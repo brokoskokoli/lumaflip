@@ -1,0 +1,430 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+#include "Settings.h"
+
+#include "InputBindings.h"
+
+#include <QCoreApplication>
+#include <QCryptographicHash>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QKeySequence>
+#include <QMap>
+#include <QMutex>
+#include <QMutexLocker>
+#include <QRegularExpression>
+#include <QSaveFile>
+#include <QSettings>
+#include <QStandardPaths>
+#include <QThread>
+
+#include <memory>
+
+namespace lf {
+
+namespace {
+
+enum class Type { Bool, Int, String, KeyList };
+
+struct KeyInfo {
+    Type type = Type::String;
+    QVariant def;
+    QStringList allowed;  // String: allowed values (empty = any)
+    bool colorAllowed = false;
+    int min = 0, max = 0;  // Int
+};
+
+using Registry = QMap<QString, KeyInfo>;  // sorted
+
+const Registry& registry() {
+    static const Registry reg = [] {
+        Registry r;
+        auto b = [&r](const char* k, bool d) { r.insert(QString::fromLatin1(k), {Type::Bool, d, {}, false, 0, 0}); };
+        auto i = [&r](const char* k, int d, int lo, int hi) {
+            r.insert(QString::fromLatin1(k), {Type::Int, d, {}, false, lo, hi});
+        };
+        auto s = [&r](const char* k, const char* d, QStringList allowed, bool color = false) {
+            r.insert(QString::fromLatin1(k), {Type::String, QString::fromLatin1(d), allowed, color, 0, 0});
+        };
+        s(key::OpenBehavior, "newWindow", {"newWindow", "replaceFront", "newUnlessOpen"});
+        b(key::FitWindowToImage, false);
+        b(key::RestoreWindows, true);
+        s(key::Background, "dark", {"dark", "light", "system", "checker"}, true);
+        s(key::ZoomMode, "fit", {"fit", "fitUpscale", "actual", "fillWidth", "fillHeight", "fill"});
+        s(key::UpscaleFilter, "smooth", {"smooth", "nearest"});
+        s(key::ActualSizeUnit, "devicePixels", {"devicePixels", "points"});
+        b(key::ShowStatusBar, true);
+        b(key::ShowInfoPanel, false);
+        b(key::ShowFilmstrip, false);
+        s(key::WrapMode, "stop", {"stop", "wrap", "nextFolder"});
+        b(key::FollowFinder, true);
+        b(key::FinderLiveQuery, false);
+        s(key::ManualSortKey, "name",
+          {"name", "dateModified", "dateCreated", "dateAdded", "dateCaptured", "size", "kind", "pixelCount",
+           "rating"});
+        b(key::ManualSortAscending, true);
+        i(key::MemoryBudgetMB, 0, 0, 65536);
+        i(key::PrefetchAhead, 3, 0, 20);
+        i(key::PrefetchBehind, 1, 0, 20);
+        b(key::RawEmbeddedOnly, false);
+        b(key::RatingStoreSidecar, true);
+        b(key::RatingStoreEmbedded, false);
+        b(key::RatingStoreFinderTags, false);
+        // Input (4.14)
+        b(key::WheelInverted, false);
+        i(key::WheelStepsPerImage, 1, 1, 5);
+        i(key::WheelMinIntervalMs, 120, 0, 300);
+        i(key::ZoomStepPercent, 15, 5, 50);
+        i(key::JumpSize, 10, 2, 100);
+        for (const auto& slot : InputBindings::inputSlots()) {
+            if (slot.id == QLatin1String("endOfCollection"))
+                continue;  // stored as key::WrapMode
+            r.insert(QString::fromLatin1(key::InputPrefix) + slot.id,
+                     {Type::String, slot.defaultChoice, slot.choices, false, 0, 0});
+        }
+        for (Action a : InputBindings::allActions()) {
+            QStringList d;
+            for (const auto& seq : InputBindings::defaultShortcuts(a))
+                d << seq.toString(QKeySequence::PortableText);
+            r.insert(QString::fromLatin1(key::ShortcutPrefix) + actionId(a), {Type::KeyList, d, {}, false, 0, 0});
+        }
+        return r;
+    }();
+    return reg;
+}
+
+const KeyInfo* findKey(const QString& k) {
+    const Registry& r = registry();
+    auto it = r.constFind(k);
+    return it == r.constEnd() ? nullptr : &*it;
+}
+
+bool isColor(const QString& s) {
+    static const QRegularExpression re(QStringLiteral("^#[0-9a-fA-F]{6}$"));
+    return re.match(s).hasMatch();
+}
+
+bool validKeySequence(const QString& s) {
+    const QKeySequence seq = QKeySequence::fromString(s, QKeySequence::PortableText);
+    return !seq.isEmpty() && seq[0].key() != Qt::Key_unknown;
+}
+
+// Normalizes `v` to the type of `info`; returns invalid QVariant if not acceptable.
+QVariant normalize(const KeyInfo& info, const QVariant& v) {
+    if (!v.isValid())
+        return {};
+    switch (info.type) {
+    case Type::Bool: {
+        if (v.typeId() == QMetaType::Bool)
+            return v;
+        const QString s = v.toString().toLower();
+        if (s == QLatin1String("true") || s == QLatin1String("1"))
+            return true;
+        if (s == QLatin1String("false") || s == QLatin1String("0"))
+            return false;
+        return {};
+    }
+    case Type::Int: {
+        bool ok = false;
+        const int n = v.toInt(&ok);
+        if (!ok || n < info.min || n > info.max)
+            return {};
+        return n;
+    }
+    case Type::String: {
+        if (!v.canConvert<QString>())
+            return {};
+        const QString s = v.toString();
+        if (!info.allowed.isEmpty() && !info.allowed.contains(s) && !(info.colorAllowed && isColor(s)))
+            return {};
+        return s;
+    }
+    case Type::KeyList: {
+        QStringList list;
+        if (v.typeId() == QMetaType::QString) {
+            // INI stores single-element/empty lists as plain strings.
+            if (!v.toString().isEmpty())
+                list << v.toString();
+        } else if (v.canConvert<QStringList>()) {
+            list = v.toStringList();
+        } else {
+            return {};
+        }
+        for (const auto& s : list)
+            if (!validKeySequence(s))
+                return {};
+        return list;
+    }
+    }
+    return {};
+}
+
+QVariant toStorage(const KeyInfo* info, const QVariant& v) {
+    // Empty lists are written as "" so every backend reads them back as "no shortcut".
+    if (info && info->type == Type::KeyList && v.toStringList().isEmpty())
+        return QString();
+    return v;
+}
+
+QString typeName(Type t) {
+    switch (t) {
+    case Type::Bool: return QStringLiteral("bool");
+    case Type::Int: return QStringLiteral("int");
+    case Type::String: return QStringLiteral("string");
+    case Type::KeyList: return QStringLiteral("list of shortcuts");
+    }
+    return {};
+}
+
+} // namespace
+
+struct Settings::Private {
+    mutable QMutex mutex;
+    std::unique_ptr<QSettings> qs;
+    QString folderFile;
+    mutable bool foldersLoaded = false;
+    mutable QJsonObject folders;
+
+    // Created lazily so the default (native) backend picks up the organization and
+    // application names set in main(). Caller holds `mutex`.
+    QSettings& settings() {
+        if (!qs)
+            qs = std::make_unique<QSettings>();
+        return *qs;
+    }
+};
+
+namespace {
+QString defaultFolderFile() {
+    const QString dir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    return dir + QStringLiteral("/folders.json");
+}
+} // namespace
+
+Settings::Settings(QObject* parent) : QObject(parent), d(new Private) {
+}
+
+Settings& Settings::instance() {
+    static Settings* s = [] {
+        auto* st = new Settings;  // intentionally leaked: lives until process exit
+        if (auto* app = QCoreApplication::instance(); app && st->thread() != app->thread())
+            st->moveToThread(app->thread());
+        return st;
+    }();
+    return *s;
+}
+
+void Settings::useTestingBackend(const QString& iniPath) {
+    Settings& s = instance();
+    QMutexLocker lock(&s.d->mutex);
+    s.d->qs = std::make_unique<QSettings>(iniPath, QSettings::IniFormat);
+    s.d->folderFile = iniPath + QStringLiteral(".folders.json");
+    s.d->foldersLoaded = false;
+    s.d->folders = {};
+}
+
+QStringList Settings::knownKeys() { return registry().keys(); }
+
+QVariant Settings::defaultValue(const QString& key) const {
+    const KeyInfo* info = findKey(key);
+    return info ? info->def : QVariant();
+}
+
+QVariant Settings::value(const QString& key) const {
+    QVariant raw;
+    {
+        QMutexLocker lock(&d->mutex);
+        raw = d->settings().value(key);
+    }
+    const KeyInfo* info = findKey(key);
+    if (!info)
+        return raw;  // keys owned by other modules (e.g. window geometry)
+    const QVariant v = normalize(*info, raw);
+    return v.isValid() ? v : info->def;
+}
+
+void Settings::setValue(const QString& key, const QVariant& value) {
+    const KeyInfo* info = findKey(key);
+    QVariant v = value;
+    if (info) {
+        v = normalize(*info, value);
+        if (!v.isValid()) {
+            qWarning("lf::Settings: invalid value for %s ignored", qPrintable(key));
+            return;
+        }
+    }
+    const QVariant old = this->value(key);
+    {
+        QMutexLocker lock(&d->mutex);
+        d->settings().setValue(key, toStorage(info, v));
+    }
+    if (old != v)
+        emit changed(key);
+}
+
+void Settings::resetToDefaults(const QString& prefix) {
+    QStringList affected;
+    QHash<QString, QVariant> before;
+    for (const QString& k : registry().keys())
+        if (k.startsWith(prefix))
+            before.insert(k, value(k));
+    {
+        QMutexLocker lock(&d->mutex);
+        const QStringList all = d->settings().allKeys();
+        for (const QString& k : all) {
+            if (k.startsWith(prefix)) {
+                d->settings().remove(k);
+                if (!findKey(k))
+                    affected << k;
+            }
+        }
+    }
+    for (auto it = before.cbegin(); it != before.cend(); ++it)
+        if (value(it.key()) != it.value())
+            affected << it.key();
+    affected.sort();
+    for (const QString& k : affected)
+        emit changed(k);
+}
+
+// ---- export / import (F-SET-03) ----
+
+bool Settings::exportTo(const QString& filePath, QString* error) const {
+    QJsonObject values;
+    for (auto it = registry().cbegin(); it != registry().cend(); ++it) {
+        const QVariant v = value(it.key());
+        if (it->type == Type::KeyList)
+            values.insert(it.key(), QJsonArray::fromStringList(v.toStringList()));
+        else
+            values.insert(it.key(), QJsonValue::fromVariant(v));
+    }
+    QJsonObject root;
+    root.insert(QStringLiteral("format"), QStringLiteral("lumaflip-settings"));
+    root.insert(QStringLiteral("version"), 1);
+    root.insert(QStringLiteral("settings"), values);
+    QSaveFile f(filePath);
+    if (!f.open(QIODevice::WriteOnly)) {
+        if (error)
+            *error = tr("Datei kann nicht geschrieben werden: %1").arg(f.errorString());
+        return false;
+    }
+    f.write(QJsonDocument(root).toJson(QJsonDocument::Indented));
+    if (!f.commit()) {
+        if (error)
+            *error = tr("Datei kann nicht geschrieben werden: %1").arg(f.errorString());
+        return false;
+    }
+    return true;
+}
+
+bool Settings::importFrom(const QString& filePath, QString* error) {
+    auto fail = [error](const QString& msg) {
+        if (error)
+            *error = msg;
+        return false;
+    };
+    QFile f(filePath);
+    if (!f.open(QIODevice::ReadOnly))
+        return fail(tr("Datei kann nicht gelesen werden: %1").arg(f.errorString()));
+    QJsonParseError pe;
+    const QJsonDocument doc = QJsonDocument::fromJson(f.readAll(), &pe);
+    if (pe.error != QJsonParseError::NoError)
+        return fail(tr("Keine gültige Einstellungsdatei (JSON-Fehler: %1).").arg(pe.errorString()));
+    const QJsonObject root = doc.object();
+    if (!doc.isObject() || root.value(QStringLiteral("format")).toString() != QLatin1String("lumaflip-settings") ||
+        !root.value(QStringLiteral("settings")).isObject())
+        return fail(tr("Keine Lumaflip-Einstellungsdatei."));
+    const QJsonObject values = root.value(QStringLiteral("settings")).toObject();
+
+    QList<QPair<QString, QVariant>> accepted;
+    QStringList problems;
+    for (auto it = values.constBegin(); it != values.constEnd(); ++it) {
+        const KeyInfo* info = findKey(it.key());
+        if (!info)
+            continue;  // unknown keys (newer/older versions) are ignored
+        const QJsonValue jv = it.value();
+        bool typeOk = false;
+        switch (info->type) {
+        case Type::Bool: typeOk = jv.isBool(); break;
+        case Type::Int: typeOk = jv.isDouble() && jv.toDouble() == double(jv.toInt()); break;
+        case Type::String: typeOk = jv.isString(); break;
+        case Type::KeyList: {
+            typeOk = jv.isArray();
+            for (const auto& e : jv.toArray())
+                typeOk = typeOk && e.isString();
+            break;
+        }
+        }
+        const QVariant v = typeOk ? normalize(*info, jv.toVariant()) : QVariant();
+        if (!v.isValid()) {
+            problems << tr("%1: ungültiger Wert (erwartet: %2)").arg(it.key(), typeName(info->type));
+            continue;
+        }
+        accepted.append({it.key(), v});
+    }
+    if (!problems.isEmpty())
+        return fail(tr("Import abgebrochen, nichts wurde geändert:\n%1").arg(problems.join(QLatin1Char('\n'))));
+    for (const auto& [k, v] : accepted)
+        setValue(k, v);
+    return true;
+}
+
+// ---- per-folder values (F-SORT-06) ----
+
+namespace {
+QString folderHash(const QString& folderPath) {
+    QFileInfo fi(folderPath);
+    QString canonical = fi.canonicalFilePath();
+    if (canonical.isEmpty())
+        canonical = QDir::cleanPath(fi.absoluteFilePath());
+    return QString::fromLatin1(
+        QCryptographicHash::hash(canonical.toUtf8(), QCryptographicHash::Sha256).toHex().left(32));
+}
+} // namespace
+
+QVariant Settings::folderValue(const QString& folderPath, const QString& key) const {
+    QMutexLocker lock(&d->mutex);
+    if (d->folderFile.isEmpty())
+        d->folderFile = defaultFolderFile();
+    if (!d->foldersLoaded) {
+        d->foldersLoaded = true;
+        QFile f(d->folderFile);
+        if (f.open(QIODevice::ReadOnly))
+            d->folders = QJsonDocument::fromJson(f.readAll()).object();
+    }
+    const QJsonObject entry = d->folders.value(folderHash(folderPath)).toObject();
+    const QJsonValue v = entry.value(QStringLiteral("values")).toObject().value(key);
+    return v.isUndefined() ? QVariant() : v.toVariant();
+}
+
+void Settings::setFolderValue(const QString& folderPath, const QString& key, const QVariant& value) {
+    (void)folderValue(folderPath, key);  // ensure loaded
+    QMutexLocker lock(&d->mutex);
+    const QString h = folderHash(folderPath);
+    QJsonObject entry = d->folders.value(h).toObject();
+    QJsonObject values = entry.value(QStringLiteral("values")).toObject();
+    if (value.isValid())
+        values.insert(key, QJsonValue::fromVariant(value));
+    else
+        values.remove(key);
+    if (values.isEmpty()) {
+        d->folders.remove(h);
+    } else {
+        entry.insert(QStringLiteral("values"), values);
+        d->folders.insert(h, entry);
+    }
+    QDir().mkpath(QFileInfo(d->folderFile).absolutePath());
+    QSaveFile f(d->folderFile);
+    if (f.open(QIODevice::WriteOnly)) {
+        f.write(QJsonDocument(d->folders).toJson(QJsonDocument::Compact));
+        if (!f.commit())
+            qWarning("lf::Settings: cannot write %s", qPrintable(d->folderFile));
+    } else {
+        qWarning("lf::Settings: cannot write %s", qPrintable(d->folderFile));
+    }
+}
+
+} // namespace lf
