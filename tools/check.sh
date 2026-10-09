@@ -27,6 +27,10 @@ cmake -S . -B "$BUILD_DIR" -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH
 step "Build"
 cmake --build "$BUILD_DIR"
 
+step "Format corpus"
+# Generates tests/corpus/generated/ once (stamp-checked, no-op when up to date).
+tests/corpus/make_corpus.sh
+
 step "Tests"
 export QT_QPA_PLATFORM="${QT_QPA_PLATFORM:-offscreen}"
 ctest --test-dir "$BUILD_DIR" --output-on-failure -j "$(sysctl -n hw.ncpu)"
