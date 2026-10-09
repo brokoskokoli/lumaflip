@@ -314,6 +314,7 @@ void ViewerWindow::openPaths(const QStringList& paths) {
 void ViewerWindow::openFile(const QString& path) {
     hideAccessHint();
     m_opened = true;
+    m_fitToImagePending = Settings::instance().value(key::FitWindowToImage).toBool();
     // F-WIN-09: a folder that another window already enumerated is not read again.
     for (ViewerWindow* other : m_app.windows()) {
         Collection* oc = other->collection();
@@ -335,12 +336,14 @@ void ViewerWindow::openFile(const QString& path) {
 void ViewerWindow::openFiles(const QStringList& paths) {
     hideAccessHint();
     m_opened = true;
+    m_fitToImagePending = Settings::instance().value(key::FitWindowToImage).toBool();
     m_collection->openFiles(paths);
 }
 
 void ViewerWindow::openFolder(const QString& folderPath) {
     hideAccessHint();
     m_opened = true;
+    m_fitToImagePending = Settings::instance().value(key::FitWindowToImage).toBool();
     m_collection->openFolder(folderPath);
 }
 
@@ -442,12 +445,48 @@ bool ViewerWindow::display(const QString& path, Quality quality, const DecodedIm
     m_shownPath = path;
     m_shownQuality = quality;
     m_shownFailed = false;
-    if (!same)
+    if (!same) {
         ++m_displayCount;
+        if (m_fitToImagePending) {
+            m_fitToImagePending = false;
+            fitWindowToImage(image->fullSize.isEmpty() ? image->image.size() : image->fullSize);
+        }
+    }
     updateStatus();
     updateEmptyState();
     emit imageShown(path, quality);
     return true;
+}
+
+void ViewerWindow::fitWindowToImage(QSize imagePixels) {
+    // F-WIN-08 option "Fenstergröße an Bild anpassen": 100 % if it fits, else as large
+    // as the screen allows (the zoom mode then fits the image).
+    if (isFullScreen() || isMaximized() || imagePixels.isEmpty())
+        return;
+    QScreen* s = screen() ? screen() : QGuiApplication::primaryScreen();
+    if (!s)
+        return;
+    const QRect avail = s->availableGeometry();
+    const qreal dpr = s->devicePixelRatio();
+    // Chrome around the image (status bar, hint bar); computed from size hints so it
+    // also works before the window is shown and laid out.
+    int chromeHeight = 0;
+    if (!statusBar()->isHidden())
+        chromeHeight += statusBar()->sizeHint().height();
+    if (!m_accessHint->isHidden())
+        chromeHeight += m_accessHint->sizeHint().height();
+    const QSize wanted = (QSizeF(imagePixels) / dpr).toSize() + QSize(0, chromeHeight);
+    const QSize bounded = wanted.boundedTo(QSize(int(avail.width() * 0.9), int(avail.height() * 0.9)))
+                              .expandedTo(QSize(360, 260));
+    resize(bounded);
+    QRect frame = frameGeometry();
+    if (!avail.contains(frame)) {
+        frame.moveRight(std::min(frame.right(), avail.right()));
+        frame.moveBottom(std::min(frame.bottom(), avail.bottom()));
+        frame.moveLeft(std::max(frame.left(), avail.left()));
+        frame.moveTop(std::max(frame.top(), avail.top()));
+        move(frame.topLeft());
+    }
 }
 
 void ViewerWindow::onImageReady(const QString& path, Quality quality, const DecodedImagePtr& image) {
@@ -469,9 +508,9 @@ void ViewerWindow::onImageFailed(const QString& path, const QString& error) {
     }
     m_shownPath = path;
     m_shownFailed = true;
-    QString detail = tr("Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.");
-    if (!error.isEmpty())
-        detail += QLatin1Char('\n') + error;
+    // The decoder reason is already user facing (German); generic text only as fallback.
+    const QString detail =
+        error.isEmpty() ? tr("Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.") : error;
     m_view->showError(fileName(path), detail, tr("Im Finder zeigen"));
     updateStatus();
 }
@@ -586,9 +625,8 @@ void ViewerWindow::updateStatus() {
         m_pixelLabel->clear();
         m_zoomLabel->clear();
     }
-    qint64 bytes = i >= 0 ? m_collection->at(i).size : -1;
-    if (bytes < 0 && !cur.isEmpty() && cur == m_shownPath)
-        bytes = QFileInfo(cur).size();
+    // Known once the folder is read (no file system access on the GUI thread).
+    const qint64 bytes = i >= 0 ? m_collection->at(i).size : -1;
     m_bytesLabel->setText(bytes >= 0 ? QLocale().formattedDataSize(bytes, 1, QLocale::DataSizeSIFormat)
                                      : QString());
     m_sortLabel->setText(sortText());

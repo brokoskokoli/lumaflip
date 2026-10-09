@@ -844,6 +844,31 @@ private slots:
         QCOMPARE(c->currentPath(), path("IMG_1.png"));
     }
 
+    // Covers: F-WIN-08 (option "Fenstergröße an Bild anpassen")
+    void F_WIN_08_fitWindowToImageOption() {
+        QVERIFY(!makeImage(path("wide.png"), Qt::darkGreen, QSize(1200, 800)).isEmpty());
+        ViewerWindow* plain = app->openPaths({path("wide.png")});
+        QVERIFY(waitWindowShown(plain));
+        QVERIFY(waitShown(plain, path("wide.png")));
+        const QSize normal = plain->size();
+        Settings::instance().setValue(key::FitWindowToImage, true);
+        ViewerWindow* w = app->openPaths({path("wide.png")});
+        QVERIFY(w != plain);
+        QVERIFY(waitWindowShown(w));
+        QVERIFY(waitShown(w, path("wide.png")));
+        const qreal dpr = w->screen()->devicePixelRatio();
+        const QSize expected = (QSizeF(1200, 800) / dpr).toSize();
+        QTRY_VERIFY2(qAbs(w->view()->width() - expected.width()) <= 2 &&
+                         qAbs(w->view()->height() - expected.height()) <= 2,
+                     qPrintable(QStringLiteral("%1x%2 vs %3x%4 (normal %5x%6)")
+                                    .arg(w->view()->width())
+                                    .arg(w->view()->height())
+                                    .arg(expected.width())
+                                    .arg(expected.height())
+                                    .arg(normal.width())
+                                    .arg(normal.height())));
+    }
+
     // Covers: F-WIN-09, F-OPEN-07
     void F_WIN_09_sharedResourcesAndFolderWatching() {
         makeStandardFolder();

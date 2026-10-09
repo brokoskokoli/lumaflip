@@ -41,7 +41,12 @@ public:
         setAttribute(Qt::WA_StyledBackground);
         setStyleSheet(QStringLiteral("#lfErrorCard { background: rgba(20, 20, 20, 225); border-radius: 12px; "
                                      "border: 1px solid rgba(255, 255, 255, 40); }"
-                                     "#lfErrorCard QLabel { color: #f2f2f2; background: transparent; }"));
+                                     "#lfErrorCard QLabel { color: #f2f2f2; background: transparent; }"
+                                     "#lfErrorCard QPushButton { color: #f2f2f2; background: rgba(255, 255, 255, 28); "
+                                     "border: 1px solid rgba(255, 255, 255, 90); border-radius: 6px; "
+                                     "padding: 4px 14px; }"
+                                     "#lfErrorCard QPushButton:hover { background: rgba(255, 255, 255, 50); }"
+                                     "#lfErrorCard QPushButton:pressed { background: rgba(255, 255, 255, 80); }"));
         auto* layout = new QVBoxLayout(this);
         layout->setContentsMargins(24, 20, 24, 20);
         layout->setSpacing(8);

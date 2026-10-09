@@ -113,6 +113,7 @@ private:
     void showEdgeHint(bool atEnd);
     void showAccessHint(const QString& folder);
     void hideAccessHint();
+    void fitWindowToImage(QSize imagePixels);
     void scheduleGeometrySave();
     void saveGeometryNow();
     void setChromeVisible(bool visible);
@@ -154,6 +155,7 @@ private:
     QElapsedTimer m_lastWheelFlip;
     bool m_opened = false;
     bool m_closed = false;
+    bool m_fitToImagePending = false;
 };
 
 } // namespace lf
