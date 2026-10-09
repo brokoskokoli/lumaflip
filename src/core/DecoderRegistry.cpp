@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "Decoder.h"
+#include "ImageFormats.h"
 #include "Platform.h"
+#include "QtImageDecoder.h"
 
 #include <QCoreApplication>
 #include <QFile>
@@ -10,9 +12,6 @@
 
 namespace lf {
 
-// Implemented by the portable decoder module (src/core/QtImageDecoder.h). Until that
-// module is merged, a weak no-op default lives in PlatformDecodersWeak.cpp.
-void registerPortableDecoders(DecoderRegistry& registry);
 
 namespace {
 
@@ -40,20 +39,6 @@ QString unsupportedError(const QString& path) {
 }
 
 // Default extension set (lower case). To be unified with ImageFormats.h after merge.
-const QStringList& defaultExtensions() {
-    static const QStringList list = {
-        // common
-        "jpg", "jpeg", "jpe", "jfif", "png", "apng", "gif", "bmp", "dib", "tif", "tiff", "webp",
-        // modern
-        "heic", "heif", "hif", "avif", "jxl", "jp2", "j2k", "jpf", "jpx", "jpm",
-        // camera raw
-        "dng", "cr2", "cr3", "crw", "nef", "nrw", "arw", "srf", "sr2", "orf", "rw2", "raf", "pef", "srw",
-        "x3f", "3fr", "fff", "iiq", "mos", "mrw", "erf", "kdc", "dcr", "rwl", "raw",
-        // pro / misc
-        "psd", "psb", "exr", "hdr", "tga", "ico", "cur", "icns", "dds", "pbm", "pgm", "ppm", "pnm", "svg",
-        "svgz", "qoi", "pcx", "xcf", "kra", "ora", "astc", "ktx"};
-    return list;
-}
 
 template <typename T, typename Fn>
 std::optional<T> tryBackends(const QList<std::shared_ptr<Decoder>>& backends, const QString& path,
@@ -152,7 +137,7 @@ DecoderRegistry& DecoderRegistry::instance() {
     // concurrent use from worker threads needs no locking.
     static DecoderRegistry* registry = [] {
         auto* r = new DecoderRegistry;
-        r->addSupportedExtensions(defaultExtensions());
+        r->addSupportedExtensions(imageSuffixes());  // single source of truth: ImageFormats
         registerPlatformDecoders(*r);
         registerPortableDecoders(*r);
         if (r->m_decoders.isEmpty())
