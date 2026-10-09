@@ -54,9 +54,18 @@ public:
     // Synchronous metadata/info (cached), for overlays and the info panel.
     std::optional<ImageInfo> info(const QString& path);
 
+    // Number of entries in the per-path bookkeeping tables (info cache, failures,
+    // generations). Diagnostics/tests: stays bounded however many files are visited.
+    int bookkeepingEntries() const;
+
 signals:
     void imageReady(const QString& path, lf::Quality quality, lf::DecodedImagePtr image);
+    // Nothing of `path` can be shown (every stage failed and none is cached).
     void imageFailed(const QString& path, const QString& error);
+    // One stage failed while another stage of `path` is (or may still become) available,
+    // e.g. the full-resolution decode of a huge image while the screen stage is shown.
+    // The failed stage is not retried until invalidate(path).
+    void stageFailed(const QString& path, lf::Quality quality, const QString& error);
 
 private:
     struct Private;

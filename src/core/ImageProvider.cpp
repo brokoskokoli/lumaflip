@@ -16,8 +16,13 @@
 //   jobs not desired any more are dropped; running ones finish and are cached.
 // - Per-path generation counters discard results of jobs that were started before
 //   invalidate(path).
-// - Results are emitted in quality order: a stage that arrives after a better one
-//   is dropped, so clients never see Screen followed by Preview.
+// - Results are emitted in quality order: a stage that arrives after an equal or
+//   better cached one is dropped, so clients never see Full followed by Screen.
+// - Failures are tracked per stage. A path counts as failed (imageFailed) only when
+//   no stage of it is cached or still in flight; otherwise stageFailed is emitted and
+//   the stage is not retried until invalidate().
+// - Per-path bookkeeping (info cache, failures, generations) is pruned so it stays
+//   bounded while browsing through many folders.
 
 #include "ImageProvider.h"
 
@@ -47,6 +52,8 @@ constexpr int kPreviewPx = 512;
 constexpr int kBucketPx = 256;
 constexpr int kDefaultScreenPx = 2560;
 constexpr qint64 kMaxDefaultBudget = qint64(2) << 30; // 2 GB (P-09)
+constexpr int kMaxInfoEntries = 2048;    // info() cache (FIFO)
+constexpr int kMaxPathBookkeeping = 512; // failed / failedStages / generation before pruning
 
 // Score tiers (higher runs first).
 constexpr qint64 kTierActiveCurrent = 4'000'000'000'000LL;
@@ -147,8 +154,9 @@ struct ImageProvider::Private {
     qint64 budget = 0;
     quint64 tick = 0;
     QHash<const void*, ClientState> clients;
-    QSet<QString> pinned;           // paths currently wanted by any client
-    QHash<QString, QString> failed; // path -> error
+    QSet<QString> pinned;              // paths currently wanted by any client
+    QHash<QString, QString> failed;    // path -> error (nothing of the path can be shown)
+    QHash<Key, QString> failedStages;  // stage -> error (not retried until invalidate)
     QHash<QString, quint64> generation;
 
     // ---- shared with workers ----
@@ -157,6 +165,7 @@ struct ImageProvider::Private {
 
     QMutex infoMutex;
     QHash<QString, ImageInfo> infoCache;
+    QList<QString> infoOrder; // insertion order, for the FIFO bound
 
     Private(ImageProvider* q_, DecoderRegistry& r) : q(q_), registry(r) {}
 
@@ -262,6 +271,8 @@ struct ImageProvider::Private {
             if (findCached(path, qual, px))
                 return;
             const Key k = keyFor(path, qual, px);
+            if (failedStages.contains(k))
+                return;
             auto it = desired.find(k);
             if (it == desired.end())
                 desired.insert(k, score);
@@ -333,6 +344,36 @@ struct ImageProvider::Private {
         }
         for (int i = 0; i < toStart; ++i)
             pool.start([this] { runNext(); });
+        prune();
+    }
+
+    // Drops per-path bookkeeping of files nobody wants, has cached or is decoding.
+    void prune() {
+        if (failed.size() <= kMaxPathBookkeeping && failedStages.size() <= kMaxPathBookkeeping &&
+            generation.size() <= kMaxPathBookkeeping)
+            return;
+        QSet<QString> busy;
+        {
+            QMutexLocker lock(&mutex);
+            for (auto it = jobs.cbegin(); it != jobs.cend(); ++it)
+                busy.insert(it.key().path);
+        }
+        auto keep = [&](const QString& path) {
+            return pinned.contains(path) || cacheKeysByPath.contains(path) || busy.contains(path);
+        };
+        failed.removeIf([&](const auto& it) { return !keep(it.key()); });
+        failedStages.removeIf([&](const auto& it) { return !keep(it.key().path); });
+        // A generation is only compared against jobs of the same path, so it can go once
+        // no job of that path exists any more.
+        generation.removeIf([&](const auto& it) { return !busy.contains(it.key()); });
+    }
+
+    bool hasJobsFor(const QString& path) {
+        QMutexLocker lock(&mutex);
+        for (auto it = jobs.cbegin(); it != jobs.cend(); ++it)
+            if (it.key().path == path)
+                return true;
+        return false;
     }
 
     // Worker thread: take the best pending job and decode it.
@@ -376,20 +417,23 @@ struct ImageProvider::Private {
         }
         if (!img) {
             if (failed.contains(path))
-                return; // another stage of the same file already reported it
+                return; // already reported as a whole
+            failedStages.insert(job.key, error);
+            reschedule(); // never re-queues the failed stage
+            if (cacheKeysByPath.contains(path) || hasJobsFor(path)) {
+                // Something else of this file is shown or may still arrive.
+                emit q->stageFailed(path, job.key.quality, error);
+                return;
+            }
             failed.insert(path, error);
-            reschedule(); // drops the remaining stages of this file
             emit q->imageFailed(path, error);
             return;
         }
-        // Keep stages monotonic: a preview arriving after a better image is useless.
-        if (job.key.quality == Quality::Preview) {
-            for (const Key& k : cacheKeysByPath.value(path)) {
-                if (k.quality != Quality::Preview) {
-                    reschedule();
-                    return;
-                }
-            }
+        // Keep stages monotonic: a result arriving after an equal or better cached stage
+        // (e.g. Screen finishing after Full) would downgrade the view.
+        if (findCached(path, job.key.quality, job.key.px)) {
+            reschedule();
+            return;
         }
         insert(job.key, img);
         reschedule();
@@ -437,22 +481,27 @@ DecodedImagePtr ImageProvider::request(const QString& path, Quality quality, QSi
                      [&](const Stage& s) { return s.quality == stage.quality && s.px == stage.px; }))
         cs.stages.append(stage);
 
-    if (auto f = d->failed.constFind(path); f != d->failed.cend()) {
-        const QString err = f.value();
-        QMetaObject::invokeMethod(
-            this, [this, path, err] { emit imageFailed(path, err); }, Qt::QueuedConnection);
-        return nullptr;
-    }
-
     DecodedImagePtr hit;
     if (const Key* k = d->findCached(path, quality, px)) {
         hit = d->touch(*k);
+    } else if (auto f = d->failed.constFind(path); f != d->failed.cend()) {
+        const QString err = f.value();
+        QMetaObject::invokeMethod(
+            this, [this, path, err] { emit imageFailed(path, err); }, Qt::QueuedConnection);
+        d->reschedule();
+        return nullptr;
     } else if (const Key* lower = d->findCached(path, Quality::Preview, 0)) {
         // Hand out the best lower stage right away as a placeholder.
         const Quality lq = lower->quality;
         DecodedImagePtr img = d->touch(*lower);
         QMetaObject::invokeMethod(
             this, [this, path, lq, img] { emit imageReady(path, lq, img); }, Qt::QueuedConnection);
+        if (auto f = d->failedStages.constFind(keyFor(path, quality, px)); f != d->failedStages.cend()) {
+            const QString err = f.value();
+            QMetaObject::invokeMethod(
+                this, [this, path, quality, err] { emit stageFailed(path, quality, err); },
+                Qt::QueuedConnection);
+        }
     }
     d->reschedule();
     return hit;
@@ -482,9 +531,11 @@ void ImageProvider::invalidate(const QString& path) {
     ++d->generation[path];
     d->removePath(path);
     d->failed.remove(path);
+    d->failedStages.removeIf([&](const auto& it) { return it.key().path == path; });
     {
         QMutexLocker lock(&d->infoMutex);
-        d->infoCache.remove(path);
+        if (d->infoCache.remove(path))
+            d->infoOrder.removeOne(path);
     }
     {
         QMutexLocker lock(&d->mutex);
@@ -518,9 +569,18 @@ std::optional<ImageInfo> ImageProvider::info(const QString& path) {
     auto result = d->registry.info(path, &error);
     if (result) {
         QMutexLocker lock(&d->infoMutex);
+        if (!d->infoCache.contains(path))
+            d->infoOrder.append(path);
         d->infoCache.insert(path, *result);
+        while (d->infoOrder.size() > kMaxInfoEntries)
+            d->infoCache.remove(d->infoOrder.takeFirst());
     }
     return result;
+}
+
+int ImageProvider::bookkeepingEntries() const {
+    QMutexLocker lock(&d->infoMutex);
+    return int(d->infoCache.size() + d->failed.size() + d->failedStages.size() + d->generation.size());
 }
 
 } // namespace lf
