@@ -6,6 +6,7 @@
 // translates Qt events into InputEvent and executes the returned Action.
 
 #include <QHash>
+#include <QList>
 #include <QKeySequence>
 #include <QString>
 #include <QStringList>
@@ -31,6 +32,9 @@ enum class Action {
     Magnifier,                            // hold
     DragOut,
     StartPan,
+    // appended (keep order above stable)
+    Rate0, Rate1, Rate2, Rate3, Rate4, Rate5, RatePick, RateReject, RateClear,  // F-CULL-01
+    Undo, Redo, OpenPreferences, CloseAllWindows,
 };
 
 QString actionId(Action a);          // stable string id for settings ("nextImage")
@@ -49,6 +53,8 @@ struct InputEvent {
     bool animated = false;       // current image is animated
     bool atScrollEdge = false;   // for "scroll then flip" (F-IN-07)
     bool inCullingMode = false;
+    bool multiPage = false;      // current file has several pages (F-IN-04 "page")
+    bool inLeftHalf = false;     // click position (F-IN-09 "image": left half = previous)
 };
 
 // Configurable "slots" of SPEC 4.14 (F-IN-01..16). Each slot has a set of
@@ -58,6 +64,7 @@ struct InputSlot {
     QString label;               // German
     QStringList choices;         // choice ids
     QStringList choiceLabels;    // German
+    QStringList choiceHelp;      // German one-line explanation per choice (F-IN-17)
     QString defaultChoice;
 };
 
@@ -71,10 +78,19 @@ public:
     QString choice(const QString& slotId) const;
     void setChoice(const QString& slotId, const QString& choiceId);  // persists
 
-    // Free key shortcuts (F-SET-02) for actions not covered by slots.
-    QKeySequence shortcut(Action a) const;
-    void setShortcut(Action a, const QKeySequence& seq);
+    // Free key shortcuts (F-SET-02) for actions not covered by slots. An action can
+    // have several alternative shortcuts (SPEC 5.2, e.g. Cmd+0 and "3").
+    static QVector<Action> allActions();     // every action except None
+    static QList<QKeySequence> defaultShortcuts(Action a);
+    QKeySequence shortcut(Action a) const;   // first (primary) shortcut
+    QList<QKeySequence> shortcuts(Action a) const;
+    void setShortcut(Action a, const QKeySequence& seq);  // replaces all with one (empty = none)
+    void setShortcuts(Action a, const QList<QKeySequence>& seqs);  // persists
+    void resetShortcuts();
+    // Actions whose shortcut collides with another action in the same context
+    // (rating keys only apply in culling mode and never conflict with zoom digits).
     QVector<Action> conflicts() const;
+    QVector<Action> conflictsWith(Action a) const;
 
     // Core: resolve an input event to an action.
     Action resolve(const InputEvent& ev) const;
@@ -89,7 +105,7 @@ public:
 
 private:
     QHash<QString, QString> m_choices;
-    QHash<int, QKeySequence> m_shortcuts;
+    QHash<int, QList<QKeySequence>> m_shortcuts;
 };
 
 } // namespace lf

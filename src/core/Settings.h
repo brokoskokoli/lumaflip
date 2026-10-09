@@ -6,6 +6,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QStringList>
 #include <QVariant>
 
 namespace lf {
@@ -27,10 +28,19 @@ inline constexpr auto ShowFilmstrip = "view/filmstrip";
 inline constexpr auto WrapMode = "nav/wrap";                       // "stop" | "wrap" | "nextFolder"
 inline constexpr auto FollowFinder = "sort/followFinder";          // bool, default true
 inline constexpr auto FinderLiveQuery = "sort/finderLive";         // bool, default false (opt-in)
-inline constexpr auto ManualSortKey = "sort/manualKey";
-inline constexpr auto ManualSortAscending = "sort/manualAscending";
-// Input (4.14) - values are action ids, see InputBindings.h
+inline constexpr auto ManualSortKey = "sort/manualKey";           // "name" | "dateModified" | "dateCreated" |
+                                                                   // "dateAdded" | "dateCaptured" | "size" |
+                                                                   // "kind" | "pixelCount" | "rating"
+inline constexpr auto ManualSortAscending = "sort/manualAscending"; // bool, default true
+// Input (4.14) - values are choice ids, see InputBindings.h ("input/<slotId>",
+// "input/shortcut/<actionId>" = list of portable key sequence strings)
 inline constexpr auto InputPrefix = "input/";
+inline constexpr auto ShortcutPrefix = "input/shortcut/";
+inline constexpr auto WheelInverted = "input/wheelTuning.inverted";        // bool, default false (F-IN-03)
+inline constexpr auto WheelStepsPerImage = "input/wheelTuning.steps";      // 1..5, default 1
+inline constexpr auto WheelMinIntervalMs = "input/wheelTuning.intervalMs"; // 0..300, default 120
+inline constexpr auto ZoomStepPercent = "input/wheelTuning.zoomStep";      // 5..50, default 15
+inline constexpr auto JumpSize = "input/jumpSize";                         // 2..100, default 10 (F-IN-04)
 // Performance
 inline constexpr auto MemoryBudgetMB = "perf/memoryBudgetMB";      // 0 = auto (25% RAM, max 2048)
 inline constexpr auto PrefetchAhead = "perf/prefetchAhead";        // default 3
@@ -51,6 +61,7 @@ public:
     void setValue(const QString& key, const QVariant& value);
     QVariant defaultValue(const QString& key) const;
     void resetToDefaults(const QString& prefix = {});  // prefix "" = all
+    static QStringList knownKeys();                    // every key with a default (sorted)
 
     bool exportTo(const QString& filePath, QString* error) const;   // F-SET-03
     bool importFrom(const QString& filePath, QString* error);
