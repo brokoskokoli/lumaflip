@@ -6,6 +6,7 @@
 
 #include <gtest/gtest.h>
 
+#include <QElapsedTimer>
 #include <QRandomGenerator>
 
 using namespace lf;
@@ -194,4 +195,59 @@ TEST(BinaryPlist, F_SORT_08_SharedSubobjectsDoNotExplode) {
     test::putBE(b, 0, 8);
     test::putBE(b, quint64(table), 8);
     EXPECT_FALSE(bplist::parse(b).has_value());
+}
+
+namespace {
+
+// Root array of `refs` references to one data object of `dataBytes` bytes (4-byte refs).
+QByteArray sharedDataPlist(int refs, int dataBytes) {
+    QByteArray b("bplist00");
+    const quint64 o0 = quint64(b.size());
+    b.append(char(0xAF));
+    b.append(char(0x12)); // 4-byte count
+    test::putBE(b, quint64(refs), 4);
+    for (int i = 0; i < refs; ++i)
+        test::putBE(b, 1, 4);
+    const quint64 o1 = quint64(b.size());
+    b.append(char(0x4F));
+    b.append(char(0x12));
+    test::putBE(b, quint64(dataBytes), 4);
+    b.append(QByteArray(dataBytes, 'x'));
+    const quint64 table = quint64(b.size());
+    test::putBE(b, o0, 8);
+    test::putBE(b, o1, 8);
+    b.append(QByteArray(6, '\0'));
+    b.append(char(8));
+    b.append(char(4));
+    test::putBE(b, 2, 8);
+    test::putBE(b, 0, 8);
+    test::putBE(b, table, 8);
+    return b;
+}
+
+} // namespace
+
+TEST(BinaryPlist, ReviewSharedDataIsNotCopiedPerReference) {
+    // Many references to one 64 KiB data object: the parsed list must share one buffer.
+    const QByteArray plist = sharedDataPlist(100, 64 * 1024);
+    QString err;
+    const auto v = bplist::parse(plist, &err);
+    ASSERT_TRUE(v.has_value()) << err.toStdString();
+    const QVariantList l = v->toList();
+    ASSERT_EQ(l.size(), 100);
+    const QByteArray first = l.first().toByteArray();
+    EXPECT_EQ(first.size(), 64 * 1024);
+    for (const QVariant& e : l)
+        EXPECT_EQ(e.toByteArray().constData(), first.constData()); // implicit sharing, no copy
+}
+
+TEST(BinaryPlist, ReviewOutputBudgetRejectsReferenceAmplification) {
+    // 800 KB input whose logical expansion is 200k x 4 KiB (~800 MB): must fail, quickly.
+    const QByteArray plist = sharedDataPlist(200'000, 4096);
+    QElapsedTimer t;
+    t.start();
+    QString err;
+    EXPECT_FALSE(bplist::parse(plist, &err).has_value());
+    EXPECT_FALSE(err.isEmpty());
+    EXPECT_LT(t.elapsed(), 5000); // generous: the old code took seconds and ~900 MB
 }

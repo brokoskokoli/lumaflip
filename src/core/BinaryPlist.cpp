@@ -13,7 +13,12 @@ namespace {
 
 constexpr int kMaxDepth = 128;
 constexpr quint64 kMaxObjects = 1u << 24; // sanity cap, far above any Finder blob
-constexpr quint64 kMaxVisits = 1u << 20;  // shared sub-objects could otherwise expand exponentially
+constexpr quint64 kMaxVisits = 1u << 20;  // logical nodes (shared sub-objects count once per reference)
+// Logical output budget: a shared data/string object referenced N times counts N times. Parsed
+// objects are memoized per index (QVariant implicit sharing), so the real memory stays close to
+// the input size; the budget keeps consumers that walk the tree from expanding it unboundedly.
+constexpr quint64 kMaxOutputBytes = 16u << 20;
+constexpr quint64 kNodeOverhead = 16; // bytes charged per node on top of its payload
 
 class Parser {
   public:
@@ -44,6 +49,7 @@ class Parser {
         if (offsetTable_ < 8 || offsetTable_ > t || (t - offsetTable_) / offsetIntSize_ < numObjects_)
             return fail("bad offset table");
         state_.assign(numObjects_, 0);
+        memo_.assign(numObjects_, Memo{});
         bool ok = true;
         QVariant v = object(top, 0, ok);
         if (!ok)
@@ -61,6 +67,16 @@ class Parser {
     std::vector<char> state_; // 0 = unvisited/done, 1 = on the current path (cycle detection)
     const char* err_ = nullptr;
     quint64 visits_ = 0;
+    quint64 outBytes_ = 0;
+
+    // Fully parsed objects, so repeated references share one QVariant instead of copying it.
+    struct Memo {
+        bool done = false;
+        QVariant value;
+        quint64 nodes = 0; // logical node count of the subtree
+        quint64 bytes = 0; // logical output bytes of the subtree
+    };
+    std::vector<Memo> memo_;
 
     // Big-endian unsigned read; caller guarantees bounds.
     quint64 be(quint64 pos, int size) const {
@@ -108,11 +124,45 @@ class Parser {
         return {};
     }
 
+    bool charge(bool& ok, quint64 nodes, quint64 bytes) {
+        visits_ += nodes;
+        outBytes_ += bytes;
+        if (visits_ > kMaxVisits) {
+            bad(ok, "too many objects");
+            return false;
+        }
+        if (outBytes_ > kMaxOutputBytes) {
+            bad(ok, "plist expands too much");
+            return false;
+        }
+        return true;
+    }
+
     QVariant object(quint64 idx, int depth, bool& ok) {
         if (depth > kMaxDepth)
             return bad(ok, "nesting too deep");
-        if (++visits_ > kMaxVisits)
-            return bad(ok, "too many objects");
+        if (idx < memo_.size() && memo_[idx].done) {
+            const Memo& m = memo_[idx];
+            if (!charge(ok, m.nodes, m.bytes))
+                return {};
+            return m.value;
+        }
+        const quint64 nodesBefore = visits_;
+        const quint64 bytesBefore = outBytes_;
+        if (!charge(ok, 1, kNodeOverhead))
+            return {};
+        QVariant v = parseObject(idx, depth, ok);
+        if (!ok)
+            return {};
+        Memo& m = memo_[idx];
+        m.done = true;
+        m.value = v;
+        m.nodes = visits_ - nodesBefore;
+        m.bytes = outBytes_ - bytesBefore;
+        return v;
+    }
+
+    QVariant parseObject(quint64 idx, int depth, bool& ok) {
         quint64 off = 0;
         if (!objectOffset(idx, off))
             return bad(ok, "bad object offset");
@@ -158,18 +208,24 @@ class Parser {
             quint64 len = 0;
             if (!length(pos, nib, len) || !has(pos, len))
                 return bad(ok, "truncated data");
+            if (!charge(ok, 0, len))
+                return {};
             return QByteArray(reinterpret_cast<const char*>(d_ + pos), qsizetype(len));
         }
         case 0x5: {
             quint64 len = 0;
             if (!length(pos, nib, len) || !has(pos, len))
                 return bad(ok, "truncated ascii string");
+            if (!charge(ok, 0, len * 2))
+                return {};
             return QString::fromLatin1(reinterpret_cast<const char*>(d_ + pos), qsizetype(len));
         }
         case 0x6: {
             quint64 len = 0;
             if (!length(pos, nib, len) || len > n_ / 2 || !has(pos, len * 2))
                 return bad(ok, "truncated utf16 string");
+            if (!charge(ok, 0, len * 2))
+                return {};
             QString s(qsizetype(len), Qt::Uninitialized);
             for (quint64 i = 0; i < len; ++i)
                 s[qsizetype(i)] = QChar(char16_t(be(pos + 2 * i, 2)));
@@ -179,6 +235,8 @@ class Parser {
             quint64 len = 0;
             if (!length(pos, nib, len) || !has(pos, len))
                 return bad(ok, "truncated utf8 string");
+            if (!charge(ok, 0, len * 2))
+                return {};
             return QString::fromUtf8(reinterpret_cast<const char*>(d_ + pos), qsizetype(len));
         }
         case 0x8: {
