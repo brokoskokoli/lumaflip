@@ -1,0 +1,51 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// UI description of sort specs (F-SORT-05) and the supported suffix list (F-OPEN-06).
+
+#include "core/ImageFormats.h"
+#include "core/SortSpec.h"
+
+#include <gtest/gtest.h>
+
+using namespace lf;
+
+TEST(SortSpec, F_SORT_05_DescribeFinderSources) {
+    EXPECT_EQ(describe({SortKey::DateAdded, false, SortSource::FinderDsStore}),
+              QString::fromUtf8("Wie Finder: Hinzugefügt am ↓"));
+    EXPECT_EQ(describe({SortKey::Name, true, SortSource::FinderGlobal}),
+              QString::fromUtf8("Wie Finder: Name ↑"));
+    EXPECT_EQ(describe({SortKey::Size, false, SortSource::FinderLive}),
+              QString::fromUtf8("Wie Finder: Größe ↓"));
+    EXPECT_EQ(describe({SortKey::FinderIconPosition, true, SortSource::FinderDsStore}),
+              QString::fromUtf8("Wie Finder: Symbolposition"));
+}
+
+TEST(SortSpec, F_SORT_05_DescribeFallbackAndManual) {
+    EXPECT_EQ(describe({SortKey::Name, true, SortSource::Fallback}),
+              QString::fromUtf8("Name ↑ (Finder-Info nicht gefunden)"));
+    EXPECT_EQ(describe({SortKey::DateModified, false, SortSource::Manual}),
+              QString::fromUtf8("Änderungsdatum ↓"));
+}
+
+TEST(SortSpec, F_SORT_02_EveryKeyHasALabel) {
+    for (SortKey k : {SortKey::Name, SortKey::DateModified, SortKey::DateCreated, SortKey::DateAdded,
+                      SortKey::DateCaptured, SortKey::Size, SortKey::Kind, SortKey::PixelCount,
+                      SortKey::Rating, SortKey::FinderIconPosition})
+        EXPECT_FALSE(sortKeyLabel(k).isEmpty());
+    EXPECT_EQ(sortKeyLabel(SortKey::DateCaptured), QString::fromUtf8("Aufnahmedatum"));
+}
+
+TEST(ImageFormats, F_OPEN_06_KnownSuffixes) {
+    for (const char* s : {"jpg", "jpeg", "png", "heic", "avif", "jxl", "webp", "tiff", "gif", "psd", "exr",
+                          "svg", "cr3",  "nef", "arw",  "dng",  "raf", "orf",  "rw2",  "qoi", "dcm"})
+        EXPECT_TRUE(isImageSuffix(QString::fromLatin1(s))) << s;
+    for (const char* s : {"txt", "pdf", "mov", "mp4", "zip", "", "app", "JPG"})
+        EXPECT_FALSE(isImageSuffix(QString::fromLatin1(s))) << s;
+    EXPECT_TRUE(hasImageSuffix("Foto.JPG"));
+    EXPECT_TRUE(hasImageSuffix("/a/b.c/IMG_1.cr2"));
+    EXPECT_FALSE(hasImageSuffix("/a/b.jpg/readme"));
+    EXPECT_FALSE(hasImageSuffix("noext"));
+    EXPECT_FALSE(hasImageSuffix("trailingdot."));
+    EXPECT_TRUE(isRawSuffix("cr3"));
+    EXPECT_FALSE(isRawSuffix("jpg"));
+    EXPECT_GE(imageSuffixes().size(), 80);
+}
