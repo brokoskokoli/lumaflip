@@ -50,7 +50,12 @@ if [[ $QUICK == 0 ]]; then
 
   if [[ -x "$BUILD_DIR/tests/lf_bench" ]]; then
     step "Benchmarks"
-    "$BUILD_DIR/tests/lf_bench"
+    # The view benchmark (P-03) needs Metal: the offscreen platform has no QRhi.
+    if [[ "$(uname)" == Darwin ]]; then
+      QT_QPA_PLATFORM=cocoa "$BUILD_DIR/tests/lf_bench"
+    else
+      "$BUILD_DIR/tests/lf_bench"
+    fi
   fi
 fi
 
