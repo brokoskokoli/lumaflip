@@ -51,7 +51,7 @@ bool writeImage(const QString& path, CGImageRef img, UTType* type, NSDictionary*
     return ok;
 }
 
-qint64 physFootprint() {
+[[maybe_unused]] qint64 physFootprint() {
     task_vm_info_data_t info{};
     mach_msg_type_number_t count = TASK_VM_INFO_COUNT;
     if (task_info(mach_task_self(), TASK_VM_INFO, reinterpret_cast<task_info_t>(&info), &count) != KERN_SUCCESS)
