@@ -6,16 +6,17 @@
 // The view handles pan/pinch/drag itself and forwards everything else (keys, wheel,
 // clicks) as InputEvent to its owner via userInput().
 
+#include "app/ZoomModel.h"  // ZoomMode (moved there so the pure geometry is testable)
 #include "core/ImageProvider.h"
 #include "core/InputBindings.h"
 
 #include <QColor>
+#include <QColorSpace>
+#include <QList>
 #include <QPointF>
 #include <QWidget>
 
 namespace lf {
-
-enum class ZoomMode { Fit, FitUpscale, Actual, FillWidth, FillHeight, Fill, Custom };
 
 class ImageView : public QWidget {
     Q_OBJECT
@@ -30,6 +31,10 @@ public:
     // Error card (F-FMT-02).
     void showError(const QString& title, const QString& detail);
     DecodedImagePtr image() const;
+    // Keep GPU textures for these images (neighbours from the prefetch window,
+    // SPEC 7.1) so that switching to them takes one frame (P-03). Images not in
+    // the list (and not current) release their textures.
+    void setPreloadImages(const QList<DecodedImagePtr>& images);
 
     void setZoomMode(ZoomMode mode);
     ZoomMode zoomMode() const;
@@ -37,6 +42,9 @@ public:
     void setZoomFactor(double factor, QPointF anchorInWidget);
     void zoomBy(double factor, QPointF anchorInWidget);
     void zoomBy(double factor);  // anchor = center
+    // ⌘+ / ⌘− (F-VIEW-02): steps on a zoom ladder that contains 100 %.
+    void zoomStep(int steps, QPointF anchorInWidget);
+    void zoomStep(int steps);    // anchor = center
     void toggleFitActual(QPointF anchorInWidget);  // F-VIEW-03
     void setZoomLocked(bool locked);               // F-VIEW-05: keep zoom/pan across images
     bool zoomLocked() const;
@@ -54,6 +62,10 @@ public:
     void setBackground(const QString& setting);    // see Settings key::Background
     void setUpscaleNearest(bool nearest);
     void setActualSizeInDevicePixels(bool devicePixels);
+    // Output color space override (F-COL-01). Invalid (default) = the color space
+    // of the window's screen, which is what macOS composites the window in.
+    void setOutputColorSpace(const QColorSpace& colorSpace);
+    QColorSpace outputColorSpace() const;  // effective
 
     // Size in device pixels the image should be decoded to for the current zoom.
     QSize desiredDecodeSize() const;
@@ -64,6 +76,13 @@ signals:
     // Current zoom needs more resolution than the loaded image has (Quality::Full).
     void needsHigherResolution();
     void dragOutRequested();
+
+protected:
+    bool event(QEvent* event) override;
+    bool eventFilter(QObject* watched, QEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
+    void showEvent(QShowEvent* event) override;
 
 private:
     struct Private;
