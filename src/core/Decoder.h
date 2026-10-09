@@ -46,7 +46,7 @@ struct DecodeRequest {
 
 // Result of a decode. `image` is already oriented (EXIF applied) and carries its
 // color space (QImage::colorSpace()). HDR results use QImage::Format_RGBA16FPx4
-// in extended linear Display P3 and set headroom > 1.
+// (premultiplied variant) in extended linear Display P3 and set headroom > 1.
 struct DecodedImage {
     QImage image;
     QSize fullSize;           // oriented full-resolution size of the source
