@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+<plist version="1.0">
+<dict>
+  <key>CFBundleDevelopmentRegion</key><string>de</string>
+  <key>CFBundleExecutable</key><string>${MACOSX_BUNDLE_EXECUTABLE_NAME}</string>
+  <key>CFBundleIdentifier</key><string>${MACOSX_BUNDLE_GUI_IDENTIFIER}</string>
+  <key>CFBundleInfoDictionaryVersion</key><string>6.0</string>
+  <key>CFBundleName</key><string>${MACOSX_BUNDLE_BUNDLE_NAME}</string>
+  <key>CFBundleDisplayName</key><string>${MACOSX_BUNDLE_BUNDLE_NAME}</string>
+  <key>CFBundlePackageType</key><string>APPL</string>
+  <key>CFBundleShortVersionString</key><string>${MACOSX_BUNDLE_SHORT_VERSION_STRING}</string>
+  <key>CFBundleVersion</key><string>${MACOSX_BUNDLE_BUNDLE_VERSION}</string>
+  <key>LSMinimumSystemVersion</key><string>15.0</string>
+  <key>LSApplicationCategoryType</key><string>public.app-category.photography</string>
+  <key>NSHighResolutionCapable</key><true/>
+  <key>NSSupportsAutomaticGraphicsSwitching</key><true/>
+  <key>NSPrincipalClass</key><string>NSApplication</string>
+  <key>NSAppleEventsUsageDescription</key>
+  <string>Lumaflip fragt auf Wunsch das vorderste Finder-Fenster nach seiner Sortierung, damit die Bilder in derselben Reihenfolge angezeigt werden.</string>
+  <key>CFBundleDocumentTypes</key>
+  <array>
+    <dict>
+      <key>CFBundleTypeName</key><string>Bild</string>
+      <key>CFBundleTypeRole</key><string>Viewer</string>
+      <key>LSHandlerRank</key><string>Default</string>
+      <key>LSItemContentTypes</key>
+      <array>
+        <string>public.jpeg</string><string>public.png</string><string>com.compuserve.gif</string>
+        <string>public.tiff</string><string>com.microsoft.bmp</string><string>org.webmproject.webp</string>
+        <string>public.heic</string><string>public.heif</string><string>public.avif</string>
+        <string>public.jpeg-xl</string><string>public.camera-raw-image</string><string>com.adobe.raw-image</string>
+        <string>com.adobe.photoshop-image</string><string>com.ilm.openexr-image</string><string>public.radiance</string>
+        <string>public.jpeg-2000</string><string>com.truevision.tga-image</string><string>com.microsoft.ico</string>
+        <string>com.apple.icns</string><string>public.svg-image</string>
+      </array>
+    </dict>
+    <dict>
+      <key>CFBundleTypeName</key><string>Bild (sonstige)</string>
+      <key>CFBundleTypeRole</key><string>Viewer</string>
+      <key>LSHandlerRank</key><string>Alternate</string>
+      <key>LSItemContentTypes</key><array><string>public.image</string></array>
+    </dict>
+    <dict>
+      <key>CFBundleTypeName</key><string>Ordner</string>
+      <key>CFBundleTypeRole</key><string>Viewer</string>
+      <key>LSHandlerRank</key><string>Alternate</string>
+      <key>LSItemContentTypes</key><array><string>public.folder</string></array>
+    </dict>
+  </array>
+</dict>
+</plist>

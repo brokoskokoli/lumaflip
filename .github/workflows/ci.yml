@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: brew install cmake ninja qt googletest clang-format
+      - name: All checks (SPEC 15.1)
+        run: tools/check.sh --stage M1
+      - name: Sanitizers
+        run: tools/check.sh --quick --sanitize
