@@ -38,6 +38,7 @@ endif()
 # ---- the app bundle ----
 qt_add_executable(Lumaflip MACOSX_BUNDLE app/main.cpp)
 target_link_libraries(Lumaflip PRIVATE lf_ui lf_warnings)
+target_compile_definitions(Lumaflip PRIVATE LF_APP_VERSION="${PROJECT_VERSION}")
 set_target_properties(Lumaflip PROPERTIES
   OUTPUT_NAME "${LF_APP_NAME}"
   MACOSX_BUNDLE_INFO_PLIST "${PROJECT_SOURCE_DIR}/packaging/macos/Info.plist.in"

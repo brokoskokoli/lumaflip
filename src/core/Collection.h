@@ -35,6 +35,10 @@ public:
     void openFiles(const QStringList& filePaths);
     // F-OPEN-05: folder contents, current = first.
     void openFolder(const QString& folderPath);
+    // F-WIN-09 / F-WIN-03: take over the state of `other` (input, entries, sort mode,
+    // current file) without enumerating the folder again. If `other` is still
+    // loading, the same load is started for this collection.
+    void copyFrom(const Collection& other);
 
     QString folderPath() const;      // empty for openFiles() with mixed folders
     bool isFolderCollection() const;

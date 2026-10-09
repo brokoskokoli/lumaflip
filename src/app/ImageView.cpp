@@ -12,6 +12,7 @@
 #include <QMouseEvent>
 #include <QNativeGestureEvent>
 #include <QPointer>
+#include <QPushButton>
 #include <QStyleHints>
 #include <QVBoxLayout>
 #include <QWheelEvent>
@@ -57,14 +58,22 @@ public:
         m_detail->setAlignment(Qt::AlignCenter);
         m_detail->setWordWrap(true);
         m_detail->setTextInteractionFlags(Qt::TextSelectableByMouse);
+        m_action = new QPushButton(this);
+        m_action->setObjectName(QStringLiteral("lfErrorAction"));
+        m_action->setFocusPolicy(Qt::NoFocus);  // arrow keys keep flipping (F-FMT-02)
+        m_action->hide();
         layout->addWidget(m_title);
         layout->addWidget(m_detail);
+        layout->addWidget(m_action, 0, Qt::AlignHCenter);
     }
-    void setTexts(const QString& title, const QString& detail) {
+    void setTexts(const QString& title, const QString& detail, const QString& action) {
         m_title->setText(title);
         m_detail->setText(detail);
         m_detail->setVisible(!detail.isEmpty());
+        m_action->setText(action);
+        m_action->setVisible(!action.isEmpty());
     }
+    QPushButton* actionButton() const { return m_action; }
     void place(const QSize& area) {
         const int w = std::clamp(area.width() - 48, 120, 520);
         setFixedWidth(w);
@@ -76,6 +85,7 @@ public:
 private:
     QLabel* m_title;
     QLabel* m_detail;
+    QPushButton* m_action;
 };
 
 } // namespace
@@ -352,6 +362,7 @@ ImageView::ImageView(QWidget* parent) : QWidget(parent), d(new Private) {
     d->canvas->setMouseTracking(false);
     d->card = new ErrorCard(this);
     d->card->hide();
+    connect(d->card->actionButton(), &QPushButton::clicked, this, &ImageView::errorActionTriggered);
     d->updateOutputColorSpace();
     d->applyBackground();
     d->syncGeometry();
@@ -388,15 +399,17 @@ void ImageView::clear() {
     d->sync();
 }
 
-void ImageView::showError(const QString& title, const QString& detail) {
+void ImageView::showError(const QString& title, const QString& detail, const QString& actionText) {
     d->image.reset();
     d->canvas->setCurrent(nullptr, false);
-    d->card->setTexts(title, detail);
+    d->card->setTexts(title, detail, actionText);
     d->card->place(size());
     d->card->show();
     d->card->raise();
     d->sync();
 }
+
+bool ImageView::isShowingError() const { return !d->card->isHidden(); }
 
 DecodedImagePtr ImageView::image() const { return d->image; }
 

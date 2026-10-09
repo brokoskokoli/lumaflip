@@ -453,3 +453,42 @@ TEST_F(CollectionTest, F_PRIV_01_AccessDeniedKeepsOpenedFile) {
     EXPECT_EQ(c->currentPath(), locked + "/b.jpg");
 #endif
 }
+
+// Covers: F-WIN-09, F-WIN-03 (a second window on the same folder does not enumerate again)
+TEST_F(CollectionTest, F_WIN_09_CopyFromTakesOverWithoutEnumeration) {
+    for (const char* n : {"a.jpg", "b.jpg", "c.jpg"})
+        touch(path(n));
+    auto c = makeCollection();
+    c->openFile(path("b.jpg"));
+    ASSERT_TRUE(waitLoaded(*c, 1));
+    const int callsBefore = order.calls;
+
+    auto copy = makeCollection();
+    QStringList currents;
+    QObject::connect(copy.get(), &Collection::currentChanged, [&](int, const QString& p) { currents << p; });
+    copy->copyFrom(*c);
+    EXPECT_FALSE(copy->isLoading());
+    EXPECT_EQ(names(*copy), (QStringList{"a.jpg", "b.jpg", "c.jpg"}));
+    EXPECT_EQ(copy->currentPath(), path("b.jpg"));
+    EXPECT_EQ(copy->sortSpec(), c->sortSpec());
+    EXPECT_EQ(copy->folderPath(), c->folderPath());
+    EXPECT_TRUE(copy->isFolderCollection());
+    EXPECT_EQ(currents, QStringList{path("b.jpg")});
+    EXPECT_EQ(order.calls, callsBefore);  // nothing enumerated or sorted again
+    // Independent afterwards (F-WIN-01).
+    copy->next(WrapMode::Stop);
+    EXPECT_EQ(c->currentPath(), path("b.jpg"));
+    EXPECT_EQ(copy->currentPath(), path("c.jpg"));
+
+    // Copying a collection that is still loading starts the same load.
+    order.delayMs = 50;
+    auto loading = makeCollection();
+    loading->openFile(path("a.jpg"));
+    auto copy2 = makeCollection();
+    copy2->copyFrom(*loading);
+    EXPECT_TRUE(copy2->isLoading());
+    EXPECT_EQ(copy2->currentPath(), path("a.jpg"));
+    ASSERT_TRUE(test::waitUntil([&] { return !copy2->isLoading() && !loading->isLoading(); }));
+    EXPECT_EQ(names(*copy2), (QStringList{"a.jpg", "b.jpg", "c.jpg"}));
+    EXPECT_EQ(copy2->currentPath(), path("a.jpg"));
+}

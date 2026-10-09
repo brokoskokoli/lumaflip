@@ -28,8 +28,10 @@ public:
     // file), zoom/pan are kept and the swap is seamless.
     void setImage(DecodedImagePtr image, bool sameFile);
     void clear();
-    // Error card (F-FMT-02).
-    void showError(const QString& title, const QString& detail);
+    // Error card (F-FMT-02). A non-empty `actionText` adds a button that emits
+    // errorActionTriggered() (the window uses it for "Im Finder zeigen").
+    void showError(const QString& title, const QString& detail, const QString& actionText = {});
+    bool isShowingError() const;
     DecodedImagePtr image() const;
     // Keep GPU textures for these images (neighbours from the prefetch window,
     // SPEC 7.1) so that switching to them takes one frame (P-03). Images not in
@@ -76,6 +78,7 @@ signals:
     // Current zoom needs more resolution than the loaded image has (Quality::Full).
     void needsHigherResolution();
     void dragOutRequested();
+    void errorActionTriggered();
 
 protected:
     bool event(QEvent* event) override;

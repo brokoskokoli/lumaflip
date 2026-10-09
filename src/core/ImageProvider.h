@@ -45,6 +45,12 @@ public:
     void setWanted(const void* client, const QStringList& ordered, QSize target, bool clientActive);
     void removeClient(const void* client);
 
+    // Best cached image for `path` of at least `minQuality` (Preview = any stage)
+    // without scheduling anything or changing a client's state; nullptr if none.
+    // Windows use it to hand decoded neighbours to the view (P-03) and to show a
+    // cached stage instantly when flipping.
+    DecodedImagePtr cached(const QString& path, Quality minQuality = Quality::Preview, QSize target = {});
+
     // Invalidate (file changed/renamed/deleted).
     void invalidate(const QString& path);
 

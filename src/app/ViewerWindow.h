@@ -1,0 +1,159 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+#pragma once
+
+// One viewer window (SPEC 4.15, 5.1): owns a Collection and an ImageView, wires
+// them to the shared ImageProvider (staged loading + prefetch, SPEC 7.1), maps
+// input to actions (InputBindings, 4.14) and shows title/status (F-NAV-07,
+// F-INFO-01, F-SORT-05), error card (F-FMT-02) and the access hint (F-PRIV-01).
+
+#include "app/ZoomModel.h"
+#include "core/Collection.h" // WrapMode
+#include "core/ImageProvider.h"
+#include "core/InputBindings.h"
+#include "core/SortSpec.h"
+
+#include <QElapsedTimer>
+#include <QMainWindow>
+#include <QPointF>
+#include <QPointer>
+#include <QStringList>
+
+class QLabel;
+class QPushButton;
+class QTimer;
+
+namespace lf {
+
+class Application;
+class Collection;
+class ImageView;
+
+QString zoomModeId(ZoomMode mode);          // Settings key::ZoomMode values
+ZoomMode zoomModeFromId(const QString& id); // unknown -> Fit
+
+class ViewerWindow : public QMainWindow {
+    Q_OBJECT
+public:
+    explicit ViewerWindow(Application& app, QWidget* parent = nullptr);
+    ~ViewerWindow() override;
+
+    // Opening (F-OPEN-02..05). openPaths() classifies: one file -> its folder,
+    // several files -> exactly those, one folder -> its contents.
+    void openPaths(const QStringList& paths);
+    void openFile(const QString& path);
+    void openFiles(const QStringList& paths);
+    void openFolder(const QString& folderPath);
+    // F-WIN-03 ⌥⌘N: same collection (no re-enumeration), image, zoom and view rotation.
+    void copyStateFrom(const ViewerWindow& other);
+
+    bool isEmpty() const; // nothing opened (start screen)
+    Collection* collection() const { return m_collection; }
+    ImageView* view() const { return m_view; }
+    QString currentPath() const;
+    QString shownPath() const { return m_shownPath; }
+    int displayedImageCount() const { return m_displayCount; } // distinct images shown (benchmarks)
+
+    // Executes an action (menu, keys, mouse). `pos` = cursor position in the view
+    // (anchor for zoom), negative = center. Returns false if not applicable.
+    bool perform(Action action, QPointF pos = QPointF(-1, -1));
+    // Feeds an input event (from the view or tests) through the bindings (4.14),
+    // including wheel steps/min interval (F-IN-03).
+    void handleInput(InputEvent event, QPointF pos);
+
+    void setZoomMode(ZoomMode mode); // remembered for new windows (F-MAC-05)
+    void setSortFollowFinder();      // "Wie Finder" (F-SORT-03)
+    void setSortKey(SortKey key);    // manual (F-SORT-02)
+    void setSortAscending(bool ascending);
+    void toggleFullScreen();    // F-VIEW-10
+    bool chromeVisible() const; // status bar shown (fullscreen auto-hide)
+
+    QString statusText() const;                          // all status fields joined with " · " (F-INFO-01)
+    QString sortText() const;                            // F-SORT-05
+    QWidget* accessHint() const { return m_accessHint; } // F-PRIV-01
+    QString toastText() const; // visible transient message (edge hint, errors), else empty
+    void showMessage(const QString& text, int ms = 1500);
+    QSize decodeTarget() const; // device pixels for Quality::Screen
+
+    // Called by the Application for file operations of any window (F-FILE-01).
+    void fileRemoved(const QString& path);
+    void fileAdded(const QString& path, bool makeCurrent);
+    void folderChanged(const QString& folderPath);
+    void applySetting(const QString& key);
+    void refreshActivity(); // front/active state changed: re-prioritise prefetch (F-WIN-09)
+
+signals:
+    // An image (or a better stage of it) was handed to the view.
+    void imageShown(const QString& path, lf::Quality quality);
+    void titleChanged();
+
+protected:
+    void closeEvent(QCloseEvent* event) override;
+    void changeEvent(QEvent* event) override;
+    void dragEnterEvent(QDragEnterEvent* event) override;
+    void dropEvent(QDropEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
+    void moveEvent(QMoveEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
+    bool eventFilter(QObject* watched, QEvent* event) override;
+
+private:
+    void onCurrentChanged(int index, const QString& path);
+    void onEntriesChanged();
+    void onImageReady(const QString& path, Quality quality, const DecodedImagePtr& image);
+    void onImageFailed(const QString& path, const QString& error);
+    void showCurrent(const QString& path);
+    bool display(const QString& path, Quality quality, const DecodedImagePtr& image);
+    void updatePrefetch();
+    void refreshPreload();
+    void updateTitle();
+    void updateStatus();
+    void updateEmptyState();
+    void updateFolderWatch();
+    void navigate(int delta);
+    void showEdgeHint(bool atEnd);
+    void showAccessHint(const QString& folder);
+    void hideAccessHint();
+    void scheduleGeometrySave();
+    void saveGeometryNow();
+    void setChromeVisible(bool visible);
+    void layoutOverlays();
+    void copyImage();
+    void copyPath();
+    void trashCurrent();
+    WrapMode wrapMode() const;
+
+    Application& m_app;
+    Collection* m_collection = nullptr;
+    ImageView* m_view = nullptr;
+    QWidget* m_accessHint = nullptr;
+    QLabel* m_accessText = nullptr;
+    QWidget* m_emptyState = nullptr;
+    QLabel* m_emptyText = nullptr;
+    QLabel* m_toast = nullptr;
+    QTimer* m_toastTimer = nullptr;
+    QTimer* m_chromeTimer = nullptr;
+    QTimer* m_resizeTimer = nullptr;
+    QTimer* m_geometryTimer = nullptr;
+    QLabel* m_nameLabel = nullptr;
+    QLabel* m_positionLabel = nullptr;
+    QLabel* m_pixelLabel = nullptr;
+    QLabel* m_bytesLabel = nullptr;
+    QLabel* m_zoomLabel = nullptr;
+    QLabel* m_sortLabel = nullptr;
+
+    QString m_shownPath; // file the view currently shows (or failed for)
+    Quality m_shownQuality = Quality::Preview;
+    bool m_shownFailed = false;
+    QStringList m_wanted; // prefetch window, current first
+    QString m_watchedFolder;
+    int m_direction = 1; // last flip direction (prefetch, SPEC 7.1)
+    int m_displayCount = 0;
+    bool m_flipH = false;
+    bool m_flipV = false;
+    int m_wheelAccum = 0;
+    QElapsedTimer m_lastWheelFlip;
+    bool m_opened = false;
+    bool m_closed = false;
+};
+
+} // namespace lf

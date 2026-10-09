@@ -478,6 +478,12 @@ void ImageProvider::removeClient(const void* client) {
     d->evict();
 }
 
+DecodedImagePtr ImageProvider::cached(const QString& path, Quality minQuality, QSize target) {
+    const int px = minQuality == Quality::Preview ? kPreviewPx : bucketFor(target);
+    const Key* k = d->findCached(path, minQuality, px);
+    return k ? d->touch(*k) : nullptr;
+}
+
 void ImageProvider::invalidate(const QString& path) {
     ++d->generation[path];
     d->removePath(path);

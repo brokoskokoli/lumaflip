@@ -350,3 +350,20 @@ TEST_F(ImageProviderTest, FullOnlyOnExplicitRequest) {
     ASSERT_TRUE(waitReady("/q/a.jpg", Quality::Full));
     EXPECT_EQ(ready.last().image->image.size(), QSize(4000, 3000));
 }
+
+// P-03 / F-WIN-09: windows peek at cached neighbours without disturbing anything.
+TEST_F(ImageProviderTest, P_03_CachedPeekHasNoSideEffects) {
+    EXPECT_EQ(provider->cached("/c/a.jpg"), nullptr);
+    lf::test::spin(50);
+    EXPECT_TRUE(decoder->recorded().isEmpty());  // peeking schedules nothing
+
+    provider->setWanted(&clientA, {"/c/a.jpg", "/c/b.jpg"}, target, true);
+    ASSERT_TRUE(waitReady("/c/b.jpg", Quality::Screen));
+    const auto any = provider->cached("/c/b.jpg");
+    ASSERT_NE(any, nullptr);
+    EXPECT_NE(provider->cached("/c/b.jpg", Quality::Screen, target), nullptr);
+    EXPECT_EQ(provider->cached("/c/b.jpg", Quality::Full, target), nullptr);
+    const int calls = int(decoder->recorded().size());
+    lf::test::spin(50);
+    EXPECT_EQ(decoder->recorded().size(), calls);
+}

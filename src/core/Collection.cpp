@@ -623,6 +623,36 @@ void Collection::openFolder(const QString& folderPath) {
     d->start(JobKind::Load);
 }
 
+void Collection::copyFrom(const Collection& other) {
+    if (&other == this)
+        return;
+    const Private& o = *other.d;
+    d->reset(o.mode);
+    d->folder = o.folder;
+    d->openedFile = o.openedFile;
+    d->files = o.files;
+    d->followFinder = o.followFinder;
+    d->allowLiveQuery = o.allowLiveQuery;
+    d->manualSpec = o.manualSpec;
+    const bool specChanged = !(d->spec == o.spec);
+    d->spec = o.spec;
+    d->entries = o.entries;
+    d->rebuildIndex();
+    d->current = o.current;
+    d->selectFirstOnLoad = o.selectFirstOnLoad;
+    emit entriesChanged();
+    emit currentChanged(d->current, currentPath());
+    if (specChanged)
+        emit sortSpecChanged(d->spec);
+    if (d->mode == Mode::None)
+        return;
+    if (o.loading) {
+        d->start(JobKind::Load);
+        return;
+    }
+    emit loadingFinished();
+}
+
 QString Collection::folderPath() const {
     return d->folder;
 }
