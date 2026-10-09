@@ -33,6 +33,10 @@ signals:
     void fileRemoved(const QString& path);
     void fileAdded(const QString& path);
     void fileRenamed(const QString& oldPath, const QString& newPath);
+    // Undo/redo cannot return an error; failures (e.g. the original path is taken
+    // again when restoring from the trash) are reported here. The failed command is
+    // removed from the undo stack.
+    void operationFailed(const QString& message);
 
 private:
     struct Private;
