@@ -1,0 +1,819 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+#include "Collection.h"
+
+#include "ImageFormats.h"
+#include "Platform.h"
+
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
+#include <QFutureWatcher>
+#include <QHash>
+#include <QPointer>
+#include <QSet>
+#include <QTimeZone>
+#include <QtConcurrent/QtConcurrentRun>
+#include <algorithm>
+#include <atomic>
+#include <functional>
+#include <memory>
+#include <numeric>
+
+#ifdef Q_OS_UNIX
+#include <cerrno>
+#include <dirent.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#endif
+
+namespace lf {
+
+// ---------------------------------------------------------------------------------------
+// Pure helpers
+// ---------------------------------------------------------------------------------------
+namespace collection {
+namespace {
+
+bool acceptName(const QString& name) {
+    // Hidden files (incl. AppleDouble "._*") and unsupported suffixes (F-OPEN-06).
+    if (name.isEmpty() || name.startsWith(u'.'))
+        return false;
+    return hasImageSuffix(name);
+}
+
+#ifdef Q_OS_UNIX
+QDateTime fromTimespec(const struct timespec& ts) {
+    return QDateTime::fromMSecsSinceEpoch(qint64(ts.tv_sec) * 1000 + ts.tv_nsec / 1000000, QTimeZone::UTC);
+}
+#endif
+
+} // namespace
+
+QVector<FileEntry> enumerateFolder(const QString& folderPath, bool* accessDenied) {
+    if (accessDenied)
+        *accessDenied = false;
+    QVector<FileEntry> out;
+    const QString folder = QDir::cleanPath(folderPath);
+    const QString prefix = folder.endsWith(u'/') ? folder : folder + u'/';
+#ifdef Q_OS_UNIX
+    const QByteArray encoded = QFile::encodeName(folder);
+    const int dfd = ::open(encoded.constData(), O_RDONLY | O_DIRECTORY | O_CLOEXEC);
+    DIR* dir = dfd >= 0 ? ::fdopendir(dfd) : nullptr;
+    if (!dir) {
+        const int err = errno;
+        if (dfd >= 0)
+            ::close(dfd);
+        if (accessDenied && (err == EACCES || err == EPERM))
+            *accessDenied = true; // includes macOS privacy (TCC) denials, F-PRIV-01
+        return out;
+    }
+    errno = 0;
+    while (struct dirent* de = ::readdir(dir)) {
+        if (de->d_name[0] == '.')
+            continue;
+        if (de->d_type != DT_REG && de->d_type != DT_LNK && de->d_type != DT_UNKNOWN)
+            continue; // directories (incl. packages/bundles), devices, sockets ...
+        const QString name = QFile::decodeName(de->d_name);
+        if (!acceptName(name))
+            continue;
+        struct stat st;
+        if (::fstatat(dfd, de->d_name, &st, 0) != 0 || !S_ISREG(st.st_mode))
+            continue; // dangling symlink or symlink to a directory
+#ifdef UF_HIDDEN
+        if (st.st_flags & UF_HIDDEN)
+            continue; // hidden via chflags, Finder does not show it either
+#endif
+        FileEntry e;
+        e.name = name;
+        e.path = prefix + name;
+        e.size = qint64(st.st_size);
+#ifdef Q_OS_DARWIN
+        e.modified = fromTimespec(st.st_mtimespec);
+        e.created = fromTimespec(st.st_birthtimespec);
+#else
+        e.modified = fromTimespec(st.st_mtim);
+#endif
+        out.append(std::move(e));
+    }
+    ::closedir(dir); // also closes dfd
+#else
+    const QDir dir(folder);
+    if (!dir.exists() || !QFileInfo(folder).isReadable()) {
+        if (accessDenied && dir.exists())
+            *accessDenied = true;
+        return out;
+    }
+    const QFileInfoList infos = dir.entryInfoList(QDir::Files | QDir::NoDotAndDotDot, QDir::NoSort);
+    for (const QFileInfo& fi : infos) {
+        if (fi.isHidden() || !acceptName(fi.fileName()) || fi.isBundle())
+            continue;
+        FileEntry e;
+        e.name = fi.fileName();
+        e.path = prefix + e.name;
+        e.size = fi.size();
+        e.modified = fi.lastModified(QTimeZone::UTC);
+        e.created = fi.birthTime(QTimeZone::UTC);
+        out.append(std::move(e));
+    }
+#endif
+    return out;
+}
+
+namespace {
+
+// Numeric primary key; `known == false` sorts after all known values in either direction.
+struct NumKey {
+    qint64 value = 0;
+    bool known = false;
+};
+
+qint64 msecs(const QDateTime& dt) {
+    return dt.toMSecsSinceEpoch();
+}
+
+NumKey numKey(const FileEntry& e, SortKey key) {
+    switch (key) {
+    case SortKey::DateModified:
+        return {e.modified.isValid() ? msecs(e.modified) : 0, e.modified.isValid()};
+    case SortKey::DateCreated:
+        return {e.created.isValid() ? msecs(e.created) : 0, e.created.isValid()};
+    case SortKey::DateAdded:
+        return {e.added.isValid() ? msecs(e.added) : 0, e.added.isValid()};
+    case SortKey::DateCaptured:
+        if (e.captured && e.captured->isValid())
+            return {msecs(*e.captured), true};
+        return {};
+    case SortKey::Size:
+        return {e.size, e.size >= 0};
+    case SortKey::PixelCount:
+        return {e.pixelCount, e.pixelCount >= 0};
+    case SortKey::Rating:
+        return {e.rating, e.rating >= 0};
+    default:
+        return {};
+    }
+}
+
+int sign(qint64 v) {
+    return v < 0 ? -1 : (v > 0 ? 1 : 0);
+}
+
+// Name tie-break (always ascending), then byte order of the path for full determinism.
+int tieBreak(const FileEntry& a, const FileEntry& b, const NameCollator& collator) {
+    if (const int c = collator.compare(a.name, b.name))
+        return c;
+    return sign(a.path.compare(b.path));
+}
+
+// Primary-key comparison; `unknownA/B` report missing values (sorted last, both directions).
+int comparePrimary(const FileEntry& a, const FileEntry& b, const SortSpec& spec, const NameCollator& collator,
+                   const NumKey* ka, const NumKey* kb) {
+    switch (spec.key) {
+    case SortKey::Name: {
+        const int c = collator.compare(a.name, b.name);
+        return spec.ascending ? c : -c;
+    }
+    case SortKey::Kind: {
+        const bool ea = a.kind.isEmpty(), eb = b.kind.isEmpty();
+        if (ea != eb)
+            return ea ? 1 : -1;
+        const int c = ea ? 0 : collator.compare(a.kind, b.kind);
+        return spec.ascending ? c : -c;
+    }
+    case SortKey::FinderIconPosition: {
+        const bool ha = a.finderIconPosition.has_value(), hb = b.finderIconPosition.has_value();
+        if (ha != hb)
+            return ha ? -1 : 1;
+        if (!ha)
+            return 0;
+        const QPointF pa = *a.finderIconPosition, pb = *b.finderIconPosition;
+        int c = pa.y() < pb.y() ? -1 : (pa.y() > pb.y() ? 1 : 0);
+        if (c == 0)
+            c = pa.x() < pb.x() ? -1 : (pa.x() > pb.x() ? 1 : 0);
+        return spec.ascending ? c : -c;
+    }
+    default: {
+        const NumKey x = ka ? *ka : numKey(a, spec.key);
+        const NumKey y = kb ? *kb : numKey(b, spec.key);
+        if (x.known != y.known)
+            return x.known ? -1 : 1;
+        const int c = x.known ? (x.value < y.value ? -1 : (x.value > y.value ? 1 : 0)) : 0;
+        return spec.ascending ? c : -c;
+    }
+    }
+}
+
+int compareEntries(const FileEntry& a, const FileEntry& b, const SortSpec& spec,
+                   const NameCollator& collator) {
+    if (const int c = comparePrimary(a, b, spec, collator, nullptr, nullptr))
+        return c;
+    return tieBreak(a, b, collator);
+}
+
+} // namespace
+
+void sortEntries(QVector<FileEntry>& entries, const SortSpec& spec, const NameCollator& collator) {
+    const qsizetype n = entries.size();
+    if (n < 2)
+        return;
+    // Precompute numeric keys once (dates are comparatively expensive to convert).
+    std::vector<NumKey> keys(static_cast<size_t>(n));
+    for (qsizetype i = 0; i < n; ++i)
+        keys[size_t(i)] = numKey(entries[i], spec.key);
+    std::vector<qsizetype> order(static_cast<size_t>(n));
+    std::iota(order.begin(), order.end(), qsizetype(0));
+    std::stable_sort(order.begin(), order.end(), [&](qsizetype i, qsizetype j) {
+        const FileEntry& a = entries[i];
+        const FileEntry& b = entries[j];
+        int c = comparePrimary(a, b, spec, collator, &keys[size_t(i)], &keys[size_t(j)]);
+        if (c == 0)
+            c = tieBreak(a, b, collator);
+        return c < 0;
+    });
+    QVector<FileEntry> sorted;
+    sorted.reserve(n);
+    for (qsizetype i : order)
+        sorted.append(std::move(entries[i]));
+    entries = std::move(sorted);
+}
+
+} // namespace collection
+
+// ---------------------------------------------------------------------------------------
+// Collection
+// ---------------------------------------------------------------------------------------
+namespace {
+
+enum class Mode { None, File, Files, Folder };
+enum class JobKind { Load, Resort };
+
+FileEntry entryForPath(const QString& path) {
+    FileEntry e;
+    e.path = path;
+    e.name = QFileInfo(path).fileName();
+    return e;
+}
+
+std::optional<FileEntry> statEntry(const QString& path) {
+    const QFileInfo fi(path);
+    if (!fi.exists() || !fi.isFile())
+        return std::nullopt;
+    FileEntry e = entryForPath(path);
+    e.size = fi.size();
+    e.modified = fi.lastModified(QTimeZone::UTC);
+    e.created = fi.birthTime(QTimeZone::UTC);
+    return e;
+}
+
+QString normalizedPath(const QString& path) {
+    if (path.isEmpty())
+        return {};
+    return QDir::cleanPath(QFileInfo(path).absoluteFilePath()).normalized(QString::NormalizationForm_C);
+}
+
+QString parentOf(const QString& path) {
+    return QFileInfo(path).absolutePath();
+}
+
+struct Job {
+    JobKind kind = JobKind::Load;
+    quint64 generation = 0;
+    std::shared_ptr<std::atomic<quint64>> latest;
+    Mode mode = Mode::None;
+    QString folder;              // folder to enumerate / ask Finder about; may be empty
+    QString mustInclude;         // explicitly opened file, kept even if filtered
+    QStringList files;           // Mode::Files
+    QVector<FileEntry> existing; // JobKind::Resort
+    bool followFinder = true;
+    bool allowLiveQuery = false;
+    SortSpec manualSpec;
+    NameCollator* collator = nullptr;
+    FolderOrderProvider* order = nullptr;
+    FileAttributeProvider* attributes = nullptr;
+    std::shared_ptr<void> keepAlive; // owns the default providers while the job runs
+
+    bool cancelled() const { return latest->load(std::memory_order_relaxed) != generation; }
+};
+
+struct Result {
+    quint64 generation = 0;
+    bool cancelled = false;
+    bool accessDenied = false;
+    QVector<FileEntry> entries;
+    SortSpec spec;
+};
+
+// Fallback collator if no platform collator is available (should not happen).
+class BinaryCollator : public NameCollator {
+  public:
+    int compare(const QString& a, const QString& b) const override {
+        const int c = a.compare(b, Qt::CaseInsensitive);
+        return c ? c : a.compare(b);
+    }
+};
+
+Result runJob(Job job) {
+    Result r;
+    r.generation = job.generation;
+    auto cancelled = [&] {
+        r.cancelled = job.cancelled();
+        return r.cancelled;
+    };
+    QVector<FileEntry> entries;
+    if (job.kind == JobKind::Resort) {
+        entries = std::move(job.existing);
+    } else if (job.mode == Mode::Files) {
+        QSet<QString> seen;
+        for (const QString& p : std::as_const(job.files)) {
+            if (seen.contains(p))
+                continue;
+            seen.insert(p);
+            if (auto e = statEntry(p))
+                entries.append(std::move(*e));
+        }
+    } else {
+        bool denied = false;
+        entries = collection::enumerateFolder(job.folder, &denied);
+        r.accessDenied = denied;
+        if (!job.mustInclude.isEmpty()) {
+            const bool present = std::any_of(entries.cbegin(), entries.cend(),
+                                             [&](const FileEntry& e) { return e.path == job.mustInclude; });
+            if (!present) {
+                if (auto e = statEntry(job.mustInclude))
+                    entries.append(std::move(*e));
+            }
+        }
+    }
+    if (cancelled())
+        return r;
+
+    if (job.kind == JobKind::Load && job.attributes) {
+        for (qsizetype i = 0; i < entries.size(); ++i) {
+            if ((i & 255) == 255 && cancelled())
+                return r;
+            job.attributes->fill(entries[i]);
+        }
+    }
+
+    SortSpec spec = job.manualSpec;
+    if (job.followFinder) {
+        if (!job.folder.isEmpty() && job.order)
+            spec = job.order->finderOrder(job.folder, job.allowLiveQuery);
+        else
+            spec = SortSpec{SortKey::Name, true, SortSource::Fallback};
+    }
+    // TODO(F-SORT-06, M2): a remembered per-folder manual spec takes precedence here.
+    if (cancelled())
+        return r;
+
+    if (spec.key == SortKey::FinderIconPosition) {
+        QHash<QString, QPointF> pos;
+        if (!job.folder.isEmpty() && job.order)
+            pos = job.order->iconPositions(job.folder);
+        for (FileEntry& e : entries) {
+            const auto it = pos.constFind(e.name);
+            if (it != pos.cend() && parentOf(e.path) == job.folder)
+                e.finderIconPosition = *it;
+            else
+                e.finderIconPosition.reset();
+        }
+    }
+    BinaryCollator fallback;
+    collection::sortEntries(entries, spec, job.collator ? *job.collator : fallback);
+    if (cancelled())
+        return r;
+    r.entries = std::move(entries);
+    r.spec = spec;
+    return r;
+}
+
+} // namespace
+
+struct Collection::Private {
+    Collection* q = nullptr;
+    Mode mode = Mode::None;
+    QString folder;
+    QString openedFile;
+    QStringList files;
+    QVector<FileEntry> entries;
+    QHash<QString, int> indexByPath;
+    int current = -1;
+    bool loading = false;
+    bool selectFirstOnLoad = false;
+
+    SortSpec spec{SortKey::Name, true, SortSource::Fallback};
+    SortSpec manualSpec{SortKey::Name, true, SortSource::Manual};
+    bool followFinder = true;
+    bool allowLiveQuery = false;
+
+    std::shared_ptr<std::atomic<quint64>> latest = std::make_shared<std::atomic<quint64>>(0);
+    quint64 generation = 0;
+    QPointer<QFutureWatcher<Result>> watcher;
+
+    // Default providers; shared with running jobs so they outlive the Collection if needed.
+    struct OwnProviders {
+        std::unique_ptr<NameCollator> collator;
+        std::unique_ptr<FolderOrderProvider> order;
+        std::unique_ptr<FileAttributeProvider> attributes;
+    };
+    std::shared_ptr<OwnProviders> own;
+    NameCollator* collator = nullptr;
+    FolderOrderProvider* order = nullptr;
+    FileAttributeProvider* attributes = nullptr;
+
+    void rebuildIndex() {
+        indexByPath.clear();
+        indexByPath.reserve(entries.size());
+        for (int i = 0; i < entries.size(); ++i)
+            indexByPath.insert(entries[i].path, i);
+    }
+
+    void cancelPending() {
+        ++generation;
+        latest->store(generation);
+        if (watcher) {
+            watcher->disconnect(q);
+            watcher->deleteLater();
+            watcher = nullptr;
+        }
+    }
+
+    Job makeJob(JobKind kind) {
+        Job j;
+        j.kind = kind;
+        j.generation = generation;
+        j.latest = latest;
+        j.mode = mode;
+        j.folder = folder;
+        j.mustInclude = mode == Mode::File ? openedFile : QString();
+        j.files = files;
+        if (kind == JobKind::Resort)
+            j.existing = entries;
+        j.followFinder = followFinder;
+        j.allowLiveQuery = allowLiveQuery;
+        j.manualSpec = manualSpec;
+        j.collator = collator;
+        j.order = order;
+        j.attributes = attributes;
+        j.keepAlive = own;
+        return j;
+    }
+
+    void start(JobKind kind) {
+        cancelPending();
+        if (mode == Mode::None)
+            return;
+        loading = true;
+        auto* w = new QFutureWatcher<Result>(q);
+        watcher = w;
+        QObject::connect(w, &QFutureWatcher<Result>::finished, q, [this, w] {
+            const Result r = w->result();
+            w->deleteLater();
+            if (watcher == w)
+                watcher = nullptr;
+            apply(r);
+        });
+        w->setFuture(QtConcurrent::run(runJob, makeJob(kind)));
+    }
+
+    int neighbourIndex(const QVector<FileEntry>& old, int oldIndex) const {
+        if (entries.isEmpty())
+            return -1;
+        if (oldIndex < 0 || oldIndex >= old.size())
+            return 0;
+        for (int i = oldIndex + 1; i < old.size(); ++i) {
+            if (const auto it = indexByPath.constFind(old[i].path); it != indexByPath.cend())
+                return *it;
+        }
+        for (int i = oldIndex - 1; i >= 0; --i) {
+            if (const auto it = indexByPath.constFind(old[i].path); it != indexByPath.cend())
+                return *it;
+        }
+        return 0;
+    }
+
+    void apply(const Result& r) {
+        if (r.generation != generation || r.cancelled)
+            return;
+        const QString oldPath = current >= 0 && current < entries.size() ? entries[current].path : QString();
+        const int oldIndex = current;
+        const QVector<FileEntry> old = std::move(entries);
+        entries = r.entries;
+        rebuildIndex();
+        if (selectFirstOnLoad) {
+            current = entries.isEmpty() ? -1 : 0;
+            selectFirstOnLoad = false;
+        } else {
+            const auto it = indexByPath.constFind(oldPath);
+            current = it != indexByPath.cend() ? *it : neighbourIndex(old, oldIndex);
+        }
+        const bool specChanged = !(spec == r.spec);
+        spec = r.spec;
+        loading = false;
+        emit q->entriesChanged();
+        const QString newPath = current >= 0 ? entries[current].path : QString();
+        if (current != oldIndex || newPath != oldPath)
+            emit q->currentChanged(current, newPath);
+        if (specChanged)
+            emit q->sortSpecChanged(spec);
+        if (r.accessDenied)
+            emit q->accessDenied(folder);
+        emit q->loadingFinished();
+    }
+
+    void setCurrent(int index) {
+        if (index == current)
+            return;
+        current = index;
+        emit q->currentChanged(current, current >= 0 ? entries[current].path : QString());
+    }
+
+    void reset(Mode m) {
+        cancelPending();
+        mode = m;
+        folder.clear();
+        openedFile.clear();
+        files.clear();
+        entries.clear();
+        indexByPath.clear();
+        current = -1;
+        selectFirstOnLoad = false;
+        loading = false;
+    }
+};
+
+Collection::Collection(QObject* parent) : QObject(parent), d(new Private) {
+    d->q = this;
+    d->own = std::make_shared<Private::OwnProviders>();
+    d->own->collator = createNameCollator();
+    d->own->order = createFolderOrderProvider();
+    d->own->attributes = createFileAttributeProvider();
+    d->collator = d->own->collator.get();
+    d->order = d->own->order.get();
+    d->attributes = d->own->attributes.get();
+}
+
+Collection::~Collection() {
+    // Running workers notice the new generation and stop early; they keep the default
+    // providers alive through Job::keepAlive. Injected providers must outlive pending loads.
+    d->cancelPending();
+    delete d;
+}
+
+void Collection::openFile(const QString& filePath) {
+    const QString path = normalizedPath(filePath);
+    if (path.isEmpty()) {
+        d->reset(Mode::None);
+        emit entriesChanged();
+        emit currentChanged(-1, QString());
+        return;
+    }
+    d->reset(Mode::File);
+    d->folder = parentOf(path);
+    d->openedFile = path;
+    d->entries = {entryForPath(path)};
+    d->rebuildIndex();
+    d->current = 0;
+    emit entriesChanged();
+    emit currentChanged(0, path);
+    d->start(JobKind::Load);
+}
+
+void Collection::openFiles(const QStringList& filePaths) {
+    QStringList paths;
+    QSet<QString> seen;
+    for (const QString& p : filePaths) {
+        const QString n = normalizedPath(p);
+        if (!n.isEmpty() && !seen.contains(n)) {
+            seen.insert(n);
+            paths.append(n);
+        }
+    }
+    if (paths.size() == 1) {
+        // A single file is a folder collection (F-OPEN-02); several are exactly those (F-OPEN-04).
+        openFile(paths.first());
+        return;
+    }
+    d->reset(Mode::Files);
+    d->files = paths;
+    QString common = paths.isEmpty() ? QString() : parentOf(paths.first());
+    for (const QString& p : std::as_const(paths)) {
+        if (parentOf(p) != common) {
+            common.clear();
+            break;
+        }
+    }
+    d->folder = common;
+    for (const QString& p : std::as_const(paths))
+        d->entries.append(entryForPath(p));
+    d->rebuildIndex();
+    d->current = d->entries.isEmpty() ? -1 : 0;
+    emit entriesChanged();
+    emit currentChanged(d->current, d->current >= 0 ? d->entries[0].path : QString());
+    d->start(JobKind::Load);
+}
+
+void Collection::openFolder(const QString& folderPath) {
+    d->reset(Mode::Folder);
+    d->folder = normalizedPath(folderPath);
+    d->selectFirstOnLoad = true;
+    emit entriesChanged();
+    emit currentChanged(-1, QString());
+    d->start(JobKind::Load);
+}
+
+QString Collection::folderPath() const {
+    return d->folder;
+}
+bool Collection::isFolderCollection() const {
+    return d->mode == Mode::File || d->mode == Mode::Folder;
+}
+bool Collection::isLoading() const {
+    return d->loading;
+}
+int Collection::count() const {
+    return int(d->entries.size());
+}
+
+const FileEntry& Collection::at(int index) const {
+    Q_ASSERT(index >= 0 && index < d->entries.size());
+    return d->entries[index];
+}
+
+const QVector<FileEntry>& Collection::entries() const {
+    return d->entries;
+}
+
+int Collection::indexOf(const QString& path) const {
+    auto it = d->indexByPath.constFind(path);
+    if (it == d->indexByPath.cend())
+        it = d->indexByPath.constFind(normalizedPath(path));
+    return it == d->indexByPath.cend() ? -1 : *it;
+}
+
+int Collection::currentIndex() const {
+    return d->current;
+}
+
+QString Collection::currentPath() const {
+    return d->current >= 0 ? d->entries[d->current].path : QString();
+}
+
+void Collection::setCurrentIndex(int index) {
+    if (index < 0 || index >= d->entries.size())
+        return;
+    d->setCurrent(index);
+}
+
+bool Collection::setCurrentPath(const QString& path) {
+    const int i = indexOf(path);
+    if (i < 0)
+        return false;
+    d->setCurrent(i);
+    return true;
+}
+
+bool Collection::next(WrapMode wrap) {
+    return jump(1, wrap);
+}
+bool Collection::previous(WrapMode wrap) {
+    return jump(-1, wrap);
+}
+
+bool Collection::first() {
+    if (d->entries.isEmpty() || d->current == 0)
+        return false;
+    d->setCurrent(0);
+    return true;
+}
+
+bool Collection::last() {
+    const int lastIndex = int(d->entries.size()) - 1;
+    if (lastIndex < 0 || d->current == lastIndex)
+        return false;
+    d->setCurrent(lastIndex);
+    return true;
+}
+
+bool Collection::jump(int delta, WrapMode wrap) {
+    const int n = int(d->entries.size());
+    if (n == 0 || delta == 0)
+        return false;
+    const int cur = std::max(d->current, 0);
+    int target;
+    if (wrap == WrapMode::Wrap) {
+        target = int(((qint64(cur) + delta) % n + n) % n);
+    } else {
+        target = int(std::clamp<qint64>(qint64(cur) + delta, 0, n - 1));
+    }
+    if (target == d->current)
+        return false;
+    d->setCurrent(target);
+    return true;
+}
+
+SortSpec Collection::sortSpec() const {
+    return d->spec;
+}
+
+void Collection::setSortSpec(const SortSpec& spec) {
+    SortSpec s = spec;
+    s.source = SortSource::Manual;
+    const bool changed = d->followFinder || !(d->spec == s);
+    d->followFinder = false;
+    d->manualSpec = s;
+    d->spec = s;
+    if (changed)
+        emit sortSpecChanged(s);
+    if (d->mode == Mode::None)
+        return;
+    // While the initial load is running the entries are incomplete: restart it.
+    d->start(d->loading ? JobKind::Load : JobKind::Resort);
+}
+
+void Collection::setFollowFinder(bool follow, bool allowLiveQuery) {
+    const bool changed = d->followFinder != follow || d->allowLiveQuery != allowLiveQuery;
+    d->followFinder = follow;
+    d->allowLiveQuery = allowLiveQuery;
+    if (!follow && changed) {
+        d->spec = d->manualSpec;
+        emit sortSpecChanged(d->spec);
+    }
+    if (!changed || d->mode == Mode::None)
+        return;
+    d->start(d->loading ? JobKind::Load : JobKind::Resort);
+}
+
+bool Collection::followsFinder() const {
+    return d->followFinder;
+}
+
+void Collection::refresh() {
+    if (d->mode == Mode::None)
+        return;
+    d->start(JobKind::Load);
+}
+
+void Collection::removePath(const QString& path) {
+    const int i = indexOf(path);
+    if (i < 0)
+        return;
+    const QString removed = d->entries[i].path;
+    d->files.removeAll(removed);
+    const int oldCurrent = d->current;
+    d->entries.removeAt(i);
+    d->rebuildIndex();
+    const int n = int(d->entries.size());
+    if (n == 0)
+        d->current = -1;
+    else if (i < oldCurrent)
+        d->current = oldCurrent - 1;
+    else if (i == oldCurrent)
+        d->current = std::min(i, n - 1); // the next image takes its place (F-OPEN-07)
+    emit entriesChanged();
+    if (d->current != oldCurrent || i == oldCurrent)
+        emit currentChanged(d->current, currentPath());
+}
+
+void Collection::insertPath(const QString& filePath) {
+    const QString path = normalizedPath(filePath);
+    if (path.isEmpty() || d->indexByPath.contains(path) || d->mode == Mode::None)
+        return;
+    if (d->mode != Mode::Files && parentOf(path) != d->folder)
+        return; // not part of this folder collection
+    auto e = statEntry(path);
+    if (!e)
+        return;
+    if (d->attributes)
+        d->attributes->fill(*e);
+    if (d->mode == Mode::Files)
+        d->files.append(path);
+    BinaryCollator fallback;
+    const NameCollator& collator = d->collator ? *d->collator : fallback;
+    const auto pos = std::upper_bound(d->entries.begin(), d->entries.end(), *e,
+                                      [&](const FileEntry& a, const FileEntry& b) {
+                                          return collection::compareEntries(a, b, d->spec, collator) < 0;
+                                      });
+    const int at = int(pos - d->entries.begin());
+    d->entries.insert(at, std::move(*e));
+    d->rebuildIndex();
+    const int oldCurrent = d->current;
+    if (d->current >= at)
+        ++d->current;
+    emit entriesChanged();
+    if (d->current != oldCurrent)
+        emit currentChanged(d->current, currentPath());
+}
+
+void Collection::setProviders(NameCollator* collator, FolderOrderProvider* order,
+                              FileAttributeProvider* attributes) {
+    d->collator = collator;
+    d->order = order;
+    d->attributes = attributes;
+}
+
+} // namespace lf
+
+// Compile the moc output into this translation unit (keeps lf_core linkable per module).
+#include "moc_Collection.cpp"
