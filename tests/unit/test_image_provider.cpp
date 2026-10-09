@@ -144,8 +144,9 @@ protected:
             [this](const QString& p, Quality q, DecodedImagePtr img) { ready.append({p, q, img}); });
         QObject::connect(provider.get(), &ImageProvider::imageFailed,
                          [this](const QString& p, const QString& e) { failed.append({p, e}); });
-        QObject::connect(provider.get(), &ImageProvider::stageFailed,
-                         [this](const QString& p, Quality q, const QString&) { stageFailures.append({p, q}); });
+        QObject::connect(
+            provider.get(), &ImageProvider::stageFailed,
+            [this](const QString& p, Quality q, const QString&) { stageFailures.append({p, q}); });
     }
     // Pool size of ImageProvider (see its constructor).
     static int poolSize() { return std::max(2, QThread::idealThreadCount() - 2); }
@@ -410,7 +411,8 @@ TEST_F(ImageProviderTest, ReviewFailedPreviewStillShowsScreen) {
 TEST_F(ImageProviderTest, ReviewLateScreenAfterFullIsDropped) {
     decoder->closeScreenGate();
     provider->request("/s/late.jpg", Quality::Screen, target, &clientA);
-    ASSERT_TRUE(waitUntil([&] { return decoder->count("/s/late.jpg", false) == 1 && decoder->blocked() == 1; }));
+    ASSERT_TRUE(
+        waitUntil([&] { return decoder->count("/s/late.jpg", false) == 1 && decoder->blocked() == 1; }));
     provider->request("/s/late.jpg", Quality::Full, target, &clientA);
     ASSERT_TRUE(waitReady("/s/late.jpg", Quality::Full));
     const int readyBefore = int(ready.size());

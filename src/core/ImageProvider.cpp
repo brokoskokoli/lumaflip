@@ -52,8 +52,8 @@ constexpr int kPreviewPx = 512;
 constexpr int kBucketPx = 256;
 constexpr int kDefaultScreenPx = 2560;
 constexpr qint64 kMaxDefaultBudget = qint64(2) << 30; // 2 GB (P-09)
-constexpr int kMaxInfoEntries = 2048;    // info() cache (FIFO)
-constexpr int kMaxPathBookkeeping = 512; // failed / failedStages / generation before pruning
+constexpr int kMaxInfoEntries = 2048;                 // info() cache (FIFO)
+constexpr int kMaxPathBookkeeping = 512;              // failed / failedStages / generation before pruning
 
 // Score tiers (higher runs first).
 constexpr qint64 kTierActiveCurrent = 4'000'000'000'000LL;
@@ -154,9 +154,9 @@ struct ImageProvider::Private {
     qint64 budget = 0;
     quint64 tick = 0;
     QHash<const void*, ClientState> clients;
-    QSet<QString> pinned;              // paths currently wanted by any client
-    QHash<QString, QString> failed;    // path -> error (nothing of the path can be shown)
-    QHash<Key, QString> failedStages;  // stage -> error (not retried until invalidate)
+    QSet<QString> pinned;             // paths currently wanted by any client
+    QHash<QString, QString> failed;   // path -> error (nothing of the path can be shown)
+    QHash<Key, QString> failedStages; // stage -> error (not retried until invalidate)
     QHash<QString, quint64> generation;
 
     // ---- shared with workers ----

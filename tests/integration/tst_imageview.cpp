@@ -226,7 +226,8 @@ private slots:
         // Gray color space -> converted on the CPU; > sync limit -> converted off-thread.
         QImage g(1000, 1000, QImage::Format_Grayscale8);
         g.fill(200);
-        g.setColorSpace(QColorSpace(QColorSpace(QColorSpace::SRgb).whitePoint(), QColorSpace::TransferFunction::SRgb));
+        g.setColorSpace(
+            QColorSpace(QColorSpace(QColorSpace::SRgb).whitePoint(), QColorSpace::TransferFunction::SRgb));
         view->setImage(makeDecoded(g), false);
         const QColor before = centerPixel();
         QVERIFY2(close(before, QColor(200, 200, 200), 2), qPrintable(str(before)));

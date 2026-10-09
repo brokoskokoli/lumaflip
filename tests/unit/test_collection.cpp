@@ -441,7 +441,7 @@ namespace {
 // Attribute provider whose fill() blocks (once armed) until released: holds a load job
 // after enumeration so GUI-thread edits can race it deterministically.
 class BlockingAttributeProvider : public FileAttributeProvider {
-  public:
+public:
     void fill(FileEntry&) override {
         if (!armed.load())
             return;

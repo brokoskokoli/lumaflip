@@ -35,8 +35,8 @@ TEST(SortSpec, F_SORT_02_EveryKeyHasALabel) {
 }
 
 TEST(ImageFormats, F_OPEN_06_KnownSuffixes) {
-    for (const char* s : {"jpg", "jpeg", "png", "heic", "avif", "jxl", "webp", "tiff", "gif", "psd", "exr",
-                          "svg", "cr3",  "nef", "arw",  "dng",  "raf", "orf",  "rw2",  "dcm"})
+    for (const char* s : {"jpg", "jpeg", "png", "heic", "avif", "jxl", "webp", "tiff", "gif", "psd",
+                          "exr", "svg",  "cr3", "nef",  "arw",  "dng", "raf",  "orf",  "rw2", "dcm"})
         EXPECT_TRUE(isImageSuffix(QString::fromLatin1(s))) << s;
     for (const char* s : {"txt", "pdf", "mov", "mp4", "zip", "", "app", "JPG"})
         EXPECT_FALSE(isImageSuffix(QString::fromLatin1(s))) << s;
@@ -58,8 +58,8 @@ TEST(ImageFormats, F_OPEN_06_KnownSuffixes) {
 // produced error cards.
 TEST(ImageFormats, F_OPEN_06_OnlySuffixesWithBackend) {
 #ifdef Q_OS_DARWIN
-    for (const char* s : {"jpg", "jpeg", "jfif", "heic", "heif", "cr3", "jxl", "avif", "dng", "nef", "png", "svg",
-                          "svgz", "tif", "webp"})
+    for (const char* s : {"jpg", "jpeg", "jfif", "heic", "heif", "cr3", "jxl", "avif", "dng", "nef", "png",
+                          "svg", "svgz", "tif", "webp"})
         EXPECT_TRUE(isImageSuffix(QString::fromLatin1(s))) << s;
     for (const char* s : {"xcf", "kra", "ora", "x3f", "ari", "cap", "pdf", "txt"})
         EXPECT_FALSE(isImageSuffix(QString::fromLatin1(s))) << s;

@@ -565,10 +565,10 @@ struct Collection::Private {
                 FileEntry e = it.value();
                 if (needsImageProperties(sortSpec.key) && attributes && !e.imagePropertiesRead)
                     attributes->fillImageProperties(e);
-                const auto pos = std::upper_bound(entries.begin(), entries.end(), e,
-                                                  [&](const FileEntry& a, const FileEntry& b) {
-                                                      return collection::compareEntries(a, b, sortSpec, coll) < 0;
-                                                  });
+                const auto pos = std::upper_bound(
+                    entries.begin(), entries.end(), e, [&](const FileEntry& a, const FileEntry& b) {
+                        return collection::compareEntries(a, b, sortSpec, coll) < 0;
+                    });
                 entries.insert(pos, std::move(e));
             }
         }

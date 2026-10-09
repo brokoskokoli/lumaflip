@@ -310,9 +310,10 @@ TEST(FinderViewSettings, F_SORT_08_NonAsciiNfdRecordNames) {
     ASSERT_NE(nfdFolder, nfcFolder);
     const QString folder = tmp.filePath(nfcFolder);
     ASSERT_TRUE(QDir().mkpath(folder));
-    ASSERT_TRUE(test::writeFile(tmp.filePath(".DS_Store"),
-                                test::writeDsStore({vstl("Nlsv", nfdFolder),
-                                                    blobRecord(nfdFolder, "lsvC", lsvC("dateAdded", false))})));
+    ASSERT_TRUE(
+        test::writeFile(tmp.filePath(".DS_Store"),
+                        test::writeDsStore({vstl("Nlsv", nfdFolder),
+                                            blobRecord(nfdFolder, "lsvC", lsvC("dateAdded", false))})));
     const SortSpec s = resolve(readFolderRecords(folder), {});
     EXPECT_EQ(s.key, SortKey::DateAdded);
     EXPECT_FALSE(s.ascending);
@@ -322,9 +323,10 @@ TEST(FinderViewSettings, F_SORT_08_NonAsciiNfdRecordNames) {
     EXPECT_TRUE(recordsFor({vstl("Nlsv", nfdFolder)}, nfcFolder).found);
     EXPECT_TRUE(recordsFor({vstl("Nlsv", nfdFolder)}, nfdFolder).found);
 
-    ASSERT_TRUE(test::writeFile(folder + "/.DS_Store",
-                                test::writeDsStore({test::ilocRecord(QString::fromUtf8("Ba\xcc\x88ume.jpg"), 7, 9),
-                                                    test::ilocRecord("plain.jpg", 1, 2)})));
+    ASSERT_TRUE(
+        test::writeFile(folder + "/.DS_Store",
+                        test::writeDsStore({test::ilocRecord(QString::fromUtf8("Ba\xcc\x88ume.jpg"), 7, 9),
+                                            test::ilocRecord("plain.jpg", 1, 2)})));
     const auto pos = readIconPositions(folder);
     ASSERT_EQ(pos.size(), 2);
     EXPECT_EQ(pos.value(QString::fromUtf8("Bäume.jpg")), QPointF(7, 9));

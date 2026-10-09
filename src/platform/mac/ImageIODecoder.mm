@@ -699,8 +699,8 @@ std::optional<DecodedImage> ImageIODecoder::decode(const QString& path, const De
         DecodedImage out;
         out.fullSize = fullSize.isValid() && !fullSize.isEmpty() ? fullSize : r->image.size();
         // A capped full decode is the best this backend delivers: not a preview.
-        out.isPreview = !capped && (r->image.width() < out.fullSize.width() ||
-                                    r->image.height() < out.fullSize.height());
+        out.isPreview =
+            !capped && (r->image.width() < out.fullSize.width() || r->image.height() < out.fullSize.height());
         out.headroom = r->headroom;
         out.frameDurationMs = l.animated ? frameDurationMs(props) : 0;
         out.image = std::move(r->image);
