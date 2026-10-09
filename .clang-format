@@ -6,3 +6,4 @@ AllowShortFunctionsOnASingleLine: Inline
 BreakBeforeBraces: Custom
 BraceWrapping: { AfterFunction: false, AfterClass: false }
 IncludeBlocks: Preserve
+AccessModifierOffset: -4

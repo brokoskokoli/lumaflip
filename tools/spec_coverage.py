@@ -40,7 +40,7 @@ def referenced_ids() -> set[str]:
         sources.append(manual)
     for f in sources:
         text = f.read_text(errors="ignore")
-        for m in re.finditer(r"\b([FP])[-_]([A-Z]+[-_])?(\d+)\b", text):
+        for m in re.finditer(r"(?<![A-Za-z0-9])([FP])[-_]([A-Z]+[-_])?(\d+)(?![0-9])", text):
             prefix, mid, num = m.group(1), m.group(2), m.group(3)
             found.add(f"{prefix}-{mid[:-1]}-{num}" if mid else f"{prefix}-{num}")
     return found

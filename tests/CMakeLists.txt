@@ -8,6 +8,7 @@ add_executable(lf_unit_tests ${LF_UNIT_TESTS})
 target_link_libraries(lf_unit_tests PRIVATE lf_core GTest::gtest_main lf_warnings)
 target_compile_definitions(lf_unit_tests PRIVATE LF_TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data"
                                                   LF_CORPUS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/corpus")
+target_compile_options(lf_unit_tests PRIVATE $<$<COMPILE_LANGUAGE:OBJCXX>:-fobjc-arc>)
 gtest_discover_tests(lf_unit_tests DISCOVERY_MODE PRE_TEST PROPERTIES LABELS unit)
 
 # Integration tests: each tests/integration/*.cpp is a Qt Test executable linking the UI.
