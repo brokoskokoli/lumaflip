@@ -212,9 +212,32 @@ private slots:
         QElapsedTimer t;
         t.start();
         view->setImage(makeDecoded(big), false);
-        QVERIFY(t.elapsed() < 50);
+        // Deterministic: the result is applied via the event loop, so right after
+        // setImage() the conversion is still pending. The time limit is only a sanity bound.
+        QVERIFY(!canvas->isIdle());
+        QVERIFY2(t.elapsed() < 1000, qPrintable(QString::number(t.elapsed())));
         const QColor c = centerPixel();
         QVERIFY2(close(c, QColor(200, 100, 50), 1), qPrintable(str(c)));
+    }
+
+    // Review finding: changing the output color space released the textures of CPU-converted
+    // images before the new conversion was ready, so frames in between were blank.
+    void F_COL_02_outputChangeKeepsImageVisible() {
+        // Gray color space -> converted on the CPU; > sync limit -> converted off-thread.
+        QImage g(1000, 1000, QImage::Format_Grayscale8);
+        g.fill(200);
+        g.setColorSpace(
+            QColorSpace(QColorSpace(QColorSpace::SRgb).whitePoint(), QColorSpace::TransferFunction::SRgb));
+        view->setImage(makeDecoded(g), false);
+        const QColor before = centerPixel();
+        QVERIFY2(close(before, QColor(200, 200, 200), 2), qPrintable(str(before)));
+        view->setOutputColorSpace(QColorSpace(QColorSpace::DisplayP3));
+        QVERIFY(!canvas->isIdle()); // re-conversion pending (applied via the event loop)
+        const QImage fb = canvas->grabFramebuffer();
+        const QColor during = fb.pixelColor(fb.width() / 2, fb.height() / 2);
+        QVERIFY2(close(during, before, 3), qPrintable(str(during)));
+        const QColor after = centerPixel();
+        QVERIFY2(close(after, QColor(200, 200, 200), 2), qPrintable(str(after)));
     }
 
     void F_COL_01_displayColorSpaceAuto() {
@@ -420,7 +443,9 @@ private slots:
         QElapsedTimer t;
         t.start();
         view->setImage(makeDecoded(huge), false);
-        QVERIFY(t.elapsed() < 50);  // setImage itself does no heavy work
+        // setImage itself does no heavy work: nothing is uploaded until the next frame.
+        QVERIFY(!canvas->isIdle());
+        QVERIFY2(t.elapsed() < 1000, qPrintable(QString::number(t.elapsed())));
         const QImage fb = grab();
         qInfo() << "huge image" << size << "rendered after" << t.elapsed() << "ms, tiles" << canvas->currentTileCount();
         QVERIFY(canvas->currentTileCount() >= 2);

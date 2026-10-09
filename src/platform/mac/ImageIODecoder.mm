@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "platform/mac/ImageIODecoder.h"
 
+#include "core/ImageFormats.h"
+
 #import <CoreGraphics/CoreGraphics.h>
 #import <Foundation/Foundation.h>
 #import <ImageIO/ImageIO.h>
@@ -152,20 +154,71 @@ std::optional<size_t> imageIndex(const Layout& l, const DecodeRequest& req) {
     return p <= l.primary ? p - 1 : p;
 }
 
+// Offset of the first entropy-coded byte (just after the first SOS header), or -1 if the
+// marker structure cannot be followed. Walking the segments by their lengths skips APPn
+// payloads such as the EXIF thumbnail, which is a complete JPEG with its own EOI.
+qint64 jpegEntropyStart(QFile& f, qint64 size) {
+    uchar m[4];
+    if (!f.seek(0) || f.read(reinterpret_cast<char*>(m), 2) != 2 || m[0] != 0xFF || m[1] != 0xD8)
+        return -1;
+    qint64 pos = 2;
+    for (int guard = 0; guard < 4096 && pos + 4 <= size; ++guard) {
+        if (!f.seek(pos) || f.read(reinterpret_cast<char*>(m), 4) != 4)
+            return -1;
+        if (m[0] != 0xFF)
+            return -1;
+        if (m[1] == 0xFF) { // fill byte
+            ++pos;
+            continue;
+        }
+        const int marker = m[1];
+        if (marker == 0xD8 || marker == 0x01 || (marker >= 0xD0 && marker <= 0xD7)) {
+            pos += 2; // standalone markers
+            continue;
+        }
+        if (marker == 0xD9)
+            return -1; // EOI before any scan
+        const qint64 len = (qint64(m[2]) << 8) | m[3];
+        if (len < 2)
+            return -1;
+        if (marker == 0xDA) // SOS: entropy data follows its header
+            return pos + 2 + len <= size ? pos + 2 + len : -1;
+        pos += 2 + len;
+    }
+    return -1;
+}
+
 // ImageIO happily decodes a cut-off JPEG and fills the rest with gray, without any
 // status flag. A complete JPEG ends with an EOI marker (FF D9); entropy-coded data
-// never contains FF D9 (FF is byte-stuffed), so its absence in the tail means the
-// file was truncated. Some cameras append trailers, hence the generous window.
+// never contains FF D9 (FF is byte-stuffed), so its absence after the start of the
+// scan data means the file was truncated. Only the part after the first SOS is searched:
+// an EXIF thumbnail in APP1 carries an EOI of its own. Some cameras append trailers,
+// hence the generous window for large files.
 bool jpegLooksTruncated(const QString& path) {
     QFile f(path);
     if (!f.open(QIODevice::ReadOnly))
         return false;
     const qint64 size = f.size();
-    const qint64 window = std::min<qint64>(size, 512 * 1024);
-    if (!f.seek(size - window))
+    const qint64 entropy = jpegEntropyStart(f, size);
+    if (entropy < 0)
+        return false; // unusual structure: let ImageIO decide
+    const qint64 from = std::max(entropy, size - 512 * 1024);
+    if (!f.seek(from))
         return false;
-    const QByteArray tail = f.read(window);
+    const QByteArray tail = f.read(size - from);
     return !tail.contains(QByteArrayLiteral("\xFF\xD9"));
+}
+
+// Long edge for a full-resolution decode of a w x h image, honouring the caps.
+int cappedLongEdge(int w, int h) {
+    const qint64 edge = std::max(w, h);
+    qint64 cap = std::min<qint64>(edge, ImageIODecoder::kMaxFullEdge);
+    const double pixels = double(w) * double(h);
+    if (pixels > double(ImageIODecoder::kMaxFullPixels)) {
+        const double scale = std::sqrt(double(ImageIODecoder::kMaxFullPixels) / pixels);
+        cap = std::min<qint64>(cap, qint64(std::floor(double(edge) * scale)));
+    }
+    return int(std::max<qint64>(1, cap));
 }
 
 bool isHdrImage(CGImageSourceRef src, size_t index, NSDictionary* props) {
@@ -334,8 +387,11 @@ Target sdrTarget(CGImageRef img) {
         return t;
     }
     CFRef<CFDataRef> icc(CGColorSpaceCopyICCData(rgb));
-    if (!icc || sameName(rgb, kCGColorSpaceGenericRGB)) {
+    CFRef<CGColorSpaceRef> deviceRgb(CGColorSpaceCreateDeviceRGB());
+    if (!icc || CFEqual(rgb, deviceRgb.get())) {
         // Untagged / device RGB: interpret the values as sRGB without converting them.
+        // (Tagged spaces such as Generic RGB - gamma 1.8, other primaries - take the ICC
+        // path below and keep their real profile.)
         useSRGB();
         if (cs == rgb)
             t.replacement.reset(CGImageCreateCopyWithColorSpace(img, t.space.get()));
@@ -586,26 +642,42 @@ std::optional<DecodedImage> ImageIODecoder::decode(const QString& path, const De
         const bool hdr = req.hdr && isHdrImage(src.get(), *index, props);
 
         NSMutableDictionary* opts = [NSMutableDictionary dictionary];
-        opts[(__bridge NSString*)kCGImageSourceShouldCacheImmediately] = @YES;
         if (hdr)
             opts[(__bridge NSString*)kCGImageSourceDecodeRequest] =
                 (__bridge NSString*)kCGImageSourceDecodeToHDR;
 
+        // Full decodes beyond the cap are downsampled to the cap (see header).
+        int maxPixelSize = req.maxPixelSize;
+        bool capped = false;
+        if (maxPixelSize <= 0 && !req.preferEmbeddedPreview && pw > 0 && ph > 0) {
+            const int cap = cappedLongEdge(pw, ph);
+            if (cap < std::max(pw, ph)) {
+                maxPixelSize = cap;
+                capped = true;
+            }
+        }
+
         CFRef<CGImageRef> img;
         int drawOrientation = o;
-        if (req.maxPixelSize > 0 || req.preferEmbeddedPreview) {
+        if (maxPixelSize > 0 || req.preferEmbeddedPreview) {
             NSMutableDictionary* t = [opts mutableCopy];
+            // A thumbnail is created as a bitmap anyway; decoding it right here keeps the
+            // work on this worker thread.
+            t[(__bridge NSString*)kCGImageSourceShouldCacheImmediately] = @YES;
             t[(__bridge NSString*)(req.preferEmbeddedPreview
                                        ? kCGImageSourceCreateThumbnailFromImageIfAbsent
                                        : kCGImageSourceCreateThumbnailFromImageAlways)] = @YES;
             t[(__bridge NSString*)kCGImageSourceCreateThumbnailWithTransform] = @YES;
-            if (req.maxPixelSize > 0)
-                t[(__bridge NSString*)kCGImageSourceThumbnailMaxPixelSize] = @(req.maxPixelSize);
+            if (maxPixelSize > 0)
+                t[(__bridge NSString*)kCGImageSourceThumbnailMaxPixelSize] = @(maxPixelSize);
             img.reset(CGImageSourceCreateThumbnailAtIndex(src.get(), *index, (__bridge CFDictionaryRef)t));
             if (img)
                 drawOrientation = 1; // already oriented by ImageIO
         }
-        if (!img) {
+        if (!img && !capped) {
+            // Draw-once full decode: no ImageIO cache. With kCGImageSourceShouldCacheImmediately
+            // ImageIO would keep its own full-size bitmap while we draw into a second one.
+            opts[(__bridge NSString*)kCGImageSourceShouldCache] = @NO;
             img.reset(CGImageSourceCreateImageAtIndex(src.get(), *index, (__bridge CFDictionaryRef)opts));
             drawOrientation = o;
         }
@@ -626,7 +698,9 @@ std::optional<DecodedImage> ImageIODecoder::decode(const QString& path, const De
 
         DecodedImage out;
         out.fullSize = fullSize.isValid() && !fullSize.isEmpty() ? fullSize : r->image.size();
-        out.isPreview = r->image.width() < out.fullSize.width() || r->image.height() < out.fullSize.height();
+        // A capped full decode is the best this backend delivers: not a preview.
+        out.isPreview =
+            !capped && (r->image.width() < out.fullSize.width() || r->image.height() < out.fullSize.height());
         out.headroom = r->headroom;
         out.frameDurationMs = l.animated ? frameDurationMs(props) : 0;
         out.image = std::move(r->image);
@@ -792,6 +866,29 @@ QStringList ImageIODecoder::supportedExtensions() {
                 NSArray<NSString*>* list = t.tags[UTTagClassFilenameExtension];
                 for (NSString* e in list)
                     s.insert(QString::fromNSString(e).toLower());
+            }
+            // Suffixes whose files ImageIO recognises by signature although no UTType maps
+            // them to the reader (APNG/AVIF sequences/PNM share the PNG/AVIF/PBM decoders).
+            const std::pair<const char*, const char*> bySignature[] = {
+                {"apng", "public.png"}, {"avifs", "public.avis"}, {"pnm", "public.pbm"}};
+            for (const auto& [suffix, type] : bySignature)
+                if (readableTypes().contains(QLatin1StringView(type)))
+                    s.insert(QString::fromLatin1(suffix));
+            // Aliases the readable types do not list themselves (jfif, cur, ...): a known
+            // image suffix counts if its UTType is, or conforms to, a readable type.
+            for (const QString& suffix : defaultImageSuffixes()) {
+                if (s.contains(suffix))
+                    continue;
+                UTType* t = [UTType typeWithFilenameExtension:suffix.toNSString()];
+                if (!t || t.dynamic)
+                    continue;
+                for (const QString& id : readableTypes()) {
+                    UTType* readable = [UTType typeWithIdentifier:id.toNSString()];
+                    if (readable && [t conformsToType:readable]) {
+                        s.insert(suffix);
+                        break;
+                    }
+                }
             }
         }
         QStringList l(s.begin(), s.end());

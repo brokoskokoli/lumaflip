@@ -42,14 +42,18 @@ public:
     }
     std::optional<DecodedImage> decode(const QString& path, const DecodeRequest& req,
                                        QString* error) override {
+        const bool isScreen = !req.preferEmbeddedPreview && req.maxPixelSize > 0;
         {
             QMutexLocker l(&m);
             calls.append({path, req.maxPixelSize, req.preferEmbeddedPreview});
-            while (gateClosed)
+            ++waiting;
+            while (gateClosed || (isScreen && screenGateClosed))
                 gate.wait(&m);
+            --waiting;
         }
         QThread::msleep(ulong(req.preferEmbeddedPreview ? previewMs : screenMs));
-        if (failing.contains(path)) {
+        if (failing.contains(path) || (req.maxPixelSize == 0 && failingFull.contains(path)) ||
+            (req.preferEmbeddedPreview && failingPreview.contains(path))) {
             *error = "kaputt";
             return std::nullopt;
         }
@@ -74,6 +78,20 @@ public:
         gateClosed = false;
         gate.wakeAll();
     }
+    void closeScreenGate() {
+        QMutexLocker l(&m);
+        screenGateClosed = true;
+    }
+    void openScreenGate() {
+        QMutexLocker l(&m);
+        screenGateClosed = false;
+        gate.wakeAll();
+    }
+    // Number of decode calls currently blocked on a gate.
+    int blocked() {
+        QMutexLocker l(&m);
+        return waiting;
+    }
     QList<Call> recorded() {
         QMutexLocker l(&m);
         return calls;
@@ -94,13 +112,17 @@ public:
     QSize fullSize{4000, 3000};
     int previewMs = 5;
     int screenMs = 30;
-    QSet<QString> failing; // set before use
+    QSet<QString> failing;        // set before use
+    QSet<QString> failingFull;    // only full-resolution decodes fail
+    QSet<QString> failingPreview; // only embedded-preview decodes fail
     int infoCalls = 0;
 
 private:
     QMutex m;
     QWaitCondition gate;
     bool gateClosed = false;
+    bool screenGateClosed = false;
+    int waiting = 0;
     QList<Call> calls;
 };
 
@@ -122,7 +144,12 @@ protected:
             [this](const QString& p, Quality q, DecodedImagePtr img) { ready.append({p, q, img}); });
         QObject::connect(provider.get(), &ImageProvider::imageFailed,
                          [this](const QString& p, const QString& e) { failed.append({p, e}); });
+        QObject::connect(
+            provider.get(), &ImageProvider::stageFailed,
+            [this](const QString& p, Quality q, const QString&) { stageFailures.append({p, q}); });
     }
+    // Pool size of ImageProvider (see its constructor).
+    static int poolSize() { return std::max(2, QThread::idealThreadCount() - 2); }
     void TearDown() override {
         decoder->openGate();
         provider.reset();
@@ -141,6 +168,7 @@ protected:
     std::unique_ptr<ImageProvider> provider;
     QList<Ready> ready;
     QList<QPair<QString, QString>> failed;
+    QList<QPair<QString, Quality>> stageFailures;
     const QSize target{1920, 1080};
     int clientA = 0, clientB = 0;
 };
@@ -198,7 +226,7 @@ TEST_F(ImageProviderTest, F_WIN_09_DedupeAcrossClients) {
     provider->request("/x/a.jpg", Quality::Screen, target, &clientA);
     provider->request("/x/a.jpg", Quality::Screen, target, &clientB);
     provider->setWanted(&clientB, {"/x/a.jpg"}, target, true);
-    lf::test::spin(50);
+    ASSERT_TRUE(waitUntil([&] { return decoder->blocked() == 2; }, 5000)); // preview + screen
     decoder->openGate();
     ASSERT_TRUE(waitReady("/x/a.jpg", Quality::Screen));
     lf::test::spin(50);
@@ -214,7 +242,8 @@ TEST_F(ImageProviderTest, CancelsJobsNoLongerWanted) {
     for (int i = 0; i < 60; ++i)
         far << QStringLiteral("/old/%1.jpg").arg(i);
     provider->setWanted(&clientA, far, target, true);
-    lf::test::spin(150); // all pool threads now block in the decoder
+    // Wait until every pool thread blocks in the decoder: no further job can be picked.
+    ASSERT_TRUE(waitUntil([&] { return decoder->blocked() == poolSize(); }, 5000));
     const QSet<QString> startedBefore = decoder->paths();
     ASSERT_FALSE(startedBefore.isEmpty());
     ASSERT_LT(startedBefore.size(), far.size());
@@ -239,7 +268,7 @@ TEST_F(ImageProviderTest, ActiveCurrentBeforeNeighbours) {
     for (int i = 0; i < 40; ++i)
         list << QStringLiteral("/n/%1.jpg").arg(i);
     provider->setWanted(&clientA, list, target, true);
-    lf::test::spin(100);
+    ASSERT_TRUE(waitUntil([&] { return decoder->blocked() == poolSize(); }, 5000));
     // Saturated pool: switching to a new current image must still get it decoded first.
     provider->setWanted(&clientA, QStringList{"/n/new.jpg"} + list, target, true);
     const int before = int(decoder->recorded().size());
@@ -247,7 +276,7 @@ TEST_F(ImageProviderTest, ActiveCurrentBeforeNeighbours) {
     ASSERT_TRUE(waitReady("/n/new.jpg", Quality::Screen, 5000));
     // Picks happen in priority order; recording may interleave by at most the pool size.
     const auto calls = decoder->recorded();
-    const int window = std::max(2, QThread::idealThreadCount() - 2);
+    const int window = poolSize();
     int first = -1;
     for (int i = before; i < calls.size() && first < 0; ++i)
         if (calls[i].path == "/n/new.jpg")
@@ -319,7 +348,7 @@ TEST_F(ImageProviderTest, InvalidateDropsCache) {
 TEST_F(ImageProviderTest, InvalidateWhileDecodingDiscardsStaleResult) {
     decoder->closeGate();
     provider->request("/v/b.jpg", Quality::Screen, target, &clientA);
-    lf::test::spin(50);
+    ASSERT_TRUE(waitUntil([&] { return decoder->blocked() == 2; }, 5000)); // both stages running
     provider->invalidate("/v/b.jpg");
     decoder->openGate();
     ASSERT_TRUE(waitReady("/v/b.jpg", Quality::Screen));
@@ -366,4 +395,73 @@ TEST_F(ImageProviderTest, P_03_CachedPeekHasNoSideEffects) {
     const int calls = int(decoder->recorded().size());
     lf::test::spin(50);
     EXPECT_EQ(decoder->recorded().size(), calls);
+}
+
+// Review finding: a failed Full decode (e.g. a huge image) marked the whole file failed, so
+// request() returned nullptr although Screen was cached and the view showed an error card.
+TEST_F(ImageProviderTest, ReviewFailedFullKeepsScreen) {
+    decoder->failingFull.insert("/s/huge.jpg");
+    provider->request("/s/huge.jpg", Quality::Screen, target, &clientA);
+    ASSERT_TRUE(waitReady("/s/huge.jpg", Quality::Screen));
+    provider->request("/s/huge.jpg", Quality::Full, target, &clientA);
+    ASSERT_TRUE(waitUntil([&] { return !stageFailures.isEmpty(); }));
+    EXPECT_EQ(stageFailures[0].first, "/s/huge.jpg");
+    EXPECT_EQ(stageFailures[0].second, Quality::Full);
+    EXPECT_TRUE(failed.isEmpty());
+    EXPECT_NE(provider->request("/s/huge.jpg", Quality::Screen, target, &clientA), nullptr);
+    lf::test::spin(100);
+    EXPECT_TRUE(failed.isEmpty());
+    EXPECT_EQ(decoder->count("/s/huge.jpg", false), 2); // screen + one full attempt, no retries
+}
+
+// A failing embedded preview must not hide the screen stage that decodes fine.
+TEST_F(ImageProviderTest, ReviewFailedPreviewStillShowsScreen) {
+    decoder->failingPreview.insert("/s/nopreview.jpg");
+    provider->request("/s/nopreview.jpg", Quality::Screen, target, &clientA);
+    ASSERT_TRUE(waitReady("/s/nopreview.jpg", Quality::Screen));
+    EXPECT_TRUE(failed.isEmpty());
+    EXPECT_NE(provider->request("/s/nopreview.jpg", Quality::Screen, target, &clientA), nullptr);
+}
+
+// Review finding: a Screen result finishing after Full was still inserted and emitted, so
+// the view downgraded from full resolution to the screen stage.
+TEST_F(ImageProviderTest, ReviewLateScreenAfterFullIsDropped) {
+    decoder->closeScreenGate();
+    provider->request("/s/late.jpg", Quality::Screen, target, &clientA);
+    ASSERT_TRUE(
+        waitUntil([&] { return decoder->count("/s/late.jpg", false) == 1 && decoder->blocked() == 1; }));
+    provider->request("/s/late.jpg", Quality::Full, target, &clientA);
+    ASSERT_TRUE(waitReady("/s/late.jpg", Quality::Full));
+    const int readyBefore = int(ready.size());
+    decoder->openScreenGate();
+    ASSERT_TRUE(waitUntil([&] { return decoder->blocked() == 0; }));
+    lf::test::spin(100); // let the late screen result arrive on the GUI thread
+    for (int i = readyBefore; i < ready.size(); ++i)
+        EXPECT_NE(ready[i].quality, Quality::Screen) << "late screen stage emitted after full";
+    DecodedImagePtr img = provider->request("/s/late.jpg", Quality::Screen, target, &clientA);
+    ASSERT_NE(img, nullptr);
+    EXPECT_EQ(img->image.size(), QSize(4000, 3000)); // still the full image
+}
+
+// Review finding: info cache, failure and generation tables grew without bound.
+TEST_F(ImageProviderTest, ReviewBookkeepingStaysBounded) {
+    decoder->previewMs = 0;
+    decoder->screenMs = 0;
+    for (int i = 0; i < 5000; ++i)
+        ASSERT_TRUE(provider->info(QStringLiteral("/b/info%1.jpg").arg(i)));
+    const int calls = decoder->infoCalls;
+    ASSERT_TRUE(provider->info("/b/info0.jpg")); // oldest entry was evicted
+    EXPECT_EQ(decoder->infoCalls, calls + 1);
+
+    for (int i = 0; i < 700; ++i) {
+        const QString p = QStringLiteral("/b/bad%1.jpg").arg(i);
+        decoder->failing.insert(p);
+        const int before = int(failed.size());
+        provider->setWanted(&clientA, {p}, target, true);
+        ASSERT_TRUE(waitUntil([&] { return failed.size() > before; }));
+        provider->invalidate(QStringLiteral("/b/gone%1.jpg").arg(i)); // generation entries
+    }
+    provider->setWanted(&clientA, {"/b/ok.jpg"}, target, true);
+    ASSERT_TRUE(waitReady("/b/ok.jpg", Quality::Screen));
+    EXPECT_LE(provider->bookkeepingEntries(), 2048 + 3 * 512 + 8);
 }

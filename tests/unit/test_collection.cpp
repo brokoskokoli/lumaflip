@@ -10,9 +10,11 @@
 
 #include <QDir>
 #include <QFile>
+#include <QSemaphore>
 #include <QTemporaryDir>
 
 #ifdef Q_OS_UNIX
+#include <fcntl.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #endif
@@ -88,6 +90,10 @@ TEST_F(CollectionTest, F_OPEN_06_EnumerateFiltersHiddenPackagesAndNonImages) {
     touch(path(".hidden.jpg"));
     touch(path("._a.jpg")); // AppleDouble
     touch(path("notes.txt"));
+#ifdef Q_OS_DARWIN
+    touch(path("layers.xcf")); // no backend on macOS (F-OPEN-06)
+    touch(path("doc.pdf"));
+#endif
     touch(path("noext"));
     touch(path(".DS_Store"));
     ASSERT_TRUE(QDir().mkpath(path("folder.jpg")));
@@ -428,6 +434,97 @@ TEST_F(CollectionTest, F_OPEN_03_NewerOpenCancelsOlder) {
     EXPECT_EQ(finished, 1);
     EXPECT_EQ(names(*c), (QStringList{"z1.jpg", "z2.jpg"}));
     EXPECT_EQ(c->currentPath(), QDir::cleanPath(other.filePath("z2.jpg")));
+}
+
+namespace {
+
+// Attribute provider whose fill() blocks (once armed) until released: holds a load job
+// after enumeration so GUI-thread edits can race it deterministically.
+class BlockingAttributeProvider : public FileAttributeProvider {
+public:
+    void fill(FileEntry&) override {
+        if (!armed.load())
+            return;
+        if (entered.fetch_add(1) == 0)
+            started.release();
+        release.acquire();
+        release.release(); // let every further fill() pass
+    }
+    std::atomic<bool> armed{false};
+    std::atomic<int> entered{0};
+    QSemaphore started;
+    QSemaphore release;
+};
+
+} // namespace
+
+// Review finding: removePath()/insertPath() during a pending load were overwritten by the
+// job's stale snapshot, e.g. a just-trashed file reappeared.
+TEST_F(CollectionTest, F_OPEN_07_EditsDuringPendingLoadSurvive) {
+    for (const char* n : {"a.jpg", "b.jpg", "c.jpg"})
+        touch(path(n));
+    BlockingAttributeProvider blocking;
+    auto c = std::make_unique<Collection>();
+    c->setProviders(collator.get(), &order, &blocking);
+    QObject::connect(c.get(), &Collection::loadingFinished, [this] { ++finished; });
+    c->openFile(path("a.jpg"));
+    ASSERT_TRUE(waitLoaded(*c, 1));
+    ASSERT_EQ(names(*c), (QStringList{"a.jpg", "b.jpg", "c.jpg"}));
+
+    blocking.armed = true;
+    c->refresh();
+    ASSERT_TRUE(blocking.started.tryAcquire(1, 5000)); // the job has enumerated a, b, c
+    blocking.armed = false;                            // insertPath() fills on this thread
+    // Trash b, restore-like insert of d, both while the job is blocked.
+    ASSERT_TRUE(QFile::remove(path("b.jpg")));
+    c->removePath(path("b.jpg"));
+    touch(path("d.jpg"));
+    c->insertPath(path("d.jpg"));
+    EXPECT_EQ(names(*c), (QStringList{"a.jpg", "c.jpg", "d.jpg"}));
+    blocking.release.release();
+    ASSERT_TRUE(waitLoaded(*c, 2));
+    EXPECT_EQ(names(*c), (QStringList{"a.jpg", "c.jpg", "d.jpg"}));
+    EXPECT_EQ(c->indexOf(path("b.jpg")), -1);
+}
+
+TEST_F(CollectionTest, F_OPEN_07_RemoveDuringPendingResortSurvives) {
+    for (const char* n : {"a.jpg", "b.jpg", "c.jpg"})
+        touch(path(n));
+    auto c = makeCollection();
+    c->openFile(path("a.jpg"));
+    ASSERT_TRUE(waitLoaded(*c, 1));
+    order.delayMs = 0;
+    // The resort job snapshots the entries synchronously; the removal happens after it.
+    c->setSortSpec({SortKey::Name, false, SortSource::Manual});
+    c->removePath(path("b.jpg"));
+    ASSERT_TRUE(waitLoaded(*c, 2));
+    EXPECT_EQ(names(*c), (QStringList{"c.jpg", "a.jpg"}));
+}
+
+// Non-ASCII names: files created with decomposed (NFD) bytes, as Finder does, opened via
+// the NFC spelling Qt and most callers use. The opened file must not appear twice.
+TEST_F(CollectionTest, F_OPEN_02_NonAsciiNfdNamesOpenOnce) {
+#ifdef Q_OS_UNIX
+    const QByteArray nfdA("A\xcc\x88pfel.jpg"); // "Äpfel.jpg" decomposed
+    const QByteArray nfdB("Mu\xcc\x88ll.jpg");  // "Müll.jpg" decomposed
+    for (const QByteArray& n : {nfdA, nfdB}) {
+        const QByteArray p = QFile::encodeName(QDir::cleanPath(dir.path())) + '/' + n;
+        const int fd = ::open(p.constData(), O_CREAT | O_WRONLY, 0644);
+        ASSERT_GE(fd, 0);
+        ::close(fd);
+    }
+    auto c = makeCollection();
+    const QString opened = path(QString::fromUtf8("Müll.jpg")); // NFC
+    c->openFile(opened);
+    ASSERT_TRUE(waitLoaded(*c, 1));
+    EXPECT_EQ(c->count(), 2) << names(*c).join(u'|').toStdString();
+    EXPECT_GE(c->indexOf(opened), 0);
+    EXPECT_EQ(c->currentIndex(), c->indexOf(opened));
+    QStringList nfc;
+    for (const QString& n : names(*c))
+        nfc << n.normalized(QString::NormalizationForm_C);
+    EXPECT_EQ(nfc, (QStringList{QString::fromUtf8("Äpfel.jpg"), QString::fromUtf8("Müll.jpg")}));
+#endif
 }
 
 // Covers: F-PRIV-01

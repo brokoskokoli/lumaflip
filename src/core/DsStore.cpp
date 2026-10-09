@@ -3,6 +3,7 @@
 
 #include <QFile>
 #include <QSet>
+#include <algorithm>
 #include <cstring>
 #include <vector>
 
@@ -162,6 +163,10 @@ class Reader {
         p += 2 * nameLen;
         if (end - p < 8)
             return fail("record header truncated");
+        // Finder stores names as on disk (usually decomposed, NFD); Qt hands out NFC.
+        // Normalize so record names compare equal to Qt file names.
+        if (std::any_of(name.cbegin(), name.cend(), [](QChar c) { return c.unicode() >= 0x80; }))
+            name = name.normalized(QString::NormalizationForm_C);
         DsStoreRecord r;
         r.fileName = std::move(name);
         r.code = QString::fromLatin1(reinterpret_cast<const char*>(d_ + p), 4);

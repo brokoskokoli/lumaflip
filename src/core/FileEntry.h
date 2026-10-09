@@ -22,6 +22,9 @@ struct FileEntry {
     std::optional<QPointF> finderIconPosition;  // from .DS_Store Iloc, icon view "none"
     int rating = -1;           // -1 unknown, 0..5; filled on demand (M3)
     qint64 pixelCount = -1;    // filled on demand
+    // True once FileAttributeProvider::fillImageProperties() ran for this entry (captured,
+    // pixelCount and rating then hold whatever the file provides).
+    bool imagePropertiesRead = false;
 };
 
 } // namespace lf

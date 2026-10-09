@@ -9,6 +9,7 @@
 #include <QFile>
 #include <QTemporaryDir>
 #include <gtest/gtest.h>
+#include <sys/stat.h>
 
 using namespace lf;
 using lf::test::waitUntil;
@@ -103,5 +104,47 @@ TEST(FolderWatcher, F_WIN_09_SharedStreamPerFolder) {
     w1->unwatch(dir.path());
     EXPECT_EQ(mac::activeFolderStreamCount(), base + 1);  // w2 still watching
     w2.reset();  // destruction releases its watches
+    EXPECT_EQ(mac::activeFolderStreamCount(), base);
+}
+
+// Review finding: FSEvents reports on-disk (often decomposed, NFD) bytes while Qt hands out
+// NFC paths, so a folder named "Müll Fotos" created by Finder never matched.
+TEST(FolderWatcher, F_OPEN_07_NonAsciiFolderNameNfd) {
+    lf::test::ensureQtApp();
+    QTemporaryDir dir;
+    // Create the folder with decomposed bytes, as Finder does ("u" + U+0308).
+    const QByteArray nfdName("Mu\xcc\x88ll Fotos");
+    ASSERT_EQ(QString::fromUtf8(nfdName).normalized(QString::NormalizationForm_C),
+              QString::fromUtf8("Müll Fotos"));
+    const QByteArray nfdPath = dir.path().toUtf8() + '/' + nfdName;
+    ASSERT_EQ(::mkdir(nfdPath.constData(), 0755), 0);
+    const QString folder = QDir(dir.path()).filePath(QString::fromUtf8("Müll Fotos")); // NFC
+    const int base = mac::activeFolderStreamCount();
+    auto watcher = createFolderWatcher();
+    Counter c(*watcher);
+    watcher->watch(folder);
+    settle(c);
+    touch(QDir(folder).filePath(QString::fromUtf8("Bäume.jpg")));
+    ASSERT_TRUE(waitUntil([&] { return c.count > 0; }, 3000)) << "create in NFD folder";
+    EXPECT_EQ(c.last, folder);
+    watcher->unwatch(folder);
+    EXPECT_EQ(mac::activeFolderStreamCount(), base);
+}
+
+// Review finding: unwatch() recomputed the canonical key; after the folder was deleted the
+// symlink no longer resolved and the stream leaked.
+TEST(FolderWatcher, F_OPEN_07_UnwatchAfterDeletionClosesStream) {
+    lf::test::ensureQtApp();
+    QTemporaryDir dir;
+    const int base = mac::activeFolderStreamCount();
+    const QString real = QDir(dir.path()).filePath("real");
+    const QString link = QDir(dir.path()).filePath("link");
+    ASSERT_TRUE(QDir().mkpath(real));
+    ASSERT_TRUE(QFile::link(real, link));
+    auto watcher = createFolderWatcher();
+    watcher->watch(link);
+    EXPECT_EQ(mac::activeFolderStreamCount(), base + 1);
+    ASSERT_TRUE(QDir(real).removeRecursively());
+    watcher->unwatch(link);
     EXPECT_EQ(mac::activeFolderStreamCount(), base);
 }

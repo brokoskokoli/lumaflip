@@ -100,8 +100,10 @@ ViewStyle viewStyleFromCode(const QString& code) {
     return ViewStyle::Unknown;
 }
 
-FolderRecords extractFolderRecords(const QVector<DsStoreRecord>& records, const QString& name) {
+FolderRecords extractFolderRecords(const QVector<DsStoreRecord>& records, const QString& folderName) {
     FolderRecords r;
+    // Record names are NFC (normalized by the parser); so is the name we look for.
+    const QString name = folderName.normalized(QString::NormalizationForm_C);
     for (const DsStoreRecord& rec : records) {
         if (rec.fileName != name)
             continue;

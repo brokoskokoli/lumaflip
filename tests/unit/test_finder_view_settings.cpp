@@ -300,6 +300,38 @@ TEST(FinderViewSettings, F_SORT_03_IconPositionsFromIloc) {
     EXPECT_EQ(pos.value("b.jpg"), QPointF(-20, 300));
 }
 
+// Review finding: Finder writes record names as on disk (decomposed, NFD) while Qt hands
+// out NFC names, so settings of "Müll Fotos" and icon positions of "Bäume.jpg" were missed.
+TEST(FinderViewSettings, F_SORT_08_NonAsciiNfdRecordNames) {
+    QTemporaryDir tmp;
+    ASSERT_TRUE(tmp.isValid());
+    const QString nfdFolder = QString::fromUtf8("Mu\xcc\x88ll Fotos");
+    const QString nfcFolder = QString::fromUtf8("Müll Fotos");
+    ASSERT_NE(nfdFolder, nfcFolder);
+    const QString folder = tmp.filePath(nfcFolder);
+    ASSERT_TRUE(QDir().mkpath(folder));
+    ASSERT_TRUE(
+        test::writeFile(tmp.filePath(".DS_Store"),
+                        test::writeDsStore({vstl("Nlsv", nfdFolder),
+                                            blobRecord(nfdFolder, "lsvC", lsvC("dateAdded", false))})));
+    const SortSpec s = resolve(readFolderRecords(folder), {});
+    EXPECT_EQ(s.key, SortKey::DateAdded);
+    EXPECT_FALSE(s.ascending);
+    EXPECT_EQ(s.source, SortSource::FinderDsStore);
+
+    // Either spelling of the folder name finds the record.
+    EXPECT_TRUE(recordsFor({vstl("Nlsv", nfdFolder)}, nfcFolder).found);
+    EXPECT_TRUE(recordsFor({vstl("Nlsv", nfdFolder)}, nfdFolder).found);
+
+    ASSERT_TRUE(
+        test::writeFile(folder + "/.DS_Store",
+                        test::writeDsStore({test::ilocRecord(QString::fromUtf8("Ba\xcc\x88ume.jpg"), 7, 9),
+                                            test::ilocRecord("plain.jpg", 1, 2)})));
+    const auto pos = readIconPositions(folder);
+    ASSERT_EQ(pos.size(), 2);
+    EXPECT_EQ(pos.value(QString::fromUtf8("Bäume.jpg")), QPointF(7, 9));
+}
+
 // Covers: F-SORT-04 (output parsing; the osascript call itself is a manual check)
 TEST(FinderViewSettings, F_SORT_04_ParseLiveQueryOutput) {
     QTemporaryDir tmp;

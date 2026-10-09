@@ -35,8 +35,8 @@ TEST(SortSpec, F_SORT_02_EveryKeyHasALabel) {
 }
 
 TEST(ImageFormats, F_OPEN_06_KnownSuffixes) {
-    for (const char* s : {"jpg", "jpeg", "png", "heic", "avif", "jxl", "webp", "tiff", "gif", "psd", "exr",
-                          "svg", "cr3",  "nef", "arw",  "dng",  "raf", "orf",  "rw2",  "qoi", "dcm"})
+    for (const char* s : {"jpg", "jpeg", "png", "heic", "avif", "jxl", "webp", "tiff", "gif", "psd",
+                          "exr", "svg",  "cr3", "nef",  "arw",  "dng", "raf",  "orf",  "rw2", "dcm"})
         EXPECT_TRUE(isImageSuffix(QString::fromLatin1(s))) << s;
     for (const char* s : {"txt", "pdf", "mov", "mp4", "zip", "", "app", "JPG"})
         EXPECT_FALSE(isImageSuffix(QString::fromLatin1(s))) << s;
@@ -47,5 +47,27 @@ TEST(ImageFormats, F_OPEN_06_KnownSuffixes) {
     EXPECT_FALSE(hasImageSuffix("trailingdot."));
     EXPECT_TRUE(isRawSuffix("cr3"));
     EXPECT_FALSE(isRawSuffix("jpg"));
-    EXPECT_GE(imageSuffixes().size(), 80);
+    EXPECT_GE(imageSuffixes().size(), 50);
+    EXPECT_GE(defaultImageSuffixes().size(), 80);
+    for (const char* s : {"qoi", "xcf", "kra", "cr3", "x3f"})
+        EXPECT_TRUE(defaultImageSuffixes().contains(QString::fromLatin1(s))) << s;
+}
+
+// Review finding (F-OPEN-06): on macOS only suffixes with a registered backend are claimed;
+// formats nobody can decode (GIMP, Krita, OpenRaster, PCX, Sigma X3F, ...) were listed and
+// produced error cards.
+TEST(ImageFormats, F_OPEN_06_OnlySuffixesWithBackend) {
+#ifdef Q_OS_DARWIN
+    for (const char* s : {"jpg", "jpeg", "jfif", "heic", "heif", "cr3", "jxl", "avif", "dng", "nef", "png",
+                          "svg", "svgz", "tif", "webp"})
+        EXPECT_TRUE(isImageSuffix(QString::fromLatin1(s))) << s;
+    for (const char* s : {"xcf", "kra", "ora", "x3f", "ari", "cap", "pdf", "txt"})
+        EXPECT_FALSE(isImageSuffix(QString::fromLatin1(s))) << s;
+    EXPECT_FALSE(hasImageSuffix("x.xcf"));
+    EXPECT_TRUE(hasImageSuffix("IMG_0001.HEIC"));
+    for (const QString& s : imageSuffixes())
+        EXPECT_EQ(s, s.toLower());
+#else
+    EXPECT_EQ(imageSuffixes(), defaultImageSuffixes());
+#endif
 }

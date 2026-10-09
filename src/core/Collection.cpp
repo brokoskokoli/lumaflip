@@ -276,6 +276,11 @@ QString parentOf(const QString& path) {
     return QFileInfo(path).absolutePath();
 }
 
+// Sort keys whose values come from the image metadata (F-SORT-02), read on demand.
+bool needsImageProperties(SortKey key) {
+    return key == SortKey::DateCaptured || key == SortKey::PixelCount || key == SortKey::Rating;
+}
+
 struct Job {
     JobKind kind = JobKind::Load;
     quint64 generation = 0;
@@ -367,12 +372,25 @@ Result runJob(Job job) {
     if (cancelled())
         return r;
 
+    if (needsImageProperties(spec.key) && job.attributes) {
+        for (qsizetype i = 0; i < entries.size(); ++i) {
+            if ((i & 31) == 31 && cancelled())
+                return r;
+            if (!entries[i].imagePropertiesRead)
+                job.attributes->fillImageProperties(entries[i]);
+        }
+        if (cancelled())
+            return r;
+    }
+
     if (spec.key == SortKey::FinderIconPosition) {
         QHash<QString, QPointF> pos;
         if (!job.folder.isEmpty() && job.order)
             pos = job.order->iconPositions(job.folder);
         for (FileEntry& e : entries) {
-            const auto it = pos.constFind(e.name);
+            auto it = pos.constFind(e.name);
+            if (it == pos.cend())
+                it = pos.constFind(e.name.normalized(QString::NormalizationForm_C));
             if (it != pos.cend() && parentOf(e.path) == job.folder)
                 e.finderIconPosition = *it;
             else
@@ -410,6 +428,10 @@ struct Collection::Private {
     std::shared_ptr<std::atomic<quint64>> latest = std::make_shared<std::atomic<quint64>>(0);
     quint64 generation = 0;
     QPointer<QFutureWatcher<Result>> watcher;
+    // removePath()/insertPath() calls while a job runs: the job works on a snapshot taken
+    // before them, so apply() replays them onto its result.
+    QSet<QString> removedDuringJob;
+    QHash<QString, FileEntry> insertedDuringJob;
 
     // Default providers; shared with running jobs so they outlive the Collection if needed.
     struct OwnProviders {
@@ -462,6 +484,8 @@ struct Collection::Private {
 
     void start(JobKind kind) {
         cancelPending();
+        removedDuringJob.clear();
+        insertedDuringJob.clear();
         if (mode == Mode::None)
             return;
         loading = true;
@@ -500,6 +524,7 @@ struct Collection::Private {
         const int oldIndex = current;
         const QVector<FileEntry> old = std::move(entries);
         entries = r.entries;
+        replayEditsDuringJob(r.spec);
         rebuildIndex();
         if (selectFirstOnLoad) {
             current = entries.isEmpty() ? -1 : 0;
@@ -522,6 +547,35 @@ struct Collection::Private {
         emit q->loadingFinished();
     }
 
+    // Re-applies removals/insertions made while the job ran (its snapshot predates them).
+    void replayEditsDuringJob(const SortSpec& sortSpec) {
+        if (!removedDuringJob.isEmpty()) {
+            entries.removeIf([&](const FileEntry& e) { return removedDuringJob.contains(e.path); });
+            files.removeIf([&](const QString& p) { return removedDuringJob.contains(p); });
+        }
+        if (!insertedDuringJob.isEmpty()) {
+            QSet<QString> present;
+            for (const FileEntry& e : std::as_const(entries))
+                present.insert(e.path);
+            BinaryCollator fallback;
+            const NameCollator& coll = collator ? *collator : fallback;
+            for (auto it = insertedDuringJob.begin(); it != insertedDuringJob.end(); ++it) {
+                if (present.contains(it.key()))
+                    continue;
+                FileEntry e = it.value();
+                if (needsImageProperties(sortSpec.key) && attributes && !e.imagePropertiesRead)
+                    attributes->fillImageProperties(e);
+                const auto pos = std::upper_bound(
+                    entries.begin(), entries.end(), e, [&](const FileEntry& a, const FileEntry& b) {
+                        return collection::compareEntries(a, b, sortSpec, coll) < 0;
+                    });
+                entries.insert(pos, std::move(e));
+            }
+        }
+        removedDuringJob.clear();
+        insertedDuringJob.clear();
+    }
+
     void setCurrent(int index) {
         if (index == current)
             return;
@@ -540,6 +594,8 @@ struct Collection::Private {
         current = -1;
         selectFirstOnLoad = false;
         loading = false;
+        removedDuringJob.clear();
+        insertedDuringJob.clear();
     }
 };
 
@@ -787,6 +843,12 @@ void Collection::refresh() {
 
 void Collection::removePath(const QString& path) {
     const int i = indexOf(path);
+    if (d->watcher) {
+        // A pending load/resort must not bring the entry back (e.g. a just-trashed file).
+        const QString p = i >= 0 ? d->entries[i].path : normalizedPath(path);
+        d->removedDuringJob.insert(p);
+        d->insertedDuringJob.remove(p);
+    }
     if (i < 0)
         return;
     const QString removed = d->entries[i].path;
@@ -815,8 +877,15 @@ void Collection::insertPath(const QString& filePath) {
     auto e = statEntry(path);
     if (!e)
         return;
-    if (d->attributes)
+    if (d->attributes) {
         d->attributes->fill(*e);
+        if (needsImageProperties(d->spec.key))
+            d->attributes->fillImageProperties(*e);
+    }
+    if (d->watcher) {
+        d->removedDuringJob.remove(path);
+        d->insertedDuringJob.insert(path, *e);
+    }
     if (d->mode == Mode::Files)
         d->files.append(path);
     BinaryCollator fallback;

@@ -2,6 +2,8 @@
 // Fills "Date Added", creation date and the localized kind of FileEntry objects.
 // One getattrlist(2) call per file (no Foundation round trips); kinds are cached per
 // file name extension, so filling 10 000 entries stays in the low milliseconds.
+// Image properties for sorting (capture date, pixel count, rating) come from ImageIO's
+// property dictionary, which reads only header and metadata, never the pixels.
 
 #include "core/Platform.h"
 
@@ -11,9 +13,11 @@
 #include <QTimeZone>
 
 #import <Foundation/Foundation.h>
+#import <ImageIO/ImageIO.h>
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 #include <algorithm>
+#include <cmath>
 #include <cstring>
 #include <sys/attr.h>
 #include <unistd.h>
@@ -33,7 +37,92 @@ class MacFileAttributeProvider final : public FileAttributeProvider {
             entry.kind = kindFor(entry.name);
     }
 
+    void fillImageProperties(FileEntry& entry) override {
+        entry.imagePropertiesRead = true;
+        @autoreleasepool {
+            NSURL* url = [NSURL fileURLWithPath:entry.path.toNSString() isDirectory:NO];
+            NSDictionary* srcOpts = @{(id)kCGImageSourceShouldCache : @NO};
+            CGImageSourceRef src =
+                CGImageSourceCreateWithURL((__bridge CFURLRef)url, (__bridge CFDictionaryRef)srcOpts);
+            if (!src)
+                return;
+            if (CGImageSourceGetCount(src) > 0) {
+                NSDictionary* props = CFBridgingRelease(
+                    CGImageSourceCopyPropertiesAtIndex(src, 0, (__bridge CFDictionaryRef)srcOpts));
+                readProperties(props, entry);
+                if (entry.rating < 0) {
+                    CGImageMetadataRef meta = CGImageSourceCopyMetadataAtIndex(src, 0, nullptr);
+                    if (meta) {
+                        NSString* r = CFBridgingRelease(
+                            CGImageMetadataCopyStringValueWithPath(meta, nullptr, CFSTR("xmp:Rating")));
+                        if (r)
+                            entry.rating = ratingFrom(r.doubleValue);
+                        CFRelease(meta);
+                    }
+                }
+            }
+            CFRelease(src);
+        }
+    }
+
   private:
+    static int ratingFrom(double v) {
+        // XMP: -1 = rejected, 0 = unrated, 1..5 stars.
+        if (!(v >= 0))
+            return -1;
+        return int(std::min(5.0, std::floor(v)));
+    }
+
+    static void readProperties(NSDictionary* props, FileEntry& entry) {
+        if (![props isKindOfClass:[NSDictionary class]])
+            return;
+        NSNumber* w = props[(id)kCGImagePropertyPixelWidth];
+        NSNumber* h = props[(id)kCGImagePropertyPixelHeight];
+        if ([w isKindOfClass:[NSNumber class]] && [h isKindOfClass:[NSNumber class]] && w.longLongValue > 0 &&
+            h.longLongValue > 0)
+            entry.pixelCount = w.longLongValue * h.longLongValue;
+        NSDictionary* exif = props[(id)kCGImagePropertyExifDictionary];
+        if ([exif isKindOfClass:[NSDictionary class]]) {
+            NSString* dto = exif[(id)kCGImagePropertyExifDateTimeOriginal];
+            if (![dto isKindOfClass:[NSString class]])
+                dto = exif[(id)kCGImagePropertyExifDateTimeDigitized];
+            if ([dto isKindOfClass:[NSString class]]) {
+                NSString* offset = exif[@"OffsetTimeOriginal"];
+                const QDateTime dt =
+                    exifDate(QString::fromNSString(dto),
+                             [offset isKindOfClass:[NSString class]] ? QString::fromNSString(offset) : QString());
+                if (dt.isValid())
+                    entry.captured = dt;
+            }
+        }
+        NSDictionary* iptc = props[(id)kCGImagePropertyIPTCDictionary];
+        if ([iptc isKindOfClass:[NSDictionary class]]) {
+            NSNumber* stars = iptc[(id)kCGImagePropertyIPTCStarRating];
+            if ([stars isKindOfClass:[NSNumber class]])
+                entry.rating = ratingFrom(stars.doubleValue);
+        }
+    }
+
+    // EXIF "YYYY:MM:DD HH:MM:SS" (local time of the camera) plus optional "+HH:MM" offset.
+    // Without an offset the time is taken as local time, like Finder and Photos do.
+    static QDateTime exifDate(const QString& text, const QString& offset) {
+        const QDate date = QDate::fromString(text.left(10), QStringLiteral("yyyy:MM:dd"));
+        const QTime time = QTime::fromString(text.mid(11, 8), QStringLiteral("HH:mm:ss"));
+        if (!date.isValid() || !time.isValid())
+            return {};
+        const QString off = offset.trimmed();
+        if (off.size() == 6 && (off[0] == u'+' || off[0] == u'-') && off[3] == u':') {
+            bool okH = false, okM = false;
+            const int hh = off.mid(1, 2).toInt(&okH);
+            const int mm = off.mid(4, 2).toInt(&okM);
+            if (okH && okM) {
+                const int secs = (hh * 3600 + mm * 60) * (off[0] == u'-' ? -1 : 1);
+                return QDateTime(date, time, QTimeZone::fromSecondsAheadOfUtc(secs));
+            }
+        }
+        return QDateTime(date, time, QTimeZone::LocalTime);
+    }
+
     QMutex mutex_;
     QHash<QString, QString> kinds_; // lower-case suffix -> localized description
 

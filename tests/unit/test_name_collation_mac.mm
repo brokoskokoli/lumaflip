@@ -6,6 +6,7 @@
 #include "SortingTestHelpers.h"
 #include "core/Collection.h"
 #include "core/Platform.h"
+#include "platform/mac/MacNameCollator.h"
 
 #include <gtest/gtest.h>
 
@@ -113,6 +114,24 @@ TEST(NameCollationMac, F_SORT_01_FinderNameOrder) {
     EXPECT_TRUE(less(QString::fromUtf8("äpfel.jpg"), "b.jpg"));
     // Width-insensitive: fullwidth digits count as numbers.
     EXPECT_TRUE(less(QString::fromUtf8("２.jpg"), "10.jpg"));
+}
+
+// Review finding: the collator snapshotted the locale at construction, so a language or
+// region change in System Settings never reached a running window. It must re-fetch the
+// current locale after NSCurrentLocaleDidChangeNotification (and only then: P-05).
+TEST(NameCollationMac, F_SORT_01_FollowsLocaleChanges) {
+    const auto collator = createNameCollator();
+    (void)collator->compare("a.jpg", "b.jpg");
+    const int fetched = mac::nameCollatorLocaleFetches();
+    for (int i = 0; i < 1000; ++i)
+        (void)collator->compare("a.jpg", "b.jpg");
+    EXPECT_EQ(mac::nameCollatorLocaleFetches(), fetched); // cached between changes
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSCurrentLocaleDidChangeNotification object:nil];
+    EXPECT_LT(collator->compare("a.jpg", "b.jpg"), 0);
+    EXPECT_EQ(mac::nameCollatorLocaleFetches(), fetched + 1);
+    // Results still match NSString with the (re-fetched) current locale.
+    EXPECT_EQ(collator->compare(QString::fromUtf8("äpfel.jpg"), "b.jpg"),
+              nsCompare(QString::fromUtf8("äpfel.jpg"), "b.jpg"));
 }
 
 TEST(NameCollationMac, F_SORT_01_StrictWeakOrderingOnSet) {

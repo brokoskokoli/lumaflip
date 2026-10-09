@@ -88,6 +88,8 @@ public:
     // Fast check by extension only (used while enumerating folders).
     bool isSupportedExtension(const QString& suffixLower) const;
     void addSupportedExtensions(const QStringList& suffixesLower);
+    // All registered extensions (lower case, sorted).
+    QStringList supportedExtensions() const;
 
     std::optional<ImageInfo> info(const QString& path, QString* error) const;
     std::optional<DecodedImage> decode(const QString& path, const DecodeRequest& req,

@@ -130,6 +130,9 @@ struct Entry {
     std::vector<Tile> tiles;
     int tileSizeUsed = 0;
     quint64 lastUse = 0;
+    // GPU state of the previous conversion (output color space changed while the new
+    // CPU conversion runs): drawn instead of nothing until the replacement is uploaded.
+    std::shared_ptr<Entry> stale;
 
     bool ready() const { return !converting && !image.isNull(); }
     bool complete() const {
@@ -141,6 +144,7 @@ struct Entry {
         return true;
     }
     void releaseGpu() {
+        stale.reset();
         for (Tile& t : tiles) {
             t.srb[0].reset();
             t.srb[1].reset();
@@ -261,11 +265,35 @@ struct ImageCanvas::Private {
         fillDestinationTransfer(dstTransfer, output);
         dstLutDirty = true;
         for (const auto& e : entries) {
-            if (e->cpuColor)
+            if (e->cpuColor) {
+                // Keep the uploaded tiles of the old conversion as a fallback: releasing
+                // them before the new conversion is ready would show blank frames.
+                std::shared_ptr<Entry> old = e->complete() ? detachGpu(*e) : std::move(e->stale);
                 prepareEntry(e);
-            else if (e->ready())
+                e->stale = std::move(old);
+            } else if (e->ready()) {
                 updateColor(e);
+            }
         }
+    }
+
+    // Moves the drawable state of `e` into a new entry (for drawing until replaced).
+    static std::shared_ptr<Entry> detachGpu(Entry& e) {
+        auto old = std::make_shared<Entry>();
+        old->src = e.src;
+        old->image = e.image;
+        old->cpuColor = e.cpuColor;
+        old->convertedFor = e.convertedFor;
+        old->texFormat = e.texFormat;
+        old->premultiplied = e.premultiplied;
+        old->color = e.color; // pixels were converted for the previous output: shown as is
+        old->srcLut = std::move(e.srcLut);
+        old->srcLutUploaded = e.srcLutUploaded;
+        old->tiles = std::move(e.tiles);
+        old->tileSizeUsed = e.tileSizeUsed;
+        e.tiles.clear();
+        e.srcLutUploaded = false;
+        return old;
     }
 
     int tileLimit() const {
@@ -346,6 +374,7 @@ struct ImageCanvas::Private {
             rub->generateMips(t.tex.get());
             t.uploaded = true;
         }
+        e.stale.reset(); // replacement fully uploaded
         return true;
     }
 
@@ -686,6 +715,8 @@ void ImageCanvas::render(QRhiCommandBuffer* cb) {
             draw = d->current.get();
         else if (d->fallback && d->fallback->complete())
             draw = d->fallback.get();
+        else if (d->current->stale && d->current->stale->complete())
+            draw = d->current->stale.get(); // output changed, re-conversion pending
         else if (d->current->ready())
             draw = d->current.get();  // partially uploaded huge image: draw what is there
         moreWork = !d->current->complete() && d->current->ready();

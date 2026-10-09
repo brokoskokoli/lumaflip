@@ -43,6 +43,11 @@ class FileAttributeProvider {
 public:
     virtual ~FileAttributeProvider() = default;
     virtual void fill(FileEntry& entry) = 0;
+    // Reads image metadata needed for sorting (F-SORT-02): capture date (EXIF
+    // DateTimeOriginal), pixel count and the embedded rating, without decoding pixels.
+    // Called on a worker thread, only when the active sort key needs these values.
+    // Implementations set entry.imagePropertiesRead. The default does nothing.
+    virtual void fillImageProperties(FileEntry& entry) { entry.imagePropertiesRead = true; }
 };
 
 // Watches folders for changes (F-OPEN-07). Emits folderChanged for a watched path.

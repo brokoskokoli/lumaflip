@@ -16,6 +16,14 @@
 // models and RGB profiles Qt cannot represent are converted to Display P3 by ColorSync.
 // Gray images are expanded to neutral sRGB.
 //
+// Size cap (memory safety): a full-resolution request (maxPixelSize == 0) for an image whose
+// longer edge exceeds kMaxFullEdge or whose pixel count exceeds kMaxFullPixels is decoded
+// downsampled to fit both limits (ImageIO thumbnail API). The result has the correct
+// DecodedImage::fullSize but isPreview == false: it is the best this backend delivers.
+// Full decodes are drawn once into the output bitmap without asking ImageIO to keep its
+// own cached copy (kCGImageSourceShouldCache = NO). ImageIO still needs one temporary
+// decode buffer during the draw, so the peak is ~2x the output and 1x afterwards.
+//
 // All methods are thread-safe (no shared mutable state) and wrap their work in an
 // autorelease pool.
 
@@ -27,6 +35,9 @@ class ImageIODecoder final : public Decoder {
   public:
     QString name() const override { return QStringLiteral("ImageIO"); }
     int priority() const override { return 100; }
+
+    static constexpr int kMaxFullEdge = 32768;
+    static constexpr qint64 kMaxFullPixels = 500'000'000;
     // Signature based (CGImageSourceGetType on the header); the suffix is only used
     // for formats without a reliable magic number (RAW, TGA).
     bool canDecode(const QString& path, const QByteArray& header) const override;
