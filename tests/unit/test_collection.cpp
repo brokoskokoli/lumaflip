@@ -90,6 +90,10 @@ TEST_F(CollectionTest, F_OPEN_06_EnumerateFiltersHiddenPackagesAndNonImages) {
     touch(path(".hidden.jpg"));
     touch(path("._a.jpg")); // AppleDouble
     touch(path("notes.txt"));
+#ifdef Q_OS_DARWIN
+    touch(path("layers.xcf")); // no backend on macOS (F-OPEN-06)
+    touch(path("doc.pdf"));
+#endif
     touch(path("noext"));
     touch(path(".DS_Store"));
     ASSERT_TRUE(QDir().mkpath(path("folder.jpg")));

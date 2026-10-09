@@ -38,8 +38,6 @@ QString unsupportedError(const QString& path) {
     return tr("Das Dateiformat wird nicht unterstützt.");
 }
 
-// Default extension set (lower case). To be unified with ImageFormats.h after merge.
-
 template <typename T, typename Fn>
 std::optional<T> tryBackends(const QList<std::shared_ptr<Decoder>>& backends, const QString& path,
                              QString* error, Fn&& fn) {
@@ -97,6 +95,12 @@ void DecoderRegistry::addSupportedExtensions(const QStringList& suffixesLower) {
         m_extensions.insert(s.toLower());
 }
 
+QStringList DecoderRegistry::supportedExtensions() const {
+    QStringList l(m_extensions.cbegin(), m_extensions.cend());
+    l.sort();
+    return l;
+}
+
 std::optional<ImageInfo> DecoderRegistry::info(const QString& path, QString* error) const {
     return tryBackends<ImageInfo>(candidates(path), path, error,
                                   [&](Decoder& d, QString* err) { return d.info(path, err); });
@@ -137,7 +141,11 @@ DecoderRegistry& DecoderRegistry::instance() {
     // concurrent use from worker threads needs no locking.
     static DecoderRegistry* registry = [] {
         auto* r = new DecoderRegistry;
-        r->addSupportedExtensions(imageSuffixes());  // single source of truth: ImageFormats
+#ifndef Q_OS_DARWIN
+        // Portable default; on macOS the backends below declare exactly what they decode
+        // (and ImageFormats derives its list from this registry).
+        r->addSupportedExtensions(defaultImageSuffixes());
+#endif
         registerPlatformDecoders(*r);
         registerPortableDecoders(*r);
         if (r->m_decoders.isEmpty())

@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "platform/mac/ImageIODecoder.h"
 
+#include "core/ImageFormats.h"
+
 #import <CoreGraphics/CoreGraphics.h>
 #import <Foundation/Foundation.h>
 #import <ImageIO/ImageIO.h>
@@ -864,6 +866,29 @@ QStringList ImageIODecoder::supportedExtensions() {
                 NSArray<NSString*>* list = t.tags[UTTagClassFilenameExtension];
                 for (NSString* e in list)
                     s.insert(QString::fromNSString(e).toLower());
+            }
+            // Suffixes whose files ImageIO recognises by signature although no UTType maps
+            // them to the reader (APNG/AVIF sequences/PNM share the PNG/AVIF/PBM decoders).
+            const std::pair<const char*, const char*> bySignature[] = {
+                {"apng", "public.png"}, {"avifs", "public.avis"}, {"pnm", "public.pbm"}};
+            for (const auto& [suffix, type] : bySignature)
+                if (readableTypes().contains(QLatin1StringView(type)))
+                    s.insert(QString::fromLatin1(suffix));
+            // Aliases the readable types do not list themselves (jfif, cur, ...): a known
+            // image suffix counts if its UTType is, or conforms to, a readable type.
+            for (const QString& suffix : defaultImageSuffixes()) {
+                if (s.contains(suffix))
+                    continue;
+                UTType* t = [UTType typeWithFilenameExtension:suffix.toNSString()];
+                if (!t || t.dynamic)
+                    continue;
+                for (const QString& id : readableTypes()) {
+                    UTType* readable = [UTType typeWithIdentifier:id.toNSString()];
+                    if (readable && [t conformsToType:readable]) {
+                        s.insert(suffix);
+                        break;
+                    }
+                }
             }
         }
         QStringList l(s.begin(), s.end());

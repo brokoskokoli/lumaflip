@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "ImageFormats.h"
 
+#include "Decoder.h"
+
 #include <QSet>
 #include <algorithm>
 
@@ -22,22 +24,42 @@ constexpr const char* kRaw[] = {
 };
 // clang-format on
 
+// Rendered by some backend (Qt's PDF plugin) but documents, not images to flip through.
+constexpr const char* kExcluded[] = {"pdf", "ps", "eps", "ai"};
+
 struct Tables {
+    QSet<QString> defaults;
     QSet<QString> all;
     QSet<QString> raw;
     Tables() {
         for (const char* s : kCommon)
-            all.insert(QString::fromLatin1(s));
+            defaults.insert(QString::fromLatin1(s));
         for (const char* s : kRaw) {
-            all.insert(QString::fromLatin1(s));
+            defaults.insert(QString::fromLatin1(s));
             raw.insert(QString::fromLatin1(s));
         }
+#ifdef Q_OS_DARWIN
+        // Only what a registered backend can decode (the registry's extension set is
+        // built from the backends alone on macOS).
+        for (const QString& e : DecoderRegistry::instance().supportedExtensions())
+            all.insert(e.toLower());
+        for (const char* s : kExcluded)
+            all.remove(QString::fromLatin1(s));
+#else
+        all = defaults;
+#endif
     }
 };
 
 const Tables& tables() {
     static const Tables t; // thread-safe static initialisation
     return t;
+}
+
+QStringList sorted(const QSet<QString>& set) {
+    QStringList l(set.cbegin(), set.cend());
+    std::sort(l.begin(), l.end());
+    return l;
 }
 
 } // namespace
@@ -60,8 +82,18 @@ bool hasImageSuffix(const QString& fileName) {
 }
 
 QStringList imageSuffixes() {
-    QStringList l(tables().all.cbegin(), tables().all.cend());
-    std::sort(l.begin(), l.end());
+    return sorted(tables().all);
+}
+
+QStringList defaultImageSuffixes() {
+    static const QStringList l = [] {
+        QSet<QString> s;
+        for (const char* c : kCommon)
+            s.insert(QString::fromLatin1(c));
+        for (const char* c : kRaw)
+            s.insert(QString::fromLatin1(c));
+        return sorted(s);
+    }();
     return l;
 }
 
