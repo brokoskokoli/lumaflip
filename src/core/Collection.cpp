@@ -388,7 +388,9 @@ Result runJob(Job job) {
         if (!job.folder.isEmpty() && job.order)
             pos = job.order->iconPositions(job.folder);
         for (FileEntry& e : entries) {
-            const auto it = pos.constFind(e.name);
+            auto it = pos.constFind(e.name);
+            if (it == pos.cend())
+                it = pos.constFind(e.name.normalized(QString::NormalizationForm_C));
             if (it != pos.cend() && parentOf(e.path) == job.folder)
                 e.finderIconPosition = *it;
             else
