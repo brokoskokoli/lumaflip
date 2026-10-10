@@ -284,7 +284,7 @@ void installServiceResponder(QWidget* window, ServiceContext context, ServiceIma
     }
 }
 
-void registerServicesProvider(std::function<void(const QStringList& files)> openFiles) {
+void setServicesProvider(std::function<void(const QStringList& files)> openFiles) {
     if (!NSApp)
         return;
     static LFServicesProvider* provider = nil;
@@ -293,6 +293,13 @@ void registerServicesProvider(std::function<void(const QStringList& files)> open
             provider = [[LFServicesProvider alloc] init];
         provider->open = std::move(openFiles);
         NSApp.servicesProvider = provider;
+    }
+}
+
+void registerServicesSendTypes() {
+    if (!NSApp)
+        return;
+    @autoreleasepool {
         NSMutableArray<NSPasteboardType>* send = [NSMutableArray array];
         for (const QString& t : services::sendTypes())
             [send addObject:t.toNSString()];

@@ -42,8 +42,13 @@ using ServiceContext = std::function<services::Context()>;
 using ServiceImage = std::function<QImage()>; // pixels of the shown image (TIFF/PNG)
 // Lets other apps' services use the window's current image (idempotent).
 void installServiceResponder(QWidget* window, ServiceContext context, ServiceImage image);
-// App level, once: the send types and the provider of "In Lumaflip öffnen".
-void registerServicesProvider(std::function<void(const QStringList& files)> openFiles);
+// App level, at launch: the provider of "In Lumaflip öffnen". Cheap (AppKit only keeps the
+// object) and set before the event loop runs, so the request of a service that launched the
+// app (cold start) finds it.
+void setServicesProvider(std::function<void(const QStringList& files)> openFiles);
+// App level, once, deferred (AppKit builds its Services data - P-01 startup time): the send
+// types, so other apps' services work on the windows' images.
+void registerServicesSendTypes();
 
 // ---- Desktop picture ----
 std::unique_ptr<WallpaperService> createWallpaperService(QWidget* window);

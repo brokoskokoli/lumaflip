@@ -13,7 +13,8 @@
 // a message: switching HDR off with ⇧⌘H makes it available).
 //
 // The image analysed is the shown stage with the view's rotation/flip applied; the overlay's
-// contents rectangle follows zoom and pan (ImageView::imageToWidget()).
+// contents rectangle follows zoom and pan (ImageView::imageToWidget()). The native view is
+// removed while the image view is hidden (grid, compare) or a crop runs (WindowIntegration).
 
 #include "core/LiveText.h"
 
@@ -32,8 +33,11 @@ public:
     explicit LiveTextOverlay(ImageView* view, QObject* parent = nullptr);
     ~LiveTextOverlay() override;
 
-    // VisionKit available (built with the Swift bridge, ImageAnalyzer.isSupported).
+    // VisionKit available (built with the Swift bridge, ImageAnalyzer.isSupported). The first
+    // call loads the bridge library and with it the Swift runtime (thread-safe; call it on a
+    // worker while availabilityKnown() is false, so the GUI thread does not wait for it).
     static bool isAvailable();
+    static bool availabilityKnown();
 
     bool isSupported() const override;
     void analyze(quint64 token, const QImage& image) override;

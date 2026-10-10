@@ -62,9 +62,11 @@ protected:
 
 private:
     bool refuseInContainer(Action action);
+    void installServices(); // F-MAC-07 responder, once the native window exists
     void toggleLiveText();
     void updateLiveTextImage();
     void updateLiveTextBlocking();
+    void updateLiveTextOverlay(); // native view shown only over the visible image view
     void askWallpaper();
     void quickLook();
 
@@ -74,6 +76,7 @@ private:
     LiveTextOverlay* m_overlay = nullptr;
     QPointer<QMessageBox> m_wallpaperBox;
     bool m_servicesInstalled = false;
+    bool m_liveTextLoading = false; // the bridge library loads on a worker (first use)
 };
 
 } // namespace lf
