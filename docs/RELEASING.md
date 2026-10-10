@@ -13,8 +13,9 @@ Runtime, **notarisiert** und „gestapelt“, ohne Sandbox (SPEC 10.1). Jedes Re
 | `tools/macos_deploy.py` | Wird von `package.sh` aufgerufen: kopiert Qt-Frameworks, -Plugins, Übersetzungen und alle abhängigen Bibliotheken ins Bundle, schreibt `qt.conf` und `Contents/Resources/licenses/` (inkl. `index.json` für das Über-Fenster); `--verify` prüft mit `otool`, dass nichts mehr auf `/opt/homebrew` zeigt |
 | `tools/notarize.sh` | Lädt App oder DMG zum Apple-Notardienst hoch (`notarytool submit --wait`), heftet das Ticket an (`stapler staple`); `--dry-run` zeigt nur die Befehle |
 | `tools/fetch_sparkle.sh` | Lädt Sparkle 2 (MIT) in der festgelegten Version, prüft die SHA-256 und entpackt nach `third_party/Sparkle/` (in `.gitignore`): Framework, `bin/generate_appcast`, `bin/sign_update`, `bin/generate_keys`, `LICENSE` |
-| `tools/sparkle_key_check.sh` | Prüft, ob ein exportierter privater Sparkle-Schlüssel zum öffentlichen Schlüssel der App passt (`--print-public` gibt den öffentlichen Schlüssel aus) |
-| `.github/workflows/release.yml` | Läuft bei Tag `v*` im Hauptrepo: Versionsabgleich → Prüfungen (`checks.yml`) → Paket → Signatur → Notarisierung → GitHub Release |
+| `tools/sparkle_key_check.sh` | Prüft, ob ein exportierter privater Sparkle-Schlüssel zum öffentlichen Schlüssel der App passt: Der öffentliche Schlüssel wird immer aus dem privaten **abgeleitet** (auch beim alten 96-Byte-Format, dessen gespeichertem Anhang nicht vertraut wird). `--print-public` gibt ihn aus, `--self-test` prüft das Skript mit Wegwerf-Schlüsseln aus OpenSSL (läuft in `tools/check.sh`) |
+| `tools/appcast_verify.py` | Vergleicht neuen und alten Appcast vor dem Veröffentlichen: alle alten Einträge mit unveränderter Download-URL vorhanden, genau ein neuer Eintrag mit EdDSA-Signatur und passender Länge |
+| `.github/workflows/release.yml` | Läuft bei Tag `v*` im Hauptrepo: Versionsabgleich → Prüfungen (`checks.yml`) + Schlüsselprüfung → Paket/Signatur/Notarisierung → Release als Entwurf → Appcast → Release veröffentlichen |
 | `.github/workflows/checks.yml` | Wiederverwendbarer Workflow mit allen Pflichtprüfungen (SPEC 15.1); `ci.yml` (Push/PR) und `release.yml` rufen ihn unverändert auf |
 | `packaging/macos/Lumaflip.entitlements` | Einzige Berechtigung: `com.apple.security.automation.apple-events` (Opt-in F-SORT-04). Keine Sandbox |
 | `packaging/macos/Info.plist.in` | Dateitypen, TCC-Texte, Symbol, Copyright |
@@ -29,6 +30,14 @@ tools/package.sh                       # ad-hoc signiert, nur für diesen Mac
 LF_SIGN_IDENTITY="Developer ID Application: Name (TEAMID)" tools/package.sh
 LF_SIGN_IDENTITY="…" tools/package.sh --notarize-dry-run   # zeigt die Notarisierungsbefehle
 ```
+
+- **libjpeg-turbo ist Pflicht:** `package.sh` konfiguriert mit `-DLF_REQUIRE_TURBOJPEG=ON` und prüft
+  im `CMakeCache.txt`, dass das statische `libturbojpeg.a` gelinkt ist (verlustfreies JPEG-Drehen,
+  F-EDIT-02; `brew install jpeg-turbo`, kommt mit Qt ohnehin mit). Nur für Experimente:
+  `LF_REQUIRE_TURBOJPEG=OFF tools/package.sh`.
+- **Sparkle ist lokal optional:** ohne `tools/fetch_sparkle.sh` entsteht ein Paket ohne Updater; mit
+  Framework, aber ohne `LF_SPARKLE_PUBLIC_KEY` bleibt der Updater aus. Nur der Release verlangt
+  beides (`LF_REQUIRE_SPARKLE=1`).
 
 - **Ad-hoc** (Standard, `LF_SIGN_IDENTITY` nicht gesetzt): ohne Hardened Runtime, denn deren
   Bibliotheksprüfung verlangt dieselbe Team-ID für alle Bibliotheken, die ad-hoc-Signaturen nicht
@@ -101,11 +110,16 @@ Actions → Variables: `SPARKLE_PUBLIC_ED_KEY` = öffentlicher EdDSA-Schlüssel 
 
 Der Workflow legt einen temporären Schlüsselbund an (zufälliges Passwort), importiert das Zertifikat,
 ermittelt die Identität `Developer ID Application: …` daraus und löscht Schlüsselbund und Schlüsseldatei
-am Ende (auch bei Fehlern). `GITHUB_TOKEN` reicht für `gh release create`.
+am Ende (auch bei Fehlern). `GITHUB_TOKEN` reicht für `gh release create` und den Push nach `gh-pages`.
 
 Ablauf und Absicherung von `release.yml`:
 
-- **Gleiche Prüfungen wie CI:** Der Job `release` hängt von `checks` ab, der denselben
+- **Jobs und Secrets getrennt:** `sparkle-keys` (nur Sparkle-Schlüssel) → `build` (nur `.p12` und
+  Notar-Schlüssel, **nicht** der Sparkle-Schlüssel; Ergebnis als Artefakt `release-dist`) → `draft`
+  (nur `GITHUB_TOKEN`) → `appcast` (nur Sparkle-Schlüssel und `GITHUB_TOKEN`; kein `brew`, kein Build:
+  Sparkles Werkzeuge kommen aus dem per SHA-256 geprüften Archiv von `tools/fetch_sparkle.sh`, die DMG
+  aus dem Artefakt, dessen Prüfsumme vorher kontrolliert wird).
+- **Gleiche Prüfungen wie CI:** Der Job `build` hängt von `checks` ab, der denselben
   wiederverwendbaren Workflow `checks.yml` wie die CI für den getaggten Commit ausführt
   (Benchmark-Toleranz 2,0, `webp`/`jpeg-xl` für den Formatkorpus, RAW-Beispiele mit Cache und
   `LF_REQUIRE_RAW=1`, clang-tidy, Sanitizer, Linux-Kern, REUSE). `checks` bekommt keine Secrets.
@@ -184,26 +198,54 @@ tools/sparkle_key_check.sh sparkle_private.key "<öffentlicher Schlüssel>"   # 
 
 ### Was der Release-Workflow macht
 
-1. `tools/fetch_sparkle.sh`, dann Schlüsselprüfung: Fehlen Variable oder Secret oder passen sie nicht
-   zusammen (`tools/sparkle_key_check.sh`), bricht der Workflow **vor** dem Bauen ab.
-2. `package.sh --notarize` mit `LF_ENABLE_SPARKLE=ON`, `LF_SPARKLE_PUBLIC_KEY`, `LF_REQUIRE_SPARKLE=1`.
-3. Nach `gh release create`: `gh-pages` klonen (bzw. neu anlegen), vorhandene `appcast.xml` und die neue DMG
-   in ein Arbeitsverzeichnis, Release-Text als HTML (GitHub-Markdown-API) daneben, dann
-   `generate_appcast --ed-key-file -` – der private Schlüssel kommt nur über stdin (`printf` ist ein
-   Shell-Builtin, erscheint also in keiner Argumentliste und wird nie ausgegeben). Vorhandene Einträge
-   bleiben erhalten (höchstens 10), keine Delta-Updates. `sign_update --verify` prüft die Feed-Signatur.
-4. `appcast.xml` und `notes/<version>.html` werden als Commit auf `gh-pages` gepusht (`GITHUB_TOKEN` über
-   `gh auth setup-git`, kein Token in einer URL).
+1. **`sparkle-keys`:** Fehlen Variable oder Secret oder passen sie nicht zusammen
+   (`tools/sparkle_key_check.sh`), bricht der Workflow **vor** dem Bauen ab.
+2. **`build`:** `tools/fetch_sparkle.sh`, `package.sh --notarize` mit `LF_ENABLE_SPARKLE=ON`,
+   `LF_SPARKLE_PUBLIC_KEY`, `LF_REQUIRE_SPARKLE=1` (und `LF_REQUIRE_TURBOJPEG=ON`), Tickets prüfen,
+   DMG/ZIP/SHA-256 als Artefakt `release-dist` hochladen.
+3. **`draft`:** Prüfsummen kontrollieren; `gh release view` → gibt es das Release noch nicht, wird es als
+   **Entwurf** angelegt (`gh release create --draft --generate-notes`), ein vorhandener Entwurf bekommt die
+   neuen Dateien (`gh release upload --clobber`). Ein bereits **veröffentlichtes** Release wird nie
+   überschrieben (Abbruch: neue Version taggen).
+4. **`appcast`** (globale Concurrency-Gruppe `release-appcast`, `cancel-in-progress: false`: nie zwei
+   Appcast-Läufe gleichzeitig, auch nicht für verschiedene Tags): Sparkle-Werkzeuge per
+   `tools/fetch_sparkle.sh`, DMG aus dem Artefakt (Prüfsumme), Schlüsselprüfung. Dann `gh-pages`
+   **vollständig** klonen (bzw. neu anlegen), vorhandene `appcast.xml` und die DMG in ein
+   Arbeitsverzeichnis, Release-Text des Entwurfs als HTML (GitHub-Markdown-API) daneben,
+   `generate_appcast --ed-key-file - --maximum-versions 0 --maximum-deltas 0` – der private Schlüssel
+   kommt nur über stdin (`printf` ist ein Shell-Builtin, erscheint also in keiner Argumentliste und wird
+   nie ausgegeben). Alle vorhandenen Einträge bleiben erhalten, keine Delta-Updates.
+5. **Prüfung vor dem Push:** `tools/appcast_verify.py` vergleicht alten und neuen Appcast (jeder alte
+   Eintrag mit gleicher Version und gleicher Download-URL noch da; genau ein Eintrag mehr bzw. gleich
+   viele bei einem erneuten Lauf; neuer Eintrag mit erwarteter URL, `sparkle:edSignature` und der Länge
+   der DMG), `sign_update --verify` prüft die Feed-Signatur.
+6. `appcast.xml` und `notes/<version>.html` werden als Commit auf `gh-pages` gepusht (`GITHUB_TOKEN` über
+   `gh auth setup-git`, kein Token in einer URL). Schlägt der Push fehl (anderer Push dazwischen), wird bis
+   zu fünfmal geholt, neu aufgesetzt (`rebase`) und erneut gepusht; hat sich dabei `appcast.xml` selbst
+   geändert, bricht der Job ab (Appcast müsste neu erzeugt werden → Job erneut starten). Ein
+   unveränderter Appcast (erneuter Lauf) wird nicht noch einmal committet.
+7. **Erst danach** wird das Release veröffentlicht (`gh release edit --draft=false`). Bis dahin zeigt der
+   Appcast evtl. schon die neue Version, deren Download noch nicht öffentlich ist; GitHub Pages braucht
+   für die Veröffentlichung ohnehin etwa eine Minute, das Release ist dann in der Regel schon öffentlich.
 
-Bricht nur der Appcast-Schritt ab (z. B. Pages-Push), steht das GitHub Release schon, und ein erneuter Lauf
-scheitert an `gh release create`. Dann den Appcast lokal erzeugen: DMG aus dem Release und die aktuelle
-`appcast.xml` von `gh-pages` in ein leeres Verzeichnis legen, `third_party/Sparkle/bin/generate_appcast
---download-url-prefix https://github.com/brokoskokoli/lumaflip/releases/download/vX.Y.Z/ --maximum-deltas 0 <dir>`
-(Schlüssel aus dem Schlüsselbund) und `appcast.xml` auf `gh-pages` committen.
+**Erneut ausführen:** Jeder Job lässt sich wiederholen („Re-run failed jobs“). Bricht der Appcast-Schritt
+ab, bleibt das Release ein unveröffentlichter Entwurf; ein erneuter Lauf erzeugt den Appcast neu und
+veröffentlicht danach. Hinweis zur Concurrency-Gruppe: GitHub hält je Gruppe nur **einen wartenden** Job;
+werden drei Tags schnell hintereinander gepusht, bricht der dritte den wartenden zweiten ab – dann den
+abgebrochenen Lauf neu starten.
+
+Notfall (Workflow nicht nutzbar): DMG aus dem Release und die aktuelle `appcast.xml` von `gh-pages` in ein
+leeres Verzeichnis legen, `third_party/Sparkle/bin/generate_appcast --download-url-prefix
+https://github.com/brokoskokoli/lumaflip/releases/download/vX.Y.Z/ --maximum-deltas 0 --maximum-versions 0 <dir>`
+(Schlüssel aus dem Schlüsselbund), mit `tools/appcast_verify.py --old <alt> --new <dir>/appcast.xml --version
+X.Y.Z --url <URL der DMG>` prüfen und `appcast.xml` auf `gh-pages` committen.
 
 ### Schlüssel fehlt, ist falsch oder kompromittiert
 
-- **Variable oder Secret fehlt / passen nicht:** Kein Release wird gebaut (Schritt „Check Sparkle keys“).
+- **Variable oder Secret fehlt / passen nicht:** Kein Release wird gebaut (Job `sparkle-keys`).
+- **Altes Schlüsselformat (96 Byte):** frühere `generate_keys`-Versionen speichern den privaten Schlüssel
+  als 64-Byte-orlp-Schlüssel plus 32-Byte-öffentlichen Schlüssel. `sparkle_key_check.sh` leitet den
+  öffentlichen Schlüssel aus dem privaten Skalar ab und lehnt Dateien ab, deren Anhang nicht dazu passt.
 - **Lokaler Build ohne Schlüssel:** Updater aus, nichts wird veröffentlicht.
 - **Schlüssel wechseln (Rotation):** Sparkle erlaubt pro Update nur *eine* Änderung – entweder den
   EdDSA-Schlüssel oder das Developer-ID-Zertifikat, nie beide zugleich. Wegen

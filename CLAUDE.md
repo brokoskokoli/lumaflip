@@ -7,7 +7,8 @@ Bildbetrachter für macOS (später Windows/Linux). Die verbindliche Spezifikatio
 
 ```sh
 tools/check.sh --quick          # Build + alle Tests (schnell, vor jedem Commit)
-tools/check.sh --stage M1       # alle Pflichtprüfungen inkl. Format, SPDX, Spec-Abdeckung, Benchmarks
+tools/check.sh --stage M2       # alle Pflichtprüfungen inkl. Format, SPDX, Spec-Abdeckung, Benchmarks
+                                # (Stufe: Standard M2 bzw. $LF_STAGE; CI: LF_STAGE in checks.yml)
 tools/check.sh --quick --sanitize   # ASan/UBSan
 tools/check.sh --format-all     # clang-format für alle Dateien (Standard: nur geänderte Zeilen ggü. main)
 tools/check.sh --quick --tidy   # zusätzlich clang-tidy (.clang-tidy) auf geänderten Dateien, falls installiert
@@ -16,10 +17,27 @@ cmake -B build/generic -DLF_FORCE_GENERIC_PLATFORM=ON …  # Core mit src/platfo
 open build/check/src/Lumaflip.app --args <bild>   # App starten
 ```
 
-Abhängigkeiten: `brew install cmake ninja qt googletest clang-format` (Qt 6.11 via Homebrew).
+Abhängigkeiten: `brew install cmake ninja qt jpeg-turbo googletest clang-format` (Qt 6.11 via Homebrew).
 Optional `tools/fetch_sparkle.sh` (Sparkle 2 nach `third_party/`, automatische Updates F-MAC-08;
 ohne baut die App mit abgeschaltetem Updater, siehe `docs/RELEASING.md`).
 Bauverzeichnisse liegen unter `build/` – nicht löschen, `cmake --fresh` verwenden, falls nötig.
+
+- **Aktuelle Stufe:** `LF_STAGE` in `.github/workflows/checks.yml` (derzeit `M2`) bestimmt, bis zu
+  welcher Stufe die Spec-Abdeckung vollständig sein muss; beim Start der nächsten Stufe nur dort
+  (und als Standard in `tools/check.sh`) anheben.
+- **Benchmarks unter Last:** Vor `lf_bench` wartet `check.sh` höchstens `LF_BENCH_LOAD_WAIT`
+  Sekunden (Standard 300, `0` = nicht warten), bis die 1-Minuten-Last ≤ Anzahl der Kerne ist
+  (parallele Builds verfälschen die Zeiten). Überschreitet ein Benchmark sein Limit, wird nur
+  dieser einmal wiederholt (`LF_BENCH_ONLY=name1,name2 build/check/tests/lf_bench`); beide
+  Ergebnisse stehen in der Ausgabe (`build/check/bench.log`, `bench-rerun.log`). Fehlschlag nur,
+  wenn auch die Wiederholung scheitert.
+- **Finder-Fixtures:** `LF_REQUIRE_FINDER_FIXTURES=1` lässt den Fixture-Test fehlschlagen statt
+  überspringen; die CI setzt es automatisch, sobald `tests/data/finder/` existiert
+  (`tools/make_finder_fixtures.sh`, docs/TESTING-M1.md §4).
+- **Release-Werkzeuge:** `tools/package.sh` (verlangt das statische `libturbojpeg.a`,
+  `brew install jpeg-turbo`; Sparkle lokal optional), `tools/sparkle_key_check.sh --self-test`
+  (läuft in `check.sh`), `tools/appcast_verify.py` – Details in `docs/RELEASING.md`.
+- **Manuelle Abnahme:** `docs/TESTING-M2.md` (v1.0), `docs/TESTING-M1.md`, `docs/MANUAL_CHECKS.md`.
 
 ## Aufbau
 
