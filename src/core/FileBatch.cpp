@@ -72,9 +72,8 @@ QString filebatch::keepBothName(const QString& folder, const QString& name,
         return name;
     const QFileInfo fi(name);
     const QString base = fi.completeBaseName().isEmpty() ? name : fi.completeBaseName();
-    const QString suffix = fi.completeBaseName().isEmpty() || fi.suffix().isEmpty()
-                               ? QString()
-                               : QLatin1Char('.') + fi.suffix();
+    const QString suffix =
+        fi.completeBaseName().isEmpty() || fi.suffix().isEmpty() ? QString() : QLatin1Char('.') + fi.suffix();
     for (int n = 2; n < 100000; ++n) {
         const QString candidate = QStringLiteral("%1 %2%3").arg(base).arg(n).arg(suffix);
         if (!taken(candidate))
@@ -125,7 +124,8 @@ QStringList filebatch::ownSidecars(const QString& imagePath) {
         break;
     }
     if (!shared)
-        for (const QString& p : {dir.filePath(base + QStringLiteral(".xmp")), dir.filePath(base + QStringLiteral(".XMP"))})
+        for (const QString& p :
+             {dir.filePath(base + QStringLiteral(".xmp")), dir.filePath(base + QStringLiteral(".XMP"))})
             if (QFileInfo::exists(p))
                 add(p);
     return out;
@@ -279,7 +279,8 @@ QString FileBatch::undoStep(const Step& step) {
     }
     if (!error.isEmpty())
         return error;
-    if (!step.replacedTrash.isEmpty() && !m_trash.restoreFromTrash(step.replacedTrash, step.replacedFrom, &error))
+    if (!step.replacedTrash.isEmpty() &&
+        !m_trash.restoreFromTrash(step.replacedTrash, step.replacedFrom, &error))
         return error;
     return {};
 }
@@ -334,8 +335,8 @@ QString FileBatch::revert() {
     // Folders this batch created (e.g. "_Rejected") go again if they are empty now.
     for (const QString& f : std::as_const(m_createdFolders)) {
         QDir dir(f);
-        if (dir.exists() && dir.entryList(QDir::AllEntries | QDir::Hidden | QDir::System | QDir::NoDotAndDotDot)
-                                .isEmpty())
+        if (dir.exists() &&
+            dir.entryList(QDir::AllEntries | QDir::Hidden | QDir::System | QDir::NoDotAndDotDot).isEmpty())
             QDir().rmdir(f);
     }
     return first;

@@ -957,8 +957,8 @@ private slots:
         QStringList titles;
         for (QMenu* m : menus)
             titles << m->title();
-        QCOMPARE(titles, (QStringList{"Ablage", "Bearbeiten", "Darstellung", "Navigation", "Bild", "Aussortieren",
-                                      "Fenster", "Hilfe"}));
+        QCOMPARE(titles, (QStringList{"Ablage", "Bearbeiten", "Darstellung", "Navigation", "Bild",
+                                      "Aussortieren", "Fenster", "Hilfe"}));
         auto has = [&](Action a, const QKeySequence& seq) {
             QAction* act = action(a);
             return act && act->shortcuts().contains(seq);

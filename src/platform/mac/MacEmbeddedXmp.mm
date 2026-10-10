@@ -100,7 +100,8 @@ bool writeImpl(const QString& srcPath, const QString& dstPath, const Rating& rat
         // as "unrated" / "no flag" (xmp::ratingFromValues).
         auto set = [meta](NSString* path, const std::optional<QString>& value) {
             NSString* text = value ? value->toNSString() : @"0";
-            CGImageMetadataSetValueWithPath(meta, nullptr, (__bridge CFStringRef)path, (__bridge CFStringRef)text);
+            CGImageMetadataSetValueWithPath(meta, nullptr, (__bridge CFStringRef)path,
+                                            (__bridge CFStringRef)text);
         };
         set(@"xmp:Rating", v.rating);
         const QString lf = QString::fromLatin1(xmp::kPrefixLumaflip);
@@ -117,9 +118,10 @@ bool writeImpl(const QString& srcPath, const QString& dstPath, const Rating& rat
         CFRelease(src);
         if (!ok) {
             NSError* e = err ? CFBridgingRelease(err) : nil;
-            setError(error, tr("Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.") +
-                                (e ? QStringLiteral(" (%1)").arg(QString::fromNSString(e.localizedDescription))
-                                   : QString()));
+            setError(error,
+                     tr("Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.") +
+                         (e ? QStringLiteral(" (%1)").arg(QString::fromNSString(e.localizedDescription))
+                            : QString()));
             return false;
         }
         if (!auxBefore.isEmpty()) {
@@ -144,7 +146,7 @@ bool writeImpl(const QString& srcPath, const QString& dstPath, const Rating& rat
 bool canEmbedRatingType(const QString& typeId) {
     static const QStringList allowed = {QStringLiteral("public.jpeg"), QStringLiteral("public.heic"),
                                         QStringLiteral("public.heif"), QStringLiteral("public.tiff"),
-                                        QStringLiteral("public.png"), QStringLiteral("com.adobe.raw-image")};
+                                        QStringLiteral("public.png"),  QStringLiteral("com.adobe.raw-image")};
     if (!allowed.contains(typeId))
         return false;
     @autoreleasepool {
@@ -162,28 +164,30 @@ std::optional<Rating> readEmbeddedRating(const QString& path) {
             CFRelease(src);
             return std::nullopt;
         }
-        CGImageMetadataRef meta = CGImageSourceCopyMetadataAtIndex(src, CGImageSourceGetPrimaryImageIndex(src), nullptr);
+        CGImageMetadataRef meta =
+            CGImageSourceCopyMetadataAtIndex(src, CGImageSourceGetPrimaryImageIndex(src), nullptr);
         CFRelease(src);
         if (!meta)
             return std::nullopt;
         __block xmp::RatingValues v;
         NSString* nsXmp = @(xmp::kNsXmp);
         NSString* nsLf = @(xmp::kNsLumaflip);
-        CGImageMetadataEnumerateTagsUsingBlock(meta, nullptr, nullptr, ^bool(CFStringRef, CGImageMetadataTagRef tag) {
-          NSString* ns = CFBridgingRelease(CGImageMetadataTagCopyNamespace(tag));
-          NSString* name = CFBridgingRelease(CGImageMetadataTagCopyName(tag));
-          CFTypeRef value = CGImageMetadataTagCopyValue(tag);
-          const QString text = stringOf(value);
-          if (value)
-              CFRelease(value);
-          if ([ns isEqualToString:nsXmp] && [name isEqualToString:@"Rating"])
-              v.rating = text;
-          else if ([ns isEqualToString:nsLf] && [name isEqualToString:@"Pick"])
-              v.pick = text;
-          else if ([ns isEqualToString:nsLf] && [name isEqualToString:@"Stars"])
-              v.stars = text;
-          return true;
-        });
+        CGImageMetadataEnumerateTagsUsingBlock(
+            meta, nullptr, nullptr, ^bool(CFStringRef, CGImageMetadataTagRef tag) {
+              NSString* ns = CFBridgingRelease(CGImageMetadataTagCopyNamespace(tag));
+              NSString* name = CFBridgingRelease(CGImageMetadataTagCopyName(tag));
+              CFTypeRef value = CGImageMetadataTagCopyValue(tag);
+              const QString text = stringOf(value);
+              if (value)
+                  CFRelease(value);
+              if ([ns isEqualToString:nsXmp] && [name isEqualToString:@"Rating"])
+                  v.rating = text;
+              else if ([ns isEqualToString:nsLf] && [name isEqualToString:@"Pick"])
+                  v.pick = text;
+              else if ([ns isEqualToString:nsLf] && [name isEqualToString:@"Stars"])
+                  v.stars = text;
+              return true;
+            });
         CFRelease(meta);
         return xmp::ratingFromValues(v);
     }

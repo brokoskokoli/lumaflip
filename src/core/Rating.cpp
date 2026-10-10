@@ -187,8 +187,8 @@ QStringList sidecarCandidates(const QString& imagePath) {
     const QString base = fi.dir().filePath(fi.completeBaseName());
     // The variant with the extension names exactly one image: it wins over the Adobe one
     // (which RAW+JPEG pairs share).
-    return {imagePath + QStringLiteral(".xmp"), base + QStringLiteral(".xmp"), imagePath + QStringLiteral(".XMP"),
-            base + QStringLiteral(".XMP")};
+    return {imagePath + QStringLiteral(".xmp"), base + QStringLiteral(".xmp"),
+            imagePath + QStringLiteral(".XMP"), base + QStringLiteral(".XMP")};
 }
 
 // ---- Finder tags ----

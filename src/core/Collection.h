@@ -121,7 +121,7 @@ public:
     // the current one and disappears when another image becomes current.
     void setRatingFilter(const RatingFilter& filter);
     RatingFilter ratingFilter() const;
-    int totalCount() const;      // shown + hidden by the filter
+    int totalCount() const;       // shown + hidden by the filter
     QStringList allPaths() const; // shown + hidden by the filter (F-CULL-05)
     // A rating changed (RatingStore::ratingChanged): updates the entry, applies the filter.
     void updateRating(const QString& path, const Rating& rating);

@@ -367,7 +367,7 @@ struct Job {
     FolderSortMemory folderMemory; // F-SORT-06
     RatingReader ratingReader;     // F-SORT-02 / F-CULL-04 (M3)
     RatingFilter filter;
-    QString keepPath; // stays visible although the filter does not match (current image)
+    QString keepPath;              // stays visible although the filter does not match (current image)
     bool revalidate = false;       // explicit open: check a shared snapshot against the folder
     NameCollator* collator = nullptr;
     FolderOrderProvider* order = nullptr;
@@ -707,8 +707,8 @@ struct Collection::Private {
         for (const FileEntry& e : r.hidden)
             if (!removedDuringJob.contains(e.path))
                 hidden.insert(e.path, e);
-        if (!stale.isEmpty() &&
-            !std::any_of(entries.cbegin(), entries.cend(), [&](const FileEntry& e) { return e.path == stale; }))
+        if (!stale.isEmpty() && !std::any_of(entries.cbegin(), entries.cend(),
+                                             [&](const FileEntry& e) { return e.path == stale; }))
             stale.clear();
         replayEditsDuringJob(r.spec);
         rebuildIndex();
@@ -1212,17 +1212,18 @@ void Collection::insertPath(const QString& filePath, bool addToFileSet, bool mak
         if (e)
             d->insertEntry(std::move(*e), makeCurrent);
     });
-    w->setFuture(QtConcurrent::run([path, attributes, needProps, reader, keepAlive]() -> std::optional<FileEntry> {
-        auto e = statEntry(path);
-        if (e && attributes) {
-            attributes->fill(*e);
-            if (needProps)
-                attributes->fillImageProperties(*e);
-        }
-        if (e && reader)
-            collection::setRating(*e, reader(path));
-        return e;
-    }));
+    w->setFuture(
+        QtConcurrent::run([path, attributes, needProps, reader, keepAlive]() -> std::optional<FileEntry> {
+            auto e = statEntry(path);
+            if (e && attributes) {
+                attributes->fill(*e);
+                if (needProps)
+                    attributes->fillImageProperties(*e);
+            }
+            if (e && reader)
+                collection::setRating(*e, reader(path));
+            return e;
+        }));
 }
 
 bool Collection::hasPendingInserts() const {

@@ -78,8 +78,8 @@ bool QuickMoveController::interceptKey(const InputEvent& ev) {
 void QuickMoveController::transferCurrent(QuickOp op, int slot) {
     const QString folder = quickmove::target(slot);
     if (folder.isEmpty()) {
-        m_window.showMessage(tr("Ziel %1 ist nicht festgelegt (Einstellungen → Bewertung → Schnellablage).").arg(slot),
-                             4000);
+        m_window.showMessage(
+            tr("Ziel %1 ist nicht festgelegt (Einstellungen → Bewertung → Schnellablage).").arg(slot), 4000);
         return;
     }
     const QString cur = m_window.currentPath();
@@ -107,18 +107,21 @@ void QuickMoveController::transfer(TransferKind kind, QVector<TransferItem> item
         const QStringList conflicts = w->result();
         w->deleteLater();
         if (self)
-            self->runWithChoices(kind, items, conflicts, 0, false, ConflictChoice::Skip, undoText, doneMessage);
+            self->runWithChoices(kind, items, conflicts, 0, false, ConflictChoice::Skip, undoText,
+                                 doneMessage);
     });
     w->setFuture(QtConcurrent::run([items, kind] { return filebatch::conflicts(items, kind); }));
 }
 
-void QuickMoveController::runWithChoices(TransferKind kind, QVector<TransferItem> items, QStringList conflicts,
-                                         int next, bool forAll, ConflictChoice allChoice, const QString& undoText,
+void QuickMoveController::runWithChoices(TransferKind kind, QVector<TransferItem> items,
+                                         QStringList conflicts, int next, bool forAll,
+                                         ConflictChoice allChoice, const QString& undoText,
                                          std::function<QString(int)> doneMessage) {
     // Ask about the remaining conflicts one after the other (or apply "für alle").
     while (next < conflicts.size()) {
         const QString source = conflicts.at(next);
-        auto it = std::find_if(items.begin(), items.end(), [&](const TransferItem& i) { return i.source == source; });
+        auto it = std::find_if(items.begin(), items.end(),
+                               [&](const TransferItem& i) { return i.source == source; });
         if (forAll) {
             if (it != items.end())
                 it->onConflict = allChoice;
@@ -128,8 +131,8 @@ void QuickMoveController::runWithChoices(TransferKind kind, QVector<TransferItem
         const QString folder = it != items.end() ? it->targetFolder : QString();
         QPointer<QuickMoveController> self(this);
         askConflict(&m_window, QFileInfo(source).fileName(), folder, int(conflicts.size() - next),
-                    [self, kind, items, conflicts, next, undoText, doneMessage](std::optional<ConflictChoice> choice,
-                                                                                bool all) mutable {
+                    [self, kind, items, conflicts, next, undoText,
+                     doneMessage](std::optional<ConflictChoice> choice, bool all) mutable {
                         if (!self || !choice)
                             return; // cancelled: nothing happens
                         auto it2 = std::find_if(items.begin(), items.end(), [&](const TransferItem& i) {
@@ -137,24 +140,27 @@ void QuickMoveController::runWithChoices(TransferKind kind, QVector<TransferItem
                         });
                         if (it2 != items.end())
                             it2->onConflict = *choice;
-                        self->runWithChoices(kind, items, conflicts, next + 1, all, *choice, undoText, doneMessage);
+                        self->runWithChoices(kind, items, conflicts, next + 1, all, *choice, undoText,
+                                             doneMessage);
                     });
         return;
     }
     auto batch = std::make_shared<FileBatch>(m_app.fileOps().trashService(), kind, items);
     QPointer<ViewerWindow> window(&m_window);
-    runBatchAsync(m_app.fileOps(), undoText, batch, [window, batch, doneMessage](bool ok, const QString& error) {
-        if (!window)
-            return;
-        if (!ok) {
-            window->showMessage(error, 5000);
-            return;
-        }
-        window->showMessage(doneMessage ? doneMessage(int(batch->steps().size())) : QString(), 2500);
-    });
+    runBatchAsync(
+        m_app.fileOps(), undoText, batch, [window, batch, doneMessage](bool ok, const QString& error) {
+            if (!window)
+                return;
+            if (!ok) {
+                window->showMessage(error, 5000);
+                return;
+            }
+            window->showMessage(doneMessage ? doneMessage(int(batch->steps().size())) : QString(), 2500);
+        });
 }
 
-void QuickMoveController::askConflict(QWidget* parent, const QString& fileName, const QString& folder, int count,
+void QuickMoveController::askConflict(QWidget* parent, const QString& fileName, const QString& folder,
+                                      int count,
                                       std::function<void(std::optional<ConflictChoice>, bool)> done) {
     auto* box = new QMessageBox(parent);
     box->setObjectName(QStringLiteral("lfConflictDialog"));
@@ -162,11 +168,12 @@ void QuickMoveController::askConflict(QWidget* parent, const QString& fileName, 
     box->setIcon(QMessageBox::Question);
     box->setWindowTitle(tr("Namenskonflikt"));
     box->setText(tr("„%1“ gibt es in „%2“ schon.").arg(fileName, QDir(folder).dirName()));
-    box->setInformativeText(tr("Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der "
-                               "neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.")
-                                .arg(filebatch::keepBothName(folder, fileName, [&](const QString& p) {
-                                    return QFileInfo(p).fileName() == fileName; // no disk access here
-                                })));
+    box->setInformativeText(
+        tr("Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der "
+           "neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.")
+            .arg(filebatch::keepBothName(folder, fileName, [&](const QString& p) {
+                return QFileInfo(p).fileName() == fileName; // no disk access here
+            })));
     QPushButton* replace = box->addButton(tr("Ersetzen"), QMessageBox::DestructiveRole);
     replace->setObjectName(QStringLiteral("lfConflictReplace"));
     QPushButton* keepBoth = box->addButton(tr("Beide behalten"), QMessageBox::AcceptRole);

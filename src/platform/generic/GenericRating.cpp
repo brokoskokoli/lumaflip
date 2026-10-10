@@ -25,8 +25,8 @@ std::optional<Rating> readEmbeddedRating(const QString& path) {
 
 bool writeEmbeddedRating(const QString&, const QString&, const Rating&, QString* error) {
     if (error)
-        *error = QCoreApplication::translate("lf::RatingStore",
-                                             "In dieses Format kann die Bewertung nicht sicher geschrieben werden.");
+        *error = QCoreApplication::translate(
+            "lf::RatingStore", "In dieses Format kann die Bewertung nicht sicher geschrieben werden.");
     return false;
 }
 
@@ -40,7 +40,8 @@ std::optional<QStringList> readRawTags(const QString&, QString*) {
 
 bool writeRawTags(const QString&, const QStringList&, QString* error) {
     if (error)
-        *error = QCoreApplication::translate("lf::RatingStore", "Finder-Tags werden auf diesem System nicht unterstützt.");
+        *error = QCoreApplication::translate("lf::RatingStore",
+                                             "Finder-Tags werden auf diesem System nicht unterstützt.");
     return false;
 }
 

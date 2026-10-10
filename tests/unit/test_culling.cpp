@@ -55,8 +55,9 @@ class FolderTrash : public TrashService {
 public:
     FolderTrash() { dir.setAutoRemove(true); }
     std::optional<QString> moveToTrash(const QString& path, QString* error) override {
-        const QString target = QDir(dir.path()).filePath(QUuid::createUuid().toString(QUuid::Id128) + "-" +
-                                                         QFileInfo(path).fileName());
+        const QString target =
+            QDir(dir.path())
+                .filePath(QUuid::createUuid().toString(QUuid::Id128) + "-" + QFileInfo(path).fileName());
         if (!QFile::rename(path, target)) {
             if (error)
                 *error = QStringLiteral("trash failed");
@@ -77,30 +78,30 @@ public:
     int trashed = 0;
 };
 
-const char* kLightroomSidecar =
-    "<x:xmpmeta xmlns:x=\"adobe:ns:meta/\" x:xmptk=\"Adobe XMP Core 7.0\">\n"
-    " <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-    "  <rdf:Description rdf:about=\"\"\n"
-    "    xmlns:xmp=\"http://ns.adobe.com/xap/1.0/\"\n"
-    "    xmlns:crs=\"http://ns.adobe.com/camera-raw-settings/1.0/\"\n"
-    "    xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
-    "    xmp:Rating=\"2\"\n"
-    "    xmp:Label=\"Rot\"\n"
-    "    crs:Exposure2012=\"+0.35\"\n"
-    "    crs:WhiteBalance=\"As Shot\">\n"
-    "   <dc:subject>\n"
-    "    <rdf:Bag>\n"
-    "     <rdf:li>Urlaub &amp; Meer</rdf:li>\n"
-    "    </rdf:Bag>\n"
-    "   </dc:subject>\n"
-    "   <!-- develop history -->\n"
-    "  </rdf:Description>\n"
-    " </rdf:RDF>\n"
-    "</x:xmpmeta>\n";
+const char* kLightroomSidecar = "<x:xmpmeta xmlns:x=\"adobe:ns:meta/\" x:xmptk=\"Adobe XMP Core 7.0\">\n"
+                                " <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
+                                "  <rdf:Description rdf:about=\"\"\n"
+                                "    xmlns:xmp=\"http://ns.adobe.com/xap/1.0/\"\n"
+                                "    xmlns:crs=\"http://ns.adobe.com/camera-raw-settings/1.0/\"\n"
+                                "    xmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n"
+                                "    xmp:Rating=\"2\"\n"
+                                "    xmp:Label=\"Rot\"\n"
+                                "    crs:Exposure2012=\"+0.35\"\n"
+                                "    crs:WhiteBalance=\"As Shot\">\n"
+                                "   <dc:subject>\n"
+                                "    <rdf:Bag>\n"
+                                "     <rdf:li>Urlaub &amp; Meer</rdf:li>\n"
+                                "    </rdf:Bag>\n"
+                                "   </dc:subject>\n"
+                                "   <!-- develop history -->\n"
+                                "  </rdf:Description>\n"
+                                " </rdf:RDF>\n"
+                                "</x:xmpmeta>\n";
 
 // Everything of `original` except the attribute xmp:Rating must still be there unchanged.
 QString withoutRatingProps(QString s) {
-    static const QRegularExpression re(QStringLiteral("\\s+(xmp|lumaflip|xmlns:lumaflip)(:Rating|:Pick|:Stars|)=\"[^\"]*\""));
+    static const QRegularExpression re(
+        QStringLiteral("\\s+(xmp|lumaflip|xmlns:lumaflip)(:Rating|:Pick|:Stars|)=\"[^\"]*\""));
     return s.remove(re);
 }
 
@@ -238,7 +239,8 @@ TEST(CullingXmp, F_CULL_02_ReadWritePreservesForeignXmp) {
 TEST(CullingXmp, F_CULL_02_ElementFormOtherPrefixAndRejectInterop) {
     const QString elementForm = QStringLiteral(
         "<?xpacket begin=\"\" id=\"W5M0MpCehiHzreSzNTczkc9d\"?>\n"
-        "<x:xmpmeta xmlns:x=\"adobe:ns:meta/\"><rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">"
+        "<x:xmpmeta xmlns:x=\"adobe:ns:meta/\"><rdf:RDF "
+        "xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">"
         "<rdf:Description rdf:about=\"\" xmlns:xap=\"http://ns.adobe.com/xap/1.0/\" "
         "xmlns:darktable=\"http://darktable.sf.net/\" darktable:xmp_version=\"5\">"
         "<xap:Rating>3</xap:Rating></rdf:Description></rdf:RDF></x:xmpmeta>\n<?xpacket end=\"w\"?>");
@@ -339,7 +341,8 @@ TEST_F(CullingTest, F_CULL_02_EmbeddedJpegKeepsScanDataByteIdentical) {
     EXPECT_EQ(jpeg::scanData(readFile(jpg)), jpeg::scanData(before));
     EXPECT_FALSE(QFileInfo::exists(path("embedded.xmp"))); // no sidecar needed
     // No temporary files left behind.
-    EXPECT_EQ(QDir(dir.path()).entryList(QDir::Files | QDir::Hidden).filter(QStringLiteral("lumaflip")).size(), 0);
+    EXPECT_EQ(
+        QDir(dir.path()).entryList(QDir::Files | QDir::Hidden).filter(QStringLiteral("lumaflip")).size(), 0);
 #endif
 }
 
@@ -357,7 +360,8 @@ TEST_F(CullingTest, F_CULL_02_EmbeddedHeicPngTiff) {
     for (const char* name : {"still.heic", "rgb16.tiff"}) {
         if (QFileInfo::exists(corpusFile(QString::fromLatin1(name)))) {
             ASSERT_TRUE(QFile::copy(corpusFile(QString::fromLatin1(name)), path(QString::fromLatin1(name))));
-            QFile(path(QString::fromLatin1(name))).setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner);
+            QFile(path(QString::fromLatin1(name)))
+                .setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner);
             files << path(QString::fromLatin1(name));
         }
     }
@@ -412,7 +416,8 @@ TEST(CullingTags, F_CULL_02_FinderTagsMapping) {
                                  QStringLiteral("Pick\n2")}));
     EXPECT_EQ(rating::fromTags(next, names), stars(4, PickFlag::Pick));
     const QStringList rejected = rating::applyToTags(next, stars(0, PickFlag::Reject), names);
-    EXPECT_EQ(rejected, (QStringList{QStringLiteral("Urlaub"), QStringLiteral("Rot\n6"), QStringLiteral("Reject\n6")}));
+    EXPECT_EQ(rejected,
+              (QStringList{QStringLiteral("Urlaub"), QStringLiteral("Rot\n6"), QStringLiteral("Reject\n6")}));
     EXPECT_EQ(rating::applyToTags(rejected, Rating(), names),
               (QStringList{QStringLiteral("Urlaub"), QStringLiteral("Rot\n6")}));
     rating::fromTags({QStringLiteral("Urlaub")}, names, &found);
@@ -445,7 +450,8 @@ TEST_F(CullingTest, F_CULL_02_FinderTagsOnTempFile) {
     EXPECT_EQ(service->tags(f, &error).value_or(QStringList()),
               (QStringList{QStringLiteral("Urlaub"), QStringLiteral("★★★"), QStringLiteral("Pick")}));
     EXPECT_TRUE(ratingio::writeTags(f, Rating(), names).isEmpty());
-    EXPECT_EQ(platform::readRawTags(f, &error).value_or(QStringList()), QStringList{QStringLiteral("Urlaub")});
+    EXPECT_EQ(platform::readRawTags(f, &error).value_or(QStringList()),
+              QStringList{QStringLiteral("Urlaub")});
 }
 
 // ---- F-CULL-02: conflict rule ----
@@ -503,7 +509,8 @@ TEST_F(CullingTest, F_CULL_02_AsyncWriteIsUndoable) {
     const QString f = path("undo.jpg");
     ASSERT_TRUE(writeFile(f, "x"));
     QList<Rating> changes;
-    QObject::connect(&store, &RatingStore::ratingChanged, [&](const QString&, const Rating& r) { changes << r; });
+    QObject::connect(&store, &RatingStore::ratingChanged,
+                     [&](const QString&, const Rating& r) { changes << r; });
     bool done = false, ok = false;
     store.setRating(ops, f, stars(3, PickFlag::Pick), [&](bool success, const QString&, const QString&) {
         done = true;
@@ -545,11 +552,10 @@ TEST_F(CullingTest, F_CULL_05_RejectsToTrashAsOneUndoStep) {
     QStringList removed;
     QObject::connect(&ops, &FileOps::fileRemoved, [&](const QString& p) { removed << p; });
     bool done = false;
-    runBatchAsync(ops, QStringLiteral("Verworfene in den Papierkorb"), batch,
-                  [&](bool ok, const QString& e) {
-                      EXPECT_TRUE(ok) << e.toStdString();
-                      done = true;
-                  });
+    runBatchAsync(ops, QStringLiteral("Verworfene in den Papierkorb"), batch, [&](bool ok, const QString& e) {
+        EXPECT_TRUE(ok) << e.toStdString();
+        done = true;
+    });
     ASSERT_TRUE(lf::test::waitUntil([&] { return done; }));
     for (const QString& p : rejects)
         EXPECT_FALSE(QFileInfo::exists(p));
@@ -669,7 +675,8 @@ TEST_F(CullingTest, F_FILE_08_MoveAndCopyIntoTargetWithUndo) {
     ASSERT_TRUE(writeFile(path("c.jpg"), "copy"));
     auto run = [&](TransferKind kind, const QString& src) {
         bool done = false;
-        auto b = std::make_shared<FileBatch>(trash, kind, QVector<TransferItem>{{src, target, ConflictChoice::Skip}});
+        auto b = std::make_shared<FileBatch>(trash, kind,
+                                             QVector<TransferItem>{{src, target, ConflictChoice::Skip}});
         runBatchAsync(ops, QStringLiteral("x"), b, [&](bool ok, const QString&) {
             EXPECT_TRUE(ok);
             done = true;
@@ -694,7 +701,8 @@ TEST_F(CullingTest, F_FILE_08_MoveAndCopyIntoTargetWithUndo) {
 }
 
 TEST(QuickMove, F_FILE_11_KeepBothNaming) {
-    QSet<QString> taken{QStringLiteral("/t/IMG.jpg"), QStringLiteral("/t/IMG 2.jpg"), QStringLiteral("/t/noext")};
+    QSet<QString> taken{QStringLiteral("/t/IMG.jpg"), QStringLiteral("/t/IMG 2.jpg"),
+                        QStringLiteral("/t/noext")};
     auto exists = [&](const QString& p) { return taken.contains(p); };
     EXPECT_EQ(filebatch::keepBothName("/t", "IMG.jpg", exists), QStringLiteral("IMG 3.jpg"));
     EXPECT_EQ(filebatch::keepBothName("/t", "free.jpg", exists), QStringLiteral("free.jpg"));

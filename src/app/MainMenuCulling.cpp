@@ -25,12 +25,13 @@ struct RateItem {
     Action action;
 };
 const RateItem kRateItems[] = {
-    {"rate:0", Action::Rate0},          {"rate:1", Action::Rate1},          {"rate:2", Action::Rate2},
-    {"rate:3", Action::Rate3},          {"rate:4", Action::Rate4},          {"rate:5", Action::Rate5},
-    {"rate:pick", Action::RatePick},    {"rate:reject", Action::RateReject}, {"rate:clear", Action::RateClear},
+    {"rate:0", Action::Rate0},       {"rate:1", Action::Rate1},           {"rate:2", Action::Rate2},
+    {"rate:3", Action::Rate3},       {"rate:4", Action::Rate4},           {"rate:5", Action::Rate5},
+    {"rate:pick", Action::RatePick}, {"rate:reject", Action::RateReject}, {"rate:clear", Action::RateClear},
 };
 
-const char* const kFilterIds[] = {"all", "picks", "min1", "min2", "min3", "min4", "min5", "unrated", "rejects"};
+const char* const kFilterIds[] = {"all",  "picks", "min1",    "min2",   "min3",
+                                  "min4", "min5",  "unrated", "rejects"};
 
 QString filterText(const QString& id) {
     if (id == QLatin1String("all"))
@@ -68,7 +69,8 @@ void MainMenu::buildCulling() {
         const Action a = item.action;
         connect(act, &QAction::triggered, this, [this, a] { m_app.perform(a); });
     }
-    QAction* advance = addCommand(menu, QStringLiteral("culling:autoAdvance"), tr("Nach Bewertung automatisch weiter"));
+    QAction* advance =
+        addCommand(menu, QStringLiteral("culling:autoAdvance"), tr("Nach Bewertung automatisch weiter"));
     advance->setCheckable(true);
     connect(advance, &QAction::triggered, this,
             [](bool on) { Settings::instance().setValue(key::CullAutoAdvance, on); });
@@ -94,12 +96,14 @@ void MainMenu::buildCulling() {
 
     // ---- rejects (F-CULL-05) ----
     menu->addSeparator();
-    connect(addCommand(menu, QStringLiteral("culling:trashRejects"), tr("Alle verworfenen in den Papierkorb …")),
-            &QAction::triggered, this, [culling] {
-                if (CullingController* c = culling())
-                    c->bulkRejects(true);
-            });
-    connect(addCommand(menu, QStringLiteral("culling:moveRejects"), tr("Alle verworfenen nach „_Rejected“ verschieben …")),
+    connect(
+        addCommand(menu, QStringLiteral("culling:trashRejects"), tr("Alle verworfenen in den Papierkorb …")),
+        &QAction::triggered, this, [culling] {
+            if (CullingController* c = culling())
+                c->bulkRejects(true);
+        });
+    connect(addCommand(menu, QStringLiteral("culling:moveRejects"),
+                       tr("Alle verworfenen nach „_Rejected“ verschieben …")),
             &QAction::triggered, this, [culling] {
                 if (CullingController* c = culling())
                     c->bulkRejects(false);
@@ -113,8 +117,9 @@ void MainMenu::buildCulling() {
         QMenu* sub = menu->addMenu(move ? tr("Verschieben nach") : tr("Kopieren nach"));
         sub->setObjectName(move ? QStringLiteral("menu:quickMove") : QStringLiteral("menu:quickCopy"));
         for (int n = 1; n <= quickmove::kSlots; ++n) {
-            QAction* act = addCommand(sub, (move ? QStringLiteral("quickMove:") : QStringLiteral("quickCopy:")) +
-                                               QString::number(n),
+            QAction* act = addCommand(sub,
+                                      (move ? QStringLiteral("quickMove:") : QStringLiteral("quickCopy:")) +
+                                          QString::number(n),
                                       quickmove::label(n, {}));
             connect(act, &QAction::triggered, this, [culling, move, n] {
                 if (CullingController* c = culling())
@@ -134,11 +139,12 @@ void MainMenu::buildCulling() {
             }
         });
     }
-    connect(addCommand(menu, QStringLiteral("culling:quickTargets"), tr("Ziele der Schnellablage festlegen …")),
-            &QAction::triggered, this, [] {
-                if (PreferencesDialog* p = PreferencesDialog::showPreferences())
-                    p->showSection(PreferencesDialog::Rating);
-            });
+    connect(
+        addCommand(menu, QStringLiteral("culling:quickTargets"), tr("Ziele der Schnellablage festlegen …")),
+        &QAction::triggered, this, [] {
+            if (PreferencesDialog* p = PreferencesDialog::showPreferences())
+                p->showSection(PreferencesDialog::Rating);
+        });
     connect(menu, &QMenu::aboutToShow, this, &MainMenu::refreshState);
 }
 
@@ -153,7 +159,8 @@ void MainMenu::refreshCullingState() {
     for (const RateItem& item : kRateItems)
         if (QAction* act = command(QString::fromLatin1(item.id)))
             act->setEnabled(c != nullptr);
-    command(QStringLiteral("culling:autoAdvance"))->setChecked(Settings::instance().value(key::CullAutoAdvance).toBool());
+    command(QStringLiteral("culling:autoAdvance"))
+        ->setChecked(Settings::instance().value(key::CullAutoAdvance).toBool());
     const QString filterId = c ? c->filter().id() : QStringLiteral("all");
     for (const char* raw : kFilterIds) {
         QAction* act = command(QStringLiteral("filter:") + QString::fromLatin1(raw));

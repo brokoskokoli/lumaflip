@@ -88,13 +88,16 @@ QStringList quickmove::targets() {
 QString quickmove::target(int slot) {
     if (slot < 1 || slot > kSlots)
         return {};
-    return Settings::instance().value(QString::fromLatin1(key::QuickTargetPrefix) + QString::number(slot)).toString();
+    return Settings::instance()
+        .value(QString::fromLatin1(key::QuickTargetPrefix) + QString::number(slot))
+        .toString();
 }
 
 void quickmove::setTarget(int slot, const QString& folder) {
     if (slot < 1 || slot > kSlots)
         return;
-    Settings::instance().setValue(QString::fromLatin1(key::QuickTargetPrefix) + QString::number(slot), folder);
+    Settings::instance().setValue(QString::fromLatin1(key::QuickTargetPrefix) + QString::number(slot),
+                                  folder);
 }
 
 QString quickmove::label(int slot, const QString& folder) {

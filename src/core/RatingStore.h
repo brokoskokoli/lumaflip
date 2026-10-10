@@ -133,7 +133,8 @@ public:
     // Like setRating(), with the new rating computed from the stored one on the worker
     // (e.g. "P" keeps the stars even if the rating was not read yet). `done` gets the result.
     using Change = std::function<Rating(const Rating& stored)>;
-    using ChangeDone = std::function<void(bool ok, const QString& error, const QString& notice, const Rating& now)>;
+    using ChangeDone =
+        std::function<void(bool ok, const QString& error, const QString& notice, const Rating& now)>;
     void changeRating(FileOps& ops, const QString& path, Change change, ChangeDone done = {});
 
 signals:

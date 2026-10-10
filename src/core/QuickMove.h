@@ -26,9 +26,9 @@ public:
     struct Result {
         Kind kind = Kind::NotHandled;
         QuickOp op = QuickOp::Move;
-        int slot = 0;            // 1..9 (Execute)
-        bool repeat = false;     // Execute from `M M` / `C C`
-        bool passThrough = false; // Cancelled by a key that has its own meaning
+        int slot = 0;              // 1..9 (Execute)
+        bool repeat = false;       // Execute from `M M` / `C C`
+        bool passThrough = false;  // Cancelled by a key that has its own meaning
         bool noLastTarget = false; // `M M` without a previous target
     };
 

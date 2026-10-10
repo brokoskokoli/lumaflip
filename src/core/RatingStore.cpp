@@ -204,7 +204,8 @@ std::optional<Rating> ratingio::readEmbedded(const QString& path) {
     return platform::readEmbeddedRating(path);
 }
 
-QString ratingio::writeEmbedded(const QString& path, const Rating& r, bool keepModificationDate, bool* refused) {
+QString ratingio::writeEmbedded(const QString& path, const Rating& r, bool keepModificationDate,
+                                bool* refused) {
     if (refused)
         *refused = false;
     auto refuse = [refused](const QString& why) {
@@ -232,12 +233,11 @@ QString ratingio::writeEmbedded(const QString& path, const Rating& r, bool keepM
     // unchanged; the rating must read back.
     if (platform::imageTypeIdentifier(target) == QLatin1String("public.jpeg")) {
         QFile a(target), b(tmp);
-        const bool same = a.open(QIODevice::ReadOnly) && b.open(QIODevice::ReadOnly) &&
-                          [&] {
-                              const QByteArray x = a.readAll(), y = b.readAll();
-                              const QByteArray sx = jpeg::scanData(x);
-                              return !sx.isEmpty() && sx == jpeg::scanData(y);
-                          }();
+        const bool same = a.open(QIODevice::ReadOnly) && b.open(QIODevice::ReadOnly) && [&] {
+            const QByteArray x = a.readAll(), y = b.readAll();
+            const QByteArray sx = jpeg::scanData(x);
+            return !sx.isEmpty() && sx == jpeg::scanData(y);
+        }();
         if (!same) {
             QFile::remove(tmp);
             return refuse(tr("Die Bewertung ließ sich nicht ohne Neukodieren ins Bild schreiben."));
@@ -249,7 +249,8 @@ QString ratingio::writeEmbedded(const QString& path, const Rating& r, bool keepM
     }
     if (fileStamp(target) != stamp) {
         QFile::remove(tmp);
-        return tr("„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.").arg(QFileInfo(path).fileName());
+        return tr("„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.")
+            .arg(QFileInfo(path).fileName());
     }
     if (!platform::replaceFile(tmp, target, keepModificationDate, &error)) {
         QFile::remove(tmp);
@@ -345,8 +346,8 @@ QHash<QString, Rating> ratingio::readMany(const QStringList& paths, const Rating
         const QString folder = QFileInfo(p).absolutePath();
         auto it = xmpByFolder.find(folder);
         if (it == xmpByFolder.end()) {
-            const QStringList names = QDir(folder).entryList({QStringLiteral("*.xmp"), QStringLiteral("*.XMP")},
-                                                             QDir::Files | QDir::Hidden);
+            const QStringList names = QDir(folder).entryList(
+                {QStringLiteral("*.xmp"), QStringLiteral("*.XMP")}, QDir::Files | QDir::Hidden);
             it = xmpByFolder.insert(folder, QSet<QString>(names.cbegin(), names.cend()));
         }
         out.insert(p, read(p, o, &*it));
@@ -499,19 +500,20 @@ void RatingStore::changeRating(FileOps& ops, const QString& path, Change change,
         self->store(path, value);
         emit self->ratingChanged(path, value);
     };
-    ops.runAsync(tr("Bewertung"), apply, revert, notify, [self, state, path, done](bool ok, const QString& error) {
-        QString notice;
-        Rating now;
-        {
-            std::lock_guard g(state->mutex);
-            notice = state->notice;
-            now = ok ? state->next : state->previous;
-        }
-        if (!ok && self)
-            self->request(path); // the stores may be partly written: show what is on disk now
-        if (done)
-            done(ok, error, notice, now);
-    });
+    ops.runAsync(tr("Bewertung"), apply, revert, notify,
+                 [self, state, path, done](bool ok, const QString& error) {
+                     QString notice;
+                     Rating now;
+                     {
+                         std::lock_guard g(state->mutex);
+                         notice = state->notice;
+                         now = ok ? state->next : state->previous;
+                     }
+                     if (!ok && self)
+                         self->request(path); // the stores may be partly written: show what is on disk now
+                     if (done)
+                         done(ok, error, notice, now);
+                 });
 }
 
 } // namespace lf

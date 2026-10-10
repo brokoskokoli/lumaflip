@@ -83,8 +83,8 @@ QComboBox* color(const char* k, QWidget* parent) {
     const QString key = QString::fromLatin1(k);
     c->setObjectName(QStringLiteral("setting:") + key);
     // Finder label indices 0..7
-    const QStringList names = {tr("Keine Farbe"), tr("Grau"), tr("Grün"),  tr("Lila"),
-                               tr("Blau"),        tr("Gelb"), tr("Rot"),   tr("Orange")};
+    const QStringList names = {tr("Keine Farbe"), tr("Grau"), tr("Grün"), tr("Lila"),
+                               tr("Blau"),        tr("Gelb"), tr("Rot"),  tr("Orange")};
     for (int i = 0; i < names.size(); ++i)
         c->addItem(names.at(i), i);
     QObject::connect(c, &QComboBox::activated, c, [c, key](int i) { st().setValue(key, c->itemData(i)); });
@@ -131,7 +131,8 @@ QWidget* targetRow(int slot, QWidget* parent) {
     });
     QObject::connect(choose, &QPushButton::clicked, row, [row, slot] {
         const QString start = quickmove::target(slot);
-        const QString dir = QFileDialog::getExistingDirectory(row, tr("Ziel %1 der Schnellablage").arg(slot), start);
+        const QString dir =
+            QFileDialog::getExistingDirectory(row, tr("Ziel %1 der Schnellablage").arg(slot), start);
         if (!dir.isEmpty())
             quickmove::setTarget(slot, dir);
     });
@@ -154,14 +155,17 @@ QWidget* createRatingPage(QWidget* parent) {
                          "„Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten."),
                       stores));
     form->addRow(check(key::RatingStoreEmbedded, tr("Im Bild selbst (eingebettetes XMP)"), stores));
-    form->addRow(help(tr("Nur JPEG, HEIC, TIFF, PNG und DNG; die Bildpixel werden nicht neu kodiert. RAW-Dateien "
-                         "werden nie verändert – dafür wird die Zusatzdatei benutzt."),
-                      stores));
-    form->addRow(check(key::RatingKeepModDate, tr("Änderungsdatum beim Schreiben ins Bild beibehalten"), stores));
+    form->addRow(
+        help(tr("Nur JPEG, HEIC, TIFF, PNG und DNG; die Bildpixel werden nicht neu kodiert. RAW-Dateien "
+                "werden nie verändert – dafür wird die Zusatzdatei benutzt."),
+             stores));
+    form->addRow(
+        check(key::RatingKeepModDate, tr("Änderungsdatum beim Schreiben ins Bild beibehalten"), stores));
     form->addRow(check(key::RatingStoreFinderTags, tr("Finder-Tags"), stores));
-    form->addRow(help(tr("Im Finder sichtbar und per Spotlight durchsuchbar. Sind mehrere Speicherorte gewählt, "
-                         "werden alle beschrieben; beim Lesen gilt die Reihenfolge Zusatzdatei, Bild, Tags."),
-                      stores));
+    form->addRow(
+        help(tr("Im Finder sichtbar und per Spotlight durchsuchbar. Sind mehrere Speicherorte gewählt, "
+                "werden alle beschrieben; beim Lesen gilt die Reihenfolge Zusatzdatei, Bild, Tags."),
+             stores));
     form->addRow(tr("Stern-Symbol:"), tagRow(key::RatingTagStarSymbol, key::RatingTagStarColor, stores));
     form->addRow(tr("Tag für Pick:"), tagRow(key::RatingTagPick, key::RatingTagPickColor, stores));
     form->addRow(tr("Tag für Verworfen:"), tagRow(key::RatingTagReject, key::RatingTagRejectColor, stores));

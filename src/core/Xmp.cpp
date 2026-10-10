@@ -259,8 +259,8 @@ std::optional<QString> setProperty(const QString& xml, const QString& nsUri, con
                 while (qe < e.tagEnd && !isSpace(xml[qe]) && xml[qe] != u'/' && xml[qe] != u'>')
                     ++qe;
                 const QString q = xml.mid(e.tagStart + 1, qe - e.tagStart - 1);
-                edits.append({e.tagStart, e.endEnd,
-                               QStringLiteral("<%1>%2</%1>").arg(q, escapeText(*value))});
+                edits.append(
+                    {e.tagStart, e.endEnd, QStringLiteral("<%1>%2</%1>").arg(q, escapeText(*value))});
                 written = true;
             } else {
                 edits.append({leadingSpace(xml, e.tagStart), e.endEnd, QString()});
@@ -290,14 +290,14 @@ std::optional<QString> setProperty(const QString& xml, const QString& nsUri, con
             const QString rdfPrefix = prefixFor(rdf.scope, kRdf);
             if (rdfPrefix.isEmpty())
                 return std::nullopt;
-            const QString desc = QStringLiteral("<%1:Description %1:about=\"\" xmlns:%2=\"%3\" %2:%4=\"%5\"/>")
-                                     .arg(rdfPrefix, preferredPrefix, escapeAttr(nsUri), localName,
-                                          escapeAttr(*value));
+            const QString desc =
+                QStringLiteral("<%1:Description %1:about=\"\" xmlns:%2=\"%3\" %2:%4=\"%5\"/>")
+                    .arg(rdfPrefix, preferredPrefix, escapeAttr(nsUri), localName, escapeAttr(*value));
             if (rdf.selfClosing) {
-                const QString open = xml.mid(rdf.tagStart, rdf.tagEnd - rdf.tagStart - 2).trimmed() +
-                                     QLatin1Char('>');
-                edits.append({rdf.tagStart, rdf.tagEnd,
-                               open + desc + QStringLiteral("</%1:RDF>").arg(rdfPrefix)});
+                const QString open =
+                    xml.mid(rdf.tagStart, rdf.tagEnd - rdf.tagStart - 2).trimmed() + QLatin1Char('>');
+                edits.append(
+                    {rdf.tagStart, rdf.tagEnd, open + desc + QStringLiteral("</%1:RDF>").arg(rdfPrefix)});
             } else {
                 edits.append({rdf.endStart, rdf.endStart, desc});
             }
@@ -417,13 +417,14 @@ std::optional<QString> writeRating(const QString& xml, const Rating& rating) {
 }
 
 QString newSidecar(const Rating& rating) {
-    const QString empty = QStringLiteral("<x:xmpmeta xmlns:x=\"adobe:ns:meta/\" x:xmptk=\"Lumaflip\">\n"
-                                         " <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
-                                         "  <rdf:Description rdf:about=\"\"\n"
-                                         "    xmlns:xmp=\"http://ns.adobe.com/xap/1.0/\">\n"
-                                         "  </rdf:Description>\n"
-                                         " </rdf:RDF>\n"
-                                         "</x:xmpmeta>\n");
+    const QString empty =
+        QStringLiteral("<x:xmpmeta xmlns:x=\"adobe:ns:meta/\" x:xmptk=\"Lumaflip\">\n"
+                       " <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
+                       "  <rdf:Description rdf:about=\"\"\n"
+                       "    xmlns:xmp=\"http://ns.adobe.com/xap/1.0/\">\n"
+                       "  </rdf:Description>\n"
+                       " </rdf:RDF>\n"
+                       "</x:xmpmeta>\n");
     if (rating.isEmpty())
         return empty;
     return writeRating(empty, rating).value_or(empty);
@@ -438,8 +439,8 @@ QString decode(const QByteArray& bytes, bool* hadBom) {
         return QString::fromUtf8(bytes.mid(3));
     }
     if (bytes.startsWith("\xFE\xFF") || bytes.startsWith("\xFF\xFE")) {
-        auto dec = QStringDecoder(bytes.startsWith("\xFE\xFF") ? QStringDecoder::Utf16BE
-                                                               : QStringDecoder::Utf16LE);
+        auto dec =
+            QStringDecoder(bytes.startsWith("\xFE\xFF") ? QStringDecoder::Utf16BE : QStringDecoder::Utf16LE);
         return dec.decode(bytes.mid(2));
     }
     return QString::fromUtf8(bytes);

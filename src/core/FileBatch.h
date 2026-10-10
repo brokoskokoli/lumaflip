@@ -53,9 +53,9 @@ QStringList ownSidecars(const QString& imagePath);
 class FileBatch {
 public:
     struct Step {
-        QString from, to;     // to: trash location for Trash
-        QString replacedFrom; // a replaced target ...
-        QString replacedTrash; // ... and where it went in the trash
+        QString from, to;                          // to: trash location for Trash
+        QString replacedFrom;                      // a replaced target ...
+        QString replacedTrash;                     // ... and where it went in the trash
         QVector<QPair<QString, QString>> sidecars; // moved/copied along (from, to)
     };
 
@@ -66,8 +66,8 @@ public:
     QString revert();
 
     TransferKind kind() const { return m_kind; }
-    QVector<Step> steps() const;   // what the last apply() did
-    QStringList skipped() const;   // sources skipped (conflict "Skip", source gone)
+    QVector<Step> steps() const; // what the last apply() did
+    QStringList skipped() const; // sources skipped (conflict "Skip", source gone)
     // GUI thread, after a step: emits fileRemoved/fileAdded on `ops` for what changed.
     void notify(FileOps& ops, bool forward) const;
 

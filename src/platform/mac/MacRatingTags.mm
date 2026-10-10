@@ -90,7 +90,8 @@ bool writeRawTags(const QString& path, const QStringList& rawTags, QString* erro
         }
     }
     if (error)
-        *error = tr("Tags von „%1“ konnten nicht gesetzt werden: %2").arg(QFileInfo(path).fileName(), errnoText());
+        *error =
+            tr("Tags von „%1“ konnten nicht gesetzt werden: %2").arg(QFileInfo(path).fileName(), errnoText());
     return false;
 }
 

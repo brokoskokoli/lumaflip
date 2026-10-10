@@ -79,13 +79,17 @@ protected:
         p.setFont(small);
         p.drawText(badge.adjusted(pad, pad, -pad, 0), Qt::AlignLeft | Qt::AlignTop, mode);
         p.setFont(big);
-        p.drawText(badge.adjusted(pad, pad + fs.height(), -pad, -pad), Qt::AlignLeft | Qt::AlignVCenter, text);
+        p.drawText(badge.adjusted(pad, pad + fs.height(), -pad, -pad), Qt::AlignLeft | Qt::AlignVCenter,
+                   text);
         if (!m_help)
             return;
         // Large key help, bottom center.
         const QStringList lines = {
-            QCoreApplication::translate("lf::CullingController", "0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg"),
-            QCoreApplication::translate("lf::CullingController", "← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden"),
+            QCoreApplication::translate("lf::CullingController",
+                                        "0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg"),
+            QCoreApplication::translate(
+                "lf::CullingController",
+                "← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden"),
         };
         QFont hf = font();
         hf.setPointSizeF(hf.pointSizeF() * 1.25);
@@ -102,7 +106,8 @@ protected:
         p.fillPath(hp, QColor(20, 20, 20, 170));
         p.setPen(QColor(235, 235, 235));
         for (int i = 0; i < lines.size(); ++i)
-            p.drawText(QRect(help.left() + pad, help.top() + pad + i * fh.height(), help.width() - 2 * pad, fh.height()),
+            p.drawText(QRect(help.left() + pad, help.top() + pad + i * fh.height(), help.width() - 2 * pad,
+                             fh.height()),
                        Qt::AlignCenter, lines.at(i));
     }
 
@@ -282,11 +287,13 @@ void CullingController::bulkRejects(bool toTrash) {
         box->setObjectName(QStringLiteral("lfBulkRejectsDialog"));
         box->setAttribute(Qt::WA_DeleteOnClose);
         box->setIcon(QMessageBox::Question);
-        box->setText(toTrash ? tr("%n verworfene(s) Bild(er) in den Papierkorb legen?", nullptr, int(rejects.size()))
-                             : tr("%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?", nullptr,
-                                  int(rejects.size())));
+        box->setText(
+            toTrash ? tr("%n verworfene(s) Bild(er) in den Papierkorb legen?", nullptr, int(rejects.size()))
+                    : tr("%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?", nullptr,
+                         int(rejects.size())));
         box->setInformativeText(tr("XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig."));
-        QPushButton* go = box->addButton(toTrash ? tr("In den Papierkorb") : tr("Verschieben"), QMessageBox::AcceptRole);
+        QPushButton* go =
+            box->addButton(toTrash ? tr("In den Papierkorb") : tr("Verschieben"), QMessageBox::AcceptRole);
         go->setObjectName(QStringLiteral("lfBulkRejectsConfirm"));
         box->addButton(QMessageBox::Cancel);
         box->setDefaultButton(go);
@@ -295,13 +302,15 @@ void CullingController::bulkRejects(bool toTrash) {
                 return;
             QVector<TransferItem> items;
             for (const QString& p : rejects)
-                items.append({p, QFileInfo(p).dir().filePath(QStringLiteral("_Rejected")), ConflictChoice::Skip});
-            const QString undo = toTrash ? tr("Verworfene in den Papierkorb") : tr("Verworfene nach _Rejected");
-            self->m_quick->transfer(toTrash ? TransferKind::Trash : TransferKind::Move, items, undo,
-                                    [toTrash](int n) {
-                                        return toTrash ? tr("%n Bild(er) in den Papierkorb gelegt", nullptr, n)
-                                                       : tr("%n Bild(er) nach „_Rejected“ verschoben", nullptr, n);
-                                    });
+                items.append(
+                    {p, QFileInfo(p).dir().filePath(QStringLiteral("_Rejected")), ConflictChoice::Skip});
+            const QString undo =
+                toTrash ? tr("Verworfene in den Papierkorb") : tr("Verworfene nach _Rejected");
+            self->m_quick->transfer(
+                toTrash ? TransferKind::Trash : TransferKind::Move, items, undo, [toTrash](int n) {
+                    return toTrash ? tr("%n Bild(er) in den Papierkorb gelegt", nullptr, n)
+                                   : tr("%n Bild(er) nach „_Rejected“ verschoben", nullptr, n);
+                });
         });
         box->open();
     });
