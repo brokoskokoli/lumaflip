@@ -627,13 +627,13 @@ private slots:
         auto check = [&](const char* k) {
             return prefs->findChild<QCheckBox*>(QStringLiteral("setting:") + QLatin1String(k));
         };
-        for (const char* k : {key::ShowInfoPanel, key::ShowFilmstrip, key::RatingStoreSidecar,
-                              key::RatingStoreEmbedded, key::RatingStoreFinderTags}) {
+        for (const char* k :
+             {key::RatingStoreSidecar, key::RatingStoreEmbedded, key::RatingStoreFinderTags}) {
             QVERIFY2(check(k) && !check(k)->isEnabled(), k);
         }
-        QVERIFY(check(key::ShowInfoPanel)->text().contains(QStringLiteral("ab Version 1.0")));
         for (const char* k :
-             {key::RestoreWindows, key::RawEmbeddedOnly, key::ConfirmTrash, key::TitleShowFolder})
+             {key::RestoreWindows, key::RawEmbeddedOnly, key::ConfirmTrash, key::TitleShowFolder,
+              key::ShowInfoPanel, key::ShowFilmstrip}) // M2: info panel, filmstrip
             QVERIFY2(check(k) && check(k)->isEnabled(), k);
         auto choiceEnabled = [&](const char* slot, const char* choice) {
             auto* combo = prefs->findChild<QComboBox*>(QStringLiteral("slot:") + QLatin1String(slot));

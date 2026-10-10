@@ -6,6 +6,7 @@
 #include "ImageView.h"
 #include "Updater.h"
 #include "ViewerWindow.h"
+#include "WindowPanels.h"
 #include "core/Collection.h"
 #include "core/FileOps.h"
 #include "core/Settings.h"
@@ -207,6 +208,9 @@ void MainMenu::build() {
     status->setCheckable(true);
     connect(status, &QAction::triggered, this,
             [](bool on) { Settings::instance().setValue(key::ShowStatusBar, on); });
+    // M2 side panels (WindowPanels): per window, remembered for new windows.
+    add(view, Action::ToggleInfoPanel, tr("Infopanel"))->setCheckable(true);    // F-INFO-02
+    add(view, Action::ToggleFilmstrip, tr("Filmstreifen"))->setCheckable(true); // F-GRID-01
     QMenu* bg = view->addMenu(tr("Hintergrund"));
     bg->setObjectName(QStringLiteral("menu:background"));
     auto* bgGroup = new QActionGroup(this);
@@ -380,6 +384,12 @@ void MainMenu::refreshState() {
     for (const QString& id : {QStringLiteral("minimize"), QStringLiteral("zoomWindow")})
         command(id)->setEnabled(hasWindow);
     action(Action::CloseAllWindows)->setEnabled(!m_app.windows().isEmpty());
+    for (Action a : {Action::ToggleInfoPanel, Action::ToggleFilmstrip}) { // M2 panels
+        action(a)->setEnabled(hasWindow);
+        action(a)->setChecked(w && w->panels() &&
+                              (a == Action::ToggleInfoPanel ? w->panels()->infoPanelEnabled()
+                                                            : w->panels()->filmstripEnabled()));
+    }
 
     Settings& st = Settings::instance();
     command(QStringLiteral("statusBar"))->setChecked(st.value(key::ShowStatusBar).toBool());

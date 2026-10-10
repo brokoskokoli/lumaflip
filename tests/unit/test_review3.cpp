@@ -366,11 +366,12 @@ TEST(Review3Input, F_IN_18_PresetSkipsUnavailableChoices) {
 }
 
 TEST(Review3Input, F_SET_02_PlannedActionsAreNotAvailable) {
-    for (Action a : {Action::ToggleSlideshow, Action::ToggleInfoPanel, Action::ToggleGrid, Action::Rename,
-                     Action::OpenInEditor, Action::Rate0, Action::Rate5, Action::RatePick})
+    for (Action a : {Action::ToggleSlideshow, Action::ToggleGrid, Action::Rename, Action::OpenInEditor,
+                     Action::Rate0, Action::Rate5, Action::RatePick})
         EXPECT_FALSE(InputBindings::isActionAvailable(a)) << actionId(a).toStdString();
-    for (Action a : {Action::NextImage, Action::ZoomFit, Action::Trash, Action::ToggleFullScreen,
-                     Action::CopyImage, Action::ShowShortcuts, Action::NextFolder})
+    for (Action a :
+         {Action::NextImage, Action::ZoomFit, Action::Trash, Action::ToggleFullScreen, Action::CopyImage,
+          Action::ShowShortcuts, Action::NextFolder, Action::ToggleInfoPanel, Action::ToggleFilmstrip})
         EXPECT_TRUE(InputBindings::isActionAvailable(a)) << actionId(a).toStdString();
 }
 
