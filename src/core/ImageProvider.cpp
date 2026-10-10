@@ -542,9 +542,9 @@ struct ImageProvider::Private {
         {
             QMutexLocker lock(&mutex);
             Job* best = nullptr;
-            for (auto it = jobs.begin(); it != jobs.end(); ++it) {
-                if (!it->running && (!best || it->score > best->score))
-                    best = &*it;
+            for (Job& j : jobs) {
+                if (!j.running && (!best || j.score > best->score))
+                    best = &j;
             }
             if (!best)
                 return; // the job this runnable was started for got cancelled
@@ -815,6 +815,10 @@ QStringList ImageProvider::forgetFailures() {
         return {};
     d->failed.clear();
     d->failedStages.removeIf([&](const auto& it) { return paths.contains(it.key().path); });
+    // A stage of these files still running produces the old result (e.g. an error text in
+    // the previous language): it counts as stale and is decoded again.
+    for (const QString& p : std::as_const(paths))
+        ++d->generation[p];
     d->reschedule(); // clients still wanting them decode again
     return QStringList(paths.cbegin(), paths.cend());
 }

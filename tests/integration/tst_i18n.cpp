@@ -403,8 +403,12 @@ private slots:
         ViewerWindow* bad = app.openPaths({broken});
         QVERIFY(bad && QTest::qWaitForWindowExposed(bad));
         bad->resize(900, 640);
-        QWidget* card = nullptr;
-        QTRY_VERIFY((card = bad->findChild<QWidget*>(QStringLiteral("lfErrorCard"))) && card->isVisible());
+        auto visibleCard = [bad] {
+            auto* c = bad->findChild<QWidget*>(QStringLiteral("lfErrorCard"));
+            return c && c->isVisible() ? c : nullptr;
+        };
+        QTRY_VERIFY(visibleCard());
+        QWidget* card = visibleCard();
         collect(QStringLiteral("error card"), card);
 
         // Shortcut overview (F-IN-*).

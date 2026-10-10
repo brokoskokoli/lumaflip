@@ -112,7 +112,7 @@ void QuickFilterBar::open(const QString& initialText) {
     updateCount();
 }
 
-void QuickFilterBar::close() {
+void QuickFilterBar::closeField() {
     if (m_debounce->isActive())
         applyFilter();
     const bool hadFocus = m_edit->hasFocus();
@@ -125,7 +125,7 @@ void QuickFilterBar::clearAndClose() {
     m_edit->clear();
     m_debounce->stop();
     m_window.collection()->setNameFilter(QString());
-    close();
+    closeField();
     m_window.focusContent();
 }
 
@@ -162,7 +162,7 @@ bool QuickFilterBar::eventFilter(QObject* watched, QEvent* event) {
             return true;
         }
         if (ke->key() == Qt::Key_Return || ke->key() == Qt::Key_Enter || ke->key() == Qt::Key_Down) {
-            close(); // keep the filter
+            closeField(); // keep the filter
             m_window.focusContent();
             return true;
         }

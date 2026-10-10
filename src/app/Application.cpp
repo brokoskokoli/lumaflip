@@ -347,7 +347,7 @@ QString Application::busyText() const {
 // ---------------------------------------------------------------------------------------
 
 void Application::classifyPaths(const QStringList& paths, QObject* context,
-                                std::function<void(const ClassifiedPaths&)> done) {
+                                const std::function<void(const ClassifiedPaths&)>& done) {
     QStringList absolute;
     for (const QString& p : paths)
         absolute << absPath(p);
