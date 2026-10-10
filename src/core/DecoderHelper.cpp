@@ -746,6 +746,19 @@ ipc::Response serveDecoderRequest(const ipc::Request& request,
         r.members = std::move(l.members);
         return r;
     }
+    if (request.op == ipc::Op::ArchiveReadRun) {
+        QString error;
+        if (auto run = archive::readRunLocal(request.path, request.member, &error)) {
+            r.ok = true;
+            for (archive::Extracted& e : *run) {
+                r.members.append(archive::Member{e.name, qint64(e.data.size()), {}});
+                r.data.append(e.data);
+            }
+        } else {
+            r.error = error;
+        }
+        return r;
+    }
     if (request.op == ipc::Op::ArchiveRead) {
         QString error;
         if (auto data = archive::readLocal(request.path, request.member, &error)) {

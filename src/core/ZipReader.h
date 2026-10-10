@@ -11,6 +11,7 @@
 #include <QByteArray>
 #include <QFile>
 #include <QHash>
+#include <QSet>
 #include <QString>
 #include <QStringList>
 
@@ -37,6 +38,9 @@ public:
     QString errorString() const { return m_error; }
     QStringList names() const;
     std::optional<Member> member(const QString& name) const;
+    // Encrypted members are not listed (never readable); these tell they were there.
+    int encryptedCount() const { return int(m_encrypted.size()); }
+    bool isEncrypted(const QString& name) const { return m_encrypted.contains(name); }
     // Contents of a member, at most `maxBytes` of the uncompressed data (0 = the whole
     // member, up to kMaxMemberBytes). nullopt + errorString() on damaged data.
     std::optional<QByteArray> read(const QString& name, qint64 maxBytes = 0);
@@ -57,6 +61,7 @@ private:
     QString m_error;
     QHash<QString, Member> m_members;
     QStringList m_order;
+    QSet<QString> m_encrypted;
 };
 
 } // namespace lf

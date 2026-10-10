@@ -424,25 +424,41 @@ void sortEntries(QVector<FileEntry>& entries, const SortSpec& spec, const NameCo
     entries = std::move(sorted);
 }
 
-QString siblingImageFolder(const QString& folderPath, int direction, const NameCollator* collator) {
+namespace {
+// siblingImageFolder() / siblingFolderOrContainer(): `includeContainers` also offers the
+// archives and PDF documents next to `path` (accepted without opening them).
+QString siblingOf(const QString& path, int direction, const NameCollator* collator, bool includeContainers) {
     constexpr int kMaxCandidates = 500; // do not crawl huge parents
-    const QString folder = QDir::cleanPath(folderPath);
-    const QFileInfo self(folder);
-    const QDir parent = self.dir();
-    if (self.isRoot() || parent.path() == folder)
+    const QString self = QDir::cleanPath(path);
+    const QFileInfo selfInfo(self);
+    const QDir parent = selfInfo.dir();
+    if (selfInfo.isRoot() || parent.path() == self)
         return {};
     QStringList names;
-    const QFileInfoList infos = parent.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::NoSort);
-    for (const QFileInfo& fi : infos)
-        if (!fi.isHidden() && !isPackageFolder(fi) && !fi.fileName().startsWith(u'.'))
+    QSet<QString> containers;
+    const QDir::Filters filter = includeContainers ? QDir::Dirs | QDir::Files | QDir::NoDotAndDotDot
+                                                   : QDir::Dirs | QDir::NoDotAndDotDot;
+    const QFileInfoList infos = parent.entryInfoList(filter, QDir::NoSort);
+    for (const QFileInfo& fi : infos) {
+        if (fi.isHidden() || fi.fileName().startsWith(u'.'))
+            continue;
+        if (fi.isDir()) {
+            if (!isPackageFolder(fi))
+                names << fi.fileName();
+        } else if (vpath::isContainerPath(fi.fileName())) {
             names << fi.fileName();
+            containers.insert(fi.fileName());
+        }
+    }
     std::sort(names.begin(), names.end(), [collator](const QString& a, const QString& b) {
         return collator ? collator->compare(a, b) < 0 : a.compare(b, Qt::CaseInsensitive) < 0;
     });
-    const QString me = self.fileName();
+    const QString me = selfInfo.fileName();
     qsizetype i = names.indexOf(me);
     if (i < 0) // e.g. a different normalization of the name
         i = names.indexOf(me.normalized(QString::NormalizationForm_D));
+    if (i < 0)
+        i = names.indexOf(me.normalized(QString::NormalizationForm_C));
     if (i < 0)
         return {};
     const int step = direction >= 0 ? 1 : -1;
@@ -450,10 +466,19 @@ QString siblingImageFolder(const QString& folderPath, int direction, const NameC
     for (qsizetype k = i + step; k >= 0 && k < names.size() && checked < kMaxCandidates;
          k += step, ++checked) {
         const QString candidate = parent.filePath(names[k]);
-        if (!enumerateFolder(candidate).isEmpty())
+        if (containers.contains(names[k]) || !enumerateFolder(candidate).isEmpty())
             return QDir::cleanPath(candidate);
     }
     return {};
+}
+} // namespace
+
+QString siblingImageFolder(const QString& folderPath, int direction, const NameCollator* collator) {
+    return siblingOf(folderPath, direction, collator, false);
+}
+
+QString siblingFolderOrContainer(const QString& path, int direction, const NameCollator* collator) {
+    return siblingOf(path, direction, collator, true);
 }
 
 int compareFolderPaths(const QString& a, const QString& b, const NameCollator& collator) {
@@ -553,7 +578,8 @@ void pairRawJpeg(QVector<FileEntry>& entries, QHash<QString, FileEntry>* partner
 namespace {
 
 // Container (F-OPEN-10, M4): the images inside an archive or PDF (VirtualPath.h), read on a
-// worker like a folder; never watched, no file operations.
+// worker like a folder; watched through its parent folder (listed again when it changed), no
+// file operations.
 enum class Mode { None, File, Files, Folder, Container };
 // Modes without a folder of their own (no recursion, no folder sort memory).
 bool fileLike(Mode m) {
@@ -624,7 +650,8 @@ struct Job {
     QString mustInclude;         // explicitly opened file, kept even if filtered
     QStringList files;           // Mode::Files
     QString container;           // Mode::Container: the archive or PDF
-    QVector<FileEntry> existing; // JobKind::Resort
+    QString containerStamp;      // Mode::Container: size/date of the last listing (empty: none)
+    QVector<FileEntry> existing; // JobKind::Resort; Mode::Container: the last listing's entries
     bool followFinder = true;
     bool allowLiveQuery = false;
     SortSpec manualSpec;
@@ -664,7 +691,17 @@ struct Result {
     bool truncated = false; // recursive: stopped at Job::maxTreeImages
     QStringList nameTerms;  // the name filter the result was filtered with
     QString containerError; // Mode::Container: why the archive shows no images
+    QString containerStamp; // Mode::Container: size/date of the container listed
 };
+
+// F-OPEN-10: size and date of a container ("" if it is gone): a change lists it again.
+QString containerStampOf(const QString& path) {
+    const QFileInfo fi(path);
+    if (!fi.isFile())
+        return {};
+    return QString::number(fi.size()) + u':' +
+           QString::number(fi.lastModified(QTimeZone::UTC).toMSecsSinceEpoch());
+}
 
 // F-NAV-08: whether the entry's name contains every term; folds the name once per entry.
 bool nameMatches(FileEntry& e, const QStringList& terms) {
@@ -765,16 +802,23 @@ Result runJob(Job job) {
     if (job.kind == JobKind::Resort) {
         entries = std::move(job.existing);
     } else if (job.mode == Mode::Container) {
-        // F-OPEN-10: the archive's (or PDF's) images, already in member order.
-        BinaryCollator fallbackCollator;
-        const archive::Listing listing = archive::list(job.container);
-        entries = archive::imageEntries(job.container, listing,
-                                        job.collator ? *job.collator
-                                                     : static_cast<NameCollator&>(fallbackCollator));
-        if (!listing.ok)
-            r.containerError = listing.error;
-        else if (entries.isEmpty())
-            r.containerError = archive::messageNoImages();
+        // F-OPEN-10: the archive's (or PDF's) images, already in member order. A reload after
+        // a change in its folder keeps the entries while the container itself is unchanged.
+        r.containerStamp = containerStampOf(job.container);
+        if (!job.containerStamp.isEmpty() && job.containerStamp == r.containerStamp &&
+            !job.existing.isEmpty()) {
+            entries = std::move(job.existing);
+        } else {
+            BinaryCollator fallbackCollator;
+            const archive::Listing listing = archive::list(job.container);
+            entries = archive::imageEntries(job.container, listing,
+                                            job.collator ? *job.collator
+                                                         : static_cast<NameCollator&>(fallbackCollator));
+            if (!listing.ok)
+                r.containerError = listing.error;
+            else if (entries.isEmpty())
+                r.containerError = archive::messageNoImages();
+        }
     } else if (job.mode == Mode::Files) {
         QSet<QString> seen;
         for (const QString& p : std::as_const(job.files)) {
@@ -1165,6 +1209,7 @@ struct Collection::Private {
     QStringList files;
     QSet<QString> fileSet; // Mode::Files: every file the collection was opened with (F-OPEN-04)
     QString container;     // Mode::Container: the archive or PDF (F-OPEN-10)
+    QString containerStamp; // Mode::Container: size/date of the last listing (watching)
     QSet<QString> leased;  // folders leased in the FolderCache (the folder; recursive: the tree)
     QVector<FileEntry> entries;
     QHash<QString, int> indexByPath;
@@ -1447,6 +1492,12 @@ struct Collection::Private {
         j.mustInclude = mode == Mode::File ? openedFile : QString();
         j.files = files;
         j.container = container;
+        if (kind == JobKind::Load && mode == Mode::Container && !containerStamp.isEmpty()) {
+            j.containerStamp = containerStamp; // F-OPEN-10: unchanged -> no new listing
+            j.existing = entries;
+            for (auto it = hidden.cbegin(); it != hidden.cend(); ++it)
+                j.existing.append(it.value());
+        }
         if (kind == JobKind::Resort) {
             // The filtered-out entries are sorted along (they keep their place for the
             // filters, and are not lost by a resort).
@@ -1607,6 +1658,12 @@ struct Collection::Private {
             emit q->treeLimitReached(int(entries.size() + hidden.size()));
         if (!r.containerError.isEmpty() && r.kind == JobKind::Load)
             emit q->containerFailed(container, r.containerError); // F-OPEN-10
+        if (r.kind == JobKind::Load && mode == Mode::Container) {
+            const bool rewritten = !containerStamp.isEmpty() && containerStamp != r.containerStamp;
+            containerStamp = r.containerStamp;
+            if (rewritten)
+                emit q->containerContentChanged(container); // F-OPEN-10: images are outdated
+        }
         if (r.nameTerms != nameTerms)
             scheduleNameFilter(); // typed while the job ran (it filtered with older terms)
         if (resortForProperties) {
@@ -1914,6 +1971,7 @@ void Collection::openFolder(const QString& folderPath, bool selectLast) {
 void Collection::openContainer(const QString& containerPath, const QString& selectMember) {
     d->reset(Mode::Container);
     d->container = normalizedPath(containerPath);
+    d->containerStamp.clear();
     d->updateLease();
     const QString wanted = selectMember.isEmpty() ? QString() : vpath::join(d->container, selectMember);
     d->selectFirstOnLoad = wanted.isEmpty();
@@ -2522,9 +2580,18 @@ void Collection::Private::applyNameFilterOutput(NameFilterOutput out) {
 // ---- code review M3 #16: folder changes ----
 
 void Collection::folderContentsChanged(const QString& folderPath) {
+    const QString f = QDir::cleanPath(folderPath);
+    if (d->mode == Mode::Container) {
+        // F-OPEN-10: the folder of the archive/PDF changed; the reload checks the container.
+        if (f == folderOf(d->container)) {
+            d->pendingFolders.insert(f);
+            if (!d->changeTimer->isActive())
+                d->changeTimer->start();
+        }
+        return;
+    }
     if (d->mode != Mode::File && d->mode != Mode::Folder)
         return;
-    const QString f = QDir::cleanPath(folderPath);
     if (!d->coversFolder(f))
         return;
     d->pendingFolders.insert(f);
@@ -2537,7 +2604,7 @@ bool Collection::hasPendingChanges() const {
 }
 
 void Collection::Private::processPendingChanges() {
-    if (pendingFolders.isEmpty() || (mode != Mode::File && mode != Mode::Folder))
+    if (pendingFolders.isEmpty() || (mode != Mode::File && mode != Mode::Folder && mode != Mode::Container))
         return;
     if (deltaRunning)
         return; // started again when the running update is applied

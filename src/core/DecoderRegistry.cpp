@@ -92,20 +92,22 @@ QString failedError(const QString& path, const QStringList& backendErrors) {
     return DecoderRegistry::messageDamaged();
 }
 
-// F-OPEN-10: an image inside an archive is decoded from its extracted copy (ArchiveCache);
-// PDF pages and ordinary paths stay as they are. Empty + `error` if the member cannot be
-// extracted.
-QString resolve(const QString& path, QString* error) {
+// F-OPEN-10: an image inside an archive is decoded from its extracted copy (ArchiveCache),
+// pinned in `pin` while the backends read it; PDF pages and ordinary paths stay as they
+// are. Empty + `error` if the member cannot be extracted.
+QString resolve(const QString& path, ArchiveCache::Pin* pin, QString* error) {
     if (!vpath::isMember(path) || vpath::containerKind(vpath::containerOf(path)) == vpath::ContainerKind::Pdf)
         return path;
-    return ArchiveCache::instance().materialize(path, error);
+    *pin = ArchiveCache::instance().acquire(path, error);
+    return pin->file();
 }
 
 template <typename T, typename Fn>
 std::optional<T> tryBackends(const DecoderRegistry& reg, const QString& requested, QString* error,
                              QString* detail, Fn&& fn) {
     QString resolveError;
-    const QString path = resolve(requested, &resolveError);
+    ArchiveCache::Pin pin; // the extracted file stays until the backends are done
+    const QString path = resolve(requested, &pin, &resolveError);
     if (path.isEmpty()) {
         if (error)
             *error = resolveError;
@@ -263,23 +265,45 @@ private:
 };
 } // namespace
 
+// F-OPEN-10: keeps the extracted file of an archive member while its frames are read.
+class PinnedFrameReader final : public FrameReader {
+public:
+    PinnedFrameReader(std::unique_ptr<FrameReader> inner, ArchiveCache::Pin pin)
+        : m_inner(std::move(inner)), m_pin(std::move(pin)) {}
+    int frameCount() const override { return m_inner->frameCount(); }
+    std::optional<DecodedImage> readFrame(int index, const DecodeRequest& req, QString* error) override {
+        return m_inner->readFrame(index, req, error);
+    }
+
+private:
+    std::unique_ptr<FrameReader> m_inner;
+    ArchiveCache::Pin m_pin;
+};
+
 std::unique_ptr<FrameReader> DecoderRegistry::openFrames(const QString& requested) const {
-    const QString path = resolve(requested, nullptr);
+    ArchiveCache::Pin pin;
+    const QString path = resolve(requested, &pin, nullptr);
     if (path.isEmpty())
         return nullptr;
+    auto pinned = [&pin](std::unique_ptr<FrameReader> r) -> std::unique_ptr<FrameReader> {
+        if (pin.isNull())
+            return r;
+        return std::make_unique<PinnedFrameReader>(std::move(r), std::move(pin));
+    };
     for (const auto& d : candidates(path)) {
         if (auto r = d->openFrames(path))
-            return r;
+            return pinned(std::move(r));
         QString error;
         if (auto info = d->info(path, &error))
-            return std::make_unique<GenericFrameReader>(d, path, std::max(1, info->frameCount));
+            return pinned(std::make_unique<GenericFrameReader>(d, path, std::max(1, info->frameCount)));
     }
     return nullptr;
 }
 
 Metadata DecoderRegistry::metadata(const QString& requested) const {
     // Metadata has no error channel: take the first backend that delivers anything.
-    const QString path = resolve(requested, nullptr);
+    ArchiveCache::Pin pin;
+    const QString path = resolve(requested, &pin, nullptr);
     if (path.isEmpty())
         return {};
     Metadata first;

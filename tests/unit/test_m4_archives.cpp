@@ -14,6 +14,7 @@
 #include "core/DecoderIpc.h"
 #include "core/LibArchive.h"
 #include "core/Platform.h"
+#include "core/ThumbnailCache.h"
 #include "core/VirtualPath.h"
 
 #include <gtest/gtest.h>
@@ -71,6 +72,7 @@ struct ZipMember {
     QString name;
     QByteArray data;
     qint64 claimedSize = -1; // -1: the real size (zip bombs lie here)
+    quint16 flags = 0;       // extra general purpose flags (bit 0: encrypted)
 };
 
 // Minimal ZIP writer (deflate), so a test can state any size in the directory.
@@ -85,7 +87,7 @@ QByteArray makeZip(const QList<ZipMember>& members) {
         const quint32 offset = quint32(zip.size());
         put32(zip, 0x04034b50);
         put16(zip, 20);
-        put16(zip, 0x800);
+        put16(zip, 0x800 | m.flags);
         put16(zip, 8);
         put32(zip, 0);
         put32(zip, crc);
@@ -97,7 +99,7 @@ QByteArray makeZip(const QList<ZipMember>& members) {
         put32(central, 0x02014b50);
         put16(central, 20);
         put16(central, 20);
-        put16(central, 0x800);
+        put16(central, 0x800 | m.flags);
         put16(central, 8);
         put32(central, 0);
         put32(central, crc);
@@ -480,7 +482,7 @@ TEST_F(ArchiveTest, F_OPEN_10_CollectionBrowsesArchiveLikeAFolder) {
     ASSERT_TRUE(test::waitUntil([&] { return finished > 0 && !c.isLoading(); }, 10000));
     EXPECT_TRUE(c.isContainerCollection());
     EXPECT_FALSE(c.isFolderCollection());
-    EXPECT_TRUE(c.folders().isEmpty()); // never watched
+    EXPECT_TRUE(c.folders().isEmpty()); // no folder of its own (watched through its parent)
     EXPECT_EQ(c.containerPath(), zip);
     EXPECT_EQ(memberNames(c.entries()),
               (QStringList{"1.png", "2.png", "10.png", "Kapitel 2/01.png", "Kapitel 10/01.png"}));
@@ -551,4 +553,253 @@ TEST(ContainerPolicy, F_OPEN_10_RightToLeftSwapsArrowsAndSwipesOnly) {
     EXPECT_EQ(containers::readingDirection(Action::NextImage, swipe, true), Action::PreviousImage);
     EXPECT_EQ(containers::readingDirection(Action::NextImage, wheel, true), Action::NextImage);
     EXPECT_EQ(containers::readingDirection(Action::ZoomIn, left, true), Action::ZoomIn);
+}
+
+// ---- review M4: thumbnails, solid archives, scan bound, cache pins -----------------------
+
+TEST_F(ArchiveTest, F_OPEN_10_ThumbnailsForArchiveMembers) {
+    // The grid and the filmstrip show members like files: their thumbnails come from the
+    // extracted copy, stamped with the archive's size and date.
+    const QString zip = writeFile(path(QStringLiteral("Band.cbz")),
+                                  makeZip({{QStringLiteral("01.png"), png(80, 60, Qt::green)},
+                                           {QStringLiteral("02.png"), png(60, 80, Qt::blue)}}));
+    QTemporaryDir cacheDir;
+    ThumbnailCacheOptions o;
+    o.directory = cacheDir.path() + QStringLiteral("/thumbs");
+    o.threads = 1;
+    ThumbnailCache thumbs(DecoderRegistry::instance(), o);
+    const QString member = vpath::join(zip, QStringLiteral("01.png"));
+    int client = 0;
+    thumbs.request(member, 40, &client);
+    ASSERT_TRUE(test::waitUntil([&] { return !thumbs.cached(member, 40).isNull(); }, 60000));
+    const QImage t = thumbs.cached(member, 40);
+    EXPECT_EQ(t.size(), QSize(40, 30));
+    EXPECT_EQ(t.pixelColor(20, 15), QColor(Qt::green));
+    const QFileInfo fi(zip);
+    EXPECT_TRUE(
+        QFileInfo::exists(thumbs.directory() + u'/' +
+                          ThumbnailCache::diskFileName(
+                              member, fi.size(), fi.lastModified(QTimeZone::UTC).toMSecsSinceEpoch(), 40)));
+    // A member that is not there gets no thumbnail (and no crash).
+    const QString missing = vpath::join(zip, QStringLiteral("nope.png"));
+    thumbs.request(missing, 40, &client);
+    test::spin(300);
+    EXPECT_TRUE(thumbs.cached(missing, 40).isNull());
+}
+
+TEST_F(ArchiveTest, F_OPEN_10_SolidArchiveIsReadOnceWhenBrowsingOn) {
+    if (!archive::libArchiveAvailable())
+        GTEST_SKIP() << "libarchive not available";
+    QString error;
+    const QString seven = path(QStringLiteral("Band.cb7"));
+    QList<QPair<QString, QByteArray>> pages;
+    for (int i = 1; i <= 6; ++i)
+        pages.append(
+            {QStringLiteral("%1.png").arg(i, 2, 10, QLatin1Char('0')), png(8, 8, QColor(i * 30, 0, 0))});
+    QList<QPair<QString, QByteArray>> files = pages;
+    files.insert(3, {QStringLiteral("notes.txt"), QByteArray("not an image")});
+    ASSERT_TRUE(libarchive::writeArchive(seven, QStringLiteral("7zip"), files, &error));
+    // One pass brings the wanted member and the images after it (not the text file).
+    const auto run = libarchive::readRun(seven, QStringLiteral("02.png"), archive::kMaxMemberBytes,
+                                         archive::kMaxRunBytes, &vpath::isImageMemberName, &error);
+    ASSERT_TRUE(run.has_value()) << error.toStdString();
+    QStringList names;
+    for (const archive::Extracted& e : *run)
+        names << e.name;
+    EXPECT_EQ(names, (QStringList{"02.png", "03.png", "04.png", "05.png", "06.png"}));
+    EXPECT_EQ(run->first().data, pages[1].second);
+    // The run stays within its byte budget (the wanted member always comes).
+    const auto small = libarchive::readRun(seven, QStringLiteral("02.png"), archive::kMaxMemberBytes,
+                                           pages[1].second.size() + pages[2].second.size(),
+                                           &vpath::isImageMemberName, &error);
+    ASSERT_TRUE(small.has_value());
+    EXPECT_EQ(small->size(), 2);
+    // The cache keeps them: browsing 1 -> 6 reads the archive once.
+    int passes = 0;
+    ArchiveCache cache({}, qint64(64) << 20, [&](const QString& c, const QString& m, QString* e) {
+        ++passes;
+        return archive::readRunLocal(c, m, e);
+    });
+    for (const auto& [name, data] : std::as_const(pages)) {
+        const QString file = cache.materialize(vpath::join(seven, name), &error);
+        ASSERT_FALSE(file.isEmpty()) << error.toStdString();
+        QFile f(file);
+        ASSERT_TRUE(f.open(QIODevice::ReadOnly));
+        EXPECT_EQ(f.readAll(), data);
+    }
+    EXPECT_EQ(passes, 1);
+    // The extracted copy carries the member's own file name (other apps show it).
+    EXPECT_EQ(QFileInfo(cache.cachedFile(vpath::join(seven, QStringLiteral("05.png")))).fileName(),
+              QStringLiteral("05.png"));
+    EXPECT_TRUE(cache.cachedFile(vpath::join(seven, QStringLiteral("notes.txt"))).isEmpty());
+}
+
+TEST_F(ArchiveTest, F_OPEN_10_ScanBoundHoldsForSkippedMembers) {
+    if (!archive::libArchiveAvailable())
+        GTEST_SKIP() << "libarchive not available";
+    QString error;
+    // 3 MiB before the wanted member: within a 1 MiB scan budget it cannot be reached.
+    const QString seven = path(QStringLiteral("big.7z"));
+    ASSERT_TRUE(libarchive::writeArchive(seven, QStringLiteral("7zip"),
+                                         {{QStringLiteral("filler.png"), QByteArray(3 * 1024 * 1024, '\0')},
+                                          {QStringLiteral("page.png"), png(4, 4)}},
+                                         &error));
+    EXPECT_FALSE(
+        libarchive::read(seven, QStringLiteral("page.png"), archive::kMaxMemberBytes, &error, qint64(1) << 20)
+            .has_value());
+    EXPECT_EQ(error, archive::messageArchiveTooLarge());
+    EXPECT_TRUE(
+        libarchive::read(seven, QStringLiteral("page.png"), archive::kMaxMemberBytes, &error).has_value())
+        << error.toStdString();
+    // The listing ends where the budget ends.
+    const archive::Listing cut = libarchive::list(seven, qint64(1) << 20);
+    ASSERT_TRUE(cut.ok);
+    EXPECT_EQ(cut.members.size(), 1);
+    EXPECT_EQ(libarchive::list(seven).members.size(), 2);
+}
+
+TEST_F(ArchiveTest, F_OPEN_10_MemberWithLyingSizeIsBounded) {
+    QString error;
+    // Claims 10 bytes, inflates to 2 MiB: never more than the limit is handed over, and the
+    // member after it is still reachable within a small scan budget.
+    const QString liar =
+        writeFile(path(QStringLiteral("liar.cbz")),
+                  makeZip({{QStringLiteral("liar.png"), QByteArray(2 * 1024 * 1024, 'a'), 10},
+                           {QStringLiteral("page.png"), png(4, 4)}}));
+    if (archive::libArchiveAvailable()) {
+        const auto lied = libarchive::read(liar, QStringLiteral("liar.png"), qint64(1) << 20, &error);
+        if (lied)
+            EXPECT_LE(lied->size(), qint64(1) << 20);
+        const auto page = libarchive::read(liar, QStringLiteral("page.png"), archive::kMaxMemberBytes, &error,
+                                           qint64(1) << 20);
+        ASSERT_TRUE(page.has_value()) << error.toStdString();
+        EXPECT_EQ(*page, png(4, 4));
+    }
+    // A central directory that claims gigabytes of compressed data: only what the member can
+    // produce is read.
+    QByteArray zip = makeZip({{QStringLiteral("x.png"), png(4, 4)}});
+    const qsizetype central = zip.indexOf(QByteArray("PK\x01\x02", 4));
+    ASSERT_GT(central, 0);
+    zip[central + 20] = char(0xF0);
+    zip[central + 21] = char(0xFF);
+    zip[central + 22] = char(0xFF);
+    zip[central + 23] = char(0xFF);
+    const QString claims = writeFile(path(QStringLiteral("claims.zip")), zip);
+    const auto x = archive::readLocal(claims, QStringLiteral("x.png"), &error);
+    ASSERT_TRUE(x.has_value()) << error.toStdString();
+    EXPECT_EQ(*x, png(4, 4));
+}
+
+TEST_F(ArchiveTest, F_OPEN_10_EncryptedArchiveSaysPasswordProtected) {
+    const QString zip = writeFile(path(QStringLiteral("secret.cbz")),
+                                  makeZip({{QStringLiteral("01.png"), png(4, 4), -1, 0x1}}));
+    const archive::Listing l = archive::listLocal(zip);
+    EXPECT_FALSE(l.ok);
+    EXPECT_EQ(l.error, archive::messageEncryptedArchive());
+    QString error;
+    EXPECT_FALSE(archive::readLocal(zip, QStringLiteral("01.png"), &error).has_value());
+    EXPECT_EQ(error, archive::messageEncryptedArchive());
+}
+
+TEST_F(ArchiveTest, F_OPEN_10_CacheKeepsFilesThatAreBeingRead) {
+    ArchiveCache cache(
+        [](const QString&, const QString& member, QString*) -> std::optional<QByteArray> {
+            return QByteArray(1000, member.at(0).toLatin1());
+        },
+        2500);
+    QString error;
+    const QString c = writeFile(path(QStringLiteral("a.zip")), "x");
+    {
+        const ArchiveCache::Pin a = cache.acquire(vpath::join(c, QStringLiteral("a.png")), &error);
+        ASSERT_FALSE(a.isNull());
+        cache.materialize(vpath::join(c, QStringLiteral("b.png")), &error);
+        cache.materialize(vpath::join(c, QStringLiteral("d.png")), &error);
+        cache.materialize(vpath::join(c, QStringLiteral("e.png")), &error);
+        EXPECT_TRUE(QFile::exists(a.file())); // pinned: a decoder still reads it
+        EXPECT_TRUE(cache.contains(vpath::join(c, QStringLiteral("a.png"))));
+    }
+    // Released: the budget holds again.
+    cache.materialize(vpath::join(c, QStringLiteral("f.png")), &error);
+    EXPECT_LE(cache.cachedBytes(), 2500);
+    EXPECT_FALSE(cache.contains(vpath::join(c, QStringLiteral("a.png"))));
+}
+
+TEST_F(ArchiveTest, F_OPEN_10_StaleCacheFoldersAreSwept) {
+    QTemporaryDir temp;
+    ASSERT_TRUE(QDir(temp.path()).mkpath(QStringLiteral("lumaflip-archive-old1/abc")));
+    writeFile(temp.path() + QStringLiteral("/lumaflip-archive-old1/abc/01.png"), "x");
+    ASSERT_TRUE(QDir(temp.path()).mkpath(QStringLiteral("other-folder")));
+    EXPECT_EQ(ArchiveCache::sweepStaleDirectories(12 * 3600, temp.path()), 0); // still young
+    EXPECT_EQ(ArchiveCache::sweepStaleDirectories(-3600, temp.path()), 1);
+    EXPECT_FALSE(QFileInfo::exists(temp.path() + QStringLiteral("/lumaflip-archive-old1")));
+    EXPECT_TRUE(QFileInfo::exists(temp.path() + QStringLiteral("/other-folder")));
+}
+
+TEST_F(ArchiveTest, F_OPEN_10_RealFolderNamedLikeAnArchiveIsAFolder) {
+    // "Band.zip#" is a real folder here: its files are ordinary files, never members.
+    const QString folder = path(QStringLiteral("Band.zip#"));
+    ASSERT_TRUE(QDir().mkpath(folder));
+    const QString file = writeFile(folder + QStringLiteral("/01.png"), png(2, 2));
+    EXPECT_FALSE(vpath::isMember(file));
+    EXPECT_EQ(vpath::containerOf(file), file);
+    // Without such a folder the same spelling is a member path.
+    EXPECT_TRUE(vpath::isMember(path(QStringLiteral("Other.zip#/01.png"))));
+}
+
+TEST_F(ArchiveTest, F_OPEN_10_SiblingArchivesAndFoldersForNextFolder) {
+    writeFile(path(QStringLiteral("A.cbz")), "x");
+    writeFile(path(QStringLiteral("B/1.png")), png(2, 2));
+    ASSERT_TRUE(QDir().mkpath(path(QStringLiteral("C empty"))));
+    writeFile(path(QStringLiteral("D.pdf")), "x");
+    writeFile(path(QStringLiteral("E.txt")), "x");
+    writeFile(path(QStringLiteral("F.cb7")), "x");
+    EXPECT_EQ(collection::siblingFolderOrContainer(path(QStringLiteral("A.cbz")), 1, collator.get()),
+              path(QStringLiteral("B")));
+    EXPECT_EQ(collection::siblingFolderOrContainer(path(QStringLiteral("D.pdf")), 1, collator.get()),
+              path(QStringLiteral("F.cb7")));
+    EXPECT_EQ(collection::siblingFolderOrContainer(path(QStringLiteral("D.pdf")), -1, collator.get()),
+              path(QStringLiteral("B")));
+    EXPECT_EQ(collection::siblingFolderOrContainer(path(QStringLiteral("A.cbz")), -1, collator.get()),
+              QString());
+    EXPECT_EQ(collection::siblingFolderOrContainer(path(QStringLiteral("F.cb7")), 1, collator.get()),
+              QString());
+}
+
+TEST_F(ArchiveTest, F_OPEN_10_ArchiveIsWatchedThroughItsFolder) {
+    const QString zip =
+        writeFile(path(QStringLiteral("Band.cbz")), makeZip({{QStringLiteral("01.png"), png(4, 4)}}));
+    Collection c;
+    int finished = 0;
+    int rewritten = 0;
+    QObject::connect(&c, &Collection::loadingFinished, [&] { ++finished; });
+    QObject::connect(&c, &Collection::containerContentChanged, [&] { ++rewritten; });
+    c.openContainer(zip);
+    ASSERT_TRUE(test::waitUntil([&] { return finished > 0 && !c.isLoading(); }, 10000));
+    EXPECT_EQ(c.count(), 1);
+    // Something else changed in the folder: the archive is the same, nothing is reported.
+    writeFile(path(QStringLiteral("other.txt")), "x");
+    c.folderContentsChanged(QDir::cleanPath(dir.path()));
+    ASSERT_TRUE(test::waitUntil([&] { return finished > 1 && !c.isLoading(); }, 10000));
+    EXPECT_EQ(rewritten, 0);
+    EXPECT_EQ(c.count(), 1);
+    // The archive was rewritten with another page: listed again.
+    test::spin(1100); // a new modification time on every file system
+    writeFile(zip, makeZip({{QStringLiteral("01.png"), png(4, 4)}, {QStringLiteral("02.png"), png(4, 4)}}));
+    c.folderContentsChanged(QDir::cleanPath(dir.path()));
+    ASSERT_TRUE(test::waitUntil([&] { return c.count() == 2; }, 10000));
+    EXPECT_EQ(rewritten, 1);
+    // Other folders do not concern it.
+    c.folderContentsChanged(path(QStringLiteral("elsewhere")));
+    EXPECT_FALSE(c.hasPendingChanges());
+}
+
+TEST(ArchiveIpc, F_OPEN_10_ReadRunRoundTrips) {
+    ipc::Request rq;
+    rq.op = ipc::Op::ArchiveReadRun;
+    rq.path = QStringLiteral("/a/Band.cbr");
+    rq.member = QStringLiteral("01.jpg");
+    const auto rq2 = ipc::decodeRequest(ipc::encode(rq));
+    ASSERT_TRUE(rq2);
+    EXPECT_EQ(rq2->op, ipc::Op::ArchiveReadRun);
+    EXPECT_EQ(rq2->member, rq.member);
 }
