@@ -35,6 +35,20 @@ namespace lf {
 // Pure helpers
 // ---------------------------------------------------------------------------------------
 namespace collection {
+
+Rating ratingOf(const FileEntry& e) {
+    Rating r;
+    r.stars = std::clamp(e.rating, 0, 5);
+    r.flag = e.pick > 0 ? PickFlag::Pick : (e.pick < 0 ? PickFlag::Reject : PickFlag::None);
+    return r;
+}
+
+void setRating(FileEntry& e, const Rating& r) {
+    e.rating = r.stars;
+    e.pick = qint8(r.flag);
+    e.ratingRead = true;
+}
+
 namespace {
 
 bool acceptName(const QString& name) {
@@ -157,6 +171,8 @@ NumKey numKey(const FileEntry& e, SortKey key) {
     case SortKey::PixelCount:
         return {e.pixelCount, e.pixelCount >= 0};
     case SortKey::Rating:
+        if (e.ratingRead) // RatingStore (F-SORT-02, M3): rejects lowest, picks above
+            return {rating::sortValue(collection::ratingOf(e)), true};
         return {e.rating, e.rating >= 0};
     default:
         return {};
@@ -349,6 +365,9 @@ struct Job {
     bool allowLiveQuery = false;
     SortSpec manualSpec;
     FolderSortMemory folderMemory; // F-SORT-06
+    RatingReader ratingReader;     // F-SORT-02 / F-CULL-04 (M3)
+    RatingFilter filter;
+    QString keepPath;              // stays visible although the filter does not match (current image)
     bool revalidate = false;       // explicit open: check a shared snapshot against the folder
     NameCollator* collator = nullptr;
     FolderOrderProvider* order = nullptr;
@@ -364,6 +383,7 @@ struct Result {
     bool accessDenied = false;
     bool privacyDenied = false;
     QVector<FileEntry> entries;
+    QVector<FileEntry> hidden; // F-CULL-04: not matching the rating filter
     SortSpec spec;
     // Folder loads: FolderSnapshot::changeSeq of the snapshot used (max: not from a snapshot).
     quint64 changeSeq = std::numeric_limits<quint64>::max();
@@ -460,6 +480,30 @@ Result runJob(Job job) {
             return r;
     }
 
+    // M3: ratings from the RatingStore for sorting by rating and for the filter.
+    const bool filtering = job.ratingReader && job.filter.isActive();
+    if (job.ratingReader && (spec.key == SortKey::Rating || filtering)) {
+        for (qsizetype i = 0; i < entries.size(); ++i) {
+            if ((i & 31) == 31 && cancelled())
+                return r;
+            if (!entries[i].ratingRead)
+                collection::setRating(entries[i], job.ratingReader(entries[i].path));
+        }
+        if (cancelled())
+            return r;
+    }
+    if (filtering) {
+        QVector<FileEntry> shown;
+        shown.reserve(entries.size());
+        for (FileEntry& e : entries) {
+            if (job.filter.matches(collection::ratingOf(e)) || e.path == job.keepPath)
+                shown.append(std::move(e));
+            else
+                r.hidden.append(std::move(e));
+        }
+        entries = std::move(shown);
+    }
+
     if (spec.key == SortKey::FinderIconPosition) {
         QHash<QString, QPointF> pos;
         if (!job.folder.isEmpty() && job.order)
@@ -516,6 +560,12 @@ struct Collection::Private {
     bool followFinder = true;
     bool allowLiveQuery = false;
     FolderSortMemory folderMemory;
+    // M3 ratings: reader, filter (F-CULL-04), entries hidden by it, and the current image
+    // whose new rating no longer matches (hidden once another image becomes current).
+    RatingReader ratingReader;
+    RatingFilter filter;
+    QHash<QString, FileEntry> hidden;
+    QString stale;
     bool revalidateNext = false; // the next load comes from an explicit open
     // replayEditsDuringJob() inserted entries whose image properties are still unknown
     // (needed by the sort key): a resort on a worker reads them (never the GUI thread).
@@ -583,6 +633,15 @@ struct Collection::Private {
         j.allowLiveQuery = allowLiveQuery;
         j.manualSpec = manualSpec;
         j.folderMemory = folderMemory;
+        j.ratingReader = ratingReader;
+        j.filter = filter;
+        {
+            const QString cur = current >= 0 && current < entries.size() ? entries[current].path : QString();
+            if (!stale.isEmpty())
+                j.keepPath = stale;
+            else if (!cur.isEmpty() && cur == openedFile)
+                j.keepPath = cur; // the explicitly opened file while it is shown (F-OPEN-02)
+        }
         j.revalidate = kind == JobKind::Load && revalidateNext;
         revalidateNext = false;
         j.collator = collator;
@@ -644,6 +703,13 @@ struct Collection::Private {
         const int oldIndex = current;
         const QVector<FileEntry> old = std::move(entries);
         entries = r.entries;
+        hidden.clear();
+        for (const FileEntry& e : r.hidden)
+            if (!removedDuringJob.contains(e.path))
+                hidden.insert(e.path, e);
+        if (!stale.isEmpty() && !std::any_of(entries.cbegin(), entries.cend(),
+                                             [&](const FileEntry& e) { return e.path == stale; }))
+            stale.clear();
         replayEditsDuringJob(r.spec);
         rebuildIndex();
         if (selectFirstOnLoad) {
@@ -712,7 +778,28 @@ struct Collection::Private {
         if (index == current)
             return;
         current = index;
-        emit q->currentChanged(current, current >= 0 ? entries[current].path : QString());
+        const QString path = current >= 0 ? entries[current].path : QString();
+        if (!stale.isEmpty() && stale != path)
+            dropStale(path);
+        emit q->currentChanged(current, path);
+    }
+
+    // F-CULL-04: the previously current image no longer matches the filter: hide it now.
+    void dropStale(const QString& currentPath) {
+        const QString s = std::exchange(stale, QString());
+        const auto it = indexByPath.constFind(s);
+        if (it == indexByPath.cend())
+            return;
+        const int i = *it;
+        hidden.insert(s, entries[i]);
+        entries.removeAt(i);
+        rebuildIndex();
+        current = currentPath.isEmpty() ? -1 : indexByPath.value(currentPath, -1);
+        emit q->entriesChanged();
+    }
+
+    bool hiddenByFilter(const FileEntry& e) const {
+        return ratingReader && filter.isActive() && e.ratingRead && !filter.matches(collection::ratingOf(e));
     }
 
     void reset(Mode m) {
@@ -731,6 +818,8 @@ struct Collection::Private {
         removedDuringJob.clear();
         insertedDuringJob.clear();
         pendingInserts.clear();
+        hidden.clear();
+        stale.clear();
         resortForProperties = false;
         revalidateNext = false;
         lastLocalChange = 0; // edits of the previous contents do not concern the new ones
@@ -751,6 +840,10 @@ struct Collection::Private {
         }
         if (mode == Mode::Files && !files.contains(path))
             files.append(path);
+        if (hiddenByFilter(e) && !makeCurrent) {
+            hidden.insert(path, std::move(e)); // F-CULL-04
+            return;
+        }
         BinaryCollator fallback;
         const NameCollator& coll = collator ? *collator : fallback;
         const auto pos =
@@ -884,6 +977,10 @@ void Collection::copyFrom(const Collection& other) {
     d->followFinder = o.followFinder;
     d->allowLiveQuery = o.allowLiveQuery;
     d->manualSpec = o.manualSpec;
+    d->ratingReader = o.ratingReader;
+    d->filter = o.filter;
+    d->hidden = o.hidden;
+    d->stale = o.stale;
     const bool specChanged = !(d->spec == o.spec);
     d->spec = o.spec;
     d->entries = o.entries;
@@ -1048,6 +1145,10 @@ void Collection::reload() {
 void Collection::removePath(const QString& path) {
     d->noteLocalChange();
     d->pendingInserts.remove(normalizedPath(path)); // a pending insertPath() must not bring it back
+    d->hidden.remove(path);
+    d->hidden.remove(normalizedPath(path));
+    if (d->stale == path || d->stale == normalizedPath(path))
+        d->stale.clear();
     const int i = indexOf(path);
     if (d->watcher) {
         // A pending load/resort must not bring the entry back (e.g. a just-trashed file).
@@ -1096,6 +1197,9 @@ void Collection::insertPath(const QString& filePath, bool addToFileSet, bool mak
     d->pendingInserts.insert(path, token);
     FileAttributeProvider* attributes = d->attributes;
     const bool needProps = needsImageProperties(d->spec.key);
+    const RatingReader reader = d->ratingReader && (d->spec.key == SortKey::Rating || d->filter.isActive())
+                                    ? d->ratingReader
+                                    : RatingReader();
     std::shared_ptr<void> keepAlive = d->own;
     using Watcher = QFutureWatcher<std::optional<FileEntry>>;
     auto* w = new Watcher(this);
@@ -1108,15 +1212,18 @@ void Collection::insertPath(const QString& filePath, bool addToFileSet, bool mak
         if (e)
             d->insertEntry(std::move(*e), makeCurrent);
     });
-    w->setFuture(QtConcurrent::run([path, attributes, needProps, keepAlive]() -> std::optional<FileEntry> {
-        auto e = statEntry(path);
-        if (e && attributes) {
-            attributes->fill(*e);
-            if (needProps)
-                attributes->fillImageProperties(*e);
-        }
-        return e;
-    }));
+    w->setFuture(
+        QtConcurrent::run([path, attributes, needProps, reader, keepAlive]() -> std::optional<FileEntry> {
+            auto e = statEntry(path);
+            if (e && attributes) {
+                attributes->fill(*e);
+                if (needProps)
+                    attributes->fillImageProperties(*e);
+            }
+            if (e && reader)
+                collection::setRating(*e, reader(path));
+            return e;
+        }));
 }
 
 bool Collection::hasPendingInserts() const {
@@ -1127,6 +1234,18 @@ void Collection::renamePath(const QString& fromPath, const QString& toPath) {
     d->noteLocalChange();
     const int i = indexOf(fromPath);
     const QString to = normalizedPath(toPath);
+    if (i < 0 && d->hidden.contains(fromPath)) {
+        // Hidden by the rating filter: stays hidden under the new name.
+        FileEntry e = d->hidden.take(fromPath);
+        if (!to.isEmpty() && (d->mode == Mode::Files || parentOf(to) == d->folder)) {
+            e.path = to;
+            e.name = QFileInfo(to).fileName();
+            d->hidden.insert(to, e);
+        }
+        return;
+    }
+    if (d->stale == fromPath)
+        d->stale = to;
     if (i < 0) {
         insertPath(to);
         return;
@@ -1180,6 +1299,70 @@ void Collection::renamePath(const QString& fromPath, const QString& toPath) {
     emit entriesChanged();
     if (d->current != oldCurrent || wasCurrent)
         emit currentChanged(d->current, currentPath());
+}
+
+void Collection::setRatingReader(RatingReader reader) {
+    d->ratingReader = std::move(reader);
+}
+
+void Collection::setRatingFilter(const RatingFilter& filter) {
+    if (d->filter == filter)
+        return;
+    d->filter = filter;
+    d->stale.clear();
+    if (d->mode == Mode::None)
+        return;
+    d->start(JobKind::Load); // the snapshot is shared (FolderCache): no new enumeration
+}
+
+RatingFilter Collection::ratingFilter() const {
+    return d->filter;
+}
+
+int Collection::totalCount() const {
+    return int(d->entries.size() + d->hidden.size());
+}
+
+QStringList Collection::allPaths() const {
+    QStringList out;
+    out.reserve(d->entries.size() + d->hidden.size());
+    for (const FileEntry& e : std::as_const(d->entries))
+        out << e.path;
+    for (auto it = d->hidden.cbegin(); it != d->hidden.cend(); ++it)
+        out << it.key();
+    return out;
+}
+
+void Collection::updateRating(const QString& path, const Rating& r) {
+    const int i = indexOf(path);
+    if (i < 0) {
+        const QString key = d->hidden.contains(path) ? path : normalizedPath(path);
+        auto it = d->hidden.find(key);
+        if (it == d->hidden.end())
+            return;
+        collection::setRating(*it, r);
+        if (!d->filter.isActive() || d->filter.matches(r)) {
+            FileEntry e = d->hidden.take(key);
+            d->insertEntry(std::move(e), false); // matches again: back at its sorted place
+        }
+        return;
+    }
+    collection::setRating(d->entries[i], r);
+    if (!d->ratingReader || !d->filter.isActive() || d->filter.matches(r)) {
+        if (d->stale == d->entries[i].path)
+            d->stale.clear();
+        return;
+    }
+    if (i == d->current) {
+        d->stale = d->entries[i].path; // hidden when another image becomes current
+        return;
+    }
+    const QString cur = currentPath();
+    d->hidden.insert(d->entries[i].path, d->entries[i]);
+    d->entries.removeAt(i);
+    d->rebuildIndex();
+    d->current = cur.isEmpty() ? -1 : d->indexByPath.value(cur, -1);
+    emit entriesChanged();
 }
 
 void Collection::setProviders(NameCollator* collator, FolderOrderProvider* order,

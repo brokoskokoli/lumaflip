@@ -161,6 +161,89 @@
     </message>
 </context>
 <context>
+    <name>lf::CullingController</name>
+    <message>
+        <source>Bewertung wird gelesen …</source>
+        <translation>별점 읽는 중 …</translation>
+    </message>
+    <message>
+        <source>AUSSORTIEREN</source>
+        <translation>선별</translation>
+    </message>
+    <message>
+        <source>0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg</source>
+        <translation>0–5  별     P  채택     X  거부     U  플래그 지우기</translation>
+    </message>
+    <message>
+        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden</source>
+        <translation>← →  탐색     M/C + 1–9  이동/복사     ⌘Z  실행 취소     Esc  종료</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U markieren</source>
+        <translation>선별 모드: 숫자로 별점, P/X/U로 플래그 지정</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus beendet</source>
+        <translation>선별 모드 종료</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation>%1: %2</translation>
+    </message>
+    <message>
+        <source>Filter: %1 — %2 / %3</source>
+        <translation>필터: %1 — %2 / %3</translation>
+    </message>
+    <message>
+        <source>Keine verworfenen Bilder</source>
+        <translation>거부된 이미지 없음</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Papierkorb legen?</source>
+        <translation>
+            <numerusform>거부된 이미지 %n개를 휴지통으로 이동하겠습니까?</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
+        <translation>
+            <numerusform>거부된 이미지 %n개를 ‘_Rejected’ 폴더로 이동하겠습니까?</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <translation>XMP 사이드카 파일도 함께 이동합니다. ⌘Z로 전체 단계를 실행 취소할 수 있습니다.</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb</source>
+        <translation>휴지통으로</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>이동</translation>
+    </message>
+    <message>
+        <source>Verworfene in den Papierkorb</source>
+        <translation>거부된 이미지를 휴지통으로</translation>
+    </message>
+    <message>
+        <source>Verworfene nach _Rejected</source>
+        <translation>거부된 이미지를 _Rejected로</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>이미지 %n개를 휴지통으로 이동함</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „_Rejected“ verschoben</source>
+        <translation>
+            <numerusform>이미지 %n개를 ‘_Rejected’로 이동함</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::DecoderRegistry</name>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -407,6 +490,25 @@
     <message>
         <source>Kamera-RAW (Sigma X3F)</source>
         <translation>카메라 RAW(Sigma X3F)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::FileBatch</name>
+    <message>
+        <source>„%1“ existiert bereits.</source>
+        <translation>‘%1’이(가) 이미 존재합니다.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht kopiert werden.</source>
+        <translation>‘%1’을(를) 복사할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Der Ordner „%1“ konnte nicht angelegt werden.</source>
+        <translation>‘%1’ 폴더를 생성할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Die Kopie „%1“ konnte nicht entfernt werden.</source>
+        <translation>복사본 ‘%1’을(를) 제거할 수 없습니다.</translation>
     </message>
 </context>
 <context>
@@ -1083,6 +1185,18 @@
     <message>
         <source>Markierung zurücksetzen</source>
         <translation>플래그 지우기</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus</source>
+        <translation>선별 모드</translation>
+    </message>
+    <message>
+        <source>Schnellablage: verschieben (M, dann 1–9)</source>
+        <translation>빠른 이동: 이동(M, 그다음 1–9)</translation>
+    </message>
+    <message>
+        <source>Schnellablage: kopieren (C, dann 1–9)</source>
+        <translation>빠른 이동: 복사(C, 그다음 1–9)</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2106,6 +2220,74 @@
         <source>Geschwindigkeit</source>
         <translation>속도</translation>
     </message>
+    <message>
+        <source>Alle Bilder</source>
+        <translation>모든 이미지</translation>
+    </message>
+    <message>
+        <source>Nur Picks</source>
+        <translation>채택만</translation>
+    </message>
+    <message>
+        <source>Nur unbewertete</source>
+        <translation>별점 없는 것만</translation>
+    </message>
+    <message>
+        <source>Nur verworfene</source>
+        <translation>거부된 것만</translation>
+    </message>
+    <message>
+        <source>Mindestens %1 ★</source>
+        <translation>최소 %1 ★</translation>
+    </message>
+    <message>
+        <source>Aussortieren</source>
+        <translation>선별</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus</source>
+        <translation>선별 모드</translation>
+    </message>
+    <message>
+        <source>Bewerten</source>
+        <translation>별점 매기기</translation>
+    </message>
+    <message>
+        <source>Nach Bewertung automatisch weiter</source>
+        <translation>별점 후 자동으로 다음</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation>필터</translation>
+    </message>
+    <message>
+        <source>Alle verworfenen in den Papierkorb …</source>
+        <translation>거부된 모든 이미지를 휴지통으로 …</translation>
+    </message>
+    <message>
+        <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
+        <translation>거부된 모든 이미지를 ‘_Rejected’로 …</translation>
+    </message>
+    <message>
+        <source>Schnellablage: verschieben (M, dann 1–9)</source>
+        <translation>빠른 이동: 이동(M, 그다음 1–9)</translation>
+    </message>
+    <message>
+        <source>Schnellablage: kopieren (C, dann 1–9)</source>
+        <translation>빠른 이동: 복사(C, 그다음 1–9)</translation>
+    </message>
+    <message>
+        <source>Verschieben nach</source>
+        <translation>다음으로 이동</translation>
+    </message>
+    <message>
+        <source>Kopieren nach</source>
+        <translation>다음으로 복사</translation>
+    </message>
+    <message>
+        <source>Ziele der Schnellablage festlegen …</source>
+        <translation>빠른 이동 대상 설정 …</translation>
+    </message>
 </context>
 <context>
     <name>lf::MenuExtras</name>
@@ -2769,36 +2951,128 @@
         <translation>‘Finder와 동일하게 정렬’이 꺼져 있거나 Finder 정보를 찾을 수 없을 때 적용됩니다. 보기 → 정렬 기준 메뉴에서 선택한 항목은 폴더별로 기억되며, ‘모든 폴더에 사용’을 선택하면 여기의 기본값이 됩니다.</translation>
     </message>
     <message>
-        <source>Bewertungen speichern:</source>
-        <translation>별점 저장:</translation>
+        <source>Keine Farbe</source>
+        <translation>색상 없음</translation>
+    </message>
+    <message>
+        <source>Grau</source>
+        <translation>회색</translation>
+    </message>
+    <message>
+        <source>Grün</source>
+        <translation>초록색</translation>
+    </message>
+    <message>
+        <source>Lila</source>
+        <translation>보라색</translation>
+    </message>
+    <message>
+        <source>Blau</source>
+        <translation>파란색</translation>
+    </message>
+    <message>
+        <source>Gelb</source>
+        <translation>노란색</translation>
+    </message>
+    <message>
+        <source>Rot</source>
+        <translation>빨간색</translation>
+    </message>
+    <message>
+        <source>Orange</source>
+        <translation>주황색</translation>
+    </message>
+    <message>
+        <source>nicht festgelegt</source>
+        <translation>설정 안 됨</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>선택 …</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>제거</translation>
+    </message>
+    <message>
+        <source>Ziel %1 der Schnellablage</source>
+        <translation>빠른 이동 대상 %1</translation>
+    </message>
+    <message>
+        <source>Bewertungen speichern</source>
+        <translation>별점 저장 위치</translation>
     </message>
     <message>
         <source>XMP-Zusatzdatei neben dem Bild (Bild.xmp)</source>
         <translation>이미지 옆 XMP 사이드카 파일(이미지.xmp)</translation>
     </message>
     <message>
-        <source>Kompatibel mit Lightroom, Capture One und darktable.</source>
-        <translation>Lightroom, Capture One 및 darktable과 호환됩니다.</translation>
+        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
+        <translation>Lightroom, Capture One, darktable과 호환: 별점은 xmp:Rating에, ‘거부’는 -1로 저장됩니다. 파일의 기존 내용은 유지됩니다.</translation>
+    </message>
+    <message>
+        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; die Bildpixel werden nicht neu kodiert. RAW-Dateien werden nie verändert – dafür wird die Zusatzdatei benutzt.</source>
+        <translation>JPEG, HEIC, TIFF, PNG, DNG만 해당되며 픽셀은 다시 인코딩되지 않습니다. RAW 파일은 절대 변경되지 않으며 대신 사이드카 파일을 사용합니다.</translation>
+    </message>
+    <message>
+        <source>Änderungsdatum beim Schreiben ins Bild beibehalten</source>
+        <translation>이미지에 쓸 때 수정일 유지</translation>
+    </message>
+    <message>
+        <source>Im Finder sichtbar und per Spotlight durchsuchbar. Sind mehrere Speicherorte gewählt, werden alle beschrieben; beim Lesen gilt die Reihenfolge Zusatzdatei, Bild, Tags.</source>
+        <translation>Finder에 표시되고 Spotlight로 검색할 수 있습니다. 여러 위치를 선택하면 모두에 기록하며, 읽을 때는 사이드카 파일, 이미지, 태그 순서를 따릅니다.</translation>
+    </message>
+    <message>
+        <source>Stern-Symbol:</source>
+        <translation>별 기호:</translation>
+    </message>
+    <message>
+        <source>Tag für Pick:</source>
+        <translation>채택 태그:</translation>
+    </message>
+    <message>
+        <source>Tag für Verworfen:</source>
+        <translation>거부 태그:</translation>
+    </message>
+    <message>
+        <source>Drei Sterne werden zum Tag „★★★“ (Symbol dreimal).</source>
+        <translation>별 세 개는 ‘★★★’ 태그가 됩니다(기호 세 번).</translation>
+    </message>
+    <message>
+        <source>Aussortieren</source>
+        <translation>선별</translation>
+    </message>
+    <message>
+        <source>Nach Bewertung automatisch weiter</source>
+        <translation>별점 후 자동으로 다음 이미지로</translation>
+    </message>
+    <message>
+        <source>Zoom im Aussortiermodus fixieren</source>
+        <translation>선별 모드에서 확대/축소 고정</translation>
+    </message>
+    <message>
+        <source>Tastenhilfe im Aussortiermodus zeigen</source>
+        <translation>선별 모드에서 키 도움말 표시</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus: ⌘K oder K. Ziffern vergeben dort Sterne statt Zoomstufen; „Bewertungstasten immer aktiv“ gibt es unter Maus &amp; Tastatur.</source>
+        <translation>선별 모드: ⌘K 또는 K. 이 모드에서는 숫자가 확대/축소 대신 별점을 매깁니다. ‘별점 키 항상 활성’은 ‘마우스 및 키보드’에 있습니다.</translation>
+    </message>
+    <message>
+        <source>Schnellablage</source>
+        <translation>빠른 이동</translation>
+    </message>
+    <message>
+        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z macht es rückgängig.</source>
+        <translation>M 다음 1–9를 누르면 이미지를 대상 폴더로 이동하고, C 다음 1–9를 누르면 복사합니다. M M 또는 C C는 마지막 대상을 반복합니다. ⌘Z로 실행 취소할 수 있습니다.</translation>
     </message>
     <message>
         <source>Im Bild selbst (eingebettetes XMP)</source>
         <translation>이미지 자체에 저장(내장 XMP)</translation>
     </message>
     <message>
-        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; sonst wird die Zusatzdatei benutzt. Die Bildpixel werden nicht neu kodiert.</source>
-        <translation>JPEG, HEIC, TIFF, PNG 및 DNG만 해당되며, 그 외에는 사이드카 파일을 사용합니다. 이미지 픽셀은 재인코딩되지 않습니다.</translation>
-    </message>
-    <message>
         <source>Finder-Tags</source>
         <translation>Finder 태그</translation>
-    </message>
-    <message>
-        <source>Im Finder sichtbar und per Spotlight durchsuchbar.</source>
-        <translation>Finder에서 볼 수 있으며 Spotlight로 검색할 수 있습니다.</translation>
-    </message>
-    <message>
-        <source>Bewertungen und der Aussortiermodus folgen %1.</source>
-        <translation>별점 및 선별 모드는 %1을(를) 따릅니다.</translation>
     </message>
     <message>
         <source>Unterstützte Formate (ohne Nachinstallation):</source>
@@ -3011,6 +3285,206 @@
     <message>
         <source>Nicht genug Speicher für das Bild.</source>
         <translation>이미지를 위한 메모리가 부족합니다.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QuickMove</name>
+    <message>
+        <source>%1  (nicht festgelegt)</source>
+        <translation>%1  (설정 안 됨)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QuickMoveController</name>
+    <message>
+        <source>Verschieben nach … (1–9, M = wie zuletzt)</source>
+        <translation>다음으로 이동 … (1–9, M = 지난번과 동일)</translation>
+    </message>
+    <message>
+        <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
+        <translation>다음으로 복사 … (1–9, C = 지난번과 동일)</translation>
+    </message>
+    <message>
+        <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
+        <translation>아직 사용한 대상이 없습니다. 먼저 숫자 1–9를 선택하십시오.</translation>
+    </message>
+    <message>
+        <source>Ziel %1 ist nicht festgelegt (Einstellungen → Bewertung → Schnellablage).</source>
+        <translation>대상 %1이(가) 설정되지 않았습니다(설정 → 별점 → 빠른 이동).</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>이동</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>복사</translation>
+    </message>
+    <message>
+        <source>Übersprungen – nichts geändert.</source>
+        <translation>건너뜀 – 변경된 내용 없음.</translation>
+    </message>
+    <message>
+        <source>Nach „%1“ verschoben</source>
+        <translation>‘%1’(으)로 이동함</translation>
+    </message>
+    <message>
+        <source>Nach „%1“ kopiert</source>
+        <translation>‘%1’(으)로 복사함</translation>
+    </message>
+    <message>
+        <source>Namenskonflikt</source>
+        <translation>이름 충돌</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es in „%2“ schon.</source>
+        <translation>‘%2’에 ‘%1’이(가) 이미 있습니다.</translation>
+    </message>
+    <message>
+        <source>Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.</source>
+        <translation>‘대치’는 기존 파일을 휴지통으로 이동하고, ‘둘 다 유지’는 새 파일에 ‘%1’과(와) 같은 이름을 붙입니다. ⌘Z로 모두 실행 취소할 수 있습니다.</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>대치</translation>
+    </message>
+    <message>
+        <source>Beide behalten</source>
+        <translation>둘 다 유지</translation>
+    </message>
+    <message>
+        <source>Überspringen</source>
+        <translation>건너뛰기</translation>
+    </message>
+    <message>
+        <source>Für alle %1 Konflikte</source>
+        <translation>모든 충돌 %1개에 적용</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Rating</name>
+    <message>
+        <source>alle</source>
+        <translation>모두</translation>
+    </message>
+    <message>
+        <source>nur Picks</source>
+        <translation>채택만</translation>
+    </message>
+    <message>
+        <source>≥ %1 ★</source>
+        <translation>≥ %1 ★</translation>
+    </message>
+    <message>
+        <source>nur unbewertete</source>
+        <translation>별점 없는 것만</translation>
+    </message>
+    <message>
+        <source>nur verworfene</source>
+        <translation>거부된 것만</translation>
+    </message>
+    <message>
+        <source>Pick</source>
+        <translation>채택</translation>
+    </message>
+    <message>
+        <source>Verworfen</source>
+        <translation>거부됨</translation>
+    </message>
+</context>
+<context>
+    <name>lf::RatingStore</name>
+    <message>
+        <source>„%1“ konnte nicht geschrieben werden (Ordner schreibgeschützt?).</source>
+        <translation>‘%1’을(를) 쓸 수 없습니다(폴더가 읽기 전용?).</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>‘%1’을(를) 읽을 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist zu groß.</source>
+        <translation>‘%1’이(가) 너무 큽니다.</translation>
+    </message>
+    <message>
+        <source>Die XMP-Datei „%1“ ist beschädigt oder unbekannt aufgebaut und wird nicht verändert.</source>
+        <translation>XMP 파일 ‘%1’이(가) 손상되었거나 구조를 알 수 없어 변경하지 않습니다.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht ersetzt werden.</source>
+        <translation>‘%1’을(를) 대치할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>파일이 더 이상 존재하지 않습니다.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert.</source>
+        <translation>RAW 파일은 절대 변경되지 않습니다.</translation>
+    </message>
+    <message>
+        <source>In dieses Format kann die Bewertung nicht sicher geschrieben werden.</source>
+        <translation>이 포맷에는 별점을 안전하게 기록할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>In animierte oder mehrseitige Dateien wird nicht geschrieben.</source>
+        <translation>애니메이션 또는 여러 페이지 파일에는 기록하지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist schreibgeschützt.</source>
+        <translation>파일이 읽기 전용입니다.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht ins Bild schreiben.</source>
+        <translation>별점을 이미지에 기록할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht ohne Neukodieren ins Bild schreiben.</source>
+        <translation>다시 인코딩하지 않고는 별점을 이미지에 기록할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.</source>
+        <translation>그동안 ‘%1’이(가) 변경되었습니다 – 별점이 저장되지 않았습니다.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>파일을 대치할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Finder-Tags werden auf diesem System nicht unterstützt.</source>
+        <translation>이 시스템에서는 Finder 태그를 지원하지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Kein Speicherort für Bewertungen gewählt (Einstellungen → Bewertung).</source>
+        <translation>별점 저장 위치가 선택되지 않았습니다(설정 → 별점).</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 Die Bewertung steht deshalb in der XMP-Zusatzdatei.</source>
+        <translation>‘%1’: %2 따라서 별점은 XMP 사이드카 파일에 저장됩니다.</translation>
+    </message>
+    <message>
+        <source>Bewertung</source>
+        <translation>별점</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>파일을 읽을 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
+        <translation>별점을 이미지에 무손실로 기록할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder der Datei (z. B. eine HDR-Gain-Map) gingen beim Schreiben verloren.</source>
+        <translation>기록 중 파일의 보조 이미지(예: HDR 게인 맵)가 손실되었습니다.</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gelesen werden: %2</source>
+        <translation>‘%1’의 태그를 읽을 수 없습니다: %2</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
+        <translation>‘%1’의 태그를 설정할 수 없습니다: %2</translation>
     </message>
 </context>
 <context>

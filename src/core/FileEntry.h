@@ -21,6 +21,8 @@ struct FileEntry {
     QString kind;                              // localized type description ("JPEG image")
     std::optional<QPointF> finderIconPosition; // from .DS_Store Iloc, icon view "none"
     int rating = -1;                           // -1 unknown, 0..5; filled on demand (M3)
+    qint8 pick = 0;                            // F-CULL-01: 1 pick, -1 reject (with ratingRead)
+    bool ratingRead = false;                   // rating/pick come from the RatingStore (F-CULL-02)
     qint64 pixelCount = -1;                    // filled on demand
     // True once FileAttributeProvider::fillImageProperties() ran for this entry (captured,
     // pixelCount and rating then hold whatever the file provides).

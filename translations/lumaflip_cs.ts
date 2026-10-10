@@ -161,6 +161,97 @@
     </message>
 </context>
 <context>
+    <name>lf::CullingController</name>
+    <message>
+        <source>Bewertung wird gelesen …</source>
+        <translation>Načítání hodnocení …</translation>
+    </message>
+    <message>
+        <source>AUSSORTIEREN</source>
+        <translation>VÝBĚR</translation>
+    </message>
+    <message>
+        <source>0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg</source>
+        <translation>0–5  Hvězdičky     P  Ponechat     X  Zamítnout     U  Zrušit označení</translation>
+    </message>
+    <message>
+        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden</source>
+        <translation>← →  Procházet     M/C + 1–9  Přesunout/Kopírovat     ⌘Z  Odvolat     Esc  Ukončit</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U markieren</source>
+        <translation>Režim výběru: číslice dávají hvězdičky, P/X/U označují</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus beendet</source>
+        <translation>Režim výběru ukončen</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation>%1: %2</translation>
+    </message>
+    <message>
+        <source>Filter: %1 — %2 / %3</source>
+        <translation>Filtr: %1 — %2 / %3</translation>
+    </message>
+    <message>
+        <source>Keine verworfenen Bilder</source>
+        <translation>Žádné zamítnuté obrázky</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Papierkorb legen?</source>
+        <translation>
+            <numerusform>Přesunout %n zamítnutý obrázek do koše?</numerusform>
+            <numerusform>Přesunout %n zamítnuté obrázky do koše?</numerusform>
+            <numerusform>Přesunout %n zamítnutých obrázků do koše?</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
+        <translation>
+            <numerusform>Přesunout %n zamítnutý obrázek do složky „_Rejected“?</numerusform>
+            <numerusform>Přesunout %n zamítnuté obrázky do složky „_Rejected“?</numerusform>
+            <numerusform>Přesunout %n zamítnutých obrázků do složky „_Rejected“?</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <translation>Doprovodné soubory XMP se přesunou s nimi. ⌘Z odvolá celý krok.</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb</source>
+        <translation>Do koše</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>Přesunout</translation>
+    </message>
+    <message>
+        <source>Verworfene in den Papierkorb</source>
+        <translation>Zamítnuté do koše</translation>
+    </message>
+    <message>
+        <source>Verworfene nach _Rejected</source>
+        <translation>Zamítnuté do _Rejected</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n obrázek přesunut do koše</numerusform>
+            <numerusform>%n obrázky přesunuty do koše</numerusform>
+            <numerusform>%n obrázků přesunuto do koše</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „_Rejected“ verschoben</source>
+        <translation>
+            <numerusform>%n obrázek přesunut do „_Rejected“</numerusform>
+            <numerusform>%n obrázky přesunuty do „_Rejected“</numerusform>
+            <numerusform>%n obrázků přesunuto do „_Rejected“</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::DecoderRegistry</name>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -407,6 +498,25 @@
     <message>
         <source>Kamera-RAW (Sigma X3F)</source>
         <translation>Fotoaparát RAW (Sigma X3F)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::FileBatch</name>
+    <message>
+        <source>„%1“ existiert bereits.</source>
+        <translation>„%1“ již existuje.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht kopiert werden.</source>
+        <translation>„%1“ nelze zkopírovat.</translation>
+    </message>
+    <message>
+        <source>Der Ordner „%1“ konnte nicht angelegt werden.</source>
+        <translation>Složku „%1“ nelze vytvořit.</translation>
+    </message>
+    <message>
+        <source>Die Kopie „%1“ konnte nicht entfernt werden.</source>
+        <translation>Kopii „%1“ nelze odstranit.</translation>
     </message>
 </context>
 <context>
@@ -1087,6 +1197,18 @@
     <message>
         <source>Markierung zurücksetzen</source>
         <translation>Zrušit označení</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus</source>
+        <translation>Režim výběru</translation>
+    </message>
+    <message>
+        <source>Schnellablage: verschieben (M, dann 1–9)</source>
+        <translation>Rychlé odkládání: přesunout (M, pak 1–9)</translation>
+    </message>
+    <message>
+        <source>Schnellablage: kopieren (C, dann 1–9)</source>
+        <translation>Rychlé odkládání: kopírovat (C, pak 1–9)</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2110,6 +2232,74 @@
         <source>Geschwindigkeit</source>
         <translation>Rychlost</translation>
     </message>
+    <message>
+        <source>Alle Bilder</source>
+        <translation>Všechny obrázky</translation>
+    </message>
+    <message>
+        <source>Nur Picks</source>
+        <translation>Jen ponechané</translation>
+    </message>
+    <message>
+        <source>Nur unbewertete</source>
+        <translation>Jen bez hodnocení</translation>
+    </message>
+    <message>
+        <source>Nur verworfene</source>
+        <translation>Jen zamítnuté</translation>
+    </message>
+    <message>
+        <source>Mindestens %1 ★</source>
+        <translation>Alespoň %1 ★</translation>
+    </message>
+    <message>
+        <source>Aussortieren</source>
+        <translation>Výběr</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus</source>
+        <translation>Režim výběru</translation>
+    </message>
+    <message>
+        <source>Bewerten</source>
+        <translation>Hodnotit</translation>
+    </message>
+    <message>
+        <source>Nach Bewertung automatisch weiter</source>
+        <translation>Po hodnocení dál</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation>Filtr</translation>
+    </message>
+    <message>
+        <source>Alle verworfenen in den Papierkorb …</source>
+        <translation>Všechny zamítnuté do koše …</translation>
+    </message>
+    <message>
+        <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
+        <translation>Všechny zamítnuté do „_Rejected“ …</translation>
+    </message>
+    <message>
+        <source>Schnellablage: verschieben (M, dann 1–9)</source>
+        <translation>Rychlé odkládání: přesunout (M, pak 1–9)</translation>
+    </message>
+    <message>
+        <source>Schnellablage: kopieren (C, dann 1–9)</source>
+        <translation>Rychlé odkládání: kopírovat (C, pak 1–9)</translation>
+    </message>
+    <message>
+        <source>Verschieben nach</source>
+        <translation>Přesunout do</translation>
+    </message>
+    <message>
+        <source>Kopieren nach</source>
+        <translation>Kopírovat do</translation>
+    </message>
+    <message>
+        <source>Ziele der Schnellablage festlegen …</source>
+        <translation>Nastavit cíle odkládání …</translation>
+    </message>
 </context>
 <context>
     <name>lf::MenuExtras</name>
@@ -2775,36 +2965,128 @@
         <translation>Platí, když je „Řazení podle Finderu“ vypnuto nebo nejsou nalezeny žádné informace Finderu. Volba v nabídce Zobrazení → Řadit podle se pamatuje pro každou složku zvlášť; „Použít pro všechny složky“ z ní udělá výchozí hodnotu zde.</translation>
     </message>
     <message>
-        <source>Bewertungen speichern:</source>
-        <translation>Ukládání hodnocení:</translation>
+        <source>Keine Farbe</source>
+        <translation>Bez barvy</translation>
+    </message>
+    <message>
+        <source>Grau</source>
+        <translation>Šedá</translation>
+    </message>
+    <message>
+        <source>Grün</source>
+        <translation>Zelená</translation>
+    </message>
+    <message>
+        <source>Lila</source>
+        <translation>Fialová</translation>
+    </message>
+    <message>
+        <source>Blau</source>
+        <translation>Modrá</translation>
+    </message>
+    <message>
+        <source>Gelb</source>
+        <translation>Žlutá</translation>
+    </message>
+    <message>
+        <source>Rot</source>
+        <translation>Červená</translation>
+    </message>
+    <message>
+        <source>Orange</source>
+        <translation>Oranžová</translation>
+    </message>
+    <message>
+        <source>nicht festgelegt</source>
+        <translation>nenastaveno</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>Vybrat …</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>Odstranit</translation>
+    </message>
+    <message>
+        <source>Ziel %1 der Schnellablage</source>
+        <translation>Cíl %1 rychlého odkládání</translation>
+    </message>
+    <message>
+        <source>Bewertungen speichern</source>
+        <translation>Ukládat hodnocení</translation>
     </message>
     <message>
         <source>XMP-Zusatzdatei neben dem Bild (Bild.xmp)</source>
         <translation>Doplňkový soubor XMP vedle obrázku (obrázek.xmp)</translation>
     </message>
     <message>
-        <source>Kompatibel mit Lightroom, Capture One und darktable.</source>
-        <translation>Kompatibilní s Lightroom, Capture One a darktable.</translation>
+        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
+        <translation>Kompatibilní s Lightroomem, Capture One a darktable: hvězdičky v xmp:Rating, „Zamítnout“ jako -1. Stávající obsah souboru zůstane zachován.</translation>
+    </message>
+    <message>
+        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; die Bildpixel werden nicht neu kodiert. RAW-Dateien werden nie verändert – dafür wird die Zusatzdatei benutzt.</source>
+        <translation>Jen JPEG, HEIC, TIFF, PNG a DNG; pixely se znovu nekódují. Soubory RAW se nikdy nemění – použije se pro ně doprovodný soubor.</translation>
+    </message>
+    <message>
+        <source>Änderungsdatum beim Schreiben ins Bild beibehalten</source>
+        <translation>Při zápisu do obrázku zachovat datum změny</translation>
+    </message>
+    <message>
+        <source>Im Finder sichtbar und per Spotlight durchsuchbar. Sind mehrere Speicherorte gewählt, werden alle beschrieben; beim Lesen gilt die Reihenfolge Zusatzdatei, Bild, Tags.</source>
+        <translation>Viditelné ve Finderu a vyhledatelné přes Spotlight. Je-li zvoleno více míst, zapisuje se do všech; při čtení platí pořadí doprovodný soubor, obrázek, štítky.</translation>
+    </message>
+    <message>
+        <source>Stern-Symbol:</source>
+        <translation>Symbol hvězdičky:</translation>
+    </message>
+    <message>
+        <source>Tag für Pick:</source>
+        <translation>Štítek pro Ponechat:</translation>
+    </message>
+    <message>
+        <source>Tag für Verworfen:</source>
+        <translation>Štítek pro Zamítnout:</translation>
+    </message>
+    <message>
+        <source>Drei Sterne werden zum Tag „★★★“ (Symbol dreimal).</source>
+        <translation>Tři hvězdičky dají štítek „★★★“ (symbol třikrát).</translation>
+    </message>
+    <message>
+        <source>Aussortieren</source>
+        <translation>Výběr</translation>
+    </message>
+    <message>
+        <source>Nach Bewertung automatisch weiter</source>
+        <translation>Po hodnocení automaticky dál</translation>
+    </message>
+    <message>
+        <source>Zoom im Aussortiermodus fixieren</source>
+        <translation>V režimu výběru zamknout zvětšení</translation>
+    </message>
+    <message>
+        <source>Tastenhilfe im Aussortiermodus zeigen</source>
+        <translation>V režimu výběru zobrazit nápovědu kláves</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus: ⌘K oder K. Ziffern vergeben dort Sterne statt Zoomstufen; „Bewertungstasten immer aktiv“ gibt es unter Maus &amp; Tastatur.</source>
+        <translation>Režim výběru: ⌘K nebo K. Číslice tam dávají hvězdičky místo úrovní zvětšení; „Klávesy hodnocení vždy aktivní“ najdete v části Myš a klávesnice.</translation>
+    </message>
+    <message>
+        <source>Schnellablage</source>
+        <translation>Rychlé odkládání</translation>
+    </message>
+    <message>
+        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z macht es rückgängig.</source>
+        <translation>M a pak 1–9 přesune obrázek do cílové složky, C a pak 1–9 jej zkopíruje. M M nebo C C zopakuje poslední cíl. ⌘Z to odvolá.</translation>
     </message>
     <message>
         <source>Im Bild selbst (eingebettetes XMP)</source>
         <translation>Přímo v obrázku (vložené XMP)</translation>
     </message>
     <message>
-        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; sonst wird die Zusatzdatei benutzt. Die Bildpixel werden nicht neu kodiert.</source>
-        <translation>Jen JPEG, HEIC, TIFF, PNG a DNG; jinak se použije doplňkový soubor. Pixely obrázku se znovu nekódují.</translation>
-    </message>
-    <message>
         <source>Finder-Tags</source>
         <translation>Štítky Finderu</translation>
-    </message>
-    <message>
-        <source>Im Finder sichtbar und per Spotlight durchsuchbar.</source>
-        <translation>Viditelné ve Finderu a prohledávatelné přes Spotlight.</translation>
-    </message>
-    <message>
-        <source>Bewertungen und der Aussortiermodus folgen %1.</source>
-        <translation>Hodnocení a režim třídění se řídí: %1.</translation>
     </message>
     <message>
         <source>Unterstützte Formate (ohne Nachinstallation):</source>
@@ -3017,6 +3299,206 @@
     <message>
         <source>Nicht genug Speicher für das Bild.</source>
         <translation>Nedostatek paměti pro obrázek.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QuickMove</name>
+    <message>
+        <source>%1  (nicht festgelegt)</source>
+        <translation>%1  (nenastaveno)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QuickMoveController</name>
+    <message>
+        <source>Verschieben nach … (1–9, M = wie zuletzt)</source>
+        <translation>Přesunout do … (1–9, M = jako minule)</translation>
+    </message>
+    <message>
+        <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
+        <translation>Kopírovat do … (1–9, C = jako minule)</translation>
+    </message>
+    <message>
+        <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
+        <translation>Zatím nebyl použit žádný cíl – nejprve zvolte číslici 1–9.</translation>
+    </message>
+    <message>
+        <source>Ziel %1 ist nicht festgelegt (Einstellungen → Bewertung → Schnellablage).</source>
+        <translation>Cíl %1 není nastaven (Nastavení → Hodnocení → Rychlé odkládání).</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>Přesunout</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>Kopírovat</translation>
+    </message>
+    <message>
+        <source>Übersprungen – nichts geändert.</source>
+        <translation>Přeskočeno – nic se nezměnilo.</translation>
+    </message>
+    <message>
+        <source>Nach „%1“ verschoben</source>
+        <translation>Přesunuto do „%1“</translation>
+    </message>
+    <message>
+        <source>Nach „%1“ kopiert</source>
+        <translation>Zkopírováno do „%1“</translation>
+    </message>
+    <message>
+        <source>Namenskonflikt</source>
+        <translation>Konflikt názvů</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es in „%2“ schon.</source>
+        <translation>„%1“ již v „%2“ existuje.</translation>
+    </message>
+    <message>
+        <source>Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.</source>
+        <translation>Nahradit přesune stávající soubor do koše, „Ponechat oba“ dá novému název jako „%1“. ⌘Z vše odvolá.</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>Nahradit</translation>
+    </message>
+    <message>
+        <source>Beide behalten</source>
+        <translation>Ponechat oba</translation>
+    </message>
+    <message>
+        <source>Überspringen</source>
+        <translation>Přeskočit</translation>
+    </message>
+    <message>
+        <source>Für alle %1 Konflikte</source>
+        <translation>Pro všechny konflikty (%1)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Rating</name>
+    <message>
+        <source>alle</source>
+        <translation>vše</translation>
+    </message>
+    <message>
+        <source>nur Picks</source>
+        <translation>jen ponechané</translation>
+    </message>
+    <message>
+        <source>≥ %1 ★</source>
+        <translation>≥ %1 ★</translation>
+    </message>
+    <message>
+        <source>nur unbewertete</source>
+        <translation>jen bez hodnocení</translation>
+    </message>
+    <message>
+        <source>nur verworfene</source>
+        <translation>jen zamítnuté</translation>
+    </message>
+    <message>
+        <source>Pick</source>
+        <translation>Ponecháno</translation>
+    </message>
+    <message>
+        <source>Verworfen</source>
+        <translation>Zamítnuto</translation>
+    </message>
+</context>
+<context>
+    <name>lf::RatingStore</name>
+    <message>
+        <source>„%1“ konnte nicht geschrieben werden (Ordner schreibgeschützt?).</source>
+        <translation>„%1“ nelze zapsat (složka jen pro čtení?).</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>„%1“ nelze přečíst.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist zu groß.</source>
+        <translation>„%1“ je příliš velký.</translation>
+    </message>
+    <message>
+        <source>Die XMP-Datei „%1“ ist beschädigt oder unbekannt aufgebaut und wird nicht verändert.</source>
+        <translation>Soubor XMP „%1“ je poškozený nebo má neznámou strukturu a nebude změněn.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht ersetzt werden.</source>
+        <translation>„%1“ nelze nahradit.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>Soubor už neexistuje.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert.</source>
+        <translation>Soubory RAW se nikdy nemění.</translation>
+    </message>
+    <message>
+        <source>In dieses Format kann die Bewertung nicht sicher geschrieben werden.</source>
+        <translation>Do tohoto formátu nelze hodnocení bezpečně zapsat.</translation>
+    </message>
+    <message>
+        <source>In animierte oder mehrseitige Dateien wird nicht geschrieben.</source>
+        <translation>Do animovaných nebo vícestránkových souborů se nezapisuje.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist schreibgeschützt.</source>
+        <translation>Soubor je jen pro čtení.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht ins Bild schreiben.</source>
+        <translation>Hodnocení nelze zapsat do obrázku.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht ohne Neukodieren ins Bild schreiben.</source>
+        <translation>Hodnocení nelze zapsat do obrázku bez nového kódování.</translation>
+    </message>
+    <message>
+        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.</source>
+        <translation>„%1“ byl mezitím změněn – hodnocení nebylo uloženo.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>Soubor nelze nahradit.</translation>
+    </message>
+    <message>
+        <source>Finder-Tags werden auf diesem System nicht unterstützt.</source>
+        <translation>Štítky Finderu nejsou v tomto systému podporovány.</translation>
+    </message>
+    <message>
+        <source>Kein Speicherort für Bewertungen gewählt (Einstellungen → Bewertung).</source>
+        <translation>Není zvoleno místo pro ukládání hodnocení (Nastavení → Hodnocení).</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 Die Bewertung steht deshalb in der XMP-Zusatzdatei.</source>
+        <translation>„%1“: %2 Hodnocení je proto uloženo v doprovodném souboru XMP.</translation>
+    </message>
+    <message>
+        <source>Bewertung</source>
+        <translation>Hodnocení</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Soubor nelze přečíst.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
+        <translation>Hodnocení nelze zapsat do obrázku bezztrátově.</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder der Datei (z. B. eine HDR-Gain-Map) gingen beim Schreiben verloren.</source>
+        <translation>Doplňkové obrázky souboru (např. HDR gain mapa) se při zápisu ztratily.</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gelesen werden: %2</source>
+        <translation>Štítky „%1“ nelze přečíst: %2</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
+        <translation>Štítky „%1“ nelze nastavit: %2</translation>
     </message>
 </context>
 <context>

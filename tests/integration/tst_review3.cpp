@@ -507,7 +507,7 @@ private slots:
                     return r;
             return -1;
         };
-        for (Action a : {Action::Rate3, Action::ToggleGrid}) {
+        for (Action a : {Action::ToggleGrid}) { // M3: rating keys are implemented
             const int r = row(a);
             if (r < 0)
                 continue; // no key bound

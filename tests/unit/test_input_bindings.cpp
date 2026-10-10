@@ -421,10 +421,10 @@ TEST_F(InputBindingsTest, F_IN_18_Presets) {
     {
         InputBindings b;
         EXPECT_EQ(b.resolve(wheelEv(-1)), Action::ZoomIn); // wheel = zoom
-        // Rating keys "always" are not available before 1.0: the preset leaves the
-        // culling-only default (digits keep zooming outside the culling mode).
-        EXPECT_EQ(b.choice("ratingKeys"), "cullingOnly");
-        EXPECT_EQ(b.resolve(keyEv(Qt::Key_3)), Action::ZoomActual);
+        // M3: digits = stars, P/X/U active (Lightroom habits).
+        EXPECT_EQ(b.choice("ratingKeys"), "always");
+        EXPECT_EQ(b.resolve(keyEv(Qt::Key_3)), Action::Rate3);
+        EXPECT_EQ(b.resolve(keyEv(Qt::Key_P)), Action::RatePick);
         EXPECT_EQ(b.resolve(keyEv(Qt::Key_0, Cmd)), Action::ZoomActual); // ⌘0 still zooms
     }
     InputBindings::applyPreset("windows");
@@ -643,5 +643,5 @@ TEST_F(InputBindingsTest, ActionIdRoundtrip) {
     EXPECT_EQ(actionId(Action::None), "none");
     EXPECT_EQ(actionId(Action::NextImage), "nextImage");
     // every enum value except None is listed
-    EXPECT_EQ(InputBindings::allActions().size(), int(Action::SaveRotation)); // last enum value
+    EXPECT_EQ(InputBindings::allActions().size(), int(Action::QuickCopy)); // last enum value
 }

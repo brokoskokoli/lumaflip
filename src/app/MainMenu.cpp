@@ -311,6 +311,7 @@ void MainMenu::build() {
     add(image, Action::FlipHorizontal, tr("Horizontal spiegeln"));
     add(image, Action::FlipVertical, tr("Vertikal spiegeln"));
     buildMedia(view, nav, image); // slideshow, pages, animation, save rotation (MainMenuMedia.cpp)
+    buildCulling();               // M3: "Aussortieren" (MainMenuCulling.cpp)
 
     // ---- Fenster ----
     m_windowMenu = m_bar->addMenu(tr("Fenster"));
@@ -426,6 +427,7 @@ void MainMenu::refreshState() {
     for (const auto& item : kSortItems)
         command("sort:" + QString::fromLatin1(item.id))->setEnabled(hasWindow);
     refreshMediaState();
+    refreshCullingState();
 }
 
 void MainMenu::refreshWindowList() {

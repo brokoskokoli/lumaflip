@@ -53,6 +53,10 @@ private:
     // M2 media entries (MainMenuMedia.cpp): slideshow, pages, animation, saving the rotation.
     void buildMedia(QMenu* view, QMenu* nav, QMenu* image);
     void refreshMediaState();
+    // M3 menu "Aussortieren" (MainMenuCulling.cpp): culling mode, rating, filter, rejects,
+    // quick move/copy (F-CULL-01..06, F-FILE-08).
+    void buildCulling();
+    void refreshCullingState();
 
     Application& m_app;
     QMenuBar* m_bar = nullptr;

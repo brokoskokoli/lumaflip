@@ -6,6 +6,7 @@
 // results are applied via queued signals.
 
 #include "FileEntry.h"
+#include "Rating.h"
 #include "SortSpec.h"
 
 #include <QObject>
@@ -32,6 +33,8 @@ struct FolderSortChoice {
 };
 // Looks up the remembered choice of a folder; called on worker threads.
 using FolderSortMemory = std::function<std::optional<FolderSortChoice>(const QString& folderPath)>;
+// Reads the rating of a file (RatingStore, F-CULL-02); called on worker threads.
+using RatingReader = std::function<Rating(const QString& path)>;
 
 class Collection : public QObject {
     Q_OBJECT
@@ -108,6 +111,21 @@ public:
     // True while insertPath() results are outstanding (tests).
     bool hasPendingInserts() const;
 
+    // ---- ratings (M3) ----
+    // F-SORT-02 / F-CULL-04: ratings for SortKey::Rating and the filter come from `reader`
+    // (read on the worker with the entries). Without a reader the embedded rating of the
+    // FileAttributeProvider is used for sorting and the filter is not applied.
+    void setRatingReader(RatingReader reader);
+    // F-CULL-04: shows only matching images (reloads). The explicitly opened file stays.
+    // An image whose new rating no longer matches (updateRating) stays visible while it is
+    // the current one and disappears when another image becomes current.
+    void setRatingFilter(const RatingFilter& filter);
+    RatingFilter ratingFilter() const;
+    int totalCount() const;       // shown + hidden by the filter
+    QStringList allPaths() const; // shown + hidden by the filter (F-CULL-05)
+    // A rating changed (RatingStore::ratingChanged): updates the entry, applies the filter.
+    void updateRating(const QString& path, const Rating& rating);
+
     // Injection for tests; defaults are created via Platform.h factories.
     void setProviders(NameCollator* collator, FolderOrderProvider* order,
                       FileAttributeProvider* attributes); // non-owning, may be null
@@ -137,6 +155,9 @@ void sortEntries(QVector<FileEntry>& entries, const SortSpec& spec, const NameCo
 // of `folderPath` in Finder name order that contains images; empty if there is none.
 // Blocking (lists folders): call on a worker thread.
 QString siblingImageFolder(const QString& folderPath, int direction, const NameCollator* collator);
+// M3: the rating an entry carries (RatingStore values, F-CULL-02) and setting it.
+Rating ratingOf(const FileEntry& entry);
+void setRating(FileEntry& entry, const Rating& rating);
 } // namespace collection
 
 } // namespace lf

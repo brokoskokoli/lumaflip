@@ -65,6 +65,19 @@ inline constexpr auto RawEmbeddedOnly = "perf/rawEmbeddedOnly"; // bool, default
 inline constexpr auto RatingStoreSidecar = "rating/sidecar";       // default true
 inline constexpr auto RatingStoreEmbedded = "rating/embedded";     // default false
 inline constexpr auto RatingStoreFinderTags = "rating/finderTags"; // default false
+// Culling and quick move (M3: F-CULL-02/03/06, F-FILE-08)
+inline constexpr auto RatingTagStarSymbol = "rating/tagStarSymbol";   // default "★" (n stars = n times)
+inline constexpr auto RatingTagPick = "rating/tagPick";               // default "Pick"
+inline constexpr auto RatingTagReject = "rating/tagReject";           // default "Reject"
+inline constexpr auto RatingTagStarColor = "rating/tagStarColor";     // 0..7 Finder label, default 0
+inline constexpr auto RatingTagPickColor = "rating/tagPickColor";     // default 2 (green)
+inline constexpr auto RatingTagRejectColor = "rating/tagRejectColor"; // default 6 (red)
+inline constexpr auto RatingKeepModDate = "rating/keepModDate";       // bool, default true (embedded)
+inline constexpr auto CullAutoAdvance = "culling/autoAdvance";        // bool, default false (F-CULL-03)
+inline constexpr auto CullLockZoom = "culling/lockZoom";              // bool, default true (F-CULL-06)
+inline constexpr auto CullShowHelp = "culling/showHelp";              // bool, default true (F-CULL-06)
+// "files/quickTarget1" … "files/quickTarget9": folder paths, "" = not set (F-FILE-08)
+inline constexpr auto QuickTargetPrefix = "files/quickTarget";
 // Slideshow (F-SLIDE-01/02)
 inline constexpr auto SlideshowIntervalSec = "slideshow/intervalSec"; // 1..60, default 3
 inline constexpr auto SlideshowRepeat = "slideshow/repeat";           // bool, default true

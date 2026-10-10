@@ -161,6 +161,93 @@
     </message>
 </context>
 <context>
+    <name>lf::CullingController</name>
+    <message>
+        <source>Bewertung wird gelesen …</source>
+        <translation>Leser vurdering …</translation>
+    </message>
+    <message>
+        <source>AUSSORTIEREN</source>
+        <translation>UTVELGING</translation>
+    </message>
+    <message>
+        <source>0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg</source>
+        <translation>0–5  Stjerner     P  Behold     X  Forkast     U  Fjern markering</translation>
+    </message>
+    <message>
+        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden</source>
+        <translation>← →  Bla     M/C + 1–9  Flytt/Kopier     ⌘Z  Angre     Esc  Avslutt</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U markieren</source>
+        <translation>Utvelgingsmodus: sifre gir stjerner, P/X/U markerer</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus beendet</source>
+        <translation>Utvelgingsmodus avsluttet</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation>%1: %2</translation>
+    </message>
+    <message>
+        <source>Filter: %1 — %2 / %3</source>
+        <translation>Filter: %1 — %2 / %3</translation>
+    </message>
+    <message>
+        <source>Keine verworfenen Bilder</source>
+        <translation>Ingen forkastede bilder</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Papierkorb legen?</source>
+        <translation>
+            <numerusform>Flytte %n forkastet bilde til papirkurven?</numerusform>
+            <numerusform>Flytte %n forkastede bilder til papirkurven?</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
+        <translation>
+            <numerusform>Flytte %n forkastet bilde til mappen «_Rejected»?</numerusform>
+            <numerusform>Flytte %n forkastede bilder til mappen «_Rejected»?</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <translation>XMP-sidefiler følger med. ⌘Z angrer hele trinnet.</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb</source>
+        <translation>Til papirkurven</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>Flytt</translation>
+    </message>
+    <message>
+        <source>Verworfene in den Papierkorb</source>
+        <translation>Forkastede til papirkurven</translation>
+    </message>
+    <message>
+        <source>Verworfene nach _Rejected</source>
+        <translation>Forkastede til _Rejected</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n bilde flyttet til papirkurven</numerusform>
+            <numerusform>%n bilder flyttet til papirkurven</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „_Rejected“ verschoben</source>
+        <translation>
+            <numerusform>%n bilde flyttet til «_Rejected»</numerusform>
+            <numerusform>%n bilder flyttet til «_Rejected»</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::DecoderRegistry</name>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -407,6 +494,25 @@
     <message>
         <source>Kamera-RAW (Sigma X3F)</source>
         <translation>Kamera-RAW (Sigma X3F)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::FileBatch</name>
+    <message>
+        <source>„%1“ existiert bereits.</source>
+        <translation>«%1» finnes allerede.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht kopiert werden.</source>
+        <translation>«%1» kunne ikke kopieres.</translation>
+    </message>
+    <message>
+        <source>Der Ordner „%1“ konnte nicht angelegt werden.</source>
+        <translation>Mappen «%1» kunne ikke opprettes.</translation>
+    </message>
+    <message>
+        <source>Die Kopie „%1“ konnte nicht entfernt werden.</source>
+        <translation>Kopien «%1» kunne ikke fjernes.</translation>
     </message>
 </context>
 <context>
@@ -1085,6 +1191,18 @@
     <message>
         <source>Markierung zurücksetzen</source>
         <translation>Tilbakestill markering</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus</source>
+        <translation>Utvelgingsmodus</translation>
+    </message>
+    <message>
+        <source>Schnellablage: verschieben (M, dann 1–9)</source>
+        <translation>Hurtigarkiv: flytt (M, deretter 1–9)</translation>
+    </message>
+    <message>
+        <source>Schnellablage: kopieren (C, dann 1–9)</source>
+        <translation>Hurtigarkiv: kopier (C, deretter 1–9)</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2108,6 +2226,74 @@
         <source>Geschwindigkeit</source>
         <translation>Hastighet</translation>
     </message>
+    <message>
+        <source>Alle Bilder</source>
+        <translation>Alle bilder</translation>
+    </message>
+    <message>
+        <source>Nur Picks</source>
+        <translation>Bare beholdte</translation>
+    </message>
+    <message>
+        <source>Nur unbewertete</source>
+        <translation>Bare uten vurdering</translation>
+    </message>
+    <message>
+        <source>Nur verworfene</source>
+        <translation>Bare forkastede</translation>
+    </message>
+    <message>
+        <source>Mindestens %1 ★</source>
+        <translation>Minst %1 ★</translation>
+    </message>
+    <message>
+        <source>Aussortieren</source>
+        <translation>Utvelging</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus</source>
+        <translation>Utvelgingsmodus</translation>
+    </message>
+    <message>
+        <source>Bewerten</source>
+        <translation>Vurder</translation>
+    </message>
+    <message>
+        <source>Nach Bewertung automatisch weiter</source>
+        <translation>Videre etter vurdering</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation>Filter</translation>
+    </message>
+    <message>
+        <source>Alle verworfenen in den Papierkorb …</source>
+        <translation>Alle forkastede til papirkurven …</translation>
+    </message>
+    <message>
+        <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
+        <translation>Alle forkastede til «_Rejected» …</translation>
+    </message>
+    <message>
+        <source>Schnellablage: verschieben (M, dann 1–9)</source>
+        <translation>Hurtigarkiv: flytt (M, deretter 1–9)</translation>
+    </message>
+    <message>
+        <source>Schnellablage: kopieren (C, dann 1–9)</source>
+        <translation>Hurtigarkiv: kopier (C, deretter 1–9)</translation>
+    </message>
+    <message>
+        <source>Verschieben nach</source>
+        <translation>Flytt til</translation>
+    </message>
+    <message>
+        <source>Kopieren nach</source>
+        <translation>Kopier til</translation>
+    </message>
+    <message>
+        <source>Ziele der Schnellablage festlegen …</source>
+        <translation>Angi mål for hurtigarkiv …</translation>
+    </message>
 </context>
 <context>
     <name>lf::MenuExtras</name>
@@ -2772,36 +2958,128 @@
         <translation>Gjelder når «Sortering som i Finder» er av eller ingen Finder-informasjon blir funnet. Et valg i menyen Vis → Sorter etter huskes per mappe; «Bruk for alle mapper» gjør det til standard her.</translation>
     </message>
     <message>
-        <source>Bewertungen speichern:</source>
-        <translation>Lagre vurderinger:</translation>
+        <source>Keine Farbe</source>
+        <translation>Ingen farge</translation>
+    </message>
+    <message>
+        <source>Grau</source>
+        <translation>Grå</translation>
+    </message>
+    <message>
+        <source>Grün</source>
+        <translation>Grønn</translation>
+    </message>
+    <message>
+        <source>Lila</source>
+        <translation>Lilla</translation>
+    </message>
+    <message>
+        <source>Blau</source>
+        <translation>Blå</translation>
+    </message>
+    <message>
+        <source>Gelb</source>
+        <translation>Gul</translation>
+    </message>
+    <message>
+        <source>Rot</source>
+        <translation>Rød</translation>
+    </message>
+    <message>
+        <source>Orange</source>
+        <translation>Oransje</translation>
+    </message>
+    <message>
+        <source>nicht festgelegt</source>
+        <translation>ikke angitt</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>Velg …</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>Fjern</translation>
+    </message>
+    <message>
+        <source>Ziel %1 der Schnellablage</source>
+        <translation>Mål %1 for hurtigarkiv</translation>
+    </message>
+    <message>
+        <source>Bewertungen speichern</source>
+        <translation>Lagre vurderinger</translation>
     </message>
     <message>
         <source>XMP-Zusatzdatei neben dem Bild (Bild.xmp)</source>
         <translation>XMP-sidefil ved siden av bildet (Bilde.xmp)</translation>
     </message>
     <message>
-        <source>Kompatibel mit Lightroom, Capture One und darktable.</source>
-        <translation>Kompatibel med Lightroom, Capture One og darktable.</translation>
+        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
+        <translation>Kompatibel med Lightroom, Capture One og darktable: stjerner i xmp:Rating, «Forkast» som -1. Filens eksisterende innhold beholdes.</translation>
+    </message>
+    <message>
+        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; die Bildpixel werden nicht neu kodiert. RAW-Dateien werden nie verändert – dafür wird die Zusatzdatei benutzt.</source>
+        <translation>Bare JPEG, HEIC, TIFF, PNG og DNG; pikslene kodes ikke på nytt. RAW-filer endres aldri – for dem brukes sidefilen.</translation>
+    </message>
+    <message>
+        <source>Änderungsdatum beim Schreiben ins Bild beibehalten</source>
+        <translation>Behold endringsdato ved skriving i bildet</translation>
+    </message>
+    <message>
+        <source>Im Finder sichtbar und per Spotlight durchsuchbar. Sind mehrere Speicherorte gewählt, werden alle beschrieben; beim Lesen gilt die Reihenfolge Zusatzdatei, Bild, Tags.</source>
+        <translation>Synlige i Finder og søkbare med Spotlight. Er flere plasseringer valgt, skrives alle; ved lesing gjelder rekkefølgen sidefil, bilde, tagger.</translation>
+    </message>
+    <message>
+        <source>Stern-Symbol:</source>
+        <translation>Stjernesymbol:</translation>
+    </message>
+    <message>
+        <source>Tag für Pick:</source>
+        <translation>Tagg for Behold:</translation>
+    </message>
+    <message>
+        <source>Tag für Verworfen:</source>
+        <translation>Tagg for Forkast:</translation>
+    </message>
+    <message>
+        <source>Drei Sterne werden zum Tag „★★★“ (Symbol dreimal).</source>
+        <translation>Tre stjerner blir taggen «★★★» (symbolet tre ganger).</translation>
+    </message>
+    <message>
+        <source>Aussortieren</source>
+        <translation>Utvelging</translation>
+    </message>
+    <message>
+        <source>Nach Bewertung automatisch weiter</source>
+        <translation>Gå automatisk videre etter vurdering</translation>
+    </message>
+    <message>
+        <source>Zoom im Aussortiermodus fixieren</source>
+        <translation>Lås zoom i utvelgingsmodus</translation>
+    </message>
+    <message>
+        <source>Tastenhilfe im Aussortiermodus zeigen</source>
+        <translation>Vis tastehjelp i utvelgingsmodus</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus: ⌘K oder K. Ziffern vergeben dort Sterne statt Zoomstufen; „Bewertungstasten immer aktiv“ gibt es unter Maus &amp; Tastatur.</source>
+        <translation>Utvelgingsmodus: ⌘K eller K. Der gir sifre stjerner i stedet for zoomnivåer; «Vurderingstaster alltid aktive» finnes under Mus og tastatur.</translation>
+    </message>
+    <message>
+        <source>Schnellablage</source>
+        <translation>Hurtigarkiv</translation>
+    </message>
+    <message>
+        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z macht es rückgängig.</source>
+        <translation>M og deretter 1–9 flytter bildet til målmappen, C og deretter 1–9 kopierer det. M M eller C C gjentar siste mål. ⌘Z angrer.</translation>
     </message>
     <message>
         <source>Im Bild selbst (eingebettetes XMP)</source>
         <translation>I selve bildet (innebygd XMP)</translation>
     </message>
     <message>
-        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; sonst wird die Zusatzdatei benutzt. Die Bildpixel werden nicht neu kodiert.</source>
-        <translation>Bare JPEG, HEIC, TIFF, PNG og DNG; ellers brukes sidefilen. Bildepikslene kodes ikke på nytt.</translation>
-    </message>
-    <message>
         <source>Finder-Tags</source>
         <translation>Finder-merker</translation>
-    </message>
-    <message>
-        <source>Im Finder sichtbar und per Spotlight durchsuchbar.</source>
-        <translation>Synlig i Finder og søkbar med Spotlight.</translation>
-    </message>
-    <message>
-        <source>Bewertungen und der Aussortiermodus folgen %1.</source>
-        <translation>Vurderinger og utvelgelsesmodus følger %1.</translation>
     </message>
     <message>
         <source>Unterstützte Formate (ohne Nachinstallation):</source>
@@ -3014,6 +3292,206 @@
     <message>
         <source>Nicht genug Speicher für das Bild.</source>
         <translation>Ikke nok minne til bildet.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QuickMove</name>
+    <message>
+        <source>%1  (nicht festgelegt)</source>
+        <translation>%1  (ikke angitt)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QuickMoveController</name>
+    <message>
+        <source>Verschieben nach … (1–9, M = wie zuletzt)</source>
+        <translation>Flytt til … (1–9, M = som sist)</translation>
+    </message>
+    <message>
+        <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
+        <translation>Kopier til … (1–9, C = som sist)</translation>
+    </message>
+    <message>
+        <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
+        <translation>Ingen mål brukt ennå – velg først et siffer 1–9.</translation>
+    </message>
+    <message>
+        <source>Ziel %1 ist nicht festgelegt (Einstellungen → Bewertung → Schnellablage).</source>
+        <translation>Mål %1 er ikke angitt (Innstillinger → Vurdering → Hurtigarkiv).</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>Flytt</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>Kopier</translation>
+    </message>
+    <message>
+        <source>Übersprungen – nichts geändert.</source>
+        <translation>Hoppet over – ingenting endret.</translation>
+    </message>
+    <message>
+        <source>Nach „%1“ verschoben</source>
+        <translation>Flyttet til «%1»</translation>
+    </message>
+    <message>
+        <source>Nach „%1“ kopiert</source>
+        <translation>Kopiert til «%1»</translation>
+    </message>
+    <message>
+        <source>Namenskonflikt</source>
+        <translation>Navnekonflikt</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es in „%2“ schon.</source>
+        <translation>«%1» finnes allerede i «%2».</translation>
+    </message>
+    <message>
+        <source>Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.</source>
+        <translation>Erstatt flytter den eksisterende filen til papirkurven, «Behold begge» gir den nye et navn som «%1». ⌘Z angrer alt.</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>Erstatt</translation>
+    </message>
+    <message>
+        <source>Beide behalten</source>
+        <translation>Behold begge</translation>
+    </message>
+    <message>
+        <source>Überspringen</source>
+        <translation>Hopp over</translation>
+    </message>
+    <message>
+        <source>Für alle %1 Konflikte</source>
+        <translation>For alle %1 konflikter</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Rating</name>
+    <message>
+        <source>alle</source>
+        <translation>alle</translation>
+    </message>
+    <message>
+        <source>nur Picks</source>
+        <translation>bare beholdte</translation>
+    </message>
+    <message>
+        <source>≥ %1 ★</source>
+        <translation>≥ %1 ★</translation>
+    </message>
+    <message>
+        <source>nur unbewertete</source>
+        <translation>bare uten vurdering</translation>
+    </message>
+    <message>
+        <source>nur verworfene</source>
+        <translation>bare forkastede</translation>
+    </message>
+    <message>
+        <source>Pick</source>
+        <translation>Beholdt</translation>
+    </message>
+    <message>
+        <source>Verworfen</source>
+        <translation>Forkastet</translation>
+    </message>
+</context>
+<context>
+    <name>lf::RatingStore</name>
+    <message>
+        <source>„%1“ konnte nicht geschrieben werden (Ordner schreibgeschützt?).</source>
+        <translation>«%1» kunne ikke skrives (mappen skrivebeskyttet?).</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>«%1» kan ikke leses.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist zu groß.</source>
+        <translation>«%1» er for stor.</translation>
+    </message>
+    <message>
+        <source>Die XMP-Datei „%1“ ist beschädigt oder unbekannt aufgebaut und wird nicht verändert.</source>
+        <translation>XMP-filen «%1» er skadet eller har ukjent oppbygning og endres ikke.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht ersetzt werden.</source>
+        <translation>«%1» kunne ikke erstattes.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>Filen finnes ikke lenger.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert.</source>
+        <translation>RAW-filer endres aldri.</translation>
+    </message>
+    <message>
+        <source>In dieses Format kann die Bewertung nicht sicher geschrieben werden.</source>
+        <translation>Vurderingen kan ikke skrives trygt i dette formatet.</translation>
+    </message>
+    <message>
+        <source>In animierte oder mehrseitige Dateien wird nicht geschrieben.</source>
+        <translation>Det skrives ikke i animerte filer eller filer med flere sider.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist schreibgeschützt.</source>
+        <translation>Filen er skrivebeskyttet.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht ins Bild schreiben.</source>
+        <translation>Vurderingen kunne ikke skrives i bildet.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht ohne Neukodieren ins Bild schreiben.</source>
+        <translation>Vurderingen kunne ikke skrives i bildet uten omkoding.</translation>
+    </message>
+    <message>
+        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.</source>
+        <translation>«%1» er endret i mellomtiden – vurderingen ble ikke lagret.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>Filen kunne ikke erstattes.</translation>
+    </message>
+    <message>
+        <source>Finder-Tags werden auf diesem System nicht unterstützt.</source>
+        <translation>Finder-tagger støttes ikke på dette systemet.</translation>
+    </message>
+    <message>
+        <source>Kein Speicherort für Bewertungen gewählt (Einstellungen → Bewertung).</source>
+        <translation>Ingen lagringsplassering for vurderinger valgt (Innstillinger → Vurdering).</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 Die Bewertung steht deshalb in der XMP-Zusatzdatei.</source>
+        <translation>«%1»: %2 Vurderingen lagres derfor i XMP-sidefilen.</translation>
+    </message>
+    <message>
+        <source>Bewertung</source>
+        <translation>Vurdering</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Filen kan ikke leses.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
+        <translation>Vurderingen kunne ikke skrives tapsfritt i bildet.</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder der Datei (z. B. eine HDR-Gain-Map) gingen beim Schreiben verloren.</source>
+        <translation>Filens ekstrabilder (f.eks. et HDR-gain map) gikk tapt under skrivingen.</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gelesen werden: %2</source>
+        <translation>Tagger for «%1» kunne ikke leses: %2</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
+        <translation>Tagger for «%1» kunne ikke angis: %2</translation>
     </message>
 </context>
 <context>

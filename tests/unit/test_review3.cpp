@@ -354,19 +354,20 @@ TEST(Review3Provider, P_08_DecodeByteCapFollowsBudget) {
 TEST(Review3Input, F_IN_18_PresetSkipsUnavailableChoices) {
     QTemporaryDir dir;
     Settings::useTestingBackend(dir.filePath("p.ini"));
-    EXPECT_FALSE(InputBindings::isChoiceAvailable("ratingKeys", "always"));
+    EXPECT_FALSE(InputBindings::isChoiceAvailable("middleClick", "magnifier"));
+    EXPECT_TRUE(InputBindings::isChoiceAvailable("ratingKeys", "always")); // M3
     EXPECT_TRUE(InputBindings::isChoiceAvailable("ratingKeys", "cullingOnly"));
     InputBindings::applyPreset("photographer");
     InputBindings b;
     EXPECT_EQ(b.choice("wheel"), "zoom"); // available: applied
     EXPECT_EQ(b.choice("click"), "fitActual");
-    EXPECT_EQ(b.choice("ratingKeys"), "cullingOnly"); // not available yet: default
+    EXPECT_EQ(b.choice("ratingKeys"), "always"); // M3: ratings are implemented
     for (const InputSlot& s : InputBindings::inputSlots())
         EXPECT_TRUE(InputBindings::isChoiceAvailable(s.id, b.choice(s.id))) << s.id.toStdString();
 }
 
 TEST(Review3Input, F_SET_02_PlannedActionsAreNotAvailable) {
-    for (Action a : {Action::ToggleGrid, Action::Rate0, Action::Rate5, Action::RatePick})
+    for (Action a : {Action::ToggleGrid, Action::Magnifier})
         EXPECT_FALSE(InputBindings::isActionAvailable(a)) << actionId(a).toStdString();
     // M2: slideshow, animation, pages and saving the rotation are implemented.
     for (Action a : {Action::NextImage, Action::ZoomFit, Action::Trash, Action::ToggleFullScreen,

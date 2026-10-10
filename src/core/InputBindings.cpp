@@ -105,6 +105,12 @@ const ActionInfo kActions[] = {
     {Action::RatePick, "ratePick", QT_TRANSLATE_NOOP("lf::InputBindings", "Behalten (Pick)")},
     {Action::RateReject, "rateReject", QT_TRANSLATE_NOOP("lf::InputBindings", "Verwerfen (Reject)")},
     {Action::RateClear, "rateClear", QT_TRANSLATE_NOOP("lf::InputBindings", "Markierung zurücksetzen")},
+    {Action::ToggleCullingMode, "toggleCullingMode",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Aussortiermodus")},
+    {Action::QuickMove, "quickMove",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Schnellablage: verschieben (M, dann 1–9)")},
+    {Action::QuickCopy, "quickCopy",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Schnellablage: kopieren (C, dann 1–9)")},
 };
 
 const ActionInfo* info(Action a) {
@@ -212,6 +218,12 @@ QStringList defaultShortcutStrings(Action a) {
         return {"X"};
     case Action::RateClear:
         return {"U"};
+    case Action::ToggleCullingMode:
+        return {"Ctrl+K", "K"};
+    case Action::QuickMove:
+        return {"M"};
+    case Action::QuickCopy:
+        return {"C"};
     default:
         return {};
     }
@@ -584,7 +596,7 @@ void InputBindings::applyPreset(const QString& presetId) {
         fullScreen.append(QKeySequence(Qt::Key_Enter));
         rename = {QKeySequence(Qt::Key_F2)};
     } else if (presetId == QLatin1String("photographer")) {
-        // Lightroom-like
+        // Lightroom-like: digits = stars, P/X/U flag (F-IN-18, M3)
         p = {{"wheel", "zoom"}, {"wheel.cmd", "image"}, {"click", "fitActual"}, {"ratingKeys", "always"}};
     } else if (presetId != QLatin1String("mac")) {
         return;
@@ -603,7 +615,6 @@ void InputBindings::applyPreset(const QString& presetId) {
 bool InputBindings::isChoiceAvailable(const QString& slotId, const QString& choiceId) {
     static const QSet<QString> later = {
         QStringLiteral("middleClick:magnifier"), // F-IN-11 Lupe
-        QStringLiteral("ratingKeys:always"),     // Bewertungen (F-CULL-01)
     };
     return !later.contains(slotId + QLatin1Char(':') + choiceId);
 }
@@ -612,15 +623,6 @@ bool InputBindings::isActionAvailable(Action a) {
     switch (a) {
     case Action::ToggleGrid:
     case Action::Magnifier:
-    case Action::Rate0:
-    case Action::Rate1:
-    case Action::Rate2:
-    case Action::Rate3:
-    case Action::Rate4:
-    case Action::Rate5:
-    case Action::RatePick:
-    case Action::RateReject:
-    case Action::RateClear:
         return false;
     default:
         return a != Action::None;

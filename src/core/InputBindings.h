@@ -83,6 +83,10 @@ enum class Action {
     OpenPreferences,
     CloseAllWindows,
     SaveRotation, // F-EDIT-02
+    // M3 (appended, keep order above stable)
+    ToggleCullingMode, // F-CULL-06
+    QuickMove,         // F-FILE-08: M + 1..9 (prefix key)
+    QuickCopy,         // F-FILE-08: C + 1..9 (prefix key)
 };
 
 QString actionId(Action a); // stable string id for settings ("nextImage")
