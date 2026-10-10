@@ -275,6 +275,42 @@ Installation für Nutzer danach: `brew install --cask brokoskokoli/tap/lumaflip`
 Die nicht automatisierbaren Prüfungen (Gatekeeper beim echten Download, Offline-Start, TCC-Texte,
 Lizenzfenster) stehen in [MANUAL_CHECKS.md](MANUAL_CHECKS.md) im Abschnitt „Auslieferung“.
 
+## Release-Notizen
+
+Der Workflow legt den Entwurf mit `--generate-notes` an; vor dem Veröffentlichen den Text des
+Entwurfs durch die Notizen der Version ersetzen (Sparkle zeigt ihn als HTML im Update-Fenster).
+Deutsch zuerst, Englisch darunter.
+
+### 1.1.0 (Meilenstein M3)
+
+**Neu**
+- 18 Sprachen (folgt der Systemsprache, umschaltbar ohne Neustart; Übersetzungen noch ungeprüft).
+- Aussortiermodus (⌘K) mit Sternen, Pick/Reject und automatischem Weiterblättern; Bewertungen als
+  XMP-Zusatzdatei, im Bild oder als Finder-Tags; Filter nach Bewertung; Sammelaktion für verworfene Bilder.
+- Schnellablage (`M`/`C` + `1`–`9`) mit Namenskonflikt-Abfrage und Rückgängig.
+- Rasteransicht, Vergleich von 2–4 Bildern, Lupe, gekoppelte Fenster.
+- HDR/EDR-Darstellung mit SDR-Vorschau und Belichtungsregler.
+- Unterordner, Nachbarordner (⌥← / ⌥→), „Gehe zu Bild“, zufällige Reihenfolge, Schnellfilter (⌘F).
+- RAW+JPEG-Paare als ein Bild (optional), GPS mit Karte nach Klick, Fenster mit allen Metadaten.
+- Neue Formate: QOI, PCX, PBM/PGM/PPM/PFM, SGI, OpenRaster, Krita; Decoder im Hilfsprozess.
+
+**Hinweise**
+- Bei RAW+JPEG gehört `IMG_1.xmp` der RAW-Datei (Lightroom); das JPEG nutzt `IMG_1.JPG.xmp`.
+- Kartenausschnitte werden erst nach „Karte anzeigen“ von Apple geladen und nur bei sichtbarem
+  Infopanel; „Karte ausblenden“ nimmt die Zustimmung zurück.
+- Bekannte Grenzen: SVG über Qt SVG (resvg folgt), XCF/PSB erst in M4.
+
+**New (English)**
+- 18 languages (follows the system language, switchable without restart; translations not yet reviewed).
+- Culling mode (⌘K) with stars, pick/reject and auto-advance; ratings in XMP sidecars, embedded or as
+  Finder tags; rating filter; bulk action for rejected images.
+- Quick move/copy (`M`/`C` + `1`–`9`) with name-conflict handling and undo.
+- Grid view, compare 2–4 images, loupe, coupled windows.
+- HDR/EDR display with SDR preview and exposure control.
+- Subfolders, sibling folders (⌥← / ⌥→), “Go to Image”, shuffle, quick filter (⌘F).
+- RAW+JPEG pairs as one image (optional), GPS with a map after a click, full metadata window.
+- New formats: QOI, PCX, PBM/PGM/PPM/PFM, SGI, OpenRaster, Krita; decoders in a helper process.
+
 ## Lizenzen im Paket (SPEC 11)
 
 - Qt bleibt dynamisch gelinkt (Frameworks unter `Contents/Frameworks`) und ist damit austauschbar (LGPLv3).

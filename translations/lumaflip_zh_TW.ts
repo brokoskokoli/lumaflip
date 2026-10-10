@@ -71,7 +71,7 @@
         <translation>&lt;p&gt;適用於 macOS 的快速影像檢視器：按兩下即可打開整個檔案夾，順序與 Finder 中相同。&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli 與貢獻者&lt;/p&gt;&lt;p&gt;Lumaflip 是自由軟體：你可以依據 &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; 第 3 版或（依你的選擇）任何更新版本的條款來散布及修改。Lumaflip 不提供任何擔保。&lt;/p&gt;&lt;p&gt;原始碼：&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;使用 Qt %3（LGPLv3）。&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Lizenzen von Drittanbietern…</source>
+        <source>Lizenzen von Drittanbietern …</source>
         <translation>第三方授權…</translation>
     </message>
 </context>
@@ -276,7 +276,7 @@
     <name>lf::CullingController</name>
     <message>
         <source>Bewertung wird gelesen …</source>
-        <translation>正在讀取評分 …</translation>
+        <translation>正在讀取評分…</translation>
     </message>
     <message>
         <source>AUSSORTIEREN</source>
@@ -323,8 +323,8 @@
         </translation>
     </message>
     <message>
-        <source>XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
-        <translation>XMP 附屬檔案會一起移動。⌘Z 可還原整個步驟。</translation>
+        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <translation>僅限顯示的影像（目前的篩選條件）。XMP 附屬檔案和 RAW+JPEG 配對中的另一個檔案會一起移動。⌘Z 可還原整個步驟。</translation>
     </message>
     <message>
         <source>In den Papierkorb</source>
@@ -821,31 +821,31 @@
     <message>
         <source>%1° %2</source>
         <extracomment>GPS coordinate: degrees and hemisphere letter, e.g. &quot;48,137154° N&quot;</extracomment>
-        <translation>%1° %2</translation>
+        <translation>%2 %1°</translation>
     </message>
     <message>
         <source>S</source>
         <comment>south</comment>
         <extracomment>GPS hemisphere: abbreviation of &quot;south&quot;</extracomment>
-        <translation>南</translation>
+        <translation>南緯</translation>
     </message>
     <message>
         <source>N</source>
         <comment>north</comment>
         <extracomment>GPS hemisphere: abbreviation of &quot;north&quot;</extracomment>
-        <translation>北</translation>
+        <translation>北緯</translation>
     </message>
     <message>
         <source>W</source>
         <comment>west</comment>
         <extracomment>GPS hemisphere: abbreviation of &quot;west&quot;</extracomment>
-        <translation>西</translation>
+        <translation>西經</translation>
     </message>
     <message>
         <source>O</source>
         <comment>east</comment>
         <extracomment>GPS hemisphere: abbreviation of &quot;east&quot; (German &quot;O&quot; = Ost)</extracomment>
-        <translation>東</translation>
+        <translation>東經</translation>
     </message>
     <message>
         <source>%1 m</source>
@@ -858,7 +858,7 @@
     <message>
         <source>%1° %2′ %3″ %4</source>
         <extracomment>GPS coordinate in degrees, minutes, seconds, e.g. &quot;48° 8′ 13,6″ N&quot;</extracomment>
-        <translation>%1° %2′ %3″ %4</translation>
+        <translation>%4 %1°%2′%3″</translation>
     </message>
     <message>
         <source>%1, %2</source>
@@ -1048,6 +1048,14 @@
     <message>
         <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
         <translation>從 Apple 地圖載入地圖片段（需要網際網路連線）</translation>
+    </message>
+    <message>
+        <source>Karte ausblenden</source>
+        <translation>隱藏地圖</translation>
+    </message>
+    <message>
+        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)</source>
+        <translation>不再載入地圖片段（直到再次點按「顯示地圖」）</translation>
     </message>
     <message>
         <source>In Karten öffnen</source>
@@ -2620,11 +2628,11 @@
     </message>
     <message>
         <source>Alle verworfenen in den Papierkorb …</source>
-        <translation>將所有排除的丟到垃圾桶 …</translation>
+        <translation>將所有排除的丟到垃圾桶…</translation>
     </message>
     <message>
         <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
-        <translation>將所有排除的移到「_Rejected」 …</translation>
+        <translation>將所有排除的移到「_Rejected」…</translation>
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
@@ -2644,7 +2652,7 @@
     </message>
     <message>
         <source>Ziele der Schnellablage festlegen …</source>
-        <translation>設定快速歸檔目標 …</translation>
+        <translation>設定快速歸檔目標…</translation>
     </message>
     <message>
         <source>Raster</source>
@@ -3658,7 +3666,7 @@
     </message>
     <message>
         <source>Wählen …</source>
-        <translation>選擇 …</translation>
+        <translation>選擇…</translation>
     </message>
     <message>
         <source>Entfernen</source>
@@ -3991,11 +3999,11 @@
     <name>lf::QuickMoveController</name>
     <message>
         <source>Verschieben nach … (1–9, M = wie zuletzt)</source>
-        <translation>移動到 …（1–9，M = 同上次）</translation>
+        <translation>移動到…（1–9，M = 同上次）</translation>
     </message>
     <message>
         <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
-        <translation>拷貝到 …（1–9，C = 同上次）</translation>
+        <translation>拷貝到…（1–9，C = 同上次）</translation>
     </message>
     <message>
         <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
@@ -4172,8 +4180,16 @@
         <translation>評分</translation>
     </message>
     <message>
+        <source>Bewertungen</source>
+        <translation>評分</translation>
+    </message>
+    <message>
         <source>Die Datei kann nicht gelesen werden.</source>
         <translation>無法讀取檔案。</translation>
+    </message>
+    <message>
+        <source>Das XMP im Bild ist beschädigt und wird nicht verändert.</source>
+        <translation>影像中的 XMP 已損毀，不會被修改。</translation>
     </message>
     <message>
         <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
@@ -4462,7 +4478,7 @@
         <translation>排序方式現在套用至所有檔案夾</translation>
     </message>
     <message>
-        <source>Zugriff erlauben…</source>
+        <source>Zugriff erlauben …</source>
         <translation>允許取用…</translation>
     </message>
     <message>
@@ -4470,7 +4486,7 @@
         <translation>隱藏</translation>
     </message>
     <message>
-        <source>Öffnen…</source>
+        <source>Öffnen …</source>
         <translation>打開…</translation>
     </message>
     <message>

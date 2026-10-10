@@ -226,7 +226,7 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     m_accessText = new QLabel(hint);
     m_accessText->setObjectName(QStringLiteral("lfAccessText"));
     m_accessText->setWordWrap(true);
-    auto* allow = new QPushButton(tr("Zugriff erlauben…"), hint);
+    auto* allow = new QPushButton(tr("Zugriff erlauben …"), hint);
     allow->setObjectName(QStringLiteral("lfAllowAccess"));
     allow->setFocusPolicy(Qt::NoFocus);
     auto* dismiss = new QPushButton(tr("Ausblenden"), hint);
@@ -257,7 +257,7 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     m_emptyText = new QLabel(m_emptyState);
     m_emptyText->setObjectName(QStringLiteral("lfEmptyText"));
     m_emptyText->setAlignment(Qt::AlignCenter);
-    auto* open = new QPushButton(tr("Öffnen…"), m_emptyState);
+    auto* open = new QPushButton(tr("Öffnen …"), m_emptyState);
     open->setObjectName(QStringLiteral("lfOpenButton"));
     open->setFocusPolicy(Qt::NoFocus);
     open->setCursor(Qt::PointingHandCursor);
@@ -992,7 +992,7 @@ QString ViewerWindow::statusText() const {
         if (!l->text().isEmpty())
             parts << l->text();
     if (const QString filter = m_culling->filterStatus(); !filter.isEmpty())
-        parts << filter; // F-CULL-04
+        parts << filter;              // F-CULL-04
     parts << m_extras->statusParts(); // M3: name filter, shuffle, coupling
     return parts.join(QStringLiteral(" · "));
 }
@@ -1020,7 +1020,7 @@ void ViewerWindow::updateEmptyState() {
 
 void ViewerWindow::updateEmptyStyle() {
     // The start screen lies on the image background (dark by default): text and the
-    // "Öffnen…" button get colors with enough contrast to it.
+    // "Öffnen …" button get colors with enough contrast to it.
     const bool dark = m_view->backgroundColor().lightnessF() < 0.5;
     m_startRecent->setDark(dark);
     m_emptyText->setStyleSheet(dark ? QStringLiteral("color: rgb(200, 200, 200); font-size: 18px;")

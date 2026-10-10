@@ -71,7 +71,7 @@
         <translation>&lt;p&gt;Nopea kuvien katseluohjelma macOS:lle: kaksoisosoitus avaa koko kansion – samassa järjestyksessä kuin Finderissa.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli ja muut tekijät&lt;/p&gt;&lt;p&gt;Lumaflip on vapaa ohjelmisto: voit levittää ja muokata sitä &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; -lisenssin version 3 tai (valintasi mukaan) minkä tahansa myöhemmän version ehtojen mukaisesti. Lumaflip toimitetaan ilman minkäänlaista takuuta.&lt;/p&gt;&lt;p&gt;Lähdekoodi: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Käyttää Qt %3:a (LGPLv3).&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Lizenzen von Drittanbietern…</source>
+        <source>Lizenzen von Drittanbietern …</source>
         <translation>Kolmansien osapuolten lisenssit…</translation>
     </message>
 </context>
@@ -166,8 +166,8 @@
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
         <extracomment>status bar while a folder with subfolders is read (F-OPEN-08)</extracomment>
         <translation>
-            <numerusform>Luetaan alikansioita … %1 kansiota, %n kuva</numerusform>
-            <numerusform>Luetaan alikansioita … %1 kansiota, %n kuvaa</numerusform>
+            <numerusform>Luetaan alikansioita… %1 kansiota, %n kuva</numerusform>
+            <numerusform>Luetaan alikansioita… %1 kansiota, %n kuvaa</numerusform>
         </translation>
     </message>
     <message>
@@ -278,7 +278,7 @@
     <name>lf::CullingController</name>
     <message>
         <source>Bewertung wird gelesen …</source>
-        <translation>Luetaan arviota …</translation>
+        <translation>Luetaan arviota…</translation>
     </message>
     <message>
         <source>AUSSORTIEREN</source>
@@ -327,8 +327,8 @@
         </translation>
     </message>
     <message>
-        <source>XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
-        <translation>XMP-sivutiedostot siirtyvät mukana. ⌘Z kumoaa koko vaiheen.</translation>
+        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <translation>Vain näytetyt kuvat (nykyiset suodattimet). XMP-sivutiedostot ja RAW+JPEG-parien toinen tiedosto siirtyvät mukana. ⌘Z kumoaa koko vaiheen.</translation>
     </message>
     <message>
         <source>In den Papierkorb</source>
@@ -1047,7 +1047,7 @@
     </message>
     <message>
         <source>Karte wird geladen …</source>
-        <translation>Ladataan karttaa …</translation>
+        <translation>Ladataan karttaa…</translation>
     </message>
     <message>
         <source>Karte anzeigen</source>
@@ -1056,6 +1056,14 @@
     <message>
         <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
         <translation>Lataa karttaotteen Apple Kartoista (internetyhteys)</translation>
+    </message>
+    <message>
+        <source>Karte ausblenden</source>
+        <translation>Piilota kartta</translation>
+    </message>
+    <message>
+        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)</source>
+        <translation>Älä lataa enää karttaotteita (ennen seuraavaa ”Näytä kartta” -napsautusta)</translation>
     </message>
     <message>
         <source>In Karten öffnen</source>
@@ -1171,7 +1179,7 @@
     </message>
     <message>
         <source>Alle Metadaten …</source>
-        <translation>Kaikki metatiedot …</translation>
+        <translation>Kaikki metatiedot…</translation>
     </message>
     <message>
         <source>Tags</source>
@@ -2628,11 +2636,11 @@
     </message>
     <message>
         <source>Alle verworfenen in den Papierkorb …</source>
-        <translation>Kaikki hylätyt roskakoriin …</translation>
+        <translation>Kaikki hylätyt roskakoriin…</translation>
     </message>
     <message>
         <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
-        <translation>Kaikki hylätyt kansioon ”_Rejected” …</translation>
+        <translation>Kaikki hylätyt kansioon ”_Rejected”…</translation>
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
@@ -2652,7 +2660,7 @@
     </message>
     <message>
         <source>Ziele der Schnellablage festlegen …</source>
-        <translation>Määritä pikasiirron kohteet …</translation>
+        <translation>Määritä pikasiirron kohteet…</translation>
     </message>
     <message>
         <source>Raster</source>
@@ -2977,7 +2985,7 @@
     </message>
     <message>
         <source>Suchen (Feld oder Wert) …</source>
-        <translation>Hae (kenttä tai arvo) …</translation>
+        <translation>Hae (kenttä tai arvo)…</translation>
     </message>
     <message>
         <source>Feld</source>
@@ -3674,7 +3682,7 @@
     </message>
     <message>
         <source>Wählen …</source>
-        <translation>Valitse …</translation>
+        <translation>Valitse…</translation>
     </message>
     <message>
         <source>Entfernen</source>
@@ -4007,11 +4015,11 @@
     <name>lf::QuickMoveController</name>
     <message>
         <source>Verschieben nach … (1–9, M = wie zuletzt)</source>
-        <translation>Siirrä kohteeseen … (1–9, M = kuten viimeksi)</translation>
+        <translation>Siirrä kohteeseen… (1–9, M = kuten viimeksi)</translation>
     </message>
     <message>
         <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
-        <translation>Kopioi kohteeseen … (1–9, C = kuten viimeksi)</translation>
+        <translation>Kopioi kohteeseen… (1–9, C = kuten viimeksi)</translation>
     </message>
     <message>
         <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
@@ -4190,8 +4198,16 @@
         <translation>Arvio</translation>
     </message>
     <message>
+        <source>Bewertungen</source>
+        <translation>Arviot</translation>
+    </message>
+    <message>
         <source>Die Datei kann nicht gelesen werden.</source>
         <translation>Tiedostoa ei voi lukea.</translation>
+    </message>
+    <message>
+        <source>Das XMP im Bild ist beschädigt und wird nicht verändert.</source>
+        <translation>Kuvan XMP-tiedot ovat vioittuneet, eikä niitä muuteta.</translation>
     </message>
     <message>
         <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
@@ -4480,7 +4496,7 @@
         <translation>Järjestys koskee nyt kaikkia kansioita</translation>
     </message>
     <message>
-        <source>Zugriff erlauben…</source>
+        <source>Zugriff erlauben …</source>
         <translation>Salli käyttö…</translation>
     </message>
     <message>
@@ -4488,7 +4504,7 @@
         <translation>Kätke</translation>
     </message>
     <message>
-        <source>Öffnen…</source>
+        <source>Öffnen …</source>
         <translation>Avaa…</translation>
     </message>
     <message>

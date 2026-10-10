@@ -71,7 +71,7 @@
         <translation>&lt;p&gt;macOS용 빠른 이미지 뷰어: 이중 클릭하면 폴더 전체가 Finder와 같은 순서로 열립니다.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli 및 기여자&lt;/p&gt;&lt;p&gt;Lumaflip은 자유 소프트웨어입니다. &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; 버전 3 또는 (사용자의 선택에 따라) 그 이후 버전의 조건에 따라 재배포하거나 수정할 수 있습니다. Lumaflip은 어떠한 보증도 없이 제공됩니다.&lt;/p&gt;&lt;p&gt;소스 코드: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Qt %3(LGPLv3)을 사용합니다.&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Lizenzen von Drittanbietern…</source>
+        <source>Lizenzen von Drittanbietern …</source>
         <translation>타사 라이선스…</translation>
     </message>
 </context>
@@ -276,7 +276,7 @@
     <name>lf::CullingController</name>
     <message>
         <source>Bewertung wird gelesen …</source>
-        <translation>별점 읽는 중 …</translation>
+        <translation>별점 읽는 중…</translation>
     </message>
     <message>
         <source>AUSSORTIEREN</source>
@@ -323,8 +323,8 @@
         </translation>
     </message>
     <message>
-        <source>XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
-        <translation>XMP 사이드카 파일도 함께 이동합니다. ⌘Z로 전체 단계를 실행 취소할 수 있습니다.</translation>
+        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <translation>표시된 이미지만 해당됩니다(현재 필터). XMP 사이드카 파일과 RAW+JPEG 쌍의 다른 파일도 함께 이동합니다. ⌘Z로 전체 단계를 실행 취소할 수 있습니다.</translation>
     </message>
     <message>
         <source>In den Papierkorb</source>
@@ -821,31 +821,31 @@
     <message>
         <source>%1° %2</source>
         <extracomment>GPS coordinate: degrees and hemisphere letter, e.g. &quot;48,137154° N&quot;</extracomment>
-        <translation>%1° %2</translation>
+        <translation>%2 %1°</translation>
     </message>
     <message>
         <source>S</source>
         <comment>south</comment>
         <extracomment>GPS hemisphere: abbreviation of &quot;south&quot;</extracomment>
-        <translation>남</translation>
+        <translation>남위</translation>
     </message>
     <message>
         <source>N</source>
         <comment>north</comment>
         <extracomment>GPS hemisphere: abbreviation of &quot;north&quot;</extracomment>
-        <translation>북</translation>
+        <translation>북위</translation>
     </message>
     <message>
         <source>W</source>
         <comment>west</comment>
         <extracomment>GPS hemisphere: abbreviation of &quot;west&quot;</extracomment>
-        <translation>서</translation>
+        <translation>서경</translation>
     </message>
     <message>
         <source>O</source>
         <comment>east</comment>
         <extracomment>GPS hemisphere: abbreviation of &quot;east&quot; (German &quot;O&quot; = Ost)</extracomment>
-        <translation>동</translation>
+        <translation>동경</translation>
     </message>
     <message>
         <source>%1 m</source>
@@ -858,7 +858,7 @@
     <message>
         <source>%1° %2′ %3″ %4</source>
         <extracomment>GPS coordinate in degrees, minutes, seconds, e.g. &quot;48° 8′ 13,6″ N&quot;</extracomment>
-        <translation>%1° %2′ %3″ %4</translation>
+        <translation>%4 %1° %2′ %3″</translation>
     </message>
     <message>
         <source>%1, %2</source>
@@ -1048,6 +1048,14 @@
     <message>
         <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
         <translation>Apple 지도에서 지도 일부를 불러옵니다(인터넷 연결)</translation>
+    </message>
+    <message>
+        <source>Karte ausblenden</source>
+        <translation>지도 가리기</translation>
+    </message>
+    <message>
+        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)</source>
+        <translation>지도 조각을 더 이상 불러오지 않습니다(&apos;지도 보기&apos;를 다시 클릭할 때까지)</translation>
     </message>
     <message>
         <source>In Karten öffnen</source>
@@ -2620,11 +2628,11 @@
     </message>
     <message>
         <source>Alle verworfenen in den Papierkorb …</source>
-        <translation>거부된 모든 이미지를 휴지통으로 …</translation>
+        <translation>거부된 모든 이미지를 휴지통으로…</translation>
     </message>
     <message>
         <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
-        <translation>거부된 모든 이미지를 ‘_Rejected’로 …</translation>
+        <translation>거부된 모든 이미지를 ‘_Rejected’로…</translation>
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
@@ -2644,7 +2652,7 @@
     </message>
     <message>
         <source>Ziele der Schnellablage festlegen …</source>
-        <translation>빠른 이동 대상 설정 …</translation>
+        <translation>빠른 이동 대상 설정…</translation>
     </message>
     <message>
         <source>Raster</source>
@@ -3658,7 +3666,7 @@
     </message>
     <message>
         <source>Wählen …</source>
-        <translation>선택 …</translation>
+        <translation>선택…</translation>
     </message>
     <message>
         <source>Entfernen</source>
@@ -3991,11 +3999,11 @@
     <name>lf::QuickMoveController</name>
     <message>
         <source>Verschieben nach … (1–9, M = wie zuletzt)</source>
-        <translation>다음으로 이동 … (1–9, M = 지난번과 동일)</translation>
+        <translation>다음으로 이동… (1–9, M = 지난번과 동일)</translation>
     </message>
     <message>
         <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
-        <translation>다음으로 복사 … (1–9, C = 지난번과 동일)</translation>
+        <translation>다음으로 복사… (1–9, C = 지난번과 동일)</translation>
     </message>
     <message>
         <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
@@ -4172,8 +4180,16 @@
         <translation>별점</translation>
     </message>
     <message>
+        <source>Bewertungen</source>
+        <translation>별점</translation>
+    </message>
+    <message>
         <source>Die Datei kann nicht gelesen werden.</source>
         <translation>파일을 읽을 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Das XMP im Bild ist beschädigt und wird nicht verändert.</source>
+        <translation>이미지의 XMP가 손상되어 변경하지 않습니다.</translation>
     </message>
     <message>
         <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
@@ -4462,7 +4478,7 @@
         <translation>이제 모든 폴더에 정렬이 적용됩니다</translation>
     </message>
     <message>
-        <source>Zugriff erlauben…</source>
+        <source>Zugriff erlauben …</source>
         <translation>접근 허용…</translation>
     </message>
     <message>
@@ -4470,7 +4486,7 @@
         <translation>가리기</translation>
     </message>
     <message>
-        <source>Öffnen…</source>
+        <source>Öffnen …</source>
         <translation>열기…</translation>
     </message>
     <message>

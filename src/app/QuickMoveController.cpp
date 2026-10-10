@@ -180,7 +180,7 @@ void QuickMoveController::askConflict(QWidget* parent, const QStringList& fileNa
     box->setIcon(QMessageBox::Question);
     box->setWindowTitle(tr("Namenskonflikt"));
     // A RAW+JPEG pair is one unit: both names, both renamed alike (FileBatch).
-    const QString shown = fileNames.join(QStringLiteral("“ + „"));
+    const QString shown = fileNames.join(QStringLiteral(" + "));
     QStringList renamed;
     for (const QString& fileName : fileNames)
         renamed << filebatch::keepBothName(folder, fileName, [&](const QString& p) {
@@ -190,7 +190,7 @@ void QuickMoveController::askConflict(QWidget* parent, const QStringList& fileNa
     box->setInformativeText(
         tr("Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der "
            "neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.")
-            .arg(renamed.join(QStringLiteral("“ + „"))));
+            .arg(renamed.join(QStringLiteral(" + "))));
     QPushButton* replace = box->addButton(tr("Ersetzen"), QMessageBox::DestructiveRole);
     replace->setObjectName(QStringLiteral("lfConflictReplace"));
     QPushButton* keepBoth = box->addButton(tr("Beide behalten"), QMessageBox::AcceptRole);

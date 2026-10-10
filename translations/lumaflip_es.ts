@@ -71,7 +71,7 @@
         <translation>&lt;p&gt;Visor de imágenes rápido para macOS: con un doble clic se abre toda la carpeta, en el mismo orden que en el Finder.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli y colaboradores&lt;/p&gt;&lt;p&gt;Lumaflip es software libre: puedes redistribuirlo y modificarlo según los términos de la &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt;, versión 3 o (a tu elección) cualquier versión posterior. Lumaflip se proporciona sin ninguna garantía.&lt;/p&gt;&lt;p&gt;Código fuente: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Usa Qt %3 (LGPLv3).&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Lizenzen von Drittanbietern…</source>
+        <source>Lizenzen von Drittanbietern …</source>
         <translation>Licencias de terceros…</translation>
     </message>
 </context>
@@ -278,7 +278,7 @@
     <name>lf::CullingController</name>
     <message>
         <source>Bewertung wird gelesen …</source>
-        <translation>Leyendo valoración …</translation>
+        <translation>Leyendo valoración…</translation>
     </message>
     <message>
         <source>AUSSORTIEREN</source>
@@ -327,8 +327,8 @@
         </translation>
     </message>
     <message>
-        <source>XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
-        <translation>Los archivos XMP complementarios van con ellas. ⌘Z deshace todo el paso.</translation>
+        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <translation>Solo las imágenes mostradas (filtros actuales). Los archivos XMP complementarios y el segundo archivo de los pares RAW+JPEG van con ellas. ⌘Z deshace todo el paso.</translation>
     </message>
     <message>
         <source>In den Papierkorb</source>
@@ -1056,6 +1056,14 @@
     <message>
         <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
         <translation>Carga una sección de mapa de Apple Mapas (conexión a Internet)</translation>
+    </message>
+    <message>
+        <source>Karte ausblenden</source>
+        <translation>Ocultar mapa</translation>
+    </message>
+    <message>
+        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)</source>
+        <translation>Dejar de cargar fragmentos de mapa (hasta volver a hacer clic en «Mostrar mapa»)</translation>
     </message>
     <message>
         <source>In Karten öffnen</source>
@@ -2628,11 +2636,11 @@
     </message>
     <message>
         <source>Alle verworfenen in den Papierkorb …</source>
-        <translation>Todas las descartadas a la papelera …</translation>
+        <translation>Todas las descartadas a la papelera…</translation>
     </message>
     <message>
         <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
-        <translation>Todas las descartadas a “_Rejected” …</translation>
+        <translation>Todas las descartadas a “_Rejected”…</translation>
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
@@ -2652,7 +2660,7 @@
     </message>
     <message>
         <source>Ziele der Schnellablage festlegen …</source>
-        <translation>Definir destinos del archivado …</translation>
+        <translation>Definir destinos del archivado…</translation>
     </message>
     <message>
         <source>Raster</source>
@@ -3674,7 +3682,7 @@
     </message>
     <message>
         <source>Wählen …</source>
-        <translation>Elegir …</translation>
+        <translation>Elegir…</translation>
     </message>
     <message>
         <source>Entfernen</source>
@@ -4007,11 +4015,11 @@
     <name>lf::QuickMoveController</name>
     <message>
         <source>Verschieben nach … (1–9, M = wie zuletzt)</source>
-        <translation>Mover a … (1–9, M = como la última vez)</translation>
+        <translation>Mover a… (1–9, M = como la última vez)</translation>
     </message>
     <message>
         <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
-        <translation>Copiar a … (1–9, C = como la última vez)</translation>
+        <translation>Copiar a… (1–9, C = como la última vez)</translation>
     </message>
     <message>
         <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
@@ -4190,8 +4198,16 @@
         <translation>Valoración</translation>
     </message>
     <message>
+        <source>Bewertungen</source>
+        <translation>Valoraciones</translation>
+    </message>
+    <message>
         <source>Die Datei kann nicht gelesen werden.</source>
         <translation>No se puede leer el archivo.</translation>
+    </message>
+    <message>
+        <source>Das XMP im Bild ist beschädigt und wird nicht verändert.</source>
+        <translation>El XMP de la imagen está dañado y no se modifica.</translation>
     </message>
     <message>
         <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
@@ -4480,7 +4496,7 @@
         <translation>El orden se aplica ahora a todas las carpetas</translation>
     </message>
     <message>
-        <source>Zugriff erlauben…</source>
+        <source>Zugriff erlauben …</source>
         <translation>Permitir acceso…</translation>
     </message>
     <message>
@@ -4488,7 +4504,7 @@
         <translation>Ocultar</translation>
     </message>
     <message>
-        <source>Öffnen…</source>
+        <source>Öffnen …</source>
         <translation>Abrir…</translation>
     </message>
     <message>

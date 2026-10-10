@@ -535,3 +535,49 @@ TEST(I18n, F_I18N_06_MenuTextsStayCompact) {
                         << lang.toStdString() << ": " << m.source.toStdString() << " -> "
                         << form.toStdString();
 }
+
+TEST(I18n, F_I18N_06_EllipsisFollowsTheLanguageStyle) {
+    LF_SKIP_WITHOUT_TRANSLATIONS();
+    // Apple's per-language style: German puts a space before "…" ("Öffnen …"); English,
+    // French, Japanese … write it right after the word ("Open…", "Ouvrir…", "開く…").
+    // Never three dots.
+    static const QRegularExpression spaceBefore(QStringLiteral("\\S[\\s\\x{00A0}\\x{202F}]+…"));
+    static const QRegularExpression glued(QStringLiteral("[\\p{L}\\p{N}]…"));
+    for (const TsMessage& m : readTs(tsPath(QStringLiteral("en")))) {
+        EXPECT_FALSE(m.source.contains(QStringLiteral("..."))) << m.source.toStdString();
+        EXPECT_FALSE(glued.match(m.source).hasMatch())
+            << "German style is \"Wort …\": " << m.source.toStdString();
+    }
+    for (const QString& lang : translatedLanguages()) {
+        for (const TsMessage& m : readTs(tsPath(lang))) {
+            if (!m.finished)
+                continue;
+            for (const QString& form : m.forms) {
+                EXPECT_FALSE(form.contains(QStringLiteral("...")))
+                    << lang.toStdString() << ": " << form.toStdString();
+                EXPECT_FALSE(spaceBefore.match(form).hasMatch())
+                    << lang.toStdString() << ": no space before \"…\": " << form.toStdString();
+                EXPECT_EQ(form.contains(u'…'), m.source.contains(u'…'))
+                    << lang.toStdString() << ": " << m.source.toStdString() << " -> " << form.toStdString();
+            }
+        }
+    }
+}
+
+TEST(I18n, F_I18N_04_GpsDirectionOrderPerLanguage) {
+    LF_SKIP_WITHOUT_TRANSLATIONS();
+    // East Asian languages put the direction word first ("北緯 35° 39′ 29.4″").
+    const auto dms = [](const char* lang) {
+        ScopedCatalog c(QString::fromLatin1(lang));
+        EXPECT_TRUE(c.ok()) << lang;
+        return QCoreApplication::translate("lf::GeoLocation", "%1° %2′ %3″ %4")
+            .arg(35)
+            .arg(39)
+            .arg(QStringLiteral("29.4"), QCoreApplication::translate("lf::Format", "N", "north"));
+    };
+    EXPECT_EQ(dms("ja"), QStringLiteral("北緯 35° 39′ 29.4″"));
+    EXPECT_EQ(dms("zh_CN"), QStringLiteral("北纬 35°39′29.4″"));
+    EXPECT_EQ(dms("zh_TW"), QStringLiteral("北緯 35°39′29.4″"));
+    EXPECT_EQ(dms("ko"), QStringLiteral("북위 35° 39′ 29.4″"));
+    EXPECT_EQ(dms("en"), QStringLiteral("35° 39′ 29.4″ N"));
+}

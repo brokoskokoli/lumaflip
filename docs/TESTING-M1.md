@@ -42,7 +42,7 @@ open ~/Applications/Lumaflip.app
 ```
 
 - [ ] Die App startet ohne Bild mit einem leeren Fenster: „Bild oder Ordner hierher ziehen“
-      und Knopf „Öffnen…“.
+      und Knopf „Öffnen …“.
 - [ ] Im Dock erscheint das Lumaflip-Symbol, die Menüleiste zeigt „Lumaflip, Ablage,
       Bearbeiten, Darstellung, Navigation, Bild, Fenster, Hilfe“.
 
@@ -231,7 +231,7 @@ Fenster (SPEC 4.15):
 - [ ] ⌘N: leeres Fenster; ⌥⌘N: Kopie des Fensters mit gleichem Ordner, Bild, Zoom und
       sichtbarem Ausschnitt; ⌘W schließt eins, ⌥⌘W alle. Ohne Fenster bleibt die
       Menüleiste nutzbar (⌘O, ⌘N), ein Klick auf das Dock-Symbol öffnet ein leeres Fenster.
-- [ ] Startfenster (ohne Bild): „Öffnen…“ ist auf dem dunklen Hintergrund gut lesbar,
+- [ ] Startfenster (ohne Bild): „Öffnen …“ ist auf dem dunklen Hintergrund gut lesbar,
       darunter keine leere Statusleiste.
 - [ ] Einstellungen (⌘,) offen und vorn: ⌘W schließt die Einstellungen (nicht das
       Bildfenster dahinter); ⌘⌫, ⌘C, ⌘L, ⌘+ wirken dann nicht auf das verdeckte Bild.
@@ -283,8 +283,8 @@ Datenschutz (SPEC 10.2, 12.1 Nr. 8):
 
 - [ ] macOS fragt einmal, ob Lumaflip auf den Ordner „Schreibtisch“ zugreifen darf.
 - [ ] Bei **„Nicht erlauben“**: Das Bild wird trotzdem angezeigt (Titel „… — 1 / 1“),
-      darüber eine gelbe Leiste mit Erklärung und „Zugriff erlauben…“. Kein Fehlerzustand.
-- [ ] „Zugriff erlauben…“ öffnet Systemeinstellungen → Datenschutz & Sicherheit →
+      darüber eine gelbe Leiste mit Erklärung und „Zugriff erlauben …“. Kein Fehlerzustand.
+- [ ] „Zugriff erlauben …“ öffnet Systemeinstellungen → Datenschutz & Sicherheit →
       **Dateien und Ordner**. Lumaflip verlangt nirgends Festplattenvollzugriff.
 - [ ] Gegenprobe ohne Datenschutzsperre: Ordner im Terminal mit `chmod 100 Ordner`
       sperren, ein Bild darin per Pfad öffnen: die Leiste nennt fehlende Leserechte (Finder →

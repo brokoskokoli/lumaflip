@@ -71,7 +71,7 @@
         <translation>&lt;p&gt;Fast image viewer for macOS: a double-click opens the whole folder — in the same order as in the Finder.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli and contributors&lt;/p&gt;&lt;p&gt;Lumaflip is free software: you can redistribute and modify it under the terms of the &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; version 3 or (at your option) any later version. Lumaflip is provided without any warranty.&lt;/p&gt;&lt;p&gt;Source code: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Uses Qt %3 (LGPLv3).&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Lizenzen von Drittanbietern…</source>
+        <source>Lizenzen von Drittanbietern …</source>
         <translation>Third-Party Licenses…</translation>
     </message>
 </context>
@@ -166,8 +166,8 @@
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
         <extracomment>status bar while a folder with subfolders is read (F-OPEN-08)</extracomment>
         <translation>
-            <numerusform>Reading subfolders … %1 folders, %n image</numerusform>
-            <numerusform>Reading subfolders … %1 folders, %n images</numerusform>
+            <numerusform>Reading subfolders… %1 folders, %n image</numerusform>
+            <numerusform>Reading subfolders… %1 folders, %n images</numerusform>
         </translation>
     </message>
     <message>
@@ -278,7 +278,7 @@
     <name>lf::CullingController</name>
     <message>
         <source>Bewertung wird gelesen …</source>
-        <translation>Reading rating …</translation>
+        <translation>Reading rating…</translation>
     </message>
     <message>
         <source>AUSSORTIEREN</source>
@@ -327,8 +327,8 @@
         </translation>
     </message>
     <message>
-        <source>XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
-        <translation>XMP sidecar files go along. ⌘Z undoes the whole step.</translation>
+        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <translation>Only the images shown (current filters). XMP sidecar files and the second file of RAW+JPEG pairs go along. ⌘Z undoes the whole step.</translation>
     </message>
     <message>
         <source>In den Papierkorb</source>
@@ -1047,7 +1047,7 @@
     </message>
     <message>
         <source>Karte wird geladen …</source>
-        <translation>Loading map …</translation>
+        <translation>Loading map…</translation>
     </message>
     <message>
         <source>Karte anzeigen</source>
@@ -1056,6 +1056,14 @@
     <message>
         <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
         <translation>Loads a map section from Apple Maps (internet connection)</translation>
+    </message>
+    <message>
+        <source>Karte ausblenden</source>
+        <translation>Hide Map</translation>
+    </message>
+    <message>
+        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)</source>
+        <translation>Stop loading map snippets (until you click “Show Map” again)</translation>
     </message>
     <message>
         <source>In Karten öffnen</source>
@@ -1171,7 +1179,7 @@
     </message>
     <message>
         <source>Alle Metadaten …</source>
-        <translation>All Metadata …</translation>
+        <translation>All Metadata…</translation>
     </message>
     <message>
         <source>Tags</source>
@@ -2628,11 +2636,11 @@
     </message>
     <message>
         <source>Alle verworfenen in den Papierkorb …</source>
-        <translation>Move All Rejected to Trash …</translation>
+        <translation>Move All Rejected to Trash…</translation>
     </message>
     <message>
         <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
-        <translation>Move All Rejected to “_Rejected” …</translation>
+        <translation>Move All Rejected to “_Rejected”…</translation>
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
@@ -2652,7 +2660,7 @@
     </message>
     <message>
         <source>Ziele der Schnellablage festlegen …</source>
-        <translation>Set Quick Move Targets …</translation>
+        <translation>Set Quick Move Targets…</translation>
     </message>
     <message>
         <source>Raster</source>
@@ -2977,7 +2985,7 @@
     </message>
     <message>
         <source>Suchen (Feld oder Wert) …</source>
-        <translation>Search (field or value) …</translation>
+        <translation>Search (field or value)…</translation>
     </message>
     <message>
         <source>Feld</source>
@@ -3674,7 +3682,7 @@
     </message>
     <message>
         <source>Wählen …</source>
-        <translation>Choose …</translation>
+        <translation>Choose…</translation>
     </message>
     <message>
         <source>Entfernen</source>
@@ -4007,11 +4015,11 @@
     <name>lf::QuickMoveController</name>
     <message>
         <source>Verschieben nach … (1–9, M = wie zuletzt)</source>
-        <translation>Move to … (1–9, M = same as last)</translation>
+        <translation>Move to… (1–9, M = same as last)</translation>
     </message>
     <message>
         <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
-        <translation>Copy to … (1–9, C = same as last)</translation>
+        <translation>Copy to… (1–9, C = same as last)</translation>
     </message>
     <message>
         <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
@@ -4190,8 +4198,16 @@
         <translation>Rating</translation>
     </message>
     <message>
+        <source>Bewertungen</source>
+        <translation>Ratings</translation>
+    </message>
+    <message>
         <source>Die Datei kann nicht gelesen werden.</source>
         <translation>The file cannot be read.</translation>
+    </message>
+    <message>
+        <source>Das XMP im Bild ist beschädigt und wird nicht verändert.</source>
+        <translation>The XMP in the image is damaged and is left unchanged.</translation>
     </message>
     <message>
         <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
@@ -4480,7 +4496,7 @@
         <translation>Sorting now applies to all folders</translation>
     </message>
     <message>
-        <source>Zugriff erlauben…</source>
+        <source>Zugriff erlauben …</source>
         <translation>Allow Access…</translation>
     </message>
     <message>
@@ -4488,7 +4504,7 @@
         <translation>Hide</translation>
     </message>
     <message>
-        <source>Öffnen…</source>
+        <source>Öffnen …</source>
         <translation>Open…</translation>
     </message>
     <message>
