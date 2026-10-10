@@ -71,7 +71,9 @@ Neue Quelldateien werden per Glob automatisch gebaut (CMake `CONFIGURE_DEPENDS`)
 ## Konventionen
 
 - Namespace `lf`. C++20. Qt-Typen bevorzugen (QString, QVector …). Keine Exceptions über Modulgrenzen.
+<!-- REUSE-IgnoreStart -->
 - Jede Datei beginnt mit `// SPDX-License-Identifier: GPL-3.0-or-later`.
+<!-- REUSE-IgnoreEnd -->
 - UI-Texte auf Deutsch als Ausgangssprache, immer über `tr()` (Mehrsprachigkeit, SPEC 4.16):
   ganze Sätze mit `%1` statt Verkettung, Plural mit `tr("%n …", nullptr, n)`. Außerhalb von
   QObject-Klassen eine `struct Tr { Q_DECLARE_TR_FUNCTIONS(lf::Kontext) };` (sonst falscher

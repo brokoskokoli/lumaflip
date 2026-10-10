@@ -639,9 +639,11 @@ public:
 - Sie ist bei freien Bildbetrachtern üblich (nomacs, qimgv, Gwenview).
 
 Weitere Pflichten:
+<!-- REUSE-IgnoreStart -->
 - `LICENSE` im Repo, SPDX-Kopfzeile (`SPDX-License-Identifier: GPL-3.0-or-later`) in jeder Quelldatei.
+<!-- REUSE-IgnoreEnd -->
 - Fenster „Über“ mit Drittanbieter-Lizenzen; die Lizenztexte liegen im App-Bundle.
-- Beiträge laufen über das DCO (`Signed-off-by`) statt eines CLA.
+- Beiträge: kein CLA; inbound = outbound (Beiträge stehen unter GPL-3.0-or-later), ein DCO-`Signed-off-by` ist willkommen, aber keine Pflicht (CONTRIBUTING.md).
 - **Hinweis:** Eine spätere Mac-App-Store-Edition verträgt sich nicht mit der GPL (Konflikt mit den App-Store-Bedingungen) und ist damit praktisch ausgeschlossen. Das ist akzeptiert, weil der Direktvertrieb ohnehin die bessere Lösung ist (10.1).
 
 ---
