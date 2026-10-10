@@ -208,6 +208,9 @@ jobs:
       VCPKG_DEFAULT_TRIPLET: x64-windows-static-md
       # Shared runners: timing limits of the tests x2.
       LF_TIMING_FACTOR: "2"
+      # Qt writes its messages to the debugger output when stderr is no console (ctest
+      # pipes): keep them in the test logs.
+      QT_FORCE_STDERR_LOGGING: "1"
     defaults:
       run:
         shell: pwsh

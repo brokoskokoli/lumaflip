@@ -240,12 +240,21 @@ QVector<FileEntry> enumerateFolder(const QString& folderPath, bool* accessDenied
         e.created = toUtc(fd.ftCreationTime);
         if (fd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
             // A symbolic link: the target's data (dangling links and links to folders are skipped).
-            const QFileInfo target(e.path);
-            if (!target.exists() || !target.isFile())
+            // Opening the link follows it (no FILE_FLAG_OPEN_REPARSE_POINT).
+            const QString native = QDir::toNativeSeparators(e.path);
+            HANDLE h = CreateFileW(reinterpret_cast<LPCWSTR>(native.utf16()), FILE_READ_ATTRIBUTES,
+                                   FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, nullptr,
+                                   OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, nullptr);
+            if (h == INVALID_HANDLE_VALUE)
                 continue;
-            e.size = target.size();
-            e.modified = target.lastModified(QTimeZone::UTC);
-            e.created = target.birthTime(QTimeZone::UTC);
+            BY_HANDLE_FILE_INFORMATION info{};
+            const bool ok = GetFileInformationByHandle(h, &info) != 0;
+            CloseHandle(h);
+            if (!ok || (info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+                continue;
+            e.size = qint64((quint64(info.nFileSizeHigh) << 32) | info.nFileSizeLow);
+            e.modified = toUtc(info.ftLastWriteTime);
+            e.created = toUtc(info.ftCreationTime);
         }
         out.append(std::move(e));
     } while (FindNextFileW(find, &fd));

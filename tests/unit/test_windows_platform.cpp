@@ -445,6 +445,8 @@ TEST(WindowsPlatform, HelperSandboxPartsDiagnostics) {
         std::printf("sandbox off [%s]: %s\n", off,
                     pong ? (pong->sandboxed ? "ping ok, sandboxed" : "ping ok, not sandboxed")
                          : qPrintable(QStringLiteral("failed: ") + error));
+        if (!*off && !pong)
+            ADD_FAILURE() << "the fully sandboxed helper does not start (see the lines above/below)";
     }
     qunsetenv("LF_DECODER_HELPER_SANDBOX_OFF");
 }

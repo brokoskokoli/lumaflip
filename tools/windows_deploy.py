@@ -121,8 +121,10 @@ def main() -> int:
     args = ap.parse_args()
     build: pathlib.Path = args.build
     out: pathlib.Path = args.out
-    app = build / "src" / "Lumaflip.exe"
-    helper = build / "src" / "lumaflip-decoder.exe"
+    # qt_standard_project_setup() puts the executables into the top of the build tree.
+    exe_dir = build if (build / "Lumaflip.exe").is_file() else build / "src"
+    app = exe_dir / "Lumaflip.exe"
+    helper = exe_dir / "lumaflip-decoder.exe"
     for f in (app, helper):
         if not f.is_file():
             raise SystemExit(f"error: {f} missing - build first")
