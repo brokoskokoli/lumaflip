@@ -99,6 +99,9 @@ def manual_rows(known_ids: set[str]) -> tuple[dict[str, list[str]], list[str]]:
                 if not re.fullmatch(r"\|(\s*:?-+:?\s*\|)+", sep.strip()):
                     errors.append(f"{rel}:{no}: table header without separator row")
                 in_table, ncols = True, len(header)
+                # Only tables whose first header cell is "ID" list requirements; other
+                # tables (e.g. release checklists) are validated for shape only.
+                id_table = bool(header) and header[0] == "ID"
                 skip_sep = True
             continue
         if skip_sep:
@@ -117,6 +120,8 @@ def manual_rows(known_ids: set[str]) -> tuple[dict[str, list[str]], list[str]]:
         if any(not c for c in cells):
             errors.append(f"{rel}:{no}: empty cell")
         rid = cells[0]
+        if not id_table:
+            continue
         if not ID_TEXT.match(rid):
             errors.append(f"{rel}:{no}: first column is not a requirement ID: {rid!r}")
         elif rid not in known_ids:

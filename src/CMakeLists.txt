@@ -33,6 +33,7 @@ file(GLOB LF_UI_SOURCES CONFIGURE_DEPENDS app/*.cpp app/*.h app/*.mm)
 list(FILTER LF_UI_SOURCES EXCLUDE REGEX ".*/main\\.cpp$")
 add_library(lf_ui STATIC ${LF_UI_SOURCES})
 target_link_libraries(lf_ui PUBLIC lf_core Qt6::Widgets Qt6::GuiPrivate PRIVATE lf_warnings)
+target_compile_definitions(lf_ui PRIVATE LF_APP_VERSION="${PROJECT_VERSION}") # AboutDialog
 if(APPLE)
   target_compile_options(lf_ui PRIVATE $<$<COMPILE_LANGUAGE:OBJCXX>:-fobjc-arc>)
 endif()
@@ -42,7 +43,10 @@ if(LF_SHADERS)
 endif()
 
 # ---- the app bundle ----
-qt_add_executable(Lumaflip MACOSX_BUNDLE app/main.cpp)
+# App icon (source: packaging/macos/icon/lumaflip.svg, rendered by tools/make_icon.sh).
+set(LF_APP_ICON "${PROJECT_SOURCE_DIR}/packaging/macos/icon/Lumaflip.icns")
+set_source_files_properties(${LF_APP_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+qt_add_executable(Lumaflip MACOSX_BUNDLE app/main.cpp ${LF_APP_ICON})
 target_link_libraries(Lumaflip PRIVATE lf_ui lf_warnings)
 target_compile_definitions(Lumaflip PRIVATE LF_APP_VERSION="${PROJECT_VERSION}")
 set_target_properties(Lumaflip PROPERTIES
@@ -50,5 +54,7 @@ set_target_properties(Lumaflip PROPERTIES
   MACOSX_BUNDLE_INFO_PLIST "${PROJECT_SOURCE_DIR}/packaging/macos/Info.plist.in"
   MACOSX_BUNDLE_GUI_IDENTIFIER "${LF_BUNDLE_ID}"
   MACOSX_BUNDLE_BUNDLE_NAME "${LF_APP_NAME}"
+  MACOSX_BUNDLE_ICON_FILE "Lumaflip.icns"
+  MACOSX_BUNDLE_COPYRIGHT "© 2026 brokoskokoli und Mitwirkende. Lizenz: GPL-3.0-or-later."
   MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
   MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}")
