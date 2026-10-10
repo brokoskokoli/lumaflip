@@ -658,6 +658,11 @@ void Application::placeWindow(ViewerWindow* window) {
         window->resize(1100, 760);
         if (QScreen* s = QGuiApplication::primaryScreen()) {
             const QRect avail = s->availableGeometry();
+            // Small screens (e.g. 1024 x 768): never larger than the screen. macOS would
+            // shrink and move such a window itself after showing it - also after a resize
+            // the app made in between (F-WIN-08 "fit window to image").
+            window->resize(
+                window->size().boundedTo(QSize(int(avail.width() * 0.9), int(avail.height() * 0.9))));
             window->move(avail.center() - QPoint(window->width() / 2, window->height() / 2));
         }
     }
