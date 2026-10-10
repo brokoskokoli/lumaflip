@@ -14,8 +14,20 @@ Q_LOGGING_CATEGORY(lcEdr, "lf.view.edr")
 
 namespace lf {
 
+namespace {
+// macOS: EDR (extended linear Display P3 CAMetalLayer). Windows: scRGB (RGBA16F, linear
+// sRGB primaries) on an HDR output in advanced color mode (EdrDisplay_win.cpp).
+#ifdef Q_OS_WIN
+constexpr auto kExtendedFormat = QRhiSwapChain::HDRExtendedSrgbLinear;
+constexpr auto kSurfaceType = QSurface::Direct3DSurface;
+#else
+constexpr auto kExtendedFormat = QRhiSwapChain::HDRExtendedDisplayP3Linear;
+constexpr auto kSurfaceType = QSurface::MetalSurface;
+#endif
+} // namespace
+
 EdrSurface::EdrSurface(ImageCanvas* canvas) : m_canvas(canvas) {
-    setSurfaceType(QSurface::MetalSurface);
+    setSurfaceType(kSurfaceType);
     setFlags(Qt::FramelessWindowHint | Qt::WindowTransparentForInput | Qt::WindowDoesNotAcceptFocus);
     connect(canvas, &ImageCanvas::rhiAboutToBeReleased, this, &EdrSurface::releaseSwapChain);
 }
@@ -54,14 +66,14 @@ bool EdrSurface::ensureSwapChain() {
     if (!m_swapChain) {
         m_swapChain.reset(rhi->newSwapChain());
         m_swapChain->setWindow(this);
-        if (!m_swapChain->isFormatSupported(QRhiSwapChain::HDRExtendedDisplayP3Linear)) {
-            qCInfo(lcEdr) << "extended linear Display P3 swapchain not supported on this screen";
+        if (!m_swapChain->isFormatSupported(kExtendedFormat)) {
+            qCInfo(lcEdr) << "extended range swapchain not supported on this screen";
             releaseSwapChain();
             m_failed = true;
             QTimer::singleShot(0, this, &EdrSurface::failed);
             return false;
         }
-        m_swapChain->setFormat(QRhiSwapChain::HDRExtendedDisplayP3Linear);
+        m_swapChain->setFormat(kExtendedFormat);
         m_renderPass.reset(m_swapChain->newCompatibleRenderPassDescriptor());
         m_swapChain->setRenderPassDescriptor(m_renderPass.get());
         if (!m_swapChain->createOrResize()) {

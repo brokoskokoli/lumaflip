@@ -16,6 +16,10 @@ if(LF_GENERIC_PLATFORM)
 else()
   file(GLOB LF_UNIT_TESTS CONFIGURE_DEPENDS unit/*.cpp unit/*.mm)
 endif()
+# Tests of the Windows platform layer (test_windows_*.cpp, include platform/windows) only there.
+if(NOT LF_WINDOWS_PLATFORM)
+  list(FILTER LF_UNIT_TESTS EXCLUDE REGEX ".*/test_windows_[^/]*\\.cpp$")
+endif()
 add_executable(lf_unit_tests ${LF_UNIT_TESTS})
 target_link_libraries(lf_unit_tests PRIVATE lf_core GTest::gtest_main lf_warnings)
 target_compile_definitions(lf_unit_tests PRIVATE LF_TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data"
@@ -51,6 +55,11 @@ if(APPLE)
   target_compile_options(lf_test_support PRIVATE $<$<COMPILE_LANGUAGE:OBJCXX>:-fobjc-arc>)
   target_link_libraries(lf_test_support PUBLIC Qt6::Widgets "-framework AppKit" "-framework Carbon"
                                         PRIVATE lf_warnings)
+  target_include_directories(lf_test_support PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/integration)
+endif()
+if(WIN32)
+  add_library(lf_test_support STATIC integration/support/NativeEvents.h integration/support/NativeEvents_win.cpp)
+  target_link_libraries(lf_test_support PUBLIC Qt6::Widgets user32 PRIVATE lf_warnings)
   target_include_directories(lf_test_support PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/integration)
 endif()
 

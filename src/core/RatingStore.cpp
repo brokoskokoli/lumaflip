@@ -25,6 +25,10 @@
 #ifdef Q_OS_UNIX
 #include <unistd.h>
 #endif
+#ifdef Q_OS_WIN
+#include <io.h>
+#include <windows.h>
+#endif
 
 namespace lf {
 
@@ -56,6 +60,8 @@ bool writeNew(const QString& path, const QByteArray& data, QString* error) {
     }
 #ifdef Q_OS_UNIX
     ::fsync(f.handle());
+#elif defined(Q_OS_WIN)
+    FlushFileBuffers(reinterpret_cast<HANDLE>(_get_osfhandle(f.handle())));
 #endif
     f.close();
     return true;

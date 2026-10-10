@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "CustomActions.h"
 
+#include "CommandLine.h"
 #include "Settings.h"
 
 #include <QCoreApplication>
+#include <QDir>
 #include <QFileInfo>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -15,6 +17,11 @@
 #ifdef Q_OS_UNIX
 #include <csignal>
 #include <sys/types.h>
+#endif
+#ifdef Q_OS_WIN
+#include <windows.h>
+
+#include <shellapi.h>
 #endif
 
 namespace lf {
@@ -95,7 +102,38 @@ QString validate(const CustomAction& a) {
                    : Tr::tr("Die Aktion braucht den Namen eines Kurzbefehls.");
     if (a.kind == CustomAction::Kind::Shortcut && a.command.trimmed().startsWith(u'-'))
         return Tr::tr("Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.");
+#ifdef Q_OS_WIN
+    if (a.kind == CustomAction::Kind::Shortcut)
+        return Tr::tr("Kurzbefehle gibt es nur unter macOS.");
+    const QStringList argv = splitCommand(a.command);
+    if (argv.isEmpty())
+        return Tr::tr("Die Aktion braucht einen Befehl.");
+    if (cmdline::isBatchFile(argv.first()))
+        return Tr::tr("Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen "
+                      "als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript "
+                      "(powershell -File …).");
+#endif
     return {};
+}
+
+QStringList splitCommand(const QString& command) {
+#ifdef Q_OS_WIN
+    // The rules of CommandLineToArgvW, which programs apply to their own command line.
+    const QString trimmed = command.trimmed();
+    if (trimmed.isEmpty())
+        return {};
+    int argc = 0;
+    LPWSTR* argv = CommandLineToArgvW(reinterpret_cast<LPCWSTR>(trimmed.utf16()), &argc);
+    QStringList out;
+    for (int i = 0; argv && i < argc; ++i)
+        out << QString::fromWCharArray(argv[i]);
+    if (argv)
+        LocalFree(argv);
+    return out;
+#else
+    const QString trimmed = command.trimmed();
+    return trimmed.isEmpty() ? QStringList() : QStringList{trimmed};
+#endif
 }
 
 ProcessSpec processFor(const CustomAction& action, const QStringList& files, const QString& shortcutsTool) {
@@ -110,6 +148,19 @@ ProcessSpec processFor(const CustomAction& action, const QStringList& files, con
         }
         return spec;
     }
+#ifdef Q_OS_WIN
+    // Windows: the command is a program with its own arguments; the files are appended as
+    // further arguments, each quoted for CommandLineToArgvW (CustomActionRun::start builds the
+    // command line, core/CommandLine.h) - no cmd.exe in between.
+    const QStringList argv = splitCommand(action.command);
+    if (!argv.isEmpty()) {
+        spec.program = argv.first();
+        spec.arguments = argv.mid(1);
+        for (const QString& f : files)
+            spec.arguments << QDir::toNativeSeparators(f);
+    }
+    return spec;
+#endif
     // The command is the script; the files are positional parameters ("$1", "$@") - the
     // shell never parses them.
     spec.program = QStringLiteral("/bin/sh");
@@ -156,6 +207,14 @@ void CustomActionRun::start() {
                    QProcess::UnixProcessFlag::CloseFileDescriptors;
     params.lowestFileDescriptorToClose = 3;
     m_process->setUnixProcessParameters(params);
+#endif
+#ifdef Q_OS_WIN
+    // The command line exactly as core/CommandLine.h builds it (CommandLineToArgvW rules).
+    const QString commandLine = cmdline::build(QDir::toNativeSeparators(spec.program), spec.arguments);
+    m_process->setCreateProcessArgumentsModifier([commandLine](QProcess::CreateProcessArguments* args) {
+        args->arguments = commandLine;
+        args->flags |= CREATE_NO_WINDOW;
+    });
 #endif
     if (!m_files.isEmpty()) // the folder of the (first) file, if it is there
         if (const QFileInfo dir(QFileInfo(m_files.first()).absolutePath()); dir.isDir())

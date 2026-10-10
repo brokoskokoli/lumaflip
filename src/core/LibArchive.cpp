@@ -8,7 +8,19 @@
 #include <cstdint>
 #include <sys/types.h>
 
-#if LF_HAVE_LIBARCHIVE
+#if LF_HAVE_LIBARCHIVE && defined(Q_OS_WIN)
+// Windows (vcpkg): the real headers - the declarations below use POSIX types, and file
+// names go through the wide-character API (the narrow one expects the ANSI code page).
+#include <archive.h>
+#include <archive_entry.h>
+using LaArchive = struct archive;
+using LaEntry = struct archive_entry;
+using ssize_t = la_ssize_t;
+#define LF_ARCHIVE_OPEN_READ(a, path, block)                                                       \
+    archive_read_open_filename_w(a, reinterpret_cast<const wchar_t*>((path).utf16()), block)
+#define LF_ARCHIVE_OPEN_WRITE(a, path)                                                             \
+    archive_write_open_filename_w(a, reinterpret_cast<const wchar_t*>((path).utf16()))
+#elif LF_HAVE_LIBARCHIVE
 // The stable C API of libarchive 3 (archive.h / archive_entry.h). macOS ships the library
 // (/usr/lib/libarchive.2.dylib, SDK: usr/lib/libarchive.tbd) but no header, so the few
 // functions used here are declared with their documented signatures.
@@ -52,6 +64,8 @@ int archive_write_free(struct archive*);
 // lf::archive (Archive.h) hides the C struct names inside namespace lf.
 using LaArchive = struct archive;
 using LaEntry = struct archive_entry;
+#define LF_ARCHIVE_OPEN_READ(a, path, block) archive_read_open_filename(a, QFile::encodeName(path).constData(), block)
+#define LF_ARCHIVE_OPEN_WRITE(a, path) archive_write_open_filename(a, QFile::encodeName(path).constData())
 #endif
 
 namespace lf::libarchive {
@@ -83,7 +97,7 @@ struct Reader {
         archive_read_support_format_rar(a);
         archive_read_support_format_rar5(a);
         archive_read_support_format_7zip(a);
-        return archive_read_open_filename(a, QFile::encodeName(path).constData(), kBlockSize) == kOk;
+        return LF_ARCHIVE_OPEN_READ(a, path, kBlockSize) == kOk;
     }
 };
 
@@ -200,7 +214,7 @@ bool writeArchive(const QString& path, const QString& format, const QList<QPair<
     };
     if (archive_write_set_format_by_name(a, format.toUtf8().constData()) != kOk)
         return fail("format");
-    if (archive_write_open_filename(a, QFile::encodeName(path).constData()) != kOk)
+    if (LF_ARCHIVE_OPEN_WRITE(a, path) != kOk)
         return fail("open");
     for (const auto& [name, data] : files) {
         LaEntry* e = archive_entry_new();

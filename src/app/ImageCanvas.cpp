@@ -39,9 +39,14 @@ constexpr int kTilePadding = 64;
 constexpr int kUboSize = 288; // image.vert/.frag "buf": 18 x vec4 (mat4 = 4)
 
 // Output space of the extended range presentation (EdrSurface): linear Display P3, values
-// above 1 are brighter than SDR white.
+// above 1 are brighter than SDR white. Windows: scRGB (linear, sRGB primaries, 1.0 = SDR
+// white), the format of an HDRExtendedSrgbLinear swapchain.
 QColorSpace extendedOutputSpace() {
+#ifdef Q_OS_WIN
+    return QColorSpace(QColorSpace::Primaries::SRgb, QColorSpace::TransferFunction::Linear);
+#else
     return QColorSpace(QColorSpace::Primaries::DciP3D65, QColorSpace::TransferFunction::Linear);
+#endif
 }
 
 // How a tile is drawn (fillUbo).

@@ -23,15 +23,32 @@
 #ifdef Q_OS_UNIX
 #include <unistd.h>
 #endif
+#ifdef Q_OS_WIN
+#include <io.h>
+#include <windows.h>
+#endif
 
 int main(int argc, char** argv) {
 #ifdef Q_OS_UNIX
     // The app may vanish at any time: a write to its pipe must fail, not kill the helper.
     std::signal(SIGPIPE, SIG_IGN);
     // The protocol owns the original stdout; anything a library prints goes to stderr.
+    const int protocolIn = STDIN_FILENO;
     const int protocolOut = dup(STDOUT_FILENO);
     dup2(STDERR_FILENO, STDOUT_FILENO);
+#elif defined(Q_OS_WIN)
+    // The protocol owns the pipes behind the original stdin/stdout handles (DecoderIpc.cpp:
+    // descriptors are handle values). A private copy of stdout's handle first: redirecting the
+    // C runtime's stdout to stderr closes the original handle.
+    HANDLE out = nullptr;
+    DuplicateHandle(GetCurrentProcess(), GetStdHandle(STD_OUTPUT_HANDLE), GetCurrentProcess(), &out, 0, FALSE,
+                    DUPLICATE_SAME_ACCESS);
+    const int protocolIn = HandleToLong(GetStdHandle(STD_INPUT_HANDLE));
+    const int protocolOut = HandleToLong(out);
+    SetStdHandle(STD_OUTPUT_HANDLE, GetStdHandle(STD_ERROR_HANDLE));
+    _dup2(_fileno(stderr), _fileno(stdout));
 #else
+    const int protocolIn = 0;
     const int protocolOut = 1;
 #endif
     if (argc < 2 || qstrcmp(argv[1], "--decoder-helper") != 0) {
@@ -63,5 +80,5 @@ int main(int argc, char** argv) {
     backends << std::make_shared<lf::pdf::PdfPageDecoder>(); // M4: PDF pages (F-OPEN-10)
     if (auto resvg = lf::createResvgDecoder()) // M3: SVG 1.1 via resvg (fonts load on first text)
         backends << resvg;
-    return lf::runDecoderHelper(STDIN_FILENO, protocolOut, backends, sandboxed, testOps);
+    return lf::runDecoderHelper(protocolIn, protocolOut, backends, sandboxed, testOps);
 }

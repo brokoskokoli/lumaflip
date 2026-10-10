@@ -34,6 +34,9 @@
 #include <cerrno>
 #include <cstdio>
 #include <cstring>
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
 #ifdef Q_OS_UNIX
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -105,7 +108,28 @@ namespace {
 // at `to` after the caller's check is not overwritten. A case-only rename on a
 // case-insensitive volume (`to` is `from`) uses a plain rename. Returns 0 or an errno.
 int renameNoReplace(const QString& from, const QString& to) {
-#ifndef Q_OS_UNIX
+#if defined(Q_OS_WIN)
+    // MoveFileExW without MOVEFILE_REPLACE_EXISTING fails if `to` exists: the check is part
+    // of the rename (also for a case-only rename of the same file, which NTFS allows).
+    const QString a = QDir::toNativeSeparators(from), b = QDir::toNativeSeparators(to);
+    if (MoveFileExW(reinterpret_cast<const wchar_t*>(a.utf16()), reinterpret_cast<const wchar_t*>(b.utf16()), 0))
+        return 0;
+    switch (GetLastError()) {
+    case ERROR_ALREADY_EXISTS:
+    case ERROR_FILE_EXISTS:
+        return EEXIST;
+    case ERROR_NOT_SAME_DEVICE:
+        return EXDEV;
+    case ERROR_ACCESS_DENIED:
+    case ERROR_SHARING_VIOLATION:
+        return EACCES;
+    case ERROR_FILE_NOT_FOUND:
+    case ERROR_PATH_NOT_FOUND:
+        return ENOENT;
+    default:
+        return EIO;
+    }
+#elif !defined(Q_OS_UNIX)
     if (!sameFile(from, to) && (QFileInfo(to).exists() || QFileInfo(to).isSymLink()))
         return EEXIST;
     std::error_code ec;

@@ -1549,6 +1549,12 @@ void ViewerWindow::toggleFullScreen() {
 
 void ViewerWindow::setChromeVisible(bool visible) {
     m_chromeShown = visible;
+#ifndef Q_OS_MACOS
+    // The window's own menu bar (Windows, Linux) goes with the chrome. It stays "visible"
+    // with zero height: the menu shortcuts only work through a visible bar.
+    if (QWidget* bar = menuWidget())
+        bar->setMaximumHeight(visible ? QWIDGETSIZE_MAX : 0);
+#endif
     applyStatusBarVisibility();
     if (m_panels)
         m_panels->setChromeVisible(visible); // M2 panels hide/return with the chrome

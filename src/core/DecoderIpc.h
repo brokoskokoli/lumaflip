@@ -150,4 +150,14 @@ QImage mapSharedImage(int fd, const PixelHeader& header, QString* error);
 bool unlinkShared(const QByteArray& name);
 bool sharedExists(const QByteArray& name); // tests
 
+#ifdef Q_OS_WIN
+// Windows: descriptors are HANDLE values (see DecoderIpc.cpp). Closes a pipe end or a shared
+// memory object from createShared().
+void closeHandle(int fd);
+// A one-way pipe (a named pipe pair, never reachable remotely). Overlapped ends support the
+// timeouts of readFrame(); inheritable ends can be handed to a child process.
+bool createPipe(int* readEnd, int* writeEnd, bool overlappedRead, bool overlappedWrite, bool inheritRead,
+                bool inheritWrite);
+#endif
+
 } // namespace lf::ipc

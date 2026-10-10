@@ -29,8 +29,13 @@ Installed& installed() {
 }
 
 QString bundleTranslationDir() {
+#ifdef Q_OS_WIN
+    // Windows: <install dir>/translations (Lumaflip's and Qt's catalogues, windeployqt).
+    return QDir::cleanPath(QCoreApplication::applicationDirPath() + QStringLiteral("/translations"));
+#else
     return QDir::cleanPath(QCoreApplication::applicationDirPath() +
                            QStringLiteral("/../Resources/translations"));
+#endif
 }
 
 // Loads the first of `names` found in `dirs` ("qtbase_fr.qm" …); nullptr if none.

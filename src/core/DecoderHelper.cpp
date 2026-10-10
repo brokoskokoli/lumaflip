@@ -39,6 +39,16 @@
 #include <sandbox.h>
 #include <servers/bootstrap.h>
 #endif
+#if defined(Q_OS_WIN) && LF_WINDOWS_PLATFORM
+#include "platform/windows/WinDecoderSandbox.h"
+
+#include <windows.h>
+#include <winsock2.h>
+#include <ws2tcpip.h>
+#define LF_WIN_HELPER 1
+#else
+#define LF_WIN_HELPER 0
+#endif
 #if defined(Q_OS_UNIX) && !defined(Q_OS_DARWIN)
 // POSIX: the process environment. Declared at global scope - inside a namespace it
 // would name a different (undefined) variable.
@@ -88,11 +98,17 @@ struct HelperProcess {
     int fromChild = -1;
     bool busy = false;
     bool verified = false; // answered the first Ping (sandbox checked)
+#if LF_WIN_HELPER
+    win::HelperProcess win; // process and job handles
+#endif
 
     bool running() const { return pid > 0; }
 
     void kill() {
-#ifdef Q_OS_UNIX
+#if LF_WIN_HELPER
+        win::killDecoderHelper(&win);
+        toChild = fromChild = -1;
+#elif defined(Q_OS_UNIX)
         if (toChild >= 0)
             close(toChild);
         if (fromChild >= 0)
@@ -172,6 +188,14 @@ struct HelperProcess {
         toChild = in[1];
         fromChild = out[0];
         return true;
+#elif LF_WIN_HELPER
+        if (!win::startDecoderHelper(o.executable, {QStringLiteral("--decoder-helper")}, o.extraEnvironment, &win,
+                                     error))
+            return false;
+        pid = win.pid;
+        toChild = win.toChild;
+        fromChild = win.fromChild;
+        return true;
 #else
         Q_UNUSED(o);
         if (error)
@@ -233,6 +257,8 @@ struct ShmNameGuard {
 #ifdef Q_OS_UNIX
         if (fd >= 0)
             close(fd);
+#elif LF_WIN_HELPER
+        ipc::closeHandle(fd);
 #endif
     }
 };
@@ -408,8 +434,13 @@ QString DecoderHelperPool::defaultExecutable() {
         return QFileInfo(env).isExecutable() ? env : QString();
     if (!QCoreApplication::instance())
         return {};
+#ifdef Q_OS_WIN
+    const QString exe =
+        QDir(QCoreApplication::applicationDirPath()).filePath(QStringLiteral("lumaflip-decoder.exe"));
+#else
     const QString exe =
         QDir(QCoreApplication::applicationDirPath()).filePath(QStringLiteral("lumaflip-decoder"));
+#endif
     return QFileInfo(exe).isExecutable() ? exe : QString();
 }
 
@@ -587,6 +618,62 @@ bool testOperation(ipc::Op op, const QString& arg, QString* detail) {
     default:
         return false;
     }
+#elif LF_WIN_HELPER
+    switch (op) {
+    case ipc::Op::TestWriteFile: {
+        QFile f(arg);
+        const bool ok = f.open(QIODevice::WriteOnly) && f.write("x", 1) == 1;
+        *detail = f.errorString();
+        return ok;
+    }
+    case ipc::Op::TestSocket: {
+        WSADATA wsa{};
+        if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
+            return false;
+        const SOCKET s = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+        bool ok = false;
+        if (s != INVALID_SOCKET) {
+            sockaddr_in addr{};
+            addr.sin_family = AF_INET;
+            addr.sin_port = htons(quint16(arg.toUInt()));
+            addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+            ok = ::connect(s, reinterpret_cast<const sockaddr*>(&addr), sizeof addr) == 0;
+            if (!ok)
+                *detail = QStringLiteral("WSA error %1").arg(WSAGetLastError());
+            closesocket(s);
+        }
+        WSACleanup();
+        return ok;
+    }
+    case ipc::Op::TestCreateShm: {
+        const std::wstring name =
+            (QStringLiteral("Local\\") + (arg.startsWith(u'/') ? arg.mid(1) : arg)).toStdWString();
+        HANDLE h = CreateFileMappingW(INVALID_HANDLE_VALUE, nullptr, PAGE_READWRITE, 0, 4096, name.c_str());
+        if (!h) {
+            *detail = QStringLiteral("error %1").arg(GetLastError());
+            return false;
+        }
+        CloseHandle(h);
+        return true;
+    }
+    case ipc::Op::TestExec: {
+        STARTUPINFOW si{};
+        si.cb = sizeof si;
+        PROCESS_INFORMATION pi{};
+        std::wstring cmd = QDir::toNativeSeparators(arg).toStdWString();
+        if (!CreateProcessW(nullptr, cmd.data(), nullptr, nullptr, FALSE, CREATE_NO_WINDOW, nullptr, nullptr, &si,
+                            &pi)) {
+            *detail = QStringLiteral("error %1").arg(GetLastError());
+            return false;
+        }
+        WaitForSingleObject(pi.hProcess, 5000);
+        CloseHandle(pi.hThread);
+        CloseHandle(pi.hProcess);
+        return true;
+    }
+    default:
+        return false;
+    }
 #else
     Q_UNUSED(op);
     Q_UNUSED(arg);
@@ -740,6 +827,23 @@ int runDecoderHelper(int inFd, int outFd, const QList<std::shared_ptr<Decoder>>&
         if (ipc::writeFrame(outFd, ipc::encode(response)) != ipc::IoStatus::Ok)
             return 0;
     }
+#elif LF_WIN_HELPER
+    // The app's end of a pipe closing (app gone) ends the loop; while a decode runs, the job
+    // object of the app (KILL_ON_JOB_CLOSE) ends the helper if the app dies.
+    const qint64 pid = qint64(GetCurrentProcessId());
+    DecoderHelperState state;
+    for (;;) {
+        QByteArray payload;
+        const ipc::IoStatus st = ipc::readFrame(inFd, &payload, -1);
+        if (st != ipc::IoStatus::Ok)
+            return st == ipc::IoStatus::Closed ? 0 : 1;
+        const auto request = ipc::decodeRequest(payload);
+        if (!request)
+            return 2;
+        const ipc::Response response = serveDecoderRequest(*request, backends, pid, sandboxed, testOps, &state);
+        if (ipc::writeFrame(outFd, ipc::encode(response)) != ipc::IoStatus::Ok)
+            return 0;
+    }
 #else
     Q_UNUSED(inFd);
     Q_UNUSED(outFd);
@@ -791,6 +895,10 @@ bool applyDecoderSandbox(QString* error) {
     }
 #pragma clang diagnostic pop
     return true;
+#elif LF_WIN_HELPER
+    // Windows: the app starts the helper inside its sandbox (low integrity, job object,
+    // mitigations - WinDecoderSandbox.h); the helper checks that it really runs in it.
+    return win::verifyDecoderSandbox(error);
 #else
     if (error)
         *error = QStringLiteral("not supported on this platform");
