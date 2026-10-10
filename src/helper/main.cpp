@@ -6,8 +6,11 @@
 // down this process. Not meant to be started by hand.
 
 #include "core/DecoderHelper.h"
+#include "core/PsbDecoder.h"
 #include "core/QtImageDecoder.h"
+#include "core/ResvgDecoder.h"
 #include "core/SimpleDecoders.h"
+#include "core/XcfDecoder.h"
 
 #include <QGuiApplication>
 #include <QImageReader>
@@ -48,6 +51,9 @@ int main(int argc, char** argv) {
     QList<std::shared_ptr<lf::Decoder>> backends = {std::make_shared<lf::QtImageDecoder>(),
                                                     std::make_shared<lf::SvgDecoder>()};
     backends << lf::simpleDecoders(); // M3 "Rest" formats (QOI, PCX, PNM/PFM, SGI, ORA, KRA)
+    backends << std::make_shared<lf::XcfDecoder>() << std::make_shared<lf::PsbDecoder>(); // M3: XCF, PSB
+    if (auto resvg = lf::createResvgDecoder()) // M3: SVG 1.1 via resvg (fonts load on first text)
+        backends << resvg;
     const bool testOps = qEnvironmentVariableIntValue("LF_DECODER_HELPER_TEST_OPS") == 1;
     return lf::runDecoderHelper(STDIN_FILENO, protocolOut, backends, sandboxed, testOps);
 }

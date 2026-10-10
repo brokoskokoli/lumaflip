@@ -574,5 +574,190 @@ let svg = """
 """
 writeBytes("vector.svg", svg.data(using: .utf8)!)
 
+// SVG 1.1 features for resvg (M3): CSS selectors QtSvg ignores, a blur filter, a gradient
+// and text (system fonts). Checked by test_resvg.cpp ("resvg" in expected.json).
+let svgFiles: [(String, String)] = [
+    ("css.svg", """
+    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="100">
+      <style>
+        rect[data-q="tl"] { fill: #ff0000; }
+        g.top > rect[data-q="tr"] { fill: #00ff00; }
+        #bl { fill: #0000ff; }
+        .br { fill: #ffffff; }
+      </style>
+      <g class="top">
+        <rect data-q="tl" x="0" y="0" width="100" height="50" fill="#808080"/>
+        <rect data-q="tr" x="100" y="0" width="100" height="50" fill="#808080"/>
+      </g>
+      <rect id="bl" x="0" y="50" width="100" height="50" fill="#808080"/>
+      <rect class="br" x="100" y="50" width="100" height="50" fill="#808080"/>
+    </svg>
+
+    """),
+    ("filter.svg", """
+    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="100">
+      <defs><filter id="b" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="3"/></filter></defs>
+      <g filter="url(#b)">
+        <rect x="0" y="0" width="100" height="50" fill="#ff0000"/>
+        <rect x="100" y="0" width="100" height="50" fill="#00ff00"/>
+        <rect x="0" y="50" width="100" height="50" fill="#0000ff"/>
+        <rect x="100" y="50" width="100" height="50" fill="#ffffff"/>
+      </g>
+    </svg>
+
+    """),
+    ("gradient.svg", """
+    <svg xmlns="http://www.w3.org/2000/svg" width="200" height="100">
+      <defs>
+        <linearGradient id="top" x1="0" x2="1"><stop offset="0.49" stop-color="#ff0000"/><stop offset="0.51" stop-color="#00ff00"/></linearGradient>
+        <radialGradient id="bottom" cx="0.25" cy="0.5" r="0.2"><stop offset="0" stop-color="#0000ff"/><stop offset="1" stop-color="#0000ff"/></radialGradient>
+      </defs>
+      <rect width="200" height="50" fill="url(#top)"/>
+      <rect y="50" width="200" height="50" fill="#ffffff"/>
+      <rect y="50" width="100" height="50" fill="url(#bottom)"/>
+    </svg>
+
+    """),
+    ("text.svg", """
+    <svg xmlns="http://www.w3.org/2000/svg" width="300" height="100">
+      <rect width="300" height="100" fill="#ffffff"/>
+      <text x="10" y="75" font-family="Helvetica, Arial, sans-serif" font-size="72" fill="#000000">Lumaflip</text>
+    </svg>
+
+    """),
+]
+for (name, text) in svgFiles { writeBytes(name, text.data(using: .utf8)!) }
+
+// MARK: - XCF (GIMP) and PSB (Photoshop Large Document): own decoders (M3), hand-encoded
+
+func be64(_ v: Int) -> [UInt8] { be32(v >> 32) + be32(v & 0xFFFF_FFFF) }
+
+/// GIMP's RLE: per byte plane, runs (n < 127: n+1 copies) and literals (256 - n bytes).
+func xcfRLE(_ raw: [UInt8], bpp: Int) -> [UInt8] {
+    var out: [UInt8] = []
+    let n = raw.count / bpp
+    for plane in 0..<bpp {
+        let p = (0..<n).map { raw[$0 * bpp + plane] }
+        var i = 0
+        while i < n {
+            var run = 1
+            while i + run < n && run < 127 && p[i + run] == p[i] { run += 1 }
+            if run >= 2 {
+                out += [UInt8(run - 1), p[i]]
+                i += run
+                continue
+            }
+            var lit = 1
+            while i + lit < n && lit < 127 && !(i + lit + 1 < n && p[i + lit] == p[i + lit + 1]) { lit += 1 }
+            out.append(UInt8(256 - lit))
+            out += p[i..<(i + lit)]
+            i += lit
+        }
+    }
+    return out
+}
+
+/// XCF with a hidden green layer on top of the quadrant layer (RGBA, one tile each).
+func makeXcf(version: Int, precision: Int, compression: UInt8, bytesPerComp: Int) -> [UInt8] {
+    let wide = version >= 11
+    func ptr(_ v: Int) -> [UInt8] { wide ? be64(v) : be32(v) }
+    func prop(_ t: Int, _ p: [UInt8]) -> [UInt8] { be32(t) + be32(p.count) + p }
+    func comp(_ v: UInt8) -> [UInt8] { bytesPerComp == 2 ? be16(Int(v) * 257) : [v] }
+    var out = Array("gimp xcf v\(String(format: "%03d", version))".utf8) + [0]
+    out += be32(W) + be32(H) + be32(0)
+    if version >= 4 { out += be32(precision) }
+    out += prop(17, [compression]) + be32(0) + be32(0)
+    let table = out.count
+    out += ptr(0) + ptr(0) + ptr(0) + ptr(0) // two layers, end, no channels
+    func patch(_ at: Int, _ v: Int) {
+        let bytes = ptr(v)
+        for i in 0..<bytes.count { out[at + i] = bytes[i] }
+    }
+    let layers: [(Int, Int, Bool, [UInt8])] = [
+        (16, 16, false, (0..<256).flatMap { _ in [0, 255, 0, 255] as [UInt8] }),
+        (W, H, true, quadBytes(W, H).flatMap { $0 }),
+    ]
+    for (index, (w, h, visible, px)) in layers.enumerated() {
+        patch(table + index * (wide ? 8 : 4), out.count)
+        out += be32(w) + be32(h) + be32(1) + be32(6) + Array("layer".utf8) + [0]
+        out += prop(6, be32(255)) + prop(8, be32(visible ? 1 : 0)) + prop(7, be32(28)) + prop(15, be32(0) + be32(0))
+        out += be32(0) + be32(0)
+        let hierarchySlot = out.count
+        out += ptr(0) + ptr(0) // hierarchy, no mask
+        patch(hierarchySlot, out.count)
+        let bpp = 4 * bytesPerComp
+        out += be32(w) + be32(h) + be32(bpp)
+        let levelSlot = out.count
+        out += ptr(0) + ptr(0)
+        patch(levelSlot, out.count)
+        out += be32(w) + be32(h)
+        let tileSlot = out.count
+        out += ptr(0) + ptr(0) // one tile (w, h <= 64)
+        patch(tileSlot, out.count)
+        let raw = px.flatMap { comp($0) }
+        out += compression == 1 ? xcfRLE(raw, bpp: bpp) : raw
+    }
+    return out
+}
+writeBytes("quad.xcf", Data(makeXcf(version: 11, precision: 150, compression: 1, bytesPerComp: 1)))
+writeBytes("quad16.xcf", Data(makeXcf(version: 7, precision: 250, compression: 0, bytesPerComp: 2)))
+
+/// PackBits (PSD/PSB RLE) of one row.
+func packBits(_ row: [UInt8]) -> [UInt8] {
+    var out: [UInt8] = []
+    var i = 0
+    while i < row.count {
+        var run = 1
+        while i + run < row.count && run < 128 && row[i + run] == row[i] { run += 1 }
+        if run >= 2 {
+            out += [UInt8(bitPattern: Int8(1 - run)), row[i]]
+            i += run
+            continue
+        }
+        var lit = 1
+        while i + lit < row.count && lit < 128 && !(i + lit + 1 < row.count && row[i + lit] == row[i + lit + 1]) { lit += 1 }
+        out.append(UInt8(lit - 1))
+        out += row[i..<(i + lit)]
+        i += lit
+    }
+    return out
+}
+
+/// PSB (version 2): planar channels (each H rows of rowBytes), raw or RLE with 4-byte counts.
+func makePsb(mode: Int, depth: Int, channels: [[UInt8]], rle: Bool) -> [UInt8] {
+    var out = Array("8BPS".utf8) + be16(2) + [UInt8](repeating: 0, count: 6)
+    out += be16(channels.count) + be32(H) + be32(W) + be16(depth) + be16(mode)
+    out += be32(0) + be32(0) + be64(0) // colour mode data, image resources, layers
+    out += be16(rle ? 1 : 0)
+    let rowBytes = W * depth / 8
+    if rle {
+        var rows: [[UInt8]] = []
+        for c in channels { for y in 0..<H { rows.append(packBits(Array(c[(y * rowBytes)..<((y + 1) * rowBytes)]))) } }
+        for r in rows { out += be32(r.count) }
+        for r in rows { out += r }
+    } else {
+        for c in channels { out += c }
+    }
+    return out
+}
+do {
+    let px = quadBytes(W, H)
+    let rgb8 = (0..<3).map { c in px.map { $0[c] } }
+    writeBytes("quad.psb", Data(makePsb(mode: 3, depth: 8, channels: rgb8, rle: true)))
+    let rgba16 = (0..<4).map { c in px.flatMap { be16(Int($0[c]) * 257) } }
+    writeBytes("quad16.psb", Data(makePsb(mode: 3, depth: 16, channels: rgba16, rle: false)))
+    // CMYK like cmyk.jpg: TL cyan, TR magenta, BL yellow, BR black; stored inverted.
+    var cmyk = [[UInt8]](repeating: [], count: 4)
+    for y in 0..<H {
+        for x in 0..<W {
+            let left = x < W / 2, top = y < H / 2
+            let ink: [UInt8] = top ? (left ? [255, 0, 0, 0] : [0, 255, 0, 0]) : (left ? [0, 0, 255, 0] : [0, 0, 0, 255])
+            for c in 0..<4 { cmyk[c].append(255 - ink[c]) }
+        }
+    }
+    writeBytes("cmyk.psb", Data(makePsb(mode: 4, depth: 8, channels: cmyk, rle: true)))
+}
+
 print("written: \(written.count) files")
 for s in skipped { print("skip: \(s)") }

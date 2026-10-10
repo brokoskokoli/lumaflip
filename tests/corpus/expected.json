@@ -76,5 +76,23 @@
     "quad.kra": {"displaySize": [64, 48], "hasAlpha": true, "format": "Krita", "quadrants": "rgbw", "optional": true}
   },
   "broken": ["truncated.jpg", "empty.jpg", "garbage.jpg"],
-  "svg": {"vector.svg": {"displaySize": [200, 100], "quadrants": "rgbw"}}
+  "svg": {"vector.svg": {"displaySize": [200, 100], "quadrants": "rgbw"}},
+  "_comment_layered": "layered = XCF/PSB own decoders (test_xcf_psb.cpp); the XCF files have a hidden green layer on top. cmyk.psb uses the inks of cmyk.jpg.",
+  "layered": {
+    "quad.xcf": {"displaySize": [64, 48], "format": "XCF", "bits": 8, "quadrants": "rgbw"},
+    "quad16.xcf": {"displaySize": [64, 48], "format": "XCF", "bits": 16, "quadrants": "rgbw"},
+    "quad.psb": {"displaySize": [64, 48], "format": "PSB", "bits": 8, "quadrants": "rgbw"},
+    "quad16.psb": {"displaySize": [64, 48], "format": "PSB", "bits": 16, "quadrants": "rgbw"},
+    "cmyk.psb": {"displaySize": [64, 48], "format": "PSB", "colorModel": "CMYK", "colorSpace": "DisplayP3",
+                 "quadrants": {"tl": [0, 160, 213, 255], "tr": [198, 47, 124, 255], "bl": [255, 241, 81, 255], "br": [27, 25, 25, 255]},
+                 "tolerance": 30}
+  },
+  "_comment_resvg": "resvg = SVG 1.1 files for the resvg backend (test_resvg.cpp): CSS selectors QtSvg ignores, a blur filter, gradients, text (system fonts).",
+  "resvg": {
+    "vector.svg": {"displaySize": [200, 100], "quadrants": "rgbw"},
+    "css.svg": {"displaySize": [200, 100], "quadrants": "rgbw"},
+    "filter.svg": {"displaySize": [200, 100], "quadrants": "rgbw", "tolerance": 12},
+    "gradient.svg": {"displaySize": [200, 100], "quadrants": "rgbw", "tolerance": 8},
+    "text.svg": {"displaySize": [300, 100], "minDarkPixels": 1000}
+  }
 }

@@ -45,6 +45,35 @@ if(LF_REQUIRE_TURBOJPEG AND NOT (LF_TURBOJPEG_INCLUDE AND LF_TURBOJPEG_LIB MATCH
   message(FATAL_ERROR "LF_REQUIRE_TURBOJPEG: the static libturbojpeg.a and turbojpeg.h were not found "
                       "(brew install jpeg-turbo); found: '${LF_TURBOJPEG_LIB}'")
 endif()
+# SVG via resvg (SPEC 4.4 "Vektor", M3; core/ResvgDecoder.h): Homebrew's libresvg, linked
+# dynamically (Apache-2.0/MIT, SPEC 11; tools/macos_deploy.py bundles the dylib and its
+# licence texts from the keg). AUTO: on if found; QtSvg stays the fallback either way.
+set(LF_ENABLE_RESVG "AUTO" CACHE STRING "SVG via resvg: AUTO, ON or OFF")
+set_property(CACHE LF_ENABLE_RESVG PROPERTY STRINGS AUTO ON OFF)
+set(LF_RESVG OFF)
+if(NOT LF_ENABLE_RESVG STREQUAL "OFF")
+  find_path(LF_RESVG_INCLUDE resvg.h
+    HINTS /opt/homebrew/opt/resvg/include /usr/local/opt/resvg/include PATH_SUFFIXES resvg)
+  find_library(LF_RESVG_LIB NAMES resvg HINTS /opt/homebrew/opt/resvg/lib /usr/local/opt/resvg/lib)
+  if(LF_RESVG_INCLUDE AND LF_RESVG_LIB)
+    set(LF_RESVG ON)
+  elseif(LF_ENABLE_RESVG STREQUAL "ON")
+    message(FATAL_ERROR "LF_ENABLE_RESVG=ON, but resvg was not found (brew install resvg)")
+  endif()
+endif()
+if(LF_RESVG)
+  message(STATUS "resvg: ${LF_RESVG_LIB}")
+  target_include_directories(lf_core SYSTEM PRIVATE ${LF_RESVG_INCLUDE})
+  target_link_libraries(lf_core PRIVATE ${LF_RESVG_LIB})
+  target_compile_definitions(lf_core PRIVATE LF_HAVE_RESVG=1)
+  if(LF_RESVG_LIB MATCHES "\\.a$")
+    file(REAL_PATH "${LF_RESVG_LIB}" _lf_resvg_real)
+    list(APPEND LF_STATIC_COMPONENTS "{\"id\": \"resvg\", \"library\": \"${_lf_resvg_real}\"}")
+  endif()
+else()
+  message(STATUS "resvg not found or disabled: SVG via QtSvg only (SVG Tiny 1.2)")
+  target_compile_definitions(lf_core PRIVATE LF_HAVE_RESVG=0)
+endif()
 list(JOIN LF_STATIC_COMPONENTS ",\n  " _lf_static_json)
 file(CONFIGURE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/static-components.json"
      CONTENT "[\n  ${_lf_static_json}\n]\n" @ONLY)

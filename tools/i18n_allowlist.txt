@@ -10,6 +10,13 @@
 src/core/BinaryPlist.cpp:*
 src/core/DsStore.cpp:*
 src/core/FinderViewSettings.cpp:*
+# XCF/PSB parsers: diagnostics and "approximate" notes (log only), colour model ids;
+# backend names; the default sans-serif font of resvg
+src/core/XcfDecoder.cpp:*
+src/core/PsbDecoder.cpp:*
+src/core/XcfDecoder.h:Lumaflip XCF
+src/core/PsbDecoder.h:Lumaflip PSB
+src/core/ResvgDecoder.cpp:Helvetica
 # Native language names: always shown in their own language (Preferences -> Sprache)
 src/core/Language.cpp:*
 # Portable key names (QKeySequence::PortableText)
