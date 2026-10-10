@@ -326,6 +326,8 @@ bool GridView::handlesKey(const QKeyEvent* e) const {
 }
 
 bool GridView::event(QEvent* event) {
+    if (event->type() == QEvent::LanguageChange)
+        setAccessibleName(tr("Raster")); // F-I18N-03 (VoiceOver)
     if (event->type() == QEvent::ShortcutOverride) {
         // Arrows, Enter, Esc … are menu shortcuts in the viewer; in the grid they move the
         // cursor (Enter opens, Esc closes).

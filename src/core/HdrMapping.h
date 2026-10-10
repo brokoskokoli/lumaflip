@@ -116,4 +116,10 @@ bool headroomChanged(float previous, float now);
 // other formats. For tests and decoders that report no headroom.
 float measuredPeak(const QImage& image);
 
+// CPU version of the widget (SDR) pass for small images (the loupe, F-VIEW-11): `image`
+// (any format and color space, no space = sRGB) times `exposureMultiplier`, tone-mapped from
+// `contentPeak` x exposure to SDR white like the shader, sRGB encoded. Returns
+// ARGB32_Premultiplied in sRGB. SDR content at exposure 1 comes out as a plain conversion.
+QImage toneMappedSdr(const QImage& image, float contentPeak, float exposureMultiplier);
+
 } // namespace lf::hdr

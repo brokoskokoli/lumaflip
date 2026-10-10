@@ -14,9 +14,10 @@
 //
 // The surface ignores input (Qt::WindowTransparentForInput): clicks, wheel and gestures
 // reach the canvas below, the keyboard focus stays with the view. Widgets above the image
-// (error card, toasts, rename field, culling overlay, exposure HUD ...) are painted by Qt
-// into the window's layer *below* this native view; the view grabs them into an overlay
-// image which the canvas composites on top in the extended pass (ImageView.cpp).
+// (error card, toasts, rename field, culling overlay, exposure HUD ...) and widgets of the
+// window stacked above the view (quick filter bar) are painted by Qt into the window's layer
+// *below* this native view; the view grabs them into an overlay image and hands the changed
+// parts to the canvas, which composites them on top in the extended pass (ImageView.cpp).
 //
 // Used only while an HDR image is shown with HDR on, on an EDR capable display.
 

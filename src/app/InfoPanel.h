@@ -123,6 +123,7 @@ private:
     QString m_shownPath; // metadata shown for this path
     bool m_loadRunning = false;
     QString m_loadingPath; // job in flight for this path
+    int m_textEpoch = 0;   // +1 per language change: loads of an older epoch are dropped
     QHash<QString, InfoData> m_cache;
     QStringList m_cacheOrder;
 

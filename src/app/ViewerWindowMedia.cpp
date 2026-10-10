@@ -11,6 +11,7 @@
 #include "ViewerWindow.h"
 #include "core/Collection.h"
 #include "core/FileOps.h"
+#include "core/Language.h"
 #include "core/LosslessTransform.h"
 #include "core/Settings.h"
 #include "core/SlideshowInput.h"
@@ -235,7 +236,7 @@ QString ViewerWindow::frameStatusText() const {
     if (m_anim && m_anim->isActive() && m_anim->path() == currentPath()) {
         QString s = tr("Bild %1/%2").arg(m_anim->currentFrame() + 1).arg(m_anim->frameCount());
         if (std::abs(m_anim->speed() - 1.0) > 1e-6)
-            s += QStringLiteral(" · %1×").arg(QLocale().toString(m_anim->speed()));
+            s += QStringLiteral(" · %1×").arg(formatLocale().toString(m_anim->speed()));
         return s;
     }
     if (m_pageCount > 1 && m_mediaPath == currentPath())
@@ -259,7 +260,7 @@ void ViewerWindow::updateFrameLabel() {
 void ViewerWindow::setAnimationSpeed(double factor) {
     m_anim->setSpeed(factor);
     if (m_anim->isActive())
-        showMessage(tr("Geschwindigkeit: %1×").arg(QLocale().toString(m_anim->speed())), 900);
+        showMessage(tr("Geschwindigkeit: %1×").arg(formatLocale().toString(m_anim->speed())), 900);
 }
 
 bool ViewerWindow::goToPage(int page) {

@@ -5,9 +5,11 @@
 #include "QtTestApp.h"
 #include "core/ImageProvider.h"
 
+#include <QFile>
 #include <QList>
 #include <QMutex>
 #include <QSet>
+#include <QTemporaryDir>
 #include <QWaitCondition>
 #include <gtest/gtest.h>
 
@@ -368,6 +370,36 @@ TEST_F(ImageProviderTest, FailureEmitsImageFailed) {
     // A later request reports the known failure again.
     provider->request("/f/bad.jpg", Quality::Screen, target, &clientB);
     ASSERT_TRUE(waitUntil([&] { return failed.size() == 2; }));
+}
+
+// F-I18N-03 (review 5): after a language switch failed pages are decoded again, so the
+// error card gets the decoder's text in the new language.
+TEST_F(ImageProviderTest, F_I18N_03_ForgetFailuresDecodesAgain) {
+    QTemporaryDir dir;
+    ASSERT_TRUE(dir.isValid());
+    const QString bad = dir.filePath("bad.jpg");
+    {
+        QFile f(bad);
+        ASSERT_TRUE(f.open(QIODevice::WriteOnly));
+        f.write("not an image");
+    }
+    decoder->failing.insert(bad);
+    EXPECT_TRUE(provider->forgetFailures().isEmpty()); // nothing failed yet
+    provider->request(bad, Quality::Screen, target, &clientA);
+    ASSERT_TRUE(waitUntil([&] { return !failed.isEmpty(); }));
+    lf::test::spin(50);
+    const int decodes = int(decoder->recorded().size());
+    ASSERT_GT(decodes, 0);
+    // Without forgetting, a new request only repeats the known failure.
+    provider->request(bad, Quality::Screen, target, &clientB);
+    ASSERT_TRUE(waitUntil([&] { return failed.size() == 2; }));
+    EXPECT_EQ(int(decoder->recorded().size()), decodes);
+    // Forgotten: decoded again (and reported again).
+    EXPECT_EQ(provider->forgetFailures(), QStringList{bad});
+    EXPECT_TRUE(provider->forgetFailures().isEmpty());
+    provider->request(bad, Quality::Screen, target, &clientA);
+    ASSERT_TRUE(waitUntil([&] { return failed.size() >= 3; }));
+    EXPECT_GT(int(decoder->recorded().size()), decodes);
 }
 
 TEST_F(ImageProviderTest, FullOnlyOnExplicitRequest) {

@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
-/* Localized Info.plist texts (cs); generated from translations/ - see translations/README.md */
+/* Localized Info.plist texts (cs); maintained by hand here (not generated from the .ts catalogues) - see translations/README.md */
 "NSAppleEventsUsageDescription" = "Lumaflip se na požádání zeptá nejpřednějšího okna Finderu na jeho řazení, aby se obrázky zobrazily ve stejném pořadí.";
 "NSDesktopFolderUsageDescription" = "Lumaflip čte složku otevřeného obrázku, abyste mohli listovat pomocí šipek.";
 "NSDocumentsFolderUsageDescription" = "Lumaflip čte složku otevřeného obrázku, abyste mohli listovat pomocí šipek.";
@@ -9,4 +9,5 @@
 "Bild" = "Obrázek";
 "Bild (sonstige)" = "Obrázek (ostatní)";
 "Ordner" = "Složka";
+"WBMP-Bild" = "Obrázek WBMP";
 "NSHumanReadableCopyright" = "© 2026 brokoskokoli a přispěvatelé. Licence: GPL-3.0-or-later.";

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "platform/mac/ImageIODecoder.h"
 
+#include "core/HdrMapping.h"
 #include "core/ImageFormats.h"
 #include "core/LocaleFormat.h"
 
@@ -24,7 +25,6 @@ namespace lf {
 namespace {
 
 // ---- small helpers -------------------------------------------------------------------
-
 
 void setError(QString* error, const QString& msg) {
     if (error)
@@ -420,17 +420,6 @@ struct Rendered {
     float headroom = 1.0f;
 };
 
-float peakOf(const QImage& img) {
-    float peak = 0.f;
-    for (int y = 0; y < img.height(); ++y) {
-        const auto* p = reinterpret_cast<const qfloat16*>(img.constScanLine(y));
-        for (int x = 0; x < img.width() * 4; x += 4) {
-            peak = std::max({peak, float(p[x]), float(p[x + 1]), float(p[x + 2])});
-        }
-    }
-    return std::isfinite(peak) ? peak : 1.f;
-}
-
 // Draws `img` into a QImage, applying EXIF orientation `o` (1 = none).
 std::optional<Rendered> render(CGImageRef img, int o, bool hdr, QString* error) {
     const size_t w = CGImageGetWidth(img), h = CGImageGetHeight(img);
@@ -483,7 +472,7 @@ std::optional<Rendered> render(CGImageRef img, int o, bool hdr, QString* error) 
         headroom = CGImageGetContentHeadroom(img);
         // Do not tone-map: a target headroom above any realistic content keeps the full
         // range the decoder delivered (PQ peaks at 10000 / 203 nits ~ 49x SDR white).
-        CGContextSetEDRTargetHeadroom(ctx.get(), std::max(headroom, 64.0f));
+        CGContextSetEDRTargetHeadroom(ctx.get(), std::isfinite(headroom) ? std::max(headroom, 64.0f) : 64.0f);
     }
     CGContextSetBlendMode(ctx.get(), kCGBlendModeCopy);
     CGContextSetInterpolationQuality(ctx.get(), kCGInterpolationNone);
@@ -492,7 +481,9 @@ std::optional<Rendered> render(CGImageRef img, int o, bool hdr, QString* error) 
     ctx.reset();
     out.setColorSpace(target.qspace);
     if (hdr)
-        headroom = headroom > 1.0f ? headroom : std::max(1.0f, peakOf(out));
+        // Measured peak: non-finite samples (a single +inf) are skipped, never headroom 1.
+        headroom = std::isfinite(headroom) && headroom > 1.0f ? headroom
+                                                              : std::max(1.0f, lf::hdr::measuredPeak(out));
     return Rendered{std::move(out), headroom};
 }
 

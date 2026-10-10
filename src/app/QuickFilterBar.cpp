@@ -28,7 +28,6 @@ QuickFilterBar::QuickFilterBar(ViewerWindow& window, Application& app, QWidget* 
     h->setSpacing(6);
     m_edit = new QLineEdit(this);
     m_edit->setObjectName(QStringLiteral("lfQuickFilterField"));
-    m_edit->setPlaceholderText(tr("Dateiname filtern"));
     m_edit->setClearButtonEnabled(true);
     m_edit->setMinimumWidth(200);
     m_edit->setAttribute(Qt::WA_MacShowFocusRect, false);
@@ -38,7 +37,6 @@ QuickFilterBar::QuickFilterBar(ViewerWindow& window, Application& app, QWidget* 
     auto* closeButton = new QToolButton(this);
     closeButton->setObjectName(QStringLiteral("lfQuickFilterClose"));
     closeButton->setText(QStringLiteral("✕"));
-    closeButton->setToolTip(tr("Filter aufheben (Esc)"));
     closeButton->setFocusPolicy(Qt::NoFocus);
     h->addWidget(m_edit, 1);
     h->addWidget(m_count);
@@ -52,7 +50,22 @@ QuickFilterBar::QuickFilterBar(ViewerWindow& window, Application& app, QWidget* 
     connect(m_debounce, &QTimer::timeout, this, &QuickFilterBar::applyFilter);
     connect(m_edit, &QLineEdit::textChanged, this, [this] { m_debounce->start(); });
     connect(m_window.collection(), &Collection::entriesChanged, this, &QuickFilterBar::updateCount);
+    retranslateUi();
     hide();
+}
+
+void QuickFilterBar::retranslateUi() {
+    m_edit->setPlaceholderText(tr("Dateiname filtern"));
+    if (auto* closeButton = findChild<QToolButton*>(QStringLiteral("lfQuickFilterClose")))
+        closeButton->setToolTip(tr("Filter aufheben (Esc)"));
+    if (isVisible())
+        place(); // the width follows the placeholder
+}
+
+void QuickFilterBar::changeEvent(QEvent* event) {
+    QFrame::changeEvent(event);
+    if (event->type() == QEvent::LanguageChange)
+        retranslateUi(); // F-I18N-03
 }
 
 QString QuickFilterBar::text() const {

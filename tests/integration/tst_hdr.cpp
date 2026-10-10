@@ -10,6 +10,7 @@
 #include "app/HdrController.h"
 #include "app/ImageCanvas.h"
 #include "app/ImageView.h"
+#include "app/Loupe.h"
 #include "app/RecentItems.h"
 #include "app/ViewerWindow.h"
 #include "core/FileOps.h"
@@ -286,6 +287,64 @@ private slots:
         sdr.fill(Qt::gray);
         view->setImage(makeDecoded(sdr), false);
         QVERIFY(!view->isExtendedPresentationActive());
+    }
+
+    // Review 5: the overlay travels as patches (no full-view copy per change, the painting
+    // buffers stay unshared) and widgets of the window stacked above the view without being
+    // its children (quick filter bar on the central widget, F-NAV-08) are composited too.
+    void F_COL_03_edrOverlayPatchesAndWidgetsAboveView() {
+        if (!edrDisplay())
+            QSKIP("No EDR capable display (or not the cocoa platform)");
+        QWidget host;
+        host.resize(240, 180);
+        auto* v = new ImageView(&host);
+        v->setGeometry(0, 0, 240, 180);
+        auto* bar = new QLabel(QStringLiteral("Filter"), &host); // sibling above the view
+        bar->setStyleSheet(QStringLiteral("background: rgba(28, 28, 28, 230); color: white;"));
+        bar->setGeometry(100, 10, 120, 24);
+        bar->hide();
+        host.show();
+        QVERIFY(QTest::qWaitForWindowExposed(&host));
+        auto* c = v->findChild<ImageCanvas*>();
+        QVERIFY(c);
+        v->setImage(makeDecoded(hdrSolid({64, 64}, 4.0f, 2.0f, 1.0f), 4.0f), false);
+        QTRY_VERIFY(v->isExtendedPresentationActive());
+        QTRY_VERIFY_WITH_TIMEOUT(c->extendedFramesRendered() > 0, 5000);
+        QVERIFY(!c->hasExtendedOverlay());
+        bar->show();
+        bar->raise();
+        QTRY_VERIFY(c->hasExtendedOverlay()); // not a child of the view, still grabbed
+        const int patches = c->extendedOverlayPatches();
+        for (int i = 0; i < 5; ++i) {
+            bar->move(100 - 10 * i, 10 + 5 * i);
+            QTRY_VERIFY(c->extendedOverlayPatches() > patches + i);
+            QVERIFY(!c->overlayBufferShared());
+        }
+        // Moved off the view: nothing above the image any more.
+        bar->move(300, 300);
+        bar->hide();
+        QTRY_VERIFY(!c->hasExtendedOverlay());
+    }
+
+    // F-VIEW-11 with F-COL-03/05: the loupe shows the image with the exposure and tone
+    // mapping of the view (widget pass reference), not the unmapped stage.
+    void F_VIEW_11_loupeAppliesExposureAndToneMapping() {
+        ImageView::setDisplayStateForTesting([](const QWidget*) { return hdr::DisplayState{1.0f, 1.0f}; });
+        view->setImage(makeDecoded(hdrSolid({64, 64}, 3.0f, 1.5f, 0.5f), 4.0f), false);
+        view->setExposureEv(-1.0);
+        LoupeWidget loupe(view.get(), view.get());
+        loupe.setGeometry(view->rect());
+        loupe.setCursorPos(QPointF(view->width() / 2.0, view->height() / 2.0));
+        loupe.show();
+        const QImage shot = loupe.grab().toImage();
+        const QPointF center = loupe.loupeGeometry().target.center() * shot.devicePixelRatio();
+        const QColor got = shot.pixelColor(center.toPoint());
+        const QColor want = referenceSdr(3.0f, 1.5f, 0.5f, 4.0f, 0.5f);
+        QVERIFY2(close(got, want, 3), qPrintable(str(got) + " vs " + str(want)));
+        // The same as the view's own pixels around the loupe.
+        loupe.hide();
+        const QColor around = centerPixel();
+        QVERIFY2(close(got, around, 3), qPrintable(str(got) + " vs " + str(around)));
     }
 
     // The decision follows the display: no EDR -> SDR preview, EDR -> extended.

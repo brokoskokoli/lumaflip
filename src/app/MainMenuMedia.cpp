@@ -6,6 +6,7 @@
 #include "Application.h"
 #include "MainMenu.h"
 #include "ViewerWindow.h"
+#include "core/Language.h"
 #include "core/Settings.h"
 
 #include <QAction>
@@ -77,7 +78,7 @@ void MainMenu::buildMedia(QMenu* view, QMenu* nav, QMenu* image) {
     speed->setObjectName(QStringLiteral("menu:animationSpeed"));
     auto* group = new QActionGroup(this);
     for (double s : kSpeeds) {
-        QAction* act = addCommand(speed, speedId(s), QStringLiteral("%1×").arg(QLocale().toString(s)));
+        QAction* act = addCommand(speed, speedId(s), QStringLiteral("%1×").arg(formatLocale().toString(s)));
         act->setCheckable(true);
         group->addAction(act);
         connect(act, &QAction::triggered, this, [front, s] {

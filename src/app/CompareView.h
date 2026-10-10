@@ -49,6 +49,9 @@ public:
     ViewSyncBinding* sync() const { return m_sync; }
     void updateCaptions(); // ratings changed
     void stop();           // releases the provider client (hidden)
+    // F-I18N-03: accessible name, captions, and panes with an error card decode again (their
+    // decoder texts are in the old language). Called on QEvent::LanguageChange.
+    void retranslateUi();
 
     // Same settings as the window's view.
     void applyViewSettings(const QString& background, bool upscaleNearest, bool devicePixels);

@@ -803,6 +803,18 @@ void ImageProvider::invalidate(const QString& path) {
     emit invalidated(path);
 }
 
+QStringList ImageProvider::forgetFailures() {
+    QSet<QString> paths;
+    for (auto it = d->failed.cbegin(); it != d->failed.cend(); ++it)
+        paths.insert(it.key().path);
+    if (paths.isEmpty())
+        return {};
+    d->failed.clear();
+    d->failedStages.removeIf([&](const auto& it) { return paths.contains(it.key().path); });
+    d->reschedule(); // clients still wanting them decode again
+    return QStringList(paths.cbegin(), paths.cend());
+}
+
 void ImageProvider::setMemoryBudget(qint64 bytes) {
     d->budget = std::max<qint64>(0, bytes);
     d->decodeByteCap = decodeByteCapFor(d->budget);

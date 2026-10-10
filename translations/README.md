@@ -35,8 +35,15 @@ Muttersprachler:innen sind sehr willkommen.
   (`src/core/Language.cpp`). Ein Wechsel wirkt sofort (Menüs, Einstellungen, Fenster).
 - Zahlen, Größen und Datumsangaben richten sich nach der UI-Sprache in der Region des
   Systems (`src/core/LocaleFormat.cpp`); die Finder-Sortierung bleibt beim System-Gebietsschema.
-- macOS-Texte aus der `Info.plist` (Berechtigungsabfragen, Dokumenttypen, Copyright) stehen in
-  `packaging/macos/lproj/<sprache>.lproj/InfoPlist.strings` und werden dort direkt gepflegt.
+- macOS-Texte aus der `Info.plist` (Berechtigungsabfragen, Dokumenttypen, UTI-Beschreibungen,
+  Copyright) stehen in `packaging/macos/lproj/<sprache>.lproj/InfoPlist.strings` und werden
+  dort **von Hand** gepflegt (nicht aus den `.ts`-Dateien erzeugt). Neuer Text in
+  `Info.plist.in` (z. B. ein `UTTypeDescription`) → in allen 18 Dateien ergänzen;
+  `tools/i18n_check.py` meldet fehlende und veraltete Einträge.
+- Eine fest gewählte Sprache (*Allgemein → Sprache*) schreibt Lumaflip zusätzlich als
+  `AppleLanguages` in die eigenen Einstellungen, damit auch die Texte, die macOS selbst
+  baut („Vollbild aktivieren“, „Dienste“, Öffnen-Dialog, Berechtigungsabfragen), nach einem
+  Neustart folgen; „Systemsprache“ entfernt den Eintrag wieder.
 
 ## Texte aktualisieren (Entwickler:innen)
 
@@ -53,8 +60,12 @@ Diffs). Neue Texte sind danach in allen Sprachen „unfinished“ und erscheinen
 Übersetzung auf Deutsch. `tools/check.sh` (auch `--quick --no-gui`) prüft
 
 - Texte ohne `tr()` (Heuristik; Ausnahmen in `tools/i18n_allowlist.txt` mit Begründung),
-- ob die `.ts`-Dateien zum Code passen (fehlende/veraltete Einträge, falsche Kontexte),
-- ob jede Sprache zu mindestens 99 % übersetzt ist.
+- ob die `.ts`-Dateien zum Code passen (fehlende/veraltete Einträge, falsche Kontexte,
+  Plural-Attribut),
+- ob jede Übersetzung die Platzhalter der Quelle behält (`%1`, `%2` … in gleicher Anzahl;
+  `%n` in mindestens einer Pluralform),
+- ob jede Sprache zu mindestens 99 % übersetzt ist,
+- ob jede `InfoPlist.strings` alle übersetzbaren Texte der `Info.plist.in` enthält.
 
 Die Unit-Tests `I18n.F_I18N_*` prüfen außerdem Platzhalter (`%1`, `%n`), Pluralformen,
 HTML, Tastenkürzel-Symbole und Leerzeichen in jeder Übersetzung.

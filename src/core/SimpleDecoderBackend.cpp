@@ -172,9 +172,11 @@ float peakOf(const QImage& img) {
     for (int y = 0; y < img.height(); ++y) {
         const auto* p = reinterpret_cast<const float*>(img.constScanLine(y));
         for (int x = 0; x < img.width() * 4; x += 4)
-            peak = std::max({peak, p[x], p[x + 1], p[x + 2]});
+            for (int c = 0; c < 3; ++c)
+                if (std::isfinite(p[x + c])) // one +inf/NaN sample must not hide the real peak
+                    peak = std::max(peak, p[x + c]);
     }
-    return std::isfinite(peak) ? peak : 1.f;
+    return peak;
 }
 
 QString suffixOf(const QString& path) {
@@ -327,7 +329,8 @@ std::optional<DecodedImage> SimpleFormatDecoder::decode(const QString& path, con
     DecodedImage out;
     if (raster->isFloat) {
         const float peak = peakOf(img);
-        if (req.hdr && peak > 1.0f) {
+        // Float sources keep their range also for the SDR preview's exposure (hdrFloat).
+        if ((req.hdr || req.hdrFloat) && peak > 1.0f) {
             // F-COL-03: extended range, like the ImageIO backend (linear Display P3).
             img.convertToColorSpace(
                 QColorSpace(QColorSpace::Primaries::DciP3D65, QColorSpace::TransferFunction::Linear));

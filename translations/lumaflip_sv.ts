@@ -3069,6 +3069,14 @@
         <source>Bild (allgemein)</source>
         <translation>Bild (allmänt)</translation>
     </message>
+    <message numerus="yes">
+        <source>&lt;%n Bytes: %1&gt;</source>
+        <extracomment>binary metadata value: its size and the first bytes in hex, e.g. &quot;&lt;2 Bytes: 01 02&gt;&quot;</extracomment>
+        <translation>
+            <numerusform>&lt;%n byte: %1&gt;</numerusform>
+            <numerusform>&lt;%n byte: %1&gt;</numerusform>
+        </translation>
+    </message>
 </context>
 <context>
     <name>lf::NavigationExtras</name>
@@ -3261,8 +3269,8 @@
         <translation>Språk:</translation>
     </message>
     <message>
-        <source>Wirkt sofort. Systemfenster wie „Öffnen“ folgen der Sprache, die macOS für Lumaflip verwendet (Systemeinstellungen → Allgemein → Sprache &amp; Region).</source>
-        <translation>Gäller direkt. Systemfönster som ”Öppna” följer det språk som macOS använder för Lumaflip (Systeminställningar → Allmänt → Språk och region).</translation>
+        <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbild aktivieren“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
+        <translation>Gäller direkt. Menyer och fönster i macOS (”Visa i helskärm”, ”Tjänster”, ”Öppna”, behörighetsfrågor) följer efter en omstart.</translation>
     </message>
     <message>
         <source>Öffnen aus dem Finder:</source>

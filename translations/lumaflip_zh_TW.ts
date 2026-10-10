@@ -3057,6 +3057,13 @@
         <source>Bild (allgemein)</source>
         <translation>影像（一般）</translation>
     </message>
+    <message numerus="yes">
+        <source>&lt;%n Bytes: %1&gt;</source>
+        <extracomment>binary metadata value: its size and the first bytes in hex, e.g. &quot;&lt;2 Bytes: 01 02&gt;&quot;</extracomment>
+        <translation>
+            <numerusform>&lt;%n 位元組: %1&gt;</numerusform>
+        </translation>
+    </message>
 </context>
 <context>
     <name>lf::NavigationExtras</name>
@@ -3244,8 +3251,8 @@
         <translation>語言：</translation>
     </message>
     <message>
-        <source>Wirkt sofort. Systemfenster wie „Öffnen“ folgen der Sprache, die macOS für Lumaflip verwendet (Systemeinstellungen → Allgemein → Sprache &amp; Region).</source>
-        <translation>立即生效。「打開」等系統視窗會依照 macOS 為 Lumaflip 使用的語言顯示（「系統設定」→「一般」→「語言與地區」）。</translation>
+        <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbild aktivieren“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
+        <translation>立即生效。macOS 的選單和視窗（「進入全螢幕」、「服務」、「打開」、權限要求）會在重新啟動後跟著變更。</translation>
     </message>
     <message>
         <source>Öffnen aus dem Finder:</source>

@@ -43,8 +43,12 @@ QComboBox* createLanguageChooser(QWidget* parent) {
     fill(c);
     QObject::connect(c, &QComboBox::activated, c, [c](int i) {
         const QString value = c->itemData(i).toString();
-        if (!value.isEmpty())
-            Settings::instance().setValue(key::Language, value);
+        if (value.isEmpty())
+            return;
+        Settings::instance().setValue(key::Language, value);
+        // AppKit's own texts (full screen, Services, open panels, privacy prompts) follow the
+        // explicit choice after a restart; "system" removes it again.
+        setAppKitLanguage(value);
     });
     QObject::connect(&Settings::instance(), &Settings::changed, c, [c](const QString& k) {
         if (k == QLatin1String(key::Language))

@@ -144,8 +144,18 @@ bool systemRestoresWindows();
 
 // F-I18N-03: the languages chosen for this app only (macOS: System Settings → General →
 // Language & Region → Applications, i.e. AppleLanguages in the app's own defaults domain),
-// most preferred first; empty if none (then the system's preferred languages apply).
-QStringList appLanguagePreference();
+// most preferred first; empty if none (then the system's preferred languages apply). A
+// value Lumaflip wrote itself (setAppKitLanguage()) is not a per-app choice: empty then.
+// `domain`: defaults domain to read (empty = the app's own; tests use their own).
+QStringList appLanguagePreference(const QString& domain = QString());
+
+// F-I18N-03: an explicit language choice in Lumaflip also goes to AppleLanguages in the
+// app's defaults domain (as ["<tag>"], appleLanguageTag()), so the UI AppKit builds itself
+// - "Enter Full Screen", Services, open/save panels, privacy prompts (InfoPlist.strings) -
+// follows after a restart. `code` empty or "system" removes what Lumaflip wrote before (a
+// per-app language set in System Settings stays). Returns false if the defaults could not
+// be written; no-op (true) outside macOS. `domain` as above.
+bool setAppKitLanguage(const QString& code, const QString& domain = QString());
 
 // ---- factories (implemented per platform) ----
 std::unique_ptr<NameCollator> createNameCollator();

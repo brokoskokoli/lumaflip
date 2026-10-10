@@ -14,6 +14,7 @@
 #include <atomic>
 #include <cerrno>
 #include <chrono>
+#include <cmath>
 #include <csignal>
 #include <cstdlib>
 #include <cstring>
@@ -454,7 +455,29 @@ std::optional<DecodedImage> RemoteDecoder::decode(const QString& path, const Dec
     }
     DecodedImage out = resp->decoded;
     out.image = std::move(resp->image);
+    sanitizeHelperResult(out);
     return out;
+}
+
+void sanitizeHelperResult(DecodedImage& out) {
+    // The helper decodes untrusted files: its numbers are not trusted further than its pixels.
+    if (!std::isfinite(out.headroom) || out.headroom < 1.0f || out.headroom > kMaxHelperHeadroom)
+        out.headroom = 1.0f;
+    const QSize img = out.image.size();
+    const QSize full = out.fullSize;
+    bool fullOk = !img.isEmpty() && full.width() > 0 && full.height() > 0 && full.width() >= img.width() &&
+                  full.height() >= img.height() && full.width() <= kMaxHelperFullSide &&
+                  full.height() <= kMaxHelperFullSide;
+    if (fullOk) {
+        // Same aspect ratio as the (possibly downsampled) image, up to rounding of the
+        // downsampled edges (+-2 px) or 1 %.
+        const double cross =
+            std::abs(double(img.width()) * full.height() - double(img.height()) * full.width());
+        fullOk = cross <=
+                 2.0 * (double(full.width()) + full.height()) + 0.01 * double(img.width()) * full.height();
+    }
+    if (!fullOk)
+        out.fullSize = img;
 }
 
 Metadata RemoteDecoder::metadata(const QString& path) {

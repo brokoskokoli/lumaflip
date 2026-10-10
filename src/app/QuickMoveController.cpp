@@ -89,14 +89,16 @@ void QuickMoveController::transferCurrent(QuickOp op, int slot) {
         return;
     const bool several = paths.size() > 1;
     paths = m_window.collection()->withPairs(paths); // F-FMT-06: RAW+JPEG pairs move together
-    QuickChord::setLastSlot(slot);
     const QString name = QDir(folder).dirName();
     const bool move = op == QuickOp::Move;
     QVector<TransferItem> items;
     for (const QString& p : std::as_const(paths))
         items.append({p, folder, ConflictChoice::Skip});
     transfer(move ? TransferKind::Move : TransferKind::Copy, items, move ? tr("Verschieben") : tr("Kopieren"),
-             [move, name, several](int done) {
+             [move, name, several, slot](int done) {
+                 // Called once the batch succeeded (never for a failed or cancelled one): only
+                 // now `M M` / `C C` repeats this target.
+                 QuickChord::setLastSlot(slot);
                  if (done == 0)
                      return tr("Übersprungen – nichts geändert.");
                  if (several)

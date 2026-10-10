@@ -3057,6 +3057,13 @@
         <source>Bild (allgemein)</source>
         <translation>이미지(일반)</translation>
     </message>
+    <message numerus="yes">
+        <source>&lt;%n Bytes: %1&gt;</source>
+        <extracomment>binary metadata value: its size and the first bytes in hex, e.g. &quot;&lt;2 Bytes: 01 02&gt;&quot;</extracomment>
+        <translation>
+            <numerusform>&lt;%n바이트: %1&gt;</numerusform>
+        </translation>
+    </message>
 </context>
 <context>
     <name>lf::NavigationExtras</name>
@@ -3244,8 +3251,8 @@
         <translation>언어:</translation>
     </message>
     <message>
-        <source>Wirkt sofort. Systemfenster wie „Öffnen“ folgen der Sprache, die macOS für Lumaflip verwendet (Systemeinstellungen → Allgemein → Sprache &amp; Region).</source>
-        <translation>즉시 적용됩니다. ‘열기’와 같은 시스템 윈도우는 macOS가 Lumaflip에 사용하는 언어를 따릅니다(시스템 설정 → 일반 → 언어 및 지역).</translation>
+        <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbild aktivieren“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
+        <translation>즉시 적용됩니다. macOS 메뉴와 윈도우(‘전체 화면 시작’, ‘서비스’, ‘열기’, 권한 요청)는 다시 시작한 후 바뀝니다.</translation>
     </message>
     <message>
         <source>Öffnen aus dem Finder:</source>

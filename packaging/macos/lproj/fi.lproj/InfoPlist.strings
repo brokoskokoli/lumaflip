@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
-/* Localized Info.plist texts (fi); generated from translations/ - see translations/README.md */
+/* Localized Info.plist texts (fi); maintained by hand here (not generated from the .ts catalogues) - see translations/README.md */
 "NSAppleEventsUsageDescription" = "Lumaflip voi pyynnöstä kysyä etummaiselta Finder-ikkunalta sen järjestystä, jotta kuvat näytetään samassa järjestyksessä.";
 "NSDesktopFolderUsageDescription" = "Lumaflip lukee avatun kuvan kansion, jotta voit selata kuvia nuolinäppäimillä.";
 "NSDocumentsFolderUsageDescription" = "Lumaflip lukee avatun kuvan kansion, jotta voit selata kuvia nuolinäppäimillä.";
@@ -9,4 +9,5 @@
 "Bild" = "Kuva";
 "Bild (sonstige)" = "Kuva (muu)";
 "Ordner" = "Kansio";
+"WBMP-Bild" = "WBMP-kuva";
 "NSHumanReadableCopyright" = "© 2026 brokoskokoli ja muut tekijät. Lisenssi: GPL-3.0-or-later.";

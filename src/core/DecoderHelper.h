@@ -97,6 +97,14 @@ private:
     std::shared_ptr<DecoderHelperPool> m_pool;
 };
 
+// Checks what a helper reported besides the pixels (RemoteDecoder::decode): headroom must be
+// finite and within [1, kMaxHelperHeadroom] (else 1); fullSize must be positive, at least the
+// image size, at most kMaxHelperFullSide per edge and of the image's aspect ratio up to the
+// rounding of a downsampled decode (else the image size).
+inline constexpr float kMaxHelperHeadroom = 64.0f;
+inline constexpr int kMaxHelperFullSide = 1 << 20;
+void sanitizeHelperResult(DecodedImage& decoded);
+
 // Wraps every decoder in RemoteDecoder when a helper pool exists, else returns it as is.
 std::shared_ptr<Decoder> isolatedDecoder(std::shared_ptr<Decoder> decoder);
 

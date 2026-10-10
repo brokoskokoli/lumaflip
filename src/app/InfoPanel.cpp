@@ -432,12 +432,19 @@ void InfoPanel::startLoad() {
     const FileEntry entry = m_entry;
     const std::shared_ptr<TagService> tags = m_tagService;
     const quint64 tagRevision = m_tagRevision.value(path);
+    const int textEpoch = m_textEpoch;
     auto* w = new QFutureWatcher<InfoData>(this);
-    connect(w, &QFutureWatcher<InfoData>::finished, this, [this, w, tagRevision] {
+    connect(w, &QFutureWatcher<InfoData>::finished, this, [this, w, tagRevision, textEpoch] {
         InfoData data = w->result();
         w->deleteLater();
         m_loadRunning = false;
         m_loadingPath.clear();
+        if (textEpoch != m_textEpoch) {
+            // The language changed while this ran: its labels, values and dates are in the
+            // old language. Neither cached nor shown; read again.
+            startLoad();
+            return;
+        }
         const quint64 now = m_tagRevision.value(data.path);
         if (now != tagRevision) {
             // Tags were written meanwhile: what this read saw is stale. Use the stored
@@ -688,7 +695,9 @@ void InfoPanel::retranslateUi() {
     m_allMetadata->setText(Tr::tr("Alle Metadaten …"));
     if (auto* c = m_tagEdit->completer())
         c->setModel(new QStringListModel(standardTags(), c));
-    // Labels, values and dates were formatted for the old language: read them again.
+    // Labels, values and dates were formatted for the old language: read them again (a load
+    // running now is dropped when it finishes, see startLoad()).
+    ++m_textEpoch;
     m_cache.clear();
     m_cacheOrder.clear();
     if (!m_path.isEmpty()) {

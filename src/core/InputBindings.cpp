@@ -12,6 +12,7 @@
 #include <QMutex>
 
 #include <algorithm>
+#include <optional>
 
 namespace lf {
 
@@ -348,15 +349,17 @@ QString actionLabel(Action a) {
 
 // ---- slots (SPEC 4.14) ----
 
-const QVector<InputSlot>& InputBindings::inputSlots() {
-    // Rebuilt when the UI language changed (labels are translated, F-I18N-03).
+QVector<InputSlot> InputBindings::inputSlots() {
+    // Rebuilt when the UI language changed (labels are translated, F-I18N-03). Returned as
+    // a (shared) copy: a reference would outlive the mutex while another thread rebuilds.
     static QMutex mutex;
     static QVector<InputSlot> slotTable;
     static int builtFor = -1;
     QMutexLocker lock(&mutex);
-    if (builtFor == languageGeneration())
+    const int generation = languageGeneration();
+    if (builtFor == generation)
         return slotTable;
-    builtFor = languageGeneration();
+    builtFor = generation;
     slotTable = [] {
         QVector<InputSlot> v;
         auto add = [&v](const char* id, const char* label,
@@ -578,11 +581,11 @@ const QVector<InputSlot>& InputBindings::inputSlots() {
 }
 
 namespace {
-const InputSlot* findSlot(const QString& id) {
+std::optional<InputSlot> findSlot(const QString& id) {
     for (const auto& s : InputBindings::inputSlots())
         if (s.id == id)
-            return &s;
-    return nullptr;
+            return s;
+    return std::nullopt;
 }
 } // namespace
 
@@ -612,12 +615,12 @@ QString InputBindings::choice(const QString& slotId) const {
     auto it = m_choices.constFind(slotId);
     if (it != m_choices.constEnd())
         return *it;
-    const InputSlot* s = findSlot(slotId);
+    const std::optional<InputSlot> s = findSlot(slotId);
     return s ? s->defaultChoice : QString();
 }
 
 void InputBindings::setChoice(const QString& slotId, const QString& choiceId) {
-    const InputSlot* s = findSlot(slotId);
+    const std::optional<InputSlot> s = findSlot(slotId);
     if (!s || !s->choices.contains(choiceId))
         return;
     m_choices.insert(slotId, choiceId);

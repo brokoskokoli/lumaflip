@@ -218,7 +218,21 @@ void CompareView::onImageFailed(const QString& path, const QString& error) {
             p.view->showError(QFileInfo(path).fileName(), error);
 }
 
+void CompareView::retranslateUi() {
+    setAccessibleName(tr("Vergleich"));
+    updateCaptions(); // ratings are described in words
+    // Error cards of panes hold decoder texts of the old language: decode them again.
+    m_provider.forgetFailures();
+    if (!isVisible())
+        return; // stopped: decoded again when shown (setPaths())
+    for (int i = 0; i < m_panes.size(); ++i)
+        if (!m_panes[i].hasImage)
+            request(i, Quality::Screen);
+}
+
 bool CompareView::event(QEvent* event) {
+    if (event->type() == QEvent::LanguageChange)
+        retranslateUi(); // F-I18N-03
     if (event->type() == QEvent::ShortcutOverride) {
         auto* ke = static_cast<QKeyEvent*>(event);
         const Qt::KeyboardModifiers mods = ke->modifiers() & ~Qt::KeypadModifier;
