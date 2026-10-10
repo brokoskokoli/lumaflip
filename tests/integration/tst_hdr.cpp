@@ -380,6 +380,9 @@ private slots:
         services.shell = &shell;
         services.openUrl = [](const QUrl&) { return true; };
         auto app = std::make_unique<Application>(services);
+        // Without an EDR display (CI runners) the app decodes HDR files as SDR; the badge
+        // and the exposure HUD do not depend on the display, so decode HDR anyway.
+        app->provider().setHdrDecoding(true);
         const QString a = QDir::cleanPath(dir.filePath(QStringLiteral("a.exr")));
         ViewerWindow* w = app->openPaths({a});
         QVERIFY(w);

@@ -881,6 +881,9 @@ private slots:
         ViewerWindow* plain = app->openPaths({path("wide.png")});
         QVERIFY(waitWindowShown(plain));
         QVERIFY(waitShown(plain, path("wide.png")));
+        // The new window cascades with this size; on small screens (CI: 1024 x 768) the
+        // default size fills the screen and macOS treats the window as zoomed.
+        plain->resize(500, 350);
         const QSize normal = plain->size();
         Settings::instance().setValue(key::FitWindowToImage, true);
         ViewerWindow* w = app->openPaths({path("wide.png")});

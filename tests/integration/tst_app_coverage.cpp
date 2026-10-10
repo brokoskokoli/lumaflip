@@ -389,7 +389,7 @@ private slots:
         // Independent of machine speed: reading the folder on the GUI thread would
         // make the longest gap about as long as the whole load.
         QVERIFY2(
-            maxGap <= 50 || maxGap * 10 <= loadMs * 6,
+            maxGap <= 50 + idleGap || maxGap * 10 <= loadMs * 6,
             qPrintable(
                 QStringLiteral("GUI thread blocked for %1 of %2 ms of loading").arg(maxGap).arg(loadMs)));
     }

@@ -15,7 +15,7 @@ constexpr const char* kCommon[] = {
     "jpg", "jpeg", "jpe", "jfif", "png", "apng", "gif", "bmp", "dib", "tif", "tiff", "webp",
     "heic", "heif", "hif", "avif", "avifs", "jxl", "jp2", "j2k", "jpf", "jpx", "ico", "cur",
     "icns", "tga", "psd", "psb", "exr", "hdr", "pic", "dds", "ktx", "ktx2", "astc", "pvr",
-    "svg", "svgz", "qoi", "pcx", "pbm", "pgm", "ppm", "pnm", "pfm", "xcf", "kra", "ora",
+    "svg", "svgz", "qoi", "pcx", "pbm", "pgm", "ppm", "pnm", "pam", "pfm", "xcf", "kra", "ora",
     "sgi", "rgb", "ras", "dcm",
 };
 constexpr const char* kRaw[] = {

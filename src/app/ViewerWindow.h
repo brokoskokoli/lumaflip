@@ -66,7 +66,7 @@ public:
     bool isEmpty() const; // nothing opened (start screen)
     Collection* collection() const { return m_collection; }
     ImageView* view() const { return m_view; }
-    WindowPanels* panels() const { return m_panels; } // F-INFO-02, F-GRID-01
+    WindowPanels* panels() const { return m_panels; }        // F-INFO-02, F-GRID-01
     CullingController* culling() const { return m_culling; } // M3: F-CULL-01..06, F-FILE-08
     WindowExtras* extras() const { return m_extras; }        // M3: F-GRID-02/03, F-VIEW-11..13, F-NAV-06/08
     HdrController* hdr() const { return m_hdr; }             // M3: F-COL-04/05
@@ -237,7 +237,7 @@ private:
     QStringList m_wanted;      // prefetch window, current first
     QString m_watchedFolder;
     bool m_watchedTree = false; // F-OPEN-08: m_watchedFolder is watched with its subfolders
-    int m_direction = 1; // last flip direction (prefetch, SPEC 7.1)
+    int m_direction = 1;        // last flip direction (prefetch, SPEC 7.1)
     int m_displayCount = 0;
     bool m_flipH = false;
     bool m_flipV = false;
@@ -262,7 +262,7 @@ private:
     QSize m_vectorSize;
     class StartScreenRecent* m_startRecent = nullptr; // F-OPEN-12
     void openRecent(const QString& path);
-    WindowPanels* m_panels = nullptr; // M2: info panel + filmstrip (WindowPanels.cpp)
+    WindowPanels* m_panels = nullptr;       // M2: info panel + filmstrip (WindowPanels.cpp)
     CullingController* m_culling = nullptr; // M3 (CullingController.cpp)
     WindowExtras* m_extras = nullptr;       // M3 (WindowExtras.cpp)
     HdrController* m_hdr = nullptr;         // M3 (HdrController.cpp)

@@ -507,7 +507,7 @@ TEST_F(CollectionTest, F_OPEN_07_RemoveDuringPendingResortSurvives) {
 // Non-ASCII names: files created with decomposed (NFD) bytes, as Finder does, opened via
 // the NFC spelling Qt and most callers use. The opened file must not appear twice.
 TEST_F(CollectionTest, F_OPEN_02_NonAsciiNfdNamesOpenOnce) {
-#ifdef Q_OS_UNIX
+#ifdef Q_OS_DARWIN // APFS/HFS+ treat NFD and NFC spellings as the same name; Linux does not
     const QByteArray nfdA("A\xcc\x88pfel.jpg"); // "Äpfel.jpg" decomposed
     const QByteArray nfdB("Mu\xcc\x88ll.jpg");  // "Müll.jpg" decomposed
     for (const QByteArray& n : {nfdA, nfdB}) {

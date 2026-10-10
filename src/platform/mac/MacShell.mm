@@ -19,7 +19,6 @@ namespace {
 constexpr int64_t kDefaultAppTimeoutSec = 10; // blocking variant only
 constexpr int kDefaultAppPendingMs = 3000;    // "still running" note (async)
 
-
 class MacShell final : public Shell {
 public:
     void revealInFileManager(const QString& path) override {

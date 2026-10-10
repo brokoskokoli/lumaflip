@@ -32,7 +32,6 @@ namespace lf::platform {
 
 namespace {
 
-
 void setError(QString* error, const QString& msg) {
     if (error)
         *error = msg;

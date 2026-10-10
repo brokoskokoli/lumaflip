@@ -17,6 +17,8 @@
 
 #include <gtest/gtest.h>
 
+#include <algorithm>
+
 #include <QDir>
 #include <QElapsedTimer>
 #include <QFile>
@@ -283,7 +285,9 @@ TEST(ReviewNameFilter, F_NAV_08_FiftyThousandEntriesStayResponsive) {
     EXPECT_EQ(step(munich, expected(munich)), (50000 + 6) / 7);
     EXPECT_EQ(step(narrower, expected(narrower)), expected(narrower));
     EXPECT_EQ(step(QString(), 50000), 50000);
-    EXPECT_LT(worstSlice, 30);
+    // LF_TIMING_FACTOR (CI: shared runners, sanitizers) scales the limit.
+    const int factor = std::max(1, qEnvironmentVariableIntValue("LF_TIMING_FACTOR"));
+    EXPECT_LT(worstSlice, 30 * factor);
     // Order kept: the entries come back in their original order.
     for (int i = 0; i < 50000; i += 4999)
         EXPECT_EQ(c.at(i).path, entries.at(i).path);

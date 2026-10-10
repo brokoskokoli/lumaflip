@@ -467,7 +467,12 @@ private slots:
         w->slideshow()->setIntervalMs(200);
         QTRY_COMPARE_WITH_TIMEOUT(w->currentPath(), files.at(2), 3000);
         QTRY_COMPARE_WITH_TIMEOUT(w->currentPath(), files.at(0), 3000); // wrapped
+        // macOS ignores a full screen change while the previous transition is still
+        // animating (slow machines, CI): give each transition time to finish.
+        QTest::qWait(1500);
         w->stopSlideshow();
+        QTRY_VERIFY_WITH_TIMEOUT(!w->isFullScreen(), 5000);
+        QTest::qWait(1500);
 
         Settings::instance().setValue(key::SlideshowRepeat, false);
         w->collection()->setCurrentPath(files.at(1));

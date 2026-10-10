@@ -33,6 +33,41 @@
 
 namespace lf {
 
+namespace {
+
+// Packages are folders the Finder shows as one file ("X.app", "Fotos.photoslibrary"). macOS
+// asks Launch Services (bundle bit, registered extensions); elsewhere the usual package
+// extensions identify them (Mac folders on a shared or external drive).
+bool isPackageFolder(const QFileInfo& fi) {
+#ifdef Q_OS_DARWIN
+    return fi.isBundle();
+#else
+    static const QSet<QString> kPackageSuffixes = {
+        QStringLiteral("app"),
+        QStringLiteral("bundle"),
+        QStringLiteral("framework"),
+        QStringLiteral("plugin"),
+        QStringLiteral("kext"),
+        QStringLiteral("photoslibrary"),
+        QStringLiteral("photolibrary"),
+        QStringLiteral("aplibrary"),
+        QStringLiteral("migratedphotolibrary"),
+        QStringLiteral("fcpbundle"),
+        QStringLiteral("imovielibrary"),
+        QStringLiteral("rtfd"),
+        QStringLiteral("pkg"),
+        QStringLiteral("mpkg"),
+        QStringLiteral("xcodeproj"),
+        QStringLiteral("xcworkspace"),
+        QStringLiteral("playground"),
+        QStringLiteral("logicx"),
+    };
+    return fi.isDir() && kPackageSuffixes.contains(fi.suffix().toLower());
+#endif
+}
+
+} // namespace
+
 // ---------------------------------------------------------------------------------------
 // Pure helpers
 // ---------------------------------------------------------------------------------------
@@ -80,7 +115,7 @@ bool acceptSubfolder(int dfd, const char* name, const QString& fullPath, dev_t p
 #endif
     // Packages carry an extension (or the bundle bit); asking costs a Launch Services call,
     // so only for names with a dot.
-    if (fullPath.lastIndexOf(u'.') > fullPath.lastIndexOf(u'/') && QFileInfo(fullPath).isBundle())
+    if (fullPath.lastIndexOf(u'.') > fullPath.lastIndexOf(u'/') && isPackageFolder(QFileInfo(fullPath)))
         return false;
     return true;
 }
@@ -171,7 +206,7 @@ QVector<FileEntry> enumerateFolder(const QString& folderPath, bool* accessDenied
         dir.entryInfoList(QDir::Files | QDir::Dirs | QDir::NoDotAndDotDot, QDir::NoSort);
     for (const QFileInfo& fi : infos) {
         if (fi.isDir()) {
-            if (subfolders && !fi.isSymLink() && !fi.isHidden() && !fi.isBundle() &&
+            if (subfolders && !fi.isSymLink() && !fi.isHidden() && !isPackageFolder(fi) &&
                 !fi.fileName().startsWith(u'.'))
                 subfolders->append(fi.fileName());
             continue;
@@ -335,7 +370,7 @@ QString siblingImageFolder(const QString& folderPath, int direction, const NameC
     QStringList names;
     const QFileInfoList infos = parent.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::NoSort);
     for (const QFileInfo& fi : infos)
-        if (!fi.isHidden() && !fi.isBundle() && !fi.fileName().startsWith(u'.'))
+        if (!fi.isHidden() && !isPackageFolder(fi) && !fi.fileName().startsWith(u'.'))
             names << fi.fileName();
     std::sort(names.begin(), names.end(), [collator](const QString& a, const QString& b) {
         return collator ? collator->compare(a, b) < 0 : a.compare(b, Qt::CaseInsensitive) < 0;
@@ -1123,7 +1158,7 @@ struct Collection::Private {
         if (!QFileInfo(path).isDir())
             return FolderState::Missing;
 #endif
-        if (path.lastIndexOf(u'.') > path.lastIndexOf(u'/') && QFileInfo(path).isBundle())
+        if (path.lastIndexOf(u'.') > path.lastIndexOf(u'/') && isPackageFolder(QFileInfo(path)))
             return FolderState::Excluded;
         return FolderState::Accepted;
     }

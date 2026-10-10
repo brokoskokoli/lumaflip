@@ -12,7 +12,6 @@ namespace lf::mac {
 
 namespace {
 
-
 // Shared by all completion handlers (any thread) and the delivery on the GUI thread.
 struct Registration {
     QMutex mutex;
