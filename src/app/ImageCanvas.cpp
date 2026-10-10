@@ -215,6 +215,7 @@ struct ImageCanvas::Private {
     bool extended = false;    // extended range presentation active (EdrSurface)
     std::function<void()> requestExtended;
     int extFrames = 0;
+    int extFramesAtSwitch = 0; // extFrames when the extended presentation was switched on
     // Background (base or first checker color, second checker color) in extended linear
     // Display P3, converted from the display space.
     float extBgRgb[3][3] = {}; // [2]: base (clear color)
@@ -1064,6 +1065,7 @@ void ImageCanvas::setExtendedPresentation(bool on, std::function<void()> request
     if (d->extended == on)
         return;
     d->extended = on;
+    d->extFramesAtSwitch = d->extFrames;
     // Both: the widget clears (extended) or shows the image again; the EDR surface draws.
     update();
     if (on && d->requestExtended)
@@ -1168,9 +1170,10 @@ void ImageCanvas::render(QRhiCommandBuffer* cb) {
     QRhi* rhi = d->rhi;
     QRhiResourceUpdateBatch* rub = rhi->nextResourceUpdateBatch();
     d->uploadStatic(rub);
-    if (d->extended && d->requestExtended) {
+    if (d->extended && d->requestExtended && d->extFrames > d->extFramesAtSwitch) {
         // Covered by the extended range surface, which draws the image: only clear (no
-        // uniform writes that could race with the surface's frames).
+        // uniform writes that could race with the surface's frames). Until its first frame
+        // the widget keeps drawing (SDR preview), so switching never shows an empty view.
         cb->beginPass(renderTarget(), d->base, {1.0f, 0}, rub);
         cb->endPass();
         return;
