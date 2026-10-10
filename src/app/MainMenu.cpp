@@ -318,6 +318,7 @@ void MainMenu::build() {
     buildMedia(view, nav, image); // slideshow, pages, animation, save rotation (MainMenuMedia.cpp)
     buildCulling();               // M3: "Aussortieren" (MainMenuCulling.cpp)
     buildViews(view, nav);        // M3: grid, compare, go to, shuffle, name filter (MainMenuViews.cpp)
+    buildEdit(file, view, image); // M4: crop, export, overlays, compare blending (MainMenuEdit.cpp)
 
     // ---- Fenster ----
     m_windowMenu = m_bar->addMenu(tr("Fenster"));
@@ -442,6 +443,7 @@ void MainMenu::refreshState() {
     refreshViewsState();
     refreshHdrState();
     refreshM4State();
+    refreshEditState();
 }
 
 void MainMenu::refreshWindowList() {

@@ -72,6 +72,16 @@
     </message>
 </context>
 <context>
+    <name>lf::ExportDialog</name>
+    <message numerus="yes">
+        <source>%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.</source>
+        <translation>
+            <numerusform>%n Bild als neue Datei exportieren. Das Original bleibt unverändert.</numerusform>
+            <numerusform>%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::FolderMapModel</name>
     <message numerus="yes">
         <source>%1 von %n Bildern mit Ort</source>
@@ -208,6 +218,37 @@
         <translation>
             <numerusform>%n Datei in den Papierkorb gelegt</numerusform>
             <numerusform>%n Dateien in den Papierkorb gelegt</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowEditing</name>
+    <message numerus="yes">
+        <source>%n Bilder konnten nicht exportiert werden.</source>
+        <translation>
+            <numerusform>%n Bild konnte nicht exportiert werden.</numerusform>
+            <numerusform>%n Bilder konnten nicht exportiert werden.</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Export abgebrochen – %n Bilder exportiert</source>
+        <translation>
+            <numerusform>Export abgebrochen – %n Bild exportiert</numerusform>
+            <numerusform>Export abgebrochen – %n Bilder exportiert</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder exportiert</source>
+        <translation>
+            <numerusform>%n Bild exportiert</numerusform>
+            <numerusform>%n Bilder exportiert</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n übersprungen</source>
+        <translation>
+            <numerusform>%n übersprungen</numerusform>
+            <numerusform>%n übersprungen</numerusform>
         </translation>
     </message>
 </context>

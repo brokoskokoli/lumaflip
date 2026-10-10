@@ -250,9 +250,43 @@
         <translation>Vertailu</translation>
     </message>
     <message>
+        <source>%1×</source>
+        <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
+        <translation>%1×</translation>
+    </message>
+    <message>
+        <source>%1 %</source>
+        <translation>%1 %</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Rinnakkain</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>Erotus</translation>
+    </message>
+    <message>
+        <source>Überblenden</source>
+        <translation>Ristihäivytys</translation>
+    </message>
+    <message>
+        <source>Wischen</source>
+        <translation>Pyyhkäisy</translation>
+    </message>
+    <message>
+        <source>Die ersten beiden Bilder übereinander vergleichen</source>
+        <translation>Vertaa kahta ensimmäistä kuvaa päällekkäin</translation>
+    </message>
+    <message>
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+    <message>
+        <source>%1 ⇄ %2</source>
+        <extracomment>compare caption while two images are blended: &quot;first.jpg ⇄ second.jpg&quot;</extracomment>
+        <translation>%1 ⇄ %2</translation>
     </message>
 </context>
 <context>
@@ -306,6 +340,193 @@
     <message>
         <source>Abbrechen</source>
         <translation>Kumoa</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropOverlay</name>
+    <message>
+        <source>Seitenverhältnis</source>
+        <translation>Kuvasuhde</translation>
+    </message>
+    <message>
+        <source>Hochformat</source>
+        <translation>Pysty</translation>
+    </message>
+    <message>
+        <source>Seitenverhältnis hochkant statt quer</source>
+        <translation>Kuvasuhde pystyyn vaakasuunnan sijaan</translation>
+    </message>
+    <message>
+        <source>Drittel</source>
+        <translation>Kolmannekset</translation>
+    </message>
+    <message>
+        <source>Raster der Drittel-Regel einblenden</source>
+        <translation>Näytä kolmanneksen säännön ruudukko</translation>
+    </message>
+    <message>
+        <source>Speichern</source>
+        <translation>Tallenna</translation>
+    </message>
+    <message>
+        <source>Zuschnitt in der Datei speichern (Enter, widerrufbar)</source>
+        <translation>Tallenna rajaus tiedostoon (Enter, voidaan kumota)</translation>
+    </message>
+    <message>
+        <source>Speichern unter …</source>
+        <translation>Tallenna nimellä…</translation>
+    </message>
+    <message>
+        <source>Zuschnitt als neue Datei speichern – das Original bleibt unverändert</source>
+        <translation>Tallenna rajaus uutena tiedostona – alkuperäinen säilyy muuttumattomana</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Kumoa</translation>
+    </message>
+    <message>
+        <source>Zuschneiden beenden (Esc)</source>
+        <translation>Lopeta rajaus (Esc)</translation>
+    </message>
+    <message>
+        <source>%1 × %2 px</source>
+        <extracomment>crop size in pixels, e.g. &quot;1920 × 1080 px&quot;</extracomment>
+        <translation>%1 × %2 px</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropSave</name>
+    <message>
+        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.</source>
+        <translation>Tiedostoa on muutettu sillä välin – mitään ei tallennettu. Rajaa uudelleen.</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
+        <translation>Tiedosto sisältää muita kuvia (esim. HDR-vahvistuskartan tai toisen stereokuvan), jotka eivät häviöttömän rajauksen jälkeen enää täsmäisi. Rajaus onnistuu vain uudelleenkoodaamalla – samalla menetetään hieman laatua ja nämä lisäkuvat.</translation>
+    </message>
+    <message>
+        <source>Frei</source>
+        <translation>Vapaa</translation>
+    </message>
+    <message>
+        <source>Original</source>
+        <translation>Alkuperäinen</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
+        <translation>JPEG-kirjastoa ei voitu käynnistää.</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Daten konnten nicht verlustfrei zugeschnitten werden (%1).</source>
+        <translation>JPEG-tietoja ei voitu rajata häviöttömästi (%1).</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.</source>
+        <translation>Valinta ei ole JPEG-lohkoruudukossa.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden von JPEG-Dateien ist in dieser Version nicht verfügbar.</source>
+        <translation>JPEG-tiedostojen häviötön rajaus ei ole käytettävissä tässä versiossa.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
+        <translation>Arkistoissa ja PDF-dokumenteissa olevia kuvia ei voi tallentaa rajattuina – käytä toimintoa ”Vie”.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>Tiedostoa ei ole enää olemassa.</translation>
+    </message>
+    <message>
+        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <translation>Tiedostomuotoa ei tunnisteta tallennusta varten.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
+        <translation>RAW-tiedostoja ei koskaan muuteta. Käytä rajattuun kopioon toimintoa ”Vie”.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
+        <translation>Animoituja tai monisivuisia tiedostoja ei voi tallentaa rajattuina.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist schreibgeschützt.</source>
+        <translation>”%1” on kirjoitussuojattu.</translation>
+    </message>
+    <message>
+        <source>„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.</source>
+        <translation>”Tallenna nimellä” ei koskaan korvaa alkuperäistä – valitse toinen nimi.</translation>
+    </message>
+    <message>
+        <source>In „%1“ kann nicht geschrieben werden.</source>
+        <translation>Kohteeseen ”%1” ei voi kirjoittaa.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>Kohdetta ”%1” ei voi lukea.</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>Aluetta ei ole valittu.</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.</source>
+        <translation>Valinta kattaa koko kuvan – ei rajattavaa.</translation>
+    </message>
+    <message>
+        <source>Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
+        <translation>Häviötöntä rajausta varten valinta sovitettiin JPEG-lohkoruudukkoon (%1 × %2 pikseliä), ja se on nyt %3 × %4 pikseliä.</translation>
+    </message>
+    <message>
+        <source>Diese JPEG-Datei lässt sich nicht verlustfrei zuschneiden. Beim Neukodieren geht etwas Bildqualität verloren.</source>
+        <translation>Tätä JPEG-tiedostoa ei voi rajata häviöttömästi. Uudelleenkoodaus heikentää hieman laatua.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nicht gespeichert werden.</source>
+        <translation>Rajausta ei voi tallentaa.</translation>
+    </message>
+    <message>
+        <source>Beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
+        <translation>Uudelleenkoodattuna kuva ei pysyisi täsmälleen samana (värimalli, bittisyvyys, paletti tai läpinäkyvyys muuttuisi).</translation>
+    </message>
+    <message>
+        <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <translation>Tämä muoto on häviöllinen. Rajauksen voi tallentaa vain koodaamalla kuvan uudelleen – samalla laatu heikkenee hieman.</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder (%1) gehen dabei verloren.</source>
+        <translation>Lisäkuvat (%1) menetetään.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
+        <translation>Häviötön rajaus ei ole mahdollinen tälle kuvalle.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>Rajausta ei voitu tallentaa.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>Tiedostoa ei voitu korvata.</translation>
+    </message>
+    <message>
+        <source>Nichts zuzuschneiden</source>
+        <translation>Ei rajattavaa</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten (an JPEG-Blöcke angepasst)</source>
+        <translation>Rajattu häviöttömästi (sovitettu JPEG-lohkoihin)</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten</source>
+        <translation>Rajattu häviöttömästi</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (verlustfrei neu kodiert)</source>
+        <translation>Rajattu (häviöttömästi uudelleenkoodattu)</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (neu kodiert)</source>
+        <translation>Rajattu (uudelleenkoodattu)</translation>
     </message>
 </context>
 <context>
@@ -884,6 +1105,136 @@
     </message>
 </context>
 <context>
+    <name>lf::ExportDialog</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>Vie</translation>
+    </message>
+    <message>
+        <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>Vie ”%1” uutena tiedostona. Alkuperäinen säilyy muuttumattomana.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.</source>
+        <translation>
+            <numerusform>Vie %n kuva uutena tiedostona. Alkuperäinen säilyy muuttumattomana.</numerusform>
+            <numerusform>Vie %n kuvaa uusina tiedostoina. Alkuperäiset säilyvät muuttumattomina.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation>Muoto:</translation>
+    </message>
+    <message>
+        <source>Qualität:</source>
+        <translation>Laatu:</translation>
+    </message>
+    <message>
+        <source>Maximale Größe:</source>
+        <translation>Enimmäiskoko:</translation>
+    </message>
+    <message>
+        <source>Metadaten:</source>
+        <translation>Metatiedot:</translation>
+    </message>
+    <message>
+        <source>Farbraum:</source>
+        <translation>Väriavaruus:</translation>
+    </message>
+    <message>
+        <source>HDR:</source>
+        <translation>HDR:</translation>
+    </message>
+    <message>
+        <source>Dateiname:</source>
+        <translation>Tiedostonimi:</translation>
+    </message>
+    <message>
+        <source>Zielordner:</source>
+        <translation>Kohdekansio:</translation>
+    </message>
+    <message>
+        <source>Originalgröße</source>
+        <translation>Alkuperäinen koko</translation>
+    </message>
+    <message>
+        <source> px (lange Kante)</source>
+        <extracomment>suffix of the maximum size (long edge in pixels)</extracomment>
+        <translation> px (pitkä sivu)</translation>
+    </message>
+    <message>
+        <source>Alle behalten</source>
+        <translation>Säilytä kaikki</translation>
+    </message>
+    <message>
+        <source>Ohne Ortsdaten (GPS)</source>
+        <translation>Ilman sijaintia (GPS)</translation>
+    </message>
+    <message>
+        <source>Alle entfernen</source>
+        <translation>Poista kaikki</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>Säilytä</translation>
+    </message>
+    <message>
+        <source>In sRGB umwandeln</source>
+        <translation>Muunna sRGB-muotoon</translation>
+    </message>
+    <message>
+        <source>In Display P3 umwandeln</source>
+        <translation>Muunna Display P3 -muotoon</translation>
+    </message>
+    <message>
+        <source>Gain-Map behalten (wo das Format es kann)</source>
+        <translation>Säilytä vahvistuskartta (jos muoto tukee)</translation>
+    </message>
+    <message>
+        <source>Als SDR (Tone Mapping)</source>
+        <translation>SDR-muodossa (sävykartoitus)</translation>
+    </message>
+    <message>
+        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung</source>
+        <translation>Paikkamerkit: {name} = alkuperäisen nimi, {n} = juokseva numero, {format} = tiedostopääte</translation>
+    </message>
+    <message>
+        <source>Neben dem Original</source>
+        <translation>Alkuperäisen viereen</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>Valitse…</translation>
+    </message>
+    <message>
+        <source>Erste Datei: %1</source>
+        <translation>Ensimmäinen tiedosto: %1</translation>
+    </message>
+    <message>
+        <source>Zielordner für den Export</source>
+        <translation>Viennin kohdekansio</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ExportRunner</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>Vie</translation>
+    </message>
+    <message>
+        <source>Exportiere …</source>
+        <translation>Viedään…</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Kumoa</translation>
+    </message>
+    <message>
+        <source>Exportiere %1 von %2: %3</source>
+        <translation>Viedään %1/%2: %3</translation>
+    </message>
+</context>
+<context>
     <name>lf::FileBatch</name>
     <message>
         <source>„%1“ existiert bereits.</source>
@@ -1211,6 +1562,49 @@
     <message>
         <source>Wird berechnet …</source>
         <translation>Lasketaan…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ImageExport</name>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>”%1” on jo olemassa.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht exportiert werden.</source>
+        <translation>Kuvaa ei voitu viedä.</translation>
+    </message>
+    <message>
+        <source>%1: Der Zielordner kann nicht angelegt werden.</source>
+        <translation>%1: Kohdekansiota ei voi luoda.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht geschrieben werden.</source>
+        <translation>Kuvaa ei voitu kirjoittaa.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden.</source>
+        <translation>Kuvaa ei voitu purkaa.</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
+        <translation>Tätä muotoa ei voi kirjoittaa tällä Macilla.</translation>
+    </message>
+    <message>
+        <source>Unbekanntes Zielformat.</source>
+        <translation>Tuntematon kohdemuoto.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher zum Exportieren.</source>
+        <translation>Muisti ei riitä vientiin.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Tiedostoa ei voi lukea.</translation>
+    </message>
+    <message>
+        <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
+        <translation>%1 ei voi tallentaa HDR-vahvistuskarttaa – kuva vietiin SDR-muodossa.</translation>
     </message>
 </context>
 <context>
@@ -1848,6 +2242,26 @@
     <message>
         <source>Comics von rechts nach links lesen</source>
         <translation>Lue sarjakuvat oikealta vasemmalle</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>Rajaa</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>Vie</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung</source>
+        <translation>Yli-/alivalotusvaroitus</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>Tarkennuksen korostus</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>AF-pisteet</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2878,8 +3292,48 @@
         <translation>Satunnainen järjestys</translation>
     </message>
     <message>
+        <source>Exportieren …</source>
+        <translation>Vie…</translation>
+    </message>
+    <message>
+        <source>Zuschneiden …</source>
+        <translation>Rajaa…</translation>
+    </message>
+    <message>
+        <source>Overlays</source>
+        <translation>Peitot</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtung</source>
+        <translation>Yli-/alivalotus</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>Tarkennuksen korostus</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>AF-pisteet</translation>
+    </message>
+    <message>
+        <source>Vergleich überlagern</source>
+        <translation>Vertaa päällekkäin</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Rinnakkain</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>Erotus</translation>
+    </message>
+    <message>
         <source>Überblenden</source>
         <translation>Ristihäivytys</translation>
+    </message>
+    <message>
+        <source>Wischen (geteilte Ansicht)</source>
+        <translation>Pyyhkäisy (jaettu näkymä)</translation>
     </message>
     <message>
         <source>Diashow</source>
@@ -3842,6 +4296,38 @@
     <message>
         <source>Groß</source>
         <translation>Suuri</translation>
+    </message>
+    <message>
+        <source>Überbelichtung ab (J):</source>
+        <translation>Ylivalotus alkaen (J):</translation>
+    </message>
+    <message>
+        <source>Unterbelichtung bis:</source>
+        <translation>Alivalotus enintään:</translation>
+    </message>
+    <message>
+        <source>HDR-Überbelichtung bezogen auf:</source>
+        <translation>HDR-ylivalotus suhteessa:</translation>
+    </message>
+    <message>
+        <source>Spitzenhelligkeit des Bildes</source>
+        <translation>Kuvan huippukirkkaus</translation>
+    </message>
+    <message>
+        <source>SDR-Weiß</source>
+        <translation>SDR-valkoinen</translation>
+    </message>
+    <message>
+        <source>Focus Peaking (⇧J), Empfindlichkeit:</source>
+        <translation>Tarkennuksen korostus (⇧J), herkkyys:</translation>
+    </message>
+    <message>
+        <source>Focus-Peaking-Farbe:</source>
+        <translation>Tarkennuksen korostuksen väri:</translation>
+    </message>
+    <message>
+        <source>Weiß</source>
+        <translation>Valkoinen</translation>
     </message>
     <message>
         <source>Diashow (⇧⌘F, S):</source>
@@ -5266,6 +5752,123 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowEditing</name>
+    <message>
+        <source>Über-/Unterbelichtungswarnung an (rot: Lichter, blau: Schatten)</source>
+        <translation>Yli-/alivalotusvaroitus päällä (punainen: valoalueet, sininen: varjot)</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung aus</source>
+        <translation>Yli-/alivalotusvaroitus pois</translation>
+    </message>
+    <message>
+        <source>Focus Peaking an</source>
+        <translation>Tarkennuksen korostus päällä</translation>
+    </message>
+    <message>
+        <source>Focus Peaking aus</source>
+        <translation>Tarkennuksen korostus pois</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte an</source>
+        <translation>AF-pisteet näkyvissä</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte aus</source>
+        <translation>AF-pisteet piilotettu</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte: %1</source>
+        <extracomment>%1 = where the AF points come from (&quot;Canon&quot;, &quot;Sony&quot;, &quot;EXIF&quot; …)</extracomment>
+        <translation>AF-pisteet: %1</translation>
+    </message>
+    <message>
+        <source>Keine Fokuspunkte in den Metadaten</source>
+        <translation>Metatiedoissa ei ole AF-pisteitä</translation>
+    </message>
+    <message>
+        <source>Zuschneiden geht in der Einzelbildansicht.</source>
+        <translation>Rajaus toimii yksittäisen kuvan näkymässä.</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Zuschneiden.</source>
+        <translation>Ei rajattavaa kuvaa.</translation>
+    </message>
+    <message>
+        <source>Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab</source>
+        <translation>Rajaus: vedä kehys – Enter tallentaa, Esc peruu</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>Aluetta ei ole valittu.</translation>
+    </message>
+    <message>
+        <source>%1-zugeschnitten.%2</source>
+        <extracomment>default file name of a cropped copy: &quot;&lt;name&gt;-zugeschnitten.&lt;suffix&gt;&quot;</extracomment>
+        <translation>%1-rajattu.%2</translation>
+    </message>
+    <message>
+        <source>Zugeschnittenes Bild speichern unter</source>
+        <translation>Tallenna rajattu kuva nimellä</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>Rajaa</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
+        <translation>Rajauksen voi tallentaa vain uudelleenkoodaamalla.</translation>
+    </message>
+    <message>
+        <source>Neu kodieren</source>
+        <translation>Koodaa uudelleen</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Kumoa</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten gespeichert als „%1“</source>
+        <translation>Rajaus tallennettu nimellä ”%1”</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Exportieren.</source>
+        <translation>Ei vietävää kuvaa.</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>Vie</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder konnten nicht exportiert werden.</source>
+        <translation>
+            <numerusform>%n kuvaa ei voitu viedä.</numerusform>
+            <numerusform>%n kuvaa ei voitu viedä.</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Export abgebrochen – %n Bilder exportiert</source>
+        <translation>
+            <numerusform>Vienti keskeytettiin – %n kuva viety</numerusform>
+            <numerusform>Vienti keskeytettiin – %n kuvaa viety</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder exportiert</source>
+        <translation>
+            <numerusform>%n kuva viety</numerusform>
+            <numerusform>%n kuvaa viety</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n übersprungen</source>
+        <translation>
+            <numerusform>%n ohitettu</numerusform>
+            <numerusform>%n ohitettu</numerusform>
+        </translation>
     </message>
 </context>
 <context>

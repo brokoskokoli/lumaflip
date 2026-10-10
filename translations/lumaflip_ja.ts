@@ -248,9 +248,43 @@
         <translation>比較</translation>
     </message>
     <message>
+        <source>%1×</source>
+        <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
+        <translation>%1×</translation>
+    </message>
+    <message>
+        <source>%1 %</source>
+        <translation>%1%</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>左右に並べる</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>差分</translation>
+    </message>
+    <message>
+        <source>Überblenden</source>
+        <translation>クロスフェード</translation>
+    </message>
+    <message>
+        <source>Wischen</source>
+        <translation>ワイプ</translation>
+    </message>
+    <message>
+        <source>Die ersten beiden Bilder übereinander vergleichen</source>
+        <translation>最初の 2 枚の画像を重ねて比較</translation>
+    </message>
+    <message>
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+    <message>
+        <source>%1 ⇄ %2</source>
+        <extracomment>compare caption while two images are blended: &quot;first.jpg ⇄ second.jpg&quot;</extracomment>
+        <translation>%1 ⇄ %2</translation>
     </message>
 </context>
 <context>
@@ -303,6 +337,193 @@
     <message>
         <source>Abbrechen</source>
         <translation>キャンセル</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropOverlay</name>
+    <message>
+        <source>Seitenverhältnis</source>
+        <translation>縦横比</translation>
+    </message>
+    <message>
+        <source>Hochformat</source>
+        <translation>縦向き</translation>
+    </message>
+    <message>
+        <source>Seitenverhältnis hochkant statt quer</source>
+        <translation>縦横比を横向きでなく縦向きに</translation>
+    </message>
+    <message>
+        <source>Drittel</source>
+        <translation>三分割</translation>
+    </message>
+    <message>
+        <source>Raster der Drittel-Regel einblenden</source>
+        <translation>三分割法のグリッドを表示</translation>
+    </message>
+    <message>
+        <source>Speichern</source>
+        <translation>保存</translation>
+    </message>
+    <message>
+        <source>Zuschnitt in der Datei speichern (Enter, widerrufbar)</source>
+        <translation>切り取りをファイルに保存（Enter、取り消し可能）</translation>
+    </message>
+    <message>
+        <source>Speichern unter …</source>
+        <translation>別名で保存…</translation>
+    </message>
+    <message>
+        <source>Zuschnitt als neue Datei speichern – das Original bleibt unverändert</source>
+        <translation>切り取りを新しいファイルとして保存 – オリジナルは変更されません</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>キャンセル</translation>
+    </message>
+    <message>
+        <source>Zuschneiden beenden (Esc)</source>
+        <translation>切り取りを終了（Esc）</translation>
+    </message>
+    <message>
+        <source>%1 × %2 px</source>
+        <extracomment>crop size in pixels, e.g. &quot;1920 × 1080 px&quot;</extracomment>
+        <translation>%1 × %2 px</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropSave</name>
+    <message>
+        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.</source>
+        <translation>ファイルがその間に変更されました。何も保存されていません。もう一度切り取ってください。</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
+        <translation>このファイルには、ロスレスで切り取ると合わなくなる別の画像（HDR ゲインマップや 2 枚目のステレオ画像など）が含まれています。切り取りは再エンコードでのみ可能で、画質が少し低下し、これらの追加画像は失われます。</translation>
+    </message>
+    <message>
+        <source>Frei</source>
+        <translation>自由</translation>
+    </message>
+    <message>
+        <source>Original</source>
+        <translation>オリジナル</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
+        <translation>JPEGライブラリを起動できませんでした。</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Daten konnten nicht verlustfrei zugeschnitten werden (%1).</source>
+        <translation>JPEG データをロスレスで切り取れませんでした（%1）。</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.</source>
+        <translation>選択範囲が JPEG ブロックの格子に揃っていません。</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden von JPEG-Dateien ist in dieser Version nicht verfügbar.</source>
+        <translation>このバージョンでは JPEG ファイルのロスレス切り取りは使用できません。</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
+        <translation>アーカイブや PDF 書類内の画像は切り取って保存できません。「書き出す」を使ってください。</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>ファイルはもう存在しません。</translation>
+    </message>
+    <message>
+        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <translation>保存用のファイルフォーマットを認識できません。</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
+        <translation>RAW ファイルは変更されません。切り取ったコピーには「書き出す」を使ってください。</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
+        <translation>アニメーションや複数ページのファイルは切り取って保存できません。</translation>
+    </message>
+    <message>
+        <source>„%1“ ist schreibgeschützt.</source>
+        <translation>「%1」は書き込み禁止です。</translation>
+    </message>
+    <message>
+        <source>„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.</source>
+        <translation>「別名で保存」はオリジナルを上書きしません。別の名前を選んでください。</translation>
+    </message>
+    <message>
+        <source>In „%1“ kann nicht geschrieben werden.</source>
+        <translation>「%1」に書き込めません。</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>「%1」を読み込めません。</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>範囲が選択されていません。</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.</source>
+        <translation>選択範囲が画像全体です。切り取るものはありません。</translation>
+    </message>
+    <message>
+        <source>Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
+        <translation>ロスレスで切り取るため、選択範囲を JPEG ブロックの格子（%1 × %2 ピクセル）に合わせました。現在のサイズは %3 × %4 ピクセルです。</translation>
+    </message>
+    <message>
+        <source>Diese JPEG-Datei lässt sich nicht verlustfrei zuschneiden. Beim Neukodieren geht etwas Bildqualität verloren.</source>
+        <translation>この JPEG ファイルはロスレスで切り取れません。再エンコードすると画質が少し低下します。</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nicht gespeichert werden.</source>
+        <translation>切り取りを保存できません。</translation>
+    </message>
+    <message>
+        <source>Beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
+        <translation>再エンコードすると画像が完全には同じになりません（カラーモデル、ビット深度、パレット、透明度が変わります）。</translation>
+    </message>
+    <message>
+        <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <translation>このフォーマットは非可逆です。切り取りは画像を再エンコードしないと保存できず、画質が少し低下します。</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder (%1) gehen dabei verloren.</source>
+        <translation>追加画像（%1）は失われます。</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
+        <translation>この画像はロスレスで切り取れません。</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>切り取りを保存できませんでした。</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>ファイルを置き換えられませんでした。</translation>
+    </message>
+    <message>
+        <source>Nichts zuzuschneiden</source>
+        <translation>切り取るものはありません</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten (an JPEG-Blöcke angepasst)</source>
+        <translation>ロスレスで切り取りました（JPEG ブロックに調整）</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten</source>
+        <translation>ロスレスで切り取りました</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (verlustfrei neu kodiert)</source>
+        <translation>切り取りました（ロスレスで再エンコード）</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (neu kodiert)</source>
+        <translation>切り取りました（再エンコード）</translation>
     </message>
 </context>
 <context>
@@ -876,6 +1097,135 @@
     </message>
 </context>
 <context>
+    <name>lf::ExportDialog</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>書き出す</translation>
+    </message>
+    <message>
+        <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>「%1」を新しいファイルとして書き出します。オリジナルは変更されません。</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.</source>
+        <translation>
+            <numerusform>%n 枚の画像を新しいファイルとして書き出します。オリジナルは変更されません。</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation>フォーマット:</translation>
+    </message>
+    <message>
+        <source>Qualität:</source>
+        <translation>画質:</translation>
+    </message>
+    <message>
+        <source>Maximale Größe:</source>
+        <translation>最大サイズ:</translation>
+    </message>
+    <message>
+        <source>Metadaten:</source>
+        <translation>メタデータ:</translation>
+    </message>
+    <message>
+        <source>Farbraum:</source>
+        <translation>カラースペース:</translation>
+    </message>
+    <message>
+        <source>HDR:</source>
+        <translation>HDR:</translation>
+    </message>
+    <message>
+        <source>Dateiname:</source>
+        <translation>ファイル名:</translation>
+    </message>
+    <message>
+        <source>Zielordner:</source>
+        <translation>保存先フォルダ:</translation>
+    </message>
+    <message>
+        <source>Originalgröße</source>
+        <translation>元のサイズ</translation>
+    </message>
+    <message>
+        <source> px (lange Kante)</source>
+        <extracomment>suffix of the maximum size (long edge in pixels)</extracomment>
+        <translation> px（長辺）</translation>
+    </message>
+    <message>
+        <source>Alle behalten</source>
+        <translation>すべて保持</translation>
+    </message>
+    <message>
+        <source>Ohne Ortsdaten (GPS)</source>
+        <translation>位置情報（GPS）なし</translation>
+    </message>
+    <message>
+        <source>Alle entfernen</source>
+        <translation>すべて削除</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>保持</translation>
+    </message>
+    <message>
+        <source>In sRGB umwandeln</source>
+        <translation>sRGB に変換</translation>
+    </message>
+    <message>
+        <source>In Display P3 umwandeln</source>
+        <translation>Display P3 に変換</translation>
+    </message>
+    <message>
+        <source>Gain-Map behalten (wo das Format es kann)</source>
+        <translation>ゲインマップを保持（フォーマットが対応する場合）</translation>
+    </message>
+    <message>
+        <source>Als SDR (Tone Mapping)</source>
+        <translation>SDR として（トーンマッピング）</translation>
+    </message>
+    <message>
+        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung</source>
+        <translation>プレースホルダ: {name} = オリジナルの名前、{n} = 連番、{format} = 拡張子</translation>
+    </message>
+    <message>
+        <source>Neben dem Original</source>
+        <translation>オリジナルと同じ場所</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>選択…</translation>
+    </message>
+    <message>
+        <source>Erste Datei: %1</source>
+        <translation>最初のファイル: %1</translation>
+    </message>
+    <message>
+        <source>Zielordner für den Export</source>
+        <translation>書き出し先フォルダ</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ExportRunner</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>書き出す</translation>
+    </message>
+    <message>
+        <source>Exportiere …</source>
+        <translation>書き出し中…</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>キャンセル</translation>
+    </message>
+    <message>
+        <source>Exportiere %1 von %2: %3</source>
+        <translation>書き出し中 %1/%2: %3</translation>
+    </message>
+</context>
+<context>
     <name>lf::FileBatch</name>
     <message>
         <source>„%1“ existiert bereits.</source>
@@ -1200,6 +1550,49 @@
     <message>
         <source>Wird berechnet …</source>
         <translation>計算中…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ImageExport</name>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>「%1」はすでに存在します。</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht exportiert werden.</source>
+        <translation>画像を書き出せませんでした。</translation>
+    </message>
+    <message>
+        <source>%1: Der Zielordner kann nicht angelegt werden.</source>
+        <translation>%1: 保存先フォルダを作成できません。</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht geschrieben werden.</source>
+        <translation>画像を書き込めませんでした。</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden.</source>
+        <translation>画像をデコードできませんでした。</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
+        <translation>このフォーマットはこの Mac では書き込めません。</translation>
+    </message>
+    <message>
+        <source>Unbekanntes Zielformat.</source>
+        <translation>不明な書き出しフォーマットです。</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher zum Exportieren.</source>
+        <translation>書き出すためのメモリが足りません。</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>ファイルを読み込めません。</translation>
+    </message>
+    <message>
+        <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
+        <translation>%1 は HDR ゲインマップを保存できません。画像は SDR として書き出されました。</translation>
     </message>
 </context>
 <context>
@@ -1837,6 +2230,26 @@
     <message>
         <source>Comics von rechts nach links lesen</source>
         <translation>コミックを右から左に読む</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>切り取り</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>書き出す</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung</source>
+        <translation>白飛び／黒つぶれ警告</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>フォーカスピーキング</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>AF ポイント</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2867,8 +3280,48 @@
         <translation>シャッフル</translation>
     </message>
     <message>
+        <source>Exportieren …</source>
+        <translation>書き出す…</translation>
+    </message>
+    <message>
+        <source>Zuschneiden …</source>
+        <translation>切り取り…</translation>
+    </message>
+    <message>
+        <source>Overlays</source>
+        <translation>オーバーレイ</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtung</source>
+        <translation>露出オーバー／アンダー</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>フォーカスピーキング</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>AF ポイント</translation>
+    </message>
+    <message>
+        <source>Vergleich überlagern</source>
+        <translation>重ねて比較</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>左右に並べる</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>差分</translation>
+    </message>
+    <message>
         <source>Überblenden</source>
         <translation>クロスフェード</translation>
+    </message>
+    <message>
+        <source>Wischen (geteilte Ansicht)</source>
+        <translation>ワイプ（分割表示）</translation>
     </message>
     <message>
         <source>Diashow</source>
@@ -3823,6 +4276,38 @@
     <message>
         <source>Groß</source>
         <translation>大</translation>
+    </message>
+    <message>
+        <source>Überbelichtung ab (J):</source>
+        <translation>露出オーバーの下限（J）:</translation>
+    </message>
+    <message>
+        <source>Unterbelichtung bis:</source>
+        <translation>露出アンダーの上限:</translation>
+    </message>
+    <message>
+        <source>HDR-Überbelichtung bezogen auf:</source>
+        <translation>HDR の露出オーバーの基準:</translation>
+    </message>
+    <message>
+        <source>Spitzenhelligkeit des Bildes</source>
+        <translation>画像のピーク輝度</translation>
+    </message>
+    <message>
+        <source>SDR-Weiß</source>
+        <translation>SDR の白</translation>
+    </message>
+    <message>
+        <source>Focus Peaking (⇧J), Empfindlichkeit:</source>
+        <translation>フォーカスピーキング（⇧J）、感度:</translation>
+    </message>
+    <message>
+        <source>Focus-Peaking-Farbe:</source>
+        <translation>フォーカスピーキングの色:</translation>
+    </message>
+    <message>
+        <source>Weiß</source>
+        <translation>白</translation>
     </message>
     <message>
         <source>Diashow (⇧⌘F, S):</source>
@@ -5242,6 +5727,119 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowEditing</name>
+    <message>
+        <source>Über-/Unterbelichtungswarnung an (rot: Lichter, blau: Schatten)</source>
+        <translation>白飛び／黒つぶれ警告 オン（赤: ハイライト、青: シャドウ）</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung aus</source>
+        <translation>白飛び／黒つぶれ警告 オフ</translation>
+    </message>
+    <message>
+        <source>Focus Peaking an</source>
+        <translation>フォーカスピーキング オン</translation>
+    </message>
+    <message>
+        <source>Focus Peaking aus</source>
+        <translation>フォーカスピーキング オフ</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte an</source>
+        <translation>AF ポイント オン</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte aus</source>
+        <translation>AF ポイント オフ</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte: %1</source>
+        <extracomment>%1 = where the AF points come from (&quot;Canon&quot;, &quot;Sony&quot;, &quot;EXIF&quot; …)</extracomment>
+        <translation>AF ポイント: %1</translation>
+    </message>
+    <message>
+        <source>Keine Fokuspunkte in den Metadaten</source>
+        <translation>メタデータに AF ポイントがありません</translation>
+    </message>
+    <message>
+        <source>Zuschneiden geht in der Einzelbildansicht.</source>
+        <translation>切り取りは 1 枚表示で使用できます。</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Zuschneiden.</source>
+        <translation>切り取る画像がありません。</translation>
+    </message>
+    <message>
+        <source>Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab</source>
+        <translation>切り取り: 枠をドラッグ – Enter で保存、Esc で中止</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>範囲が選択されていません。</translation>
+    </message>
+    <message>
+        <source>%1-zugeschnitten.%2</source>
+        <extracomment>default file name of a cropped copy: &quot;&lt;name&gt;-zugeschnitten.&lt;suffix&gt;&quot;</extracomment>
+        <translation>%1-cropped.%2</translation>
+    </message>
+    <message>
+        <source>Zugeschnittenes Bild speichern unter</source>
+        <translation>切り取った画像を別名で保存</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>切り取り</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
+        <translation>切り取りは再エンコードしないと保存できません。</translation>
+    </message>
+    <message>
+        <source>Neu kodieren</source>
+        <translation>再エンコード</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>キャンセル</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten gespeichert als „%1“</source>
+        <translation>切り取った画像を「%1」として保存しました</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Exportieren.</source>
+        <translation>書き出す画像がありません。</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>書き出す</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder konnten nicht exportiert werden.</source>
+        <translation>
+            <numerusform>%n 枚の画像を書き出せませんでした。</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Export abgebrochen – %n Bilder exportiert</source>
+        <translation>
+            <numerusform>書き出しを中止しました（%n 枚書き出し済み）</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder exportiert</source>
+        <translation>
+            <numerusform>%n 枚の画像を書き出しました</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n übersprungen</source>
+        <translation>
+            <numerusform>%n 枚をスキップ</numerusform>
+        </translation>
     </message>
 </context>
 <context>

@@ -96,3 +96,9 @@ src/core/Rating.h:Pick
 src/core/Rating.h:Reject
 src/core/Settings.cpp:Pick
 src/core/Settings.cpp:Reject
+# F-INFO-07: camera makers (where AF points come from) and F-EDIT-04 format names
+src/core/AfPoints.cpp:Canon
+src/core/AfPoints.cpp:Nikon
+src/core/AfPoints.cpp:Sony
+src/core/AfPoints.cpp:Fujifilm
+src/core/ImageExport.cpp:JPEG XL

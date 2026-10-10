@@ -18,6 +18,8 @@ layout(std140, binding = 0) uniform buf {
     vec4 checkerColor;
     vec4 range;
     vec4 tone;
+    vec4 overlay;
+    vec4 overlayColor;
 } ubuf;
 
 void main()

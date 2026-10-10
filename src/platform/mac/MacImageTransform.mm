@@ -3,6 +3,7 @@
 // the lossless metadata copy and re-encoding, copyfile/clonefile/setattrlist/rename and
 // F_FULLFSYNC for the durable replacement that keeps the file's attributes.
 
+#include "core/CropSave.h"
 #include "core/LosslessTransform.h"
 
 #include <QCoreApplication>
@@ -179,6 +180,29 @@ CGImageRef rotatedImage(CGImageRef img, const Pixels& p, int op) {
             std::memcpy(dst + size_t(Y) * rowOut + size_t(X) * B, row + x * B, B);
         }
     }
+    CGDataProviderRef provider = CGDataProviderCreateWithCFData((__bridge CFDataRef)out);
+    CGImageRef result = CGImageCreate(W2, H2, p.bpc, p.bpp, rowOut, p.space, p.info, provider,
+                                      CGImageGetDecode(img), false, CGImageGetRenderingIntent(img));
+    CGDataProviderRelease(provider);
+    return result;
+}
+
+// F-EDIT-03: copies the part `r` of `src` into a new image of the same layout and color space.
+CGImageRef croppedImage(CGImageRef img, const Pixels& p, const QRect& r) {
+    const size_t B = p.bpp / 8;
+    if (r.isEmpty() || r.left() < 0 || r.top() < 0 || size_t(r.right()) >= p.width ||
+        size_t(r.bottom()) >= p.height)
+        return nullptr;
+    const size_t W2 = size_t(r.width()), H2 = size_t(r.height());
+    const size_t rowOut = W2 * B;
+    NSMutableData* out = [NSMutableData dataWithLength:rowOut * H2];
+    if (!out)
+        return nullptr;
+    const auto* in = static_cast<const uint8_t*>(p.data.bytes);
+    auto* dst = static_cast<uint8_t*>(out.mutableBytes);
+    for (size_t y = 0; y < H2; ++y)
+        std::memcpy(dst + y * rowOut, in + (size_t(r.top()) + y) * p.bytesPerRow + size_t(r.left()) * B,
+                    rowOut);
     CGDataProviderRef provider = CGDataProviderCreateWithCFData((__bridge CFDataRef)out);
     CGImageRef result = CGImageCreate(W2, H2, p.bpc, p.bpp, rowOut, p.space, p.info, provider,
                                       CGImageGetDecode(img), false, CGImageGetRenderingIntent(img));
@@ -622,6 +646,114 @@ bool reencodeImpl(const QString& srcPath, const QString& dstPath, int pixelOp, b
     }
 }
 
+bool reencodeCroppedImpl(const QString& srcPath, const QString& dstPath, const QRect& r, bool requireExact,
+                         QString* error, bool* inexact) {
+    @autoreleasepool {
+        CGImageSourceRef src = openSource(srcPath);
+        if (!src) {
+            setError(error, QCoreApplication::translate("lf::LosslessTransform",
+                                                        "Die Datei kann nicht gelesen werden."));
+            return false;
+        }
+        const size_t index = CGImageSourceGetPrimaryImageIndex(src);
+        NSDictionary* props = CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(src, index, nullptr));
+        CGImageMetadataRef meta = CGImageSourceCopyMetadataAtIndex(src, index, nullptr);
+        NSDictionary* decodeOpts = @{(__bridge NSString*)kCGImageSourceShouldCache : @NO};
+        CGImageRef img = CGImageSourceCreateImageAtIndex(src, index, (__bridge CFDictionaryRef)decodeOpts);
+        CFStringRef type = CGImageSourceGetType(src);
+        auto cleanup = [&] {
+            if (meta)
+                CFRelease(meta);
+            CFRelease(src);
+        };
+        if (!img || !type) {
+            if (img)
+                CGImageRelease(img);
+            cleanup();
+            setError(error, QCoreApplication::translate("lf::LosslessTransform",
+                                                        "Das Bild konnte nicht dekodiert werden."));
+            return false;
+        }
+        CGImageRef cropped = nullptr;
+        if (auto raw = rawPixels(img))
+            cropped = croppedImage(img, *raw, r);
+        if (!cropped && !requireExact)
+            cropped = CGImageCreateWithImageInRect(img, CGRectMake(r.x(), r.y(), r.width(), r.height()));
+        CGImageRelease(img);
+        if (!cropped) {
+            cleanup();
+            if (requireExact && inexact)
+                *inexact = true;
+            setError(error, QCoreApplication::translate("lf::LosslessTransform",
+                                                        "Das Bild lässt sich nicht exakt neu speichern."));
+            return false;
+        }
+        // Metadata (EXIF, XMP, IPTC) as it is, with the new pixel dimensions.
+        CGMutableImageMetadataRef m =
+            meta ? CGImageMetadataCreateMutableCopy(meta) : CGImageMetadataCreateMutable();
+        if (m) {
+            CGImageMetadataSetValueMatchingImageProperty(m, kCGImagePropertyExifDictionary,
+                                                         kCGImagePropertyExifPixelXDimension,
+                                                         (__bridge CFTypeRef) @(r.width()));
+            CGImageMetadataSetValueMatchingImageProperty(m, kCGImagePropertyExifDictionary,
+                                                         kCGImagePropertyExifPixelYDimension,
+                                                         (__bridge CFTypeRef) @(r.height()));
+        }
+        NSMutableDictionary* opts = [NSMutableDictionary dictionary];
+        if (!requireExact)
+            opts[(__bridge NSString*)kCGImageDestinationLossyCompressionQuality] = @0.95;
+        // The codec settings of the original where ImageIO reports them (TIFF compression).
+        if (NSDictionary* tiff = props[(__bridge NSString*)kCGImagePropertyTIFFDictionary]) {
+            if (id comp = tiff[(__bridge NSString*)kCGImagePropertyTIFFCompression])
+                opts[(__bridge NSString*)kCGImagePropertyTIFFDictionary] =
+                    @{(__bridge NSString*)kCGImagePropertyTIFFCompression : comp};
+        }
+        if (id o = props[(__bridge NSString*)kCGImagePropertyOrientation])
+            opts[(__bridge NSString*)kCGImagePropertyOrientation] = o;
+        CGImageDestinationRef dst =
+            CGImageDestinationCreateWithURL((__bridge CFURLRef)fileURL(dstPath), type, 1, nullptr);
+        bool ok = false;
+        if (dst) {
+            CGImageDestinationAddImageAndMetadata(dst, cropped, m, (__bridge CFDictionaryRef)opts);
+            ok = CGImageDestinationFinalize(dst);
+            CFRelease(dst);
+        }
+        if (m)
+            CFRelease(m);
+        cleanup();
+        if (!ok) {
+            CGImageRelease(cropped);
+            QFile::remove(dstPath);
+            setError(error, QCoreApplication::translate("lf::LosslessTransform",
+                                                        "Dieses Format kann nicht geschrieben werden."));
+            return false;
+        }
+        if (requireExact) {
+            bool exact = false;
+            if (CGImageSourceRef check = openSource(dstPath)) {
+                if (CGImageRef back =
+                        CGImageSourceCreateImageAtIndex(check, 0, (__bridge CFDictionaryRef)decodeOpts)) {
+                    exact = samePixels(cropped, back);
+                    CGImageRelease(back);
+                }
+                CFRelease(check);
+            }
+            if (!exact) {
+                CGImageRelease(cropped);
+                QFile::remove(dstPath);
+                if (inexact)
+                    *inexact = true;
+                setError(error, QCoreApplication::translate(
+                                    "lf::LosslessTransform",
+                                    "Das Bild lässt sich in diesem Format nicht exakt neu speichern."));
+                return false;
+            }
+        }
+        CGImageRelease(cropped);
+        return true;
+    }
+}
+
 } // namespace
 
 // Removes what a failed ImageIO write left behind: the destination and ImageIO's own
@@ -655,6 +787,31 @@ bool reencodeTransformed(const QString& srcPath, const QString& dstPath, int pix
         return true;
     removeFailedDestination(dstPath);
     return false;
+}
+
+bool reencodeCropped(const QString& src, const QString& dst, const QRect& stored, bool requireExact,
+                     QString* error, bool* inexact) {
+    if (inexact)
+        *inexact = false;
+    if (reencodeCroppedImpl(src, dst, stored, requireExact, error, inexact))
+        return true;
+    removeFailedDestination(dst);
+    return false;
+}
+
+QStringList auxiliaryImageNames(const QString& path) {
+    @autoreleasepool {
+        CGImageSourceRef src = openSource(path);
+        if (!src)
+            return {};
+        const QStringList pairs = auxiliaryImages(src);
+        CFRelease(src);
+        QStringList names;
+        for (qsizetype i = 1; i < pairs.size(); i += 2)
+            if (!names.contains(pairs.at(i)))
+                names << pairs.at(i);
+        return names;
+    }
 }
 
 bool replaceFile(const QString& replacement, const QString& target, bool keepModificationDate,

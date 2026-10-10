@@ -252,9 +252,43 @@
         <translation>Porovnání</translation>
     </message>
     <message>
+        <source>%1×</source>
+        <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
+        <translation>%1×</translation>
+    </message>
+    <message>
+        <source>%1 %</source>
+        <translation>%1 %</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Vedle sebe</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>Rozdíl</translation>
+    </message>
+    <message>
+        <source>Überblenden</source>
+        <translation>Prolínání</translation>
+    </message>
+    <message>
+        <source>Wischen</source>
+        <translation>Stírání</translation>
+    </message>
+    <message>
+        <source>Die ersten beiden Bilder übereinander vergleichen</source>
+        <translation>Porovnat první dva obrázky přes sebe</translation>
+    </message>
+    <message>
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+    <message>
+        <source>%1 ⇄ %2</source>
+        <extracomment>compare caption while two images are blended: &quot;first.jpg ⇄ second.jpg&quot;</extracomment>
+        <translation>%1 ⇄ %2</translation>
     </message>
 </context>
 <context>
@@ -309,6 +343,193 @@
     <message>
         <source>Abbrechen</source>
         <translation>Zrušit</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropOverlay</name>
+    <message>
+        <source>Seitenverhältnis</source>
+        <translation>Poměr stran</translation>
+    </message>
+    <message>
+        <source>Hochformat</source>
+        <translation>Na výšku</translation>
+    </message>
+    <message>
+        <source>Seitenverhältnis hochkant statt quer</source>
+        <translation>Poměr stran na výšku místo na šířku</translation>
+    </message>
+    <message>
+        <source>Drittel</source>
+        <translation>Třetiny</translation>
+    </message>
+    <message>
+        <source>Raster der Drittel-Regel einblenden</source>
+        <translation>Zobrazit mřížku pravidla třetin</translation>
+    </message>
+    <message>
+        <source>Speichern</source>
+        <translation>Uložit</translation>
+    </message>
+    <message>
+        <source>Zuschnitt in der Datei speichern (Enter, widerrufbar)</source>
+        <translation>Uložit ořez do souboru (Enter, lze vrátit)</translation>
+    </message>
+    <message>
+        <source>Speichern unter …</source>
+        <translation>Uložit jako…</translation>
+    </message>
+    <message>
+        <source>Zuschnitt als neue Datei speichern – das Original bleibt unverändert</source>
+        <translation>Uložit ořez jako nový soubor – originál zůstane beze změny</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Zrušit</translation>
+    </message>
+    <message>
+        <source>Zuschneiden beenden (Esc)</source>
+        <translation>Ukončit ořezávání (Esc)</translation>
+    </message>
+    <message>
+        <source>%1 × %2 px</source>
+        <extracomment>crop size in pixels, e.g. &quot;1920 × 1080 px&quot;</extracomment>
+        <translation>%1 × %2 px</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropSave</name>
+    <message>
+        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.</source>
+        <translation>Soubor byl mezitím změněn – nic nebylo uloženo. Ořízněte znovu.</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
+        <translation>Soubor obsahuje další obrázky (např. HDR mapu zisku nebo druhý stereosnímek), které by po bezeztrátovém ořezu už neodpovídaly. Oříznout lze jen novým zakódováním – přijdete přitom o trochu kvality a o tyto další obrázky.</translation>
+    </message>
+    <message>
+        <source>Frei</source>
+        <translation>Volný</translation>
+    </message>
+    <message>
+        <source>Original</source>
+        <translation>Originál</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
+        <translation>Knihovnu JPEG nelze spustit.</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Daten konnten nicht verlustfrei zugeschnitten werden (%1).</source>
+        <translation>Data JPEG se nepodařilo bezeztrátově oříznout (%1).</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.</source>
+        <translation>Výběr neleží na mřížce bloků JPEG.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden von JPEG-Dateien ist in dieser Version nicht verfügbar.</source>
+        <translation>Bezeztrátový ořez souborů JPEG není v této verzi k dispozici.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
+        <translation>Obrázky v archivech a dokumentech PDF nelze uložit oříznuté – použijte „Exportovat“.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>Soubor již neexistuje.</translation>
+    </message>
+    <message>
+        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <translation>Formát souboru nebyl pro uložení rozpoznán.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
+        <translation>Soubory RAW se nikdy nemění. Pro oříznutou kopii použijte „Exportovat“.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
+        <translation>Animované a vícestránkové soubory nelze uložit oříznuté.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist schreibgeschützt.</source>
+        <translation>„%1“ je chráněn proti zápisu.</translation>
+    </message>
+    <message>
+        <source>„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.</source>
+        <translation>„Uložit jako“ nikdy nepřepíše originál – zvolte jiný název.</translation>
+    </message>
+    <message>
+        <source>In „%1“ kann nicht geschrieben werden.</source>
+        <translation>Do „%1“ nelze zapisovat.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>„%1“ nelze číst.</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>Není vybrána žádná oblast.</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.</source>
+        <translation>Výběr zahrnuje celý obrázek – není co oříznout.</translation>
+    </message>
+    <message>
+        <source>Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
+        <translation>Pro bezeztrátový ořez byl výběr zarovnán na mřížku bloků JPEG (%1 × %2 pixelů) a má nyní %3 × %4 pixelů.</translation>
+    </message>
+    <message>
+        <source>Diese JPEG-Datei lässt sich nicht verlustfrei zuschneiden. Beim Neukodieren geht etwas Bildqualität verloren.</source>
+        <translation>Tento soubor JPEG nelze bezeztrátově oříznout. Nové zakódování mírně sníží kvalitu.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nicht gespeichert werden.</source>
+        <translation>Ořez nelze uložit.</translation>
+    </message>
+    <message>
+        <source>Beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
+        <translation>Při novém kódování by obrázek nezůstal přesně stejný (změnil by se barevný model, bitová hloubka, paleta nebo průhlednost).</translation>
+    </message>
+    <message>
+        <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <translation>Tento formát je ztrátový. Ořez lze uložit jen novým zakódováním obrázku – přitom se mírně sníží kvalita.</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder (%1) gehen dabei verloren.</source>
+        <translation>Další obrázky (%1) se přitom ztratí.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
+        <translation>Bezeztrátový ořez u tohoto obrázku není možný.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>Ořez se nepodařilo uložit.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>Soubor nelze nahradit.</translation>
+    </message>
+    <message>
+        <source>Nichts zuzuschneiden</source>
+        <translation>Není co oříznout</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten (an JPEG-Blöcke angepasst)</source>
+        <translation>Bezeztrátově oříznuto (zarovnáno na bloky JPEG)</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten</source>
+        <translation>Bezeztrátově oříznuto</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (verlustfrei neu kodiert)</source>
+        <translation>Oříznuto (bezeztrátově nově zakódováno)</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (neu kodiert)</source>
+        <translation>Oříznuto (nově zakódováno)</translation>
     </message>
 </context>
 <context>
@@ -892,6 +1113,137 @@
     </message>
 </context>
 <context>
+    <name>lf::ExportDialog</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exportovat</translation>
+    </message>
+    <message>
+        <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>Exportovat „%1“ jako nový soubor. Originál zůstane beze změny.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.</source>
+        <translation>
+            <numerusform>Exportovat %n obrázek jako nový soubor. Originál zůstane beze změny.</numerusform>
+            <numerusform>Exportovat %n obrázky jako nové soubory. Originály zůstanou beze změny.</numerusform>
+            <numerusform>Exportovat %n obrázků jako nové soubory. Originály zůstanou beze změny.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation>Formát:</translation>
+    </message>
+    <message>
+        <source>Qualität:</source>
+        <translation>Kvalita:</translation>
+    </message>
+    <message>
+        <source>Maximale Größe:</source>
+        <translation>Maximální velikost:</translation>
+    </message>
+    <message>
+        <source>Metadaten:</source>
+        <translation>Metadata:</translation>
+    </message>
+    <message>
+        <source>Farbraum:</source>
+        <translation>Barevný prostor:</translation>
+    </message>
+    <message>
+        <source>HDR:</source>
+        <translation>HDR:</translation>
+    </message>
+    <message>
+        <source>Dateiname:</source>
+        <translation>Název souboru:</translation>
+    </message>
+    <message>
+        <source>Zielordner:</source>
+        <translation>Cílová složka:</translation>
+    </message>
+    <message>
+        <source>Originalgröße</source>
+        <translation>Původní velikost</translation>
+    </message>
+    <message>
+        <source> px (lange Kante)</source>
+        <extracomment>suffix of the maximum size (long edge in pixels)</extracomment>
+        <translation> px (delší strana)</translation>
+    </message>
+    <message>
+        <source>Alle behalten</source>
+        <translation>Ponechat vše</translation>
+    </message>
+    <message>
+        <source>Ohne Ortsdaten (GPS)</source>
+        <translation>Bez polohy (GPS)</translation>
+    </message>
+    <message>
+        <source>Alle entfernen</source>
+        <translation>Odstranit vše</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>Zachovat</translation>
+    </message>
+    <message>
+        <source>In sRGB umwandeln</source>
+        <translation>Převést na sRGB</translation>
+    </message>
+    <message>
+        <source>In Display P3 umwandeln</source>
+        <translation>Převést na Display P3</translation>
+    </message>
+    <message>
+        <source>Gain-Map behalten (wo das Format es kann)</source>
+        <translation>Zachovat mapu zisku (pokud to formát umí)</translation>
+    </message>
+    <message>
+        <source>Als SDR (Tone Mapping)</source>
+        <translation>Jako SDR (tone mapping)</translation>
+    </message>
+    <message>
+        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung</source>
+        <translation>Zástupné symboly: {name} = název originálu, {n} = pořadové číslo, {format} = přípona</translation>
+    </message>
+    <message>
+        <source>Neben dem Original</source>
+        <translation>Vedle originálu</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>Vybrat…</translation>
+    </message>
+    <message>
+        <source>Erste Datei: %1</source>
+        <translation>První soubor: %1</translation>
+    </message>
+    <message>
+        <source>Zielordner für den Export</source>
+        <translation>Cílová složka exportu</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ExportRunner</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exportovat</translation>
+    </message>
+    <message>
+        <source>Exportiere …</source>
+        <translation>Exportování…</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Zrušit</translation>
+    </message>
+    <message>
+        <source>Exportiere %1 von %2: %3</source>
+        <translation>Export %1 z %2: %3</translation>
+    </message>
+</context>
+<context>
     <name>lf::FileBatch</name>
     <message>
         <source>„%1“ existiert bereits.</source>
@@ -1222,6 +1574,49 @@
     <message>
         <source>Wird berechnet …</source>
         <translation>Probíhá výpočet…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ImageExport</name>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>„%1“ již existuje.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht exportiert werden.</source>
+        <translation>Obrázek se nepodařilo exportovat.</translation>
+    </message>
+    <message>
+        <source>%1: Der Zielordner kann nicht angelegt werden.</source>
+        <translation>%1: Cílovou složku nelze vytvořit.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht geschrieben werden.</source>
+        <translation>Obrázek se nepodařilo zapsat.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden.</source>
+        <translation>Obrázek nelze dekódovat.</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
+        <translation>Tento formát nelze na tomto Macu zapsat.</translation>
+    </message>
+    <message>
+        <source>Unbekanntes Zielformat.</source>
+        <translation>Neznámý cílový formát.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher zum Exportieren.</source>
+        <translation>Nedostatek paměti pro export.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Soubor nelze číst.</translation>
+    </message>
+    <message>
+        <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
+        <translation>%1 nemůže uložit HDR mapu zisku – obrázek byl exportován jako SDR.</translation>
     </message>
 </context>
 <context>
@@ -1859,6 +2254,26 @@
     <message>
         <source>Comics von rechts nach links lesen</source>
         <translation>Číst komiksy zprava doleva</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>Oříznout</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exportovat</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung</source>
+        <translation>Varování před pře-/podexpozicí</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>Focus peaking</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>Body AF</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2889,8 +3304,48 @@
         <translation>Náhodné pořadí</translation>
     </message>
     <message>
+        <source>Exportieren …</source>
+        <translation>Exportovat…</translation>
+    </message>
+    <message>
+        <source>Zuschneiden …</source>
+        <translation>Oříznout…</translation>
+    </message>
+    <message>
+        <source>Overlays</source>
+        <translation>Překryvy</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtung</source>
+        <translation>Pře-/podexpozice</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>Focus peaking</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>Body AF</translation>
+    </message>
+    <message>
+        <source>Vergleich überlagern</source>
+        <translation>Překrýt porovnání</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Vedle sebe</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>Rozdíl</translation>
+    </message>
+    <message>
         <source>Überblenden</source>
         <translation>Prolínání</translation>
+    </message>
+    <message>
+        <source>Wischen (geteilte Ansicht)</source>
+        <translation>Stírání (rozdělené zobrazení)</translation>
     </message>
     <message>
         <source>Diashow</source>
@@ -3861,6 +4316,38 @@
     <message>
         <source>Groß</source>
         <translation>Velká</translation>
+    </message>
+    <message>
+        <source>Überbelichtung ab (J):</source>
+        <translation>Přeexpozice od (J):</translation>
+    </message>
+    <message>
+        <source>Unterbelichtung bis:</source>
+        <translation>Podexpozice do:</translation>
+    </message>
+    <message>
+        <source>HDR-Überbelichtung bezogen auf:</source>
+        <translation>Přeexpozice HDR vzhledem k:</translation>
+    </message>
+    <message>
+        <source>Spitzenhelligkeit des Bildes</source>
+        <translation>Špičkový jas obrázku</translation>
+    </message>
+    <message>
+        <source>SDR-Weiß</source>
+        <translation>Bílá SDR</translation>
+    </message>
+    <message>
+        <source>Focus Peaking (⇧J), Empfindlichkeit:</source>
+        <translation>Focus peaking (⇧J), citlivost:</translation>
+    </message>
+    <message>
+        <source>Focus-Peaking-Farbe:</source>
+        <translation>Barva focus peakingu:</translation>
+    </message>
+    <message>
+        <source>Weiß</source>
+        <translation>Bílá</translation>
     </message>
     <message>
         <source>Diashow (⇧⌘F, S):</source>
@@ -5290,6 +5777,127 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowEditing</name>
+    <message>
+        <source>Über-/Unterbelichtungswarnung an (rot: Lichter, blau: Schatten)</source>
+        <translation>Varování před pře-/podexpozicí zapnuto (červená: světla, modrá: stíny)</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung aus</source>
+        <translation>Varování před pře-/podexpozicí vypnuto</translation>
+    </message>
+    <message>
+        <source>Focus Peaking an</source>
+        <translation>Focus peaking zapnut</translation>
+    </message>
+    <message>
+        <source>Focus Peaking aus</source>
+        <translation>Focus peaking vypnut</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte an</source>
+        <translation>Body AF zapnuty</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte aus</source>
+        <translation>Body AF vypnuty</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte: %1</source>
+        <extracomment>%1 = where the AF points come from (&quot;Canon&quot;, &quot;Sony&quot;, &quot;EXIF&quot; …)</extracomment>
+        <translation>Body AF: %1</translation>
+    </message>
+    <message>
+        <source>Keine Fokuspunkte in den Metadaten</source>
+        <translation>V metadatech nejsou body AF</translation>
+    </message>
+    <message>
+        <source>Zuschneiden geht in der Einzelbildansicht.</source>
+        <translation>Ořezávání funguje v zobrazení jednoho obrázku.</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Zuschneiden.</source>
+        <translation>Žádný obrázek k oříznutí.</translation>
+    </message>
+    <message>
+        <source>Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab</source>
+        <translation>Ořez: táhněte rámeček – Enter uloží, Esc zruší</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>Není vybrána žádná oblast.</translation>
+    </message>
+    <message>
+        <source>%1-zugeschnitten.%2</source>
+        <extracomment>default file name of a cropped copy: &quot;&lt;name&gt;-zugeschnitten.&lt;suffix&gt;&quot;</extracomment>
+        <translation>%1-oriznuty.%2</translation>
+    </message>
+    <message>
+        <source>Zugeschnittenes Bild speichern unter</source>
+        <translation>Uložit oříznutý obrázek jako</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>Oříznout</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
+        <translation>Ořez lze uložit jen novým zakódováním.</translation>
+    </message>
+    <message>
+        <source>Neu kodieren</source>
+        <translation>Znovu zakódovat</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Zrušit</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten gespeichert als „%1“</source>
+        <translation>Ořez uložen jako „%1“</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Exportieren.</source>
+        <translation>Žádný obrázek k exportu.</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exportovat</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder konnten nicht exportiert werden.</source>
+        <translation>
+            <numerusform>%n obrázek se nepodařilo exportovat.</numerusform>
+            <numerusform>%n obrázky se nepodařilo exportovat.</numerusform>
+            <numerusform>%n obrázků se nepodařilo exportovat.</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Export abgebrochen – %n Bilder exportiert</source>
+        <translation>
+            <numerusform>Export zrušen – exportován %n obrázek</numerusform>
+            <numerusform>Export zrušen – exportovány %n obrázky</numerusform>
+            <numerusform>Export zrušen – exportováno %n obrázků</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder exportiert</source>
+        <translation>
+            <numerusform>Exportován %n obrázek</numerusform>
+            <numerusform>Exportovány %n obrázky</numerusform>
+            <numerusform>Exportováno %n obrázků</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n übersprungen</source>
+        <translation>
+            <numerusform>přeskočen %n</numerusform>
+            <numerusform>přeskočeny %n</numerusform>
+            <numerusform>přeskočeno %n</numerusform>
+        </translation>
     </message>
 </context>
 <context>

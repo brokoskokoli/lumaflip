@@ -13,6 +13,7 @@
 #include "RecentItems.h"
 #include "RenameController.h"
 #include "StartScreenRecent.h"
+#include "WindowEditing.h"
 #include "WindowExtras.h"
 #include "WindowIntegration.h"
 #include "WindowPanels.h"
@@ -398,6 +399,9 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     m_integration = new WindowIntegration(*this, m_app); // M4: archives, Live Text, Quick Look …
     connect(this, &ViewerWindow::imageShown, m_integration,
             [this](const QString& path) { m_integration->imageShown(path); });
+    m_editing = new WindowEditing(*this, m_app); // M4: crop, export, photo overlays
+    connect(this, &ViewerWindow::imageShown, m_editing,
+            [this](const QString& path) { m_editing->imageShown(path); });
     // F-OPEN-10: an archive/PDF that cannot be read or holds no images.
     connect(m_collection, &Collection::containerFailed, this,
             [this](const QString& container, const QString& error) {
@@ -697,6 +701,8 @@ void ViewerWindow::onCurrentChanged(int, const QString& path) {
     mediaCurrentChanged(path);
     if (m_integration)
         m_integration->currentChanged(path);
+    if (m_editing)
+        m_editing->currentChanged(path);
     updateTitle();
     updateStatus();
     if (path.isEmpty()) {
@@ -1048,6 +1054,8 @@ QString ViewerWindow::statusText() const {
     parts << m_extras->statusParts(); // M3: name filter, shuffle, coupling
     if (const QString live = m_integration->statusText(); !live.isEmpty())
         parts << live; // F-MAC-06
+    if (const QString af = m_editing ? m_editing->statusText() : QString(); !af.isEmpty())
+        parts << af; // F-INFO-07
     return parts.join(QStringLiteral(" · "));
 }
 
@@ -1310,6 +1318,8 @@ bool ViewerWindow::perform(Action a, QPointF pos) {
         return true;
     if (m_integration && m_integration->perform(a))
         return true; // M4: container guard, Quick Look, Live Text, wallpaper, action log
+    if (m_editing && m_editing->perform(a))
+        return true; // M4: crop, export, photo overlays
     if (m_extras->perform(a, pos))
         return true; // M3: grid, compare, loupe, go to, shuffle, name filter, window modes
     const QPointF anchor = pos.x() >= 0 ? pos : QPointF(m_view->width() / 2.0, m_view->height() / 2.0);

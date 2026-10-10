@@ -248,9 +248,43 @@
         <translation>比较</translation>
     </message>
     <message>
+        <source>%1×</source>
+        <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
+        <translation>%1×</translation>
+    </message>
+    <message>
+        <source>%1 %</source>
+        <translation>%1%</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>并排</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>差异</translation>
+    </message>
+    <message>
+        <source>Überblenden</source>
+        <translation>交叉淡化</translation>
+    </message>
+    <message>
+        <source>Wischen</source>
+        <translation>划变</translation>
+    </message>
+    <message>
+        <source>Die ersten beiden Bilder übereinander vergleichen</source>
+        <translation>叠加比较前两张图像</translation>
+    </message>
+    <message>
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+    <message>
+        <source>%1 ⇄ %2</source>
+        <extracomment>compare caption while two images are blended: &quot;first.jpg ⇄ second.jpg&quot;</extracomment>
+        <translation>%1 ⇄ %2</translation>
     </message>
 </context>
 <context>
@@ -303,6 +337,193 @@
     <message>
         <source>Abbrechen</source>
         <translation>取消</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropOverlay</name>
+    <message>
+        <source>Seitenverhältnis</source>
+        <translation>宽高比</translation>
+    </message>
+    <message>
+        <source>Hochformat</source>
+        <translation>竖排</translation>
+    </message>
+    <message>
+        <source>Seitenverhältnis hochkant statt quer</source>
+        <translation>竖排而非横排的宽高比</translation>
+    </message>
+    <message>
+        <source>Drittel</source>
+        <translation>三分法</translation>
+    </message>
+    <message>
+        <source>Raster der Drittel-Regel einblenden</source>
+        <translation>显示三分法网格</translation>
+    </message>
+    <message>
+        <source>Speichern</source>
+        <translation>存储</translation>
+    </message>
+    <message>
+        <source>Zuschnitt in der Datei speichern (Enter, widerrufbar)</source>
+        <translation>将裁剪存储到文件中（Enter，可撤销）</translation>
+    </message>
+    <message>
+        <source>Speichern unter …</source>
+        <translation>存储为…</translation>
+    </message>
+    <message>
+        <source>Zuschnitt als neue Datei speichern – das Original bleibt unverändert</source>
+        <translation>将裁剪存储为新文件——原件保持不变</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <source>Zuschneiden beenden (Esc)</source>
+        <translation>结束裁剪（Esc）</translation>
+    </message>
+    <message>
+        <source>%1 × %2 px</source>
+        <extracomment>crop size in pixels, e.g. &quot;1920 × 1080 px&quot;</extracomment>
+        <translation>%1 × %2 像素</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropSave</name>
+    <message>
+        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.</source>
+        <translation>文件已在此期间被更改——未存储任何内容。请重新裁剪。</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
+        <translation>该文件包含其他图像（如 HDR 增益图或第二张立体图像），无损裁剪后将不再匹配。只能通过重新编码来裁剪——这会损失少许画质以及这些附加图像。</translation>
+    </message>
+    <message>
+        <source>Frei</source>
+        <translation>自由</translation>
+    </message>
+    <message>
+        <source>Original</source>
+        <translation>原始</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
+        <translation>无法启动 JPEG 库。</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Daten konnten nicht verlustfrei zugeschnitten werden (%1).</source>
+        <translation>无法无损裁剪 JPEG 数据（%1）。</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.</source>
+        <translation>所选区域未对齐 JPEG 块网格。</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden von JPEG-Dateien ist in dieser Version nicht verfügbar.</source>
+        <translation>此版本不支持 JPEG 文件的无损裁剪。</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
+        <translation>压缩包和 PDF 文稿中的图像无法裁剪后存储——请使用“导出”。</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>文件已不存在。</translation>
+    </message>
+    <message>
+        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <translation>无法识别要存储的文件格式。</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
+        <translation>RAW 文件永远不会被更改。如需裁剪后的副本，请使用“导出”。</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
+        <translation>动画或多页文件无法裁剪后存储。</translation>
+    </message>
+    <message>
+        <source>„%1“ ist schreibgeschützt.</source>
+        <translation>“%1”为只读。</translation>
+    </message>
+    <message>
+        <source>„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.</source>
+        <translation>“存储为”绝不会覆盖原件——请选择其他名称。</translation>
+    </message>
+    <message>
+        <source>In „%1“ kann nicht geschrieben werden.</source>
+        <translation>无法写入“%1”。</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>无法读取“%1”。</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>未选择区域。</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.</source>
+        <translation>所选区域为整个图像——无需裁剪。</translation>
+    </message>
+    <message>
+        <source>Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
+        <translation>为进行无损裁剪，所选区域已对齐 JPEG 块网格（%1 × %2 像素），现在为 %3 × %4 像素。</translation>
+    </message>
+    <message>
+        <source>Diese JPEG-Datei lässt sich nicht verlustfrei zuschneiden. Beim Neukodieren geht etwas Bildqualität verloren.</source>
+        <translation>此 JPEG 文件无法无损裁剪。重新编码会损失少许画质。</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nicht gespeichert werden.</source>
+        <translation>无法存储裁剪。</translation>
+    </message>
+    <message>
+        <source>Beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
+        <translation>重新编码后图像将无法完全保持一致（颜色模型、位深度、调色板或透明度会改变）。</translation>
+    </message>
+    <message>
+        <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <translation>此格式为有损格式。只能通过重新编码图像来存储裁剪——这会损失少许画质。</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder (%1) gehen dabei verloren.</source>
+        <translation>附加图像（%1）将会丢失。</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
+        <translation>无法对此图像进行无损裁剪。</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>无法存储裁剪。</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>无法替换文件。</translation>
+    </message>
+    <message>
+        <source>Nichts zuzuschneiden</source>
+        <translation>无需裁剪</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten (an JPEG-Blöcke angepasst)</source>
+        <translation>已无损裁剪（已对齐 JPEG 块）</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten</source>
+        <translation>已无损裁剪</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (verlustfrei neu kodiert)</source>
+        <translation>已裁剪（无损重新编码）</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (neu kodiert)</source>
+        <translation>已裁剪（重新编码）</translation>
     </message>
 </context>
 <context>
@@ -876,6 +1097,135 @@
     </message>
 </context>
 <context>
+    <name>lf::ExportDialog</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>导出</translation>
+    </message>
+    <message>
+        <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>将“%1”导出为新文件。原件保持不变。</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.</source>
+        <translation>
+            <numerusform>将 %n 张图像导出为新文件。原件保持不变。</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation>格式：</translation>
+    </message>
+    <message>
+        <source>Qualität:</source>
+        <translation>质量：</translation>
+    </message>
+    <message>
+        <source>Maximale Größe:</source>
+        <translation>最大尺寸：</translation>
+    </message>
+    <message>
+        <source>Metadaten:</source>
+        <translation>元数据：</translation>
+    </message>
+    <message>
+        <source>Farbraum:</source>
+        <translation>色彩空间：</translation>
+    </message>
+    <message>
+        <source>HDR:</source>
+        <translation>HDR：</translation>
+    </message>
+    <message>
+        <source>Dateiname:</source>
+        <translation>文件名：</translation>
+    </message>
+    <message>
+        <source>Zielordner:</source>
+        <translation>目标文件夹：</translation>
+    </message>
+    <message>
+        <source>Originalgröße</source>
+        <translation>原始尺寸</translation>
+    </message>
+    <message>
+        <source> px (lange Kante)</source>
+        <extracomment>suffix of the maximum size (long edge in pixels)</extracomment>
+        <translation> 像素（长边）</translation>
+    </message>
+    <message>
+        <source>Alle behalten</source>
+        <translation>全部保留</translation>
+    </message>
+    <message>
+        <source>Ohne Ortsdaten (GPS)</source>
+        <translation>不含位置（GPS）</translation>
+    </message>
+    <message>
+        <source>Alle entfernen</source>
+        <translation>全部移除</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>保持</translation>
+    </message>
+    <message>
+        <source>In sRGB umwandeln</source>
+        <translation>转换为 sRGB</translation>
+    </message>
+    <message>
+        <source>In Display P3 umwandeln</source>
+        <translation>转换为 Display P3</translation>
+    </message>
+    <message>
+        <source>Gain-Map behalten (wo das Format es kann)</source>
+        <translation>保留增益图（如格式支持）</translation>
+    </message>
+    <message>
+        <source>Als SDR (Tone Mapping)</source>
+        <translation>作为 SDR（色调映射）</translation>
+    </message>
+    <message>
+        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung</source>
+        <translation>占位符：{name} = 原件名称，{n} = 序号，{format} = 扩展名</translation>
+    </message>
+    <message>
+        <source>Neben dem Original</source>
+        <translation>与原件放在一起</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>选择…</translation>
+    </message>
+    <message>
+        <source>Erste Datei: %1</source>
+        <translation>第一个文件：%1</translation>
+    </message>
+    <message>
+        <source>Zielordner für den Export</source>
+        <translation>导出目标文件夹</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ExportRunner</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>导出</translation>
+    </message>
+    <message>
+        <source>Exportiere …</source>
+        <translation>正在导出…</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <source>Exportiere %1 von %2: %3</source>
+        <translation>正在导出第 %1 张，共 %2 张：%3</translation>
+    </message>
+</context>
+<context>
     <name>lf::FileBatch</name>
     <message>
         <source>„%1“ existiert bereits.</source>
@@ -1200,6 +1550,49 @@
     <message>
         <source>Wird berechnet …</source>
         <translation>正在计算…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ImageExport</name>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>“%1”已存在。</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht exportiert werden.</source>
+        <translation>无法导出图像。</translation>
+    </message>
+    <message>
+        <source>%1: Der Zielordner kann nicht angelegt werden.</source>
+        <translation>%1：无法创建目标文件夹。</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht geschrieben werden.</source>
+        <translation>无法写入图像。</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden.</source>
+        <translation>无法解码图像。</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
+        <translation>无法在这台 Mac 上写入此格式。</translation>
+    </message>
+    <message>
+        <source>Unbekanntes Zielformat.</source>
+        <translation>未知的目标格式。</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher zum Exportieren.</source>
+        <translation>内存不足，无法导出。</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>无法读取文件。</translation>
+    </message>
+    <message>
+        <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
+        <translation>%1 无法存储 HDR 增益图——图像已导出为 SDR。</translation>
     </message>
 </context>
 <context>
@@ -1837,6 +2230,26 @@
     <message>
         <source>Comics von rechts nach links lesen</source>
         <translation>从右向左阅读漫画</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>裁剪</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>导出</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung</source>
+        <translation>过曝/欠曝警告</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>峰值对焦</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>对焦点</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2867,8 +3280,48 @@
         <translation>随机顺序</translation>
     </message>
     <message>
+        <source>Exportieren …</source>
+        <translation>导出…</translation>
+    </message>
+    <message>
+        <source>Zuschneiden …</source>
+        <translation>裁剪…</translation>
+    </message>
+    <message>
+        <source>Overlays</source>
+        <translation>叠加层</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtung</source>
+        <translation>过曝/欠曝</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>峰值对焦</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>对焦点</translation>
+    </message>
+    <message>
+        <source>Vergleich überlagern</source>
+        <translation>叠加比较</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>并排</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>差异</translation>
+    </message>
+    <message>
         <source>Überblenden</source>
         <translation>交叉淡化</translation>
+    </message>
+    <message>
+        <source>Wischen (geteilte Ansicht)</source>
+        <translation>划变（分屏视图）</translation>
     </message>
     <message>
         <source>Diashow</source>
@@ -3823,6 +4276,38 @@
     <message>
         <source>Groß</source>
         <translation>大</translation>
+    </message>
+    <message>
+        <source>Überbelichtung ab (J):</source>
+        <translation>过曝起点（J）：</translation>
+    </message>
+    <message>
+        <source>Unterbelichtung bis:</source>
+        <translation>欠曝上限：</translation>
+    </message>
+    <message>
+        <source>HDR-Überbelichtung bezogen auf:</source>
+        <translation>HDR 过曝参照：</translation>
+    </message>
+    <message>
+        <source>Spitzenhelligkeit des Bildes</source>
+        <translation>图像峰值亮度</translation>
+    </message>
+    <message>
+        <source>SDR-Weiß</source>
+        <translation>SDR 白</translation>
+    </message>
+    <message>
+        <source>Focus Peaking (⇧J), Empfindlichkeit:</source>
+        <translation>峰值对焦（⇧J），灵敏度：</translation>
+    </message>
+    <message>
+        <source>Focus-Peaking-Farbe:</source>
+        <translation>峰值对焦颜色：</translation>
+    </message>
+    <message>
+        <source>Weiß</source>
+        <translation>白色</translation>
     </message>
     <message>
         <source>Diashow (⇧⌘F, S):</source>
@@ -5242,6 +5727,119 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowEditing</name>
+    <message>
+        <source>Über-/Unterbelichtungswarnung an (rot: Lichter, blau: Schatten)</source>
+        <translation>过曝/欠曝警告已打开（红色：高光，蓝色：阴影）</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung aus</source>
+        <translation>过曝/欠曝警告已关闭</translation>
+    </message>
+    <message>
+        <source>Focus Peaking an</source>
+        <translation>峰值对焦已打开</translation>
+    </message>
+    <message>
+        <source>Focus Peaking aus</source>
+        <translation>峰值对焦已关闭</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte an</source>
+        <translation>对焦点已显示</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte aus</source>
+        <translation>对焦点已隐藏</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte: %1</source>
+        <extracomment>%1 = where the AF points come from (&quot;Canon&quot;, &quot;Sony&quot;, &quot;EXIF&quot; …)</extracomment>
+        <translation>对焦点：%1</translation>
+    </message>
+    <message>
+        <source>Keine Fokuspunkte in den Metadaten</source>
+        <translation>元数据中没有对焦点</translation>
+    </message>
+    <message>
+        <source>Zuschneiden geht in der Einzelbildansicht.</source>
+        <translation>裁剪仅在单图视图中可用。</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Zuschneiden.</source>
+        <translation>没有可裁剪的图像。</translation>
+    </message>
+    <message>
+        <source>Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab</source>
+        <translation>裁剪：拖移出边框——Enter 存储，Esc 取消</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>未选择区域。</translation>
+    </message>
+    <message>
+        <source>%1-zugeschnitten.%2</source>
+        <extracomment>default file name of a cropped copy: &quot;&lt;name&gt;-zugeschnitten.&lt;suffix&gt;&quot;</extracomment>
+        <translation>%1-cropped.%2</translation>
+    </message>
+    <message>
+        <source>Zugeschnittenes Bild speichern unter</source>
+        <translation>将裁剪后的图像存储为</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>裁剪</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
+        <translation>只能通过重新编码来存储裁剪。</translation>
+    </message>
+    <message>
+        <source>Neu kodieren</source>
+        <translation>重新编码</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten gespeichert als „%1“</source>
+        <translation>裁剪已存储为“%1”</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Exportieren.</source>
+        <translation>没有可导出的图像。</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>导出</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder konnten nicht exportiert werden.</source>
+        <translation>
+            <numerusform>%n 张图像无法导出。</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Export abgebrochen – %n Bilder exportiert</source>
+        <translation>
+            <numerusform>导出已取消——已导出 %n 张图像</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder exportiert</source>
+        <translation>
+            <numerusform>已导出 %n 张图像</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n übersprungen</source>
+        <translation>
+            <numerusform>已跳过 %n 张</numerusform>
+        </translation>
     </message>
 </context>
 <context>

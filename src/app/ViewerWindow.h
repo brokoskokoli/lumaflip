@@ -38,6 +38,7 @@ class SlideshowController;
 class WindowPanels; // M2 panels (info panel, filmstrip)
 class WindowExtras; // M3 grid, compare, loupe, window modes, go to, shuffle, name filter
 class WindowIntegration; // M4 archives, Live Text, Quick Look, Services, wallpaper
+class WindowEditing;     // M4 crop, export, photo overlays
 
 QString zoomModeId(ZoomMode mode);          // Settings key::ZoomMode values
 ZoomMode zoomModeFromId(const QString& id); // unknown -> Fit
@@ -75,6 +76,7 @@ public:
     WindowExtras* extras() const { return m_extras; }        // M3: F-GRID-02/03, F-VIEW-11..13, F-NAV-06/08
     HdrController* hdr() const { return m_hdr; }             // M3: F-COL-04/05
     WindowIntegration* integration() const { return m_integration; } // M4: F-OPEN-10, F-MAC-06/07 …
+    WindowEditing* editing() const { return m_editing; }             // M4: F-EDIT-03/04, F-INFO-07
     QString currentPath() const;
     QString shownPath() const { return m_shownPath; }
     int displayedImageCount() const { return m_displayCount; } // distinct images shown (benchmarks)
@@ -272,6 +274,7 @@ private:
     WindowExtras* m_extras = nullptr;       // M3 (WindowExtras.cpp)
     HdrController* m_hdr = nullptr;         // M3 (HdrController.cpp)
     WindowIntegration* m_integration = nullptr; // M4 (WindowIntegration.cpp)
+    WindowEditing* m_editing = nullptr;         // M4 (WindowEditing.cpp)
     // F-I18N-03: texts of the window after a language switch (ViewerWindowI18n.cpp).
     void retranslateUi();
     QString m_accessFolder; // folder of the access hint (its text is rebuilt)

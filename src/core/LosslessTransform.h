@@ -159,22 +159,25 @@ QString restoreFileFrom(const QString& backup, const QString& target);
 
 class UndoBackupStore;
 
-// One saved rotation with undo/redo (F-EDIT-02), for FileOps::modifyAsync(): apply() saves
-// (first call) or redoes, revert() undoes. Both run on the FileOps worker, one after the
-// other. Before the first save a backup of the file is put into the UndoBackupStore, after
-// it a copy of the result (for redo). After every successful step the FileStamp of the file
-// is recorded; a later step refuses (German message, nothing written) if the file no longer
-// matches it, or if the store dropped the backups to stay within its budget.
-class RotationEdit {
+// An in-place change of one file with undo/redo, for FileOps::modifyAsync() (F-EDIT-02
+// rotation, F-EDIT-03 crop): apply() saves (first call: `save`, which must replace `target`
+// safely, e.g. with platform::replaceFile()) or redoes, revert() undoes. Both run on the
+// FileOps worker, one after the other. Before the first save a backup of the file is put
+// into the UndoBackupStore, after it a copy of the result (for redo). After every successful
+// step the FileStamp of the file is recorded; a later step refuses (German message, nothing
+// written) if the file no longer matches it, or if the store dropped the backups to stay
+// within its budget.
+class FileEdit {
 public:
-    RotationEdit(RotationRequest request, RotationPlan plan, RotationMethod method,
-                 std::shared_ptr<UndoBackupStore> store);
-    ~RotationEdit(); // releases the backups (deleted on a worker thread)
-    RotationEdit(const RotationEdit&) = delete;
-    RotationEdit& operator=(const RotationEdit&) = delete;
+    using Save = std::function<QString()>; // empty string = success, else a German error
+    FileEdit(QString target, Save save, std::shared_ptr<UndoBackupStore> store);
+    ~FileEdit(); // releases the backups (deleted on a worker thread)
+    FileEdit(const FileEdit&) = delete;
+    FileEdit& operator=(const FileEdit&) = delete;
 
     QString apply();
     QString revert();
+    QString target() const { return m_target; }
 
     static QString messageChangedUndo(); // "Datei wurde inzwischen verändert – Rückgängig nicht möglich"
     static QString messageChangedRedo();
@@ -182,15 +185,45 @@ public:
 
 private:
     QString step(bool forward);
-    RotationRequest m_request;
-    RotationPlan m_plan;
-    RotationMethod m_method;
+    QString m_target; // the real file (symbolic links resolved)
+    Save m_save;
     std::shared_ptr<UndoBackupStore> m_store;
     std::mutex m_mutex;
     quint64 m_id = 0;     // backup entry in the store (0 = none yet)
-    bool m_done = false;  // the file holds the saved rotation (else the original)
+    bool m_done = false;  // the file holds the change (else the original)
     FileStamp m_expected; // the file after the last successful step
 };
+
+// One saved rotation with undo/redo (F-EDIT-02): a FileEdit whose save is
+// executeRotationSave().
+class RotationEdit {
+public:
+    RotationEdit(RotationRequest request, RotationPlan plan, RotationMethod method,
+                 std::shared_ptr<UndoBackupStore> store);
+    ~RotationEdit();
+    RotationEdit(const RotationEdit&) = delete;
+    RotationEdit& operator=(const RotationEdit&) = delete;
+
+    QString apply() { return m_edit->apply(); }
+    QString revert() { return m_edit->revert(); }
+
+    static QString messageChangedUndo() { return FileEdit::messageChangedUndo(); }
+    static QString messageChangedRedo() { return FileEdit::messageChangedRedo(); }
+    static QString messageBackupDropped() { return FileEdit::messageBackupDropped(); }
+
+private:
+    std::unique_ptr<FileEdit> m_edit;
+};
+
+// ---- helpers for safe file writes (shared by F-EDIT-02/03/04) ----
+namespace filesafety {
+// Hidden temporary file next to `path` (same volume: the final rename is atomic).
+QString siblingTempPath(const QString& path);
+// Writes `data` to the new file `path` (never replaces an existing one).
+bool writeNewFile(const QString& path, const QByteArray& data, QString* error);
+// The whole file; empty (and a German `error`) if unreadable.
+QByteArray readFile(const QString& path, QString* error);
+} // namespace filesafety
 
 // ---- platform part (src/platform/*/…ImageTransform…) ----
 namespace platform {
