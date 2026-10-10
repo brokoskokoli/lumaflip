@@ -200,6 +200,32 @@ TEST(DecoderIpc, SharedMemoryRoundTripAndCleanup) {
     EXPECT_FALSE(ipc::fillSharedImage("/other.name", img, &error));
 }
 
+// Metadata values cross the process boundary as plain types only: a hostile helper must
+// not make the app construct arbitrary QVariant types (a QImage would be decoded by the
+// app's own image plugins - the very thing the helper isolates). Found by fuzz_decoder_ipc.
+TEST(DecoderIpc, MetadataValuesArePlainTypesOnly) {
+    ipc::Response rs;
+    rs.id = 1;
+    rs.ok = true;
+    QImage tiny(2, 2, QImage::Format_RGBA8888);
+    tiny.fill(Qt::red);
+    rs.metadata.entries.append({QStringLiteral("x.image"), QStringLiteral("Bild"), QVariant(tiny)});
+    rs.metadata.entries.append({QStringLiteral("x.count"), QStringLiteral("Zahl"), QVariant(42)});
+    QVariantMap inner{{QStringLiteral("when"), QDateTime(QDate(2024, 1, 2), QTime(3, 4), QTimeZone::UTC)},
+                      {QStringLiteral("list"), QStringList{"a", "b"}},
+                      {QStringLiteral("image"), QVariant(tiny)}};
+    rs.metadata.groups.insert(QStringLiteral("Gruppe"), inner);
+    const auto back = ipc::decodeResponse(ipc::encode(rs));
+    ASSERT_TRUE(back.has_value());
+    ASSERT_EQ(back->metadata.entries.size(), 2);
+    EXPECT_NE(back->metadata.entries[0].value.typeId(), QMetaType::QImage);
+    EXPECT_EQ(back->metadata.entries[1].value.toInt(), 42);
+    const QVariantMap g = back->metadata.groups.value(QStringLiteral("Gruppe")).toMap();
+    EXPECT_EQ(g.value(QStringLiteral("when")).toDateTime(), inner.value(QStringLiteral("when")).toDateTime());
+    EXPECT_EQ(g.value(QStringLiteral("list")).toStringList(), (QStringList{"a", "b"}));
+    EXPECT_NE(g.value(QStringLiteral("image")).typeId(), QMetaType::QImage);
+}
+
 // Code review M3 #5: a hostile helper's header must not overflow the size check
 // (bytesPerLine * height wrapping to a small shmSize), announce an empty buffer or an
 // indexed/mono format (colour table not transferred).

@@ -104,10 +104,155 @@ void get(QDataStream& s, PixelHeader& p) {
     p.format = f;
 }
 
+// Metadata values cross the process boundary as a closed set of plain types. A QVariant
+// stream would let a compromised helper make the app construct any registered type (e.g.
+// a QImage, decoded by the app's image plugins - exactly what the helper is for).
+enum class ValueKind : quint8 { Invalid, Bool, Int, UInt, Double, String, DateTime, Map, List, Bytes };
+constexpr int kMaxValueDepth = 8;
+constexpr qint32 kMaxValueItems = 100000;
+
+void putValue(QDataStream& s, const QVariant& v, int depth = 0) {
+    if (depth > kMaxValueDepth) {
+        s << quint8(ValueKind::Invalid);
+        return;
+    }
+    switch (v.typeId()) {
+    case QMetaType::Bool:
+        s << quint8(ValueKind::Bool) << v.toBool();
+        return;
+    case QMetaType::Int:
+    case QMetaType::Long:
+    case QMetaType::LongLong:
+    case QMetaType::Short:
+    case QMetaType::Char:
+    case QMetaType::SChar:
+        s << quint8(ValueKind::Int) << qint64(v.toLongLong());
+        return;
+    case QMetaType::UInt:
+    case QMetaType::ULong:
+    case QMetaType::ULongLong:
+    case QMetaType::UShort:
+    case QMetaType::UChar:
+        s << quint8(ValueKind::UInt) << quint64(v.toULongLong());
+        return;
+    case QMetaType::Double:
+    case QMetaType::Float:
+        s << quint8(ValueKind::Double) << v.toDouble();
+        return;
+    case QMetaType::QDateTime:
+        s << quint8(ValueKind::DateTime) << v.toDateTime();
+        return;
+    case QMetaType::QByteArray:
+        s << quint8(ValueKind::Bytes) << v.toByteArray();
+        return;
+    case QMetaType::QVariantMap: {
+        const QVariantMap m = v.toMap();
+        s << quint8(ValueKind::Map) << qint32(m.size());
+        for (auto it = m.cbegin(); it != m.cend(); ++it) {
+            s << it.key();
+            putValue(s, it.value(), depth + 1);
+        }
+        return;
+    }
+    case QMetaType::QVariantList:
+    case QMetaType::QStringList: {
+        const QVariantList l = v.toList();
+        s << quint8(ValueKind::List) << qint32(l.size());
+        for (const QVariant& x : l)
+            putValue(s, x, depth + 1);
+        return;
+    }
+    default:
+        if (!v.isValid()) {
+            s << quint8(ValueKind::Invalid);
+            return;
+        }
+        s << quint8(ValueKind::String) << v.toString();
+        return;
+    }
+}
+
+QVariant getValue(QDataStream& s, int depth = 0) {
+    quint8 kind = 0;
+    s >> kind;
+    auto corrupt = [&] {
+        s.setStatus(QDataStream::ReadCorruptData);
+        return QVariant();
+    };
+    if (depth > kMaxValueDepth)
+        return corrupt();
+    switch (ValueKind(kind)) {
+    case ValueKind::Invalid:
+        return QVariant();
+    case ValueKind::Bool: {
+        bool b = false;
+        s >> b;
+        return b;
+    }
+    case ValueKind::Int: {
+        qint64 i = 0;
+        s >> i;
+        return QVariant::fromValue(i);
+    }
+    case ValueKind::UInt: {
+        quint64 u = 0;
+        s >> u;
+        return QVariant::fromValue(u);
+    }
+    case ValueKind::Double: {
+        double d = 0;
+        s >> d;
+        return d;
+    }
+    case ValueKind::String: {
+        QString t;
+        s >> t;
+        return t;
+    }
+    case ValueKind::DateTime: {
+        QDateTime t;
+        s >> t;
+        return t;
+    }
+    case ValueKind::Bytes: {
+        QByteArray b;
+        s >> b;
+        return b;
+    }
+    case ValueKind::Map: {
+        qint32 n = 0;
+        s >> n;
+        if (n < 0 || n > kMaxValueItems)
+            return corrupt();
+        QVariantMap m;
+        for (qint32 i = 0; i < n && s.status() == QDataStream::Ok; ++i) {
+            QString key;
+            s >> key;
+            m.insert(key, getValue(s, depth + 1));
+        }
+        return m;
+    }
+    case ValueKind::List: {
+        qint32 n = 0;
+        s >> n;
+        if (n < 0 || n > kMaxValueItems)
+            return corrupt();
+        QVariantList l;
+        for (qint32 i = 0; i < n && s.status() == QDataStream::Ok; ++i)
+            l.append(getValue(s, depth + 1));
+        return l;
+    }
+    }
+    return corrupt();
+}
+
 void put(QDataStream& s, const Metadata& m) {
-    s << m.groups << qint32(m.entries.size());
-    for (const MetadataEntry& e : m.entries)
-        s << e.key << e.label << e.value;
+    putValue(s, m.groups);
+    s << qint32(m.entries.size());
+    for (const MetadataEntry& e : m.entries) {
+        s << e.key << e.label;
+        putValue(s, e.value);
+    }
     putOptional(s, m.captured);
     putOptional(s, m.latitude);
     putOptional(s, m.longitude);
@@ -115,11 +260,17 @@ void put(QDataStream& s, const Metadata& m) {
 }
 void get(QDataStream& s, Metadata& m) {
     qint32 n = 0;
-    s >> m.groups >> n;
+    m.groups = getValue(s).toMap();
+    s >> n;
     m.entries.clear();
+    if (n < 0 || n > kMaxValueItems) {
+        s.setStatus(QDataStream::ReadCorruptData);
+        return;
+    }
     for (qint32 i = 0; i < n && s.status() == QDataStream::Ok; ++i) {
         MetadataEntry e;
-        s >> e.key >> e.label >> e.value;
+        s >> e.key >> e.label;
+        e.value = getValue(s);
         m.entries.append(e);
     }
     getOptional(s, m.captured);

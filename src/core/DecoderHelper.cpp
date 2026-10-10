@@ -704,8 +704,13 @@ int runDecoderHelper(int inFd, int outFd, const QList<std::shared_ptr<Decoder>>&
 
 const char* decoderSandboxProfile() {
     // Seatbelt (SBPL), deny by default. The minimal set was determined empirically with
-    // every corpus format the helper serves (incl. SVG text in a system font) while
-    // watching the denials in the system log (docs/MANUAL_CHECKS.md, "Decoder-Sandbox"):
+    // every corpus format the helper serves (incl. SVG text in a system font; unit test
+    // DecoderHelper.SandboxedHelperDecodesEveryServedCorpusFormat) while watching the
+    // denials in the system log:
+    //   /usr/bin/log show --last 2m --predicate 'eventMessage CONTAINS "lumaflip-decode"
+    //     AND (eventMessage CONTAINS "deny(" OR eventMessage CONTAINS "denied lookup")'
+    // (the decodes need none of the denied lookups; HEIF via Qt's ImageIO plugin would need
+    // the GPU and is therefore not served by the helper, QtImageDecoder::canDecode()):
     //  - file-read*: the decoders read arbitrary user files (the path arrives over the
     //    pipe), plus fonts and ICC profiles. Qt, its plugins and the font database are
     //    loaded before the sandbox closes (src/helper/main.cpp).
