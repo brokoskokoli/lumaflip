@@ -47,7 +47,6 @@ int archive_entry_size_is_set(struct archive_entry*);
 mode_t archive_entry_filetype(struct archive_entry*);
 time_t archive_entry_mtime(struct archive_entry*);
 int archive_entry_is_encrypted(struct archive_entry*);
-int archive_read_has_encrypted_entries(struct archive*);
 int archive_format(struct archive*);
 struct archive* archive_write_new(void);
 int archive_write_set_format_by_name(struct archive*, const char* name);
@@ -126,9 +125,9 @@ bool acceptName(const QString& name) {
 
 // libarchive could not go on: a password protected archive (encrypted data or headers) gets
 // its own message, anything else is damaged.
+// Only the error text is asked: archive_read_has_encrypted_entries() is not safe after a
+// failed open on every libarchive version (crashed in the Linux CI).
 QString failure(LaArchive* a) {
-    if (archive_read_has_encrypted_entries(a) > 0)
-        return archive::messageEncryptedArchive();
     const QString text = QString::fromUtf8(archive_error_string(a) ? archive_error_string(a) : "");
     if (text.contains(QLatin1String("ncrypt"), Qt::CaseInsensitive) ||
         text.contains(QLatin1String("assphrase"), Qt::CaseInsensitive))
@@ -203,7 +202,7 @@ archive::Listing list(const QString& path, qint64 scanLimit) {
     Reader r;
     if (!r.open(path)) {
         out.error = !QFile::exists(path) ? archive::messageDamagedArchive()
-                    : r.a && archive_read_has_encrypted_entries(r.a) > 0
+                    : r.a && failure(r.a) == archive::messageEncryptedArchive()
                         ? archive::messageEncryptedArchive()
                         : archive::messageUnsupportedArchive();
         return out;
@@ -257,8 +256,7 @@ std::optional<QVector<archive::Extracted>> readRun(const QString& path, const QS
     };
     Reader r;
     if (!r.open(path))
-        return fail(r.a && archive_read_has_encrypted_entries(r.a) > 0 ? archive::messageEncryptedArchive()
-                                                                       : archive::messageDamagedArchive());
+        return fail(r.a ? failure(r.a) : archive::messageDamagedArchive());
     QByteArray scratch(qsizetype(kBlockSize), Qt::Uninitialized);
     const QString want = name.normalized(QString::NormalizationForm_C);
     QVector<archive::Extracted> run;
