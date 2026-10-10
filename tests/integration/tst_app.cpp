@@ -582,6 +582,9 @@ private slots:
         // Double click toggles too (default of F-IN-10).
         QTest::mouseDClick(canvas, Qt::LeftButton, {}, QPoint(20, 20));
         QVERIFY(w->isFullScreen());
+        // Let the native transition finish first (slow machines, CI): macOS would apply
+        // its end after the toggle below and leave the window in fullscreen.
+        (void)QTest::qWaitFor([w] { return w->windowHandle()->windowStates() & Qt::WindowFullScreen; }, 3000);
         QTest::qWait(800);
         w->toggleFullScreen();
         QVERIFY(!w->isFullScreen());
