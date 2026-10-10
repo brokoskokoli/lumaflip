@@ -171,14 +171,23 @@ private slots:
     // shows red, green and blue in turn - the frames of tests/corpus/generated/anim.*)
     void F_FMT_03_corpusAnimationsPlayOnCanvas_data() {
         QTest::addColumn<QString>("name");
-        QTest::newRow("gif") << QStringLiteral("anim.gif");
-        QTest::newRow("webp") << QStringLiteral("anim.webp");
-        QTest::newRow("apng") << QStringLiteral("anim.png");
+        QTest::addColumn<bool>("upscaleWithFilmstrip"); // view settings of the B-2 report
+        for (bool user : {false, true}) {
+            const char* suffix = user ? " upscaled+filmstrip" : "";
+            QTest::addRow("gif%s", suffix) << QStringLiteral("anim.gif") << user;
+            QTest::addRow("webp%s", suffix) << QStringLiteral("anim.webp") << user;
+            QTest::addRow("apng%s", suffix) << QStringLiteral("anim.png") << user;
+        }
     }
     void F_FMT_03_corpusAnimationsPlayOnCanvas() {
         QFETCH(QString, name);
+        QFETCH(bool, upscaleWithFilmstrip);
         if (!QFileInfo::exists(corpus(name)))
             QSKIP("format corpus file missing - run tests/corpus/make_corpus.sh");
+        if (upscaleWithFilmstrip) {
+            Settings::instance().setValue(key::ZoomMode, QStringLiteral("fitUpscale"));
+            Settings::instance().setValue(key::ShowFilmstrip, true);
+        }
         const QString file = copyCorpus(name);
         ViewerWindow* w = open(file);
         QVERIFY(w);

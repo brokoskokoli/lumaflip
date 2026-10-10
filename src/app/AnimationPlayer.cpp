@@ -147,7 +147,8 @@ void AnimationPlayer::play() {
     m_pendingStep = -1;
     if (m_finished) { // loop count used up: play the sequence again from the start
         m_finished = false;
-        m_playsDone = 0;
+        // The step from the last frame back to frame 0 starts the new play, it completes none.
+        m_playsDone = m_current == m_count - 1 ? -1 : 0;
     }
     const DecodedImagePtr cur = m_frames.value(m_current);
     const qint64 d = qint64(std::llround((cur ? durationMs(*cur) : kDefaultDurationMs) * 1e6 / m_speed));

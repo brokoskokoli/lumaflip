@@ -296,6 +296,9 @@ int frameDurationMs(NSDictionary* props) {
          kCGImagePropertyWebPDelayTime},
         {kCGImagePropertyHEICSDictionary, kCGImagePropertyHEICSUnclampedDelayTime,
          kCGImagePropertyHEICSDelayTime},
+        // Animated AVIF: the SDK names only the dictionary; its keys are those of HEICS.
+        {kCGImagePropertyAVISDictionary, kCGImagePropertyHEICSUnclampedDelayTime,
+         kCGImagePropertyHEICSDelayTime},
     };
     for (const auto& k : keys) {
         NSDictionary* d = dictValue(props, k.dict);
@@ -326,6 +329,7 @@ int loopCountOf(CGImageSourceRef src) {
         {kCGImagePropertyGIFDictionary, kCGImagePropertyGIFLoopCount},
         {kCGImagePropertyPNGDictionary, kCGImagePropertyAPNGLoopCount},
         {kCGImagePropertyWebPDictionary, kCGImagePropertyWebPLoopCount},
+        {kCGImagePropertyAVISDictionary, kCGImagePropertyHEICSLoopCount},
     };
     for (const auto& k : keys) {
         NSDictionary* d = dictValue(props, k.dict);
