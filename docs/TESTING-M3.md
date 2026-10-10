@@ -184,6 +184,11 @@ Ordner `Viele/`, Einstellungen → Bewertung: Speicherort „XMP-Zusatzdatei“.
       Blättern geht weiter; Aktivitätsanzeige: Prozess `lumaflip-decoder` wird bei Bedarf neu
       gestartet. (F-FMT-02, SPEC 8.5)
 
+- [ ] SVG mit CSS, Filtern und Text (z. B. aus Wikipedia) neben Safari: gleiche Darstellung (resvg);
+      Statuszeile zeigt die Eigengröße. (F-FMT-01)
+- [ ] GIMP-Datei (`.xcf`, mit Ebenengruppen, Masken und Modi) und Photoshop-Large-Document (`.psb`)
+      neben GIMP/Photoshop: gleiche Darstellung. (F-FMT-01)
+
 ## 10. GPS, Datenschutz, Rohmetadaten (F-INFO-04, F-INFO-05, SPEC 10.3)
 
 Netzwerkmonitor läuft, Update-Prüfung aus.
@@ -199,6 +204,10 @@ Netzwerkmonitor läuft, Update-Prüfung aus.
 - [ ] „In Karten öffnen“ öffnet Apple Karten an der Stelle; offline: verständliche Meldung statt Karte.
 - [ ] „Alle Metadaten …“ (RAW, iPhone-HEIC, JPEG mit IPTC): Gruppen aufklappbar, Suche „ISO“,
       Kopieren/„Alles kopieren“ liefert lesbaren Text; das Fenster folgt beim Blättern. (F-INFO-05)
+- [ ] `GPS/` öffnen und blättern: **keine** Kartenanfragen. Darstellung → „Karte“ (⇧⌘M): erst jetzt
+      Verbindungen zu Apple; „N von M Bildern mit Ort“, zusammengefasste Markierungen, Vorschaubild
+      beim Überfahren, das aktuelle Bild (rot) folgt ←/→, Klick auf eine Markierung zeigt das Bild.
+      Karte schließen: keine weiteren Anfragen. (F-INFO-08, SPEC 10.3)
 
 ## 11. Regression M1/M2 (Stichproben)
 
@@ -210,9 +219,11 @@ Netzwerkmonitor läuft, Update-Prüfung aus.
 
 ## 12. Bekannte Grenzen von Version 1.1
 
-- SVG läuft in diesem Stand weiter über Qt SVG (SVG Tiny 1.2, kein vollständiges CSS/Filter).
-  resvg sowie XCF/PSB sind noch nicht enthalten – die SPEC plant sie inzwischen für M3, in dieser
-  Abnahme also als „fehlt noch“ notieren, nicht als Fehler; ebenso die Ordnerkarte (F-INFO-08).
+- XCF: nicht unterstützte Ebenenmodi (HSV/LCH, Farbe entfernen …) und GIMP-3-Effekte werden als
+  „Normal“ gezeichnet bzw. ausgelassen (Protokoll `lf.xcf`: „approximate rendering“); gemischt wird im
+  wahrnehmungsbezogenen Farbraum, kleine Abweichungen zu GIMP 2.10 (linearer Mischraum) sind möglich.
+- PSB: angezeigt wird das zusammengesetzte Gesamtbild der Datei; wurde sie ohne „Kompatibilität
+  maximieren“ gespeichert, ist es leer oder weiß (wie in anderen Betrachtern).
 - Archive/PDF (F-OPEN-10) folgen in M4.
 - Die Übersetzungen sind maschinell entstanden und **noch nicht muttersprachlich geprüft**
   (`translations/REVIEW_STATUS.md`).

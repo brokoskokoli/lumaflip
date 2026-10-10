@@ -139,6 +139,23 @@ OpenRaster, Krita inkl. abgeschnittener und zufällig veränderter Dateien) und
 | F-INFO-05 | Infopanel → „Alle Metadaten …“ bei einem RAW (MakerNote-Gruppe, z. B. „MakerCanon“), einem iPhone-HEIC und einem JPEG mit IPTC: Gruppen aufklappbar, Suche nach „ISO“ bzw. einem Wert findet die Zeilen, ⌘C/„Kopieren“/„Alles kopieren“ liefert lesbaren Text; beim Blättern folgt das Fenster dem Bild | Vielfalt echter Kameradateien |
 | F-FMT-01 | Restformate: echte QOI-, PCX-, PBM/PGM/PPM/PFM-, SGI-, ORA- (Krita/GIMP/MyPaint-Export) und KRA-Dateien öffnen: Darstellung wie im Ursprungsprogramm; PFM mit Werten über 1 erscheint auf einem EDR-Bildschirm hell (HDR) | Dateien aus Fremdprogrammen; synthetische Dateien prüft `test_simple_decoders` |
 
+## M3: Ordnerkarte, SVG über resvg, XCF und PSB (SPEC 4.4, 4.6, 10.3)
+
+Automatisch prüfen `test_folder_map` (GPS aus EXIF/ImageIO ohne Dekodieren, Zwischenspeicher je
+Pfad und Änderungsdatum, Zählung, schrittweises Füllen, Abbruch bei neuem Ordner, Filter und
+RAW+JPEG-Paare, Folgen des aktuellen Bildes, Klick und Überfahren, kein Lesen und keine Karte vor
+dem Öffnen – mit einer Ersatz-Kartenansicht), `test_resvg` (CSS-Selektoren, Filter, Verläufe, Text,
+Unterschied zu Qt SVG), `test_xcf_psb` (Versionen, Kompressionen, Präzisionen, Ebenenmodi, Masken,
+Gruppen, PSB-Farbmodi, kaputte und zufällig veränderte Dateien), `test_layered_helper` (alle drei im
+Hilfsprozess samt Sandbox) und `tst_folder_map` (echte Fenster, Ersatz-Kartenansicht).
+
+| ID | Prüfung | Warum manuell |
+|---|---|---|
+| F-INFO-08 | Ordner mit eigenen Fotos mit GPS (iPhone-HEIC, Kamera-JPEG/RAW, einige ohne Ort; auch einige hundert Bilder an wenigen Orten): Darstellung → „Karte“ (⇧⌘M) bzw. „Ordnerkarte“ im Infopanel; Kopfzeile „N von M Bildern mit Ort“ stimmt, Markierungen erscheinen schrittweise; nahe Punkte werden zu einer Zahl zusammengefasst, Klick darauf zoomt hinein; Überfahren einer Markierung zeigt das Vorschaubild; das aktuelle Bild ist rot und wandert beim Blättern mit ←/→ mit (die Karte gleitet nur, wenn es den sichtbaren Ausschnitt verlässt); Klick auf eine Markierung zeigt das Bild, ←/→ blättern danach wieder; Bewertungs- und Namensfilter verkleinern die Karte; RAW+JPEG-Paare erscheinen einmal; Hell-/Dunkelmodus | Echte MapKit-Karte, Clusterbildung und Mausbewegung; die Logik dahinter prüfen `test_folder_map` und `tst_folder_map` mit einer Ersatz-Kartenansicht |
+| F-INFO-08 | Datenschutz (SPEC 10.3) mit Netzwerkmonitor (Little Snitch o. Ä.): Ordner mit GPS-Fotos öffnen, blättern, Infopanel offen – **keine** Verbindung zu Apples Kartendiensten; erst das Öffnen der Karte lädt Kacheln; Karte schließen (×, ⇧⌘M): keine weiteren Kartenanfragen, auch nicht beim Blättern; neues Fenster: Karte wieder geschlossen | Netzwerkverkehr von MapKit ist im Test nicht beobachtbar (Tests laufen ohne Netz mit Ersatzansicht) |
+| F-FMT-01 | SVG über resvg: SVG-Dateien mit CSS (`<style>` mit Attribut-/Kindselektoren), Filtern (Schatten, Weichzeichnen), Verläufen, Masken und Text (z. B. Wikipedia-Grafiken, Icon-Sets) in Lumaflip und in Safari/Chrome nebeneinander: gleiche Darstellung, Schriften wie im Browser; Statuszeile zeigt die Eigengröße („200 × 100 (Vektor)“); Zoom bleibt scharf; Prozess `lumaflip-decoder` rendert (Aktivitätsanzeige) | Vergleich mit Browsern und echten Dateien; Einzelmerkmale prüft `test_resvg` |
+| F-FMT-01 | Echte GIMP-Dateien (GIMP 2.8, 2.10 und 3.0; 8/16/32 Bit; mit Ebenengruppen, Masken, Versatz, Deckkraft und Modi wie Multiplizieren/Überlagern/Weiche Kanten) und Photoshop-Large-Documents (PSB, RGB/CMYK/Graustufen, 8/16/32 Bit, mit „Kompatibilität maximieren“) neben GIMP/Photoshop bzw. deren Export: Darstellung stimmt, nicht unterstützte Modi/Effekte erscheinen vereinfacht (Protokoll „approximate rendering“), große PSB-Dateien werden flüssig verkleinert angezeigt | Dateien aus Fremdprogrammen; synthetische Dateien prüft `test_xcf_psb` |
+
 ## M3: Mehrsprachigkeit (SPEC 4.16)
 
 Automatisch prüfen `test_i18n` (Texte ohne `tr()`, Kataloge vollständig und aktuell, Platzhalter,

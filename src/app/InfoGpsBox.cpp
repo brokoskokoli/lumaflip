@@ -47,6 +47,14 @@ InfoGpsBox::InfoGpsBox(std::unique_ptr<MapSnapshotProvider> provider, QWidget* p
     buttons->addWidget(m_openMaps);
     buttons->addStretch();
     layout->addLayout(buttons);
+    // F-INFO-08: the folder map (its own panel; opening it is the consent, SPEC 10.3).
+    auto* folderRow = new QHBoxLayout;
+    m_folderMap = new QPushButton(this);
+    m_folderMap->setObjectName(QStringLiteral("lfGpsFolderMap"));
+    m_folderMap->setFocusPolicy(Qt::NoFocus);
+    folderRow->addWidget(m_folderMap);
+    folderRow->addStretch();
+    layout->addLayout(folderRow);
     m_status = new QLabel(this);
     m_status->setObjectName(QStringLiteral("lfGpsStatus"));
     m_status->setForegroundRole(QPalette::PlaceholderText);
@@ -66,6 +74,7 @@ InfoGpsBox::InfoGpsBox(std::unique_ptr<MapSnapshotProvider> provider, QWidget* p
         m_controller->showMap(); // the click is the consent (SPEC 10.3)
     });
     connect(m_hideMap, &QPushButton::clicked, this, [this] { m_controller->hideMap(); });
+    connect(m_folderMap, &QPushButton::clicked, this, &InfoGpsBox::folderMapRequested);
     connect(m_openMaps, &QPushButton::clicked, this, [this] {
         if (const auto p = m_controller->location()) {
             const QUrl url = geo::mapsUrl(*p, m_label);
@@ -132,6 +141,9 @@ void InfoGpsBox::retranslateUi() {
     m_hideMap->setToolTip(
         tr("Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)"));
     m_openMaps->setText(tr("In Karten öffnen"));
+    m_folderMap->setText(tr("Ordnerkarte"));
+    m_folderMap->setToolTip(tr("Alle Bilder dieser Ansicht mit Aufnahmeort auf einer Karte zeigen (lädt "
+                               "Kartendaten von Apple Karten)"));
     updateState();
 }
 

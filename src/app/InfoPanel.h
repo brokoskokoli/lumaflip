@@ -96,6 +96,7 @@ signals:
     void loaded(const QString& path);
     void histogramReady(const QString& path);
     void tagsWritten(const QString& path, bool ok);
+    void folderMapRequested(); // F-INFO-08: "Ordnerkarte" in the GPS box
 
 protected:
     void showEvent(QShowEvent* event) override;

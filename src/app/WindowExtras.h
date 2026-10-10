@@ -14,6 +14,7 @@
 #include <QPointer>
 #include <QStringList>
 
+class QDockWidget;
 class QLabel;
 class QStatusBar;
 class QWidget;
@@ -22,6 +23,7 @@ namespace lf {
 
 class Application;
 class CollectionExtras;
+class FolderMapPanel;
 class LoupeController;
 class NavigationExtras;
 class OverviewController;
@@ -39,6 +41,12 @@ public:
     NavigationExtras* navigation() const { return m_nav; }
     QuickFilterBar* quickFilter() const { return m_filter; }
     CollectionExtras* collectionExtras() const { return m_collection; } // F-OPEN-08, F-FMT-06
+
+    // ---- F-INFO-08 folder map (dock on the right, created on first use) ----
+    FolderMapPanel* folderMap() const { return m_map; }
+    bool folderMapShown() const;
+    // Shows the panel and opens the map (the consent for this window, SPEC 10.3) or closes it.
+    void setFolderMapShown(bool on);
 
     // ---- hooks called by ViewerWindow ----
     bool perform(Action action, QPointF pos); // true: handled here
@@ -73,6 +81,8 @@ private:
     QuickFilterBar* m_filter = nullptr;
     CollectionExtras* m_collection = nullptr;
     QWidget* m_handle = nullptr;
+    FolderMapPanel* m_map = nullptr;
+    QDockWidget* m_mapDock = nullptr;
     // Remembered once: the window's own centralWidget() must not be queried from the
     // event filter while the window is being destroyed (its layout is already gone).
     QPointer<QWidget> m_central;

@@ -34,10 +34,15 @@ public:
     QPushButton* showMapButton() const { return m_showMap; }
     QPushButton* hideMapButton() const { return m_hideMap; }
     QPushButton* openMapsButton() const { return m_openMaps; }
+    QPushButton* folderMapButton() const { return m_folderMap; } // F-INFO-08
     QLabel* mapLabel() const { return m_map; }
     QLabel* coordinatesLabel() const { return m_coords; }
     // Tests: replaces opening the Maps app.
     void setUrlOpener(std::function<void(const QUrl&)> opener) { m_opener = std::move(opener); }
+
+signals:
+    // F-INFO-08: "Ordnerkarte" - show all images of the folder on a map.
+    void folderMapRequested();
 
 protected:
     void changeEvent(QEvent* event) override;
@@ -54,6 +59,7 @@ private:
     QPushButton* m_showMap = nullptr;
     QPushButton* m_hideMap = nullptr;
     QPushButton* m_openMaps = nullptr;
+    QPushButton* m_folderMap = nullptr;
     QString m_label;
     std::function<void(const QUrl&)> m_opener;
 };

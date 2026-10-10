@@ -135,6 +135,7 @@ const ActionInfo kActions[] = {
      QT_TRANSLATE_NOOP("lf::InputBindings", "Unterordner einbeziehen")},
     {Action::ToggleRawJpeg, "toggleRawJpeg",
      QT_TRANSLATE_NOOP("lf::InputBindings", "RAW/JPEG des Paares zeigen")},
+    {Action::ToggleFolderMap, "toggleFolderMap", QT_TRANSLATE_NOOP("lf::InputBindings", "Ordnerkarte")},
 };
 
 const ActionInfo* info(Action a) {
@@ -268,6 +269,9 @@ QStringList defaultShortcutStrings(Action a) {
         return {"Alt+Ctrl+0"};
     case Action::ToggleExposureHud:
         return {"Alt+Ctrl+E"};
+    // F-INFO-08 (not in SPEC 5.2): ⇧⌘M is free in macOS and in the table above.
+    case Action::ToggleFolderMap:
+        return {"Shift+Ctrl+M"};
     default:
         return {};
     }

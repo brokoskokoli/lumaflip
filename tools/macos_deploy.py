@@ -110,6 +110,15 @@ STATIC_COMPONENTS = {
                   "packaging/licenses/libjpeg-turbo-README.ijg.txt"],
         "symbols": ["_tj3Transform", "_tj3Init"],
     },
+    # Only when resvg is linked statically (LF_RESVG_LIB = libresvg.a); normally it is the
+    # dylib of Homebrew's keg, deployed with the keg's LICENSE-APACHE/LICENSE-MIT.
+    "resvg": {
+        "name": "resvg – SVG-Darstellung (Decoder-Hilfsprozess)",
+        "license": "Apache-2.0 OR MIT",
+        "homepage": "https://github.com/linebender/resvg",
+        "files": ["packaging/licenses/resvg-LICENSE-APACHE.txt", "packaging/licenses/resvg-LICENSE-MIT.txt"],
+        "symbols": ["_resvg_render", "_resvg_parse_tree_from_data"],
+    },
 }
 STATIC_MANIFEST = "static-components.json"
 
@@ -133,6 +142,7 @@ DISPLAY_NAMES = {
     "xz": "xz – liblzma",
     "webp": "libwebp",
     "jpeg-turbo": "libjpeg-turbo",
+    "resvg": "resvg – SVG-Darstellung (Decoder-Hilfsprozess)",
     "dbus": "D-Bus (libdbus)",
 }
 
