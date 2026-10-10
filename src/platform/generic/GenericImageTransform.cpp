@@ -3,6 +3,7 @@
 // files with an orientation tag (patched by the core) and lossless formats re-encoded with
 // Qt. A lossless metadata copy for other formats is not available here.
 
+#include "core/CropSave.h"
 #include "core/Decoder.h"
 #include "core/ImageFormats.h"
 #include "core/LosslessTransform.h"
@@ -162,6 +163,44 @@ bool reencodeTransformed(const QString& src, const QString& dst, int pixelOp, bo
         }
     }
     return true;
+}
+
+bool reencodeCropped(const QString& src, const QString& dst, const QRect& stored, bool requireExact,
+                     QString* error, bool* inexact) {
+    if (inexact)
+        *inexact = false;
+    QImageReader r(src);
+    r.setAutoTransform(false);
+    const QByteArray format = r.format();
+    const QImage img = r.read();
+    if (img.isNull()) {
+        setError(error, Tr::tr("Das Bild konnte nicht dekodiert werden."));
+        return false;
+    }
+    const QImage out = img.copy(stored);
+    QImageWriter w(dst, format);
+    if (!requireExact)
+        w.setQuality(95);
+    if (out.isNull() || !w.write(out)) {
+        setError(error, Tr::tr("Dieses Format kann nicht geschrieben werden."));
+        return false;
+    }
+    if (requireExact) {
+        QImageReader back(dst);
+        back.setAutoTransform(false);
+        if (back.read() != out) {
+            QFile::remove(dst);
+            if (inexact)
+                *inexact = true;
+            setError(error, Tr::tr("Das Bild lässt sich in diesem Format nicht exakt neu speichern."));
+            return false;
+        }
+    }
+    return true;
+}
+
+QStringList auxiliaryImageNames(const QString&) {
+    return {};
 }
 
 bool replaceFile(const QString& replacement, const QString& target, bool keepModificationDate,

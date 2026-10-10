@@ -487,29 +487,16 @@ void platform::setDurabilityObserver(std::function<void(DurabilityStep, const QS
     g_observer = std::move(observer);
 }
 
-// ---- planning and saving ----
+// ---- safe file writes ----
 
-namespace {
-
-QByteArray readAll(const QString& path, QString* error) {
-    QFile f(path);
-    if (!f.open(QIODevice::ReadOnly)) {
-        if (error)
-            *error = Tr::tr("„%1“ kann nicht gelesen werden.").arg(QFileInfo(path).fileName());
-        return {};
-    }
-    return f.readAll();
-}
-
-// Temporary file next to `path` (same volume: the final rename is atomic), hidden.
-QString siblingTempPath(const QString& path) {
+QString filesafety::siblingTempPath(const QString& path) {
     const QFileInfo fi(path);
     const QString id = QUuid::createUuid().toString(QUuid::Id128).left(12);
     return fi.dir().filePath(
         QStringLiteral(".%1.lumaflip-%2.%3").arg(fi.completeBaseName(), id, fi.suffix()));
 }
 
-bool writeFile(const QString& path, const QByteArray& data, QString* error) {
+bool filesafety::writeNewFile(const QString& path, const QByteArray& data, QString* error) {
     QFile f(path);
     if (!f.open(QIODevice::WriteOnly | QIODevice::NewOnly) || f.write(data) != data.size() || !f.flush()) {
         if (error)
@@ -520,6 +507,32 @@ bool writeFile(const QString& path, const QByteArray& data, QString* error) {
     }
     f.close();
     return true;
+}
+
+QByteArray filesafety::readFile(const QString& path, QString* error) {
+    QFile f(path);
+    if (!f.open(QIODevice::ReadOnly)) {
+        if (error)
+            *error = Tr::tr("„%1“ kann nicht gelesen werden.").arg(QFileInfo(path).fileName());
+        return {};
+    }
+    return f.readAll();
+}
+
+// ---- planning and saving ----
+
+namespace {
+
+QByteArray readAll(const QString& path, QString* error) {
+    return filesafety::readFile(path, error);
+}
+
+QString siblingTempPath(const QString& path) {
+    return filesafety::siblingTempPath(path);
+}
+
+bool writeFile(const QString& path, const QByteArray& data, QString* error) {
+    return filesafety::writeNewFile(path, data, error);
 }
 
 bool isJpegType(const QString& typeId) {
@@ -779,49 +792,45 @@ QString restoreFileFrom(const QString& backup, const QString& target) {
     return {};
 }
 
-// ---- RotationEdit ----
+// ---- FileEdit / RotationEdit ----
 
 namespace {
 const QString kBefore = QStringLiteral("before");
 const QString kAfter = QStringLiteral("after");
 } // namespace
 
-RotationEdit::RotationEdit(RotationRequest request, RotationPlan plan, RotationMethod method,
-                           std::shared_ptr<UndoBackupStore> store)
-    : m_request(std::move(request)), m_plan(std::move(plan)), m_method(method), m_store(std::move(store)) {
-    if (m_plan.target.isEmpty())
-        m_plan.target = resolvedFilePath(m_request.path);
-}
+FileEdit::FileEdit(QString target, Save save, std::shared_ptr<UndoBackupStore> store)
+    : m_target(resolvedFilePath(target)), m_save(std::move(save)), m_store(std::move(store)) {}
 
-RotationEdit::~RotationEdit() {
+FileEdit::~FileEdit() {
     if (m_id && m_store)
         m_store->release(m_id);
 }
 
-QString RotationEdit::messageChangedUndo() {
+QString FileEdit::messageChangedUndo() {
     return Tr::tr("Datei wurde inzwischen verändert – Rückgängig nicht möglich");
 }
 
-QString RotationEdit::messageChangedRedo() {
+QString FileEdit::messageChangedRedo() {
     return Tr::tr("Datei wurde inzwischen verändert – Wiederholen nicht möglich");
 }
 
-QString RotationEdit::messageBackupDropped() {
+QString FileEdit::messageBackupDropped() {
     return Tr::tr("Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – "
                   "Rückgängig/Wiederholen ist dafür nicht mehr möglich.");
 }
 
-QString RotationEdit::apply() {
+QString FileEdit::apply() {
     return step(true);
 }
 
-QString RotationEdit::revert() {
+QString FileEdit::revert() {
     return step(false);
 }
 
-QString RotationEdit::step(bool forward) {
+QString FileEdit::step(bool forward) {
     std::lock_guard g(m_mutex);
-    const QString& target = m_plan.target;
+    const QString& target = m_target;
     QString error;
     if (!m_id) {
         if (!forward)
@@ -832,7 +841,7 @@ QString RotationEdit::step(bool forward) {
             return Tr::tr("Kein Platz für die Sicherungskopie – nichts gespeichert.");
         if (!m_store->addCopy(m_id, target, kBefore, true, &error))
             return error;
-        const QString e = executeRotationSave(m_request, m_plan, m_method);
+        const QString e = m_save ? m_save() : QString();
         if (!e.isEmpty())
             return e;
         m_done = true;
@@ -855,6 +864,18 @@ QString RotationEdit::step(bool forward) {
     m_expected = fileStamp(target);
     return {};
 }
+
+RotationEdit::RotationEdit(RotationRequest request, RotationPlan plan, RotationMethod method,
+                           std::shared_ptr<UndoBackupStore> store) {
+    if (plan.target.isEmpty())
+        plan.target = resolvedFilePath(request.path);
+    const QString target = plan.target;
+    m_edit = std::make_unique<FileEdit>(
+        target, [request, plan, method] { return executeRotationSave(request, plan, method); },
+        std::move(store));
+}
+
+RotationEdit::~RotationEdit() = default;
 
 QString describeRotationMethod(RotationMethod method) {
 

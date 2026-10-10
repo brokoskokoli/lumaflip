@@ -134,6 +134,26 @@ const Registry& registry() {
         b(key::WallpaperAllScreens, false);
         s(key::CustomActions, "[]", {});
         i(key::CustomActionTimeoutSec, 60, 1, 3600);
+        // M4 (F-EDIT-03/04, F-INFO-07)
+        s(key::CropAspect, "free", {"free", "original", "1:1", "4:3", "3:2", "16:9"});
+        b(key::CropPortrait, false);
+        b(key::CropGrid, true);
+        s(key::ExportFormat, "jpeg", {"jpeg", "heic", "avif", "jxl", "png", "tiff"});
+        i(key::ExportQuality, 90, 1, 100);
+        i(key::ExportMaxEdge, 0, 0, 65535);
+        s(key::ExportMetadata, "all", {"all", "noGps", "none"});
+        s(key::ExportColor, "keep", {"keep", "srgb", "p3"});
+        s(key::ExportHdr, "keep", {"keep", "sdr"});
+        s(key::ExportPattern, "{name}-export", {});
+        s(key::ExportFolder, "", {});
+        b(key::OverlayClipping, false);
+        b(key::OverlayPeaking, false);
+        b(key::OverlayAfPoints, false);
+        i(key::OverlayClipHighPercent, 98, 50, 100);
+        i(key::OverlayClipLowPercent, 2, 0, 50);
+        s(key::OverlayClipHdrReference, "headroom", {"headroom", "sdr"});
+        i(key::OverlayPeakingSensitivity, 50, 0, 100);
+        s(key::OverlayPeakingColor, "#ff2020", {"#ff2020"}, true);
         // Input (4.14)
         b(key::WheelInverted, false);
         i(key::WheelStepsPerImage, 1, 1, 5);

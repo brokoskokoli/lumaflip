@@ -4,6 +4,7 @@
 #include "ColorPipeline.h"
 #include "core/HdrMapping.h"
 #include "core/ImagePatch.h"
+#include "core/PhotoOverlays.h"
 #include "core/StartupTrace.h"
 
 #include <QColorTransform>
@@ -35,7 +36,7 @@ constexpr qint64 kSyncConvertPixels = 512 * 1024;
 constexpr qint64 kUploadBudgetBytes = 192ll * 1024 * 1024;
 // Tile padding (texels) so that filtering and mip levels do not show seams.
 constexpr int kTilePadding = 64;
-constexpr int kUboSize = 256;
+constexpr int kUboSize = 288; // image.vert/.frag "buf": 18 x vec4 (mat4 = 4)
 
 // Output space of the extended range presentation (EdrSurface): linear Display P3, values
 // above 1 are brighter than SDR white.
@@ -224,6 +225,7 @@ struct ImageCanvas::Private {
     QColorSpace output{QColorSpace::SRgb};
     ColorPipeline dstTransfer; // only the destination TRC part is used
     bool dstLutDirty = true;
+    overlays::Params photoOverlays; // F-INFO-07 (off by default)
     float exposure = 1.0f;    // F-COL-05 (linear multiplier)
     float edrHeadroom = 1.0f; // F-COL-03: target of renderExtended()
     bool extended = false;    // extended range presentation active (EdrSurface)
@@ -554,13 +556,14 @@ struct ImageCanvas::Private {
         const float targetHeadroom = ext ? std::max(1.0f, edrHeadroom) : 1.0f;
         const hdr::ToneCurve curve = hdr::makeToneCurve(contentPeak(e), targetHeadroom);
         fillUboData(color, e.premultiplied, mvp, t, rub, t.ubo[passIndex(mode)].get(), opacity, ext, exposure,
-                    targetHeadroom, curve, false);
+                    targetHeadroom, curve, false, contentPeak(e));
     }
 
     // Shared by image tiles and the overlay. `ext`: output is extended linear P3.
     void fillUboData(const ColorPipeline& color, bool premultiplied, const QMatrix4x4& mvp, const Tile& t,
                      QRhiResourceUpdateBatch* rub, QRhiBuffer* ubo, float opacity, bool ext,
-                     float exposureMul, float maxValue, const hdr::ToneCurve& curve, bool overlay) {
+                     float exposureMul, float maxValue, const hdr::ToneCurve& curve, bool overlay,
+                     float peak = 1.0f) {
         QMatrix4x4 cm; // identity; upper 3x3 from the pipeline (row-major input)
         for (int r = 0; r < 3; ++r)
             for (int c = 0; c < 3; ++c)
@@ -619,6 +622,19 @@ struct ImageCanvas::Private {
         v[29] = curve.srcPq;
         v[30] = curve.kneePq;
         v[31] = curve.maxLumPq;
+        // F-INFO-07 overlays (zero = off: the shader skips them).
+        if (!overlay && photoOverlays.active()) {
+            v[32] = photoOverlays.clipping ? 1.0f : 0.0f;
+            v[33] = photoOverlays.peaking ? 1.0f : 0.0f;
+            v[34] = overlays::highThreshold(photoOverlays, peak);
+            v[35] = overlays::lowThreshold(photoOverlays);
+            const QColor& pc = photoOverlays.peakingColor;
+            // Output encoded (display space), linear for the extended pass.
+            const float rgb[3] = {float(pc.redF()), float(pc.greenF()), float(pc.blueF())};
+            for (int i = 0; i < 3; ++i)
+                v[36 + i] = ext ? overlays::srgbToLinear(rgb[i]) : rgb[i];
+            v[39] = overlays::peakingThreshold(photoOverlays.peakingSensitivity);
+        }
         rub->updateDynamicBuffer(ubo, 0, kUboSize, data);
     }
 
@@ -1075,6 +1091,17 @@ void ImageCanvas::setHdrMapping(float exposureMultiplier, float extendedHeadroom
     d->exposure = exposure;
     d->edrHeadroom = headroom;
     d->requestFrame();
+}
+
+void ImageCanvas::setPhotoOverlays(const overlays::Params& params) {
+    if (d->photoOverlays == params)
+        return;
+    d->photoOverlays = params;
+    d->requestFrame();
+}
+
+overlays::Params ImageCanvas::photoOverlays() const {
+    return d->photoOverlays;
 }
 
 float ImageCanvas::exposureMultiplier() const {

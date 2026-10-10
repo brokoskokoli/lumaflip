@@ -23,6 +23,7 @@
 // Display P3 swapchain; while it is active the widget only clears (it is covered).
 
 #include "core/ImageProvider.h"
+#include "core/PhotoOverlays.h"
 
 #include <QColor>
 #include <QColorSpace>
@@ -70,6 +71,10 @@ public:
     // extended range presentation (>= 1).
     void setHdrMapping(float exposureMultiplier, float extendedHeadroom);
     float exposureMultiplier() const;
+    // F-INFO-07: clipping warning and focus peaking, drawn by the image shader (off by
+    // default; with both off the output is unchanged).
+    void setPhotoOverlays(const overlays::Params& params);
+    overlays::Params photoOverlays() const;
     float extendedHeadroom() const;
     // Extended range presentation on/off. While on, frame requests go to `requestFrame`
     // (the EdrSurface) and renderExtended() draws the image.

@@ -997,6 +997,18 @@ void ImageView::setDragOutEnabled(bool enabled) {
     d->dragOutEnabled = enabled;
 }
 
+void ImageView::setPhotoOverlays(const overlays::Params& params) {
+    d->canvas->setPhotoOverlays(params);
+}
+
+overlays::Params ImageView::photoOverlays() const {
+    return d->canvas->photoOverlays();
+}
+
+QWidget* ImageView::canvasWidget() const {
+    return d->canvas;
+}
+
 QTransform ImageView::imageToWidget() const {
     if (!d->image)
         return {};
