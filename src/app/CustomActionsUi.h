@@ -43,6 +43,8 @@ public:
     // viewer window asks here first. Runs the action bound to `key`/`modifiers` on the current
     // file of `window`; false if no action has this key.
     bool runForKey(int key, Qt::KeyboardModifiers modifiers, ViewerWindow* window);
+    // An action has this key without ⌘/⌃ (typing it must not open the name filter).
+    bool hasKey(int key, Qt::KeyboardModifiers modifiers) const;
 
     void showLog(QWidget* parent);
     QStringList logLines() const { return m_log; }

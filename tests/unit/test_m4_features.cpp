@@ -466,6 +466,11 @@ TEST(CustomActions, F_FILE_10_PlainKeysMatchAndConflictsAreFound) {
     a.keys = QKeySequence(Qt::ShiftModifier | Qt::Key_K);
     EXPECT_TRUE(customactions::matchesKey(a, Qt::Key_K, Qt::ShiftModifier));
     EXPECT_FALSE(customactions::matchesKey(a, Qt::Key_K, Qt::NoModifier));
+    a.id = QStringLiteral("x");
+    const QList<CustomAction> stored = customactions::fromJson(customactions::toJson({a})); // as saved
+    ASSERT_EQ(stored.size(), 1);
+    EXPECT_TRUE(customactions::matchesKey(stored.first(), Qt::Key_K, Qt::ShiftModifier))
+        << stored.first().keys.toString().toStdString();
     a.keys = QKeySequence(Qt::AltModifier | Qt::Key_1);
     EXPECT_TRUE(customactions::matchesKey(a, Qt::Key_1, Qt::AltModifier));
     EXPECT_FALSE(customactions::matchesKey(a, Qt::Key_1, Qt::NoModifier));

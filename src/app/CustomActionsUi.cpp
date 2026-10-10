@@ -66,9 +66,16 @@ void CustomActionsManager::setConfirmForTesting(
     m_confirm = std::move(c);
 }
 
-bool CustomActionsManager::runForKey(int key, Qt::KeyboardModifiers modifiers, ViewerWindow* window) {
-    if (!window || (modifiers & (Qt::ControlModifier | Qt::MetaModifier)))
+bool CustomActionsManager::hasKey(int key, Qt::KeyboardModifiers modifiers) const {
+    if (modifiers & (Qt::ControlModifier | Qt::MetaModifier))
         return false; // ⌘/⌃: the menu entry's shortcut (MainMenu::rebuildCustomActions)
+    return std::any_of(m_actions.cbegin(), m_actions.cend(),
+                       [&](const CustomAction& a) { return customactions::matchesKey(a, key, modifiers); });
+}
+
+bool CustomActionsManager::runForKey(int key, Qt::KeyboardModifiers modifiers, ViewerWindow* window) {
+    if (!window || !hasKey(key, modifiers))
+        return false;
     for (const CustomAction& a : std::as_const(m_actions))
         if (customactions::matchesKey(a, key, modifiers)) {
             run(a.id, window);

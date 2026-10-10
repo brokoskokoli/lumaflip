@@ -457,7 +457,8 @@ private slots:
     }
 
     // Covers: F-FILE-10 (keys without ⌘/⌃ - F5, K, ⇧K - run the action in the viewer window;
-    // K is also an app shortcut: the custom action wins there)
+    // K is also an app shortcut: the custom action wins there; ⇧K has no app meaning and must
+    // not open the name filter, F-NAV-08)
     void F_FILE_10_customActionOnAPlainKey() {
 #ifdef Q_OS_WIN
         QSKIP("POSIX shell command (Windows: test_windows_platform.cpp)");
