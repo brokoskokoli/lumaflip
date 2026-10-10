@@ -29,6 +29,11 @@ public:
     // Shows an image. If `sameFile` is true (higher quality stage of the current
     // file), zoom/pan are kept and the swap is seamless.
     void setImage(DecodedImagePtr image, bool sameFile);
+    // F-FMT-03: next frame of the shown animation (same size): zoom/pan stay, the GPU
+    // textures are reused.
+    void showAnimationFrame(DecodedImagePtr frame);
+    // F-SLIDE-02: the next setImage() of another file fades in over the current image.
+    void beginCrossfade(int ms);
     void clear();
     // Error card (F-FMT-02). A non-empty `actionText` adds a button that emits
     // errorActionTriggered() (the window uses it for "Im Finder zeigen").

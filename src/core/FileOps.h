@@ -50,6 +50,13 @@ public:
     void renameAsync(const QString& path, const QString& newFileName, Completion done = {});
     void moveToAsync(const QString& path, const QString& targetFolder, Completion done = {});
     void copyToAsync(const QString& path, const QString& targetFolder, Completion done = {});
+    // F-EDIT-02: a file changed in place (e.g. a saved rotation). `apply` (do, redo) and
+    // `revert` (undo) run on a worker thread and return an error text (empty = success);
+    // `cleanup` runs when the undo command is dropped (e.g. to delete backup copies).
+    // fileChanged(path) follows every successful step.
+    using FileWork = std::function<QString()>;
+    void modifyAsync(const QString& path, const QString& undoText, FileWork apply, FileWork revert,
+                     Completion done = {}, std::function<void()> cleanup = {});
     // Undo/redo the next command with its file system work on a worker thread. (The
     // stack's own undo()/redo() still work and run synchronously.)
     void undo();
@@ -61,6 +68,8 @@ signals:
     void fileRemoved(const QString& path);
     void fileAdded(const QString& path);
     void fileRenamed(const QString& oldPath, const QString& newPath);
+    // The contents of `path` changed (modifyAsync, its undo and redo): caches must go.
+    void fileChanged(const QString& path);
     // A trashed file was put back (undo), right after fileAdded(path). `origin` is the
     // object passed to moveToTrashAsync() (null if gone or not given).
     void fileRestored(const QString& path, QObject* origin);

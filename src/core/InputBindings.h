@@ -82,6 +82,7 @@ enum class Action {
     Redo,
     OpenPreferences,
     CloseAllWindows,
+    SaveRotation, // F-EDIT-02
 };
 
 QString actionId(Action a); // stable string id for settings ("nextImage")

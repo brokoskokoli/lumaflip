@@ -643,5 +643,5 @@ TEST_F(InputBindingsTest, ActionIdRoundtrip) {
     EXPECT_EQ(actionId(Action::None), "none");
     EXPECT_EQ(actionId(Action::NextImage), "nextImage");
     // every enum value except None is listed
-    EXPECT_EQ(InputBindings::allActions().size(), int(Action::CloseAllWindows));
+    EXPECT_EQ(InputBindings::allActions().size(), int(Action::SaveRotation)); // last enum value
 }

@@ -96,6 +96,13 @@ const Registry& registry() {
         b(key::RatingStoreSidecar, true);
         b(key::RatingStoreEmbedded, false);
         b(key::RatingStoreFinderTags, false);
+        // Slideshow (F-SLIDE-01/02) and saving the rotation (F-EDIT-02)
+        i(key::SlideshowIntervalSec, 3, 1, 60);
+        b(key::SlideshowRepeat, true);
+        b(key::SlideshowShuffle, false);
+        b(key::SlideshowCrossfade, true);
+        s(key::RotationSaveStrategy, "exif", {"exif", "lossless"});
+        b(key::KeepModificationDate, false);
         // Input (4.14)
         b(key::WheelInverted, false);
         i(key::WheelStepsPerImage, 1, 1, 5);

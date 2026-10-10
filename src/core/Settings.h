@@ -61,6 +61,14 @@ inline constexpr auto RawEmbeddedOnly = "perf/rawEmbeddedOnly"; // bool, default
 inline constexpr auto RatingStoreSidecar = "rating/sidecar";       // default true
 inline constexpr auto RatingStoreEmbedded = "rating/embedded";     // default false
 inline constexpr auto RatingStoreFinderTags = "rating/finderTags"; // default false
+// Slideshow (F-SLIDE-01/02)
+inline constexpr auto SlideshowIntervalSec = "slideshow/intervalSec"; // 1..60, default 3
+inline constexpr auto SlideshowRepeat = "slideshow/repeat";           // bool, default true
+inline constexpr auto SlideshowShuffle = "slideshow/shuffle";         // bool, default false
+inline constexpr auto SlideshowCrossfade = "slideshow/crossfade";     // bool, default true
+// Saving the rotation (F-EDIT-02)
+inline constexpr auto RotationSaveStrategy = "edit/rotationStrategy"; // "exif" | "lossless" (JPEG DCT)
+inline constexpr auto KeepModificationDate = "edit/keepModDate";      // bool, default false
 } // namespace key
 
 class Settings : public QObject {

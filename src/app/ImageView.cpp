@@ -439,6 +439,24 @@ void ImageView::setImage(DecodedImagePtr image, bool sameFile) {
     d->sync();
 }
 
+void ImageView::showAnimationFrame(DecodedImagePtr frame) {
+    if (!frame || frame->image.isNull() || !d->image) {
+        setImage(std::move(frame), true);
+        return;
+    }
+    const QSize full = frame->fullSize.isEmpty() ? frame->image.size() : frame->fullSize;
+    if (full != d->model.imageSize()) {
+        setImage(std::move(frame), true);
+        return;
+    }
+    d->image = std::move(frame);
+    d->canvas->replaceFrame(d->image);
+}
+
+void ImageView::beginCrossfade(int ms) {
+    d->canvas->startCrossfade(ms);
+}
+
 void ImageView::clear() {
     d->image.reset();
     d->canvas->setCurrent(nullptr, false);

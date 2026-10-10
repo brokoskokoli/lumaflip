@@ -16,6 +16,21 @@ target_include_directories(lf_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(lf_core
   PUBLIC Qt6::Core Qt6::Gui Qt6::Concurrent Qt6::Svg
   PRIVATE lf_warnings)
+# F-EDIT-02: lossless JPEG rotation (DCT transform) with libjpeg-turbo's TurboJPEG API,
+# linked statically (BSD-style license; Homebrew's jpeg-turbo is a Qt dependency anyway).
+# Without it the rotation is saved via the EXIF orientation only.
+find_path(LF_TURBOJPEG_INCLUDE turbojpeg.h
+  HINTS /opt/homebrew/opt/jpeg-turbo/include /usr/local/opt/jpeg-turbo/include)
+find_library(LF_TURBOJPEG_LIB NAMES libturbojpeg.a turbojpeg
+  HINTS /opt/homebrew/opt/jpeg-turbo/lib /usr/local/opt/jpeg-turbo/lib)
+if(LF_TURBOJPEG_INCLUDE AND LF_TURBOJPEG_LIB)
+  message(STATUS "TurboJPEG: ${LF_TURBOJPEG_LIB}")
+  target_include_directories(lf_core SYSTEM PRIVATE ${LF_TURBOJPEG_INCLUDE})
+  target_link_libraries(lf_core PRIVATE ${LF_TURBOJPEG_LIB})
+  target_compile_definitions(lf_core PRIVATE LF_HAVE_TURBOJPEG=1)
+else()
+  message(STATUS "TurboJPEG not found: lossless JPEG rotation (F-EDIT-02, DCT) disabled")
+endif()
 if(LF_GENERIC_PLATFORM)
   target_compile_definitions(lf_core PUBLIC LF_GENERIC_PLATFORM=1)
 elseif(APPLE)

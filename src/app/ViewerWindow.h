@@ -19,6 +19,8 @@
 #include <QStringList>
 #include <QVariantMap>
 
+#include <optional>
+
 class QLabel;
 class QPushButton;
 class QStatusBar;
@@ -26,9 +28,11 @@ class QTimer;
 
 namespace lf {
 
+class AnimationPlayer;
 class Application;
 class Collection;
 class ImageView;
+class SlideshowController;
 class WindowPanels; // M2 panels (info panel, filmstrip)
 
 QString zoomModeId(ZoomMode mode);          // Settings key::ZoomMode values
@@ -99,6 +103,22 @@ public:
     void refreshActivity(); // front/active state changed: re-prioritise prefetch (F-WIN-09)
     // Shows/hides the window; the status bar is created on the first show (P-01).
     void setVisible(bool visible) override;
+
+    // ---- M2 media (ViewerWindowMedia.cpp): animation F-FMT-03, pages F-FMT-04,
+    //      slideshow F-SLIDE-01/02, saving the rotation F-EDIT-02 ----
+    AnimationPlayer* animation() const { return m_anim; }
+    SlideshowController* slideshow() const { return m_slideshow; }
+    bool isSlideshowRunning() const;
+    // Fullscreen, interval/options from the settings; `seed` fixes the shuffle order (tests).
+    void startSlideshow(std::optional<quint32> seed = std::nullopt);
+    void stopSlideshow();
+    int currentPage() const { return m_page; }
+    int pageCount() const { return m_pageCount; }
+    bool goToPage(int page); // F-FMT-04
+    void setAnimationSpeed(double factor);
+    // "Bild 3/12" (animation) or "Seite 2/5" (multi-page), else empty.
+    QString frameStatusText() const;
+    void saveRotation(); // F-EDIT-02 (asks before trimming or re-encoding)
 
 signals:
     // An image (or a better stage of it) was handed to the view.
@@ -173,6 +193,30 @@ private:
     QLabel* m_bytesLabel = nullptr;
     QLabel* m_zoomLabel = nullptr;
     QLabel* m_sortLabel = nullptr;
+    QLabel* m_frameLabel = nullptr; // "Bild 3/12" / "Seite 2/5"
+
+    // ---- M2 media state (ViewerWindowMedia.cpp) ----
+    void setupMedia();
+    void mediaCurrentChanged(const QString& path);
+    bool mediaIgnoresStage(const QString& path, const DecodedImagePtr& image) const;
+    void mediaBeforeDisplay(bool sameFile);
+    void mediaDisplayed(const QString& path, const DecodedImagePtr& image, bool sameFile);
+    bool performMedia(Action action); // true: handled
+    bool handleSlideshowInput(const InputEvent& event);
+    void mediaVisibilityChanged();
+    void mediaEntriesChanged();
+    void onFileContentChanged(const QString& path);
+    QStringList slideshowPrefetch(int count) const;
+    void updateFrameLabel();
+    AnimationPlayer* m_anim = nullptr;
+    SlideshowController* m_slideshow = nullptr;
+    int m_page = 0;
+    int m_pageCount = 1;
+    bool m_animResume = false;          // playing when the window was hidden/minimized
+    bool m_slideshowFullScreen = false; // the slideshow entered fullscreen (leave it at the end)
+    bool m_reloadResetsView = false;    // the file was rewritten (saved rotation): reset the view rotation
+    bool m_rotationSaving = false;
+    QString m_mediaPath; // file the page/animation state belongs to
 
     QString m_shownPath; // file the view currently shows (or failed for)
     Quality m_shownQuality = Quality::Preview;

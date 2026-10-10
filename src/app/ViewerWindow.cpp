@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "ViewerWindow.h"
 
+#include "AnimationPlayer.h"
 #include "Application.h"
 #include "DragOut.h"
 #include "ImageView.h"
@@ -299,7 +300,7 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
         const QString cur = currentPath();
         if (cur.isEmpty() || m_shownFailed)
             return;
-        if (auto img = m_app.provider().request(cur, Quality::Screen, decodeTarget(), this))
+        if (auto img = m_app.provider().request(cur, Quality::Screen, decodeTarget(), this, 0, m_page))
             display(cur, Quality::Screen, img);
         updatePrefetch();
     });
@@ -348,7 +349,7 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
         const QString cur = currentPath();
         if (cur.isEmpty() || m_shownFailed || cur != m_shownPath)
             return;
-        if (auto img = m_app.provider().request(cur, Quality::Full, {}, this))
+        if (auto img = m_app.provider().request(cur, Quality::Full, {}, this, 0, m_page))
             display(cur, Quality::Full, img);
     });
     connect(m_view, &ImageView::errorActionTriggered, this, [this] { perform(Action::RevealInFinder); });
@@ -363,6 +364,7 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     });
     connect(&st, &Settings::changed, this, &ViewerWindow::applySetting);
     m_panels = new WindowPanels(*this, provider); // M2: created hidden, shown with the window
+    setupMedia(); // animation, pages, slideshow, saving the rotation (ViewerWindowMedia.cpp)
 
     m_app.registerWindow(this);
     updateTitle();
@@ -390,6 +392,7 @@ void ViewerWindow::createStatusBar() {
     };
     m_nameLabel = makeLabel("lfStatusName");
     m_positionLabel = makeLabel("lfStatusPosition");
+    m_frameLabel = makeLabel("lfStatusFrame"); // F-FMT-03/04
     m_pixelLabel = makeLabel("lfStatusPixels");
     m_bytesLabel = makeLabel("lfStatusBytes");
     m_zoomLabel = makeLabel("lfStatusZoom");
@@ -406,6 +409,7 @@ void ViewerWindow::setVisible(bool visible) {
     if (visible && !isVisible())
         configureViewerWindow(this, Settings::instance().value(key::AllowTabs).toBool());
     QMainWindow::setVisible(visible);
+    mediaVisibilityChanged(); // F-FMT-03: no playback in hidden windows
     // After the native window and the GPU surface exist (show), before the event loop
     // presents the first frame: the first frame already has the status bar.
     if (visible) {
@@ -599,6 +603,7 @@ QString ViewerWindow::currentPath() const {
 // ---------------------------------------------------------------------------------------
 
 void ViewerWindow::onCurrentChanged(int, const QString& path) {
+    mediaCurrentChanged(path);
     updateTitle();
     updateStatus();
     if (path.isEmpty()) {
@@ -619,6 +624,7 @@ void ViewerWindow::onCurrentChanged(int, const QString& path) {
 }
 
 void ViewerWindow::onEntriesChanged() {
+    mediaEntriesChanged();
     updateTitle();
     updateStatus();
     updateEmptyState();
@@ -627,12 +633,12 @@ void ViewerWindow::onEntriesChanged() {
 
 void ViewerWindow::showCurrent(const QString& path) {
     ImageProvider& provider = m_app.provider();
-    if (auto img = provider.request(path, Quality::Screen, decodeTarget(), this)) {
+    if (auto img = provider.request(path, Quality::Screen, decodeTarget(), this, 0, m_page)) {
         display(path, Quality::Screen, img);
         return;
     }
     // A cached lower stage is shown at once (P-04); the better one follows via imageReady.
-    if (auto img = provider.cached(path)) {
+    if (auto img = provider.cached(path, Quality::Preview, {}, m_page)) {
         display(path, img->isPreview ? Quality::Preview : Quality::Screen, img);
         return;
     }
@@ -646,12 +652,14 @@ void ViewerWindow::showCurrent(const QString& path) {
 }
 
 bool ViewerWindow::display(const QString& path, Quality quality, const DecodedImagePtr& image) {
-    if (!image || image->image.isNull())
+    if (!image || image->image.isNull() || mediaIgnoresStage(path, image))
         return false;
     const bool same = path == m_shownPath && !m_shownFailed;
     if (same) {
         const DecodedImagePtr cur = m_view->image();
-        if (cur == image || int(quality) < int(m_shownQuality))
+        // An outdated image (file rewritten) takes any fresh stage: a complete small preview may be
+        // the only one the provider delivers (it satisfies the better stages).
+        if (cur == image || (int(quality) < int(m_shownQuality) && !m_shownStale))
             return false;
         // An outdated image (invalidated, e.g. the RAW setting changed) is replaced by the
         // new decode of the same stage even if that is not larger.
@@ -666,6 +674,7 @@ bool ViewerWindow::display(const QString& path, Quality quality, const DecodedIm
     }
     if (trace::enabled())
         trace::once(quality == Quality::Preview ? "display Preview" : "display Screen/Full");
+    mediaBeforeDisplay(same); // slideshow crossfade
     m_view->setImage(image, same);
     m_shownPath = path;
     m_shownQuality = quality;
@@ -680,6 +689,7 @@ bool ViewerWindow::display(const QString& path, Quality quality, const DecodedIm
     }
     updateStatus();
     updateEmptyState();
+    mediaDisplayed(path, image, same); // animation / pages
     emit imageShown(path, quality);
     return true;
 }
@@ -719,7 +729,8 @@ void ViewerWindow::fitWindowToImage(QSize imagePixels) {
 void ViewerWindow::onImageReady(const QString& path, Quality quality, const DecodedImagePtr& image) {
     trace::once("onImageReady (GUI thread)");
     if (path == currentPath()) {
-        display(path, quality, image);
+        if (!image || image->page == m_page) // F-FMT-04: only the shown page
+            display(path, quality, image);
         return;
     }
     if (m_wanted.contains(path))
@@ -781,7 +792,12 @@ void ViewerWindow::updatePrefetch() {
         if (!list.contains(p))
             list << p;
     };
-    if (i >= 0) {
+    // F-SLIDE-01: during a slideshow the prefetch follows the slideshow order.
+    const QStringList slideshowNext = slideshowPrefetch(ahead);
+    for (const QString& p : slideshowNext)
+        if (!list.contains(p))
+            list << p;
+    if (i >= 0 && slideshowNext.isEmpty()) {
         for (int k = 1; k <= ahead; ++k)
             add(i + m_direction * k);
         for (int k = 1; k <= behind; ++k)
@@ -864,6 +880,7 @@ void ViewerWindow::updateStatus() {
     m_positionLabel->setText(i >= 0 && !(m_collection->isLoading() && n <= 1)
                                  ? QStringLiteral("%1 / %2").arg(i + 1).arg(n)
                                  : QString());
+    m_frameLabel->setText(frameStatusText());
     const DecodedImagePtr img = m_view->image();
     const bool showsCurrent = !cur.isEmpty() && cur == m_shownPath && !m_shownFailed && img;
     if (showsCurrent) {
@@ -879,7 +896,7 @@ void ViewerWindow::updateStatus() {
     m_bytesLabel->setText(bytes >= 0 ? QLocale().formattedDataSize(bytes, 1, QLocale::DataSizeSIFormat)
                                      : QString());
     m_sortLabel->setText(sortText());
-    for (QLabel* l : {m_nameLabel, m_positionLabel, m_pixelLabel, m_bytesLabel, m_zoomLabel})
+    for (QLabel* l : {m_nameLabel, m_positionLabel, m_frameLabel, m_pixelLabel, m_bytesLabel, m_zoomLabel})
         l->setVisible(!l->text().isEmpty());
 }
 
@@ -887,7 +904,8 @@ QString ViewerWindow::statusText() const {
     QStringList parts;
     if (!m_statusBar)
         return {};
-    for (QLabel* l : {m_nameLabel, m_positionLabel, m_pixelLabel, m_bytesLabel, m_zoomLabel, m_sortLabel})
+    for (QLabel* l :
+         {m_nameLabel, m_positionLabel, m_frameLabel, m_pixelLabel, m_bytesLabel, m_zoomLabel, m_sortLabel})
         if (!l->text().isEmpty())
             parts << l->text();
     return parts.join(QStringLiteral(" · "));
@@ -1066,6 +1084,10 @@ void ViewerWindow::switchFolder(int direction) {
 void ViewerWindow::handleInput(InputEvent ev, QPointF pos) {
     if (pos.x() >= 0)
         ev.inLeftHalf = pos.x() < m_view->width() / 2.0;
+    ev.animated = ev.animated || m_anim->isActive(); // F-IN-06 (animation)
+    ev.multiPage = ev.multiPage || m_pageCount > 1;  // F-IN-04 (pages)
+    if (handleSlideshowInput(ev))
+        return; // F-SLIDE-01: Space pauses, 1–9 set the interval
     const InputBindings& b = m_app.bindings();
     const Action a = b.resolve(ev);
     if (a == Action::None)
@@ -1109,6 +1131,8 @@ bool ViewerWindow::perform(Action a, QPointF pos) {
     const double step = std::max(16.0, m_view->height() * 0.1);
     const double page = std::max(32.0, m_view->height() * 0.9);
     const QString cur = currentPath();
+    if (performMedia(a))
+        return true; // animation, pages, slideshow, saving the rotation
     switch (a) {
     case Action::NextImage:
         navigate(1);
@@ -1541,6 +1565,7 @@ void ViewerWindow::changeEvent(QEvent* event) {
         if (!currentPath().isEmpty())
             updatePrefetch();
     } else if (event->type() == QEvent::WindowStateChange) {
+        mediaVisibilityChanged(); // minimized: animation pauses
         setChromeVisible(!isFullScreen());
         if (!currentPath().isEmpty())
             updatePrefetch(); // minimized windows keep only the current image (F-WIN-09)
@@ -1595,6 +1620,16 @@ void ViewerWindow::resizeEvent(QResizeEvent* event) {
 }
 
 bool ViewerWindow::eventFilter(QObject* watched, QEvent* event) {
+    if (event->type() == QEvent::ShortcutOverride && isSlideshowRunning()) {
+        // F-SLIDE-01: during the slideshow 1–9 set the interval instead of the zoom shortcuts.
+        const auto* ke = static_cast<QKeyEvent*>(event);
+        if ((ke->modifiers() & ~Qt::KeypadModifier) == Qt::NoModifier && ke->key() >= Qt::Key_1 &&
+            ke->key() <= Qt::Key_9) {
+            event->accept();
+            return true;
+        }
+    }
+
     if (watched == m_view && event->type() == QEvent::Resize)
         layoutOverlays();
     if (event->type() == QEvent::MouseMove && isFullScreen()) {

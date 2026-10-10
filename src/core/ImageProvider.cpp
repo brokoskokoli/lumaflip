@@ -73,12 +73,13 @@ constexpr qint64 kTierInactiveCurrent = 2'000'000'000'000LL;
 struct Key {
     QString path;
     Quality quality = Quality::Preview;
-    int px = 0; // decode size bucket (long edge); 0 = full resolution
+    int px = 0;   // decode size bucket (long edge); 0 = full resolution
+    int page = 0; // F-FMT-04: page of a multi-page file
     bool operator==(const Key& o) const = default;
 };
 
 size_t qHash(const Key& k, size_t seed = 0) {
-    return qHashMulti(seed, k.path, int(k.quality), k.px);
+    return qHashMulti(seed, k.path, int(k.quality), k.px, k.page);
 }
 
 int longEdge(QSize s) {
@@ -92,16 +93,16 @@ int bucketFor(QSize target) {
     return ((m + kBucketPx - 1) / kBucketPx) * kBucketPx;
 }
 
-Key keyFor(const QString& path, Quality q, int screenPx) {
+Key keyFor(const QString& path, Quality q, int screenPx, int page = 0) {
     switch (q) {
     case Quality::Preview:
-        return {path, q, kPreviewPx};
+        return {path, q, kPreviewPx, page};
     case Quality::Screen:
-        return {path, q, screenPx};
+        return {path, q, screenPx, page};
     case Quality::Full:
         break;
     }
-    return {path, Quality::Full, 0};
+    return {path, Quality::Full, 0, page};
 }
 
 qint64 physicalMemory() {
@@ -143,6 +144,7 @@ struct Stage {
 
 struct ClientState {
     QString current;     // last path passed to request()
+    int page = 0;        // page of `current` (F-FMT-04)
     QList<Stage> stages; // qualities requested for `current`
     int priority = 0;    // priority passed with the last request()
     QStringList wanted;  // from setWanted, current first
@@ -269,7 +271,7 @@ struct ImageProvider::Private {
             return false;
         for (auto it = jobs.cbegin(); it != jobs.cend(); ++it) {
             const Key& o = it.key();
-            if (it->running && o.path == k.path &&
+            if (it->running && o.path == k.path && o.page == k.page &&
                 (o.quality == Quality::Full || (o.quality == Quality::Screen && o.px >= k.px)))
                 return true;
         }
@@ -293,14 +295,16 @@ struct ImageProvider::Private {
         return false;
     }
 
-    // Best cached entry for `path` that satisfies the request (largest wins).
-    const Key* findCached(const QString& path, Quality q, int px) const {
+    // Best cached entry for `path` (page `page`) that satisfies the request (largest wins).
+    const Key* findCached(const QString& path, Quality q, int px, int page = 0) const {
         const Key* best = nullptr;
         int bestEdge = -1;
         const auto keys = cacheKeysByPath.constFind(path);
         if (keys == cacheKeysByPath.cend())
             return nullptr;
         for (const Key& k : *keys) {
+            if (k.page != page)
+                continue;
             const CacheEntry& e = cache[k];
             if (!satisfies(k, *e.image, q, px))
                 continue;
@@ -327,7 +331,7 @@ struct ImageProvider::Private {
         cacheKeysByPath[k.path].append(k);
         // A real stage supersedes the preview of the same file.
         if (k.quality != Quality::Preview)
-            remove(keyFor(k.path, Quality::Preview, 0));
+            remove(keyFor(k.path, Quality::Preview, 0, k.page));
     }
 
     void remove(const Key& k) {
@@ -374,10 +378,10 @@ struct ImageProvider::Private {
         QHash<Key, qint64> desired;
         pinned.clear();
 
-        auto want = [&](const QString& path, Quality qual, int px, qint64 score) {
-            if (findCached(path, qual, px))
+        auto want = [&](const QString& path, Quality qual, int px, qint64 score, int page = 0) {
+            if (findCached(path, qual, px, page))
                 return;
-            const Key k = keyFor(path, qual, px);
+            const Key k = keyFor(path, qual, px, page);
             if (failedStages.contains(k))
                 return;
             auto it = desired.find(k);
@@ -408,14 +412,15 @@ struct ImageProvider::Private {
                     const qint64 base = (cs.active ? kTierActiveCurrent : kTierInactiveCurrent) +
                                         qint64(std::clamp(cs.priority, -1000, 1000)) * 1'000'000;
                     QList<Stage> stages;
+                    const int page = path == cs.current ? cs.page : 0;
                     if (path == cs.current)
                         stages = cs.stages;
                     if (cs.wanted.contains(path) || stages.isEmpty())
                         stages.append({Quality::Screen, cs.screenPx});
-                    if (!hasAny)
-                        want(path, Quality::Preview, kPreviewPx, base);
+                    if (!hasAnyOfPage(path, page))
+                        want(path, Quality::Preview, kPreviewPx, base, page);
                     for (int i = 0; i < stages.size(); ++i)
-                        want(path, stages[i].quality, stages[i].px, base - 1 - i);
+                        want(path, stages[i].quality, stages[i].px, base - 1 - i, page);
                 } else {
                     // Prefetch neighbours: all previews first (fast flipping), then screens.
                     const qint64 base = kTierActivePrefetch - qint64(rank) * 10;
@@ -454,6 +459,13 @@ struct ImageProvider::Private {
         for (int i = 0; i < toStart; ++i)
             pool.start([this] { runNext(); });
         prune();
+    }
+
+    bool hasAnyOfPage(const QString& path, int page) const {
+        const auto keys = cacheKeysByPath.constFind(path);
+        if (keys == cacheKeysByPath.cend())
+            return false;
+        return std::any_of(keys->cbegin(), keys->cend(), [page](const Key& k) { return k.page == page; });
     }
 
     // Drops per-path bookkeeping of files nobody wants, has cached or is decoding.
@@ -502,6 +514,7 @@ struct ImageProvider::Private {
         }
 
         DecodeRequest req;
+        req.page = job.key.page;
         req.maxPixelSize = job.key.px;
         req.maxBytes = decodeByteCap.load(std::memory_order_relaxed); // P-08
         req.preferEmbeddedPreview =
@@ -513,8 +526,10 @@ struct ImageProvider::Private {
             trace::once(job.key.quality == Quality::Preview  ? "decode start (Preview)"
                         : job.key.quality == Quality::Screen ? "decode start (Screen)"
                                                              : "decode start (Full)");
-        if (auto img = registry().decode(job.key.path, req, &error))
+        if (auto img = registry().decode(job.key.path, req, &error)) {
+            img->page = job.key.page; // F-FMT-04: which page this result is cached as
             result = std::make_shared<const DecodedImage>(std::move(*img));
+        }
 
         if (trace::enabled())
             trace::once(job.key.quality == Quality::Preview  ? "decode done (Preview)"
@@ -551,7 +566,7 @@ struct ImageProvider::Private {
         }
         // Keep stages monotonic: a result arriving after an equal or better cached stage
         // (e.g. Screen finishing after Full) would downgrade the view.
-        if (findCached(path, job.key.quality, job.key.px)) {
+        if (findCached(path, job.key.quality, job.key.px, job.key.page)) {
             reschedule();
             return;
         }
@@ -645,12 +660,15 @@ ImageProvider& ImageProvider::instance() {
 }
 
 DecodedImagePtr ImageProvider::request(const QString& path, Quality quality, QSize target, const void* client,
-                                       int priority) {
-    d->adoptPrestart(path);
+                                       int priority, int page) {
+    page = std::max(0, page);
+    if (page == 0)
+        d->adoptPrestart(path);
     const int px = quality == Quality::Preview ? kPreviewPx : bucketFor(target);
     ClientState& cs = d->clients[client];
-    if (cs.current != path) {
+    if (cs.current != path || cs.page != page) {
         cs.current = path;
+        cs.page = page;
         cs.stages.clear();
     }
     cs.priority = priority;
@@ -660,7 +678,7 @@ DecodedImagePtr ImageProvider::request(const QString& path, Quality quality, QSi
         cs.stages.append(stage);
 
     DecodedImagePtr hit;
-    if (const Key* k = d->findCached(path, quality, px)) {
+    if (const Key* k = d->findCached(path, quality, px, page)) {
         hit = d->touch(*k);
     } else if (auto f = d->failed.constFind(path); f != d->failed.cend()) {
         const QString err = f.value();
@@ -668,13 +686,14 @@ DecodedImagePtr ImageProvider::request(const QString& path, Quality quality, QSi
             this, [this, path, err] { emit imageFailed(path, err); }, Qt::QueuedConnection);
         d->reschedule();
         return nullptr;
-    } else if (const Key* lower = d->findCached(path, Quality::Preview, 0)) {
+    } else if (const Key* lower = d->findCached(path, Quality::Preview, 0, page)) {
         // Hand out the best lower stage right away as a placeholder.
         const Quality lq = lower->quality;
         DecodedImagePtr img = d->touch(*lower);
         QMetaObject::invokeMethod(
             this, [this, path, lq, img] { emit imageReady(path, lq, img); }, Qt::QueuedConnection);
-        if (auto f = d->failedStages.constFind(keyFor(path, quality, px)); f != d->failedStages.cend()) {
+        if (auto f = d->failedStages.constFind(keyFor(path, quality, px, page));
+            f != d->failedStages.cend()) {
             const QString err = f.value();
             QMetaObject::invokeMethod(
                 this, [this, path, quality, err] { emit stageFailed(path, quality, err); },
@@ -695,6 +714,7 @@ void ImageProvider::setWanted(const void* client, const QStringList& ordered, QS
     cs.active = clientActive;
     if (!ordered.isEmpty() && !ordered.contains(cs.current)) {
         cs.current.clear(); // the wanted list is authoritative
+        cs.page = 0;
         cs.stages.clear();
     }
     d->reschedule();
@@ -707,10 +727,12 @@ void ImageProvider::removeClient(const void* client) {
     d->evict();
 }
 
-DecodedImagePtr ImageProvider::cached(const QString& path, Quality minQuality, QSize target) {
-    d->adoptPrestart(path);
+DecodedImagePtr ImageProvider::cached(const QString& path, Quality minQuality, QSize target, int page) {
+    page = std::max(0, page);
+    if (page == 0)
+        d->adoptPrestart(path);
     const int px = minQuality == Quality::Preview ? kPreviewPx : bucketFor(target);
-    const Key* k = d->findCached(path, minQuality, px);
+    const Key* k = d->findCached(path, minQuality, px, page);
     return k ? d->touch(*k) : nullptr;
 }
 

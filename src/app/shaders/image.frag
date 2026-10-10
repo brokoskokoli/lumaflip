@@ -17,7 +17,7 @@ layout(std140, binding = 0) uniform buf {
     vec4 flags;         // x: premultiplied, y: identity color, z: checker, w: checker cell (px)
     vec4 bgColor;       // background (and first checker color), output encoded
     vec4 checkerColor;  // second checker color
-    vec4 range;         // x: exposure multiplier (linear), y: max linear value (1 = SDR)
+    vec4 range;         // x: exposure multiplier (linear), y: max linear value (1 = SDR), z: opacity
 } ubuf;
 
 layout(binding = 1) uniform sampler2D tex;
@@ -113,5 +113,6 @@ void main()
         if (mod(cell.x + cell.y, 2.0) >= 1.0)
             bg = ubuf.checkerColor.rgb;
     }
-    fragColor = vec4(mix(bg, rgb, a), 1.0);
+    // Alpha = opacity of this image over the previous one (crossfade, F-SLIDE-02).
+    fragColor = vec4(mix(bg, rgb, a), ubuf.range.z);
 }

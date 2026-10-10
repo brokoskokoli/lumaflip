@@ -476,7 +476,7 @@ private slots:
                     return r;
             return -1;
         };
-        for (Action a : {Action::ToggleSlideshow, Action::Rate3, Action::ToggleGrid}) {
+        for (Action a : {Action::Rate3, Action::ToggleGrid}) {
             const int r = row(a);
             if (r < 0)
                 continue; // no key bound
@@ -484,19 +484,23 @@ private slots:
                      qPrintable(actionLabel(a)));
             QVERIFY(!(table->item(r, 0)->flags() & Qt::ItemIsEnabled));
         }
-        QVERIFY(row(Action::ToggleSlideshow) >= 0);
+        QVERIFY(row(Action::ToggleGrid) >= 0);
         const int next = row(Action::ZoomFit); // ⌘9
         QVERIFY(next >= 0);
         QVERIFY(!table->item(next, 0)->text().contains(QStringLiteral("ab Version")));
         QVERIFY(table->item(next, 0)->flags() & Qt::ItemIsEnabled);
-        QVERIFY(next < row(Action::ToggleSlideshow)); // planned ones come last
+        QVERIFY(next < row(Action::ToggleGrid)); // planned ones come last
+        // M2: the slideshow is available now (F-SLIDE-01).
+        const int show = row(Action::ToggleSlideshow);
+        QVERIFY(show >= 0);
+        QVERIFY(!table->item(show, 0)->text().contains(QStringLiteral("ab Version")));
         table->window()->close();
     }
 
-    // ---- F-FMT-03: animation playback is not offered as working (B11) ----
+    // ---- F-FMT-03: the formats list tells whether animations play (B11) ----
 
-    // Covers: F-FMT-03, F-SET-01 (the formats list marks animation playback as later)
-    void F_FMT_03_formatsListMarksPlaybackLater() {
+    // Covers: F-FMT-03, F-SET-01 (the formats list offers animation playback since M2)
+    void F_FMT_03_formatsListMarksPlayback() {
         app->showPreferences();
         PreferencesDialog* prefs = PreferencesDialog::existingInstance();
         QVERIFY(prefs);
@@ -506,7 +510,8 @@ private slots:
         for (int r = 0; r < list->rowCount(); ++r) {
             if (list->item(r, 0)->text() == QStringLiteral("Animiert")) {
                 found = true;
-                QVERIFY(list->item(r, 1)->text().contains(QStringLiteral("ab Version 1.0")));
+                QVERIFY(!list->item(r, 1)->text().contains(QStringLiteral("ab Version 1.0")));
+                QVERIFY(list->item(r, 1)->text().contains(QStringLiteral("Wiedergabe")));
             }
         }
         QVERIFY(found);

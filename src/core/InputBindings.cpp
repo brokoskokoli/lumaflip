@@ -64,6 +64,7 @@ const ActionInfo kActions[] = {
     {Action::RotateRight, "rotateRight", "Rechts drehen"},
     {Action::FlipHorizontal, "flipHorizontal", "Horizontal spiegeln"},
     {Action::FlipVertical, "flipVertical", "Vertikal spiegeln"},
+    {Action::SaveRotation, "saveRotation", "Drehung speichern"},
     {Action::Trash, "trash", "In den Papierkorb legen"},
     {Action::Undo, "undo", "Rückgängig"},
     {Action::Redo, "redo", "Wiederholen"},
@@ -138,6 +139,8 @@ QStringList defaultShortcutStrings(Action a) {
         return {"H"};
     case Action::FlipVertical:
         return {"Shift+H"};
+    case Action::SaveRotation:
+        return {"Ctrl+S"};
     case Action::ToggleInfoPanel:
         return {"Ctrl+I", "I"};
     case Action::ToggleFilmstrip:
@@ -503,8 +506,6 @@ void InputBindings::applyPreset(const QString& presetId) {
 bool InputBindings::isChoiceAvailable(const QString& slotId, const QString& choiceId) {
     static const QSet<QString> later = {
         QStringLiteral("middleClick:magnifier"), // F-IN-11 Lupe
-        QStringLiteral("space:slideshow"),       // Diashow
-        QStringLiteral("pageUpDown:page"),       // mehrseitige Dateien
         QStringLiteral("ratingKeys:always"),     // Bewertungen (F-CULL-01)
     };
     return !later.contains(slotId + QLatin1Char(':') + choiceId);
@@ -512,12 +513,6 @@ bool InputBindings::isChoiceAvailable(const QString& slotId, const QString& choi
 
 bool InputBindings::isActionAvailable(Action a) {
     switch (a) {
-    case Action::NextPage:
-    case Action::PreviousPage:
-    case Action::ToggleAnimation:
-    case Action::NextFrame:
-    case Action::PreviousFrame:
-    case Action::ToggleSlideshow:
     case Action::ToggleGrid:
     case Action::Magnifier:
     case Action::Rate0:

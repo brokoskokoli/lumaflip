@@ -57,6 +57,23 @@ struct DecodedImage {
     bool isPreview = false;  // true if this is a reduced/embedded preview
     float headroom = 1.0f;   // HDR peak relative to SDR white
     int frameDurationMs = 0; // for animations
+    // F-FMT-03/04 (additive): what the file holds besides this image. Backends that do not
+    // know leave the defaults (a single still image).
+    int page = 0;       // page this image belongs to (DecodeRequest::page)
+    int frame = 0;      // animation frame (DecodeRequest::frame)
+    int pageCount = 1;  // pages of the file (multi-page TIFF, ICO, HEIF collections)
+    int frameCount = 1; // animation frames of the file (> 1: animated)
+};
+
+// F-FMT-03: sequential access to the frames of an animation. Keeps the file open, so
+// decoders that composite frames on top of the previous ones (GIF, APNG) do not start
+// over for every frame. Not thread-safe: one reader is used by one thread at a time.
+class FrameReader {
+public:
+    virtual ~FrameReader() = default;
+    virtual int frameCount() const = 0;
+    // Frame `index` (DecodeRequest::frame is ignored, maxPixelSize/maxBytes apply).
+    virtual std::optional<DecodedImage> readFrame(int index, const DecodeRequest& req, QString* error) = 0;
 };
 
 struct Metadata {
@@ -80,6 +97,12 @@ public:
     virtual std::optional<DecodedImage> decode(const QString& path, const DecodeRequest& req,
                                                QString* error) = 0;
     virtual Metadata metadata(const QString& path) = 0;
+    // F-FMT-03: an open reader for the frames of an animated file; nullptr = not supported
+    // by this backend (the registry then falls back to decode() with DecodeRequest::frame).
+    virtual std::unique_ptr<FrameReader> openFrames(const QString& path) {
+        Q_UNUSED(path);
+        return nullptr;
+    }
 };
 
 // Picks backends in priority order and falls back on failure (SPEC 8.3).
@@ -110,6 +133,9 @@ public:
     static QString messageUnsupported(); // "Das Dateiformat wird nicht unterstützt."
     static QString messageTooLarge();    // out of memory while decoding
     Metadata metadata(const QString& path) const;
+    // F-FMT-03: frame reader of the best backend, or a generic one built on decode().
+    // nullptr if no backend can decode the file.
+    std::unique_ptr<FrameReader> openFrames(const QString& path) const;
 
     // Process-wide instance with platform + portable backends registered.
     static DecoderRegistry& instance();

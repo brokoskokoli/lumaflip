@@ -197,6 +197,42 @@ std::optional<DecodedImage> DecoderRegistry::decode(const QString& path, const D
                                      });
 }
 
+namespace {
+// F-FMT-03 fallback: frames through Decoder::decode() with DecodeRequest::frame.
+class GenericFrameReader final : public FrameReader {
+public:
+    GenericFrameReader(std::shared_ptr<Decoder> decoder, QString path, int frames)
+        : m_decoder(std::move(decoder)), m_path(std::move(path)), m_frames(frames) {}
+    int frameCount() const override { return m_frames; }
+    std::optional<DecodedImage> readFrame(int index, const DecodeRequest& req, QString* error) override {
+        DecodeRequest r = req;
+        r.frame = index;
+        auto img = m_decoder->decode(m_path, r, error);
+        if (img && img->image.isNull())
+            return std::nullopt;
+        if (img)
+            img->frame = index;
+        return img;
+    }
+
+private:
+    std::shared_ptr<Decoder> m_decoder;
+    QString m_path;
+    int m_frames;
+};
+} // namespace
+
+std::unique_ptr<FrameReader> DecoderRegistry::openFrames(const QString& path) const {
+    for (const auto& d : candidates(path)) {
+        if (auto r = d->openFrames(path))
+            return r;
+        QString error;
+        if (auto info = d->info(path, &error))
+            return std::make_unique<GenericFrameReader>(d, path, std::max(1, info->frameCount));
+    }
+    return nullptr;
+}
+
 Metadata DecoderRegistry::metadata(const QString& path) const {
     // Metadata has no error channel: take the first backend that delivers anything.
     Metadata first;
