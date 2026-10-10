@@ -3,6 +3,9 @@
 
 #include "CompareBlend.h"
 
+#include <QColorSpace>
+#include <QPainter>
+
 #include <algorithm>
 #include <cmath>
 
@@ -30,11 +33,12 @@ BlendMode blendModeFromId(const QString& id) {
 }
 
 QRgb differencePixel(QRgb a, QRgb b, double amount) {
-    auto ch = [amount](int x, int y) {
-        return std::clamp(int(std::lround(std::abs(x - y) * std::max(1.0, amount))), 0, 255);
+    const int alpha = std::max(qAlpha(a), qAlpha(b));
+    // Premultiplied: an amplified channel must not exceed alpha (invalid pixel otherwise).
+    auto ch = [amount, alpha](int x, int y) {
+        return std::clamp(int(std::lround(std::abs(x - y) * std::max(1.0, amount))), 0, alpha);
     };
-    return qRgba(ch(qRed(a), qRed(b)), ch(qGreen(a), qGreen(b)), ch(qBlue(a), qBlue(b)),
-                 std::max(qAlpha(a), qAlpha(b)));
+    return qRgba(ch(qRed(a), qRed(b)), ch(qGreen(a), qGreen(b)), ch(qBlue(a), qBlue(b)), alpha);
 }
 
 QRgb blendPixel(QRgb a, QRgb b, double t) {
@@ -101,6 +105,64 @@ DiffStats differenceStats(const QImage& a0, const QImage& b0) {
     }
     s.changedFraction = double(changed) / std::max<qint64>(1, qint64(a.width()) * a.height());
     return s;
+}
+
+QTransform partnerPlacement(QSizeF fullA, QSizeF fullB) {
+    if (fullA.isEmpty() || fullB.isEmpty())
+        return {};
+    const double s = std::min(fullA.width() / fullB.width(), fullA.height() / fullB.height());
+    const QPointF off((fullA.width() - fullB.width() * s) / 2.0, (fullA.height() - fullB.height() * s) / 2.0);
+    return QTransform::fromScale(s, s) * QTransform::fromTranslate(off.x(), off.y());
+}
+
+QTransform alignPartner(const QTransform& bToA, const QTransform& aToOut, QSizeF fullB, QPointF outCenter,
+                        QPointF centerDelta, double zoomRatio) {
+    const QTransform m = bToA * aToOut;
+    if (!m.isInvertible() || fullB.isEmpty())
+        return m;
+    if (centerDelta.isNull() && std::abs(zoomRatio - 1.0) < 1e-9)
+        return m;
+    // m(p) = L(p - pc) + C with pc = m^-1(C); the pane offset moves pc, the ratio scales L.
+    const QPointF pc = m.inverted().map(outCenter) +
+                       QPointF(centerDelta.x() * fullB.width(), centerDelta.y() * fullB.height());
+    const QTransform linear(m.m11(), m.m12(), m.m21(), m.m22(), 0, 0);
+    const double r = zoomRatio > 0 ? zoomRatio : 1.0;
+    return QTransform::fromTranslate(-pc.x(), -pc.y()) * linear * QTransform::fromScale(r, r) *
+           QTransform::fromTranslate(outCenter.x(), outCenter.y());
+}
+
+QImage renderLayer(const QImage& src, const QTransform& toOut, QSize outSize, const QColor& background) {
+    QImage out(outSize, QImage::Format_ARGB32_Premultiplied);
+    if (out.isNull())
+        return {};
+    out.fill(background);
+    if (src.isNull())
+        return out;
+    // Drawn in the source's own color space (float stays float until the conversion), then
+    // converted at output size: both images end up in one color space (sRGB), so differences
+    // never come from profiles, and nothing full-size is converted.
+    const bool deep = src.depth() > 32;
+    QImage layer(outSize,
+                 deep ? QImage::Format_RGBA32FPx4_Premultiplied : QImage::Format_ARGB32_Premultiplied);
+    if (layer.isNull())
+        return out;
+    layer.fill(Qt::transparent);
+    {
+        QPainter p(&layer);
+        p.setRenderHint(QPainter::SmoothPixmapTransform);
+        p.setTransform(toOut);
+        p.drawImage(0, 0, src);
+    }
+    const QColorSpace srgb(QColorSpace::SRgb);
+    if (src.colorSpace().isValid() && src.colorSpace() != srgb) {
+        layer.setColorSpace(src.colorSpace());
+        layer = layer.convertedToColorSpace(srgb, QImage::Format_ARGB32_Premultiplied);
+    } else if (deep) {
+        layer = layer.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+    }
+    QPainter p(&out);
+    p.drawImage(0, 0, layer);
+    return out;
 }
 
 } // namespace lf::compare
