@@ -160,10 +160,11 @@ jobs:
       - name: Install build tools
         run: |
           sudo apt-get update
-          # Optional backends stay off here: Ubuntu 24.04 ships TurboJPEG 2.1 (the core
-          # needs the 3.x API) and no resvg package (building it with cargo is slow).
+          # libarchive-dev: archives (F-OPEN-10). Optional backends stay off here: Ubuntu
+          # 24.04 ships TurboJPEG 2.1 (the core needs the 3.x API) and no resvg package
+          # (building it with cargo is slow).
           sudo apt-get install -y --no-install-recommends ninja-build clang libgtest-dev \
-            libgl1-mesa-dev libegl1 libxkbcommon0 libfontconfig1 libglib2.0-0
+            libarchive-dev libgl1-mesa-dev libegl1 libxkbcommon0 libfontconfig1 libglib2.0-0
       - name: Install Qt
         uses: jurplel/install-qt-action@a9c63c7c123f3069cff414e7e482d95dfa9d8125 # v4.4.1
         with:

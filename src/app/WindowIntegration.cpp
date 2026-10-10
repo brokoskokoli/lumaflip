@@ -161,11 +161,13 @@ void WindowIntegration::imageShown(const QString& path) {
 // ---- Live Text ----
 
 void WindowIntegration::toggleLiveText() {
-    if (!liveTextAvailable() && !m_session->isActive()) {
+    // Switching off always works (also after Live Text was disabled in the settings while
+    // it was on); the checks below only apply to switching on.
+    if (!m_session->isActive() && !liveTextAvailable()) {
         m_window.showMessage(tr("Live Text ist auf diesem Mac nicht verfügbar."), 3000);
         return;
     }
-    if (!Settings::instance().value(key::LiveTextEnabled).toBool()) {
+    if (!m_session->isActive() && !Settings::instance().value(key::LiveTextEnabled).toBool()) {
         m_window.showMessage(tr("Live Text ist in den Einstellungen ausgeschaltet."), 3000);
         return;
     }

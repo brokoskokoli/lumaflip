@@ -209,6 +209,8 @@ TEST(VirtualPath, F_OPEN_10_ImageMemberFilter) {
 // ---- listing order -----------------------------------------------------------------------
 
 TEST_F(ArchiveTest, F_OPEN_10_ZipListingInFinderOrder) {
+    if (!archive::libArchiveAvailable()) // the test archives are written with libarchive
+        GTEST_SKIP() << "libarchive not available";
     QString error;
     const QString zip = path(QStringLiteral("Band.cbz"));
     ASSERT_TRUE(libarchive::writeArchive(zip, QStringLiteral("zip"), kComicPages, &error))
@@ -265,7 +267,7 @@ TEST_F(ArchiveTest, F_OPEN_10_SevenZipAndOtherFormatsViaLibArchive) {
     ASSERT_TRUE(bytes.has_value()) << error.toStdString();
     EXPECT_EQ(*bytes, kComicPages[3].second);
     // A RAR cannot be written here; a file with the suffix but other contents fails cleanly.
-    const QString rar = writeFile(path(QStringLiteral("x.cbr")), QByteArray("Rar!\x1a\x07\x00garbage", 16));
+    const QString rar = writeFile(path(QStringLiteral("x.cbr")), QByteArray("Rar!\x1a\x07\x00garbage", 14));
     const archive::Listing bad = archive::listLocal(rar);
     EXPECT_FALSE(bad.ok);
     EXPECT_FALSE(bad.error.isEmpty());
@@ -274,6 +276,8 @@ TEST_F(ArchiveTest, F_OPEN_10_SevenZipAndOtherFormatsViaLibArchive) {
 // ---- extraction on demand ----------------------------------------------------------------
 
 TEST_F(ArchiveTest, F_OPEN_10_MemberIsExtractedPrivatelyAndDecoded) {
+    if (!archive::libArchiveAvailable()) // the test archives are written with libarchive
+        GTEST_SKIP() << "libarchive not available";
     QString error;
     const QString zip = path(QStringLiteral("Band.cbz"));
     ASSERT_TRUE(libarchive::writeArchive(zip, QStringLiteral("zip"),
@@ -364,6 +368,8 @@ TEST_F(ArchiveTest, F_OPEN_10_SevenZipBombIsBounded) {
 }
 
 TEST_F(ArchiveTest, F_OPEN_10_MalformedArchivesFailCleanly) {
+    if (!archive::libArchiveAvailable()) // the test archives are written with libarchive
+        GTEST_SKIP() << "libarchive not available";
     QString error;
     const QString good = path(QStringLiteral("good.zip"));
     ASSERT_TRUE(libarchive::writeArchive(good, QStringLiteral("zip"), kComicPages, &error));
@@ -416,6 +422,8 @@ TEST(ArchiveIpc, F_OPEN_10_ArchiveOperationsRoundTripAndAreBounded) {
 
 #ifdef LF_DECODER_HELPER_BINARY
 TEST_F(ArchiveTest, F_OPEN_10_SandboxedHelperListsAndExtracts) {
+    if (!archive::libArchiveAvailable()) // the test archives are written with libarchive
+        GTEST_SKIP() << "libarchive not available";
     QString error;
     const QString zip = path(QStringLiteral("Band.cbz"));
     ASSERT_TRUE(libarchive::writeArchive(zip, QStringLiteral("zip"), kComicPages, &error));
@@ -454,6 +462,8 @@ TEST_F(ArchiveTest, F_OPEN_10_SandboxedHelperListsAndExtracts) {
 // ---- the collection ----------------------------------------------------------------------
 
 TEST_F(ArchiveTest, F_OPEN_10_CollectionBrowsesArchiveLikeAFolder) {
+    if (!archive::libArchiveAvailable()) // the test archives are written with libarchive
+        GTEST_SKIP() << "libarchive not available";
     QString error;
     const QString zip = path(QStringLiteral("Band.cbz"));
     ASSERT_TRUE(libarchive::writeArchive(zip, QStringLiteral("zip"), kComicPages, &error));
@@ -486,6 +496,8 @@ TEST_F(ArchiveTest, F_OPEN_10_CollectionBrowsesArchiveLikeAFolder) {
 }
 
 TEST_F(ArchiveTest, F_OPEN_10_EmptyOrBrokenArchiveReportsWhy) {
+    if (!archive::libArchiveAvailable()) // the test archives are written with libarchive
+        GTEST_SKIP() << "libarchive not available";
     QString error;
     const QString zip = path(QStringLiteral("text.zip"));
     ASSERT_TRUE(libarchive::writeArchive(zip, QStringLiteral("zip"),
