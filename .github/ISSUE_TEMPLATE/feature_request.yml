@@ -1,0 +1,42 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+name: Feature request
+description: Suggest an idea or improvement
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Lumaflip is developed **spec-first**: accepted ideas become a requirement with an ID in
+        [SPEC.md](https://github.com/brokoskokoli/lumaflip/blob/main/SPEC.md) before they are built.
+        Please check the [roadmap](https://github.com/brokoskokoli/lumaflip#roadmap) and existing issues first —
+        archives/PDF, Live Text, crop/export, photo overlays and Windows/Linux are already planned (M4).
+        Open-ended questions fit better in [Discussions](https://github.com/brokoskokoli/lumaflip/discussions).
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / use case
+      description: What are you trying to do, and what gets in the way today?
+      placeholder: "When culling 800 RAW files I want to …"
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: How should it work? Keys, menus, settings, defaults.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives / other viewers
+      description: Workarounds you use, or how other apps solve it.
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Fit with the project
+      options:
+        - label: This is not image editing beyond rotate/flip/simple crop, and needs no library database or cloud account (see SPEC 1.2 non-goals).
+          required: false
+        - label: I'd be willing to help implement or test this.
+          required: false

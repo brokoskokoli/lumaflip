@@ -5,7 +5,7 @@ SPDX-PackageName = "Lumaflip"
 # Source files carry their own "SPDX-License-Identifier" line; this file adds the
 # copyright notice for everything and the license for files that cannot hold a
 # comment (JSON, config files, binary test data). Everything in this repository,
-# including documentation and test data, is GPL-3.0-or-later.
+# including documentation and test data, is GPL-3.0-or-later (except the Code of Conduct, see below).
 # Downloaded/generated test files (tests/corpus/generated/, e.g. the CC0 RAW samples
 # of tests/corpus/download_raw.sh) are git-ignored and not part of the repository.
 
@@ -44,3 +44,11 @@ path = ["translations/*.ts", "packaging/macos/lproj/**"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 The Lumaflip contributors"
 SPDX-License-Identifier = "GPL-3.0-or-later"
+
+# The Code of Conduct is the Contributor Covenant 2.1 (CC-BY-4.0); only the contact
+# paragraph under "Enforcement" is adapted.
+[[annotations]]
+path = "CODE_OF_CONDUCT.md"
+precedence = "override"
+SPDX-FileCopyrightText = "2014-2021 Coraline Ada Ehmke and the Contributor Covenant contributors"
+SPDX-License-Identifier = "CC-BY-4.0"

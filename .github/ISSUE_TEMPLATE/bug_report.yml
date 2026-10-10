@@ -1,0 +1,92 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+name: Bug report
+description: Something doesn't work as expected
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug!
+        **Security problems** (e.g. a crafted file that crashes the decoder helper or escapes its sandbox):
+        please don't file them here — see [SECURITY.md](https://github.com/brokoskokoli/lumaflip/blob/main/SECURITY.md).
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: A clear description of the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Double-click IMG_0423.HEIC in a folder sorted by "Date Added" in Finder
+        2. Press →
+        3. …
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Opening / browsing / Finder sort order
+        - A specific image format
+        - Colour / HDR
+        - Culling / ratings / XMP
+        - Grid / compare / loupe
+        - Info panel / metadata / maps
+        - File operations (trash, move, rename, rotate)
+        - Settings / shortcuts / input
+        - Windows / full screen / slideshow
+        - Translations / UI text
+        - Updates / installation
+        - Performance
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Lumaflip version
+      description: Lumaflip → About Lumaflip
+      placeholder: "1.1.0"
+    validations:
+      required: true
+  - type: input
+    id: macos
+    attributes:
+      label: macOS version and Mac model
+      placeholder: "macOS 15.5, MacBook Pro M3 (XDR display)"
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: Installed via
+      options:
+        - DMG from GitHub Releases
+        - Homebrew
+        - Built from source
+    validations:
+      required: true
+  - type: textarea
+    id: files
+    attributes:
+      label: Sample file / screenshots
+      description: |
+        If a specific file is affected, attach it (zip it if GitHub refuses the type) or describe it
+        (format, camera, size). Only share files you are allowed to share — no private photos.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Crash log or console output
+      description: For crashes, attach the report from `~/Library/Logs/DiagnosticReports/` (Lumaflip* or lumaflip-decoder*).
+      render: text

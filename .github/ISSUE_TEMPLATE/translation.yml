@@ -1,0 +1,72 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+name: Translation
+description: Report a wrong or awkward translation, or offer to review a language
+labels: ["translation"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Except for German (the source language), Lumaflip's translations are machine-made and
+        **not yet reviewed** — native speakers are very welcome!
+        You can also fix the `.ts` file directly in a pull request: see
+        [translations/README.md](https://github.com/brokoskokoli/lumaflip/blob/main/translations/README.md).
+  - type: dropdown
+    id: language
+    attributes:
+      label: Language
+      options:
+        - English (en)
+        - French (fr)
+        - Spanish (es)
+        - Italian (it)
+        - Portuguese – Brazil (pt_BR)
+        - Portuguese – Portugal (pt_PT)
+        - Dutch (nl)
+        - Polish (pl)
+        - Swedish (sv)
+        - Danish (da)
+        - Norwegian Bokmål (nb)
+        - Finnish (fi)
+        - Czech (cs)
+        - Japanese (ja)
+        - Chinese – Simplified (zh_CN)
+        - Chinese – Traditional (zh_TW)
+        - Korean (ko)
+        - German (de)
+        - New language (please name it below)
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of report?
+      options:
+        - Wrong or awkward translation
+        - Text is cut off / layout problem
+        - Text not translated
+        - I'd like to review this whole language
+        - Request a new language
+    validations:
+      required: true
+  - type: textarea
+    id: where
+    attributes:
+      label: Where does the text appear?
+      description: Menu, settings page, dialog, info panel … A screenshot helps a lot.
+      placeholder: "Settings → Rating, label of the second checkbox"
+  - type: textarea
+    id: current
+    attributes:
+      label: Current text
+    validations:
+      required: false
+  - type: textarea
+    id: suggested
+    attributes:
+      label: Suggested text
+      description: Keep placeholders like `%1`, `%n` and key symbols (⌘ ⌥ ⇧) unchanged.
+  - type: input
+    id: version
+    attributes:
+      label: Lumaflip version
+      placeholder: "1.1.0"

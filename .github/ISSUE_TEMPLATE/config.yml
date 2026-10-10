@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+blank_issues_enabled: false
+contact_links:
+  - name: Questions & ideas (Discussions)
+    url: https://github.com/brokoskokoli/lumaflip/discussions
+    about: Ask how something works, share workflows, or discuss an idea before filing a feature request.
+  - name: FAQ
+    url: https://github.com/brokoskokoli/lumaflip/blob/main/docs/FAQ.md
+    about: Formats, HDR requirements, Finder sort order, privacy, why there is no App Store version.
+  - name: Report a security vulnerability
+    url: https://github.com/brokoskokoli/lumaflip/security/advisories/new
+    about: Please report security issues privately, not as a public issue.
