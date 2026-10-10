@@ -337,10 +337,14 @@ private slots:
             }
         QCOMPARE(withPhoto, 1);
         QCOMPARE(app->windows().size(), 1);
-        QVERIFY(w);
+        if (!w)
+            QFAIL("no window shows the photo");
+        const Collection* c = w->collection();
+        if (!c)
+            QFAIL("the window has no collection");
         QVERIFY(waitLoaded(w));
-        QVERIFY(!w->collection()->isFolderCollection()); // exactly the two files
-        QCOMPARE(w->collection()->count(), 2);
+        QVERIFY(!c->isFolderCollection()); // exactly the two files
+        QCOMPARE(c->count(), 2);
     }
 
     // ---- F-NAV-03: a newer open wins over a pending folder switch (review item 4) ----

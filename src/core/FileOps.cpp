@@ -807,20 +807,20 @@ bool FileOps::copyTo(const QString& path, const QString& targetFolder, QString* 
     return d->runNow(d->copyOp(path, targetFolder), error);
 }
 
-void FileOps::moveToTrashAsync(const QString& path, QObject* origin, Completion done) {
-    d->startAsync(d->trashOp(path, origin), std::move(done));
+void FileOps::moveToTrashAsync(const QString& path, QObject* origin, const Completion& done) {
+    d->startAsync(d->trashOp(path, origin), done);
 }
 
-void FileOps::renameAsync(const QString& path, const QString& newFileName, Completion done) {
-    d->startAsync(d->renameOp(path, newFileName), std::move(done));
+void FileOps::renameAsync(const QString& path, const QString& newFileName, const Completion& done) {
+    d->startAsync(d->renameOp(path, newFileName), done);
 }
 
-void FileOps::moveToAsync(const QString& path, const QString& targetFolder, Completion done) {
-    d->startAsync(d->moveOp(path, targetFolder), std::move(done));
+void FileOps::moveToAsync(const QString& path, const QString& targetFolder, const Completion& done) {
+    d->startAsync(d->moveOp(path, targetFolder), done);
 }
 
-void FileOps::copyToAsync(const QString& path, const QString& targetFolder, Completion done) {
-    d->startAsync(d->copyOp(path, targetFolder), std::move(done));
+void FileOps::copyToAsync(const QString& path, const QString& targetFolder, const Completion& done) {
+    d->startAsync(d->copyOp(path, targetFolder), done);
 }
 
 void FileOps::undo() {
