@@ -302,7 +302,13 @@ TEST(ReviewNameFilter, F_NAV_08_FiftyThousandEntriesStayResponsive) {
     // re-run in tools/check.sh.
     double load1 = 0;
     const double cores = double(std::max(1u, std::thread::hardware_concurrency()));
+#ifdef Q_OS_WIN
+    Q_UNUSED(load1);
+    Q_UNUSED(cores);
+    const double loadFactor = 1.0; // Windows has no load average
+#else
     const double loadFactor = (getloadavg(&load1, 1) == 1) ? std::max(1.0, 2.0 * load1 / cores) : 1.0;
+#endif
     const double factor = loadFactor * std::max(1, qEnvironmentVariableIntValue("LF_TIMING_FACTOR"));
     const qint64 limit = qint64(30 * factor);
     qint64 worst = run();

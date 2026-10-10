@@ -42,8 +42,9 @@
 #endif
 #ifdef Q_OS_WIN
 #include <windows.h>
-#endif
+#else
 #include <utime.h>
+#endif
 
 using namespace lf;
 

@@ -120,10 +120,10 @@ add_library(lf_warnings INTERFACE)
 if(MSVC)
   # MSVC (and clang-cl): /W4 is the counterpart of -Wall -Wextra. Warnings that clang only
   # reports with flags the project does not use are switched off, so both compilers
-  # enforce the same rules: C4244/C4267/C4305 (implicit narrowing, -Wconversion), C4127
+  # enforce the same rules: C4244/C4267/C4305/C4310 (narrowing, -Wconversion), C4127
   # (constant condition), C4456-C4459 (shadowing, -Wshadow), C4324 (padding for alignas),
   # C4702 (unreachable code, -Wunreachable-code: platform #ifdef branches return early).
-  target_compile_options(lf_warnings INTERFACE /W4 /wd4244 /wd4267 /wd4305 /wd4127 /wd4456
+  target_compile_options(lf_warnings INTERFACE /W4 /wd4244 /wd4267 /wd4305 /wd4310 /wd4127 /wd4456
                                                /wd4457 /wd4458 /wd4459 /wd4324 /wd4702)
   if(LF_WERROR)
     target_compile_options(lf_warnings INTERFACE /WX)

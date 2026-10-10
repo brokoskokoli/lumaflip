@@ -19,6 +19,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QImageWriter>
+#include <QRegularExpression>
 #include <QTemporaryDir>
 #include <QThread>
 
@@ -269,6 +270,75 @@ TEST(WindowsPlatform, F_FILE_10_CustomActionArgumentsStayData) {
     EXPECT_FALSE(customactions::validate(a).isEmpty()) << "no Shortcuts app on Windows";
 }
 
+namespace {
+
+CustomActionRun::Result runAction(const CustomAction& a, const QStringList& files, int timeoutMs) {
+    test::ensureQtApp();
+    CustomActionRun run(a, files, timeoutMs);
+    bool done = false;
+    CustomActionRun::Result result;
+    QObject::connect(&run, &CustomActionRun::finished, [&](const CustomActionRun::Result& r) {
+        result = r;
+        done = true;
+    });
+    run.start();
+    EXPECT_TRUE(test::waitUntil([&] { return done; }, timeoutMs + 20000));
+    return result;
+}
+
+} // namespace
+
+// File names that cmd.exe or PowerShell would parse as commands reach the program as plain
+// arguments (end to end through CreateProcess and PowerShell's own argument parsing).
+TEST(WindowsPlatform, F_FILE_10_CustomActionRunsWithoutShellParsing) {
+    QTemporaryDir dir;
+    ASSERT_TRUE(dir.isValid());
+    const QString base = QDir::cleanPath(dir.path());
+    const QStringList names = {QStringLiteral("a b & calc.jpg"), QStringLiteral("x;y %PATH% ^z.jpg"),
+                               QStringLiteral("$(New-Item PWNED1).jpg"), QStringLiteral("'q' `w.jpg"),
+                               QStringLiteral("Grüße ✓.jpg")};
+    QStringList files;
+    for (const QString& n : names) {
+        files << base + u'/' + n;
+        ASSERT_TRUE(writeFile(files.last(), "x")) << n.toStdString();
+    }
+    const QString script = base + QStringLiteral("/list.ps1");
+    ASSERT_TRUE(writeFile(script, "$out = Join-Path (Split-Path -Parent $args[0]) 'out.txt'\r\n"
+                                  "$args | Set-Content -LiteralPath $out -Encoding utf8\r\n"));
+    CustomAction a;
+    a.id = QStringLiteral("w");
+    a.name = QStringLiteral("Liste");
+    a.command =
+        QStringLiteral("powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%1\"")
+            .arg(QDir::toNativeSeparators(script));
+    ASSERT_TRUE(customactions::validate(a).isEmpty());
+    const CustomActionRun::Result r = runAction(a, files, 60000);
+    ASSERT_TRUE(r.ok()) << r.error.toStdString() << r.output.toStdString();
+    QFile out(base + QStringLiteral("/out.txt"));
+    ASSERT_TRUE(out.open(QIODevice::ReadOnly));
+    QString text = QString::fromUtf8(out.readAll());
+    if (text.startsWith(QChar(0xFEFF)))
+        text.remove(0, 1);
+    QStringList expected;
+    for (const QString& f : files)
+        expected << QDir::toNativeSeparators(f);
+    EXPECT_EQ(text.split(QRegularExpression(QStringLiteral("\\r?\\n")), Qt::SkipEmptyParts), expected);
+    EXPECT_FALSE(QFile::exists(base + QStringLiteral("/PWNED1")));
+}
+
+TEST(WindowsPlatform, F_FILE_10_CustomActionTimeoutEndsTheProgram) {
+    CustomAction a;
+    a.id = QStringLiteral("s");
+    a.name = QStringLiteral("Warten");
+    a.command = QStringLiteral("powershell.exe -NoProfile -NonInteractive -Command Start-Sleep -Seconds 60");
+    QElapsedTimer t;
+    t.start();
+    const CustomActionRun::Result r = runAction(a, {}, 3000);
+    EXPECT_TRUE(r.timedOut);
+    EXPECT_FALSE(r.ok());
+    EXPECT_LT(t.elapsed(), 20000);
+}
+
 // ---- WIC decoder ------------------------------------------------------------------------------
 
 TEST(WindowsPlatform, F_FMT_01_WicDecodesLikeQt) {
@@ -309,9 +379,9 @@ TEST(WindowsPlatform, F_FMT_01_WicDecodesLikeQt) {
         ASSERT_TRUE(info.has_value()) << e1.toStdString();
         EXPECT_EQ(info->pixelSize, QSize(160, 100));
         // Decode-time downscaling.
-        DecodeRequest small;
-        small.maxPixelSize = 40;
-        const auto s = wic.decode(path, small, &e1);
+        DecodeRequest reduced; // ("small" is a macro of the Windows headers)
+        reduced.maxPixelSize = 40;
+        const auto s = wic.decode(path, reduced, &e1);
         ASSERT_TRUE(s.has_value()) << e1.toStdString();
         EXPECT_EQ(s->image.size(), QSize(40, 25));
         EXPECT_EQ(s->fullSize, QSize(160, 100));
