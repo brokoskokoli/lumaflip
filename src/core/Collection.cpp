@@ -25,6 +25,9 @@
 #include <memory>
 #include <numeric>
 
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
 #ifdef Q_OS_UNIX
 #include <cerrno>
 #include <dirent.h>
@@ -197,6 +200,65 @@ QVector<FileEntry> enumerateFolder(const QString& folderPath, bool* accessDenied
         out.append(std::move(e));
     }
     ::closedir(dir); // also closes dfd
+#elif defined(Q_OS_WIN)
+    // One FindFirstFileExW pass: name, size, times and attributes without a stat per file
+    // (P-05: large folders). Hidden/system files are skipped like Explorer does by default;
+    // reparse points (symbolic links, junctions) to folders are not followed (no cycles).
+    const QString pattern = QDir::toNativeSeparators(prefix) + QStringLiteral("*");
+    WIN32_FIND_DATAW fd;
+    HANDLE find = FindFirstFileExW(reinterpret_cast<LPCWSTR>(pattern.utf16()), FindExInfoBasic, &fd,
+                                   FindExSearchNameMatch, nullptr, FIND_FIRST_EX_LARGE_FETCH);
+    if (find == INVALID_HANDLE_VALUE) {
+        const DWORD err = GetLastError();
+        if (accessDenied && err == ERROR_ACCESS_DENIED)
+            *accessDenied = true; // F-PRIV-01
+        return out;
+    }
+    auto toUtc = [](const FILETIME& ft) {
+        const qint64 ticks = qint64((quint64(ft.dwHighDateTime) << 32) | ft.dwLowDateTime);
+        return QDateTime::fromMSecsSinceEpoch(ticks / 10000 - 11644473600000LL, QTimeZone::UTC);
+    };
+    do {
+        const QString name = QString::fromWCharArray(fd.cFileName);
+        if (name.startsWith(u'.'))
+            continue;
+        if (fd.dwFileAttributes & (FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM))
+            continue;
+        if (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+            if (subfolders && !(fd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) &&
+                !(name.contains(u'.') && isPackageFolder(QFileInfo(prefix + name))))
+                subfolders->append(name);
+            continue;
+        }
+        if (!acceptName(name))
+            continue;
+        FileEntry e;
+        e.name = name;
+        e.path = prefix + name;
+        e.size = qint64((quint64(fd.nFileSizeHigh) << 32) | fd.nFileSizeLow);
+        e.modified = toUtc(fd.ftLastWriteTime);
+        e.created = toUtc(fd.ftCreationTime);
+        if (fd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
+            // A symbolic link: the target's data (dangling links and links to folders are skipped).
+            // Opening the link follows it (no FILE_FLAG_OPEN_REPARSE_POINT).
+            const QString native = QDir::toNativeSeparators(e.path);
+            HANDLE h = CreateFileW(reinterpret_cast<LPCWSTR>(native.utf16()), FILE_READ_ATTRIBUTES,
+                                   FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, nullptr,
+                                   OPEN_EXISTING, FILE_FLAG_BACKUP_SEMANTICS, nullptr);
+            if (h == INVALID_HANDLE_VALUE)
+                continue;
+            BY_HANDLE_FILE_INFORMATION info{};
+            const bool ok = GetFileInformationByHandle(h, &info) != 0;
+            CloseHandle(h);
+            if (!ok || (info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+                continue;
+            e.size = qint64((quint64(info.nFileSizeHigh) << 32) | info.nFileSizeLow);
+            e.modified = toUtc(info.ftLastWriteTime);
+            e.created = toUtc(info.ftCreationTime);
+        }
+        out.append(std::move(e));
+    } while (FindNextFileW(find, &fd));
+    FindClose(find);
 #else
     const QDir dir(folder);
     if (!dir.exists() || !QFileInfo(folder).isReadable()) {

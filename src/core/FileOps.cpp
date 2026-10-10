@@ -34,6 +34,9 @@
 #include <cerrno>
 #include <cstdio>
 #include <cstring>
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
 #ifdef Q_OS_UNIX
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -105,7 +108,29 @@ namespace {
 // at `to` after the caller's check is not overwritten. A case-only rename on a
 // case-insensitive volume (`to` is `from`) uses a plain rename. Returns 0 or an errno.
 int renameNoReplace(const QString& from, const QString& to) {
-#ifndef Q_OS_UNIX
+#if defined(Q_OS_WIN)
+    // MoveFileExW without MOVEFILE_REPLACE_EXISTING fails if `to` exists: the check is part
+    // of the rename (also for a case-only rename of the same file, which NTFS allows).
+    const QString a = QDir::toNativeSeparators(from), b = QDir::toNativeSeparators(to);
+    if (MoveFileExW(reinterpret_cast<const wchar_t*>(a.utf16()), reinterpret_cast<const wchar_t*>(b.utf16()),
+                    0))
+        return 0;
+    switch (GetLastError()) {
+    case ERROR_ALREADY_EXISTS:
+    case ERROR_FILE_EXISTS:
+        return EEXIST;
+    case ERROR_NOT_SAME_DEVICE:
+        return EXDEV;
+    case ERROR_ACCESS_DENIED:
+    case ERROR_SHARING_VIOLATION:
+        return EACCES;
+    case ERROR_FILE_NOT_FOUND:
+    case ERROR_PATH_NOT_FOUND:
+        return ENOENT;
+    default:
+        return EIO;
+    }
+#elif !defined(Q_OS_UNIX)
     if (!sameFile(from, to) && (QFileInfo(to).exists() || QFileInfo(to).isSymLink()))
         return EEXIST;
     std::error_code ec;
@@ -692,12 +717,13 @@ void FileOps::modifyAsync(const QString& path, const QString& undoText, FileWork
                      const QString e = apply ? apply() : QString();
                      return e.isEmpty() ? success() : failure(e);
                  },
-                 [this, path, undoText, apply, revert, pendingCleanup](const Outcome&) {
+                 [this, path, undoText, apply = std::move(apply), revert = std::move(revert),
+                  pendingCleanup](const Outcome&) {
                      emit fileChanged(path);
                      d->stack->push(new ModifyCommand(this, undoText, path, apply, revert,
                                                       std::exchange(*pendingCleanup, {})));
                  }};
-    d->startAsync(op, [pendingCleanup, done](bool ok, const QString& error) {
+    d->startAsync(op, [pendingCleanup, done = std::move(done)](bool ok, const QString& error) {
         if (!ok && *pendingCleanup)
             std::exchange(*pendingCleanup, {})();
         if (done)
@@ -716,13 +742,14 @@ void FileOps::runAsync(const QString& undoText, FileWork apply, FileWork revert,
                      const QString e = apply ? apply() : QString();
                      return e.isEmpty() ? success() : failure(e);
                  },
-                 [this, undoText, apply, revert, notify, pendingCleanup](const Outcome&) {
+                 [this, undoText, apply = std::move(apply), revert = std::move(revert),
+                  notify = std::move(notify), pendingCleanup](const Outcome&) {
                      if (notify)
                          notify(true);
                      d->stack->push(new ModifyCommand(this, undoText, QString(), apply, revert,
                                                       std::exchange(*pendingCleanup, {}), notify));
                  }};
-    d->startAsync(op, [pendingCleanup, done](bool ok, const QString& error) {
+    d->startAsync(op, [pendingCleanup, done = std::move(done)](bool ok, const QString& error) {
         if (!ok && *pendingCleanup)
             std::exchange(*pendingCleanup, {})();
         if (done)
@@ -780,19 +807,19 @@ bool FileOps::copyTo(const QString& path, const QString& targetFolder, QString* 
     return d->runNow(d->copyOp(path, targetFolder), error);
 }
 
-void FileOps::moveToTrashAsync(const QString& path, QObject* origin, Completion done) {
+void FileOps::moveToTrashAsync(const QString& path, QObject* origin, const Completion& done) {
     d->startAsync(d->trashOp(path, origin), done);
 }
 
-void FileOps::renameAsync(const QString& path, const QString& newFileName, Completion done) {
+void FileOps::renameAsync(const QString& path, const QString& newFileName, const Completion& done) {
     d->startAsync(d->renameOp(path, newFileName), done);
 }
 
-void FileOps::moveToAsync(const QString& path, const QString& targetFolder, Completion done) {
+void FileOps::moveToAsync(const QString& path, const QString& targetFolder, const Completion& done) {
     d->startAsync(d->moveOp(path, targetFolder), done);
 }
 
-void FileOps::copyToAsync(const QString& path, const QString& targetFolder, Completion done) {
+void FileOps::copyToAsync(const QString& path, const QString& targetFolder, const Completion& done) {
     d->startAsync(d->copyOp(path, targetFolder), done);
 }
 

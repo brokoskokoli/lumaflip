@@ -26,6 +26,9 @@
 #include <fcntl.h>
 #include <unistd.h>
 #endif
+#if LF_WINDOWS_PLATFORM
+#include "platform/windows/WinFileUtil.h"
+#endif
 
 namespace lf::platform {
 
@@ -43,7 +46,9 @@ void setError(QString* error, const QString& msg) {
 
 // fsync() of a file or folder (POSIX); elsewhere a no-op that reports success.
 bool syncFile(const QString& path) {
-#ifdef Q_OS_UNIX
+#if LF_WINDOWS_PLATFORM
+    return win::flushPath(path);
+#elif defined(Q_OS_UNIX)
     const int fd = ::open(QFile::encodeName(path).constData(), O_RDONLY | O_CLOEXEC);
     if (fd < 0)
         return false;
@@ -254,8 +259,18 @@ bool replaceFile(const QString& replacement, const QString& target, bool keepMod
         return false;
     }
     reportDurabilityStep(DurabilityStep::FullSync, replacement);
+#if LF_WINDOWS_PLATFORM
+    // ReplaceFileW keeps what belongs to the file (creation date, attributes, ACL, alternate
+    // data streams such as the "downloaded from" mark) - the counterpart of keeping the
+    // attributes on macOS.
+    if (QString why; !win::replaceFile(replacement, target, &why)) {
+        qWarning("lf: replacing %s failed: %s", qPrintable(target), qPrintable(why));
+        ec = std::make_error_code(std::errc::io_error);
+    }
+#else
     std::filesystem::rename(std::filesystem::path(replacement.toStdU16String()),
                             std::filesystem::path(target.toStdU16String()), ec);
+#endif
     if (ec) {
         setError(error, Tr::tr("„%1“ konnte nicht ersetzt werden: %2")
                             .arg(orig.fileName(), QString::fromStdString(ec.message())));

@@ -634,6 +634,14 @@
         <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
         <translation>A shortcut name must not start with “-”.</translation>
     </message>
+    <message>
+        <source>Kurzbefehle gibt es nur unter macOS.</source>
+        <translation>Shortcuts actions are only available on macOS.</translation>
+    </message>
+    <message>
+        <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
+        <translation>Batch files (.bat, .cmd) cannot be run directly: cmd.exe would read file names as commands. Run a program or a PowerShell script instead (powershell -File script.ps1).</translation>
+    </message>
     <message numerus="yes">
         <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
         <translation>
@@ -845,6 +853,10 @@
     <message>
         <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
         <translation>Not enough memory for the image (%1 × %2 pixels).</translation>
+    </message>
+    <message>
+        <source>Windows-Fehler %1</source>
+        <translation>Windows error %1</translation>
     </message>
     <message>
         <source>Die Bilddaten des Decoders fehlen.</source>
@@ -1363,6 +1375,13 @@
     <message>
         <source>Karte schließen</source>
         <translation>Close Map</translation>
+    </message>
+</context>
+<context>
+    <name>lf::FolderMapView</name>
+    <message>
+        <source>Karten sind unter Windows nicht verfügbar. Fotos mit Ortsangabe in diesem Ordner: %1</source>
+        <translation>Maps are not available on Windows. Photos with a location in this folder: %1</translation>
     </message>
 </context>
 <context>
@@ -3003,6 +3022,18 @@
         <source>Der Bildschirm ist nicht mehr da.</source>
         <translation>The display is no longer connected.</translation>
     </message>
+    <message>
+        <source>Alle Bildschirme</source>
+        <translation>All Screens</translation>
+    </message>
+    <message>
+        <source>Bildschirm %1</source>
+        <translation>Screen %1</translation>
+    </message>
+    <message>
+        <source>Windows hat das Bild nicht als Hintergrund übernommen.</source>
+        <translation>Windows did not accept the image as desktop background.</translation>
+    </message>
 </context>
 <context>
     <name>lf::MainMenu</name>
@@ -3580,6 +3611,10 @@
     <message>
         <source>Die Karte konnte nicht geladen werden.</source>
         <translation>The map could not be loaded.</translation>
+    </message>
+    <message>
+        <source>Karten sind unter Windows nicht verfügbar.</source>
+        <translation>Maps are not available on Windows.</translation>
     </message>
 </context>
 <context>
@@ -5387,6 +5422,18 @@
     <message>
         <source>„%1“ kann nicht gestartet werden.</source>
         <translation>“%1” can’t be started.</translation>
+    </message>
+    <message>
+        <source>Batch-Dateien werden aus Sicherheitsgründen nicht gestartet.</source>
+        <translation>Batch files are not started, for security reasons.</translation>
+    </message>
+    <message>
+        <source>Das Programm wurde nicht gefunden.</source>
+        <translation>The program was not found.</translation>
+    </message>
+    <message>
+        <source>Windows erlaubt Programmen nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
+        <translation>Windows does not let programs make themselves the default app. The “Default apps” settings have been opened: choose Lumaflip there for the file types you want.</translation>
     </message>
 </context>
 <context>

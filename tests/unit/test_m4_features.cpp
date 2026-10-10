@@ -293,6 +293,7 @@ TEST(Wallpaper, F_FILE_09_AppliesThroughTheWorkspaceAndReportsErrors) {
 // F-FILE-10 Custom actions
 // =========================================================================================
 
+#ifndef Q_OS_WIN // POSIX shell and Shortcuts (Windows: test_windows_platform.cpp)
 TEST(CustomActions, F_FILE_10_ShellArgumentsAreNeverInterpreted) {
     QTemporaryDir dir;
     ASSERT_TRUE(dir.isValid());
@@ -395,6 +396,8 @@ TEST(CustomActions, F_FILE_10_ShortcutsCommandConstruction) {
     EXPECT_FALSE(missing.started);
     EXPECT_FALSE(missing.error.isEmpty());
 }
+
+#endif
 
 TEST(CustomActions, F_FILE_10_StoredAsJsonWithKeysAndConfirmation) {
     CustomAction a;

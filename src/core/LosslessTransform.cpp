@@ -19,6 +19,9 @@
 #ifdef Q_OS_UNIX
 #include <sys/stat.h>
 #endif
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
 
 #ifdef LF_HAVE_TURBOJPEG
 #include <turbojpeg.h>
@@ -446,6 +449,26 @@ FileStamp fileStamp(const QString& path) {
 #endif
     s.inode = quint64(st.st_ino);
     s.device = quint64(st.st_dev);
+#elif defined(Q_OS_WIN)
+    // File identity like st_ino/st_dev: volume serial number + file index (hard links share it).
+    const QString native = QDir::toNativeSeparators(path);
+    HANDLE h = CreateFileW(reinterpret_cast<LPCWSTR>(native.utf16()), FILE_READ_ATTRIBUTES,
+                           FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING,
+                           FILE_ATTRIBUTE_NORMAL, nullptr);
+    if (h == INVALID_HANDLE_VALUE)
+        return s;
+    BY_HANDLE_FILE_INFORMATION info{};
+    const bool ok = GetFileInformationByHandle(h, &info) != 0;
+    CloseHandle(h);
+    if (!ok || (info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+        return s;
+    s.size = qint64((quint64(info.nFileSizeHigh) << 32) | info.nFileSizeLow);
+    // FILETIME: 100 ns since 1601-01-01 -> ns since 1970-01-01.
+    const qint64 ticks =
+        qint64((quint64(info.ftLastWriteTime.dwHighDateTime) << 32) | info.ftLastWriteTime.dwLowDateTime);
+    s.mtimeNs = (ticks - 116444736000000000LL) * 100;
+    s.inode = (quint64(info.nFileIndexHigh) << 32) | info.nFileIndexLow;
+    s.device = quint64(info.dwVolumeSerialNumber);
 #else
     const QFileInfo fi(path);
     if (!fi.isFile())
@@ -795,8 +818,13 @@ QString restoreFileFrom(const QString& backup, const QString& target) {
 // ---- FileEdit / RotationEdit ----
 
 namespace {
-const QString kBefore = QStringLiteral("before");
-const QString kAfter = QStringLiteral("after");
+// Names of the backup copies (functions: no QString with static storage duration).
+QString backupBefore() {
+    return QStringLiteral("before");
+}
+QString backupAfter() {
+    return QStringLiteral("after");
+}
 } // namespace
 
 FileEdit::FileEdit(QString target, Save save, std::shared_ptr<UndoBackupStore> store)
@@ -839,21 +867,21 @@ QString FileEdit::step(bool forward) {
         m_id = m_store ? m_store->create() : 0;
         if (!m_id)
             return Tr::tr("Kein Platz für die Sicherungskopie – nichts gespeichert.");
-        if (!m_store->addCopy(m_id, target, kBefore, true, &error))
+        if (!m_store->addCopy(m_id, target, backupBefore(), true, &error))
             return error;
-        const QString e = m_save ? m_save() : QString();
+        QString e = m_save ? m_save() : QString();
         if (!e.isEmpty())
             return e;
         m_done = true;
         m_expected = fileStamp(target);
         // For redo; a clone costs nothing while the file stays as saved. Without it, redo
         // reports the missing backup.
-        m_store->addCopy(m_id, target, kAfter, false, &error);
+        m_store->addCopy(m_id, target, backupAfter(), false, &error);
         return {};
     }
     if (m_done == forward)
         return {}; // already in that state
-    const QString backup = m_store->file(m_id, forward ? kAfter : kBefore);
+    const QString backup = m_store->file(m_id, forward ? backupAfter() : backupBefore());
     if (backup.isEmpty())
         return messageBackupDropped();
     if (fileStamp(target) != m_expected)
@@ -865,7 +893,7 @@ QString FileEdit::step(bool forward) {
     return {};
 }
 
-RotationEdit::RotationEdit(RotationRequest request, RotationPlan plan, RotationMethod method,
+RotationEdit::RotationEdit(const RotationRequest& request, RotationPlan plan, RotationMethod method,
                            std::shared_ptr<UndoBackupStore> store) {
     if (plan.target.isEmpty())
         plan.target = resolvedFilePath(request.path);

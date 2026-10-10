@@ -20,6 +20,20 @@ else()
     list(APPEND LF_PLATFORM_SOURCES ${LF_LINUX_SOURCES})
   endif()
 endif()
+if(LF_WINDOWS_PLATFORM)
+  # Windows: src/platform/windows replaces the generic file of the same role
+  # (Win<Role>.cpp for Generic<Role>.cpp); the other generic fallbacks stay.
+  file(GLOB LF_WINDOWS_SOURCES CONFIGURE_DEPENDS platform/windows/*.cpp platform/windows/*.h)
+  foreach(_src IN LISTS LF_WINDOWS_SOURCES)
+    get_filename_component(_name "${_src}" NAME)
+    if(_name MATCHES "^Win(.+)\\.cpp$")
+      list(FILTER LF_PLATFORM_SOURCES EXCLUDE REGEX ".*/platform/generic/Generic${CMAKE_MATCH_1}\\.cpp$")
+    endif()
+  endforeach()
+  # freedesktop (XDG) helpers of the Linux shell integration are not used on Windows.
+  list(FILTER LF_PLATFORM_SOURCES EXCLUDE REGEX ".*/platform/generic/Xdg[^/]*$")
+  list(APPEND LF_PLATFORM_SOURCES ${LF_WINDOWS_SOURCES})
+endif()
 # Portable implementations that the mac build may reuse (e.g. DsStore parser) live in core/.
 
 add_library(lf_core STATIC ${LF_CORE_SOURCES} ${LF_PLATFORM_SOURCES})
@@ -29,12 +43,19 @@ find_package(ZLIB REQUIRED)
 target_link_libraries(lf_core
   PUBLIC Qt6::Core Qt6::Gui Qt6::Concurrent Qt6::Svg
   PRIVATE lf_warnings ZLIB::ZLIB)
+if(LF_WINDOWS_PLATFORM)
+  target_compile_definitions(lf_core PUBLIC LF_WINDOWS_PLATFORM=1)
+  # Shell (trash, reveal, open with), WIC, COM, Recycle Bin property keys, monitor ICC
+  # profiles, DXGI (HDR output info), job objects and tokens for the decoder helper.
+  target_link_libraries(lf_core PUBLIC ole32 oleaut32 shell32 shlwapi uuid propsys windowscodecs
+                                       user32 gdi32 advapi32 dxgi userenv version ws2_32)
+endif()
 # F-EDIT-02: lossless JPEG rotation (DCT transform) with libjpeg-turbo's TurboJPEG API,
 # linked statically (BSD-style license; Homebrew's jpeg-turbo is a Qt dependency anyway).
 # Without it the rotation is saved via the EXIF orientation only.
 find_path(LF_TURBOJPEG_INCLUDE turbojpeg.h
   HINTS /opt/homebrew/opt/jpeg-turbo/include /usr/local/opt/jpeg-turbo/include)
-find_library(LF_TURBOJPEG_LIB NAMES libturbojpeg.a turbojpeg
+find_library(LF_TURBOJPEG_LIB NAMES libturbojpeg.a turbojpeg turbojpeg-static
   HINTS /opt/homebrew/opt/jpeg-turbo/lib /usr/local/opt/jpeg-turbo/lib)
 # Third-party code linked statically into the app (no dylib for tools/macos_deploy.py to
 # find) is listed in Contents/Resources/static-components.json; the deploy script requires
@@ -99,6 +120,12 @@ endif()
 # functions are declared in LibArchive.cpp). Elsewhere it is used when the system has it.
 if(APPLE AND NOT LF_GENERIC_PLATFORM)
   set(LF_LIBARCHIVE_LIB archive)
+elseif(WIN32)
+  # vcpkg (vcpkg.json): the imported target carries the compression libraries it needs.
+  find_package(LibArchive QUIET)
+  if(TARGET LibArchive::LibArchive)
+    set(LF_LIBARCHIVE_LIB LibArchive::LibArchive)
+  endif()
 else()
   find_library(LF_LIBARCHIVE_LIB NAMES archive)
 endif()
@@ -196,12 +223,21 @@ elseif(APPLE)
   target_compile_options(lf_core PRIVATE $<$<COMPILE_LANGUAGE:OBJCXX>:-fobjc-arc>)
 endif()
 
+if(WIN32)
+  include(platform/windows/WindowsBuild.cmake) # icon, version resources, manifest
+endif()
+
 # ---- lumaflip-decoder: decoder helper process (SPEC 8.5, core/DecoderHelper.h) ----
 # Runs the library decoders (Qt image plugins, QtSvg) outside the app; bundled next to the
 # app binary (Contents/MacOS) and signed by tools/package.sh.
-if(APPLE OR LF_LINUX)
+if(APPLE OR LF_LINUX OR LF_WINDOWS_PLATFORM)
   add_executable(lumaflip-decoder helper/main.cpp)
   target_link_libraries(lumaflip-decoder PRIVATE lf_core lf_warnings)
+  if(WIN32)
+    # Console subsystem (no window); version resource like the app.
+    target_sources(lumaflip-decoder PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/lumaflip-decoder.rc"
+                                            "${LF_WINDOWS_MANIFEST}")
+  endif()
   set(LF_DECODER_HELPER_TARGET lumaflip-decoder CACHE INTERNAL "decoder helper target")
 else()
   set(LF_DECODER_HELPER_TARGET "" CACHE INTERNAL "decoder helper target")
@@ -249,13 +285,23 @@ endif()
 # ---- lf_ui: widgets (static library so integration tests can link it) ----
 file(GLOB LF_UI_SOURCES CONFIGURE_DEPENDS app/*.cpp app/*.h app/*.mm)
 list(FILTER LF_UI_SOURCES EXCLUDE REGEX ".*/main\\.cpp$")
-if(LF_GENERIC_PLATFORM)
+if(WIN32)
+  # Windows: the *_mac.mm parts are replaced by <Name>_win.cpp next to them (not by
+  # src/app/generic, the Linux/portable variant).
+  list(FILTER LF_UI_SOURCES EXCLUDE REGEX ".*_mac\\.(mm|h)$")
+  list(FILTER LF_UI_SOURCES EXCLUDE REGEX ".*/MacImage\\.h$")
+  # Type names and suffixes from Qt's MIME database, as on Linux.
+  list(APPEND LF_UI_SOURCES app/generic/GenericDisplayText.cpp)
+elseif(LF_GENERIC_PLATFORM)
   # Without AppKit: the *_mac.mm parts are replaced by src/app/generic (no-ops where macOS
   # has a service and Linux has none; XDG implementations otherwise, docs/LINUX.md).
   list(FILTER LF_UI_SOURCES EXCLUDE REGEX ".*_mac\\.(mm|h)$")
   list(FILTER LF_UI_SOURCES EXCLUDE REGEX ".*/MacImage\\.h$")
   file(GLOB LF_UI_GENERIC_SOURCES CONFIGURE_DEPENDS app/generic/*.cpp app/generic/*.h)
   list(APPEND LF_UI_SOURCES ${LF_UI_GENERIC_SOURCES})
+endif()
+if(NOT WIN32)
+  list(FILTER LF_UI_SOURCES EXCLUDE REGEX ".*_win\\.(cpp|h)$")
 endif()
 add_library(lf_ui STATIC ${LF_UI_SOURCES})
 target_link_libraries(lf_ui PUBLIC lf_core Qt6::Widgets Qt6::GuiPrivate PRIVATE lf_warnings)
@@ -343,6 +389,11 @@ endif()
 file(GLOB LF_SHADERS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/app/shaders/*.vert ${CMAKE_CURRENT_SOURCE_DIR}/app/shaders/*.frag)
 if(LF_SHADERS)
   qt_add_shaders(lf_ui "lf_shaders" PREFIX "/shaders" BASE app/shaders FILES ${LF_SHADERS})
+endif()
+
+if(WIN32)
+  include(platform/windows/WindowsApp.cmake) # Lumaflip.exe (instead of the app bundle)
+  return()
 endif()
 
 # ---- Linux (and other non-macOS) app: plain executable + XDG install layout ----

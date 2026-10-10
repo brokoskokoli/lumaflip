@@ -28,6 +28,18 @@ else()
     endif()
   endforeach()
 endif()
+# Tests of the Windows platform layer (test_windows_*.cpp, include platform/windows) only there.
+if(NOT LF_WINDOWS_PLATFORM)
+  list(FILTER LF_UNIT_TESTS EXCLUDE REGEX ".*/test_windows_[^/]*\\.cpp$")
+else()
+  # The freedesktop (XDG) helpers are not part of the Windows build.
+  foreach(src ${LF_UNIT_TESTS})
+    file(STRINGS ${src} xdg_includes REGEX "#include [\"<]platform/generic/Xdg")
+    if(xdg_includes)
+      list(REMOVE_ITEM LF_UNIT_TESTS ${src})
+    endif()
+  endforeach()
+endif()
 add_executable(lf_unit_tests ${LF_UNIT_TESTS})
 target_link_libraries(lf_unit_tests PRIVATE lf_core GTest::gtest_main lf_warnings)
 target_compile_definitions(lf_unit_tests PRIVATE LF_TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data"

@@ -61,6 +61,15 @@ Lumaflip-<version>-x86_64.AppImage`, dann starten. *Ablage → Als Standard-App 
 es zum Bildbetrachter. HEIC braucht einen separat installierten HEVC-Decoder; Live Text, Quick
 Look, Karten und HDR (EDR) gibt es nur auf dem Mac. Details, Bauen und Sandbox:
 [docs/LINUX.md](docs/LINUX.md) (Englisch).
+### Windows (Vorschau)
+
+Windows 10 (1809) oder 11, x64. Vorschau-Builds aus der CI (Job „Windows app“, Artefakt
+`lumaflip-windows-x64`): Installer `Lumaflip-<version>-windows-x64-setup.exe` (pro Benutzer, trägt
+Lumaflip unter „Öffnen mit“ und „Einstellungen → Standard-Apps“ ein, übernimmt keinen Dateityp
+ungefragt) oder die portable ZIP-Datei. Die Builds sind **noch nicht signiert**: SmartScreen warnt
+beim ersten Start („Der Computer wurde durch Windows geschützt“ → „Weitere Informationen“ →
+„Trotzdem ausführen“). HEIC, AVIF, WebP, JPEG XL und RAW über die Codec-Erweiterungen aus dem
+Microsoft Store. Details: [docs/WINDOWS.md](docs/WINDOWS.md).
 
 ## Aus dem Quellcode bauen
 
@@ -72,6 +81,8 @@ tools/check.sh --quick --no-gui        # Build + Unit-Tests ohne Fenster
 
 Linux: `cmake -S . -B build/linux -G Ninja && cmake --build build/linux`, AppImage mit
 `tools/linux_appimage.sh build/linux dist` (Abhängigkeiten in [docs/LINUX.md](docs/LINUX.md)).
+Windows (MSVC, Qt msvc2022_64, vcpkg): `cmake --preset windows-release`, siehe
+[docs/WINDOWS.md](docs/WINDOWS.md).
 
 ## Mitmachen
 

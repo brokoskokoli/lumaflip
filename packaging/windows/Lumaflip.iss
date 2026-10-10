@@ -1,0 +1,103 @@
+; SPDX-License-Identifier: GPL-3.0-or-later
+; Inno Setup script of the Windows installer (CI job "Windows app", docs/WINDOWS.md).
+;
+;   iscc /DAppVersion=1.1.0 /DSourceDir=<deployed folder> /DOutputDir=<dir> /DIconFile=<Lumaflip.ico> Lumaflip.iss
+;
+; File types: Lumaflip registers as a program that can open images ("Open with", Default
+; apps in Settings: RegisteredApplications + Capabilities, OpenWithProgids) - it never takes
+; over a file type itself. The user chooses Lumaflip as default in Settings → Apps →
+; Default apps (the app opens that page: Settings → General → "Als Standard-App festlegen").
+;
+; Unsigned for now: Windows SmartScreen warns on the first start ("Unbekannter Herausgeber").
+; Signing: see docs/WINDOWS.md (SignTool in [Setup] once a certificate exists).
+
+#ifndef AppVersion
+  #define AppVersion "0.0.0"
+#endif
+#ifndef SourceDir
+  #define SourceDir "..\..\dist\Lumaflip"
+#endif
+#ifndef OutputDir
+  #define OutputDir "..\..\dist"
+#endif
+
+#define AppName "Lumaflip"
+#define AppExe "Lumaflip.exe"
+#define ProgId "Lumaflip.Image"
+
+; Image types offered in "Open with" (keep in sync with WinShell.cpp imageDocumentTypes()).
+#dim Exts[30] {"jpg", "jpeg", "jpe", "jfif", "png", "gif", "bmp", "dib", "tif", "tiff", "webp", "heic", "heif", \
+  "avif", "jxl", "svg", "svgz", "ico", "jxr", "wdp", "dds", "psd", "exr", "dng", "cr2", "cr3", "nef", "arw", \
+  "raf", "orf"}
+
+[Setup]
+AppId={{6E0D5D8A-6A43-4C6B-9C6F-4C1A5B7E1F2D}
+AppName={#AppName}
+AppVersion={#AppVersion}
+AppVerName={#AppName} {#AppVersion}
+AppPublisher=The Lumaflip contributors
+AppPublisherURL=https://github.com/brokoskokoli/lumaflip
+AppSupportURL=https://github.com/brokoskokoli/lumaflip/issues
+AppUpdatesURL=https://github.com/brokoskokoli/lumaflip/releases
+VersionInfoVersion={#AppVersion}
+DefaultDirName={autopf}\{#AppName}
+DefaultGroupName={#AppName}
+DisableProgramGroupPage=yes
+; Per user by default (no administrator rights); "for all users" on request.
+PrivilegesRequired=lowest
+PrivilegesRequiredOverridesAllowed=dialog
+ArchitecturesAllowed=x64compatible
+ArchitecturesInstallIn64BitMode=x64compatible
+MinVersion=10.0.17763
+ChangesAssociations=yes
+LicenseFile=..\..\LICENSE
+OutputDir={#OutputDir}
+OutputBaseFilename=Lumaflip-{#AppVersion}-windows-x64-setup
+#ifdef IconFile
+SetupIconFile={#IconFile}
+#endif
+UninstallDisplayIcon={app}\{#AppExe}
+UninstallDisplayName={#AppName}
+Compression=lzma2/max
+SolidCompression=yes
+WizardStyle=modern
+
+[Languages]
+Name: "de"; MessagesFile: "compiler:Languages\German.isl"
+Name: "en"; MessagesFile: "compiler:Default.isl"
+
+[Tasks]
+Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+
+[Files]
+Source: "{#SourceDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+[Icons]
+Name: "{autoprograms}\{#AppName}"; Filename: "{app}\{#AppExe}"
+Name: "{autodesktop}\{#AppName}"; Filename: "{app}\{#AppExe}"; Tasks: desktopicon
+
+[Registry]
+; ProgID used by the "Open with" entries.
+Root: HKA; Subkey: "Software\Classes\{#ProgId}"; ValueType: string; ValueName: ""; ValueData: "Bild (Lumaflip)"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\{#ProgId}"; ValueType: string; ValueName: "FriendlyTypeName"; ValueData: "Bild (Lumaflip)"
+Root: HKA; Subkey: "Software\Classes\{#ProgId}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: """{app}\{#AppExe}"",0"
+Root: HKA; Subkey: "Software\Classes\{#ProgId}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#AppExe}"" ""%1"""
+; The application itself ("Open with" list, Explorer's app picker).
+Root: HKA; Subkey: "Software\Classes\Applications\{#AppExe}"; ValueType: string; ValueName: "FriendlyAppName"; ValueData: "{#AppName}"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\Applications\{#AppExe}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: """{app}\{#AppExe}"",0"
+Root: HKA; Subkey: "Software\Classes\Applications\{#AppExe}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#AppExe}"" ""%1"""
+; Default apps in Settings (RegisteredApplications -> Capabilities).
+Root: HKA; Subkey: "Software\{#AppName}\Capabilities"; ValueType: string; ValueName: "ApplicationName"; ValueData: "{#AppName}"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\{#AppName}\Capabilities"; ValueType: string; ValueName: "ApplicationDescription"; ValueData: "Schneller Bildbetrachter, der Ordner in der Reihenfolge des Dateimanagers durchblättert."
+Root: HKA; Subkey: "Software\{#AppName}\Capabilities"; ValueType: string; ValueName: "ApplicationIcon"; ValueData: """{app}\{#AppExe}"",0"
+Root: HKA; Subkey: "Software\RegisteredApplications"; ValueType: string; ValueName: "{#AppName}"; ValueData: "Software\{#AppName}\Capabilities"; Flags: uninsdeletevalue
+#sub AddExtension
+Root: HKA; Subkey: "Software\Classes\.{#Exts[i]}\OpenWithProgids"; ValueType: string; ValueName: "{#ProgId}"; ValueData: ""; Flags: uninsdeletevalue
+Root: HKA; Subkey: "Software\Classes\Applications\{#AppExe}\SupportedTypes"; ValueType: string; ValueName: ".{#Exts[i]}"; ValueData: ""
+Root: HKA; Subkey: "Software\{#AppName}\Capabilities\FileAssociations"; ValueType: string; ValueName: ".{#Exts[i]}"; ValueData: "{#ProgId}"
+#endsub
+#define i
+#for {i = 0; i < DimOf(Exts); i++} AddExtension
+
+[Run]
+Filename: "{app}\{#AppExe}"; Description: "{cm:LaunchProgram,{#AppName}}"; Flags: nowait postinstall skipifsilent

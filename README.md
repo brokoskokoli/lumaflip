@@ -133,6 +133,15 @@ An **AppImage** for x86_64 Linux (glibc 2.39+, e.g. Ubuntu 24.04 or newer) is bu
 `chmod +x Lumaflip-<version>-x86_64.AppImage` and run it. *File → Set as Default App…* registers it
 as your image viewer. HEIC needs a separately installed HEVC decoder; Live Text, Quick Look, maps
 and HDR (EDR) are macOS-only. Details, building from source and the sandbox: [docs/LINUX.md](docs/LINUX.md).
+### Windows (preview)
+
+Requirements: **Windows 10 (1809) or 11**, x64. Preview builds come from CI (job *Windows app*,
+artifact `lumaflip-windows-x64`): `Lumaflip-<version>-windows-x64-setup.exe` (installs per user,
+registers Lumaflip under *Open with* and *Settings → Default apps*, never takes over a file type)
+or the portable `Lumaflip-<version>-windows-x64.zip`. These builds are **not code-signed yet**:
+SmartScreen warns on the first start ("Windows protected your PC" → *More info* → *Run anyway*).
+HEIC, AVIF, WebP, JPEG XL and RAW use the codec extensions from the Microsoft Store. Details,
+differences to macOS and known gaps: [docs/WINDOWS.md](docs/WINDOWS.md).
 
 The first time you open an image from Desktop, Documents, Downloads, a removable drive or a network
 volume, macOS asks once for access. Lumaflip needs to read the image's folder so you can flip
@@ -195,6 +204,9 @@ tools/package.sh                       # self-contained app + DMG/ZIP in dist/ (
 On Linux: `cmake -S . -B build/linux -G Ninja && cmake --build build/linux`, then
 `tools/linux_appimage.sh build/linux dist` for an AppImage; dependencies are listed in
 [docs/LINUX.md](docs/LINUX.md).
+
+On Windows (MSVC, Qt msvc2022_64, vcpkg): `cmake --preset windows-release`, see
+[docs/WINDOWS.md](docs/WINDOWS.md).
 
 Qt 6.11 from Homebrew. resvg is optional; without it, SVG falls back to Qt SVG. More detail is in
 [CONTRIBUTING.md](CONTRIBUTING.md), and signing, notarization and releases are covered in

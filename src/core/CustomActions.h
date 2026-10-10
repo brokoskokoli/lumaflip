@@ -4,6 +4,12 @@
 // F-FILE-10 (M4): user-defined actions - a shell command or a Shortcuts shortcut that gets
 // the current file as argument, from the menu or a key of its own.
 //
+// Windows: there is no POSIX shell. A command is a program with arguments ("C:\Tools\x.exe"
+// --flag); the files are appended as separate arguments, each quoted by the rules of
+// CommandLineToArgvW (core/CommandLine.h), and the program is started with CreateProcess -
+// never through cmd.exe. Batch files are refused (cmd would parse the file names);
+// Shortcuts actions do not exist.
+//
 // Safety: file paths are never put into a command line. A shell command runs as
 //     /bin/sh -c <command> lumaflip-action <file> …
 // so the command reads the files as "$1" / "$@" (quotes, spaces, "$(…)", backquotes in file
@@ -53,6 +59,9 @@ QString newId();
 // Why `action` cannot run (empty = it can): no name, no command, a shortcut name that would
 // be read as an option ("-…").
 QString validate(const CustomAction& action);
+// Windows: the command split into program and arguments (CommandLineToArgvW rules; empty if
+// there is no command). Elsewhere the trimmed command as the only element.
+QStringList splitCommand(const QString& command);
 
 struct ProcessSpec {
     QString program;

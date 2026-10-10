@@ -36,7 +36,7 @@ public:
         int decodeTimeoutMs = 30000;  // a single decode (huge SVG, damaged file loops)
         int infoTimeoutMs = 10000;    // info/metadata/ping
         QStringList extraEnvironment; // "NAME=value" added to the app's environment
-#if defined(Q_OS_MACOS) || defined(Q_OS_LINUX)
+#if defined(Q_OS_MACOS) || defined(Q_OS_LINUX) || defined(Q_OS_WIN)
         bool requireSandbox = true; // refuse a helper whose Ping says sandboxed = false
 #else
         bool requireSandbox = false;

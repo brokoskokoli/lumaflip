@@ -1,0 +1,22 @@
+Qt 6
+====
+
+Lumaflip uses the Qt Toolkit (https://www.qt.io/), Copyright (C) The Qt Company Ltd.
+and other contributors.
+
+Qt is used under the terms of the GNU Lesser General Public License version 3
+(LGPL-3.0-only, see LGPL-3.0.txt; the LGPL refers to the GNU General Public License
+version 3, see GPL-3.0.txt).
+
+Qt is linked dynamically. The Qt libraries (Qt6*.dll) and plugins (platforms\,
+imageformats\, styles\, ...) are located in the installation folder of Lumaflip and can
+be replaced by compatible builds of the same Qt version (MSVC 2022, x64). The Qt source
+code is available from https://download.qt.io/official_releases/qt/ and
+https://code.qt.io/. The exact Qt version shipped is shown in the "Third-party licenses"
+window of Lumaflip.
+
+Qt itself contains third-party components under their own (permissive) licenses; see
+https://doc.qt.io/qt-6/licenses-used-in-qt.html.
+
+The source code of Lumaflip (GPL-3.0-or-later) is available at
+https://github.com/brokoskokoli/lumaflip.

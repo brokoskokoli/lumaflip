@@ -74,7 +74,7 @@ class FolderTrash : public TrashService {
 public:
     FolderTrash() { dir.setAutoRemove(true); }
     std::optional<QString> moveToTrash(const QString& path, QString* error) override {
-        const QString target =
+        QString target =
             QDir(dir.path())
                 .filePath(QUuid::createUuid().toString(QUuid::Id128) + "-" + QFileInfo(path).fileName());
         if (!QFile::rename(path, target)) {
@@ -166,8 +166,11 @@ TEST_F(PairsReviewTest, F_CULL_02_JpegNextToRawNeverTouchesRawSidecar) {
 // ---- 9: base names are compared literally (no glob patterns) ----
 
 TEST_F(PairsReviewTest, F_FMT_06_GlobCharactersInBaseNames) {
-    for (const QString& base :
-         {QStringLiteral("Shot [a]"), QStringLiteral("a*b?"), QStringLiteral("x{1,2}")}) {
+    QStringList bases = {QStringLiteral("Shot [a]"), QStringLiteral("x{1,2}")};
+#ifndef Q_OS_WIN
+    bases << QStringLiteral("a*b?"); // "*" and "?" are not allowed in Windows file names
+#endif
+    for (const QString& base : bases) {
         const QString raw = path(base + ".CR3"), jpg = path(base + ".JPG");
         ASSERT_TRUE(writeFile(raw, "raw"));
         ASSERT_TRUE(writeFile(jpg, "jpg"));
@@ -349,6 +352,9 @@ TEST_F(PairsReviewTest, F_CULL_01_RatingPairIsOneUndoStep) {
 // ---- 12: bulk rejects ----
 
 TEST(BulkRejects, F_CULL_05_OnlyShownAndNeverRejectedTwice) {
+#ifdef Q_OS_WIN
+    GTEST_SKIP() << "POSIX absolute paths in the test data (\"/p/a.jpg\" is \"<drive>:/p/a.jpg\" on Windows)";
+#endif
     EXPECT_EQ(bulkrejects::rejectedFolder("/p/a.jpg"), QStringLiteral("/p/_Rejected"));
     EXPECT_TRUE(bulkrejects::rejectedFolder("/p/_Rejected/a.jpg").isEmpty());
     EXPECT_TRUE(bulkrejects::rejectedFolder("/p/_rejected/sub/a.jpg").isEmpty());

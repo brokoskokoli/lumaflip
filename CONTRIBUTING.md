@@ -49,6 +49,25 @@ replaces the file of the same name in `src/platform/generic`; tests that need it
 `platform/linux/` header and are only built on Linux. Platform differences and the CI job are
 described in [docs/LINUX.md](docs/LINUX.md).
 
+### Windows
+
+Visual Studio 2022 (C++ workload) or the Build Tools, CMake ≥ 3.28, Ninja, Qt 6.11 for
+`msvc2022_64` (with *Qt Image Formats* and *Qt Shader Tools*), Python 3 and
+[vcpkg](https://github.com/microsoft/vcpkg) (`VCPKG_ROOT`; dependencies come from `vcpkg.json`).
+In an *x64 Native Tools Command Prompt*:
+
+```bat
+set CMAKE_PREFIX_PATH=C:\Qt\6.11.2\msvc2022_64
+cmake --preset windows-release
+cmake --build --preset windows-release
+ctest --preset windows-release -L unit
+```
+
+Windows code goes into `src/platform/windows/` (`Win<Role>.cpp` replaces the generic
+`Generic<Role>.cpp`) and `src/app/<Name>_win.cpp` next to `<Name>_mac.mm`; CMake parts into
+`src/platform/windows/*.cmake` or `if(WIN32)` blocks. Own sources build with `/W4 /WX`. Packaging:
+`tools/windows_deploy.py` + `packaging/windows/Lumaflip.iss`. More in [docs/WINDOWS.md](docs/WINDOWS.md).
+
 ### Checks
 
 | Command | What it does |

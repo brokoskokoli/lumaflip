@@ -47,10 +47,10 @@ public:
 
     // Asynchronous operations. `origin` (e.g. the window that trashed the file) is kept
     // with the undo command and reported again by fileRestored() on every undo.
-    void moveToTrashAsync(const QString& path, QObject* origin = nullptr, Completion done = {});
-    void renameAsync(const QString& path, const QString& newFileName, Completion done = {});
-    void moveToAsync(const QString& path, const QString& targetFolder, Completion done = {});
-    void copyToAsync(const QString& path, const QString& targetFolder, Completion done = {});
+    void moveToTrashAsync(const QString& path, QObject* origin = nullptr, const Completion& done = {});
+    void renameAsync(const QString& path, const QString& newFileName, const Completion& done = {});
+    void moveToAsync(const QString& path, const QString& targetFolder, const Completion& done = {});
+    void copyToAsync(const QString& path, const QString& targetFolder, const Completion& done = {});
     // F-EDIT-02: a file changed in place (e.g. a saved rotation). `apply` (do, redo) and
     // `revert` (undo) run on a worker thread and return an error text (empty = success);
     // `cleanup` runs when the undo command is dropped (e.g. to delete backup copies).

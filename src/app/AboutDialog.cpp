@@ -6,6 +6,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QGuiApplication>
 #include <QHBoxLayout>
 #include <QIcon>
 #include <QJsonArray>
@@ -32,7 +33,7 @@ constexpr auto kGplUrl = "https://www.gnu.org/licenses/gpl-3.0.html";
 
 QStringList jsonStrings(const QJsonValue& v) {
     QStringList out;
-    for (const QJsonValue& e : v.toArray())
+    for (const auto& e : v.toArray())
         out << e.toString();
     return out;
 }
@@ -53,8 +54,13 @@ QString AboutDialog::version() {
 }
 
 QString AboutDialog::bundledLicensesDir() {
+#ifdef Q_OS_WIN
+    // <install dir>/Lumaflip.exe -> <install dir>/licenses (tools/windows_deploy.py)
+    return QDir::cleanPath(QCoreApplication::applicationDirPath() + QStringLiteral("/licenses"));
+#else
     // <bundle>/Contents/MacOS/Lumaflip -> <bundle>/Contents/Resources/licenses
     return QDir::cleanPath(QCoreApplication::applicationDirPath() + QStringLiteral("/../Resources/licenses"));
+#endif
 }
 
 QVector<ThirdPartyComponent> AboutDialog::loadComponents(const QString& dir, bool* fromBundle) {
@@ -64,7 +70,7 @@ QVector<ThirdPartyComponent> AboutDialog::loadComponents(const QString& dir, boo
         QJsonParseError err{};
         const QJsonDocument doc = QJsonDocument::fromJson(index.readAll(), &err);
         if (err.error == QJsonParseError::NoError) {
-            for (const QJsonValue& v : doc.array()) {
+            for (const auto& v : doc.array()) {
                 const QJsonObject o = v.toObject();
                 ThirdPartyComponent c;
                 c.id = o.value(QLatin1String("id")).toString();
@@ -113,11 +119,19 @@ AboutDialog::AboutDialog(QWidget* parent, const QString& licensesDir)
     auto* layout = new QVBoxLayout(this);
     layout->setSpacing(10);
 
+#ifdef Q_OS_WIN
+    // The icon of the executable (resource IDI_ICON1, see packaging/windows/version.rc.in).
+    const QIcon appIcon = QGuiApplication::windowIcon();
+    if (!appIcon.isNull()) {
+        auto* icon = new QLabel(this);
+        icon->setPixmap(appIcon.pixmap(96, 96));
+#else
     const QString icns = QDir::cleanPath(QCoreApplication::applicationDirPath() +
                                          QStringLiteral("/../Resources/Lumaflip.icns"));
     if (QFileInfo::exists(icns)) {
         auto* icon = new QLabel(this);
         icon->setPixmap(QIcon(icns).pixmap(96, 96));
+#endif
         icon->setAlignment(Qt::AlignHCenter);
         layout->addWidget(icon);
     }

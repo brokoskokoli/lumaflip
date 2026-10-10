@@ -292,9 +292,11 @@ TEST_F(ArchiveTest, F_OPEN_10_MemberIsExtractedPrivatelyAndDecoded) {
     ASSERT_FALSE(file.isEmpty()) << error.toStdString();
     EXPECT_TRUE(file.endsWith(QStringLiteral(".png")));
     EXPECT_FALSE(file.contains(QStringLiteral("p/01"))); // hashed name, never the member path
+#ifndef Q_OS_WIN // Windows: ACLs of the user's profile, no POSIX permission bits
     EXPECT_EQ(QFileInfo(QFileInfo(file).absolutePath()).permissions() &
                   (QFileDevice::ReadGroup | QFileDevice::ReadOther | QFileDevice::WriteOther),
               QFileDevice::Permissions());
+#endif
     EXPECT_TRUE(cache.contains(member));
     EXPECT_EQ(cache.materialize(member, &error), file); // extracted once
     // The registry decodes member paths through the shared cache.

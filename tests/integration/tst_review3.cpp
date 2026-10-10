@@ -37,8 +37,14 @@
 
 #include <atomic>
 #include <memory>
+#ifdef Q_OS_UNIX
 #include <sys/time.h>
+#endif
+#ifdef Q_OS_WIN
+#include <windows.h>
+#else
 #include <utime.h>
+#endif
 
 using namespace lf;
 
@@ -53,7 +59,7 @@ public:
         QThread::msleep(ulong(delayMs.load()));
         if (QSemaphore* g = gate.load()) // deterministic: blocks until the test releases it
             g->acquire();
-        const QString target =
+        QString target =
             m_dir.filePath(QStringLiteral("%1-%2").arg(++m_counter).arg(QFileInfo(path).fileName()));
         if (!QFileInfo::exists(path) || !QFile::rename(path, target)) {
             if (error)
@@ -104,11 +110,35 @@ QString makeImage(const QString& path, QColor color, QSize size = QSize(64, 48))
 
 // Moves the modification time of a folder (a change the folder watcher did not report).
 bool touchFolder(const QString& folder, int secondsAhead) {
+#ifdef Q_OS_UNIX
     struct timeval times[2];
     gettimeofday(&times[0], nullptr);
     times[0].tv_sec += secondsAhead;
     times[1] = times[0];
     return ::utimes(QFile::encodeName(folder).constData(), times) == 0;
+#elif defined(Q_OS_WIN)
+    // SetFileTime on the folder itself (QFile cannot open folders on Windows).
+    const QString native = QDir::toNativeSeparators(folder);
+    HANDLE h = CreateFileW(reinterpret_cast<LPCWSTR>(native.utf16()), FILE_WRITE_ATTRIBUTES,
+                           FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING,
+                           FILE_FLAG_BACKUP_SEMANTICS, nullptr);
+    if (h == INVALID_HANDLE_VALUE)
+        return false;
+    FILETIME now{};
+    GetSystemTimeAsFileTime(&now);
+    ULARGE_INTEGER t{};
+    t.LowPart = now.dwLowDateTime;
+    t.HighPart = now.dwHighDateTime;
+    t.QuadPart += quint64(qint64(secondsAhead) * 10000000);
+    FILETIME ft{t.LowPart, t.HighPart};
+    const bool ok = SetFileTime(h, nullptr, &ft, &ft) != 0;
+    CloseHandle(h);
+    return ok;
+#else
+    Q_UNUSED(folder);
+    Q_UNUSED(secondsAhead);
+    return false;
+#endif
 }
 
 } // namespace
@@ -307,9 +337,14 @@ private slots:
             }
         QCOMPARE(withPhoto, 1);
         QCOMPARE(app->windows().size(), 1);
+        if (!w)
+            QFAIL("no window shows the photo");
+        const Collection* c = w->collection();
+        if (!c)
+            QFAIL("the window has no collection");
         QVERIFY(waitLoaded(w));
-        QVERIFY(!w->collection()->isFolderCollection()); // exactly the two files
-        QCOMPARE(w->collection()->count(), 2);
+        QVERIFY(!c->isFolderCollection()); // exactly the two files
+        QCOMPARE(c->count(), 2);
     }
 
     // ---- F-NAV-03: a newer open wins over a pending folder switch (review item 4) ----
@@ -496,10 +531,13 @@ private slots:
     void F_SET_02_shortcutOverviewMarksPlannedActions() {
         app->showShortcuts();
         auto* table = qApp->findChild<QTableWidget*>(QStringLiteral("lfShortcutsTable"));
-        if (!table)
-            for (QWidget* w : QApplication::topLevelWidgets())
-                if ((table = w->findChild<QTableWidget*>(QStringLiteral("lfShortcutsTable"))))
+        if (!table) {
+            for (QWidget* w : QApplication::topLevelWidgets()) {
+                table = w->findChild<QTableWidget*>(QStringLiteral("lfShortcutsTable"));
+                if (table)
                     break;
+            }
+        }
         QVERIFY(table);
         auto row = [&](Action a) {
             for (int r = 0; r < table->rowCount(); ++r)

@@ -21,6 +21,15 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #endif
+#ifdef Q_OS_WIN
+#include <atomic>
+#include <string>
+#include <vector>
+
+#include <windows.h>
+
+#include <sddl.h>
+#endif
 
 namespace lf::ipc {
 
@@ -611,7 +620,304 @@ bool sharedExists(const QByteArray& name) {
     return true;
 }
 
-#else // no POSIX: the helper process is not used on this platform (yet)
+#elif defined(Q_OS_WIN)
+
+// Windows: the "file descriptors" are HANDLE values (64-bit Windows uses 32-bit significant
+// handles, HandleToLong/LongToHandle). Pipes: the app's ends are overlapped named pipe
+// handles (timeouts via the OVERLAPPED event), the helper's ends are synchronous. Shared
+// memory: named file mappings in the session namespace ("Local\lfd.<pid>.<id>"), labelled
+// low integrity so the helper (a low integrity process, DecoderHelper.cpp) may write them.
+// There is no unlink: a name exists as long as a handle is open - the helper closes its
+// handle after copying, the app when it maps the pixels (or on failure, closeHandle).
+
+namespace {
+
+HANDLE toHandle(int fd) {
+    return LongToHandle(fd);
+}
+
+using Clock = std::chrono::steady_clock;
+
+int remainingMs(Clock::time_point deadline) {
+    const auto left = std::chrono::duration_cast<std::chrono::milliseconds>(deadline - Clock::now()).count();
+    return int(std::clamp<qint64>(left, 0, std::numeric_limits<int>::max()));
+}
+
+IoStatus statusOf(DWORD err) {
+    return (err == ERROR_BROKEN_PIPE || err == ERROR_NO_DATA || err == ERROR_PIPE_NOT_CONNECTED ||
+            err == ERROR_HANDLE_EOF)
+               ? IoStatus::Closed
+               : (err == ERROR_OPERATION_ABORTED ? IoStatus::Timeout : IoStatus::Error);
+}
+
+// One ReadFile/WriteFile of up to `size` bytes, waiting at most until `deadline` (works with
+// overlapped and synchronous handles; a synchronous one cannot time out).
+IoStatus transfer(HANDLE h, bool write, char* data, DWORD size, DWORD* done,
+                  const Clock::time_point* deadline) {
+    *done = 0;
+    OVERLAPPED ov{};
+    ov.hEvent = CreateEventW(nullptr, TRUE, FALSE, nullptr);
+    if (!ov.hEvent)
+        return IoStatus::Error;
+    DWORD immediate = 0;
+    const BOOL ok =
+        write ? WriteFile(h, data, size, &immediate, &ov) : ReadFile(h, data, size, &immediate, &ov);
+    const DWORD err = ok ? DWORD(ERROR_SUCCESS) : GetLastError();
+    IoStatus status = IoStatus::Ok;
+    if (ok) {
+        *done = immediate; // completed at once (always for synchronous handles)
+    } else if (err == ERROR_IO_PENDING) {
+        const DWORD wait =
+            WaitForSingleObject(ov.hEvent, deadline ? DWORD(remainingMs(*deadline)) : INFINITE);
+        if (wait != WAIT_OBJECT_0) {
+            CancelIoEx(h, &ov);
+            status = IoStatus::Timeout;
+        }
+        if (!GetOverlappedResult(h, &ov, done, TRUE)) {
+            if (status == IoStatus::Ok)
+                status = statusOf(GetLastError());
+        } else if (status == IoStatus::Timeout && *done > 0) {
+            status = IoStatus::Ok; // completed while being cancelled
+        }
+    } else {
+        status = statusOf(err);
+    }
+    CloseHandle(ov.hEvent);
+    if (status == IoStatus::Ok && *done == 0 && !write)
+        status = IoStatus::Closed;
+    return status;
+}
+
+IoStatus readExactly(int fd, char* data, size_t size, const Clock::time_point* deadline) {
+    size_t done = 0;
+    while (done < size) {
+        DWORD n = 0;
+        const IoStatus st = transfer(toHandle(fd), false, data + done,
+                                     DWORD(std::min<size_t>(size - done, size_t(1) << 24)), &n, deadline);
+        if (st != IoStatus::Ok)
+            return st;
+        done += n;
+    }
+    return IoStatus::Ok;
+}
+
+// "/lfd.<pid>.<id>" -> L"Local\lfd.<pid>.<id>"
+std::wstring mappingName(const QByteArray& name) {
+    const QString n =
+        QStringLiteral("Local\\") + QString::fromLatin1(name.startsWith('/') ? name.mid(1) : name);
+    return n.toStdWString();
+}
+
+// The user of this process and SYSTEM may use the object; low integrity processes may
+// write it (mandatory label "no write up" at low).
+PSECURITY_DESCRIPTOR lowIntegrityDescriptor() {
+    HANDLE token = nullptr;
+    if (!OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &token))
+        return nullptr;
+    DWORD size = 0;
+    GetTokenInformation(token, TokenUser, nullptr, 0, &size);
+    std::vector<char> buffer(size);
+    LPWSTR sid = nullptr;
+    if (size && GetTokenInformation(token, TokenUser, buffer.data(), size, &size))
+        ConvertSidToStringSidW(reinterpret_cast<TOKEN_USER*>(buffer.data())->User.Sid, &sid);
+    CloseHandle(token);
+    if (!sid)
+        return nullptr;
+    const std::wstring sddl = L"D:P(A;;GA;;;" + std::wstring(sid) + L")(A;;GA;;;SY)S:(ML;;NW;;;LW)";
+    LocalFree(sid);
+    PSECURITY_DESCRIPTOR sd = nullptr;
+    if (!ConvertStringSecurityDescriptorToSecurityDescriptorW(sddl.c_str(), SDDL_REVISION_1, &sd, nullptr))
+        return nullptr;
+    return sd;
+}
+
+QString winError(DWORD code) {
+    return Tr::tr("Windows-Fehler %1").arg(code);
+}
+
+void releaseView(void* info) {
+    UnmapViewOfFile(info);
+}
+
+} // namespace
+
+IoStatus writeFrame(int fd, const QByteArray& payload) {
+    if (quint64(payload.size()) > kMaxFrameBytes)
+        return IoStatus::TooLarge;
+    const quint32 len = quint32(payload.size());
+    const unsigned char header[4] = {uchar(len & 0xFF), uchar((len >> 8) & 0xFF), uchar((len >> 16) & 0xFF),
+                                     uchar((len >> 24) & 0xFF)};
+    QByteArray all(reinterpret_cast<const char*>(header), 4);
+    all += payload;
+    size_t done = 0;
+    while (done < size_t(all.size())) {
+        DWORD n = 0;
+        const IoStatus st =
+            transfer(toHandle(fd), true, all.data() + done, DWORD(size_t(all.size()) - done), &n, nullptr);
+        if (st != IoStatus::Ok)
+            return st;
+        done += n;
+    }
+    return IoStatus::Ok;
+}
+
+IoStatus readFrame(int fd, QByteArray* payload, int timeoutMs) {
+    const Clock::time_point deadline = Clock::now() + std::chrono::milliseconds(std::max(timeoutMs, 0));
+    const Clock::time_point* limit = timeoutMs < 0 ? nullptr : &deadline;
+    unsigned char header[4];
+    IoStatus st = readExactly(fd, reinterpret_cast<char*>(header), 4, limit);
+    if (st != IoStatus::Ok)
+        return st;
+    const quint32 len = quint32(header[0]) | (quint32(header[1]) << 8) | (quint32(header[2]) << 16) |
+                        (quint32(header[3]) << 24);
+    if (len > kMaxFrameBytes)
+        return IoStatus::TooLarge;
+    payload->resize(qsizetype(len));
+    return readExactly(fd, payload->data(), len, limit);
+}
+
+bool fillSharedImage(const QByteArray& name, const QImage& image, QString* error) {
+    const qint64 size = qint64(image.bytesPerLine()) * image.height();
+    if (image.isNull() || size <= 0) {
+        if (error)
+            *error = Tr::tr("Das Bild ist leer.");
+        return false;
+    }
+    HANDLE h = name.startsWith(kShmPrefix)
+                   ? OpenFileMappingW(FILE_MAP_WRITE, FALSE, mappingName(name).c_str())
+                   : nullptr;
+    if (!h) {
+        if (error)
+            *error = Tr::tr("Gemeinsamer Speicher ist nicht verfügbar (%1).").arg(winError(GetLastError()));
+        return false;
+    }
+    void* mem = MapViewOfFile(h, FILE_MAP_WRITE, 0, 0, 0);
+    CloseHandle(h); // the view keeps the memory; the name goes with the app's handle
+    bool ok = false;
+    if (mem) {
+        MEMORY_BASIC_INFORMATION mbi{};
+        ok = VirtualQuery(mem, &mbi, sizeof mbi) == sizeof mbi && qint64(mbi.RegionSize) >= size;
+        if (ok)
+            std::memcpy(mem, image.constBits(), size_t(size));
+        UnmapViewOfFile(mem);
+    }
+    if (!ok && error)
+        *error = Tr::tr("Nicht genug Speicher für das Bild (%1 × %2 Pixel).")
+                     .arg(image.width())
+                     .arg(image.height());
+    return ok;
+}
+
+int createShared(const QByteArray& name, qint64 size, QString* error) {
+    if (size <= 0) {
+        if (error)
+            *error = Tr::tr("Gemeinsamer Speicher ist nicht verfügbar (%1).")
+                         .arg(winError(ERROR_INVALID_PARAMETER));
+        return -1;
+    }
+    PSECURITY_DESCRIPTOR sd = lowIntegrityDescriptor();
+    SECURITY_ATTRIBUTES sa{sizeof(SECURITY_ATTRIBUTES), sd, FALSE};
+    HANDLE h = CreateFileMappingW(INVALID_HANDLE_VALUE, sd ? &sa : nullptr, PAGE_READWRITE,
+                                  DWORD(quint64(size) >> 32), DWORD(quint64(size) & 0xFFFFFFFFu),
+                                  mappingName(name).c_str());
+    const DWORD err = GetLastError();
+    if (sd)
+        LocalFree(sd);
+    if (h && err == ERROR_ALREADY_EXISTS) { // exclusive, like O_EXCL
+        CloseHandle(h);
+        h = nullptr;
+    }
+    if (!h) {
+        if (error)
+            *error = Tr::tr("Gemeinsamer Speicher ist nicht verfügbar (%1).").arg(winError(err));
+        return -1;
+    }
+    return HandleToLong(h);
+}
+
+QImage mapSharedImage(int fd, const PixelHeader& h, QString* error) {
+    if (fd <= 0) {
+        if (error)
+            *error = Tr::tr("Die Bilddaten des Decoders fehlen.");
+        return {};
+    }
+    HANDLE mapping = toHandle(fd);
+    void* mem = validatePixelHeader(h, nullptr)
+                    ? MapViewOfFile(mapping, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0)
+                    : nullptr;
+    CloseHandle(mapping);
+    MEMORY_BASIC_INFORMATION mbi{};
+    if (mem && (VirtualQuery(mem, &mbi, sizeof mbi) != sizeof mbi || qint64(mbi.RegionSize) < h.shmSize)) {
+        UnmapViewOfFile(mem);
+        mem = nullptr;
+    }
+    if (!mem) {
+        if (error)
+            *error = Tr::tr("Die Bilddaten des Decoders sind ungültig.");
+        return {};
+    }
+    QImage img(static_cast<uchar*>(mem), h.width, h.height, qsizetype(h.bytesPerLine),
+               QImage::Format(h.format), releaseView, mem);
+    if (img.isNull()) {
+        UnmapViewOfFile(mem);
+        if (error)
+            *error = Tr::tr("Die Bilddaten des Decoders sind ungültig.");
+        return {};
+    }
+    if (!h.iccProfile.isEmpty())
+        img.setColorSpace(QColorSpace::fromIccProfile(h.iccProfile));
+    return img;
+}
+
+bool unlinkShared(const QByteArray& name) {
+    // Windows has no names to remove (they vanish with the last handle); reports whether the
+    // name still exists, as unlink() would.
+    return sharedExists(name);
+}
+
+bool sharedExists(const QByteArray& name) {
+    HANDLE h = OpenFileMappingW(FILE_MAP_READ, FALSE, mappingName(name).c_str());
+    if (!h)
+        return false;
+    CloseHandle(h);
+    return true;
+}
+
+void closeHandle(int fd) {
+    if (fd > 0)
+        CloseHandle(toHandle(fd));
+}
+
+bool createPipe(int* readEnd, int* writeEnd, bool overlappedRead, bool overlappedWrite, bool inheritRead,
+                bool inheritWrite) {
+    static std::atomic<quint32> counter{0};
+    const std::wstring name = (QStringLiteral(R"(\\.\pipe\lumaflip-)") + QStringLiteral("%1-%2-%3")
+                                                                             .arg(GetCurrentProcessId())
+                                                                             .arg(counter.fetch_add(1))
+                                                                             .arg(quint64(GetTickCount64())))
+                                  .toStdWString();
+    // The server end is the read end; the client end opened right after is the write end.
+    SECURITY_ATTRIBUTES saRead{sizeof(SECURITY_ATTRIBUTES), nullptr, inheritRead ? TRUE : FALSE};
+    HANDLE rd = CreateNamedPipeW(name.c_str(),
+                                 PIPE_ACCESS_INBOUND | FILE_FLAG_FIRST_PIPE_INSTANCE |
+                                     (overlappedRead ? FILE_FLAG_OVERLAPPED : 0),
+                                 PIPE_TYPE_BYTE | PIPE_READMODE_BYTE | PIPE_WAIT | PIPE_REJECT_REMOTE_CLIENTS,
+                                 1, 64 * 1024, 64 * 1024, 0, &saRead);
+    if (rd == INVALID_HANDLE_VALUE)
+        return false;
+    SECURITY_ATTRIBUTES saWrite{sizeof(SECURITY_ATTRIBUTES), nullptr, inheritWrite ? TRUE : FALSE};
+    HANDLE wr = CreateFileW(name.c_str(), GENERIC_WRITE, 0, &saWrite, OPEN_EXISTING,
+                            overlappedWrite ? FILE_FLAG_OVERLAPPED : 0, nullptr);
+    if (wr == INVALID_HANDLE_VALUE) {
+        CloseHandle(rd);
+        return false;
+    }
+    *readEnd = HandleToLong(rd);
+    *writeEnd = HandleToLong(wr);
+    return true;
+}
+
+#else // no POSIX, no Windows: the helper process is not used on this platform
 
 IoStatus writeFrame(int, const QByteArray&) {
     return IoStatus::Error;

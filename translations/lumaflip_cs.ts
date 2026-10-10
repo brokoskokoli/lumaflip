@@ -641,6 +641,14 @@
         <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
         <translation>Název zkratky nesmí začínat znakem „-“.</translation>
     </message>
+    <message>
+        <source>Kurzbefehle gibt es nur unter macOS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
         <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
         <translation>
@@ -853,6 +861,10 @@
     <message>
         <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
         <translation>Nedostatek paměti pro obrázek (%1 × %2 pixelů).</translation>
+    </message>
+    <message>
+        <source>Windows-Fehler %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Die Bilddaten des Decoders fehlen.</source>
@@ -1373,6 +1385,13 @@
     <message>
         <source>Karte schließen</source>
         <translation>Zavřít mapu</translation>
+    </message>
+</context>
+<context>
+    <name>lf::FolderMapView</name>
+    <message>
+        <source>Karten sind unter Windows nicht verfügbar. Fotos mit Ortsangabe in diesem Ordner: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3015,6 +3034,18 @@
         <source>Der Bildschirm ist nicht mehr da.</source>
         <translation>Displej už není připojen.</translation>
     </message>
+    <message>
+        <source>Alle Bildschirme</source>
+        <translation type="unfinished">Všechny obrazovky</translation>
+    </message>
+    <message>
+        <source>Bildschirm %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Windows hat das Bild nicht als Hintergrund übernommen.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>lf::MainMenu</name>
@@ -3592,6 +3623,10 @@
     <message>
         <source>Die Karte konnte nicht geladen werden.</source>
         <translation>Mapu se nepodařilo načíst.</translation>
+    </message>
+    <message>
+        <source>Karten sind unter Windows nicht verfügbar.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5410,6 +5445,18 @@
     <message>
         <source>„%1“ kann nicht gestartet werden.</source>
         <translation>„%1“ nelze spustit.</translation>
+    </message>
+    <message>
+        <source>Batch-Dateien werden aus Sicherheitsgründen nicht gestartet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Das Programm wurde nicht gefunden.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Windows erlaubt Programmen nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

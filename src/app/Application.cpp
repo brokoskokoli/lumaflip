@@ -32,6 +32,7 @@
 #include <QHash>
 #include <QHeaderView>
 #include <QKeyEvent>
+#include <QMenuBar>
 #include <QMessageBox>
 #include <QPointer>
 #include <QPushButton>
@@ -741,7 +742,27 @@ void Application::placeWindow(ViewerWindow* window) {
     window->move(p);
 }
 
+#ifdef Q_OS_WIN
+namespace {
+// Without a global menu bar (Windows) every window shows the shared menus in a bar of its
+// own; the actions' shortcuts work through it (a hidden, parentless bar would disable
+// them).
+void attachMenuBar(ViewerWindow* window, MainMenu* menu) {
+    if (!window || !menu)
+        return;
+    auto* bar = new QMenuBar(window);
+    bar->setObjectName(QStringLiteral("lfWindowMenuBar"));
+    for (QMenu* m : menu->menus())
+        bar->addMenu(m);
+    window->setMenuBar(bar); // replaces (and deletes) the previous one
+}
+} // namespace
+#endif
+
 void Application::registerWindow(ViewerWindow* window) {
+#ifdef Q_OS_WIN
+    attachMenuBar(window, d->menu);
+#endif
     d->windows.append(window);
     d->allWindows.removeAll(QPointer<ViewerWindow>());
     d->allWindows.append(window);
@@ -1151,6 +1172,10 @@ void Application::retranslate() {
     d->retranslatePending = false;
     delete d->menu;
     d->menu = new MainMenu(*this);
+#ifdef Q_OS_WIN
+    for (ViewerWindow* w : windows())
+        attachMenuBar(w, d->menu);
+#endif
     if (PreferencesDialog* prefs = PreferencesDialog::recreateForLanguageChange())
         connect(prefs, &PreferencesDialog::makeDefaultRequested, this, &Application::makeDefaultViewer,
                 Qt::UniqueConnection);

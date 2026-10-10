@@ -32,6 +32,9 @@ QString bundleTranslationDir() {
 #ifdef Q_OS_MACOS
     return QDir::cleanPath(QCoreApplication::applicationDirPath() +
                            QStringLiteral("/../Resources/translations"));
+#elif defined(Q_OS_WIN)
+    // Windows: <install dir>/translations (Lumaflip's and Qt's catalogues, windeployqt).
+    return QDir::cleanPath(QCoreApplication::applicationDirPath() + QStringLiteral("/translations"));
 #else
     // XDG install layout (bin/lumaflip, share/lumaflip/translations; also inside an AppImage).
     return QDir::cleanPath(QCoreApplication::applicationDirPath() +

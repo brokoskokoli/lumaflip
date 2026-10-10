@@ -10,6 +10,9 @@ project(Lumaflip VERSION 1.1.0 LANGUAGES C CXX)
 if(APPLE)
   enable_language(OBJC OBJCXX)
 endif()
+if(WIN32)
+  enable_language(RC) # version resource and icon of the Windows executables
+endif()
 
 set(LF_APP_NAME "Lumaflip")
 set(LF_BUNDLE_ID "io.github.brokoskokoli.lumaflip")
@@ -27,9 +30,9 @@ option(LF_BUILD_FUZZERS "Build the fuzz targets in tests/fuzz (libFuzzer or stan
 # Release builds: fail instead of silently dropping lossless JPEG rotation (F-EDIT-02) when
 # libjpeg-turbo's static TurboJPEG library (libturbojpeg.a) is missing (src/CMakeLists.txt).
 option(LF_REQUIRE_TURBOJPEG "Require the static libjpeg-turbo TurboJPEG library" OFF)
-# The app (widgets, QRhi canvas, bundle) and its integration tests/benchmarks: macOS and
-# Linux (M4, SPEC 9.3/13). Other systems build the platform-neutral core only for now.
-if(APPLE OR CMAKE_SYSTEM_NAME STREQUAL "Linux")
+# The app (widgets, QRhi canvas, bundle) and its integration tests/benchmarks: macOS, Linux
+# and Windows (M4, SPEC 9.3/13). Other systems build the platform-neutral core only for now.
+if(APPLE OR WIN32 OR CMAKE_SYSTEM_NAME STREQUAL "Linux")
   option(LF_BUILD_UI "Build the app, its UI library, integration tests and benchmarks" ON)
 else()
   option(LF_BUILD_UI "Build the app, its UI library, integration tests and benchmarks" OFF)
@@ -46,6 +49,14 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
   set(LF_LINUX ON)
 else()
   set(LF_LINUX OFF)
+endif()
+# Windows: the generic layer plus the native parts in src/platform/windows (which replace
+# their generic counterparts, src/CMakeLists.txt). LF_GENERIC_PLATFORM stays on there: the
+# code and tests use it for "not the macOS platform layer".
+if(WIN32 AND NOT LF_FORCE_GENERIC_PLATFORM)
+  set(LF_WINDOWS_PLATFORM ON)
+else()
+  set(LF_WINDOWS_PLATFORM OFF)
 endif()
 
 # ---- Sparkle 2: automatic updates (F-MAC-08, SPEC 10.1) ----
@@ -109,10 +120,32 @@ endif()
 
 # Common warning flags for our own targets only.
 add_library(lf_warnings INTERFACE)
-target_compile_options(lf_warnings INTERFACE -Wall -Wextra -Wpedantic
-  $<$<CXX_COMPILER_ID:Clang,AppleClang>:-Wno-gnu-zero-variadic-macro-arguments>)
-if(LF_WERROR)
-  target_compile_options(lf_warnings INTERFACE -Werror)
+if(MSVC)
+  # MSVC (and clang-cl): /W4 is the counterpart of -Wall -Wextra. Warnings that clang only
+  # reports with flags the project does not use are switched off, so both compilers
+  # enforce the same rules: C4244/C4267/C4305/C4310 (narrowing, -Wconversion), C4127
+  # (constant condition), C4456-C4459 (shadowing, -Wshadow), C4324 (padding for alignas),
+  # C4702 (unreachable code, -Wunreachable-code: platform #ifdef branches return early).
+  target_compile_options(lf_warnings INTERFACE /W4 /wd4244 /wd4267 /wd4305 /wd4310 /wd4127 /wd4456
+                                               /wd4457 /wd4458 /wd4459 /wd4324 /wd4702)
+  if(LF_WERROR)
+    target_compile_options(lf_warnings INTERFACE /WX)
+  endif()
+else()
+  target_compile_options(lf_warnings INTERFACE -Wall -Wextra -Wpedantic
+    $<$<CXX_COMPILER_ID:Clang,AppleClang>:-Wno-gnu-zero-variadic-macro-arguments>)
+  if(LF_WERROR)
+    target_compile_options(lf_warnings INTERFACE -Werror)
+  endif()
+endif()
+if(WIN32)
+  # Windows 10 API level, Unicode Win32 API, no min/max macros; sources are UTF-8 (German
+  # UI texts). Applies to every target (also the tests).
+  add_compile_definitions(_WIN32_WINNT=0x0A00 WINVER=0x0A00 NTDDI_VERSION=0x0A000006 UNICODE _UNICODE
+                          NOMINMAX WIN32_LEAN_AND_MEAN _CRT_SECURE_NO_WARNINGS)
+  if(MSVC)
+    add_compile_options(/utf-8 /Zc:__cplusplus /permissive- /EHsc /bigobj)
+  endif()
 endif()
 if(LF_SANITIZE)
   add_compile_options(-fsanitize=address,undefined -fno-omit-frame-pointer)

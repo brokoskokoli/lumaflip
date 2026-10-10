@@ -198,7 +198,7 @@ private:
 // executeRotationSave().
 class RotationEdit {
 public:
-    RotationEdit(RotationRequest request, RotationPlan plan, RotationMethod method,
+    RotationEdit(const RotationRequest& request, RotationPlan plan, RotationMethod method,
                  std::shared_ptr<UndoBackupStore> store);
     ~RotationEdit();
     RotationEdit(const RotationEdit&) = delete;

@@ -814,6 +814,10 @@ void ViewerWindow::fitWindowToImage(QSize imagePixels) {
         chromeHeight += m_statusBar->sizeHint().height();
     if (!m_accessHint->isHidden())
         chromeHeight += m_accessHint->sizeHint().height();
+#ifdef Q_OS_WIN
+    if (const QWidget* bar = menuWidget(); bar && !bar->isHidden()) // the window's own menu bar
+        chromeHeight += bar->sizeHint().height();
+#endif
     const QSize wanted = (QSizeF(imagePixels) / dpr).toSize() + QSize(0, chromeHeight);
     const QSize bounded = wanted.boundedTo(QSize(int(avail.width() * 0.9), int(avail.height() * 0.9)))
                               .expandedTo(QSize(360, 260));
@@ -1552,6 +1556,12 @@ void ViewerWindow::toggleFullScreen() {
 
 void ViewerWindow::setChromeVisible(bool visible) {
     m_chromeShown = visible;
+#ifdef Q_OS_WIN
+    // The window's own menu bar (Windows) goes with the chrome. It stays "visible"
+    // with zero height: the menu shortcuts only work through a visible bar.
+    if (QWidget* bar = menuWidget())
+        bar->setMaximumHeight(visible ? QWIDGETSIZE_MAX : 0);
+#endif
     applyStatusBarVisibility();
     if (m_panels)
         m_panels->setChromeVisible(visible); // M2 panels hide/return with the chrome

@@ -117,3 +117,12 @@ src/codecs/LibJxlDecoder.cpp:JPEG XL
 src/codecs/OpenExrDecoder.cpp:Gray
 # Linux decoder helper sandbox: log diagnostics only (SPEC 8.5)
 src/platform/linux/LinuxSandbox.cpp:*
+# Windows platform layer: icon font families, format/colour model ids (as with ImageIO),
+# helper diagnostics (log and test operations only)
+src/app/SystemSymbols_win.cpp:Segoe Fluent Icons
+src/app/SystemSymbols_win.cpp:Segoe MDL2 Assets
+src/core/DecoderHelper.cpp:WSA error %1
+src/platform/windows/WicDecoder.cpp:JPEG XR
+src/platform/windows/WicDecoder.cpp:Gray
+src/platform/windows/WicDecoder.cpp:Adobe RGB (1998)
+src/platform/windows/WinDecoderSandbox.cpp:integrity level 0x%1, in job: %2

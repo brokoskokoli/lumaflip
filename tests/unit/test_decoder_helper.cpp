@@ -36,6 +36,9 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #endif
+#if defined(Q_OS_WIN) && LF_WINDOWS_PLATFORM
+#include "platform/windows/WinDecoderSandbox.h"
+#endif
 #ifdef Q_OS_LINUX
 #include <sys/syscall.h>
 #endif
@@ -356,7 +359,15 @@ int maxChannelDifference(const QImage& a, const QImage& b) {
 }
 
 bool processAlive(qint64 pid) {
+#ifdef Q_OS_WIN
+    return win::processAlive(pid);
+#else
     return pid > 0 && ::kill(pid_t(pid), 0) == 0;
+#endif
+}
+
+qint64 ownPid() {
+    return qint64(QCoreApplication::applicationPid());
 }
 
 // Local stand-in with the helper's "Qt" backend name that claims every file.
@@ -382,8 +393,8 @@ TEST(DecoderHelper, PingAndSandbox) {
     ASSERT_TRUE(pong.has_value()) << error.toStdString();
     EXPECT_TRUE(pong->ok);
     EXPECT_GT(pong->pid, 0);
-    EXPECT_NE(pong->pid, qint64(getpid()));
-#if defined(Q_OS_MACOS) || defined(Q_OS_LINUX)
+    EXPECT_NE(pong->pid, ownPid());
+#if defined(Q_OS_MACOS) || defined(Q_OS_LINUX) || defined(Q_OS_WIN)
     EXPECT_TRUE(pong->sandboxed);
     // No file writes from inside the sandbox.
     QTemporaryDir dir;
@@ -443,7 +454,7 @@ TEST(DecoderHelper, SharedMemoryIsRemovedInEveryCase) {
     DecoderHelperPool pool(helperOptions());
     ipc::Request r = op(ipc::Op::Decode, corpusFile(QStringLiteral("rgba8.png")));
     r.backend = QStringLiteral("Qt");
-    const qint64 app = qint64(getpid());
+    const qint64 app = ownPid();
     // 1. Mapped by the pool while it holds the helper: no name left, the image valid.
     auto resp = pool.call(r, 10000);
     ASSERT_TRUE(resp && resp->ok);
@@ -458,6 +469,7 @@ TEST(DecoderHelper, SharedMemoryIsRemovedInEveryCase) {
         EXPECT_FALSE(ipc::sharedExists(ipc::shmName(app, id)));
 }
 
+#ifdef Q_OS_UNIX
 // The helper's request loop (in process, over pipes): Decode keeps the image and announces
 // its size, Deliver fills the app's object and removes its name; a Deliver for another
 // request, or after any other request, is refused. The helper never creates an object.
@@ -520,6 +532,8 @@ TEST(DecoderHelper, HelperDeliversIntoAppOwnedSharedMemory) {
     close(fromHelper[0]);
     close(fromHelper[1]);
 }
+
+#endif // Q_OS_UNIX
 
 #ifdef Q_OS_MACOS
 // Code review M3 #1: the app quits or crashes while the helper decodes. Before, the helper
@@ -782,7 +796,7 @@ TEST(DecoderHelper, SandboxDeniesEverythingButReading) {
 
 #endif
 
-#if defined(Q_OS_MACOS) || defined(Q_OS_LINUX)
+#if defined(Q_OS_MACOS) || defined(Q_OS_LINUX) || defined(Q_OS_WIN)
 
 // The app refuses a helper that reports running without sandbox (error card text).
 TEST(DecoderHelper, RefusesHelperWithoutSandbox) {

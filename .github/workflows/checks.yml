@@ -4,7 +4,7 @@
 # release is never built with weaker checks than a merge.
 # On macOS: build, tests, format (all files), SPDX, spec coverage, benchmarks, clang-tidy
 # (changed files, findings fail), ASan/UBSan; the platform-neutral core on Linux
-# (SPEC 9.3); REUSE compliance.
+# (SPEC 9.3); the Windows app (build, tests, ZIP + installer); REUSE compliance.
 # Actions are pinned by commit SHA (comment = tag). No secrets are passed to this workflow.
 name: Checks
 on:
@@ -346,6 +346,146 @@ jobs:
         with:
           name: test-logs-linux-app
           path: build/linux-app/Testing/Temporary/*.log
+          if-no-files-found: warn
+
+  windows:
+    # M4: the app on Windows 10/11 (src/platform/windows, docs/WINDOWS.md): MSVC + Qt
+    # msvc2022_64, vcpkg (vcpkg.json) for zlib/libjpeg-turbo/libarchive/GoogleTest with a
+    # binary cache. Unit and integration tests (real windows, D3D11/WARP), then the
+    # deployed folder (windeployqt), a portable ZIP and the Inno Setup installer.
+    name: Windows app
+    if: inputs.code
+    runs-on: windows-2025
+    timeout-minutes: 150
+    env:
+      VCPKG_COMMIT: 9e593bb18ea69cc5095e012465dcd675a822ed0d # = builtin-baseline in vcpkg.json
+      VCPKG_DEFAULT_TRIPLET: x64-windows-static-md
+      # Shared runners: timing limits of the tests x2.
+      LF_TIMING_FACTOR: "2"
+      # Qt writes its messages to the debugger output when stderr is no console (ctest
+      # pipes): keep them in the test logs.
+      QT_FORCE_STDERR_LOGGING: "1"
+      # No GPU on the runners: Direct3D 11 runs on WARP (software), see tst_app_coverage.
+      LF_SOFTWARE_RHI: "1"
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: MSVC developer environment
+        uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1.13.0
+        with:
+          arch: x64
+      - name: Restore Qt
+        id: qt-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/Qt
+          key: qt-win-6.11.2-msvc2022_64-${{ hashFiles('tools/fetch_qt_windows.py') }}
+      - name: Install Qt 6.11.2 (msvc2022_64)
+        # install-qt-action/aqtinstall do not read the per-architecture repository layout of
+        # Qt 6.11 for Windows yet: tools/fetch_qt_windows.py (official repository, SHA-1 checked).
+        run: |
+          $qtdir = Join-Path $env:RUNNER_TEMP "Qt"
+          if (-not (Test-Path "$qtdir\6.11.2\msvc2022_64\bin\Qt6Core.dll")) {
+            python tools/fetch_qt_windows.py 6.11.2 $qtdir
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+          $prefix = "$qtdir\6.11.2\msvc2022_64"
+          "QT_ROOT_DIR=$prefix" >> $env:GITHUB_ENV
+          "CMAKE_PREFIX_PATH=$prefix" >> $env:GITHUB_ENV
+          "$prefix\bin" >> $env:GITHUB_PATH
+      - name: Save Qt
+        if: steps.qt-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/Qt
+          key: qt-win-6.11.2-msvc2022_64-${{ hashFiles('tools/fetch_qt_windows.py') }}
+        continue-on-error: true
+      - name: vcpkg (pinned)
+        run: |
+          $root = Join-Path $env:RUNNER_TEMP "vcpkg"
+          git init -q $root
+          git -C $root fetch -q --depth 1 https://github.com/microsoft/vcpkg.git $env:VCPKG_COMMIT
+          git -C $root checkout -q FETCH_HEAD
+          & "$root\bootstrap-vcpkg.bat" -disableMetrics
+          "VCPKG_ROOT=$root" >> $env:GITHUB_ENV
+          $cache = Join-Path $env:RUNNER_TEMP "vcpkg-cache"
+          New-Item -ItemType Directory -Force $cache | Out-Null
+          "VCPKG_BINARY_SOURCES=clear;files,$cache,readwrite" >> $env:GITHUB_ENV
+          "LF_VCPKG_CACHE=$cache" >> $env:GITHUB_ENV
+      - name: Restore vcpkg binary cache
+        id: vcpkg-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/vcpkg-cache
+          key: vcpkg-win-${{ hashFiles('vcpkg.json') }}
+      - name: Configure
+        run: cmake --preset windows-release
+      - name: Save vcpkg binary cache
+        # Right after the dependencies were built: a failing build/test does not lose them.
+        if: steps.vcpkg-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/vcpkg-cache
+          key: vcpkg-win-${{ hashFiles('vcpkg.json') }}
+        continue-on-error: true
+      - name: Build
+        id: build
+        # -k 0: report every compile error, not only the first one.
+        run: cmake --build --preset windows-release -- -k 0
+      - name: Unit tests
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: ctest --test-dir build/windows-release -L unit --output-on-failure -j 4 --timeout 300
+      - name: Integration tests
+        # Real windows on the runner's desktop; QRhi uses D3D11 (WARP without a GPU). Also
+        # after failed unit tests (independent results; the job fails either way).
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        env:
+          QT_QPA_PLATFORM: windows
+        run: ctest --test-dir build/windows-release -L integration --output-on-failure -j 2 --timeout 900
+      - name: Deploy (windeployqt)
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: |
+          python tools/windows_deploy.py build/windows-release dist/Lumaflip `
+            --vcpkg-installed build/windows-release/vcpkg_installed/$env:VCPKG_DEFAULT_TRIPLET
+      - name: Smoke test of the deployed app
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        # The deployed helper starts sandboxed and decodes (Qt plugins from the deployed folder).
+        run: python tools/windows_smoke.py dist/Lumaflip
+      - name: Portable ZIP
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: |
+          $version = (Select-String -Path CMakeLists.txt -Pattern 'project\(Lumaflip VERSION ([0-9.]+)').Matches[0].Groups[1].Value
+          "LF_VERSION=$version" >> $env:GITHUB_ENV
+          Compress-Archive -Path dist/Lumaflip -DestinationPath "dist/Lumaflip-$version-windows-x64.zip"
+      - name: Installer (Inno Setup)
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        run: |
+          choco install innosetup -y --no-progress
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          & $iscc /Qp "/DAppVersion=$env:LF_VERSION" "/DSourceDir=$PWD\dist\Lumaflip" "/DOutputDir=$PWD\dist" `
+            "/DIconFile=$PWD\build\windows-release\packaging\Lumaflip.ico" packaging\windows\Lumaflip.iss
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          Get-ChildItem dist
+      - name: Upload app (ZIP + installer)
+        if: ${{ !cancelled() && steps.build.outcome == 'success' }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: lumaflip-windows-x64
+          path: |
+            dist/*.zip
+            dist/*-setup.exe
+          if-no-files-found: error
+      - name: Upload test logs
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: test-logs-windows
+          path: build/windows-release/Testing/Temporary/*.log
           if-no-files-found: warn
 
   reuse:

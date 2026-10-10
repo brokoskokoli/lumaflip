@@ -27,6 +27,12 @@ refer to [SPEC.md](SPEC.md).
   decoders for HEIF/AVIF (libheif), JPEG XL (libjxl), camera RAW (LibRaw) and OpenEXR, and a
   seccomp-bpf + Landlock sandbox for the decoder helper. Desktop entry, AppStream metadata,
   icons, Flatpak manifest. See [docs/LINUX.md](docs/LINUX.md). [SPEC 9.3, 13]
+- **Windows 10/11 (preview)**: the app built with MSVC and Qt 6.11, with a native platform layer
+  — WIC as system decoder (HEIF/AVIF/WebP/JPEG XL/RAW with the Store codec extensions), Explorer
+  name order, Recycle Bin with undo, recursive folder watching, Open with, Default apps,
+  wallpaper, monitor ICC profile and scRGB HDR output, the decoder helper in a low integrity
+  sandbox with a job object. Installer (Inno Setup) and portable ZIP from CI; not code-signed yet
+  (SmartScreen warns). See docs/WINDOWS.md. [SPEC 9.3, 13]
 
 ## [1.1.0] - Unreleased
 
