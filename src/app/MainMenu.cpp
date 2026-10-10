@@ -128,8 +128,8 @@ void MainMenu::build() {
             &QAction::triggered, &m_app, &Application::showOpenFolderDialog);
     m_recentMenu = file->addMenu(tr("Zuletzt geöffnet"));
     m_recentMenu->setObjectName(QStringLiteral("menu:recent"));
-    connect(m_recentMenu, &QMenu::aboutToShow, this, &MainMenu::rebuildRecent);
-    rebuildRecent();
+    connect(m_recentMenu, &QMenu::aboutToShow, this, [this] { rebuildRecent(); });
+    rebuildRecent(false); // P-01: no icons at startup
     file->addSeparator();
     add(file, Action::CloseWindow, tr("Schließen"));
     add(file, Action::CloseAllWindows, tr("Alle schließen"));
@@ -342,11 +342,11 @@ void MainMenu::build() {
     refreshWindowList();
 }
 
-void MainMenu::rebuildRecent() {
+void MainMenu::rebuildRecent(bool withIcons) {
     // F-OPEN-11: files and folders, newest first.
     RecentItems::populateMenu(
         m_recentMenu, [this](const QString& p) { m_app.openPaths({p}); },
-        [this] { m_app.clearRecentPaths(); });
+        [this] { m_app.clearRecentPaths(); }, withIcons);
 }
 
 void MainMenu::refreshShortcuts() {

@@ -116,10 +116,10 @@ QString RecentItems::menuTitle(const RecentItem& item, const QList<RecentItem>& 
 }
 
 void RecentItems::populateMenu(QMenu* menu, const std::function<void(const QString&)>& open,
-                               const std::function<void()>& clearAll) {
+                               const std::function<void()>& clearAll, bool withIcons) {
     menu->clear();
     const QList<RecentItem> list = items();
-    QStyle* style = QApplication::style();
+    QStyle* style = withIcons && !list.isEmpty() ? QApplication::style() : nullptr;
     // Icons by kind only: no file system access on the GUI thread.
     const QIcon fileIcon = style ? style->standardIcon(QStyle::SP_FileIcon) : QIcon();
     const QIcon folderIcon = style ? style->standardIcon(QStyle::SP_DirIcon) : QIcon();

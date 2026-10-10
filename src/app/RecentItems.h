@@ -35,9 +35,10 @@ public:
 
     // Menu text: the file/folder name; equal names get their parent folder appended.
     static QString menuTitle(const RecentItem& item, const QList<RecentItem>& all);
-    // Fills `menu` with the entries and "Einträge löschen".
+    // Fills `menu` with the entries and "Einträge löschen". `withIcons` false: no style
+    // icons (the menu is built once at startup, P-01; icons follow when it opens).
     static void populateMenu(QMenu* menu, const std::function<void(const QString&)>& open,
-                             const std::function<void()>& clearAll);
+                             const std::function<void()>& clearAll, bool withIcons = true);
 
     // System registration: by default only inside an .app bundle; tests can force it off.
     static void setSystemRegistrationEnabled(bool enabled);

@@ -49,7 +49,7 @@ private:
     QAction* addCommand(QMenu* menu, const QString& id, const QString& text,
                         const QKeySequence& shortcut = {});
     void build();
-    void rebuildRecent();
+    void rebuildRecent(bool withIcons = true);
 
     Application& m_app;
     QMenuBar* m_bar = nullptr;

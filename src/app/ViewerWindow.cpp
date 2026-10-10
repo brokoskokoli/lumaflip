@@ -356,6 +356,7 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
                                 QLatin1String("dragOut"));
     connect(m_view, &ImageView::dragOutRequested, this, [this] {
         const QString cur = currentPath();
+        // The shown (screen sized) image: scaling it for the drag stays quick on the GUI thread.
         if (!cur.isEmpty() && cur == m_shownPath && !m_shownFailed && m_view->image())
             startDragOut(m_view, cur, m_view->image()->image);
     });
