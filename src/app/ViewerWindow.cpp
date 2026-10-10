@@ -7,6 +7,8 @@
 #include "ImageView.h"
 #include "OpenWith.h"
 #include "RenameController.h"
+#include "RecentItems.h"
+#include "StartScreenRecent.h"
 #include "WindowPanels.h"
 #include "WindowTabbing.h"
 #include "core/Collection.h"
@@ -256,8 +258,12 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     el->addWidget(m_emptyText);
     el->addSpacing(12);
     el->addWidget(open, 0, Qt::AlignHCenter);
+    m_startRecent = new StartScreenRecent(m_emptyState); // F-OPEN-12, filled when shown
+    el->addSpacing(18);
+    el->addWidget(m_startRecent, 0, Qt::AlignHCenter);
     el->addStretch();
     connect(open, &QPushButton::clicked, &m_app, &Application::showOpenDialog);
+    connect(m_startRecent, &StartScreenRecent::openRequested, this, &ViewerWindow::openRecent);
 
     m_toast = new QLabel(m_view);
     m_toast->setObjectName(QStringLiteral("lfToast"));
@@ -922,6 +928,8 @@ void ViewerWindow::updateEmptyState() {
     // Shown with the window (setVisible): polishing the text overlay before would wait
     // for the font database, and a window opened with a file never needs it (P-01).
     m_emptyState->setVisible(empty && isVisible());
+    if (empty && isVisible())
+        m_startRecent->refresh();
     if (empty)
         layoutOverlays();
     applyStatusBarVisibility();
@@ -931,6 +939,7 @@ void ViewerWindow::updateEmptyStyle() {
     // The start screen lies on the image background (dark by default): text and the
     // "Öffnen…" button get colors with enough contrast to it.
     const bool dark = m_view->backgroundColor().lightnessF() < 0.5;
+    m_startRecent->setDark(dark);
     m_emptyText->setStyleSheet(dark ? QStringLiteral("color: rgb(200, 200, 200); font-size: 18px;")
                                     : QStringLiteral("color: rgb(70, 70, 70); font-size: 18px;"));
     const QString text = dark ? QStringLiteral("#f2f2f2") : QStringLiteral("#1c1c1c");
@@ -1506,8 +1515,29 @@ void ViewerWindow::refreshActivity() {
         updatePrefetch();
 }
 
+void ViewerWindow::openRecent(const QString& path) {
+    // F-OPEN-12: an item may be gone (deleted, volume not mounted): checked off the GUI
+    // thread; then a note here and the entry leaves the list instead of an error card.
+    QPointer<ViewerWindow> self(this);
+    Application::classifyPaths({path}, this, [self, path](const ClassifiedPaths& c) {
+        if (!self)
+            return;
+        if (!c.missing.isEmpty()) {
+            RecentItems::remove(path);
+            self->showMessage(tr("„%1“ ist nicht mehr vorhanden.").arg(QFileInfo(path).fileName()), 5000);
+            return;
+        }
+        self->m_app.openPaths({path});
+    });
+}
+
 void ViewerWindow::applySetting(const QString& k) {
     Settings& st = Settings::instance();
+    if (k == RecentItems::settingsKey()) {
+        if (m_emptyState->isVisible())
+            m_startRecent->refresh(); // F-OPEN-12
+        return;
+    }
     if (k == QLatin1String(key::Background)) {
         m_view->setBackground(st.value(key::Background).toString());
         updateEmptyStyle();

@@ -96,6 +96,18 @@ void RecentItems::rename(const QString& from, const QString& to) {
         store(list);
 }
 
+void RecentItems::remove(const QString& path) {
+    QList<RecentItem> list = items();
+    const auto n = list.size();
+    list.removeIf([&](const RecentItem& i) { return i.path == path; });
+    if (list.size() != n)
+        store(list);
+}
+
+QString RecentItems::settingsKey() {
+    return QString::fromLatin1(kRecentKey);
+}
+
 void RecentItems::clear() {
     store({});
     if (systemRegistrationEnabled())

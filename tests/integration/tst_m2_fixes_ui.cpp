@@ -11,6 +11,7 @@
 #include "app/ImageView.h"
 #include "app/MainMenu.h"
 #include "app/RecentItems.h"
+#include "app/StartScreenRecent.h"
 #include "app/ViewerWindow.h"
 #include "core/Collection.h"
 #include "core/FileOps.h"
@@ -25,6 +26,7 @@
 #include <QDir>
 #include <QMenu>
 #include <QTemporaryDir>
+#include <QToolButton>
 #include <QThreadPool>
 #include <QUndoStack>
 #include <QtTest>
@@ -264,6 +266,58 @@ private slots:
                  QStringLiteral("⇧⌘R"));
         QCOMPARE(lf::test::nativeKeyEquivalent(app->menu()->action(Action::RotateRight)),
                  QStringLiteral("⌘r"));
+    }
+
+    // F-OPEN-12: the start screen lists up to 8 recent items, files and folders mixed in
+    // the order of last use, clickable; a missing one gives a note and leaves the list.
+    void F_OPEN_12_startScreenShowsRecent() {
+        QDir(dir->path()).mkpath(QStringLiteral("Ordner"));
+        QVERIFY(!makeImage(path("Ordner/x.png"), Qt::blue).isEmpty());
+        QStringList expected; // newest first
+        for (int i = 0; i < 10; ++i) {
+            if (i % 3 == 1) {
+                const QString d = path(QStringLiteral("Ordner%1").arg(i));
+                QDir().mkpath(d);
+                RecentItems::add({}, {d});
+                expected.prepend(d);
+            } else {
+                const QString f = makeImage(path(QStringLiteral("bild%1.png").arg(i)), Qt::red);
+                QVERIFY(!f.isEmpty());
+                RecentItems::add({f});
+                expected.prepend(f);
+            }
+        }
+        const QString gone = path(QStringLiteral("weg.png"));
+        RecentItems::add({gone}); // never existed: newest entry
+        expected.prepend(gone);
+        ViewerWindow* w = app->newWindow();
+        QVERIFY(w);
+        QVERIFY(QTest::qWaitForWindowExposed(w));
+        auto* recent = w->findChild<StartScreenRecent*>(QStringLiteral("lfStartRecent"));
+        QVERIFY(recent);
+        QTRY_VERIFY(recent->isVisible());
+        QCOMPARE(recent->shownPaths(), expected.mid(0, 8));
+        const auto buttons = recent->findChildren<QToolButton*>(QStringLiteral("lfStartRecentItem"));
+        QCOMPARE(buttons.size(), 8);
+        QCOMPARE(buttons.first()->text(), QStringLiteral("weg.png"));
+        QCOMPARE(buttons.first()->toolTip(), gone);
+        // Missing: a note, no error card, the entry is removed, the window stays empty.
+        buttons.first()->click();
+        QTRY_VERIFY(w->toastText().contains(QStringLiteral("nicht mehr vorhanden")));
+        QVERIFY(w->isEmpty());
+        QTRY_COMPARE(recent->shownPaths(), expected.mid(1, 8));
+        // A folder entry opens the folder in this (start) window.
+        int folderIndex = -1;
+        for (int i = 0; i < recent->shownPaths().size(); ++i)
+            if (!recent->shownPaths().at(i).endsWith(QStringLiteral(".png")))
+                folderIndex = folderIndex < 0 ? i : folderIndex;
+        QVERIFY(folderIndex >= 0);
+        const QString folder = recent->shownPaths().at(folderIndex);
+        QVERIFY(!makeImage(folder + QStringLiteral("/in.png"), Qt::yellow).isEmpty());
+        recent->findChildren<QToolButton*>(QStringLiteral("lfStartRecentItem")).at(folderIndex)->click();
+        QTRY_COMPARE(w->collection()->folderPath(), folder);
+        QTRY_VERIFY(!w->isEmpty());
+        QCOMPARE(app->windows().size(), 1);
     }
 };
 

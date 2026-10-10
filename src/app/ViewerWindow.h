@@ -240,6 +240,8 @@ private:
     quint64 m_openToken = 0; // latest open request (openPaths classifies asynchronously)
     bool m_folderSwitchPending = false;
     QPushButton* m_openButton = nullptr;
+    class StartScreenRecent* m_startRecent = nullptr; // F-OPEN-12
+    void openRecent(const QString& path);
     WindowPanels* m_panels = nullptr; // M2: info panel + filmstrip (WindowPanels.cpp)
 };
 
