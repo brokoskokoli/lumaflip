@@ -6,7 +6,7 @@
 namespace lf {
 
 QString sortKeyLabel(SortKey key) {
-    const char* text = "Name";
+    const char* text = QT_TRANSLATE_NOOP("SortSpec", "Name");
     switch (key) {
     case SortKey::Name:
         text = QT_TRANSLATE_NOOP("SortSpec", "Name");

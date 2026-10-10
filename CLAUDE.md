@@ -72,7 +72,15 @@ Neue Quelldateien werden per Glob automatisch gebaut (CMake `CONFIGURE_DEPENDS`)
 
 - Namespace `lf`. C++20. Qt-Typen bevorzugen (QString, QVector …). Keine Exceptions über Modulgrenzen.
 - Jede Datei beginnt mit `// SPDX-License-Identifier: GPL-3.0-or-later`.
-- UI-Texte auf Deutsch als Ausgangssprache, immer über `tr()` (Mehrsprachigkeit, SPEC 4.16).
+- UI-Texte auf Deutsch als Ausgangssprache, immer über `tr()` (Mehrsprachigkeit, SPEC 4.16):
+  ganze Sätze mit `%1` statt Verkettung, Plural mit `tr("%n …", nullptr, n)`. Außerhalb von
+  QObject-Klassen eine `struct Tr { Q_DECLARE_TR_FUNCTIONS(lf::Kontext) };` (sonst falscher
+  lupdate-Kontext); in `.mm`-Dateien `QCoreApplication::translate("lf::…", …)` bzw.
+  `lf::mac::translate()` für NSString. Tabellen mit `QT_TRANSLATE_NOOP`, übersetzt erst beim
+  Anzeigen (Sprachwechsel zur Laufzeit). Zahlen/Größen/Daten über `core/LocaleFormat.h`.
+  Nach Textänderungen `cmake --build build/check --target lf_lupdate` (aktualisiert
+  `translations/*.ts`); `tools/i18n_check.py` (läuft in `check.sh`) meldet Texte ohne `tr()`
+  und veraltete Kataloge. Details: [translations/README.md](translations/README.md).
 - **Rückverfolgbarkeit:** Tests nennen die Anforderungs-ID im Namen, z. B.
   `TEST(SortEngine, F_SORT_01_FinderNameOrder)`, `void F_NAV_01_arrowKeys();` oder
   `LF_BENCH(P_05_…)`. Nur Testnamen zählen, keine Kommentare.

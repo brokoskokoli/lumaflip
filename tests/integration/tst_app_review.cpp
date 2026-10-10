@@ -487,7 +487,9 @@ private slots:
 
     // Covers: F-MAC-01 (Qt's own texts are German: application menu, buttons)
     void F_MAC_01_germanQtTranslations() {
-        const QString file = installQtTranslations();
+        // German UI chosen explicitly (the default follows the system language, F-I18N-03).
+        installTranslations(QStringLiteral("de"));
+        const QString file = installedQtCatalog();
         QVERIFY2(!file.isEmpty(), qPrintable(qtTranslationDirs().join(QLatin1Char(' '))));
         QCOMPARE(QCoreApplication::translate("MAC_APPLICATION_MENU", "Quit %1"),
                  QStringLiteral("%1 beenden"));

@@ -19,9 +19,6 @@ namespace {
 constexpr int64_t kDefaultAppTimeoutSec = 10; // blocking variant only
 constexpr int kDefaultAppPendingMs = 3000;    // "still running" note (async)
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::Shell", text);
-}
 
 class MacShell final : public Shell {
 public:
@@ -84,8 +81,9 @@ public:
         @autoreleasepool {
             NSURL* bundle = [[NSBundle mainBundle] bundleURL];
             if (![bundle.pathExtension isEqualToString:@"app"]) {
-                const QString error = tr("Lumaflip läuft nicht als App-Paket und kann nicht als Standard-App "
-                                         "festgelegt werden.");
+                const QString error = QCoreApplication::translate(
+                    "lf::Shell", "Lumaflip läuft nicht als App-Paket und kann nicht als Standard-App "
+                                 "festgelegt werden.");
                 QPointer<QObject> guard(context);
                 QMetaObject::invokeMethod(
                     context,
@@ -116,8 +114,9 @@ public:
             NSURL* bundle = [[NSBundle mainBundle] bundleURL];
             if (![bundle.pathExtension isEqualToString:@"app"]) {
                 if (error)
-                    *error = tr("Lumaflip läuft nicht als App-Paket und kann nicht als Standard-App "
-                                "festgelegt werden.");
+                    *error = QCoreApplication::translate(
+                        "lf::Shell", "Lumaflip läuft nicht als App-Paket und kann nicht als Standard-App "
+                                     "festgelegt werden.");
                 return false;
             }
             NSMutableArray<NSString*>* errors = [NSMutableArray array];
@@ -127,7 +126,9 @@ public:
                 if (!type) {
                     @synchronized(errors) {
                         [errors addObject:[NSString stringWithFormat:@"%@: %@", t.toNSString(),
-                                                                     tr("unbekannter Typ").toNSString()]];
+                                                                     QCoreApplication::translate(
+                                                                         "lf::Shell", "unbekannter Typ")
+                                                                         .toNSString()]];
                     }
                     continue;
                 }
@@ -155,7 +156,8 @@ public:
                     messages << QString::fromNSString(e);
             }
             if (timedOut)
-                messages << tr("Zeitüberschreitung bei der Rückmeldung des Systems.");
+                messages << QCoreApplication::translate(
+                    "lf::Shell", "Zeitüberschreitung bei der Rückmeldung des Systems.");
             if (!messages.isEmpty()) {
                 if (error)
                     *error = messages.join(QLatin1Char('\n'));

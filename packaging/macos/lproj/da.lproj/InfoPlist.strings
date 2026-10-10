@@ -1,0 +1,12 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/* Localized Info.plist texts (da); generated from translations/ - see translations/README.md */
+"NSAppleEventsUsageDescription" = "Lumaflip spørger efter behov det forreste Finder-vindue om dets sortering, så billederne vises i samme rækkefølge.";
+"NSDesktopFolderUsageDescription" = "Lumaflip læser mappen med det åbnede billede, så du kan blade med piletasterne.";
+"NSDocumentsFolderUsageDescription" = "Lumaflip læser mappen med det åbnede billede, så du kan blade med piletasterne.";
+"NSDownloadsFolderUsageDescription" = "Lumaflip læser mappen med det åbnede billede, så du kan blade med piletasterne.";
+"NSRemovableVolumesUsageDescription" = "Lumaflip læser mappen med det åbnede billede, så du kan blade med piletasterne.";
+"NSNetworkVolumesUsageDescription" = "Lumaflip læser mappen med det åbnede billede, så du kan blade med piletasterne.";
+"Bild" = "Billede";
+"Bild (sonstige)" = "Billede (andet)";
+"Ordner" = "Mappe";
+"NSHumanReadableCopyright" = "© 2026 brokoskokoli og bidragydere. Licens: GPL-3.0-or-later.";

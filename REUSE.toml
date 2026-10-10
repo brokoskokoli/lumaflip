@@ -36,3 +36,11 @@ path = [".clang-format", ".gitignore"]
 precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 The Lumaflip contributors"
 SPDX-License-Identifier = "GPL-3.0-or-later"
+
+# Translation catalogues (written by lupdate, no room for a header) and the localized
+# Info.plist texts.
+[[annotations]]
+path = ["translations/*.ts", "packaging/macos/lproj/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 The Lumaflip contributors"
+SPDX-License-Identifier = "GPL-3.0-or-later"

@@ -100,7 +100,7 @@ int main(int argc, char* argv[]) {
         app.installEventFilter(&traceEvents);
     lf::Settings::configureApplication(); // SPEC 8.6: settings/app data locations
     QApplication::setApplicationVersion(QStringLiteral(LF_APP_VERSION));
-    lf::installQtTranslations(); // before the menu bar exists (application menu texts)
+    lf::installQtTranslations(); // UI language (F-I18N-03), before the menu bar exists
     lf::trace::mark("translations installed");
     if (!exitAfterFirstFrame)
         lf::Settings::migrateLegacyLocations();

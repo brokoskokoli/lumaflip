@@ -89,8 +89,10 @@ signals:
 protected:
     void showEvent(QShowEvent* event) override;
     bool eventFilter(QObject* watched, QEvent* event) override;
+    void changeEvent(QEvent* event) override; // F-I18N-03: language switch
 
 private:
+    void retranslateUi();
     void startLoad();
     void apply(const InfoData& data);
     void showPlaceholder();

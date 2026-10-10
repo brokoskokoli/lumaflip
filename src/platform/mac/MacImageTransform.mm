@@ -32,9 +32,6 @@ namespace lf::platform {
 
 namespace {
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::LosslessTransform", text);
-}
 
 void setError(QString* error, const QString& msg) {
     if (error)
@@ -106,7 +103,8 @@ QStringList auxiliaryImages(CGImageSourceRef src) {
         if (!info)
             continue;
         CFRelease(info);
-        found << QString::fromNSString((__bridge NSString*)t.type) << tr(t.name);
+        found << QString::fromNSString((__bridge NSString*)t.type)
+              << QCoreApplication::translate("lf::LosslessTransform", t.name);
     }
     return found; // pairs: type id, German name
 }
@@ -120,8 +118,10 @@ QString auxNames(const QStringList& pairs) {
 }
 
 QString auxLostMessage(const QStringList& pairs) {
-    return tr("Die Datei enthält Zusatzbilder (%1), die beim Speichern der Ausrichtung verloren gingen. "
-              "Die Drehung wurde deshalb nicht gespeichert und gilt weiter nur in der Anzeige.")
+    return QCoreApplication::translate(
+               "lf::LosslessTransform",
+               "Die Datei enthält Zusatzbilder (%1), die beim Speichern der Ausrichtung verloren gingen. "
+               "Die Drehung wurde deshalb nicht gespeichert und gilt weiter nur in der Anzeige.")
         .arg(auxNames(pairs));
 }
 
@@ -356,15 +356,16 @@ bool copyIntoInode(const QByteArray& from, const QByteArray& to, const struct ti
                    const struct timespec& mtime, QString* error) {
     const int in = open(from.constData(), O_RDONLY | O_CLOEXEC);
     if (in < 0) {
-        setError(error, tr("Die neue Datei kann nicht gelesen werden."));
+        setError(error, QCoreApplication::translate("lf::LosslessTransform",
+                                                    "Die neue Datei kann nicht gelesen werden."));
         return false;
     }
     const int out = open(to.constData(), O_WRONLY | O_CLOEXEC | O_NOFOLLOW);
     if (out < 0) {
         close(in);
-        setError(
-            error,
-            tr("Die Datei kann nicht geschrieben werden: %1").arg(QString::fromLocal8Bit(strerror(errno))));
+        setError(error, QCoreApplication::translate("lf::LosslessTransform",
+                                                    "Die Datei kann nicht geschrieben werden: %1")
+                            .arg(QString::fromLocal8Bit(strerror(errno))));
         return false;
     }
     std::vector<char> buf(1 << 20);
@@ -403,8 +404,10 @@ bool copyIntoInode(const QByteArray& from, const QByteArray& to, const struct ti
     close(out);
     close(in);
     if (!ok)
-        setError(error, tr("Die Datei konnte nicht vollständig geschrieben werden: %1")
-                            .arg(QString::fromLocal8Bit(strerror(errno))));
+        setError(error,
+                 QCoreApplication::translate("lf::LosslessTransform",
+                                             "Die Datei konnte nicht vollständig geschrieben werden: %1")
+                     .arg(QString::fromLocal8Bit(strerror(errno))));
     return ok;
 }
 
@@ -459,7 +462,8 @@ bool writeOrientationImpl(const QString& srcPath, const QString& dstPath, int or
     @autoreleasepool {
         CGImageSourceRef src = openSource(srcPath);
         if (!src) {
-            setError(error, tr("Die Datei kann nicht gelesen werden."));
+            setError(error, QCoreApplication::translate("lf::LosslessTransform",
+                                                        "Die Datei kann nicht gelesen werden."));
             return false;
         }
         const QStringList auxBefore = auxiliaryImages(src);
@@ -470,7 +474,9 @@ bool writeOrientationImpl(const QString& srcPath, const QString& dstPath, int or
                  : nullptr;
         if (!dst) {
             CFRelease(src);
-            setError(error, tr("Für dieses Format kann die Ausrichtung nicht gespeichert werden."));
+            setError(error, QCoreApplication::translate(
+                                "lf::LosslessTransform",
+                                "Für dieses Format kann die Ausrichtung nicht gespeichert werden."));
             return false;
         }
         NSDictionary* opts = @{(__bridge NSString*)kCGImageDestinationOrientation : @(orientation)};
@@ -486,12 +492,21 @@ bool writeOrientationImpl(const QString& srcPath, const QString& dstPath, int or
                 setError(error, auxLostMessage(auxBefore));
                 return false;
             }
-            setError(error, tr("Die Ausrichtung konnte nicht verlustfrei geschrieben werden.") +
-                                (detail.isEmpty() ? QString() : QStringLiteral(" (%1)").arg(detail)));
+            setError(error, detail.isEmpty()
+                                ? QCoreApplication::translate(
+                                      "lf::LosslessTransform",
+                                      "Die Ausrichtung konnte nicht verlustfrei geschrieben werden.")
+                                //: %1 is the system's error message
+                                : QCoreApplication::translate(
+                                      "lf::LosslessTransform",
+                                      "Die Ausrichtung konnte nicht verlustfrei geschrieben werden (%1).")
+                                      .arg(detail));
             return false;
         }
         if (!QFileInfo::exists(dstPath)) {
-            setError(error, tr("Die Ausrichtung konnte nicht verlustfrei geschrieben werden."));
+            setError(error, QCoreApplication::translate(
+                                "lf::LosslessTransform",
+                                "Die Ausrichtung konnte nicht verlustfrei geschrieben werden."));
             return false;
         }
         // Every auxiliary image must have survived the copy.
@@ -517,7 +532,8 @@ bool reencodeImpl(const QString& srcPath, const QString& dstPath, int pixelOp, b
     @autoreleasepool {
         CGImageSourceRef src = openSource(srcPath);
         if (!src) {
-            setError(error, tr("Die Datei kann nicht gelesen werden."));
+            setError(error, QCoreApplication::translate("lf::LosslessTransform",
+                                                        "Die Datei kann nicht gelesen werden."));
             return false;
         }
         const size_t index = CGImageSourceGetPrimaryImageIndex(src);
@@ -530,7 +546,8 @@ bool reencodeImpl(const QString& srcPath, const QString& dstPath, int pixelOp, b
             if (img)
                 CGImageRelease(img);
             CFRelease(src);
-            setError(error, tr("Das Bild konnte nicht dekodiert werden."));
+            setError(error, QCoreApplication::translate("lf::LosslessTransform",
+                                                        "Das Bild konnte nicht dekodiert werden."));
             return false;
         }
         CGImageRef rotated = nullptr;
@@ -543,8 +560,11 @@ bool reencodeImpl(const QString& srcPath, const QString& dstPath, int pixelOp, b
             CFRelease(src);
             if (requireExact && inexact)
                 *inexact = true;
-            setError(error, requireExact ? tr("Das Bild lässt sich nicht exakt neu speichern.")
-                                         : tr("Nicht genug Speicher zum Drehen."));
+            setError(error, requireExact ? QCoreApplication::translate(
+                                               "lf::LosslessTransform",
+                                               "Das Bild lässt sich nicht exakt neu speichern.")
+                                         : QCoreApplication::translate("lf::LosslessTransform",
+                                                                       "Nicht genug Speicher zum Drehen."));
             return false;
         }
 
@@ -571,7 +591,8 @@ bool reencodeImpl(const QString& srcPath, const QString& dstPath, int pixelOp, b
         if (!ok) {
             CGImageRelease(rotated);
             QFile::remove(dstPath);
-            setError(error, tr("Dieses Format kann nicht geschrieben werden."));
+            setError(error, QCoreApplication::translate("lf::LosslessTransform",
+                                                        "Dieses Format kann nicht geschrieben werden."));
             return false;
         }
         if (requireExact) {
@@ -590,7 +611,9 @@ bool reencodeImpl(const QString& srcPath, const QString& dstPath, int pixelOp, b
                 QFile::remove(dstPath);
                 if (inexact)
                     *inexact = true;
-                setError(error, tr("Das Bild lässt sich in diesem Format nicht exakt neu speichern."));
+                setError(error, QCoreApplication::translate(
+                                    "lf::LosslessTransform",
+                                    "Das Bild lässt sich in diesem Format nicht exakt neu speichern."));
                 return false;
             }
         }
@@ -640,17 +663,19 @@ bool replaceFile(const QString& replacement, const QString& target, bool keepMod
     const QByteArray to = QFile::encodeName(target);
     struct stat st{};
     if (lstat(to.constData(), &st) != 0) {
-        setError(error, tr("„%1“ existiert nicht mehr.").arg(QFileInfo(target).fileName()));
+        setError(error, QCoreApplication::translate("lf::LosslessTransform", "„%1“ existiert nicht mehr.")
+                            .arg(QFileInfo(target).fileName()));
         return false;
     }
     if (!S_ISREG(st.st_mode)) {
         // Callers resolve symbolic links; never replace a link by a regular file.
-        setError(error, tr("„%1“ ist keine normale Datei.").arg(QFileInfo(target).fileName()));
+        setError(error, QCoreApplication::translate("lf::LosslessTransform", "„%1“ ist keine normale Datei.")
+                            .arg(QFileInfo(target).fileName()));
         return false;
     }
     struct stat rs{};
     if (stat(from.constData(), &rs) != 0) {
-        setError(error, tr("Die neue Datei fehlt."));
+        setError(error, QCoreApplication::translate("lf::LosslessTransform", "Die neue Datei fehlt."));
         return false;
     }
 
@@ -659,7 +684,8 @@ bool replaceFile(const QString& replacement, const QString& target, bool keepMod
         // change the file ID. The contents go into the existing inode instead; the complete
         // new file stays on disk until that is done.
         if (!fullSyncPath(from)) {
-            setError(error, tr("Die neue Datei konnte nicht gesichert werden."));
+            setError(error, QCoreApplication::translate("lf::LosslessTransform",
+                                                        "Die neue Datei konnte nicht gesichert werden."));
             return false;
         }
         reportDurabilityStep(DurabilityStep::FullSync, replacement);
@@ -673,9 +699,9 @@ bool replaceFile(const QString& replacement, const QString& target, bool keepMod
             copyfile(to.constData(), old.constData(), nullptr, COPYFILE_DATA | COPYFILE_EXCL) == 0;
         if (!haveOld) {
             unlink(old.constData());
-            setError(
-                error,
-                tr("Nicht genug Platz, um „%1“ sicher zu überschreiben.").arg(QFileInfo(target).fileName()));
+            setError(error, QCoreApplication::translate("lf::LosslessTransform",
+                                                        "Nicht genug Platz, um „%1“ sicher zu überschreiben.")
+                                .arg(QFileInfo(target).fileName()));
             return false;
         }
         const struct timespec mtime = keepModificationDate ? st.st_mtimespec : rs.st_mtimespec;
@@ -684,7 +710,9 @@ bool replaceFile(const QString& replacement, const QString& target, bool keepMod
             if (copyIntoInode(old, to, st.st_atimespec, st.st_mtimespec, &ignored))
                 unlink(old.constData());
             else if (error)
-                *error += QLatin1Char(' ') + tr("Der alte Inhalt liegt in „%1“.").arg(QFile::decodeName(old));
+                *error += QLatin1Char(' ') + QCoreApplication::translate("lf::LosslessTransform",
+                                                                         "Der alte Inhalt liegt in „%1“.")
+                                                 .arg(QFile::decodeName(old));
             return false;
         }
         unlink(old.constData());
@@ -696,7 +724,8 @@ bool replaceFile(const QString& replacement, const QString& target, bool keepMod
     // Permissions, ACL, owner (as far as allowed) and extended attributes (Finder tags,
     // comments, quarantine) of the original.
     if (copyfile(to.constData(), from.constData(), nullptr, COPYFILE_SECURITY | COPYFILE_XATTR) != 0) {
-        setError(error, tr("Die Dateiattribute konnten nicht übernommen werden."));
+        setError(error, QCoreApplication::translate("lf::LosslessTransform",
+                                                    "Die Dateiattribute konnten nicht übernommen werden."));
         return false;
     }
     // Creation date and "date added" (Finder sorting) as before.
@@ -721,13 +750,15 @@ bool replaceFile(const QString& replacement, const QString& target, bool keepMod
     // The data must be on the disk before the name points to it: otherwise a power loss
     // right after the rename can leave an empty or partial file under the original name.
     if (!fullSyncPath(from)) {
-        setError(error, tr("Die neue Datei konnte nicht gesichert werden."));
+        setError(error, QCoreApplication::translate("lf::LosslessTransform",
+                                                    "Die neue Datei konnte nicht gesichert werden."));
         return false;
     }
     reportDurabilityStep(DurabilityStep::FullSync, replacement);
     if (rename(from.constData(), to.constData()) != 0) {
-        setError(error, tr("„%1“ konnte nicht ersetzt werden: %2")
-                            .arg(QFileInfo(target).fileName(), QString::fromLocal8Bit(strerror(errno))));
+        setError(error,
+                 QCoreApplication::translate("lf::LosslessTransform", "„%1“ konnte nicht ersetzt werden: %2")
+                     .arg(QFileInfo(target).fileName(), QString::fromLocal8Bit(strerror(errno))));
         return false;
     }
     reportDurabilityStep(DurabilityStep::Rename, target);
@@ -756,7 +787,9 @@ bool copyWithMetadata(const QString& path, const QString& copy, QString* error, 
     if (copyfile(from.constData(), to.constData(), nullptr, COPYFILE_ALL | COPYFILE_EXCL) != 0) {
         if (errno != EEXIST)
             unlink(to.constData()); // partial copy (never a file that was there before)
-        setError(error, tr("Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden."));
+        setError(error, QCoreApplication::translate(
+                            "lf::LosslessTransform",
+                            "Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden."));
         return false;
     }
     return true;

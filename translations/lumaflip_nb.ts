@@ -1,0 +1,3461 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="nb" sourcelanguage="de">
+<context>
+    <name>SortSpec</name>
+    <message>
+        <source>Name</source>
+        <translation>Navn</translation>
+    </message>
+    <message>
+        <source>Änderungsdatum</source>
+        <translation>Endringsdato</translation>
+    </message>
+    <message>
+        <source>Erstellungsdatum</source>
+        <translation>Opprettelsesdato</translation>
+    </message>
+    <message>
+        <source>Hinzugefügt am</source>
+        <translation>Dato lagt til</translation>
+    </message>
+    <message>
+        <source>Aufnahmedatum</source>
+        <translation>Opptaksdato</translation>
+    </message>
+    <message>
+        <source>Größe</source>
+        <translation>Størrelse</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Type</translation>
+    </message>
+    <message>
+        <source>Pixelzahl</source>
+        <translation>Antall piksler</translation>
+    </message>
+    <message>
+        <source>Bewertung</source>
+        <translation>Vurdering</translation>
+    </message>
+    <message>
+        <source>Symbolposition</source>
+        <translation>Symbolplassering</translation>
+    </message>
+    <message>
+        <source>Wie Finder (live): %1</source>
+        <translation>Som Finder (direkte): %1</translation>
+    </message>
+    <message>
+        <source>Wie Finder: %1</source>
+        <translation>Som Finder: %1</translation>
+    </message>
+    <message>
+        <source>%1 (Finder-Info nicht gefunden)</source>
+        <translation>%1 (fant ikke Finder-info)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::AboutDialog</name>
+    <message>
+        <source>Über Lumaflip</source>
+        <translation>Om Lumaflip</translation>
+    </message>
+    <message>
+        <source>Version %1</source>
+        <translation>Versjon %1</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Schneller Bildbetrachter für macOS: Doppelklick öffnet den ganzen Ordner – in derselben Reihenfolge wie im Finder.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli und Mitwirkende&lt;/p&gt;&lt;p&gt;Lumaflip ist freie Software: Du kannst sie unter den Bedingungen der &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; Version 3 oder (nach deiner Wahl) jeder späteren Version weitergeben und verändern. Lumaflip wird ohne jede Gewährleistung bereitgestellt.&lt;/p&gt;&lt;p&gt;Quellcode: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Verwendet Qt %3 (LGPLv3).&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Rask bildeviser for macOS: Dobbeltklikk åpner hele mappen – i samme rekkefølge som i Finder.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli og bidragsytere&lt;/p&gt;&lt;p&gt;Lumaflip er fri programvare: Du kan videreformidle og endre den under vilkårene i &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; versjon 3 eller (etter ditt valg) en hvilken som helst senere versjon. Lumaflip leveres uten noen form for garanti.&lt;/p&gt;&lt;p&gt;Kildekode: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Bruker Qt %3 (LGPLv3).&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Lizenzen von Drittanbietern…</source>
+        <translation>Tredjepartslisenser…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Application</name>
+    <message>
+        <source>Lumaflip</source>
+        <translation>Lumaflip</translation>
+    </message>
+    <message>
+        <source>Dateivorgänge werden abgeschlossen, dann wird Lumaflip beendet …</source>
+        <translation>Fullfører filoperasjoner, deretter avsluttes Lumaflip…</translation>
+    </message>
+    <message>
+        <source>Dateivorgang läuft …</source>
+        <translation>Filoperasjon pågår…</translation>
+    </message>
+    <message>
+        <source>Nicht gefunden: %1</source>
+        <translation>Ikke funnet: %1</translation>
+    </message>
+    <message>
+        <source>Bilder (%1);;Alle Dateien (*)</source>
+        <translation>Bilder (%1);;Alle filer (*)</translation>
+    </message>
+    <message>
+        <source>Öffnen</source>
+        <translation>Åpne</translation>
+    </message>
+    <message>
+        <source>Ordner öffnen</source>
+        <translation>Åpne mappe</translation>
+    </message>
+    <message>
+        <source>Tastenkürzel</source>
+        <translation>Tastatursnarveier</translation>
+    </message>
+    <message>
+        <source>Aktion</source>
+        <translation>Handling</translation>
+    </message>
+    <message>
+        <source>Taste(n)</source>
+        <translation>Tast(er)</translation>
+    </message>
+    <message>
+        <source>Nächstes / vorheriges Bild</source>
+        <translation>Neste/forrige bilde</translation>
+    </message>
+    <message>
+        <source>→ / ←, Leertaste / ⇧Leertaste, Bild↓ / Bild↑, Mausrad</source>
+        <translation>→ / ←, Mellomrom / ⇧Mellomrom, Side↓ / Side↑, musehjul</translation>
+    </message>
+    <message>
+        <source>Erstes / letztes Bild</source>
+        <translation>Første/siste bilde</translation>
+    </message>
+    <message>
+        <source>Pos1 / Ende</source>
+        <translation>Hjem / Slutt</translation>
+    </message>
+    <message>
+        <source>Vollbild / Modus verlassen</source>
+        <translation>Avslutt fullskjerm / modus</translation>
+    </message>
+    <message>
+        <source>Esc</source>
+        <translation>Esc</translation>
+    </message>
+    <message>
+        <source>%1 (in einer späteren Version)</source>
+        <translation>%1 (i en senere versjon)</translation>
+    </message>
+    <message>
+        <source>Lumaflip wird als Standard-App festgelegt …</source>
+        <translation>Angir Lumaflip som standardapp…</translation>
+    </message>
+    <message>
+        <source>Lumaflip ist jetzt die Standard-App für Bilder.</source>
+        <translation>Lumaflip er nå standardappen for bilder.</translation>
+    </message>
+    <message>
+        <source>Lumaflip konnte nicht als Standard-App festgelegt werden:
+%1</source>
+        <translation>Kunne ikke angi Lumaflip som standardapp:
+%1</translation>
+    </message>
+</context>
+<context>
+    <name>lf::DecoderRegistry</name>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>Filen finnes ikke.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer.</source>
+        <translation>Filen er tom.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Filen kan ikke leses.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist beschädigt oder unvollständig.</source>
+        <translation>Filen er skadet eller ufullstendig.</translation>
+    </message>
+    <message>
+        <source>Das Dateiformat wird nicht unterstützt.</source>
+        <translation>Filformatet støttes ikke.</translation>
+    </message>
+    <message>
+        <source>Das Bild ist zu groß, um es vollständig zu laden.</source>
+        <translation>Bildet er for stort til å lastes inn fullstendig.</translation>
+    </message>
+    <message>
+        <source>Das Bild ist leer.</source>
+        <translation>Bildet er tomt.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::DefaultAppDialog</name>
+    <message>
+        <source>Als Standard-App festlegen</source>
+        <translation>Angi som standardapp</translation>
+    </message>
+    <message>
+        <source>Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht ausgewählte Formate bleiben beim bisherigen Programm.</source>
+        <translation>Lumaflip blir standardappen for de valgte bildeformatene. Formater som ikke er valgt, beholder den nåværende appen.</translation>
+    </message>
+    <message>
+        <source>Alle auswählen</source>
+        <translation>Velg alle</translation>
+    </message>
+    <message>
+        <source>Keine auswählen</source>
+        <translation>Velg ingen</translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation>Angi</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Avbryt</translation>
+    </message>
+</context>
+<context>
+    <name>lf::DisplayText</name>
+    <message>
+        <source>JPEG-Bild</source>
+        <translation>JPEG-bilde</translation>
+    </message>
+    <message>
+        <source>PNG-Bild</source>
+        <translation>PNG-bilde</translation>
+    </message>
+    <message>
+        <source>APNG-Bild</source>
+        <translation>APNG-bilde</translation>
+    </message>
+    <message>
+        <source>GIF-Bild</source>
+        <translation>GIF-bilde</translation>
+    </message>
+    <message>
+        <source>TIFF-Bild</source>
+        <translation>TIFF-bilde</translation>
+    </message>
+    <message>
+        <source>BMP-Bild</source>
+        <translation>BMP-bilde</translation>
+    </message>
+    <message>
+        <source>WebP-Bild</source>
+        <translation>WebP-bilde</translation>
+    </message>
+    <message>
+        <source>HEIC-Bild</source>
+        <translation>HEIC-bilde</translation>
+    </message>
+    <message>
+        <source>HEIF-Bild</source>
+        <translation>HEIF-bilde</translation>
+    </message>
+    <message>
+        <source>AVIF-Bild</source>
+        <translation>AVIF-bilde</translation>
+    </message>
+    <message>
+        <source>JPEG-XL-Bild</source>
+        <translation>JPEG XL-bilde</translation>
+    </message>
+    <message>
+        <source>JPEG-2000-Bild</source>
+        <translation>JPEG 2000-bilde</translation>
+    </message>
+    <message>
+        <source>Photoshop-Dokument</source>
+        <translation>Photoshop-dokument</translation>
+    </message>
+    <message>
+        <source>Photoshop-Dokument (groß)</source>
+        <translation>Photoshop-dokument (stort)</translation>
+    </message>
+    <message>
+        <source>OpenEXR-Bild</source>
+        <translation>OpenEXR-bilde</translation>
+    </message>
+    <message>
+        <source>Radiance-HDR-Bild</source>
+        <translation>Radiance HDR-bilde</translation>
+    </message>
+    <message>
+        <source>TGA-Bild</source>
+        <translation>TGA-bilde</translation>
+    </message>
+    <message>
+        <source>DDS-Textur</source>
+        <translation>DDS-tekstur</translation>
+    </message>
+    <message>
+        <source>KTX-Textur</source>
+        <translation>KTX-tekstur</translation>
+    </message>
+    <message>
+        <source>Windows-Symbol (ICO)</source>
+        <translation>Windows-symbol (ICO)</translation>
+    </message>
+    <message>
+        <source>Windows-Mauszeiger (CUR)</source>
+        <translation>Windows-musepeker (CUR)</translation>
+    </message>
+    <message>
+        <source>Apple-Symbol (ICNS)</source>
+        <translation>Apple-symbol (ICNS)</translation>
+    </message>
+    <message>
+        <source>SVG-Vektorgrafik</source>
+        <translation>SVG-vektorgrafikk</translation>
+    </message>
+    <message>
+        <source>PDF-Dokument</source>
+        <translation>PDF-dokument</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Adobe DNG)</source>
+        <translation>Kamera-RAW (Adobe DNG)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Canon CR2)</source>
+        <translation>Kamera-RAW (Canon CR2)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Canon CR3)</source>
+        <translation>Kamera-RAW (Canon CR3)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Canon CRW)</source>
+        <translation>Kamera-RAW (Canon CRW)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Nikon NEF)</source>
+        <translation>Kamera-RAW (Nikon NEF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Nikon NRW)</source>
+        <translation>Kamera-RAW (Nikon NRW)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Sony ARW)</source>
+        <translation>Kamera-RAW (Sony ARW)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Sony SR2)</source>
+        <translation>Kamera-RAW (Sony SR2)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Sony SRF)</source>
+        <translation>Kamera-RAW (Sony SRF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Fujifilm RAF)</source>
+        <translation>Kamera-RAW (Fujifilm RAF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Olympus ORF)</source>
+        <translation>Kamera-RAW (Olympus ORF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Panasonic RW2)</source>
+        <translation>Kamera-RAW (Panasonic RW2)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW</source>
+        <translation>Kamera-RAW</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Pentax PEF)</source>
+        <translation>Kamera-RAW (Pentax PEF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Phase One IIQ)</source>
+        <translation>Kamera-RAW (Phase One IIQ)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Hasselblad 3FR)</source>
+        <translation>Kamera-RAW (Hasselblad 3FR)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Hasselblad FFF)</source>
+        <translation>Kamera-RAW (Hasselblad FFF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Epson ERF)</source>
+        <translation>Kamera-RAW (Epson ERF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Minolta MRW)</source>
+        <translation>Kamera-RAW (Minolta MRW)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Leaf MOS)</source>
+        <translation>Kamera-RAW (Leaf MOS)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Leica RWL)</source>
+        <translation>Kamera-RAW (Leica RWL)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Samsung SRW)</source>
+        <translation>Kamera-RAW (Samsung SRW)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Sigma X3F)</source>
+        <translation>Kamera-RAW (Sigma X3F)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::FileOps</name>
+    <message>
+        <source>„%1“ existiert bereits.</source>
+        <translation>«%1» finnes allerede.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht kopiert werden.</source>
+        <translation>Kunne ikke kopiere «%1».</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht entfernt werden.</source>
+        <translation>Kunne ikke fjerne «%1».</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht verschoben werden: %2</source>
+        <translation>Kunne ikke flytte «%1»: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert nicht.</source>
+        <translation>«%1» finnes ikke.</translation>
+    </message>
+    <message>
+        <source>Der Zielordner „%1“ existiert nicht.</source>
+        <translation>Målmappen «%1» finnes ikke.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist kein gültiger Dateiname.</source>
+        <translation>«%1» er ikke et gyldig filnavn.</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>Flytt til papirkurven</translation>
+    </message>
+    <message>
+        <source>Umbenennen</source>
+        <translation>Gi nytt navn</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>Flytt</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>Kopier</translation>
+    </message>
+    <message>
+        <source>Die Kopie „%1“ konnte nicht entfernt werden.</source>
+        <translation>Kunne ikke fjerne kopien «%1».</translation>
+    </message>
+    <message>
+        <source>Ein anderer Dateivorgang läuft noch. Bitte warte, bis er abgeschlossen ist.</source>
+        <translation>En annen filoperasjon pågår fortsatt. Vent til den er fullført.</translation>
+    </message>
+    <message>
+        <source>Der Verlauf zum Widerrufen wurde zurückgesetzt, weil er sich während des Vorgangs geändert hat.</source>
+        <translation>Angreloggen ble tilbakestilt fordi den ble endret under operasjonen.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Filmstrip</name>
+    <message>
+        <source>Filmstreifen</source>
+        <translation>Filmstripe</translation>
+    </message>
+</context>
+<context>
+    <name>lf::FilmstripModel</name>
+    <message>
+        <source>%1 – kann nicht gelesen werden</source>
+        <translation>%1 – kan ikke leses</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Format</name>
+    <message>
+        <source>%1 KB</source>
+        <extracomment>SI kilobyte (1000 bytes) as in the Finder; e.g. French &quot;%1 ko&quot;</extracomment>
+        <translation>%1 KB</translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <extracomment>SI megabyte as in the Finder; e.g. French &quot;%1 Mo&quot;</extracomment>
+        <translation>%1 MB</translation>
+    </message>
+    <message>
+        <source>%1 GB</source>
+        <extracomment>SI gigabyte as in the Finder; e.g. French &quot;%1 Go&quot;</extracomment>
+        <translation>%1 GB</translation>
+    </message>
+    <message>
+        <source>%1 TB</source>
+        <extracomment>SI terabyte as in the Finder; e.g. French &quot;%1 To&quot;</extracomment>
+        <translation>%1 TB</translation>
+    </message>
+    <message>
+        <source>%1 PB</source>
+        <extracomment>SI petabyte as in the Finder; e.g. French &quot;%1 Po&quot;</extracomment>
+        <translation>%1 PB</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Byte</source>
+        <extracomment>file size below 1000 bytes; %n is the number of bytes</extracomment>
+        <translation>
+            <numerusform>%n byte</numerusform>
+            <numerusform>%n byte</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 (%2 Byte)</source>
+        <extracomment>size and exact number of bytes, e.g. &quot;2,8 MB (2.812.345 Byte)&quot;; plural by the byte count</extracomment>
+        <translation>
+            <numerusform>%1 (%2 byte)</numerusform>
+            <numerusform>%1 (%2 byte)</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>1/%1 s</source>
+        <extracomment>exposure time as a fraction of a second, e.g. &quot;1/250 s&quot;</extracomment>
+        <translation>1/%1 s</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <extracomment>exposure time in seconds, e.g. &quot;2,5 s&quot;</extracomment>
+        <translation>%1 s</translation>
+    </message>
+    <message>
+        <source>f/%1</source>
+        <extracomment>aperture (f-number), e.g. &quot;f/2,8&quot;</extracomment>
+        <translation>f/%1</translation>
+    </message>
+    <message>
+        <source>%1 EV</source>
+        <extracomment>exposure compensation in exposure values; %1 is the signed number, e.g. &quot;+0,7&quot;</extracomment>
+        <translation>%1 EV</translation>
+    </message>
+    <message>
+        <source>%1 mm</source>
+        <extracomment>focal length in millimetres</extracomment>
+        <translation>%1 mm</translation>
+    </message>
+    <message>
+        <source> (KB: %1 mm)</source>
+        <extracomment>appended to the focal length: the 35 mm equivalent (&quot;KB&quot; = Kleinbild), e.g. &quot; (35-mm-equiv.: 52 mm)&quot;</extracomment>
+        <translation> (35 mm-ekv.: %1 mm)</translation>
+    </message>
+    <message>
+        <source>%1° %2</source>
+        <extracomment>GPS coordinate: degrees and hemisphere letter, e.g. &quot;48,137154° N&quot;</extracomment>
+        <translation>%1° %2</translation>
+    </message>
+    <message>
+        <source>S</source>
+        <comment>south</comment>
+        <extracomment>GPS hemisphere: abbreviation of &quot;south&quot;</extracomment>
+        <translation>S</translation>
+    </message>
+    <message>
+        <source>N</source>
+        <comment>north</comment>
+        <extracomment>GPS hemisphere: abbreviation of &quot;north&quot;</extracomment>
+        <translation>N</translation>
+    </message>
+    <message>
+        <source>W</source>
+        <comment>west</comment>
+        <extracomment>GPS hemisphere: abbreviation of &quot;west&quot;</extracomment>
+        <translation>V</translation>
+    </message>
+    <message>
+        <source>O</source>
+        <comment>east</comment>
+        <extracomment>GPS hemisphere: abbreviation of &quot;east&quot; (German &quot;O&quot; = Ost)</extracomment>
+        <translation>Ø</translation>
+    </message>
+    <message>
+        <source>%1 m</source>
+        <extracomment>altitude in metres</extracomment>
+        <translation>%1 m</translation>
+    </message>
+</context>
+<context>
+    <name>lf::HistogramWidget</name>
+    <message>
+        <source>Histogramm</source>
+        <translation>Histogram</translation>
+    </message>
+    <message>
+        <source>Wird berechnet …</source>
+        <translation>Beregner…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ImageIODecoder</name>
+    <message>
+        <source>Das Bild hat keine Pixel.</source>
+        <translation>Bildet har ingen piksler.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>Ikke nok minne til bildet (%1 × %2 piksler).</translation>
+    </message>
+    <message>
+        <source>Bildpuffer konnte nicht angelegt werden.</source>
+        <translation>Kunne ikke opprette bildebuffer.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>Filen finnes ikke.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>Filen er tom (0 byte).</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Filen kan ikke leses.</translation>
+    </message>
+    <message>
+        <source>Unbekanntes oder nicht unterstütztes Dateiformat.</source>
+        <translation>Ukjent filformat eller filformat som ikke støttes.</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält keine lesbaren Bilddaten (beschädigt?).</source>
+        <translation>Filen inneholder ingen lesbare bildedata (skadet?).</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden (Datei beschädigt?).</source>
+        <translation>Kunne ikke dekode bildet (er filen skadet?).</translation>
+    </message>
+    <message>
+        <source>Ausgelöst</source>
+        <translation>Utløst</translation>
+    </message>
+    <message>
+        <source>Nicht ausgelöst</source>
+        <translation>Ikke utløst</translation>
+    </message>
+    <message>
+        <source>Die Bildinformationen sind beschädigt.</source>
+        <translation>Bildeinformasjonen er skadet.</translation>
+    </message>
+    <message>
+        <source>Einzelbild %1 existiert nicht.</source>
+        <translation>Bilderute %1 finnes ikke.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Side %1 finnes ikke.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist unvollständig (abgeschnitten).</source>
+        <translation>Filen er ufullstendig (avkortet).</translation>
+    </message>
+    <message>
+        <source>%1 Bit</source>
+        <translation>%1 bit</translation>
+    </message>
+    <message>
+        <source>Ja</source>
+        <translation>Ja</translation>
+    </message>
+    <message>
+        <source>Nein</source>
+        <translation>Nei</translation>
+    </message>
+    <message>
+        <source>HEIC-Sequenz</source>
+        <translation>HEIC-sekvens</translation>
+    </message>
+    <message>
+        <source>AVIF-Sequenz</source>
+        <translation>AVIF-sekvens</translation>
+    </message>
+</context>
+<context>
+    <name>lf::InfoPanel</name>
+    <message>
+        <source>Ein- oder ausklappen</source>
+        <translation>Utvid eller skjul</translation>
+    </message>
+    <message>
+        <source>Rot</source>
+        <extracomment>Finder standard tag names: use the names macOS shows in this language</extracomment>
+        <translation>Rød</translation>
+    </message>
+    <message>
+        <source>Orange</source>
+        <translation>Oransje</translation>
+    </message>
+    <message>
+        <source>Gelb</source>
+        <translation>Gul</translation>
+    </message>
+    <message>
+        <source>Grün</source>
+        <translation>Grønn</translation>
+    </message>
+    <message>
+        <source>Blau</source>
+        <translation>Blå</translation>
+    </message>
+    <message>
+        <source>Lila</source>
+        <translation>Lilla</translation>
+    </message>
+    <message>
+        <source>Grau</source>
+        <translation>Grå</translation>
+    </message>
+    <message>
+        <source>Datei</source>
+        <translation>Fil</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Navn</translation>
+    </message>
+    <message>
+        <source>Pfad</source>
+        <translation>Bane</translation>
+    </message>
+    <message>
+        <source>Größe</source>
+        <translation>Størrelse</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Type</translation>
+    </message>
+    <message>
+        <source>Erstellt</source>
+        <translation>Opprettet</translation>
+    </message>
+    <message>
+        <source>Geändert</source>
+        <translation>Endret</translation>
+    </message>
+    <message>
+        <source>Hinzugefügt</source>
+        <translation>Lagt til</translation>
+    </message>
+    <message>
+        <source>Bild</source>
+        <translation>Bilde</translation>
+    </message>
+    <message>
+        <source>Kamera</source>
+        <translation>Kamera</translation>
+    </message>
+    <message>
+        <source>Aufnahme</source>
+        <translation>Opptak</translation>
+    </message>
+    <message>
+        <source>GPS</source>
+        <translation>GPS</translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation>Format</translation>
+    </message>
+    <message>
+        <source>Nicht lesbar</source>
+        <translation>Ikke lesbar</translation>
+    </message>
+    <message>
+        <source>Tags</source>
+        <translation>Merker</translation>
+    </message>
+    <message>
+        <source>Ausgewählten Tag entfernen</source>
+        <translation>Fjern valgt merke</translation>
+    </message>
+    <message>
+        <source>Tag hinzufügen …</source>
+        <translation>Legg til merke…</translation>
+    </message>
+    <message>
+        <source>„%1“ entfernen</source>
+        <translation>Fjern «%1»</translation>
+    </message>
+    <message>
+        <source>Histogramm</source>
+        <translation>Histogram</translation>
+    </message>
+    <message>
+        <source>Kein Histogramm</source>
+        <translation>Ingen histogram</translation>
+    </message>
+    <message>
+        <source>Wird geladen …</source>
+        <translation>Laster inn…</translation>
+    </message>
+    <message>
+        <source>Wert kopieren</source>
+        <translation>Kopier verdi</translation>
+    </message>
+    <message>
+        <source>Zeile kopieren</source>
+        <translation>Kopier rad</translation>
+    </message>
+    <message>
+        <source>Abschnitt kopieren</source>
+        <translation>Kopier del</translation>
+    </message>
+    <message>
+        <source>Alle Angaben kopieren</source>
+        <translation>Kopier all informasjon</translation>
+    </message>
+</context>
+<context>
+    <name>lf::InputBindings</name>
+    <message>
+        <source>Nächstes Bild</source>
+        <translation>Neste bilde</translation>
+    </message>
+    <message>
+        <source>Vorheriges Bild</source>
+        <translation>Forrige bilde</translation>
+    </message>
+    <message>
+        <source>Erstes Bild</source>
+        <translation>Første bilde</translation>
+    </message>
+    <message>
+        <source>Letztes Bild</source>
+        <translation>Siste bilde</translation>
+    </message>
+    <message>
+        <source>Mehrere Bilder vor</source>
+        <translation>Flere bilder frem</translation>
+    </message>
+    <message>
+        <source>Mehrere Bilder zurück</source>
+        <translation>Flere bilder tilbake</translation>
+    </message>
+    <message>
+        <source>Nächster Ordner</source>
+        <translation>Neste mappe</translation>
+    </message>
+    <message>
+        <source>Vorheriger Ordner</source>
+        <translation>Forrige mappe</translation>
+    </message>
+    <message>
+        <source>Nächste Seite</source>
+        <translation>Neste side</translation>
+    </message>
+    <message>
+        <source>Vorherige Seite</source>
+        <translation>Forrige side</translation>
+    </message>
+    <message>
+        <source>Vergrößern</source>
+        <translation>Zoom inn</translation>
+    </message>
+    <message>
+        <source>Verkleinern</source>
+        <translation>Zoom ut</translation>
+    </message>
+    <message>
+        <source>100 %</source>
+        <translation>100 %</translation>
+    </message>
+    <message>
+        <source>Einpassen</source>
+        <translation>Tilpass</translation>
+    </message>
+    <message>
+        <source>Breite füllen</source>
+        <translation>Fyll bredde</translation>
+    </message>
+    <message>
+        <source>Einpassen ↔ 100 % am Cursor</source>
+        <translation>Tilpass ↔ 100 % ved pekeren</translation>
+    </message>
+    <message>
+        <source>Zoom fixieren</source>
+        <translation>Lås zoom</translation>
+    </message>
+    <message>
+        <source>Ausschnitt nach oben</source>
+        <translation>Panorer opp</translation>
+    </message>
+    <message>
+        <source>Ausschnitt nach unten</source>
+        <translation>Panorer ned</translation>
+    </message>
+    <message>
+        <source>Ausschnitt nach links</source>
+        <translation>Panorer til venstre</translation>
+    </message>
+    <message>
+        <source>Ausschnitt nach rechts</source>
+        <translation>Panorer til høyre</translation>
+    </message>
+    <message>
+        <source>Ausschnitt eine Seite nach oben</source>
+        <translation>Panorer én side opp</translation>
+    </message>
+    <message>
+        <source>Ausschnitt eine Seite nach unten</source>
+        <translation>Panorer én side ned</translation>
+    </message>
+    <message>
+        <source>Zum Bildanfang scrollen</source>
+        <translation>Rull til starten av bildet</translation>
+    </message>
+    <message>
+        <source>Zum Bildende scrollen</source>
+        <translation>Rull til slutten av bildet</translation>
+    </message>
+    <message>
+        <source>Vollbild</source>
+        <translation>Fullskjerm</translation>
+    </message>
+    <message>
+        <source>Vollbild bzw. Modus verlassen</source>
+        <translation>Avslutt fullskjerm eller modus</translation>
+    </message>
+    <message>
+        <source>Modus verlassen, sonst Fenster schließen</source>
+        <translation>Avslutt modus, ellers lukk vinduet</translation>
+    </message>
+    <message>
+        <source>Fenster schließen</source>
+        <translation>Lukk vindu</translation>
+    </message>
+    <message>
+        <source>Alle Fenster schließen</source>
+        <translation>Lukk alle vinduer</translation>
+    </message>
+    <message>
+        <source>Animation abspielen/pausieren</source>
+        <translation>Spill av / pause animasjon</translation>
+    </message>
+    <message>
+        <source>Nächstes Einzelbild</source>
+        <translation>Neste bilderute</translation>
+    </message>
+    <message>
+        <source>Vorheriges Einzelbild</source>
+        <translation>Forrige bilderute</translation>
+    </message>
+    <message>
+        <source>Diashow</source>
+        <translation>Lysbildeserie</translation>
+    </message>
+    <message>
+        <source>Links drehen</source>
+        <translation>Roter mot venstre</translation>
+    </message>
+    <message>
+        <source>Rechts drehen</source>
+        <translation>Roter mot høyre</translation>
+    </message>
+    <message>
+        <source>Horizontal spiegeln</source>
+        <translation>Vend horisontalt</translation>
+    </message>
+    <message>
+        <source>Vertikal spiegeln</source>
+        <translation>Vend vertikalt</translation>
+    </message>
+    <message>
+        <source>Drehung speichern</source>
+        <translation>Lagre rotering</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>Flytt til papirkurven</translation>
+    </message>
+    <message>
+        <source>Rückgängig</source>
+        <translation>Angre</translation>
+    </message>
+    <message>
+        <source>Wiederholen</source>
+        <translation>Utfør på nytt</translation>
+    </message>
+    <message>
+        <source>Umbenennen</source>
+        <translation>Gi nytt navn</translation>
+    </message>
+    <message>
+        <source>Im Finder zeigen</source>
+        <translation>Vis i Finder</translation>
+    </message>
+    <message>
+        <source>Bild kopieren</source>
+        <translation>Kopier bilde</translation>
+    </message>
+    <message>
+        <source>Pfad kopieren</source>
+        <translation>Kopier bane</translation>
+    </message>
+    <message>
+        <source>Im Editor öffnen</source>
+        <translation>Åpne i redigeringsapp</translation>
+    </message>
+    <message>
+        <source>Infopanel</source>
+        <translation>Infopanel</translation>
+    </message>
+    <message>
+        <source>Filmstreifen</source>
+        <translation>Filmstripe</translation>
+    </message>
+    <message>
+        <source>Raster</source>
+        <translation>Rutenett</translation>
+    </message>
+    <message>
+        <source>Tastenkürzel-Übersicht</source>
+        <translation>Oversikt over tastatursnarveier</translation>
+    </message>
+    <message>
+        <source>Einstellungen</source>
+        <translation>Innstillinger</translation>
+    </message>
+    <message>
+        <source>Neues Fenster</source>
+        <translation>Nytt vindu</translation>
+    </message>
+    <message>
+        <source>Fenster duplizieren</source>
+        <translation>Dupliser vindu</translation>
+    </message>
+    <message>
+        <source>Lupe (gedrückt halten)</source>
+        <translation>Lupe (hold inne)</translation>
+    </message>
+    <message>
+        <source>Datei herausziehen</source>
+        <translation>Dra ut fil</translation>
+    </message>
+    <message>
+        <source>Ausschnitt verschieben</source>
+        <translation>Panorer</translation>
+    </message>
+    <message>
+        <source>Bewertung entfernen (0 Sterne)</source>
+        <translation>Fjern vurdering (0 stjerner)</translation>
+    </message>
+    <message>
+        <source>1 Stern</source>
+        <translation>1 stjerne</translation>
+    </message>
+    <message>
+        <source>2 Sterne</source>
+        <translation>2 stjerner</translation>
+    </message>
+    <message>
+        <source>3 Sterne</source>
+        <translation>3 stjerner</translation>
+    </message>
+    <message>
+        <source>4 Sterne</source>
+        <translation>4 stjerner</translation>
+    </message>
+    <message>
+        <source>5 Sterne</source>
+        <translation>5 stjerner</translation>
+    </message>
+    <message>
+        <source>Behalten (Pick)</source>
+        <translation>Behold (Pick)</translation>
+    </message>
+    <message>
+        <source>Verwerfen (Reject)</source>
+        <translation>Forkast (Reject)</translation>
+    </message>
+    <message>
+        <source>Markierung zurücksetzen</source>
+        <translation>Tilbakestill markering</translation>
+    </message>
+    <message>
+        <source>Nichts</source>
+        <translation>Ingenting</translation>
+    </message>
+    <message>
+        <source>Mausrad</source>
+        <translation>Musehjul</translation>
+    </message>
+    <message>
+        <source>Bild wechseln</source>
+        <translation>Bytt bilde</translation>
+    </message>
+    <message>
+        <source>Nach unten drehen zeigt das nächste, nach oben das vorherige Bild.</source>
+        <translation>Rull ned for neste bilde, opp for forrige.</translation>
+    </message>
+    <message>
+        <source>Zoomen (am Cursor)</source>
+        <translation>Zoom (ved pekeren)</translation>
+    </message>
+    <message>
+        <source>Nach oben drehen vergrößert, nach unten verkleinert – am Mauszeiger.</source>
+        <translation>Rull opp for å zoome inn, ned for å zoome ut – ved pekeren.</translation>
+    </message>
+    <message>
+        <source>Ausschnitt scrollen (sonst Bild wechseln)</source>
+        <translation>Rull utsnittet (ellers bytt bilde)</translation>
+    </message>
+    <message>
+        <source>Gezoomt wird der Ausschnitt verschoben, sonst wird das Bild gewechselt.</source>
+        <translation>Når bildet er zoomet, panoreres utsnittet, ellers byttes bildet.</translation>
+    </message>
+    <message>
+        <source>Bild wechseln, solange die Taste gehalten wird.</source>
+        <translation>Bytt bilde mens tasten holdes inne.</translation>
+    </message>
+    <message>
+        <source>Zoomen am Mauszeiger, solange die Taste gehalten wird.</source>
+        <translation>Zoom ved pekeren mens tasten holdes inne.</translation>
+    </message>
+    <message>
+        <source>Horizontal scrollen</source>
+        <translation>Rull horisontalt</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt wird waagerecht verschoben.</source>
+        <translation>Utsnittet panoreres vannrett.</translation>
+    </message>
+    <message>
+        <source>Mausrad mit ⌘</source>
+        <translation>Musehjul med ⌘</translation>
+    </message>
+    <message>
+        <source>Mausrad mit ⌥</source>
+        <translation>Musehjul med ⌥</translation>
+    </message>
+    <message>
+        <source>Mausrad mit ⇧</source>
+        <translation>Musehjul med ⇧</translation>
+    </message>
+    <message>
+        <source>Bild↑ / Bild↓</source>
+        <translation>Side↑ / Side↓</translation>
+    </message>
+    <message>
+        <source>Vorheriges/nächstes Bild</source>
+        <translation>Forrige/neste bilde</translation>
+    </message>
+    <message>
+        <source>Wechselt ein Bild zurück bzw. vor.</source>
+        <translation>Går ett bilde tilbake eller frem.</translation>
+    </message>
+    <message>
+        <source>Mehrere Bilder zurück/vor</source>
+        <translation>Flere bilder tilbake/frem</translation>
+    </message>
+    <message>
+        <source>Springt um die eingestellte Sprungweite (Standard 10).</source>
+        <translation>Hopper med angitt hopplengde (standard 10).</translation>
+    </message>
+    <message>
+        <source>Vorheriger/nächster Ordner</source>
+        <translation>Forrige/neste mappe</translation>
+    </message>
+    <message>
+        <source>Wechselt in den benachbarten Ordner.</source>
+        <translation>Går til nabomappen.</translation>
+    </message>
+    <message>
+        <source>Seite zurück/vor (sonst Bild)</source>
+        <translation>Side tilbake/frem (ellers bilde)</translation>
+    </message>
+    <message>
+        <source>Bei mehrseitigen Dateien wird geblättert, sonst das Bild gewechselt.</source>
+        <translation>I flersidige filer blas det mellom sidene, ellers byttes bildet.</translation>
+    </message>
+    <message>
+        <source>Ausschnitt seitenweise scrollen (sonst Bild)</source>
+        <translation>Rull utsnittet sidevis (ellers bilde)</translation>
+    </message>
+    <message>
+        <source>Gezoomt um eine Bildschirmhöhe scrollen, sonst Bild wechseln.</source>
+        <translation>Når zoomet: rull én skjermhøyde, ellers bytt bilde.</translation>
+    </message>
+    <message>
+        <source>Pos1 / Ende</source>
+        <translation>Hjem / Slutt</translation>
+    </message>
+    <message>
+        <source>Erstes/letztes Bild</source>
+        <translation>Første/siste bilde</translation>
+    </message>
+    <message>
+        <source>Springt zum ersten bzw. letzten Bild der Sammlung.</source>
+        <translation>Hopper til første eller siste bilde i samlingen.</translation>
+    </message>
+    <message>
+        <source>Bildanfang/-ende (sonst erstes/letztes Bild)</source>
+        <translation>Start/slutt av bildet (ellers første/siste bilde)</translation>
+    </message>
+    <message>
+        <source>Gezoomt an den Anfang bzw. das Ende des Bildes scrollen, sonst erstes/letztes Bild.</source>
+        <translation>Når zoomet: rull til starten eller slutten av bildet, ellers første/siste bilde.</translation>
+    </message>
+    <message>
+        <source>Leertaste / ⇧Leertaste</source>
+        <translation>Mellomrom / ⇧Mellomrom</translation>
+    </message>
+    <message>
+        <source>Nächstes/vorheriges Bild</source>
+        <translation>Neste/forrige bilde</translation>
+    </message>
+    <message>
+        <source>Leertaste: nächstes Bild, mit ⇧: vorheriges Bild.</source>
+        <translation>Mellomrom: neste bilde, med ⇧: forrige bilde.</translation>
+    </message>
+    <message>
+        <source>Animation abspielen/pausieren, sonst Bild</source>
+        <translation>Spill av / pause animasjon, ellers bilde</translation>
+    </message>
+    <message>
+        <source>Bei animierten Bildern Wiedergabe umschalten, sonst Bild wechseln.</source>
+        <translation>Slår avspilling av/på for animerte bilder, ellers byttes bildet.</translation>
+    </message>
+    <message>
+        <source>Einpassen ↔ 100 %</source>
+        <translation>Tilpass ↔ 100 %</translation>
+    </message>
+    <message>
+        <source>Schaltet zwischen Einpassen und 100 % um.</source>
+        <translation>Veksler mellom Tilpass og 100 %.</translation>
+    </message>
+    <message>
+        <source>Diashow starten/pausieren</source>
+        <translation>Start/pause lysbildeserie</translation>
+    </message>
+    <message>
+        <source>Startet bzw. pausiert die Diashow.</source>
+        <translation>Starter lysbildeserien eller setter den på pause.</translation>
+    </message>
+    <message>
+        <source>← / →, wenn gezoomt</source>
+        <translation>← / → når zoomet</translation>
+    </message>
+    <message>
+        <source>Immer Bild wechseln</source>
+        <translation>Bytt alltid bilde</translation>
+    </message>
+    <message>
+        <source>Pfeiltasten wechseln das Bild; mit ⌥ wird der Ausschnitt verschoben.</source>
+        <translation>Piltastene bytter bilde; med ⌥ panoreres utsnittet.</translation>
+    </message>
+    <message>
+        <source>Erst bis zum Rand scrollen, dann Bild wechseln</source>
+        <translation>Rull først til kanten, bytt deretter bilde</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt wird verschoben; am Bildrand wechselt das Bild.</source>
+        <translation>Utsnittet panoreres; ved bildekanten byttes bildet.</translation>
+    </message>
+    <message>
+        <source>Ausschnitt scrollen (Bild mit ⌥←/⌥→)</source>
+        <translation>Rull utsnittet (bilde med ⌥←/⌥→)</translation>
+    </message>
+    <message>
+        <source>Pfeiltasten verschieben den Ausschnitt; Bildwechsel mit ⌥←/⌥→.</source>
+        <translation>Piltastene panorerer utsnittet; bytt bilde med ⌥←/⌥→.</translation>
+    </message>
+    <message>
+        <source>↑ / ↓</source>
+        <translation>↑ / ↓</translation>
+    </message>
+    <message>
+        <source>Ausschnitt scrollen, sonst vorheriges/nächstes Bild</source>
+        <translation>Rull utsnittet, ellers forrige/neste bilde</translation>
+    </message>
+    <message>
+        <source>Gezoomt wird der Ausschnitt verschoben, sonst das Bild gewechselt.</source>
+        <translation>Når zoomet panoreres utsnittet, ellers byttes bildet.</translation>
+    </message>
+    <message>
+        <source>Ausschnitt scrollen (wenn gezoomt), sonst nichts</source>
+        <translation>Rull utsnittet (når zoomet), ellers ingenting</translation>
+    </message>
+    <message>
+        <source>Gezoomt wird der Ausschnitt verschoben, sonst passiert nichts.</source>
+        <translation>Når zoomet panoreres utsnittet, ellers skjer ingenting.</translation>
+    </message>
+    <message>
+        <source>↑ zeigt das vorherige, ↓ das nächste Bild.</source>
+        <translation>↑ viser forrige bilde, ↓ neste.</translation>
+    </message>
+    <message>
+        <source>Zoomen</source>
+        <translation>Zoom</translation>
+    </message>
+    <message>
+        <source>↑ vergrößert, ↓ verkleinert.</source>
+        <translation>↑ zoomer inn, ↓ zoomer ut.</translation>
+    </message>
+    <message>
+        <source>Einfacher Klick ins Bild</source>
+        <translation>Enkeltklikk i bildet</translation>
+    </message>
+    <message>
+        <source>Ein Klick hat keine Wirkung (Ziehen verschiebt weiterhin).</source>
+        <translation>Et klikk har ingen effekt (dra panorerer fortsatt).</translation>
+    </message>
+    <message>
+        <source>Ein Klick zoomt auf 100 % an der Klickstelle und zurück.</source>
+        <translation>Et klikk zoomer til 100 % ved klikkpunktet og tilbake.</translation>
+    </message>
+    <message>
+        <source>Nächstes Bild (linke Hälfte: vorheriges)</source>
+        <translation>Neste bilde (venstre halvdel: forrige)</translation>
+    </message>
+    <message>
+        <source>Klick in die rechte Hälfte: nächstes Bild, linke Hälfte: vorheriges.</source>
+        <translation>Klikk i høyre halvdel: neste bilde, venstre halvdel: forrige.</translation>
+    </message>
+    <message>
+        <source>Doppelklick ins Bild</source>
+        <translation>Dobbeltklikk i bildet</translation>
+    </message>
+    <message>
+        <source>Vollbild umschalten</source>
+        <translation>Slå fullskjerm av/på</translation>
+    </message>
+    <message>
+        <source>Doppelklick wechselt in das Vollbild und zurück.</source>
+        <translation>Dobbeltklikk går til fullskjerm og tilbake.</translation>
+    </message>
+    <message>
+        <source>Doppelklick schaltet zwischen Einpassen und 100 % um.</source>
+        <translation>Dobbeltklikk veksler mellom Tilpass og 100 %.</translation>
+    </message>
+    <message>
+        <source>Doppelklick schließt das Fenster.</source>
+        <translation>Dobbeltklikk lukker vinduet.</translation>
+    </message>
+    <message>
+        <source>Mittlere Maustaste</source>
+        <translation>Midtre museknapp</translation>
+    </message>
+    <message>
+        <source>Die mittlere Maustaste hat keine Wirkung.</source>
+        <translation>Midtre museknapp har ingen effekt.</translation>
+    </message>
+    <message>
+        <source>Schaltet das Vollbild um.</source>
+        <translation>Slår fullskjerm av/på.</translation>
+    </message>
+    <message>
+        <source>Schließt das Fenster.</source>
+        <translation>Lukker vinduet.</translation>
+    </message>
+    <message>
+        <source>Schaltet zwischen Einpassen und 100 % an der Klickstelle um.</source>
+        <translation>Veksler mellom Tilpass og 100 % ved klikkpunktet.</translation>
+    </message>
+    <message>
+        <source>Zeigt eine Lupe, solange die Taste gedrückt ist.</source>
+        <translation>Viser en lupe mens knappen holdes inne.</translation>
+    </message>
+    <message>
+        <source>Maustasten 4/5 (Zurück/Vor)</source>
+        <translation>Museknapp 4/5 (tilbake/frem)</translation>
+    </message>
+    <message>
+        <source>Zurück-Taste: vorheriges Bild, Vor-Taste: nächstes Bild.</source>
+        <translation>Tilbake-knapp: forrige bilde, frem-knapp: neste bilde.</translation>
+    </message>
+    <message>
+        <source>Die Tasten haben keine Wirkung.</source>
+        <translation>Knappene har ingen effekt.</translation>
+    </message>
+    <message>
+        <source>Trackpad-Wischen (zwei Finger, horizontal)</source>
+        <translation>Sveip på styreflaten (to fingre, horisontalt)</translation>
+    </message>
+    <message>
+        <source>Bild wechseln (gezoomt: scrollen)</source>
+        <translation>Bytt bilde (zoomet: rull)</translation>
+    </message>
+    <message>
+        <source>Wischen wechselt das Bild; im gezoomten Zustand wird der Ausschnitt verschoben.</source>
+        <translation>Sveip bytter bilde; når zoomet panoreres utsnittet.</translation>
+    </message>
+    <message>
+        <source>Ausschnitt scrollen</source>
+        <translation>Rull utsnittet</translation>
+    </message>
+    <message>
+        <source>Wischen verschiebt immer nur den Ausschnitt.</source>
+        <translation>Sveip panorerer alltid bare utsnittet.</translation>
+    </message>
+    <message>
+        <source>Aus</source>
+        <translation>Av</translation>
+    </message>
+    <message>
+        <source>Wischen wird ignoriert.</source>
+        <translation>Sveip ignoreres.</translation>
+    </message>
+    <message>
+        <source>Ziehen mit linker Maustaste</source>
+        <translation>Dra med venstre museknapp</translation>
+    </message>
+    <message>
+        <source>Ausschnitt verschieben (⌥: Datei herausziehen)</source>
+        <translation>Panorer (⌥: dra ut fil)</translation>
+    </message>
+    <message>
+        <source>Ziehen verschiebt den Ausschnitt; mit ⌥ wird die Datei in andere Apps gezogen.</source>
+        <translation>Dra panorerer utsnittet; med ⌥ dras filen til andre apper.</translation>
+    </message>
+    <message>
+        <source>Datei herausziehen (⌥: Ausschnitt verschieben)</source>
+        <translation>Dra ut fil (⌥: panorer)</translation>
+    </message>
+    <message>
+        <source>Ziehen zieht die Datei in andere Apps; mit ⌥ wird der Ausschnitt verschoben.</source>
+        <translation>Dra flytter filen til andre apper; med ⌥ panoreres utsnittet.</translation>
+    </message>
+    <message>
+        <source>Esc</source>
+        <translation>Esc</translation>
+    </message>
+    <message>
+        <source>Vollbild bzw. Modus verlassen, sonst nichts</source>
+        <translation>Avslutt fullskjerm eller modus, ellers ingenting</translation>
+    </message>
+    <message>
+        <source>Esc beendet Vollbild, Diashow oder andere Modi und tut sonst nichts.</source>
+        <translation>Esc avslutter fullskjerm, lysbildeserie eller andre moduser og gjør ellers ingenting.</translation>
+    </message>
+    <message>
+        <source>Vollbild bzw. Modus verlassen, sonst Fenster schließen</source>
+        <translation>Avslutt fullskjerm eller modus, ellers lukk vinduet</translation>
+    </message>
+    <message>
+        <source>Esc beendet Modi; ist keiner aktiv, wird das Fenster geschlossen.</source>
+        <translation>Esc avslutter moduser; er ingen aktive, lukkes vinduet.</translation>
+    </message>
+    <message>
+        <source>Ende der Sammlung</source>
+        <translation>Slutten av samlingen</translation>
+    </message>
+    <message>
+        <source>Anhalten</source>
+        <translation>Stopp</translation>
+    </message>
+    <message>
+        <source>Am Ende bleibt das letzte Bild stehen (mit kurzem Hinweis).</source>
+        <translation>Ved slutten blir siste bilde stående (med en kort melding).</translation>
+    </message>
+    <message>
+        <source>Umlaufen</source>
+        <translation>Begynn forfra</translation>
+    </message>
+    <message>
+        <source>Nach dem letzten Bild folgt wieder das erste.</source>
+        <translation>Etter siste bilde kommer det første igjen.</translation>
+    </message>
+    <message>
+        <source>Zum nächsten Ordner</source>
+        <translation>Til neste mappe</translation>
+    </message>
+    <message>
+        <source>Nach dem letzten Bild geht es im nächsten Ordner weiter.</source>
+        <translation>Etter siste bilde fortsetter det i neste mappe.</translation>
+    </message>
+    <message>
+        <source>Bewertungstasten (0–5, P/X/U)</source>
+        <translation>Vurderingstaster (0–5, P/X/U)</translation>
+    </message>
+    <message>
+        <source>Nur im Aussortiermodus</source>
+        <translation>Bare i utvelgelsesmodus</translation>
+    </message>
+    <message>
+        <source>Ziffern wählen sonst den Zoommodus (1/2/3).</source>
+        <translation>Ellers velger sifrene zoommodus (1/2/3).</translation>
+    </message>
+    <message>
+        <source>Immer aktiv</source>
+        <translation>Alltid aktiv</translation>
+    </message>
+    <message>
+        <source>Ziffern vergeben immer Sterne; P/X/U markieren. Zoom-Ziffern sind aus.</source>
+        <translation>Sifrene gir alltid stjerner; P/X/U markerer. Zoomsifrene er av.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::LicensesDialog</name>
+    <message>
+        <source>Lizenzen von Drittanbietern</source>
+        <translation>Tredjepartslisenser</translation>
+    </message>
+    <message>
+        <source>Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im Programmpaket unter Contents/Resources/licenses.</source>
+        <translation>Lumaflip inneholder følgende komponenter. Lisenstekstene ligger også i programpakken under Contents/Resources/licenses.</translation>
+    </message>
+    <message>
+        <source>Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das Programmpaket gelegt.</source>
+        <translation>Utviklerversjon: Lisenstekstene legges i programpakken først ved pakking (tools/package.sh).</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Version: %1&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Versjon: %1&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Lizenz: %1&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Lisens: %1&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Enthalten in: %1&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Inkludert i: %1&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>(Datei fehlt)</source>
+        <translation>(Fil mangler)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::LosslessTransform</name>
+    <message>
+        <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
+        <translation>Kunne ikke starte JPEG-biblioteket.</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Daten konnten nicht verlustfrei umgeordnet werden (%1).</source>
+        <translation>Kunne ikke omorganisere JPEG-dataene tapsfritt (%1).</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Drehen der JPEG-Daten ist in dieser Version nicht verfügbar.</source>
+        <translation>Tapsfri rotering av JPEG-data er ikke tilgjengelig i denne versjonen.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>«%1» kan ikke leses.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht geschrieben werden (Ordner schreibgeschützt?).</source>
+        <translation>Kunne ikke skrive filen (er mappen skrivebeskyttet?).</translation>
+    </message>
+    <message>
+        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte die Drehung erneut speichern.</source>
+        <translation>Filen er endret i mellomtiden – ingenting ble lagret. Lagre roteringen på nytt.</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
+        <translation>Filen inneholder flere bilder (f.eks. et HDR-gain-kart eller et andre stereobilde) som ville gått tapt ved tapsfri omorganisering av JPEG-dataene.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>Filen finnes ikke lenger.</translation>
+    </message>
+    <message>
+        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <translation>Filformatet gjenkjennes ikke for lagring.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; zum dauerhaften Drehen bitte den RAW-Entwickler benutzen.</source>
+        <translation>RAW-filer endres aldri. Roteringen gjelder bare visningen; bruk RAW-konvertereren for å rotere permanent.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht gedreht gespeichert werden.</source>
+        <translation>Animerte eller flersidige filer kan ikke lagres rotert.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist schreibgeschützt.</source>
+        <translation>«%1» er skrivebeskyttet.</translation>
+    </message>
+    <message>
+        <source>Deshalb wurde nur die EXIF-Ausrichtung gesetzt.</source>
+        <translation>Derfor ble bare EXIF-retningen angitt.</translation>
+    </message>
+    <message>
+        <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfrei drehen geht nur, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
+        <translation>Bildets bredde eller høyde er ikke et multiplum av JPEG-blokkstørrelsen. Tapsfri rotering er bare mulig hvis en smal kant (opptil 15 piksler) beskjæres. Alternativt angis bare EXIF-retningen.</translation>
+    </message>
+    <message>
+        <source>Die Drehung kann nicht gespeichert werden.</source>
+        <translation>Roteringen kan ikke lagres.</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann keine Ausrichtung speichern, und beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
+        <translation>Dette formatet kan ikke lagre retning, og ved omkoding ville bildet ikke forblitt helt likt (fargemodell, bitdybde, palett eller gjennomsiktighet ville blitt endret).</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann keine Ausrichtung speichern. Die Drehung lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <translation>Dette formatet kan ikke lagre retning. Roteringen kan bare lagres ved å kode bildet på nytt – da går noe bildekvalitet tapt.</translation>
+    </message>
+    <message>
+        <source>Die EXIF-Ausrichtung konnte nicht gesetzt werden.</source>
+        <translation>Kunne ikke angi EXIF-retningen.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Drehen ist für dieses Bild nicht möglich.</source>
+        <translation>Tapsfri rotering er ikke mulig for dette bildet.</translation>
+    </message>
+    <message>
+        <source>Die Ausrichtung ließ sich nicht ohne Neukodieren speichern.</source>
+        <translation>Retningen kunne ikke lagres uten omkoding.</translation>
+    </message>
+    <message>
+        <source>Die Drehung konnte nicht gespeichert werden.</source>
+        <translation>Kunne ikke lagre roteringen.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>Kunne ikke erstatte filen.</translation>
+    </message>
+    <message>
+        <source>Datei wurde inzwischen verändert – Rückgängig nicht möglich</source>
+        <translation>Filen er endret i mellomtiden – kan ikke angre</translation>
+    </message>
+    <message>
+        <source>Datei wurde inzwischen verändert – Wiederholen nicht möglich</source>
+        <translation>Filen er endret i mellomtiden – kan ikke utføre på nytt</translation>
+    </message>
+    <message>
+        <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Rückgängig/Wiederholen ist dafür nicht mehr möglich.</source>
+        <translation>Sikkerhetskopien av dette trinnet ble slettet for å spare plass – angre/utfør på nytt er ikke lenger mulig for det.</translation>
+    </message>
+    <message>
+        <source>Es gibt nichts rückgängig zu machen.</source>
+        <translation>Det er ingenting å angre.</translation>
+    </message>
+    <message>
+        <source>Kein Platz für die Sicherungskopie – nichts gespeichert.</source>
+        <translation>Ikke plass til sikkerhetskopien – ingenting ble lagret.</translation>
+    </message>
+    <message>
+        <source>Keine Drehung zu speichern</source>
+        <translation>Ingen rotering å lagre</translation>
+    </message>
+    <message>
+        <source>Drehung gespeichert (EXIF-Ausrichtung)</source>
+        <translation>Rotering lagret (EXIF-retning)</translation>
+    </message>
+    <message>
+        <source>Drehung verlustfrei gespeichert</source>
+        <translation>Rotering lagret tapsfritt</translation>
+    </message>
+    <message>
+        <source>Drehung verlustfrei gespeichert (Rand beschnitten)</source>
+        <translation>Rotering lagret tapsfritt (kant beskåret)</translation>
+    </message>
+    <message>
+        <source>Drehung gespeichert (verlustfrei neu kodiert)</source>
+        <translation>Rotering lagret (tapsfritt kodet på nytt)</translation>
+    </message>
+    <message>
+        <source>Drehung gespeichert (neu kodiert)</source>
+        <translation>Rotering lagret (kodet på nytt)</translation>
+    </message>
+    <message>
+        <source>Für dieses Format kann die Ausrichtung nicht gespeichert werden.</source>
+        <translation>Retningen kan ikke lagres for dette formatet.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden.</source>
+        <translation>Kunne ikke dekode bildet.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher zum Drehen.</source>
+        <translation>Ikke nok minne til å rotere.</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann nicht geschrieben werden.</source>
+        <translation>Dette formatet kan ikke skrives.</translation>
+    </message>
+    <message>
+        <source>Das Bild lässt sich in diesem Format nicht exakt neu speichern.</source>
+        <translation>Bildet kan ikke lagres nøyaktig på nytt i dette formatet.</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert nicht mehr.</source>
+        <translation>«%1» finnes ikke lenger.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist keine normale Datei.</source>
+        <translation>«%1» er ikke en vanlig fil.</translation>
+    </message>
+    <message>
+        <source>Die neue Datei konnte nicht gesichert werden.</source>
+        <translation>Kunne ikke lagre den nye filen.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht geschrieben werden.</source>
+        <translation>Filen kan ikke skrives.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht vollständig geschrieben werden.</source>
+        <translation>Filen kunne ikke skrives fullstendig.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht ersetzt werden: %2</source>
+        <translation>Kunne ikke erstatte «%1»: %2</translation>
+    </message>
+    <message>
+        <source>Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.</source>
+        <translation>Kunne ikke opprette sikkerhetskopi for «Angre».</translation>
+    </message>
+    <message>
+        <source>HDR-Gain-Map</source>
+        <translation>HDR-gain-kart</translation>
+    </message>
+    <message>
+        <source>Tiefenkarte</source>
+        <translation>Dybdekart</translation>
+    </message>
+    <message>
+        <source>Porträt-Maske</source>
+        <translation>Portrettmaske</translation>
+    </message>
+    <message>
+        <source>Segmentierungsmaske</source>
+        <translation>Segmenteringsmaske</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält Zusatzbilder (%1), die beim Speichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gespeichert und gilt weiter nur in der Anzeige.</source>
+        <translation>Filen inneholder tilleggsbilder (%1) som ville gått tapt ved lagring av retningen. Roteringen ble derfor ikke lagret og gjelder fortsatt bare visningen.</translation>
+    </message>
+    <message>
+        <source>Die neue Datei kann nicht gelesen werden.</source>
+        <translation>Den nye filen kan ikke leses.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht geschrieben werden: %1</source>
+        <translation>Filen kan ikke skrives: %1</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht vollständig geschrieben werden: %1</source>
+        <translation>Filen kunne ikke skrives fullstendig: %1</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Filen kan ikke leses.</translation>
+    </message>
+    <message>
+        <source>Die Ausrichtung konnte nicht verlustfrei geschrieben werden.</source>
+        <translation>Kunne ikke skrive retningen tapsfritt.</translation>
+    </message>
+    <message>
+        <source>Die Ausrichtung konnte nicht verlustfrei geschrieben werden (%1).</source>
+        <translation>Kunne ikke skrive retningen tapsfritt (%1).</translation>
+    </message>
+    <message>
+        <source>Das Bild lässt sich nicht exakt neu speichern.</source>
+        <translation>Bildet kan ikke lagres nøyaktig på nytt.</translation>
+    </message>
+    <message>
+        <source>Die neue Datei fehlt.</source>
+        <translation>Den nye filen mangler.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Platz, um „%1“ sicher zu überschreiben.</source>
+        <translation>Ikke nok plass til å overskrive «%1» trygt.</translation>
+    </message>
+    <message>
+        <source>Der alte Inhalt liegt in „%1“.</source>
+        <translation>Det gamle innholdet ligger i «%1».</translation>
+    </message>
+    <message>
+        <source>Die Dateiattribute konnten nicht übernommen werden.</source>
+        <translation>Kunne ikke overføre filattributtene.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MainMenu</name>
+    <message>
+        <source>Ablage</source>
+        <translation>Arkiv</translation>
+    </message>
+    <message>
+        <source>Neues Fenster</source>
+        <translation>Nytt vindu</translation>
+    </message>
+    <message>
+        <source>Fenster duplizieren</source>
+        <translation>Dupliser vindu</translation>
+    </message>
+    <message>
+        <source>Öffnen …</source>
+        <translation>Åpne…</translation>
+    </message>
+    <message>
+        <source>Ordner öffnen …</source>
+        <translation>Åpne mappe…</translation>
+    </message>
+    <message>
+        <source>Zuletzt geöffnet</source>
+        <translation>Åpne nylig brukte</translation>
+    </message>
+    <message>
+        <source>Schließen</source>
+        <translation>Lukk</translation>
+    </message>
+    <message>
+        <source>Alle schließen</source>
+        <translation>Lukk alle</translation>
+    </message>
+    <message>
+        <source>Im Finder zeigen</source>
+        <translation>Vis i Finder</translation>
+    </message>
+    <message>
+        <source>Umbenennen …</source>
+        <translation>Gi nytt navn…</translation>
+    </message>
+    <message>
+        <source>In Standard-Editor öffnen</source>
+        <translation>Åpne i standard redigeringsapp</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>Flytt til papirkurven</translation>
+    </message>
+    <message>
+        <source>Als Standard-App festlegen …</source>
+        <translation>Angi som standardapp…</translation>
+    </message>
+    <message>
+        <source>Über Lumaflip</source>
+        <translation>Om Lumaflip</translation>
+    </message>
+    <message>
+        <source>Nach Updates suchen …</source>
+        <translation>Se etter oppdateringer…</translation>
+    </message>
+    <message>
+        <source>Einstellungen …</source>
+        <translation>Innstillinger…</translation>
+    </message>
+    <message>
+        <source>Lumaflip beenden</source>
+        <translation>Avslutt Lumaflip</translation>
+    </message>
+    <message>
+        <source>Bearbeiten</source>
+        <translation>Rediger</translation>
+    </message>
+    <message>
+        <source>Widerrufen</source>
+        <translation>Angre</translation>
+    </message>
+    <message>
+        <source>Wiederholen</source>
+        <translation>Utfør på nytt</translation>
+    </message>
+    <message>
+        <source>„%1“ widerrufen</source>
+        <translation>Angre %1</translation>
+    </message>
+    <message>
+        <source>„%1“ wiederholen</source>
+        <translation>Utfør %1 på nytt</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>Kopier</translation>
+    </message>
+    <message>
+        <source>Pfad kopieren</source>
+        <translation>Kopier bane</translation>
+    </message>
+    <message>
+        <source>Darstellung</source>
+        <translation>Vis</translation>
+    </message>
+    <message>
+        <source>Einpassen</source>
+        <translation>Tilpass</translation>
+    </message>
+    <message>
+        <source>Einpassen inkl. Vergrößern</source>
+        <translation>Tilpass (også forstørr)</translation>
+    </message>
+    <message>
+        <source>100 % (1:1 Pixel)</source>
+        <translation>100 % (1:1 piksler)</translation>
+    </message>
+    <message>
+        <source>Breite füllen</source>
+        <translation>Fyll bredde</translation>
+    </message>
+    <message>
+        <source>Höhe füllen</source>
+        <translation>Fyll høyde</translation>
+    </message>
+    <message>
+        <source>Fenster füllen</source>
+        <translation>Fyll vindu</translation>
+    </message>
+    <message>
+        <source>Vergrößern</source>
+        <translation>Zoom inn</translation>
+    </message>
+    <message>
+        <source>Verkleinern</source>
+        <translation>Zoom ut</translation>
+    </message>
+    <message>
+        <source>Einpassen ↔ 100 %</source>
+        <translation>Tilpass ↔ 100 %</translation>
+    </message>
+    <message>
+        <source>Zoom fixieren</source>
+        <translation>Lås zoom</translation>
+    </message>
+    <message>
+        <source>Vollbild</source>
+        <translation>Fullskjerm</translation>
+    </message>
+    <message>
+        <source>Statusleiste</source>
+        <translation>Statuslinje</translation>
+    </message>
+    <message>
+        <source>Infopanel</source>
+        <translation>Infopanel</translation>
+    </message>
+    <message>
+        <source>Filmstreifen</source>
+        <translation>Filmstripe</translation>
+    </message>
+    <message>
+        <source>Hintergrund</source>
+        <translation>Bakgrunn</translation>
+    </message>
+    <message>
+        <source>Dunkel</source>
+        <translation>Mørk</translation>
+    </message>
+    <message>
+        <source>Hell</source>
+        <translation>Lys</translation>
+    </message>
+    <message>
+        <source>Wie System</source>
+        <translation>Som systemet</translation>
+    </message>
+    <message>
+        <source>Schachbrett</source>
+        <translation>Sjakkbrett</translation>
+    </message>
+    <message>
+        <source>Eigene Farbe …</source>
+        <translation>Egendefinert farge…</translation>
+    </message>
+    <message>
+        <source>Hintergrundfarbe</source>
+        <translation>Bakgrunnsfarge</translation>
+    </message>
+    <message>
+        <source>Sortieren nach</source>
+        <translation>Sorter etter</translation>
+    </message>
+    <message>
+        <source>Wie Finder</source>
+        <translation>Som Finder</translation>
+    </message>
+    <message>
+        <source>Aufsteigend</source>
+        <translation>Stigende</translation>
+    </message>
+    <message>
+        <source>Absteigend</source>
+        <translation>Synkende</translation>
+    </message>
+    <message>
+        <source>Für alle Ordner verwenden</source>
+        <translation>Bruk for alle mapper</translation>
+    </message>
+    <message>
+        <source>Navigation</source>
+        <translation>Navigering</translation>
+    </message>
+    <message>
+        <source>Nächstes Bild</source>
+        <translation>Neste bilde</translation>
+    </message>
+    <message>
+        <source>Vorheriges Bild</source>
+        <translation>Forrige bilde</translation>
+    </message>
+    <message>
+        <source>Erstes Bild</source>
+        <translation>Første bilde</translation>
+    </message>
+    <message>
+        <source>Letztes Bild</source>
+        <translation>Siste bilde</translation>
+    </message>
+    <message>
+        <source>Mehrere Bilder vor</source>
+        <translation>Flere bilder frem</translation>
+    </message>
+    <message>
+        <source>Mehrere Bilder zurück</source>
+        <translation>Flere bilder tilbake</translation>
+    </message>
+    <message>
+        <source>Bild</source>
+        <translation>Bilde</translation>
+    </message>
+    <message>
+        <source>Links drehen</source>
+        <translation>Roter mot venstre</translation>
+    </message>
+    <message>
+        <source>Rechts drehen</source>
+        <translation>Roter mot høyre</translation>
+    </message>
+    <message>
+        <source>Horizontal spiegeln</source>
+        <translation>Vend horisontalt</translation>
+    </message>
+    <message>
+        <source>Vertikal spiegeln</source>
+        <translation>Vend vertikalt</translation>
+    </message>
+    <message>
+        <source>Fenster</source>
+        <translation>Vindu</translation>
+    </message>
+    <message>
+        <source>Minimieren</source>
+        <translation>Minimer</translation>
+    </message>
+    <message>
+        <source>Zoomen</source>
+        <translation>Zoom</translation>
+    </message>
+    <message>
+        <source>Alle nach vorne bringen</source>
+        <translation>Legg alle øverst</translation>
+    </message>
+    <message>
+        <source>Hilfe</source>
+        <translation>Hjelp</translation>
+    </message>
+    <message>
+        <source>Tastenkürzel</source>
+        <translation>Tastatursnarveier</translation>
+    </message>
+    <message>
+        <source>Wiederholen</source>
+        <comment>slideshow option: start again after the last image</comment>
+        <translation>Gjenta</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge</source>
+        <translation>Tilfeldig rekkefølge</translation>
+    </message>
+    <message>
+        <source>Überblenden</source>
+        <translation>Overtoning</translation>
+    </message>
+    <message>
+        <source>Diashow</source>
+        <translation>Lysbildeserie</translation>
+    </message>
+    <message>
+        <source>Diashow-Optionen</source>
+        <translation>Valg for lysbildeserie</translation>
+    </message>
+    <message>
+        <source>Nächste Seite</source>
+        <translation>Neste side</translation>
+    </message>
+    <message>
+        <source>Vorherige Seite</source>
+        <translation>Forrige side</translation>
+    </message>
+    <message>
+        <source>Drehung speichern</source>
+        <translation>Lagre rotering</translation>
+    </message>
+    <message>
+        <source>Animation</source>
+        <translation>Animasjon</translation>
+    </message>
+    <message>
+        <source>Abspielen/Pause</source>
+        <translation>Spill av / pause</translation>
+    </message>
+    <message>
+        <source>Nächstes Einzelbild</source>
+        <translation>Neste bilderute</translation>
+    </message>
+    <message>
+        <source>Vorheriges Einzelbild</source>
+        <translation>Forrige bilderute</translation>
+    </message>
+    <message>
+        <source>Geschwindigkeit</source>
+        <translation>Hastighet</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MenuExtras</name>
+    <message>
+        <source>Öffnen mit</source>
+        <translation>Åpne med</translation>
+    </message>
+    <message>
+        <source>Teilen</source>
+        <translation>Del</translation>
+    </message>
+    <message>
+        <source>Anordnen</source>
+        <translation>Ordne</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Side ved side</translation>
+    </message>
+    <message>
+        <source>Untereinander</source>
+        <translation>Over hverandre</translation>
+    </message>
+    <message>
+        <source>Raster</source>
+        <translation>Rutenett</translation>
+    </message>
+    <message>
+        <source>Kaskadieren</source>
+        <translation>Overlappende</translation>
+    </message>
+    <message>
+        <source>Vorherigen Tab zeigen</source>
+        <translation>Vis forrige fane</translation>
+    </message>
+    <message>
+        <source>Nächsten Tab zeigen</source>
+        <translation>Vis neste fane</translation>
+    </message>
+    <message>
+        <source>Tab in neues Fenster bewegen</source>
+        <translation>Flytt fane til nytt vindu</translation>
+    </message>
+    <message>
+        <source>Alle Fenster zusammenführen</source>
+        <translation>Slå sammen alle vinduer</translation>
+    </message>
+    <message>
+        <source>Tableiste ein-/ausblenden</source>
+        <translation>Vis/skjul fanelinje</translation>
+    </message>
+    <message>
+        <source>Tabs in den Einstellungen erlauben (Fenster)</source>
+        <translation>Tillat faner i innstillingene (Vindu)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Metadata</name>
+    <message>
+        <source>Datei</source>
+        <translation>Fil</translation>
+    </message>
+    <message>
+        <source>Kamera</source>
+        <translation>Kamera</translation>
+    </message>
+    <message>
+        <source>Aufnahme</source>
+        <extracomment>group: exposure/shooting data</extracomment>
+        <translation>Opptak</translation>
+    </message>
+    <message>
+        <source>GPS</source>
+        <translation>GPS</translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation>Format</translation>
+    </message>
+    <message>
+        <source>Pixelmaße</source>
+        <extracomment>image size in pixels (width × height)</extracomment>
+        <translation>Dimensjoner</translation>
+    </message>
+    <message>
+        <source>Farbraum</source>
+        <translation>Fargerom</translation>
+    </message>
+    <message>
+        <source>Profil</source>
+        <translation>Profil</translation>
+    </message>
+    <message>
+        <source>Bittiefe</source>
+        <translation>Bitdybde</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>Transparenz</source>
+        <translation>Gjennomsiktighet</translation>
+    </message>
+    <message>
+        <source>Einzelbilder</source>
+        <extracomment>number of animation frames</extracomment>
+        <translation>Bilderuter</translation>
+    </message>
+    <message>
+        <source>Seiten</source>
+        <translation>Sider</translation>
+    </message>
+    <message>
+        <source>Ausrichtung</source>
+        <translation>Retning</translation>
+    </message>
+    <message>
+        <source>Bewertung</source>
+        <extracomment>star rating</extracomment>
+        <translation>Vurdering</translation>
+    </message>
+    <message>
+        <source>Hersteller</source>
+        <translation>Produsent</translation>
+    </message>
+    <message>
+        <source>Modell</source>
+        <translation>Modell</translation>
+    </message>
+    <message>
+        <source>Objektiv</source>
+        <translation>Objektiv</translation>
+    </message>
+    <message>
+        <source>Brennweite</source>
+        <translation>Brennvidde</translation>
+    </message>
+    <message>
+        <source>Blende</source>
+        <extracomment>aperture (f-number)</extracomment>
+        <translation>Blender</translation>
+    </message>
+    <message>
+        <source>Belichtungszeit</source>
+        <translation>Lukkertid</translation>
+    </message>
+    <message>
+        <source>ISO</source>
+        <translation>ISO</translation>
+    </message>
+    <message>
+        <source>Belichtungskorrektur</source>
+        <translation>Eksponeringskompensasjon</translation>
+    </message>
+    <message>
+        <source>Blitz</source>
+        <translation>Blits</translation>
+    </message>
+    <message>
+        <source>Aufnahmedatum</source>
+        <translation>Opptaksdato</translation>
+    </message>
+    <message>
+        <source>Breite</source>
+        <extracomment>GPS latitude</extracomment>
+        <translation>Breddegrad</translation>
+    </message>
+    <message>
+        <source>Länge</source>
+        <extracomment>GPS longitude</extracomment>
+        <translation>Lengdegrad</translation>
+    </message>
+    <message>
+        <source>Höhe</source>
+        <extracomment>GPS altitude</extracomment>
+        <translation>Høyde</translation>
+    </message>
+</context>
+<context>
+    <name>lf::OpenWithService</name>
+    <message>
+        <source>Kein Programm zum Bearbeiten gefunden. Wähle eines unter Einstellungen → Allgemein → Editor.</source>
+        <translation>Fant ingen app for redigering. Velg en under Innstillinger → Generelt → Redigeringsapp.</translation>
+    </message>
+    <message>
+        <source>Kein Bild geöffnet</source>
+        <translation>Ingen bilde åpnet</translation>
+    </message>
+    <message>
+        <source>Andere …</source>
+        <translation>Annen…</translation>
+    </message>
+    <message>
+        <source>Programm wählen</source>
+        <translation>Velg app</translation>
+    </message>
+    <message>
+        <source>Programme (*.app)</source>
+        <translation>Apper (*.app)</translation>
+    </message>
+    <message>
+        <source>Programme werden gesucht …</source>
+        <translation>Søker etter apper…</translation>
+    </message>
+    <message>
+        <source>%1 (Standard)</source>
+        <translation>%1 (standard)</translation>
+    </message>
+    <message>
+        <source>Keine passenden Programme</source>
+        <translation>Ingen passende apper</translation>
+    </message>
+</context>
+<context>
+    <name>lf::PreferencesDialog</name>
+    <message>
+        <source>in einer späteren Version</source>
+        <translation>i en senere versjon</translation>
+    </message>
+    <message>
+        <source>Einstellungen</source>
+        <translation>Innstillinger</translation>
+    </message>
+    <message>
+        <source>Allgemein</source>
+        <translation>Generelt</translation>
+    </message>
+    <message>
+        <source>Fenster</source>
+        <translation>Vindu</translation>
+    </message>
+    <message>
+        <source>Anzeige</source>
+        <translation>Visning</translation>
+    </message>
+    <message>
+        <source>Maus &amp; Tastatur</source>
+        <translation>Mus og tastatur</translation>
+    </message>
+    <message>
+        <source>Navigation &amp; Sortierung</source>
+        <translation>Navigering og sortering</translation>
+    </message>
+    <message>
+        <source>Bewertung</source>
+        <translation>Vurdering</translation>
+    </message>
+    <message>
+        <source>Formate</source>
+        <translation>Formater</translation>
+    </message>
+    <message>
+        <source>Erweitert</source>
+        <translation>Avansert</translation>
+    </message>
+    <message>
+        <source>Auf Standard zurücksetzen</source>
+        <translation>Tilbakestill til standard</translation>
+    </message>
+    <message>
+        <source>Sprache:</source>
+        <translation>Språk:</translation>
+    </message>
+    <message>
+        <source>Wirkt sofort. Systemfenster wie „Öffnen“ folgen der Sprache, die macOS für Lumaflip verwendet (Systemeinstellungen → Allgemein → Sprache &amp; Region).</source>
+        <translation>Trer i kraft umiddelbart. Systemvinduer som «Åpne» følger språket macOS bruker for Lumaflip (Systeminnstillinger → Generelt → Språk og region).</translation>
+    </message>
+    <message>
+        <source>Öffnen aus dem Finder:</source>
+        <translation>Åpne fra Finder:</translation>
+    </message>
+    <message>
+        <source>Immer in neuem Fenster</source>
+        <translation>Alltid i nytt vindu</translation>
+    </message>
+    <message>
+        <source>Im vordersten Fenster ersetzen</source>
+        <translation>Erstatt i fremste vindu</translation>
+    </message>
+    <message>
+        <source>Neues Fenster, außer die Datei ist schon offen</source>
+        <translation>Nytt vindu, med mindre filen allerede er åpen</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Finder, „Öffnen mit“ und Drag &amp; Drop auf das Dock-Symbol.</source>
+        <translation>Gjelder dobbeltklikk i Finder, «Åpne med» og dra-og-slipp på Dock-symbolet.</translation>
+    </message>
+    <message>
+        <source>Fenster beim nächsten Start wiederherstellen</source>
+        <translation>Gjenopprett vinduer ved neste oppstart</translation>
+    </message>
+    <message>
+        <source>Ordner, Bild, Zoom und Position aller Fenster, die beim Beenden offen waren.</source>
+        <translation>Mappe, bilde, zoom og plassering for alle vinduer som var åpne ved avslutning.</translation>
+    </message>
+    <message>
+        <source>Vor dem Löschen nachfragen</source>
+        <translation>Spør før sletting</translation>
+    </message>
+    <message>
+        <source>Aus: ⌘⌫ legt das Bild sofort in den Papierkorb, ⌘Z holt es zurück.</source>
+        <translation>Av: ⌘⌫ flytter bildet til papirkurven umiddelbart, ⌘Z henter det tilbake.</translation>
+    </message>
+    <message>
+        <source>Editor:</source>
+        <translation>Redigeringsapp:</translation>
+    </message>
+    <message>
+        <source>Für „In Standard-Editor öffnen“ (Taste E).</source>
+        <translation>For «Åpne i standard redigeringsapp» (tasten E).</translation>
+    </message>
+    <message>
+        <source>Drehung speichern:</source>
+        <translation>Lagre rotering:</translation>
+    </message>
+    <message>
+        <source>EXIF-Ausrichtung setzen</source>
+        <translation>Angi EXIF-retning</translation>
+    </message>
+    <message>
+        <source>JPEG verlustfrei drehen (DCT)</source>
+        <translation>Roter JPEG tapsfritt (DCT)</translation>
+    </message>
+    <message>
+        <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Programme ohne EXIF-Unterstützung das Bild richtig zeigen. RAW-Dateien werden nie verändert; ⌘Z macht das Speichern rückgängig.</source>
+        <translation>Ingen av delene endrer bildepikslene. «EXIF-retning» endrer bare et flagg (JPEG, HEIC, TIFF, PNG); «roter tapsfritt» omorganiserer JPEG-blokkene slik at også apper uten EXIF-støtte viser bildet riktig. RAW-filer endres aldri; ⌘Z angrer lagringen.</translation>
+    </message>
+    <message>
+        <source>Änderungsdatum beibehalten</source>
+        <translation>Behold endringsdato</translation>
+    </message>
+    <message>
+        <source>Fenstergröße an Bild anpassen</source>
+        <translation>Tilpass vindusstørrelsen til bildet</translation>
+    </message>
+    <message>
+        <source>Aus: Neue Fenster übernehmen die zuletzt benutzte Größe.</source>
+        <translation>Av: Nye vinduer bruker sist brukte størrelse.</translation>
+    </message>
+    <message>
+        <source>Ordnername in der Titelleiste</source>
+        <translation>Mappenavn i tittellinjen</translation>
+    </message>
+    <message>
+        <source>Zum Beispiel „IMG_1234.jpg — 23 / 412 — Urlaub“.</source>
+        <translation>For eksempel «IMG_1234.jpg — 23 / 412 — Ferie».</translation>
+    </message>
+    <message>
+        <source>Neue Fenster zeigen:</source>
+        <translation>Nye vinduer viser:</translation>
+    </message>
+    <message>
+        <source>Statuszeile</source>
+        <translation>Statuslinje</translation>
+    </message>
+    <message>
+        <source>Infopanel (⌘I)</source>
+        <translation>Infopanel (⌘I)</translation>
+    </message>
+    <message>
+        <source>Filmstreifen (T)</source>
+        <translation>Filmstripe (T)</translation>
+    </message>
+    <message>
+        <source>Tabs:</source>
+        <translation>Faner:</translation>
+    </message>
+    <message>
+        <source>Fenster als Tabs öffnen (macOS-Tabs erlauben)</source>
+        <translation>Åpne vinduer som faner (tillat macOS-faner)</translation>
+    </message>
+    <message>
+        <source>Neue Fenster erscheinen dann als Tab im vordersten Fenster; Fenster → „Alle Fenster zusammenführen“ fasst offene Fenster zusammen.</source>
+        <translation>Nye vinduer vises da som fane i det fremste vinduet; Vindu → «Slå sammen alle vinduer» samler åpne vinduer.</translation>
+    </message>
+    <message>
+        <source>Dunkel</source>
+        <translation>Mørk</translation>
+    </message>
+    <message>
+        <source>Hell</source>
+        <translation>Lys</translation>
+    </message>
+    <message>
+        <source>Wie Systemdarstellung</source>
+        <translation>Som systemutseendet</translation>
+    </message>
+    <message>
+        <source>Schachbrett (Transparenz)</source>
+        <translation>Sjakkbrett (gjennomsiktighet)</translation>
+    </message>
+    <message>
+        <source>Eigene Farbe</source>
+        <translation>Egendefinert farge</translation>
+    </message>
+    <message>
+        <source>Farbe wählen …</source>
+        <translation>Velg farge…</translation>
+    </message>
+    <message>
+        <source>Hintergrundfarbe</source>
+        <translation>Bakgrunnsfarge</translation>
+    </message>
+    <message>
+        <source>Hintergrund:</source>
+        <translation>Bakgrunn:</translation>
+    </message>
+    <message>
+        <source>Zoom beim Öffnen:</source>
+        <translation>Zoom ved åpning:</translation>
+    </message>
+    <message>
+        <source>Einpassen (nicht vergrößern)</source>
+        <translation>Tilpass (ikke forstørr)</translation>
+    </message>
+    <message>
+        <source>Einpassen inkl. Vergrößern</source>
+        <translation>Tilpass (også forstørr)</translation>
+    </message>
+    <message>
+        <source>100 %</source>
+        <translation>100 %</translation>
+    </message>
+    <message>
+        <source>Breite füllen</source>
+        <translation>Fyll bredde</translation>
+    </message>
+    <message>
+        <source>Höhe füllen</source>
+        <translation>Fyll høyde</translation>
+    </message>
+    <message>
+        <source>Fenster füllen</source>
+        <translation>Fyll vindu</translation>
+    </message>
+    <message>
+        <source>Vergrößern über 100 %:</source>
+        <translation>Forstørring over 100 %:</translation>
+    </message>
+    <message>
+        <source>Glatt</source>
+        <translation>Jevn</translation>
+    </message>
+    <message>
+        <source>Pixel scharf</source>
+        <translation>Skarpe piksler</translation>
+    </message>
+    <message>
+        <source>100 % bedeutet:</source>
+        <translation>100 % betyr:</translation>
+    </message>
+    <message>
+        <source>1 Bildpixel = 1 Gerätepixel (Retina-korrekt)</source>
+        <translation>1 bildepiksel = 1 enhetspiksel (Retina-korrekt)</translation>
+    </message>
+    <message>
+        <source>1 Bildpixel = 1 Punkt</source>
+        <translation>1 bildepiksel = 1 punkt</translation>
+    </message>
+    <message>
+        <source>Diashow (⇧⌘F, S):</source>
+        <translation>Lysbildeserie (⇧⌘F, S):</translation>
+    </message>
+    <message>
+        <source> s pro Bild</source>
+        <translation> s per bilde</translation>
+    </message>
+    <message>
+        <source>Wiederholen</source>
+        <translation>Gjenta</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge</source>
+        <translation>Tilfeldig rekkefølge</translation>
+    </message>
+    <message>
+        <source>Überblenden</source>
+        <translation>Overtoning</translation>
+    </message>
+    <message>
+        <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, Esc beendet.</source>
+        <translation>Under lysbildeserien: Mellomrom setter på pause, 1–9 angir intervallet i sekunder, ←/→ blar, Esc avslutter.</translation>
+    </message>
+    <message>
+        <source>Profilvorlagen</source>
+        <translation>Forhåndsinnstillinger</translation>
+    </message>
+    <message>
+        <source>Mac-Standard</source>
+        <translation>Mac-standard</translation>
+    </message>
+    <message>
+        <source>Windows-Viewer-Gewohnheiten</source>
+        <translation>Vaner fra Windows-bildevisere</translation>
+    </message>
+    <message>
+        <source>Fotograf:in / Lightroom</source>
+        <translation>Fotograf / Lightroom</translation>
+    </message>
+    <message>
+        <source>Maus, Trackpad und Tasten</source>
+        <translation>Mus, styreflate og taster</translation>
+    </message>
+    <message>
+        <source>%1 (%2)</source>
+        <translation>%1 (%2)</translation>
+    </message>
+    <message>
+        <source>Mausrad-Feinheiten</source>
+        <translation>Finjustering av musehjul</translation>
+    </message>
+    <message>
+        <source>Richtung umkehren</source>
+        <translation>Snu retningen</translation>
+    </message>
+    <message>
+        <source>Raststufen pro Bildwechsel:</source>
+        <translation>Hakk per bildeskifte:</translation>
+    </message>
+    <message>
+        <source>Mindestabstand zwischen Bildwechseln:</source>
+        <translation>Minste intervall mellom bildeskifter:</translation>
+    </message>
+    <message>
+        <source> ms</source>
+        <translation> ms</translation>
+    </message>
+    <message>
+        <source>Verhindert das Überspringen von Bildern bei Rädern ohne Rasterung.</source>
+        <translation>Hindrer at bilder hoppes over med hjul uten hakk.</translation>
+    </message>
+    <message>
+        <source>Zoomschritt pro Raste:</source>
+        <translation>Zoomtrinn per hakk:</translation>
+    </message>
+    <message>
+        <source> %</source>
+        <translation> %</translation>
+    </message>
+    <message>
+        <source>Sprungweite (Bild↑/Bild↓):</source>
+        <translation>Hopplengde (Side↑/Side↓):</translation>
+    </message>
+    <message>
+        <source> Bilder</source>
+        <translation> bilder</translation>
+    </message>
+    <message>
+        <source>Tastenkürzel</source>
+        <translation>Tastatursnarveier</translation>
+    </message>
+    <message>
+        <source>Feld anklicken und neue Taste drücken. Bis zu drei Kürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
+        <translation>Klikk på feltet og trykk en ny tast. Opptil tre snarveier per handling. Sifre og P/X/U for vurdering gjelder bare i utvelgelsesmodus.</translation>
+    </message>
+    <message>
+        <source>Aktion</source>
+        <translation>Handling</translation>
+    </message>
+    <message>
+        <source>Kürzel</source>
+        <translation>Snarvei</translation>
+    </message>
+    <message>
+        <source>Alternative</source>
+        <translation>Alternativ</translation>
+    </message>
+    <message>
+        <source>–</source>
+        <translation>–</translation>
+    </message>
+    <message>
+        <source>Standardkürzel wiederherstellen</source>
+        <translation>Gjenopprett standardsnarvei</translation>
+    </message>
+    <message>
+        <source>Alle Tastenkürzel zurücksetzen</source>
+        <translation>Tilbakestill alle tastatursnarveier</translation>
+    </message>
+    <message>
+        <source>Konflikt mit: %1</source>
+        <translation>Konflikt med: %1</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Aktion(en) mit doppelt belegten Tasten – bitte eine davon ändern.</source>
+        <translation>
+            <numerusform>%n handling har dobbeltbelagte taster – endre én av dem.</numerusform>
+            <numerusform>%n handlinger har dobbeltbelagte taster – endre én av dem.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Am Ende der Sammlung:</source>
+        <translation>Ved slutten av samlingen:</translation>
+    </message>
+    <message>
+        <source>Anhalten</source>
+        <translation>Stopp</translation>
+    </message>
+    <message>
+        <source>Umlaufen</source>
+        <translation>Begynn forfra</translation>
+    </message>
+    <message>
+        <source>Zum nächsten Ordner</source>
+        <translation>Til neste mappe</translation>
+    </message>
+    <message>
+        <source>Sortierung wie im Finder</source>
+        <translation>Sortering som i Finder</translation>
+    </message>
+    <message>
+        <source>Liest die Darstellungsoptionen des Ordners (.DS_Store) und die globalen Finder-Einstellungen.</source>
+        <translation>Leser mappens visningsvalg (.DS_Store) og de globale Finder-innstillingene.</translation>
+    </message>
+    <message>
+        <source>Zeigt das vorderste Finder-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen aktuelle Sortierung (auch noch nicht gespeicherte). macOS bittet dafür einmalig um die Erlaubnis, den Finder zu steuern (Automation).</source>
+        <translation>Hvis det fremste Finder-vinduet viser nøyaktig den åpne mappen, bruker Lumaflip vinduets gjeldende sortering (også ulagret). macOS ber én gang om tillatelse til å styre Finder (Automatisering).</translation>
+    </message>
+    <message>
+        <source>Manuelle Sortierung:</source>
+        <translation>Manuell sortering:</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Navn</translation>
+    </message>
+    <message>
+        <source>Änderungsdatum</source>
+        <translation>Endringsdato</translation>
+    </message>
+    <message>
+        <source>Erstellungsdatum</source>
+        <translation>Opprettelsesdato</translation>
+    </message>
+    <message>
+        <source>Hinzugefügt am</source>
+        <translation>Dato lagt til</translation>
+    </message>
+    <message>
+        <source>Aufnahmedatum</source>
+        <translation>Opptaksdato</translation>
+    </message>
+    <message>
+        <source>Größe</source>
+        <translation>Størrelse</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Type</translation>
+    </message>
+    <message>
+        <source>Pixelzahl</source>
+        <translation>Antall piksler</translation>
+    </message>
+    <message>
+        <source>Aufsteigend</source>
+        <translation>Stigende</translation>
+    </message>
+    <message>
+        <source>Gilt, wenn „Sortierung wie im Finder“ aus ist oder keine Finder-Information gefunden wird. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier.</source>
+        <translation>Gjelder når «Sortering som i Finder» er av eller ingen Finder-informasjon blir funnet. Et valg i menyen Vis → Sorter etter huskes per mappe; «Bruk for alle mapper» gjør det til standard her.</translation>
+    </message>
+    <message>
+        <source>Bewertungen speichern:</source>
+        <translation>Lagre vurderinger:</translation>
+    </message>
+    <message>
+        <source>XMP-Zusatzdatei neben dem Bild (Bild.xmp)</source>
+        <translation>XMP-sidefil ved siden av bildet (Bilde.xmp)</translation>
+    </message>
+    <message>
+        <source>Kompatibel mit Lightroom, Capture One und darktable.</source>
+        <translation>Kompatibel med Lightroom, Capture One og darktable.</translation>
+    </message>
+    <message>
+        <source>Im Bild selbst (eingebettetes XMP)</source>
+        <translation>I selve bildet (innebygd XMP)</translation>
+    </message>
+    <message>
+        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; sonst wird die Zusatzdatei benutzt. Die Bildpixel werden nicht neu kodiert.</source>
+        <translation>Bare JPEG, HEIC, TIFF, PNG og DNG; ellers brukes sidefilen. Bildepikslene kodes ikke på nytt.</translation>
+    </message>
+    <message>
+        <source>Finder-Tags</source>
+        <translation>Finder-merker</translation>
+    </message>
+    <message>
+        <source>Im Finder sichtbar und per Spotlight durchsuchbar.</source>
+        <translation>Synlig i Finder og søkbar med Spotlight.</translation>
+    </message>
+    <message>
+        <source>Bewertungen und der Aussortiermodus folgen %1.</source>
+        <translation>Vurderinger og utvelgelsesmodus følger %1.</translation>
+    </message>
+    <message>
+        <source>Unterstützte Formate (ohne Nachinstallation):</source>
+        <translation>Støttede formater (uten ekstra installasjon):</translation>
+    </message>
+    <message>
+        <source>Gruppe</source>
+        <translation>Gruppe</translation>
+    </message>
+    <message>
+        <source>Standard</source>
+        <translation>Standard</translation>
+    </message>
+    <message>
+        <source>Modern</source>
+        <translation>Moderne</translation>
+    </message>
+    <message>
+        <source>RAW</source>
+        <translation>RAW</translation>
+    </message>
+    <message>
+        <source>Pro/HDR</source>
+        <translation>Pro/HDR</translation>
+    </message>
+    <message>
+        <source>Animiert</source>
+        <translation>Animert</translation>
+    </message>
+    <message>
+        <source>GIF, APNG, WebP, AVIF/HEICS, JXL – mit Wiedergabe</source>
+        <translation>GIF, APNG, WebP, AVIF/HEICS, JXL – med avspilling</translation>
+    </message>
+    <message>
+        <source>Vektor</source>
+        <translation>Vektor</translation>
+    </message>
+    <message>
+        <source>Als Standard-App für Bilder festlegen</source>
+        <translation>Angi som standardapp for bilder</translation>
+    </message>
+    <message>
+        <source>RAW: nur eingebettete Vorschau anzeigen (schneller)</source>
+        <translation>RAW: Vis bare innebygd forhåndsvisning (raskere)</translation>
+    </message>
+    <message>
+        <source>Aus: Zuerst die eingebettete Vorschau, danach wird die volle Entwicklung nachgeladen.</source>
+        <translation>Av: Først den innebygde forhåndsvisningen, deretter lastes full fremkalling inn.</translation>
+    </message>
+    <message>
+        <source>Leistung</source>
+        <translation>Ytelse</translation>
+    </message>
+    <message>
+        <source> MB</source>
+        <translation> MB</translation>
+    </message>
+    <message>
+        <source>Automatisch (25 % des Arbeitsspeichers, max. 2 GB)</source>
+        <translation>Automatisk (25 % av minnet, maks. 2 GB)</translation>
+    </message>
+    <message>
+        <source>Speicherbudget:</source>
+        <translation>Minnebudsjett:</translation>
+    </message>
+    <message>
+        <source>Bilder im Voraus laden:</source>
+        <translation>Forhåndslast bilder:</translation>
+    </message>
+    <message>
+        <source>Bilder zurück behalten:</source>
+        <translation>Behold tidligere bilder:</translation>
+    </message>
+    <message>
+        <source>Einstellungen sichern</source>
+        <translation>Sikkerhetskopier innstillinger</translation>
+    </message>
+    <message>
+        <source>Exportieren …</source>
+        <translation>Eksporter…</translation>
+    </message>
+    <message>
+        <source>Importieren …</source>
+        <translation>Importer…</translation>
+    </message>
+    <message>
+        <source>Alle Einstellungen zurücksetzen</source>
+        <translation>Tilbakestill alle innstillinger</translation>
+    </message>
+    <message>
+        <source>Lumaflip-Einstellungen (*.json)</source>
+        <translation>Lumaflip-innstillinger (*.json)</translation>
+    </message>
+    <message>
+        <source>Einstellungen exportieren</source>
+        <translation>Eksporter innstillinger</translation>
+    </message>
+    <message>
+        <source>Einstellungen importieren</source>
+        <translation>Importer innstillinger</translation>
+    </message>
+    <message>
+        <source>Alle Einstellungen zurücksetzen?</source>
+        <translation>Vil du tilbakestille alle innstillinger?</translation>
+    </message>
+    <message>
+        <source>Alle Einstellungen einschließlich der Tastenkürzel werden auf die Standardwerte zurückgesetzt.</source>
+        <translation>Alle innstillinger, inkludert tastatursnarveiene, tilbakestilles til standardverdiene.</translation>
+    </message>
+    <message>
+        <source>Einstellungen exportiert: %1</source>
+        <translation>Innstillinger eksportert: %1</translation>
+    </message>
+    <message>
+        <source>Export fehlgeschlagen: %1</source>
+        <translation>Eksport mislyktes: %1</translation>
+    </message>
+    <message>
+        <source>Export fehlgeschlagen</source>
+        <translation>Eksport mislyktes</translation>
+    </message>
+    <message>
+        <source>Unbekannter Fehler</source>
+        <translation>Ukjent feil</translation>
+    </message>
+    <message>
+        <source>Einstellungen importiert: %1</source>
+        <translation>Innstillinger importert: %1</translation>
+    </message>
+    <message>
+        <source>Import fehlgeschlagen: %1</source>
+        <translation>Import mislyktes: %1</translation>
+    </message>
+    <message>
+        <source>Import fehlgeschlagen</source>
+        <translation>Import mislyktes</translation>
+    </message>
+    <message>
+        <source>Standard-App des Systems für den Bildtyp (nie Lumaflip)</source>
+        <translation>Systemets standardapp for bildetypen (aldri Lumaflip)</translation>
+    </message>
+    <message>
+        <source>Lumaflip kann nicht sein eigener Editor sein. Bitte wähle ein anderes Programm.</source>
+        <translation>Lumaflip kan ikke være sin egen redigeringsapp. Velg en annen app.</translation>
+    </message>
+    <message>
+        <source>Auswählen …</source>
+        <translation>Velg…</translation>
+    </message>
+    <message>
+        <source>Editor wählen</source>
+        <translation>Velg redigeringsapp</translation>
+    </message>
+    <message>
+        <source>Programme (*.app)</source>
+        <translation>Apper (*.app)</translation>
+    </message>
+    <message>
+        <source>Sortierung live vom Finder-Fenster übernehmen</source>
+        <translation>Hent sortering direkte fra Finder-vinduet</translation>
+    </message>
+    <message>
+        <source>Sortierung vom Finder-Fenster übernehmen</source>
+        <translation>Hent sortering fra Finder-vinduet</translation>
+    </message>
+    <message>
+        <source>Lumaflip fragt dann beim Öffnen eines Ordners das vorderste Finder-Fenster nach seiner Sortierung – aber nur, wenn es genau diesen Ordner zeigt.</source>
+        <translation>Lumaflip spør da det fremste Finder-vinduet om sorteringen når en mappe åpnes – men bare hvis det viser nøyaktig denne mappen.</translation>
+    </message>
+    <message>
+        <source>Dafür fragt macOS einmalig, ob Lumaflip den Finder steuern darf („Automation“). Lumaflip liest nur Ordner, Ansicht und Sortierung des Fensters und ändert nichts. Die Erlaubnis lässt sich jederzeit unter Systemeinstellungen → Datenschutz &amp; Sicherheit → Automation widerrufen.</source>
+        <translation>macOS spør da én gang om Lumaflip får styre Finder («Automatisering»). Lumaflip leser bare vinduets mappe, visning og sortering og endrer ingenting. Tillatelsen kan når som helst trekkes tilbake under Systeminnstillinger → Personvern og sikkerhet → Automatisering.</translation>
+    </message>
+    <message>
+        <source>Aktivieren</source>
+        <translation>Aktiver</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Avbryt</translation>
+    </message>
+    <message>
+        <source>Systemsprache (%1)</source>
+        <extracomment>first entry of the language list; %1 is the language macOS asks for, in that language</extracomment>
+        <translation>Systemspråk (%1)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QtImageDecoder</name>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>Filen er tom (0 byte).</translation>
+    </message>
+    <message>
+        <source>Unbekanntes oder nicht unterstütztes Dateiformat.</source>
+        <translation>Ukjent filformat eller filformat som ikke støttes.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Side %1 finnes ikke.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden: %1</source>
+        <translation>Kunne ikke dekode bildet: %1</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei ist ungültig oder beschädigt.</source>
+        <translation>SVG-filen er ugyldig eller skadet.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Ikke nok minne til bildet.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::RecentItems</name>
+    <message>
+        <source>Einträge löschen</source>
+        <translation>Tøm menyen</translation>
+    </message>
+</context>
+<context>
+    <name>lf::RenameController</name>
+    <message>
+        <source>Bitte gib einen Namen ein.</source>
+        <translation>Skriv inn et navn.</translation>
+    </message>
+    <message>
+        <source>Der Name darf keinen Schrägstrich (/) und keinen Doppelpunkt (:) enthalten.</source>
+        <translation>Navnet kan ikke inneholde skråstrek (/) eller kolon (:).</translation>
+    </message>
+    <message>
+        <source>Namen, die mit einem Punkt beginnen, sind für Systemdateien reserviert.</source>
+        <translation>Navn som begynner med punktum, er reservert for systemfiler.</translation>
+    </message>
+    <message>
+        <source>Der Name enthält ungültige Zeichen.</source>
+        <translation>Navnet inneholder ugyldige tegn.</translation>
+    </message>
+    <message>
+        <source>Der Name ist zu lang (höchstens %1 Byte).</source>
+        <translation>Navnet er for langt (maks. %1 byte).</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert bereits. Bitte wähle einen anderen Namen.</source>
+        <translation>«%1» finnes allerede. Velg et annet navn.</translation>
+    </message>
+    <message>
+        <source>Neuer Dateiname</source>
+        <translation>Nytt filnavn</translation>
+    </message>
+    <message>
+        <source>Soll die Endung „.%1“ entfernt werden?</source>
+        <translation>Vil du fjerne filtypen «.%1»?</translation>
+    </message>
+    <message>
+        <source>Soll die Endung „.%1“ hinzugefügt werden?</source>
+        <translation>Vil du legge til filtypen «.%1»?</translation>
+    </message>
+    <message>
+        <source>Soll die Endung „.%1“ in „.%2“ geändert werden?</source>
+        <translation>Vil du endre filtypen «.%1» til «.%2»?</translation>
+    </message>
+    <message>
+        <source>Dateiendung ändern?</source>
+        <translation>Vil du endre filtypen?</translation>
+    </message>
+    <message>
+        <source>Die Datei wird dadurch nicht umgewandelt. Andere Programme erkennen sie danach eventuell nicht mehr.</source>
+        <translation>Filen blir ikke konvertert av dette. Andre apper vil kanskje ikke lenger gjenkjenne den.</translation>
+    </message>
+    <message>
+        <source>Ohne Endung lassen</source>
+        <translation>Behold uten filtype</translation>
+    </message>
+    <message>
+        <source>„.%1“ behalten</source>
+        <translation>Behold «.%1»</translation>
+    </message>
+    <message>
+        <source>Endung entfernen</source>
+        <translation>Fjern filtype</translation>
+    </message>
+    <message>
+        <source>„.%1“ verwenden</source>
+        <translation>Bruk «.%1»</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Avbryt</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Settings</name>
+    <message>
+        <source>Datei kann nicht geschrieben werden: %1</source>
+        <translation>Kan ikke skrive filen: %1</translation>
+    </message>
+    <message>
+        <source>Datei kann nicht gelesen werden: %1</source>
+        <translation>Kan ikke lese filen: %1</translation>
+    </message>
+    <message>
+        <source>Keine gültige Einstellungsdatei (JSON-Fehler: %1).</source>
+        <translation>Ikke en gyldig innstillingsfil (JSON-feil: %1).</translation>
+    </message>
+    <message>
+        <source>Keine Lumaflip-Einstellungsdatei.</source>
+        <translation>Ikke en innstillingsfil for Lumaflip.</translation>
+    </message>
+    <message>
+        <source>%1: ungültiger Wert (erwartet: %2)</source>
+        <translation>%1: ugyldig verdi (forventet: %2)</translation>
+    </message>
+    <message>
+        <source>Import abgebrochen, nichts wurde geändert:
+%1</source>
+        <translation>Importen ble avbrutt, ingenting ble endret:
+%1</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Share</name>
+    <message>
+        <source>Teilen …</source>
+        <translation>Del…</translation>
+    </message>
+    <message>
+        <source>Wird geladen …</source>
+        <translation>Laster inn…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Shell</name>
+    <message>
+        <source>Auf dieser Plattform wird das Festlegen der Standard-App noch nicht unterstützt.</source>
+        <translation>Angivelse av standardapp støttes ikke ennå på denne plattformen.</translation>
+    </message>
+    <message>
+        <source>Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, falls eine erscheint.</source>
+        <translation>Lumaflip angis fortsatt som standardapp – bekreft spørsmålet fra macOS hvis det vises.</translation>
+    </message>
+    <message>
+        <source>unbekannter Typ</source>
+        <translation>ukjent type</translation>
+    </message>
+    <message>
+        <source>Lumaflip läuft nicht als App-Paket und kann nicht als Standard-App festgelegt werden.</source>
+        <translation>Lumaflip kjører ikke som en apppakke og kan ikke angis som standardapp.</translation>
+    </message>
+    <message>
+        <source>Zeitüberschreitung bei der Rückmeldung des Systems.</source>
+        <translation>Tidsavbrudd ved venting på svar fra systemet.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::StartScreenRecent</name>
+    <message>
+        <source>Zuletzt geöffnet</source>
+        <translation>Nylig brukte</translation>
+    </message>
+</context>
+<context>
+    <name>lf::TagService</name>
+    <message>
+        <source>Tags werden auf diesem System nicht unterstützt.</source>
+        <translation>Merker støttes ikke på dette systemet.</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gelesen werden: %2</source>
+        <translation>Kunne ikke lese merkene til «%1»: %2</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
+        <translation>Kunne ikke angi merkene til «%1»: %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::TrashService</name>
+    <message>
+        <source>„%1“ konnte nicht in den Papierkorb gelegt werden.</source>
+        <translation>Kunne ikke flytte «%1» til papirkurven.</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert bereits und wird nicht überschrieben.</source>
+        <translation>«%1» finnes allerede og blir ikke overskrevet.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht wiederhergestellt werden.</source>
+        <translation>Kunne ikke gjenopprette «%1».</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht in den Papierkorb gelegt werden: %2</source>
+        <translation>Kunne ikke flytte «%1» til papirkurven: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ist nicht mehr im Papierkorb.</source>
+        <translation>«%1» er ikke lenger i papirkurven.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht wiederhergestellt werden: %2</source>
+        <translation>Kunne ikke gjenopprette «%1»: %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::UndoBackupStore</name>
+    <message>
+        <source>Die Sicherung für „Rückgängig“ ist nicht mehr vorhanden.</source>
+        <translation>Sikkerhetskopien for «Angre» finnes ikke lenger.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Platz für die Sicherungskopie (Rückgängig) – nichts gespeichert.</source>
+        <translation>Ikke nok plass til sikkerhetskopien (Angre) – ingenting ble lagret.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Updater</name>
+    <message>
+        <source>Automatisch nach Updates suchen</source>
+        <translation>Se etter oppdateringer automatisk</translation>
+    </message>
+    <message>
+        <source>Updates automatisch installieren</source>
+        <translation>Installer oppdateringer automatisk</translation>
+    </message>
+    <message>
+        <source>Lumaflip fragt dazu einmal am Tag bei GitHub nach einer neuen Version. Das ist die einzige Netzwerkverbindung der App.</source>
+        <translation>Lumaflip spør GitHub én gang om dagen om det finnes en ny versjon. Dette er appens eneste nettverkstilkobling.</translation>
+    </message>
+    <message>
+        <source>Updates:</source>
+        <translation>Oppdateringer:</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ViewerWindow</name>
+    <message>
+        <source>Sortierung gilt jetzt für alle Ordner</source>
+        <translation>Sorteringen gjelder nå for alle mapper</translation>
+    </message>
+    <message>
+        <source>Zugriff erlauben…</source>
+        <translation>Gi tilgang…</translation>
+    </message>
+    <message>
+        <source>Ausblenden</source>
+        <translation>Skjul</translation>
+    </message>
+    <message>
+        <source>Öffnen…</source>
+        <translation>Åpne…</translation>
+    </message>
+    <message>
+        <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
+        <translation>Filen er skadet, eller formatet støttes ikke.</translation>
+    </message>
+    <message>
+        <source>Im Finder zeigen</source>
+        <translation>Vis i Finder</translation>
+    </message>
+    <message>
+        <source>Volle Auflösung nicht verfügbar</source>
+        <translation>Full oppløsning er ikke tilgjengelig</translation>
+    </message>
+    <message>
+        <source>Lumaflip – lädt …</source>
+        <translation>Lumaflip – laster inn…</translation>
+    </message>
+    <message>
+        <source>Sortierung wird ermittelt …</source>
+        <translation>Finner sortering…</translation>
+    </message>
+    <message>
+        <source>%1 %</source>
+        <extracomment>zoom factor in the status bar, e.g. &quot;37 %&quot; (use the language&apos;s percent style)</extracomment>
+        <translation>%1 %</translation>
+    </message>
+    <message>
+        <source>Vektor</source>
+        <translation>Vektor</translation>
+    </message>
+    <message>
+        <source>%1 × %2 (Vektor)</source>
+        <translation>%1 × %2 (vektor)</translation>
+    </message>
+    <message>
+        <source>Keine Bilder in „%1“</source>
+        <translation>Ingen bilder i «%1»</translation>
+    </message>
+    <message>
+        <source>Bild oder Ordner hierher ziehen</source>
+        <translation>Dra et bilde eller en mappe hit</translation>
+    </message>
+    <message>
+        <source>Letztes Bild</source>
+        <translation>Siste bilde</translation>
+    </message>
+    <message>
+        <source>Erstes Bild</source>
+        <translation>Første bilde</translation>
+    </message>
+    <message>
+        <source>Lumaflip darf den Ordner „%1“ nicht lesen und zeigt deshalb nur die geöffnete Datei. Erlaube den Zugriff unter Systemeinstellungen → Datenschutz &amp; Sicherheit → Dateien und Ordner. Festplattenvollzugriff ist dafür nicht nötig.</source>
+        <translation>Lumaflip har ikke tilgang til å lese mappen «%1» og viser derfor bare den åpne filen. Gi tilgang under Systeminnstillinger → Personvern og sikkerhet → Filer og mapper. Full disktilgang er ikke nødvendig.</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
+        <translation>Du har ikke lesetilgang til mappen «%1», så Lumaflip viser bare den åpne filen. Tilgangen kan endres i Finder under Arkiv → Vis info → «Deling og tillatelser».</translation>
+    </message>
+    <message>
+        <source>Kein weiterer Ordner mit Bildern</source>
+        <translation>Ingen flere mapper med bilder</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner mit Bildern</source>
+        <translation>Ingen forrige mappe med bilder</translation>
+    </message>
+    <message>
+        <source>Zoom fixiert</source>
+        <translation>Zoom låst</translation>
+    </message>
+    <message>
+        <source>Zoom gelöst</source>
+        <translation>Zoom låst opp</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>Flytt til papirkurven</translation>
+    </message>
+    <message>
+        <source>„%1“ in den Papierkorb legen?</source>
+        <translation>Vil du flytte «%1» til papirkurven?</translation>
+    </message>
+    <message>
+        <source>Mit ⌘Z lässt sich das widerrufen.</source>
+        <translation>Du kan angre dette med ⌘Z.</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Avbryt</translation>
+    </message>
+    <message>
+        <source>Bild wird kopiert …</source>
+        <translation>Kopierer bilde…</translation>
+    </message>
+    <message>
+        <source>Bild kopiert (Bildschirmauflösung)</source>
+        <translation>Bilde kopiert (skjermoppløsning)</translation>
+    </message>
+    <message>
+        <source>Bild kopiert</source>
+        <translation>Bilde kopiert</translation>
+    </message>
+    <message>
+        <source>Pfad kopiert</source>
+        <translation>Bane kopiert</translation>
+    </message>
+    <message>
+        <source>„%1“ ist nicht mehr vorhanden.</source>
+        <translation>«%1» finnes ikke lenger.</translation>
+    </message>
+    <message>
+        <source>Animation angehalten: %1</source>
+        <translation>Animasjon satt på pause: %1</translation>
+    </message>
+    <message>
+        <source>Diashow beendet</source>
+        <translation>Lysbildeserie avsluttet</translation>
+    </message>
+    <message>
+        <source>Wiedergabe</source>
+        <translation>Avspilling</translation>
+    </message>
+    <message>
+        <source>Pause</source>
+        <translation>Pause</translation>
+    </message>
+    <message>
+        <source>Diashow angehalten</source>
+        <translation>Lysbildeserie satt på pause</translation>
+    </message>
+    <message>
+        <source>Diashow läuft weiter</source>
+        <translation>Lysbildeserien fortsetter</translation>
+    </message>
+    <message numerus="yes">
+        <source>Intervall: %n Sekunde(n)</source>
+        <translation>
+            <numerusform>Intervall: %n sekund</numerusform>
+            <numerusform>Intervall: %n sekunder</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Bild %1/%2</source>
+        <translation>Bilde %1/%2</translation>
+    </message>
+    <message>
+        <source>Seite %1/%2</source>
+        <translation>Side %1/%2</translation>
+    </message>
+    <message>
+        <source>Geschwindigkeit: %1×</source>
+        <translation>Hastighet: %1×</translation>
+    </message>
+    <message>
+        <source>Erste Seite</source>
+        <translation>Første side</translation>
+    </message>
+    <message>
+        <source>Letzte Seite</source>
+        <translation>Siste side</translation>
+    </message>
+    <message>
+        <source>Diashow – Leertaste: Pause · 1–9: Sekunden · Esc: Ende</source>
+        <translation>Lysbildeserie – Mellomrom: pause · 1–9: sekunder · Esc: avslutt</translation>
+    </message>
+    <message>
+        <source>Keine Drehung zu speichern – zuerst mit ⌘L oder ⌘R drehen</source>
+        <translation>Ingen rotering å lagre – roter først med ⌘L eller ⌘R</translation>
+    </message>
+    <message>
+        <source>Drehung speichern</source>
+        <translation>Lagre rotering</translation>
+    </message>
+    <message>
+        <source>Verlustfrei drehen geht nur mit beschnittenem Rand.</source>
+        <translation>Tapsfri rotering er bare mulig med beskåret kant.</translation>
+    </message>
+    <message>
+        <source>Die Drehung kann nur durch Neukodieren gespeichert werden.</source>
+        <translation>Roteringen kan bare lagres ved å kode bildet på nytt.</translation>
+    </message>
+    <message>
+        <source>Rand abschneiden</source>
+        <translation>Beskjær kanten</translation>
+    </message>
+    <message>
+        <source>Neu kodieren</source>
+        <translation>Kod på nytt</translation>
+    </message>
+    <message>
+        <source>Nur EXIF-Ausrichtung setzen</source>
+        <translation>Bare angi EXIF-retning</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowPanels</name>
+    <message>
+        <source>Informationen</source>
+        <translation>Informasjon</translation>
+    </message>
+    <message>
+        <source>Filmstreifen</source>
+        <translation>Filmstripe</translation>
+    </message>
+</context>
+</TS>

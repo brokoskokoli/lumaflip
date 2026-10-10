@@ -105,7 +105,8 @@ struct MetadataEntry {
 struct Metadata {
     // Grouped key/value pairs for the info panel (F-INFO-02), e.g.
     // {"Kamera": {"Modell": "...", ...}, "Aufnahme": {...}, "GPS": {...}}
-    // (group and row names are the German labels of the keys below).
+    // (group and row names are the German source labels of the keys below, whatever the
+    // UI language: translateMetadataLabel() gives the text to show).
     QVariantMap groups;
     // The same rows with stable keys, in display order (filled by backends that use
     // addMetadata(); the ImageIO backend does). Consumers should prefer this.
@@ -116,12 +117,16 @@ struct Metadata {
 };
 
 // The single translation table of metadata labels (context "lf::Metadata", tr-able):
-// "camera.model" -> "Modell", group "camera" -> "Kamera". Empty for unknown keys.
+// "camera.model" -> "Modell", group "camera" -> "Kamera" (in the UI language). Empty for
+// unknown keys.
 QString metadataLabel(const QString& key);
 QString metadataGroupLabel(const QString& group);
+// A German label of `groups` ("Modell") in the UI language; unknown labels unchanged.
+QString translateMetadataLabel(const QString& germanLabel);
 // All keys in display order ("file.format", "file.dimensions", …, "gps.altitude").
 QStringList metadataKeys();
-// Adds a row to `md` under `key`: to `entries` and - under the German labels - to `groups`.
+// Adds a row to `md` under `key`: to `entries` (label in the UI language) and - under the
+// German labels - to `groups`.
 // An existing row with that key is replaced.
 void addMetadata(Metadata& md, const QString& key, const QVariant& value);
 

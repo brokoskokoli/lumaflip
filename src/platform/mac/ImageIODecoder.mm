@@ -2,6 +2,7 @@
 #include "platform/mac/ImageIODecoder.h"
 
 #include "core/ImageFormats.h"
+#include "core/LocaleFormat.h"
 
 #import <CoreGraphics/CoreGraphics.h>
 #import <Foundation/Foundation.h>
@@ -24,9 +25,6 @@ namespace {
 
 // ---- small helpers -------------------------------------------------------------------
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::ImageIODecoder", text);
-}
 
 void setError(QString* error, const QString& msg) {
     if (error)
@@ -437,7 +435,7 @@ float peakOf(const QImage& img) {
 std::optional<Rendered> render(CGImageRef img, int o, bool hdr, QString* error) {
     const size_t w = CGImageGetWidth(img), h = CGImageGetHeight(img);
     if (w == 0 || h == 0) {
-        setError(error, tr("Das Bild hat keine Pixel."));
+        setError(error, QCoreApplication::translate("lf::ImageIODecoder", "Das Bild hat keine Pixel."));
         return std::nullopt;
     }
     const bool swap = o >= 5;
@@ -467,13 +465,17 @@ std::optional<Rendered> render(CGImageRef img, int o, bool hdr, QString* error) 
 
     QImage out(dw, dh, fmt);
     if (out.isNull()) {
-        setError(error, tr("Nicht genug Speicher für das Bild (%1 × %2 Pixel).").arg(dw).arg(dh));
+        setError(error, QCoreApplication::translate("lf::ImageIODecoder",
+                                                    "Nicht genug Speicher für das Bild (%1 × %2 Pixel).")
+                            .arg(dw)
+                            .arg(dh));
         return std::nullopt;
     }
     CFRef<CGContextRef> ctx(CGBitmapContextCreate(
         out.bits(), size_t(dw), size_t(dh), bpc, size_t(out.bytesPerLine()), target.space.get(), bitmapInfo));
     if (!ctx) {
-        setError(error, tr("Bildpuffer konnte nicht angelegt werden."));
+        setError(error, QCoreApplication::translate("lf::ImageIODecoder",
+                                                    "Bildpuffer konnte nicht angelegt werden."));
         return std::nullopt;
     }
     float headroom = 1.0f;
@@ -503,25 +505,29 @@ QString typeOfFile(CGImageSourceRef src) {
 CFRef<CGImageSourceRef> openValidated(const QString& path, Layout* layout, QString* error) {
     const QFileInfo fi(path);
     if (!fi.exists()) {
-        setError(error, tr("Die Datei existiert nicht."));
+        setError(error, QCoreApplication::translate("lf::ImageIODecoder", "Die Datei existiert nicht."));
         return {};
     }
     if (fi.size() == 0) {
-        setError(error, tr("Die Datei ist leer (0 Byte)."));
+        setError(error, QCoreApplication::translate("lf::ImageIODecoder", "Die Datei ist leer (0 Byte)."));
         return {};
     }
     CFRef<CGImageSourceRef> src = openSource(path);
     if (!src) {
-        setError(error, tr("Die Datei kann nicht gelesen werden."));
+        setError(error,
+                 QCoreApplication::translate("lf::ImageIODecoder", "Die Datei kann nicht gelesen werden."));
         return {};
     }
     if (typeOfFile(src.get()).isEmpty() || CGImageSourceGetStatus(src.get()) == kCGImageStatusUnknownType) {
-        setError(error, tr("Unbekanntes oder nicht unterstütztes Dateiformat."));
+        setError(error, QCoreApplication::translate("lf::ImageIODecoder",
+                                                    "Unbekanntes oder nicht unterstütztes Dateiformat."));
         return {};
     }
     *layout = layoutOf(src.get());
     if (layout->count == 0) {
-        setError(error, tr("Die Datei enthält keine lesbaren Bilddaten (beschädigt?)."));
+        setError(error,
+                 QCoreApplication::translate("lf::ImageIODecoder",
+                                             "Die Datei enthält keine lesbaren Bilddaten (beschädigt?)."));
         return {};
     }
     return src;
@@ -583,7 +589,9 @@ std::optional<DecodedImage> decodeAt(CGImageSourceRef src, const Layout& l, size
         drawOrientation = o;
     }
     if (!img) {
-        setError(error, tr("Das Bild konnte nicht dekodiert werden (Datei beschädigt?)."));
+        setError(error,
+                 QCoreApplication::translate("lf::ImageIODecoder",
+                                             "Das Bild konnte nicht dekodiert werden (Datei beschädigt?)."));
         return std::nullopt;
     }
     // HDR only if the decoder actually delivered extended range data.
@@ -613,29 +621,8 @@ std::optional<DecodedImage> decodeAt(CGImageSourceRef src, const Layout& l, size
     return out;
 }
 
-// ---- metadata formatting (German UI strings) ------------------------------------------
-
-QString formatNumber(double v, int decimals) {
-    static const QLocale de(QLocale::German, QLocale::Germany);
-    QString s = de.toString(v, 'f', decimals);
-    if (decimals > 0 && s.contains(QLatin1Char(','))) {
-        while (s.endsWith(QLatin1Char('0')))
-            s.chop(1);
-        if (s.endsWith(QLatin1Char(',')))
-            s.chop(1);
-    }
-    return s;
-}
-
-QString formatExposure(double t) {
-    if (t <= 0)
-        return {};
-    if (t < 1.0) {
-        const double inv = 1.0 / t;
-        return QStringLiteral("1/%1 s").arg(formatNumber(inv >= 10 ? std::round(inv) : inv, 1));
-    }
-    return QStringLiteral("%1 s").arg(formatNumber(t, 1));
-}
+// ---- metadata ---------------------------------------------------------------------------
+// Values are formatted for the UI language (core/LocaleFormat.h, F-I18N-04).
 
 std::optional<QDateTime> parseExifDate(const QString& s, const QString& offset, const QString& subsec) {
     QDateTime dt = QDateTime::fromString(s.trimmed(), QStringLiteral("yyyy:MM:dd HH:mm:ss"));
@@ -658,8 +645,8 @@ std::optional<QDateTime> parseExifDate(const QString& s, const QString& offset, 
 
 QString flashText(int flash) {
     if (flash & 0x1)
-        return tr("Ausgelöst");
-    return tr("Nicht ausgelöst");
+        return QCoreApplication::translate("lf::ImageIODecoder", "Ausgelöst");
+    return QCoreApplication::translate("lf::ImageIODecoder", "Nicht ausgelöst");
 }
 
 } // namespace
@@ -729,7 +716,9 @@ std::optional<ImageInfo> ImageIODecoder::info(const QString& path, QString* erro
         NSDictionary* props =
             CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(src.get(), l.primary, nullptr));
         if (!props || !value(props, kCGImagePropertyPixelWidth)) {
-            setError(error, tr("Die Bildinformationen sind beschädigt."));
+            // explicit context: lupdate loses track of the class after the Objective-C above
+            setError(error, QCoreApplication::translate("lf::ImageIODecoder",
+                                                        "Die Bildinformationen sind beschädigt."));
             return std::nullopt;
         }
         return infoFromProperties(src.get(), l, l.primary, props);
@@ -745,12 +734,17 @@ std::optional<DecodedImage> ImageIODecoder::decode(const QString& path, const De
             return std::nullopt;
         const auto index = imageIndex(l, req);
         if (!index) {
-            setError(error, l.animated ? tr("Einzelbild %1 existiert nicht.").arg(req.frame + 1)
-                                       : tr("Seite %1 existiert nicht.").arg(req.page + 1));
+            setError(error,
+                     l.animated
+                         ? QCoreApplication::translate("lf::ImageIODecoder", "Einzelbild %1 existiert nicht.")
+                               .arg(req.frame + 1)
+                         : QCoreApplication::translate("lf::ImageIODecoder", "Seite %1 existiert nicht.")
+                               .arg(req.page + 1));
             return std::nullopt;
         }
         if (l.type == u"public.jpeg" && jpegLooksTruncated(path)) {
-            setError(error, tr("Die Datei ist unvollständig (abgeschnitten)."));
+            setError(error, QCoreApplication::translate("lf::ImageIODecoder",
+                                                        "Die Datei ist unvollständig (abgeschnitten)."));
             return std::nullopt;
         }
         return decodeAt(src.get(), l, *index, req, error);
@@ -768,7 +762,9 @@ public:
     std::optional<DecodedImage> readFrame(int index, const DecodeRequest& req, QString* error) override {
         @autoreleasepool {
             if (index < 0 || index >= frameCount()) {
-                setError(error, tr("Einzelbild %1 existiert nicht.").arg(index + 1));
+                setError(error,
+                         QCoreApplication::translate("lf::ImageIODecoder", "Einzelbild %1 existiert nicht.")
+                             .arg(index + 1));
                 return std::nullopt;
             }
             DecodeRequest r = req;
@@ -818,10 +814,14 @@ Metadata ImageIODecoder::metadata(const QString& path) {
             addMetadata(md, QStringLiteral("file.colorModel"), info.colorModel);
         if (!info.profileName.isEmpty())
             addMetadata(md, QStringLiteral("file.profile"), info.profileName);
-        addMetadata(md, QStringLiteral("file.bitDepth"), tr("%1 Bit").arg(info.bitsPerComponent));
-        addMetadata(md, QStringLiteral("file.hdr"), info.isHdr ? tr("Ja") : tr("Nein"));
+        addMetadata(md, QStringLiteral("file.bitDepth"),
+                    QCoreApplication::translate("lf::ImageIODecoder", "%1 Bit").arg(info.bitsPerComponent));
+        addMetadata(md, QStringLiteral("file.hdr"),
+                    info.isHdr ? QCoreApplication::translate("lf::ImageIODecoder", "Ja")
+                               : QCoreApplication::translate("lf::ImageIODecoder", "Nein"));
         if (info.hasAlpha)
-            addMetadata(md, QStringLiteral("file.alpha"), tr("Ja"));
+            addMetadata(md, QStringLiteral("file.alpha"),
+                        QCoreApplication::translate("lf::ImageIODecoder", "Ja"));
         if (info.isAnimated)
             addMetadata(md, QStringLiteral("file.frames"), info.frameCount);
         if (info.pageCount > 1)
@@ -847,22 +847,17 @@ Metadata ImageIODecoder::metadata(const QString& path) {
         putStr("camera.lens", lens);
 
         if (auto f = toDouble(value(exif, kCGImagePropertyExifFocalLength)); f && *f > 0) {
-            QString s = QStringLiteral("%1 mm").arg(formatNumber(*f, 1));
-            if (auto f35 = toDouble(value(exif, kCGImagePropertyExifFocalLenIn35mmFilm));
-                f35 && *f35 > 0 && *f35 != *f)
-                s += QStringLiteral(" (KB: %1 mm)").arg(formatNumber(*f35, 0));
-            addMetadata(md, QStringLiteral("shot.focalLength"), s);
+            const auto f35 = toDouble(value(exif, kCGImagePropertyExifFocalLenIn35mmFilm));
+            addMetadata(md, QStringLiteral("shot.focalLength"), formatFocalLength(*f, f35.value_or(0)));
         }
         if (auto n = toDouble(value(exif, kCGImagePropertyExifFNumber)); n && *n > 0)
-            addMetadata(md, QStringLiteral("shot.aperture"), QStringLiteral("f/%1").arg(formatNumber(*n, 1)));
+            addMetadata(md, QStringLiteral("shot.aperture"), formatAperture(*n));
         if (auto t = toDouble(value(exif, kCGImagePropertyExifExposureTime)); t && *t > 0)
-            addMetadata(md, QStringLiteral("shot.exposureTime"), formatExposure(*t));
+            addMetadata(md, QStringLiteral("shot.exposureTime"), formatExposureTime(*t));
         if (auto iso = toDouble(value(exif, kCGImagePropertyExifISOSpeedRatings)); iso && *iso > 0)
             addMetadata(md, QStringLiteral("shot.iso"), QString::number(qRound(*iso)));
         if (auto ev = toDouble(value(exif, kCGImagePropertyExifExposureBiasValue)); ev) {
-            const QString num = formatNumber(*ev, 1);
-            addMetadata(md, QStringLiteral("shot.exposureBias"),
-                        QStringLiteral("%1%2 EV").arg(*ev > 0 ? QStringLiteral("+") : QString(), num));
+            addMetadata(md, QStringLiteral("shot.exposureBias"), formatExposureBias(*ev));
         }
         if (id flash = value(exif, kCGImagePropertyExifFlash))
             addMetadata(md, QStringLiteral("shot.flash"), flashText([flash intValue]));
@@ -876,7 +871,7 @@ Metadata ImageIODecoder::metadata(const QString& path) {
                               toQString(value(exif, kCGImagePropertyExifOffsetTimeDigitized)), QString());
         if (captured) {
             md.captured = captured;
-            QString s = captured->toString(QStringLiteral("dd.MM.yyyy HH:mm:ss"));
+            QString s = formatDateTime(*captured);
             if (captured->timeSpec() == Qt::OffsetFromUTC) {
                 const int off = captured->offsetFromUtc();
                 s += QStringLiteral(" (UTC%1%2:%3)")
@@ -897,17 +892,12 @@ Metadata ImageIODecoder::metadata(const QString& path) {
                 const double lo = lonRef == u"W" ? -std::abs(*lon) : std::abs(*lon);
                 md.latitude = la;
                 md.longitude = lo;
-                addMetadata(md, QStringLiteral("gps.latitude"),
-                            QStringLiteral("%1° %2").arg(formatNumber(std::abs(la), 6),
-                                                         la < 0 ? QStringLiteral("S") : QStringLiteral("N")));
-                addMetadata(md, QStringLiteral("gps.longitude"),
-                            QStringLiteral("%1° %2").arg(formatNumber(std::abs(lo), 6),
-                                                         lo < 0 ? QStringLiteral("W") : QStringLiteral("O")));
+                addMetadata(md, QStringLiteral("gps.latitude"), formatLatitude(la));
+                addMetadata(md, QStringLiteral("gps.longitude"), formatLongitude(lo));
             }
             if (auto alt = toDouble(value(gps, kCGImagePropertyGPSAltitude))) {
                 const bool below = [value(gps, kCGImagePropertyGPSAltitudeRef) intValue] == 1;
-                addMetadata(md, QStringLiteral("gps.altitude"),
-                            QStringLiteral("%1 m").arg(formatNumber(below ? -*alt : *alt, 1)));
+                addMetadata(md, QStringLiteral("gps.altitude"), formatAltitude(below ? -*alt : *alt));
             }
         }
 
@@ -990,11 +980,11 @@ QString ImageIODecoder::formatNameForType(const QString& t) {
         {"com.apple.icns", "ICNS"},
         {"org.webmproject.webp", "WebP"},
         {"public.heic", "HEIC"},
-        {"public.heics", "HEIC-Sequenz"},
+        {"public.heics", QT_TRANSLATE_NOOP("lf::ImageIODecoder", "HEIC-Sequenz")},
         {"public.heif", "HEIF"},
         {"public.avci", "AVCI"},
         {"public.avif", "AVIF"},
-        {"public.avis", "AVIF-Sequenz"},
+        {"public.avis", QT_TRANSLATE_NOOP("lf::ImageIODecoder", "AVIF-Sequenz")},
         {"public.jpeg-xl", "JPEG XL"},
         {"public.jpeg-2000", "JPEG 2000"},
         {"com.adobe.photoshop-image", "Photoshop (PSD)"},
@@ -1047,7 +1037,8 @@ QString ImageIODecoder::formatNameForType(const QString& t) {
     };
     for (const auto& e : table)
         if (t == QLatin1StringView(e.uti))
-            return QString::fromLatin1(e.name);
+            return QCoreApplication::translate("lf::ImageIODecoder",
+                                               e.name); // brand names stay, "HEIC-Sequenz" is translated
     @autoreleasepool {
         UTType* type = [UTType typeWithIdentifier:t.toNSString()];
         if (type.preferredFilenameExtension)

@@ -5,6 +5,7 @@
 #include "HistogramWidget.h"
 #include "core/AppScoped.h"
 #include "core/Decoder.h"
+#include "core/LocaleFormat.h"
 #include "core/Platform.h"
 #include "core/Settings.h"
 
@@ -23,6 +24,8 @@
 #include <QLocale>
 #include <QMenu>
 #include <QMimeDatabase>
+#include <QRegularExpression>
+#include <QStringListModel>
 #include <QThreadPool>
 #include <QTimeZone>
 #include <QToolButton>
@@ -40,9 +43,10 @@ constexpr int kCacheEntries = 64;
 constexpr int kHistogramEntries = 32;
 const int kSectionRole = Qt::UserRole + 1;
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::InfoPanel", text);
-}
+// tr() for the code in this file outside QObject classes (lupdate takes the context from it).
+struct Tr {
+    Q_DECLARE_TR_FUNCTIONS(lf::InfoPanel)
+};
 
 // Metadata reads (any number of windows) share two low-priority threads; parented to the
 // application so they are joined before Qt shuts down.
@@ -67,58 +71,25 @@ QThreadPool* tagWritePool() {
 }
 
 QString formatDate(const QDateTime& dt) {
-    return dt.isValid() ? dt.toLocalTime().toString(QStringLiteral("dd.MM.yyyy HH:mm:ss")) : QString();
+    return formatDateTime(dt.toLocalTime()); // locale of the UI language (F-I18N-04)
 }
 
 QString formatSize(qint64 bytes) {
-    return formatByteSizeExact(bytes); // German units like the rest of the UI
+    return formatByteSizeExact(bytes);
 }
 
-// The decoders deliver stable German keys (Decoder.h); the labels shown are translatable.
-// Unknown keys are shown as they are.
-const char* const kRowLabels[] = {
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Format"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Pixelmaße"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Farbraum"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Profil"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Bittiefe"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "HDR"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Transparenz"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Einzelbilder"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Seiten"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Ausrichtung"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Bewertung"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Hersteller"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Modell"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Objektiv"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Aufnahmedatum"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Brennweite"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Blende"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Belichtungszeit"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "ISO"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Belichtungskorrektur"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Blitz"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Breite"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Länge"),
-    QT_TRANSLATE_NOOP("lf::InfoPanel", "Höhe"),
-};
-
-QString rowLabel(const QString& key) {
-    for (const char* k : kRowLabels)
-        if (key == QString::fromUtf8(k))
-            return tr(k);
-    return key;
-}
-
-// Rows of a decoder group in a fixed, meaningful order; unknown keys follow alphabetically.
-QList<QPair<QString, QString>> orderedRows(const QVariantMap& group, const QStringList& order) {
+// Rows of the metadata group `group` ("camera") in the fixed order of metadataKeys(), with
+// the labels in the UI language (F-INFO-02, F-I18N-01).
+QList<QPair<QString, QString>> metadataRows(const Metadata& md, const QString& group) {
     QList<QPair<QString, QString>> rows;
-    for (const QString& k : order)
-        if (group.contains(k))
-            rows.append({rowLabel(k), group.value(k).toString()});
-    for (auto it = group.cbegin(); it != group.cend(); ++it)
-        if (!order.contains(it.key()))
-            rows.append({rowLabel(it.key()), it.value().toString()});
+    const QString prefix = group + QLatin1Char('.');
+    for (const QString& key : metadataKeys()) {
+        if (!key.startsWith(prefix))
+            continue;
+        for (const MetadataEntry& e : md.entries)
+            if (e.key == key)
+                rows.append({metadataLabel(key), e.value.toString()});
+    }
     return rows;
 }
 
@@ -136,7 +107,7 @@ QToolButton* makeSectionHeader(const QString& text, const QString& name, QWidget
     b->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     b->setArrowType(Qt::DownArrow);
     b->setIconSize(QSize(9, 9)); // a small disclosure arrow
-    b->setToolTip(QCoreApplication::translate("lf::InfoPanel", "Ein- oder ausklappen"));
+    b->setToolTip(Tr::tr("Ein- oder ausklappen"));
     QFont bold = b->font();
     bold.setBold(true);
     b->setFont(bold);
@@ -158,8 +129,12 @@ void connectSection(QToolButton* header, QWidget* body, const QString& settingsK
     });
 }
 
-const QStringList kStandardTags = {tr("Rot"),  tr("Orange"), tr("Gelb"), tr("Grün"),
-                                   tr("Blau"), tr("Lila"),   tr("Grau")};
+// Finder's standard tags (completion), in the UI language.
+QStringList standardTags() {
+    //: Finder standard tag names: use the names macOS shows in this language
+    return {Tr::tr("Rot"),  Tr::tr("Orange"), Tr::tr("Gelb"), Tr::tr("Grün"),
+            Tr::tr("Blau"), Tr::tr("Lila"),   Tr::tr("Grau")};
+}
 
 } // namespace
 
@@ -168,59 +143,46 @@ InfoData InfoPanel::load(const QString& path, const FileEntry& entry, TagService
     data.path = path;
     const QFileInfo fi(path);
 
-    InfoSection file{tr("Datei"), {}};
-    file.rows.append({tr("Name"), fi.fileName()});
-    file.rows.append({tr("Pfad"), fi.absolutePath()});
+    InfoSection file{Tr::tr("Datei"), {}};
+    file.rows.append({Tr::tr("Name"), fi.fileName()});
+    file.rows.append({Tr::tr("Pfad"), fi.absolutePath()});
     const qint64 size = entry.size >= 0 ? entry.size : (fi.exists() ? fi.size() : -1);
     if (size >= 0)
-        file.rows.append({tr("Größe"), formatSize(size)});
+        file.rows.append({Tr::tr("Größe"), formatSize(size)});
     // German type names ("JPEG-Bild"); the system's text (system language) only as fallback.
     QString kind = displayKind(fi.fileName(), entry.kind);
     if (kind.isEmpty())
         kind = QMimeDatabase().mimeTypeForFile(fi).comment();
     if (!kind.isEmpty())
-        file.rows.append({tr("Art"), kind});
+        file.rows.append({Tr::tr("Art"), kind});
     const QDateTime created = entry.created.isValid() ? entry.created : fi.birthTime(QTimeZone::UTC);
     const QDateTime modified = entry.modified.isValid() ? entry.modified : fi.lastModified(QTimeZone::UTC);
     if (created.isValid())
-        file.rows.append({tr("Erstellt"), formatDate(created)});
+        file.rows.append({Tr::tr("Erstellt"), formatDate(created)});
     if (modified.isValid())
-        file.rows.append({tr("Geändert"), formatDate(modified)});
+        file.rows.append({Tr::tr("Geändert"), formatDate(modified)});
     if (entry.added.isValid())
-        file.rows.append({tr("Hinzugefügt"), formatDate(entry.added)});
+        file.rows.append({Tr::tr("Hinzugefügt"), formatDate(entry.added)});
     data.sections.append(file);
 
-    // The decoders deliver German groups (Decoder.h): their "Datei" group describes the image.
+    // The decoders' "file" group describes the image.
     const Metadata md = DecoderRegistry::instance().metadata(path);
-    struct Group {
-        const char* source;
-        QString title;
-        QStringList order;
+    const std::pair<const char*, QString> groups[] = {
+        {"file", Tr::tr("Bild")},
+        {"camera", Tr::tr("Kamera")},
+        {"shot", Tr::tr("Aufnahme")},
+        {"gps", Tr::tr("GPS")},
     };
-    const Group groups[] = {
-        {"Datei",
-         tr("Bild"),
-         {QStringLiteral("Format"), QStringLiteral("Pixelmaße"), QStringLiteral("Farbraum"),
-          QStringLiteral("Profil"), QStringLiteral("Bittiefe"), QStringLiteral("HDR"),
-          QStringLiteral("Transparenz"), QStringLiteral("Einzelbilder"), QStringLiteral("Seiten"),
-          QStringLiteral("Ausrichtung"), QStringLiteral("Bewertung")}},
-        {"Kamera",
-         tr("Kamera"),
-         {QStringLiteral("Hersteller"), QStringLiteral("Modell"), QStringLiteral("Objektiv")}},
-        {"Aufnahme",
-         tr("Aufnahme"),
-         {QStringLiteral("Aufnahmedatum"), QStringLiteral("Brennweite"), QStringLiteral("Blende"),
-          QStringLiteral("Belichtungszeit"), QStringLiteral("ISO"), QStringLiteral("Belichtungskorrektur"),
-          QStringLiteral("Blitz")}},
-        {"GPS", tr("GPS"), {QStringLiteral("Breite"), QStringLiteral("Länge"), QStringLiteral("Höhe")}},
-    };
-    for (const Group& g : groups) {
-        const QVariantMap m = md.groups.value(QString::fromLatin1(g.source)).toMap();
-        if (!m.isEmpty())
-            data.sections.append({g.title, orderedRows(m, g.order)});
+    bool hasImageRows = false;
+    for (const auto& [group, title] : groups) {
+        const auto rows = metadataRows(md, QString::fromLatin1(group));
+        if (rows.isEmpty())
+            continue;
+        hasImageRows = hasImageRows || qstrcmp(group, "file") == 0;
+        data.sections.append({title, rows});
     }
-    if (md.groups.value(QStringLiteral("Datei")).toMap().isEmpty()) {
-        data.sections.append({tr("Bild"), {{tr("Format"), tr("Nicht lesbar")}}});
+    if (!hasImageRows) {
+        data.sections.append({Tr::tr("Bild"), {{Tr::tr("Format"), Tr::tr("Nicht lesbar")}}});
         data.unreadable = true;
     }
 
@@ -271,11 +233,11 @@ InfoPanel::InfoPanel(ImageProvider& provider, std::shared_ptr<TagService> tags, 
     tl->setContentsMargins(0, 0, 0, 0);
     tl->setSpacing(4);
     auto* head = new QHBoxLayout;
-    QToolButton* title = makeSectionHeader(tr("Tags"), QStringLiteral("lfTagSection"), m_tagBox);
+    QToolButton* title = makeSectionHeader(Tr::tr("Tags"), QStringLiteral("lfTagSection"), m_tagBox);
     m_tagRemove = new QToolButton(m_tagBox);
     m_tagRemove->setObjectName(QStringLiteral("lfTagRemove"));
     m_tagRemove->setText(QStringLiteral("−"));
-    m_tagRemove->setToolTip(tr("Ausgewählten Tag entfernen"));
+    m_tagRemove->setToolTip(Tr::tr("Ausgewählten Tag entfernen"));
     m_tagRemove->setFocusPolicy(Qt::NoFocus);
     m_tagRemove->setAutoRaise(true);
     m_tagRemove->setEnabled(false);
@@ -302,10 +264,10 @@ InfoPanel::InfoPanel(ImageProvider& provider, std::shared_ptr<TagService> tags, 
     tb->addWidget(m_tagList);
     m_tagEdit = new QLineEdit(m_tagBody);
     m_tagEdit->setObjectName(QStringLiteral("lfTagEdit"));
-    m_tagEdit->setPlaceholderText(tr("Tag hinzufügen …"));
+    m_tagEdit->setPlaceholderText(Tr::tr("Tag hinzufügen …"));
     m_tagEdit->setFocusPolicy(Qt::ClickFocus);
     m_tagEdit->setClearButtonEnabled(true);
-    auto* completer = new QCompleter(kStandardTags, m_tagEdit);
+    auto* completer = new QCompleter(standardTags(), m_tagEdit);
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     m_tagEdit->setCompleter(completer);
     m_tagEdit->installEventFilter(this);
@@ -340,12 +302,13 @@ InfoPanel::InfoPanel(ImageProvider& provider, std::shared_ptr<TagService> tags, 
             return;
         QMenu menu(this);
         const QString tag = item->text();
-        menu.addAction(tr("„%1“ entfernen").arg(tag), this, [this, tag] { removeTag(tag); });
+        menu.addAction(Tr::tr("„%1“ entfernen").arg(tag), this, [this, tag] { removeTag(tag); });
         menu.exec(m_tagList->viewport()->mapToGlobal(pos));
     });
 
     // ---- histogram (F-INFO-03) ----
-    QToolButton* histTitle = makeSectionHeader(tr("Histogramm"), QStringLiteral("lfHistogramSection"), this);
+    QToolButton* histTitle =
+        makeSectionHeader(Tr::tr("Histogramm"), QStringLiteral("lfHistogramSection"), this);
     layout->addWidget(histTitle);
     m_histogram = new HistogramWidget(this);
     layout->addWidget(m_histogram);
@@ -363,7 +326,7 @@ InfoPanel::InfoPanel(ImageProvider& provider, std::shared_ptr<TagService> tags, 
     });
     connect(&m_provider, &ImageProvider::imageFailed, this, [this](const QString& p) {
         if (p == m_path && m_histogramPath != p)
-            m_histogram->showNote(tr("Kein Histogramm")); // unreadable file (F-FMT-02)
+            m_histogram->showNote(Tr::tr("Kein Histogramm")); // unreadable file (F-FMT-02)
     });
 }
 
@@ -406,10 +369,10 @@ void InfoPanel::showEvent(QShowEvent* event) {
 void InfoPanel::showPlaceholder() {
     // Name and folder are known at once; the rest follows from the worker.
     const QFileInfo fi(m_path);
-    InfoSection file{tr("Datei"), {{tr("Name"), fi.fileName()}, {tr("Pfad"), fi.absolutePath()}}};
+    InfoSection file{Tr::tr("Datei"), {{Tr::tr("Name"), fi.fileName()}, {Tr::tr("Pfad"), fi.absolutePath()}}};
     if (m_entry.size >= 0)
-        file.rows.append({tr("Größe"), formatSize(m_entry.size)});
-    rebuildTree({file, InfoSection{tr("Bild"), {{tr("Wird geladen …"), QString()}}}});
+        file.rows.append({Tr::tr("Größe"), formatSize(m_entry.size)});
+    rebuildTree({file, InfoSection{Tr::tr("Bild"), {{Tr::tr("Wird geladen …"), QString()}}}});
     m_shownPath.clear();
     m_tags.clear();
     m_tagsPath.clear();
@@ -477,7 +440,7 @@ void InfoPanel::apply(const InfoData& data) {
         rebuildTree(data.sections);
     m_shownPath = data.path;
     if (data.unreadable && m_histogramPath != data.path)
-        m_histogram->showNote(tr("Kein Histogramm")); // whenever the failure was reported
+        m_histogram->showNote(Tr::tr("Kein Histogramm")); // whenever the failure was reported
     if (m_tagWrites == 0)
         applyTags(data.path, data.tags, data.tagError);
 }
@@ -552,12 +515,12 @@ void InfoPanel::showContextMenu(const QPoint& pos) {
     auto copy = [](const QString& text) { QGuiApplication::clipboard()->setText(text); };
     if (item && !item->data(0, kSectionRole).toBool()) {
         m_tree->setCurrentItem(item);
-        menu.addAction(tr("Wert kopieren"), this, [item, copy] { copy(copyText(item, false)); });
-        menu.addAction(tr("Zeile kopieren"), this, [item, copy] { copy(copyText(item, true)); });
+        menu.addAction(Tr::tr("Wert kopieren"), this, [item, copy] { copy(copyText(item, false)); });
+        menu.addAction(Tr::tr("Zeile kopieren"), this, [item, copy] { copy(copyText(item, true)); });
     } else if (item) {
-        menu.addAction(tr("Abschnitt kopieren"), this, [item, copy] { copy(copyText(item, false)); });
+        menu.addAction(Tr::tr("Abschnitt kopieren"), this, [item, copy] { copy(copyText(item, false)); });
     }
-    menu.addAction(tr("Alle Angaben kopieren"), this, [this, copy] {
+    menu.addAction(Tr::tr("Alle Angaben kopieren"), this, [this, copy] {
         QStringList parts;
         for (int i = 0; i < m_tree->topLevelItemCount(); ++i)
             parts << copyText(m_tree->topLevelItem(i), false);
@@ -644,6 +607,32 @@ void InfoPanel::writeTags(const QStringList& tags) {
             r.error = readError;
         return r;
     }));
+}
+
+void InfoPanel::changeEvent(QEvent* event) {
+    QWidget::changeEvent(event);
+    if (event->type() == QEvent::LanguageChange)
+        retranslateUi();
+}
+
+void InfoPanel::retranslateUi() {
+    for (auto* header : findChildren<QToolButton*>(QRegularExpression(QStringLiteral("^lf.*Section$"))))
+        header->setToolTip(Tr::tr("Ein- oder ausklappen"));
+    if (auto* tags = findChild<QToolButton*>(QStringLiteral("lfTagSection")))
+        tags->setText(Tr::tr("Tags"));
+    if (auto* hist = findChild<QToolButton*>(QStringLiteral("lfHistogramSection")))
+        hist->setText(Tr::tr("Histogramm"));
+    m_tagRemove->setToolTip(Tr::tr("Ausgewählten Tag entfernen"));
+    m_tagEdit->setPlaceholderText(Tr::tr("Tag hinzufügen …"));
+    if (auto* c = m_tagEdit->completer())
+        c->setModel(new QStringListModel(standardTags(), c));
+    // Labels, values and dates were formatted for the old language: read them again.
+    m_cache.clear();
+    m_cacheOrder.clear();
+    if (!m_path.isEmpty()) {
+        showPlaceholder();
+        startLoad();
+    }
 }
 
 bool InfoPanel::eventFilter(QObject* watched, QEvent* event) {

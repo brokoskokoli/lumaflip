@@ -16,7 +16,8 @@ int fixMenu(NSMenu* menu) {
         if (key.length != 1 || !(item.keyEquivalentModifierMask & NSEventModifierFlagShift))
             continue;
         const unichar c = [key characterAtIndex:0];
-        if (![[NSCharacterSet lowercaseLetterCharacterSet] characterIsMember:c])
+        NSCharacterSet* lower = NSCharacterSet.lowercaseLetterCharacterSet; // no "[[" (lupdate)
+        if (![lower characterIsMember:c])
             continue;
         NSString* upper = key.uppercaseString;
         if (upper.length == 1 && ![upper isEqualToString:key]) {

@@ -12,9 +12,6 @@ namespace lf::mac {
 
 namespace {
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::Shell", text);
-}
 
 // Shared by all completion handlers (any thread) and the delivery on the GUI thread.
 struct Registration {
@@ -26,8 +23,10 @@ struct Registration {
 } // namespace
 
 QString defaultAppPendingMessage() {
-    return tr("Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, "
-              "falls eine erscheint.");
+    return QCoreApplication::translate(
+        "lf::Shell",
+        "Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, "
+        "falls eine erscheint.");
 }
 
 void registerDefaultApp(const QStringList& types, const std::function<bool(const QString&)>& isKnownType,
@@ -51,7 +50,8 @@ void registerDefaultApp(const QStringList& types, const std::function<bool(const
     for (const QString& t : types) {
         if (!isKnownType(t)) {
             QMutexLocker lock(&state->mutex);
-            state->errors << QStringLiteral("%1: %2").arg(t, tr("unbekannter Typ"));
+            state->errors << QStringLiteral("%1: %2").arg(
+                t, QCoreApplication::translate("lf::Shell", "unbekannter Typ"));
             continue;
         }
         dispatch_group_enter(group);

@@ -1,0 +1,12 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/* Localized Info.plist texts (zh_TW); generated from translations/ - see translations/README.md */
+"NSAppleEventsUsageDescription" = "Lumaflip 可依你的要求向最前方的 Finder 視窗詢問其排序方式，以便依相同順序顯示影像。";
+"NSDesktopFolderUsageDescription" = "Lumaflip 會讀取所打開影像的檔案夾，讓你可以使用方向鍵瀏覽。";
+"NSDocumentsFolderUsageDescription" = "Lumaflip 會讀取所打開影像的檔案夾，讓你可以使用方向鍵瀏覽。";
+"NSDownloadsFolderUsageDescription" = "Lumaflip 會讀取所打開影像的檔案夾，讓你可以使用方向鍵瀏覽。";
+"NSRemovableVolumesUsageDescription" = "Lumaflip 會讀取所打開影像的檔案夾，讓你可以使用方向鍵瀏覽。";
+"NSNetworkVolumesUsageDescription" = "Lumaflip 會讀取所打開影像的檔案夾，讓你可以使用方向鍵瀏覽。";
+"Bild" = "影像";
+"Bild (sonstige)" = "影像（其他）";
+"Ordner" = "檔案夾";
+"NSHumanReadableCopyright" = "© 2026 brokoskokoli 與貢獻者。授權：GPL-3.0-or-later。";

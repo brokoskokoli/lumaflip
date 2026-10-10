@@ -19,9 +19,10 @@
 namespace lf {
 
 namespace {
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::Share", text);
-}
+// tr() for the code in this file outside QObject classes (lupdate takes the context from it).
+struct Tr {
+    Q_DECLARE_TR_FUNCTIONS(lf::Share)
+};
 } // namespace
 
 QList<QUrl> shareItems(const QStringList& paths) {
@@ -93,7 +94,7 @@ void ShareServiceCache::clearCache() {
 
 void populateShareMenu(QMenu* menu, const QStringList& paths, const std::function<void()>& showPicker) {
     menu->clear();
-    QAction* picker = menu->addAction(tr("Teilen …"));
+    QAction* picker = menu->addAction(Tr::tr("Teilen …"));
     picker->setObjectName(QStringLiteral("share:picker"));
     picker->setEnabled(!paths.isEmpty());
     QObject::connect(picker, &QAction::triggered, menu, [showPicker] {
@@ -106,7 +107,7 @@ void populateShareMenu(QMenu* menu, const QStringList& paths, const std::functio
     const std::optional<QList<ShareService>> services = cache.cached(paths.first());
     if (!services) {
         menu->addSeparator();
-        QAction* wait = menu->addAction(tr("Wird geladen …"));
+        QAction* wait = menu->addAction(Tr::tr("Wird geladen …"));
         wait->setObjectName(QStringLiteral("share:pending"));
         wait->setEnabled(false);
         // Filled when the list arrives (also while the menu is open: Qt updates the native

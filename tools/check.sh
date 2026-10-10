@@ -14,6 +14,7 @@
 #                 the format check); any finding fails. Skipped if clang-tidy is not
 #                 installed, unless LF_REQUIRE_TIDY=1 (CI)
 #   --tidy-all    like --tidy, but on every .cpp/.mm file under src/ and tests/
+# Always (also with --quick --no-gui): tools/i18n_check.py (untranslated texts, catalogues).
 # Environment: LF_BENCH_TOLERANCE (benchmark limit factor, default 1.2),
 #   LF_BENCH_LOAD_WAIT (seconds to wait for the 1-minute load average to drop to the
 #   number of CPU cores before benchmarks, default 300; 0 = do not wait),
@@ -97,6 +98,14 @@ cmake -S . -B "$BUILD_DIR" -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_PREFIX_PATH
 
 step "Build"
 cmake --build "$BUILD_DIR"
+
+step "Translations (F-I18N-01/05)"
+# No window, no load: texts outside tr(), catalogues up to date with the sources (scratch
+# lupdate run) and translated (translations/README.md).
+LUPDATE="${LF_LUPDATE:-$QT_PREFIX/bin/lupdate}"
+[[ -x "$LUPDATE" ]] || LUPDATE="$(command -v lupdate || true)"
+[[ -n "$LUPDATE" ]] || die "lupdate not found (Qt LinguistTools, part of Homebrew's qt)"
+python3 tools/i18n_check.py --lupdate "$LUPDATE"
 
 step "Format corpus"
 # Generates tests/corpus/generated/ once (stamp-checked, no-op when up to date).

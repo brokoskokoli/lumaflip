@@ -1,0 +1,3465 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="pl" sourcelanguage="de">
+<context>
+    <name>SortSpec</name>
+    <message>
+        <source>Name</source>
+        <translation>Nazwa</translation>
+    </message>
+    <message>
+        <source>Änderungsdatum</source>
+        <translation>Data modyfikacji</translation>
+    </message>
+    <message>
+        <source>Erstellungsdatum</source>
+        <translation>Data utworzenia</translation>
+    </message>
+    <message>
+        <source>Hinzugefügt am</source>
+        <translation>Data dodania</translation>
+    </message>
+    <message>
+        <source>Aufnahmedatum</source>
+        <translation>Data wykonania</translation>
+    </message>
+    <message>
+        <source>Größe</source>
+        <translation>Wielkość</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Rodzaj</translation>
+    </message>
+    <message>
+        <source>Pixelzahl</source>
+        <translation>Liczba pikseli</translation>
+    </message>
+    <message>
+        <source>Bewertung</source>
+        <translation>Ocena</translation>
+    </message>
+    <message>
+        <source>Symbolposition</source>
+        <translation>Położenie ikony</translation>
+    </message>
+    <message>
+        <source>Wie Finder (live): %1</source>
+        <translation>Jak w Finderze (na żywo): %1</translation>
+    </message>
+    <message>
+        <source>Wie Finder: %1</source>
+        <translation>Jak w Finderze: %1</translation>
+    </message>
+    <message>
+        <source>%1 (Finder-Info nicht gefunden)</source>
+        <translation>%1 (nie znaleziono informacji Findera)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::AboutDialog</name>
+    <message>
+        <source>Über Lumaflip</source>
+        <translation>Lumaflip – informacje</translation>
+    </message>
+    <message>
+        <source>Version %1</source>
+        <translation>Wersja %1</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Schneller Bildbetrachter für macOS: Doppelklick öffnet den ganzen Ordner – in derselben Reihenfolge wie im Finder.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli und Mitwirkende&lt;/p&gt;&lt;p&gt;Lumaflip ist freie Software: Du kannst sie unter den Bedingungen der &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; Version 3 oder (nach deiner Wahl) jeder späteren Version weitergeben und verändern. Lumaflip wird ohne jede Gewährleistung bereitgestellt.&lt;/p&gt;&lt;p&gt;Quellcode: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Verwendet Qt %3 (LGPLv3).&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Szybka przeglądarka obrazów dla macOS: dwukrotne kliknięcie otwiera cały folder – w tej samej kolejności co w Finderze.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli i współtwórcy&lt;/p&gt;&lt;p&gt;Lumaflip jest wolnym oprogramowaniem: możesz je rozpowszechniać i modyfikować na warunkach licencji &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; w wersji 3 lub (według własnego wyboru) dowolnej późniejszej wersji. Lumaflip jest udostępniany bez żadnej gwarancji.&lt;/p&gt;&lt;p&gt;Kod źródłowy: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Używa Qt %3 (LGPLv3).&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Lizenzen von Drittanbietern…</source>
+        <translation>Licencje innych firm…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Application</name>
+    <message>
+        <source>Lumaflip</source>
+        <translation>Lumaflip</translation>
+    </message>
+    <message>
+        <source>Dateivorgänge werden abgeschlossen, dann wird Lumaflip beendet …</source>
+        <translation>Trwa kończenie operacji na plikach, potem Lumaflip zakończy działanie…</translation>
+    </message>
+    <message>
+        <source>Dateivorgang läuft …</source>
+        <translation>Trwa operacja na pliku…</translation>
+    </message>
+    <message>
+        <source>Nicht gefunden: %1</source>
+        <translation>Nie znaleziono: %1</translation>
+    </message>
+    <message>
+        <source>Bilder (%1);;Alle Dateien (*)</source>
+        <translation>Obrazy (%1);;Wszystkie pliki (*)</translation>
+    </message>
+    <message>
+        <source>Öffnen</source>
+        <translation>Otwórz</translation>
+    </message>
+    <message>
+        <source>Ordner öffnen</source>
+        <translation>Otwórz folder</translation>
+    </message>
+    <message>
+        <source>Tastenkürzel</source>
+        <translation>Skróty klawiszowe</translation>
+    </message>
+    <message>
+        <source>Aktion</source>
+        <translation>Czynność</translation>
+    </message>
+    <message>
+        <source>Taste(n)</source>
+        <translation>Klawisze</translation>
+    </message>
+    <message>
+        <source>Nächstes / vorheriges Bild</source>
+        <translation>Następny / poprzedni obraz</translation>
+    </message>
+    <message>
+        <source>→ / ←, Leertaste / ⇧Leertaste, Bild↓ / Bild↑, Mausrad</source>
+        <translation>→ / ←, Spacja / ⇧Spacja, Page Down / Page Up, kółko myszy</translation>
+    </message>
+    <message>
+        <source>Erstes / letztes Bild</source>
+        <translation>Pierwszy / ostatni obraz</translation>
+    </message>
+    <message>
+        <source>Pos1 / Ende</source>
+        <translation>Home / End</translation>
+    </message>
+    <message>
+        <source>Vollbild / Modus verlassen</source>
+        <translation>Wyjście z pełnego ekranu / trybu</translation>
+    </message>
+    <message>
+        <source>Esc</source>
+        <translation>Esc</translation>
+    </message>
+    <message>
+        <source>%1 (in einer späteren Version)</source>
+        <translation>%1 (w przyszłej wersji)</translation>
+    </message>
+    <message>
+        <source>Lumaflip wird als Standard-App festgelegt …</source>
+        <translation>Ustawianie Lumaflip jako domyślnej aplikacji…</translation>
+    </message>
+    <message>
+        <source>Lumaflip ist jetzt die Standard-App für Bilder.</source>
+        <translation>Lumaflip jest teraz domyślną aplikacją dla obrazów.</translation>
+    </message>
+    <message>
+        <source>Lumaflip konnte nicht als Standard-App festgelegt werden:
+%1</source>
+        <translation>Nie można ustawić Lumaflip jako domyślnej aplikacji:
+%1</translation>
+    </message>
+</context>
+<context>
+    <name>lf::DecoderRegistry</name>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>Plik nie istnieje.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer.</source>
+        <translation>Plik jest pusty.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Nie można odczytać pliku.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist beschädigt oder unvollständig.</source>
+        <translation>Plik jest uszkodzony lub niekompletny.</translation>
+    </message>
+    <message>
+        <source>Das Dateiformat wird nicht unterstützt.</source>
+        <translation>Format pliku nie jest obsługiwany.</translation>
+    </message>
+    <message>
+        <source>Das Bild ist zu groß, um es vollständig zu laden.</source>
+        <translation>Obraz jest za duży, aby wczytać go w całości.</translation>
+    </message>
+    <message>
+        <source>Das Bild ist leer.</source>
+        <translation>Obraz jest pusty.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::DefaultAppDialog</name>
+    <message>
+        <source>Als Standard-App festlegen</source>
+        <translation>Ustaw jako domyślną aplikację</translation>
+    </message>
+    <message>
+        <source>Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht ausgewählte Formate bleiben beim bisherigen Programm.</source>
+        <translation>Lumaflip stanie się domyślną aplikacją dla zaznaczonych formatów obrazów. Niezaznaczone formaty pozostaną przypisane do dotychczasowej aplikacji.</translation>
+    </message>
+    <message>
+        <source>Alle auswählen</source>
+        <translation>Zaznacz wszystkie</translation>
+    </message>
+    <message>
+        <source>Keine auswählen</source>
+        <translation>Odznacz wszystkie</translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation>Ustaw</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Anuluj</translation>
+    </message>
+</context>
+<context>
+    <name>lf::DisplayText</name>
+    <message>
+        <source>JPEG-Bild</source>
+        <translation>Obraz JPEG</translation>
+    </message>
+    <message>
+        <source>PNG-Bild</source>
+        <translation>Obraz PNG</translation>
+    </message>
+    <message>
+        <source>APNG-Bild</source>
+        <translation>Obraz APNG</translation>
+    </message>
+    <message>
+        <source>GIF-Bild</source>
+        <translation>Obraz GIF</translation>
+    </message>
+    <message>
+        <source>TIFF-Bild</source>
+        <translation>Obraz TIFF</translation>
+    </message>
+    <message>
+        <source>BMP-Bild</source>
+        <translation>Obraz BMP</translation>
+    </message>
+    <message>
+        <source>WebP-Bild</source>
+        <translation>Obraz WebP</translation>
+    </message>
+    <message>
+        <source>HEIC-Bild</source>
+        <translation>Obraz HEIC</translation>
+    </message>
+    <message>
+        <source>HEIF-Bild</source>
+        <translation>Obraz HEIF</translation>
+    </message>
+    <message>
+        <source>AVIF-Bild</source>
+        <translation>Obraz AVIF</translation>
+    </message>
+    <message>
+        <source>JPEG-XL-Bild</source>
+        <translation>Obraz JPEG XL</translation>
+    </message>
+    <message>
+        <source>JPEG-2000-Bild</source>
+        <translation>Obraz JPEG 2000</translation>
+    </message>
+    <message>
+        <source>Photoshop-Dokument</source>
+        <translation>Dokument Photoshop</translation>
+    </message>
+    <message>
+        <source>Photoshop-Dokument (groß)</source>
+        <translation>Dokument Photoshop (duży)</translation>
+    </message>
+    <message>
+        <source>OpenEXR-Bild</source>
+        <translation>Obraz OpenEXR</translation>
+    </message>
+    <message>
+        <source>Radiance-HDR-Bild</source>
+        <translation>Obraz Radiance HDR</translation>
+    </message>
+    <message>
+        <source>TGA-Bild</source>
+        <translation>Obraz TGA</translation>
+    </message>
+    <message>
+        <source>DDS-Textur</source>
+        <translation>Tekstura DDS</translation>
+    </message>
+    <message>
+        <source>KTX-Textur</source>
+        <translation>Tekstura KTX</translation>
+    </message>
+    <message>
+        <source>Windows-Symbol (ICO)</source>
+        <translation>Ikona Windows (ICO)</translation>
+    </message>
+    <message>
+        <source>Windows-Mauszeiger (CUR)</source>
+        <translation>Kursor Windows (CUR)</translation>
+    </message>
+    <message>
+        <source>Apple-Symbol (ICNS)</source>
+        <translation>Ikona Apple (ICNS)</translation>
+    </message>
+    <message>
+        <source>SVG-Vektorgrafik</source>
+        <translation>Grafika wektorowa SVG</translation>
+    </message>
+    <message>
+        <source>PDF-Dokument</source>
+        <translation>Dokument PDF</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Adobe DNG)</source>
+        <translation>RAW z aparatu (Adobe DNG)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Canon CR2)</source>
+        <translation>RAW z aparatu (Canon CR2)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Canon CR3)</source>
+        <translation>RAW z aparatu (Canon CR3)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Canon CRW)</source>
+        <translation>RAW z aparatu (Canon CRW)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Nikon NEF)</source>
+        <translation>RAW z aparatu (Nikon NEF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Nikon NRW)</source>
+        <translation>RAW z aparatu (Nikon NRW)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Sony ARW)</source>
+        <translation>RAW z aparatu (Sony ARW)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Sony SR2)</source>
+        <translation>RAW z aparatu (Sony SR2)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Sony SRF)</source>
+        <translation>RAW z aparatu (Sony SRF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Fujifilm RAF)</source>
+        <translation>RAW z aparatu (Fujifilm RAF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Olympus ORF)</source>
+        <translation>RAW z aparatu (Olympus ORF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Panasonic RW2)</source>
+        <translation>RAW z aparatu (Panasonic RW2)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW</source>
+        <translation>RAW z aparatu</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Pentax PEF)</source>
+        <translation>RAW z aparatu (Pentax PEF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Phase One IIQ)</source>
+        <translation>RAW z aparatu (Phase One IIQ)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Hasselblad 3FR)</source>
+        <translation>RAW z aparatu (Hasselblad 3FR)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Hasselblad FFF)</source>
+        <translation>RAW z aparatu (Hasselblad FFF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Epson ERF)</source>
+        <translation>RAW z aparatu (Epson ERF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Minolta MRW)</source>
+        <translation>RAW z aparatu (Minolta MRW)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Leaf MOS)</source>
+        <translation>RAW z aparatu (Leaf MOS)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Leica RWL)</source>
+        <translation>RAW z aparatu (Leica RWL)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Samsung SRW)</source>
+        <translation>RAW z aparatu (Samsung SRW)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Sigma X3F)</source>
+        <translation>RAW z aparatu (Sigma X3F)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::FileOps</name>
+    <message>
+        <source>„%1“ existiert bereits.</source>
+        <translation>„%1” już istnieje.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht kopiert werden.</source>
+        <translation>Nie można skopiować „%1”.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht entfernt werden.</source>
+        <translation>Nie można usunąć „%1”.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht verschoben werden: %2</source>
+        <translation>Nie można przenieść „%1”: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert nicht.</source>
+        <translation>„%1” nie istnieje.</translation>
+    </message>
+    <message>
+        <source>Der Zielordner „%1“ existiert nicht.</source>
+        <translation>Folder docelowy „%1” nie istnieje.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist kein gültiger Dateiname.</source>
+        <translation>„%1” nie jest prawidłową nazwą pliku.</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>Przenieś do kosza</translation>
+    </message>
+    <message>
+        <source>Umbenennen</source>
+        <translation>Zmień nazwę</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>Przenieś</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>Kopiuj</translation>
+    </message>
+    <message>
+        <source>Die Kopie „%1“ konnte nicht entfernt werden.</source>
+        <translation>Nie można usunąć kopii „%1”.</translation>
+    </message>
+    <message>
+        <source>Ein anderer Dateivorgang läuft noch. Bitte warte, bis er abgeschlossen ist.</source>
+        <translation>Trwa inna operacja na plikach. Poczekaj na jej zakończenie.</translation>
+    </message>
+    <message>
+        <source>Der Verlauf zum Widerrufen wurde zurückgesetzt, weil er sich während des Vorgangs geändert hat.</source>
+        <translation>Historia cofania została wyzerowana, ponieważ zmieniła się w trakcie operacji.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Filmstrip</name>
+    <message>
+        <source>Filmstreifen</source>
+        <translation>Pasek miniatur</translation>
+    </message>
+</context>
+<context>
+    <name>lf::FilmstripModel</name>
+    <message>
+        <source>%1 – kann nicht gelesen werden</source>
+        <translation>%1 – nie można odczytać</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Format</name>
+    <message>
+        <source>%1 KB</source>
+        <extracomment>SI kilobyte (1000 bytes) as in the Finder; e.g. French &quot;%1 ko&quot;</extracomment>
+        <translation>%1 KB</translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <extracomment>SI megabyte as in the Finder; e.g. French &quot;%1 Mo&quot;</extracomment>
+        <translation>%1 MB</translation>
+    </message>
+    <message>
+        <source>%1 GB</source>
+        <extracomment>SI gigabyte as in the Finder; e.g. French &quot;%1 Go&quot;</extracomment>
+        <translation>%1 GB</translation>
+    </message>
+    <message>
+        <source>%1 TB</source>
+        <extracomment>SI terabyte as in the Finder; e.g. French &quot;%1 To&quot;</extracomment>
+        <translation>%1 TB</translation>
+    </message>
+    <message>
+        <source>%1 PB</source>
+        <extracomment>SI petabyte as in the Finder; e.g. French &quot;%1 Po&quot;</extracomment>
+        <translation>%1 PB</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Byte</source>
+        <extracomment>file size below 1000 bytes; %n is the number of bytes</extracomment>
+        <translation>
+            <numerusform>%n bajt</numerusform>
+            <numerusform>%n bajty</numerusform>
+            <numerusform>%n bajtów</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 (%2 Byte)</source>
+        <extracomment>size and exact number of bytes, e.g. &quot;2,8 MB (2.812.345 Byte)&quot;; plural by the byte count</extracomment>
+        <translation>
+            <numerusform>%1 (%2 bajt)</numerusform>
+            <numerusform>%1 (%2 bajty)</numerusform>
+            <numerusform>%1 (%2 bajtów)</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>1/%1 s</source>
+        <extracomment>exposure time as a fraction of a second, e.g. &quot;1/250 s&quot;</extracomment>
+        <translation>1/%1 s</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <extracomment>exposure time in seconds, e.g. &quot;2,5 s&quot;</extracomment>
+        <translation>%1 s</translation>
+    </message>
+    <message>
+        <source>f/%1</source>
+        <extracomment>aperture (f-number), e.g. &quot;f/2,8&quot;</extracomment>
+        <translation>f/%1</translation>
+    </message>
+    <message>
+        <source>%1 EV</source>
+        <extracomment>exposure compensation in exposure values; %1 is the signed number, e.g. &quot;+0,7&quot;</extracomment>
+        <translation>%1 EV</translation>
+    </message>
+    <message>
+        <source>%1 mm</source>
+        <extracomment>focal length in millimetres</extracomment>
+        <translation>%1 mm</translation>
+    </message>
+    <message>
+        <source> (KB: %1 mm)</source>
+        <extracomment>appended to the focal length: the 35 mm equivalent (&quot;KB&quot; = Kleinbild), e.g. &quot; (35-mm-equiv.: 52 mm)&quot;</extracomment>
+        <translation> (ekw. 35 mm: %1 mm)</translation>
+    </message>
+    <message>
+        <source>%1° %2</source>
+        <extracomment>GPS coordinate: degrees and hemisphere letter, e.g. &quot;48,137154° N&quot;</extracomment>
+        <translation>%1° %2</translation>
+    </message>
+    <message>
+        <source>S</source>
+        <comment>south</comment>
+        <extracomment>GPS hemisphere: abbreviation of &quot;south&quot;</extracomment>
+        <translation>S</translation>
+    </message>
+    <message>
+        <source>N</source>
+        <comment>north</comment>
+        <extracomment>GPS hemisphere: abbreviation of &quot;north&quot;</extracomment>
+        <translation>N</translation>
+    </message>
+    <message>
+        <source>W</source>
+        <comment>west</comment>
+        <extracomment>GPS hemisphere: abbreviation of &quot;west&quot;</extracomment>
+        <translation>W</translation>
+    </message>
+    <message>
+        <source>O</source>
+        <comment>east</comment>
+        <extracomment>GPS hemisphere: abbreviation of &quot;east&quot; (German &quot;O&quot; = Ost)</extracomment>
+        <translation>E</translation>
+    </message>
+    <message>
+        <source>%1 m</source>
+        <extracomment>altitude in metres</extracomment>
+        <translation>%1 m</translation>
+    </message>
+</context>
+<context>
+    <name>lf::HistogramWidget</name>
+    <message>
+        <source>Histogramm</source>
+        <translation>Histogram</translation>
+    </message>
+    <message>
+        <source>Wird berechnet …</source>
+        <translation>Obliczanie…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ImageIODecoder</name>
+    <message>
+        <source>Das Bild hat keine Pixel.</source>
+        <translation>Obraz nie zawiera pikseli.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>Za mało pamięci dla obrazu (%1 × %2 pikseli).</translation>
+    </message>
+    <message>
+        <source>Bildpuffer konnte nicht angelegt werden.</source>
+        <translation>Nie można utworzyć bufora obrazu.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>Plik nie istnieje.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>Plik jest pusty (0 bajtów).</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Nie można odczytać pliku.</translation>
+    </message>
+    <message>
+        <source>Unbekanntes oder nicht unterstütztes Dateiformat.</source>
+        <translation>Nieznany lub nieobsługiwany format pliku.</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält keine lesbaren Bilddaten (beschädigt?).</source>
+        <translation>Plik nie zawiera czytelnych danych obrazu (uszkodzony?).</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden (Datei beschädigt?).</source>
+        <translation>Nie można zdekodować obrazu (plik uszkodzony?).</translation>
+    </message>
+    <message>
+        <source>Ausgelöst</source>
+        <translation>Wyzwolona</translation>
+    </message>
+    <message>
+        <source>Nicht ausgelöst</source>
+        <translation>Niewyzwolona</translation>
+    </message>
+    <message>
+        <source>Die Bildinformationen sind beschädigt.</source>
+        <translation>Informacje o obrazie są uszkodzone.</translation>
+    </message>
+    <message>
+        <source>Einzelbild %1 existiert nicht.</source>
+        <translation>Klatka %1 nie istnieje.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Strona %1 nie istnieje.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist unvollständig (abgeschnitten).</source>
+        <translation>Plik jest niekompletny (obcięty).</translation>
+    </message>
+    <message>
+        <source>%1 Bit</source>
+        <translation>%1 bit</translation>
+    </message>
+    <message>
+        <source>Ja</source>
+        <translation>Tak</translation>
+    </message>
+    <message>
+        <source>Nein</source>
+        <translation>Nie</translation>
+    </message>
+    <message>
+        <source>HEIC-Sequenz</source>
+        <translation>Sekwencja HEIC</translation>
+    </message>
+    <message>
+        <source>AVIF-Sequenz</source>
+        <translation>Sekwencja AVIF</translation>
+    </message>
+</context>
+<context>
+    <name>lf::InfoPanel</name>
+    <message>
+        <source>Ein- oder ausklappen</source>
+        <translation>Rozwiń lub zwiń</translation>
+    </message>
+    <message>
+        <source>Rot</source>
+        <extracomment>Finder standard tag names: use the names macOS shows in this language</extracomment>
+        <translation>Czerwony</translation>
+    </message>
+    <message>
+        <source>Orange</source>
+        <translation>Pomarańczowy</translation>
+    </message>
+    <message>
+        <source>Gelb</source>
+        <translation>Żółty</translation>
+    </message>
+    <message>
+        <source>Grün</source>
+        <translation>Zielony</translation>
+    </message>
+    <message>
+        <source>Blau</source>
+        <translation>Niebieski</translation>
+    </message>
+    <message>
+        <source>Lila</source>
+        <translation>Fioletowy</translation>
+    </message>
+    <message>
+        <source>Grau</source>
+        <translation>Szary</translation>
+    </message>
+    <message>
+        <source>Datei</source>
+        <translation>Plik</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nazwa</translation>
+    </message>
+    <message>
+        <source>Pfad</source>
+        <translation>Ścieżka</translation>
+    </message>
+    <message>
+        <source>Größe</source>
+        <translation>Wielkość</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Rodzaj</translation>
+    </message>
+    <message>
+        <source>Erstellt</source>
+        <translation>Utworzono</translation>
+    </message>
+    <message>
+        <source>Geändert</source>
+        <translation>Zmodyfikowano</translation>
+    </message>
+    <message>
+        <source>Hinzugefügt</source>
+        <translation>Dodano</translation>
+    </message>
+    <message>
+        <source>Bild</source>
+        <translation>Obraz</translation>
+    </message>
+    <message>
+        <source>Kamera</source>
+        <translation>Aparat</translation>
+    </message>
+    <message>
+        <source>Aufnahme</source>
+        <translation>Ekspozycja</translation>
+    </message>
+    <message>
+        <source>GPS</source>
+        <translation>GPS</translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation>Format</translation>
+    </message>
+    <message>
+        <source>Nicht lesbar</source>
+        <translation>Nieczytelny</translation>
+    </message>
+    <message>
+        <source>Tags</source>
+        <translation>Tagi</translation>
+    </message>
+    <message>
+        <source>Ausgewählten Tag entfernen</source>
+        <translation>Usuń zaznaczony tag</translation>
+    </message>
+    <message>
+        <source>Tag hinzufügen …</source>
+        <translation>Dodaj tag…</translation>
+    </message>
+    <message>
+        <source>„%1“ entfernen</source>
+        <translation>Usuń „%1”</translation>
+    </message>
+    <message>
+        <source>Histogramm</source>
+        <translation>Histogram</translation>
+    </message>
+    <message>
+        <source>Kein Histogramm</source>
+        <translation>Brak histogramu</translation>
+    </message>
+    <message>
+        <source>Wird geladen …</source>
+        <translation>Wczytywanie…</translation>
+    </message>
+    <message>
+        <source>Wert kopieren</source>
+        <translation>Kopiuj wartość</translation>
+    </message>
+    <message>
+        <source>Zeile kopieren</source>
+        <translation>Kopiuj wiersz</translation>
+    </message>
+    <message>
+        <source>Abschnitt kopieren</source>
+        <translation>Kopiuj sekcję</translation>
+    </message>
+    <message>
+        <source>Alle Angaben kopieren</source>
+        <translation>Kopiuj wszystkie informacje</translation>
+    </message>
+</context>
+<context>
+    <name>lf::InputBindings</name>
+    <message>
+        <source>Nächstes Bild</source>
+        <translation>Następny obraz</translation>
+    </message>
+    <message>
+        <source>Vorheriges Bild</source>
+        <translation>Poprzedni obraz</translation>
+    </message>
+    <message>
+        <source>Erstes Bild</source>
+        <translation>Pierwszy obraz</translation>
+    </message>
+    <message>
+        <source>Letztes Bild</source>
+        <translation>Ostatni obraz</translation>
+    </message>
+    <message>
+        <source>Mehrere Bilder vor</source>
+        <translation>Kilka obrazów do przodu</translation>
+    </message>
+    <message>
+        <source>Mehrere Bilder zurück</source>
+        <translation>Kilka obrazów wstecz</translation>
+    </message>
+    <message>
+        <source>Nächster Ordner</source>
+        <translation>Następny folder</translation>
+    </message>
+    <message>
+        <source>Vorheriger Ordner</source>
+        <translation>Poprzedni folder</translation>
+    </message>
+    <message>
+        <source>Nächste Seite</source>
+        <translation>Następna strona</translation>
+    </message>
+    <message>
+        <source>Vorherige Seite</source>
+        <translation>Poprzednia strona</translation>
+    </message>
+    <message>
+        <source>Vergrößern</source>
+        <translation>Powiększ</translation>
+    </message>
+    <message>
+        <source>Verkleinern</source>
+        <translation>Pomniejsz</translation>
+    </message>
+    <message>
+        <source>100 %</source>
+        <translation>100%</translation>
+    </message>
+    <message>
+        <source>Einpassen</source>
+        <translation>Dopasuj</translation>
+    </message>
+    <message>
+        <source>Breite füllen</source>
+        <translation>Wypełnij szerokość</translation>
+    </message>
+    <message>
+        <source>Einpassen ↔ 100 % am Cursor</source>
+        <translation>Dopasuj ↔ 100% w miejscu kursora</translation>
+    </message>
+    <message>
+        <source>Zoom fixieren</source>
+        <translation>Zablokuj powiększenie</translation>
+    </message>
+    <message>
+        <source>Ausschnitt nach oben</source>
+        <translation>Przesuń widok w górę</translation>
+    </message>
+    <message>
+        <source>Ausschnitt nach unten</source>
+        <translation>Przesuń widok w dół</translation>
+    </message>
+    <message>
+        <source>Ausschnitt nach links</source>
+        <translation>Przesuń widok w lewo</translation>
+    </message>
+    <message>
+        <source>Ausschnitt nach rechts</source>
+        <translation>Przesuń widok w prawo</translation>
+    </message>
+    <message>
+        <source>Ausschnitt eine Seite nach oben</source>
+        <translation>Przesuń widok o stronę w górę</translation>
+    </message>
+    <message>
+        <source>Ausschnitt eine Seite nach unten</source>
+        <translation>Przesuń widok o stronę w dół</translation>
+    </message>
+    <message>
+        <source>Zum Bildanfang scrollen</source>
+        <translation>Przewiń na początek obrazu</translation>
+    </message>
+    <message>
+        <source>Zum Bildende scrollen</source>
+        <translation>Przewiń na koniec obrazu</translation>
+    </message>
+    <message>
+        <source>Vollbild</source>
+        <translation>Pełny ekran</translation>
+    </message>
+    <message>
+        <source>Vollbild bzw. Modus verlassen</source>
+        <translation>Wyjdź z pełnego ekranu lub trybu</translation>
+    </message>
+    <message>
+        <source>Modus verlassen, sonst Fenster schließen</source>
+        <translation>Wyjdź z trybu, w przeciwnym razie zamknij okno</translation>
+    </message>
+    <message>
+        <source>Fenster schließen</source>
+        <translation>Zamknij okno</translation>
+    </message>
+    <message>
+        <source>Alle Fenster schließen</source>
+        <translation>Zamknij wszystkie okna</translation>
+    </message>
+    <message>
+        <source>Animation abspielen/pausieren</source>
+        <translation>Odtwórz/wstrzymaj animację</translation>
+    </message>
+    <message>
+        <source>Nächstes Einzelbild</source>
+        <translation>Następna klatka</translation>
+    </message>
+    <message>
+        <source>Vorheriges Einzelbild</source>
+        <translation>Poprzednia klatka</translation>
+    </message>
+    <message>
+        <source>Diashow</source>
+        <translation>Pokaz slajdów</translation>
+    </message>
+    <message>
+        <source>Links drehen</source>
+        <translation>Obróć w lewo</translation>
+    </message>
+    <message>
+        <source>Rechts drehen</source>
+        <translation>Obróć w prawo</translation>
+    </message>
+    <message>
+        <source>Horizontal spiegeln</source>
+        <translation>Odbij w poziomie</translation>
+    </message>
+    <message>
+        <source>Vertikal spiegeln</source>
+        <translation>Odbij w pionie</translation>
+    </message>
+    <message>
+        <source>Drehung speichern</source>
+        <translation>Zachowaj obrót</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>Przenieś do kosza</translation>
+    </message>
+    <message>
+        <source>Rückgängig</source>
+        <translation>Cofnij</translation>
+    </message>
+    <message>
+        <source>Wiederholen</source>
+        <translation>Powtórz</translation>
+    </message>
+    <message>
+        <source>Umbenennen</source>
+        <translation>Zmień nazwę</translation>
+    </message>
+    <message>
+        <source>Im Finder zeigen</source>
+        <translation>Pokaż w Finderze</translation>
+    </message>
+    <message>
+        <source>Bild kopieren</source>
+        <translation>Kopiuj obraz</translation>
+    </message>
+    <message>
+        <source>Pfad kopieren</source>
+        <translation>Kopiuj ścieżkę</translation>
+    </message>
+    <message>
+        <source>Im Editor öffnen</source>
+        <translation>Otwórz w edytorze</translation>
+    </message>
+    <message>
+        <source>Infopanel</source>
+        <translation>Panel informacji</translation>
+    </message>
+    <message>
+        <source>Filmstreifen</source>
+        <translation>Pasek miniatur</translation>
+    </message>
+    <message>
+        <source>Raster</source>
+        <translation>Siatka</translation>
+    </message>
+    <message>
+        <source>Tastenkürzel-Übersicht</source>
+        <translation>Przegląd skrótów klawiszowych</translation>
+    </message>
+    <message>
+        <source>Einstellungen</source>
+        <translation>Ustawienia</translation>
+    </message>
+    <message>
+        <source>Neues Fenster</source>
+        <translation>Nowe okno</translation>
+    </message>
+    <message>
+        <source>Fenster duplizieren</source>
+        <translation>Powiel okno</translation>
+    </message>
+    <message>
+        <source>Lupe (gedrückt halten)</source>
+        <translation>Lupa (przytrzymaj)</translation>
+    </message>
+    <message>
+        <source>Datei herausziehen</source>
+        <translation>Wyciągnij plik</translation>
+    </message>
+    <message>
+        <source>Ausschnitt verschieben</source>
+        <translation>Przesuń widok</translation>
+    </message>
+    <message>
+        <source>Bewertung entfernen (0 Sterne)</source>
+        <translation>Usuń ocenę (0 gwiazdek)</translation>
+    </message>
+    <message>
+        <source>1 Stern</source>
+        <translation>1 gwiazdka</translation>
+    </message>
+    <message>
+        <source>2 Sterne</source>
+        <translation>2 gwiazdki</translation>
+    </message>
+    <message>
+        <source>3 Sterne</source>
+        <translation>3 gwiazdki</translation>
+    </message>
+    <message>
+        <source>4 Sterne</source>
+        <translation>4 gwiazdki</translation>
+    </message>
+    <message>
+        <source>5 Sterne</source>
+        <translation>5 gwiazdek</translation>
+    </message>
+    <message>
+        <source>Behalten (Pick)</source>
+        <translation>Zachowaj (Pick)</translation>
+    </message>
+    <message>
+        <source>Verwerfen (Reject)</source>
+        <translation>Odrzuć (Reject)</translation>
+    </message>
+    <message>
+        <source>Markierung zurücksetzen</source>
+        <translation>Usuń oznaczenie</translation>
+    </message>
+    <message>
+        <source>Nichts</source>
+        <translation>Nic</translation>
+    </message>
+    <message>
+        <source>Mausrad</source>
+        <translation>Kółko myszy</translation>
+    </message>
+    <message>
+        <source>Bild wechseln</source>
+        <translation>Zmień obraz</translation>
+    </message>
+    <message>
+        <source>Nach unten drehen zeigt das nächste, nach oben das vorherige Bild.</source>
+        <translation>Obrót w dół pokazuje następny obraz, w górę – poprzedni.</translation>
+    </message>
+    <message>
+        <source>Zoomen (am Cursor)</source>
+        <translation>Zmień powiększenie (w miejscu kursora)</translation>
+    </message>
+    <message>
+        <source>Nach oben drehen vergrößert, nach unten verkleinert – am Mauszeiger.</source>
+        <translation>Obrót w górę powiększa, w dół pomniejsza – w miejscu wskaźnika.</translation>
+    </message>
+    <message>
+        <source>Ausschnitt scrollen (sonst Bild wechseln)</source>
+        <translation>Przewijaj widok (w przeciwnym razie zmień obraz)</translation>
+    </message>
+    <message>
+        <source>Gezoomt wird der Ausschnitt verschoben, sonst wird das Bild gewechselt.</source>
+        <translation>Po powiększeniu przesuwa widok, w przeciwnym razie zmienia obraz.</translation>
+    </message>
+    <message>
+        <source>Bild wechseln, solange die Taste gehalten wird.</source>
+        <translation>Zmienia obraz, dopóki klawisz jest przytrzymany.</translation>
+    </message>
+    <message>
+        <source>Zoomen am Mauszeiger, solange die Taste gehalten wird.</source>
+        <translation>Zmienia powiększenie w miejscu wskaźnika, dopóki klawisz jest przytrzymany.</translation>
+    </message>
+    <message>
+        <source>Horizontal scrollen</source>
+        <translation>Przewijaj w poziomie</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt wird waagerecht verschoben.</source>
+        <translation>Widok jest przesuwany w poziomie.</translation>
+    </message>
+    <message>
+        <source>Mausrad mit ⌘</source>
+        <translation>Kółko myszy z ⌘</translation>
+    </message>
+    <message>
+        <source>Mausrad mit ⌥</source>
+        <translation>Kółko myszy z ⌥</translation>
+    </message>
+    <message>
+        <source>Mausrad mit ⇧</source>
+        <translation>Kółko myszy z ⇧</translation>
+    </message>
+    <message>
+        <source>Bild↑ / Bild↓</source>
+        <translation>Page Up / Page Down</translation>
+    </message>
+    <message>
+        <source>Vorheriges/nächstes Bild</source>
+        <translation>Poprzedni/następny obraz</translation>
+    </message>
+    <message>
+        <source>Wechselt ein Bild zurück bzw. vor.</source>
+        <translation>Przechodzi o jeden obraz wstecz lub do przodu.</translation>
+    </message>
+    <message>
+        <source>Mehrere Bilder zurück/vor</source>
+        <translation>Kilka obrazów wstecz/do przodu</translation>
+    </message>
+    <message>
+        <source>Springt um die eingestellte Sprungweite (Standard 10).</source>
+        <translation>Przeskakuje o ustawioną liczbę obrazów (domyślnie 10).</translation>
+    </message>
+    <message>
+        <source>Vorheriger/nächster Ordner</source>
+        <translation>Poprzedni/następny folder</translation>
+    </message>
+    <message>
+        <source>Wechselt in den benachbarten Ordner.</source>
+        <translation>Przechodzi do sąsiedniego folderu.</translation>
+    </message>
+    <message>
+        <source>Seite zurück/vor (sonst Bild)</source>
+        <translation>Strona wstecz/do przodu (w przeciwnym razie obraz)</translation>
+    </message>
+    <message>
+        <source>Bei mehrseitigen Dateien wird geblättert, sonst das Bild gewechselt.</source>
+        <translation>W plikach wielostronicowych zmienia stronę, w przeciwnym razie zmienia obraz.</translation>
+    </message>
+    <message>
+        <source>Ausschnitt seitenweise scrollen (sonst Bild)</source>
+        <translation>Przewijaj widok stronami (w przeciwnym razie obraz)</translation>
+    </message>
+    <message>
+        <source>Gezoomt um eine Bildschirmhöhe scrollen, sonst Bild wechseln.</source>
+        <translation>Po powiększeniu przewija o wysokość ekranu, w przeciwnym razie zmienia obraz.</translation>
+    </message>
+    <message>
+        <source>Pos1 / Ende</source>
+        <translation>Home / End</translation>
+    </message>
+    <message>
+        <source>Erstes/letztes Bild</source>
+        <translation>Pierwszy/ostatni obraz</translation>
+    </message>
+    <message>
+        <source>Springt zum ersten bzw. letzten Bild der Sammlung.</source>
+        <translation>Przechodzi do pierwszego lub ostatniego obrazu kolekcji.</translation>
+    </message>
+    <message>
+        <source>Bildanfang/-ende (sonst erstes/letztes Bild)</source>
+        <translation>Początek/koniec obrazu (w przeciwnym razie pierwszy/ostatni obraz)</translation>
+    </message>
+    <message>
+        <source>Gezoomt an den Anfang bzw. das Ende des Bildes scrollen, sonst erstes/letztes Bild.</source>
+        <translation>Po powiększeniu przewija na początek lub koniec obrazu, w przeciwnym razie przechodzi do pierwszego/ostatniego obrazu.</translation>
+    </message>
+    <message>
+        <source>Leertaste / ⇧Leertaste</source>
+        <translation>Spacja / ⇧Spacja</translation>
+    </message>
+    <message>
+        <source>Nächstes/vorheriges Bild</source>
+        <translation>Następny/poprzedni obraz</translation>
+    </message>
+    <message>
+        <source>Leertaste: nächstes Bild, mit ⇧: vorheriges Bild.</source>
+        <translation>Spacja: następny obraz, z ⇧: poprzedni obraz.</translation>
+    </message>
+    <message>
+        <source>Animation abspielen/pausieren, sonst Bild</source>
+        <translation>Odtwórz/wstrzymaj animację, w przeciwnym razie obraz</translation>
+    </message>
+    <message>
+        <source>Bei animierten Bildern Wiedergabe umschalten, sonst Bild wechseln.</source>
+        <translation>W obrazach animowanych przełącza odtwarzanie, w przeciwnym razie zmienia obraz.</translation>
+    </message>
+    <message>
+        <source>Einpassen ↔ 100 %</source>
+        <translation>Dopasuj ↔ 100%</translation>
+    </message>
+    <message>
+        <source>Schaltet zwischen Einpassen und 100 % um.</source>
+        <translation>Przełącza między dopasowaniem a 100%.</translation>
+    </message>
+    <message>
+        <source>Diashow starten/pausieren</source>
+        <translation>Uruchom/wstrzymaj pokaz slajdów</translation>
+    </message>
+    <message>
+        <source>Startet bzw. pausiert die Diashow.</source>
+        <translation>Uruchamia lub wstrzymuje pokaz slajdów.</translation>
+    </message>
+    <message>
+        <source>← / →, wenn gezoomt</source>
+        <translation>← / →, gdy powiększono</translation>
+    </message>
+    <message>
+        <source>Immer Bild wechseln</source>
+        <translation>Zawsze zmieniaj obraz</translation>
+    </message>
+    <message>
+        <source>Pfeiltasten wechseln das Bild; mit ⌥ wird der Ausschnitt verschoben.</source>
+        <translation>Klawisze strzałek zmieniają obraz; z ⌥ przesuwają widok.</translation>
+    </message>
+    <message>
+        <source>Erst bis zum Rand scrollen, dann Bild wechseln</source>
+        <translation>Najpierw przewiń do krawędzi, potem zmień obraz</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt wird verschoben; am Bildrand wechselt das Bild.</source>
+        <translation>Widok jest przesuwany; na krawędzi obrazu następuje zmiana obrazu.</translation>
+    </message>
+    <message>
+        <source>Ausschnitt scrollen (Bild mit ⌥←/⌥→)</source>
+        <translation>Przewijaj widok (obraz: ⌥←/⌥→)</translation>
+    </message>
+    <message>
+        <source>Pfeiltasten verschieben den Ausschnitt; Bildwechsel mit ⌥←/⌥→.</source>
+        <translation>Klawisze strzałek przesuwają widok; zmiana obrazu za pomocą ⌥←/⌥→.</translation>
+    </message>
+    <message>
+        <source>↑ / ↓</source>
+        <translation>↑ / ↓</translation>
+    </message>
+    <message>
+        <source>Ausschnitt scrollen, sonst vorheriges/nächstes Bild</source>
+        <translation>Przewijaj widok, w przeciwnym razie poprzedni/następny obraz</translation>
+    </message>
+    <message>
+        <source>Gezoomt wird der Ausschnitt verschoben, sonst das Bild gewechselt.</source>
+        <translation>Po powiększeniu przesuwa widok, w przeciwnym razie zmienia obraz.</translation>
+    </message>
+    <message>
+        <source>Ausschnitt scrollen (wenn gezoomt), sonst nichts</source>
+        <translation>Przewijaj widok (po powiększeniu), w przeciwnym razie nic</translation>
+    </message>
+    <message>
+        <source>Gezoomt wird der Ausschnitt verschoben, sonst passiert nichts.</source>
+        <translation>Po powiększeniu przesuwa widok, w przeciwnym razie nic się nie dzieje.</translation>
+    </message>
+    <message>
+        <source>↑ zeigt das vorherige, ↓ das nächste Bild.</source>
+        <translation>↑ pokazuje poprzedni, ↓ następny obraz.</translation>
+    </message>
+    <message>
+        <source>Zoomen</source>
+        <translation>Zmień powiększenie</translation>
+    </message>
+    <message>
+        <source>↑ vergrößert, ↓ verkleinert.</source>
+        <translation>↑ powiększa, ↓ pomniejsza.</translation>
+    </message>
+    <message>
+        <source>Einfacher Klick ins Bild</source>
+        <translation>Pojedyncze kliknięcie w obraz</translation>
+    </message>
+    <message>
+        <source>Ein Klick hat keine Wirkung (Ziehen verschiebt weiterhin).</source>
+        <translation>Kliknięcie nic nie robi (przeciąganie nadal przesuwa widok).</translation>
+    </message>
+    <message>
+        <source>Ein Klick zoomt auf 100 % an der Klickstelle und zurück.</source>
+        <translation>Kliknięcie powiększa do 100% w miejscu kliknięcia i z powrotem.</translation>
+    </message>
+    <message>
+        <source>Nächstes Bild (linke Hälfte: vorheriges)</source>
+        <translation>Następny obraz (lewa połowa: poprzedni)</translation>
+    </message>
+    <message>
+        <source>Klick in die rechte Hälfte: nächstes Bild, linke Hälfte: vorheriges.</source>
+        <translation>Kliknięcie w prawą połowę: następny obraz, w lewą: poprzedni.</translation>
+    </message>
+    <message>
+        <source>Doppelklick ins Bild</source>
+        <translation>Dwukrotne kliknięcie w obraz</translation>
+    </message>
+    <message>
+        <source>Vollbild umschalten</source>
+        <translation>Przełącz pełny ekran</translation>
+    </message>
+    <message>
+        <source>Doppelklick wechselt in das Vollbild und zurück.</source>
+        <translation>Dwukrotne kliknięcie włącza i wyłącza pełny ekran.</translation>
+    </message>
+    <message>
+        <source>Doppelklick schaltet zwischen Einpassen und 100 % um.</source>
+        <translation>Dwukrotne kliknięcie przełącza między dopasowaniem a 100%.</translation>
+    </message>
+    <message>
+        <source>Doppelklick schließt das Fenster.</source>
+        <translation>Dwukrotne kliknięcie zamyka okno.</translation>
+    </message>
+    <message>
+        <source>Mittlere Maustaste</source>
+        <translation>Środkowy przycisk myszy</translation>
+    </message>
+    <message>
+        <source>Die mittlere Maustaste hat keine Wirkung.</source>
+        <translation>Środkowy przycisk myszy nic nie robi.</translation>
+    </message>
+    <message>
+        <source>Schaltet das Vollbild um.</source>
+        <translation>Przełącza pełny ekran.</translation>
+    </message>
+    <message>
+        <source>Schließt das Fenster.</source>
+        <translation>Zamyka okno.</translation>
+    </message>
+    <message>
+        <source>Schaltet zwischen Einpassen und 100 % an der Klickstelle um.</source>
+        <translation>Przełącza między dopasowaniem a 100% w miejscu kliknięcia.</translation>
+    </message>
+    <message>
+        <source>Zeigt eine Lupe, solange die Taste gedrückt ist.</source>
+        <translation>Pokazuje lupę, dopóki przycisk jest wciśnięty.</translation>
+    </message>
+    <message>
+        <source>Maustasten 4/5 (Zurück/Vor)</source>
+        <translation>Przyciski myszy 4/5 (Wstecz/Dalej)</translation>
+    </message>
+    <message>
+        <source>Zurück-Taste: vorheriges Bild, Vor-Taste: nächstes Bild.</source>
+        <translation>Przycisk Wstecz: poprzedni obraz, przycisk Dalej: następny obraz.</translation>
+    </message>
+    <message>
+        <source>Die Tasten haben keine Wirkung.</source>
+        <translation>Przyciski nic nie robią.</translation>
+    </message>
+    <message>
+        <source>Trackpad-Wischen (zwei Finger, horizontal)</source>
+        <translation>Przesunięcie na gładziku (dwa palce, poziomo)</translation>
+    </message>
+    <message>
+        <source>Bild wechseln (gezoomt: scrollen)</source>
+        <translation>Zmień obraz (po powiększeniu: przewijaj)</translation>
+    </message>
+    <message>
+        <source>Wischen wechselt das Bild; im gezoomten Zustand wird der Ausschnitt verschoben.</source>
+        <translation>Przesunięcie zmienia obraz; po powiększeniu przesuwa widok.</translation>
+    </message>
+    <message>
+        <source>Ausschnitt scrollen</source>
+        <translation>Przewijaj widok</translation>
+    </message>
+    <message>
+        <source>Wischen verschiebt immer nur den Ausschnitt.</source>
+        <translation>Przesunięcie zawsze tylko przesuwa widok.</translation>
+    </message>
+    <message>
+        <source>Aus</source>
+        <translation>Wył.</translation>
+    </message>
+    <message>
+        <source>Wischen wird ignoriert.</source>
+        <translation>Przesunięcia są ignorowane.</translation>
+    </message>
+    <message>
+        <source>Ziehen mit linker Maustaste</source>
+        <translation>Przeciąganie lewym przyciskiem</translation>
+    </message>
+    <message>
+        <source>Ausschnitt verschieben (⌥: Datei herausziehen)</source>
+        <translation>Przesuń widok (⌥: wyciągnij plik)</translation>
+    </message>
+    <message>
+        <source>Ziehen verschiebt den Ausschnitt; mit ⌥ wird die Datei in andere Apps gezogen.</source>
+        <translation>Przeciąganie przesuwa widok; z ⌥ plik jest przeciągany do innych aplikacji.</translation>
+    </message>
+    <message>
+        <source>Datei herausziehen (⌥: Ausschnitt verschieben)</source>
+        <translation>Wyciągnij plik (⌥: przesuń widok)</translation>
+    </message>
+    <message>
+        <source>Ziehen zieht die Datei in andere Apps; mit ⌥ wird der Ausschnitt verschoben.</source>
+        <translation>Przeciąganie przenosi plik do innych aplikacji; z ⌥ przesuwa widok.</translation>
+    </message>
+    <message>
+        <source>Esc</source>
+        <translation>Esc</translation>
+    </message>
+    <message>
+        <source>Vollbild bzw. Modus verlassen, sonst nichts</source>
+        <translation>Wyjdź z pełnego ekranu lub trybu, w przeciwnym razie nic</translation>
+    </message>
+    <message>
+        <source>Esc beendet Vollbild, Diashow oder andere Modi und tut sonst nichts.</source>
+        <translation>Esc kończy pełny ekran, pokaz slajdów lub inne tryby, a poza tym nic nie robi.</translation>
+    </message>
+    <message>
+        <source>Vollbild bzw. Modus verlassen, sonst Fenster schließen</source>
+        <translation>Wyjdź z pełnego ekranu lub trybu, w przeciwnym razie zamknij okno</translation>
+    </message>
+    <message>
+        <source>Esc beendet Modi; ist keiner aktiv, wird das Fenster geschlossen.</source>
+        <translation>Esc kończy tryby; jeśli żaden nie jest aktywny, zamyka okno.</translation>
+    </message>
+    <message>
+        <source>Ende der Sammlung</source>
+        <translation>Koniec kolekcji</translation>
+    </message>
+    <message>
+        <source>Anhalten</source>
+        <translation>Zatrzymaj</translation>
+    </message>
+    <message>
+        <source>Am Ende bleibt das letzte Bild stehen (mit kurzem Hinweis).</source>
+        <translation>Na końcu pozostaje ostatni obraz (z krótkim komunikatem).</translation>
+    </message>
+    <message>
+        <source>Umlaufen</source>
+        <translation>Zapętlaj</translation>
+    </message>
+    <message>
+        <source>Nach dem letzten Bild folgt wieder das erste.</source>
+        <translation>Po ostatnim obrazie znów pojawia się pierwszy.</translation>
+    </message>
+    <message>
+        <source>Zum nächsten Ordner</source>
+        <translation>Do następnego folderu</translation>
+    </message>
+    <message>
+        <source>Nach dem letzten Bild geht es im nächsten Ordner weiter.</source>
+        <translation>Po ostatnim obrazie przeglądanie jest kontynuowane w następnym folderze.</translation>
+    </message>
+    <message>
+        <source>Bewertungstasten (0–5, P/X/U)</source>
+        <translation>Klawisze oceny (0–5, P/X/U)</translation>
+    </message>
+    <message>
+        <source>Nur im Aussortiermodus</source>
+        <translation>Tylko w trybie selekcji</translation>
+    </message>
+    <message>
+        <source>Ziffern wählen sonst den Zoommodus (1/2/3).</source>
+        <translation>W przeciwnym razie cyfry wybierają tryb powiększenia (1/2/3).</translation>
+    </message>
+    <message>
+        <source>Immer aktiv</source>
+        <translation>Zawsze aktywne</translation>
+    </message>
+    <message>
+        <source>Ziffern vergeben immer Sterne; P/X/U markieren. Zoom-Ziffern sind aus.</source>
+        <translation>Cyfry zawsze przyznają gwiazdki; P/X/U oznaczają. Cyfry powiększenia są wyłączone.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::LicensesDialog</name>
+    <message>
+        <source>Lizenzen von Drittanbietern</source>
+        <translation>Licencje innych firm</translation>
+    </message>
+    <message>
+        <source>Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im Programmpaket unter Contents/Resources/licenses.</source>
+        <translation>Lumaflip zawiera następujące komponenty. Teksty licencji znajdują się również w pakiecie aplikacji w Contents/Resources/licenses.</translation>
+    </message>
+    <message>
+        <source>Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das Programmpaket gelegt.</source>
+        <translation>Wersja deweloperska: teksty licencji są umieszczane w pakiecie aplikacji dopiero podczas pakowania (tools/package.sh).</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Version: %1&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Wersja: %1&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Lizenz: %1&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Licencja: %1&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Enthalten in: %1&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Zawarte w: %1&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>(Datei fehlt)</source>
+        <translation>(brak pliku)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::LosslessTransform</name>
+    <message>
+        <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
+        <translation>Nie można uruchomić biblioteki JPEG.</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Daten konnten nicht verlustfrei umgeordnet werden (%1).</source>
+        <translation>Nie można bezstratnie przekształcić danych JPEG (%1).</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Drehen der JPEG-Daten ist in dieser Version nicht verfügbar.</source>
+        <translation>Bezstratny obrót danych JPEG nie jest dostępny w tej wersji.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>Nie można odczytać „%1”.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht geschrieben werden (Ordner schreibgeschützt?).</source>
+        <translation>Nie można zapisać pliku (folder tylko do odczytu?).</translation>
+    </message>
+    <message>
+        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte die Drehung erneut speichern.</source>
+        <translation>Plik został w międzyczasie zmieniony – niczego nie zachowano. Zachowaj obrót ponownie.</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
+        <translation>Plik zawiera dodatkowe obrazy (np. mapę wzmocnienia HDR lub drugi obraz stereo), które zostałyby utracone podczas bezstratnego przekształcania danych JPEG.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>Plik już nie istnieje.</translation>
+    </message>
+    <message>
+        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <translation>Nie rozpoznano formatu pliku do zachowania.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; zum dauerhaften Drehen bitte den RAW-Entwickler benutzen.</source>
+        <translation>Pliki RAW nigdy nie są zmieniane. Obrót dotyczy tylko wyświetlania; aby trwale obrócić obraz, użyj programu do wywoływania RAW.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht gedreht gespeichert werden.</source>
+        <translation>Nie można zachować obrotu plików animowanych ani wielostronicowych.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist schreibgeschützt.</source>
+        <translation>„%1” jest tylko do odczytu.</translation>
+    </message>
+    <message>
+        <source>Deshalb wurde nur die EXIF-Ausrichtung gesetzt.</source>
+        <translation>Dlatego ustawiono tylko orientację EXIF.</translation>
+    </message>
+    <message>
+        <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfrei drehen geht nur, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
+        <translation>Szerokość lub wysokość obrazu nie jest wielokrotnością rozmiaru bloku JPEG. Bezstratny obrót jest możliwy tylko po przycięciu wąskiej krawędzi (do 15 pikseli). Alternatywnie można ustawić tylko orientację EXIF.</translation>
+    </message>
+    <message>
+        <source>Die Drehung kann nicht gespeichert werden.</source>
+        <translation>Nie można zachować obrotu.</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann keine Ausrichtung speichern, und beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
+        <translation>Ten format nie może przechowywać orientacji, a po ponownym zakodowaniu obraz nie pozostałby dokładnie taki sam (zmieniłby się model kolorów, głębia bitowa, paleta lub przezroczystość).</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann keine Ausrichtung speichern. Die Drehung lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <translation>Ten format nie może przechowywać orientacji. Obrót można zachować tylko przez ponowne zakodowanie obrazu – wiąże się to z niewielką utratą jakości.</translation>
+    </message>
+    <message>
+        <source>Die EXIF-Ausrichtung konnte nicht gesetzt werden.</source>
+        <translation>Nie można ustawić orientacji EXIF.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Drehen ist für dieses Bild nicht möglich.</source>
+        <translation>Bezstratny obrót tego obrazu nie jest możliwy.</translation>
+    </message>
+    <message>
+        <source>Die Ausrichtung ließ sich nicht ohne Neukodieren speichern.</source>
+        <translation>Nie można zachować orientacji bez ponownego kodowania.</translation>
+    </message>
+    <message>
+        <source>Die Drehung konnte nicht gespeichert werden.</source>
+        <translation>Zachowanie obrotu nie powiodło się.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>Nie można zastąpić pliku.</translation>
+    </message>
+    <message>
+        <source>Datei wurde inzwischen verändert – Rückgängig nicht möglich</source>
+        <translation>Plik został w międzyczasie zmieniony – nie można cofnąć</translation>
+    </message>
+    <message>
+        <source>Datei wurde inzwischen verändert – Wiederholen nicht möglich</source>
+        <translation>Plik został w międzyczasie zmieniony – nie można powtórzyć</translation>
+    </message>
+    <message>
+        <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Rückgängig/Wiederholen ist dafür nicht mehr möglich.</source>
+        <translation>Kopia zapasowa tego kroku została usunięta, aby zaoszczędzić miejsce – cofnięcie/powtórzenie nie jest już możliwe.</translation>
+    </message>
+    <message>
+        <source>Es gibt nichts rückgängig zu machen.</source>
+        <translation>Nie ma nic do cofnięcia.</translation>
+    </message>
+    <message>
+        <source>Kein Platz für die Sicherungskopie – nichts gespeichert.</source>
+        <translation>Brak miejsca na kopię zapasową – niczego nie zachowano.</translation>
+    </message>
+    <message>
+        <source>Keine Drehung zu speichern</source>
+        <translation>Brak obrotu do zachowania</translation>
+    </message>
+    <message>
+        <source>Drehung gespeichert (EXIF-Ausrichtung)</source>
+        <translation>Obrót zachowany (orientacja EXIF)</translation>
+    </message>
+    <message>
+        <source>Drehung verlustfrei gespeichert</source>
+        <translation>Obrót zachowany bezstratnie</translation>
+    </message>
+    <message>
+        <source>Drehung verlustfrei gespeichert (Rand beschnitten)</source>
+        <translation>Obrót zachowany bezstratnie (przycięto krawędź)</translation>
+    </message>
+    <message>
+        <source>Drehung gespeichert (verlustfrei neu kodiert)</source>
+        <translation>Obrót zachowany (ponownie zakodowano bezstratnie)</translation>
+    </message>
+    <message>
+        <source>Drehung gespeichert (neu kodiert)</source>
+        <translation>Obrót zachowany (ponownie zakodowano)</translation>
+    </message>
+    <message>
+        <source>Für dieses Format kann die Ausrichtung nicht gespeichert werden.</source>
+        <translation>Dla tego formatu nie można zachować orientacji.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden.</source>
+        <translation>Nie można zdekodować obrazu.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher zum Drehen.</source>
+        <translation>Za mało pamięci, aby obrócić obraz.</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann nicht geschrieben werden.</source>
+        <translation>Nie można zapisywać w tym formacie.</translation>
+    </message>
+    <message>
+        <source>Das Bild lässt sich in diesem Format nicht exakt neu speichern.</source>
+        <translation>Nie można dokładnie ponownie zapisać obrazu w tym formacie.</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert nicht mehr.</source>
+        <translation>„%1” już nie istnieje.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist keine normale Datei.</source>
+        <translation>„%1” nie jest zwykłym plikiem.</translation>
+    </message>
+    <message>
+        <source>Die neue Datei konnte nicht gesichert werden.</source>
+        <translation>Nie można zabezpieczyć nowego pliku.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht geschrieben werden.</source>
+        <translation>Nie można zapisać pliku.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht vollständig geschrieben werden.</source>
+        <translation>Nie można zapisać całego pliku.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht ersetzt werden: %2</source>
+        <translation>Nie można zastąpić „%1”: %2</translation>
+    </message>
+    <message>
+        <source>Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.</source>
+        <translation>Nie można utworzyć kopii zapasowej dla polecenia „Cofnij”.</translation>
+    </message>
+    <message>
+        <source>HDR-Gain-Map</source>
+        <translation>Mapa wzmocnienia HDR</translation>
+    </message>
+    <message>
+        <source>Tiefenkarte</source>
+        <translation>Mapa głębi</translation>
+    </message>
+    <message>
+        <source>Porträt-Maske</source>
+        <translation>Maska portretu</translation>
+    </message>
+    <message>
+        <source>Segmentierungsmaske</source>
+        <translation>Maska segmentacji</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält Zusatzbilder (%1), die beim Speichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gespeichert und gilt weiter nur in der Anzeige.</source>
+        <translation>Plik zawiera obrazy dodatkowe (%1), które zostałyby utracone podczas zachowywania orientacji. Dlatego obrót nie został zachowany i nadal dotyczy tylko wyświetlania.</translation>
+    </message>
+    <message>
+        <source>Die neue Datei kann nicht gelesen werden.</source>
+        <translation>Nie można odczytać nowego pliku.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht geschrieben werden: %1</source>
+        <translation>Nie można zapisać pliku: %1</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht vollständig geschrieben werden: %1</source>
+        <translation>Nie można zapisać całego pliku: %1</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Nie można odczytać pliku.</translation>
+    </message>
+    <message>
+        <source>Die Ausrichtung konnte nicht verlustfrei geschrieben werden.</source>
+        <translation>Nie można bezstratnie zapisać orientacji.</translation>
+    </message>
+    <message>
+        <source>Die Ausrichtung konnte nicht verlustfrei geschrieben werden (%1).</source>
+        <translation>Nie można bezstratnie zapisać orientacji (%1).</translation>
+    </message>
+    <message>
+        <source>Das Bild lässt sich nicht exakt neu speichern.</source>
+        <translation>Nie można dokładnie ponownie zapisać obrazu.</translation>
+    </message>
+    <message>
+        <source>Die neue Datei fehlt.</source>
+        <translation>Brak nowego pliku.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Platz, um „%1“ sicher zu überschreiben.</source>
+        <translation>Za mało miejsca, aby bezpiecznie nadpisać „%1”.</translation>
+    </message>
+    <message>
+        <source>Der alte Inhalt liegt in „%1“.</source>
+        <translation>Poprzednia zawartość znajduje się w „%1”.</translation>
+    </message>
+    <message>
+        <source>Die Dateiattribute konnten nicht übernommen werden.</source>
+        <translation>Nie można przenieść atrybutów pliku.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MainMenu</name>
+    <message>
+        <source>Ablage</source>
+        <translation>Plik</translation>
+    </message>
+    <message>
+        <source>Neues Fenster</source>
+        <translation>Nowe okno</translation>
+    </message>
+    <message>
+        <source>Fenster duplizieren</source>
+        <translation>Powiel okno</translation>
+    </message>
+    <message>
+        <source>Öffnen …</source>
+        <translation>Otwórz…</translation>
+    </message>
+    <message>
+        <source>Ordner öffnen …</source>
+        <translation>Otwórz folder…</translation>
+    </message>
+    <message>
+        <source>Zuletzt geöffnet</source>
+        <translation>Otwórz ostatnie</translation>
+    </message>
+    <message>
+        <source>Schließen</source>
+        <translation>Zamknij</translation>
+    </message>
+    <message>
+        <source>Alle schließen</source>
+        <translation>Zamknij wszystko</translation>
+    </message>
+    <message>
+        <source>Im Finder zeigen</source>
+        <translation>Pokaż w Finderze</translation>
+    </message>
+    <message>
+        <source>Umbenennen …</source>
+        <translation>Zmień nazwę…</translation>
+    </message>
+    <message>
+        <source>In Standard-Editor öffnen</source>
+        <translation>Otwórz w domyślnym edytorze</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>Przenieś do kosza</translation>
+    </message>
+    <message>
+        <source>Als Standard-App festlegen …</source>
+        <translation>Ustaw jako domyślną aplikację…</translation>
+    </message>
+    <message>
+        <source>Über Lumaflip</source>
+        <translation>Lumaflip – informacje</translation>
+    </message>
+    <message>
+        <source>Nach Updates suchen …</source>
+        <translation>Sprawdź uaktualnienia…</translation>
+    </message>
+    <message>
+        <source>Einstellungen …</source>
+        <translation>Ustawienia…</translation>
+    </message>
+    <message>
+        <source>Lumaflip beenden</source>
+        <translation>Zakończ Lumaflip</translation>
+    </message>
+    <message>
+        <source>Bearbeiten</source>
+        <translation>Edycja</translation>
+    </message>
+    <message>
+        <source>Widerrufen</source>
+        <translation>Cofnij</translation>
+    </message>
+    <message>
+        <source>Wiederholen</source>
+        <translation>Powtórz</translation>
+    </message>
+    <message>
+        <source>„%1“ widerrufen</source>
+        <translation>Cofnij: %1</translation>
+    </message>
+    <message>
+        <source>„%1“ wiederholen</source>
+        <translation>Powtórz: %1</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>Kopiuj</translation>
+    </message>
+    <message>
+        <source>Pfad kopieren</source>
+        <translation>Kopiuj ścieżkę</translation>
+    </message>
+    <message>
+        <source>Darstellung</source>
+        <translation>Widok</translation>
+    </message>
+    <message>
+        <source>Einpassen</source>
+        <translation>Dopasuj</translation>
+    </message>
+    <message>
+        <source>Einpassen inkl. Vergrößern</source>
+        <translation>Dopasuj z powiększaniem</translation>
+    </message>
+    <message>
+        <source>100 % (1:1 Pixel)</source>
+        <translation>100% (1:1 piksel)</translation>
+    </message>
+    <message>
+        <source>Breite füllen</source>
+        <translation>Wypełnij szerokość</translation>
+    </message>
+    <message>
+        <source>Höhe füllen</source>
+        <translation>Wypełnij wysokość</translation>
+    </message>
+    <message>
+        <source>Fenster füllen</source>
+        <translation>Wypełnij okno</translation>
+    </message>
+    <message>
+        <source>Vergrößern</source>
+        <translation>Powiększ</translation>
+    </message>
+    <message>
+        <source>Verkleinern</source>
+        <translation>Pomniejsz</translation>
+    </message>
+    <message>
+        <source>Einpassen ↔ 100 %</source>
+        <translation>Dopasuj ↔ 100%</translation>
+    </message>
+    <message>
+        <source>Zoom fixieren</source>
+        <translation>Zablokuj powiększenie</translation>
+    </message>
+    <message>
+        <source>Vollbild</source>
+        <translation>Pełny ekran</translation>
+    </message>
+    <message>
+        <source>Statusleiste</source>
+        <translation>Pasek statusu</translation>
+    </message>
+    <message>
+        <source>Infopanel</source>
+        <translation>Panel informacji</translation>
+    </message>
+    <message>
+        <source>Filmstreifen</source>
+        <translation>Pasek miniatur</translation>
+    </message>
+    <message>
+        <source>Hintergrund</source>
+        <translation>Tło</translation>
+    </message>
+    <message>
+        <source>Dunkel</source>
+        <translation>Ciemne</translation>
+    </message>
+    <message>
+        <source>Hell</source>
+        <translation>Jasne</translation>
+    </message>
+    <message>
+        <source>Wie System</source>
+        <translation>Jak system</translation>
+    </message>
+    <message>
+        <source>Schachbrett</source>
+        <translation>Szachownica</translation>
+    </message>
+    <message>
+        <source>Eigene Farbe …</source>
+        <translation>Własny kolor…</translation>
+    </message>
+    <message>
+        <source>Hintergrundfarbe</source>
+        <translation>Kolor tła</translation>
+    </message>
+    <message>
+        <source>Sortieren nach</source>
+        <translation>Sortuj według</translation>
+    </message>
+    <message>
+        <source>Wie Finder</source>
+        <translation>Jak w Finderze</translation>
+    </message>
+    <message>
+        <source>Aufsteigend</source>
+        <translation>Rosnąco</translation>
+    </message>
+    <message>
+        <source>Absteigend</source>
+        <translation>Malejąco</translation>
+    </message>
+    <message>
+        <source>Für alle Ordner verwenden</source>
+        <translation>Użyj dla wszystkich folderów</translation>
+    </message>
+    <message>
+        <source>Navigation</source>
+        <translation>Nawigacja</translation>
+    </message>
+    <message>
+        <source>Nächstes Bild</source>
+        <translation>Następny obraz</translation>
+    </message>
+    <message>
+        <source>Vorheriges Bild</source>
+        <translation>Poprzedni obraz</translation>
+    </message>
+    <message>
+        <source>Erstes Bild</source>
+        <translation>Pierwszy obraz</translation>
+    </message>
+    <message>
+        <source>Letztes Bild</source>
+        <translation>Ostatni obraz</translation>
+    </message>
+    <message>
+        <source>Mehrere Bilder vor</source>
+        <translation>Kilka obrazów do przodu</translation>
+    </message>
+    <message>
+        <source>Mehrere Bilder zurück</source>
+        <translation>Kilka obrazów wstecz</translation>
+    </message>
+    <message>
+        <source>Bild</source>
+        <translation>Obraz</translation>
+    </message>
+    <message>
+        <source>Links drehen</source>
+        <translation>Obróć w lewo</translation>
+    </message>
+    <message>
+        <source>Rechts drehen</source>
+        <translation>Obróć w prawo</translation>
+    </message>
+    <message>
+        <source>Horizontal spiegeln</source>
+        <translation>Odbij w poziomie</translation>
+    </message>
+    <message>
+        <source>Vertikal spiegeln</source>
+        <translation>Odbij w pionie</translation>
+    </message>
+    <message>
+        <source>Fenster</source>
+        <translation>Okno</translation>
+    </message>
+    <message>
+        <source>Minimieren</source>
+        <translation>Minimalizuj</translation>
+    </message>
+    <message>
+        <source>Zoomen</source>
+        <translation>Zmień rozmiar</translation>
+    </message>
+    <message>
+        <source>Alle nach vorne bringen</source>
+        <translation>Wszystko na wierzch</translation>
+    </message>
+    <message>
+        <source>Hilfe</source>
+        <translation>Pomoc</translation>
+    </message>
+    <message>
+        <source>Tastenkürzel</source>
+        <translation>Skróty klawiszowe</translation>
+    </message>
+    <message>
+        <source>Wiederholen</source>
+        <comment>slideshow option: start again after the last image</comment>
+        <translation>Powtarzaj</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge</source>
+        <translation>Kolejność losowa</translation>
+    </message>
+    <message>
+        <source>Überblenden</source>
+        <translation>Przenikanie</translation>
+    </message>
+    <message>
+        <source>Diashow</source>
+        <translation>Pokaz slajdów</translation>
+    </message>
+    <message>
+        <source>Diashow-Optionen</source>
+        <translation>Opcje pokazu slajdów</translation>
+    </message>
+    <message>
+        <source>Nächste Seite</source>
+        <translation>Następna strona</translation>
+    </message>
+    <message>
+        <source>Vorherige Seite</source>
+        <translation>Poprzednia strona</translation>
+    </message>
+    <message>
+        <source>Drehung speichern</source>
+        <translation>Zachowaj obrót</translation>
+    </message>
+    <message>
+        <source>Animation</source>
+        <translation>Animacja</translation>
+    </message>
+    <message>
+        <source>Abspielen/Pause</source>
+        <translation>Odtwórz/wstrzymaj</translation>
+    </message>
+    <message>
+        <source>Nächstes Einzelbild</source>
+        <translation>Następna klatka</translation>
+    </message>
+    <message>
+        <source>Vorheriges Einzelbild</source>
+        <translation>Poprzednia klatka</translation>
+    </message>
+    <message>
+        <source>Geschwindigkeit</source>
+        <translation>Szybkość</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MenuExtras</name>
+    <message>
+        <source>Öffnen mit</source>
+        <translation>Otwórz za pomocą</translation>
+    </message>
+    <message>
+        <source>Teilen</source>
+        <translation>Udostępnij</translation>
+    </message>
+    <message>
+        <source>Anordnen</source>
+        <translation>Rozmieść</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Obok siebie</translation>
+    </message>
+    <message>
+        <source>Untereinander</source>
+        <translation>Jedno pod drugim</translation>
+    </message>
+    <message>
+        <source>Raster</source>
+        <translation>Siatka</translation>
+    </message>
+    <message>
+        <source>Kaskadieren</source>
+        <translation>Kaskadowo</translation>
+    </message>
+    <message>
+        <source>Vorherigen Tab zeigen</source>
+        <translation>Pokaż poprzednią kartę</translation>
+    </message>
+    <message>
+        <source>Nächsten Tab zeigen</source>
+        <translation>Pokaż następną kartę</translation>
+    </message>
+    <message>
+        <source>Tab in neues Fenster bewegen</source>
+        <translation>Przenieś kartę do nowego okna</translation>
+    </message>
+    <message>
+        <source>Alle Fenster zusammenführen</source>
+        <translation>Scal wszystkie okna</translation>
+    </message>
+    <message>
+        <source>Tableiste ein-/ausblenden</source>
+        <translation>Pokaż/ukryj pasek kart</translation>
+    </message>
+    <message>
+        <source>Tabs in den Einstellungen erlauben (Fenster)</source>
+        <translation>Zezwól na karty w ustawieniach (Okno)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Metadata</name>
+    <message>
+        <source>Datei</source>
+        <translation>Plik</translation>
+    </message>
+    <message>
+        <source>Kamera</source>
+        <translation>Aparat</translation>
+    </message>
+    <message>
+        <source>Aufnahme</source>
+        <extracomment>group: exposure/shooting data</extracomment>
+        <translation>Ekspozycja</translation>
+    </message>
+    <message>
+        <source>GPS</source>
+        <translation>GPS</translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation>Format</translation>
+    </message>
+    <message>
+        <source>Pixelmaße</source>
+        <extracomment>image size in pixels (width × height)</extracomment>
+        <translation>Wymiary</translation>
+    </message>
+    <message>
+        <source>Farbraum</source>
+        <translation>Przestrzeń barw</translation>
+    </message>
+    <message>
+        <source>Profil</source>
+        <translation>Profil</translation>
+    </message>
+    <message>
+        <source>Bittiefe</source>
+        <translation>Głębia bitowa</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>Transparenz</source>
+        <translation>Przezroczystość</translation>
+    </message>
+    <message>
+        <source>Einzelbilder</source>
+        <extracomment>number of animation frames</extracomment>
+        <translation>Klatki</translation>
+    </message>
+    <message>
+        <source>Seiten</source>
+        <translation>Strony</translation>
+    </message>
+    <message>
+        <source>Ausrichtung</source>
+        <translation>Orientacja</translation>
+    </message>
+    <message>
+        <source>Bewertung</source>
+        <extracomment>star rating</extracomment>
+        <translation>Ocena</translation>
+    </message>
+    <message>
+        <source>Hersteller</source>
+        <translation>Producent</translation>
+    </message>
+    <message>
+        <source>Modell</source>
+        <translation>Model</translation>
+    </message>
+    <message>
+        <source>Objektiv</source>
+        <translation>Obiektyw</translation>
+    </message>
+    <message>
+        <source>Brennweite</source>
+        <translation>Ogniskowa</translation>
+    </message>
+    <message>
+        <source>Blende</source>
+        <extracomment>aperture (f-number)</extracomment>
+        <translation>Przysłona</translation>
+    </message>
+    <message>
+        <source>Belichtungszeit</source>
+        <translation>Czas naświetlania</translation>
+    </message>
+    <message>
+        <source>ISO</source>
+        <translation>ISO</translation>
+    </message>
+    <message>
+        <source>Belichtungskorrektur</source>
+        <translation>Korekcja ekspozycji</translation>
+    </message>
+    <message>
+        <source>Blitz</source>
+        <translation>Lampa błyskowa</translation>
+    </message>
+    <message>
+        <source>Aufnahmedatum</source>
+        <translation>Data wykonania</translation>
+    </message>
+    <message>
+        <source>Breite</source>
+        <extracomment>GPS latitude</extracomment>
+        <translation>Szerokość geogr.</translation>
+    </message>
+    <message>
+        <source>Länge</source>
+        <extracomment>GPS longitude</extracomment>
+        <translation>Długość geogr.</translation>
+    </message>
+    <message>
+        <source>Höhe</source>
+        <extracomment>GPS altitude</extracomment>
+        <translation>Wysokość n.p.m.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::OpenWithService</name>
+    <message>
+        <source>Kein Programm zum Bearbeiten gefunden. Wähle eines unter Einstellungen → Allgemein → Editor.</source>
+        <translation>Nie znaleziono aplikacji do edycji. Wybierz ją w Ustawienia → Ogólne → Edytor.</translation>
+    </message>
+    <message>
+        <source>Kein Bild geöffnet</source>
+        <translation>Nie otwarto żadnego obrazu</translation>
+    </message>
+    <message>
+        <source>Andere …</source>
+        <translation>Inna…</translation>
+    </message>
+    <message>
+        <source>Programm wählen</source>
+        <translation>Wybierz aplikację</translation>
+    </message>
+    <message>
+        <source>Programme (*.app)</source>
+        <translation>Aplikacje (*.app)</translation>
+    </message>
+    <message>
+        <source>Programme werden gesucht …</source>
+        <translation>Wyszukiwanie aplikacji…</translation>
+    </message>
+    <message>
+        <source>%1 (Standard)</source>
+        <translation>%1 (domyślna)</translation>
+    </message>
+    <message>
+        <source>Keine passenden Programme</source>
+        <translation>Brak pasujących aplikacji</translation>
+    </message>
+</context>
+<context>
+    <name>lf::PreferencesDialog</name>
+    <message>
+        <source>in einer späteren Version</source>
+        <translation>w przyszłej wersji</translation>
+    </message>
+    <message>
+        <source>Einstellungen</source>
+        <translation>Ustawienia</translation>
+    </message>
+    <message>
+        <source>Allgemein</source>
+        <translation>Ogólne</translation>
+    </message>
+    <message>
+        <source>Fenster</source>
+        <translation>Okno</translation>
+    </message>
+    <message>
+        <source>Anzeige</source>
+        <translation>Wyświetlanie</translation>
+    </message>
+    <message>
+        <source>Maus &amp; Tastatur</source>
+        <translation>Mysz i klawiatura</translation>
+    </message>
+    <message>
+        <source>Navigation &amp; Sortierung</source>
+        <translation>Nawigacja i sortowanie</translation>
+    </message>
+    <message>
+        <source>Bewertung</source>
+        <translation>Ocena</translation>
+    </message>
+    <message>
+        <source>Formate</source>
+        <translation>Formaty</translation>
+    </message>
+    <message>
+        <source>Erweitert</source>
+        <translation>Zaawansowane</translation>
+    </message>
+    <message>
+        <source>Auf Standard zurücksetzen</source>
+        <translation>Przywróć domyślne</translation>
+    </message>
+    <message>
+        <source>Sprache:</source>
+        <translation>Język:</translation>
+    </message>
+    <message>
+        <source>Wirkt sofort. Systemfenster wie „Öffnen“ folgen der Sprache, die macOS für Lumaflip verwendet (Systemeinstellungen → Allgemein → Sprache &amp; Region).</source>
+        <translation>Działa od razu. Okna systemowe, takie jak „Otwórz”, używają języka, którego macOS używa dla Lumaflip (Ustawienia systemowe → Ogólne → Język i region).</translation>
+    </message>
+    <message>
+        <source>Öffnen aus dem Finder:</source>
+        <translation>Otwieranie z Findera:</translation>
+    </message>
+    <message>
+        <source>Immer in neuem Fenster</source>
+        <translation>Zawsze w nowym oknie</translation>
+    </message>
+    <message>
+        <source>Im vordersten Fenster ersetzen</source>
+        <translation>Zastąp w oknie na wierzchu</translation>
+    </message>
+    <message>
+        <source>Neues Fenster, außer die Datei ist schon offen</source>
+        <translation>Nowe okno, chyba że plik jest już otwarty</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Finder, „Öffnen mit“ und Drag &amp; Drop auf das Dock-Symbol.</source>
+        <translation>Dotyczy dwukrotnego kliknięcia w Finderze, polecenia „Otwórz za pomocą” oraz przeciągania na ikonę w Docku.</translation>
+    </message>
+    <message>
+        <source>Fenster beim nächsten Start wiederherstellen</source>
+        <translation>Przywracaj okna przy następnym uruchomieniu</translation>
+    </message>
+    <message>
+        <source>Ordner, Bild, Zoom und Position aller Fenster, die beim Beenden offen waren.</source>
+        <translation>Folder, obraz, powiększenie i położenie wszystkich okien otwartych w chwili zakończenia.</translation>
+    </message>
+    <message>
+        <source>Vor dem Löschen nachfragen</source>
+        <translation>Pytaj przed usunięciem</translation>
+    </message>
+    <message>
+        <source>Aus: ⌘⌫ legt das Bild sofort in den Papierkorb, ⌘Z holt es zurück.</source>
+        <translation>Wył.: ⌘⌫ od razu przenosi obraz do kosza, ⌘Z go przywraca.</translation>
+    </message>
+    <message>
+        <source>Editor:</source>
+        <translation>Edytor:</translation>
+    </message>
+    <message>
+        <source>Für „In Standard-Editor öffnen“ (Taste E).</source>
+        <translation>Dla polecenia „Otwórz w domyślnym edytorze” (klawisz E).</translation>
+    </message>
+    <message>
+        <source>Drehung speichern:</source>
+        <translation>Zachowywanie obrotu:</translation>
+    </message>
+    <message>
+        <source>EXIF-Ausrichtung setzen</source>
+        <translation>Ustaw orientację EXIF</translation>
+    </message>
+    <message>
+        <source>JPEG verlustfrei drehen (DCT)</source>
+        <translation>Obróć JPEG bezstratnie (DCT)</translation>
+    </message>
+    <message>
+        <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Programme ohne EXIF-Unterstützung das Bild richtig zeigen. RAW-Dateien werden nie verändert; ⌘Z macht das Speichern rückgängig.</source>
+        <translation>Żadna z opcji nie zmienia pikseli obrazu. „Orientacja EXIF” zmienia tylko znacznik (JPEG, HEIC, TIFF, PNG); „obrót bezstratny” przestawia bloki JPEG, aby również aplikacje bez obsługi EXIF wyświetlały obraz poprawnie. Pliki RAW nigdy nie są zmieniane; ⌘Z cofa zachowanie.</translation>
+    </message>
+    <message>
+        <source>Änderungsdatum beibehalten</source>
+        <translation>Zachowaj datę modyfikacji</translation>
+    </message>
+    <message>
+        <source>Fenstergröße an Bild anpassen</source>
+        <translation>Dopasuj rozmiar okna do obrazu</translation>
+    </message>
+    <message>
+        <source>Aus: Neue Fenster übernehmen die zuletzt benutzte Größe.</source>
+        <translation>Wył.: nowe okna przejmują ostatnio używany rozmiar.</translation>
+    </message>
+    <message>
+        <source>Ordnername in der Titelleiste</source>
+        <translation>Nazwa folderu na pasku tytułu</translation>
+    </message>
+    <message>
+        <source>Zum Beispiel „IMG_1234.jpg — 23 / 412 — Urlaub“.</source>
+        <translation>Na przykład „IMG_1234.jpg — 23 / 412 — Urlop”.</translation>
+    </message>
+    <message>
+        <source>Neue Fenster zeigen:</source>
+        <translation>Nowe okna pokazują:</translation>
+    </message>
+    <message>
+        <source>Statuszeile</source>
+        <translation>Pasek statusu</translation>
+    </message>
+    <message>
+        <source>Infopanel (⌘I)</source>
+        <translation>Panel informacji (⌘I)</translation>
+    </message>
+    <message>
+        <source>Filmstreifen (T)</source>
+        <translation>Pasek miniatur (T)</translation>
+    </message>
+    <message>
+        <source>Tabs:</source>
+        <translation>Karty:</translation>
+    </message>
+    <message>
+        <source>Fenster als Tabs öffnen (macOS-Tabs erlauben)</source>
+        <translation>Otwieraj okna jako karty (zezwól na karty macOS)</translation>
+    </message>
+    <message>
+        <source>Neue Fenster erscheinen dann als Tab im vordersten Fenster; Fenster → „Alle Fenster zusammenführen“ fasst offene Fenster zusammen.</source>
+        <translation>Nowe okna pojawiają się wtedy jako karta w oknie na wierzchu; Okno → „Scal wszystkie okna” łączy otwarte okna.</translation>
+    </message>
+    <message>
+        <source>Dunkel</source>
+        <translation>Ciemne</translation>
+    </message>
+    <message>
+        <source>Hell</source>
+        <translation>Jasne</translation>
+    </message>
+    <message>
+        <source>Wie Systemdarstellung</source>
+        <translation>Jak wygląd systemu</translation>
+    </message>
+    <message>
+        <source>Schachbrett (Transparenz)</source>
+        <translation>Szachownica (przezroczystość)</translation>
+    </message>
+    <message>
+        <source>Eigene Farbe</source>
+        <translation>Własny kolor</translation>
+    </message>
+    <message>
+        <source>Farbe wählen …</source>
+        <translation>Wybierz kolor…</translation>
+    </message>
+    <message>
+        <source>Hintergrundfarbe</source>
+        <translation>Kolor tła</translation>
+    </message>
+    <message>
+        <source>Hintergrund:</source>
+        <translation>Tło:</translation>
+    </message>
+    <message>
+        <source>Zoom beim Öffnen:</source>
+        <translation>Powiększenie przy otwieraniu:</translation>
+    </message>
+    <message>
+        <source>Einpassen (nicht vergrößern)</source>
+        <translation>Dopasuj (bez powiększania)</translation>
+    </message>
+    <message>
+        <source>Einpassen inkl. Vergrößern</source>
+        <translation>Dopasuj z powiększaniem</translation>
+    </message>
+    <message>
+        <source>100 %</source>
+        <translation>100%</translation>
+    </message>
+    <message>
+        <source>Breite füllen</source>
+        <translation>Wypełnij szerokość</translation>
+    </message>
+    <message>
+        <source>Höhe füllen</source>
+        <translation>Wypełnij wysokość</translation>
+    </message>
+    <message>
+        <source>Fenster füllen</source>
+        <translation>Wypełnij okno</translation>
+    </message>
+    <message>
+        <source>Vergrößern über 100 %:</source>
+        <translation>Powiększanie powyżej 100%:</translation>
+    </message>
+    <message>
+        <source>Glatt</source>
+        <translation>Gładkie</translation>
+    </message>
+    <message>
+        <source>Pixel scharf</source>
+        <translation>Ostre piksele</translation>
+    </message>
+    <message>
+        <source>100 % bedeutet:</source>
+        <translation>100% oznacza:</translation>
+    </message>
+    <message>
+        <source>1 Bildpixel = 1 Gerätepixel (Retina-korrekt)</source>
+        <translation>1 piksel obrazu = 1 piksel urządzenia (poprawnie dla Retina)</translation>
+    </message>
+    <message>
+        <source>1 Bildpixel = 1 Punkt</source>
+        <translation>1 piksel obrazu = 1 punkt</translation>
+    </message>
+    <message>
+        <source>Diashow (⇧⌘F, S):</source>
+        <translation>Pokaz slajdów (⇧⌘F, S):</translation>
+    </message>
+    <message>
+        <source> s pro Bild</source>
+        <translation> s na obraz</translation>
+    </message>
+    <message>
+        <source>Wiederholen</source>
+        <translation>Powtarzaj</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge</source>
+        <translation>Kolejność losowa</translation>
+    </message>
+    <message>
+        <source>Überblenden</source>
+        <translation>Przenikanie</translation>
+    </message>
+    <message>
+        <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, Esc beendet.</source>
+        <translation>Podczas pokazu slajdów: Spacja wstrzymuje, 1–9 ustawia interwał w sekundach, ←/→ przełącza obrazy, Esc kończy.</translation>
+    </message>
+    <message>
+        <source>Profilvorlagen</source>
+        <translation>Szablony profili</translation>
+    </message>
+    <message>
+        <source>Mac-Standard</source>
+        <translation>Standard Maca</translation>
+    </message>
+    <message>
+        <source>Windows-Viewer-Gewohnheiten</source>
+        <translation>Nawyki z przeglądarek Windows</translation>
+    </message>
+    <message>
+        <source>Fotograf:in / Lightroom</source>
+        <translation>Fotograf / Lightroom</translation>
+    </message>
+    <message>
+        <source>Maus, Trackpad und Tasten</source>
+        <translation>Mysz, gładzik i klawisze</translation>
+    </message>
+    <message>
+        <source>%1 (%2)</source>
+        <translation>%1 (%2)</translation>
+    </message>
+    <message>
+        <source>Mausrad-Feinheiten</source>
+        <translation>Szczegóły kółka myszy</translation>
+    </message>
+    <message>
+        <source>Richtung umkehren</source>
+        <translation>Odwróć kierunek</translation>
+    </message>
+    <message>
+        <source>Raststufen pro Bildwechsel:</source>
+        <translation>Skoki kółka na zmianę obrazu:</translation>
+    </message>
+    <message>
+        <source>Mindestabstand zwischen Bildwechseln:</source>
+        <translation>Minimalny odstęp między zmianami obrazu:</translation>
+    </message>
+    <message>
+        <source> ms</source>
+        <translation> ms</translation>
+    </message>
+    <message>
+        <source>Verhindert das Überspringen von Bildern bei Rädern ohne Rasterung.</source>
+        <translation>Zapobiega przeskakiwaniu obrazów przy kółkach bez wyczuwalnych skoków.</translation>
+    </message>
+    <message>
+        <source>Zoomschritt pro Raste:</source>
+        <translation>Krok powiększenia na skok kółka:</translation>
+    </message>
+    <message>
+        <source> %</source>
+        <translation> %</translation>
+    </message>
+    <message>
+        <source>Sprungweite (Bild↑/Bild↓):</source>
+        <translation>Odległość skoku (Page Up/Page Down):</translation>
+    </message>
+    <message>
+        <source> Bilder</source>
+        <translation> obr.</translation>
+    </message>
+    <message>
+        <source>Tastenkürzel</source>
+        <translation>Skróty klawiszowe</translation>
+    </message>
+    <message>
+        <source>Feld anklicken und neue Taste drücken. Bis zu drei Kürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
+        <translation>Kliknij pole i naciśnij nowy klawisz. Do trzech skrótów na czynność. Cyfry i P/X/U do oceniania działają tylko w trybie selekcji.</translation>
+    </message>
+    <message>
+        <source>Aktion</source>
+        <translation>Czynność</translation>
+    </message>
+    <message>
+        <source>Kürzel</source>
+        <translation>Skrót</translation>
+    </message>
+    <message>
+        <source>Alternative</source>
+        <translation>Alternatywa</translation>
+    </message>
+    <message>
+        <source>–</source>
+        <translation>–</translation>
+    </message>
+    <message>
+        <source>Standardkürzel wiederherstellen</source>
+        <translation>Przywróć domyślne skróty</translation>
+    </message>
+    <message>
+        <source>Alle Tastenkürzel zurücksetzen</source>
+        <translation>Wyzeruj wszystkie skróty klawiszowe</translation>
+    </message>
+    <message>
+        <source>Konflikt mit: %1</source>
+        <translation>Konflikt z: %1</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Aktion(en) mit doppelt belegten Tasten – bitte eine davon ändern.</source>
+        <translation>
+            <numerusform>%n czynność ma zdublowane klawisze – zmień jedną z nich.</numerusform>
+            <numerusform>%n czynności mają zdublowane klawisze – zmień jedną z nich.</numerusform>
+            <numerusform>%n czynności ma zdublowane klawisze – zmień jedną z nich.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Am Ende der Sammlung:</source>
+        <translation>Na końcu kolekcji:</translation>
+    </message>
+    <message>
+        <source>Anhalten</source>
+        <translation>Zatrzymaj</translation>
+    </message>
+    <message>
+        <source>Umlaufen</source>
+        <translation>Zapętlaj</translation>
+    </message>
+    <message>
+        <source>Zum nächsten Ordner</source>
+        <translation>Do następnego folderu</translation>
+    </message>
+    <message>
+        <source>Sortierung wie im Finder</source>
+        <translation>Sortowanie jak w Finderze</translation>
+    </message>
+    <message>
+        <source>Liest die Darstellungsoptionen des Ordners (.DS_Store) und die globalen Finder-Einstellungen.</source>
+        <translation>Odczytuje opcje widoku folderu (.DS_Store) i globalne ustawienia Findera.</translation>
+    </message>
+    <message>
+        <source>Zeigt das vorderste Finder-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen aktuelle Sortierung (auch noch nicht gespeicherte). macOS bittet dafür einmalig um die Erlaubnis, den Finder zu steuern (Automation).</source>
+        <translation>Jeśli okno Findera na wierzchu pokazuje dokładnie otwarty folder, Lumaflip przejmuje jego bieżące sortowanie (także jeszcze niezachowane). macOS jednorazowo prosi o pozwolenie na sterowanie Finderem (Automatyzacja).</translation>
+    </message>
+    <message>
+        <source>Manuelle Sortierung:</source>
+        <translation>Sortowanie ręczne:</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nazwa</translation>
+    </message>
+    <message>
+        <source>Änderungsdatum</source>
+        <translation>Data modyfikacji</translation>
+    </message>
+    <message>
+        <source>Erstellungsdatum</source>
+        <translation>Data utworzenia</translation>
+    </message>
+    <message>
+        <source>Hinzugefügt am</source>
+        <translation>Data dodania</translation>
+    </message>
+    <message>
+        <source>Aufnahmedatum</source>
+        <translation>Data wykonania</translation>
+    </message>
+    <message>
+        <source>Größe</source>
+        <translation>Wielkość</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Rodzaj</translation>
+    </message>
+    <message>
+        <source>Pixelzahl</source>
+        <translation>Liczba pikseli</translation>
+    </message>
+    <message>
+        <source>Aufsteigend</source>
+        <translation>Rosnąco</translation>
+    </message>
+    <message>
+        <source>Gilt, wenn „Sortierung wie im Finder“ aus ist oder keine Finder-Information gefunden wird. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier.</source>
+        <translation>Obowiązuje, gdy opcja „Sortowanie jak w Finderze” jest wyłączona lub nie znaleziono informacji Findera. Wybór w menu Widok → Sortuj według jest zapamiętywany dla każdego folderu; „Użyj dla wszystkich folderów” ustawia go tutaj jako domyślny.</translation>
+    </message>
+    <message>
+        <source>Bewertungen speichern:</source>
+        <translation>Zachowywanie ocen:</translation>
+    </message>
+    <message>
+        <source>XMP-Zusatzdatei neben dem Bild (Bild.xmp)</source>
+        <translation>Plik pomocniczy XMP obok obrazu (Obraz.xmp)</translation>
+    </message>
+    <message>
+        <source>Kompatibel mit Lightroom, Capture One und darktable.</source>
+        <translation>Zgodne z Lightroom, Capture One i darktable.</translation>
+    </message>
+    <message>
+        <source>Im Bild selbst (eingebettetes XMP)</source>
+        <translation>W samym obrazie (osadzone XMP)</translation>
+    </message>
+    <message>
+        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; sonst wird die Zusatzdatei benutzt. Die Bildpixel werden nicht neu kodiert.</source>
+        <translation>Tylko JPEG, HEIC, TIFF, PNG i DNG; w innym przypadku używany jest plik pomocniczy. Piksele obrazu nie są ponownie kodowane.</translation>
+    </message>
+    <message>
+        <source>Finder-Tags</source>
+        <translation>Tagi Findera</translation>
+    </message>
+    <message>
+        <source>Im Finder sichtbar und per Spotlight durchsuchbar.</source>
+        <translation>Widoczne w Finderze i możliwe do wyszukania w Spotlight.</translation>
+    </message>
+    <message>
+        <source>Bewertungen und der Aussortiermodus folgen %1.</source>
+        <translation>Oceny i tryb selekcji są zgodne z: %1.</translation>
+    </message>
+    <message>
+        <source>Unterstützte Formate (ohne Nachinstallation):</source>
+        <translation>Obsługiwane formaty (bez dodatkowej instalacji):</translation>
+    </message>
+    <message>
+        <source>Gruppe</source>
+        <translation>Grupa</translation>
+    </message>
+    <message>
+        <source>Standard</source>
+        <translation>Standardowe</translation>
+    </message>
+    <message>
+        <source>Modern</source>
+        <translation>Nowoczesne</translation>
+    </message>
+    <message>
+        <source>RAW</source>
+        <translation>RAW</translation>
+    </message>
+    <message>
+        <source>Pro/HDR</source>
+        <translation>Pro/HDR</translation>
+    </message>
+    <message>
+        <source>Animiert</source>
+        <translation>Animowane</translation>
+    </message>
+    <message>
+        <source>GIF, APNG, WebP, AVIF/HEICS, JXL – mit Wiedergabe</source>
+        <translation>GIF, APNG, WebP, AVIF/HEICS, JXL – z odtwarzaniem</translation>
+    </message>
+    <message>
+        <source>Vektor</source>
+        <translation>Wektorowe</translation>
+    </message>
+    <message>
+        <source>Als Standard-App für Bilder festlegen</source>
+        <translation>Ustaw jako domyślną aplikację dla obrazów</translation>
+    </message>
+    <message>
+        <source>RAW: nur eingebettete Vorschau anzeigen (schneller)</source>
+        <translation>RAW: pokazuj tylko osadzony podgląd (szybciej)</translation>
+    </message>
+    <message>
+        <source>Aus: Zuerst die eingebettete Vorschau, danach wird die volle Entwicklung nachgeladen.</source>
+        <translation>Wył.: najpierw osadzony podgląd, potem doczytywane jest pełne wywołanie.</translation>
+    </message>
+    <message>
+        <source>Leistung</source>
+        <translation>Wydajność</translation>
+    </message>
+    <message>
+        <source> MB</source>
+        <translation> MB</translation>
+    </message>
+    <message>
+        <source>Automatisch (25 % des Arbeitsspeichers, max. 2 GB)</source>
+        <translation>Automatycznie (25% pamięci RAM, maks. 2 GB)</translation>
+    </message>
+    <message>
+        <source>Speicherbudget:</source>
+        <translation>Budżet pamięci:</translation>
+    </message>
+    <message>
+        <source>Bilder im Voraus laden:</source>
+        <translation>Wczytuj obrazy z wyprzedzeniem:</translation>
+    </message>
+    <message>
+        <source>Bilder zurück behalten:</source>
+        <translation>Zachowuj poprzednie obrazy:</translation>
+    </message>
+    <message>
+        <source>Einstellungen sichern</source>
+        <translation>Kopia zapasowa ustawień</translation>
+    </message>
+    <message>
+        <source>Exportieren …</source>
+        <translation>Eksportuj…</translation>
+    </message>
+    <message>
+        <source>Importieren …</source>
+        <translation>Importuj…</translation>
+    </message>
+    <message>
+        <source>Alle Einstellungen zurücksetzen</source>
+        <translation>Wyzeruj wszystkie ustawienia</translation>
+    </message>
+    <message>
+        <source>Lumaflip-Einstellungen (*.json)</source>
+        <translation>Ustawienia Lumaflip (*.json)</translation>
+    </message>
+    <message>
+        <source>Einstellungen exportieren</source>
+        <translation>Eksportuj ustawienia</translation>
+    </message>
+    <message>
+        <source>Einstellungen importieren</source>
+        <translation>Importuj ustawienia</translation>
+    </message>
+    <message>
+        <source>Alle Einstellungen zurücksetzen?</source>
+        <translation>Wyzerować wszystkie ustawienia?</translation>
+    </message>
+    <message>
+        <source>Alle Einstellungen einschließlich der Tastenkürzel werden auf die Standardwerte zurückgesetzt.</source>
+        <translation>Wszystkie ustawienia, łącznie ze skrótami klawiszowymi, zostaną przywrócone do wartości domyślnych.</translation>
+    </message>
+    <message>
+        <source>Einstellungen exportiert: %1</source>
+        <translation>Wyeksportowano ustawienia: %1</translation>
+    </message>
+    <message>
+        <source>Export fehlgeschlagen: %1</source>
+        <translation>Eksport nie powiódł się: %1</translation>
+    </message>
+    <message>
+        <source>Export fehlgeschlagen</source>
+        <translation>Eksport nie powiódł się</translation>
+    </message>
+    <message>
+        <source>Unbekannter Fehler</source>
+        <translation>Nieznany błąd</translation>
+    </message>
+    <message>
+        <source>Einstellungen importiert: %1</source>
+        <translation>Zaimportowano ustawienia: %1</translation>
+    </message>
+    <message>
+        <source>Import fehlgeschlagen: %1</source>
+        <translation>Import nie powiódł się: %1</translation>
+    </message>
+    <message>
+        <source>Import fehlgeschlagen</source>
+        <translation>Import nie powiódł się</translation>
+    </message>
+    <message>
+        <source>Standard-App des Systems für den Bildtyp (nie Lumaflip)</source>
+        <translation>Domyślna aplikacja systemu dla danego typu obrazu (nigdy Lumaflip)</translation>
+    </message>
+    <message>
+        <source>Lumaflip kann nicht sein eigener Editor sein. Bitte wähle ein anderes Programm.</source>
+        <translation>Lumaflip nie może być swoim własnym edytorem. Wybierz inną aplikację.</translation>
+    </message>
+    <message>
+        <source>Auswählen …</source>
+        <translation>Wybierz…</translation>
+    </message>
+    <message>
+        <source>Editor wählen</source>
+        <translation>Wybierz edytor</translation>
+    </message>
+    <message>
+        <source>Programme (*.app)</source>
+        <translation>Aplikacje (*.app)</translation>
+    </message>
+    <message>
+        <source>Sortierung live vom Finder-Fenster übernehmen</source>
+        <translation>Przejmuj sortowanie na żywo z okna Findera</translation>
+    </message>
+    <message>
+        <source>Sortierung vom Finder-Fenster übernehmen</source>
+        <translation>Przejmuj sortowanie z okna Findera</translation>
+    </message>
+    <message>
+        <source>Lumaflip fragt dann beim Öffnen eines Ordners das vorderste Finder-Fenster nach seiner Sortierung – aber nur, wenn es genau diesen Ordner zeigt.</source>
+        <translation>Przy otwieraniu folderu Lumaflip pyta wtedy okno Findera na wierzchu o jego sortowanie – ale tylko wtedy, gdy pokazuje ono dokładnie ten folder.</translation>
+    </message>
+    <message>
+        <source>Dafür fragt macOS einmalig, ob Lumaflip den Finder steuern darf („Automation“). Lumaflip liest nur Ordner, Ansicht und Sortierung des Fensters und ändert nichts. Die Erlaubnis lässt sich jederzeit unter Systemeinstellungen → Datenschutz &amp; Sicherheit → Automation widerrufen.</source>
+        <translation>W tym celu macOS jednorazowo zapyta, czy Lumaflip może sterować Finderem („Automatyzacja”). Lumaflip odczytuje tylko folder, widok i sortowanie okna i niczego nie zmienia. Pozwolenie można w każdej chwili odwołać w Ustawienia systemowe → Prywatność i ochrona → Automatyzacja.</translation>
+    </message>
+    <message>
+        <source>Aktivieren</source>
+        <translation>Włącz</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Anuluj</translation>
+    </message>
+    <message>
+        <source>Systemsprache (%1)</source>
+        <extracomment>first entry of the language list; %1 is the language macOS asks for, in that language</extracomment>
+        <translation>Język systemu (%1)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QtImageDecoder</name>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>Plik jest pusty (0 bajtów).</translation>
+    </message>
+    <message>
+        <source>Unbekanntes oder nicht unterstütztes Dateiformat.</source>
+        <translation>Nieznany lub nieobsługiwany format pliku.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Strona %1 nie istnieje.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden: %1</source>
+        <translation>Nie można zdekodować obrazu: %1</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei ist ungültig oder beschädigt.</source>
+        <translation>Plik SVG jest nieprawidłowy lub uszkodzony.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Za mało pamięci dla obrazu.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::RecentItems</name>
+    <message>
+        <source>Einträge löschen</source>
+        <translation>Wyczyść menu</translation>
+    </message>
+</context>
+<context>
+    <name>lf::RenameController</name>
+    <message>
+        <source>Bitte gib einen Namen ein.</source>
+        <translation>Wprowadź nazwę.</translation>
+    </message>
+    <message>
+        <source>Der Name darf keinen Schrägstrich (/) und keinen Doppelpunkt (:) enthalten.</source>
+        <translation>Nazwa nie może zawierać ukośnika (/) ani dwukropka (:).</translation>
+    </message>
+    <message>
+        <source>Namen, die mit einem Punkt beginnen, sind für Systemdateien reserviert.</source>
+        <translation>Nazwy zaczynające się od kropki są zarezerwowane dla plików systemowych.</translation>
+    </message>
+    <message>
+        <source>Der Name enthält ungültige Zeichen.</source>
+        <translation>Nazwa zawiera nieprawidłowe znaki.</translation>
+    </message>
+    <message>
+        <source>Der Name ist zu lang (höchstens %1 Byte).</source>
+        <translation>Nazwa jest za długa (maks. %1 bajtów).</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert bereits. Bitte wähle einen anderen Namen.</source>
+        <translation>„%1” już istnieje. Wybierz inną nazwę.</translation>
+    </message>
+    <message>
+        <source>Neuer Dateiname</source>
+        <translation>Nowa nazwa pliku</translation>
+    </message>
+    <message>
+        <source>Soll die Endung „.%1“ entfernt werden?</source>
+        <translation>Czy usunąć rozszerzenie „.%1”?</translation>
+    </message>
+    <message>
+        <source>Soll die Endung „.%1“ hinzugefügt werden?</source>
+        <translation>Czy dodać rozszerzenie „.%1”?</translation>
+    </message>
+    <message>
+        <source>Soll die Endung „.%1“ in „.%2“ geändert werden?</source>
+        <translation>Czy zmienić rozszerzenie „.%1” na „.%2”?</translation>
+    </message>
+    <message>
+        <source>Dateiendung ändern?</source>
+        <translation>Zmienić rozszerzenie pliku?</translation>
+    </message>
+    <message>
+        <source>Die Datei wird dadurch nicht umgewandelt. Andere Programme erkennen sie danach eventuell nicht mehr.</source>
+        <translation>Nie spowoduje to konwersji pliku. Inne aplikacje mogą go potem nie rozpoznawać.</translation>
+    </message>
+    <message>
+        <source>Ohne Endung lassen</source>
+        <translation>Bez rozszerzenia</translation>
+    </message>
+    <message>
+        <source>„.%1“ behalten</source>
+        <translation>Zachowaj „.%1”</translation>
+    </message>
+    <message>
+        <source>Endung entfernen</source>
+        <translation>Usuń rozszerzenie</translation>
+    </message>
+    <message>
+        <source>„.%1“ verwenden</source>
+        <translation>Użyj „.%1”</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Anuluj</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Settings</name>
+    <message>
+        <source>Datei kann nicht geschrieben werden: %1</source>
+        <translation>Nie można zapisać pliku: %1</translation>
+    </message>
+    <message>
+        <source>Datei kann nicht gelesen werden: %1</source>
+        <translation>Nie można odczytać pliku: %1</translation>
+    </message>
+    <message>
+        <source>Keine gültige Einstellungsdatei (JSON-Fehler: %1).</source>
+        <translation>Nieprawidłowy plik ustawień (błąd JSON: %1).</translation>
+    </message>
+    <message>
+        <source>Keine Lumaflip-Einstellungsdatei.</source>
+        <translation>To nie jest plik ustawień Lumaflip.</translation>
+    </message>
+    <message>
+        <source>%1: ungültiger Wert (erwartet: %2)</source>
+        <translation>%1: nieprawidłowa wartość (oczekiwano: %2)</translation>
+    </message>
+    <message>
+        <source>Import abgebrochen, nichts wurde geändert:
+%1</source>
+        <translation>Import przerwany, niczego nie zmieniono:
+%1</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Share</name>
+    <message>
+        <source>Teilen …</source>
+        <translation>Udostępnij…</translation>
+    </message>
+    <message>
+        <source>Wird geladen …</source>
+        <translation>Wczytywanie…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Shell</name>
+    <message>
+        <source>Auf dieser Plattform wird das Festlegen der Standard-App noch nicht unterstützt.</source>
+        <translation>Ustawianie domyślnej aplikacji nie jest jeszcze obsługiwane na tej platformie.</translation>
+    </message>
+    <message>
+        <source>Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, falls eine erscheint.</source>
+        <translation>Trwa ustawianie Lumaflip jako domyślnej aplikacji – potwierdź zapytanie macOS, jeśli się pojawi.</translation>
+    </message>
+    <message>
+        <source>unbekannter Typ</source>
+        <translation>nieznany typ</translation>
+    </message>
+    <message>
+        <source>Lumaflip läuft nicht als App-Paket und kann nicht als Standard-App festgelegt werden.</source>
+        <translation>Lumaflip nie działa jako pakiet aplikacji i nie może zostać ustawiony jako domyślna aplikacja.</translation>
+    </message>
+    <message>
+        <source>Zeitüberschreitung bei der Rückmeldung des Systems.</source>
+        <translation>Przekroczono czas oczekiwania na odpowiedź systemu.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::StartScreenRecent</name>
+    <message>
+        <source>Zuletzt geöffnet</source>
+        <translation>Ostatnio otwierane</translation>
+    </message>
+</context>
+<context>
+    <name>lf::TagService</name>
+    <message>
+        <source>Tags werden auf diesem System nicht unterstützt.</source>
+        <translation>Tagi nie są obsługiwane w tym systemie.</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gelesen werden: %2</source>
+        <translation>Nie można odczytać tagów „%1”: %2</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
+        <translation>Nie można ustawić tagów „%1”: %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::TrashService</name>
+    <message>
+        <source>„%1“ konnte nicht in den Papierkorb gelegt werden.</source>
+        <translation>Nie można przenieść „%1” do kosza.</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert bereits und wird nicht überschrieben.</source>
+        <translation>Element „%1” już istnieje i nie zostanie nadpisany.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht wiederhergestellt werden.</source>
+        <translation>Nie można przywrócić „%1”.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht in den Papierkorb gelegt werden: %2</source>
+        <translation>Nie można przenieść „%1” do kosza: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ist nicht mehr im Papierkorb.</source>
+        <translation>Elementu „%1” nie ma już w koszu.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht wiederhergestellt werden: %2</source>
+        <translation>Nie można przywrócić „%1”: %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::UndoBackupStore</name>
+    <message>
+        <source>Die Sicherung für „Rückgängig“ ist nicht mehr vorhanden.</source>
+        <translation>Kopia zapasowa dla polecenia „Cofnij” już nie istnieje.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Platz für die Sicherungskopie (Rückgängig) – nichts gespeichert.</source>
+        <translation>Za mało miejsca na kopię zapasową (cofanie) – niczego nie zachowano.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Updater</name>
+    <message>
+        <source>Automatisch nach Updates suchen</source>
+        <translation>Automatycznie sprawdzaj uaktualnienia</translation>
+    </message>
+    <message>
+        <source>Updates automatisch installieren</source>
+        <translation>Automatycznie instaluj uaktualnienia</translation>
+    </message>
+    <message>
+        <source>Lumaflip fragt dazu einmal am Tag bei GitHub nach einer neuen Version. Das ist die einzige Netzwerkverbindung der App.</source>
+        <translation>W tym celu Lumaflip raz dziennie sprawdza w serwisie GitHub, czy jest dostępna nowa wersja. To jedyne połączenie sieciowe aplikacji.</translation>
+    </message>
+    <message>
+        <source>Updates:</source>
+        <translation>Uaktualnienia:</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ViewerWindow</name>
+    <message>
+        <source>Sortierung gilt jetzt für alle Ordner</source>
+        <translation>Sortowanie obowiązuje teraz dla wszystkich folderów</translation>
+    </message>
+    <message>
+        <source>Zugriff erlauben…</source>
+        <translation>Zezwól na dostęp…</translation>
+    </message>
+    <message>
+        <source>Ausblenden</source>
+        <translation>Ukryj</translation>
+    </message>
+    <message>
+        <source>Öffnen…</source>
+        <translation>Otwórz…</translation>
+    </message>
+    <message>
+        <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
+        <translation>Plik jest uszkodzony lub jego format nie jest obsługiwany.</translation>
+    </message>
+    <message>
+        <source>Im Finder zeigen</source>
+        <translation>Pokaż w Finderze</translation>
+    </message>
+    <message>
+        <source>Volle Auflösung nicht verfügbar</source>
+        <translation>Pełna rozdzielczość niedostępna</translation>
+    </message>
+    <message>
+        <source>Lumaflip – lädt …</source>
+        <translation>Lumaflip – wczytywanie…</translation>
+    </message>
+    <message>
+        <source>Sortierung wird ermittelt …</source>
+        <translation>Ustalanie sortowania…</translation>
+    </message>
+    <message>
+        <source>%1 %</source>
+        <extracomment>zoom factor in the status bar, e.g. &quot;37 %&quot; (use the language&apos;s percent style)</extracomment>
+        <translation>%1%</translation>
+    </message>
+    <message>
+        <source>Vektor</source>
+        <translation>Wektor</translation>
+    </message>
+    <message>
+        <source>%1 × %2 (Vektor)</source>
+        <translation>%1 × %2 (wektor)</translation>
+    </message>
+    <message>
+        <source>Keine Bilder in „%1“</source>
+        <translation>Brak obrazów w „%1”</translation>
+    </message>
+    <message>
+        <source>Bild oder Ordner hierher ziehen</source>
+        <translation>Przeciągnij tutaj obraz lub folder</translation>
+    </message>
+    <message>
+        <source>Letztes Bild</source>
+        <translation>Ostatni obraz</translation>
+    </message>
+    <message>
+        <source>Erstes Bild</source>
+        <translation>Pierwszy obraz</translation>
+    </message>
+    <message>
+        <source>Lumaflip darf den Ordner „%1“ nicht lesen und zeigt deshalb nur die geöffnete Datei. Erlaube den Zugriff unter Systemeinstellungen → Datenschutz &amp; Sicherheit → Dateien und Ordner. Festplattenvollzugriff ist dafür nicht nötig.</source>
+        <translation>Lumaflip nie ma uprawnień do odczytu folderu „%1”, dlatego pokazuje tylko otwarty plik. Zezwól na dostęp w Ustawienia systemowe → Prywatność i ochrona → Pliki i foldery. Pełny dostęp do dysku nie jest do tego potrzebny.</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
+        <translation>Nie masz uprawnień do odczytu folderu „%1”, dlatego Lumaflip pokazuje tylko otwarty plik. Uprawnienia można zmienić w Finderze: Plik → Pokaż informacje → „Udostępnianie i uprawnienia”.</translation>
+    </message>
+    <message>
+        <source>Kein weiterer Ordner mit Bildern</source>
+        <translation>Brak kolejnego folderu z obrazami</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner mit Bildern</source>
+        <translation>Brak poprzedniego folderu z obrazami</translation>
+    </message>
+    <message>
+        <source>Zoom fixiert</source>
+        <translation>Powiększenie zablokowane</translation>
+    </message>
+    <message>
+        <source>Zoom gelöst</source>
+        <translation>Powiększenie odblokowane</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>Przenieś do kosza</translation>
+    </message>
+    <message>
+        <source>„%1“ in den Papierkorb legen?</source>
+        <translation>Przenieść „%1” do kosza?</translation>
+    </message>
+    <message>
+        <source>Mit ⌘Z lässt sich das widerrufen.</source>
+        <translation>Możesz to cofnąć, naciskając ⌘Z.</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Anuluj</translation>
+    </message>
+    <message>
+        <source>Bild wird kopiert …</source>
+        <translation>Kopiowanie obrazu…</translation>
+    </message>
+    <message>
+        <source>Bild kopiert (Bildschirmauflösung)</source>
+        <translation>Skopiowano obraz (rozdzielczość ekranu)</translation>
+    </message>
+    <message>
+        <source>Bild kopiert</source>
+        <translation>Skopiowano obraz</translation>
+    </message>
+    <message>
+        <source>Pfad kopiert</source>
+        <translation>Skopiowano ścieżkę</translation>
+    </message>
+    <message>
+        <source>„%1“ ist nicht mehr vorhanden.</source>
+        <translation>„%1” już nie istnieje.</translation>
+    </message>
+    <message>
+        <source>Animation angehalten: %1</source>
+        <translation>Animacja zatrzymana: %1</translation>
+    </message>
+    <message>
+        <source>Diashow beendet</source>
+        <translation>Pokaz slajdów zakończony</translation>
+    </message>
+    <message>
+        <source>Wiedergabe</source>
+        <translation>Odtwarzanie</translation>
+    </message>
+    <message>
+        <source>Pause</source>
+        <translation>Pauza</translation>
+    </message>
+    <message>
+        <source>Diashow angehalten</source>
+        <translation>Pokaz slajdów wstrzymany</translation>
+    </message>
+    <message>
+        <source>Diashow läuft weiter</source>
+        <translation>Pokaz slajdów wznowiony</translation>
+    </message>
+    <message numerus="yes">
+        <source>Intervall: %n Sekunde(n)</source>
+        <translation>
+            <numerusform>Interwał: %n sekunda</numerusform>
+            <numerusform>Interwał: %n sekundy</numerusform>
+            <numerusform>Interwał: %n sekund</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Bild %1/%2</source>
+        <translation>Obraz %1/%2</translation>
+    </message>
+    <message>
+        <source>Seite %1/%2</source>
+        <translation>Strona %1/%2</translation>
+    </message>
+    <message>
+        <source>Geschwindigkeit: %1×</source>
+        <translation>Szybkość: %1×</translation>
+    </message>
+    <message>
+        <source>Erste Seite</source>
+        <translation>Pierwsza strona</translation>
+    </message>
+    <message>
+        <source>Letzte Seite</source>
+        <translation>Ostatnia strona</translation>
+    </message>
+    <message>
+        <source>Diashow – Leertaste: Pause · 1–9: Sekunden · Esc: Ende</source>
+        <translation>Pokaz slajdów – Spacja: pauza · 1–9: sekundy · Esc: koniec</translation>
+    </message>
+    <message>
+        <source>Keine Drehung zu speichern – zuerst mit ⌘L oder ⌘R drehen</source>
+        <translation>Brak obrotu do zachowania – najpierw obróć za pomocą ⌘L lub ⌘R</translation>
+    </message>
+    <message>
+        <source>Drehung speichern</source>
+        <translation>Zachowaj obrót</translation>
+    </message>
+    <message>
+        <source>Verlustfrei drehen geht nur mit beschnittenem Rand.</source>
+        <translation>Bezstratny obrót jest możliwy tylko z przyciętą krawędzią.</translation>
+    </message>
+    <message>
+        <source>Die Drehung kann nur durch Neukodieren gespeichert werden.</source>
+        <translation>Obrót można zachować tylko przez ponowne zakodowanie.</translation>
+    </message>
+    <message>
+        <source>Rand abschneiden</source>
+        <translation>Przytnij krawędź</translation>
+    </message>
+    <message>
+        <source>Neu kodieren</source>
+        <translation>Zakoduj ponownie</translation>
+    </message>
+    <message>
+        <source>Nur EXIF-Ausrichtung setzen</source>
+        <translation>Ustaw tylko orientację EXIF</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowPanels</name>
+    <message>
+        <source>Informationen</source>
+        <translation>Informacje</translation>
+    </message>
+    <message>
+        <source>Filmstreifen</source>
+        <translation>Pasek miniatur</translation>
+    </message>
+</context>
+</TS>

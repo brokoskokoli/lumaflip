@@ -26,9 +26,8 @@ public:
         @autoreleasepool {
             NSURL* resulting = nil;
             NSError* err = nil;
-            if (![[NSFileManager defaultManager] trashItemAtURL:fileURL(path)
-                                               resultingItemURL:&resulting
-                                                          error:&err]) {
+            NSFileManager* files = NSFileManager.defaultManager; // no "[[": lupdate takes it for an attribute
+            if (![files trashItemAtURL:fileURL(path) resultingItemURL:&resulting error:&err]) {
                 if (error)
                     *error = QCoreApplication::translate(
                                  "lf::TrashService", "„%1“ konnte nicht in den Papierkorb gelegt werden: %2")
@@ -58,9 +57,8 @@ public:
             }
             NSError* err = nil;
             // moveItemAtURL fails if the destination exists - no overwrite.
-            if (![[NSFileManager defaultManager] moveItemAtURL:fileURL(trashedPath)
-                                                         toURL:fileURL(originalPath)
-                                                         error:&err]) {
+            NSFileManager* files = NSFileManager.defaultManager; // no "[[" (lupdate)
+            if (![files moveItemAtURL:fileURL(trashedPath) toURL:fileURL(originalPath) error:&err]) {
                 if (error)
                     *error = QCoreApplication::translate("lf::TrashService",
                                                          "„%1“ konnte nicht wiederhergestellt werden: %2")

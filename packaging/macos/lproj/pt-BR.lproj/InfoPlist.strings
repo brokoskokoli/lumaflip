@@ -1,0 +1,12 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/* Localized Info.plist texts (pt_BR); generated from translations/ - see translations/README.md */
+"NSAppleEventsUsageDescription" = "Se você quiser, o Lumaflip consulta a ordenação da janela do Finder da frente para exibir as imagens na mesma ordem.";
+"NSDesktopFolderUsageDescription" = "O Lumaflip lê a pasta da imagem aberta para que você possa passar as imagens com as teclas de seta.";
+"NSDocumentsFolderUsageDescription" = "O Lumaflip lê a pasta da imagem aberta para que você possa passar as imagens com as teclas de seta.";
+"NSDownloadsFolderUsageDescription" = "O Lumaflip lê a pasta da imagem aberta para que você possa passar as imagens com as teclas de seta.";
+"NSRemovableVolumesUsageDescription" = "O Lumaflip lê a pasta da imagem aberta para que você possa passar as imagens com as teclas de seta.";
+"NSNetworkVolumesUsageDescription" = "O Lumaflip lê a pasta da imagem aberta para que você possa passar as imagens com as teclas de seta.";
+"Bild" = "Imagem";
+"Bild (sonstige)" = "Imagem (outros)";
+"Ordner" = "Pasta";
+"NSHumanReadableCopyright" = "© 2026 brokoskokoli e colaboradores. Licença: GPL-3.0-or-later.";

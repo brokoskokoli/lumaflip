@@ -4,8 +4,16 @@
 <plist version="1.0">
 <dict>
   <key>CFBundleDevelopmentRegion</key><string>de</string>
+  <!-- UI languages (SPEC 4.16, F-I18N-02): macOS offers them as per-app language; the
+       matching <lang>.lproj folders hold the localized texts below (InfoPlist.strings). -->
   <key>CFBundleLocalizations</key>
-  <array><string>de</string></array>
+  <array>
+    <string>de</string><string>en</string><string>fr</string><string>es</string><string>it</string>
+    <string>pt-BR</string><string>pt-PT</string><string>nl</string><string>pl</string><string>sv</string>
+    <string>da</string><string>nb</string><string>fi</string><string>cs</string><string>ja</string>
+    <string>zh-Hans</string><string>zh-Hant</string><string>ko</string>
+  </array>
+  <key>CFBundleAllowMixedLocalizations</key><true/>
   <key>CFBundleExecutable</key><string>${MACOSX_BUNDLE_EXECUTABLE_NAME}</string>
   <key>CFBundleIdentifier</key><string>${MACOSX_BUNDLE_GUI_IDENTIFIER}</string>
   <key>CFBundleInfoDictionaryVersion</key><string>6.0</string>
