@@ -353,8 +353,8 @@ QWidget* PreferencesDialog::buildGeneral() {
     // F-I18N-03: UI language (LanguageChooser.cpp), switched at once
     form->addRow(tr("Sprache:"), prefs::createLanguageChooser(w));
     form->addRow(QString(),
-                 helpLabel(tr("Wirkt sofort. Systemfenster wie „Öffnen“ folgen der Sprache, die macOS für "
-                              "Lumaflip verwendet (Systemeinstellungen → Allgemein → Sprache & Region)."),
+                 helpLabel(tr("Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbild aktivieren“, "
+                              "„Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart."),
                            w));
     form->addRow(tr("Öffnen aus dem Finder:"),
                  bind.combo(key::OpenBehavior, {"newWindow", "replaceFront", "newUnlessOpen"},

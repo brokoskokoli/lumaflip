@@ -23,11 +23,13 @@ QString formatByteSizeExact(qint64 bytes, const QLocale& locale = formatLocale()
 QString formatDecimal(double value, int decimals, const QLocale& locale = formatLocale());
 
 // Date and time with seconds and four-digit year in the locale's short format
-// ("10.10.2026 14:03:09", "10/10/2026 2:03:09 PM", "2026/10/10 14:03:09"). The time is
-// shown as stored in `dt` (convert with toLocalTime() first if needed).
+// ("10.10.2026 14:03:09", "10/10/2026 2:03:09 PM", "2026/10/10 14:03:09"; Danish
+// "10.10.2026 14.03.09": the seconds get the separator the locale puts before the
+// minutes). The time is shown as stored in `dt` (convert with toLocalTime() first if needed).
 QString formatDateTime(const QDateTime& dt, const QLocale& locale = formatLocale());
 
-// Exposure values (info panel, F-INFO-02).
+// Exposure values (info panel, F-INFO-02). Exposure time, aperture and focal length have
+// no group separators ("1/4000 s", "1200 mm").
 QString formatExposureTime(double seconds, const QLocale& locale = formatLocale()); // "1/250 s", "2,5 s"
 QString formatAperture(double fNumber, const QLocale& locale = formatLocale());     // "f/2,8"
 QString formatExposureBias(double ev, const QLocale& locale = formatLocale());      // "+0,7 EV"

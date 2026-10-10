@@ -7,14 +7,17 @@
 // Opens windows: run only with permission on the developer's laptop (CLAUDE.md).
 
 #include "app/Application.h"
+#include "app/CompareView.h"
 #include "app/CouplingManager.h"
 #include "app/CullingController.h"
 #include "app/DefaultAppDialog.h"
+#include "app/ImageView.h"
 #include "app/InfoPanel.h"
 #include "app/MainMenu.h"
 #include "app/MetadataDialog.h"
 #include "app/NavigationExtras.h"
 #include "app/PreferencesDialog.h"
+#include "app/QuickFilterBar.h"
 #include "app/QuickMoveController.h"
 #include "app/Translations.h"
 #include "app/ViewerWindow.h"
@@ -32,6 +35,7 @@
 #include <QFile>
 #include <QImage>
 #include <QLabel>
+#include <QLineEdit>
 #include <QMenu>
 #include <QMenuBar>
 #include <QPushButton>
@@ -182,6 +186,78 @@ private slots:
         // Menus are native on macOS (no clipping); a menu's own width must still be sane.
         for (QMenu* m : menus)
             QVERIFY2(m->sizeHint().width() < 700, qPrintable(m->title()));
+    }
+
+    // F-I18N-03 (review 5): a metadata load that runs while the language changes is dropped
+    // and read again - the panel never keeps rows in the old language.
+    void F_I18N_03_infoPanelLoadDuringSwitchIsRedone() {
+        QVERIFY(installTranslations(QStringLiteral("de")));
+        const QString file = m_dir.filePath(QStringLiteral("switch.png"));
+        QImage img(64, 48, QImage::Format_RGB32);
+        img.fill(Qt::darkCyan);
+        QVERIFY(img.save(file));
+        InfoPanel panel(ImageProvider::instance(), nullptr);
+        panel.resize(240, 600);
+        panel.show();
+        QVERIFY(QTest::qWaitForWindowExposed(&panel));
+        panel.setFile(file);                                // the load starts now (German) ...
+        QVERIFY(installTranslations(QStringLiteral("en"))); // ... and the language changes
+        QTRY_VERIFY(!panel.isLoading());
+        QTest::qWait(200); // a dropped load restarts; wait for the final result
+        QTRY_VERIFY(!panel.isLoading());
+        QTreeWidget* tree = panel.tree();
+        QVERIFY(tree && tree->topLevelItemCount() > 0);
+        QCOMPARE(tree->topLevelItem(0)->text(0), QStringLiteral("File"));
+        for (int i = 0; i < tree->topLevelItemCount(); ++i)
+            for (int r = 0; r < tree->topLevelItem(i)->childCount(); ++r)
+                QVERIFY2(tree->topLevelItem(i)->child(r)->text(0) != QStringLiteral("Größe"),
+                         "row label still German");
+    }
+
+    // F-I18N-03 (review 5): texts set once - the quick filter's placeholder and tooltip, the
+    // accessible names of grid and compare view - and decoder errors on the error card follow
+    // a live switch.
+    void F_I18N_03_persistentTextsFollowTheSwitch() {
+        QVERIFY(installTranslations(QStringLiteral("de")));
+        const QString broken = m_dir.filePath(QStringLiteral("zz_switch_broken.jpg"));
+        {
+            QFile f(broken);
+            QVERIFY(f.open(QIODevice::WriteOnly));
+            f.write("not a jpeg");
+        }
+        Application app;
+        ViewerWindow* w = app.openPaths({broken});
+        QVERIFY(w && QTest::qWaitForWindowExposed(w));
+        QTRY_VERIFY(w->view()->isShowingError());
+        auto cardTexts = [w] {
+            QStringList out;
+            if (auto* card = w->view()->findChild<QWidget*>(QStringLiteral("lfErrorCard")))
+                for (QLabel* l : card->findChildren<QLabel*>())
+                    out << l->text();
+            return out.join(QLatin1Char('|'));
+        };
+        const QString germanCard = cardTexts();
+        QuickFilterBar* filter = w->extras()->quickFilter();
+        QCOMPARE(filter->field()->placeholderText(), QStringLiteral("Dateiname filtern"));
+        CompareView compare(ImageProvider::instance());
+        QCOMPARE(compare.accessibleName(), QStringLiteral("Vergleich"));
+
+        QVERIFY(installTranslations(QStringLiteral("en")));
+        QTRY_COMPARE(filter->field()->placeholderText(), QStringLiteral("Filter file names"));
+        QTRY_COMPARE(compare.accessibleName(), QStringLiteral("Compare"));
+        // The file is decoded again; the new failure brings the English text.
+        QTRY_VERIFY_WITH_TIMEOUT(cardTexts() != germanCard && w->view()->isShowingError(), 5000);
+    }
+
+    // F-I18N-03 (review 5): an explicit language also goes to AppleLanguages (AppKit's own
+    // texts follow after a restart); the preferences say so.
+    void F_I18N_03_preferencesNoteSystemMenusAfterRestart() {
+        QVERIFY(installTranslations(QStringLiteral("de")));
+        PreferencesDialog* prefs = PreferencesDialog::showPreferences();
+        bool found = false;
+        for (QLabel* l : prefs->findChildren<QLabel*>())
+            found = found || l->text().contains(QStringLiteral("nach einem Neustart"));
+        QVERIFY(found);
     }
 
     // F-I18N-06: the info panel's labels fit its minimum width in every language.

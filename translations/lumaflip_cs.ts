@@ -3029,6 +3029,15 @@
         <source>Bild (allgemein)</source>
         <translation>Obrázek (obecné)</translation>
     </message>
+    <message numerus="yes">
+        <source>&lt;%n Bytes: %1&gt;</source>
+        <extracomment>binary metadata value: its size and the first bytes in hex, e.g. &quot;&lt;2 Bytes: 01 02&gt;&quot;</extracomment>
+        <translation>
+            <numerusform>&lt;%n bajt: %1&gt;</numerusform>
+            <numerusform>&lt;%n bajty: %1&gt;</numerusform>
+            <numerusform>&lt;%n bajtů: %1&gt;</numerusform>
+        </translation>
+    </message>
 </context>
 <context>
     <name>lf::NavigationExtras</name>
@@ -3226,8 +3235,8 @@
         <translation>Jazyk:</translation>
     </message>
     <message>
-        <source>Wirkt sofort. Systemfenster wie „Öffnen“ folgen der Sprache, die macOS für Lumaflip verwendet (Systemeinstellungen → Allgemein → Sprache &amp; Region).</source>
-        <translation>Projeví se okamžitě. Systémová okna jako „Otevřít“ používají jazyk, který macOS používá pro Lumaflip (Nastavení systému → Obecné → Jazyk a oblast).</translation>
+        <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbild aktivieren“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
+        <translation>Projeví se okamžitě. Nabídky a okna systému macOS („Zapnout režim celé obrazovky“, „Služby“, „Otevřít“, žádosti o oprávnění) se změní po restartu.</translation>
     </message>
     <message>
         <source>Öffnen aus dem Finder:</source>

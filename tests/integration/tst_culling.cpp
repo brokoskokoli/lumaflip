@@ -300,13 +300,16 @@ private slots:
         QVERIFY(QDir().mkpath(path("Eins")) && QDir().mkpath(path("Zwei")));
         quickmove::setTarget(1, path("Eins"));
         quickmove::setTarget(2, path("Zwei"));
+        QuickChord::setLastSlot(0);
         ViewerWindow* w = openAndWait(path("a.jpg"));
         QVERIFY(w);
         QTest::keyClick(w->view(), Qt::Key_M);
         QVERIFY(w->culling()->quickMove()->isPending());
         QTest::keyClick(w->view(), Qt::Key_1);
+        QCOMPARE(QuickChord::lastSlot(), 0); // not before the move ran
         QTRY_VERIFY(QFileInfo::exists(path("Eins/a.jpg")));
         QVERIFY(!QFileInfo::exists(path("a.jpg")));
+        QTRY_COMPARE(QuickChord::lastSlot(), 1); // remembered once the move succeeded
         QTRY_COMPARE(w->currentPath(), path("b.jpg"));
         QCOMPARE(w->view()->zoomMode(), ZoomMode::Fit); // "1" was the target, not the zoom key
         // M M: the same target again.
@@ -325,10 +328,11 @@ private slots:
             w->perform(Action::Undo);
         QTRY_VERIFY(QFileInfo::exists(path("a.jpg")) && QFileInfo::exists(path("b.jpg")));
         QTRY_VERIFY(!QFileInfo::exists(path("Zwei/c.jpg")));
-        // A target that is not set explains itself.
+        // A target that is not set explains itself and is not remembered.
         QTest::keyClick(w->view(), Qt::Key_M);
         QTest::keyClick(w->view(), Qt::Key_7);
         QVERIFY(w->toastText().contains(QStringLiteral("nicht festgelegt")));
+        QCOMPARE(QuickChord::lastSlot(), 2);
     }
 
     // Covers: F-FILE-11 (conflict dialog: keep both, replace, skip)

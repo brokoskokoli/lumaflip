@@ -43,8 +43,11 @@ public:
     bool maybeStart(const QKeyEvent* event, bool ratingKeysActive);
     void place(); // top right of the content
 
+    void retranslateUi(); // placeholder and tooltip (F-I18N-03)
+
 protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
+    void changeEvent(QEvent* event) override;
 
 private:
     void updateCount();

@@ -3018,6 +3018,14 @@
         <source>Bild (allgemein)</source>
         <translation>Kuva (yleiset)</translation>
     </message>
+    <message numerus="yes">
+        <source>&lt;%n Bytes: %1&gt;</source>
+        <extracomment>binary metadata value: its size and the first bytes in hex, e.g. &quot;&lt;2 Bytes: 01 02&gt;&quot;</extracomment>
+        <translation>
+            <numerusform>&lt;%n tavu: %1&gt;</numerusform>
+            <numerusform>&lt;%n tavua: %1&gt;</numerusform>
+        </translation>
+    </message>
 </context>
 <context>
     <name>lf::NavigationExtras</name>
@@ -3210,8 +3218,8 @@
         <translation>Kieli:</translation>
     </message>
     <message>
-        <source>Wirkt sofort. Systemfenster wie „Öffnen“ folgen der Sprache, die macOS für Lumaflip verwendet (Systemeinstellungen → Allgemein → Sprache &amp; Region).</source>
-        <translation>Tulee voimaan heti. Järjestelmän ikkunat, kuten ”Avaa”, noudattavat kieltä, jota macOS käyttää Lumaflipille (Järjestelmäasetukset → Yleiset → Kieli ja alue).</translation>
+        <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbild aktivieren“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
+        <translation>Tulee voimaan heti. macOSin valikot ja ikkunat (”Siirry koko näytön tilaan”, ”Palvelut”, ”Avaa”, lupakyselyt) vaihtuvat uudelleenkäynnistyksen jälkeen.</translation>
     </message>
     <message>
         <source>Öffnen aus dem Finder:</source>

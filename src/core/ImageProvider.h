@@ -61,6 +61,11 @@ public:
 
     // Invalidate (file changed/renamed/deleted). Drops every page of the file.
     void invalidate(const QString& path);
+    // F-I18N-03: forgets the pages that failed as a whole (with their failed stages): their
+    // error texts are in the old UI language. The next request() decodes them again and
+    // reports in the current one. Stages that failed while another stage is shown stay
+    // failed (no user-facing decoder text). Returns the affected paths.
+    QStringList forgetFailures();
 
     void setMemoryBudget(qint64 bytes); // P-09
     qint64 memoryBudget() const;

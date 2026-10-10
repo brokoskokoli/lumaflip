@@ -98,6 +98,17 @@
     </message>
 </context>
 <context>
+    <name>lf::MetadataTree</name>
+    <message numerus="yes">
+        <source>&lt;%n Bytes: %1&gt;</source>
+        <extracomment>binary metadata value: its size and the first bytes in hex, e.g. &quot;&lt;2 Bytes: 01 02&gt;&quot;</extracomment>
+        <translation>
+            <numerusform>&lt;%n Byte: %1&gt;</numerusform>
+            <numerusform>&lt;%n Bytes: %1&gt;</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::OverviewController</name>
     <message numerus="yes">
         <source>%n Bild(er)</source>

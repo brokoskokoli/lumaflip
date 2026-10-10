@@ -3,14 +3,20 @@
 
 #include "NameFilter.h"
 
+#include <QCoreApplication>
 #include <QStringList>
 
 #include <algorithm>
+#include <climits>
 #include <optional>
 
 namespace lf::metadatatree {
 
 namespace {
+
+struct Tr {
+    Q_DECLARE_TR_FUNCTIONS(lf::MetadataTree)
+};
 
 constexpr int kInlineListMax = 16; // short scalar lists become one value
 constexpr int kBytesPreview = 32;  // bytes shown of binary values
@@ -27,7 +33,8 @@ QString scalarText(const QVariant& v) {
         QString hex = QString::fromLatin1(b.left(kBytesPreview).toHex(' '));
         if (b.size() > kBytesPreview)
             hex += QStringLiteral(" …");
-        return QStringLiteral("<%1 Bytes: %2>").arg(b.size()).arg(hex);
+        //: binary metadata value: its size and the first bytes in hex, e.g. "<2 Bytes: 01 02>"
+        return Tr::tr("<%n Bytes: %1>", nullptr, int(std::min<qsizetype>(b.size(), INT_MAX))).arg(hex);
     }
     if (v.typeId() == QMetaType::Bool)
         return v.toBool() ? QStringLiteral("true") : QStringLiteral("false");

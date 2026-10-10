@@ -106,6 +106,15 @@ QString resolveUiLanguage(const QString& setting, const QStringList& perAppLangu
                                                                 : available.value(0);
 }
 
+QString appleLanguageTag(const QString& code) {
+    if (code == QLatin1String("zh_CN"))
+        return QStringLiteral("zh-Hans");
+    if (code == QLatin1String("zh_TW"))
+        return QStringLiteral("zh-Hant");
+    QString tag = code;
+    return tag.replace(QLatin1Char('_'), QLatin1Char('-'));
+}
+
 QLocale formatLocaleFor(const QString& code, const QLocale& system) {
     const QLocale ui(code);
     const bool sameScript = ui.script() == system.script() || ui.language() != QLocale::Chinese;

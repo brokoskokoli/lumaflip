@@ -3,12 +3,14 @@
 // window is built get their translation again; the rest (title, status bar, start screen)
 // is computed anew. The info panel retranslates itself (InfoPanel::changeEvent).
 
+#include "Application.h"
 #include "Filmstrip.h"
 #include "HdrController.h"
 #include "HistogramWidget.h"
 #include "StartScreenRecent.h"
 #include "ViewerWindow.h"
 #include "WindowPanels.h"
+#include "core/ImageProvider.h"
 
 #include <QDockWidget>
 #include <QLabel>
@@ -38,6 +40,11 @@ void ViewerWindow::retranslateUi() {
         title->setText(StartScreenRecent::tr("Zuletzt geöffnet"));
     if (m_hdr)
         m_hdr->retranslate();
+    // An error card holds the decoder's text in the old language: decode the file again
+    // (a new failure shows the card in the current language, onImageFailed()).
+    m_app.provider().forgetFailures();
+    if (m_shownFailed && !currentPath().isEmpty() && currentPath() == m_shownPath)
+        m_app.provider().request(m_shownPath, Quality::Screen, decodeTarget(), this, 0, m_page);
     updateTitle();
     updateEmptyState();
     updateStatus();

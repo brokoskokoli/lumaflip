@@ -95,14 +95,21 @@ bool installTranslations(const QString& code) {
     QTranslator* qt = loadCatalog(qtNames, qtTranslationDirs());
     // German is the source language: its catalogue only holds the plural forms.
     QTranslator* app = loadCatalog({QStringLiteral("lumaflip_") + code}, appTranslationDirs());
+    const bool first = i.code.isEmpty();
     i.code = code;
     // Formats first: widgets re-read texts on LanguageChange (sent by installTranslator).
     const QLocale format = formatLocaleFor(code, QLocale::system());
     setFormatLocale(format);
-    QLocale::setDefault(format);
-    bumpLanguageGeneration();
+    // QLocale::setDefault() is not thread-safe against workers that construct QLocale():
+    // only at startup (main(), before any worker runs). Afterwards everything that formats
+    // uses formatLocale() explicitly (LocaleFormat.h).
+    if (first)
+        QLocale::setDefault(format);
     replace(i.qt, qt);
     replace(i.app, app);
+    // After the translators: a cache rebuilt for the new generation (InputBindings::
+    // inputSlots(), possibly on a worker) must not see the old catalogues.
+    bumpLanguageGeneration();
     return qt && (app || code == QLatin1String("de"));
 }
 

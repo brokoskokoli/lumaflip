@@ -138,8 +138,10 @@ struct InputSlot {
 
 class InputBindings {
 public:
-    InputBindings();                               // loads from Settings::instance()
-    static const QVector<InputSlot>& inputSlots(); // ("slots" is a Qt keyword)
+    InputBindings(); // loads from Settings::instance()
+    // A copy (implicitly shared): safe while another thread rebuilds the table after a
+    // language switch. ("slots" is a Qt keyword.)
+    static QVector<InputSlot> inputSlots();
     // Presets (F-IN-18): "mac", "windows", "photographer". Choices that are not available
     // yet (isChoiceAvailable) are skipped: the slot gets its default instead.
     static void applyPreset(const QString& presetId);

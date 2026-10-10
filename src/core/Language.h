@@ -41,6 +41,10 @@ QString resolveUiLanguage(const QString& setting, const QStringList& perAppLangu
                           const QStringList& systemLanguages,
                           const QStringList& available = uiLanguageCodes());
 
+// The language tag macOS uses for a UI language code in AppleLanguages and .lproj folders
+// ("pt_BR" -> "pt-BR", "zh_CN" -> "zh-Hans", "zh_TW" -> "zh-Hant", "fr" -> "fr").
+QString appleLanguageTag(const QString& code);
+
 // F-I18N-04: the locale texts in UI language `code` are formatted with. The system locale
 // (macOS region settings) if it is of the same language ("de" + de_CH keeps the Swiss
 // formats); else the UI language in the system's region if that combination exists

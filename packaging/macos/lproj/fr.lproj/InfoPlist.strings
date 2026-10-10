@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
-/* Localized Info.plist texts (fr); generated from translations/ - see translations/README.md */
+/* Localized Info.plist texts (fr); maintained by hand here (not generated from the .ts catalogues) - see translations/README.md */
 "NSAppleEventsUsageDescription" = "Sur demande, Lumaflip interroge la fenêtre du Finder au premier plan sur son tri, afin d’afficher les images dans le même ordre.";
 "NSDesktopFolderUsageDescription" = "Lumaflip lit le dossier de l’image ouverte afin que vous puissiez parcourir les images avec les touches fléchées.";
 "NSDocumentsFolderUsageDescription" = "Lumaflip lit le dossier de l’image ouverte afin que vous puissiez parcourir les images avec les touches fléchées.";
@@ -9,4 +9,5 @@
 "Bild" = "Image";
 "Bild (sonstige)" = "Image (autre)";
 "Ordner" = "Dossier";
+"WBMP-Bild" = "Image WBMP";
 "NSHumanReadableCopyright" = "© 2026 brokoskokoli et contributeurs. Licence : GPL-3.0-or-later.";

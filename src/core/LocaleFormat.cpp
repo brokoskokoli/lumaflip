@@ -19,6 +19,32 @@ int pluralIndex(qint64 n) {
     return n < 1000000 ? int(n) : int(n % 1000000) + 1000000;
 }
 
+// Numbers that read as one token without group separators: exposure denominators
+// ("1/4000 s", never "1/4.000 s"), apertures and focal lengths ("1200 mm").
+QLocale withoutGroupSeparator(QLocale locale) {
+    locale.setNumberOptions(locale.numberOptions() | QLocale::OmitGroupSeparator);
+    return locale;
+}
+
+// The separator the locale puts between minutes and seconds: the one before the minutes
+// ("HH.mm" in Danish and Finnish -> "."), ":" if there is none or it is quoted text.
+QString minuteSeparator(const QString& time, qsizetype minutes) {
+    qsizetype start = minutes;
+    while (start > 0) {
+        const QChar c = time.at(start - 1);
+        if (c == u'h' || c == u'H')
+            break;
+        --start;
+    }
+    if (start == 0)
+        return QStringLiteral(":");
+    const QString sep = time.mid(start, minutes - start);
+    for (const QChar c : sep)
+        if (c.isLetter() || c == u'\'' || c.isSpace())
+            return QStringLiteral(":");
+    return sep.isEmpty() ? QStringLiteral(":") : sep;
+}
+
 QString unitText(int unit, const QString& number) {
     switch (unit) {
     case 0:
@@ -84,7 +110,7 @@ QString formatDateTime(const QDateTime& dt, const QLocale& locale) {
     if (!time.contains(QLatin1String("ss"))) {
         const qsizetype m = time.indexOf(QLatin1String("mm"));
         if (m >= 0)
-            time.insert(m + 2, QLatin1String(":ss"));
+            time.insert(m + 2, minuteSeparator(time, m) + QLatin1String("ss"));
     }
     return locale.toString(dt, date + QLatin1Char(' ') + time);
 }
@@ -95,15 +121,16 @@ QString formatExposureTime(double t, const QLocale& locale) {
     if (t < 1.0) {
         const double inv = 1.0 / t;
         //: exposure time as a fraction of a second, e.g. "1/250 s"
-        return Tr::tr("1/%1 s").arg(formatDecimal(inv >= 10 ? std::round(inv) : inv, 1, locale));
+        return Tr::tr("1/%1 s").arg(
+            formatDecimal(inv >= 10 ? std::round(inv) : inv, 1, withoutGroupSeparator(locale)));
     }
     //: exposure time in seconds, e.g. "2,5 s"
-    return Tr::tr("%1 s").arg(formatDecimal(t, 1, locale));
+    return Tr::tr("%1 s").arg(formatDecimal(t, 1, withoutGroupSeparator(locale)));
 }
 
 QString formatAperture(double fNumber, const QLocale& locale) {
     //: aperture (f-number), e.g. "f/2,8"
-    return Tr::tr("f/%1").arg(formatDecimal(fNumber, 1, locale));
+    return Tr::tr("f/%1").arg(formatDecimal(fNumber, 1, withoutGroupSeparator(locale)));
 }
 
 QString formatExposureBias(double ev, const QLocale& locale) {
@@ -113,12 +140,13 @@ QString formatExposureBias(double ev, const QLocale& locale) {
 }
 
 QString formatFocalLength(double mm, double mm35, const QLocale& locale) {
+    const QLocale plain = withoutGroupSeparator(locale);
     //: focal length in millimetres
-    QString s = Tr::tr("%1 mm").arg(formatDecimal(mm, 1, locale));
+    QString s = Tr::tr("%1 mm").arg(formatDecimal(mm, 1, plain));
     if (mm35 > 0 && mm35 != mm)
         //: appended to the focal length: the 35 mm equivalent ("KB" = Kleinbild), e.g. " (35-mm-equiv.: 52
         //: mm)"
-        s += Tr::tr(" (KB: %1 mm)").arg(formatDecimal(mm35, 0, locale));
+        s += Tr::tr(" (KB: %1 mm)").arg(formatDecimal(mm35, 0, plain));
     return s;
 }
 

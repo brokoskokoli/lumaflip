@@ -51,8 +51,12 @@ bool systemRestoresWindows() {
     return false; // like the macOS default
 }
 
-QStringList appLanguagePreference() {
+QStringList appLanguagePreference(const QString&) {
     return {}; // no per-app language setting outside macOS
+}
+
+bool setAppKitLanguage(const QString&, const QString&) {
+    return true; // no AppKit outside macOS
 }
 
 } // namespace lf
