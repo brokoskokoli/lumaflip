@@ -126,6 +126,12 @@ bool QtImageDecoder::canDecode(const QString& path, const QByteArray& header) co
     if (!buf.open(QIODevice::ReadOnly))
         return false;
     const QByteArray fmt = QImageReader::imageFormat(&buf);
+#ifdef Q_OS_MACOS
+    // Qt's HEIF plugin (qmacheif) only wraps ImageIO, which decodes these files in the app
+    // already. In the decoder helper's sandbox (no GPU/IOKit) it returns garbage pixels.
+    if (fmt == "heic" || fmt == "heif")
+        return false;
+#endif
     return !fmt.isEmpty() && !isSvgFormat(fmt);
 }
 

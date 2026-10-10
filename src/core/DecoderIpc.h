@@ -10,10 +10,19 @@
 // Transport: the child's stdin/stdout pipes. Every message is a frame
 //     [u32 payload length, little endian][payload]
 // and the payload a QDataStream (Qt 6.8 format) of Request or Response, starting with
-// kProtocolVersion. Pixels do not go through the pipe: the helper writes them into a POSIX
-// shared memory object named shmName(helperPid, requestId); the app maps it (zero copy, the
-// QImage releases the mapping) and unlinks the name. Because the app can compute the name,
-// it also removes it when the helper died or timed out halfway.
+// kProtocolVersion. Pixels do not go through the pipe but through POSIX shared memory that
+// the APP owns (the helper's sandbox cannot create shared memory objects):
+//   1. Decode: the helper decodes, keeps the image and answers with its PixelHeader.
+//   2. The app checks the header (validatePixelHeader), creates the object
+//      shmName(appPid, requestId) with exactly header.shmSize bytes (createShared, keeps the
+//      descriptor) and sends Deliver with that name.
+//   3. The helper opens the existing object, unlinks the name at once, copies the pixels
+//      (fillSharedImage) and answers.
+//   4. The app unlinks the name (if still there) and maps its own descriptor
+//      (mapSharedImage: zero copy, the QImage releases the mapping).
+// A name therefore exists only between steps 2 and 3, and the app removes it on every
+// failure path; neither a helper killed mid-decode nor an app that quits or crashes during
+// a decode leaves a segment behind.
 //
 // All functions are thread-safe (no shared state).
 
@@ -27,7 +36,7 @@
 
 namespace lf::ipc {
 
-inline constexpr quint32 kProtocolVersion = 1;
+inline constexpr quint32 kProtocolVersion = 2;
 // Upper bound of one frame (metadata, ICC profiles, error texts - never pixels).
 inline constexpr quint32 kMaxFrameBytes = 64u * 1024 * 1024;
 
@@ -36,10 +45,16 @@ enum class Op : quint8 {
     Info = 2,     // Decoder::info
     Decode = 3,   // Decoder::decode (pixels via shared memory)
     Metadata = 4, // Decoder::metadata
-    // Only honoured when the helper runs with LF_DECODER_HELPER_TEST_OPS=1 (tests):
-    TestCrash = 100,     // abort()
-    TestHang = 101,      // sleep forever
-    TestWriteFile = 102, // try to create `path` (must fail in the sandbox)
+    Deliver = 5,  // copy the image of the preceding Decode (same id) into Request::shm
+    // Only honoured when the helper runs with LF_DECODER_HELPER_TEST_OPS=1 (tests). Each
+    // answers ok = the operation succeeded (all of them must fail in the sandbox):
+    TestCrash = 100,      // abort()
+    TestHang = 101,       // sleep forever
+    TestWriteFile = 102,  // create the file `path`
+    TestSocket = 103,     // open a TCP socket and connect to 127.0.0.1:`path`
+    TestMachLookup = 104, // look up the Mach service named `path`
+    TestCreateShm = 105,  // create the shared memory object named `path`
+    TestExec = 106,       // start the program `path`
 };
 
 struct Request {
@@ -48,6 +63,7 @@ struct Request {
     QString backend; // Decoder::name() of the helper-side backend ("Qt", "QtSvg")
     QString path;
     DecodeRequest decode;
+    QByteArray shm; // Deliver: name of the shared memory object created by the app
 };
 
 // Pixel buffer description of a decoded image (the bytes are in shared memory).
@@ -84,8 +100,9 @@ QByteArray encode(const Response& r);
 std::optional<Request> decodeRequest(const QByteArray& payload);
 std::optional<Response> decodeResponse(const QByteArray& payload);
 
-// Shared memory object name for a request of helper `pid` (at most 31 characters, the
-// macOS limit).
+// Shared memory object name for request `requestId` of the app process `pid` (at most 31
+// characters, the macOS limit). The helper's sandbox only grants access to this prefix.
+inline constexpr char kShmPrefix[] = "/lfd.";
 QByteArray shmName(qint64 pid, quint32 requestId);
 
 // ---- framing over file descriptors ----
@@ -94,17 +111,32 @@ enum class IoStatus { Ok, Closed, Timeout, Error, TooLarge };
 
 // Writes one frame (blocking; retries on EINTR, SIGPIPE must be ignored by the caller).
 IoStatus writeFrame(int fd, const QByteArray& payload);
-// Reads one frame. `timeoutMs` < 0 waits forever. `Closed` = EOF before a full frame.
+// Reads one frame. `timeoutMs` < 0 waits forever, else it bounds the whole frame (an
+// absolute deadline: a peer trickling single bytes cannot extend it). `Closed` = EOF before
+// a full frame.
 IoStatus readFrame(int fd, QByteArray* payload, int timeoutMs);
+// Parses a frame from a byte buffer (the length prefix and the payload): the app-side frame
+// parser of readFrame() without a file descriptor (fuzz target). Returns the bytes used
+// (0 = incomplete, -1 = invalid length).
+qsizetype parseFrame(const QByteArray& buffer, QByteArray* payload);
 
 // ---- shared memory ----
 
-// Helper side: creates the object `name` (exclusive), copies the image's bytes into it.
-// Returns false (and an error text) on failure; nothing is left behind then.
-bool writeSharedImage(const QByteArray& name, const QImage& image, PixelHeader* header, QString* error);
-// App side: maps the object and wraps it in a QImage that unmaps when released. The name
-// is unlinked in any case. Validates the header against the object's size.
-QImage readSharedImage(const QByteArray& name, const PixelHeader& header, QString* error);
+// Helper side: the header describing `image` (shmSize = bytes the app must provide).
+PixelHeader describeImage(const QImage& image);
+// Helper side: opens the EXISTING object `name` (created by the app), removes the name and
+// copies the image's bytes into it. Fails if the object is smaller than the image.
+bool fillSharedImage(const QByteArray& name, const QImage& image, QString* error);
+// App side: checks a header from the helper: positive size, a supported 8/16/32-bit
+// per channel format (no indexed or mono formats), bytesPerLine large enough, and
+// shmSize == bytesPerLine * height without overflow.
+bool validatePixelHeader(const PixelHeader& header, QString* error);
+// App side: creates the object `name` (exclusive) with `size` bytes. Returns the open
+// descriptor or -1 (nothing left behind then).
+int createShared(const QByteArray& name, qint64 size, QString* error);
+// App side: maps the object behind `fd` (from createShared, closed here in any case) and
+// wraps it in a QImage that unmaps when released. Validates the header and the size.
+QImage mapSharedImage(int fd, const PixelHeader& header, QString* error);
 // Removes the name if it exists (cleanup after a failed request). True if it existed.
 bool unlinkShared(const QByteArray& name);
 bool sharedExists(const QByteArray& name); // tests

@@ -2,6 +2,7 @@
 #include "DecoderHelper.h"
 
 #include <QCoreApplication>
+#include <QDeadlineTimer>
 #include <QDir>
 #include <QFileInfo>
 #include <QLoggingCategory>
@@ -20,14 +21,20 @@
 #include <vector>
 
 #ifdef Q_OS_UNIX
+#include <arpa/inet.h>
 #include <fcntl.h>
+#include <netinet/in.h>
 #include <spawn.h>
+#include <sys/mman.h>
+#include <sys/socket.h>
 #include <sys/wait.h>
 #include <unistd.h>
 #endif
 #ifdef Q_OS_DARWIN
 #include <crt_externs.h>
+#include <mach/mach.h>
 #include <sandbox.h>
+#include <servers/bootstrap.h>
 #endif
 
 Q_LOGGING_CATEGORY(lcHelper, "lf.decode.helper")
@@ -61,6 +68,11 @@ QString messageDecoderTimeout() {
     return Tr::tr("Das Dekodieren hat zu lange gedauert und wurde abgebrochen.");
 }
 
+QString messageDecoderNotSandboxed() {
+    return Tr::tr(
+        "Der Decoder-Hilfsprozess läuft ohne Sandbox und wird aus Sicherheitsgründen nicht verwendet.");
+}
+
 // ---- one helper process ----
 
 struct HelperProcess {
@@ -68,6 +80,7 @@ struct HelperProcess {
     int toChild = -1;
     int fromChild = -1;
     bool busy = false;
+    bool verified = false; // answered the first Ping (sandbox checked)
 
     bool running() const { return pid > 0; }
 
@@ -86,6 +99,7 @@ struct HelperProcess {
 #endif
         toChild = fromChild = -1;
         pid = 0;
+        verified = false;
     }
 
     bool start(const DecoderHelperPool::Options& o, QString* error) {
@@ -198,6 +212,25 @@ int DecoderHelperPool::runningProcesses() const {
     return n;
 }
 
+namespace {
+
+// Removes the app-owned shared memory name of a request when the call ends, whatever path
+// it takes (the helper normally removed it already).
+struct ShmNameGuard {
+    QByteArray name;
+    int fd = -1;
+    ~ShmNameGuard() {
+        if (!name.isEmpty())
+            ipc::unlinkShared(name);
+#ifdef Q_OS_UNIX
+        if (fd >= 0)
+            close(fd);
+#endif
+    }
+};
+
+} // namespace
+
 std::optional<ipc::Response> DecoderHelperPool::call(ipc::Request request, int timeoutMs, Failure* failure,
                                                      QString* error, qint64* helperPid) {
     auto fail = [&](Failure f, const QString& text) -> std::optional<ipc::Response> {
@@ -210,6 +243,10 @@ std::optional<ipc::Response> DecoderHelperPool::call(ipc::Request request, int t
     if (failure)
         *failure = Failure::None;
     request.id = d->nextId.fetch_add(1);
+    // One absolute deadline for the whole call: waiting for an idle helper, the request and
+    // (Decode) the pixel delivery.
+    const QDeadlineTimer deadline(std::max(timeoutMs, 0));
+    auto remaining = [&] { return int(std::max<qint64>(deadline.remainingTime(), 0)); };
 
     // Take an idle helper (or a slot for a new one).
     HelperProcess* proc = nullptr;
@@ -229,7 +266,10 @@ std::optional<ipc::Response> DecoderHelperPool::call(ipc::Request request, int t
                 proc = d->processes.back().get();
                 break;
             }
-            d->idle.wait(&d->mutex);
+            if (!d->idle.wait(&d->mutex, deadline)) {
+                qCWarning(lcHelper) << "no idle helper within" << timeoutMs << "ms:" << request.path;
+                return fail(Failure::Timeout, messageDecoderTimeout());
+            }
         }
         proc->busy = true;
     }
@@ -255,41 +295,97 @@ std::optional<ipc::Response> DecoderHelperPool::call(ipc::Request request, int t
     const qint64 pid = proc->pid;
     if (helperPid)
         *helperPid = pid;
-    const QByteArray shm = ipc::shmName(pid, request.id);
 
-    ipc::IoStatus st = ipc::writeFrame(proc->toChild, ipc::encode(request));
-    QByteArray payload;
-    if (st == ipc::IoStatus::Ok)
-        st = ipc::readFrame(proc->fromChild, &payload, timeoutMs);
-    std::optional<ipc::Response> response;
-    if (st == ipc::IoStatus::Ok) {
-        response = ipc::decodeResponse(payload);
-        if (response && response->id != request.id)
-            response.reset();
-    }
-    if (!response) {
-        // Crashed, hung or talking nonsense: the helper is replaced on the next call.
-        proc->kill();
-        release();
-        ipc::unlinkShared(shm); // pixels it may have written before dying
-        if (st == ipc::IoStatus::Timeout) {
-            qCWarning(lcHelper) << "timeout, helper" << pid << "killed:" << request.path;
-            return fail(Failure::Timeout, messageDecoderTimeout());
-        }
+    // One round trip; on a crash, hang or garbage the helper is killed (replaced next time).
+    Failure roundFailure = Failure::None;
+    auto roundTrip = [&](const ipc::Request& r) -> std::optional<ipc::Response> {
+        ipc::IoStatus st = ipc::writeFrame(proc->toChild, ipc::encode(r));
+        QByteArray payload;
+        if (st == ipc::IoStatus::Ok)
+            st = ipc::readFrame(proc->fromChild, &payload, remaining());
+        std::optional<ipc::Response> resp;
         if (st == ipc::IoStatus::Ok) {
-            qCWarning(lcHelper) << "protocol error, helper" << pid << "killed:" << request.path;
-            return fail(Failure::Protocol, messageDecoderCrashed());
+            resp = ipc::decodeResponse(payload);
+            if (resp && resp->id != r.id)
+                resp.reset();
         }
-        qCWarning(lcHelper) << "helper" << pid << "died:" << request.path;
-        return fail(Failure::Crashed, messageDecoderCrashed());
+        if (!resp) {
+            proc->kill();
+            if (st == ipc::IoStatus::Timeout) {
+                qCWarning(lcHelper) << "timeout, helper" << pid << "killed:" << r.path;
+                roundFailure = Failure::Timeout;
+            } else if (st == ipc::IoStatus::Ok) {
+                qCWarning(lcHelper) << "protocol error, helper" << pid << "killed:" << r.path;
+                roundFailure = Failure::Protocol;
+            } else {
+                qCWarning(lcHelper) << "helper" << pid << "died:" << r.path;
+                roundFailure = Failure::Crashed;
+            }
+        }
+        return resp;
+    };
+    auto failRound = [&]() -> std::optional<ipc::Response> {
+        release();
+        return fail(roundFailure,
+                    roundFailure == Failure::Timeout ? messageDecoderTimeout() : messageDecoderCrashed());
+    };
+
+    // A new helper must prove that it runs in its sandbox before it gets a file.
+    if (!proc->verified) {
+        ipc::Request ping;
+        ping.id = d->nextId.fetch_add(1);
+        ping.op = ipc::Op::Ping;
+        const auto pong = roundTrip(ping);
+        if (!pong)
+            return failRound();
+        if (m_options.requireSandbox && !pong->sandboxed) {
+            qCWarning(lcHelper) << "helper" << pid << "runs without sandbox - refused";
+            proc->kill();
+            release();
+            return fail(Failure::NotSandboxed, messageDecoderNotSandboxed());
+        }
+        proc->verified = true;
     }
+
+    auto response = roundTrip(request);
+    if (!response)
+        return failRound();
     if (request.op == ipc::Op::Decode && response->ok) {
-        // Map before the helper is released: its next request removes the object.
+        // The app owns the shared memory: create it with the announced size, let the helper
+        // fill it, map it. The name is removed on every path (ShmNameGuard).
         QString mapError;
-        response->image = ipc::readSharedImage(shm, response->pixels, &mapError);
-        if (response->image.isNull()) {
+        ShmNameGuard shm;
+        if (ipc::validatePixelHeader(response->pixels, &mapError)) {
+            const QByteArray name = ipc::shmName(qint64(QCoreApplication::applicationPid()), request.id);
+            shm.fd = ipc::createShared(name, response->pixels.shmSize, &mapError);
+            if (shm.fd >= 0)
+                shm.name = name;
+        }
+        if (shm.fd < 0) {
+            // The helper drops the image with the next request.
             response->ok = false;
             response->error = mapError;
+        } else {
+            ipc::Request deliver;
+            deliver.id = request.id;
+            deliver.op = ipc::Op::Deliver;
+            deliver.path = request.path;
+            deliver.shm = shm.name;
+            const auto delivered = roundTrip(deliver);
+            if (!delivered)
+                return failRound(); // ~ShmNameGuard removes the object
+            ipc::unlinkShared(shm.name);
+            shm.name.clear();
+            if (delivered->ok) {
+                response->image = ipc::mapSharedImage(std::exchange(shm.fd, -1), response->pixels, &mapError);
+                if (response->image.isNull()) {
+                    response->ok = false;
+                    response->error = mapError;
+                }
+            } else {
+                response->ok = false;
+                response->error = delivered->error;
+            }
         }
     }
     release();
@@ -388,15 +484,115 @@ namespace {
 }
 } // namespace
 
+namespace {
+
+// Test operations that probe the sandbox; true = the operation was possible.
+bool testOperation(ipc::Op op, const QString& arg, QString* detail) {
+#ifdef Q_OS_UNIX
+    switch (op) {
+    case ipc::Op::TestWriteFile: {
+        QFile f(arg);
+        const bool ok = f.open(QIODevice::WriteOnly) && f.write("x", 1) == 1;
+        *detail = f.errorString();
+        return ok;
+    }
+    case ipc::Op::TestSocket: {
+        const int s = socket(AF_INET, SOCK_STREAM, 0);
+        if (s < 0) {
+            *detail = QString::fromLocal8Bit(strerror(errno));
+            return false;
+        }
+        sockaddr_in addr{};
+        addr.sin_family = AF_INET;
+        addr.sin_port = htons(quint16(arg.toUInt()));
+        addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+        const bool ok = ::connect(s, reinterpret_cast<const sockaddr*>(&addr), sizeof addr) == 0;
+        if (!ok)
+            *detail = QString::fromLocal8Bit(strerror(errno));
+        close(s);
+        return ok;
+    }
+    case ipc::Op::TestCreateShm: {
+        const QByteArray name = arg.toUtf8();
+        const int fd = shm_open(name.constData(), O_RDWR | O_CREAT | O_EXCL, 0600);
+        if (fd < 0) {
+            *detail = QString::fromLocal8Bit(strerror(errno));
+            return false;
+        }
+        close(fd);
+        shm_unlink(name.constData());
+        return true;
+    }
+    case ipc::Op::TestExec: {
+        const QByteArray exe = QFile::encodeName(arg);
+        char* argv[] = {const_cast<char*>(exe.constData()), nullptr};
+        pid_t child = 0;
+        const int rc = posix_spawn(&child, exe.constData(), nullptr, nullptr, argv, nullptr);
+        if (rc != 0) {
+            *detail = QString::fromLocal8Bit(strerror(rc));
+            return false;
+        }
+        int status = 0;
+        waitpid(child, &status, 0);
+        return true;
+    }
+    case ipc::Op::TestMachLookup: {
+#ifdef Q_OS_DARWIN
+        mach_port_t port = MACH_PORT_NULL;
+        const QByteArray name = arg.toUtf8();
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        const kern_return_t kr = bootstrap_look_up(bootstrap_port, name.constData(), &port);
+#pragma clang diagnostic pop
+        if (kr != KERN_SUCCESS) {
+            *detail = QStringLiteral("bootstrap_look_up: %1").arg(kr);
+            return false;
+        }
+        mach_port_deallocate(mach_task_self(), port);
+        return true;
+#else
+        return false;
+#endif
+    }
+    default:
+        return false;
+    }
+#else
+    Q_UNUSED(op);
+    Q_UNUSED(arg);
+    Q_UNUSED(detail);
+    return false;
+#endif
+}
+
+} // namespace
+
 ipc::Response serveDecoderRequest(const ipc::Request& request,
                                   const QList<std::shared_ptr<Decoder>>& backends, qint64 pid, bool sandboxed,
-                                  bool testOps) {
+                                  bool testOps, DecoderHelperState* state) {
     ipc::Response r;
     r.id = request.id;
     r.pid = pid;
     r.sandboxed = sandboxed;
+    // The image of a Decode waits for exactly the next request (its Deliver).
+    QImage pending;
+    quint32 pendingId = 0;
+    if (state) {
+        pending = std::exchange(state->pending, QImage());
+        pendingId = std::exchange(state->pendingId, 0);
+    }
     if (request.op == ipc::Op::Ping) {
         r.ok = true;
+        return r;
+    }
+    if (request.op == ipc::Op::Deliver) {
+        QString error;
+        if (pending.isNull() || pendingId != request.id)
+            error = Tr::tr("Die Bilddaten des Decoders fehlen.");
+        else
+            r.ok = ipc::fillSharedImage(request.shm, pending, &error);
+        if (!r.ok)
+            r.error = error;
         return r;
     }
     if (testOps) {
@@ -406,13 +602,13 @@ ipc::Response serveDecoderRequest(const ipc::Request& request,
         case ipc::Op::TestHang:
             for (;;)
                 std::this_thread::sleep_for(std::chrono::seconds(60));
-        case ipc::Op::TestWriteFile: {
-            QFile f(request.path);
-            r.ok = f.open(QIODevice::WriteOnly) && f.write("x", 1) == 1;
-            if (!r.ok)
-                r.error = f.errorString();
+        case ipc::Op::TestWriteFile:
+        case ipc::Op::TestSocket:
+        case ipc::Op::TestMachLookup:
+        case ipc::Op::TestCreateShm:
+        case ipc::Op::TestExec:
+            r.ok = testOperation(request.op, request.path, &r.error);
             return r;
-        }
         default:
             break;
         }
@@ -446,7 +642,12 @@ ipc::Response serveDecoderRequest(const ipc::Request& request,
                 error = Tr::tr("Das Bild ist leer.");
                 break;
             }
-            r.ok = ipc::writeSharedImage(ipc::shmName(pid, request.id), img->image, &r.pixels, &error);
+            r.ok = state != nullptr;
+            r.pixels = ipc::describeImage(img->image);
+            if (state) {
+                state->pending = img->image;
+                state->pendingId = request.id;
+            }
             r.decoded = *img;
             r.decoded.image = QImage();
         }
@@ -463,9 +664,12 @@ ipc::Response serveDecoderRequest(const ipc::Request& request,
 int runDecoderHelper(int inFd, int outFd, const QList<std::shared_ptr<Decoder>>& backends, bool sandboxed,
                      bool testOps) {
 #ifdef Q_OS_UNIX
+    // A vanished app must surface as a write error (and a clean exit), not as SIGPIPE.
+    std::signal(SIGPIPE, SIG_IGN);
     const qint64 pid = qint64(getpid());
     // Exit when the app is gone, also while a decode is still running (the pipe's EOF is
-    // only seen between requests).
+    // only seen between requests). The helper owns no shared memory names (the app
+    // creates them, DecoderIpc.h), so nothing can be left behind.
     const pid_t parent = getppid();
     std::thread([parent] {
         for (;;) {
@@ -474,29 +678,19 @@ int runDecoderHelper(int inFd, int outFd, const QList<std::shared_ptr<Decoder>>&
                 _exit(0);
         }
     }).detach();
-    quint32 lastId = 0;
-    bool haveLast = false;
+    DecoderHelperState state;
     for (;;) {
         QByteArray payload;
         const ipc::IoStatus st = ipc::readFrame(inFd, &payload, -1);
-        // The app maps and unlinks the previous image before it sends the next request;
-        // anything left (the app gave up on it) goes now.
-        if (haveLast)
-            ipc::unlinkShared(ipc::shmName(pid, lastId));
-        haveLast = false;
         if (st != ipc::IoStatus::Ok)
             return st == ipc::IoStatus::Closed ? 0 : 1;
         const auto request = ipc::decodeRequest(payload);
         if (!request)
             return 2;
-        const ipc::Response response = serveDecoderRequest(*request, backends, pid, sandboxed, testOps);
-        lastId = request->id;
-        haveLast = request->op == ipc::Op::Decode && response.ok;
-        if (ipc::writeFrame(outFd, ipc::encode(response)) != ipc::IoStatus::Ok) {
-            if (haveLast)
-                ipc::unlinkShared(ipc::shmName(pid, lastId));
+        const ipc::Response response =
+            serveDecoderRequest(*request, backends, pid, sandboxed, testOps, &state);
+        if (ipc::writeFrame(outFd, ipc::encode(response)) != ipc::IoStatus::Ok)
             return 0;
-        }
     }
 #else
     Q_UNUSED(inFd);
@@ -508,22 +702,33 @@ int runDecoderHelper(int inFd, int outFd, const QList<std::shared_ptr<Decoder>>&
 #endif
 }
 
+const char* decoderSandboxProfile() {
+    // Seatbelt (SBPL), deny by default. The minimal set was determined empirically with
+    // every corpus format the helper serves (incl. SVG text in a system font) while
+    // watching the denials in the system log (docs/MANUAL_CHECKS.md, "Decoder-Sandbox"):
+    //  - file-read*: the decoders read arbitrary user files (the path arrives over the
+    //    pipe), plus fonts and ICC profiles. Qt, its plugins and the font database are
+    //    loaded before the sandbox closes (src/helper/main.cpp).
+    //  - ipc-posix-shm: open/unlink the app's "/lfd." objects (DecoderIpc.h); creating
+    //    shared memory is denied.
+    //  - signal to itself (abort() of a crashing decoder produces a regular crash).
+    // Everything else is denied: network, file writes, process-exec/fork, every Mach
+    // service (LaunchServices, pasteboard, Apple Events, window server, fonts daemon, ...),
+    // IOKit (GPU) and sysctl writes.
+    return "(version 1)\n"
+           "(deny default)\n"
+           "(allow file-read*)\n"
+           "(allow signal (target self))\n"
+           "(allow ipc-posix-shm-read-data ipc-posix-shm-write-data ipc-posix-shm-write-unlink\n"
+           "  (ipc-posix-name-prefix \"/lfd.\"))\n";
+}
+
 bool applyDecoderSandbox(QString* error) {
 #ifdef Q_OS_DARWIN
-    // Seatbelt profile: everything the decoders need to read (files, fonts, system
-    // services) stays allowed; no network, no file writes, no new processes. POSIX shared
-    // memory (ipc-posix-shm) is not a file write.
-    static const char kProfile[] = "(version 1)\n"
-                                   "(allow default)\n"
-                                   "(deny network*)\n"
-                                   "(deny file-write*)\n"
-                                   "(allow file-write-data (literal \"/dev/null\"))\n"
-                                   "(deny process-exec*)\n"
-                                   "(deny process-fork)\n";
     char* err = nullptr;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
-    const int rc = sandbox_init(kProfile, 0, &err);
+    const int rc = sandbox_init(decoderSandboxProfile(), 0, &err);
     if (rc != 0) {
         if (error)
             *error = QString::fromUtf8(err ? err : "sandbox_init failed");
