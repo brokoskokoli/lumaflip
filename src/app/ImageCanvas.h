@@ -80,12 +80,18 @@ public:
     // sharedRhi(). Returns false if the RHI is not ready.
     bool renderExtended(QRhiCommandBuffer* cb, QRhiRenderTarget* rt);
     // UI overlay for renderExtended() (widgets above the image are hidden behind the native
-    // EDR surface): premultiplied ARGB32 in the canvas' device pixels and the display's color
-    // space; `dirty` = changed rectangle (device px). A null image removes the overlay.
-    void setExtendedOverlay(const QImage& overlay, const QRect& dirty);
+    // EDR surface) in the display's color space: `size` = the whole overlay (the canvas' device
+    // pixels), `patch` = the changed part (premultiplied ARGB32) placed at `at`. The canvas
+    // keeps its own buffer and uploads only the changed part, so the caller hands over a
+    // small copy and never shares its painting buffer (a shared QImage would detach - a
+    // full-view copy - on the next paint). A new size starts from a transparent buffer.
+    void setExtendedOverlay(QSize size, const QImage& patch, QPoint at);
+    void clearExtendedOverlay();
     QRhi* sharedRhi() const;            // the QRhi of this widget (null until initialized)
     int extendedFramesRendered() const; // tests
     bool hasExtendedOverlay() const;    // tests
+    int extendedOverlayPatches() const; // tests: setExtendedOverlay() calls
+    bool overlayBufferShared() const;   // tests: the canvas' overlay buffer has other owners
 
     // For tests: limit the tile size (0 = use the GPU's max texture size).
     void setMaxTileSize(int px);

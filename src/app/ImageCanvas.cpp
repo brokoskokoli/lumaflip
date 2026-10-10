@@ -3,6 +3,7 @@
 
 #include "ColorPipeline.h"
 #include "core/HdrMapping.h"
+#include "core/ImagePatch.h"
 #include "core/StartupTrace.h"
 
 #include <QColorTransform>
@@ -44,6 +45,12 @@ QColorSpace extendedOutputSpace() {
 
 // How a tile is drawn (fillUbo).
 enum class PassMode { Widget, Extended, Overlay };
+// Per-pass GPU state of a tile: the widget and the extended pass (EdrSurface) render into
+// different swapchains whose frames may overlap, so neither writes uniforms the other's
+// in-flight frame still reads.
+inline int passIndex(PassMode mode) {
+    return mode == PassMode::Extended ? 1 : 0;
+}
 
 QShader loadShader(const QString& name) {
     QFile f(name);
@@ -126,9 +133,16 @@ struct Tile {
     QRect core;   // loaded-image px
     QRect padded; // loaded-image px (texture contents)
     std::unique_ptr<QRhiTexture> tex;
-    std::unique_ptr<QRhiBuffer> ubo;
-    std::unique_ptr<QRhiShaderResourceBindings> srb[2]; // [0] smooth, [1] nearest magnification
+    std::unique_ptr<QRhiBuffer> ubo[2]; // [passIndex()]
+    // [passIndex()][0] smooth, [1] nearest magnification
+    std::unique_ptr<QRhiShaderResourceBindings> srb[2][2];
     bool uploaded = false;
+
+    void resetBindings() {
+        for (auto& pass : srb)
+            for (auto& s : pass)
+                s.reset();
+    }
 };
 
 struct Entry {
@@ -163,9 +177,9 @@ struct Entry {
     void releaseGpu() {
         stale.reset();
         for (Tile& t : tiles) {
-            t.srb[0].reset();
-            t.srb[1].reset();
-            t.ubo.reset();
+            t.resetBindings();
+            for (auto& u : t.ubo)
+                u.reset();
             t.tex.reset();
             t.uploaded = false;
         }
@@ -223,9 +237,11 @@ struct ImageCanvas::Private {
     // Extended pass resources (render pass of the EDR swapchain).
     std::unique_ptr<QRhiGraphicsPipeline> extPipeline;
     std::unique_ptr<QRhiGraphicsPipeline> extBlendPipeline;
-    // UI overlay of the extended pass.
+    // UI overlay of the extended pass: the canvas' own buffer (never shared with the view,
+    // so neither side's writes detach a full-view copy); only patches travel.
     QImage overlayImage;
     QRect overlayDirty;
+    int overlayPatches = 0;     // tests
     ColorPipeline overlayColor; // display space -> extended linear P3
     bool overlayColorValid = false;
     std::unique_ptr<QRhiTexture> overlayTex;
@@ -422,21 +438,7 @@ struct ImageCanvas::Private {
             layoutTiles(e);
         if (extended)
             ensureExtColor(e);
-        const QVector<float>& lut = !e.color.srcLut.isEmpty()
-                                        ? e.color.srcLut
-                                        : (e.colorExtValid ? e.colorExt.srcLut : e.color.srcLut);
-        if (!lut.isEmpty() && !e.srcLutUploaded) {
-            if (!e.srcLut) {
-                e.srcLut.reset(rhi->newTexture(QRhiTexture::RGBA16F, QSize(ColorPipeline::kLutSize, 1)));
-                e.srcLut->create();
-                for (Tile& t : e.tiles) {
-                    t.srb[0].reset();
-                    t.srb[1].reset();
-                }
-            }
-            uploadLut(e.srcLut.get(), lut, rub);
-            e.srcLutUploaded = true;
-        }
+        ensureSrcLut(e, rub);
         const qint64 bpp = bytesPerPixel(e.texFormat);
         for (Tile& t : e.tiles) {
             if (t.uploaded)
@@ -472,6 +474,25 @@ struct ImageCanvas::Private {
         return true;
     }
 
+    // Uploads the entry's source LUT if one is pending - also for entries that are complete
+    // (fallback, fade, stale) when the extended pass needs a LUT the widget pass did not.
+    // A newly created LUT texture invalidates the tiles' bindings (they used the dummy).
+    void ensureSrcLut(Entry& e, QRhiResourceUpdateBatch* rub) {
+        const QVector<float>& lut = !e.color.srcLut.isEmpty()
+                                        ? e.color.srcLut
+                                        : (e.colorExtValid ? e.colorExt.srcLut : e.color.srcLut);
+        if (lut.isEmpty() || e.srcLutUploaded)
+            return;
+        if (!e.srcLut) {
+            e.srcLut.reset(rhi->newTexture(QRhiTexture::RGBA16F, QSize(ColorPipeline::kLutSize, 1)));
+            e.srcLut->create();
+            for (Tile& t : e.tiles)
+                t.resetBindings();
+        }
+        uploadLut(e.srcLut.get(), lut, rub);
+        e.srcLutUploaded = true;
+    }
+
     void uploadLut(QRhiTexture* tex, const QVector<float>& data, QRhiResourceUpdateBatch* rub) {
         QVector<qfloat16> half(data.size());
         for (qsizetype i = 0; i < data.size(); ++i)
@@ -481,28 +502,31 @@ struct ImageCanvas::Private {
         rub->uploadTexture(tex, QRhiTextureUploadDescription({0, 0, desc}));
     }
 
-    QRhiShaderResourceBindings* srbFor(Entry& e, Tile& t) {
+    QRhiShaderResourceBindings* srbFor(Entry& e, Tile& t, PassMode mode) {
+        const int pass = passIndex(mode);
         const int idx = nearest ? 1 : 0;
-        if (!t.ubo) {
-            t.ubo.reset(rhi->newBuffer(QRhiBuffer::Dynamic, QRhiBuffer::UniformBuffer, kUboSize));
-            t.ubo->create();
+        std::unique_ptr<QRhiBuffer>& ubo = t.ubo[pass];
+        std::unique_ptr<QRhiShaderResourceBindings>& srb = t.srb[pass][idx];
+        if (!ubo) {
+            ubo.reset(rhi->newBuffer(QRhiBuffer::Dynamic, QRhiBuffer::UniformBuffer, kUboSize));
+            ubo->create();
         }
-        if (!t.srb[idx]) {
+        if (!srb) {
             QRhiTexture* src = e.srcLut ? e.srcLut.get() : dummyLut.get();
-            t.srb[idx].reset(rhi->newShaderResourceBindings());
-            t.srb[idx]->setBindings(
+            srb.reset(rhi->newShaderResourceBindings());
+            srb->setBindings(
                 {QRhiShaderResourceBinding::uniformBuffer(
                      0, QRhiShaderResourceBinding::VertexStage | QRhiShaderResourceBinding::FragmentStage,
-                     t.ubo.get()),
+                     ubo.get()),
                  QRhiShaderResourceBinding::sampledTexture(1, QRhiShaderResourceBinding::FragmentStage,
                                                            t.tex.get(), sampler[idx].get()),
                  QRhiShaderResourceBinding::sampledTexture(2, QRhiShaderResourceBinding::FragmentStage, src,
                                                            sampler[0].get()),
                  QRhiShaderResourceBinding::sampledTexture(3, QRhiShaderResourceBinding::FragmentStage,
                                                            dstLut.get(), sampler[0].get())});
-            t.srb[idx]->create();
+            srb->create();
         }
-        return t.srb[idx].get();
+        return srb.get();
     }
 
     // Peak of an entry's content (relative to SDR white) after exposure.
@@ -529,8 +553,8 @@ struct ImageCanvas::Private {
         // F-COL-03/05: exposure and tone mapping to the pass's target (SDR: 1).
         const float targetHeadroom = ext ? std::max(1.0f, edrHeadroom) : 1.0f;
         const hdr::ToneCurve curve = hdr::makeToneCurve(contentPeak(e), targetHeadroom);
-        fillUboData(color, e.premultiplied, mvp, t, rub, t.ubo.get(), opacity, ext, exposure, targetHeadroom,
-                    curve, false);
+        fillUboData(color, e.premultiplied, mvp, t, rub, t.ubo[passIndex(mode)].get(), opacity, ext, exposure,
+                    targetHeadroom, curve, false);
     }
 
     // Shared by image tiles and the overlay. `ext`: output is extended linear P3.
@@ -798,15 +822,16 @@ struct ImageCanvas::Private {
             return;
         if (mode == PassMode::Extended)
             ensureExtColor(*e);
+        ensureSrcLut(*e, rub); // before srbFor(): a new LUT texture resets the bindings
         for (Tile& t : e->tiles) {
             if (t.uploaded && t.tex) {
-                srbFor(*e, t);
+                srbFor(*e, t, mode);
                 fillUbo(*e, t, target, rub, xf, alpha, mode);
             }
         }
     }
 
-    void drawEntry(QRhiCommandBuffer* cb, Entry* e, QRhiGraphicsPipeline* p, QSize target) {
+    void drawEntry(QRhiCommandBuffer* cb, Entry* e, QRhiGraphicsPipeline* p, QSize target, PassMode mode) {
         if (!e || !p)
             return;
         cb->setGraphicsPipeline(p);
@@ -815,7 +840,7 @@ struct ImageCanvas::Private {
         for (Tile& t : e->tiles) {
             if (!t.uploaded || !t.tex)
                 continue;
-            cb->setShaderResources(srbFor(*e, t));
+            cb->setShaderResources(srbFor(*e, t, mode));
             cb->setVertexInput(0, 1, &vin);
             cb->draw(4);
         }
@@ -873,10 +898,10 @@ struct ImageCanvas::Private {
         }
         const QRect dirty = overlayDirty.intersected(overlayImage.rect());
         if (!dirty.isEmpty()) {
-            // Only the changed rows/columns (a blinking text cursor must not re-upload the view).
-            QRhiTextureSubresourceUploadDescription desc(overlayImage);
-            desc.setSourceTopLeft(dirty.topLeft());
-            desc.setSourceSize(dirty.size());
+            // Only the changed rows/columns (a blinking text cursor must not re-upload the view),
+            // as a copy: the batch must not hold a reference to overlayImage (the next patch
+            // would detach the whole buffer).
+            QRhiTextureSubresourceUploadDescription desc(overlayImage.copy(dirty));
             desc.setDestinationTopLeft(dirty.topLeft());
             rub->uploadTexture(overlayTex.get(), QRhiTextureUploadDescription({0, 0, desc}));
         }
@@ -1076,21 +1101,38 @@ bool ImageCanvas::extendedPresentation() const {
     return d->extended;
 }
 
-void ImageCanvas::setExtendedOverlay(const QImage& overlay, const QRect& dirty) {
-    const bool had = !d->overlayImage.isNull();
-    if (overlay.isNull()) {
-        d->overlayImage = QImage();
-        d->overlayDirty = QRect();
-        if (had)
-            d->requestFrame();
+void ImageCanvas::setExtendedOverlay(QSize size, const QImage& patch, QPoint at) {
+    if (size.isEmpty()) {
+        clearExtendedOverlay();
         return;
     }
-    const bool resized = d->overlayImage.size() != overlay.size();
-    d->overlayImage = overlay.format() == QImage::Format_ARGB32_Premultiplied
-                          ? overlay
-                          : overlay.convertToFormat(QImage::Format_ARGB32_Premultiplied);
-    d->overlayDirty = resized || !had ? d->overlayImage.rect() : d->overlayDirty.united(dirty);
+    if (d->overlayImage.size() != size) {
+        d->overlayImage = QImage(size, QImage::Format_ARGB32_Premultiplied);
+        if (d->overlayImage.isNull())
+            return;
+        d->overlayImage.fill(Qt::transparent);
+        d->overlayDirty = d->overlayImage.rect();
+    }
+    const QRect written = copyImagePatch(d->overlayImage, patch, at);
+    d->overlayDirty = d->overlayDirty.united(written);
+    ++d->overlayPatches;
     d->requestFrame();
+}
+
+void ImageCanvas::clearExtendedOverlay() {
+    const bool had = !d->overlayImage.isNull();
+    d->overlayImage = QImage();
+    d->overlayDirty = QRect();
+    if (had)
+        d->requestFrame();
+}
+
+int ImageCanvas::extendedOverlayPatches() const {
+    return d->overlayPatches;
+}
+
+bool ImageCanvas::overlayBufferShared() const {
+    return !d->overlayImage.isNull() && !d->overlayImage.isDetached();
 }
 
 QRhi* ImageCanvas::sharedRhi() const {
@@ -1186,8 +1228,9 @@ void ImageCanvas::render(QRhiCommandBuffer* cb) {
     d->prepareDraw(f.fade, d->fadeView, 1.0f, target, rub, PassMode::Widget);
     d->prepareDraw(f.draw, d->view, f.fade ? f.opacity : 1.0f, target, rub, PassMode::Widget);
     cb->beginPass(renderTarget(), d->base, {1.0f, 0}, rub);
-    d->drawEntry(cb, f.fade, d->pipeline.get(), target);
-    d->drawEntry(cb, f.draw, f.fade && d->blendPipeline ? d->blendPipeline.get() : d->pipeline.get(), target);
+    d->drawEntry(cb, f.fade, d->pipeline.get(), target, PassMode::Widget);
+    d->drawEntry(cb, f.draw, f.fade && d->blendPipeline ? d->blendPipeline.get() : d->pipeline.get(), target,
+                 PassMode::Widget);
     cb->endPass();
     if (f.draw)
         trace::once("canvas first frame with image recorded");
@@ -1221,8 +1264,9 @@ bool ImageCanvas::renderExtended(QRhiCommandBuffer* cb, QRhiRenderTarget* rt) {
     const bool overlay = d->prepareOverlay(rub, target);
     const QColor clear = QColor::fromRgbF(d->extBgRgb[2][0], d->extBgRgb[2][1], d->extBgRgb[2][2]);
     cb->beginPass(rt, clear, {1.0f, 0}, rub);
-    d->drawEntry(cb, f.fade, d->extPipeline.get(), target);
-    d->drawEntry(cb, f.draw, f.fade ? d->extBlendPipeline.get() : d->extPipeline.get(), target);
+    d->drawEntry(cb, f.fade, d->extPipeline.get(), target, PassMode::Extended);
+    d->drawEntry(cb, f.draw, f.fade ? d->extBlendPipeline.get() : d->extPipeline.get(), target,
+                 PassMode::Extended);
     if (overlay) {
         cb->setGraphicsPipeline(d->extBlendPipeline.get());
         cb->setViewport({0, 0, float(target.width()), float(target.height())});

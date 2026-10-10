@@ -3,6 +3,7 @@
 
 #include "ImageView.h"
 #include "ViewerWindow.h"
+#include "core/HdrMapping.h"
 #include "core/Settings.h"
 
 #include <QCursor>
@@ -26,8 +27,12 @@ bool isFloatFormat(QImage::Format f) {
 }
 
 // The part of the stage to draw, as an 8-bit sRGB image (QPainter draws device values).
-QImage drawable(const QImage& stage, const QRect& rect) {
+// HDR content and the exposure (F-COL-03/05) are mapped like the view's widget pass, so the
+// loupe matches the pixels around it (in the EDR pass the loupe is an SDR overlay).
+QImage drawable(const QImage& stage, const QRect& rect, float contentPeak, float exposure) {
     QImage crop = stage.copy(rect);
+    if (exposure != 1.0f || contentPeak > hdr::kHdrThreshold)
+        return hdr::toneMappedSdr(crop, contentPeak, exposure);
     const QColorSpace cs = crop.colorSpace();
     if (cs.isValid() && cs != QColorSpace(QColorSpace::SRgb))
         return crop.convertedToColorSpace(QColorSpace::SRgb, QImage::Format_ARGB32_Premultiplied);
@@ -47,6 +52,9 @@ LoupeWidget::LoupeWidget(ImageView* view, QWidget* parent) : QWidget(parent), m_
     setAttribute(Qt::WA_TransparentForMouseEvents);
     setAttribute(Qt::WA_NoSystemBackground);
     setAttribute(Qt::WA_TranslucentBackground);
+    // Exposure or HDR state changed: the loupe shows the same mapping as the view.
+    if (view)
+        connect(view, &ImageView::hdrStateChanged, this, qOverload<>(&QWidget::update));
 }
 
 double LoupeWidget::magnification() const {
@@ -103,7 +111,8 @@ void LoupeWidget::paintEvent(QPaintEvent*) {
                 .adjusted(-1, -1, 1, 1)
                 .intersected(img->image.rect());
         if (!stageRect.isEmpty()) {
-            const QImage crop = drawable(img->image, stageRect);
+            const float exposure = m_view->exposureApplies() ? float(std::exp2(m_view->exposureEv())) : 1.0f;
+            const QImage crop = drawable(img->image, stageRect, img->headroom, exposure);
             const QRectF inFull(stageRect.x() / sx, stageRect.y() / sy, stageRect.width() / sx,
                                 stageRect.height() / sy);
             // Magnified pixels stay sharp (pixel peeping); a coarse stage is smoothed.

@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "HdrMapping.h"
 
+#include <QColorSpace>
 #include <QFloat16>
 #include <QImage>
+#include <QRgbaFloat>
 
 #include <algorithm>
 #include <cmath>
@@ -37,6 +39,10 @@ float pqDecode(float signal) {
 ToneCurve makeToneCurve(float contentPeak, float target) {
     ToneCurve c;
     c.target = std::max(1.0f, std::isfinite(target) ? target : 1.0f);
+    // An unbounded peak (+inf from a broken decoder or helper) is as bright as PQ goes:
+    // compress to the target instead of passing everything through.
+    if (std::isinf(contentPeak) && contentPeak > 0)
+        contentPeak = kPqMaxNits / kReferenceWhiteNits;
     if (!std::isfinite(contentPeak) || contentPeak <= c.target)
         return c; // fits: identity
     c.srcPq = pqEncode(contentPeak * kReferenceWhiteNits);
@@ -175,6 +181,45 @@ float measuredPeak(const QImage& image) {
     default:
         return 1.0f;
     }
+}
+
+QImage toneMappedSdr(const QImage& image, float contentPeak, float exposureMultiplier) {
+    if (image.isNull())
+        return {};
+    const QColorSpace linearSrgb =
+        QColorSpace(QColorSpace::SRgb).withTransferFunction(QColorSpace::TransferFunction::Linear);
+    // Float, unpremultiplied, linear sRGB primaries (float formats keep values above 1).
+    QImage lin = image.convertToFormat(QImage::Format_RGBA32FPx4);
+    if (lin.isNull())
+        return {};
+    if (!lin.colorSpace().isValid())
+        lin.setColorSpace(QColorSpace(QColorSpace::SRgb));
+    if (lin.colorSpace() != linearSrgb)
+        lin.convertToColorSpace(linearSrgb);
+    const float exposure =
+        std::isfinite(exposureMultiplier) && exposureMultiplier > 0 ? exposureMultiplier : 1.0f;
+    const float peak = std::isnan(contentPeak) ? 1.0f : std::max(1.0f, contentPeak);
+    const ToneCurve curve = makeToneCurve(peak * exposure, 1.0f);
+    auto encode = [](float v) {
+        v = std::isfinite(v) ? std::clamp(v, 0.0f, 1.0f) : (v > 0 ? 1.0f : 0.0f);
+        const float e = v <= 0.0031308f ? v * 12.92f : 1.055f * std::pow(v, 1.0f / 2.4f) - 0.055f;
+        return int(std::lround(std::clamp(e, 0.0f, 1.0f) * 255.0f));
+    };
+    QImage out(lin.size(), QImage::Format_ARGB32);
+    if (out.isNull())
+        return {};
+    for (int y = 0; y < lin.height(); ++y) {
+        const auto* p = reinterpret_cast<const QRgbaFloat32*>(lin.constScanLine(y));
+        auto* o = reinterpret_cast<QRgb*>(out.scanLine(y));
+        for (int x = 0; x < lin.width(); ++x) {
+            const auto rgb = toneMapRgb(curve, {p[x].r * exposure, p[x].g * exposure, p[x].b * exposure});
+            const float a = std::isfinite(p[x].a) ? std::clamp(p[x].a, 0.0f, 1.0f) : 1.0f;
+            o[x] = qRgba(encode(rgb[0]), encode(rgb[1]), encode(rgb[2]), int(std::lround(a * 255.0f)));
+        }
+    }
+    out.convertTo(QImage::Format_ARGB32_Premultiplied);
+    out.setColorSpace(QColorSpace(QColorSpace::SRgb));
+    return out;
 }
 
 } // namespace lf::hdr

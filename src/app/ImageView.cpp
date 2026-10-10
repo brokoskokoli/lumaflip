@@ -20,6 +20,7 @@
 #include <QPointer>
 #include <QPushButton>
 #include <QResizeEvent>
+#include <QSet>
 #include <QStyleHints>
 #include <QTimer>
 #include <QVBoxLayout>
@@ -159,9 +160,13 @@ struct ImageView::Private {
     QWidget* edrContainer = nullptr;
     QTimer* headroomPoll = nullptr;
     EdrDisplayWatcher* edrWatcher = nullptr;
-    // Widgets above the image, grabbed for the extended pass (EdrSurface.h).
+    // Widgets above the image, grabbed for the extended pass (EdrSurface.h). `overlay` is
+    // painted here only; the canvas gets copies of the changed parts (never shares it).
     QImage overlay;
     QRect overlayDirty; // logical px of the view
+    // Widgets of the window stacked above the view without being its children (quick filter
+    // bar on the central widget, F-NAV-08): watched and grabbed as well (widgetsAbove()).
+    QSet<const QWidget*> aboveRoots;
     bool overlayScheduled = false;
     bool grabbing = false;
 
@@ -331,7 +336,7 @@ struct ImageView::Private {
             markOverlayDirty(q->rect());
         } else {
             canvas->setExtendedPresentation(false);
-            canvas->setExtendedOverlay(QImage(), QRect());
+            canvas->clearExtendedOverlay();
             overlay = QImage();
             if (edrContainer)
                 edrContainer->hide();
@@ -343,11 +348,58 @@ struct ImageView::Private {
     bool isOverlay(const QObject* o) const {
         if (!o->isWidgetType() || o == canvas || o == edrContainer)
             return false;
-        for (auto* w = static_cast<const QWidget*>(o); w; w = w->parentWidget())
+        for (auto* w = static_cast<const QWidget*>(o); w; w = w->parentWidget()) {
             if (w->parentWidget() == q)
                 return w != canvas && w != edrContainer;
+            if (aboveRoots.contains(w))
+                return true;
+            if (w->isWindow())
+                break;
+        }
         return false;
     }
+
+    // Point `p` of `w` (the view, a descendant of it or another widget of its window) in
+    // view coordinates.
+    QPoint toView(const QWidget* w, QPoint p) const {
+        if (w == q)
+            return p;
+        const QWidget* win = q->window();
+        return q->mapFrom(win, w->mapTo(win, p));
+    }
+
+    // Widgets of the view's window stacked above the view without being its children: the
+    // later siblings (children order = stacking order) of the view and of each ancestor up
+    // to the window. The native EDR surface covers them like the view's own children.
+    QList<QWidget*> widgetsAbove() const {
+        QList<QWidget*> out;
+        for (const QWidget* node = q; node && !node->isWindow(); node = node->parentWidget()) {
+            const QWidget* parent = node->parentWidget();
+            if (!parent)
+                break;
+            bool above = false;
+            for (QObject* c : parent->children()) {
+                if (c == node) {
+                    above = true;
+                    continue;
+                }
+                if (above && c->isWidgetType() && !static_cast<QWidget*>(c)->isWindow())
+                    out << static_cast<QWidget*>(c);
+            }
+        }
+        return out;
+    }
+
+    // Watches the widgets above the view (shown, moved, resized ...) without their children.
+    void refreshAbove() {
+        aboveRoots.clear();
+        for (QWidget* w : widgetsAbove()) {
+            aboveRoots.insert(w);
+            w->installEventFilter(q); // idempotent
+        }
+    }
+
+    QRect viewRectOf(const QWidget* w) const { return QRect(toView(w, QPoint(0, 0)), w->size()); }
 
     void watchOverlays(QWidget* w) {
         w->installEventFilter(q); // idempotent (Qt removes duplicates)
@@ -359,7 +411,10 @@ struct ImageView::Private {
     void markOverlayDirty(const QRect& viewRect) {
         if (!extendedActive)
             return;
-        overlayDirty = overlayDirty.united(viewRect.intersected(q->rect()));
+        const QRect inView = viewRect.intersected(q->rect());
+        if (inView.isEmpty())
+            return; // e.g. a widget of the window next to the view
+        overlayDirty = overlayDirty.united(inView);
         if (overlayScheduled)
             return;
         overlayScheduled = true;
@@ -369,27 +424,35 @@ struct ImageView::Private {
         });
     }
 
+    // Visible widgets above the image in stacking order: the view's children, then the
+    // window's widgets above the view that overlap it.
     QList<QWidget*> overlayWidgets() const {
         QList<QWidget*> out;
         for (QObject* c : q->children())
             if (c->isWidgetType() && c != canvas && c != edrContainer &&
                 static_cast<QWidget*>(c)->isVisible())
                 out << static_cast<QWidget*>(c);
+        for (QWidget* w : widgetsAbove())
+            if (w->isVisible() && viewRectOf(w).intersects(q->rect()))
+                out << w;
         return out;
     }
 
     // Paints the visible widgets above the image into `overlay` (changed part only) and
-    // hands it to the canvas, which draws it over the image in the extended pass.
+    // hands a copy of that part to the canvas, which draws it over the image in the extended
+    // pass. `overlay` itself is never shared, so painting into it never detaches (a full-view
+    // copy per change, e.g. per mouse move with the loupe).
     void grabOverlays() {
         if (!extendedActive)
             return;
+        refreshAbove();
         const QList<QWidget*> widgets = overlayWidgets();
         for (QWidget* w : widgets)
             watchOverlays(w);
         if (widgets.isEmpty()) {
             overlay = QImage();
             overlayDirty = QRect();
-            canvas->setExtendedOverlay(QImage(), QRect());
+            canvas->clearExtendedOverlay();
             return;
         }
         const qreal dpr = q->devicePixelRatioF();
@@ -412,14 +475,14 @@ struct ImageView::Private {
             p.setCompositionMode(QPainter::CompositionMode_SourceOver);
             p.setClipRect(dirty);
             for (QWidget* w : widgets)
-                if (w->geometry().intersects(dirty))
-                    w->render(&p, w->pos(), QRegion(), QWidget::DrawChildren);
+                if (const QRect r = viewRectOf(w); r.intersects(dirty))
+                    w->render(&p, r.topLeft(), QRegion(), QWidget::DrawChildren);
         }
         grabbing = false;
         const QRect devDirty = QRectF(QRectF(dirty).topLeft() * dpr, QRectF(dirty).size() * dpr)
                                    .toAlignedRect()
                                    .intersected(overlay.rect());
-        canvas->setExtendedOverlay(overlay, devDirty);
+        canvas->setExtendedOverlay(overlay.size(), overlay.copy(devDirty), devDirty.topLeft());
     }
 
     // Event of a widget above the image while the extended presentation is active.
@@ -430,21 +493,21 @@ struct ImageView::Private {
         switch (event->type()) {
         case QEvent::Paint: {
             const QRect r = static_cast<QPaintEvent*>(event)->rect();
-            markOverlayDirty(QRect(w->mapTo(q, r.topLeft()), r.size()));
+            markOverlayDirty(QRect(toView(w, r.topLeft()), r.size()));
             break;
         }
         case QEvent::Show:
         case QEvent::Hide:
-            markOverlayDirty(QRect(w->mapTo(q, QPoint(0, 0)), w->size()));
+            markOverlayDirty(viewRectOf(w));
             break;
         case QEvent::Move: { // old and new place only (a loupe follows the mouse)
-            const QRect now(w->mapTo(q, QPoint(0, 0)), w->size());
+            const QRect now = viewRectOf(w);
             const auto* me = static_cast<QMoveEvent*>(event);
             markOverlayDirty(now.united(now.translated(me->oldPos() - me->pos())));
             break;
         }
         case QEvent::Resize: {
-            const QRect now(w->mapTo(q, QPoint(0, 0)), w->size());
+            const QRect now = viewRectOf(w);
             markOverlayDirty(now.united(QRect(now.topLeft(), static_cast<QResizeEvent*>(event)->oldSize())));
             break;
         }
@@ -1008,6 +1071,10 @@ bool ImageView::event(QEvent* event) {
         d->quietSync();
         d->resetEdrFailure();
         d->updateHdr();
+        d->markOverlayDirty(rect());
+        break;
+    case QEvent::Move:
+        // The widgets of the window above the view keep their place: they move relative to it.
         d->markOverlayDirty(rect());
         break;
     case QEvent::ChildAdded:
