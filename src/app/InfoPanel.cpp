@@ -134,6 +134,7 @@ QToolButton* makeSectionHeader(const QString& text, const QString& name, QWidget
     b->setFocusPolicy(Qt::NoFocus);
     b->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     b->setArrowType(Qt::DownArrow);
+    b->setIconSize(QSize(9, 9)); // a small disclosure arrow
     b->setToolTip(QCoreApplication::translate("lf::InfoPanel", "Ein- oder ausklappen"));
     QFont bold = b->font();
     bold.setBold(true);

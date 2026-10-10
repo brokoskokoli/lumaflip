@@ -31,7 +31,7 @@ public:
     // The first of `files` ends up on top, then the rest of the files, then `folders`.
     static void add(const QStringList& files, const QStringList& folders = {});
     static void rename(const QString& from, const QString& to); // F-FILE-04 keeps the entry
-    static void remove(const QString& path); // F-OPEN-12: an item that no longer exists
+    static void remove(const QString& path);                    // F-OPEN-12: an item that no longer exists
     static void clear();
     static QString settingsKey(); // changes of the list arrive as Settings::changed(key)
 

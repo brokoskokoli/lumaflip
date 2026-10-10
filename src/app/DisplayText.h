@@ -24,8 +24,8 @@ QString displayKind(const QString& fileName, const QString& systemKind);
 
 // An image document type (UTType) for the default-app checklist (F-MAC-04).
 struct ImageTypeDescription {
-    QString identifier; // "public.jpeg"
-    QString name;       // "JPEG-Bild"
+    QString identifier;     // "public.jpeg"
+    QString name;           // "JPEG-Bild"
     QStringList extensions; // "jpg", "jpeg" … (may be empty)
 };
 ImageTypeDescription describeImageType(const QString& identifier);

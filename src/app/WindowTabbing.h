@@ -18,7 +18,8 @@ enum class TabCommand { MergeAllWindows, MoveTabToNewWindow, SelectNextTab, Sele
 enum class NativeTabbingMode { Unknown = -1, Automatic = 0, Preferred = 1, Disallowed = 2 };
 
 // Sets tabbing mode/identifier and the collection behavior on the native window of the
-// top-level `window` (creates the native window if needed). No-op on other platforms.
+// top-level `window` (creates the native window if needed). With `allowTabs` false a
+// window that is a tab moves into a window of its own. No-op on other platforms.
 void configureViewerWindow(QWidget* window, bool allowTabs);
 NativeTabbingMode nativeTabbingMode(QWidget* window);
 // Runs a tab command on the native window; false if not possible (no native window,

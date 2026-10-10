@@ -9,6 +9,8 @@
 #include <QStringList>
 #include <QVariant>
 
+#include <optional>
+
 class QSettings;
 
 namespace lf {
@@ -84,6 +86,13 @@ public:
 
     bool exportTo(const QString& filePath, QString* error) const; // F-SET-03
     bool importFrom(const QString& filePath, QString* error);
+    // F-SET-03 in two steps, so the UI does the file I/O on a worker thread: the export
+    // contents (any thread) and the file write; the file read and applying the contents
+    // (GUI thread: emits changed()).
+    QByteArray exportData() const;
+    static bool writeExport(const QString& filePath, const QByteArray& data, QString* error);
+    static std::optional<QByteArray> readImport(const QString& filePath, QString* error);
+    bool importData(const QByteArray& json, QString* error);
 
     // Per-folder memory (F-SORT-06): manual sort spec etc., stored in app support dir.
     QVariant folderValue(const QString& folderPath, const QString& key) const;

@@ -4,8 +4,8 @@
 #include "DefaultAppDialog.h"
 #include "DockReopen.h"
 #include "ImageView.h"
-#include "MenuKeyEquivalents.h"
 #include "MainMenu.h"
+#include "MenuKeyEquivalents.h"
 #include "PreferencesDialog.h"
 #include "RecentItems.h"
 #include "ViewerWindow.h"
@@ -1012,7 +1012,8 @@ void Application::showShortcuts() {
         if (InputBindings::isActionAvailable(a))
             rows.append({actionLabel(a), keys.join(QStringLiteral(", "))});
         else
-            later.append({tr("%1 (in einer späteren Version)").arg(actionLabel(a)), keys.join(QStringLiteral(", "))});
+            later.append(
+                {tr("%1 (in einer späteren Version)").arg(actionLabel(a)), keys.join(QStringLiteral(", "))});
     }
     const int available = int(rows.size());
     rows += later;
@@ -1041,7 +1042,8 @@ void Application::makeDefaultViewer() {
     // confirming starts the asynchronous registration of the selected types only.
     auto* dlg = new DefaultAppDialog(shell().imageDocumentTypes(), PreferencesDialog::existingInstance());
     dlg->setAttribute(Qt::WA_DeleteOnClose);
-    connect(dlg, &DefaultAppDialog::confirmed, this, [this](const QStringList& types) { setDefaultViewer(types); });
+    connect(dlg, &DefaultAppDialog::confirmed, this,
+            [this](const QStringList& types) { setDefaultViewer(types); });
     dlg->open();
 }
 

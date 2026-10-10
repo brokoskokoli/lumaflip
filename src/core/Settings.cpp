@@ -428,7 +428,7 @@ void Settings::resetToDefaults(const QString& prefix) {
 
 // ---- export / import (F-SET-03) ----
 
-bool Settings::exportTo(const QString& filePath, QString* error) const {
+QByteArray Settings::exportData() const {
     QJsonObject values;
     for (auto it = registry().cbegin(); it != registry().cend(); ++it) {
         const QVariant v = value(it.key());
@@ -441,13 +441,21 @@ bool Settings::exportTo(const QString& filePath, QString* error) const {
     root.insert(QStringLiteral("format"), QStringLiteral("lumaflip-settings"));
     root.insert(QStringLiteral("version"), 1);
     root.insert(QStringLiteral("settings"), values);
+    return QJsonDocument(root).toJson(QJsonDocument::Indented);
+}
+
+bool Settings::exportTo(const QString& filePath, QString* error) const {
+    return writeExport(filePath, exportData(), error);
+}
+
+bool Settings::writeExport(const QString& filePath, const QByteArray& data, QString* error) {
     QSaveFile f(filePath);
     if (!f.open(QIODevice::WriteOnly)) {
         if (error)
             *error = tr("Datei kann nicht geschrieben werden: %1").arg(f.errorString());
         return false;
     }
-    f.write(QJsonDocument(root).toJson(QJsonDocument::Indented));
+    f.write(data);
     if (!f.commit()) {
         if (error)
             *error = tr("Datei kann nicht geschrieben werden: %1").arg(f.errorString());
@@ -456,17 +464,29 @@ bool Settings::exportTo(const QString& filePath, QString* error) const {
     return true;
 }
 
+std::optional<QByteArray> Settings::readImport(const QString& filePath, QString* error) {
+    QFile f(filePath);
+    if (!f.open(QIODevice::ReadOnly)) {
+        if (error)
+            *error = tr("Datei kann nicht gelesen werden: %1").arg(f.errorString());
+        return std::nullopt;
+    }
+    return f.readAll();
+}
+
 bool Settings::importFrom(const QString& filePath, QString* error) {
+    const std::optional<QByteArray> data = readImport(filePath, error);
+    return data && importData(*data, error);
+}
+
+bool Settings::importData(const QByteArray& json, QString* error) {
     auto fail = [error](const QString& msg) {
         if (error)
             *error = msg;
         return false;
     };
-    QFile f(filePath);
-    if (!f.open(QIODevice::ReadOnly))
-        return fail(tr("Datei kann nicht gelesen werden: %1").arg(f.errorString()));
     QJsonParseError pe;
-    const QJsonDocument doc = QJsonDocument::fromJson(f.readAll(), &pe);
+    const QJsonDocument doc = QJsonDocument::fromJson(json, &pe);
     if (pe.error != QJsonParseError::NoError)
         return fail(tr("Keine gültige Einstellungsdatei (JSON-Fehler: %1).").arg(pe.errorString()));
     const QJsonObject root = doc.object();

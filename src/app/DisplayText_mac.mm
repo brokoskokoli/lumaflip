@@ -10,7 +10,8 @@ namespace lf {
 QString systemTypeDescription(const QString& identifier) {
     @autoreleasepool {
         UTType* type = [UTType typeWithIdentifier:identifier.toNSString()];
-        return type && type.localizedDescription ? QString::fromNSString(type.localizedDescription) : QString();
+        return type && type.localizedDescription ? QString::fromNSString(type.localizedDescription)
+                                                 : QString();
     }
 }
 

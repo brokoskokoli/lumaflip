@@ -2,13 +2,13 @@
 #include "ViewerWindow.h"
 
 #include "AnimationPlayer.h"
-#include "DisplayText.h"
 #include "Application.h"
+#include "DisplayText.h"
 #include "DragOut.h"
 #include "ImageView.h"
 #include "OpenWith.h"
-#include "RenameController.h"
 #include "RecentItems.h"
+#include "RenameController.h"
 #include "StartScreenRecent.h"
 #include "WindowPanels.h"
 #include "WindowTabbing.h"
@@ -919,8 +919,9 @@ bool ViewerWindow::isVectorFile(const QString& path) {
 
 QString ViewerWindow::vectorSizeText(const QString& path) {
     if (m_vectorSizePath == path)
-        return m_vectorSize.isEmpty() ? tr("Vektor")
-                                      : tr("%1 × %2 (Vektor)").arg(m_vectorSize.width()).arg(m_vectorSize.height());
+        return m_vectorSize.isEmpty()
+                   ? tr("Vektor")
+                   : tr("%1 × %2 (Vektor)").arg(m_vectorSize.width()).arg(m_vectorSize.height());
     if (m_vectorSizeJob != path) {
         m_vectorSizeJob = path;
         auto* w = new QFutureWatcher<QSize>(this);

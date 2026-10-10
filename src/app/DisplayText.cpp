@@ -109,9 +109,9 @@ QString typeName(const QString& id) {
 // Abstract types without own extensions.
 QStringList typeExtensions(const QString& id) {
     if (id == QLatin1String("public.camera-raw-image"))
-        return {QStringLiteral("cr2"), QStringLiteral("cr3"), QStringLiteral("nef"), QStringLiteral("arw"),
-                QStringLiteral("raf"), QStringLiteral("orf"), QStringLiteral("rw2"), QStringLiteral("pef"),
-                QStringLiteral("…")};
+        return {QStringLiteral("cr2"), QStringLiteral("cr3"), QStringLiteral("nef"),
+                QStringLiteral("arw"), QStringLiteral("raf"), QStringLiteral("orf"),
+                QStringLiteral("rw2"), QStringLiteral("pef"), QStringLiteral("…")};
     return {};
 }
 
