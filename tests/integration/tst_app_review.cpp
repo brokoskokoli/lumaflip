@@ -646,7 +646,7 @@ private slots:
         };
         for (const char* k :
              {key::RatingStoreSidecar, key::RatingStoreEmbedded, key::RatingStoreFinderTags}) {
-            QVERIFY2(check(k) && !check(k)->isEnabled(), k);
+            QVERIFY2(check(k) && check(k)->isEnabled(), k); // M3: ratings are implemented
         }
         for (const char* k :
              {key::RestoreWindows, key::RawEmbeddedOnly, key::ConfirmTrash, key::TitleShowFolder,

@@ -7,6 +7,7 @@
 //   the Automation permission.
 
 #include <QString>
+#include <QStringList>
 
 class QCheckBox;
 class QWidget;
@@ -24,5 +25,10 @@ QString editorDisplayName(const QString& appPath);
 // (QMessageBox "lfLiveQueryExplanation", buttons "lfLiveQueryEnable"/cancel); only
 // "Aktivieren" stores the setting.
 QCheckBox* createLiveQueryCheck(QWidget* parent);
+
+// M3 section "Bewertung" (PreferencesCulling.cpp): rating stores and Finder tag names
+// (F-CULL-02), culling options (F-CULL-03/06), quick move targets (F-FILE-08).
+QWidget* createRatingPage(QWidget* parent);
+QStringList ratingPageKeys(); // reset by the section's "Auf Standard zurücksetzen"
 
 } // namespace lf::prefs

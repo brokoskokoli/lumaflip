@@ -941,7 +941,7 @@ private slots:
         key(a, Qt::Key_Right);
         QTRY_VERIFY(app->menu()->windowMenuTitles().contains(a->windowTitle()));
         // Choosing an entry brings the window to the front.
-        auto* menu = app->menu()->menus().at(5);
+        auto* menu = app->menu()->menus().at(6); // after "Aussortieren" (M3)
         QCOMPARE(menu->title(), QStringLiteral("Fenster"));
         for (QAction* act : menu->actions())
             if (act->text() == a->windowTitle())
@@ -957,8 +957,8 @@ private slots:
         QStringList titles;
         for (QMenu* m : menus)
             titles << m->title();
-        QCOMPARE(titles, (QStringList{"Ablage", "Bearbeiten", "Darstellung", "Navigation", "Bild", "Fenster",
-                                      "Hilfe"}));
+        QCOMPARE(titles, (QStringList{"Ablage", "Bearbeiten", "Darstellung", "Navigation", "Bild", "Aussortieren",
+                                      "Fenster", "Hilfe"}));
         auto has = [&](Action a, const QKeySequence& seq) {
             QAction* act = action(a);
             return act && act->shortcuts().contains(seq);

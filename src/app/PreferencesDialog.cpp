@@ -216,7 +216,7 @@ QStringList PreferencesDialog::sectionKeys(int section) const {
         return {key::WrapMode, key::FollowFinder, key::FinderLiveQuery, key::ManualSortKey,
                 key::ManualSortAscending};
     case Rating:
-        return {key::RatingStoreSidecar, key::RatingStoreEmbedded, key::RatingStoreFinderTags};
+        return prefs::ratingPageKeys();
     case Formats:
         return {key::RawEmbeddedOnly};
     case Advanced:
@@ -716,26 +716,7 @@ QWidget* PreferencesDialog::buildNavigation() {
 }
 
 QWidget* PreferencesDialog::buildRating() {
-    LF_BINDER;
-    auto* w = new QWidget;
-    auto* form = new QFormLayout(w);
-    form->addRow(tr("Bewertungen speichern:"),
-                 bind.check(key::RatingStoreSidecar, tr("XMP-Zusatzdatei neben dem Bild (Bild.xmp)"), w));
-    form->addRow(QString(), helpLabel(tr("Kompatibel mit Lightroom, Capture One und darktable."), w));
-    form->addRow(QString(),
-                 bind.check(key::RatingStoreEmbedded, tr("Im Bild selbst (eingebettetes XMP)"), w));
-    form->addRow(QString(),
-                 helpLabel(tr("Nur JPEG, HEIC, TIFF, PNG und DNG; sonst wird die Zusatzdatei benutzt. "
-                              "Die Bildpixel werden nicht neu kodiert."),
-                           w));
-    form->addRow(QString(), bind.check(key::RatingStoreFinderTags, tr("Finder-Tags"), w));
-    form->addRow(QString(), helpLabel(tr("Im Finder sichtbar und per Spotlight durchsuchbar."), w));
-    // Rating (F-CULL-01/02) is not implemented yet: the choices are visible but disabled.
-    for (QCheckBox* cb : w->findChildren<QCheckBox*>())
-        cb->setEnabled(false);
-    form->insertRow(0, QString(),
-                    helpLabel(tr("Bewertungen und der Aussortiermodus folgen %1.").arg(laterNote()), w));
-    return w;
+    return prefs::createRatingPage(nullptr); // M3 (PreferencesCulling.cpp)
 }
 
 QWidget* PreferencesDialog::buildFormats() {

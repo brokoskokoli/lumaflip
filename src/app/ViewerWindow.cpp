@@ -3,6 +3,7 @@
 
 #include "AnimationPlayer.h"
 #include "Application.h"
+#include "CullingController.h"
 #include "DisplayText.h"
 #include "DragOut.h"
 #include "ImageView.h"
@@ -379,6 +380,7 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     connect(&st, &Settings::changed, this, &ViewerWindow::applySetting);
     m_panels = new WindowPanels(*this, provider); // M2: created hidden, shown with the window
     setupMedia(); // animation, pages, slideshow, saving the rotation (ViewerWindowMedia.cpp)
+    m_culling = new CullingController(*this, m_app); // M3: ratings, culling, quick move
 
     m_app.registerWindow(this);
     updateTitle();
@@ -411,6 +413,7 @@ void ViewerWindow::createStatusBar() {
     m_bytesLabel = makeLabel("lfStatusBytes");
     m_zoomLabel = makeLabel("lfStatusZoom");
     m_sortLabel = makeLabel("lfStatusSort", true);
+    m_culling->attachStatusBar(sb); // F-CULL-04 "Filter: ≥ 3 ★ — 12 / 412"
     sb->setVisible(Settings::instance().value(key::ShowStatusBar).toBool());
     updateStatus();
     applyStatusBarVisibility();
@@ -914,6 +917,8 @@ void ViewerWindow::updateStatus() {
     const qint64 bytes = i >= 0 ? m_collection->at(i).size : -1;
     m_bytesLabel->setText(bytes >= 0 ? formatByteSize(bytes) : QString()); // German units
     m_sortLabel->setText(sortText());
+    if (m_culling)
+        m_culling->updateStatus();
     for (QLabel* l : {m_nameLabel, m_positionLabel, m_frameLabel, m_pixelLabel, m_bytesLabel, m_zoomLabel})
         l->setVisible(!l->text().isEmpty());
 }
@@ -955,6 +960,8 @@ QString ViewerWindow::statusText() const {
          {m_nameLabel, m_positionLabel, m_frameLabel, m_pixelLabel, m_bytesLabel, m_zoomLabel, m_sortLabel})
         if (!l->text().isEmpty())
             parts << l->text();
+    if (const QString filter = m_culling->filterStatus(); !filter.isEmpty())
+        parts << filter; // F-CULL-04
     return parts.join(QStringLiteral(" · "));
 }
 
@@ -1137,6 +1144,9 @@ void ViewerWindow::handleInput(InputEvent ev, QPointF pos) {
         ev.inLeftHalf = pos.x() < m_view->width() / 2.0;
     ev.animated = ev.animated || m_anim->isActive(); // F-IN-06 (animation)
     ev.multiPage = ev.multiPage || m_pageCount > 1;  // F-IN-04 (pages)
+    if (m_culling->interceptKey(ev))
+        return; // F-FILE-08: target digit of a quick move/copy (M/C + 1–9)
+    ev.inCullingMode = ev.inCullingMode || m_culling->isActive(); // 5.2: digits = stars
     if (handleSlideshowInput(ev))
         return; // F-SLIDE-01: Space pauses, 1–9 set the interval
     const InputBindings& b = m_app.bindings();
@@ -1186,6 +1196,8 @@ bool ViewerWindow::perform(Action a, QPointF pos) {
     const QString cur = currentPath();
     if (performMedia(a))
         return true; // animation, pages, slideshow, saving the rotation
+    if (m_culling->perform(a))
+        return true; // M3: rating, culling mode, quick move (CullingController)
     switch (a) {
     case Action::NextImage:
         navigate(1);

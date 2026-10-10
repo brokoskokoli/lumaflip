@@ -428,13 +428,12 @@ Rating RatingStore::readNow(const QString& path) {
 }
 
 std::function<Rating(const QString&)> RatingStore::reader() {
-    QPointer<RatingStore> self(this);
-    const RatingOptions o = options();
-    // Fresh from the disk (another program may have changed it); the cache follows.
-    return [self, o](const QString& path) {
-        const Rating r = ratingio::read(path, o);
-        if (self)
-            self->store(path, r);
+    // Fresh from the disk (another program may have changed it) with the options of the
+    // moment; the cache follows. The store must outlive the readers (instance(): the app).
+    RatingStore* self = this;
+    return [self](const QString& path) {
+        const Rating r = ratingio::read(path, self->options());
+        self->store(path, r);
         return r;
     };
 }
@@ -456,22 +455,32 @@ void RatingStore::request(const QString& path) {
 }
 
 void RatingStore::setRating(FileOps& ops, const QString& path, const Rating& r, WriteDone done) {
+    changeRating(
+        ops, path, [r](const Rating&) { return r; },
+        [done](bool ok, const QString& error, const QString& notice, const Rating&) {
+            if (done)
+                done(ok, error, notice);
+        });
+}
+
+void RatingStore::changeRating(FileOps& ops, const QString& path, Change change, ChangeDone done) {
     struct State {
         std::mutex mutex;
-        bool havePrevious = false;
-        Rating previous;
+        bool planned = false;
+        Rating previous, next;
         QString notice;
     };
     auto state = std::make_shared<State>();
     const RatingOptions o = options();
     QPointer<RatingStore> self(this);
-    FileOps::FileWork apply = [state, path, r, o] {
+    FileOps::FileWork apply = [state, path, change, o] {
         std::lock_guard g(state->mutex);
-        if (!state->havePrevious) {
+        if (!state->planned) {
             state->previous = ratingio::read(path, o);
-            state->havePrevious = true;
+            state->next = change ? change(state->previous) : state->previous;
+            state->planned = true;
         }
-        const RatingWriteResult res = ratingio::write(path, r, o);
+        const RatingWriteResult res = ratingio::write(path, state->next, o);
         state->notice = res.notice;
         return res.error;
     };
@@ -479,31 +488,30 @@ void RatingStore::setRating(FileOps& ops, const QString& path, const Rating& r, 
         std::lock_guard g(state->mutex);
         return ratingio::write(path, state->previous, o).error;
     };
-    FileOps::StepNotifier notify = [self, state, path, r](bool forward) {
+    FileOps::StepNotifier notify = [self, state, path](bool forward) {
         if (!self)
             return;
-        Rating value = r;
-        if (!forward) {
+        Rating value;
+        {
             std::lock_guard g(state->mutex);
-            value = state->previous;
+            value = forward ? state->next : state->previous;
         }
         self->store(path, value);
         emit self->ratingChanged(path, value);
     };
-    ops.runAsync(tr("Bewertung"), apply, revert, notify,
-                 [self, state, path, done](bool ok, const QString& error) {
-                     QString notice;
-                     {
-                         std::lock_guard g(state->mutex);
-                         notice = state->notice;
-                     }
-                     if (!ok && self) {
-                         // The stores may be partly written: show what is on disk now.
-                         self->request(path);
-                     }
-                     if (done)
-                         done(ok, error, notice);
-                 });
+    ops.runAsync(tr("Bewertung"), apply, revert, notify, [self, state, path, done](bool ok, const QString& error) {
+        QString notice;
+        Rating now;
+        {
+            std::lock_guard g(state->mutex);
+            notice = state->notice;
+            now = ok ? state->next : state->previous;
+        }
+        if (!ok && self)
+            self->request(path); // the stores may be partly written: show what is on disk now
+        if (done)
+            done(ok, error, notice, now);
+    });
 }
 
 } // namespace lf
