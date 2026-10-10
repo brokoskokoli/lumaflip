@@ -102,3 +102,18 @@ src/core/AfPoints.cpp:Nikon
 src/core/AfPoints.cpp:Sony
 src/core/AfPoints.cpp:Fujifilm
 src/core/ImageExport.cpp:JPEG XL
+# Freedesktop file formats (desktop entries, mimeapps.list group names) - never shown
+src/platform/generic/XdgDesktop.cpp:*
+src/platform/generic/GenericShell.cpp:[Desktop Entry]\n
+src/platform/generic/GenericShell.cpp:Type=Application\n
+src/platform/generic/GenericShell.cpp:Name=Lumaflip\n
+src/platform/generic/GenericShell.cpp:Icon=io.github.brokoskokoli.lumaflip\n
+src/platform/generic/GenericShell.cpp:Terminal=false\n
+src/platform/generic/GenericShell.cpp:Categories=Graphics;Viewer;\n
+src/platform/generic/GenericShell.cpp:X-AppImage-Path=%3\n
+# Library decoders (src/codecs): colour model ids and format names (like the ImageIO ones)
+src/codecs/LibJxlDecoder.cpp:Gray
+src/codecs/LibJxlDecoder.cpp:JPEG XL
+src/codecs/OpenExrDecoder.cpp:Gray
+# Linux decoder helper sandbox: log diagnostics only (SPEC 8.5)
+src/platform/linux/LinuxSandbox.cpp:*

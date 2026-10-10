@@ -27,25 +27,25 @@ option(LF_BUILD_FUZZERS "Build the fuzz targets in tests/fuzz (libFuzzer or stan
 # Release builds: fail instead of silently dropping lossless JPEG rotation (F-EDIT-02) when
 # libjpeg-turbo's static TurboJPEG library (libturbojpeg.a) is missing (src/CMakeLists.txt).
 option(LF_REQUIRE_TURBOJPEG "Require the static libjpeg-turbo TurboJPEG library" OFF)
-# The app (widgets, QRhi canvas, bundle) and its integration tests/benchmarks.
-# Off on Linux for now: there only the platform-neutral core is built and
-# unit-tested (SPEC 9.3).
-if(APPLE)
+# The app (widgets, QRhi canvas, bundle) and its integration tests/benchmarks: macOS and
+# Linux (M4, SPEC 9.3/13). Other systems build the platform-neutral core only for now.
+if(APPLE OR CMAKE_SYSTEM_NAME STREQUAL "Linux")
   option(LF_BUILD_UI "Build the app, its UI library, integration tests and benchmarks" ON)
 else()
   option(LF_BUILD_UI "Build the app, its UI library, integration tests and benchmarks" OFF)
 endif()
-# Testing only: build src/platform/generic instead of src/platform/mac on macOS, to
-# compile and unit-test the portable fallbacks locally. Implies LF_BUILD_UI=OFF.
+# Testing only: build src/platform/generic (and src/app/generic) instead of the macOS
+# platform layer on macOS, to compile and unit-test the portable fallbacks locally.
 option(LF_FORCE_GENERIC_PLATFORM "Use the generic platform layer on macOS (testing only)" OFF)
 if(NOT APPLE OR LF_FORCE_GENERIC_PLATFORM)
   set(LF_GENERIC_PLATFORM ON)
 else()
   set(LF_GENERIC_PLATFORM OFF)
 endif()
-if(LF_FORCE_GENERIC_PLATFORM AND LF_BUILD_UI)
-  message(STATUS "LF_FORCE_GENERIC_PLATFORM: not building the UI (LF_BUILD_UI=OFF)")
-  set(LF_BUILD_UI OFF CACHE BOOL "" FORCE)
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+  set(LF_LINUX ON)
+else()
+  set(LF_LINUX OFF)
 endif()
 
 # ---- Sparkle 2: automatic updates (F-MAC-08, SPEC 10.1) ----
@@ -95,6 +95,9 @@ if(LF_BUILD_UI)
   list(APPEND LF_QT_COMPONENTS GuiPrivate Widgets ShaderTools Test)
 endif()
 find_package(Qt6 6.8 REQUIRED COMPONENTS ${LF_QT_COMPONENTS})
+# Freedesktop integration (src/platform/generic/XdgShell.cpp): "show in file manager" via
+# org.freedesktop.FileManager1. Optional: without QtDBus the folder is opened instead.
+find_package(Qt6 QUIET COMPONENTS DBus)
 qt_standard_project_setup()
 # Translations (SPEC 4.16, translations/README.md): lupdate/lrelease. Required for the app
 # (Homebrew's qt has them); optional for the core-only build (Linux CI), where the unit

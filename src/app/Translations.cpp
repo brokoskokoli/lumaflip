@@ -29,8 +29,14 @@ Installed& installed() {
 }
 
 QString bundleTranslationDir() {
+#ifdef Q_OS_MACOS
     return QDir::cleanPath(QCoreApplication::applicationDirPath() +
                            QStringLiteral("/../Resources/translations"));
+#else
+    // XDG install layout (bin/lumaflip, share/lumaflip/translations; also inside an AppImage).
+    return QDir::cleanPath(QCoreApplication::applicationDirPath() +
+                           QStringLiteral("/../share/lumaflip/translations"));
+#endif
 }
 
 // Loads the first of `names` found in `dirs` ("qtbase_fr.qm" …); nullptr if none.

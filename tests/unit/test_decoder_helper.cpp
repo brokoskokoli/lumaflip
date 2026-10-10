@@ -36,6 +36,9 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #endif
+#ifdef Q_OS_LINUX
+#include <sys/syscall.h>
+#endif
 #ifdef Q_OS_DARWIN
 #include <crt_externs.h>
 #include <mach/mach.h>
@@ -380,7 +383,7 @@ TEST(DecoderHelper, PingAndSandbox) {
     EXPECT_TRUE(pong->ok);
     EXPECT_GT(pong->pid, 0);
     EXPECT_NE(pong->pid, qint64(getpid()));
-#ifdef Q_OS_MACOS
+#if defined(Q_OS_MACOS) || defined(Q_OS_LINUX)
     EXPECT_TRUE(pong->sandboxed);
     // No file writes from inside the sandbox.
     QTemporaryDir dir;
@@ -724,6 +727,60 @@ TEST(DecoderHelper, SandboxDeniesEverythingButReading) {
     // SandboxedHelperDecodesEveryServedCorpusFormat).
     EXPECT_FALSE(probe(ipc::Op::TestMachLookup, QStringLiteral("com.apple.fonts")));
 }
+
+#endif
+
+#ifdef Q_OS_LINUX
+
+// SPEC 8.5 on Linux (seccomp-bpf + Landlock, platform/linux/LinuxSandbox.h): the helper can
+// neither open sockets, write or create files, start programs nor create shared memory -
+// while the same operations work outside the sandbox (in this test).
+TEST(DecoderHelper, SandboxDeniesEverythingButReading) {
+    DecoderHelperPool pool(helperOptions());
+    auto probe = [&](ipc::Op o, const QString& arg) {
+        const auto r = pool.call(op(o, arg), 10000);
+        EXPECT_TRUE(r.has_value());
+        return r && r->ok;
+    };
+    const int listener = socket(AF_INET, SOCK_STREAM, 0);
+    ASSERT_GE(listener, 0);
+    sockaddr_in addr{};
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+    ASSERT_EQ(bind(listener, reinterpret_cast<sockaddr*>(&addr), sizeof addr), 0);
+    ASSERT_EQ(listen(listener, 4), 0);
+    socklen_t len = sizeof addr;
+    ASSERT_EQ(getsockname(listener, reinterpret_cast<sockaddr*>(&addr), &len), 0);
+    const QString port = QString::number(ntohs(addr.sin_port));
+    {
+        const int c = socket(AF_INET, SOCK_STREAM, 0);
+        EXPECT_EQ(::connect(c, reinterpret_cast<sockaddr*>(&addr), sizeof addr), 0) << "control";
+        close(c);
+    }
+    EXPECT_FALSE(probe(ipc::Op::TestSocket, port));
+    close(listener);
+    EXPECT_FALSE(probe(ipc::Op::TestExec, QStringLiteral("/bin/true")));
+    // File writes and creating shared memory need Landlock (kernel >= 5.13).
+    QTemporaryDir dir;
+    const QString target = dir.filePath(QStringLiteral("written-by-helper.txt"));
+    const QString shm = QString::fromLatin1(ipc::shmName(getpid(), 999999));
+#ifdef SYS_landlock_create_ruleset
+    // landlock_create_ruleset(NULL, 0, LANDLOCK_CREATE_RULESET_VERSION) = the ABI version.
+    const bool landlock = syscall(SYS_landlock_create_ruleset, nullptr, 0, 1u) > 0;
+#else
+    const bool landlock = false;
+#endif
+    if (!landlock)
+        GTEST_SKIP() << "kernel without Landlock: file writes are not restricted";
+    EXPECT_FALSE(probe(ipc::Op::TestWriteFile, target));
+    EXPECT_FALSE(QFile::exists(target));
+    EXPECT_FALSE(probe(ipc::Op::TestCreateShm, shm));
+    EXPECT_FALSE(ipc::sharedExists(shm.toLatin1()));
+}
+
+#endif
+
+#if defined(Q_OS_MACOS) || defined(Q_OS_LINUX)
 
 // The app refuses a helper that reports running without sandbox (error card text).
 TEST(DecoderHelper, RefusesHelperWithoutSandbox) {

@@ -120,6 +120,13 @@ void FolderMapPanel::syncEntries() {
 
 void FolderMapPanel::updateStatus() {
     m_status->setText(m_model->statusText());
+    if (!m_backend) {
+        // No map engine on this platform (MapKit is macOS only): the panel still counts the
+        // located images, but cannot draw them.
+        m_empty->setVisible(true);
+        m_empty->setText(tr("Auf diesem System ist keine Kartendarstellung verfügbar."));
+        return;
+    }
     const bool none = m_model->isOpen() && !m_model->isScanning() && m_model->locatedCount() == 0;
     m_empty->setVisible(none);
     if (none)

@@ -1349,6 +1349,10 @@
 <context>
     <name>lf::FolderMapPanel</name>
     <message>
+        <source>Auf diesem System ist keine Kartendarstellung verfügbar.</source>
+        <translation>Kartor är inte tillgängliga på det här systemet.</translation>
+    </message>
+    <message>
         <source>Keine Bilder in dieser Ansicht.</source>
         <translation>Inga bilder i den här vyn.</translation>
     </message>
@@ -5357,10 +5361,6 @@
 <context>
     <name>lf::Shell</name>
     <message>
-        <source>Auf dieser Plattform wird das Festlegen der Standard-App noch nicht unterstützt.</source>
-        <translation>Det går ännu inte att ställa in standardappen på den här plattformen.</translation>
-    </message>
-    <message>
         <source>Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, falls eine erscheint.</source>
         <translation>Lumaflip håller på att ställas in som standardapp – bekräfta frågan från macOS om den visas.</translation>
     </message>
@@ -5375,6 +5375,18 @@
     <message>
         <source>Zeitüberschreitung bei der Rückmeldung des Systems.</source>
         <translation>Tidsgränsen överskreds i väntan på svar från systemet.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht geschrieben werden.</source>
+        <translation>”%1” kan inte skrivas.</translation>
+    </message>
+    <message>
+        <source>Lumaflip ist nicht als Anwendung installiert (%1 fehlt).</source>
+        <translation>Lumaflip är inte installerat som program (%1 saknas).</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gestartet werden.</source>
+        <translation>”%1” kan inte startas.</translation>
     </message>
 </context>
 <context>
@@ -5440,6 +5452,22 @@
     <message>
         <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
         <translation>Taggarna för ”%1” kunde inte ställas in: %2</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gelesen werden.</source>
+        <translation>Taggarna för ”%1” kan inte läsas.</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert nicht mehr.</source>
+        <translation type="unfinished">”%1” finns inte längre.</translation>
+    </message>
+    <message>
+        <source>Dieses Dateisystem unterstützt keine Tags.</source>
+        <translation>Det här filsystemet stöder inte taggar.</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gespeichert werden: %2</source>
+        <translation>Taggarna för ”%1” kan inte sparas: %2</translation>
     </message>
 </context>
 <context>
@@ -5752,6 +5780,22 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ist nicht installiert.</source>
+        <translation>”%1” är inte installerat.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist fehlgeschlagen.</source>
+        <translation>”%1” misslyckades.</translation>
+    </message>
+    <message>
+        <source>Alle Bildschirme</source>
+        <translation>Alla skärmar</translation>
+    </message>
+    <message>
+        <source>Diese Arbeitsumgebung wird nicht unterstützt.</source>
+        <translation>Den här skrivbordsmiljön stöds inte.</translation>
     </message>
 </context>
 <context>
