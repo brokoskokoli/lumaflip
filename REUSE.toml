@@ -1,0 +1,38 @@
+version = 1
+SPDX-PackageName = "Lumaflip"
+
+# Licensing per REUSE (https://reuse.software), checked in CI with `reuse lint`.
+# Source files carry their own "SPDX-License-Identifier" line; this file adds the
+# copyright notice for everything and the license for files that cannot hold a
+# comment (JSON, config files, binary test data). Everything in this repository,
+# including documentation and test data, is GPL-3.0-or-later.
+# Downloaded/generated test files (tests/corpus/generated/, e.g. the CC0 RAW samples
+# of tests/corpus/download_raw.sh) are git-ignored and not part of the repository.
+
+[[annotations]]
+path = "**"
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 The Lumaflip contributors"
+SPDX-License-Identifier = "GPL-3.0-or-later"
+
+# Documentation (Markdown) and the specification.
+[[annotations]]
+path = ["**/*.md", "docs/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 The Lumaflip contributors"
+SPDX-License-Identifier = "GPL-3.0-or-later"
+
+# Test data without room for a header: expected values, synthetic binary files
+# (.DS_Store, images) created by our own scripts.
+[[annotations]]
+path = ["tests/corpus/*.json", "tests/data/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 The Lumaflip contributors"
+SPDX-License-Identifier = "GPL-3.0-or-later"
+
+# Tool configuration.
+[[annotations]]
+path = [".clang-format", ".gitignore"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 The Lumaflip contributors"
+SPDX-License-Identifier = "GPL-3.0-or-later"

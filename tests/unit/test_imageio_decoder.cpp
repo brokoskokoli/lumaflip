@@ -439,50 +439,62 @@ TEST(ImageIODecoder, F_COL_03_HdrDecodeAndSdrFallback) {
 }
 
 // F-FMT-05: RAW files (optional CC0 samples from tests/corpus/download_raw.sh): embedded
-// preview first, full development via ImageIO's RAW engine. Skipped if not downloaded.
-TEST(ImageIODecoder, F_FMT_05_RawSamplesIfPresent) {
-    const struct {
-        const char* file;
-        const char* format;
-    } samples[] = {
-        {"raw/canon_eos_r6.cr3", "Canon CR3"},     {"raw/nikon_d2h.nef", "Nikon NEF"},
-        {"raw/sony_ilce7s.arw", "Sony ARW"},       {"raw/sigma_fp.dng", "Adobe DNG"},
-        {"raw/fujifilm_xs10.raf", "Fujifilm RAF"},
-    };
-    ImageIODecoder dec;
-    int tested = 0;
-    for (const auto& s : samples) {
-        const QString path = corpusFile(QString::fromLatin1(s.file));
-        if (!QFileInfo::exists(path))
-            continue;
-        SCOPED_TRACE(s.file);
-        ++tested;
-        EXPECT_TRUE(dec.canDecode(path, fileHeader(path, 64)));
-        QString err;
-        auto info = dec.info(path, &err);
-        ASSERT_TRUE(info.has_value()) << err.toStdString();
-        EXPECT_EQ(info->formatName, QString::fromLatin1(s.format));
-        EXPECT_GT(info->displaySize.width(), 0);
+// preview first, full development via ImageIO's RAW engine. One test per sample; a
+// missing sample is reported as SKIPPED, or as a failure with LF_REQUIRE_RAW=1 (CI
+// downloads the samples, so there they must be tested for real).
+struct RawSample {
+    const char* file;
+    const char* format;
+};
 
-        DecodeRequest preview;
-        preview.maxPixelSize = 1024;
-        preview.preferEmbeddedPreview = true;
-        auto p = dec.decode(path, preview, &err);
-        ASSERT_TRUE(p.has_value()) << err.toStdString();
-        EXPECT_TRUE(p->isPreview);
-        EXPECT_LE(std::max(p->image.width(), p->image.height()), 1024);
+class ImageIODecoderRaw : public ::testing::TestWithParam<RawSample> {};
 
-        DecodeRequest screen;
-        screen.maxPixelSize = 2048;
-        auto full = dec.decode(path, screen, &err);
-        ASSERT_TRUE(full.has_value()) << err.toStdString();
-        // Orientation-aware aspect ratio matches the reported display size.
-        const double want = double(info->displaySize.width()) / info->displaySize.height();
-        EXPECT_NEAR(double(full->image.width()) / full->image.height(), want, 0.05);
+TEST_P(ImageIODecoderRaw, F_FMT_05_RawSampleDecodes) {
+    const RawSample s = GetParam();
+    const QString path = corpusFile(QString::fromLatin1(s.file));
+    if (!QFileInfo::exists(path)) {
+        if (qEnvironmentVariableIntValue("LF_REQUIRE_RAW") == 1)
+            FAIL() << s.file << " missing (LF_REQUIRE_RAW=1) - run tests/corpus/download_raw.sh";
+        GTEST_SKIP() << s.file << " missing - run tests/corpus/download_raw.sh (optional)";
     }
-    if (tested == 0)
-        GTEST_SKIP() << "no RAW samples - run tests/corpus/download_raw.sh (optional)";
+    ImageIODecoder dec;
+    EXPECT_TRUE(dec.canDecode(path, fileHeader(path, 64)));
+    QString err;
+    auto info = dec.info(path, &err);
+    ASSERT_TRUE(info.has_value()) << err.toStdString();
+    EXPECT_EQ(info->formatName, QString::fromLatin1(s.format));
+    EXPECT_GT(info->displaySize.width(), 0);
+
+    DecodeRequest preview;
+    preview.maxPixelSize = 1024;
+    preview.preferEmbeddedPreview = true;
+    auto p = dec.decode(path, preview, &err);
+    ASSERT_TRUE(p.has_value()) << err.toStdString();
+    EXPECT_TRUE(p->isPreview);
+    EXPECT_LE(std::max(p->image.width(), p->image.height()), 1024);
+
+    DecodeRequest screen;
+    screen.maxPixelSize = 2048;
+    auto full = dec.decode(path, screen, &err);
+    ASSERT_TRUE(full.has_value()) << err.toStdString();
+    // Orientation-aware aspect ratio matches the reported display size.
+    const double want = double(info->displaySize.width()) / info->displaySize.height();
+    EXPECT_NEAR(double(full->image.width()) / full->image.height(), want, 0.05);
 }
+
+INSTANTIATE_TEST_SUITE_P(Samples, ImageIODecoderRaw,
+                         ::testing::Values(RawSample{"raw/canon_eos_r6.cr3", "Canon CR3"},
+                                           RawSample{"raw/nikon_d2h.nef", "Nikon NEF"},
+                                           RawSample{"raw/sony_ilce7s.arw", "Sony ARW"},
+                                           RawSample{"raw/sigma_fp.dng", "Adobe DNG"},
+                                           RawSample{"raw/fujifilm_xs10.raf", "Fujifilm RAF"}),
+                         [](const ::testing::TestParamInfo<RawSample>& i) {
+                             std::string n = i.param.format;
+                             for (char& c : n)
+                                 if (c == ' ')
+                                     c = '_';
+                             return n;
+                         });
 
 // Decoders are called from worker threads concurrently (SPEC 8.3).
 TEST(ImageIODecoder, ConcurrentDecodeIsThreadSafe) {
