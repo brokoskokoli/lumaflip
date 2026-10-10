@@ -8,6 +8,10 @@ automatischen Tests (`tools/check.sh`). Grundlage sind SPEC.md Abschnitt 3
 (Nutzerszenarien) und 12.1 (Abnahmekriterien M1). Die einzelnen nicht automatisierbaren
 Anforderungen stehen zusätzlich in `docs/MANUAL_CHECKS.md`.
 
+> **Hinweis:** Ab Version 1.0 (M2) gilt [TESTING-M2.md](TESTING-M2.md). Abschnitte dieser Anleitung,
+> die M2 ändert, sind mit „überholt durch M2“ markiert; der Rest bleibt gültig und wird in
+> TESTING-M2 vorausgesetzt.
+
 Hake jeden Punkt ab. Wenn etwas nicht passt: Schritt, erwartetes und tatsächliches
 Ergebnis notieren (siehe Abschnitt 8).
 
@@ -239,6 +243,8 @@ Fenster (SPEC 4.15):
 - [ ] Zwei Fenster offen lassen, Lumaflip mit ⌘Q beenden und neu starten (ohne Datei):
       beide Fenster kommen mit Ordner, Bild, Zoom und Position zurück (Einstellung
       „Fenster beim nächsten Start wiederherstellen“; aus = leeres Startfenster).
+      **Überholt durch M2 – siehe [TESTING-M2](TESTING-M2.md) §11:** Der Standard folgt jetzt der Systemeinstellung „Fenster beim
+      Beenden schließen“, ein Start per Doppelklick stellt nicht wieder her.
 - [ ] Menü „Fenster“ und Rechtsklick auf das Dock-Symbol listen alle Fenster; Auswahl holt
       das Fenster nach vorn.
 - [ ] Einstellungen (⌘,) → Allgemein → „Öffnen aus dem Finder“: „Im vordersten Fenster
@@ -259,9 +265,12 @@ Menüs und Erscheinungsbild:
       ausblenden“, „Andere ausblenden“, „Alle anzeigen“, „Lumaflip beenden“; Knöpfe in
       Rückfragen („Abbrechen“, „Nein“). Defekte Dateien zeigen deutsche Gründe ohne
       Zusätze wie „ImageIO:“ oder „Qt:“.
-- [ ] Einstellungen: Funktionen, die erst später kommen (Infopanel, Filmstreifen,
+- [ ] ~~Einstellungen: Funktionen, die erst später kommen (Infopanel, Filmstreifen,
       Bewertungen, Lupe, Datei herausziehen, Diashow), sind ausgegraut und mit „ab Version
-      1.0“ beschriftet.
+      1.0“ beschriftet.~~
+      **Überholt durch M2 – siehe [TESTING-M2](TESTING-M2.md) §7, §9, §10:** Infopanel, Filmstreifen, Diashow und Datei
+      herausziehen sind in 1.0 enthalten und bedienbar; nur M3-Funktionen (Bewertungen, Lupe)
+      sind noch ausgegraut, beschriftet mit der späteren Version.
 
 Datenschutz (SPEC 10.2, 12.1 Nr. 8):
 
@@ -286,14 +295,15 @@ Datenschutz (SPEC 10.2, 12.1 Nr. 8):
 ## 8. Bekannte Grenzen von M1
 
 - Der Finder schreibt Sortieränderungen verzögert; direkt nach einer Änderung kann
-  Lumaflip noch die alte Reihenfolge zeigen (Abhilfe ab M2: Live-Abfrage, Opt-in).
+  Lumaflip noch die alte Reihenfolge zeigen (Abhilfe ab M2: Live-Abfrage, Opt-in –
+  siehe TESTING-M2 §13).
 - Spaltenansicht, Galerie, „Gruppen verwenden“ und Suchergebnisfenster lassen sich nicht
   exakt nachbilden (SPEC 6.3).
-- Die Fensterwiederherstellung folgt der Lumaflip-Einstellung, noch nicht der
-  Systemeinstellung „Fenster beim Beenden schließen“.
-- Noch nicht enthalten (M2 und später): Infopanel, Filmstreifen, Diashow, Bewertungen,
+- ~~Die Fensterwiederherstellung folgt der Lumaflip-Einstellung, noch nicht der
+  Systemeinstellung „Fenster beim Beenden schließen“.~~ **Überholt durch M2 – siehe [TESTING-M2](TESTING-M2.md) §11.**
+- ~~Noch nicht enthalten (M2 und später): Infopanel, Filmstreifen, Diashow, Bewertungen,
   Lupe, Umbenennen, Teilen, Drag-out, Fenster anordnen, Merken der manuellen Sortierung
-  pro Ordner.
+  pro Ordner.~~ **Überholt durch M2 – siehe [TESTING-M2](TESTING-M2.md) §17** (in 1.0 enthalten; Bewertungen und Lupe folgen in M3).
 
 ## 9. Fehler melden
 

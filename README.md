@@ -5,28 +5,52 @@ Schneller, freier Bildbetrachter für macOS. Doppelklick auf ein Bild öffnet de
 in **derselben Reihenfolge wie im Finder** –, und mit ← / → blätterst du ohne Wartezeit durch
 alle Bilder.
 
-> Status: in Entwicklung (Meilenstein M1). Die Spezifikation steht in [SPEC.md](SPEC.md).
+> Status: **Version 1.0 (Meilenstein M2) in der Abnahme.** Die Spezifikation steht in [SPEC.md](SPEC.md),
+> die manuelle Abnahme in [docs/TESTING-M2.md](docs/TESTING-M2.md).
 
-## Funktionen (M1)
+## Funktionen (Version 1.0)
 
-- **Ganzer Ordner per Doppelklick:** Bild öffnen, mit den Pfeiltasten blättern; Nicht-Bilder werden übersprungen.
+**Öffnen und Blättern**
+- **Ganzer Ordner per Doppelklick:** Bild öffnen, mit ← / →, Trackpad-Wischen, Mausrad oder Leertaste
+  blättern; Nicht-Bilder werden übersprungen. Startbildschirm mit „Zuletzt geöffnet“.
 - **Finder-Reihenfolge:** übernimmt die Sortierung des Finder-Fensters (Name, Änderungsdatum, Größe,
-  „Hinzugefügt am“ …); ohne Finder-Information wie die Finder-Namenssortierung.
-- **Schnell:** Vorausladen der Nachbarbilder, Darstellung über Metal.
-- **Viele Formate ohne Nachinstallation:** JPEG, PNG, GIF, BMP, TIFF, WebP, ICO, ICNS, HEIC/HEIF,
-  AVIF, JPEG XL und RAW-Formate (CR2, CR3, NEF, ARW, DNG, RAF, ORF, RW2 …) über macOS ImageIO, dazu SVG.
-- **Farbrichtig:** ICC-Profile, Display P3.
-- **Zoom:** Einpassen, 100 %, Trackpad-Gesten und Tastatur.
-- **Papierkorb mit Rückgängig:** ⌘⌫ legt die Datei in den Papierkorb, ⌘Z holt sie zurück.
-- **Mehrere Fenster**, Einstellungen für Maus und Tastatur, helles und dunkles Erscheinungsbild.
-- **Datenschutz:** keine Telemetrie, kein Netzwerkverkehr, kein Festplattenvollzugriff nötig.
+  „Hinzugefügt am“, Symbolpositionen …), auf Wunsch live vom offenen Finder-Fenster; eigene Sortierung
+  wird pro Ordner gemerkt.
+- **Ordner bleibt aktuell:** neue, gelöschte und umbenannte Dateien erscheinen sofort, das aktuelle Bild bleibt.
+- **Schnell:** Vorausladen der Nachbarbilder, Darstellung über Metal, flüssig auch auf ProMotion-Displays.
+
+**Formate und Farbe**
+- JPEG, PNG, GIF, BMP, TIFF, WebP, ICO, ICNS, HEIC/HEIF, AVIF, JPEG XL, RAW (CR2, CR3, NEF, ARW, DNG,
+  RAF, ORF, RW2 …), PSD, OpenEXR, Radiance HDR, JPEG 2000, TGA, DDS, KTX und SVG (SVG Tiny 1.2) – ohne
+  Nachinstallation.
+- **Animationen** (GIF, APNG, WebP, AVIF/HEICS, JXL) mit Pause, Einzelbild und Tempo; **mehrseitige**
+  Dateien (TIFF, ICO, HEIF) mit Seitennavigation; RAW zuerst als eingebettete Vorschau.
+- **Farbrichtig:** ICC-Profile, Display P3, CMYK; Profilwechsel beim Verschieben auf einen anderen Monitor.
+
+**Ansehen und Ordnen**
+- Zoom-Modi (Einpassen, 100 %, Breite/Höhe füllen …), Zoom am Cursor, „Zoom fixieren“ für Serienaufnahmen,
+  Vollbild, Diashow mit Überblendung.
+- **Infopanel** mit Datei-, Bild- und Kameradaten, Histogramm und Finder-Tags; **Filmstreifen** mit Vorschaubildern.
+- **Dateien:** Papierkorb mit Rückgängig, Umbenennen, „Öffnen mit“, Teilen, Bild in andere Apps ziehen,
+  Drehung verlustfrei speichern (JPEG), Kopieren von Bild und Pfad.
+
+**Bedienung und Mac-Integration**
+- **Mehrere Fenster** mit Anordnen, Tabs und Wiederherstellung; natives Menü, Hell/Dunkel, deutsch.
+- **Eingaben frei belegbar:** Mausrad, Klick, Trackpad, alle Tastenkürzel (mit Konfliktprüfung),
+  Profilvorlagen („Mac-Standard“, „Windows-Viewer-Gewohnheiten“, „Fotograf:in“); Einstellungen
+  exportieren und importieren.
+- **Standard-App** für Bilder per Knopf (Dateitypen einzeln abwählbar).
+- **Automatische Updates** (Sparkle, signiert) – abschaltbar.
+- **Datenschutz:** keine Telemetrie, einziger Netzwerkverkehr ist die abschaltbare Update-Prüfung; kein
+  Festplattenvollzugriff nötig.
 
 ## Installation
 
 - **DMG:** Unter [Releases](https://github.com/brokoskokoli/lumaflip/releases) die Datei
   `Lumaflip-<version>.dmg` laden, öffnen und Lumaflip in den Ordner „Programme“ ziehen. Die App ist mit
   Developer ID signiert und von Apple notarisiert. Prüfsumme: `shasum -a 256 -c Lumaflip-<version>.dmg.sha256`.
-- **Homebrew** (folgt): `brew install --cask brokoskokoli/tap/lumaflip`
+- **Homebrew:** `brew install --cask brokoskokoli/tap/lumaflip` (eigener Tap; Updates danach über
+  Sparkle in der App oder `brew upgrade --cask lumaflip`).
 
 Voraussetzung: macOS 15 (Sequoia) oder neuer, Apple-Silicon-Mac.
 
@@ -37,7 +61,8 @@ blättern kannst.
 ## Aus dem Quellcode bauen
 
 ```sh
-brew install cmake ninja qt googletest clang-format
+brew install cmake ninja qt jpeg-turbo googletest clang-format
+tools/fetch_sparkle.sh                              # optional: Sparkle für automatische Updates
 tools/check.sh --quick                              # bauen + alle Tests
 open build/check/src/Lumaflip.app --args <bild>     # starten
 tools/package.sh                                    # eigenständiges App-Paket + DMG/ZIP in dist/ (ad-hoc signiert)
@@ -50,6 +75,7 @@ Hinweise für Mitwirkende: [CLAUDE.md](CLAUDE.md). Beiträge laufen über das DC
 
 Lumaflip ist freie Software unter der **GNU General Public License v3.0 oder später**
 (GPL-3.0-or-later), siehe [LICENSE](LICENSE). Lumaflip verwendet Qt unter der LGPLv3 (dynamisch
-gelinkt); die Lizenzen aller mitgelieferten Komponenten zeigt das Fenster
+gelinkt), Sparkle (MIT) für Updates und libjpeg-turbo (BSD-artig, statisch gelinkt) für das
+verlustfreie Drehen; die Lizenzen aller mitgelieferten Komponenten zeigt das Fenster
 *Über Lumaflip → Lizenzen von Drittanbietern…*, die Texte liegen im App-Paket unter
 `Contents/Resources/licenses`.
