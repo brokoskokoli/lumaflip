@@ -39,6 +39,10 @@ public:
     // Runs action `id` on the current file of `window` (asks first on the first run).
     void run(const QString& id, ViewerWindow* window);
     bool isRunning() const { return !m_runs.isEmpty(); }
+    // Keys without ⌘/⌃ never reach the menu (Application filters them for InputBindings): the
+    // viewer window asks here first. Runs the action bound to `key`/`modifiers` on the current
+    // file of `window`; false if no action has this key.
+    bool runForKey(int key, Qt::KeyboardModifiers modifiers, ViewerWindow* window);
 
     void showLog(QWidget* parent);
     QStringList logLines() const { return m_log; }

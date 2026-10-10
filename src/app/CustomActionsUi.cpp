@@ -66,6 +66,17 @@ void CustomActionsManager::setConfirmForTesting(
     m_confirm = std::move(c);
 }
 
+bool CustomActionsManager::runForKey(int key, Qt::KeyboardModifiers modifiers, ViewerWindow* window) {
+    if (!window || (modifiers & (Qt::ControlModifier | Qt::MetaModifier)))
+        return false; // ⌘/⌃: the menu entry's shortcut (MainMenu::rebuildCustomActions)
+    for (const CustomAction& a : std::as_const(m_actions))
+        if (customactions::matchesKey(a, key, modifiers)) {
+            run(a.id, window);
+            return true;
+        }
+    return false;
+}
+
 void CustomActionsManager::run(const QString& id, ViewerWindow* window) {
     const auto it =
         std::find_if(m_actions.cbegin(), m_actions.cend(), [&](const CustomAction& a) { return a.id == id; });
@@ -92,12 +103,18 @@ void CustomActionsManager::run(const QString& id, ViewerWindow* window) {
         return;
     }
     // First run: show what will run with which file.
+    // Confirms exactly the command shown: if the action was edited meanwhile (preferences,
+    // import), the stored one stays unconfirmed; what runs is always the shown command.
     auto accept = [this, action, files, w] {
         QList<CustomAction> all = customactions::load();
+        bool changed = false;
         for (CustomAction& a : all)
-            if (a.id == action.id)
+            if (a.id == action.id && a.kind == action.kind && a.command == action.command && !a.confirmed) {
                 a.confirmed = true;
-        customactions::save(all);
+                changed = true;
+            }
+        if (changed)
+            customactions::save(all);
         start(action, files, w);
     };
     if (m_confirm) {
@@ -208,6 +225,23 @@ struct Tr {
     Q_DECLARE_TR_FUNCTIONS(lf::CustomActionsEditor)
 };
 
+// Actions of the app that `seq` already triggers in a viewer window (InputBindings: menu
+// shortcuts and slot keys) and other custom actions with the same key (labels).
+QStringList shortcutConflicts(const QKeySequence& seq, const QString& ownId) {
+    if (seq.isEmpty())
+        return {};
+    QStringList out = customactions::bindingConflicts(seq, InputBindings());
+    for (const CustomAction& c : customactions::load())
+        if (c.id != ownId && c.keys == seq)
+            out << c.name;
+    return out;
+}
+
+QString conflictText(const QKeySequence& seq, const QStringList& conflicts) {
+    return Tr::tr("%1 ist schon belegt (%2); im Bildfenster hat die eigene Aktion Vorrang.")
+        .arg(seq.toString(QKeySequence::NativeText), conflicts.join(QStringLiteral(", ")));
+}
+
 // Edits `action` in a modal dialog; false if cancelled.
 bool editAction(QWidget* parent, CustomAction& action) {
     QDialog dlg(parent);
@@ -219,7 +253,14 @@ bool editAction(QWidget* parent, CustomAction& action) {
     auto* kind = new QComboBox(&dlg);
     kind->setObjectName(QStringLiteral("kind"));
     kind->addItem(kindText(CustomAction::Kind::Shell));
-    kind->addItem(kindText(CustomAction::Kind::Shortcut));
+#ifdef Q_OS_MACOS
+    const bool shortcutsApp = true;
+#else
+    const bool shortcutsApp = false; // the Shortcuts app is macOS only
+#endif
+    // Elsewhere only an imported shortcut action shows the type (validate() refuses it).
+    if (shortcutsApp || action.kind == CustomAction::Kind::Shortcut)
+        kind->addItem(kindText(CustomAction::Kind::Shortcut));
     kind->setCurrentIndex(action.kind == CustomAction::Kind::Shortcut ? 1 : 0);
     auto* command = new QLineEdit(action.command, &dlg);
     command->setObjectName(QStringLiteral("command"));
@@ -227,12 +268,19 @@ bool editAction(QWidget* parent, CustomAction& action) {
     auto* help = new QLabel(&dlg);
     help->setWordWrap(true);
     auto updateHelp = [help, kind] {
-        help->setText(
-            kind->currentIndex() == 1
-                ? Tr::tr("Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als "
-                         "Eingabe.")
-                : Tr::tr("Läuft mit /bin/sh; die Datei steht in \"$1\" (alle Dateien: \"$@\"), "
-                         "z. B. open -a Preview \"$1\". Der Pfad wird nie in den Befehl eingesetzt."));
+        if (kind->currentIndex() == 1)
+            help->setText(Tr::tr("Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als "
+                                 "Eingabe."));
+        else
+#ifdef Q_OS_WIN
+            help->setText(Tr::tr("Programm mit Argumenten, z. B. \"C:\\Tools\\tool.exe\" --flag; die Datei "
+                                 "wird als eigenes Argument angehängt und nie über cmd.exe gestartet. "
+                                 "Batch-Dateien (.bat, .cmd) sind nicht erlaubt."));
+#else
+            help->setText(
+                Tr::tr("Läuft mit /bin/sh; die Datei steht in \"$1\" (alle Dateien: \"$@\"), "
+                       "z. B. open -a Preview \"$1\". Der Pfad wird nie in den Befehl eingesetzt."));
+#endif
     };
     updateHelp();
     QObject::connect(kind, &QComboBox::currentIndexChanged, &dlg, updateHelp);
@@ -240,10 +288,25 @@ bool editAction(QWidget* parent, CustomAction& action) {
     keys->setObjectName(QStringLiteral("keys"));
     keys->setMaximumSequenceLength(1);
     form->addRow(Tr::tr("Name:"), name);
-    form->addRow(Tr::tr("Art:"), kind);
+    if (kind->count() > 1)
+        form->addRow(Tr::tr("Art:"), kind);
+    else
+        kind->hide();
     form->addRow(Tr::tr("Befehl:"), command);
     form->addRow(QString(), help);
     form->addRow(Tr::tr("Taste:"), keys);
+    auto* keyWarning = new QLabel(&dlg);
+    keyWarning->setObjectName(QStringLiteral("keyConflict"));
+    keyWarning->setStyleSheet(QStringLiteral("color: #d03030;"));
+    keyWarning->setWordWrap(true);
+    auto updateKeyWarning = [keyWarning, keys, id = action.id] {
+        const QStringList c = shortcutConflicts(keys->keySequence(), id);
+        keyWarning->setText(c.isEmpty() ? QString() : conflictText(keys->keySequence(), c));
+        keyWarning->setVisible(!c.isEmpty());
+    };
+    updateKeyWarning();
+    QObject::connect(keys, &QKeySequenceEdit::keySequenceChanged, &dlg, updateKeyWarning);
+    form->addRow(QString(), keyWarning);
     auto* buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dlg);
     form->addRow(buttons);
     QObject::connect(buttons, &QDialogButtonBox::accepted, &dlg, [&] {
@@ -269,21 +332,6 @@ bool editAction(QWidget* parent, CustomAction& action) {
     if (action.command != before.command || action.kind != before.kind)
         action.confirmed = false;
     return true;
-}
-
-// Actions of the app that already use `seq` (labels).
-QStringList shortcutConflicts(const QKeySequence& seq, const QString& ownId) {
-    QStringList out;
-    if (seq.isEmpty())
-        return out;
-    InputBindings bindings;
-    for (Action a : InputBindings::allActions())
-        if (bindings.shortcuts(a).contains(seq))
-            out << actionLabel(a);
-    for (const CustomAction& c : customactions::load())
-        if (c.id != ownId && c.keys == seq)
-            out << c.name;
-    return out;
 }
 
 } // namespace
@@ -318,9 +366,7 @@ QWidget* createCustomActionsEditor(QWidget* parent) {
             table->setItem(r, 3, new QTableWidgetItem(a.keys.toString(QKeySequence::NativeText)));
             table->item(r, 0)->setData(Qt::UserRole, a.id);
             if (const QStringList c = shortcutConflicts(a.keys, a.id); !c.isEmpty())
-                conflicts << Tr::tr("„%1“: %2 ist schon belegt (%3).")
-                                 .arg(a.name, a.keys.toString(QKeySequence::NativeText),
-                                      c.join(QStringLiteral(", ")));
+                conflicts << Tr::tr("„%1“: %2").arg(a.name, conflictText(a.keys, c));
         }
         warning->setText(conflicts.join(QLatin1Char('\n')));
         warning->setVisible(!conflicts.isEmpty());

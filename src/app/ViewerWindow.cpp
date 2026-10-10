@@ -4,6 +4,7 @@
 #include "AnimationPlayer.h"
 #include "Application.h"
 #include "CullingController.h"
+#include "CustomActionsUi.h"
 #include "DisplayText.h"
 #include "DragOut.h"
 #include "HdrController.h"
@@ -1328,6 +1329,10 @@ void ViewerWindow::handleInput(InputEvent ev, QPointF pos) {
     ev.inCullingMode = ev.inCullingMode || m_culling->isActive() || m_extras->ratingKeysActive();
     if (handleSlideshowInput(ev))
         return; // F-SLIDE-01: Space pauses, 1–9 set the interval
+    // F-FILE-10: a custom action on a key without ⌘/⌃ (F5, K, ⇧K, ⌥1) - such keys never
+    // reach the menu; the action wins over the app's binding (the editor warns about it).
+    if (ev.kind == InputKind::Key && CustomActionsManager::instance().runForKey(ev.key, ev.modifiers, this))
+        return;
     const InputBindings& b = m_app.bindings();
     const Action a = m_integration->adjustInput(b.resolve(ev), ev); // F-OPEN-10: right to left
     if (a == Action::None)

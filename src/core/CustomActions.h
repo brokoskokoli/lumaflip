@@ -33,6 +33,8 @@ class QTimer;
 
 namespace lf {
 
+class InputBindings;
+
 struct CustomAction {
     enum class Kind { Shell, Shortcut };
     QString id;   // stable, generated ("a1b2c3…")
@@ -59,6 +61,18 @@ QString newId();
 // Why `action` cannot run (empty = it can): no name, no command, a shortcut name that would
 // be read as an option ("-…").
 QString validate(const CustomAction& action);
+// F-FILE-10: true if the key `key` with `modifiers` (as a viewer window gets it) is the key
+// of `action`. The keypad bit is ignored; a printable symbol typed with Shift ("?") also
+// matches the binding without Shift (like InputBindings::resolve and QKeySequenceEdit).
+bool matchesKey(const CustomAction& action, int key, Qt::KeyboardModifiers modifiers);
+// The app actions (labels) that `keys` already triggers in a viewer window through
+// InputBindings (free shortcuts and slot keys, zoomed or not, rating keys or not). A custom
+// action wins over them in the viewer (it is checked first); the editor shows the conflict.
+QStringList bindingConflicts(const QKeySequence& keys, const InputBindings& bindings);
+// Imported actions (Settings::importData) keep "confirmed" only where the same action (id,
+// kind, command) is already confirmed here; every other imported command is asked again.
+QList<CustomAction> withConfirmationFrom(QList<CustomAction> imported, const QList<CustomAction>& current);
+
 // Windows: the command split into program and arguments (CommandLineToArgvW rules; empty if
 // there is no command). Elsewhere the trimmed command as the only element.
 QStringList splitCommand(const QString& command);
