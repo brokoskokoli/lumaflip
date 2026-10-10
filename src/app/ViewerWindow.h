@@ -236,6 +236,7 @@ private:
     bool m_shownStale = false; // the provider invalidated the shown file (replace on the next stage)
     QStringList m_wanted;      // prefetch window, current first
     QString m_watchedFolder;
+    bool m_watchedTree = false; // F-OPEN-08: m_watchedFolder is watched with its subfolders
     int m_direction = 1; // last flip direction (prefetch, SPEC 7.1)
     int m_displayCount = 0;
     bool m_flipH = false;

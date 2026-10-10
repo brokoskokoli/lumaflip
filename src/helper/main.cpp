@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // lumaflip-decoder: the decoder helper process (SPEC 8.5, M3). Started by the app
 // (core/DecoderHelper.h) with the protocol on stdin/stdout (core/DecoderIpc.h); runs the
-// library decoders that are not part of the system (Qt image plugins, QtSvg) so that a
-// malformed file can only take down this process. Not meant to be started by hand.
+// library decoders that are not part of the system (Qt image plugins, QtSvg, the own
+// "Rest" format parsers of core/SimpleDecoders.h) so that a malformed file can only take
+// down this process. Not meant to be started by hand.
 
 #include "core/DecoderHelper.h"
 #include "core/QtImageDecoder.h"
+#include "core/SimpleDecoders.h"
 
 #include <QGuiApplication>
 #include <QImageReader>
@@ -43,8 +45,9 @@ int main(int argc, char** argv) {
     if (!sandboxed)
         qWarning("lumaflip-decoder: running without sandbox: %s", qPrintable(sandboxError));
 
-    const QList<std::shared_ptr<lf::Decoder>> backends = {std::make_shared<lf::QtImageDecoder>(),
-                                                          std::make_shared<lf::SvgDecoder>()};
+    QList<std::shared_ptr<lf::Decoder>> backends = {std::make_shared<lf::QtImageDecoder>(),
+                                                    std::make_shared<lf::SvgDecoder>()};
+    backends << lf::simpleDecoders(); // M3 "Rest" formats (QOI, PCX, PNM/PFM, SGI, ORA, KRA)
     const bool testOps = qEnvironmentVariableIntValue("LF_DECODER_HELPER_TEST_OPS") == 1;
     return lf::runDecoderHelper(STDIN_FILENO, protocolOut, backends, sandboxed, testOps);
 }

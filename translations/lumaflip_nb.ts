@@ -161,6 +161,62 @@
     </message>
 </context>
 <context>
+    <name>lf::CollectionExtras</name>
+    <message numerus="yes">
+        <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
+        <extracomment>status bar while a folder with subfolders is read (F-OPEN-08)</extracomment>
+        <translation>
+            <numerusform>Leser undermapper … %1 mapper, %n bilde</numerusform>
+            <numerusform>Leser undermapper … %1 mapper, %n bilder</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Unterordner gelten nur für Ordner, nicht für einzeln geöffnete Dateien</source>
+        <translation>Undermapper gjelder bare for mapper, ikke for enkeltvis åpnede filer</translation>
+    </message>
+    <message>
+        <source>Unterordner einbezogen</source>
+        <translation>Undermapper inkludert</translation>
+    </message>
+    <message>
+        <source>Nur dieser Ordner</source>
+        <translation>Bare denne mappen</translation>
+    </message>
+    <message>
+        <source>Dieses Bild ist kein RAW+JPEG-Paar</source>
+        <translation>Dette bildet er ikke et RAW+JPEG-par</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG-Paare sind ausgeschaltet (Einstellungen → Formate)</source>
+        <translation>RAW+JPEG-par er slått av (Innstillinger → Formater)</translation>
+    </message>
+    <message>
+        <source>RAW-Datei</source>
+        <translation>RAW-fil</translation>
+    </message>
+    <message>
+        <source>JPEG-Datei</source>
+        <translation>JPEG-fil</translation>
+    </message>
+    <message>
+        <source>in „%1“</source>
+        <extracomment>status bar: the subfolder of the current image (F-OPEN-08); %1 = path below the opened folder</extracomment>
+        <translation>i «%1»</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG · RAW</source>
+        <translation>RAW+JPEG · RAW</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG</source>
+        <translation>RAW+JPEG</translation>
+    </message>
+    <message>
+        <source>Zweite Datei: %1 – „RAW anzeigen“ wechselt</source>
+        <translation>Andre fil: %1 – «Vis RAW» bytter</translation>
+    </message>
+</context>
+<context>
     <name>lf::CompareView</name>
     <message>
         <source>Vergleich</source>
@@ -806,6 +862,19 @@
     </message>
 </context>
 <context>
+    <name>lf::GeoLocation</name>
+    <message>
+        <source>%1° %2′ %3″ %4</source>
+        <extracomment>GPS coordinate in degrees, minutes, seconds, e.g. &quot;48° 8′ 13,6″ N&quot;</extracomment>
+        <translation>%1° %2′ %3″ %4</translation>
+    </message>
+    <message>
+        <source>%1, %2</source>
+        <extracomment>GPS position: latitude, longitude</extracomment>
+        <translation>%1, %2</translation>
+    </message>
+</context>
+<context>
     <name>lf::GridView</name>
     <message>
         <source>Raster</source>
@@ -971,6 +1040,29 @@
     </message>
 </context>
 <context>
+    <name>lf::InfoGpsBox</name>
+    <message>
+        <source>Koordinaten kopieren</source>
+        <translation>Kopier koordinater</translation>
+    </message>
+    <message>
+        <source>Karte wird geladen …</source>
+        <translation>Laster inn kart …</translation>
+    </message>
+    <message>
+        <source>Karte anzeigen</source>
+        <translation>Vis kart</translation>
+    </message>
+    <message>
+        <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
+        <translation>Laster inn et kartutsnitt fra Apple Kart (internettforbindelse)</translation>
+    </message>
+    <message>
+        <source>In Karten öffnen</source>
+        <translation>Åpne i Kart</translation>
+    </message>
+</context>
+<context>
     <name>lf::InfoPanel</name>
     <message>
         <source>Ein- oder ausklappen</source>
@@ -1038,6 +1130,22 @@
         <translation>Lagt til</translation>
     </message>
     <message>
+        <source>RAW+JPEG-Paar</source>
+        <translation>RAW+JPEG-par</translation>
+    </message>
+    <message>
+        <source>Angezeigt</source>
+        <translation>Vist</translation>
+    </message>
+    <message>
+        <source>Zweite Datei</source>
+        <translation>Andre fil</translation>
+    </message>
+    <message>
+        <source>Größe der zweiten Datei</source>
+        <translation>Andre fils størrelse</translation>
+    </message>
+    <message>
         <source>Bild</source>
         <translation>Bilde</translation>
     </message>
@@ -1060,6 +1168,10 @@
     <message>
         <source>Nicht lesbar</source>
         <translation>Ikke lesbar</translation>
+    </message>
+    <message>
+        <source>Alle Metadaten …</source>
+        <translation>Alle metadata …</translation>
     </message>
     <message>
         <source>Tags</source>
@@ -1431,6 +1543,14 @@
     <message>
         <source>Belichtungsregler einblenden</source>
         <translation>Vis eksponeringsglidebryter</translation>
+    </message>
+    <message>
+        <source>Unterordner einbeziehen</source>
+        <translation>Inkluder undermapper</translation>
+    </message>
+    <message>
+        <source>RAW/JPEG des Paares zeigen</source>
+        <translation>Vis parets RAW/JPEG</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2386,6 +2506,10 @@
         <translation>Vend vertikalt</translation>
     </message>
     <message>
+        <source>RAW anzeigen</source>
+        <translation>Vis RAW</translation>
+    </message>
+    <message>
         <source>Fenster</source>
         <translation>Vindu</translation>
     </message>
@@ -2543,6 +2667,18 @@
         <translation>Sammenlign markering</translation>
     </message>
     <message>
+        <source>Unterordner einbeziehen</source>
+        <translation>Inkluder undermapper</translation>
+    </message>
+    <message>
+        <source>Nächster Ordner</source>
+        <translation>Neste mappe</translation>
+    </message>
+    <message>
+        <source>Vorheriger Ordner</source>
+        <translation>Forrige mappe</translation>
+    </message>
+    <message>
         <source>Gehe zu Bild …</source>
         <translation>Gå til bilde…</translation>
     </message>
@@ -2597,6 +2733,24 @@
     <message>
         <source>Belichtungsregler einblenden</source>
         <translation>Vis eksponeringsglidebryter</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MapPreviewController</name>
+    <message>
+        <source>Karten sind auf diesem System nicht verfügbar.</source>
+        <translation>Kart er ikke tilgjengelig på dette systemet.</translation>
+    </message>
+    <message>
+        <source>Die Karte konnte nicht geladen werden.</source>
+        <translation>Kartet kunne ikke lastes inn.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MapSnapshot</name>
+    <message>
+        <source>Die Karte konnte nicht geladen werden.</source>
+        <translation>Kartet kunne ikke lastes inn.</translation>
     </message>
 </context>
 <context>
@@ -2775,6 +2929,78 @@
         <source>Höhe</source>
         <extracomment>GPS altitude</extracomment>
         <translation>Høyde</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MetadataDialog</name>
+    <message>
+        <source>Alle Metadaten – %1</source>
+        <translation>Alle metadata – %1</translation>
+    </message>
+    <message>
+        <source>Wird geladen …</source>
+        <translation>Laster inn…</translation>
+    </message>
+    <message>
+        <source>Keine Metadaten gefunden.</source>
+        <translation>Fant ingen metadata.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 von %n Einträgen</source>
+        <translation>
+            <numerusform>%1 av %n oppføring</numerusform>
+            <numerusform>%1 av %n oppføringer</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Einträge</source>
+        <translation>
+            <numerusform>%n oppføring</numerusform>
+            <numerusform>%n oppføringer</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Wert kopieren</source>
+        <translation>Kopier verdi</translation>
+    </message>
+    <message>
+        <source>Gruppe kopieren</source>
+        <translation>Kopier gruppe</translation>
+    </message>
+    <message>
+        <source>Zeile kopieren</source>
+        <translation>Kopier rad</translation>
+    </message>
+    <message>
+        <source>Alles kopieren</source>
+        <translation>Kopier alt</translation>
+    </message>
+    <message>
+        <source>Suchen (Feld oder Wert) …</source>
+        <translation>Søk (felt eller verdi) …</translation>
+    </message>
+    <message>
+        <source>Feld</source>
+        <translation>Felt</translation>
+    </message>
+    <message>
+        <source>Wert</source>
+        <translation>Verdi</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>Kopier</translation>
+    </message>
+    <message>
+        <source>Alle Metadaten</source>
+        <translation>Alle metadata</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MetadataTree</name>
+    <message>
+        <source>Bild (allgemein)</source>
+        <translation>Bilde (generelt)</translation>
     </message>
 </context>
 <context>
@@ -3571,6 +3797,10 @@
         <translation>Vektor</translation>
     </message>
     <message>
+        <source>Weitere</source>
+        <translation>Andre</translation>
+    </message>
+    <message>
         <source>Als Standard-App für Bilder festlegen</source>
         <translation>Angi som standardapp for bilder</translation>
     </message>
@@ -3581,6 +3811,14 @@
     <message>
         <source>Aus: Zuerst die eingebettete Vorschau, danach wird die volle Entwicklung nachgeladen.</source>
         <translation>Av: Først den innebygde forhåndsvisningen, deretter lastes full fremkalling inn.</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG-Paare als ein Bild behandeln</source>
+        <translation>Behandle RAW+JPEG-par som ett bilde</translation>
+    </message>
+    <message>
+        <source>Gleichnamige RAW- und JPEG-Dateien erscheinen als ein Bild (das JPEG, mit Hinweis „RAW+JPEG“). Bewerten, Verschieben und Löschen betreffen beide Dateien; „RAW anzeigen“ wechselt zur RAW-Datei.</source>
+        <translation>RAW- og JPEG-filer med samme navn vises som ett bilde (JPEG-filen, merket «RAW+JPEG»). Vurdering, flytting og sletting gjelder begge filene; «Vis RAW» bytter til RAW-filen.</translation>
     </message>
     <message>
         <source>Leistung</source>
@@ -4114,6 +4352,49 @@
     </message>
 </context>
 <context>
+    <name>lf::SimpleDecoders</name>
+    <message>
+        <source>Das Archiv enthält kein zusammengesetztes Bild.</source>
+        <translation>Arkivet inneholder ikke noe sammenslått bilde.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>Bildestørrelsen %1 × %2 er ugyldig eller for stor.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist beschädigt: %1</source>
+        <translation>Bildet i arkivet er skadet: %1</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Filen kan ikke leses.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>Filen er tom (0 byte).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>Filen er for stor.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist beschädigt oder unvollständig.</source>
+        <translation>Filen er skadet eller ufullstendig.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Side %1 finnes ikke.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Ikke nok minne til bildet.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>Ikke nok minne til bildet (%1 × %2 piksler).</translation>
+    </message>
+</context>
+<context>
     <name>lf::StartScreenRecent</name>
     <message>
         <source>Zuletzt geöffnet</source>
@@ -4299,6 +4580,13 @@
         <source>Abbrechen</source>
         <translation>Avbryt</translation>
     </message>
+    <message numerus="yes">
+        <source>%n Datei(en) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n fil flyttet til papirkurven</numerusform>
+            <numerusform>%n filer flyttet til papirkurven</numerusform>
+        </translation>
+    </message>
     <message>
         <source>Bild wird kopiert …</source>
         <translation>Kopierer bilde…</translation>
@@ -4455,6 +4743,33 @@
     <message>
         <source>Filmstreifen</source>
         <translation>Filmstripe</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ZipReader</name>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Filen kan ikke leses.</translation>
+    </message>
+    <message>
+        <source>Das ZIP-Archiv ist beschädigt.</source>
+        <translation>ZIP-arkivet er skadet.</translation>
+    </message>
+    <message>
+        <source>ZIP-Archive dieser Art (mehrteilig, ZIP64) werden nicht unterstützt.</source>
+        <translation>ZIP-arkiver av denne typen (flerdelte, ZIP64) støttes ikke.</translation>
+    </message>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>«%1» mangler i arkivet.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist zu groß.</source>
+        <translation>«%1» er for stor.</translation>
+    </message>
+    <message>
+        <source>Die Kompressionsart von „%1“ wird nicht unterstützt.</source>
+        <translation>Komprimeringsmetoden for «%1» støttes ikke.</translation>
     </message>
 </context>
 </TS>

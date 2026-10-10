@@ -161,6 +161,62 @@
     </message>
 </context>
 <context>
+    <name>lf::CollectionExtras</name>
+    <message numerus="yes">
+        <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
+        <extracomment>status bar while a folder with subfolders is read (F-OPEN-08)</extracomment>
+        <translation>
+            <numerusform>Submappen lezen … %1 mappen, %n afbeelding</numerusform>
+            <numerusform>Submappen lezen … %1 mappen, %n afbeeldingen</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Unterordner gelten nur für Ordner, nicht für einzeln geöffnete Dateien</source>
+        <translation>Submappen gelden alleen voor mappen, niet voor afzonderlijk geopende bestanden</translation>
+    </message>
+    <message>
+        <source>Unterordner einbezogen</source>
+        <translation>Submappen inbegrepen</translation>
+    </message>
+    <message>
+        <source>Nur dieser Ordner</source>
+        <translation>Alleen deze map</translation>
+    </message>
+    <message>
+        <source>Dieses Bild ist kein RAW+JPEG-Paar</source>
+        <translation>Deze afbeelding is geen RAW+JPEG-paar</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG-Paare sind ausgeschaltet (Einstellungen → Formate)</source>
+        <translation>RAW+JPEG-paren zijn uitgeschakeld (Instellingen → Structuren)</translation>
+    </message>
+    <message>
+        <source>RAW-Datei</source>
+        <translation>RAW-bestand</translation>
+    </message>
+    <message>
+        <source>JPEG-Datei</source>
+        <translation>JPEG-bestand</translation>
+    </message>
+    <message>
+        <source>in „%1“</source>
+        <extracomment>status bar: the subfolder of the current image (F-OPEN-08); %1 = path below the opened folder</extracomment>
+        <translation>in ‘%1’</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG · RAW</source>
+        <translation>RAW+JPEG · RAW</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG</source>
+        <translation>RAW+JPEG</translation>
+    </message>
+    <message>
+        <source>Zweite Datei: %1 – „RAW anzeigen“ wechselt</source>
+        <translation>Tweede bestand: %1 – ‘Toon RAW’ wisselt</translation>
+    </message>
+</context>
+<context>
     <name>lf::CompareView</name>
     <message>
         <source>Vergleich</source>
@@ -806,6 +862,19 @@
     </message>
 </context>
 <context>
+    <name>lf::GeoLocation</name>
+    <message>
+        <source>%1° %2′ %3″ %4</source>
+        <extracomment>GPS coordinate in degrees, minutes, seconds, e.g. &quot;48° 8′ 13,6″ N&quot;</extracomment>
+        <translation>%1° %2′ %3″ %4</translation>
+    </message>
+    <message>
+        <source>%1, %2</source>
+        <extracomment>GPS position: latitude, longitude</extracomment>
+        <translation>%1, %2</translation>
+    </message>
+</context>
+<context>
     <name>lf::GridView</name>
     <message>
         <source>Raster</source>
@@ -971,6 +1040,29 @@
     </message>
 </context>
 <context>
+    <name>lf::InfoGpsBox</name>
+    <message>
+        <source>Koordinaten kopieren</source>
+        <translation>Kopieer coördinaten</translation>
+    </message>
+    <message>
+        <source>Karte wird geladen …</source>
+        <translation>Kaart laden …</translation>
+    </message>
+    <message>
+        <source>Karte anzeigen</source>
+        <translation>Toon kaart</translation>
+    </message>
+    <message>
+        <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
+        <translation>Laadt een kaartuitsnede uit Apple Kaarten (internetverbinding)</translation>
+    </message>
+    <message>
+        <source>In Karten öffnen</source>
+        <translation>Open in Kaarten</translation>
+    </message>
+</context>
+<context>
     <name>lf::InfoPanel</name>
     <message>
         <source>Ein- oder ausklappen</source>
@@ -1038,6 +1130,22 @@
         <translation>Toegevoegd</translation>
     </message>
     <message>
+        <source>RAW+JPEG-Paar</source>
+        <translation>RAW+JPEG-paar</translation>
+    </message>
+    <message>
+        <source>Angezeigt</source>
+        <translation>Getoond</translation>
+    </message>
+    <message>
+        <source>Zweite Datei</source>
+        <translation>Tweede bestand</translation>
+    </message>
+    <message>
+        <source>Größe der zweiten Datei</source>
+        <translation>Grootte van tweede bestand</translation>
+    </message>
+    <message>
         <source>Bild</source>
         <translation>Afbeelding</translation>
     </message>
@@ -1060,6 +1168,10 @@
     <message>
         <source>Nicht lesbar</source>
         <translation>Niet leesbaar</translation>
+    </message>
+    <message>
+        <source>Alle Metadaten …</source>
+        <translation>Alle metadata …</translation>
     </message>
     <message>
         <source>Tags</source>
@@ -1431,6 +1543,14 @@
     <message>
         <source>Belichtungsregler einblenden</source>
         <translation>Belichtingsregelaar tonen</translation>
+    </message>
+    <message>
+        <source>Unterordner einbeziehen</source>
+        <translation>Submappen opnemen</translation>
+    </message>
+    <message>
+        <source>RAW/JPEG des Paares zeigen</source>
+        <translation>Toon RAW/JPEG van paar</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2386,6 +2506,10 @@
         <translation>Spiegel verticaal</translation>
     </message>
     <message>
+        <source>RAW anzeigen</source>
+        <translation>Toon RAW</translation>
+    </message>
+    <message>
         <source>Fenster</source>
         <translation>Venster</translation>
     </message>
@@ -2543,6 +2667,18 @@
         <translation>Vergelijk selectie</translation>
     </message>
     <message>
+        <source>Unterordner einbeziehen</source>
+        <translation>Submappen opnemen</translation>
+    </message>
+    <message>
+        <source>Nächster Ordner</source>
+        <translation>Volgende map</translation>
+    </message>
+    <message>
+        <source>Vorheriger Ordner</source>
+        <translation>Vorige map</translation>
+    </message>
+    <message>
         <source>Gehe zu Bild …</source>
         <translation>Ga naar afbeelding…</translation>
     </message>
@@ -2597,6 +2733,24 @@
     <message>
         <source>Belichtungsregler einblenden</source>
         <translation>Belichtingsregelaar tonen</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MapPreviewController</name>
+    <message>
+        <source>Karten sind auf diesem System nicht verfügbar.</source>
+        <translation>Kaarten zijn niet beschikbaar op dit systeem.</translation>
+    </message>
+    <message>
+        <source>Die Karte konnte nicht geladen werden.</source>
+        <translation>De kaart kon niet worden geladen.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MapSnapshot</name>
+    <message>
+        <source>Die Karte konnte nicht geladen werden.</source>
+        <translation>De kaart kon niet worden geladen.</translation>
     </message>
 </context>
 <context>
@@ -2775,6 +2929,78 @@
         <source>Höhe</source>
         <extracomment>GPS altitude</extracomment>
         <translation>Hoogte</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MetadataDialog</name>
+    <message>
+        <source>Alle Metadaten – %1</source>
+        <translation>Alle metadata – %1</translation>
+    </message>
+    <message>
+        <source>Wird geladen …</source>
+        <translation>Laden…</translation>
+    </message>
+    <message>
+        <source>Keine Metadaten gefunden.</source>
+        <translation>Geen metadata gevonden.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 von %n Einträgen</source>
+        <translation>
+            <numerusform>%1 van %n item</numerusform>
+            <numerusform>%1 van %n items</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Einträge</source>
+        <translation>
+            <numerusform>%n item</numerusform>
+            <numerusform>%n items</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Wert kopieren</source>
+        <translation>Kopieer waarde</translation>
+    </message>
+    <message>
+        <source>Gruppe kopieren</source>
+        <translation>Kopieer groep</translation>
+    </message>
+    <message>
+        <source>Zeile kopieren</source>
+        <translation>Kopieer regel</translation>
+    </message>
+    <message>
+        <source>Alles kopieren</source>
+        <translation>Kopieer alles</translation>
+    </message>
+    <message>
+        <source>Suchen (Feld oder Wert) …</source>
+        <translation>Zoeken (veld of waarde) …</translation>
+    </message>
+    <message>
+        <source>Feld</source>
+        <translation>Veld</translation>
+    </message>
+    <message>
+        <source>Wert</source>
+        <translation>Waarde</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>Kopieer</translation>
+    </message>
+    <message>
+        <source>Alle Metadaten</source>
+        <translation>Alle metadata</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MetadataTree</name>
+    <message>
+        <source>Bild (allgemein)</source>
+        <translation>Afbeelding (algemeen)</translation>
     </message>
 </context>
 <context>
@@ -3571,6 +3797,10 @@
         <translation>Vector</translation>
     </message>
     <message>
+        <source>Weitere</source>
+        <translation>Overige</translation>
+    </message>
+    <message>
         <source>Als Standard-App für Bilder festlegen</source>
         <translation>Stel in als standaardapp voor afbeeldingen</translation>
     </message>
@@ -3581,6 +3811,14 @@
     <message>
         <source>Aus: Zuerst die eingebettete Vorschau, danach wird die volle Entwicklung nachgeladen.</source>
         <translation>Uit: eerst de ingesloten voorvertoning, daarna wordt de volledige ontwikkeling geladen.</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG-Paare als ein Bild behandeln</source>
+        <translation>RAW+JPEG-paren als één afbeelding behandelen</translation>
+    </message>
+    <message>
+        <source>Gleichnamige RAW- und JPEG-Dateien erscheinen als ein Bild (das JPEG, mit Hinweis „RAW+JPEG“). Bewerten, Verschieben und Löschen betreffen beide Dateien; „RAW anzeigen“ wechselt zur RAW-Datei.</source>
+        <translation>RAW- en JPEG-bestanden met dezelfde naam verschijnen als één afbeelding (de JPEG, met de markering ‘RAW+JPEG’). Beoordelen, verplaatsen en verwijderen gelden voor beide bestanden; ‘Toon RAW’ wisselt naar het RAW-bestand.</translation>
     </message>
     <message>
         <source>Leistung</source>
@@ -4114,6 +4352,49 @@
     </message>
 </context>
 <context>
+    <name>lf::SimpleDecoders</name>
+    <message>
+        <source>Das Archiv enthält kein zusammengesetztes Bild.</source>
+        <translation>Het archief bevat geen samengevoegde afbeelding.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>De afbeeldingsgrootte %1 × %2 is ongeldig of te groot.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist beschädigt: %1</source>
+        <translation>De afbeelding in het archief is beschadigd: %1</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Het bestand kan niet worden gelezen.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>Het bestand is leeg (0 bytes).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>Het bestand is te groot.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist beschädigt oder unvollständig.</source>
+        <translation>Het bestand is beschadigd of onvolledig.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Pagina %1 bestaat niet.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Onvoldoende geheugen voor de afbeelding.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>Onvoldoende geheugen voor de afbeelding (%1 × %2 pixels).</translation>
+    </message>
+</context>
+<context>
     <name>lf::StartScreenRecent</name>
     <message>
         <source>Zuletzt geöffnet</source>
@@ -4299,6 +4580,13 @@
         <source>Abbrechen</source>
         <translation>Annuleer</translation>
     </message>
+    <message numerus="yes">
+        <source>%n Datei(en) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n bestand naar de prullenmand verplaatst</numerusform>
+            <numerusform>%n bestanden naar de prullenmand verplaatst</numerusform>
+        </translation>
+    </message>
     <message>
         <source>Bild wird kopiert …</source>
         <translation>Afbeelding kopiëren…</translation>
@@ -4455,6 +4743,33 @@
     <message>
         <source>Filmstreifen</source>
         <translation>Filmstrip</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ZipReader</name>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Het bestand kan niet worden gelezen.</translation>
+    </message>
+    <message>
+        <source>Das ZIP-Archiv ist beschädigt.</source>
+        <translation>Het ZIP-archief is beschadigd.</translation>
+    </message>
+    <message>
+        <source>ZIP-Archive dieser Art (mehrteilig, ZIP64) werden nicht unterstützt.</source>
+        <translation>ZIP-archieven van dit type (meerdelig, ZIP64) worden niet ondersteund.</translation>
+    </message>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>‘%1’ ontbreekt in het archief.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist zu groß.</source>
+        <translation>‘%1’ is te groot.</translation>
+    </message>
+    <message>
+        <source>Die Kompressionsart von „%1“ wird nicht unterstützt.</source>
+        <translation>De compressiemethode van ‘%1’ wordt niet ondersteund.</translation>
     </message>
 </context>
 </TS>

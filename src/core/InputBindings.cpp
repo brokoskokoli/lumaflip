@@ -130,6 +130,10 @@ const ActionInfo kActions[] = {
      QT_TRANSLATE_NOOP("lf::InputBindings", "Belichtung zurücksetzen")},
     {Action::ToggleExposureHud, "toggleExposureHud",
      QT_TRANSLATE_NOOP("lf::InputBindings", "Belichtungsregler einblenden")},
+    {Action::ToggleSubfolders, "toggleSubfolders",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Unterordner einbeziehen")},
+    {Action::ToggleRawJpeg, "toggleRawJpeg",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "RAW/JPEG des Paares zeigen")},
 };
 
 const ActionInfo* info(Action a) {

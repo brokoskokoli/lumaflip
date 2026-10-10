@@ -161,6 +161,61 @@
     </message>
 </context>
 <context>
+    <name>lf::CollectionExtras</name>
+    <message numerus="yes">
+        <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
+        <extracomment>status bar while a folder with subfolders is read (F-OPEN-08)</extracomment>
+        <translation>
+            <numerusform>サブフォルダを読み込み中… %1 フォルダ、%n 枚の画像</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Unterordner gelten nur für Ordner, nicht für einzeln geöffnete Dateien</source>
+        <translation>サブフォルダはフォルダにのみ適用され、個別に開いたファイルには適用されません</translation>
+    </message>
+    <message>
+        <source>Unterordner einbezogen</source>
+        <translation>サブフォルダを含めました</translation>
+    </message>
+    <message>
+        <source>Nur dieser Ordner</source>
+        <translation>このフォルダのみ</translation>
+    </message>
+    <message>
+        <source>Dieses Bild ist kein RAW+JPEG-Paar</source>
+        <translation>この画像はRAW+JPEGのペアではありません</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG-Paare sind ausgeschaltet (Einstellungen → Formate)</source>
+        <translation>RAW+JPEGペアはオフです（設定 → フォーマット）</translation>
+    </message>
+    <message>
+        <source>RAW-Datei</source>
+        <translation>RAWファイル</translation>
+    </message>
+    <message>
+        <source>JPEG-Datei</source>
+        <translation>JPEGファイル</translation>
+    </message>
+    <message>
+        <source>in „%1“</source>
+        <extracomment>status bar: the subfolder of the current image (F-OPEN-08); %1 = path below the opened folder</extracomment>
+        <translation>「%1」内</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG · RAW</source>
+        <translation>RAW+JPEG · RAW</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG</source>
+        <translation>RAW+JPEG</translation>
+    </message>
+    <message>
+        <source>Zweite Datei: %1 – „RAW anzeigen“ wechselt</source>
+        <translation>2つ目のファイル：%1 – 「RAWを表示」で切り替え</translation>
+    </message>
+</context>
+<context>
     <name>lf::CompareView</name>
     <message>
         <source>Vergleich</source>
@@ -799,6 +854,19 @@
     </message>
 </context>
 <context>
+    <name>lf::GeoLocation</name>
+    <message>
+        <source>%1° %2′ %3″ %4</source>
+        <extracomment>GPS coordinate in degrees, minutes, seconds, e.g. &quot;48° 8′ 13,6″ N&quot;</extracomment>
+        <translation>%1° %2′ %3″ %4</translation>
+    </message>
+    <message>
+        <source>%1, %2</source>
+        <extracomment>GPS position: latitude, longitude</extracomment>
+        <translation>%1、%2</translation>
+    </message>
+</context>
+<context>
     <name>lf::GridView</name>
     <message>
         <source>Raster</source>
@@ -964,6 +1032,29 @@
     </message>
 </context>
 <context>
+    <name>lf::InfoGpsBox</name>
+    <message>
+        <source>Koordinaten kopieren</source>
+        <translation>座標をコピー</translation>
+    </message>
+    <message>
+        <source>Karte wird geladen …</source>
+        <translation>マップを読み込み中…</translation>
+    </message>
+    <message>
+        <source>Karte anzeigen</source>
+        <translation>マップを表示</translation>
+    </message>
+    <message>
+        <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
+        <translation>Appleマップから地図の一部を読み込みます（インターネット接続）</translation>
+    </message>
+    <message>
+        <source>In Karten öffnen</source>
+        <translation>マップで開く</translation>
+    </message>
+</context>
+<context>
     <name>lf::InfoPanel</name>
     <message>
         <source>Ein- oder ausklappen</source>
@@ -1031,6 +1122,22 @@
         <translation>追加日</translation>
     </message>
     <message>
+        <source>RAW+JPEG-Paar</source>
+        <translation>RAW+JPEGペア</translation>
+    </message>
+    <message>
+        <source>Angezeigt</source>
+        <translation>表示中</translation>
+    </message>
+    <message>
+        <source>Zweite Datei</source>
+        <translation>2つ目のファイル</translation>
+    </message>
+    <message>
+        <source>Größe der zweiten Datei</source>
+        <translation>2つ目のファイルのサイズ</translation>
+    </message>
+    <message>
         <source>Bild</source>
         <translation>画像</translation>
     </message>
@@ -1053,6 +1160,10 @@
     <message>
         <source>Nicht lesbar</source>
         <translation>読み込めません</translation>
+    </message>
+    <message>
+        <source>Alle Metadaten …</source>
+        <translation>すべてのメタデータ…</translation>
     </message>
     <message>
         <source>Tags</source>
@@ -1424,6 +1535,14 @@
     <message>
         <source>Belichtungsregler einblenden</source>
         <translation>露出スライダを表示</translation>
+    </message>
+    <message>
+        <source>Unterordner einbeziehen</source>
+        <translation>サブフォルダを含める</translation>
+    </message>
+    <message>
+        <source>RAW/JPEG des Paares zeigen</source>
+        <translation>ペアのRAW/JPEGを表示</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2379,6 +2498,10 @@
         <translation>上下反転</translation>
     </message>
     <message>
+        <source>RAW anzeigen</source>
+        <translation>RAWを表示</translation>
+    </message>
+    <message>
         <source>Fenster</source>
         <translation>ウインドウ</translation>
     </message>
@@ -2536,6 +2659,18 @@
         <translation>選択項目を比較</translation>
     </message>
     <message>
+        <source>Unterordner einbeziehen</source>
+        <translation>サブフォルダを含める</translation>
+    </message>
+    <message>
+        <source>Nächster Ordner</source>
+        <translation>次のフォルダ</translation>
+    </message>
+    <message>
+        <source>Vorheriger Ordner</source>
+        <translation>前のフォルダ</translation>
+    </message>
+    <message>
         <source>Gehe zu Bild …</source>
         <translation>画像に移動…</translation>
     </message>
@@ -2590,6 +2725,24 @@
     <message>
         <source>Belichtungsregler einblenden</source>
         <translation>露出スライダを表示</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MapPreviewController</name>
+    <message>
+        <source>Karten sind auf diesem System nicht verfügbar.</source>
+        <translation>このシステムではマップを利用できません。</translation>
+    </message>
+    <message>
+        <source>Die Karte konnte nicht geladen werden.</source>
+        <translation>マップを読み込めませんでした。</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MapSnapshot</name>
+    <message>
+        <source>Die Karte konnte nicht geladen werden.</source>
+        <translation>マップを読み込めませんでした。</translation>
     </message>
 </context>
 <context>
@@ -2768,6 +2921,76 @@
         <source>Höhe</source>
         <extracomment>GPS altitude</extracomment>
         <translation>高度</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MetadataDialog</name>
+    <message>
+        <source>Alle Metadaten – %1</source>
+        <translation>すべてのメタデータ – %1</translation>
+    </message>
+    <message>
+        <source>Wird geladen …</source>
+        <translation>読み込み中…</translation>
+    </message>
+    <message>
+        <source>Keine Metadaten gefunden.</source>
+        <translation>メタデータが見つかりません。</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 von %n Einträgen</source>
+        <translation>
+            <numerusform>%n 件中 %1 件</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Einträge</source>
+        <translation>
+            <numerusform>%n 件</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Wert kopieren</source>
+        <translation>値をコピー</translation>
+    </message>
+    <message>
+        <source>Gruppe kopieren</source>
+        <translation>グループをコピー</translation>
+    </message>
+    <message>
+        <source>Zeile kopieren</source>
+        <translation>行をコピー</translation>
+    </message>
+    <message>
+        <source>Alles kopieren</source>
+        <translation>すべてをコピー</translation>
+    </message>
+    <message>
+        <source>Suchen (Feld oder Wert) …</source>
+        <translation>検索（フィールドまたは値）…</translation>
+    </message>
+    <message>
+        <source>Feld</source>
+        <translation>フィールド</translation>
+    </message>
+    <message>
+        <source>Wert</source>
+        <translation>値</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>コピー</translation>
+    </message>
+    <message>
+        <source>Alle Metadaten</source>
+        <translation>すべてのメタデータ</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MetadataTree</name>
+    <message>
+        <source>Bild (allgemein)</source>
+        <translation>画像（一般）</translation>
     </message>
 </context>
 <context>
@@ -3558,6 +3781,10 @@
         <translation>ベクトル</translation>
     </message>
     <message>
+        <source>Weitere</source>
+        <translation>その他</translation>
+    </message>
+    <message>
         <source>Als Standard-App für Bilder festlegen</source>
         <translation>画像のデフォルトのアプリに設定</translation>
     </message>
@@ -3568,6 +3795,14 @@
     <message>
         <source>Aus: Zuerst die eingebettete Vorschau, danach wird die volle Entwicklung nachgeladen.</source>
         <translation>オフ: まず埋め込みプレビューを表示し、その後フル現像した画像を読み込みます。</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG-Paare als ein Bild behandeln</source>
+        <translation>RAW+JPEGペアを1枚の画像として扱う</translation>
+    </message>
+    <message>
+        <source>Gleichnamige RAW- und JPEG-Dateien erscheinen als ein Bild (das JPEG, mit Hinweis „RAW+JPEG“). Bewerten, Verschieben und Löschen betreffen beide Dateien; „RAW anzeigen“ wechselt zur RAW-Datei.</source>
+        <translation>同じ名前のRAWファイルとJPEGファイルは1枚の画像（「RAW+JPEG」と表示されたJPEG）として表示されます。評価、移動、削除は両方のファイルに適用されます。「RAWを表示」でRAWファイルに切り替わります。</translation>
     </message>
     <message>
         <source>Leistung</source>
@@ -4099,6 +4334,49 @@
     </message>
 </context>
 <context>
+    <name>lf::SimpleDecoders</name>
+    <message>
+        <source>Das Archiv enthält kein zusammengesetztes Bild.</source>
+        <translation>アーカイブに統合画像が含まれていません。</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>画像サイズ %1 × %2 が無効か、大きすぎます。</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist beschädigt: %1</source>
+        <translation>アーカイブ内の画像が破損しています：%1</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>ファイルを読み込めません。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>ファイルが空です（0 バイト）。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>ファイルが大きすぎます。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist beschädigt oder unvollständig.</source>
+        <translation>ファイルが破損しているか、不完全です。</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>ページ %1 は存在しません。</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>画像用のメモリが足りません。</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>画像用のメモリが足りません（%1 × %2 ピクセル）。</translation>
+    </message>
+</context>
+<context>
     <name>lf::StartScreenRecent</name>
     <message>
         <source>Zuletzt geöffnet</source>
@@ -4284,6 +4562,12 @@
         <source>Abbrechen</source>
         <translation>キャンセル</translation>
     </message>
+    <message numerus="yes">
+        <source>%n Datei(en) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n 個のファイルをゴミ箱に入れました</numerusform>
+        </translation>
+    </message>
     <message>
         <source>Bild wird kopiert …</source>
         <translation>画像をコピー中…</translation>
@@ -4439,6 +4723,33 @@
     <message>
         <source>Filmstreifen</source>
         <translation>フィルムストリップ</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ZipReader</name>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>ファイルを読み込めません。</translation>
+    </message>
+    <message>
+        <source>Das ZIP-Archiv ist beschädigt.</source>
+        <translation>ZIPアーカイブが破損しています。</translation>
+    </message>
+    <message>
+        <source>ZIP-Archive dieser Art (mehrteilig, ZIP64) werden nicht unterstützt.</source>
+        <translation>この種類のZIPアーカイブ（分割、ZIP64）には対応していません。</translation>
+    </message>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>アーカイブに「%1」がありません。</translation>
+    </message>
+    <message>
+        <source>„%1“ ist zu groß.</source>
+        <translation>「%1」が大きすぎます。</translation>
+    </message>
+    <message>
+        <source>Die Kompressionsart von „%1“ wird nicht unterstützt.</source>
+        <translation>「%1」の圧縮方式には対応していません。</translation>
     </message>
 </context>
 </TS>

@@ -71,6 +71,11 @@ public:
     ~FolderWatcher() override = default;
     virtual void watch(const QString& folderPath) = 0;
     virtual void unwatch(const QString& folderPath) = 0;
+    // F-OPEN-08: `root` and every folder below it (also folders created later);
+    // folderChanged() names the folder whose contents changed (or `root` if the system
+    // dropped events). Default: only `root` itself (platforms without recursive watching).
+    virtual void watchTree(const QString& root) { watch(root); }
+    virtual void unwatchTree(const QString& root) { unwatch(root); }
 signals:
     void folderChanged(const QString& folderPath);
 };

@@ -44,7 +44,8 @@ public:
     Metadata metadata(const QString& path) override;
 };
 
-// Registers the portable backends (Qt image plugins + SVG) and their suffixes.
+// Registers the portable backends (Qt image plugins + SVG + the own "Rest" format decoders,
+// SimpleDecoders.h) and their suffixes.
 // Called by the owner of the registry in addition to registerPlatformDecoders().
 void registerPortableDecoders(DecoderRegistry& registry);
 

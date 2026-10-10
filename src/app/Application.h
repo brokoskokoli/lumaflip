@@ -144,7 +144,9 @@ public:
     void unregisterWindow(ViewerWindow* window);
     void windowActivated(ViewerWindow* window);
     void windowChanged(ViewerWindow* window); // title/state changed (menus)
-    void setWindowFolder(ViewerWindow* window, const QString& oldFolder, const QString& newFolder);
+    // `oldTree`/`newTree` (F-OPEN-08): the folder is watched with all its subfolders.
+    void setWindowFolder(ViewerWindow* window, const QString& oldFolder, const QString& newFolder,
+                         bool oldTree = false, bool newTree = false);
     // A folder is opened from another window's copy (F-WIN-09): checks in the background
     // whether it changed without a watcher event (B12: network volumes) and reloads it in
     // every window if so.

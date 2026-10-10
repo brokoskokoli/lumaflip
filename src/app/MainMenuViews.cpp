@@ -4,6 +4,7 @@
 // minimal window (F-VIEW-13) and coupled windows (F-WIN-07).
 
 #include "Application.h"
+#include "CollectionExtras.h"
 #include "CouplingManager.h"
 #include "MainMenu.h"
 #include "NavigationExtras.h"
@@ -30,6 +31,15 @@ void MainMenu::buildViews(QMenu* view, QMenu* nav) {
                     w->extras()->overview()->compare(w->extras()->overview()->subjectPaths());
             });
 
+    // ---- Darstellung: subfolders (F-OPEN-08) ----
+    view->addSeparator();
+    add(view, Action::ToggleSubfolders, tr("Unterordner einbeziehen"))->setCheckable(true);
+
+    // ---- Navigation: sibling folders (F-OPEN-09) ----
+    nav->addSeparator();
+    add(nav, Action::NextFolder, tr("Nächster Ordner"));
+    add(nav, Action::PreviousFolder, tr("Vorheriger Ordner"));
+
     // ---- Navigation: go to, shuffle, name filter ----
     nav->addSeparator();
     add(nav, Action::GoToImage, tr("Gehe zu Bild …"));                                // F-NAV-06
@@ -54,10 +64,18 @@ void MainMenu::buildWindowModes(QMenu* window) {
 void MainMenu::refreshViewsState() {
     ViewerWindow* w = m_app.frontWindow();
     WindowExtras* x = w ? w->extras() : nullptr;
-    for (Action a : {Action::ToggleGrid, Action::CompareWithNext, Action::GoToImage, Action::ToggleShuffle,
-                     Action::FilterByName, Action::ToggleAlwaysOnTop, Action::ToggleMinimalWindow})
+    for (Action a :
+         {Action::ToggleGrid, Action::CompareWithNext, Action::GoToImage, Action::ToggleShuffle,
+          Action::FilterByName, Action::ToggleAlwaysOnTop, Action::ToggleMinimalWindow,
+          Action::ToggleSubfolders, Action::NextFolder, Action::PreviousFolder, Action::ToggleRawJpeg})
         if (QAction* act = action(a))
             act->setEnabled(x != nullptr);
+    if (QAction* act = action(Action::ToggleSubfolders)) // F-OPEN-08
+        act->setChecked(x && x->collectionExtras()->includesSubfolders());
+    if (QAction* act = action(Action::ToggleRawJpeg)) { // F-FMT-06
+        act->setEnabled(x && x->collectionExtras()->currentIsPair());
+        act->setChecked(x && x->collectionExtras()->currentShowsRaw());
+    }
     if (QAction* act = action(Action::ToggleGrid))
         act->setChecked(x && x->overview()->isGridShown());
     if (QAction* act = action(Action::ToggleShuffle))

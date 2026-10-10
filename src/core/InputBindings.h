@@ -100,6 +100,9 @@ enum class Action {
     ExposureDecrease,    // F-COL-05: -1/3 EV
     ExposureReset,       // F-COL-05: 0 EV
     ToggleExposureHud,   // F-COL-05: exposure slider over the image
+    // M3 (appended, keep order above stable)
+    ToggleSubfolders, // F-OPEN-08
+    ToggleRawJpeg,    // F-FMT-06: show the RAW / the JPEG of a pair
 };
 
 QString actionId(Action a); // stable string id for settings ("nextImage")

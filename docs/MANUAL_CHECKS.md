@@ -111,3 +111,22 @@ Umlauten/NFD, Bewertungstasten in der Diashow) und `tst_m3_views` (echte Fenster
 | F-COL-03 | Über einem HDR-Bild auf einem EDR-Display: Toast (z. B. ⌘C), Umbenennen (Enter, Cursor blinkt), Aussortiermodus, Belichtungsregler (⌥⌘E) und Fehlerkarte erscheinen vollständig, ohne Flackern und mit richtigen Farben; Klicks, Ziehen, Pinch und Tastatur wirken wie bei SDR-Bildern; Mauszeiger (Hand beim Verschieben) stimmt | Die EDR-Fläche ist eine native Ebene über der Qt-Oberfläche; Überlagerungen werden dafür abgegriffen und im HDR-Durchgang gezeichnet (`tst_hdr` prüft, dass sie ankommen) – der optische Eindruck ist nur am Gerät prüfbar |
 | F-COL-04 | ⇧⌘H bzw. Darstellung → HDR → „HDR anzeigen“: HDR-Bild wechselt sofort zwischen HDR und SDR-Vorschau (Spitzlichter weich abgerollt, nicht abgeschnitten), Statuszeile zeigt „HDR“ bzw. „HDR (SDR-Vorschau)“ mit passendem Tooltip; auf einem Display ohne EDR immer SDR-Vorschau | Optischer Eindruck des Tone-Mappings; Umschalten, Abzeichen und Einstellung prüft `tst_hdr` |
 | F-COL-05 | EXR mit hellen Bereichen öffnen, Belichtungsregler (⌥⌘E) und ⌥⌘+/⌥⌘−/⌥⌘0: Spitzlichter werden bei −EV sichtbar, Datei bleibt unverändert (Änderungsdatum); nächstes Bild beginnt bei 0 EV, außer „Beibehalten“ ist an | Optischer Eindruck; Belichtungsmathematik `test_hdr_mapping`, Regler und Zurücksetzen `tst_hdr` |
+
+## M3: Unterordner, Geschwisterordner, RAW+JPEG-Paare, GPS-Karte, Rohmetadaten, Restformate (SPEC 4.1, 4.4, 4.6)
+
+Automatisch prüfen `test_m3_collection` (rekursives Einlesen, Reihenfolge, Abbruch, Fortschritt,
+Unterordner-Änderungen über einen Ersatz-Watcher, Geschwisterordner, Paarbildung, Papierkorb und
+Bewertung für beide Dateien), `test_folder_watcher` (`F_OPEN_08_TreeWatchReportsSubfolders`, echtes
+FSEvents), `test_m3_info` (Koordinatentexte, Karten-Link, keine Kartenanfrage vor dem Klick,
+Metadatenbaum mit Suche/Kopie aus `exif.jpg`), `test_simple_decoders` (QOI, PCX, PNM/PAM/PFM, SGI,
+OpenRaster, Krita inkl. abgeschnittener und zufällig veränderter Dateien) und
+`tst_m3_collection_info` (echte Fenster).
+
+| ID | Prüfung | Warum manuell |
+|---|---|---|
+| F-OPEN-08 | Fotoordner mit vielen Unterordnern (z. B. 10 000 Bilder in 300 Ordnern, auch auf einem Netzlaufwerk) öffnen, Darstellung → „Unterordner einbeziehen“: das aktuelle Bild bleibt, die Statuszeile zählt „Unterordner werden gelesen … n Ordner, n Bilder“, Blättern bleibt währenddessen flüssig; danach zeigt die Statuszeile „in „Unterordner““. Im Finder ein Bild in einen Unterordner legen: erscheint ohne Neuladen. Ausschalten: nur noch der Ordner selbst | Gefühl mit echten, großen Ordnern und Netzlaufwerken |
+| F-OPEN-09 | ⌥→ / ⌥← und Navigation → „Nächster Ordner“ / „Vorheriger Ordner“ in einem Ordner mit Geschwisterordnern (auch leere und versteckte): leere werden übersprungen, die Reihenfolge entspricht dem Finder | Vergleich mit dem echten Finder |
+| F-FMT-06 | Kameraordner mit RAW+JPEG (z. B. `IMG_1.CR3` + `IMG_1.JPG`), Einstellungen → Formate → „RAW+JPEG-Paare als ein Bild behandeln“: nur ein Bild je Paar mit „RAW+JPEG“-Hinweis in der Statuszeile; Bild → „RAW anzeigen“ zeigt die RAW-Datei; Bewerten (3) schreibt `IMG_1.JPG.xmp` und `IMG_1.xmp`, Lightroom zeigt die Sterne am RAW; Löschen legt beide in den Papierkorb, ⌘Z holt beide zurück | Echte Kameradateien und Fremdprogramme |
+| F-INFO-04 | Foto mit GPS-Daten, Infopanel: Koordinaten in Grad/Minuten/Sekunden, **ohne** Netzwerkzugriff (z. B. Little Snitch/„Netzwerk“ in der Aktivitätsanzeige); erst „Karte anzeigen“ lädt die Mini-Karte mit Markierung (Hell-/Dunkelmodus), weitere Bilder mit GPS laden ihre Karte danach im selben Fenster ohne Klick, ein neues Fenster fragt wieder. „In Karten öffnen“ öffnet Apple Karten an der Stelle. Offline: verständliche Meldung statt Karte | Netzwerk und MapKit sind im Test nicht verfügbar (der Ablauf ist mit einem Ersatz-Renderer getestet) |
+| F-INFO-05 | Infopanel → „Alle Metadaten …“ bei einem RAW (MakerNote-Gruppe, z. B. „MakerCanon“), einem iPhone-HEIC und einem JPEG mit IPTC: Gruppen aufklappbar, Suche nach „ISO“ bzw. einem Wert findet die Zeilen, ⌘C/„Kopieren“/„Alles kopieren“ liefert lesbaren Text; beim Blättern folgt das Fenster dem Bild | Vielfalt echter Kameradateien |
+| F-FMT-01 | Restformate: echte QOI-, PCX-, PBM/PGM/PPM/PFM-, SGI-, ORA- (Krita/GIMP/MyPaint-Export) und KRA-Dateien öffnen: Darstellung wie im Ursprungsprogramm; PFM mit Werten über 1 erscheint auf einem EDR-Bildschirm hell (HDR) | Dateien aus Fremdprogrammen; synthetische Dateien prüft `test_simple_decoders` |

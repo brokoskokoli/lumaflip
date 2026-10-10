@@ -5,8 +5,8 @@
 // while enumerating folders.
 //
 // On macOS the set is derived from the registered decoder backends (ImageIO's readable
-// UTTypes and their filename extensions, Qt image plugins, SVG), so suffixes without any
-// backend (e.g. xcf, kra, ora, pcx, x3f) are not listed and do not produce error cards.
+// UTTypes and their filename extensions, Qt image plugins, SVG, own decoders), so suffixes
+// without any backend (e.g. xcf, x3f) are not listed and do not produce error cards.
 // Document formats that a backend happens to render (pdf) are excluded. Other platforms
 // use the portable default list.
 

@@ -9,6 +9,7 @@
 #include "HdrController.h"
 #include "ImageView.h"
 #include "OpenWith.h"
+#include "QuickMoveController.h"
 #include "RecentItems.h"
 #include "RenameController.h"
 #include "StartScreenRecent.h"
@@ -17,6 +18,7 @@
 #include "WindowTabbing.h"
 #include "core/Collection.h"
 #include "core/Decoder.h"
+#include "core/FileBatch.h"
 #include "core/FileOps.h"
 #include "core/ImageFormats.h"
 #include "core/Platform.h"
@@ -344,6 +346,7 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
         m_app.windowChanged(this);
     });
     connect(m_collection, &Collection::accessDenied, this, &ViewerWindow::showAccessHint);
+    connect(m_collection, &Collection::foldersChanged, this, &ViewerWindow::updateFolderWatch); // F-OPEN-08
     ImageProvider& provider = m_app.provider();
     connect(&provider, &ImageProvider::imageReady, this, &ViewerWindow::onImageReady);
     // F-FMT-04: an error card only for the page that failed (other pages may be fine).
@@ -447,7 +450,7 @@ void ViewerWindow::setVisible(bool visible) {
 ViewerWindow::~ViewerWindow() {
     m_app.provider().removeClient(this);
     if (!m_watchedFolder.isEmpty())
-        m_app.setWindowFolder(this, m_watchedFolder, {});
+        m_app.setWindowFolder(this, m_watchedFolder, {}, m_watchedTree, false);
     m_app.unregisterWindow(this);
 }
 
@@ -580,6 +583,8 @@ QVariantMap ViewerWindow::sessionState() const {
         m.insert(QStringLiteral("files"), files);
     }
     m.insert(QStringLiteral("current"), currentPath());
+    if (c->includesSubfolders())
+        m.insert(QStringLiteral("subfolders"), true); // F-OPEN-08 (per window and session)
     const ZoomMode mode = m_view->zoomMode() == ZoomMode::Custom ? ZoomMode::Fit : m_view->zoomMode();
     m.insert(QStringLiteral("zoom"), zoomModeId(mode));
     m.insert(QStringLiteral("geometry"), saveGeometry());
@@ -597,7 +602,18 @@ bool ViewerWindow::restoreSessionState(const QVariantMap& state, const QStringLi
     for (const QString& f : state.value(QStringLiteral("files")).toStringList())
         if (existing.contains(f))
             files << f;
-    if (!folder.isEmpty()) {
+    const bool subfolders = state.value(QStringLiteral("subfolders")).toBool(); // F-OPEN-08
+    m_collection->setIncludeSubfolders(subfolders && !folder.isEmpty());
+    if (!folder.isEmpty() && subfolders && existing.contains(folder) &&
+        QFileInfo(current).absolutePath() != folder) {
+        // The current image is in a subfolder: open the folder, then select it.
+        openFolder(folder);
+        auto* once = new QObject(this);
+        connect(m_collection, &Collection::loadingFinished, once, [this, once, current] {
+            m_collection->setCurrentPath(current);
+            once->deleteLater();
+        });
+    } else if (!folder.isEmpty()) {
         if (existing.contains(current))
             openFile(current); // the folder, with this image current
         else if (existing.contains(folder))
@@ -1126,10 +1142,12 @@ void ViewerWindow::hideAccessHint() {
 void ViewerWindow::updateFolderWatch() {
     const QString folder =
         m_collection->isFolderCollection() && !m_closed ? m_collection->folderPath() : QString();
-    if (folder == m_watchedFolder)
+    const bool tree = !folder.isEmpty() && m_collection->includesSubfolders(); // F-OPEN-08
+    if (folder == m_watchedFolder && tree == m_watchedTree)
         return;
-    m_app.setWindowFolder(this, m_watchedFolder, folder);
+    m_app.setWindowFolder(this, m_watchedFolder, folder, m_watchedTree, tree);
     m_watchedFolder = folder;
+    m_watchedTree = tree;
 }
 
 // ---------------------------------------------------------------------------------------
@@ -1503,6 +1521,16 @@ void ViewerWindow::trashCurrent() {
 }
 
 void ViewerWindow::trashNow(const QString& path) {
+    // F-FMT-06: a RAW+JPEG pair goes as a whole (one undo step, sidecars along).
+    if (const QStringList both = m_collection->withPairs({path}); both.size() > 1 && m_culling) {
+        QVector<TransferItem> items;
+        for (const QString& p : both)
+            items.append({p, QString(), ConflictChoice::Skip});
+        m_culling->quickMove()->transfer(
+            TransferKind::Trash, items, tr("In den Papierkorb legen"),
+            [](int n) { return tr("%n Datei(en) in den Papierkorb gelegt", nullptr, n); });
+        return;
+    }
     // The file system work runs on a worker thread (network volumes); every window is
     // updated when it is done. This window is remembered with the undo command.
     QPointer<ViewerWindow> self(this);
@@ -1610,7 +1638,8 @@ void ViewerWindow::fileRenamed(const QString& from, const QString& to) {
 void ViewerWindow::folderChanged(const QString& folderPath) {
     // F-OPEN-07: the app invalidated the shared snapshot once; every window showing the
     // folder re-sorts the one new enumeration (F-WIN-09).
-    if (m_collection->isFolderCollection() && m_collection->folderPath() == folderPath)
+    // F-OPEN-08: also a (new) subfolder of a collection that includes subfolders.
+    if (m_collection->isFolderCollection() && m_collection->coversFolder(folderPath))
         m_collection->reload();
 }
 
@@ -1687,7 +1716,7 @@ void ViewerWindow::closeEvent(QCloseEvent* event) {
     // file operations must not see a closed window any more.
     m_app.provider().removeClient(this);
     if (!m_watchedFolder.isEmpty())
-        m_app.setWindowFolder(this, m_watchedFolder, {});
+        m_app.setWindowFolder(this, m_watchedFolder, {}, m_watchedTree, false);
     m_watchedFolder.clear();
     m_closed = true;
     m_app.unregisterWindow(this);

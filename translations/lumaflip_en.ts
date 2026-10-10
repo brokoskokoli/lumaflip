@@ -161,6 +161,62 @@
     </message>
 </context>
 <context>
+    <name>lf::CollectionExtras</name>
+    <message numerus="yes">
+        <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
+        <extracomment>status bar while a folder with subfolders is read (F-OPEN-08)</extracomment>
+        <translation>
+            <numerusform>Reading subfolders … %1 folders, %n image</numerusform>
+            <numerusform>Reading subfolders … %1 folders, %n images</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Unterordner gelten nur für Ordner, nicht für einzeln geöffnete Dateien</source>
+        <translation>Subfolders only apply to folders, not to individually opened files</translation>
+    </message>
+    <message>
+        <source>Unterordner einbezogen</source>
+        <translation>Subfolders included</translation>
+    </message>
+    <message>
+        <source>Nur dieser Ordner</source>
+        <translation>This folder only</translation>
+    </message>
+    <message>
+        <source>Dieses Bild ist kein RAW+JPEG-Paar</source>
+        <translation>This image is not a RAW+JPEG pair</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG-Paare sind ausgeschaltet (Einstellungen → Formate)</source>
+        <translation>RAW+JPEG pairs are off (Settings → Formats)</translation>
+    </message>
+    <message>
+        <source>RAW-Datei</source>
+        <translation>RAW file</translation>
+    </message>
+    <message>
+        <source>JPEG-Datei</source>
+        <translation>JPEG file</translation>
+    </message>
+    <message>
+        <source>in „%1“</source>
+        <extracomment>status bar: the subfolder of the current image (F-OPEN-08); %1 = path below the opened folder</extracomment>
+        <translation>in “%1”</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG · RAW</source>
+        <translation>RAW+JPEG · RAW</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG</source>
+        <translation>RAW+JPEG</translation>
+    </message>
+    <message>
+        <source>Zweite Datei: %1 – „RAW anzeigen“ wechselt</source>
+        <translation>Second file: %1 – “Show RAW” switches</translation>
+    </message>
+</context>
+<context>
     <name>lf::CompareView</name>
     <message>
         <source>Vergleich</source>
@@ -806,6 +862,19 @@
     </message>
 </context>
 <context>
+    <name>lf::GeoLocation</name>
+    <message>
+        <source>%1° %2′ %3″ %4</source>
+        <extracomment>GPS coordinate in degrees, minutes, seconds, e.g. &quot;48° 8′ 13,6″ N&quot;</extracomment>
+        <translation>%1° %2′ %3″ %4</translation>
+    </message>
+    <message>
+        <source>%1, %2</source>
+        <extracomment>GPS position: latitude, longitude</extracomment>
+        <translation>%1, %2</translation>
+    </message>
+</context>
+<context>
     <name>lf::GridView</name>
     <message>
         <source>Raster</source>
@@ -971,6 +1040,29 @@
     </message>
 </context>
 <context>
+    <name>lf::InfoGpsBox</name>
+    <message>
+        <source>Koordinaten kopieren</source>
+        <translation>Copy Coordinates</translation>
+    </message>
+    <message>
+        <source>Karte wird geladen …</source>
+        <translation>Loading map …</translation>
+    </message>
+    <message>
+        <source>Karte anzeigen</source>
+        <translation>Show Map</translation>
+    </message>
+    <message>
+        <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
+        <translation>Loads a map section from Apple Maps (internet connection)</translation>
+    </message>
+    <message>
+        <source>In Karten öffnen</source>
+        <translation>Open in Maps</translation>
+    </message>
+</context>
+<context>
     <name>lf::InfoPanel</name>
     <message>
         <source>Ein- oder ausklappen</source>
@@ -1038,6 +1130,22 @@
         <translation>Added</translation>
     </message>
     <message>
+        <source>RAW+JPEG-Paar</source>
+        <translation>RAW+JPEG Pair</translation>
+    </message>
+    <message>
+        <source>Angezeigt</source>
+        <translation>Shown</translation>
+    </message>
+    <message>
+        <source>Zweite Datei</source>
+        <translation>Second File</translation>
+    </message>
+    <message>
+        <source>Größe der zweiten Datei</source>
+        <translation>Size of Second File</translation>
+    </message>
+    <message>
         <source>Bild</source>
         <translation>Image</translation>
     </message>
@@ -1060,6 +1168,10 @@
     <message>
         <source>Nicht lesbar</source>
         <translation>Unreadable</translation>
+    </message>
+    <message>
+        <source>Alle Metadaten …</source>
+        <translation>All Metadata …</translation>
     </message>
     <message>
         <source>Tags</source>
@@ -1431,6 +1543,14 @@
     <message>
         <source>Belichtungsregler einblenden</source>
         <translation>Show Exposure Slider</translation>
+    </message>
+    <message>
+        <source>Unterordner einbeziehen</source>
+        <translation>Include Subfolders</translation>
+    </message>
+    <message>
+        <source>RAW/JPEG des Paares zeigen</source>
+        <translation>Show RAW/JPEG of Pair</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2386,6 +2506,10 @@
         <translation>Flip Vertical</translation>
     </message>
     <message>
+        <source>RAW anzeigen</source>
+        <translation>Show RAW</translation>
+    </message>
+    <message>
         <source>Fenster</source>
         <translation>Window</translation>
     </message>
@@ -2543,6 +2667,18 @@
         <translation>Compare Selection</translation>
     </message>
     <message>
+        <source>Unterordner einbeziehen</source>
+        <translation>Include Subfolders</translation>
+    </message>
+    <message>
+        <source>Nächster Ordner</source>
+        <translation>Next Folder</translation>
+    </message>
+    <message>
+        <source>Vorheriger Ordner</source>
+        <translation>Previous Folder</translation>
+    </message>
+    <message>
         <source>Gehe zu Bild …</source>
         <translation>Go to Image…</translation>
     </message>
@@ -2597,6 +2733,24 @@
     <message>
         <source>Belichtungsregler einblenden</source>
         <translation>Show Exposure Slider</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MapPreviewController</name>
+    <message>
+        <source>Karten sind auf diesem System nicht verfügbar.</source>
+        <translation>Maps are not available on this system.</translation>
+    </message>
+    <message>
+        <source>Die Karte konnte nicht geladen werden.</source>
+        <translation>The map could not be loaded.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MapSnapshot</name>
+    <message>
+        <source>Die Karte konnte nicht geladen werden.</source>
+        <translation>The map could not be loaded.</translation>
     </message>
 </context>
 <context>
@@ -2775,6 +2929,78 @@
         <source>Höhe</source>
         <extracomment>GPS altitude</extracomment>
         <translation>Altitude</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MetadataDialog</name>
+    <message>
+        <source>Alle Metadaten – %1</source>
+        <translation>All Metadata – %1</translation>
+    </message>
+    <message>
+        <source>Wird geladen …</source>
+        <translation>Loading…</translation>
+    </message>
+    <message>
+        <source>Keine Metadaten gefunden.</source>
+        <translation>No metadata found.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 von %n Einträgen</source>
+        <translation>
+            <numerusform>%1 of %n entry</numerusform>
+            <numerusform>%1 of %n entries</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Einträge</source>
+        <translation>
+            <numerusform>%n entry</numerusform>
+            <numerusform>%n entries</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Wert kopieren</source>
+        <translation>Copy Value</translation>
+    </message>
+    <message>
+        <source>Gruppe kopieren</source>
+        <translation>Copy Group</translation>
+    </message>
+    <message>
+        <source>Zeile kopieren</source>
+        <translation>Copy Row</translation>
+    </message>
+    <message>
+        <source>Alles kopieren</source>
+        <translation>Copy All</translation>
+    </message>
+    <message>
+        <source>Suchen (Feld oder Wert) …</source>
+        <translation>Search (field or value) …</translation>
+    </message>
+    <message>
+        <source>Feld</source>
+        <translation>Field</translation>
+    </message>
+    <message>
+        <source>Wert</source>
+        <translation>Value</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>Copy</translation>
+    </message>
+    <message>
+        <source>Alle Metadaten</source>
+        <translation>All Metadata</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MetadataTree</name>
+    <message>
+        <source>Bild (allgemein)</source>
+        <translation>Image (general)</translation>
     </message>
 </context>
 <context>
@@ -3571,6 +3797,10 @@
         <translation>Vector</translation>
     </message>
     <message>
+        <source>Weitere</source>
+        <translation>More</translation>
+    </message>
+    <message>
         <source>Als Standard-App für Bilder festlegen</source>
         <translation>Set as Default App for Images</translation>
     </message>
@@ -3581,6 +3811,14 @@
     <message>
         <source>Aus: Zuerst die eingebettete Vorschau, danach wird die volle Entwicklung nachgeladen.</source>
         <translation>Off: The embedded preview is shown first, then the full rendering is loaded.</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG-Paare als ein Bild behandeln</source>
+        <translation>Treat RAW+JPEG pairs as one image</translation>
+    </message>
+    <message>
+        <source>Gleichnamige RAW- und JPEG-Dateien erscheinen als ein Bild (das JPEG, mit Hinweis „RAW+JPEG“). Bewerten, Verschieben und Löschen betreffen beide Dateien; „RAW anzeigen“ wechselt zur RAW-Datei.</source>
+        <translation>RAW and JPEG files with the same name appear as one image (the JPEG, marked “RAW+JPEG”). Rating, moving and deleting apply to both files; “Show RAW” switches to the RAW file.</translation>
     </message>
     <message>
         <source>Leistung</source>
@@ -4114,6 +4352,49 @@
     </message>
 </context>
 <context>
+    <name>lf::SimpleDecoders</name>
+    <message>
+        <source>Das Archiv enthält kein zusammengesetztes Bild.</source>
+        <translation>The archive contains no merged image.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>The image size %1 × %2 is invalid or too large.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist beschädigt: %1</source>
+        <translation>The image in the archive is damaged: %1</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>The file can’t be read.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>The file is empty (0 bytes).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>The file is too large.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist beschädigt oder unvollständig.</source>
+        <translation>The file is damaged or incomplete.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Page %1 doesn’t exist.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Not enough memory for the image.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>Not enough memory for the image (%1 × %2 pixels).</translation>
+    </message>
+</context>
+<context>
     <name>lf::StartScreenRecent</name>
     <message>
         <source>Zuletzt geöffnet</source>
@@ -4299,6 +4580,13 @@
         <source>Abbrechen</source>
         <translation>Cancel</translation>
     </message>
+    <message numerus="yes">
+        <source>%n Datei(en) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n file moved to the Trash</numerusform>
+            <numerusform>%n files moved to the Trash</numerusform>
+        </translation>
+    </message>
     <message>
         <source>Bild wird kopiert …</source>
         <translation>Copying image…</translation>
@@ -4455,6 +4743,33 @@
     <message>
         <source>Filmstreifen</source>
         <translation>Filmstrip</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ZipReader</name>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>The file can’t be read.</translation>
+    </message>
+    <message>
+        <source>Das ZIP-Archiv ist beschädigt.</source>
+        <translation>The ZIP archive is damaged.</translation>
+    </message>
+    <message>
+        <source>ZIP-Archive dieser Art (mehrteilig, ZIP64) werden nicht unterstützt.</source>
+        <translation>ZIP archives of this kind (multi-part, ZIP64) are not supported.</translation>
+    </message>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>“%1” is missing from the archive.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist zu groß.</source>
+        <translation>“%1” is too large.</translation>
+    </message>
+    <message>
+        <source>Die Kompressionsart von „%1“ wird nicht unterstützt.</source>
+        <translation>The compression method of “%1” is not supported.</translation>
     </message>
 </context>
 </TS>

@@ -3,6 +3,9 @@
 
 #include "DisplayText.h"
 #include "HistogramWidget.h"
+#include "InfoGpsBox.h"
+#include "MapSnapshot.h"
+#include "MetadataDialog.h"
 #include "core/AppScoped.h"
 #include "core/Decoder.h"
 #include "core/LocaleFormat.h"
@@ -24,6 +27,7 @@
 #include <QLocale>
 #include <QMenu>
 #include <QMimeDatabase>
+#include <QPushButton>
 #include <QRegularExpression>
 #include <QStringListModel>
 #include <QThreadPool>
@@ -165,8 +169,21 @@ InfoData InfoPanel::load(const QString& path, const FileEntry& entry, TagService
         file.rows.append({Tr::tr("Hinzugefügt"), formatDate(entry.added)});
     data.sections.append(file);
 
+    // F-FMT-06: a RAW+JPEG pair shown as one image - both files are described.
+    if (!entry.pairedPath.isEmpty()) {
+        const QFileInfo partner(entry.pairedPath);
+        InfoSection pair{Tr::tr("RAW+JPEG-Paar"), {}};
+        pair.rows.append({Tr::tr("Angezeigt"), fi.fileName()});
+        pair.rows.append({Tr::tr("Zweite Datei"), partner.fileName()});
+        if (partner.exists())
+            pair.rows.append({Tr::tr("Größe der zweiten Datei"), formatSize(partner.size())});
+        data.sections.append(pair);
+    }
+
     // The decoders' "file" group describes the image.
     const Metadata md = DecoderRegistry::instance().metadata(path);
+    if (md.latitude && md.longitude) // F-INFO-04
+        data.location = GeoPoint{*md.latitude, *md.longitude};
     const std::pair<const char*, QString> groups[] = {
         {"file", Tr::tr("Bild")},
         {"camera", Tr::tr("Kamera")},
@@ -225,6 +242,18 @@ InfoPanel::InfoPanel(ImageProvider& provider, std::shared_ptr<TagService> tags, 
     // The metadata have priority: tags and histogram give way (shrink, collapse) first.
     m_tree->setMinimumHeight(m_tree->fontMetrics().height() * kMinTreeRows + 8);
     layout->addWidget(m_tree, 1);
+
+    // ---- GPS (F-INFO-04) and all metadata (F-INFO-05) ----
+    m_gps = new InfoGpsBox(createMapSnapshotProvider(), this);
+    m_gps->hide();
+    layout->addWidget(m_gps);
+    m_allMetadata = new QPushButton(this);
+    m_allMetadata->setObjectName(QStringLiteral("lfAllMetadata"));
+    m_allMetadata->setText(Tr::tr("Alle Metadaten …"));
+    m_allMetadata->setFocusPolicy(Qt::NoFocus);
+    m_allMetadata->setEnabled(false);
+    connect(m_allMetadata, &QPushButton::clicked, this, &InfoPanel::showAllMetadata);
+    layout->addWidget(m_allMetadata, 0, Qt::AlignLeft);
 
     // ---- Finder tags (F-INFO-06) ----
     m_tagBox = new QWidget(this);
@@ -339,7 +368,11 @@ void InfoPanel::setFile(const QString& path, const FileEntry* entry) {
     if (!changed)
         return;
     m_tagError->hide();
+    m_allMetadata->setEnabled(!path.isEmpty());
+    if (m_metaDialog && !path.isEmpty())
+        m_metaDialog->setPath(path); // F-INFO-05: the window follows the image
     if (path.isEmpty()) {
+        m_gps->setLocation(std::nullopt);
         m_shownPath.clear();
         m_tree->clear();
         m_tags.clear();
@@ -373,6 +406,7 @@ void InfoPanel::showPlaceholder() {
     if (m_entry.size >= 0)
         file.rows.append({Tr::tr("Größe"), formatSize(m_entry.size)});
     rebuildTree({file, InfoSection{Tr::tr("Bild"), {{Tr::tr("Wird geladen …"), QString()}}}});
+    m_gps->setLocation(std::nullopt);
     m_shownPath.clear();
     m_tags.clear();
     m_tagsPath.clear();
@@ -438,6 +472,7 @@ void InfoPanel::apply(const InfoData& data) {
     }
     if (current != data.sections || m_shownPath != data.path)
         rebuildTree(data.sections);
+    m_gps->setLocation(data.location, QFileInfo(data.path).fileName()); // map only after a click
     m_shownPath = data.path;
     if (data.unreadable && m_histogramPath != data.path)
         m_histogram->showNote(Tr::tr("Kein Histogramm")); // whenever the failure was reported
@@ -527,6 +562,24 @@ void InfoPanel::showContextMenu(const QPoint& pos) {
         copy(parts.join(QStringLiteral("\n\n")));
     });
     menu.exec(m_tree->viewport()->mapToGlobal(pos));
+}
+
+// ---- all metadata (F-INFO-05) ----
+
+MetadataDialog* InfoPanel::metadataDialog() const {
+    return m_metaDialog;
+}
+
+void InfoPanel::showAllMetadata() {
+    if (m_path.isEmpty())
+        return;
+    if (!m_metaDialog) {
+        m_metaDialog = new MetadataDialog(window());
+        m_metaDialog->setPath(m_path);
+    }
+    m_metaDialog->show();
+    m_metaDialog->raise();
+    m_metaDialog->activateWindow();
 }
 
 // ---- tags (F-INFO-06) ----
@@ -624,6 +677,7 @@ void InfoPanel::retranslateUi() {
         hist->setText(Tr::tr("Histogramm"));
     m_tagRemove->setToolTip(Tr::tr("Ausgewählten Tag entfernen"));
     m_tagEdit->setPlaceholderText(Tr::tr("Tag hinzufügen …"));
+    m_allMetadata->setText(Tr::tr("Alle Metadaten …"));
     if (auto* c = m_tagEdit->completer())
         c->setModel(new QStringListModel(standardTags(), c));
     // Labels, values and dates were formatted for the old language: read them again.

@@ -161,6 +161,61 @@
     </message>
 </context>
 <context>
+    <name>lf::CollectionExtras</name>
+    <message numerus="yes">
+        <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
+        <extracomment>status bar while a folder with subfolders is read (F-OPEN-08)</extracomment>
+        <translation>
+            <numerusform>正在讀取子檔案夾… %1 個檔案夾，%n 張影像</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Unterordner gelten nur für Ordner, nicht für einzeln geöffnete Dateien</source>
+        <translation>子檔案夾僅適用於檔案夾，不適用於單獨打開的檔案</translation>
+    </message>
+    <message>
+        <source>Unterordner einbezogen</source>
+        <translation>已包含子檔案夾</translation>
+    </message>
+    <message>
+        <source>Nur dieser Ordner</source>
+        <translation>僅此檔案夾</translation>
+    </message>
+    <message>
+        <source>Dieses Bild ist kein RAW+JPEG-Paar</source>
+        <translation>此影像不是 RAW+JPEG 配對</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG-Paare sind ausgeschaltet (Einstellungen → Formate)</source>
+        <translation>RAW+JPEG 配對已關閉（設定 → 格式）</translation>
+    </message>
+    <message>
+        <source>RAW-Datei</source>
+        <translation>RAW 檔案</translation>
+    </message>
+    <message>
+        <source>JPEG-Datei</source>
+        <translation>JPEG 檔案</translation>
+    </message>
+    <message>
+        <source>in „%1“</source>
+        <extracomment>status bar: the subfolder of the current image (F-OPEN-08); %1 = path below the opened folder</extracomment>
+        <translation>位於「%1」</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG · RAW</source>
+        <translation>RAW+JPEG · RAW</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG</source>
+        <translation>RAW+JPEG</translation>
+    </message>
+    <message>
+        <source>Zweite Datei: %1 – „RAW anzeigen“ wechselt</source>
+        <translation>第二個檔案：%1 – 「顯示 RAW」可切換</translation>
+    </message>
+</context>
+<context>
     <name>lf::CompareView</name>
     <message>
         <source>Vergleich</source>
@@ -799,6 +854,19 @@
     </message>
 </context>
 <context>
+    <name>lf::GeoLocation</name>
+    <message>
+        <source>%1° %2′ %3″ %4</source>
+        <extracomment>GPS coordinate in degrees, minutes, seconds, e.g. &quot;48° 8′ 13,6″ N&quot;</extracomment>
+        <translation>%1° %2′ %3″ %4</translation>
+    </message>
+    <message>
+        <source>%1, %2</source>
+        <extracomment>GPS position: latitude, longitude</extracomment>
+        <translation>%1，%2</translation>
+    </message>
+</context>
+<context>
     <name>lf::GridView</name>
     <message>
         <source>Raster</source>
@@ -964,6 +1032,29 @@
     </message>
 </context>
 <context>
+    <name>lf::InfoGpsBox</name>
+    <message>
+        <source>Koordinaten kopieren</source>
+        <translation>拷貝座標</translation>
+    </message>
+    <message>
+        <source>Karte wird geladen …</source>
+        <translation>正在載入地圖…</translation>
+    </message>
+    <message>
+        <source>Karte anzeigen</source>
+        <translation>顯示地圖</translation>
+    </message>
+    <message>
+        <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
+        <translation>從 Apple 地圖載入地圖片段（需要網際網路連線）</translation>
+    </message>
+    <message>
+        <source>In Karten öffnen</source>
+        <translation>在「地圖」中打開</translation>
+    </message>
+</context>
+<context>
     <name>lf::InfoPanel</name>
     <message>
         <source>Ein- oder ausklappen</source>
@@ -1031,6 +1122,22 @@
         <translation>加入日期</translation>
     </message>
     <message>
+        <source>RAW+JPEG-Paar</source>
+        <translation>RAW+JPEG 配對</translation>
+    </message>
+    <message>
+        <source>Angezeigt</source>
+        <translation>顯示的</translation>
+    </message>
+    <message>
+        <source>Zweite Datei</source>
+        <translation>第二個檔案</translation>
+    </message>
+    <message>
+        <source>Größe der zweiten Datei</source>
+        <translation>第二個檔案的大小</translation>
+    </message>
+    <message>
         <source>Bild</source>
         <translation>影像</translation>
     </message>
@@ -1053,6 +1160,10 @@
     <message>
         <source>Nicht lesbar</source>
         <translation>無法讀取</translation>
+    </message>
+    <message>
+        <source>Alle Metadaten …</source>
+        <translation>所有後設資料…</translation>
     </message>
     <message>
         <source>Tags</source>
@@ -1424,6 +1535,14 @@
     <message>
         <source>Belichtungsregler einblenden</source>
         <translation>顯示曝光滑桿</translation>
+    </message>
+    <message>
+        <source>Unterordner einbeziehen</source>
+        <translation>包含子檔案夾</translation>
+    </message>
+    <message>
+        <source>RAW/JPEG des Paares zeigen</source>
+        <translation>顯示配對的 RAW/JPEG</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2379,6 +2498,10 @@
         <translation>垂直翻轉</translation>
     </message>
     <message>
+        <source>RAW anzeigen</source>
+        <translation>顯示 RAW</translation>
+    </message>
+    <message>
         <source>Fenster</source>
         <translation>視窗</translation>
     </message>
@@ -2536,6 +2659,18 @@
         <translation>比較所選項目</translation>
     </message>
     <message>
+        <source>Unterordner einbeziehen</source>
+        <translation>包含子檔案夾</translation>
+    </message>
+    <message>
+        <source>Nächster Ordner</source>
+        <translation>下一個檔案夾</translation>
+    </message>
+    <message>
+        <source>Vorheriger Ordner</source>
+        <translation>上一個檔案夾</translation>
+    </message>
+    <message>
         <source>Gehe zu Bild …</source>
         <translation>前往影像…</translation>
     </message>
@@ -2590,6 +2725,24 @@
     <message>
         <source>Belichtungsregler einblenden</source>
         <translation>顯示曝光滑桿</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MapPreviewController</name>
+    <message>
+        <source>Karten sind auf diesem System nicht verfügbar.</source>
+        <translation>此系統上無法使用地圖。</translation>
+    </message>
+    <message>
+        <source>Die Karte konnte nicht geladen werden.</source>
+        <translation>無法載入地圖。</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MapSnapshot</name>
+    <message>
+        <source>Die Karte konnte nicht geladen werden.</source>
+        <translation>無法載入地圖。</translation>
     </message>
 </context>
 <context>
@@ -2768,6 +2921,76 @@
         <source>Höhe</source>
         <extracomment>GPS altitude</extracomment>
         <translation>高度</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MetadataDialog</name>
+    <message>
+        <source>Alle Metadaten – %1</source>
+        <translation>所有後設資料 – %1</translation>
+    </message>
+    <message>
+        <source>Wird geladen …</source>
+        <translation>正在載入…</translation>
+    </message>
+    <message>
+        <source>Keine Metadaten gefunden.</source>
+        <translation>找不到後設資料。</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 von %n Einträgen</source>
+        <translation>
+            <numerusform>%1 / %n 個項目</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Einträge</source>
+        <translation>
+            <numerusform>%n 個項目</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Wert kopieren</source>
+        <translation>拷貝數值</translation>
+    </message>
+    <message>
+        <source>Gruppe kopieren</source>
+        <translation>拷貝群組</translation>
+    </message>
+    <message>
+        <source>Zeile kopieren</source>
+        <translation>拷貝此列</translation>
+    </message>
+    <message>
+        <source>Alles kopieren</source>
+        <translation>全部拷貝</translation>
+    </message>
+    <message>
+        <source>Suchen (Feld oder Wert) …</source>
+        <translation>搜尋（欄位或數值）…</translation>
+    </message>
+    <message>
+        <source>Feld</source>
+        <translation>欄位</translation>
+    </message>
+    <message>
+        <source>Wert</source>
+        <translation>數值</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>拷貝</translation>
+    </message>
+    <message>
+        <source>Alle Metadaten</source>
+        <translation>所有後設資料</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MetadataTree</name>
+    <message>
+        <source>Bild (allgemein)</source>
+        <translation>影像（一般）</translation>
     </message>
 </context>
 <context>
@@ -3558,6 +3781,10 @@
         <translation>向量</translation>
     </message>
     <message>
+        <source>Weitere</source>
+        <translation>其他</translation>
+    </message>
+    <message>
         <source>Als Standard-App für Bilder festlegen</source>
         <translation>設為影像的預設 App</translation>
     </message>
@@ -3568,6 +3795,14 @@
     <message>
         <source>Aus: Zuerst die eingebettete Vorschau, danach wird die volle Entwicklung nachgeladen.</source>
         <translation>關閉時：先顯示內嵌預覽，之後再載入完整顯影結果。</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG-Paare als ein Bild behandeln</source>
+        <translation>將 RAW+JPEG 配對視為一張影像</translation>
+    </message>
+    <message>
+        <source>Gleichnamige RAW- und JPEG-Dateien erscheinen als ein Bild (das JPEG, mit Hinweis „RAW+JPEG“). Bewerten, Verschieben und Löschen betreffen beide Dateien; „RAW anzeigen“ wechselt zur RAW-Datei.</source>
+        <translation>同名的 RAW 和 JPEG 檔案顯示為一張影像（標有「RAW+JPEG」的 JPEG）。評分、搬移和刪除同時作用於兩個檔案；「顯示 RAW」可切換至 RAW 檔案。</translation>
     </message>
     <message>
         <source>Leistung</source>
@@ -4099,6 +4334,49 @@
     </message>
 </context>
 <context>
+    <name>lf::SimpleDecoders</name>
+    <message>
+        <source>Das Archiv enthält kein zusammengesetztes Bild.</source>
+        <translation>封存檔中不含合併後的影像。</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>影像尺寸 %1 × %2 無效或過大。</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist beschädigt: %1</source>
+        <translation>封存檔中的影像已損毀：%1</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>無法讀取檔案。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>檔案是空的（0 位元組）。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>檔案過大。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist beschädigt oder unvollständig.</source>
+        <translation>檔案已損壞或不完整。</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>第 %1 頁不存在。</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>記憶體不足，無法處理影像。</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>記憶體不足，無法處理影像（%1 × %2 像素）。</translation>
+    </message>
+</context>
+<context>
     <name>lf::StartScreenRecent</name>
     <message>
         <source>Zuletzt geöffnet</source>
@@ -4284,6 +4562,12 @@
         <source>Abbrechen</source>
         <translation>取消</translation>
     </message>
+    <message numerus="yes">
+        <source>%n Datei(en) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>已將 %n 個檔案移到垃圾桶</numerusform>
+        </translation>
+    </message>
     <message>
         <source>Bild wird kopiert …</source>
         <translation>正在拷貝影像…</translation>
@@ -4439,6 +4723,33 @@
     <message>
         <source>Filmstreifen</source>
         <translation>底片條</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ZipReader</name>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>無法讀取檔案。</translation>
+    </message>
+    <message>
+        <source>Das ZIP-Archiv ist beschädigt.</source>
+        <translation>ZIP 封存檔已損毀。</translation>
+    </message>
+    <message>
+        <source>ZIP-Archive dieser Art (mehrteilig, ZIP64) werden nicht unterstützt.</source>
+        <translation>不支援此類 ZIP 封存檔（分卷、ZIP64）。</translation>
+    </message>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>封存檔中缺少「%1」。</translation>
+    </message>
+    <message>
+        <source>„%1“ ist zu groß.</source>
+        <translation>「%1」過大。</translation>
+    </message>
+    <message>
+        <source>Die Kompressionsart von „%1“ wird nicht unterstützt.</source>
+        <translation>不支援「%1」的壓縮方式。</translation>
     </message>
 </context>
 </TS>

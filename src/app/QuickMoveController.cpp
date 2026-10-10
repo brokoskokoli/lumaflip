@@ -87,6 +87,7 @@ void QuickMoveController::transferCurrent(QuickOp op, int slot) {
         paths << m_window.currentPath();
     if (paths.isEmpty())
         return;
+    paths = m_window.collection()->withPairs(paths); // F-FMT-06: RAW+JPEG pairs move together
     QuickChord::setLastSlot(slot);
     const QString name = QDir(folder).dirName();
     const bool move = op == QuickOp::Move;

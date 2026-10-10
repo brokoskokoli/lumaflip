@@ -161,6 +161,61 @@
     </message>
 </context>
 <context>
+    <name>lf::CollectionExtras</name>
+    <message numerus="yes">
+        <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
+        <extracomment>status bar while a folder with subfolders is read (F-OPEN-08)</extracomment>
+        <translation>
+            <numerusform>하위 폴더 읽는 중… 폴더 %1개, 이미지 %n개</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Unterordner gelten nur für Ordner, nicht für einzeln geöffnete Dateien</source>
+        <translation>하위 폴더는 폴더에만 적용되며 개별적으로 연 파일에는 적용되지 않습니다</translation>
+    </message>
+    <message>
+        <source>Unterordner einbezogen</source>
+        <translation>하위 폴더 포함됨</translation>
+    </message>
+    <message>
+        <source>Nur dieser Ordner</source>
+        <translation>이 폴더만</translation>
+    </message>
+    <message>
+        <source>Dieses Bild ist kein RAW+JPEG-Paar</source>
+        <translation>이 이미지는 RAW+JPEG 쌍이 아닙니다</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG-Paare sind ausgeschaltet (Einstellungen → Formate)</source>
+        <translation>RAW+JPEG 쌍이 꺼져 있습니다(설정 → 포맷)</translation>
+    </message>
+    <message>
+        <source>RAW-Datei</source>
+        <translation>RAW 파일</translation>
+    </message>
+    <message>
+        <source>JPEG-Datei</source>
+        <translation>JPEG 파일</translation>
+    </message>
+    <message>
+        <source>in „%1“</source>
+        <extracomment>status bar: the subfolder of the current image (F-OPEN-08); %1 = path below the opened folder</extracomment>
+        <translation>‘%1’ 안</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG · RAW</source>
+        <translation>RAW+JPEG · RAW</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG</source>
+        <translation>RAW+JPEG</translation>
+    </message>
+    <message>
+        <source>Zweite Datei: %1 – „RAW anzeigen“ wechselt</source>
+        <translation>두 번째 파일: %1 – ‘RAW 보기’로 전환</translation>
+    </message>
+</context>
+<context>
     <name>lf::CompareView</name>
     <message>
         <source>Vergleich</source>
@@ -799,6 +854,19 @@
     </message>
 </context>
 <context>
+    <name>lf::GeoLocation</name>
+    <message>
+        <source>%1° %2′ %3″ %4</source>
+        <extracomment>GPS coordinate in degrees, minutes, seconds, e.g. &quot;48° 8′ 13,6″ N&quot;</extracomment>
+        <translation>%1° %2′ %3″ %4</translation>
+    </message>
+    <message>
+        <source>%1, %2</source>
+        <extracomment>GPS position: latitude, longitude</extracomment>
+        <translation>%1, %2</translation>
+    </message>
+</context>
+<context>
     <name>lf::GridView</name>
     <message>
         <source>Raster</source>
@@ -964,6 +1032,29 @@
     </message>
 </context>
 <context>
+    <name>lf::InfoGpsBox</name>
+    <message>
+        <source>Koordinaten kopieren</source>
+        <translation>좌표 복사</translation>
+    </message>
+    <message>
+        <source>Karte wird geladen …</source>
+        <translation>지도 불러오는 중…</translation>
+    </message>
+    <message>
+        <source>Karte anzeigen</source>
+        <translation>지도 보기</translation>
+    </message>
+    <message>
+        <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
+        <translation>Apple 지도에서 지도 일부를 불러옵니다(인터넷 연결)</translation>
+    </message>
+    <message>
+        <source>In Karten öffnen</source>
+        <translation>지도에서 열기</translation>
+    </message>
+</context>
+<context>
     <name>lf::InfoPanel</name>
     <message>
         <source>Ein- oder ausklappen</source>
@@ -1031,6 +1122,22 @@
         <translation>추가된 날짜</translation>
     </message>
     <message>
+        <source>RAW+JPEG-Paar</source>
+        <translation>RAW+JPEG 쌍</translation>
+    </message>
+    <message>
+        <source>Angezeigt</source>
+        <translation>표시됨</translation>
+    </message>
+    <message>
+        <source>Zweite Datei</source>
+        <translation>두 번째 파일</translation>
+    </message>
+    <message>
+        <source>Größe der zweiten Datei</source>
+        <translation>두 번째 파일 크기</translation>
+    </message>
+    <message>
         <source>Bild</source>
         <translation>이미지</translation>
     </message>
@@ -1053,6 +1160,10 @@
     <message>
         <source>Nicht lesbar</source>
         <translation>읽을 수 없음</translation>
+    </message>
+    <message>
+        <source>Alle Metadaten …</source>
+        <translation>모든 메타데이터…</translation>
     </message>
     <message>
         <source>Tags</source>
@@ -1424,6 +1535,14 @@
     <message>
         <source>Belichtungsregler einblenden</source>
         <translation>노출 슬라이더 표시</translation>
+    </message>
+    <message>
+        <source>Unterordner einbeziehen</source>
+        <translation>하위 폴더 포함</translation>
+    </message>
+    <message>
+        <source>RAW/JPEG des Paares zeigen</source>
+        <translation>쌍의 RAW/JPEG 보기</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2379,6 +2498,10 @@
         <translation>수직으로 뒤집기</translation>
     </message>
     <message>
+        <source>RAW anzeigen</source>
+        <translation>RAW 보기</translation>
+    </message>
+    <message>
         <source>Fenster</source>
         <translation>윈도우</translation>
     </message>
@@ -2536,6 +2659,18 @@
         <translation>선택 항목 비교</translation>
     </message>
     <message>
+        <source>Unterordner einbeziehen</source>
+        <translation>하위 폴더 포함</translation>
+    </message>
+    <message>
+        <source>Nächster Ordner</source>
+        <translation>다음 폴더</translation>
+    </message>
+    <message>
+        <source>Vorheriger Ordner</source>
+        <translation>이전 폴더</translation>
+    </message>
+    <message>
         <source>Gehe zu Bild …</source>
         <translation>이미지로 이동…</translation>
     </message>
@@ -2590,6 +2725,24 @@
     <message>
         <source>Belichtungsregler einblenden</source>
         <translation>노출 슬라이더 표시</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MapPreviewController</name>
+    <message>
+        <source>Karten sind auf diesem System nicht verfügbar.</source>
+        <translation>이 시스템에서는 지도를 사용할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Die Karte konnte nicht geladen werden.</source>
+        <translation>지도를 불러올 수 없습니다.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MapSnapshot</name>
+    <message>
+        <source>Die Karte konnte nicht geladen werden.</source>
+        <translation>지도를 불러올 수 없습니다.</translation>
     </message>
 </context>
 <context>
@@ -2768,6 +2921,76 @@
         <source>Höhe</source>
         <extracomment>GPS altitude</extracomment>
         <translation>고도</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MetadataDialog</name>
+    <message>
+        <source>Alle Metadaten – %1</source>
+        <translation>모든 메타데이터 – %1</translation>
+    </message>
+    <message>
+        <source>Wird geladen …</source>
+        <translation>로드 중…</translation>
+    </message>
+    <message>
+        <source>Keine Metadaten gefunden.</source>
+        <translation>메타데이터가 없습니다.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 von %n Einträgen</source>
+        <translation>
+            <numerusform>%n개 중 %1개</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Einträge</source>
+        <translation>
+            <numerusform>%n개 항목</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Wert kopieren</source>
+        <translation>값 복사</translation>
+    </message>
+    <message>
+        <source>Gruppe kopieren</source>
+        <translation>그룹 복사</translation>
+    </message>
+    <message>
+        <source>Zeile kopieren</source>
+        <translation>행 복사</translation>
+    </message>
+    <message>
+        <source>Alles kopieren</source>
+        <translation>모두 복사</translation>
+    </message>
+    <message>
+        <source>Suchen (Feld oder Wert) …</source>
+        <translation>검색(필드 또는 값)…</translation>
+    </message>
+    <message>
+        <source>Feld</source>
+        <translation>필드</translation>
+    </message>
+    <message>
+        <source>Wert</source>
+        <translation>값</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>복사</translation>
+    </message>
+    <message>
+        <source>Alle Metadaten</source>
+        <translation>모든 메타데이터</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MetadataTree</name>
+    <message>
+        <source>Bild (allgemein)</source>
+        <translation>이미지(일반)</translation>
     </message>
 </context>
 <context>
@@ -3558,6 +3781,10 @@
         <translation>벡터</translation>
     </message>
     <message>
+        <source>Weitere</source>
+        <translation>기타</translation>
+    </message>
+    <message>
         <source>Als Standard-App für Bilder festlegen</source>
         <translation>이미지의 기본 앱으로 설정</translation>
     </message>
@@ -3568,6 +3795,14 @@
     <message>
         <source>Aus: Zuerst die eingebettete Vorschau, danach wird die volle Entwicklung nachgeladen.</source>
         <translation>끔: 먼저 내장된 미리보기를 표시한 후 전체 현상 이미지를 불러옵니다.</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG-Paare als ein Bild behandeln</source>
+        <translation>RAW+JPEG 쌍을 하나의 이미지로 취급</translation>
+    </message>
+    <message>
+        <source>Gleichnamige RAW- und JPEG-Dateien erscheinen als ein Bild (das JPEG, mit Hinweis „RAW+JPEG“). Bewerten, Verschieben und Löschen betreffen beide Dateien; „RAW anzeigen“ wechselt zur RAW-Datei.</source>
+        <translation>이름이 같은 RAW 및 JPEG 파일은 하나의 이미지(‘RAW+JPEG’ 표시가 있는 JPEG)로 나타납니다. 등급 지정, 이동, 삭제는 두 파일 모두에 적용되며 ‘RAW 보기’로 RAW 파일로 전환합니다.</translation>
     </message>
     <message>
         <source>Leistung</source>
@@ -4099,6 +4334,49 @@
     </message>
 </context>
 <context>
+    <name>lf::SimpleDecoders</name>
+    <message>
+        <source>Das Archiv enthält kein zusammengesetztes Bild.</source>
+        <translation>아카이브에 병합된 이미지가 없습니다.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>이미지 크기 %1 × %2이(가) 잘못되었거나 너무 큽니다.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist beschädigt: %1</source>
+        <translation>아카이브의 이미지가 손상되었습니다: %1</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>파일을 읽을 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>파일이 비어 있습니다(0바이트).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>파일이 너무 큽니다.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist beschädigt oder unvollständig.</source>
+        <translation>파일이 손상되었거나 불완전합니다.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>페이지 %1이(가) 존재하지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>이미지를 위한 메모리가 부족합니다.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>이미지를 위한 메모리가 부족합니다(%1 × %2픽셀).</translation>
+    </message>
+</context>
+<context>
     <name>lf::StartScreenRecent</name>
     <message>
         <source>Zuletzt geöffnet</source>
@@ -4284,6 +4562,12 @@
         <source>Abbrechen</source>
         <translation>취소</translation>
     </message>
+    <message numerus="yes">
+        <source>%n Datei(en) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>파일 %n개를 휴지통으로 이동함</numerusform>
+        </translation>
+    </message>
     <message>
         <source>Bild wird kopiert …</source>
         <translation>이미지 복사 중…</translation>
@@ -4439,6 +4723,33 @@
     <message>
         <source>Filmstreifen</source>
         <translation>필름 스트립</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ZipReader</name>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>파일을 읽을 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Das ZIP-Archiv ist beschädigt.</source>
+        <translation>ZIP 아카이브가 손상되었습니다.</translation>
+    </message>
+    <message>
+        <source>ZIP-Archive dieser Art (mehrteilig, ZIP64) werden nicht unterstützt.</source>
+        <translation>이 유형의 ZIP 아카이브(분할, ZIP64)는 지원되지 않습니다.</translation>
+    </message>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>아카이브에 ‘%1’이(가) 없습니다.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist zu groß.</source>
+        <translation>‘%1’이(가) 너무 큽니다.</translation>
+    </message>
+    <message>
+        <source>Die Kompressionsart von „%1“ wird nicht unterstützt.</source>
+        <translation>‘%1’의 압축 방식은 지원되지 않습니다.</translation>
     </message>
 </context>
 </TS>

@@ -7,6 +7,7 @@
 // placeholders until the data of the current file arrives. Loads only while visible.
 
 #include "core/FileEntry.h"
+#include "core/GeoLocation.h"
 #include "core/Histogram.h"
 #include "core/ImageProvider.h"
 
@@ -22,6 +23,7 @@
 
 class QLabel;
 class QLineEdit;
+class QPushButton;
 class QListWidget;
 class QToolButton;
 class QTreeWidget;
@@ -30,6 +32,8 @@ class QTreeWidgetItem;
 namespace lf {
 
 class HistogramWidget;
+class InfoGpsBox;     // F-INFO-04
+class MetadataDialog; // F-INFO-05
 class TagService;
 
 // One titled group of "key: value" rows.
@@ -46,6 +50,7 @@ struct InfoData {
     std::optional<QStringList> tags; // nullopt: unreadable (tagError)
     QString tagError;
     bool unreadable = false; // no decoder can read the image (no histogram either)
+    std::optional<GeoPoint> location; // F-INFO-04
 };
 
 class InfoPanel : public QWidget {
@@ -77,6 +82,12 @@ public:
     void removeTag(const QString& tag);
     const Histogram& histogram() const;
     QTreeWidget* tree() const { return m_tree; }
+    // F-INFO-04: GPS position, mini map (after a click) and "In Karten öffnen".
+    InfoGpsBox* gpsBox() const { return m_gps; }
+    // F-INFO-05: "Alle Metadaten …" opens the raw metadata window (follows the image).
+    QPushButton* allMetadataButton() const { return m_allMetadata; }
+    MetadataDialog* metadataDialog() const;
+    void showAllMetadata();
     HistogramWidget* histogramWidget() const { return m_histogram; }
     // Text for the clipboard: the value of `item`, or "key: value" lines of a section.
     static QString copyText(const QTreeWidgetItem* item, bool wholeRow);
@@ -139,6 +150,9 @@ private:
     QLineEdit* m_tagEdit = nullptr;
     QToolButton* m_tagRemove = nullptr;
     QLabel* m_tagError = nullptr;
+    InfoGpsBox* m_gps = nullptr;
+    QPushButton* m_allMetadata = nullptr;
+    QPointer<MetadataDialog> m_metaDialog;
 };
 
 } // namespace lf

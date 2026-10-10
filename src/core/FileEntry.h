@@ -27,6 +27,9 @@ struct FileEntry {
     // True once FileAttributeProvider::fillImageProperties() ran for this entry (captured,
     // pixelCount and rating then hold whatever the file provides).
     bool imagePropertiesRead = false;
+    // F-FMT-06 (M3): the other file of a RAW+JPEG pair this entry stands for (the RAW while
+    // the JPEG is shown, or the JPEG while the RAW is shown); empty if not paired.
+    QString pairedPath;
 };
 
 } // namespace lf
