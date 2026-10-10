@@ -248,6 +248,7 @@ InfoPanel::InfoPanel(ImageProvider& provider, std::shared_ptr<TagService> tags, 
     m_gps->setPanelVisible(false); // SPEC 10.3: maps only while the panel is shown
     m_gps->hide();
     layout->addWidget(m_gps);
+    connect(m_gps, &InfoGpsBox::folderMapRequested, this, &InfoPanel::folderMapRequested);
     m_allMetadata = new QPushButton(this);
     m_allMetadata->setObjectName(QStringLiteral("lfAllMetadata"));
     m_allMetadata->setText(Tr::tr("Alle Metadaten …"));

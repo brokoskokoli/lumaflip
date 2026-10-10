@@ -754,6 +754,41 @@
     </message>
 </context>
 <context>
+    <name>lf::FolderMapModel</name>
+    <message>
+        <source>Keine Bilder</source>
+        <translation>Geen afbeeldingen</translation>
+    </message>
+    <message>
+        <source>Orte werden gelesen … %1 von %2</source>
+        <extracomment>folder map (F-INFO-08) while the GPS positions are read: done / all images</extracomment>
+        <translation>Locaties lezen… %1 van %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 von %n Bildern mit Ort</source>
+        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Ort&quot; (%1 images with a position, %n all)</extracomment>
+        <translation>
+            <numerusform>%1 van %n afbeelding met locatie</numerusform>
+            <numerusform>%1 van %n afbeeldingen met locatie</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>lf::FolderMapPanel</name>
+    <message>
+        <source>Keine Bilder in dieser Ansicht.</source>
+        <translation>Geen afbeeldingen in deze weergave.</translation>
+    </message>
+    <message>
+        <source>Keines der Bilder enthält einen Aufnahmeort (GPS).</source>
+        <translation>Geen van de afbeeldingen bevat een opnamelocatie (GPS).</translation>
+    </message>
+    <message>
+        <source>Karte schließen</source>
+        <translation>Sluit kaart</translation>
+    </message>
+</context>
+<context>
     <name>lf::Format</name>
     <message>
         <source>%1 KB</source>
@@ -1068,6 +1103,14 @@
     <message>
         <source>In Karten öffnen</source>
         <translation>Open in Kaarten</translation>
+    </message>
+    <message>
+        <source>Ordnerkarte</source>
+        <translation>Kaart van map</translation>
+    </message>
+    <message>
+        <source>Alle Bilder dieser Ansicht mit Aufnahmeort auf einer Karte zeigen (lädt Kartendaten von Apple Karten)</source>
+        <translation>Alle afbeeldingen in deze weergave met een locatie op een kaart tonen (laadt kaartgegevens uit Apple Kaarten)</translation>
     </message>
 </context>
 <context>
@@ -1559,6 +1602,10 @@
     <message>
         <source>RAW/JPEG des Paares zeigen</source>
         <translation>Toon RAW/JPEG van paar</translation>
+    </message>
+    <message>
+        <source>Ordnerkarte</source>
+        <translation>Kaart van map</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2677,6 +2724,10 @@
     <message>
         <source>Unterordner einbeziehen</source>
         <translation>Submappen opnemen</translation>
+    </message>
+    <message>
+        <source>Karte</source>
+        <translation>Kaart</translation>
     </message>
     <message>
         <source>Nächster Ordner</source>
@@ -3971,6 +4022,49 @@
     </message>
 </context>
 <context>
+    <name>lf::PsbDecoder</name>
+    <message>
+        <source>Die PSB-Datei ist beschädigt oder unvollständig.</source>
+        <translation>Het PSB-bestand is beschadigd of onvolledig.</translation>
+    </message>
+    <message>
+        <source>Keine PSB-Datei.</source>
+        <translation>Geen PSB-bestand.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>De afbeeldingsgrootte %1 × %2 is ongeldig of te groot.</translation>
+    </message>
+    <message>
+        <source>Die Farbtiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
+        <translation>De kleurdiepte of kleurmodus van het PSB-bestand wordt niet ondersteund.</translation>
+    </message>
+    <message>
+        <source>Die Komprimierung der PSB-Datei wird nicht unterstützt.</source>
+        <translation>De compressie van het PSB-bestand wordt niet ondersteund.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Onvoldoende geheugen voor de afbeelding.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Het bestand kan niet worden gelezen.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Pagina %1 bestaat niet.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>Het bestand is leeg (0 bytes).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>Het bestand is te groot.</translation>
+    </message>
+</context>
+<context>
     <name>lf::QtImageDecoder</name>
     <message>
         <source>Die Datei ist leer (0 Byte).</source>
@@ -4306,6 +4400,49 @@
     <message>
         <source>Abbrechen</source>
         <translation>Annuleer</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ResvgDecoder</name>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Het bestand kan niet worden gelezen.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>Het bestand is leeg (0 bytes).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>Het bestand is te groot.</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei ist ungültig oder beschädigt.</source>
+        <translation>Het SVG-bestand is ongeldig of beschadigd.</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei enthält zu viele Elemente.</source>
+        <translation>Het SVG-bestand bevat te veel elementen.</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei hat keine gültige Größe.</source>
+        <translation>Het SVG-bestand heeft geen geldige grootte.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Onvoldoende geheugen voor de afbeelding.</translation>
+    </message>
+    <message>
+        <source>SVG über resvg ist in diesem Build nicht verfügbar.</source>
+        <translation>SVG via resvg is in deze build niet beschikbaar.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>De afbeeldingsgrootte %1 × %2 is ongeldig of te groot.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Pagina %1 bestaat niet.</translation>
     </message>
 </context>
 <context>
@@ -4718,6 +4855,10 @@
         <translation>Sleep om het venster te verplaatsen</translation>
     </message>
     <message>
+        <source>Karte</source>
+        <translation>Kaart</translation>
+    </message>
+    <message>
         <source>Name: „%1“</source>
         <translation>Naam: ‘%1’</translation>
     </message>
@@ -4763,6 +4904,49 @@
     <message>
         <source>Filmstreifen</source>
         <translation>Filmstrip</translation>
+    </message>
+</context>
+<context>
+    <name>lf::XcfDecoder</name>
+    <message>
+        <source>Die XCF-Datei ist beschädigt oder unvollständig.</source>
+        <translation>Het XCF-bestand is beschadigd of onvolledig.</translation>
+    </message>
+    <message>
+        <source>Keine XCF-Datei.</source>
+        <translation>Geen XCF-bestand.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>De afbeeldingsgrootte %1 × %2 is ongeldig of te groot.</translation>
+    </message>
+    <message>
+        <source>Die Farbtiefe der XCF-Datei wird nicht unterstützt.</source>
+        <translation>De kleurdiepte van het XCF-bestand wordt niet ondersteund.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Onvoldoende geheugen voor de afbeelding.</translation>
+    </message>
+    <message>
+        <source>Die Komprimierung der XCF-Datei wird nicht unterstützt.</source>
+        <translation>De compressie van het XCF-bestand wordt niet ondersteund.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Het bestand kan niet worden gelezen.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Pagina %1 bestaat niet.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>Het bestand is leeg (0 bytes).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>Het bestand is te groot.</translation>
     </message>
 </context>
 <context>

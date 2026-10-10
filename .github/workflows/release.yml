@@ -106,8 +106,8 @@ jobs:
 
       - name: Install dependencies
         # jpeg-turbo: static libturbojpeg for lossless JPEG rotation (F-EDIT-02); package.sh
-        # requires it (LF_REQUIRE_TURBOJPEG=ON).
-        run: brew install cmake ninja qt jpeg-turbo
+        # requires it (LF_REQUIRE_TURBOJPEG=ON). resvg: SVG backend (package.sh: LF_ENABLE_RESVG=ON).
+        run: brew install cmake ninja qt jpeg-turbo resvg
 
       - name: Download Sparkle (pinned by SHA-256)
         run: tools/fetch_sparkle.sh

@@ -54,6 +54,17 @@
     </message>
 </context>
 <context>
+    <name>lf::FolderMapModel</name>
+    <message numerus="yes">
+        <source>%1 von %n Bildern mit Ort</source>
+        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Ort&quot; (%1 images with a position, %n all)</extracomment>
+        <translation>
+            <numerusform>%1 von %n Bild mit Ort</numerusform>
+            <numerusform>%1 von %n Bildern mit Ort</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::Format</name>
     <message numerus="yes">
         <source>%n Byte</source>

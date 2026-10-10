@@ -45,10 +45,10 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Install dependencies
-        # webp + jpeg-xl: cwebp/cjxl for tests/corpus/make_corpus.sh; llvm: clang-tidy
+        # webp + jpeg-xl: cwebp/cjxl for tests/corpus/make_corpus.sh; llvm: clang-tidy; resvg: SVG backend
         # (keg-only, does not shadow clang-format).
         run: |
-          brew install cmake ninja qt googletest clang-format webp jpeg-xl llvm
+          brew install cmake ninja qt googletest clang-format webp jpeg-xl llvm resvg
           echo "LF_CLANG_TIDY=$(brew --prefix llvm)/bin/clang-tidy" >> "$GITHUB_ENV"
       - name: Cache RAW samples
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
@@ -93,7 +93,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Install dependencies
-        run: brew install cmake ninja qt googletest webp jpeg-xl
+        run: brew install cmake ninja qt googletest webp jpeg-xl resvg
       - name: Cache RAW samples
         uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
         with:

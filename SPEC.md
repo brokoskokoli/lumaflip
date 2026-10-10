@@ -160,7 +160,7 @@ Ziel: **So viele Formate wie möglich, ohne Nachinstallation.** Die Formate werd
 - F-FMT-04 (M2): Mehrseitige Formate (TIFF, ICO, HEIF-Sammlungen) mit Seitennavigation (⌥↑/⌥↓) und Anzeige „Seite 2/5“.
 - F-FMT-05 (M2): RAW: Zuerst die eingebettete JPEG-Vorschau anzeigen, dann die volle Entwicklung nachladen. Einstellbar: „Nur eingebettete Vorschau“ für maximale Geschwindigkeit.
 - F-FMT-06 (M3): RAW+JPEG-Paare mit gleichem Basisnamen wahlweise als ein Element behandeln (Standard: beide anzeigen).
-- Stand Restformate (M3): QOI, PCX, PNM/PAM/PFM, SGI, OpenRaster und Krita (zusammengesetztes Bild) über eigene Decoder; XCF und PSB brauchen KImageFormats (nicht vorhanden) und folgen in M4 (14.2).
+- Stand Restformate (M3): QOI, PCX, PNM/PAM/PFM, SGI, OpenRaster und Krita (zusammengesetztes Bild), XCF (sichtbare Ebenen zusammengesetzt; Ebenenmodi ohne Gegenstück vereinfacht) und PSB (Gesamtbild) über eigene Decoder; SVG über resvg (Homebrew `libresvg`, dynamisch), Qt SVG als Rückfall.
 
 ### 4.5 Farbe und HDR
 
@@ -700,7 +700,7 @@ Weitere Pflichten:
 ### 14.2 Noch offen
 
 1. **Plattformgleiche Darstellung:** Soll RAW unter Windows/Linux später genauso aussehen wie auf dem Mac? Apple RAW Engine und LibRaw entwickeln unterschiedlich. Entscheidung erst in M4 nötig.
-2. **resvg und KImageFormats (Stand M3):** resvg (SVG 1.1) hat nur eine C-API im Rust-Quellbaum; sie müsste mit einer Rust-Toolchain gebaut oder vorgebaut beigelegt werden (Build-Abhängigkeit, die 14.1 Nr. 4 bisher nicht vorsieht). Bis dahin bleibt Qt SVG. XCF/PSB setzen KImageFormats (LGPL-2.1, Qt-Plugin) voraus. Beides braucht eine Entscheidung über zusätzliche Abhängigkeiten.
+2. **resvg und KImageFormats (entschieden in M3):** resvg kommt als vorgebaute Homebrew-Bibliothek `libresvg` (C-API, dynamisch gelinkt, `LF_ENABLE_RESVG`); XCF und PSB lesen eigene Decoder, KImageFormats wird nicht gebraucht.
 
 ---
 

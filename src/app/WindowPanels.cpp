@@ -4,6 +4,7 @@
 #include "Filmstrip.h"
 #include "InfoPanel.h"
 #include "ViewerWindow.h"
+#include "WindowExtras.h"
 #include "core/Collection.h"
 #include "core/Platform.h"
 #include "core/Settings.h"
@@ -116,6 +117,10 @@ void WindowPanels::ensureInfoPanel() {
     m_info = new InfoPanel(m_provider, sharedTagService(), m_infoDock);
     m_info->setMinimumWidth(220);
     m_infoDock->setWidget(m_info);
+    connect(m_info, &InfoPanel::folderMapRequested, this, [this] { // F-INFO-08
+        if (WindowExtras* x = m_window.extras())
+            x->setFolderMapShown(true);
+    });
     m_infoDock->hide();
     m_window.addDockWidget(Qt::RightDockWidgetArea, m_infoDock);
     m_window.resizeDocks({m_infoDock}, {kInfoWidth}, Qt::Horizontal);

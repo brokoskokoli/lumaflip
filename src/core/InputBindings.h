@@ -103,6 +103,8 @@ enum class Action {
     // M3 (appended, keep order above stable)
     ToggleSubfolders, // F-OPEN-08
     ToggleRawJpeg,    // F-FMT-06: show the RAW / the JPEG of a pair
+    // M3 (appended, keep order above stable)
+    ToggleFolderMap, // F-INFO-08: folder map (⇧⌘M)
 };
 
 QString actionId(Action a); // stable string id for settings ("nextImage")

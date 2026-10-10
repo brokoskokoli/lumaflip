@@ -35,6 +35,10 @@ void MainMenu::buildViews(QMenu* view, QMenu* nav) {
     view->addSeparator();
     add(view, Action::ToggleSubfolders, tr("Unterordner einbeziehen"))->setCheckable(true);
 
+    // ---- Darstellung: folder map (F-INFO-08) ----
+    view->addSeparator();
+    add(view, Action::ToggleFolderMap, tr("Karte"))->setCheckable(true);
+
     // ---- Navigation: sibling folders (F-OPEN-09) ----
     nav->addSeparator();
     add(nav, Action::NextFolder, tr("Nächster Ordner"));
@@ -64,10 +68,10 @@ void MainMenu::buildWindowModes(QMenu* window) {
 void MainMenu::refreshViewsState() {
     ViewerWindow* w = m_app.frontWindow();
     WindowExtras* x = w ? w->extras() : nullptr;
-    for (Action a :
-         {Action::ToggleGrid, Action::CompareWithNext, Action::GoToImage, Action::ToggleShuffle,
-          Action::FilterByName, Action::ToggleAlwaysOnTop, Action::ToggleMinimalWindow,
-          Action::ToggleSubfolders, Action::NextFolder, Action::PreviousFolder, Action::ToggleRawJpeg})
+    for (Action a : {Action::ToggleGrid, Action::CompareWithNext, Action::GoToImage, Action::ToggleShuffle,
+                     Action::FilterByName, Action::ToggleAlwaysOnTop, Action::ToggleMinimalWindow,
+                     Action::ToggleSubfolders, Action::NextFolder, Action::PreviousFolder,
+                     Action::ToggleRawJpeg, Action::ToggleFolderMap})
         if (QAction* act = action(a))
             act->setEnabled(x != nullptr);
     if (QAction* act = action(Action::ToggleSubfolders)) // F-OPEN-08
@@ -78,6 +82,8 @@ void MainMenu::refreshViewsState() {
     }
     if (QAction* act = action(Action::ToggleGrid))
         act->setChecked(x && x->overview()->isGridShown());
+    if (QAction* act = action(Action::ToggleFolderMap)) // F-INFO-08
+        act->setChecked(x && x->folderMapShown());
     if (QAction* act = action(Action::ToggleShuffle))
         act->setChecked(x && x->navigation()->shuffle());
     if (QAction* act = action(Action::ToggleAlwaysOnTop))

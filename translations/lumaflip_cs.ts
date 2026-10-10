@@ -760,6 +760,42 @@
     </message>
 </context>
 <context>
+    <name>lf::FolderMapModel</name>
+    <message>
+        <source>Keine Bilder</source>
+        <translation>Žádné obrázky</translation>
+    </message>
+    <message>
+        <source>Orte werden gelesen … %1 von %2</source>
+        <extracomment>folder map (F-INFO-08) while the GPS positions are read: done / all images</extracomment>
+        <translation>Načítání míst… %1 z %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 von %n Bildern mit Ort</source>
+        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Ort&quot; (%1 images with a position, %n all)</extracomment>
+        <translation>
+            <numerusform>%1 z %n obrázku s polohou</numerusform>
+            <numerusform>%1 z %n obrázků s polohou</numerusform>
+            <numerusform>%1 z %n obrázků s polohou</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>lf::FolderMapPanel</name>
+    <message>
+        <source>Keine Bilder in dieser Ansicht.</source>
+        <translation>V tomto zobrazení nejsou žádné obrázky.</translation>
+    </message>
+    <message>
+        <source>Keines der Bilder enthält einen Aufnahmeort (GPS).</source>
+        <translation>Žádný z obrázků neobsahuje místo pořízení (GPS).</translation>
+    </message>
+    <message>
+        <source>Karte schließen</source>
+        <translation>Zavřít mapu</translation>
+    </message>
+</context>
+<context>
     <name>lf::Format</name>
     <message>
         <source>%1 KB</source>
@@ -1076,6 +1112,14 @@
     <message>
         <source>In Karten öffnen</source>
         <translation>Otevřít v Mapách</translation>
+    </message>
+    <message>
+        <source>Ordnerkarte</source>
+        <translation>Mapa složky</translation>
+    </message>
+    <message>
+        <source>Alle Bilder dieser Ansicht mit Aufnahmeort auf einer Karte zeigen (lädt Kartendaten von Apple Karten)</source>
+        <translation>Zobrazit na mapě všechny obrázky z tohoto zobrazení, které mají polohu (načítá mapová data z Apple Map)</translation>
     </message>
 </context>
 <context>
@@ -1567,6 +1611,10 @@
     <message>
         <source>RAW/JPEG des Paares zeigen</source>
         <translation>Zobrazit RAW/JPEG dvojice</translation>
+    </message>
+    <message>
+        <source>Ordnerkarte</source>
+        <translation>Mapa složky</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2685,6 +2733,10 @@
     <message>
         <source>Unterordner einbeziehen</source>
         <translation>Zahrnout podsložky</translation>
+    </message>
+    <message>
+        <source>Karte</source>
+        <translation>Mapa</translation>
     </message>
     <message>
         <source>Nächster Ordner</source>
@@ -3987,6 +4039,49 @@
     </message>
 </context>
 <context>
+    <name>lf::PsbDecoder</name>
+    <message>
+        <source>Die PSB-Datei ist beschädigt oder unvollständig.</source>
+        <translation>Soubor PSB je poškozený nebo neúplný.</translation>
+    </message>
+    <message>
+        <source>Keine PSB-Datei.</source>
+        <translation>Nejde o soubor PSB.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>Velikost obrázku %1 × %2 je neplatná nebo příliš velká.</translation>
+    </message>
+    <message>
+        <source>Die Farbtiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
+        <translation>Barevná hloubka nebo barevný režim souboru PSB není podporován.</translation>
+    </message>
+    <message>
+        <source>Die Komprimierung der PSB-Datei wird nicht unterstützt.</source>
+        <translation>Komprese souboru PSB není podporována.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Nedostatek paměti pro obrázek.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Soubor nelze číst.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Stránka %1 neexistuje.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>Soubor je prázdný (0 bajtů).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>Soubor je příliš velký.</translation>
+    </message>
+</context>
+<context>
     <name>lf::QtImageDecoder</name>
     <message>
         <source>Die Datei ist leer (0 Byte).</source>
@@ -4324,6 +4419,49 @@
     <message>
         <source>Abbrechen</source>
         <translation>Zrušit</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ResvgDecoder</name>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Soubor nelze číst.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>Soubor je prázdný (0 bajtů).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>Soubor je příliš velký.</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei ist ungültig oder beschädigt.</source>
+        <translation>Soubor SVG je neplatný nebo poškozený.</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei enthält zu viele Elemente.</source>
+        <translation>Soubor SVG obsahuje příliš mnoho prvků.</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei hat keine gültige Größe.</source>
+        <translation>Soubor SVG nemá platnou velikost.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Nedostatek paměti pro obrázek.</translation>
+    </message>
+    <message>
+        <source>SVG über resvg ist in diesem Build nicht verfügbar.</source>
+        <translation>SVG pomocí resvg není v tomto sestavení k dispozici.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>Velikost obrázku %1 × %2 je neplatná nebo příliš velká.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Stránka %1 neexistuje.</translation>
     </message>
 </context>
 <context>
@@ -4738,6 +4876,10 @@
         <translation>Přetažením přesunete okno</translation>
     </message>
     <message>
+        <source>Karte</source>
+        <translation>Mapa</translation>
+    </message>
+    <message>
         <source>Name: „%1“</source>
         <translation>Název: „%1“</translation>
     </message>
@@ -4783,6 +4925,49 @@
     <message>
         <source>Filmstreifen</source>
         <translation>Filmový pás</translation>
+    </message>
+</context>
+<context>
+    <name>lf::XcfDecoder</name>
+    <message>
+        <source>Die XCF-Datei ist beschädigt oder unvollständig.</source>
+        <translation>Soubor XCF je poškozený nebo neúplný.</translation>
+    </message>
+    <message>
+        <source>Keine XCF-Datei.</source>
+        <translation>Nejde o soubor XCF.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>Velikost obrázku %1 × %2 je neplatná nebo příliš velká.</translation>
+    </message>
+    <message>
+        <source>Die Farbtiefe der XCF-Datei wird nicht unterstützt.</source>
+        <translation>Barevná hloubka souboru XCF není podporována.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Nedostatek paměti pro obrázek.</translation>
+    </message>
+    <message>
+        <source>Die Komprimierung der XCF-Datei wird nicht unterstützt.</source>
+        <translation>Komprese souboru XCF není podporována.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Soubor nelze číst.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Stránka %1 neexistuje.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>Soubor je prázdný (0 bajtů).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>Soubor je příliš velký.</translation>
     </message>
 </context>
 <context>

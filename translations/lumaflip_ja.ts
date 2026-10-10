@@ -748,6 +748,40 @@
     </message>
 </context>
 <context>
+    <name>lf::FolderMapModel</name>
+    <message>
+        <source>Keine Bilder</source>
+        <translation>画像なし</translation>
+    </message>
+    <message>
+        <source>Orte werden gelesen … %1 von %2</source>
+        <extracomment>folder map (F-INFO-08) while the GPS positions are read: done / all images</extracomment>
+        <translation>位置情報を読み込み中… %1 / %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 von %n Bildern mit Ort</source>
+        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Ort&quot; (%1 images with a position, %n all)</extracomment>
+        <translation>
+            <numerusform>%n 枚中 %1 枚に位置情報あり</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>lf::FolderMapPanel</name>
+    <message>
+        <source>Keine Bilder in dieser Ansicht.</source>
+        <translation>この表示には画像がありません。</translation>
+    </message>
+    <message>
+        <source>Keines der Bilder enthält einen Aufnahmeort (GPS).</source>
+        <translation>撮影場所（GPS）を含む画像はありません。</translation>
+    </message>
+    <message>
+        <source>Karte schließen</source>
+        <translation>マップを閉じる</translation>
+    </message>
+</context>
+<context>
     <name>lf::Format</name>
     <message>
         <source>%1 KB</source>
@@ -1060,6 +1094,14 @@
     <message>
         <source>In Karten öffnen</source>
         <translation>マップで開く</translation>
+    </message>
+    <message>
+        <source>Ordnerkarte</source>
+        <translation>フォルダマップ</translation>
+    </message>
+    <message>
+        <source>Alle Bilder dieser Ansicht mit Aufnahmeort auf einer Karte zeigen (lädt Kartendaten von Apple Karten)</source>
+        <translation>この表示内の位置情報を持つすべての画像をマップに表示します（Appleマップから地図データを読み込みます）</translation>
     </message>
 </context>
 <context>
@@ -1551,6 +1593,10 @@
     <message>
         <source>RAW/JPEG des Paares zeigen</source>
         <translation>ペアのRAW/JPEGを表示</translation>
+    </message>
+    <message>
+        <source>Ordnerkarte</source>
+        <translation>フォルダマップ</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2669,6 +2715,10 @@
     <message>
         <source>Unterordner einbeziehen</source>
         <translation>サブフォルダを含める</translation>
+    </message>
+    <message>
+        <source>Karte</source>
+        <translation>マップ</translation>
     </message>
     <message>
         <source>Nächster Ordner</source>
@@ -3955,6 +4005,49 @@
     </message>
 </context>
 <context>
+    <name>lf::PsbDecoder</name>
+    <message>
+        <source>Die PSB-Datei ist beschädigt oder unvollständig.</source>
+        <translation>PSBファイルが破損しているか、不完全です。</translation>
+    </message>
+    <message>
+        <source>Keine PSB-Datei.</source>
+        <translation>PSBファイルではありません。</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>画像サイズ %1 × %2 が無効か、大きすぎます。</translation>
+    </message>
+    <message>
+        <source>Die Farbtiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
+        <translation>このPSBファイルの色深度またはカラーモードはサポートされていません。</translation>
+    </message>
+    <message>
+        <source>Die Komprimierung der PSB-Datei wird nicht unterstützt.</source>
+        <translation>このPSBファイルの圧縮形式はサポートされていません。</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>画像用のメモリが足りません。</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>ファイルを読み込めません。</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>ページ %1 は存在しません。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>ファイルが空です（0 バイト）。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>ファイルが大きすぎます。</translation>
+    </message>
+</context>
+<context>
     <name>lf::QtImageDecoder</name>
     <message>
         <source>Die Datei ist leer (0 Byte).</source>
@@ -4288,6 +4381,49 @@
     <message>
         <source>Abbrechen</source>
         <translation>キャンセル</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ResvgDecoder</name>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>ファイルを読み込めません。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>ファイルが空です（0 バイト）。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>ファイルが大きすぎます。</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei ist ungültig oder beschädigt.</source>
+        <translation>SVGファイルが無効か、破損しています。</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei enthält zu viele Elemente.</source>
+        <translation>SVGファイルの要素が多すぎます。</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei hat keine gültige Größe.</source>
+        <translation>SVGファイルのサイズが無効です。</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>画像用のメモリが足りません。</translation>
+    </message>
+    <message>
+        <source>SVG über resvg ist in diesem Build nicht verfügbar.</source>
+        <translation>このビルドではresvgによるSVGを利用できません。</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>画像サイズ %1 × %2 が無効か、大きすぎます。</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>ページ %1 は存在しません。</translation>
     </message>
 </context>
 <context>
@@ -4698,6 +4834,10 @@
         <translation>ドラッグしてウインドウを移動</translation>
     </message>
     <message>
+        <source>Karte</source>
+        <translation>マップ</translation>
+    </message>
+    <message>
         <source>Name: „%1“</source>
         <translation>名前：「%1」</translation>
     </message>
@@ -4743,6 +4883,49 @@
     <message>
         <source>Filmstreifen</source>
         <translation>フィルムストリップ</translation>
+    </message>
+</context>
+<context>
+    <name>lf::XcfDecoder</name>
+    <message>
+        <source>Die XCF-Datei ist beschädigt oder unvollständig.</source>
+        <translation>XCFファイルが破損しているか、不完全です。</translation>
+    </message>
+    <message>
+        <source>Keine XCF-Datei.</source>
+        <translation>XCFファイルではありません。</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>画像サイズ %1 × %2 が無効か、大きすぎます。</translation>
+    </message>
+    <message>
+        <source>Die Farbtiefe der XCF-Datei wird nicht unterstützt.</source>
+        <translation>このXCFファイルの色深度はサポートされていません。</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>画像用のメモリが足りません。</translation>
+    </message>
+    <message>
+        <source>Die Komprimierung der XCF-Datei wird nicht unterstützt.</source>
+        <translation>このXCFファイルの圧縮形式はサポートされていません。</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>ファイルを読み込めません。</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>ページ %1 は存在しません。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>ファイルが空です（0 バイト）。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>ファイルが大きすぎます。</translation>
     </message>
 </context>
 <context>
