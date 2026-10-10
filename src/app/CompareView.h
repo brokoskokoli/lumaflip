@@ -8,6 +8,7 @@
 // a pane, Esc closes the mode. Images come from the shared ImageProvider (this view is its
 // own client, so the window's prefetch is not disturbed).
 
+#include "core/CompareBlend.h"
 #include "core/ImageProvider.h"
 #include "core/InputBindings.h"
 
@@ -17,10 +18,13 @@
 
 #include <functional>
 
+class QComboBox;
 class QLabel;
+class QSlider;
 
 namespace lf {
 
+class CompareBlendOverlay;
 class ImageView;
 class ViewSyncBinding;
 
@@ -55,6 +59,16 @@ public:
 
     // Same settings as the window's view.
     void applyViewSettings(const QString& background, bool upscaleNearest, bool devicePixels);
+    // F-GRID-04: difference / blend / wipe of the first two panes over the first pane (Off =
+    // side by side). `value`: blend amount or split position (0..1); the difference is
+    // amplified by up to 16x from the same slider.
+    void setBlendMode(compare::BlendMode mode);
+    compare::BlendMode blendMode() const { return m_blend; }
+    void setBlendValue(double value);
+    double blendValue() const { return m_blendValue; }
+    CompareBlendOverlay* blendOverlay() const { return m_overlay; }
+    QWidget* blendBar() const { return m_bar; }
+
     // Keys taken from the menu shortcuts while the compare view has the focus (rating digits).
     void setExtraKeys(std::function<bool(const QKeyEvent*)> wanted) { m_extraKeys = std::move(wanted); }
 
@@ -85,12 +99,23 @@ private:
     void showStage(int pane, Quality quality, const DecodedImagePtr& image);
     void updateFrames();
     QSize decodeTarget() const;
+    void updateBlend();
+    void retranslateBar();
+    double overlayValue() const; // m_blendValue in the overlay's terms (difference: amount)
 
     ImageProvider& m_provider;
     QVector<Pane> m_panes;
     ViewSyncBinding* m_sync = nullptr;
     int m_focus = 0;
     std::function<bool(const QKeyEvent*)> m_extraKeys;
+    QWidget* m_paneArea = nullptr;
+    QWidget* m_bar = nullptr;
+    QComboBox* m_modeBox = nullptr;
+    QSlider* m_slider = nullptr;
+    QLabel* m_valueLabel = nullptr;
+    CompareBlendOverlay* m_overlay = nullptr;
+    compare::BlendMode m_blend = compare::BlendMode::Off;
+    double m_blendValue = 0.5;
 };
 
 } // namespace lf

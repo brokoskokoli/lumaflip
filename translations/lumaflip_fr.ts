@@ -157,6 +157,29 @@
     </message>
 </context>
 <context>
+    <name>lf::Archive</name>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>« %1 » manque dans l’archive.</translation>
+    </message>
+    <message>
+        <source>Dieses Archivformat wird nicht unterstützt.</source>
+        <translation>Ce format d’archive n’est pas pris en charge.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist zu groß.</source>
+        <translation>L’image dans l’archive est trop grande.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist beschädigt oder unvollständig.</source>
+        <translation>L’archive est endommagée ou incomplète.</translation>
+    </message>
+    <message>
+        <source>Das Archiv enthält keine Bilder.</source>
+        <translation>L’archive ne contient aucune image.</translation>
+    </message>
+</context>
+<context>
     <name>lf::CollectionExtras</name>
     <message numerus="yes">
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
@@ -227,9 +250,50 @@
         <translation>Comparaison</translation>
     </message>
     <message>
+        <source>%1×</source>
+        <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
+        <translation>%1×</translation>
+    </message>
+    <message>
+        <source>%1 %</source>
+        <translation>%1&#xa0;%</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Côte à côte</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>Différence</translation>
+    </message>
+    <message>
+        <source>Überblenden</source>
+        <translation>Fondu enchaîné</translation>
+    </message>
+    <message>
+        <source>Wischen</source>
+        <translation>Volet</translation>
+    </message>
+    <message>
+        <source>Die ersten beiden Bilder übereinander vergleichen</source>
+        <translation>Comparer les deux premières images superposées</translation>
+    </message>
+    <message>
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+    <message>
+        <source>%1 ⇄ %2</source>
+        <extracomment>compare caption while two images are blended: &quot;first.jpg ⇄ second.jpg&quot;</extracomment>
+        <translation>%1 ⇄ %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ContainerPolicy</name>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <translation>Les images des archives et des documents PDF sont ouvertes en lecture seule – corbeille, renommage, déplacement et notation ne sont pas possibles ici.</translation>
     </message>
 </context>
 <context>
@@ -276,6 +340,193 @@
     <message>
         <source>Abbrechen</source>
         <translation>Annuler</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropOverlay</name>
+    <message>
+        <source>Seitenverhältnis</source>
+        <translation>Format</translation>
+    </message>
+    <message>
+        <source>Hochformat</source>
+        <translation>Portrait</translation>
+    </message>
+    <message>
+        <source>Seitenverhältnis hochkant statt quer</source>
+        <translation>Format en portrait plutôt qu’en paysage</translation>
+    </message>
+    <message>
+        <source>Drittel</source>
+        <translation>Tiers</translation>
+    </message>
+    <message>
+        <source>Raster der Drittel-Regel einblenden</source>
+        <translation>Afficher la grille de la règle des tiers</translation>
+    </message>
+    <message>
+        <source>Speichern</source>
+        <translation>Enregistrer</translation>
+    </message>
+    <message>
+        <source>Zuschnitt in der Datei speichern (Enter, widerrufbar)</source>
+        <translation>Enregistrer le recadrage dans le fichier (Entrée, annulable)</translation>
+    </message>
+    <message>
+        <source>Speichern unter …</source>
+        <translation>Enregistrer sous…</translation>
+    </message>
+    <message>
+        <source>Zuschnitt als neue Datei speichern – das Original bleibt unverändert</source>
+        <translation>Enregistrer le recadrage dans un nouveau fichier – l’original reste inchangé</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuler</translation>
+    </message>
+    <message>
+        <source>Zuschneiden beenden (Esc)</source>
+        <translation>Terminer le recadrage (Échap)</translation>
+    </message>
+    <message>
+        <source>%1 × %2 px</source>
+        <extracomment>crop size in pixels, e.g. &quot;1920 × 1080 px&quot;</extracomment>
+        <translation>%1 × %2 px</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropSave</name>
+    <message>
+        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.</source>
+        <translation>Le fichier a été modifié entre-temps – rien n’a été enregistré. Veuillez recadrer à nouveau.</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
+        <translation>Le fichier contient d’autres images (p. ex. une gain map HDR ou une seconde vue stéréo) qui ne correspondraient plus après un recadrage sans perte. Le recadrage n’est possible qu’en réencodant – un peu de qualité et ces images supplémentaires sont perdues.</translation>
+    </message>
+    <message>
+        <source>Frei</source>
+        <translation>Libre</translation>
+    </message>
+    <message>
+        <source>Original</source>
+        <translation>Original</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
+        <translation>Impossible de démarrer la bibliothèque JPEG.</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Daten konnten nicht verlustfrei zugeschnitten werden (%1).</source>
+        <translation>Les données JPEG n’ont pas pu être recadrées sans perte (%1).</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.</source>
+        <translation>La sélection n’est pas alignée sur la grille des blocs JPEG.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden von JPEG-Dateien ist in dieser Version nicht verfügbar.</source>
+        <translation>Le recadrage sans perte des fichiers JPEG n’est pas disponible dans cette version.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
+        <translation>Les images d’archives et de documents PDF ne peuvent pas être enregistrées recadrées – utilisez «&#xa0;Exporter&#xa0;».</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>Le fichier n’existe plus.</translation>
+    </message>
+    <message>
+        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <translation>Le format de fichier n’est pas reconnu pour l’enregistrement.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
+        <translation>Les fichiers RAW ne sont jamais modifiés. Pour une copie recadrée, utilisez «&#xa0;Exporter&#xa0;».</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
+        <translation>Les fichiers animés ou multipages ne peuvent pas être enregistrés recadrés.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist schreibgeschützt.</source>
+        <translation>«&#xa0;%1&#xa0;» est en lecture seule.</translation>
+    </message>
+    <message>
+        <source>„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.</source>
+        <translation>«&#xa0;Enregistrer sous&#xa0;» n’écrase jamais l’original – choisissez un autre nom.</translation>
+    </message>
+    <message>
+        <source>In „%1“ kann nicht geschrieben werden.</source>
+        <translation>Impossible d’écrire dans «&#xa0;%1&#xa0;».</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>Impossible de lire «&#xa0;%1&#xa0;».</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>Aucune zone sélectionnée.</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.</source>
+        <translation>La sélection couvre toute l’image – rien à recadrer.</translation>
+    </message>
+    <message>
+        <source>Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
+        <translation>Pour un recadrage sans perte, la sélection a été alignée sur la grille des blocs JPEG (%1 × %2 pixels) et mesure maintenant %3 × %4 pixels.</translation>
+    </message>
+    <message>
+        <source>Diese JPEG-Datei lässt sich nicht verlustfrei zuschneiden. Beim Neukodieren geht etwas Bildqualität verloren.</source>
+        <translation>Ce fichier JPEG ne peut pas être recadré sans perte. Le réencodage fait perdre un peu de qualité.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nicht gespeichert werden.</source>
+        <translation>Le recadrage ne peut pas être enregistré.</translation>
+    </message>
+    <message>
+        <source>Beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
+        <translation>Le réencodage ne conserverait pas l’image à l’identique (modèle de couleur, profondeur, palette ou transparence seraient modifiés).</translation>
+    </message>
+    <message>
+        <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <translation>Ce format est avec perte. Le recadrage ne peut être enregistré qu’en réencodant l’image – un peu de qualité est perdue.</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder (%1) gehen dabei verloren.</source>
+        <translation>Les images supplémentaires (%1) sont perdues.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
+        <translation>Le recadrage sans perte n’est pas possible pour cette image.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>Le recadrage n’a pas pu être enregistré.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>Impossible de remplacer le fichier.</translation>
+    </message>
+    <message>
+        <source>Nichts zuzuschneiden</source>
+        <translation>Rien à recadrer</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten (an JPEG-Blöcke angepasst)</source>
+        <translation>Recadrée sans perte (alignée sur les blocs JPEG)</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten</source>
+        <translation>Recadrée sans perte</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (verlustfrei neu kodiert)</source>
+        <translation>Recadrée (réencodée sans perte)</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (neu kodiert)</source>
+        <translation>Recadrée (réencodée)</translation>
     </message>
 </context>
 <context>
@@ -363,6 +614,190 @@
             <numerusform>%n image déplacée vers « _Rejected »</numerusform>
             <numerusform>%n images déplacées vers « _Rejected »</numerusform>
         </translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActions</name>
+    <message>
+        <source>Die Aktion braucht einen Namen.</source>
+        <translation>L’action doit avoir un nom.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht einen Befehl.</source>
+        <translation>L’action doit avoir une commande.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht den Namen eines Kurzbefehls.</source>
+        <translation>L’action doit avoir le nom d’un raccourci.</translation>
+    </message>
+    <message>
+        <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
+        <translation>Le nom d’un raccourci ne doit pas commencer par « - ».</translation>
+    </message>
+    <message numerus="yes">
+        <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
+        <translation>
+            <numerusform>L’action a été interrompue après %n seconde.</numerusform>
+            <numerusform>L’action a été interrompue après %n secondes.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Die Aktion wurde abgebrochen.</source>
+        <translation>L’action a été interrompue.</translation>
+    </message>
+    <message>
+        <source>Die Aktion endete mit Fehlercode %1.</source>
+        <translation>L’action s’est terminée avec le code d’erreur %1.</translation>
+    </message>
+    <message>
+        <source>Die Kurzbefehle-App konnte nicht gestartet werden.</source>
+        <translation>Impossible de lancer l’app Raccourcis.</translation>
+    </message>
+    <message>
+        <source>Der Befehl konnte nicht gestartet werden.</source>
+        <translation>Impossible de lancer la commande.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsEditor</name>
+    <message>
+        <source>Eigene Aktion</source>
+        <translation>Action personnalisée</translation>
+    </message>
+    <message>
+        <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
+        <translation>Nom d’un raccourci de l’app Raccourcis ; il reçoit le fichier en entrée.</translation>
+    </message>
+    <message>
+        <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
+        <translation>S’exécute avec /bin/sh ; le fichier est dans &quot;$1&quot; (tous les fichiers : &quot;$@&quot;), p. ex. open -a Preview &quot;$1&quot;. Le chemin n’est jamais inséré dans la commande.</translation>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation>Nom :</translation>
+    </message>
+    <message>
+        <source>Art:</source>
+        <translation>Type :</translation>
+    </message>
+    <message>
+        <source>Befehl:</source>
+        <translation>Commande :</translation>
+    </message>
+    <message>
+        <source>Taste:</source>
+        <translation>Touche :</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nom</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Type</translation>
+    </message>
+    <message>
+        <source>Befehl</source>
+        <translation>Commande</translation>
+    </message>
+    <message>
+        <source>Taste</source>
+        <translation>Touche</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 ist schon belegt (%3).</source>
+        <translation>« %1 » : %2 est déjà utilisé (%3).</translation>
+    </message>
+    <message>
+        <source>Hinzufügen …</source>
+        <translation>Ajouter…</translation>
+    </message>
+    <message>
+        <source>Bearbeiten …</source>
+        <translation>Modifier…</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>Supprimer</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsManager</name>
+    <message>
+        <source>Kurzbefehl</source>
+        <translation>Raccourci</translation>
+    </message>
+    <message>
+        <source>Shell-Befehl</source>
+        <translation>Commande shell</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Aucune image n’est ouverte.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktion ausführen</source>
+        <translation>Exécuter l’action personnalisée</translation>
+    </message>
+    <message>
+        <source>„%1“ zum ersten Mal ausführen?</source>
+        <translation>Exécuter « %1 » pour la première fois ?</translation>
+    </message>
+    <message>
+        <source>Kurzbefehl: %1</source>
+        <translation>Raccourci : %1</translation>
+    </message>
+    <message>
+        <source>Befehl: %1</source>
+        <translation>Commande : %1</translation>
+    </message>
+    <message>
+        <source>Datei: %1</source>
+        <translation>Fichier : %1</translation>
+    </message>
+    <message>
+        <source>Ausführen</source>
+        <translation>Exécuter</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuler</translation>
+    </message>
+    <message>
+        <source>▶ %1: %2</source>
+        <translation>▶ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ läuft …</source>
+        <translation>« %1 » en cours…</translation>
+    </message>
+    <message>
+        <source>✓ %1: fertig</source>
+        <translation>✓ %1 : terminé</translation>
+    </message>
+    <message>
+        <source>✗ %1: %2</source>
+        <translation>✗ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ausgeführt</source>
+        <translation>« %1 » exécuté</translation>
+    </message>
+    <message>
+        <source>„%1“: %2</source>
+        <translation>« %1 » : %2</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Journal des actions</translation>
+    </message>
+    <message>
+        <source>Noch keine Aktion ausgeführt.</source>
+        <translation>Aucune action exécutée pour l’instant.</translation>
+    </message>
+    <message>
+        <source>Leeren</source>
+        <translation>Effacer</translation>
     </message>
 </context>
 <context>
@@ -667,6 +1102,136 @@
     <message>
         <source>Kamera-RAW (Sigma X3F)</source>
         <translation>RAW d’appareil photo (Sigma X3F)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ExportDialog</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exporter</translation>
+    </message>
+    <message>
+        <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>Exporter «&#xa0;%1&#xa0;» comme nouveau fichier. L’original reste inchangé.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.</source>
+        <translation>
+            <numerusform>Exporter %n image comme nouveau fichier. L’original reste inchangé.</numerusform>
+            <numerusform>Exporter %n images comme nouveaux fichiers. Les originaux restent inchangés.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation>Format&#xa0;:</translation>
+    </message>
+    <message>
+        <source>Qualität:</source>
+        <translation>Qualité&#xa0;:</translation>
+    </message>
+    <message>
+        <source>Maximale Größe:</source>
+        <translation>Taille maximale&#xa0;:</translation>
+    </message>
+    <message>
+        <source>Metadaten:</source>
+        <translation>Métadonnées&#xa0;:</translation>
+    </message>
+    <message>
+        <source>Farbraum:</source>
+        <translation>Espace colorimétrique&#xa0;:</translation>
+    </message>
+    <message>
+        <source>HDR:</source>
+        <translation>HDR&#xa0;:</translation>
+    </message>
+    <message>
+        <source>Dateiname:</source>
+        <translation>Nom de fichier&#xa0;:</translation>
+    </message>
+    <message>
+        <source>Zielordner:</source>
+        <translation>Dossier de destination&#xa0;:</translation>
+    </message>
+    <message>
+        <source>Originalgröße</source>
+        <translation>Taille d’origine</translation>
+    </message>
+    <message>
+        <source> px (lange Kante)</source>
+        <extracomment>suffix of the maximum size (long edge in pixels)</extracomment>
+        <translation> px (grand côté)</translation>
+    </message>
+    <message>
+        <source>Alle behalten</source>
+        <translation>Tout conserver</translation>
+    </message>
+    <message>
+        <source>Ohne Ortsdaten (GPS)</source>
+        <translation>Sans localisation (GPS)</translation>
+    </message>
+    <message>
+        <source>Alle entfernen</source>
+        <translation>Tout supprimer</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>Conserver</translation>
+    </message>
+    <message>
+        <source>In sRGB umwandeln</source>
+        <translation>Convertir en sRGB</translation>
+    </message>
+    <message>
+        <source>In Display P3 umwandeln</source>
+        <translation>Convertir en Display P3</translation>
+    </message>
+    <message>
+        <source>Gain-Map behalten (wo das Format es kann)</source>
+        <translation>Conserver la gain map (si le format le permet)</translation>
+    </message>
+    <message>
+        <source>Als SDR (Tone Mapping)</source>
+        <translation>En SDR (mappage tonal)</translation>
+    </message>
+    <message>
+        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung</source>
+        <translation>Variables&#xa0;: {name} = nom de l’original, {n} = numéro d’ordre, {format} = extension</translation>
+    </message>
+    <message>
+        <source>Neben dem Original</source>
+        <translation>À côté de l’original</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>Choisir…</translation>
+    </message>
+    <message>
+        <source>Erste Datei: %1</source>
+        <translation>Premier fichier&#xa0;: %1</translation>
+    </message>
+    <message>
+        <source>Zielordner für den Export</source>
+        <translation>Dossier de destination de l’exportation</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ExportRunner</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exporter</translation>
+    </message>
+    <message>
+        <source>Exportiere …</source>
+        <translation>Exportation…</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuler</translation>
+    </message>
+    <message>
+        <source>Exportiere %1 von %2: %3</source>
+        <translation>Exportation %1 sur %2&#xa0;: %3</translation>
     </message>
 </context>
 <context>
@@ -997,6 +1562,49 @@
     <message>
         <source>Wird berechnet …</source>
         <translation>Calcul en cours…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ImageExport</name>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>«&#xa0;%1&#xa0;» existe déjà.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht exportiert werden.</source>
+        <translation>L’image n’a pas pu être exportée.</translation>
+    </message>
+    <message>
+        <source>%1: Der Zielordner kann nicht angelegt werden.</source>
+        <translation>%1&#xa0;: impossible de créer le dossier de destination.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht geschrieben werden.</source>
+        <translation>L’image n’a pas pu être écrite.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden.</source>
+        <translation>Impossible de décoder l’image.</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
+        <translation>Ce format ne peut pas être écrit sur ce Mac.</translation>
+    </message>
+    <message>
+        <source>Unbekanntes Zielformat.</source>
+        <translation>Format de destination inconnu.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher zum Exportieren.</source>
+        <translation>Mémoire insuffisante pour l’exportation.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Impossible de lire le fichier.</translation>
+    </message>
+    <message>
+        <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
+        <translation>%1 ne peut pas enregistrer de gain map HDR – l’image a été exportée en SDR.</translation>
     </message>
 </context>
 <context>
@@ -1616,6 +2224,46 @@
         <translation>Carte du dossier</translation>
     </message>
     <message>
+        <source>Quick Look</source>
+        <translation>Coup d’œil</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Texte en direct</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Définir comme fond d’écran</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Journal des actions</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Lire les BD de droite à gauche</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>Recadrer</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exporter</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung</source>
+        <translation>Alerte de sur-/sous-exposition</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>Focus peaking</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>Collimateurs AF</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>Aucune action</translation>
     </message>
@@ -2060,6 +2708,33 @@
     </message>
 </context>
 <context>
+    <name>lf::LiveText</name>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Texte en direct est désactivé dans les réglages.</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Texte en direct n’est pas disponible sur ce Mac.</translation>
+    </message>
+    <message>
+        <source>Live Text: Bild wird analysiert …</source>
+        <translation>Texte en direct : analyse de l’image…</translation>
+    </message>
+    <message>
+        <source>Live Text: Text und Motive auswählbar</source>
+        <translation>Texte en direct : texte et sujets sélectionnables</translation>
+    </message>
+    <message>
+        <source>Live Text: kein Text gefunden</source>
+        <translation>Texte en direct : aucun texte trouvé</translation>
+    </message>
+    <message>
+        <source>Live Text: Analyse fehlgeschlagen (%1)</source>
+        <translation>Texte en direct : échec de l’analyse (%1)</translation>
+    </message>
+</context>
+<context>
     <name>lf::LosslessTransform</name>
     <message>
         <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
@@ -2312,6 +2987,17 @@
         <source>%1 %</source>
         <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
         <translation>%1&#xa0;%</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MacIntegration</name>
+    <message>
+        <source>Es wurden keine Dateien übergeben.</source>
+        <translation>Aucun fichier n’a été transmis.</translation>
+    </message>
+    <message>
+        <source>Der Bildschirm ist nicht mehr da.</source>
+        <translation>L’écran n’est plus connecté.</translation>
     </message>
 </context>
 <context>
@@ -2606,8 +3292,48 @@
         <translation>Ordre aléatoire</translation>
     </message>
     <message>
+        <source>Exportieren …</source>
+        <translation>Exporter…</translation>
+    </message>
+    <message>
+        <source>Zuschneiden …</source>
+        <translation>Recadrer…</translation>
+    </message>
+    <message>
+        <source>Overlays</source>
+        <translation>Superpositions</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtung</source>
+        <translation>Sur-/sous-exposition</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>Focus peaking</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>Collimateurs AF</translation>
+    </message>
+    <message>
+        <source>Vergleich überlagern</source>
+        <translation>Superposer la comparaison</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Côte à côte</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>Différence</translation>
+    </message>
+    <message>
         <source>Überblenden</source>
         <translation>Fondu enchaîné</translation>
+    </message>
+    <message>
+        <source>Wischen (geteilte Ansicht)</source>
+        <translation>Volet (vue partagée)</translation>
     </message>
     <message>
         <source>Diashow</source>
@@ -2800,6 +3526,38 @@
     <message>
         <source>Belichtungsregler einblenden</source>
         <translation>Afficher le curseur d’exposition</translation>
+    </message>
+    <message>
+        <source>Quick Look</source>
+        <translation>Coup d’œil</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen …</source>
+        <translation>Définir comme fond d’écran…</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Actions personnalisées</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Texte en direct</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Lire les BD de droite à gauche</translation>
+    </message>
+    <message>
+        <source>Keine – in den Einstellungen anlegen</source>
+        <translation>Aucune – à créer dans les réglages</translation>
+    </message>
+    <message>
+        <source>Protokoll …</source>
+        <translation>Journal…</translation>
+    </message>
+    <message>
+        <source>Aktionen bearbeiten …</source>
+        <translation>Modifier les actions…</translation>
     </message>
 </context>
 <context>
@@ -3223,6 +3981,37 @@
     </message>
 </context>
 <context>
+    <name>lf::PdfDocument</name>
+    <message>
+        <source>Die Seite gibt es im PDF-Dokument nicht.</source>
+        <translation>Cette page n’existe pas dans le document PDF.</translation>
+    </message>
+    <message>
+        <source>PDF-Dokumente werden auf diesem System nicht unterstützt.</source>
+        <translation>Les documents PDF ne sont pas pris en charge sur ce système.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist beschädigt.</source>
+        <translation>Le document PDF est endommagé.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>Le fichier n’existe pas.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <translation>Le document PDF est protégé par mot de passe.</translation>
+    </message>
+    <message>
+        <source>Die Seite ist leer.</source>
+        <translation>La page est vide.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für die Seite.</source>
+        <translation>Mémoire insuffisante pour la page.</translation>
+    </message>
+</context>
+<context>
     <name>lf::PreferencesDialog</name>
     <message>
         <source>Einstellungen</source>
@@ -3507,6 +4296,38 @@
     <message>
         <source>Groß</source>
         <translation>Grande</translation>
+    </message>
+    <message>
+        <source>Überbelichtung ab (J):</source>
+        <translation>Surexposition à partir de (J)&#xa0;:</translation>
+    </message>
+    <message>
+        <source>Unterbelichtung bis:</source>
+        <translation>Sous-exposition jusqu’à&#xa0;:</translation>
+    </message>
+    <message>
+        <source>HDR-Überbelichtung bezogen auf:</source>
+        <translation>Surexposition HDR par rapport à&#xa0;:</translation>
+    </message>
+    <message>
+        <source>Spitzenhelligkeit des Bildes</source>
+        <translation>Luminosité maximale de l’image</translation>
+    </message>
+    <message>
+        <source>SDR-Weiß</source>
+        <translation>Blanc SDR</translation>
+    </message>
+    <message>
+        <source>Focus Peaking (⇧J), Empfindlichkeit:</source>
+        <translation>Focus peaking (⇧J), sensibilité&#xa0;:</translation>
+    </message>
+    <message>
+        <source>Focus-Peaking-Farbe:</source>
+        <translation>Couleur du focus peaking&#xa0;:</translation>
+    </message>
+    <message>
+        <source>Weiß</source>
+        <translation>Blanc</translation>
     </message>
     <message>
         <source>Diashow (⇧⌘F, S):</source>
@@ -3892,6 +4713,18 @@
         <translation>Les fichiers RAW et JPEG de même nom apparaissent comme une seule image (le JPEG, avec la mention «&#xa0;RAW+JPEG&#xa0;»). Noter, déplacer et supprimer concernent les deux fichiers ; «&#xa0;Afficher le RAW&#xa0;» bascule vers le fichier RAW.</translation>
     </message>
     <message>
+        <source>Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner.</source>
+        <translation>Les archives (ZIP/CBZ, RAR/CBR, 7z/CB7) et les documents PDF s’ouvrent comme des dossiers.</translation>
+    </message>
+    <message>
+        <source>Comics (CBZ, CBR, CB7) von rechts nach links lesen</source>
+        <translation>Lire les BD (CBZ, CBR, CB7) de droite à gauche</translation>
+    </message>
+    <message>
+        <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
+        <translation>Pour les mangas : ← avance, → recule. Espace et Page↓ passent toujours à la page suivante.</translation>
+    </message>
+    <message>
         <source>Leistung</source>
         <translation>Performances</translation>
     </message>
@@ -3914,6 +4747,34 @@
     <message>
         <source>Bilder zurück behalten:</source>
         <translation>Images précédentes conservées&#xa0;:</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Texte en direct</translation>
+    </message>
+    <message>
+        <source>Live Text und Motiv freistellen erlauben (⇧⌘L)</source>
+        <translation>Autoriser Texte en direct et l’isolement du sujet (⇧⌘L)</translation>
+    </message>
+    <message>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <translation>L’image n’est analysée que si vous activez Texte en direct pour une fenêtre – sur ce Mac, sans réseau.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Actions personnalisées</translation>
+    </message>
+    <message>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <translation>Une commande shell ou un raccourci (Raccourcis) reçoit l’image actuelle en argument. Menu : Fichier → Actions personnalisées.</translation>
+    </message>
+    <message>
+        <source>Abbrechen nach:</source>
+        <translation>Interrompre après :</translation>
+    </message>
+    <message>
+        <source> s</source>
+        <translation> s</translation>
     </message>
     <message>
         <source>Einstellungen sichern</source>
@@ -4657,6 +5518,10 @@
         <translation>Ouvrir…</translation>
     </message>
     <message>
+        <source>„%1“ kann nicht geöffnet werden</source>
+        <translation>Impossible d’ouvrir « %1 »</translation>
+    </message>
+    <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
         <translation>Le fichier est endommagé ou son format n’est pas pris en charge.</translation>
     </message>
@@ -4857,6 +5722,156 @@
     </message>
 </context>
 <context>
+    <name>lf::VirtualPath</name>
+    <message>
+        <source>Seite %1</source>
+        <extracomment>one page of a PDF document browsed like a folder (F-OPEN-10)</extracomment>
+        <translation>Page %1</translation>
+    </message>
+    <message>
+        <source>%1 › %2</source>
+        <extracomment>archive or PDF and the image inside it, e.g. &quot;Band 1.cbz › 012.jpg&quot; (F-OPEN-10)</extracomment>
+        <translation>%1 › %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Wallpaper</name>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Aucune image n’est ouverte.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <translation>Les images d’archives et les pages PDF ne peuvent pas devenir fond d’écran.</translation>
+    </message>
+    <message>
+        <source>Es wurde kein Bildschirm gefunden.</source>
+        <translation>Aucun écran trouvé.</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
+        <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowEditing</name>
+    <message>
+        <source>Über-/Unterbelichtungswarnung an (rot: Lichter, blau: Schatten)</source>
+        <translation>Alerte de sur-/sous-exposition activée (rouge&#xa0;: hautes lumières, bleu&#xa0;: ombres)</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung aus</source>
+        <translation>Alerte de sur-/sous-exposition désactivée</translation>
+    </message>
+    <message>
+        <source>Focus Peaking an</source>
+        <translation>Focus peaking activé</translation>
+    </message>
+    <message>
+        <source>Focus Peaking aus</source>
+        <translation>Focus peaking désactivé</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte an</source>
+        <translation>Collimateurs AF affichés</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte aus</source>
+        <translation>Collimateurs AF masqués</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte: %1</source>
+        <extracomment>%1 = where the AF points come from (&quot;Canon&quot;, &quot;Sony&quot;, &quot;EXIF&quot; …)</extracomment>
+        <translation>Collimateurs AF&#xa0;: %1</translation>
+    </message>
+    <message>
+        <source>Keine Fokuspunkte in den Metadaten</source>
+        <translation>Aucun collimateur AF dans les métadonnées</translation>
+    </message>
+    <message>
+        <source>Zuschneiden geht in der Einzelbildansicht.</source>
+        <translation>Le recadrage fonctionne dans la vue d’une seule image.</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Zuschneiden.</source>
+        <translation>Aucune image à recadrer.</translation>
+    </message>
+    <message>
+        <source>Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab</source>
+        <translation>Recadrer&#xa0;: tracez un cadre – Entrée enregistre, Échap annule</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>Aucune zone sélectionnée.</translation>
+    </message>
+    <message>
+        <source>%1-zugeschnitten.%2</source>
+        <extracomment>default file name of a cropped copy: &quot;&lt;name&gt;-zugeschnitten.&lt;suffix&gt;&quot;</extracomment>
+        <translation>%1-recadre.%2</translation>
+    </message>
+    <message>
+        <source>Zugeschnittenes Bild speichern unter</source>
+        <translation>Enregistrer l’image recadrée sous</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>Recadrer</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
+        <translation>Le recadrage ne peut être enregistré qu’en réencodant.</translation>
+    </message>
+    <message>
+        <source>Neu kodieren</source>
+        <translation>Réencoder</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuler</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten gespeichert als „%1“</source>
+        <translation>Copie recadrée enregistrée sous «&#xa0;%1&#xa0;»</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Exportieren.</source>
+        <translation>Aucune image à exporter.</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exporter</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder konnten nicht exportiert werden.</source>
+        <translation>
+            <numerusform>%n image n’a pas pu être exportée.</numerusform>
+            <numerusform>%n images n’ont pas pu être exportées.</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Export abgebrochen – %n Bilder exportiert</source>
+        <translation>
+            <numerusform>Exportation annulée – %n image exportée</numerusform>
+            <numerusform>Exportation annulée – %n images exportées</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder exportiert</source>
+        <translation>
+            <numerusform>%n image exportée</numerusform>
+            <numerusform>%n images exportées</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n übersprungen</source>
+        <translation>
+            <numerusform>%n ignorée</numerusform>
+            <numerusform>%n ignorées</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::WindowExtras</name>
     <message>
         <source>Zum Bewegen des Fensters ziehen</source>
@@ -4901,6 +5916,73 @@
     <message>
         <source>Minimaler Fenstermodus aus</source>
         <translation>Fenêtre minimale désactivée</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowIntegration</name>
+    <message>
+        <source>Comics: von rechts nach links lesen (← = weiter)</source>
+        <translation>BD : lecture de droite à gauche (← = suivant)</translation>
+    </message>
+    <message>
+        <source>Comics: von links nach rechts lesen</source>
+        <translation>BD : lecture de gauche à droite</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Texte en direct n’est pas disponible sur ce Mac.</translation>
+    </message>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Texte en direct est désactivé dans les réglages.</translation>
+    </message>
+    <message>
+        <source>Live Text an – Text im Bild auswählen und kopieren</source>
+        <translation>Texte en direct activé – sélectionnez et copiez le texte de l’image</translation>
+    </message>
+    <message>
+        <source>Live Text aus</source>
+        <translation>Texte en direct désactivé</translation>
+    </message>
+    <message>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <translation>Texte en direct n’est pas disponible en affichage HDR – passez en SDR avec ⇧⌘H.</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Aucune image n’est ouverte.</translation>
+    </message>
+    <message>
+        <source>Quick Look ist nicht verfügbar.</source>
+        <translation>Coup d’œil n’est pas disponible.</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Définir comme fond d’écran</translation>
+    </message>
+    <message>
+        <source>„%1“ als Schreibtischhintergrund festlegen?</source>
+        <translation>Définir « %1 » comme fond d’écran ?</translation>
+    </message>
+    <message>
+        <source>Auf allen Bildschirmen</source>
+        <translation>Sur tous les écrans</translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation>Définir</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuler</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festgelegt</source>
+        <translation>Défini comme fond d’écran</translation>
+    </message>
+    <message>
+        <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
+        <translation>Impossible de modifier le fond d’écran : %1</translation>
     </message>
 </context>
 <context>

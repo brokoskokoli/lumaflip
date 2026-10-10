@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "DecoderHelper.h"
 
+#include "Archive.h"
+
 #include <QCoreApplication>
 #include <QDeadlineTimer>
 #include <QDir>
@@ -643,6 +645,24 @@ ipc::Response serveDecoderRequest(const ipc::Request& request,
         // A "file that crashes the decoder" for tests of the regular decode path.
         if (request.path.endsWith(QLatin1String(".lfcrash")))
             simulateCrash();
+    }
+    // F-OPEN-10: archives and PDF documents are parsed here, not in the app.
+    if (request.op == ipc::Op::ArchiveList) {
+        archive::Listing l = archive::listLocal(request.path);
+        r.ok = l.ok;
+        r.error = l.error;
+        r.members = std::move(l.members);
+        return r;
+    }
+    if (request.op == ipc::Op::ArchiveRead) {
+        QString error;
+        if (auto data = archive::readLocal(request.path, request.member, &error)) {
+            r.ok = true;
+            r.data = std::move(*data);
+        } else {
+            r.error = error;
+        }
+        return r;
     }
     std::shared_ptr<Decoder> backend;
     for (const auto& b : backends)

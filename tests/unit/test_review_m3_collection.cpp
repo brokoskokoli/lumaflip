@@ -15,9 +15,10 @@
 #include "core/QuickMove.h"
 #include "core/Settings.h"
 
-#include <gtest/gtest.h>
-
 #include <algorithm>
+#include <cstdlib>
+#include <gtest/gtest.h>
+#include <thread>
 
 #include <QDir>
 #include <QElapsedTimer>
@@ -294,14 +295,20 @@ TEST(ReviewNameFilter, F_NAV_08_FiftyThousandEntriesStayResponsive) {
         EXPECT_EQ(step(QString(), 50000), 50000);
         return worstSlice;
     };
-    // LF_TIMING_FACTOR (CI: shared runners, sanitizers) scales the limit. One slow slice
-    // can be load from other processes (parallel ctest): a second run decides then, like
-    // the benchmark re-run in tools/check.sh.
-    const qint64 limit = 30 * std::max(1, qEnvironmentVariableIntValue("LF_TIMING_FACTOR"));
+    // 30 ms on a quiet machine; wall-clock limits scale with the current load (other
+    // builds, parallel test binaries) and with LF_TIMING_FACTOR (CI: shared runners,
+    // sanitizers), so this stays a responsiveness check, not a flake. One slow slice can
+    // still be a stall of another process: a second run decides then, like the benchmark
+    // re-run in tools/check.sh.
+    double load1 = 0;
+    const double cores = double(std::max(1u, std::thread::hardware_concurrency()));
+    const double loadFactor = (getloadavg(&load1, 1) == 1) ? std::max(1.0, 2.0 * load1 / cores) : 1.0;
+    const double factor = loadFactor * std::max(1, qEnvironmentVariableIntValue("LF_TIMING_FACTOR"));
+    const qint64 limit = qint64(30 * factor);
     qint64 worst = run();
     if (worst >= limit)
         worst = std::min(worst, run());
-    EXPECT_LT(worst, limit);
+    EXPECT_LT(worst, limit) << "load factor " << factor;
     // Order kept: the entries come back in their original order.
     for (int i = 0; i < 50000; i += 4999)
         EXPECT_EQ(c.at(i).path, entries.at(i).path);

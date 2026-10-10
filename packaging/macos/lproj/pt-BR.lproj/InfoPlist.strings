@@ -10,4 +10,12 @@
 "Bild (sonstige)" = "Imagem (outros)";
 "Ordner" = "Pasta";
 "WBMP-Bild" = "Imagem WBMP";
+"Comic-Archiv" = "Arquivo de quadrinhos";
+"Archiv" = "Arquivo compactado";
+"PDF-Dokument" = "Documento PDF";
+"RAR-Archiv" = "Arquivo RAR";
+"7-Zip-Archiv" = "Arquivo 7-Zip";
+"Comic-Archiv (ZIP)" = "Arquivo de quadrinhos (ZIP)";
+"Comic-Archiv (RAR)" = "Arquivo de quadrinhos (RAR)";
+"Comic-Archiv (7z)" = "Arquivo de quadrinhos (7z)";
 "NSHumanReadableCopyright" = "© 2026 brokoskokoli e colaboradores. Licença: GPL-3.0-or-later.";

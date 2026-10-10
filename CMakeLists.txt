@@ -1,6 +1,11 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 cmake_minimum_required(VERSION 3.28)
 
+# Must be set before project() to take effect (SPEC: macOS 15+).
+set(CMAKE_OSX_DEPLOYMENT_TARGET "15.0" CACHE STRING "Minimum macOS version")
+if(NOT CMAKE_OSX_DEPLOYMENT_TARGET)  # an older cache may hold an empty value
+  set(CMAKE_OSX_DEPLOYMENT_TARGET "15.0" CACHE STRING "Minimum macOS version" FORCE)
+endif()
 project(Lumaflip VERSION 1.1.0 LANGUAGES C CXX)
 if(APPLE)
   enable_language(OBJC OBJCXX)
@@ -13,7 +18,6 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_OBJCXX_STANDARD 20)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_OSX_DEPLOYMENT_TARGET "15.0" CACHE STRING "Minimum macOS version")
 set(CMAKE_AUTOMOC ON)
 
 option(LF_WERROR "Treat warnings in own sources as errors" ON)

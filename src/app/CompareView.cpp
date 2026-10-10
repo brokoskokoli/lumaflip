@@ -1,19 +1,24 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "CompareView.h"
 
+#include "CompareBlendOverlay.h"
 #include "ImageView.h"
 #include "ViewSyncBinding.h"
 #include "core/RatingStore.h"
 
+#include <QComboBox>
 #include <QFileInfo>
 #include <QGridLayout>
+#include <QHBoxLayout>
 #include <QKeyEvent>
 #include <QLabel>
 #include <QMouseEvent>
+#include <QSlider>
 #include <QVBoxLayout>
 #include <QWindow>
 
 #include <algorithm>
+#include <cmath>
 
 namespace lf {
 
@@ -22,9 +27,42 @@ CompareView::CompareView(ImageProvider& provider, QWidget* parent) : QFrame(pare
     setAccessibleName(tr("Vergleich"));
     setFocusPolicy(Qt::StrongFocus);
     setFrameShape(QFrame::NoFrame);
-    auto* grid = new QGridLayout(this);
+    auto* outer = new QVBoxLayout(this);
+    outer->setContentsMargins(0, 0, 0, 0);
+    outer->setSpacing(0);
+    m_paneArea = new QWidget(this);
+    m_paneArea->setObjectName(QStringLiteral("lfComparePanes"));
+    auto* grid = new QGridLayout(m_paneArea);
     grid->setContentsMargins(4, 4, 4, 4);
     grid->setSpacing(4);
+    outer->addWidget(m_paneArea, 1);
+    // F-GRID-04: side by side / difference / blend / wipe.
+    m_bar = new QWidget(this);
+    m_bar->setObjectName(QStringLiteral("lfCompareBlendBar"));
+    auto* bar = new QHBoxLayout(m_bar);
+    bar->setContentsMargins(8, 2, 8, 4);
+    m_modeBox = new QComboBox(m_bar);
+    m_modeBox->setObjectName(QStringLiteral("lfCompareBlendMode"));
+    m_modeBox->setFocusPolicy(Qt::NoFocus);
+    m_slider = new QSlider(Qt::Horizontal, m_bar);
+    m_slider->setObjectName(QStringLiteral("lfCompareBlendSlider"));
+    m_slider->setRange(0, 100);
+    m_slider->setValue(50);
+    m_slider->setFocusPolicy(Qt::NoFocus);
+    m_valueLabel = new QLabel(m_bar);
+    m_valueLabel->setMinimumWidth(48);
+    bar->addStretch(1);
+    bar->addWidget(m_modeBox);
+    bar->addWidget(m_slider, 2);
+    bar->addWidget(m_valueLabel);
+    bar->addStretch(1);
+    outer->addWidget(m_bar);
+    retranslateBar();
+    connect(m_modeBox, &QComboBox::activated, this, [this](int index) {
+        setBlendMode(compare::blendModeFromId(m_modeBox->itemData(index).toString()));
+    });
+    connect(m_slider, &QSlider::valueChanged, this, [this](int v) { setBlendValue(v / 100.0); });
+    updateBlend();
     m_sync = new ViewSyncBinding(this);
     connect(&provider, &ImageProvider::imageReady, this, &CompareView::onImageReady);
     connect(&provider, &ImageProvider::imageFailed, this, &CompareView::onImageFailed);
@@ -51,8 +89,9 @@ QSize CompareView::decodeTarget() const {
 
 void CompareView::setPaths(const QStringList& paths, int focus) {
     const QStringList wanted = paths.mid(0, kMaxPanes);
-    auto* grid = static_cast<QGridLayout*>(layout());
+    auto* grid = static_cast<QGridLayout*>(m_paneArea->layout());
     // Panes are rebuilt (2–4 views; cheap compared to decoding).
+    m_overlay = nullptr; // a child of the first pane's view
     for (Pane& p : m_panes)
         delete p.frame;
     m_panes.clear();
@@ -62,7 +101,7 @@ void CompareView::setPaths(const QStringList& paths, int focus) {
     for (int i = 0; i < n; ++i) {
         Pane p;
         p.path = wanted.at(i);
-        p.frame = new QFrame(this);
+        p.frame = new QFrame(m_paneArea);
         p.frame->setObjectName(QStringLiteral("lfComparePane%1").arg(i));
         p.frame->setAttribute(Qt::WA_StyledBackground);
         auto* v = new QVBoxLayout(p.frame);
@@ -102,9 +141,76 @@ void CompareView::setPaths(const QStringList& paths, int focus) {
         request(i, Quality::Screen);
     }
     m_focus = std::clamp(focus, 0, std::max(0, n - 1));
+    if (n >= 2)
+        m_overlay = new CompareBlendOverlay(m_panes[0].view, m_panes[1].view);
+    if (m_overlay)
+        connect(m_overlay, &CompareBlendOverlay::valueChanged, this, [this](double v) {
+            m_blendValue = v;
+            const QSignalBlocker block(m_slider);
+            m_slider->setValue(int(std::lround(v * 100)));
+            updateBlend();
+        });
+    updateBlend();
     updateFrames();
     updateCaptions();
     emit focusChanged(m_focus);
+}
+
+void CompareView::setBlendMode(compare::BlendMode mode) {
+    if (m_panes.size() < 2)
+        mode = compare::BlendMode::Off;
+    m_blend = mode;
+    updateBlend();
+}
+
+void CompareView::setBlendValue(double value) {
+    m_blendValue = std::clamp(value, 0.0, 1.0);
+    const QSignalBlocker block(m_slider);
+    m_slider->setValue(int(std::lround(m_blendValue * 100)));
+    updateBlend();
+}
+
+double CompareView::overlayValue() const {
+    // Difference: the slider amplifies from 1x (left) to 16x (right).
+    return m_blend == compare::BlendMode::Difference ? std::pow(16.0, m_blendValue) : m_blendValue;
+}
+
+void CompareView::updateBlend() {
+    const bool on = m_blend != compare::BlendMode::Off && m_panes.size() >= 2;
+    m_bar->setVisible(m_panes.size() >= 2);
+    m_modeBox->setCurrentIndex(std::max(0, m_modeBox->findData(compare::blendModeId(m_blend))));
+    m_slider->setEnabled(on);
+    switch (m_blend) {
+    case compare::BlendMode::Difference:
+        //: amplification of the difference image, e.g. "4×"
+        m_valueLabel->setText(tr("%1×").arg(int(std::lround(overlayValue()))));
+        break;
+    case compare::BlendMode::Blend:
+    case compare::BlendMode::Wipe:
+        m_valueLabel->setText(tr("%1 %").arg(int(std::lround(m_blendValue * 100))));
+        break;
+    case compare::BlendMode::Off:
+        m_valueLabel->clear();
+        break;
+    }
+    // Only the first pane is shown while blending (it shows both images).
+    for (int i = 1; i < m_panes.size(); ++i)
+        m_panes[i].frame->setVisible(!on);
+    if (m_overlay)
+        m_overlay->setMode(on ? m_blend : compare::BlendMode::Off, overlayValue());
+    updateCaptions();
+}
+
+void CompareView::retranslateBar() {
+    const QString current = compare::blendModeId(m_blend);
+    const QSignalBlocker block(m_modeBox);
+    m_modeBox->clear();
+    m_modeBox->addItem(tr("Nebeneinander"), compare::blendModeId(compare::BlendMode::Off));
+    m_modeBox->addItem(tr("Differenz"), compare::blendModeId(compare::BlendMode::Difference));
+    m_modeBox->addItem(tr("Überblenden"), compare::blendModeId(compare::BlendMode::Blend));
+    m_modeBox->addItem(tr("Wischen"), compare::blendModeId(compare::BlendMode::Wipe));
+    m_modeBox->setCurrentIndex(std::max(0, m_modeBox->findData(current)));
+    m_modeBox->setToolTip(tr("Die ersten beiden Bilder übereinander vergleichen"));
 }
 
 QStringList CompareView::paths() const {
@@ -163,6 +269,11 @@ void CompareView::updateCaptions() {
         //: compare pane caption: file name — rating (stars, Pick/Reject)
         p.caption->setText(r ? tr("%1 — %2").arg(name, rating::describe(*r)) : name);
     }
+    if (m_blend != compare::BlendMode::Off && m_panes.size() >= 2) {
+        //: compare caption while two images are blended: "first.jpg ⇄ second.jpg"
+        m_panes[0].caption->setText(
+            tr("%1 ⇄ %2").arg(QFileInfo(m_panes[0].path).fileName(), QFileInfo(m_panes[1].path).fileName()));
+    }
 }
 
 void CompareView::applyViewSettings(const QString& background, bool upscaleNearest, bool devicePixels) {
@@ -198,6 +309,8 @@ void CompareView::showStage(int pane, Quality quality, const DecodedImagePtr& im
     p.view->setImage(image, p.hasImage);
     p.hasImage = true;
     p.shown = quality;
+    if (m_overlay && pane <= 1)
+        m_overlay->refresh(); // F-GRID-04
     // A new pane image joins the shared view of the others (except the first image).
     if (!m_sync->isApplying() && pane < m_sync->views().size()) {
         const ViewSyncState shared = m_sync->math().stateFor(pane);
@@ -220,6 +333,8 @@ void CompareView::onImageFailed(const QString& path, const QString& error) {
 
 void CompareView::retranslateUi() {
     setAccessibleName(tr("Vergleich"));
+    retranslateBar();
+    updateBlend();
     updateCaptions(); // ratings are described in words
     // Error cards of panes hold decoder texts of the old language: decode them again.
     m_provider.forgetFailures();

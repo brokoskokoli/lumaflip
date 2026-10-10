@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+#include "ArchiveCache.h"
 #include "Decoder.h"
 #include "DecoderHelper.h"
 #include "ImageFormats.h"
 #include "Platform.h"
 #include "QtImageDecoder.h"
 #include "StartupTrace.h"
+#include "VirtualPath.h"
 
 #include <QCoreApplication>
 #include <QFile>
@@ -29,6 +31,17 @@ struct Tr {
 enum class FileState { Readable, Missing, Unreadable };
 
 QByteArray readHeader(const QString& path, FileState* state = nullptr) {
+    if (vpath::isMember(path)) {
+        // F-OPEN-10: a PDF page (archive members are extracted first, resolve()): the
+        // container decides whether it is there.
+        if (state) {
+            const QFileInfo fi(vpath::containerOf(path));
+            *state = !fi.exists()      ? FileState::Missing
+                     : fi.isReadable() ? FileState::Readable
+                                       : FileState::Unreadable;
+        }
+        return QByteArray(1, '\0'); // not empty: the backends that handle members decide
+    }
     QFile f(path);
     if (!f.open(QIODevice::ReadOnly)) {
         if (state)
@@ -65,7 +78,7 @@ QString unsupportedError(FileState state) {
 
 // German, user-facing reason after every backend failed; the backend details go to the log.
 QString failedError(const QString& path, const QStringList& backendErrors) {
-    const QFileInfo fi(path);
+    const QFileInfo fi(vpath::containerOf(path));
     if (!fi.exists())
         return DecoderRegistry::messageMissing();
     // The decoder helper crashed or hung (SPEC 8.5): say so (the file is the likely cause).
@@ -79,9 +92,27 @@ QString failedError(const QString& path, const QStringList& backendErrors) {
     return DecoderRegistry::messageDamaged();
 }
 
+// F-OPEN-10: an image inside an archive is decoded from its extracted copy (ArchiveCache);
+// PDF pages and ordinary paths stay as they are. Empty + `error` if the member cannot be
+// extracted.
+QString resolve(const QString& path, QString* error) {
+    if (!vpath::isMember(path) || vpath::containerKind(vpath::containerOf(path)) == vpath::ContainerKind::Pdf)
+        return path;
+    return ArchiveCache::instance().materialize(path, error);
+}
+
 template <typename T, typename Fn>
-std::optional<T> tryBackends(const DecoderRegistry& reg, const QString& path, QString* error, QString* detail,
-                             Fn&& fn) {
+std::optional<T> tryBackends(const DecoderRegistry& reg, const QString& requested, QString* error,
+                             QString* detail, Fn&& fn) {
+    QString resolveError;
+    const QString path = resolve(requested, &resolveError);
+    if (path.isEmpty()) {
+        if (error)
+            *error = resolveError;
+        if (detail)
+            *detail = resolveError;
+        return std::nullopt;
+    }
     FileState state = FileState::Readable;
     const QByteArray header = readHeader(path, &state);
     if (const QString pre = precheckError(state, header); !pre.isEmpty()) {
@@ -103,7 +134,7 @@ std::optional<T> tryBackends(const DecoderRegistry& reg, const QString& path, QS
     QStringList details;
     for (const auto& d : backends) {
         QString err;
-        if (auto r = fn(*d, &err))
+        if (auto r = fn(*d, path, &err))
             return r;
         errors << err;
         details << QStringLiteral("%1: %2").arg(d->name(),
@@ -158,7 +189,10 @@ QList<std::shared_ptr<Decoder>> DecoderRegistry::candidates(const QString& path)
 QList<std::shared_ptr<Decoder>> DecoderRegistry::candidates(const QString& path,
                                                             const QByteArray& header) const {
     QList<std::shared_ptr<Decoder>> result;
+    const bool member = vpath::isMember(path); // F-OPEN-10: only backends that know members
     for (const auto& d : m_decoders) {
+        if (member && !d->handlesVirtualPaths())
+            continue;
         if (d->canDecode(path, header))
             result.append(d);
     }
@@ -186,21 +220,22 @@ QStringList DecoderRegistry::supportedExtensions() const {
 
 std::optional<ImageInfo> DecoderRegistry::info(const QString& path, QString* error, QString* detail) const {
     return tryBackends<ImageInfo>(*this, path, error, detail,
-                                  [&](Decoder& d, QString* err) { return d.info(path, err); });
+                                  [&](Decoder& d, const QString& p, QString* err) { return d.info(p, err); });
 }
 
 std::optional<DecodedImage> DecoderRegistry::decode(const QString& path, const DecodeRequest& req,
                                                     QString* error, QString* detail) const {
-    return tryBackends<DecodedImage>(*this, path, error, detail,
-                                     [&](Decoder& d, QString* err) -> std::optional<DecodedImage> {
-                                         auto r = d.decode(path, req, err);
-                                         if (r && r->image.isNull()) { // empty image counts as failure
-                                             if (err)
-                                                 *err = Tr::tr("Das Bild ist leer.");
-                                             return std::nullopt;
-                                         }
-                                         return r;
-                                     });
+    return tryBackends<DecodedImage>(
+        *this, path, error, detail,
+        [&](Decoder& d, const QString& p, QString* err) -> std::optional<DecodedImage> {
+            auto r = d.decode(p, req, err);
+            if (r && r->image.isNull()) { // empty image counts as failure
+                if (err)
+                    *err = Tr::tr("Das Bild ist leer.");
+                return std::nullopt;
+            }
+            return r;
+        });
 }
 
 namespace {
@@ -228,7 +263,10 @@ private:
 };
 } // namespace
 
-std::unique_ptr<FrameReader> DecoderRegistry::openFrames(const QString& path) const {
+std::unique_ptr<FrameReader> DecoderRegistry::openFrames(const QString& requested) const {
+    const QString path = resolve(requested, nullptr);
+    if (path.isEmpty())
+        return nullptr;
     for (const auto& d : candidates(path)) {
         if (auto r = d->openFrames(path))
             return r;
@@ -239,8 +277,11 @@ std::unique_ptr<FrameReader> DecoderRegistry::openFrames(const QString& path) co
     return nullptr;
 }
 
-Metadata DecoderRegistry::metadata(const QString& path) const {
+Metadata DecoderRegistry::metadata(const QString& requested) const {
     // Metadata has no error channel: take the first backend that delivers anything.
+    const QString path = resolve(requested, nullptr);
+    if (path.isEmpty())
+        return {};
     Metadata first;
     bool haveFirst = false;
     for (const auto& d : candidates(path)) {

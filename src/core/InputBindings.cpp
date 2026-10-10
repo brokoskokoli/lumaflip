@@ -136,6 +136,21 @@ const ActionInfo kActions[] = {
     {Action::ToggleRawJpeg, "toggleRawJpeg",
      QT_TRANSLATE_NOOP("lf::InputBindings", "RAW/JPEG des Paares zeigen")},
     {Action::ToggleFolderMap, "toggleFolderMap", QT_TRANSLATE_NOOP("lf::InputBindings", "Ordnerkarte")},
+    {Action::QuickLook, "quickLook", QT_TRANSLATE_NOOP("lf::InputBindings", "Quick Look")},
+    {Action::ToggleLiveText, "toggleLiveText", QT_TRANSLATE_NOOP("lf::InputBindings", "Live Text")},
+    {Action::SetWallpaper, "setWallpaper",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Als Schreibtischhintergrund festlegen")},
+    {Action::ShowActionLog, "showActionLog",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Protokoll der Aktionen")},
+    {Action::ToggleRightToLeft, "toggleRightToLeft",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Comics von rechts nach links lesen")},
+    {Action::CropImage, "cropImage", QT_TRANSLATE_NOOP("lf::InputBindings", "Zuschneiden")},
+    {Action::ExportImage, "exportImage", QT_TRANSLATE_NOOP("lf::InputBindings", "Exportieren")},
+    {Action::ToggleClipping, "toggleClipping",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Über-/Unterbelichtungswarnung")},
+    {Action::ToggleFocusPeaking, "toggleFocusPeaking",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Focus Peaking")},
+    {Action::ToggleAfPoints, "toggleAfPoints", QT_TRANSLATE_NOOP("lf::InputBindings", "Fokuspunkte")},
 };
 
 const ActionInfo* info(Action a) {
@@ -272,6 +287,25 @@ QStringList defaultShortcutStrings(Action a) {
     // F-INFO-08 (not in SPEC 5.2): ⇧⌘M is free in macOS and in the table above.
     case Action::ToggleFolderMap:
         return {"Shift+Ctrl+M"};
+    // M4 (not in SPEC 5.2): ⌘Y is Quick Look in Finder (Space flips images here); ⇧⌘L is
+    // free in macOS and in the table above (⌘L rotates, L is the magnifier).
+    case Action::QuickLook:
+        return {"Ctrl+Y"};
+    case Action::ToggleLiveText:
+        return {"Shift+Ctrl+L"};
+    // M4 part 2 (not in SPEC 5.2), free in macOS and above: ⇧C crop (C alone is the quick
+    // copy prefix), ⇧⌘E export (⌥⌘E is the exposure slider), J / ⇧J clipping and focus
+    // peaking (J as in common photo tools), ⇧A AF points.
+    case Action::CropImage:
+        return {"Shift+C"};
+    case Action::ExportImage:
+        return {"Shift+Ctrl+E"};
+    case Action::ToggleClipping:
+        return {"J"};
+    case Action::ToggleFocusPeaking:
+        return {"Shift+J"};
+    case Action::ToggleAfPoints:
+        return {"Shift+A"};
     default:
         return {};
     }

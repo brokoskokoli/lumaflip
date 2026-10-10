@@ -157,6 +157,29 @@
     </message>
 </context>
 <context>
+    <name>lf::Archive</name>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>Brak „%1” w archiwum.</translation>
+    </message>
+    <message>
+        <source>Dieses Archivformat wird nicht unterstützt.</source>
+        <translation>Ten format archiwum nie jest obsługiwany.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist zu groß.</source>
+        <translation>Obraz w archiwum jest za duży.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist beschädigt oder unvollständig.</source>
+        <translation>Archiwum jest uszkodzone lub niekompletne.</translation>
+    </message>
+    <message>
+        <source>Das Archiv enthält keine Bilder.</source>
+        <translation>Archiwum nie zawiera obrazów.</translation>
+    </message>
+</context>
+<context>
     <name>lf::CollectionExtras</name>
     <message numerus="yes">
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
@@ -229,9 +252,50 @@
         <translation>Porównanie</translation>
     </message>
     <message>
+        <source>%1×</source>
+        <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
+        <translation>%1×</translation>
+    </message>
+    <message>
+        <source>%1 %</source>
+        <translation>%1%</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Obok siebie</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>Różnica</translation>
+    </message>
+    <message>
+        <source>Überblenden</source>
+        <translation>Przenikanie</translation>
+    </message>
+    <message>
+        <source>Wischen</source>
+        <translation>Kurtyna</translation>
+    </message>
+    <message>
+        <source>Die ersten beiden Bilder übereinander vergleichen</source>
+        <translation>Porównaj nałożone na siebie dwa pierwsze obrazy</translation>
+    </message>
+    <message>
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+    <message>
+        <source>%1 ⇄ %2</source>
+        <extracomment>compare caption while two images are blended: &quot;first.jpg ⇄ second.jpg&quot;</extracomment>
+        <translation>%1 ⇄ %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ContainerPolicy</name>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <translation>Obrazy w archiwach i dokumentach PDF są otwarte tylko do oglądania – kosz, zmiana nazwy, przenoszenie i ocenianie nie działają tutaj.</translation>
     </message>
 </context>
 <context>
@@ -279,6 +343,193 @@
     <message>
         <source>Abbrechen</source>
         <translation>Anuluj</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropOverlay</name>
+    <message>
+        <source>Seitenverhältnis</source>
+        <translation>Proporcje</translation>
+    </message>
+    <message>
+        <source>Hochformat</source>
+        <translation>Pionowo</translation>
+    </message>
+    <message>
+        <source>Seitenverhältnis hochkant statt quer</source>
+        <translation>Proporcje pionowe zamiast poziomych</translation>
+    </message>
+    <message>
+        <source>Drittel</source>
+        <translation>Trójpodział</translation>
+    </message>
+    <message>
+        <source>Raster der Drittel-Regel einblenden</source>
+        <translation>Pokaż siatkę trójpodziału</translation>
+    </message>
+    <message>
+        <source>Speichern</source>
+        <translation>Zachowaj</translation>
+    </message>
+    <message>
+        <source>Zuschnitt in der Datei speichern (Enter, widerrufbar)</source>
+        <translation>Zachowaj przycięcie w pliku (Enter, można cofnąć)</translation>
+    </message>
+    <message>
+        <source>Speichern unter …</source>
+        <translation>Zachowaj jako…</translation>
+    </message>
+    <message>
+        <source>Zuschnitt als neue Datei speichern – das Original bleibt unverändert</source>
+        <translation>Zachowaj przycięcie jako nowy plik – oryginał pozostaje bez zmian</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Anuluj</translation>
+    </message>
+    <message>
+        <source>Zuschneiden beenden (Esc)</source>
+        <translation>Zakończ przycinanie (Esc)</translation>
+    </message>
+    <message>
+        <source>%1 × %2 px</source>
+        <extracomment>crop size in pixels, e.g. &quot;1920 × 1080 px&quot;</extracomment>
+        <translation>%1 × %2 px</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropSave</name>
+    <message>
+        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.</source>
+        <translation>Plik został w międzyczasie zmieniony – niczego nie zapisano. Przytnij ponownie.</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
+        <translation>Plik zawiera dodatkowe obrazy (np. mapę wzmocnienia HDR lub drugi obraz stereo), które po bezstratnym przycięciu przestałyby pasować. Przycięcie jest możliwe tylko przez ponowne zakodowanie – traci się przy tym nieco jakości i te dodatkowe obrazy.</translation>
+    </message>
+    <message>
+        <source>Frei</source>
+        <translation>Dowolne</translation>
+    </message>
+    <message>
+        <source>Original</source>
+        <translation>Oryginalne</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
+        <translation>Nie można uruchomić biblioteki JPEG.</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Daten konnten nicht verlustfrei zugeschnitten werden (%1).</source>
+        <translation>Nie udało się bezstratnie przyciąć danych JPEG (%1).</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.</source>
+        <translation>Zaznaczenie nie leży na siatce bloków JPEG.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden von JPEG-Dateien ist in dieser Version nicht verfügbar.</source>
+        <translation>Bezstratne przycinanie plików JPEG nie jest dostępne w tej wersji.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
+        <translation>Obrazów w archiwach i dokumentach PDF nie można zapisać po przycięciu – użyj „Eksportuj”.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>Plik już nie istnieje.</translation>
+    </message>
+    <message>
+        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <translation>Nie rozpoznano formatu pliku do zachowania.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
+        <translation>Pliki RAW nigdy nie są zmieniane. Aby uzyskać przyciętą kopię, użyj „Eksportuj”.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
+        <translation>Plików animowanych ani wielostronicowych nie można zapisać po przycięciu.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist schreibgeschützt.</source>
+        <translation>„%1” jest tylko do odczytu.</translation>
+    </message>
+    <message>
+        <source>„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.</source>
+        <translation>„Zachowaj jako” nigdy nie nadpisuje oryginału – wybierz inną nazwę.</translation>
+    </message>
+    <message>
+        <source>In „%1“ kann nicht geschrieben werden.</source>
+        <translation>Nie można zapisywać w „%1”.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>Nie można odczytać „%1”.</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>Nie zaznaczono obszaru.</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.</source>
+        <translation>Zaznaczenie obejmuje cały obraz – nie ma czego przycinać.</translation>
+    </message>
+    <message>
+        <source>Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
+        <translation>Do bezstratnego przycięcia zaznaczenie dopasowano do siatki bloków JPEG (%1 × %2 pikseli); ma teraz %3 × %4 pikseli.</translation>
+    </message>
+    <message>
+        <source>Diese JPEG-Datei lässt sich nicht verlustfrei zuschneiden. Beim Neukodieren geht etwas Bildqualität verloren.</source>
+        <translation>Tego pliku JPEG nie można przyciąć bezstratnie. Ponowne zakodowanie obniża nieco jakość.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nicht gespeichert werden.</source>
+        <translation>Nie można zapisać przycięcia.</translation>
+    </message>
+    <message>
+        <source>Beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
+        <translation>Po ponownym zakodowaniu obraz nie byłby identyczny (zmieniłby się model kolorów, głębia bitowa, paleta lub przezroczystość).</translation>
+    </message>
+    <message>
+        <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <translation>Ten format jest stratny. Przycięcie można zapisać tylko przez ponowne zakodowanie obrazu – traci się przy tym nieco jakości.</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder (%1) gehen dabei verloren.</source>
+        <translation>Dodatkowe obrazy (%1) zostaną utracone.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
+        <translation>Bezstratne przycięcie tego obrazu nie jest możliwe.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>Nie udało się zapisać przycięcia.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>Nie można zastąpić pliku.</translation>
+    </message>
+    <message>
+        <source>Nichts zuzuschneiden</source>
+        <translation>Nie ma czego przycinać</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten (an JPEG-Blöcke angepasst)</source>
+        <translation>Przycięto bezstratnie (dopasowano do bloków JPEG)</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten</source>
+        <translation>Przycięto bezstratnie</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (verlustfrei neu kodiert)</source>
+        <translation>Przycięto (bezstratnie zakodowano ponownie)</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (neu kodiert)</source>
+        <translation>Przycięto (ponownie zakodowano)</translation>
     </message>
 </context>
 <context>
@@ -370,6 +621,191 @@
             <numerusform>%n obrazy przeniesiono do „_Rejected”</numerusform>
             <numerusform>%n obrazów przeniesiono do „_Rejected”</numerusform>
         </translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActions</name>
+    <message>
+        <source>Die Aktion braucht einen Namen.</source>
+        <translation>Akcja wymaga nazwy.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht einen Befehl.</source>
+        <translation>Akcja wymaga polecenia.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht den Namen eines Kurzbefehls.</source>
+        <translation>Akcja wymaga nazwy skrótu.</translation>
+    </message>
+    <message>
+        <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
+        <translation>Nazwa skrótu nie może zaczynać się od „-”.</translation>
+    </message>
+    <message numerus="yes">
+        <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
+        <translation>
+            <numerusform>Akcja została przerwana po %n sekundzie.</numerusform>
+            <numerusform>Akcja została przerwana po %n sekundach.</numerusform>
+            <numerusform>Akcja została przerwana po %n sekundach.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Die Aktion wurde abgebrochen.</source>
+        <translation>Akcja została przerwana.</translation>
+    </message>
+    <message>
+        <source>Die Aktion endete mit Fehlercode %1.</source>
+        <translation>Akcja zakończyła się kodem błędu %1.</translation>
+    </message>
+    <message>
+        <source>Die Kurzbefehle-App konnte nicht gestartet werden.</source>
+        <translation>Nie można uruchomić aplikacji Skróty.</translation>
+    </message>
+    <message>
+        <source>Der Befehl konnte nicht gestartet werden.</source>
+        <translation>Nie można uruchomić polecenia.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsEditor</name>
+    <message>
+        <source>Eigene Aktion</source>
+        <translation>Własna akcja</translation>
+    </message>
+    <message>
+        <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
+        <translation>Nazwa skrótu z aplikacji Skróty; otrzymuje plik jako dane wejściowe.</translation>
+    </message>
+    <message>
+        <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
+        <translation>Działa przez /bin/sh; plik jest w &quot;$1&quot; (wszystkie pliki: &quot;$@&quot;), np. open -a Preview &quot;$1&quot;. Ścieżka nigdy nie jest wstawiana do polecenia.</translation>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation>Nazwa:</translation>
+    </message>
+    <message>
+        <source>Art:</source>
+        <translation>Rodzaj:</translation>
+    </message>
+    <message>
+        <source>Befehl:</source>
+        <translation>Polecenie:</translation>
+    </message>
+    <message>
+        <source>Taste:</source>
+        <translation>Klawisz:</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nazwa</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Rodzaj</translation>
+    </message>
+    <message>
+        <source>Befehl</source>
+        <translation>Polecenie</translation>
+    </message>
+    <message>
+        <source>Taste</source>
+        <translation>Klawisz</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 ist schon belegt (%3).</source>
+        <translation>„%1”: %2 jest już zajęty (%3).</translation>
+    </message>
+    <message>
+        <source>Hinzufügen …</source>
+        <translation>Dodaj…</translation>
+    </message>
+    <message>
+        <source>Bearbeiten …</source>
+        <translation>Edytuj…</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>Usuń</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsManager</name>
+    <message>
+        <source>Kurzbefehl</source>
+        <translation>Skrót</translation>
+    </message>
+    <message>
+        <source>Shell-Befehl</source>
+        <translation>Polecenie powłoki</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Nie otwarto żadnego obrazu.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktion ausführen</source>
+        <translation>Wykonaj własną akcję</translation>
+    </message>
+    <message>
+        <source>„%1“ zum ersten Mal ausführen?</source>
+        <translation>Wykonać „%1” po raz pierwszy?</translation>
+    </message>
+    <message>
+        <source>Kurzbefehl: %1</source>
+        <translation>Skrót: %1</translation>
+    </message>
+    <message>
+        <source>Befehl: %1</source>
+        <translation>Polecenie: %1</translation>
+    </message>
+    <message>
+        <source>Datei: %1</source>
+        <translation>Plik: %1</translation>
+    </message>
+    <message>
+        <source>Ausführen</source>
+        <translation>Wykonaj</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Anuluj</translation>
+    </message>
+    <message>
+        <source>▶ %1: %2</source>
+        <translation>▶ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ läuft …</source>
+        <translation>„%1” działa…</translation>
+    </message>
+    <message>
+        <source>✓ %1: fertig</source>
+        <translation>✓ %1: gotowe</translation>
+    </message>
+    <message>
+        <source>✗ %1: %2</source>
+        <translation>✗ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ausgeführt</source>
+        <translation>Wykonano „%1”</translation>
+    </message>
+    <message>
+        <source>„%1“: %2</source>
+        <translation>„%1”: %2</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Dziennik akcji</translation>
+    </message>
+    <message>
+        <source>Noch keine Aktion ausgeführt.</source>
+        <translation>Nie wykonano jeszcze żadnej akcji.</translation>
+    </message>
+    <message>
+        <source>Leeren</source>
+        <translation>Wyczyść</translation>
     </message>
 </context>
 <context>
@@ -674,6 +1110,137 @@
     <message>
         <source>Kamera-RAW (Sigma X3F)</source>
         <translation>RAW z aparatu (Sigma X3F)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ExportDialog</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>Eksportuj</translation>
+    </message>
+    <message>
+        <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>Eksportuj „%1” jako nowy plik. Oryginał pozostaje bez zmian.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.</source>
+        <translation>
+            <numerusform>Eksportuj %n obraz jako nowy plik. Oryginał pozostaje bez zmian.</numerusform>
+            <numerusform>Eksportuj %n obrazy jako nowe pliki. Oryginały pozostają bez zmian.</numerusform>
+            <numerusform>Eksportuj %n obrazów jako nowe pliki. Oryginały pozostają bez zmian.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation>Format:</translation>
+    </message>
+    <message>
+        <source>Qualität:</source>
+        <translation>Jakość:</translation>
+    </message>
+    <message>
+        <source>Maximale Größe:</source>
+        <translation>Maksymalny rozmiar:</translation>
+    </message>
+    <message>
+        <source>Metadaten:</source>
+        <translation>Metadane:</translation>
+    </message>
+    <message>
+        <source>Farbraum:</source>
+        <translation>Przestrzeń barw:</translation>
+    </message>
+    <message>
+        <source>HDR:</source>
+        <translation>HDR:</translation>
+    </message>
+    <message>
+        <source>Dateiname:</source>
+        <translation>Nazwa pliku:</translation>
+    </message>
+    <message>
+        <source>Zielordner:</source>
+        <translation>Folder docelowy:</translation>
+    </message>
+    <message>
+        <source>Originalgröße</source>
+        <translation>Rozmiar oryginalny</translation>
+    </message>
+    <message>
+        <source> px (lange Kante)</source>
+        <extracomment>suffix of the maximum size (long edge in pixels)</extracomment>
+        <translation> px (dłuższy bok)</translation>
+    </message>
+    <message>
+        <source>Alle behalten</source>
+        <translation>Zachowaj wszystkie</translation>
+    </message>
+    <message>
+        <source>Ohne Ortsdaten (GPS)</source>
+        <translation>Bez lokalizacji (GPS)</translation>
+    </message>
+    <message>
+        <source>Alle entfernen</source>
+        <translation>Usuń wszystkie</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>Zachowaj</translation>
+    </message>
+    <message>
+        <source>In sRGB umwandeln</source>
+        <translation>Konwertuj do sRGB</translation>
+    </message>
+    <message>
+        <source>In Display P3 umwandeln</source>
+        <translation>Konwertuj do Display P3</translation>
+    </message>
+    <message>
+        <source>Gain-Map behalten (wo das Format es kann)</source>
+        <translation>Zachowaj mapę wzmocnienia (gdy format na to pozwala)</translation>
+    </message>
+    <message>
+        <source>Als SDR (Tone Mapping)</source>
+        <translation>Jako SDR (mapowanie tonów)</translation>
+    </message>
+    <message>
+        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung</source>
+        <translation>Symbole: {name} = nazwa oryginału, {n} = numer kolejny, {format} = rozszerzenie</translation>
+    </message>
+    <message>
+        <source>Neben dem Original</source>
+        <translation>Obok oryginału</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>Wybierz…</translation>
+    </message>
+    <message>
+        <source>Erste Datei: %1</source>
+        <translation>Pierwszy plik: %1</translation>
+    </message>
+    <message>
+        <source>Zielordner für den Export</source>
+        <translation>Folder docelowy eksportu</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ExportRunner</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>Eksportuj</translation>
+    </message>
+    <message>
+        <source>Exportiere …</source>
+        <translation>Eksportowanie…</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Anuluj</translation>
+    </message>
+    <message>
+        <source>Exportiere %1 von %2: %3</source>
+        <translation>Eksportowanie %1 z %2: %3</translation>
     </message>
 </context>
 <context>
@@ -1007,6 +1574,49 @@
     <message>
         <source>Wird berechnet …</source>
         <translation>Obliczanie…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ImageExport</name>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>„%1” już istnieje.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht exportiert werden.</source>
+        <translation>Nie udało się wyeksportować obrazu.</translation>
+    </message>
+    <message>
+        <source>%1: Der Zielordner kann nicht angelegt werden.</source>
+        <translation>%1: nie można utworzyć folderu docelowego.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht geschrieben werden.</source>
+        <translation>Nie udało się zapisać obrazu.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden.</source>
+        <translation>Nie można zdekodować obrazu.</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
+        <translation>Tego formatu nie można zapisać na tym Macu.</translation>
+    </message>
+    <message>
+        <source>Unbekanntes Zielformat.</source>
+        <translation>Nieznany format docelowy.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher zum Exportieren.</source>
+        <translation>Za mało pamięci do eksportu.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Nie można odczytać pliku.</translation>
+    </message>
+    <message>
+        <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
+        <translation>%1 nie może zapisać mapy wzmocnienia HDR – obraz wyeksportowano jako SDR.</translation>
     </message>
 </context>
 <context>
@@ -1626,6 +2236,46 @@
         <translation>Mapa folderu</translation>
     </message>
     <message>
+        <source>Quick Look</source>
+        <translation>Szybki podgląd</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Tekst na żywo</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Ustaw jako tło biurka</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Dziennik akcji</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Czytaj komiksy od prawej do lewej</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>Przytnij</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>Eksportuj</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung</source>
+        <translation>Ostrzeżenie o prześwietleniu</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>Focus peaking</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>Punkty AF</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>Nic</translation>
     </message>
@@ -2070,6 +2720,33 @@
     </message>
 </context>
 <context>
+    <name>lf::LiveText</name>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Tekst na żywo jest wyłączony w ustawieniach.</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Tekst na żywo nie jest dostępny na tym Macu.</translation>
+    </message>
+    <message>
+        <source>Live Text: Bild wird analysiert …</source>
+        <translation>Tekst na żywo: analizowanie obrazu…</translation>
+    </message>
+    <message>
+        <source>Live Text: Text und Motive auswählbar</source>
+        <translation>Tekst na żywo: tekst i obiekty do zaznaczenia</translation>
+    </message>
+    <message>
+        <source>Live Text: kein Text gefunden</source>
+        <translation>Tekst na żywo: nie znaleziono tekstu</translation>
+    </message>
+    <message>
+        <source>Live Text: Analyse fehlgeschlagen (%1)</source>
+        <translation>Tekst na żywo: analiza nie powiodła się (%1)</translation>
+    </message>
+</context>
+<context>
     <name>lf::LosslessTransform</name>
     <message>
         <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
@@ -2322,6 +2999,17 @@
         <source>%1 %</source>
         <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
         <translation>%1%</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MacIntegration</name>
+    <message>
+        <source>Es wurden keine Dateien übergeben.</source>
+        <translation>Nie przekazano żadnych plików.</translation>
+    </message>
+    <message>
+        <source>Der Bildschirm ist nicht mehr da.</source>
+        <translation>Ekran nie jest już podłączony.</translation>
     </message>
 </context>
 <context>
@@ -2616,8 +3304,48 @@
         <translation>Kolejność losowa</translation>
     </message>
     <message>
+        <source>Exportieren …</source>
+        <translation>Eksportuj…</translation>
+    </message>
+    <message>
+        <source>Zuschneiden …</source>
+        <translation>Przytnij…</translation>
+    </message>
+    <message>
+        <source>Overlays</source>
+        <translation>Nakładki</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtung</source>
+        <translation>Prześwietlenie/niedoświetlenie</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>Focus peaking</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>Punkty AF</translation>
+    </message>
+    <message>
+        <source>Vergleich überlagern</source>
+        <translation>Nałóż porównanie</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Obok siebie</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>Różnica</translation>
+    </message>
+    <message>
         <source>Überblenden</source>
         <translation>Przenikanie</translation>
+    </message>
+    <message>
+        <source>Wischen (geteilte Ansicht)</source>
+        <translation>Kurtyna (widok dzielony)</translation>
     </message>
     <message>
         <source>Diashow</source>
@@ -2810,6 +3538,38 @@
     <message>
         <source>Belichtungsregler einblenden</source>
         <translation>Pokaż suwak ekspozycji</translation>
+    </message>
+    <message>
+        <source>Quick Look</source>
+        <translation>Szybki podgląd</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen …</source>
+        <translation>Ustaw jako tło biurka…</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Własne akcje</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Tekst na żywo</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Czytaj komiksy od prawej do lewej</translation>
+    </message>
+    <message>
+        <source>Keine – in den Einstellungen anlegen</source>
+        <translation>Brak – utwórz w ustawieniach</translation>
+    </message>
+    <message>
+        <source>Protokoll …</source>
+        <translation>Dziennik…</translation>
+    </message>
+    <message>
+        <source>Aktionen bearbeiten …</source>
+        <translation>Edytuj akcje…</translation>
     </message>
 </context>
 <context>
@@ -3241,6 +4001,37 @@
     </message>
 </context>
 <context>
+    <name>lf::PdfDocument</name>
+    <message>
+        <source>Die Seite gibt es im PDF-Dokument nicht.</source>
+        <translation>Ta strona nie istnieje w dokumencie PDF.</translation>
+    </message>
+    <message>
+        <source>PDF-Dokumente werden auf diesem System nicht unterstützt.</source>
+        <translation>Dokumenty PDF nie są obsługiwane w tym systemie.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist beschädigt.</source>
+        <translation>Dokument PDF jest uszkodzony.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>Plik nie istnieje.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <translation>Dokument PDF jest chroniony hasłem.</translation>
+    </message>
+    <message>
+        <source>Die Seite ist leer.</source>
+        <translation>Strona jest pusta.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für die Seite.</source>
+        <translation>Za mało pamięci dla strony.</translation>
+    </message>
+</context>
+<context>
     <name>lf::PreferencesDialog</name>
     <message>
         <source>Einstellungen</source>
@@ -3525,6 +4316,38 @@
     <message>
         <source>Groß</source>
         <translation>Duża</translation>
+    </message>
+    <message>
+        <source>Überbelichtung ab (J):</source>
+        <translation>Prześwietlenie od (J):</translation>
+    </message>
+    <message>
+        <source>Unterbelichtung bis:</source>
+        <translation>Niedoświetlenie do:</translation>
+    </message>
+    <message>
+        <source>HDR-Überbelichtung bezogen auf:</source>
+        <translation>Prześwietlenie HDR względem:</translation>
+    </message>
+    <message>
+        <source>Spitzenhelligkeit des Bildes</source>
+        <translation>Szczytowa jasność obrazu</translation>
+    </message>
+    <message>
+        <source>SDR-Weiß</source>
+        <translation>Biel SDR</translation>
+    </message>
+    <message>
+        <source>Focus Peaking (⇧J), Empfindlichkeit:</source>
+        <translation>Focus peaking (⇧J), czułość:</translation>
+    </message>
+    <message>
+        <source>Focus-Peaking-Farbe:</source>
+        <translation>Kolor focus peakingu:</translation>
+    </message>
+    <message>
+        <source>Weiß</source>
+        <translation>Biały</translation>
     </message>
     <message>
         <source>Diashow (⇧⌘F, S):</source>
@@ -3911,6 +4734,18 @@
         <translation>Pliki RAW i JPEG o tej samej nazwie są widoczne jako jeden obraz (JPEG z oznaczeniem „RAW+JPEG”). Ocena, przenoszenie i usuwanie dotyczą obu plików; „Pokaż RAW” przełącza na plik RAW.</translation>
     </message>
     <message>
+        <source>Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner.</source>
+        <translation>Archiwa (ZIP/CBZ, RAR/CBR, 7z/CB7) i dokumenty PDF otwierają się jak foldery.</translation>
+    </message>
+    <message>
+        <source>Comics (CBZ, CBR, CB7) von rechts nach links lesen</source>
+        <translation>Czytaj komiksy (CBZ, CBR, CB7) od prawej do lewej</translation>
+    </message>
+    <message>
+        <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
+        <translation>Dla mangi: ← dalej, → wstecz. Spacja i Page Down zawsze przechodzą do następnej strony.</translation>
+    </message>
+    <message>
         <source>Leistung</source>
         <translation>Wydajność</translation>
     </message>
@@ -3933,6 +4768,34 @@
     <message>
         <source>Bilder zurück behalten:</source>
         <translation>Zachowuj poprzednie obrazy:</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Tekst na żywo</translation>
+    </message>
+    <message>
+        <source>Live Text und Motiv freistellen erlauben (⇧⌘L)</source>
+        <translation>Zezwalaj na Tekst na żywo i wycinanie obiektów (⇧⌘L)</translation>
+    </message>
+    <message>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <translation>Obraz jest analizowany tylko po włączeniu Tekstu na żywo dla okna – na tym Macu, bez sieci.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Własne akcje</translation>
+    </message>
+    <message>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <translation>Polecenie powłoki lub skrót (Skróty) otrzymuje bieżący obraz jako argument. Menu: Plik → Własne akcje.</translation>
+    </message>
+    <message>
+        <source>Abbrechen nach:</source>
+        <translation>Przerwij po:</translation>
+    </message>
+    <message>
+        <source> s</source>
+        <translation> s</translation>
     </message>
     <message>
         <source>Einstellungen sichern</source>
@@ -4678,6 +5541,10 @@
         <translation>Otwórz…</translation>
     </message>
     <message>
+        <source>„%1“ kann nicht geöffnet werden</source>
+        <translation>Nie można otworzyć „%1”</translation>
+    </message>
+    <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
         <translation>Plik jest uszkodzony lub jego format nie jest obsługiwany.</translation>
     </message>
@@ -4880,6 +5747,160 @@
     </message>
 </context>
 <context>
+    <name>lf::VirtualPath</name>
+    <message>
+        <source>Seite %1</source>
+        <extracomment>one page of a PDF document browsed like a folder (F-OPEN-10)</extracomment>
+        <translation>Strona %1</translation>
+    </message>
+    <message>
+        <source>%1 › %2</source>
+        <extracomment>archive or PDF and the image inside it, e.g. &quot;Band 1.cbz › 012.jpg&quot; (F-OPEN-10)</extracomment>
+        <translation>%1 › %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Wallpaper</name>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Nie otwarto żadnego obrazu.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <translation>Obrazy w archiwach i strony PDF nie mogą być tłem biurka.</translation>
+    </message>
+    <message>
+        <source>Es wurde kein Bildschirm gefunden.</source>
+        <translation>Nie znaleziono ekranu.</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
+        <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowEditing</name>
+    <message>
+        <source>Über-/Unterbelichtungswarnung an (rot: Lichter, blau: Schatten)</source>
+        <translation>Ostrzeżenie o prześwietleniu włączone (czerwony: światła, niebieski: cienie)</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung aus</source>
+        <translation>Ostrzeżenie o prześwietleniu wyłączone</translation>
+    </message>
+    <message>
+        <source>Focus Peaking an</source>
+        <translation>Focus peaking włączony</translation>
+    </message>
+    <message>
+        <source>Focus Peaking aus</source>
+        <translation>Focus peaking wyłączony</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte an</source>
+        <translation>Punkty AF włączone</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte aus</source>
+        <translation>Punkty AF wyłączone</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte: %1</source>
+        <extracomment>%1 = where the AF points come from (&quot;Canon&quot;, &quot;Sony&quot;, &quot;EXIF&quot; …)</extracomment>
+        <translation>Punkty AF: %1</translation>
+    </message>
+    <message>
+        <source>Keine Fokuspunkte in den Metadaten</source>
+        <translation>Brak punktów AF w metadanych</translation>
+    </message>
+    <message>
+        <source>Zuschneiden geht in der Einzelbildansicht.</source>
+        <translation>Przycinanie działa w widoku pojedynczego obrazu.</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Zuschneiden.</source>
+        <translation>Brak obrazu do przycięcia.</translation>
+    </message>
+    <message>
+        <source>Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab</source>
+        <translation>Przycinanie: przeciągnij ramkę – Enter zachowuje, Esc anuluje</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>Nie zaznaczono obszaru.</translation>
+    </message>
+    <message>
+        <source>%1-zugeschnitten.%2</source>
+        <extracomment>default file name of a cropped copy: &quot;&lt;name&gt;-zugeschnitten.&lt;suffix&gt;&quot;</extracomment>
+        <translation>%1-przyciety.%2</translation>
+    </message>
+    <message>
+        <source>Zugeschnittenes Bild speichern unter</source>
+        <translation>Zachowaj przycięty obraz jako</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>Przytnij</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
+        <translation>Przycięcie można zapisać tylko przez ponowne zakodowanie.</translation>
+    </message>
+    <message>
+        <source>Neu kodieren</source>
+        <translation>Zakoduj ponownie</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Anuluj</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten gespeichert als „%1“</source>
+        <translation>Przycięcie zachowano jako „%1”</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Exportieren.</source>
+        <translation>Brak obrazu do eksportu.</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>Eksportuj</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder konnten nicht exportiert werden.</source>
+        <translation>
+            <numerusform>Nie udało się wyeksportować %n obrazu.</numerusform>
+            <numerusform>Nie udało się wyeksportować %n obrazów.</numerusform>
+            <numerusform>Nie udało się wyeksportować %n obrazów.</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Export abgebrochen – %n Bilder exportiert</source>
+        <translation>
+            <numerusform>Eksport przerwany – wyeksportowano %n obraz</numerusform>
+            <numerusform>Eksport przerwany – wyeksportowano %n obrazy</numerusform>
+            <numerusform>Eksport przerwany – wyeksportowano %n obrazów</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder exportiert</source>
+        <translation>
+            <numerusform>Wyeksportowano %n obraz</numerusform>
+            <numerusform>Wyeksportowano %n obrazy</numerusform>
+            <numerusform>Wyeksportowano %n obrazów</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n übersprungen</source>
+        <translation>
+            <numerusform>pominięto %n</numerusform>
+            <numerusform>pominięto %n</numerusform>
+            <numerusform>pominięto %n</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::WindowExtras</name>
     <message>
         <source>Zum Bewegen des Fensters ziehen</source>
@@ -4924,6 +5945,73 @@
     <message>
         <source>Minimaler Fenstermodus aus</source>
         <translation>Minimalne okno wyłączone</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowIntegration</name>
+    <message>
+        <source>Comics: von rechts nach links lesen (← = weiter)</source>
+        <translation>Komiksy: czytanie od prawej do lewej (← = dalej)</translation>
+    </message>
+    <message>
+        <source>Comics: von links nach rechts lesen</source>
+        <translation>Komiksy: czytanie od lewej do prawej</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Tekst na żywo nie jest dostępny na tym Macu.</translation>
+    </message>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Tekst na żywo jest wyłączony w ustawieniach.</translation>
+    </message>
+    <message>
+        <source>Live Text an – Text im Bild auswählen und kopieren</source>
+        <translation>Tekst na żywo włączony – zaznacz i kopiuj tekst na obrazie</translation>
+    </message>
+    <message>
+        <source>Live Text aus</source>
+        <translation>Tekst na żywo wyłączony</translation>
+    </message>
+    <message>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <translation>Tekst na żywo jest niedostępny podczas wyświetlania HDR – przełącz na SDR za pomocą ⇧⌘H.</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Nie otwarto żadnego obrazu.</translation>
+    </message>
+    <message>
+        <source>Quick Look ist nicht verfügbar.</source>
+        <translation>Szybki podgląd jest niedostępny.</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Ustaw jako tło biurka</translation>
+    </message>
+    <message>
+        <source>„%1“ als Schreibtischhintergrund festlegen?</source>
+        <translation>Ustawić „%1” jako tło biurka?</translation>
+    </message>
+    <message>
+        <source>Auf allen Bildschirmen</source>
+        <translation>Na wszystkich ekranach</translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation>Ustaw</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Anuluj</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festgelegt</source>
+        <translation>Ustawiono jako tło biurka</translation>
+    </message>
+    <message>
+        <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
+        <translation>Nie można zmienić tła biurka: %1</translation>
     </message>
 </context>
 <context>

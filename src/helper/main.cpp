@@ -6,6 +6,7 @@
 // down this process. Not meant to be started by hand.
 
 #include "core/DecoderHelper.h"
+#include "core/PdfDocument.h"
 #include "core/PsbDecoder.h"
 #include "core/QtImageDecoder.h"
 #include "core/ResvgDecoder.h"
@@ -59,6 +60,7 @@ int main(int argc, char** argv) {
                                                     std::make_shared<lf::SvgDecoder>()};
     backends << lf::simpleDecoders(); // M3 "Rest" formats (QOI, PCX, PNM/PFM, SGI, ORA, KRA)
     backends << std::make_shared<lf::XcfDecoder>() << std::make_shared<lf::PsbDecoder>(); // M3: XCF, PSB
+    backends << std::make_shared<lf::pdf::PdfPageDecoder>(); // M4: PDF pages (F-OPEN-10)
     if (auto resvg = lf::createResvgDecoder()) // M3: SVG 1.1 via resvg (fonts load on first text)
         backends << resvg;
     return lf::runDecoderHelper(STDIN_FILENO, protocolOut, backends, sandboxed, testOps);

@@ -144,6 +144,8 @@ void MainMenu::build() {
     m_extras->addShare(file); // F-FILE-06
     add(file, Action::Trash, tr("In den Papierkorb legen"));
     file->addSeparator();
+    buildM4(file, nullptr); // M4: Quick Look, wallpaper, custom actions
+    file->addSeparator();
     connect(addCommand(file, QStringLiteral("makeDefault"), tr("Als Standard-App festlegen …")),
             &QAction::triggered, &m_app, &Application::makeDefaultViewer);
     // Moved into the application menu ("Lumaflip") on macOS by their roles.
@@ -290,6 +292,7 @@ void MainMenu::build() {
         refreshState();
     });
     buildHdr(view); // M3: F-COL-04/05
+    buildM4(nullptr, view); // M4: Live Text, right-to-left comics
     connect(view, &QMenu::aboutToShow, this, &MainMenu::refreshState);
     connect(sort, &QMenu::aboutToShow, this, &MainMenu::refreshState);
 
@@ -315,6 +318,7 @@ void MainMenu::build() {
     buildMedia(view, nav, image); // slideshow, pages, animation, save rotation (MainMenuMedia.cpp)
     buildCulling();               // M3: "Aussortieren" (MainMenuCulling.cpp)
     buildViews(view, nav);        // M3: grid, compare, go to, shuffle, name filter (MainMenuViews.cpp)
+    buildEdit(file, view, image); // M4: crop, export, overlays, compare blending (MainMenuEdit.cpp)
 
     // ---- Fenster ----
     m_windowMenu = m_bar->addMenu(tr("Fenster"));
@@ -438,6 +442,8 @@ void MainMenu::refreshState() {
     refreshCullingState();
     refreshViewsState();
     refreshHdrState();
+    refreshM4State();
+    refreshEditState();
 }
 
 void MainMenu::refreshWindowList() {

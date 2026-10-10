@@ -10,4 +10,12 @@
 "Bild (sonstige)" = "イメージ（その他）";
 "Ordner" = "フォルダ";
 "WBMP-Bild" = "WBMPイメージ";
+"Comic-Archiv" = "コミックアーカイブ";
+"Archiv" = "アーカイブ";
+"PDF-Dokument" = "PDF書類";
+"RAR-Archiv" = "RARアーカイブ";
+"7-Zip-Archiv" = "7-Zipアーカイブ";
+"Comic-Archiv (ZIP)" = "コミックアーカイブ（ZIP）";
+"Comic-Archiv (RAR)" = "コミックアーカイブ（RAR）";
+"Comic-Archiv (7z)" = "コミックアーカイブ（7z）";
 "NSHumanReadableCopyright" = "© 2026 brokoskokoli および貢献者。ライセンス: GPL-3.0-or-later。";

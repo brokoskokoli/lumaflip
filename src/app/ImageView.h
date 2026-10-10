@@ -10,6 +10,7 @@
 #include "core/HdrMapping.h"
 #include "core/ImageProvider.h"
 #include "core/InputBindings.h"
+#include "core/PhotoOverlays.h"
 
 #include <QColor>
 #include <QColorSpace>
@@ -113,6 +114,13 @@ public:
     void setExposureLocked(bool locked);
     bool exposureLocked() const;
     bool exposureApplies() const; // the current image is HDR content
+    // F-INFO-07: clipping warning / focus peaking in the image shader (off by default).
+    void setPhotoOverlays(const overlays::Params& params);
+    overlays::Params photoOverlays() const;
+    // The widget that draws the image and takes the pointer input (overlays above the image
+    // forward wheel and pinch events to it).
+    QWidget* canvasWidget() const;
+
     // F-COL-03 tests: replaces edrDisplayState() (the screen's EDR headroom); empty = system.
     static void setDisplayStateForTesting(std::function<hdr::DisplayState(const QWidget*)> provider);
 

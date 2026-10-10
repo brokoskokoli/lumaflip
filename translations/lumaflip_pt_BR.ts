@@ -157,6 +157,29 @@
     </message>
 </context>
 <context>
+    <name>lf::Archive</name>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>“%1” não está no arquivo.</translation>
+    </message>
+    <message>
+        <source>Dieses Archivformat wird nicht unterstützt.</source>
+        <translation>Este formato de arquivo não é compatível.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist zu groß.</source>
+        <translation>A imagem no arquivo é grande demais.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist beschädigt oder unvollständig.</source>
+        <translation>O arquivo está danificado ou incompleto.</translation>
+    </message>
+    <message>
+        <source>Das Archiv enthält keine Bilder.</source>
+        <translation>O arquivo não contém imagens.</translation>
+    </message>
+</context>
+<context>
     <name>lf::CollectionExtras</name>
     <message numerus="yes">
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
@@ -227,9 +250,50 @@
         <translation>Comparação</translation>
     </message>
     <message>
+        <source>%1×</source>
+        <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
+        <translation>%1×</translation>
+    </message>
+    <message>
+        <source>%1 %</source>
+        <translation>%1%</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Lado a Lado</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>Diferença</translation>
+    </message>
+    <message>
+        <source>Überblenden</source>
+        <translation>Dissolver</translation>
+    </message>
+    <message>
+        <source>Wischen</source>
+        <translation>Cortina</translation>
+    </message>
+    <message>
+        <source>Die ersten beiden Bilder übereinander vergleichen</source>
+        <translation>Comparar as duas primeiras imagens sobrepostas</translation>
+    </message>
+    <message>
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+    <message>
+        <source>%1 ⇄ %2</source>
+        <extracomment>compare caption while two images are blended: &quot;first.jpg ⇄ second.jpg&quot;</extracomment>
+        <translation>%1 ⇄ %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ContainerPolicy</name>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <translation>Imagens em arquivos e documentos PDF estão abertas só para visualização – lixeira, renomear, mover e avaliar não funcionam aqui.</translation>
     </message>
 </context>
 <context>
@@ -276,6 +340,193 @@
     <message>
         <source>Abbrechen</source>
         <translation>Cancelar</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropOverlay</name>
+    <message>
+        <source>Seitenverhältnis</source>
+        <translation>Proporção</translation>
+    </message>
+    <message>
+        <source>Hochformat</source>
+        <translation>Retrato</translation>
+    </message>
+    <message>
+        <source>Seitenverhältnis hochkant statt quer</source>
+        <translation>Proporção em retrato em vez de paisagem</translation>
+    </message>
+    <message>
+        <source>Drittel</source>
+        <translation>Terços</translation>
+    </message>
+    <message>
+        <source>Raster der Drittel-Regel einblenden</source>
+        <translation>Mostrar a grade da regra dos terços</translation>
+    </message>
+    <message>
+        <source>Speichern</source>
+        <translation>Salvar</translation>
+    </message>
+    <message>
+        <source>Zuschnitt in der Datei speichern (Enter, widerrufbar)</source>
+        <translation>Salvar o recorte no arquivo (Enter, pode ser desfeito)</translation>
+    </message>
+    <message>
+        <source>Speichern unter …</source>
+        <translation>Salvar como…</translation>
+    </message>
+    <message>
+        <source>Zuschnitt als neue Datei speichern – das Original bleibt unverändert</source>
+        <translation>Salvar o recorte como novo arquivo – o original não é alterado</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Zuschneiden beenden (Esc)</source>
+        <translation>Encerrar recorte (Esc)</translation>
+    </message>
+    <message>
+        <source>%1 × %2 px</source>
+        <extracomment>crop size in pixels, e.g. &quot;1920 × 1080 px&quot;</extracomment>
+        <translation>%1 × %2 px</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropSave</name>
+    <message>
+        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.</source>
+        <translation>O arquivo foi alterado nesse meio-tempo – nada foi salvo. Recorte novamente.</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
+        <translation>O arquivo contém outras imagens (p. ex. um mapa de ganho HDR ou uma segunda vista estéreo) que não corresponderiam mais após um recorte sem perdas. Só é possível recortar recodificando – perde-se um pouco de qualidade e essas imagens adicionais.</translation>
+    </message>
+    <message>
+        <source>Frei</source>
+        <translation>Livre</translation>
+    </message>
+    <message>
+        <source>Original</source>
+        <translation>Original</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
+        <translation>Não foi possível iniciar a biblioteca JPEG.</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Daten konnten nicht verlustfrei zugeschnitten werden (%1).</source>
+        <translation>Não foi possível recortar os dados JPEG sem perdas (%1).</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.</source>
+        <translation>A seleção não está na grade de blocos JPEG.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden von JPEG-Dateien ist in dieser Version nicht verfügbar.</source>
+        <translation>O recorte sem perdas de arquivos JPEG não está disponível nesta versão.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
+        <translation>Imagens em arquivos compactados e documentos PDF não podem ser salvas recortadas – use “Exportar”.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>O arquivo não existe mais.</translation>
+    </message>
+    <message>
+        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <translation>O formato de arquivo não é reconhecido para salvar.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
+        <translation>Arquivos RAW nunca são alterados. Para uma cópia recortada, use “Exportar”.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
+        <translation>Arquivos animados ou com várias páginas não podem ser salvos recortados.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist schreibgeschützt.</source>
+        <translation>“%1” está protegido contra gravação.</translation>
+    </message>
+    <message>
+        <source>„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.</source>
+        <translation>“Salvar como” nunca substitui o original – escolha outro nome.</translation>
+    </message>
+    <message>
+        <source>In „%1“ kann nicht geschrieben werden.</source>
+        <translation>Não é possível gravar em “%1”.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>Não é possível ler “%1”.</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>Nenhuma área selecionada.</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.</source>
+        <translation>A seleção abrange a imagem inteira – nada a recortar.</translation>
+    </message>
+    <message>
+        <source>Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
+        <translation>Para o recorte sem perdas, a seleção foi ajustada à grade de blocos JPEG (%1 × %2 pixels) e agora tem %3 × %4 pixels.</translation>
+    </message>
+    <message>
+        <source>Diese JPEG-Datei lässt sich nicht verlustfrei zuschneiden. Beim Neukodieren geht etwas Bildqualität verloren.</source>
+        <translation>Este arquivo JPEG não pode ser recortado sem perdas. Ao recodificar, perde-se um pouco de qualidade.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nicht gespeichert werden.</source>
+        <translation>O recorte não pode ser salvo.</translation>
+    </message>
+    <message>
+        <source>Beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
+        <translation>Ao recodificar, a imagem não ficaria exatamente igual (modelo de cor, profundidade de bits, paleta ou transparência mudariam).</translation>
+    </message>
+    <message>
+        <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <translation>Este formato tem perdas. O recorte só pode ser salvo recodificando a imagem – perde-se um pouco de qualidade.</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder (%1) gehen dabei verloren.</source>
+        <translation>As imagens adicionais (%1) são perdidas.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
+        <translation>Não é possível recortar esta imagem sem perdas.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>Não foi possível salvar o recorte.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>Não foi possível substituir o arquivo.</translation>
+    </message>
+    <message>
+        <source>Nichts zuzuschneiden</source>
+        <translation>Nada a recortar</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten (an JPEG-Blöcke angepasst)</source>
+        <translation>Recortada sem perdas (ajustada aos blocos JPEG)</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten</source>
+        <translation>Recortada sem perdas</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (verlustfrei neu kodiert)</source>
+        <translation>Recortada (recodificada sem perdas)</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (neu kodiert)</source>
+        <translation>Recortada (recodificada)</translation>
     </message>
 </context>
 <context>
@@ -363,6 +614,190 @@
             <numerusform>%n imagem movida para “_Rejected”</numerusform>
             <numerusform>%n imagens movidas para “_Rejected”</numerusform>
         </translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActions</name>
+    <message>
+        <source>Die Aktion braucht einen Namen.</source>
+        <translation>A ação precisa de um nome.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht einen Befehl.</source>
+        <translation>A ação precisa de um comando.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht den Namen eines Kurzbefehls.</source>
+        <translation>A ação precisa do nome de um atalho.</translation>
+    </message>
+    <message>
+        <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
+        <translation>O nome de um atalho não pode começar com “-”.</translation>
+    </message>
+    <message numerus="yes">
+        <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
+        <translation>
+            <numerusform>A ação foi interrompida após %n segundo.</numerusform>
+            <numerusform>A ação foi interrompida após %n segundos.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Die Aktion wurde abgebrochen.</source>
+        <translation>A ação foi interrompida.</translation>
+    </message>
+    <message>
+        <source>Die Aktion endete mit Fehlercode %1.</source>
+        <translation>A ação terminou com o código de erro %1.</translation>
+    </message>
+    <message>
+        <source>Die Kurzbefehle-App konnte nicht gestartet werden.</source>
+        <translation>Não foi possível iniciar o app Atalhos.</translation>
+    </message>
+    <message>
+        <source>Der Befehl konnte nicht gestartet werden.</source>
+        <translation>Não foi possível iniciar o comando.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsEditor</name>
+    <message>
+        <source>Eigene Aktion</source>
+        <translation>Ação personalizada</translation>
+    </message>
+    <message>
+        <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
+        <translation>Nome de um atalho do app Atalhos; ele recebe o arquivo como entrada.</translation>
+    </message>
+    <message>
+        <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
+        <translation>Executa com /bin/sh; o arquivo está em &quot;$1&quot; (todos os arquivos: &quot;$@&quot;), p. ex. open -a Preview &quot;$1&quot;. O caminho nunca é inserido no comando.</translation>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation>Nome:</translation>
+    </message>
+    <message>
+        <source>Art:</source>
+        <translation>Tipo:</translation>
+    </message>
+    <message>
+        <source>Befehl:</source>
+        <translation>Comando:</translation>
+    </message>
+    <message>
+        <source>Taste:</source>
+        <translation>Tecla:</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nome</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Tipo</translation>
+    </message>
+    <message>
+        <source>Befehl</source>
+        <translation>Comando</translation>
+    </message>
+    <message>
+        <source>Taste</source>
+        <translation>Tecla</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 ist schon belegt (%3).</source>
+        <translation>“%1”: %2 já está em uso (%3).</translation>
+    </message>
+    <message>
+        <source>Hinzufügen …</source>
+        <translation>Adicionar…</translation>
+    </message>
+    <message>
+        <source>Bearbeiten …</source>
+        <translation>Editar…</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>Remover</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsManager</name>
+    <message>
+        <source>Kurzbefehl</source>
+        <translation>Atalho</translation>
+    </message>
+    <message>
+        <source>Shell-Befehl</source>
+        <translation>Comando de shell</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Nenhuma imagem está aberta.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktion ausführen</source>
+        <translation>Executar ação personalizada</translation>
+    </message>
+    <message>
+        <source>„%1“ zum ersten Mal ausführen?</source>
+        <translation>Executar “%1” pela primeira vez?</translation>
+    </message>
+    <message>
+        <source>Kurzbefehl: %1</source>
+        <translation>Atalho: %1</translation>
+    </message>
+    <message>
+        <source>Befehl: %1</source>
+        <translation>Comando: %1</translation>
+    </message>
+    <message>
+        <source>Datei: %1</source>
+        <translation>Arquivo: %1</translation>
+    </message>
+    <message>
+        <source>Ausführen</source>
+        <translation>Executar</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>▶ %1: %2</source>
+        <translation>▶ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ läuft …</source>
+        <translation>“%1” em execução…</translation>
+    </message>
+    <message>
+        <source>✓ %1: fertig</source>
+        <translation>✓ %1: concluído</translation>
+    </message>
+    <message>
+        <source>✗ %1: %2</source>
+        <translation>✗ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ausgeführt</source>
+        <translation>“%1” executado</translation>
+    </message>
+    <message>
+        <source>„%1“: %2</source>
+        <translation>“%1”: %2</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Registro de ações</translation>
+    </message>
+    <message>
+        <source>Noch keine Aktion ausgeführt.</source>
+        <translation>Nenhuma ação executada ainda.</translation>
+    </message>
+    <message>
+        <source>Leeren</source>
+        <translation>Limpar</translation>
     </message>
 </context>
 <context>
@@ -667,6 +1102,136 @@
     <message>
         <source>Kamera-RAW (Sigma X3F)</source>
         <translation>RAW de câmera (Sigma X3F)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ExportDialog</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exportar</translation>
+    </message>
+    <message>
+        <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>Exportar “%1” como novo arquivo. O original não é alterado.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.</source>
+        <translation>
+            <numerusform>Exportar %n imagem como novo arquivo. O original não é alterado.</numerusform>
+            <numerusform>Exportar %n imagens como novos arquivos. Os originais não são alterados.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation>Formato:</translation>
+    </message>
+    <message>
+        <source>Qualität:</source>
+        <translation>Qualidade:</translation>
+    </message>
+    <message>
+        <source>Maximale Größe:</source>
+        <translation>Tamanho máximo:</translation>
+    </message>
+    <message>
+        <source>Metadaten:</source>
+        <translation>Metadados:</translation>
+    </message>
+    <message>
+        <source>Farbraum:</source>
+        <translation>Espaço de cor:</translation>
+    </message>
+    <message>
+        <source>HDR:</source>
+        <translation>HDR:</translation>
+    </message>
+    <message>
+        <source>Dateiname:</source>
+        <translation>Nome do arquivo:</translation>
+    </message>
+    <message>
+        <source>Zielordner:</source>
+        <translation>Pasta de destino:</translation>
+    </message>
+    <message>
+        <source>Originalgröße</source>
+        <translation>Tamanho original</translation>
+    </message>
+    <message>
+        <source> px (lange Kante)</source>
+        <extracomment>suffix of the maximum size (long edge in pixels)</extracomment>
+        <translation> px (lado maior)</translation>
+    </message>
+    <message>
+        <source>Alle behalten</source>
+        <translation>Manter todos</translation>
+    </message>
+    <message>
+        <source>Ohne Ortsdaten (GPS)</source>
+        <translation>Sem localização (GPS)</translation>
+    </message>
+    <message>
+        <source>Alle entfernen</source>
+        <translation>Remover todos</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>Manter</translation>
+    </message>
+    <message>
+        <source>In sRGB umwandeln</source>
+        <translation>Converter para sRGB</translation>
+    </message>
+    <message>
+        <source>In Display P3 umwandeln</source>
+        <translation>Converter para Display P3</translation>
+    </message>
+    <message>
+        <source>Gain-Map behalten (wo das Format es kann)</source>
+        <translation>Manter o mapa de ganho (se o formato permitir)</translation>
+    </message>
+    <message>
+        <source>Als SDR (Tone Mapping)</source>
+        <translation>Como SDR (mapeamento de tons)</translation>
+    </message>
+    <message>
+        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung</source>
+        <translation>Variáveis: {name} = nome do original, {n} = número sequencial, {format} = extensão</translation>
+    </message>
+    <message>
+        <source>Neben dem Original</source>
+        <translation>Ao lado do original</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>Escolher…</translation>
+    </message>
+    <message>
+        <source>Erste Datei: %1</source>
+        <translation>Primeiro arquivo: %1</translation>
+    </message>
+    <message>
+        <source>Zielordner für den Export</source>
+        <translation>Pasta de destino da exportação</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ExportRunner</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exportar</translation>
+    </message>
+    <message>
+        <source>Exportiere …</source>
+        <translation>Exportando…</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Exportiere %1 von %2: %3</source>
+        <translation>Exportando %1 de %2: %3</translation>
     </message>
 </context>
 <context>
@@ -997,6 +1562,49 @@
     <message>
         <source>Wird berechnet …</source>
         <translation>Calculando…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ImageExport</name>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>“%1” já existe.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht exportiert werden.</source>
+        <translation>Não foi possível exportar a imagem.</translation>
+    </message>
+    <message>
+        <source>%1: Der Zielordner kann nicht angelegt werden.</source>
+        <translation>%1: não é possível criar a pasta de destino.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht geschrieben werden.</source>
+        <translation>Não foi possível gravar a imagem.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden.</source>
+        <translation>Não foi possível decodificar a imagem.</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
+        <translation>Este formato não pode ser gravado neste Mac.</translation>
+    </message>
+    <message>
+        <source>Unbekanntes Zielformat.</source>
+        <translation>Formato de destino desconhecido.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher zum Exportieren.</source>
+        <translation>Memória insuficiente para exportar.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Não é possível ler o arquivo.</translation>
+    </message>
+    <message>
+        <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
+        <translation>%1 não pode armazenar um mapa de ganho HDR – a imagem foi exportada como SDR.</translation>
     </message>
 </context>
 <context>
@@ -1616,6 +2224,46 @@
         <translation>Mapa da Pasta</translation>
     </message>
     <message>
+        <source>Quick Look</source>
+        <translation>Visualização Rápida</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Texto ao Vivo</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Definir como Imagem da Mesa</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Registro de ações</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Ler quadrinhos da direita para a esquerda</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>Recortar</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exportar</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung</source>
+        <translation>Aviso de super-/subexposição</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>Focus peaking</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>Pontos AF</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>Nada</translation>
     </message>
@@ -2060,6 +2708,33 @@
     </message>
 </context>
 <context>
+    <name>lf::LiveText</name>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Texto ao Vivo está desativado nos ajustes.</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Texto ao Vivo não está disponível neste Mac.</translation>
+    </message>
+    <message>
+        <source>Live Text: Bild wird analysiert …</source>
+        <translation>Texto ao Vivo: analisando a imagem…</translation>
+    </message>
+    <message>
+        <source>Live Text: Text und Motive auswählbar</source>
+        <translation>Texto ao Vivo: texto e objetos selecionáveis</translation>
+    </message>
+    <message>
+        <source>Live Text: kein Text gefunden</source>
+        <translation>Texto ao Vivo: nenhum texto encontrado</translation>
+    </message>
+    <message>
+        <source>Live Text: Analyse fehlgeschlagen (%1)</source>
+        <translation>Texto ao Vivo: falha na análise (%1)</translation>
+    </message>
+</context>
+<context>
     <name>lf::LosslessTransform</name>
     <message>
         <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
@@ -2312,6 +2987,17 @@
         <source>%1 %</source>
         <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
         <translation>%1%</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MacIntegration</name>
+    <message>
+        <source>Es wurden keine Dateien übergeben.</source>
+        <translation>Nenhum arquivo foi passado.</translation>
+    </message>
+    <message>
+        <source>Der Bildschirm ist nicht mehr da.</source>
+        <translation>A tela não está mais conectada.</translation>
     </message>
 </context>
 <context>
@@ -2606,8 +3292,48 @@
         <translation>Ordem Aleatória</translation>
     </message>
     <message>
+        <source>Exportieren …</source>
+        <translation>Exportar…</translation>
+    </message>
+    <message>
+        <source>Zuschneiden …</source>
+        <translation>Recortar…</translation>
+    </message>
+    <message>
+        <source>Overlays</source>
+        <translation>Sobreposições</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtung</source>
+        <translation>Super-/subexposição</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>Focus peaking</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>Pontos AF</translation>
+    </message>
+    <message>
+        <source>Vergleich überlagern</source>
+        <translation>Sobrepor comparação</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Lado a Lado</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>Diferença</translation>
+    </message>
+    <message>
         <source>Überblenden</source>
         <translation>Dissolver</translation>
+    </message>
+    <message>
+        <source>Wischen (geteilte Ansicht)</source>
+        <translation>Cortina (visualização dividida)</translation>
     </message>
     <message>
         <source>Diashow</source>
@@ -2800,6 +3526,38 @@
     <message>
         <source>Belichtungsregler einblenden</source>
         <translation>Exibir controle de exposição</translation>
+    </message>
+    <message>
+        <source>Quick Look</source>
+        <translation>Visualização Rápida</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen …</source>
+        <translation>Definir como Imagem da Mesa…</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Ações personalizadas</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Texto ao Vivo</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Ler quadrinhos da direita para a esquerda</translation>
+    </message>
+    <message>
+        <source>Keine – in den Einstellungen anlegen</source>
+        <translation>Nenhuma – crie nos ajustes</translation>
+    </message>
+    <message>
+        <source>Protokoll …</source>
+        <translation>Registro…</translation>
+    </message>
+    <message>
+        <source>Aktionen bearbeiten …</source>
+        <translation>Editar ações…</translation>
     </message>
 </context>
 <context>
@@ -3223,6 +3981,37 @@
     </message>
 </context>
 <context>
+    <name>lf::PdfDocument</name>
+    <message>
+        <source>Die Seite gibt es im PDF-Dokument nicht.</source>
+        <translation>A página não existe no documento PDF.</translation>
+    </message>
+    <message>
+        <source>PDF-Dokumente werden auf diesem System nicht unterstützt.</source>
+        <translation>Documentos PDF não são compatíveis com este sistema.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist beschädigt.</source>
+        <translation>O documento PDF está danificado.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>O arquivo não existe.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <translation>O documento PDF está protegido por senha.</translation>
+    </message>
+    <message>
+        <source>Die Seite ist leer.</source>
+        <translation>A página está vazia.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für die Seite.</source>
+        <translation>Memória insuficiente para a página.</translation>
+    </message>
+</context>
+<context>
     <name>lf::PreferencesDialog</name>
     <message>
         <source>Einstellungen</source>
@@ -3507,6 +4296,38 @@
     <message>
         <source>Groß</source>
         <translation>Grande</translation>
+    </message>
+    <message>
+        <source>Überbelichtung ab (J):</source>
+        <translation>Superexposição a partir de (J):</translation>
+    </message>
+    <message>
+        <source>Unterbelichtung bis:</source>
+        <translation>Subexposição até:</translation>
+    </message>
+    <message>
+        <source>HDR-Überbelichtung bezogen auf:</source>
+        <translation>Superexposição HDR em relação a:</translation>
+    </message>
+    <message>
+        <source>Spitzenhelligkeit des Bildes</source>
+        <translation>Brilho máximo da imagem</translation>
+    </message>
+    <message>
+        <source>SDR-Weiß</source>
+        <translation>Branco SDR</translation>
+    </message>
+    <message>
+        <source>Focus Peaking (⇧J), Empfindlichkeit:</source>
+        <translation>Focus peaking (⇧J), sensibilidade:</translation>
+    </message>
+    <message>
+        <source>Focus-Peaking-Farbe:</source>
+        <translation>Cor do focus peaking:</translation>
+    </message>
+    <message>
+        <source>Weiß</source>
+        <translation>Branco</translation>
     </message>
     <message>
         <source>Diashow (⇧⌘F, S):</source>
@@ -3892,6 +4713,18 @@
         <translation>Arquivos RAW e JPEG com o mesmo nome aparecem como uma imagem (o JPEG, com a marca “RAW+JPEG”). Classificar, mover e apagar afetam os dois arquivos; “Mostrar RAW” alterna para o arquivo RAW.</translation>
     </message>
     <message>
+        <source>Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner.</source>
+        <translation>Arquivos (ZIP/CBZ, RAR/CBR, 7z/CB7) e documentos PDF abrem como pastas.</translation>
+    </message>
+    <message>
+        <source>Comics (CBZ, CBR, CB7) von rechts nach links lesen</source>
+        <translation>Ler quadrinhos (CBZ, CBR, CB7) da direita para a esquerda</translation>
+    </message>
+    <message>
+        <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
+        <translation>Para mangá: ← avança, → volta. Espaço e Page Down sempre vão para a próxima página.</translation>
+    </message>
+    <message>
         <source>Leistung</source>
         <translation>Desempenho</translation>
     </message>
@@ -3914,6 +4747,34 @@
     <message>
         <source>Bilder zurück behalten:</source>
         <translation>Manter imagens anteriores:</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Texto ao Vivo</translation>
+    </message>
+    <message>
+        <source>Live Text und Motiv freistellen erlauben (⇧⌘L)</source>
+        <translation>Permitir Texto ao Vivo e recortar objetos (⇧⌘L)</translation>
+    </message>
+    <message>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <translation>A imagem só é analisada quando você ativa o Texto ao Vivo numa janela – neste Mac, sem rede.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Ações personalizadas</translation>
+    </message>
+    <message>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <translation>Um comando de shell ou um atalho (Atalhos) recebe a imagem atual como argumento. Menu: Arquivo → Ações personalizadas.</translation>
+    </message>
+    <message>
+        <source>Abbrechen nach:</source>
+        <translation>Interromper após:</translation>
+    </message>
+    <message>
+        <source> s</source>
+        <translation> s</translation>
     </message>
     <message>
         <source>Einstellungen sichern</source>
@@ -4657,6 +5518,10 @@
         <translation>Abrir…</translation>
     </message>
     <message>
+        <source>„%1“ kann nicht geöffnet werden</source>
+        <translation>Não é possível abrir “%1”</translation>
+    </message>
+    <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
         <translation>O arquivo está danificado ou o formato dele não é compatível.</translation>
     </message>
@@ -4857,6 +5722,156 @@
     </message>
 </context>
 <context>
+    <name>lf::VirtualPath</name>
+    <message>
+        <source>Seite %1</source>
+        <extracomment>one page of a PDF document browsed like a folder (F-OPEN-10)</extracomment>
+        <translation>Página %1</translation>
+    </message>
+    <message>
+        <source>%1 › %2</source>
+        <extracomment>archive or PDF and the image inside it, e.g. &quot;Band 1.cbz › 012.jpg&quot; (F-OPEN-10)</extracomment>
+        <translation>%1 › %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Wallpaper</name>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Nenhuma imagem está aberta.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <translation>Imagens em arquivos e páginas PDF não podem virar imagem da mesa.</translation>
+    </message>
+    <message>
+        <source>Es wurde kein Bildschirm gefunden.</source>
+        <translation>Nenhuma tela encontrada.</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
+        <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowEditing</name>
+    <message>
+        <source>Über-/Unterbelichtungswarnung an (rot: Lichter, blau: Schatten)</source>
+        <translation>Aviso de super-/subexposição ativado (vermelho: altas luzes, azul: sombras)</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung aus</source>
+        <translation>Aviso de super-/subexposição desativado</translation>
+    </message>
+    <message>
+        <source>Focus Peaking an</source>
+        <translation>Focus peaking ativado</translation>
+    </message>
+    <message>
+        <source>Focus Peaking aus</source>
+        <translation>Focus peaking desativado</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte an</source>
+        <translation>Pontos AF ativados</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte aus</source>
+        <translation>Pontos AF desativados</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte: %1</source>
+        <extracomment>%1 = where the AF points come from (&quot;Canon&quot;, &quot;Sony&quot;, &quot;EXIF&quot; …)</extracomment>
+        <translation>Pontos AF: %1</translation>
+    </message>
+    <message>
+        <source>Keine Fokuspunkte in den Metadaten</source>
+        <translation>Nenhum ponto AF nos metadados</translation>
+    </message>
+    <message>
+        <source>Zuschneiden geht in der Einzelbildansicht.</source>
+        <translation>O recorte funciona na visualização de imagem única.</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Zuschneiden.</source>
+        <translation>Nenhuma imagem para recortar.</translation>
+    </message>
+    <message>
+        <source>Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab</source>
+        <translation>Recortar: arraste um quadro – Enter salva, Esc cancela</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>Nenhuma área selecionada.</translation>
+    </message>
+    <message>
+        <source>%1-zugeschnitten.%2</source>
+        <extracomment>default file name of a cropped copy: &quot;&lt;name&gt;-zugeschnitten.&lt;suffix&gt;&quot;</extracomment>
+        <translation>%1-recortada.%2</translation>
+    </message>
+    <message>
+        <source>Zugeschnittenes Bild speichern unter</source>
+        <translation>Salvar imagem recortada como</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>Recortar</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
+        <translation>O recorte só pode ser salvo recodificando.</translation>
+    </message>
+    <message>
+        <source>Neu kodieren</source>
+        <translation>Recodificar</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten gespeichert als „%1“</source>
+        <translation>Recorte salvo como “%1”</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Exportieren.</source>
+        <translation>Nenhuma imagem para exportar.</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exportar</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder konnten nicht exportiert werden.</source>
+        <translation>
+            <numerusform>Não foi possível exportar %n imagem.</numerusform>
+            <numerusform>Não foi possível exportar %n imagens.</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Export abgebrochen – %n Bilder exportiert</source>
+        <translation>
+            <numerusform>Exportação cancelada – %n imagem exportada</numerusform>
+            <numerusform>Exportação cancelada – %n imagens exportadas</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder exportiert</source>
+        <translation>
+            <numerusform>%n imagem exportada</numerusform>
+            <numerusform>%n imagens exportadas</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n übersprungen</source>
+        <translation>
+            <numerusform>%n ignorada</numerusform>
+            <numerusform>%n ignoradas</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::WindowExtras</name>
     <message>
         <source>Zum Bewegen des Fensters ziehen</source>
@@ -4901,6 +5916,73 @@
     <message>
         <source>Minimaler Fenstermodus aus</source>
         <translation>Janela mínima desativada</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowIntegration</name>
+    <message>
+        <source>Comics: von rechts nach links lesen (← = weiter)</source>
+        <translation>Quadrinhos: ler da direita para a esquerda (← = avançar)</translation>
+    </message>
+    <message>
+        <source>Comics: von links nach rechts lesen</source>
+        <translation>Quadrinhos: ler da esquerda para a direita</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Texto ao Vivo não está disponível neste Mac.</translation>
+    </message>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Texto ao Vivo está desativado nos ajustes.</translation>
+    </message>
+    <message>
+        <source>Live Text an – Text im Bild auswählen und kopieren</source>
+        <translation>Texto ao Vivo ativado – selecione e copie texto na imagem</translation>
+    </message>
+    <message>
+        <source>Live Text aus</source>
+        <translation>Texto ao Vivo desativado</translation>
+    </message>
+    <message>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <translation>Texto ao Vivo não está disponível durante a exibição HDR – mude para SDR com ⇧⌘H.</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Nenhuma imagem está aberta.</translation>
+    </message>
+    <message>
+        <source>Quick Look ist nicht verfügbar.</source>
+        <translation>Visualização Rápida não está disponível.</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Definir como Imagem da Mesa</translation>
+    </message>
+    <message>
+        <source>„%1“ als Schreibtischhintergrund festlegen?</source>
+        <translation>Definir “%1” como imagem da mesa?</translation>
+    </message>
+    <message>
+        <source>Auf allen Bildschirmen</source>
+        <translation>Em todas as telas</translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation>Definir</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festgelegt</source>
+        <translation>Definido como imagem da mesa</translation>
+    </message>
+    <message>
+        <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
+        <translation>Não foi possível alterar a imagem da mesa: %1</translation>
     </message>
 </context>
 <context>

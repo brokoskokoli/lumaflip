@@ -157,6 +157,29 @@
     </message>
 </context>
 <context>
+    <name>lf::Archive</name>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>封存檔中缺少「%1」。</translation>
+    </message>
+    <message>
+        <source>Dieses Archivformat wird nicht unterstützt.</source>
+        <translation>不支援此封存檔格式。</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist zu groß.</source>
+        <translation>封存檔中的影像太大。</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist beschädigt oder unvollständig.</source>
+        <translation>封存檔已損毀或不完整。</translation>
+    </message>
+    <message>
+        <source>Das Archiv enthält keine Bilder.</source>
+        <translation>封存檔中沒有影像。</translation>
+    </message>
+</context>
+<context>
     <name>lf::CollectionExtras</name>
     <message numerus="yes">
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
@@ -225,9 +248,50 @@
         <translation>比較</translation>
     </message>
     <message>
+        <source>%1×</source>
+        <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
+        <translation>%1×</translation>
+    </message>
+    <message>
+        <source>%1 %</source>
+        <translation>%1%</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>並排</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>差異</translation>
+    </message>
+    <message>
+        <source>Überblenden</source>
+        <translation>交叉淡化</translation>
+    </message>
+    <message>
+        <source>Wischen</source>
+        <translation>劃接</translation>
+    </message>
+    <message>
+        <source>Die ersten beiden Bilder übereinander vergleichen</source>
+        <translation>疊加比較前兩張影像</translation>
+    </message>
+    <message>
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+    <message>
+        <source>%1 ⇄ %2</source>
+        <extracomment>compare caption while two images are blended: &quot;first.jpg ⇄ second.jpg&quot;</extracomment>
+        <translation>%1 ⇄ %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ContainerPolicy</name>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <translation>封存檔和 PDF 文件中的影像僅供檢視——此處無法丟到垃圾桶、重新命名、移動或評分。</translation>
     </message>
 </context>
 <context>
@@ -273,6 +337,193 @@
     <message>
         <source>Abbrechen</source>
         <translation>取消</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropOverlay</name>
+    <message>
+        <source>Seitenverhältnis</source>
+        <translation>長寬比</translation>
+    </message>
+    <message>
+        <source>Hochformat</source>
+        <translation>直式</translation>
+    </message>
+    <message>
+        <source>Seitenverhältnis hochkant statt quer</source>
+        <translation>直式而非橫式的長寬比</translation>
+    </message>
+    <message>
+        <source>Drittel</source>
+        <translation>三分法</translation>
+    </message>
+    <message>
+        <source>Raster der Drittel-Regel einblenden</source>
+        <translation>顯示三分法格線</translation>
+    </message>
+    <message>
+        <source>Speichern</source>
+        <translation>儲存</translation>
+    </message>
+    <message>
+        <source>Zuschnitt in der Datei speichern (Enter, widerrufbar)</source>
+        <translation>將裁切儲存到檔案中（Enter，可還原）</translation>
+    </message>
+    <message>
+        <source>Speichern unter …</source>
+        <translation>儲存為…</translation>
+    </message>
+    <message>
+        <source>Zuschnitt als neue Datei speichern – das Original bleibt unverändert</source>
+        <translation>將裁切儲存為新檔案——原始檔保持不變</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <source>Zuschneiden beenden (Esc)</source>
+        <translation>結束裁切（Esc）</translation>
+    </message>
+    <message>
+        <source>%1 × %2 px</source>
+        <extracomment>crop size in pixels, e.g. &quot;1920 × 1080 px&quot;</extracomment>
+        <translation>%1 × %2 像素</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropSave</name>
+    <message>
+        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.</source>
+        <translation>檔案已在此期間變更——未儲存任何內容。請重新裁切。</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
+        <translation>此檔案包含其他影像（例如 HDR 增益圖或第二張立體影像），無損裁切後將不再相符。只能透過重新編碼來裁切——這會損失些許畫質以及這些附加影像。</translation>
+    </message>
+    <message>
+        <source>Frei</source>
+        <translation>自由</translation>
+    </message>
+    <message>
+        <source>Original</source>
+        <translation>原始</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
+        <translation>無法啟動 JPEG 函式庫。</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Daten konnten nicht verlustfrei zugeschnitten werden (%1).</source>
+        <translation>無法無損裁切 JPEG 資料（%1）。</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.</source>
+        <translation>所選範圍未對齊 JPEG 區塊格線。</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden von JPEG-Dateien ist in dieser Version nicht verfügbar.</source>
+        <translation>此版本不支援 JPEG 檔案的無損裁切。</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
+        <translation>壓縮檔與 PDF 文件中的影像無法裁切後儲存——請使用「輸出」。</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>檔案已不存在。</translation>
+    </message>
+    <message>
+        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <translation>無法辨識要儲存的檔案格式。</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
+        <translation>RAW 檔案永遠不會被變更。若需裁切後的副本，請使用「輸出」。</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
+        <translation>動畫或多頁檔案無法裁切後儲存。</translation>
+    </message>
+    <message>
+        <source>„%1“ ist schreibgeschützt.</source>
+        <translation>「%1」為唯讀。</translation>
+    </message>
+    <message>
+        <source>„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.</source>
+        <translation>「儲存為」絕不會覆寫原始檔——請選擇其他名稱。</translation>
+    </message>
+    <message>
+        <source>In „%1“ kann nicht geschrieben werden.</source>
+        <translation>無法寫入「%1」。</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>無法讀取「%1」。</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>未選取範圍。</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.</source>
+        <translation>所選範圍為整張影像——無需裁切。</translation>
+    </message>
+    <message>
+        <source>Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
+        <translation>為進行無損裁切，所選範圍已對齊 JPEG 區塊格線（%1 × %2 像素），現在為 %3 × %4 像素。</translation>
+    </message>
+    <message>
+        <source>Diese JPEG-Datei lässt sich nicht verlustfrei zuschneiden. Beim Neukodieren geht etwas Bildqualität verloren.</source>
+        <translation>此 JPEG 檔案無法無損裁切。重新編碼會損失些許畫質。</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nicht gespeichert werden.</source>
+        <translation>無法儲存裁切。</translation>
+    </message>
+    <message>
+        <source>Beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
+        <translation>重新編碼後影像將無法完全一致（色彩模型、位元深度、調色盤或透明度會改變）。</translation>
+    </message>
+    <message>
+        <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <translation>此格式為破壞性壓縮。只能透過重新編碼影像來儲存裁切——這會損失些許畫質。</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder (%1) gehen dabei verloren.</source>
+        <translation>附加影像（%1）將會遺失。</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
+        <translation>無法對此影像進行無損裁切。</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>無法儲存裁切。</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>無法取代檔案。</translation>
+    </message>
+    <message>
+        <source>Nichts zuzuschneiden</source>
+        <translation>無需裁切</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten (an JPEG-Blöcke angepasst)</source>
+        <translation>已無損裁切（已對齊 JPEG 區塊）</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten</source>
+        <translation>已無損裁切</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (verlustfrei neu kodiert)</source>
+        <translation>已裁切（無損重新編碼）</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (neu kodiert)</source>
+        <translation>已裁切（重新編碼）</translation>
     </message>
 </context>
 <context>
@@ -356,6 +607,189 @@
         <translation>
             <numerusform>已將 %n 張影像移到「_Rejected」</numerusform>
         </translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActions</name>
+    <message>
+        <source>Die Aktion braucht einen Namen.</source>
+        <translation>動作需要名稱。</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht einen Befehl.</source>
+        <translation>動作需要指令。</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht den Namen eines Kurzbefehls.</source>
+        <translation>動作需要捷徑的名稱。</translation>
+    </message>
+    <message>
+        <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
+        <translation>捷徑名稱不能以「-」開頭。</translation>
+    </message>
+    <message numerus="yes">
+        <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
+        <translation>
+            <numerusform>動作在 %n 秒後中止。</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Die Aktion wurde abgebrochen.</source>
+        <translation>動作已中止。</translation>
+    </message>
+    <message>
+        <source>Die Aktion endete mit Fehlercode %1.</source>
+        <translation>動作結束，錯誤代碼 %1。</translation>
+    </message>
+    <message>
+        <source>Die Kurzbefehle-App konnte nicht gestartet werden.</source>
+        <translation>無法啟動「捷徑」App。</translation>
+    </message>
+    <message>
+        <source>Der Befehl konnte nicht gestartet werden.</source>
+        <translation>無法啟動指令。</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsEditor</name>
+    <message>
+        <source>Eigene Aktion</source>
+        <translation>自訂動作</translation>
+    </message>
+    <message>
+        <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
+        <translation>「捷徑」App 中某個捷徑的名稱；它會收到該檔案作為輸入。</translation>
+    </message>
+    <message>
+        <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
+        <translation>透過 /bin/sh 執行；檔案在 &quot;$1&quot; 中（所有檔案：&quot;$@&quot;），例如 open -a Preview &quot;$1&quot;。路徑絕不會被插入指令中。</translation>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation>名稱：</translation>
+    </message>
+    <message>
+        <source>Art:</source>
+        <translation>類型：</translation>
+    </message>
+    <message>
+        <source>Befehl:</source>
+        <translation>指令：</translation>
+    </message>
+    <message>
+        <source>Taste:</source>
+        <translation>按鍵：</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>名稱</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>類型</translation>
+    </message>
+    <message>
+        <source>Befehl</source>
+        <translation>指令</translation>
+    </message>
+    <message>
+        <source>Taste</source>
+        <translation>按鍵</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 ist schon belegt (%3).</source>
+        <translation>「%1」：%2 已被使用（%3）。</translation>
+    </message>
+    <message>
+        <source>Hinzufügen …</source>
+        <translation>加入…</translation>
+    </message>
+    <message>
+        <source>Bearbeiten …</source>
+        <translation>編輯…</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>移除</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsManager</name>
+    <message>
+        <source>Kurzbefehl</source>
+        <translation>捷徑</translation>
+    </message>
+    <message>
+        <source>Shell-Befehl</source>
+        <translation>Shell 指令</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>未打開影像。</translation>
+    </message>
+    <message>
+        <source>Eigene Aktion ausführen</source>
+        <translation>執行自訂動作</translation>
+    </message>
+    <message>
+        <source>„%1“ zum ersten Mal ausführen?</source>
+        <translation>首次執行「%1」？</translation>
+    </message>
+    <message>
+        <source>Kurzbefehl: %1</source>
+        <translation>捷徑：%1</translation>
+    </message>
+    <message>
+        <source>Befehl: %1</source>
+        <translation>指令：%1</translation>
+    </message>
+    <message>
+        <source>Datei: %1</source>
+        <translation>檔案：%1</translation>
+    </message>
+    <message>
+        <source>Ausführen</source>
+        <translation>執行</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <source>▶ %1: %2</source>
+        <translation>▶ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ läuft …</source>
+        <translation>「%1」正在執行…</translation>
+    </message>
+    <message>
+        <source>✓ %1: fertig</source>
+        <translation>✓ %1：完成</translation>
+    </message>
+    <message>
+        <source>✗ %1: %2</source>
+        <translation>✗ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ausgeführt</source>
+        <translation>已執行「%1」</translation>
+    </message>
+    <message>
+        <source>„%1“: %2</source>
+        <translation>「%1」：%2</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>動作記錄</translation>
+    </message>
+    <message>
+        <source>Noch keine Aktion ausgeführt.</source>
+        <translation>尚未執行任何動作。</translation>
+    </message>
+    <message>
+        <source>Leeren</source>
+        <translation>清空</translation>
     </message>
 </context>
 <context>
@@ -660,6 +1094,135 @@
     <message>
         <source>Kamera-RAW (Sigma X3F)</source>
         <translation>相機 RAW（Sigma X3F）</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ExportDialog</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>輸出</translation>
+    </message>
+    <message>
+        <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>將「%1」輸出為新檔案。原始檔保持不變。</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.</source>
+        <translation>
+            <numerusform>將 %n 張影像輸出為新檔案。原始檔保持不變。</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation>格式：</translation>
+    </message>
+    <message>
+        <source>Qualität:</source>
+        <translation>品質：</translation>
+    </message>
+    <message>
+        <source>Maximale Größe:</source>
+        <translation>最大尺寸：</translation>
+    </message>
+    <message>
+        <source>Metadaten:</source>
+        <translation>後設資料：</translation>
+    </message>
+    <message>
+        <source>Farbraum:</source>
+        <translation>色彩空間：</translation>
+    </message>
+    <message>
+        <source>HDR:</source>
+        <translation>HDR：</translation>
+    </message>
+    <message>
+        <source>Dateiname:</source>
+        <translation>檔案名稱：</translation>
+    </message>
+    <message>
+        <source>Zielordner:</source>
+        <translation>目標檔案夾：</translation>
+    </message>
+    <message>
+        <source>Originalgröße</source>
+        <translation>原始尺寸</translation>
+    </message>
+    <message>
+        <source> px (lange Kante)</source>
+        <extracomment>suffix of the maximum size (long edge in pixels)</extracomment>
+        <translation> 像素（長邊）</translation>
+    </message>
+    <message>
+        <source>Alle behalten</source>
+        <translation>全部保留</translation>
+    </message>
+    <message>
+        <source>Ohne Ortsdaten (GPS)</source>
+        <translation>不含位置（GPS）</translation>
+    </message>
+    <message>
+        <source>Alle entfernen</source>
+        <translation>全部移除</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>保持</translation>
+    </message>
+    <message>
+        <source>In sRGB umwandeln</source>
+        <translation>轉換為 sRGB</translation>
+    </message>
+    <message>
+        <source>In Display P3 umwandeln</source>
+        <translation>轉換為 Display P3</translation>
+    </message>
+    <message>
+        <source>Gain-Map behalten (wo das Format es kann)</source>
+        <translation>保留增益圖（若格式支援）</translation>
+    </message>
+    <message>
+        <source>Als SDR (Tone Mapping)</source>
+        <translation>作為 SDR（色調對應）</translation>
+    </message>
+    <message>
+        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung</source>
+        <translation>預留位置：{name} = 原始檔名稱，{n} = 流水號，{format} = 副檔名</translation>
+    </message>
+    <message>
+        <source>Neben dem Original</source>
+        <translation>與原始檔放在一起</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>選擇…</translation>
+    </message>
+    <message>
+        <source>Erste Datei: %1</source>
+        <translation>第一個檔案：%1</translation>
+    </message>
+    <message>
+        <source>Zielordner für den Export</source>
+        <translation>輸出目標檔案夾</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ExportRunner</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>輸出</translation>
+    </message>
+    <message>
+        <source>Exportiere …</source>
+        <translation>正在輸出…</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <source>Exportiere %1 von %2: %3</source>
+        <translation>正在輸出第 %1 張，共 %2 張：%3</translation>
     </message>
 </context>
 <context>
@@ -987,6 +1550,49 @@
     <message>
         <source>Wird berechnet …</source>
         <translation>正在計算…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ImageExport</name>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>「%1」已存在。</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht exportiert werden.</source>
+        <translation>無法輸出影像。</translation>
+    </message>
+    <message>
+        <source>%1: Der Zielordner kann nicht angelegt werden.</source>
+        <translation>%1：無法建立目標檔案夾。</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht geschrieben werden.</source>
+        <translation>無法寫入影像。</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden.</source>
+        <translation>無法解碼影像。</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
+        <translation>無法在這部 Mac 上寫入此格式。</translation>
+    </message>
+    <message>
+        <source>Unbekanntes Zielformat.</source>
+        <translation>未知的目標格式。</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher zum Exportieren.</source>
+        <translation>記憶體不足，無法輸出。</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>無法讀取檔案。</translation>
+    </message>
+    <message>
+        <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
+        <translation>%1 無法儲存 HDR 增益圖——影像已輸出為 SDR。</translation>
     </message>
 </context>
 <context>
@@ -1606,6 +2212,46 @@
         <translation>資料夾地圖</translation>
     </message>
     <message>
+        <source>Quick Look</source>
+        <translation>快速查看</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>原況文字</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>設定為桌面圖片</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>動作記錄</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>從右向左閱讀漫畫</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>裁切</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>輸出</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung</source>
+        <translation>過曝／欠曝警告</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>對焦峰值</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>對焦點</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>無</translation>
     </message>
@@ -2050,6 +2696,33 @@
     </message>
 </context>
 <context>
+    <name>lf::LiveText</name>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>原況文字已在設定中關閉。</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>此 Mac 無法使用原況文字。</translation>
+    </message>
+    <message>
+        <source>Live Text: Bild wird analysiert …</source>
+        <translation>原況文字：正在分析影像…</translation>
+    </message>
+    <message>
+        <source>Live Text: Text und Motive auswählbar</source>
+        <translation>原況文字：可選取文字與主體</translation>
+    </message>
+    <message>
+        <source>Live Text: kein Text gefunden</source>
+        <translation>原況文字：找不到文字</translation>
+    </message>
+    <message>
+        <source>Live Text: Analyse fehlgeschlagen (%1)</source>
+        <translation>原況文字：分析失敗（%1）</translation>
+    </message>
+</context>
+<context>
     <name>lf::LosslessTransform</name>
     <message>
         <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
@@ -2302,6 +2975,17 @@
         <source>%1 %</source>
         <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
         <translation>%1%</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MacIntegration</name>
+    <message>
+        <source>Es wurden keine Dateien übergeben.</source>
+        <translation>未傳入任何檔案。</translation>
+    </message>
+    <message>
+        <source>Der Bildschirm ist nicht mehr da.</source>
+        <translation>顯示器已中斷連接。</translation>
     </message>
 </context>
 <context>
@@ -2596,8 +3280,48 @@
         <translation>隨機順序</translation>
     </message>
     <message>
+        <source>Exportieren …</source>
+        <translation>輸出…</translation>
+    </message>
+    <message>
+        <source>Zuschneiden …</source>
+        <translation>裁切…</translation>
+    </message>
+    <message>
+        <source>Overlays</source>
+        <translation>疊加層</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtung</source>
+        <translation>過曝／欠曝</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>對焦峰值</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>對焦點</translation>
+    </message>
+    <message>
+        <source>Vergleich überlagern</source>
+        <translation>疊加比較</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>並排</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>差異</translation>
+    </message>
+    <message>
         <source>Überblenden</source>
         <translation>交叉淡化</translation>
+    </message>
+    <message>
+        <source>Wischen (geteilte Ansicht)</source>
+        <translation>劃接（分割顯示）</translation>
     </message>
     <message>
         <source>Diashow</source>
@@ -2790,6 +3514,38 @@
     <message>
         <source>Belichtungsregler einblenden</source>
         <translation>顯示曝光滑桿</translation>
+    </message>
+    <message>
+        <source>Quick Look</source>
+        <translation>快速查看</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen …</source>
+        <translation>設定為桌面圖片…</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>自訂動作</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>原況文字</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>從右向左閱讀漫畫</translation>
+    </message>
+    <message>
+        <source>Keine – in den Einstellungen anlegen</source>
+        <translation>無——在設定中建立</translation>
+    </message>
+    <message>
+        <source>Protokoll …</source>
+        <translation>記錄…</translation>
+    </message>
+    <message>
+        <source>Aktionen bearbeiten …</source>
+        <translation>編輯動作…</translation>
     </message>
 </context>
 <context>
@@ -3205,6 +3961,37 @@
     </message>
 </context>
 <context>
+    <name>lf::PdfDocument</name>
+    <message>
+        <source>Die Seite gibt es im PDF-Dokument nicht.</source>
+        <translation>PDF 文件中沒有此頁。</translation>
+    </message>
+    <message>
+        <source>PDF-Dokumente werden auf diesem System nicht unterstützt.</source>
+        <translation>此系統不支援 PDF 文件。</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist beschädigt.</source>
+        <translation>PDF 文件已損毀。</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>檔案不存在。</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <translation>PDF 文件受密碼保護。</translation>
+    </message>
+    <message>
+        <source>Die Seite ist leer.</source>
+        <translation>此頁為空。</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für die Seite.</source>
+        <translation>記憶體不足，無法顯示此頁。</translation>
+    </message>
+</context>
+<context>
     <name>lf::PreferencesDialog</name>
     <message>
         <source>Einstellungen</source>
@@ -3489,6 +4276,38 @@
     <message>
         <source>Groß</source>
         <translation>大</translation>
+    </message>
+    <message>
+        <source>Überbelichtung ab (J):</source>
+        <translation>過曝起點（J）：</translation>
+    </message>
+    <message>
+        <source>Unterbelichtung bis:</source>
+        <translation>欠曝上限：</translation>
+    </message>
+    <message>
+        <source>HDR-Überbelichtung bezogen auf:</source>
+        <translation>HDR 過曝參照：</translation>
+    </message>
+    <message>
+        <source>Spitzenhelligkeit des Bildes</source>
+        <translation>影像峰值亮度</translation>
+    </message>
+    <message>
+        <source>SDR-Weiß</source>
+        <translation>SDR 白</translation>
+    </message>
+    <message>
+        <source>Focus Peaking (⇧J), Empfindlichkeit:</source>
+        <translation>對焦峰值（⇧J），靈敏度：</translation>
+    </message>
+    <message>
+        <source>Focus-Peaking-Farbe:</source>
+        <translation>對焦峰值顏色：</translation>
+    </message>
+    <message>
+        <source>Weiß</source>
+        <translation>白色</translation>
     </message>
     <message>
         <source>Diashow (⇧⌘F, S):</source>
@@ -3873,6 +4692,18 @@
         <translation>同名的 RAW 和 JPEG 檔案顯示為一張影像（標有「RAW+JPEG」的 JPEG）。評分、搬移和刪除同時作用於兩個檔案；「顯示 RAW」可切換至 RAW 檔案。</translation>
     </message>
     <message>
+        <source>Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner.</source>
+        <translation>封存檔（ZIP/CBZ、RAR/CBR、7z/CB7）和 PDF 文件會像檔案夾一樣打開。</translation>
+    </message>
+    <message>
+        <source>Comics (CBZ, CBR, CB7) von rechts nach links lesen</source>
+        <translation>從右向左閱讀漫畫（CBZ、CBR、CB7）</translation>
+    </message>
+    <message>
+        <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
+        <translation>適合漫畫：← 往後翻，→ 往前翻。空白鍵和 Page Down 總是翻到下一頁。</translation>
+    </message>
+    <message>
         <source>Leistung</source>
         <translation>效能</translation>
     </message>
@@ -3895,6 +4726,34 @@
     <message>
         <source>Bilder zurück behalten:</source>
         <translation>保留先前的影像：</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>原況文字</translation>
+    </message>
+    <message>
+        <source>Live Text und Motiv freistellen erlauben (⇧⌘L)</source>
+        <translation>允許原況文字與擷取主體（⇧⌘L）</translation>
+    </message>
+    <message>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <translation>只有在你為視窗開啟原況文字時才會分析影像——在此 Mac 上，不連網。</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>自訂動作</translation>
+    </message>
+    <message>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <translation>Shell 指令或捷徑會收到目前影像作為參數。選單：檔案 → 自訂動作。</translation>
+    </message>
+    <message>
+        <source>Abbrechen nach:</source>
+        <translation>逾時中止：</translation>
+    </message>
+    <message>
+        <source> s</source>
+        <translation> s</translation>
     </message>
     <message>
         <source>Einstellungen sichern</source>
@@ -4636,6 +5495,10 @@
         <translation>打開…</translation>
     </message>
     <message>
+        <source>„%1“ kann nicht geöffnet werden</source>
+        <translation>無法打開「%1」</translation>
+    </message>
+    <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
         <translation>檔案已損壞，或不支援其格式。</translation>
     </message>
@@ -4834,6 +5697,152 @@
     </message>
 </context>
 <context>
+    <name>lf::VirtualPath</name>
+    <message>
+        <source>Seite %1</source>
+        <extracomment>one page of a PDF document browsed like a folder (F-OPEN-10)</extracomment>
+        <translation>第 %1 頁</translation>
+    </message>
+    <message>
+        <source>%1 › %2</source>
+        <extracomment>archive or PDF and the image inside it, e.g. &quot;Band 1.cbz › 012.jpg&quot; (F-OPEN-10)</extracomment>
+        <translation>%1 › %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Wallpaper</name>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>未打開影像。</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <translation>封存檔中的影像和 PDF 頁面不能設為桌面圖片。</translation>
+    </message>
+    <message>
+        <source>Es wurde kein Bildschirm gefunden.</source>
+        <translation>找不到顯示器。</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
+        <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowEditing</name>
+    <message>
+        <source>Über-/Unterbelichtungswarnung an (rot: Lichter, blau: Schatten)</source>
+        <translation>過曝／欠曝警告已開啟（紅色：亮部，藍色：暗部）</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung aus</source>
+        <translation>過曝／欠曝警告已關閉</translation>
+    </message>
+    <message>
+        <source>Focus Peaking an</source>
+        <translation>對焦峰值已開啟</translation>
+    </message>
+    <message>
+        <source>Focus Peaking aus</source>
+        <translation>對焦峰值已關閉</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte an</source>
+        <translation>對焦點已顯示</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte aus</source>
+        <translation>對焦點已隱藏</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte: %1</source>
+        <extracomment>%1 = where the AF points come from (&quot;Canon&quot;, &quot;Sony&quot;, &quot;EXIF&quot; …)</extracomment>
+        <translation>對焦點：%1</translation>
+    </message>
+    <message>
+        <source>Keine Fokuspunkte in den Metadaten</source>
+        <translation>後設資料中沒有對焦點</translation>
+    </message>
+    <message>
+        <source>Zuschneiden geht in der Einzelbildansicht.</source>
+        <translation>裁切僅在單張影像顯示中可用。</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Zuschneiden.</source>
+        <translation>沒有可裁切的影像。</translation>
+    </message>
+    <message>
+        <source>Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab</source>
+        <translation>裁切：拖移出邊框——Enter 儲存，Esc 取消</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>未選取範圍。</translation>
+    </message>
+    <message>
+        <source>%1-zugeschnitten.%2</source>
+        <extracomment>default file name of a cropped copy: &quot;&lt;name&gt;-zugeschnitten.&lt;suffix&gt;&quot;</extracomment>
+        <translation>%1-cropped.%2</translation>
+    </message>
+    <message>
+        <source>Zugeschnittenes Bild speichern unter</source>
+        <translation>將裁切後的影像儲存為</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>裁切</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
+        <translation>只能透過重新編碼來儲存裁切。</translation>
+    </message>
+    <message>
+        <source>Neu kodieren</source>
+        <translation>重新編碼</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten gespeichert als „%1“</source>
+        <translation>裁切已儲存為「%1」</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Exportieren.</source>
+        <translation>沒有可輸出的影像。</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>輸出</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder konnten nicht exportiert werden.</source>
+        <translation>
+            <numerusform>%n 張影像無法輸出。</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Export abgebrochen – %n Bilder exportiert</source>
+        <translation>
+            <numerusform>輸出已取消——已輸出 %n 張影像</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder exportiert</source>
+        <translation>
+            <numerusform>已輸出 %n 張影像</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n übersprungen</source>
+        <translation>
+            <numerusform>已略過 %n 張</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::WindowExtras</name>
     <message>
         <source>Zum Bewegen des Fensters ziehen</source>
@@ -4878,6 +5887,73 @@
     <message>
         <source>Minimaler Fenstermodus aus</source>
         <translation>極簡視窗：關</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowIntegration</name>
+    <message>
+        <source>Comics: von rechts nach links lesen (← = weiter)</source>
+        <translation>漫畫：從右向左閱讀（← = 下一頁）</translation>
+    </message>
+    <message>
+        <source>Comics: von links nach rechts lesen</source>
+        <translation>漫畫：從左向右閱讀</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>此 Mac 無法使用原況文字。</translation>
+    </message>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>原況文字已在設定中關閉。</translation>
+    </message>
+    <message>
+        <source>Live Text an – Text im Bild auswählen und kopieren</source>
+        <translation>原況文字已開啟——可選取並拷貝影像中的文字</translation>
+    </message>
+    <message>
+        <source>Live Text aus</source>
+        <translation>原況文字已關閉</translation>
+    </message>
+    <message>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <translation>HDR 顯示時無法使用原況文字——按 ⇧⌘H 切換到 SDR。</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>未打開影像。</translation>
+    </message>
+    <message>
+        <source>Quick Look ist nicht verfügbar.</source>
+        <translation>無法使用快速查看。</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>設定為桌面圖片</translation>
+    </message>
+    <message>
+        <source>„%1“ als Schreibtischhintergrund festlegen?</source>
+        <translation>要將「%1」設定為桌面圖片嗎？</translation>
+    </message>
+    <message>
+        <source>Auf allen Bildschirmen</source>
+        <translation>在所有顯示器上</translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation>設定</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festgelegt</source>
+        <translation>已設定為桌面圖片</translation>
+    </message>
+    <message>
+        <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
+        <translation>無法更改桌面圖片：%1</translation>
     </message>
 </context>
 <context>

@@ -157,6 +157,29 @@
     </message>
 </context>
 <context>
+    <name>lf::Archive</name>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>아카이브에 ‘%1’이(가) 없습니다.</translation>
+    </message>
+    <message>
+        <source>Dieses Archivformat wird nicht unterstützt.</source>
+        <translation>이 아카이브 형식은 지원되지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist zu groß.</source>
+        <translation>아카이브의 이미지가 너무 큽니다.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist beschädigt oder unvollständig.</source>
+        <translation>아카이브가 손상되었거나 불완전합니다.</translation>
+    </message>
+    <message>
+        <source>Das Archiv enthält keine Bilder.</source>
+        <translation>아카이브에 이미지가 없습니다.</translation>
+    </message>
+</context>
+<context>
     <name>lf::CollectionExtras</name>
     <message numerus="yes">
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
@@ -225,9 +248,50 @@
         <translation>비교</translation>
     </message>
     <message>
+        <source>%1×</source>
+        <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
+        <translation>%1×</translation>
+    </message>
+    <message>
+        <source>%1 %</source>
+        <translation>%1%</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>좌우로 나란히</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>차이</translation>
+    </message>
+    <message>
+        <source>Überblenden</source>
+        <translation>크로스페이드</translation>
+    </message>
+    <message>
+        <source>Wischen</source>
+        <translation>와이프</translation>
+    </message>
+    <message>
+        <source>Die ersten beiden Bilder übereinander vergleichen</source>
+        <translation>처음 두 이미지를 겹쳐서 비교</translation>
+    </message>
+    <message>
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+    <message>
+        <source>%1 ⇄ %2</source>
+        <extracomment>compare caption while two images are blended: &quot;first.jpg ⇄ second.jpg&quot;</extracomment>
+        <translation>%1 ⇄ %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ContainerPolicy</name>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <translation>아카이브와 PDF 문서의 이미지는 보기 전용입니다 – 휴지통, 이름 변경, 이동, 평가를 사용할 수 없습니다.</translation>
     </message>
 </context>
 <context>
@@ -273,6 +337,193 @@
     <message>
         <source>Abbrechen</source>
         <translation>취소</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropOverlay</name>
+    <message>
+        <source>Seitenverhältnis</source>
+        <translation>화면비</translation>
+    </message>
+    <message>
+        <source>Hochformat</source>
+        <translation>세로</translation>
+    </message>
+    <message>
+        <source>Seitenverhältnis hochkant statt quer</source>
+        <translation>가로 대신 세로 화면비</translation>
+    </message>
+    <message>
+        <source>Drittel</source>
+        <translation>삼분할</translation>
+    </message>
+    <message>
+        <source>Raster der Drittel-Regel einblenden</source>
+        <translation>삼분할 격자 표시</translation>
+    </message>
+    <message>
+        <source>Speichern</source>
+        <translation>저장</translation>
+    </message>
+    <message>
+        <source>Zuschnitt in der Datei speichern (Enter, widerrufbar)</source>
+        <translation>자르기를 파일에 저장(Enter, 실행 취소 가능)</translation>
+    </message>
+    <message>
+        <source>Speichern unter …</source>
+        <translation>다른 이름으로 저장…</translation>
+    </message>
+    <message>
+        <source>Zuschnitt als neue Datei speichern – das Original bleibt unverändert</source>
+        <translation>자르기를 새 파일로 저장 – 원본은 변경되지 않음</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>취소</translation>
+    </message>
+    <message>
+        <source>Zuschneiden beenden (Esc)</source>
+        <translation>자르기 끝내기(Esc)</translation>
+    </message>
+    <message>
+        <source>%1 × %2 px</source>
+        <extracomment>crop size in pixels, e.g. &quot;1920 × 1080 px&quot;</extracomment>
+        <translation>%1 × %2 px</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropSave</name>
+    <message>
+        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.</source>
+        <translation>그동안 파일이 변경되었습니다. 아무것도 저장되지 않았습니다. 다시 자르십시오.</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
+        <translation>이 파일에는 무손실 자르기 후 더 이상 맞지 않는 다른 이미지(예: HDR 게인 맵 또는 두 번째 스테레오 이미지)가 포함되어 있습니다. 다시 인코딩해야만 자를 수 있으며, 이때 화질이 약간 떨어지고 추가 이미지가 손실됩니다.</translation>
+    </message>
+    <message>
+        <source>Frei</source>
+        <translation>자유</translation>
+    </message>
+    <message>
+        <source>Original</source>
+        <translation>원본</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
+        <translation>JPEG 라이브러리를 시작할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Daten konnten nicht verlustfrei zugeschnitten werden (%1).</source>
+        <translation>JPEG 데이터를 무손실로 자를 수 없습니다(%1).</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.</source>
+        <translation>선택 영역이 JPEG 블록 격자에 맞지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden von JPEG-Dateien ist in dieser Version nicht verfügbar.</source>
+        <translation>이 버전에서는 JPEG 파일의 무손실 자르기를 사용할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
+        <translation>압축 파일과 PDF 문서의 이미지는 자른 상태로 저장할 수 없습니다. ‘내보내기’를 사용하십시오.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>파일이 더 이상 존재하지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <translation>저장할 파일 포맷을 인식할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
+        <translation>RAW 파일은 절대 변경되지 않습니다. 자른 사본이 필요하면 ‘내보내기’를 사용하십시오.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
+        <translation>애니메이션 또는 여러 페이지 파일은 자른 상태로 저장할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist schreibgeschützt.</source>
+        <translation>‘%1’은(는) 쓰기 금지되어 있습니다.</translation>
+    </message>
+    <message>
+        <source>„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.</source>
+        <translation>‘다른 이름으로 저장’은 원본을 덮어쓰지 않습니다. 다른 이름을 선택하십시오.</translation>
+    </message>
+    <message>
+        <source>In „%1“ kann nicht geschrieben werden.</source>
+        <translation>‘%1’에 쓸 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>‘%1’을(를) 읽을 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>선택된 영역이 없습니다.</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.</source>
+        <translation>선택 영역이 이미지 전체입니다. 자를 것이 없습니다.</translation>
+    </message>
+    <message>
+        <source>Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
+        <translation>무손실 자르기를 위해 선택 영역을 JPEG 블록 격자(%1 × %2픽셀)에 맞췄으며, 현재 크기는 %3 × %4픽셀입니다.</translation>
+    </message>
+    <message>
+        <source>Diese JPEG-Datei lässt sich nicht verlustfrei zuschneiden. Beim Neukodieren geht etwas Bildqualität verloren.</source>
+        <translation>이 JPEG 파일은 무손실로 자를 수 없습니다. 다시 인코딩하면 화질이 약간 떨어집니다.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nicht gespeichert werden.</source>
+        <translation>자르기를 저장할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
+        <translation>다시 인코딩하면 이미지가 정확히 같게 유지되지 않습니다(색상 모델, 비트 심도, 팔레트 또는 투명도가 바뀜).</translation>
+    </message>
+    <message>
+        <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <translation>이 포맷은 손실 압축입니다. 이미지를 다시 인코딩해야만 자르기를 저장할 수 있으며, 화질이 약간 떨어집니다.</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder (%1) gehen dabei verloren.</source>
+        <translation>추가 이미지(%1)가 손실됩니다.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
+        <translation>이 이미지는 무손실로 자를 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>자르기를 저장하지 못했습니다.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>파일을 대치할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Nichts zuzuschneiden</source>
+        <translation>자를 것이 없음</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten (an JPEG-Blöcke angepasst)</source>
+        <translation>무손실로 잘림(JPEG 블록에 맞춤)</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten</source>
+        <translation>무손실로 잘림</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (verlustfrei neu kodiert)</source>
+        <translation>잘림(무손실로 다시 인코딩됨)</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (neu kodiert)</source>
+        <translation>잘림(다시 인코딩됨)</translation>
     </message>
 </context>
 <context>
@@ -356,6 +607,189 @@
         <translation>
             <numerusform>이미지 %n개를 ‘_Rejected’로 이동함</numerusform>
         </translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActions</name>
+    <message>
+        <source>Die Aktion braucht einen Namen.</source>
+        <translation>동작에 이름이 필요합니다.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht einen Befehl.</source>
+        <translation>동작에 명령이 필요합니다.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht den Namen eines Kurzbefehls.</source>
+        <translation>동작에 단축어 이름이 필요합니다.</translation>
+    </message>
+    <message>
+        <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
+        <translation>단축어 이름은 ‘-’로 시작할 수 없습니다.</translation>
+    </message>
+    <message numerus="yes">
+        <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
+        <translation>
+            <numerusform>동작이 %n초 후 중단되었습니다.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Die Aktion wurde abgebrochen.</source>
+        <translation>동작이 중단되었습니다.</translation>
+    </message>
+    <message>
+        <source>Die Aktion endete mit Fehlercode %1.</source>
+        <translation>동작이 오류 코드 %1(으)로 끝났습니다.</translation>
+    </message>
+    <message>
+        <source>Die Kurzbefehle-App konnte nicht gestartet werden.</source>
+        <translation>단축어 앱을 시작할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Der Befehl konnte nicht gestartet werden.</source>
+        <translation>명령을 시작할 수 없습니다.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsEditor</name>
+    <message>
+        <source>Eigene Aktion</source>
+        <translation>사용자 동작</translation>
+    </message>
+    <message>
+        <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
+        <translation>단축어 앱의 단축어 이름입니다. 파일을 입력으로 받습니다.</translation>
+    </message>
+    <message>
+        <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
+        <translation>/bin/sh로 실행됩니다. 파일은 &quot;$1&quot;에 있습니다(모든 파일: &quot;$@&quot;). 예: open -a Preview &quot;$1&quot;. 경로가 명령에 삽입되지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation>이름:</translation>
+    </message>
+    <message>
+        <source>Art:</source>
+        <translation>종류:</translation>
+    </message>
+    <message>
+        <source>Befehl:</source>
+        <translation>명령:</translation>
+    </message>
+    <message>
+        <source>Taste:</source>
+        <translation>키:</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>이름</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>종류</translation>
+    </message>
+    <message>
+        <source>Befehl</source>
+        <translation>명령</translation>
+    </message>
+    <message>
+        <source>Taste</source>
+        <translation>키</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 ist schon belegt (%3).</source>
+        <translation>‘%1’: %2은(는) 이미 사용 중입니다(%3).</translation>
+    </message>
+    <message>
+        <source>Hinzufügen …</source>
+        <translation>추가…</translation>
+    </message>
+    <message>
+        <source>Bearbeiten …</source>
+        <translation>편집…</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>제거</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsManager</name>
+    <message>
+        <source>Kurzbefehl</source>
+        <translation>단축어</translation>
+    </message>
+    <message>
+        <source>Shell-Befehl</source>
+        <translation>셸 명령</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>열린 이미지가 없습니다.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktion ausführen</source>
+        <translation>사용자 동작 실행</translation>
+    </message>
+    <message>
+        <source>„%1“ zum ersten Mal ausführen?</source>
+        <translation>‘%1’을(를) 처음 실행하겠습니까?</translation>
+    </message>
+    <message>
+        <source>Kurzbefehl: %1</source>
+        <translation>단축어: %1</translation>
+    </message>
+    <message>
+        <source>Befehl: %1</source>
+        <translation>명령: %1</translation>
+    </message>
+    <message>
+        <source>Datei: %1</source>
+        <translation>파일: %1</translation>
+    </message>
+    <message>
+        <source>Ausführen</source>
+        <translation>실행</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>취소</translation>
+    </message>
+    <message>
+        <source>▶ %1: %2</source>
+        <translation>▶ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ läuft …</source>
+        <translation>‘%1’ 실행 중…</translation>
+    </message>
+    <message>
+        <source>✓ %1: fertig</source>
+        <translation>✓ %1: 완료</translation>
+    </message>
+    <message>
+        <source>✗ %1: %2</source>
+        <translation>✗ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ausgeführt</source>
+        <translation>‘%1’ 실행됨</translation>
+    </message>
+    <message>
+        <source>„%1“: %2</source>
+        <translation>‘%1’: %2</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>동작 기록</translation>
+    </message>
+    <message>
+        <source>Noch keine Aktion ausgeführt.</source>
+        <translation>아직 실행된 동작이 없습니다.</translation>
+    </message>
+    <message>
+        <source>Leeren</source>
+        <translation>지우기</translation>
     </message>
 </context>
 <context>
@@ -660,6 +1094,135 @@
     <message>
         <source>Kamera-RAW (Sigma X3F)</source>
         <translation>카메라 RAW(Sigma X3F)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ExportDialog</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>내보내기</translation>
+    </message>
+    <message>
+        <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>‘%1’을(를) 새 파일로 내보냅니다. 원본은 변경되지 않습니다.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.</source>
+        <translation>
+            <numerusform>이미지 %n개를 새 파일로 내보냅니다. 원본은 변경되지 않습니다.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation>포맷:</translation>
+    </message>
+    <message>
+        <source>Qualität:</source>
+        <translation>품질:</translation>
+    </message>
+    <message>
+        <source>Maximale Größe:</source>
+        <translation>최대 크기:</translation>
+    </message>
+    <message>
+        <source>Metadaten:</source>
+        <translation>메타데이터:</translation>
+    </message>
+    <message>
+        <source>Farbraum:</source>
+        <translation>색 공간:</translation>
+    </message>
+    <message>
+        <source>HDR:</source>
+        <translation>HDR:</translation>
+    </message>
+    <message>
+        <source>Dateiname:</source>
+        <translation>파일 이름:</translation>
+    </message>
+    <message>
+        <source>Zielordner:</source>
+        <translation>대상 폴더:</translation>
+    </message>
+    <message>
+        <source>Originalgröße</source>
+        <translation>원본 크기</translation>
+    </message>
+    <message>
+        <source> px (lange Kante)</source>
+        <extracomment>suffix of the maximum size (long edge in pixels)</extracomment>
+        <translation> px(긴 변)</translation>
+    </message>
+    <message>
+        <source>Alle behalten</source>
+        <translation>모두 유지</translation>
+    </message>
+    <message>
+        <source>Ohne Ortsdaten (GPS)</source>
+        <translation>위치 정보(GPS) 제외</translation>
+    </message>
+    <message>
+        <source>Alle entfernen</source>
+        <translation>모두 제거</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>유지</translation>
+    </message>
+    <message>
+        <source>In sRGB umwandeln</source>
+        <translation>sRGB로 변환</translation>
+    </message>
+    <message>
+        <source>In Display P3 umwandeln</source>
+        <translation>Display P3로 변환</translation>
+    </message>
+    <message>
+        <source>Gain-Map behalten (wo das Format es kann)</source>
+        <translation>게인 맵 유지(포맷이 지원하는 경우)</translation>
+    </message>
+    <message>
+        <source>Als SDR (Tone Mapping)</source>
+        <translation>SDR로(톤 매핑)</translation>
+    </message>
+    <message>
+        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung</source>
+        <translation>자리 표시자: {name} = 원본 이름, {n} = 일련번호, {format} = 확장자</translation>
+    </message>
+    <message>
+        <source>Neben dem Original</source>
+        <translation>원본과 같은 위치</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>선택…</translation>
+    </message>
+    <message>
+        <source>Erste Datei: %1</source>
+        <translation>첫 번째 파일: %1</translation>
+    </message>
+    <message>
+        <source>Zielordner für den Export</source>
+        <translation>내보내기 대상 폴더</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ExportRunner</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>내보내기</translation>
+    </message>
+    <message>
+        <source>Exportiere …</source>
+        <translation>내보내는 중…</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>취소</translation>
+    </message>
+    <message>
+        <source>Exportiere %1 von %2: %3</source>
+        <translation>내보내는 중 %1/%2: %3</translation>
     </message>
 </context>
 <context>
@@ -987,6 +1550,49 @@
     <message>
         <source>Wird berechnet …</source>
         <translation>계산 중…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ImageExport</name>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>‘%1’이(가) 이미 있습니다.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht exportiert werden.</source>
+        <translation>이미지를 내보낼 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>%1: Der Zielordner kann nicht angelegt werden.</source>
+        <translation>%1: 대상 폴더를 만들 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht geschrieben werden.</source>
+        <translation>이미지를 쓸 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden.</source>
+        <translation>이미지를 디코딩할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
+        <translation>이 Mac에서는 이 포맷을 쓸 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Unbekanntes Zielformat.</source>
+        <translation>알 수 없는 대상 포맷입니다.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher zum Exportieren.</source>
+        <translation>내보낼 메모리가 부족합니다.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>파일을 읽을 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
+        <translation>%1은(는) HDR 게인 맵을 저장할 수 없습니다. 이미지가 SDR로 내보내졌습니다.</translation>
     </message>
 </context>
 <context>
@@ -1606,6 +2212,46 @@
         <translation>폴더 지도</translation>
     </message>
     <message>
+        <source>Quick Look</source>
+        <translation>훑어보기</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>라이브 텍스트</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>데스크탑 사진으로 설정</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>동작 기록</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>만화를 오른쪽에서 왼쪽으로 읽기</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>자르기</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>내보내기</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung</source>
+        <translation>노출 과다/부족 경고</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>포커스 피킹</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>AF 포인트</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>없음</translation>
     </message>
@@ -2050,6 +2696,33 @@
     </message>
 </context>
 <context>
+    <name>lf::LiveText</name>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>라이브 텍스트가 설정에서 꺼져 있습니다.</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>이 Mac에서는 라이브 텍스트를 사용할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Live Text: Bild wird analysiert …</source>
+        <translation>라이브 텍스트: 이미지 분석 중…</translation>
+    </message>
+    <message>
+        <source>Live Text: Text und Motive auswählbar</source>
+        <translation>라이브 텍스트: 텍스트와 피사체 선택 가능</translation>
+    </message>
+    <message>
+        <source>Live Text: kein Text gefunden</source>
+        <translation>라이브 텍스트: 텍스트를 찾지 못함</translation>
+    </message>
+    <message>
+        <source>Live Text: Analyse fehlgeschlagen (%1)</source>
+        <translation>라이브 텍스트: 분석 실패(%1)</translation>
+    </message>
+</context>
+<context>
     <name>lf::LosslessTransform</name>
     <message>
         <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
@@ -2302,6 +2975,17 @@
         <source>%1 %</source>
         <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
         <translation>%1%</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MacIntegration</name>
+    <message>
+        <source>Es wurden keine Dateien übergeben.</source>
+        <translation>전달된 파일이 없습니다.</translation>
+    </message>
+    <message>
+        <source>Der Bildschirm ist nicht mehr da.</source>
+        <translation>디스플레이가 더 이상 연결되어 있지 않습니다.</translation>
     </message>
 </context>
 <context>
@@ -2596,8 +3280,48 @@
         <translation>무작위 순서</translation>
     </message>
     <message>
+        <source>Exportieren …</source>
+        <translation>내보내기…</translation>
+    </message>
+    <message>
+        <source>Zuschneiden …</source>
+        <translation>자르기…</translation>
+    </message>
+    <message>
+        <source>Overlays</source>
+        <translation>오버레이</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtung</source>
+        <translation>노출 과다/부족</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>포커스 피킹</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>AF 포인트</translation>
+    </message>
+    <message>
+        <source>Vergleich überlagern</source>
+        <translation>겹쳐서 비교</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>좌우로 나란히</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>차이</translation>
+    </message>
+    <message>
         <source>Überblenden</source>
         <translation>크로스페이드</translation>
+    </message>
+    <message>
+        <source>Wischen (geteilte Ansicht)</source>
+        <translation>와이프(분할 보기)</translation>
     </message>
     <message>
         <source>Diashow</source>
@@ -2790,6 +3514,38 @@
     <message>
         <source>Belichtungsregler einblenden</source>
         <translation>노출 슬라이더 표시</translation>
+    </message>
+    <message>
+        <source>Quick Look</source>
+        <translation>훑어보기</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen …</source>
+        <translation>데스크탑 사진으로 설정…</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>사용자 동작</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>라이브 텍스트</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>만화를 오른쪽에서 왼쪽으로 읽기</translation>
+    </message>
+    <message>
+        <source>Keine – in den Einstellungen anlegen</source>
+        <translation>없음 – 설정에서 만들기</translation>
+    </message>
+    <message>
+        <source>Protokoll …</source>
+        <translation>기록…</translation>
+    </message>
+    <message>
+        <source>Aktionen bearbeiten …</source>
+        <translation>동작 편집…</translation>
     </message>
 </context>
 <context>
@@ -3205,6 +3961,37 @@
     </message>
 </context>
 <context>
+    <name>lf::PdfDocument</name>
+    <message>
+        <source>Die Seite gibt es im PDF-Dokument nicht.</source>
+        <translation>PDF 문서에 해당 페이지가 없습니다.</translation>
+    </message>
+    <message>
+        <source>PDF-Dokumente werden auf diesem System nicht unterstützt.</source>
+        <translation>이 시스템에서는 PDF 문서를 지원하지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist beschädigt.</source>
+        <translation>PDF 문서가 손상되었습니다.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>파일이 없습니다.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <translation>PDF 문서가 암호로 보호되어 있습니다.</translation>
+    </message>
+    <message>
+        <source>Die Seite ist leer.</source>
+        <translation>페이지가 비어 있습니다.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für die Seite.</source>
+        <translation>페이지에 필요한 메모리가 부족합니다.</translation>
+    </message>
+</context>
+<context>
     <name>lf::PreferencesDialog</name>
     <message>
         <source>Einstellungen</source>
@@ -3489,6 +4276,38 @@
     <message>
         <source>Groß</source>
         <translation>크게</translation>
+    </message>
+    <message>
+        <source>Überbelichtung ab (J):</source>
+        <translation>노출 과다 시작(J):</translation>
+    </message>
+    <message>
+        <source>Unterbelichtung bis:</source>
+        <translation>노출 부족 상한:</translation>
+    </message>
+    <message>
+        <source>HDR-Überbelichtung bezogen auf:</source>
+        <translation>HDR 노출 과다 기준:</translation>
+    </message>
+    <message>
+        <source>Spitzenhelligkeit des Bildes</source>
+        <translation>이미지의 최대 밝기</translation>
+    </message>
+    <message>
+        <source>SDR-Weiß</source>
+        <translation>SDR 흰색</translation>
+    </message>
+    <message>
+        <source>Focus Peaking (⇧J), Empfindlichkeit:</source>
+        <translation>포커스 피킹(⇧J), 민감도:</translation>
+    </message>
+    <message>
+        <source>Focus-Peaking-Farbe:</source>
+        <translation>포커스 피킹 색상:</translation>
+    </message>
+    <message>
+        <source>Weiß</source>
+        <translation>흰색</translation>
     </message>
     <message>
         <source>Diashow (⇧⌘F, S):</source>
@@ -3873,6 +4692,18 @@
         <translation>이름이 같은 RAW 및 JPEG 파일은 하나의 이미지(‘RAW+JPEG’ 표시가 있는 JPEG)로 나타납니다. 등급 지정, 이동, 삭제는 두 파일 모두에 적용되며 ‘RAW 보기’로 RAW 파일로 전환합니다.</translation>
     </message>
     <message>
+        <source>Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner.</source>
+        <translation>아카이브(ZIP/CBZ, RAR/CBR, 7z/CB7)와 PDF 문서는 폴더처럼 열립니다.</translation>
+    </message>
+    <message>
+        <source>Comics (CBZ, CBR, CB7) von rechts nach links lesen</source>
+        <translation>만화(CBZ, CBR, CB7)를 오른쪽에서 왼쪽으로 읽기</translation>
+    </message>
+    <message>
+        <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
+        <translation>만화용: ←는 다음, →는 이전 페이지. 스페이스와 Page Down은 항상 다음 페이지로 이동합니다.</translation>
+    </message>
+    <message>
         <source>Leistung</source>
         <translation>성능</translation>
     </message>
@@ -3895,6 +4726,34 @@
     <message>
         <source>Bilder zurück behalten:</source>
         <translation>이전 이미지 유지:</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>라이브 텍스트</translation>
+    </message>
+    <message>
+        <source>Live Text und Motiv freistellen erlauben (⇧⌘L)</source>
+        <translation>라이브 텍스트 및 피사체 추출 허용(⇧⌘L)</translation>
+    </message>
+    <message>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <translation>창에서 라이브 텍스트를 켤 때만 이 Mac에서 네트워크 없이 이미지를 분석합니다.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>사용자 동작</translation>
+    </message>
+    <message>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <translation>셸 명령 또는 단축어가 현재 이미지를 인수로 받습니다. 메뉴: 파일 → 사용자 동작.</translation>
+    </message>
+    <message>
+        <source>Abbrechen nach:</source>
+        <translation>중단 시간:</translation>
+    </message>
+    <message>
+        <source> s</source>
+        <translation> s</translation>
     </message>
     <message>
         <source>Einstellungen sichern</source>
@@ -4636,6 +5495,10 @@
         <translation>열기…</translation>
     </message>
     <message>
+        <source>„%1“ kann nicht geöffnet werden</source>
+        <translation>‘%1’을(를) 열 수 없습니다</translation>
+    </message>
+    <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
         <translation>파일이 손상되었거나 지원되지 않는 포맷입니다.</translation>
     </message>
@@ -4834,6 +5697,152 @@
     </message>
 </context>
 <context>
+    <name>lf::VirtualPath</name>
+    <message>
+        <source>Seite %1</source>
+        <extracomment>one page of a PDF document browsed like a folder (F-OPEN-10)</extracomment>
+        <translation>%1페이지</translation>
+    </message>
+    <message>
+        <source>%1 › %2</source>
+        <extracomment>archive or PDF and the image inside it, e.g. &quot;Band 1.cbz › 012.jpg&quot; (F-OPEN-10)</extracomment>
+        <translation>%1 › %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Wallpaper</name>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>열린 이미지가 없습니다.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <translation>아카이브의 이미지와 PDF 페이지는 데스크탑 사진으로 설정할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Es wurde kein Bildschirm gefunden.</source>
+        <translation>디스플레이를 찾을 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
+        <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowEditing</name>
+    <message>
+        <source>Über-/Unterbelichtungswarnung an (rot: Lichter, blau: Schatten)</source>
+        <translation>노출 과다/부족 경고 켬(빨간색: 하이라이트, 파란색: 그림자)</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung aus</source>
+        <translation>노출 과다/부족 경고 끔</translation>
+    </message>
+    <message>
+        <source>Focus Peaking an</source>
+        <translation>포커스 피킹 켬</translation>
+    </message>
+    <message>
+        <source>Focus Peaking aus</source>
+        <translation>포커스 피킹 끔</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte an</source>
+        <translation>AF 포인트 켬</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte aus</source>
+        <translation>AF 포인트 끔</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte: %1</source>
+        <extracomment>%1 = where the AF points come from (&quot;Canon&quot;, &quot;Sony&quot;, &quot;EXIF&quot; …)</extracomment>
+        <translation>AF 포인트: %1</translation>
+    </message>
+    <message>
+        <source>Keine Fokuspunkte in den Metadaten</source>
+        <translation>메타데이터에 AF 포인트가 없음</translation>
+    </message>
+    <message>
+        <source>Zuschneiden geht in der Einzelbildansicht.</source>
+        <translation>자르기는 단일 이미지 보기에서 사용할 수 있습니다.</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Zuschneiden.</source>
+        <translation>자를 이미지가 없습니다.</translation>
+    </message>
+    <message>
+        <source>Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab</source>
+        <translation>자르기: 프레임을 드래그 – Enter로 저장, Esc로 취소</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>선택된 영역이 없습니다.</translation>
+    </message>
+    <message>
+        <source>%1-zugeschnitten.%2</source>
+        <extracomment>default file name of a cropped copy: &quot;&lt;name&gt;-zugeschnitten.&lt;suffix&gt;&quot;</extracomment>
+        <translation>%1-cropped.%2</translation>
+    </message>
+    <message>
+        <source>Zugeschnittenes Bild speichern unter</source>
+        <translation>자른 이미지를 다른 이름으로 저장</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>자르기</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
+        <translation>자르기는 다시 인코딩해야만 저장할 수 있습니다.</translation>
+    </message>
+    <message>
+        <source>Neu kodieren</source>
+        <translation>재인코딩</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>취소</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten gespeichert als „%1“</source>
+        <translation>자른 이미지를 ‘%1’(으)로 저장함</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Exportieren.</source>
+        <translation>내보낼 이미지가 없습니다.</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>내보내기</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder konnten nicht exportiert werden.</source>
+        <translation>
+            <numerusform>이미지 %n개를 내보낼 수 없습니다.</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Export abgebrochen – %n Bilder exportiert</source>
+        <translation>
+            <numerusform>내보내기 취소됨 – 이미지 %n개를 내보냄</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder exportiert</source>
+        <translation>
+            <numerusform>이미지 %n개를 내보냈습니다</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n übersprungen</source>
+        <translation>
+            <numerusform>%n개 건너뜀</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::WindowExtras</name>
     <message>
         <source>Zum Bewegen des Fensters ziehen</source>
@@ -4878,6 +5887,73 @@
     <message>
         <source>Minimaler Fenstermodus aus</source>
         <translation>최소 윈도우 끔</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowIntegration</name>
+    <message>
+        <source>Comics: von rechts nach links lesen (← = weiter)</source>
+        <translation>만화: 오른쪽에서 왼쪽으로 읽기(← = 다음)</translation>
+    </message>
+    <message>
+        <source>Comics: von links nach rechts lesen</source>
+        <translation>만화: 왼쪽에서 오른쪽으로 읽기</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>이 Mac에서는 라이브 텍스트를 사용할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>라이브 텍스트가 설정에서 꺼져 있습니다.</translation>
+    </message>
+    <message>
+        <source>Live Text an – Text im Bild auswählen und kopieren</source>
+        <translation>라이브 텍스트 켬 – 이미지의 텍스트를 선택하고 복사하세요</translation>
+    </message>
+    <message>
+        <source>Live Text aus</source>
+        <translation>라이브 텍스트 끔</translation>
+    </message>
+    <message>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <translation>HDR 표시 중에는 라이브 텍스트를 사용할 수 없습니다 – ⇧⌘H로 SDR로 전환하세요.</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>열린 이미지가 없습니다.</translation>
+    </message>
+    <message>
+        <source>Quick Look ist nicht verfügbar.</source>
+        <translation>훑어보기를 사용할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>데스크탑 사진으로 설정</translation>
+    </message>
+    <message>
+        <source>„%1“ als Schreibtischhintergrund festlegen?</source>
+        <translation>‘%1’을(를) 데스크탑 사진으로 설정하겠습니까?</translation>
+    </message>
+    <message>
+        <source>Auf allen Bildschirmen</source>
+        <translation>모든 디스플레이</translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation>설정</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>취소</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festgelegt</source>
+        <translation>데스크탑 사진으로 설정됨</translation>
+    </message>
+    <message>
+        <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
+        <translation>데스크탑 사진을 변경할 수 없습니다: %1</translation>
     </message>
 </context>
 <context>

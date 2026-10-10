@@ -23,6 +23,9 @@ layout(std140, binding = 0) uniform buf {
     vec4 range;         // x: exposure multiplier (linear), y: max linear value (1 = SDR), z: opacity,
                         // w: 1 = tone curve active
     vec4 tone;          // BT.2390 curve (HdrMapping.h ToneCurve): x knee, y srcPq, z kneePq, w maxLumPq
+    vec4 overlay;       // F-INFO-07: x clipping on, y focus peaking on, z highlight threshold (linear),
+                        // w shadow threshold (linear)
+    vec4 overlayColor;  // rgb: peaking color (output encoded), a: peaking threshold (Sobel magnitude)
 } ubuf;
 
 layout(binding = 1) uniform sampler2D tex;
@@ -118,6 +121,45 @@ vec3 toneMapRgb(vec3 rgb)
     return rgb * (mapped / m);
 }
 
+// F-INFO-07 photo overlays (core/PhotoOverlays.cpp apply() is the reference).
+float lumaAt(vec2 uv, vec2 dx, vec2 dy)
+{
+    return dot(textureGrad(tex, uv, dx, dy).rgb, vec3(0.2126, 0.7152, 0.0722));
+}
+
+vec3 applyOverlays(vec3 shown, vec3 lin, vec2 dx, vec2 dy)
+{
+    vec3 result = shown;
+    if (ubuf.overlay.y > 0.5) {
+        // 3x3 Sobel of the luma on the displayed image: steps of one screen pixel, at least
+        // one texel (magnified images).
+        vec2 sx = dx;
+        vec2 sy = dy;
+        float lx = length(dx * ubuf.texInfo.xy);
+        float ly = length(dy * ubuf.texInfo.xy);
+        if (lx < 1.0)
+            sx = dx / max(lx, 1e-6);
+        if (ly < 1.0)
+            sy = dy / max(ly, 1e-6);
+        float l[9];
+        for (int j = 0; j < 3; ++j)
+            for (int i = 0; i < 3; ++i)
+                l[j * 3 + i] = lumaAt(v_uv + sx * float(i - 1) + sy * float(j - 1), dx, dy);
+        float gx = (l[2] + 2.0 * l[5] + l[8]) - (l[0] + 2.0 * l[3] + l[6]);
+        float gy = (l[6] + 2.0 * l[7] + l[8]) - (l[0] + 2.0 * l[1] + l[2]);
+        if (sqrt(gx * gx + gy * gy) > ubuf.overlayColor.a)
+            result = ubuf.overlayColor.rgb;
+    }
+    if (ubuf.overlay.x > 0.5) {
+        float m = max(lin.r, max(lin.g, lin.b));
+        if (m >= ubuf.overlay.z)
+            result = vec3(1.0, 0.0, 0.0);
+        else if (m <= ubuf.overlay.w)
+            result = vec3(0.0, 0.25, 1.0);
+    }
+    return result;
+}
+
 void main()
 {
     // Derivatives in uniform control flow.
@@ -145,14 +187,22 @@ void main()
     if (ubuf.flags.x > 0.5)
         rgb = a > 0.0 ? rgb / a : vec3(0.0);
 
+    vec3 lin = rgb; // linear light before tone mapping (overlays only)
     if (ubuf.flags.y < 0.5) {
         rgb = decodeTransfer(rgb);
         rgb = (ubuf.colorMatrix * vec4(rgb, 0.0)).rgb;
         rgb *= ubuf.range.x;
+        lin = rgb;
         rgb = toneMapRgb(rgb);
         rgb = clamp(rgb, 0.0, ubuf.range.y);
         rgb = encodeTransfer(rgb);
+    } else if (ubuf.overlay.x > 0.5) {
+        lin = srgbToLinear(rgb);
     }
+
+    // Overlays off (the default): this branch is skipped and the output stays bit-identical.
+    if (ubuf.overlay.x > 0.5 || ubuf.overlay.y > 0.5)
+        rgb = applyOverlays(rgb, lin, dx, dy);
 
     if (ubuf.texInfo.w > 0.5) {
         // UI overlay: straight alpha, blended over the image (SrcAlpha, OneMinusSrcAlpha).

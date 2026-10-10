@@ -10,4 +10,12 @@
 "Bild (sonstige)" = "图像（其他）";
 "Ordner" = "文件夹";
 "WBMP-Bild" = "WBMP 图像";
+"Comic-Archiv" = "漫画归档";
+"Archiv" = "归档";
+"PDF-Dokument" = "PDF 文稿";
+"RAR-Archiv" = "RAR 归档";
+"7-Zip-Archiv" = "7-Zip 归档";
+"Comic-Archiv (ZIP)" = "漫画归档（ZIP）";
+"Comic-Archiv (RAR)" = "漫画归档（RAR）";
+"Comic-Archiv (7z)" = "漫画归档（7z）";
 "NSHumanReadableCopyright" = "© 2026 brokoskokoli 和贡献者。许可：GPL-3.0-or-later。";

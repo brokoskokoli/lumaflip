@@ -93,6 +93,34 @@ inline constexpr auto SlideshowCrossfade = "slideshow/crossfade";     // bool, d
 // Saving the rotation (F-EDIT-02)
 inline constexpr auto RotationSaveStrategy = "edit/rotationStrategy"; // "exif" | "lossless" (JPEG DCT)
 inline constexpr auto KeepModificationDate = "edit/keepModDate";      // bool, default false
+// M4: archives and PDF (F-OPEN-10), Live Text (F-MAC-06), wallpaper (F-FILE-09), custom
+// actions (F-FILE-10)
+inline constexpr auto ArchiveRightToLeft =
+    "archive/rightToLeft";                              // bool, default false: ←/→ swapped in cbz/cbr/cb7
+inline constexpr auto LiveTextEnabled = "mac/liveText"; // bool, default true (VisionKit may be used)
+inline constexpr auto WallpaperAllScreens = "files/wallpaperAllScreens"; // bool, default false
+inline constexpr auto CustomActions = "actions/custom"; // JSON list (core/CustomActions.h), default "[]"
+inline constexpr auto CustomActionTimeoutSec = "actions/timeoutSec"; // 1..3600, default 60
+// M4: crop (F-EDIT-03), export (F-EDIT-04), photo overlays (F-INFO-07)
+inline constexpr auto CropAspect = "crop/aspect";     // "free" | "original" | "1:1" | "4:3" | "3:2" | "16:9"
+inline constexpr auto CropPortrait = "crop/portrait"; // bool, default false
+inline constexpr auto CropGrid = "crop/grid";         // bool, default true (rule of thirds)
+inline constexpr auto ExportFormat = "export/format"; // "jpeg" | "heic" | "avif" | "jxl" | "png" | "tiff"
+inline constexpr auto ExportQuality = "export/quality";                         // 1..100, default 90
+inline constexpr auto ExportMaxEdge = "export/maxEdge";                         // px, 0 = original size
+inline constexpr auto ExportMetadata = "export/metadata";                       // "all" | "noGps" | "none"
+inline constexpr auto ExportColor = "export/colorSpace";                        // "keep" | "srgb" | "p3"
+inline constexpr auto ExportHdr = "export/hdr";                                 // "keep" | "sdr"
+inline constexpr auto ExportPattern = "export/namePattern";                     // default "{name}-export"
+inline constexpr auto ExportFolder = "export/folder";                           // "" = next to the source
+inline constexpr auto OverlayClipping = "overlay/clipping";                     // bool, default false
+inline constexpr auto OverlayPeaking = "overlay/peaking";                       // bool, default false
+inline constexpr auto OverlayAfPoints = "overlay/afPoints";                     // bool, default false
+inline constexpr auto OverlayClipHighPercent = "overlay/clipHigh";              // 50..100, default 98
+inline constexpr auto OverlayClipLowPercent = "overlay/clipLow";                // 0..50, default 2
+inline constexpr auto OverlayClipHdrReference = "overlay/clipHdrReference";     // "headroom" | "sdr"
+inline constexpr auto OverlayPeakingSensitivity = "overlay/peakingSensitivity"; // 0..100, default 50
+inline constexpr auto OverlayPeakingColor = "overlay/peakingColor"; // "#rrggbb", default "#ff2020"
 } // namespace key
 
 class Settings : public QObject {
