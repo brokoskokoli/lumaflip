@@ -9,6 +9,11 @@
 name: Checks
 on:
   workflow_call:
+    inputs:
+      code:
+        description: "Run the build/test jobs (false: documentation-only change, REUSE only)"
+        type: boolean
+        default: true
 
 permissions:
   contents: read
@@ -24,7 +29,11 @@ env:
 jobs:
   check:
     name: macOS checks
-    runs-on: macos-15
+    if: inputs.code
+    # Newest stable macOS image: the tests expect current ImageIO behaviour (formats such
+    # as DICOM, recent RAW cameras, ISO gain map HDR decoding). release.yml builds on
+    # macos-15 (deployment target 15.0).
+    runs-on: macos-26
     timeout-minutes: 90
     env:
       # Runners are slower than the reference Mac (SPEC 7): benchmark limits x2.
@@ -40,23 +49,32 @@ jobs:
       # check.sh then falls back to main/origin/main.
       LF_BASE_REF: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || github.event.before }}
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
       - name: Install dependencies
-        # webp + jpeg-xl: cwebp/cjxl for tests/corpus/make_corpus.sh; llvm: clang-tidy; resvg: SVG backend
-        # (keg-only, does not shadow clang-format).
+        # webp + jpeg-xl: cwebp/cjxl for tests/corpus/make_corpus.sh; llvm: clang-tidy (keg-only,
+        # does not shadow clang-format); resvg: SVG backend; jpeg-turbo: lossless JPEG rotation.
         run: |
-          brew install cmake ninja qt googletest clang-format webp jpeg-xl llvm resvg
+          brew install cmake ninja qt googletest clang-format webp jpeg-xl llvm resvg jpeg-turbo
           echo "LF_CLANG_TIDY=$(brew --prefix llvm)/bin/clang-tidy" >> "$GITHUB_ENV"
-      - name: Cache RAW samples
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      - name: Restore RAW samples
+        id: raw-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: tests/corpus/generated/raw
           key: raw-samples-${{ hashFiles('tests/corpus/download_raw.sh') }}
       - name: Download RAW samples (CC0, pinned by SHA-256)
         run: tests/corpus/download_raw.sh
+      - name: Save RAW samples
+        # Saved right after the download, so a failing test step does not lose the cache.
+        if: steps.raw-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: tests/corpus/generated/raw
+          key: raw-samples-${{ hashFiles('tests/corpus/download_raw.sh') }}
+        continue-on-error: true # the other macOS job may have saved the same key first
       - name: Download Sparkle (F-MAC-08, pinned by SHA-256)
         run: tools/fetch_sparkle.sh
       - name: Require Finder fixtures once they exist (F-SORT-08)
@@ -73,7 +91,7 @@ jobs:
         run: tools/check.sh --stage "$LF_STAGE" --format-all --tidy
       - name: Upload test logs
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: test-logs-macos
           path: |
@@ -83,24 +101,34 @@ jobs:
 
   sanitize:
     name: macOS ASan + UBSan
-    runs-on: macos-15
+    if: inputs.code
+    runs-on: macos-26
     timeout-minutes: 90
     env:
       LF_REQUIRE_RAW: "1"
       LF_REQUIRE_SPARKLE: "1"
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Install dependencies
-        run: brew install cmake ninja qt googletest webp jpeg-xl resvg
-      - name: Cache RAW samples
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        run: brew install cmake ninja qt googletest webp jpeg-xl resvg jpeg-turbo
+      - name: Restore RAW samples
+        id: raw-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: tests/corpus/generated/raw
           key: raw-samples-${{ hashFiles('tests/corpus/download_raw.sh') }}
       - name: Download RAW samples
         run: tests/corpus/download_raw.sh
+      - name: Save RAW samples
+        # Saved right after the download, so a failing test step does not lose the cache.
+        if: steps.raw-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: tests/corpus/generated/raw
+          key: raw-samples-${{ hashFiles('tests/corpus/download_raw.sh') }}
+        continue-on-error: true # the other macOS job may have saved the same key first
       - name: Download Sparkle (F-MAC-08, pinned by SHA-256)
         run: tools/fetch_sparkle.sh
       - name: Require Finder fixtures once they exist (F-SORT-08)
@@ -110,7 +138,7 @@ jobs:
         run: tools/check.sh --quick --sanitize
       - name: Upload test logs
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: test-logs-sanitize
           path: build/sanitize/Testing/Temporary/*.log
@@ -120,15 +148,18 @@ jobs:
     # SPEC 9.3: the core is compiled and unit-tested on Linux from M1 on, without
     # the app (LF_BUILD_UI=OFF, generic platform layer).
     name: Linux core (generic platform)
+    if: inputs.code
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Install build tools
         run: |
           sudo apt-get update
+          # Optional backends stay off here: Ubuntu 24.04 ships TurboJPEG 2.1 (the core
+          # needs the 3.x API) and no resvg package (building it with cargo is slow).
           sudo apt-get install -y --no-install-recommends ninja-build clang libgtest-dev \
             libgl1-mesa-dev libegl1 libxkbcommon0 libfontconfig1 libglib2.0-0
       - name: Install Qt
@@ -142,14 +173,15 @@ jobs:
           -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
           -DLF_BUILD_UI=OFF -DLF_WERROR=ON
       - name: Build
-        run: cmake --build build/linux
+        # -k 0: report every compile error, not only the first one.
+        run: cmake --build build/linux -- -k 0
       - name: Unit tests
         env:
           QT_QPA_PLATFORM: offscreen
         run: ctest --test-dir build/linux --output-on-failure -j "$(nproc)"
       - name: Upload test logs
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: test-logs-linux
           path: build/linux/Testing/Temporary/*.log
@@ -159,7 +191,7 @@ jobs:
     name: REUSE compliance
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: reuse lint

@@ -341,11 +341,11 @@ private slots:
             QVERIFY2(w, qPrintable(name));
             QTRY_COMPARE_WITH_TIMEOUT(w->shownPath(), QDir::cleanPath(file), 10000);
             QTRY_VERIFY_WITH_TIMEOUT(bool(w->view()->image()), 10000);
-            const QString status = w->statusText();
-            if (name.endsWith(QStringLiteral(".svg")))
-                QVERIFY2(status.contains(QStringLiteral("200 × 100")), qPrintable(status));
-            else
-                QVERIFY2(status.contains(QStringLiteral("64 × 48")), qPrintable(status));
+            // The pixel size reaches the status bar with the image info, which may come
+            // after the first image (slow machines, CI): wait for it.
+            const QString size = name.endsWith(QStringLiteral(".svg")) ? QStringLiteral("200 × 100")
+                                                                       : QStringLiteral("64 × 48");
+            QTRY_VERIFY2_WITH_TIMEOUT(w->statusText().contains(size), qPrintable(w->statusText()), 10000);
             w->close();
             QTest::qWait(20);
         }

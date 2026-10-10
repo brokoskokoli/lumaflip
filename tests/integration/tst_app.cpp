@@ -35,6 +35,7 @@
 #include <QMenuBar>
 #include <QMimeData>
 #include <QPushButton>
+#include <QScreen>
 #include <QSignalSpy>
 #include <QStatusBar>
 #include <QTemporaryDir>
@@ -871,7 +872,12 @@ private slots:
 
     // Covers: F-WIN-08 (option "Fenstergröße an Bild anpassen")
     void F_WIN_08_fitWindowToImageOption() {
-        QVERIFY(!makeImage(path("wide.png"), Qt::darkGreen, QSize(1200, 800)).isEmpty());
+        // 600 x 400 points: fits at 100 % even on small screens (CI runners: 1024 x 768),
+        // where fitWindowToImage() would otherwise cap the window at 90 % of the screen.
+        QScreen* primary = QGuiApplication::primaryScreen();
+        QVERIFY(primary);
+        const QSize pixels = (QSizeF(600, 400) * primary->devicePixelRatio()).toSize();
+        QVERIFY(!makeImage(path("wide.png"), Qt::darkGreen, pixels).isEmpty());
         ViewerWindow* plain = app->openPaths({path("wide.png")});
         QVERIFY(waitWindowShown(plain));
         QVERIFY(waitShown(plain, path("wide.png")));
@@ -882,7 +888,7 @@ private slots:
         QVERIFY(waitWindowShown(w));
         QVERIFY(waitShown(w, path("wide.png")));
         const qreal dpr = w->screen()->devicePixelRatio();
-        const QSize expected = (QSizeF(1200, 800) / dpr).toSize();
+        const QSize expected = (QSizeF(pixels) / dpr).toSize();
         QTRY_VERIFY2(qAbs(w->view()->width() - expected.width()) <= 2 &&
                          qAbs(w->view()->height() - expected.height()) <= 2,
                      qPrintable(QStringLiteral("%1x%2 vs %3x%4 (normal %5x%6)")

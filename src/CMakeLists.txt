@@ -29,6 +29,15 @@ find_library(LF_TURBOJPEG_LIB NAMES libturbojpeg.a turbojpeg
 # find) is listed in Contents/Resources/static-components.json; the deploy script requires
 # licence texts for every entry (STATIC_COMPONENTS there, texts in packaging/licenses/).
 set(LF_STATIC_COMPONENTS "")
+# core/LosslessTransform.cpp uses the TurboJPEG 3 API (tj3*); older headers (2.x, e.g.
+# Ubuntu 24.04) count as not found.
+if(LF_TURBOJPEG_INCLUDE)
+  file(STRINGS "${LF_TURBOJPEG_INCLUDE}/turbojpeg.h" _lf_tj3 REGEX "tj3Transform")
+  if(NOT _lf_tj3)
+    message(STATUS "TurboJPEG in ${LF_TURBOJPEG_INCLUDE} is older than 3.0 (no tj3 API): ignored")
+    set(LF_TURBOJPEG_INCLUDE "")
+  endif()
+endif()
 if(LF_TURBOJPEG_INCLUDE AND LF_TURBOJPEG_LIB)
   message(STATUS "TurboJPEG: ${LF_TURBOJPEG_LIB}")
   target_include_directories(lf_core SYSTEM PRIVATE ${LF_TURBOJPEG_INCLUDE})

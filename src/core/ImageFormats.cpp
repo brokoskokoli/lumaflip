@@ -25,9 +25,6 @@ constexpr const char* kRaw[] = {
 };
 // clang-format on
 
-// Rendered by some backend (Qt's PDF plugin) but documents, not images to flip through.
-constexpr const char* kExcluded[] = {"pdf", "ps", "eps", "ai"};
-
 // Static lists (no backend needed).
 struct StaticTables {
     QSet<QString> defaults;
@@ -48,6 +45,9 @@ const StaticTables& staticTables() {
 }
 
 #ifdef Q_OS_DARWIN
+// Rendered by some backend (Qt's PDF plugin) but documents, not images to flip through.
+constexpr const char* kExcluded[] = {"pdf", "ps", "eps", "ai"};
+
 void removeExcluded(QSet<QString>& set) {
     for (const char* s : kExcluded)
         set.remove(QString::fromLatin1(s));
