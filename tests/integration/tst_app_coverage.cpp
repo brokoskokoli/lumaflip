@@ -283,7 +283,8 @@ private slots:
         const bool loaded = w && waitLoaded(w);
         const bool shown = w && waitShown(w, locked + "/a.png");
         ::chmod(QFile::encodeName(locked).constData(), 0755);
-        QVERIFY(w);
+        if (!w) // not QVERIFY: the static analyzer does not see that it returns
+            QFAIL("no window");
         QVERIFY(loaded && shown);
         QVERIFY(waitExposed(w));
         QVERIFY(w->accessHint()->isVisible());

@@ -744,7 +744,8 @@ private slots:
         const bool loaded = w && waitLoaded(w);
         const bool shown = w && waitShown(w, locked + "/b.png");
         ::chmod(QFile::encodeName(locked).constData(), 0755);
-        QVERIFY(w);
+        if (!w) // not QVERIFY: the static analyzer does not see that it returns
+            QFAIL("no window");
         QVERIFY(loaded);
         QVERIFY(shown); // no error state: the opened file is shown
         QCOMPARE(w->collection()->count(), 1);
@@ -821,10 +822,14 @@ private slots:
         ViewerWindow* d = app->frontWindow();
         QVERIFY(d->isEmpty());
         QVERIFY(waitWindowShown(d));
-        QSet<QPoint> positions;
-        for (ViewerWindow* x : app->windows())
-            positions.insert(x->pos());
-        QCOMPARE(positions.size(), 4);
+        // As above: macOS may still move the new window right after showing it.
+        auto distinctPositions = [&] {
+            QSet<QPoint> positions;
+            for (ViewerWindow* x : app->windows())
+                positions.insert(x->pos());
+            return positions.size();
+        };
+        QTRY_COMPARE(distinctPositions(), 4);
 
         // ⌘W closes the front window, ⌥⌘W all.
         menuShortcut(Action::CloseWindow, QKeySequence(Qt::ControlModifier | Qt::Key_W));
