@@ -12,7 +12,8 @@ Runtime, **notarisiert** und „gestapelt“, ohne Sandbox (SPEC 10.1). Jedes Re
 | `tools/package.sh` | Release-Build (`build/release`), Qt einbetten, Lizenztexte beilegen, Homebrew-Verweise prüfen, signieren, DMG + ZIP + SHA-256 nach `dist/` |
 | `tools/macos_deploy.py` | Wird von `package.sh` aufgerufen: kopiert Qt-Frameworks, -Plugins, Übersetzungen und alle abhängigen Bibliotheken ins Bundle, schreibt `qt.conf` und `Contents/Resources/licenses/` (inkl. `index.json` für das Über-Fenster); `--verify` prüft mit `otool`, dass nichts mehr auf `/opt/homebrew` zeigt |
 | `tools/notarize.sh` | Lädt App oder DMG zum Apple-Notardienst hoch (`notarytool submit --wait`), heftet das Ticket an (`stapler staple`); `--dry-run` zeigt nur die Befehle |
-| `.github/workflows/release.yml` | Läuft bei Tag `v*` im Hauptrepo: Prüfungen → Paket → Signatur → Notarisierung → GitHub Release |
+| `.github/workflows/release.yml` | Läuft bei Tag `v*` im Hauptrepo: Versionsabgleich → Prüfungen (`checks.yml`) → Paket → Signatur → Notarisierung → GitHub Release |
+| `.github/workflows/checks.yml` | Wiederverwendbarer Workflow mit allen Pflichtprüfungen (SPEC 15.1); `ci.yml` (Push/PR) und `release.yml` rufen ihn unverändert auf |
 | `packaging/macos/Lumaflip.entitlements` | Einzige Berechtigung: `com.apple.security.automation.apple-events` (Opt-in F-SORT-04). Keine Sandbox |
 | `packaging/macos/Info.plist.in` | Dateitypen, TCC-Texte, Symbol, Copyright |
 | `packaging/macos/icon/` | `lumaflip.svg` (Quelle) und `Lumaflip.icns` (erzeugt mit `tools/make_icon.sh`, braucht `rsvg-convert`) |
@@ -36,8 +37,14 @@ LF_SIGN_IDENTITY="…" tools/package.sh --notarize-dry-run   # zeigt die Notaris
 - `spctl -a -vvv -t exec` meldet vor der Notarisierung `rejected (Unnotarized Developer ID)` – erwartet.
 - Nur arm64: Homebrew-Qt gibt es nur für die Architektur des Rechners. Universal-Builds bräuchten ein
   Universal-Qt (z. B. Qt-Online-Installer); `tools/macos_deploy.py` funktioniert damit unverändert.
-- Die Arbeitskopie liegt in einem neuen Temp-Verzeichnis (Pfad steht am Ende der Ausgabe);
+- Die Arbeitskopie liegt in einem neuen Temp-Verzeichnis und wird am Ende (auch bei Fehlern)
+  gelöscht; `--keep-work` behält sie zum Nachsehen (Pfad steht am Ende der Ausgabe).
   `dist/` und `build/release/` sind in `.gitignore`.
+- `package.sh` baut immer `CMAKE_BUILD_TYPE=Release` ohne Sanitizer und prüft anhand von
+  `build/release/compile_commands.json`, dass alle eigenen Quellen mit `-O2`/`-O3 -DNDEBUG`
+  übersetzt wurden (schützt `--skip-build` vor einem Debug-Cache).
+- `CFBundleDevelopmentRegion` ist `de` (Qt würde sonst seine Quellsprache `en` eintragen:
+  `QT_I18N_SOURCE_LANGUAGE` in `src/CMakeLists.txt`; `package.sh` erzwingt `de` zusätzlich).
 
 ## Notarisieren (lokal)
 
@@ -60,8 +67,10 @@ heften → ZIP und DMG aus der gehefteten App bauen → DMG signieren → DMG no
 DMG heften → SHA-256. So hat sowohl die App im ZIP als auch die DMG ein angeheftetes Ticket und
 startet auch ohne Netz ohne Gatekeeper-Warnung.
 
-Fehler: `notarize.sh` zeigt bei einem anderen Status als `Accepted` das Protokoll
-(`xcrun notarytool log <id>`).
+Fehler: `notarize.sh` zeigt bei einem anderen Status als `Accepted` (z. B. `Invalid`), bei
+Zeitüberschreitung und bei Upload-Fehlern die Ausgabe von `notarytool`, den Exit-Code und – sofern
+eine Submission-ID bekannt ist – das Protokoll (`xcrun notarytool log <id>`), dann bricht es ab.
+Sein Temp-Verzeichnis (ZIP der App) räumt es immer auf. Testen ohne Netz: `--dry-run`.
 
 ## Release über GitHub Actions
 
@@ -87,6 +96,23 @@ Unter Settings → Secrets and variables → Actions (oder als Secrets der Umgeb
 Der Workflow legt einen temporären Schlüsselbund an (zufälliges Passwort), importiert das Zertifikat,
 ermittelt die Identität `Developer ID Application: …` daraus und löscht Schlüsselbund und Schlüsseldatei
 am Ende (auch bei Fehlern). `GITHUB_TOKEN` reicht für `gh release create`.
+
+Ablauf und Absicherung von `release.yml`:
+
+- **Gleiche Prüfungen wie CI:** Der Job `release` hängt von `checks` ab, der denselben
+  wiederverwendbaren Workflow `checks.yml` wie die CI für den getaggten Commit ausführt
+  (Benchmark-Toleranz 2,0, `webp`/`jpeg-xl` für den Formatkorpus, RAW-Beispiele mit Cache und
+  `LF_REQUIRE_RAW=1`, clang-tidy, Sanitizer, Linux-Kern, REUSE). `checks` bekommt keine Secrets.
+- **Actions per Commit-SHA gepinnt** (Kommentar = Tag). Aktualisieren:
+  `gh api repos/<owner>/<repo>/git/ref/tags/<tag>` (bei annotierten Tags zusätzlich
+  `gh api repos/<owner>/<repo>/git/tags/<sha>` → `object.sha`).
+- **Passwörter nie auf der Kommandozeile:** `security` nimmt Passwörter nur als Argument (`-P`, in
+  `ps` sichtbar) oder per GUI. Der Workflow füttert deshalb `security -i` (interaktiver Modus) über
+  stdin mit `printf` (Shell-Builtin) – das gilt für das `.p12`-Passwort und das Schlüsselbund-Passwort.
+  Fertige Actions wie `apple-actions/import-codesign-certs` übergeben `-P` als Argument und bringen
+  daher keinen Vorteil. Das `.p12`-Passwort darf keinen Zeilenumbruch enthalten.
+- `.p12` und `.p8` werden mit `umask 077` in ein eigenes Verzeichnis (`0700`) unter `$RUNNER_TEMP`
+  geschrieben und im letzten Schritt (`if: always()`) gelöscht; kein `set -x`, `persist-credentials: false`.
 
 ## Homebrew Cask
 

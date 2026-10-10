@@ -438,8 +438,9 @@ TEST(ImageIODecoder, F_COL_03_HdrDecodeAndSdrFallback) {
     EXPECT_FLOAT_EQ(img->headroom, 1.0f);
 }
 
-// F-FMT-05: RAW files (optional CC0 samples from tests/corpus/download_raw.sh): embedded
-// preview first, full development via ImageIO's RAW engine. One test per sample; a
+// F-FMT-01 (RAW is one of the M1 formats; the embedded-preview-only mode F-FMT-05 is M2):
+// RAW files (optional CC0 samples from tests/corpus/download_raw.sh) decode as embedded
+// preview and as full development via ImageIO's RAW engine. One test per sample; a
 // missing sample is reported as SKIPPED, or as a failure with LF_REQUIRE_RAW=1 (CI
 // downloads the samples, so there they must be tested for real).
 struct RawSample {
@@ -449,7 +450,7 @@ struct RawSample {
 
 class ImageIODecoderRaw : public ::testing::TestWithParam<RawSample> {};
 
-TEST_P(ImageIODecoderRaw, F_FMT_05_RawSampleDecodes) {
+TEST_P(ImageIODecoderRaw, F_FMT_01_RawSampleDecodes) {
     const RawSample s = GetParam();
     const QString path = corpusFile(QString::fromLatin1(s.file));
     if (!QFileInfo::exists(path)) {

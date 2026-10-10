@@ -33,7 +33,7 @@ struct Registrar {
 
 } // namespace lf::bench
 
-#define LF_BENCH(name, limitMs)                                                                            \
-    static double lf_bench_##name();                                                                       \
-    static ::lf::bench::Registrar lf_bench_reg_##name(#name, limitMs, &lf_bench_##name);                   \
+#define LF_BENCH(name, limitMs)                                                                              \
+    static double lf_bench_##name();                                                                         \
+    static ::lf::bench::Registrar lf_bench_reg_##name(#name, limitMs, &lf_bench_##name);                     \
     static double lf_bench_##name()
