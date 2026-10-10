@@ -317,7 +317,7 @@ TEST(JpegLossless, F_EDIT_02_DctNeedsTrimForPartialBlocks) {
     EXPECT_NE(readFile(path), before);
 }
 
-#ifdef Q_OS_MACOS
+#if defined(Q_OS_MACOS) && !defined(LF_GENERIC_PLATFORM) // attributes are kept by the macOS layer
 // The file is replaced atomically (new inode via rename) and keeps permissions, extended
 // attributes incl. Finder tags and - on request - the modification date.
 TEST(RotationSave, F_EDIT_02_AtomicWritePreservesXattrsAndTags) {
