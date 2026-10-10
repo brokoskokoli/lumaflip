@@ -267,12 +267,13 @@ if(APPLE AND NOT LF_GENERIC_PLATFORM)
   target_compile_options(lf_ui PRIVATE $<$<COMPILE_LANGUAGE:OBJCXX>:-fobjc-arc>)
   # F-INFO-04: mini map in the info panel (MKMapSnapshotter, only after a click).
   target_link_libraries(lf_ui PUBLIC "-framework MapKit" "-framework CoreLocation")
-  # F-MAC-07: Quick Look panel (QLPreviewPanel); F-FILE-09 wallpaper uses AppKit only.
-  target_link_libraries(lf_ui PUBLIC "-framework Quartz")
+  # F-MAC-07: the Quick Look panel (QLPreviewPanel, Quartz) is loaded with dlopen on first
+  # use (app/MacIntegration_mac.mm), not linked: P-01, the umbrella framework is slow to load.
   # F-MAC-06: Live Text needs VisionKit's ImageAnalyzer / ImageAnalysisOverlayView, which are
-  # Swift-only API. app/LiveTextBridge.swift is compiled with swiftc into one object of lf_ui
-  # (no Swift language support in the project needed); the Swift runtime is part of macOS
-  # (/usr/lib/swift), the linker finds its libraries through autolinking.
+  # Swift-only API. app/LiveTextBridge.swift is built with swiftc into its own
+  # libLumaflipLiveText.dylib (Contents/Frameworks), loaded with dlopen when Live Text is
+  # first used (app/LiveTextOverlay_mac.mm): the app itself links neither the Swift runtime
+  # nor VisionKit, which would cost P-01 startup time.
   set(LF_ENABLE_LIVETEXT "AUTO" CACHE STRING "Live Text via VisionKit (needs swiftc): AUTO, ON or OFF")
   set_property(CACHE LF_ENABLE_LIVETEXT PROPERTY STRINGS AUTO ON OFF)
   find_program(LF_SWIFTC swiftc)
@@ -304,25 +305,26 @@ if(APPLE AND NOT LF_GENERIC_PLATFORM)
     if(NOT _lf_swift_real)
       set(_lf_swift_real "${LF_SWIFTC}")
     endif()
-    get_filename_component(_lf_swift_bin "${_lf_swift_real}" DIRECTORY)
     set(_lf_swift_src "${CMAKE_CURRENT_SOURCE_DIR}/app/LiveTextBridge.swift")
-    set(_lf_swift_obj "${CMAKE_CURRENT_BINARY_DIR}/LiveTextBridge.o")
-    add_custom_command(OUTPUT "${_lf_swift_obj}"
+    set(LF_LIVETEXT_DYLIB "${CMAKE_CURRENT_BINARY_DIR}/libLumaflipLiveText.dylib")
+    # The Swift libraries are part of macOS (/usr/lib/swift, absolute install names): no
+    # LC_RPATH is needed, and the ones swiftc adds (toolchain paths) are removed - the
+    # bundle must not point outside itself (tools/macos_deploy.py --verify).
+    add_custom_command(OUTPUT "${LF_LIVETEXT_DYLIB}"
       COMMAND "${LF_SWIFTC}" -parse-as-library -swift-version 5 -module-name LumaflipLiveText
               -target "${_lf_swift_arch}-apple-macos${_lf_swift_min}" -sdk "${_lf_sdk}"
-              -O -c "${_lf_swift_src}" -o "${_lf_swift_obj}"
-      DEPENDS "${_lf_swift_src}"
-      COMMENT "Compiling LiveTextBridge.swift (F-MAC-06)"
+              -O -emit-library "${_lf_swift_src}" -o "${LF_LIVETEXT_DYLIB}"
+              -Xlinker -install_name -Xlinker @rpath/libLumaflipLiveText.dylib
+      COMMAND "${CMAKE_COMMAND}" -DDYLIB=${LF_LIVETEXT_DYLIB}
+              -P "${PROJECT_SOURCE_DIR}/cmake/StripRpaths.cmake"
+      DEPENDS "${_lf_swift_src}" "${PROJECT_SOURCE_DIR}/cmake/StripRpaths.cmake"
+      COMMENT "Building libLumaflipLiveText.dylib from LiveTextBridge.swift (F-MAC-06)"
       VERBATIM)
-    set_source_files_properties("${_lf_swift_obj}" PROPERTIES EXTERNAL_OBJECT TRUE GENERATED TRUE)
-    target_sources(lf_ui PRIVATE "${_lf_swift_obj}")
-    target_compile_definitions(lf_ui PRIVATE LF_HAVE_LIVETEXT=1)
-    target_link_directories(lf_ui PUBLIC "${_lf_sdk}/usr/lib/swift")
-    if(IS_DIRECTORY "${_lf_swift_bin}/../lib/swift/macosx")
-      target_link_directories(lf_ui PUBLIC "${_lf_swift_bin}/../lib/swift/macosx")
-    endif()
-    target_link_options(lf_ui PUBLIC "LINKER:-rpath,/usr/lib/swift")
-    message(STATUS "Live Text (VisionKit via ${LF_SWIFTC}): on")
+    add_custom_target(lf_livetext ALL DEPENDS "${LF_LIVETEXT_DYLIB}")
+    add_dependencies(lf_ui lf_livetext)
+    target_compile_definitions(lf_ui PRIVATE LF_HAVE_LIVETEXT=1
+                                             LF_LIVETEXT_BUILD_DYLIB="${LF_LIVETEXT_DYLIB}")
+    message(STATUS "Live Text (VisionKit via ${LF_SWIFTC}, loaded on demand): on")
   else()
     target_compile_definitions(lf_ui PRIVATE LF_HAVE_LIVETEXT=0)
     message(STATUS "Live Text: off (no swiftc or several architectures)")
@@ -441,6 +443,15 @@ set_target_properties(Lumaflip PROPERTIES
   MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
   MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}")
 
+# F-MAC-06: the Live Text library next to the other frameworks (loaded on demand).
+if(APPLE AND LF_LIVETEXT)
+  add_custom_command(TARGET Lumaflip POST_BUILD
+    COMMAND "${CMAKE_COMMAND}" -E make_directory "$<TARGET_BUNDLE_CONTENT_DIR:Lumaflip>/Frameworks"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${LF_LIVETEXT_DYLIB}"
+            "$<TARGET_BUNDLE_CONTENT_DIR:Lumaflip>/Frameworks/libLumaflipLiveText.dylib"
+    COMMENT "Embedding libLumaflipLiveText.dylib"
+    VERBATIM)
+endif()
 # Sparkle (F-MAC-08): Info.plist entries (feed, public key, signed feed, verification
 # before extraction) only with a public key - never a feed without a key. The framework
 # is embedded into Contents/Frameworks like in the release bundle (tools/package.sh).

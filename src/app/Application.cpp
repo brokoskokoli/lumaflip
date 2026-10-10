@@ -49,9 +49,10 @@ namespace lf {
 
 namespace {
 
-constexpr int kCascadePx = 26;   // F-WIN-08
-constexpr int kTakenPx = 10;     // windows closer than this count as "on top of each other"
-constexpr int kBusyHintMs = 300; // file operation running longer: busy cursor + message
+constexpr int kCascadePx = 26;         // F-WIN-08
+constexpr int kTakenPx = 10;           // windows closer than this count as "on top of each other"
+constexpr int kBusyHintMs = 300;       // file operation running longer: busy cursor + message
+constexpr int kServicesDelayMs = 2000; // F-MAC-07 Services at the latest (P-01: after the first image)
 const char* const kGeometryKey = "window/geometry";
 const char* const kSessionKey = "session/windows"; // F-WIN-06
 
@@ -115,6 +116,7 @@ struct Application::Private {
     ClassifiedPaths restoreExisting; // what of them still exists
     bool startWindowElapsed = false;
     bool retranslatePending = false; // F-I18N-03
+    bool servicesRegistered = false; // F-MAC-07, after the first image (P-01)
 };
 
 Application::Application(AppServices services, QObject* parent)
@@ -257,9 +259,26 @@ Application::Application(AppServices services, QObject* parent)
     });
 
     // F-MAC-07: Services - the windows' images for other apps, "In Lumaflip öffnen" for files.
-    macint::registerServicesProvider([self](const QStringList& files) {
-        if (self)
-            self->openPaths(files);
+    // Registered once the first image is on screen (AppKit's Services registration costs
+    // P-01 startup time), at the latest after kServicesDelayMs.
+    auto registerServices = [self] {
+        if (!self || self->d->servicesRegistered)
+            return;
+        self->d->servicesRegistered = true;
+        macint::registerServicesProvider([self](const QStringList& files) {
+            if (self)
+                self->openPaths(files);
+        });
+    };
+    QTimer::singleShot(kServicesDelayMs, this, registerServices);
+    connect(this, &Application::windowsChanged, this, [self, registerServices] {
+        if (!self || self->d->servicesRegistered)
+            return;
+        for (ViewerWindow* w : self->windows())
+            connect(w, &ViewerWindow::imageShown, self.data(), [registerServices](const QString&, Quality q) {
+                if (q != Quality::Preview) // after the frame that shows it
+                    QTimer::singleShot(0, registerServices);
+            });
     });
 
     d->burstTimer.setSingleShot(true);

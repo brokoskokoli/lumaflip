@@ -153,6 +153,7 @@ protected:
     std::unique_ptr<NameCollator> collator;
 };
 
+// A function-local static: QList construction may throw, not at static initialisation.
 const QList<QPair<QString, QByteArray>>& comicPages() {
     static const QList<QPair<QString, QByteArray>> pages = {
         {QStringLiteral("10.png"), png(4, 3)},

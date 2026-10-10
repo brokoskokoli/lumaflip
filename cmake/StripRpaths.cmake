@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Removes every LC_RPATH from ${DYLIB} (cmake -DDYLIB=<path> -P StripRpaths.cmake).
+# Used for libLumaflipLiveText.dylib: its Swift libraries have absolute install names in
+# /usr/lib/swift, and swiftc's toolchain rpaths must not end up in the app bundle.
+execute_process(COMMAND otool -l "${DYLIB}" OUTPUT_VARIABLE _out RESULT_VARIABLE _rc)
+if(NOT _rc EQUAL 0)
+  message(FATAL_ERROR "otool -l ${DYLIB} failed")
+endif()
+string(REPLACE "\n" ";" _lines "${_out}")
+set(_in_rpath FALSE)
+set(_rpaths "")
+foreach(_line IN LISTS _lines)
+  if(_line MATCHES "cmd LC_RPATH$")
+    set(_in_rpath TRUE)
+  elseif(_in_rpath AND _line MATCHES "^ *path (.+) \\(offset [0-9]+\\)$")
+    list(APPEND _rpaths "${CMAKE_MATCH_1}")
+    set(_in_rpath FALSE)
+  elseif(_line MATCHES "^Load command")
+    set(_in_rpath FALSE)
+  endif()
+endforeach()
+foreach(_rp IN LISTS _rpaths)
+  execute_process(COMMAND install_name_tool -delete_rpath "${_rp}" "${DYLIB}" RESULT_VARIABLE _rc2)
+  if(NOT _rc2 EQUAL 0)
+    message(FATAL_ERROR "install_name_tool -delete_rpath ${_rp} ${DYLIB} failed")
+  endif()
+endforeach()
+# install_name_tool invalidates the linker's ad-hoc signature; arm64 refuses to load an
+# unsigned library. Release builds sign it again with the app (tools/package.sh).
+if(_rpaths)
+  execute_process(COMMAND codesign --force --sign - "${DYLIB}" RESULT_VARIABLE _rc3)
+  if(NOT _rc3 EQUAL 0)
+    message(FATAL_ERROR "codesign of ${DYLIB} failed")
+  endif()
+endif()
