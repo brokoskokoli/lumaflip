@@ -218,8 +218,10 @@ InfoData InfoPanel::load(const QString& path, const FileEntry& entry, TagService
         if (!m.isEmpty())
             data.sections.append({g.title, orderedRows(m, g.order)});
     }
-    if (md.groups.value(QStringLiteral("Datei")).toMap().isEmpty())
+    if (md.groups.value(QStringLiteral("Datei")).toMap().isEmpty()) {
         data.sections.append({tr("Bild"), {{tr("Format"), tr("Nicht lesbar")}}});
+        data.unreadable = true;
+    }
 
     if (tags && tags->isSupported()) {
         QString error;
@@ -473,6 +475,8 @@ void InfoPanel::apply(const InfoData& data) {
     if (current != data.sections || m_shownPath != data.path)
         rebuildTree(data.sections);
     m_shownPath = data.path;
+    if (data.unreadable && m_histogramPath != data.path)
+        m_histogram->showNote(tr("Kein Histogramm")); // whenever the failure was reported
     if (m_tagWrites == 0)
         applyTags(data.path, data.tags, data.tagError);
 }

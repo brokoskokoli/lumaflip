@@ -45,6 +45,7 @@ struct InfoData {
     QList<InfoSection> sections;
     std::optional<QStringList> tags; // nullopt: unreadable (tagError)
     QString tagError;
+    bool unreadable = false; // no decoder can read the image (no histogram either)
 };
 
 class InfoPanel : public QWidget {
