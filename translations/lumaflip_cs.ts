@@ -3433,6 +3433,10 @@
         <translation>1 pixel obrázku = 1 bod</translation>
     </message>
     <message>
+        <source>HDR-Bilder mit erweitertem Dynamikumfang anzeigen</source>
+        <translation>Zobrazovat HDR snímky s rozšířeným dynamickým rozsahem</translation>
+    </message>
+    <message>
         <source>Lupe (L gedrückt halten):</source>
         <translation>Lupa (podržte L):</translation>
     </message>

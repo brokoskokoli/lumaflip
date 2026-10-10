@@ -37,8 +37,11 @@ public:
     explicit EdrSurface(ImageCanvas* canvas);
     ~EdrSurface() override;
 
-    // Schedules a frame (vsync paced).
+    // Schedules a frame (vsync paced); before the surface is shown/exposed the request is
+    // kept and drawn on the next expose.
     void requestFrame();
+    // Allows another attempt after failed() (e.g. the window moved to another screen).
+    void resetFailure();
     // False if the swapchain format is not supported (screen without EDR) or creating the
     // swapchain failed; failed() is emitted then.
     bool isUsable() const { return !m_failed; }
@@ -60,7 +63,8 @@ private:
     std::unique_ptr<QRhiSwapChain> m_swapChain;
     std::unique_ptr<QRhiRenderPassDescriptor> m_renderPass;
     bool m_failed = false;
-    bool m_pending = false;
+    bool m_pending = false; // requestUpdate() issued, UpdateRequest outstanding
+    bool m_dirty = false;   // a frame was requested and not drawn yet
 };
 
 } // namespace lf

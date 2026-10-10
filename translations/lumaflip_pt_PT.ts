@@ -3418,6 +3418,10 @@
         <translation>1 píxel da imagem = 1 ponto</translation>
     </message>
     <message>
+        <source>HDR-Bilder mit erweitertem Dynamikumfang anzeigen</source>
+        <translation>Mostrar imagens HDR com gama dinâmica alargada</translation>
+    </message>
+    <message>
         <source>Lupe (L gedrückt halten):</source>
         <translation>Lupa (manter L premida):</translation>
     </message>

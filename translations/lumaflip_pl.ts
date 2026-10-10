@@ -3433,6 +3433,10 @@
         <translation>1 piksel obrazu = 1 punkt</translation>
     </message>
     <message>
+        <source>HDR-Bilder mit erweitertem Dynamikumfang anzeigen</source>
+        <translation>Wyświetlaj obrazy HDR z rozszerzonym zakresem dynamiki</translation>
+    </message>
+    <message>
         <source>Lupe (L gedrückt halten):</source>
         <translation>Lupa (przytrzymaj L):</translation>
     </message>

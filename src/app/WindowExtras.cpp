@@ -68,6 +68,7 @@ WindowExtras::WindowExtras(ViewerWindow& window, Application& app)
     m_nav = new NavigationExtras(window, app);
     m_collection = new CollectionExtras(window, app);
     QWidget* central = window.centralWidget();
+    m_central = central;
     m_filter = new QuickFilterBar(window, app, central);
     m_handle = new MoveHandle(central);
     central->installEventFilter(this);
@@ -259,7 +260,9 @@ void WindowExtras::setMinimalWindow(bool on) {
 }
 
 void WindowExtras::placeHandle() {
-    QWidget* central = m_window.centralWidget();
+    QWidget* central = m_central.data();
+    if (!central)
+        return;
     m_handle->setGeometry(0, 0, central->width(), kHandleHeight);
     if (m_handle->isVisible())
         m_handle->raise();
@@ -276,7 +279,7 @@ void WindowExtras::windowStateChanged() {
 }
 
 bool WindowExtras::eventFilter(QObject* watched, QEvent* event) {
-    if (watched == m_window.centralWidget() && event->type() == QEvent::Resize) {
+    if (event->type() == QEvent::Resize && m_central && watched == m_central.data()) {
         placeHandle();
         if (m_filter->isOpen())
             m_filter->place();

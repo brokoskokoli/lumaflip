@@ -3403,6 +3403,10 @@
         <translation>이미지 픽셀 1개 = 1포인트</translation>
     </message>
     <message>
+        <source>HDR-Bilder mit erweitertem Dynamikumfang anzeigen</source>
+        <translation>HDR 이미지를 확장된 다이나믹 레인지로 표시</translation>
+    </message>
+    <message>
         <source>Lupe (L gedrückt halten):</source>
         <translation>돋보기(L 길게 누르기):</translation>
     </message>

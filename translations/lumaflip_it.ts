@@ -3418,6 +3418,10 @@
         <translation>1 pixel immagine = 1 punto</translation>
     </message>
     <message>
+        <source>HDR-Bilder mit erweitertem Dynamikumfang anzeigen</source>
+        <translation>Mostra le immagini HDR con gamma dinamica estesa</translation>
+    </message>
+    <message>
         <source>Lupe (L gedrückt halten):</source>
         <translation>Lente (tieni premuto L):</translation>
     </message>
