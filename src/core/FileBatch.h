@@ -23,7 +23,9 @@
 //   undo if they are empty then.
 
 #include "FileOps.h"
+#include "Sidecars.h"
 
+#include <QHash>
 #include <QPair>
 #include <QString>
 #include <QStringList>
@@ -96,6 +98,7 @@ private:
     QVector<Step> m_steps;
     QStringList m_skipped;
     QStringList m_createdFolders;
+    QHash<QString, sidecars::Folder> m_listings; // source folder -> listing (first apply)
 };
 
 // Queues `batch` on `ops` as one undo step named `undoText`; `done` on the GUI thread.

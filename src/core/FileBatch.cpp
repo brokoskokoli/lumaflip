@@ -260,7 +260,13 @@ QString FileBatch::doStep(const QVector<int>& unit, Step* step) {
     if (members.isEmpty())
         return kSkip;
     const TransferItem& first = m_items[unit.first()];
-    const QStringList sidecarPaths = sidecars::travelling(members);
+    // One listing per source folder for the whole batch: units differ in their base names,
+    // so moving one unit does not change what another one owns.
+    const QString sourceFolder = QFileInfo(members.first()).absolutePath();
+    auto listing = m_listings.find(sourceFolder);
+    if (listing == m_listings.end())
+        listing = m_listings.insert(sourceFolder, sidecars::Folder::list(sourceFolder));
+    const QStringList sidecarPaths = sidecars::travelling(members, &*listing);
     auto restoreReplaced = [&] {
         for (auto it = step->replaced.crbegin(); it != step->replaced.crend(); ++it) {
             QString ignored;
@@ -467,11 +473,13 @@ QString FileBatch::apply() {
                 for (const QString& f : std::as_const(m_createdFolders))
                     QDir().rmdir(f);
                 m_steps.clear();
+                m_listings.clear();
                 m_createdFolders.clear();
                 return e;
             }
             m_steps.append(step);
         }
+        m_listings.clear();
         return {};
     }
     for (const QString& f : std::as_const(m_createdFolders))
