@@ -28,7 +28,7 @@ QString MenuExtras::frontPath() const {
 
 QString MenuExtras::frontFile(QString* reason) const {
     reason->clear();
-    const QString p = frontPath();
+    QString p = frontPath();
     if (p.isEmpty() || !vpath::isMember(p))
         return p;
     // F-OPEN-10: other apps get the extracted copy of an image inside an archive (it carries
@@ -37,7 +37,7 @@ QString MenuExtras::frontFile(QString* reason) const {
         *reason = tr("Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.");
         return {};
     }
-    const QString file = ArchiveCache::instance().cachedFile(p);
+    QString file = ArchiveCache::instance().cachedFile(p);
     if (!file.isEmpty())
         return file;
     // Not extracted (any more): on a worker, ready when the menu opens again.
