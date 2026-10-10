@@ -161,6 +161,62 @@
     </message>
 </context>
 <context>
+    <name>lf::CollectionExtras</name>
+    <message numerus="yes">
+        <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
+        <extracomment>status bar while a folder with subfolders is read (F-OPEN-08)</extracomment>
+        <translation>
+            <numerusform>Luetaan alikansioita … %1 kansiota, %n kuva</numerusform>
+            <numerusform>Luetaan alikansioita … %1 kansiota, %n kuvaa</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Unterordner gelten nur für Ordner, nicht für einzeln geöffnete Dateien</source>
+        <translation>Alikansiot koskevat vain kansioita, eivät erikseen avattuja tiedostoja</translation>
+    </message>
+    <message>
+        <source>Unterordner einbezogen</source>
+        <translation>Alikansiot mukana</translation>
+    </message>
+    <message>
+        <source>Nur dieser Ordner</source>
+        <translation>Vain tämä kansio</translation>
+    </message>
+    <message>
+        <source>Dieses Bild ist kein RAW+JPEG-Paar</source>
+        <translation>Tämä kuva ei ole RAW+JPEG-pari</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG-Paare sind ausgeschaltet (Einstellungen → Formate)</source>
+        <translation>RAW+JPEG-parit ovat pois päältä (Asetukset → Muodot)</translation>
+    </message>
+    <message>
+        <source>RAW-Datei</source>
+        <translation>RAW-tiedosto</translation>
+    </message>
+    <message>
+        <source>JPEG-Datei</source>
+        <translation>JPEG-tiedosto</translation>
+    </message>
+    <message>
+        <source>in „%1“</source>
+        <extracomment>status bar: the subfolder of the current image (F-OPEN-08); %1 = path below the opened folder</extracomment>
+        <translation>kansiossa ”%1”</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG · RAW</source>
+        <translation>RAW+JPEG · RAW</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG</source>
+        <translation>RAW+JPEG</translation>
+    </message>
+    <message>
+        <source>Zweite Datei: %1 – „RAW anzeigen“ wechselt</source>
+        <translation>Toinen tiedosto: %1 – ”Näytä RAW” vaihtaa</translation>
+    </message>
+</context>
+<context>
     <name>lf::CompareView</name>
     <message>
         <source>Vergleich</source>
@@ -755,6 +811,19 @@
     </message>
 </context>
 <context>
+    <name>lf::GeoLocation</name>
+    <message>
+        <source>%1° %2′ %3″ %4</source>
+        <extracomment>GPS coordinate in degrees, minutes, seconds, e.g. &quot;48° 8′ 13,6″ N&quot;</extracomment>
+        <translation>%1° %2′ %3″ %4</translation>
+    </message>
+    <message>
+        <source>%1, %2</source>
+        <extracomment>GPS position: latitude, longitude</extracomment>
+        <translation>%1, %2</translation>
+    </message>
+</context>
+<context>
     <name>lf::GridView</name>
     <message>
         <source>Raster</source>
@@ -856,6 +925,29 @@
     </message>
 </context>
 <context>
+    <name>lf::InfoGpsBox</name>
+    <message>
+        <source>Koordinaten kopieren</source>
+        <translation>Kopioi koordinaatit</translation>
+    </message>
+    <message>
+        <source>Karte wird geladen …</source>
+        <translation>Ladataan karttaa …</translation>
+    </message>
+    <message>
+        <source>Karte anzeigen</source>
+        <translation>Näytä kartta</translation>
+    </message>
+    <message>
+        <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
+        <translation>Lataa karttaotteen Apple Kartoista (internetyhteys)</translation>
+    </message>
+    <message>
+        <source>In Karten öffnen</source>
+        <translation>Avaa Kartoissa</translation>
+    </message>
+</context>
+<context>
     <name>lf::InfoPanel</name>
     <message>
         <source>Ein- oder ausklappen</source>
@@ -923,6 +1015,22 @@
         <translation>Lisätty</translation>
     </message>
     <message>
+        <source>RAW+JPEG-Paar</source>
+        <translation>RAW+JPEG-pari</translation>
+    </message>
+    <message>
+        <source>Angezeigt</source>
+        <translation>Näytetään</translation>
+    </message>
+    <message>
+        <source>Zweite Datei</source>
+        <translation>Toinen tiedosto</translation>
+    </message>
+    <message>
+        <source>Größe der zweiten Datei</source>
+        <translation>Toisen tiedoston koko</translation>
+    </message>
+    <message>
         <source>Bild</source>
         <translation>Kuva</translation>
     </message>
@@ -945,6 +1053,10 @@
     <message>
         <source>Nicht lesbar</source>
         <translation>Ei luettavissa</translation>
+    </message>
+    <message>
+        <source>Alle Metadaten …</source>
+        <translation>Kaikki metatiedot …</translation>
     </message>
     <message>
         <source>Tags</source>
@@ -1296,6 +1408,14 @@
     <message>
         <source>Fenster koppeln …</source>
         <translation>Linkitä ikkunat…</translation>
+    </message>
+    <message>
+        <source>Unterordner einbeziehen</source>
+        <translation>Sisällytä alikansiot</translation>
+    </message>
+    <message>
+        <source>RAW/JPEG des Paares zeigen</source>
+        <translation>Näytä parin RAW/JPEG</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2251,6 +2371,10 @@
         <translation>Peilaa pystysuunnassa</translation>
     </message>
     <message>
+        <source>RAW anzeigen</source>
+        <translation>Näytä RAW</translation>
+    </message>
+    <message>
         <source>Fenster</source>
         <translation>Ikkuna</translation>
     </message>
@@ -2408,6 +2532,18 @@
         <translation>Vertaa valintaa</translation>
     </message>
     <message>
+        <source>Unterordner einbeziehen</source>
+        <translation>Sisällytä alikansiot</translation>
+    </message>
+    <message>
+        <source>Nächster Ordner</source>
+        <translation>Seuraava kansio</translation>
+    </message>
+    <message>
+        <source>Vorheriger Ordner</source>
+        <translation>Edellinen kansio</translation>
+    </message>
+    <message>
         <source>Gehe zu Bild …</source>
         <translation>Siirry kuvaan…</translation>
     </message>
@@ -2434,6 +2570,24 @@
     <message>
         <source>Entkoppeln</source>
         <translation>Poista ikkunoiden linkitys</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MapPreviewController</name>
+    <message>
+        <source>Karten sind auf diesem System nicht verfügbar.</source>
+        <translation>Kartat eivät ole käytettävissä tässä järjestelmässä.</translation>
+    </message>
+    <message>
+        <source>Die Karte konnte nicht geladen werden.</source>
+        <translation>Karttaa ei voitu ladata.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MapSnapshot</name>
+    <message>
+        <source>Die Karte konnte nicht geladen werden.</source>
+        <translation>Karttaa ei voitu ladata.</translation>
     </message>
 </context>
 <context>
@@ -2612,6 +2766,78 @@
         <source>Höhe</source>
         <extracomment>GPS altitude</extracomment>
         <translation>Korkeus</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MetadataDialog</name>
+    <message>
+        <source>Alle Metadaten – %1</source>
+        <translation>Kaikki metatiedot – %1</translation>
+    </message>
+    <message>
+        <source>Wird geladen …</source>
+        <translation>Ladataan…</translation>
+    </message>
+    <message>
+        <source>Keine Metadaten gefunden.</source>
+        <translation>Metatietoja ei löytynyt.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 von %n Einträgen</source>
+        <translation>
+            <numerusform>%1/%n merkintä</numerusform>
+            <numerusform>%1/%n merkintää</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Einträge</source>
+        <translation>
+            <numerusform>%n merkintä</numerusform>
+            <numerusform>%n merkintää</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Wert kopieren</source>
+        <translation>Kopioi arvo</translation>
+    </message>
+    <message>
+        <source>Gruppe kopieren</source>
+        <translation>Kopioi ryhmä</translation>
+    </message>
+    <message>
+        <source>Zeile kopieren</source>
+        <translation>Kopioi rivi</translation>
+    </message>
+    <message>
+        <source>Alles kopieren</source>
+        <translation>Kopioi kaikki</translation>
+    </message>
+    <message>
+        <source>Suchen (Feld oder Wert) …</source>
+        <translation>Hae (kenttä tai arvo) …</translation>
+    </message>
+    <message>
+        <source>Feld</source>
+        <translation>Kenttä</translation>
+    </message>
+    <message>
+        <source>Wert</source>
+        <translation>Arvo</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>Kopioi</translation>
+    </message>
+    <message>
+        <source>Alle Metadaten</source>
+        <translation>Kaikki metatiedot</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MetadataTree</name>
+    <message>
+        <source>Bild (allgemein)</source>
+        <translation>Kuva (yleiset)</translation>
     </message>
 </context>
 <context>
@@ -3408,6 +3634,10 @@
         <translation>Vektori</translation>
     </message>
     <message>
+        <source>Weitere</source>
+        <translation>Muut</translation>
+    </message>
+    <message>
         <source>Als Standard-App für Bilder festlegen</source>
         <translation>Aseta kuvien oletussovellukseksi</translation>
     </message>
@@ -3418,6 +3648,14 @@
     <message>
         <source>Aus: Zuerst die eingebettete Vorschau, danach wird die volle Entwicklung nachgeladen.</source>
         <translation>Pois: ensin näytetään upotettu esikatselu, sen jälkeen ladataan täysi kehitys.</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG-Paare als ein Bild behandeln</source>
+        <translation>Käsittele RAW+JPEG-parit yhtenä kuvana</translation>
+    </message>
+    <message>
+        <source>Gleichnamige RAW- und JPEG-Dateien erscheinen als ein Bild (das JPEG, mit Hinweis „RAW+JPEG“). Bewerten, Verschieben und Löschen betreffen beide Dateien; „RAW anzeigen“ wechselt zur RAW-Datei.</source>
+        <translation>Samannimiset RAW- ja JPEG-tiedostot näkyvät yhtenä kuvana (JPEG, merkintänä ”RAW+JPEG”). Arviointi, siirtäminen ja poistaminen koskevat molempia tiedostoja; ”Näytä RAW” vaihtaa RAW-tiedostoon.</translation>
     </message>
     <message>
         <source>Leistung</source>
@@ -3951,6 +4189,49 @@
     </message>
 </context>
 <context>
+    <name>lf::SimpleDecoders</name>
+    <message>
+        <source>Das Archiv enthält kein zusammengesetztes Bild.</source>
+        <translation>Arkisto ei sisällä yhdistettyä kuvaa.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>Kuvan koko %1 × %2 on virheellinen tai liian suuri.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist beschädigt: %1</source>
+        <translation>Arkiston kuva on vahingoittunut: %1</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Tiedostoa ei voi lukea.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>Tiedosto on tyhjä (0 tavua).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>Tiedosto on liian suuri.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist beschädigt oder unvollständig.</source>
+        <translation>Tiedosto on vahingoittunut tai keskeneräinen.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Sivua %1 ei ole olemassa.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Muisti ei riitä kuvalle.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>Muisti ei riitä kuvalle (%1 × %2 pikseliä).</translation>
+    </message>
+</context>
+<context>
     <name>lf::StartScreenRecent</name>
     <message>
         <source>Zuletzt geöffnet</source>
@@ -4136,6 +4417,13 @@
         <source>Abbrechen</source>
         <translation>Kumoa</translation>
     </message>
+    <message numerus="yes">
+        <source>%n Datei(en) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n tiedosto siirretty roskakoriin</numerusform>
+            <numerusform>%n tiedostoa siirretty roskakoriin</numerusform>
+        </translation>
+    </message>
     <message>
         <source>Bild wird kopiert …</source>
         <translation>Kopioidaan kuvaa…</translation>
@@ -4292,6 +4580,33 @@
     <message>
         <source>Filmstreifen</source>
         <translation>Filminauha</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ZipReader</name>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Tiedostoa ei voi lukea.</translation>
+    </message>
+    <message>
+        <source>Das ZIP-Archiv ist beschädigt.</source>
+        <translation>ZIP-arkisto on vahingoittunut.</translation>
+    </message>
+    <message>
+        <source>ZIP-Archive dieser Art (mehrteilig, ZIP64) werden nicht unterstützt.</source>
+        <translation>Tämän tyyppisiä ZIP-arkistoja (moniosaiset, ZIP64) ei tueta.</translation>
+    </message>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>”%1” puuttuu arkistosta.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist zu groß.</source>
+        <translation>”%1” on liian suuri.</translation>
+    </message>
+    <message>
+        <source>Die Kompressionsart von „%1“ wird nicht unterstützt.</source>
+        <translation>Tiedoston ”%1” pakkausmenetelmää ei tueta.</translation>
     </message>
 </context>
 </TS>

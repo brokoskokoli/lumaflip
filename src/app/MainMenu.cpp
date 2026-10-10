@@ -38,6 +38,10 @@ QList<QKeySequence> displayFallback(Action a) {
         return {QKeySequence(Qt::Key_Left)};
     case Action::JumpForward:
         return {};
+    case Action::NextFolder: // F-OPEN-09: ⌥→ / ⌥← come from the arrow key slot (F-IN-16)
+        return {QKeySequence(Qt::AltModifier | Qt::Key_Right)};
+    case Action::PreviousFolder:
+        return {QKeySequence(Qt::AltModifier | Qt::Key_Left)};
     default:
         return {};
     }
@@ -310,6 +314,7 @@ void MainMenu::build() {
     add(image, Action::RotateRight, tr("Rechts drehen"));
     add(image, Action::FlipHorizontal, tr("Horizontal spiegeln"));
     add(image, Action::FlipVertical, tr("Vertikal spiegeln"));
+    add(image, Action::ToggleRawJpeg, tr("RAW anzeigen"))->setCheckable(true); // F-FMT-06
     buildMedia(view, nav, image); // slideshow, pages, animation, save rotation (MainMenuMedia.cpp)
     buildCulling();               // M3: "Aussortieren" (MainMenuCulling.cpp)
     buildViews(view, nav);        // M3: grid, compare, go to, shuffle, name filter (MainMenuViews.cpp)

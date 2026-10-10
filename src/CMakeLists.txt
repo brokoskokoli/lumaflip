@@ -108,6 +108,8 @@ target_compile_definitions(lf_ui PRIVATE LF_TRANSLATIONS_BUILD_DIR="${LF_QM_DIR}
 add_dependencies(lf_ui lf_lrelease)
 if(APPLE)
   target_compile_options(lf_ui PRIVATE $<$<COMPILE_LANGUAGE:OBJCXX>:-fobjc-arc>)
+  # F-INFO-04: mini map in the info panel (MKMapSnapshotter, only after a click).
+  target_link_libraries(lf_ui PUBLIC "-framework MapKit" "-framework CoreLocation")
 endif()
 # F-MAC-08: Sparkle 2 (see LF_ENABLE_SPARKLE in the top-level CMakeLists.txt).
 if(LF_SPARKLE)

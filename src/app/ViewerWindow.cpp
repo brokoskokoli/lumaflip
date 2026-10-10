@@ -8,6 +8,7 @@
 #include "DragOut.h"
 #include "ImageView.h"
 #include "OpenWith.h"
+#include "QuickMoveController.h"
 #include "RecentItems.h"
 #include "RenameController.h"
 #include "StartScreenRecent.h"
@@ -16,6 +17,7 @@
 #include "WindowTabbing.h"
 #include "core/Collection.h"
 #include "core/Decoder.h"
+#include "core/FileBatch.h"
 #include "core/FileOps.h"
 #include "core/ImageFormats.h"
 #include "core/Platform.h"
@@ -578,6 +580,8 @@ QVariantMap ViewerWindow::sessionState() const {
         m.insert(QStringLiteral("files"), files);
     }
     m.insert(QStringLiteral("current"), currentPath());
+    if (c->includesSubfolders())
+        m.insert(QStringLiteral("subfolders"), true); // F-OPEN-08 (per window and session)
     const ZoomMode mode = m_view->zoomMode() == ZoomMode::Custom ? ZoomMode::Fit : m_view->zoomMode();
     m.insert(QStringLiteral("zoom"), zoomModeId(mode));
     m.insert(QStringLiteral("geometry"), saveGeometry());
@@ -595,7 +599,18 @@ bool ViewerWindow::restoreSessionState(const QVariantMap& state, const QStringLi
     for (const QString& f : state.value(QStringLiteral("files")).toStringList())
         if (existing.contains(f))
             files << f;
-    if (!folder.isEmpty()) {
+    const bool subfolders = state.value(QStringLiteral("subfolders")).toBool(); // F-OPEN-08
+    m_collection->setIncludeSubfolders(subfolders && !folder.isEmpty());
+    if (!folder.isEmpty() && subfolders && existing.contains(folder) &&
+        QFileInfo(current).absolutePath() != folder) {
+        // The current image is in a subfolder: open the folder, then select it.
+        openFolder(folder);
+        auto* once = new QObject(this);
+        connect(m_collection, &Collection::loadingFinished, once, [this, once, current] {
+            m_collection->setCurrentPath(current);
+            once->deleteLater();
+        });
+    } else if (!folder.isEmpty()) {
         if (existing.contains(current))
             openFile(current); // the folder, with this image current
         else if (existing.contains(folder))
@@ -1501,6 +1516,16 @@ void ViewerWindow::trashCurrent() {
 }
 
 void ViewerWindow::trashNow(const QString& path) {
+    // F-FMT-06: a RAW+JPEG pair goes as a whole (one undo step, sidecars along).
+    if (const QStringList both = m_collection->withPairs({path}); both.size() > 1 && m_culling) {
+        QVector<TransferItem> items;
+        for (const QString& p : both)
+            items.append({p, QString(), ConflictChoice::Skip});
+        m_culling->quickMove()->transfer(
+            TransferKind::Trash, items, tr("In den Papierkorb legen"),
+            [](int n) { return tr("%n Datei(en) in den Papierkorb gelegt", nullptr, n); });
+        return;
+    }
     // The file system work runs on a worker thread (network volumes); every window is
     // updated when it is done. This window is remembered with the undo command.
     QPointer<ViewerWindow> self(this);

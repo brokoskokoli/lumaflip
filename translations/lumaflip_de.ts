@@ -2,6 +2,17 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="de" sourcelanguage="de">
 <context>
+    <name>lf::CollectionExtras</name>
+    <message numerus="yes">
+        <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
+        <extracomment>status bar while a folder with subfolders is read (F-OPEN-08)</extracomment>
+        <translation>
+            <numerusform>Unterordner werden gelesen … %1 Ordner, %n Bild</numerusform>
+            <numerusform>Unterordner werden gelesen … %1 Ordner, %n Bilder</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::CouplingManager</name>
     <message numerus="yes">
         <source>%n Fenster gekoppelt</source>
@@ -58,6 +69,23 @@
         <translation>
             <numerusform>%1 (%2 Byte)</numerusform>
             <numerusform>%1 (%2 Byte)</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>lf::MetadataDialog</name>
+    <message numerus="yes">
+        <source>%1 von %n Einträgen</source>
+        <translation>
+            <numerusform>%1 von %n Eintrag</numerusform>
+            <numerusform>%1 von %n Einträgen</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Einträge</source>
+        <translation>
+            <numerusform>%n Eintrag</numerusform>
+            <numerusform>%n Einträge</numerusform>
         </translation>
     </message>
 </context>
@@ -133,6 +161,13 @@
         <translation>
             <numerusform>Intervall: %n Sekunde</numerusform>
             <numerusform>Intervall: %n Sekunden</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Datei(en) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n Datei in den Papierkorb gelegt</numerusform>
+            <numerusform>%n Dateien in den Papierkorb gelegt</numerusform>
         </translation>
     </message>
 </context>

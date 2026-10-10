@@ -66,6 +66,7 @@ inline constexpr auto MemoryBudgetMB = "perf/memoryBudgetMB";   // 0 = auto (25%
 inline constexpr auto PrefetchAhead = "perf/prefetchAhead";     // default 3
 inline constexpr auto PrefetchBehind = "perf/prefetchBehind";   // default 1
 inline constexpr auto RawEmbeddedOnly = "perf/rawEmbeddedOnly"; // bool, default false
+inline constexpr auto PairRawJpeg = "files/pairRawJpeg";        // F-FMT-06: bool, default false
 // Ratings (F-CULL-02, M3)
 inline constexpr auto RatingStoreSidecar = "rating/sidecar";       // default true
 inline constexpr auto RatingStoreEmbedded = "rating/embedded";     // default false

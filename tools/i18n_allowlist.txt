@@ -32,6 +32,10 @@ src/app/PreferencesDialog.cpp:CR2, CR3, CRW, NEF, NRW, ARW, SR2, RAF, ORF, RW2, 
 src/app/PreferencesDialog.cpp:HEIC/HEIF, AVIF, JPEG XL
 src/app/PreferencesDialog.cpp:JPEG, PNG, GIF, BMP, TIFF, WebP, ICO/CUR, ICNS
 src/app/PreferencesDialog.cpp:PSD, OpenEXR, Radiance HDR, JPEG 2000, TGA, DDS, KTX
+src/app/PreferencesDialog.cpp:QOI, PCX, PBM/PGM/PPM/PAM/PFM, SGI, OpenRaster (ORA), Krita (KRA)
+# Own decoders (M3 Rest formats): format names and the technical colour model id
+src/core/SimpleDecoderBackend.cpp:Krita
+src/core/SimpleDecoders.cpp:Gray
 # Format names (brands, camera RAW types) and file signatures
 src/platform/mac/ImageIODecoder.mm:Adobe DNG
 src/platform/mac/ImageIODecoder.mm:Canon CR2

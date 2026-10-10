@@ -20,6 +20,7 @@ class QWidget;
 namespace lf {
 
 class Application;
+class CollectionExtras;
 class LoupeController;
 class NavigationExtras;
 class OverviewController;
@@ -36,6 +37,7 @@ public:
     LoupeController* loupe() const { return m_loupe; }
     NavigationExtras* navigation() const { return m_nav; }
     QuickFilterBar* quickFilter() const { return m_filter; }
+    CollectionExtras* collectionExtras() const { return m_collection; } // F-OPEN-08, F-FMT-06
 
     // ---- hooks called by ViewerWindow ----
     bool perform(Action action, QPointF pos); // true: handled here
@@ -68,6 +70,7 @@ private:
     LoupeController* m_loupe = nullptr;
     NavigationExtras* m_nav = nullptr;
     QuickFilterBar* m_filter = nullptr;
+    CollectionExtras* m_collection = nullptr;
     QWidget* m_handle = nullptr;
     QLabel* m_shuffleLabel = nullptr;
     QLabel* m_coupledLabel = nullptr;

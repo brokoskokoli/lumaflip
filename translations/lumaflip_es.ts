@@ -161,6 +161,62 @@
     </message>
 </context>
 <context>
+    <name>lf::CollectionExtras</name>
+    <message numerus="yes">
+        <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
+        <extracomment>status bar while a folder with subfolders is read (F-OPEN-08)</extracomment>
+        <translation>
+            <numerusform>Leyendo subcarpetas… %1 carpetas, %n imagen</numerusform>
+            <numerusform>Leyendo subcarpetas… %1 carpetas, %n imágenes</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Unterordner gelten nur für Ordner, nicht für einzeln geöffnete Dateien</source>
+        <translation>Las subcarpetas solo se aplican a carpetas, no a archivos abiertos individualmente</translation>
+    </message>
+    <message>
+        <source>Unterordner einbezogen</source>
+        <translation>Subcarpetas incluidas</translation>
+    </message>
+    <message>
+        <source>Nur dieser Ordner</source>
+        <translation>Solo esta carpeta</translation>
+    </message>
+    <message>
+        <source>Dieses Bild ist kein RAW+JPEG-Paar</source>
+        <translation>Esta imagen no es un par RAW+JPEG</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG-Paare sind ausgeschaltet (Einstellungen → Formate)</source>
+        <translation>Los pares RAW+JPEG están desactivados (Ajustes → Formatos)</translation>
+    </message>
+    <message>
+        <source>RAW-Datei</source>
+        <translation>Archivo RAW</translation>
+    </message>
+    <message>
+        <source>JPEG-Datei</source>
+        <translation>Archivo JPEG</translation>
+    </message>
+    <message>
+        <source>in „%1“</source>
+        <extracomment>status bar: the subfolder of the current image (F-OPEN-08); %1 = path below the opened folder</extracomment>
+        <translation>en “%1”</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG · RAW</source>
+        <translation>RAW+JPEG · RAW</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG</source>
+        <translation>RAW+JPEG</translation>
+    </message>
+    <message>
+        <source>Zweite Datei: %1 – „RAW anzeigen“ wechselt</source>
+        <translation>Segundo archivo: %1 – “Mostrar RAW” cambia</translation>
+    </message>
+</context>
+<context>
     <name>lf::CompareView</name>
     <message>
         <source>Vergleich</source>
@@ -755,6 +811,19 @@
     </message>
 </context>
 <context>
+    <name>lf::GeoLocation</name>
+    <message>
+        <source>%1° %2′ %3″ %4</source>
+        <extracomment>GPS coordinate in degrees, minutes, seconds, e.g. &quot;48° 8′ 13,6″ N&quot;</extracomment>
+        <translation>%1° %2′ %3″ %4</translation>
+    </message>
+    <message>
+        <source>%1, %2</source>
+        <extracomment>GPS position: latitude, longitude</extracomment>
+        <translation>%1, %2</translation>
+    </message>
+</context>
+<context>
     <name>lf::GridView</name>
     <message>
         <source>Raster</source>
@@ -856,6 +925,29 @@
     </message>
 </context>
 <context>
+    <name>lf::InfoGpsBox</name>
+    <message>
+        <source>Koordinaten kopieren</source>
+        <translation>Copiar coordenadas</translation>
+    </message>
+    <message>
+        <source>Karte wird geladen …</source>
+        <translation>Cargando mapa…</translation>
+    </message>
+    <message>
+        <source>Karte anzeigen</source>
+        <translation>Mostrar mapa</translation>
+    </message>
+    <message>
+        <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
+        <translation>Carga una sección de mapa de Apple Mapas (conexión a Internet)</translation>
+    </message>
+    <message>
+        <source>In Karten öffnen</source>
+        <translation>Abrir en Mapas</translation>
+    </message>
+</context>
+<context>
     <name>lf::InfoPanel</name>
     <message>
         <source>Ein- oder ausklappen</source>
@@ -923,6 +1015,22 @@
         <translation>Añadido</translation>
     </message>
     <message>
+        <source>RAW+JPEG-Paar</source>
+        <translation>Par RAW+JPEG</translation>
+    </message>
+    <message>
+        <source>Angezeigt</source>
+        <translation>Mostrado</translation>
+    </message>
+    <message>
+        <source>Zweite Datei</source>
+        <translation>Segundo archivo</translation>
+    </message>
+    <message>
+        <source>Größe der zweiten Datei</source>
+        <translation>Tamaño del segundo archivo</translation>
+    </message>
+    <message>
         <source>Bild</source>
         <translation>Imagen</translation>
     </message>
@@ -945,6 +1053,10 @@
     <message>
         <source>Nicht lesbar</source>
         <translation>No legible</translation>
+    </message>
+    <message>
+        <source>Alle Metadaten …</source>
+        <translation>Todos los metadatos…</translation>
     </message>
     <message>
         <source>Tags</source>
@@ -1296,6 +1408,14 @@
     <message>
         <source>Fenster koppeln …</source>
         <translation>Vincular ventanas…</translation>
+    </message>
+    <message>
+        <source>Unterordner einbeziehen</source>
+        <translation>Incluir subcarpetas</translation>
+    </message>
+    <message>
+        <source>RAW/JPEG des Paares zeigen</source>
+        <translation>Mostrar RAW/JPEG del par</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2251,6 +2371,10 @@
         <translation>Voltear verticalmente</translation>
     </message>
     <message>
+        <source>RAW anzeigen</source>
+        <translation>Mostrar RAW</translation>
+    </message>
+    <message>
         <source>Fenster</source>
         <translation>Ventana</translation>
     </message>
@@ -2408,6 +2532,18 @@
         <translation>Comparar selección</translation>
     </message>
     <message>
+        <source>Unterordner einbeziehen</source>
+        <translation>Incluir subcarpetas</translation>
+    </message>
+    <message>
+        <source>Nächster Ordner</source>
+        <translation>Carpeta siguiente</translation>
+    </message>
+    <message>
+        <source>Vorheriger Ordner</source>
+        <translation>Carpeta anterior</translation>
+    </message>
+    <message>
         <source>Gehe zu Bild …</source>
         <translation>Ir a la imagen…</translation>
     </message>
@@ -2434,6 +2570,24 @@
     <message>
         <source>Entkoppeln</source>
         <translation>Desvincular ventanas</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MapPreviewController</name>
+    <message>
+        <source>Karten sind auf diesem System nicht verfügbar.</source>
+        <translation>Los mapas no están disponibles en este sistema.</translation>
+    </message>
+    <message>
+        <source>Die Karte konnte nicht geladen werden.</source>
+        <translation>No se pudo cargar el mapa.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MapSnapshot</name>
+    <message>
+        <source>Die Karte konnte nicht geladen werden.</source>
+        <translation>No se pudo cargar el mapa.</translation>
     </message>
 </context>
 <context>
@@ -2612,6 +2766,78 @@
         <source>Höhe</source>
         <extracomment>GPS altitude</extracomment>
         <translation>Altitud</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MetadataDialog</name>
+    <message>
+        <source>Alle Metadaten – %1</source>
+        <translation>Todos los metadatos – %1</translation>
+    </message>
+    <message>
+        <source>Wird geladen …</source>
+        <translation>Cargando…</translation>
+    </message>
+    <message>
+        <source>Keine Metadaten gefunden.</source>
+        <translation>No se encontraron metadatos.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 von %n Einträgen</source>
+        <translation>
+            <numerusform>%1 de %n entrada</numerusform>
+            <numerusform>%1 de %n entradas</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Einträge</source>
+        <translation>
+            <numerusform>%n entrada</numerusform>
+            <numerusform>%n entradas</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Wert kopieren</source>
+        <translation>Copiar valor</translation>
+    </message>
+    <message>
+        <source>Gruppe kopieren</source>
+        <translation>Copiar grupo</translation>
+    </message>
+    <message>
+        <source>Zeile kopieren</source>
+        <translation>Copiar fila</translation>
+    </message>
+    <message>
+        <source>Alles kopieren</source>
+        <translation>Copiar todo</translation>
+    </message>
+    <message>
+        <source>Suchen (Feld oder Wert) …</source>
+        <translation>Buscar (campo o valor)…</translation>
+    </message>
+    <message>
+        <source>Feld</source>
+        <translation>Campo</translation>
+    </message>
+    <message>
+        <source>Wert</source>
+        <translation>Valor</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>Copiar</translation>
+    </message>
+    <message>
+        <source>Alle Metadaten</source>
+        <translation>Todos los metadatos</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MetadataTree</name>
+    <message>
+        <source>Bild (allgemein)</source>
+        <translation>Imagen (general)</translation>
     </message>
 </context>
 <context>
@@ -3408,6 +3634,10 @@
         <translation>Vectoriales</translation>
     </message>
     <message>
+        <source>Weitere</source>
+        <translation>Otros</translation>
+    </message>
+    <message>
         <source>Als Standard-App für Bilder festlegen</source>
         <translation>Establecer como app por omisión para imágenes</translation>
     </message>
@@ -3418,6 +3648,14 @@
     <message>
         <source>Aus: Zuerst die eingebettete Vorschau, danach wird die volle Entwicklung nachgeladen.</source>
         <translation>Desactivado: primero se muestra la previsualización incrustada y después se carga el revelado completo.</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG-Paare als ein Bild behandeln</source>
+        <translation>Tratar los pares RAW+JPEG como una sola imagen</translation>
+    </message>
+    <message>
+        <source>Gleichnamige RAW- und JPEG-Dateien erscheinen als ein Bild (das JPEG, mit Hinweis „RAW+JPEG“). Bewerten, Verschieben und Löschen betreffen beide Dateien; „RAW anzeigen“ wechselt zur RAW-Datei.</source>
+        <translation>Los archivos RAW y JPEG con el mismo nombre aparecen como una imagen (el JPEG, marcado “RAW+JPEG”). Valorar, mover y eliminar afectan a ambos archivos; “Mostrar RAW” cambia al archivo RAW.</translation>
     </message>
     <message>
         <source>Leistung</source>
@@ -3951,6 +4189,49 @@
     </message>
 </context>
 <context>
+    <name>lf::SimpleDecoders</name>
+    <message>
+        <source>Das Archiv enthält kein zusammengesetztes Bild.</source>
+        <translation>El archivo comprimido no contiene ninguna imagen combinada.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>El tamaño de imagen %1 × %2 no es válido o es demasiado grande.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist beschädigt: %1</source>
+        <translation>La imagen del archivo comprimido está dañada: %1</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>No se puede leer el archivo.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>El archivo está vacío (0 bytes).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>El archivo es demasiado grande.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist beschädigt oder unvollständig.</source>
+        <translation>El archivo está dañado o incompleto.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>La página %1 no existe.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>No hay memoria suficiente para la imagen.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>No hay memoria suficiente para la imagen (%1 × %2 píxeles).</translation>
+    </message>
+</context>
+<context>
     <name>lf::StartScreenRecent</name>
     <message>
         <source>Zuletzt geöffnet</source>
@@ -4136,6 +4417,13 @@
         <source>Abbrechen</source>
         <translation>Cancelar</translation>
     </message>
+    <message numerus="yes">
+        <source>%n Datei(en) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n archivo trasladado a la papelera</numerusform>
+            <numerusform>%n archivos trasladados a la papelera</numerusform>
+        </translation>
+    </message>
     <message>
         <source>Bild wird kopiert …</source>
         <translation>Copiando imagen…</translation>
@@ -4292,6 +4580,33 @@
     <message>
         <source>Filmstreifen</source>
         <translation>Tira de imágenes</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ZipReader</name>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>No se puede leer el archivo.</translation>
+    </message>
+    <message>
+        <source>Das ZIP-Archiv ist beschädigt.</source>
+        <translation>El archivo ZIP está dañado.</translation>
+    </message>
+    <message>
+        <source>ZIP-Archive dieser Art (mehrteilig, ZIP64) werden nicht unterstützt.</source>
+        <translation>No se admiten archivos ZIP de este tipo (multiparte, ZIP64).</translation>
+    </message>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>Falta “%1” en el archivo comprimido.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist zu groß.</source>
+        <translation>“%1” es demasiado grande.</translation>
+    </message>
+    <message>
+        <source>Die Kompressionsart von „%1“ wird nicht unterstützt.</source>
+        <translation>No se admite el método de compresión de “%1”.</translation>
     </message>
 </context>
 </TS>

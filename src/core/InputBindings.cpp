@@ -121,6 +121,10 @@ const ActionInfo kActions[] = {
     {Action::ToggleMinimalWindow, "toggleMinimalWindow",
      QT_TRANSLATE_NOOP("lf::InputBindings", "Minimaler Fenstermodus")},
     {Action::CoupleWindows, "coupleWindows", QT_TRANSLATE_NOOP("lf::InputBindings", "Fenster koppeln …")},
+    {Action::ToggleSubfolders, "toggleSubfolders",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Unterordner einbeziehen")},
+    {Action::ToggleRawJpeg, "toggleRawJpeg",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "RAW/JPEG des Paares zeigen")},
 };
 
 const ActionInfo* info(Action a) {

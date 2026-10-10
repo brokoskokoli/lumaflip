@@ -251,7 +251,15 @@ void OverviewController::rate(const QStringList& paths, Action action) {
     if (paths.isEmpty())
         return;
     QPointer<OverviewController> self(this);
+    // F-FMT-06: a pair's second file gets the same rating (own sidecar, written after the
+    // shown file's).
+    QStringList all;
     for (const QString& path : paths) {
+        all << path;
+        if (const QString other = m_window.collection()->pairedPath(path); !other.isEmpty())
+            all << other;
+    }
+    for (const QString& path : std::as_const(all)) {
         RatingStore::instance().changeRating(
             m_app.fileOps(), path, [action](const Rating& stored) { return rating::apply(stored, action); },
             [self](bool ok, const QString& error, const QString&, const Rating&) {
@@ -267,9 +275,10 @@ void OverviewController::rate(const QStringList& paths, Action action) {
                              1500);
 }
 
-void OverviewController::trash(const QStringList& paths) {
-    if (paths.isEmpty())
+void OverviewController::trash(const QStringList& selected) {
+    if (selected.isEmpty())
         return;
+    const QStringList paths = m_window.collection()->withPairs(selected); // F-FMT-06
     QPointer<OverviewController> self(this);
     auto run = [self, paths] {
         if (!self)

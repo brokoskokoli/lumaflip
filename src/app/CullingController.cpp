@@ -242,6 +242,14 @@ void CullingController::rate(Action a) {
             if (!self->m_active) // without the overlay: a short confirmation
                 self->m_window.showMessage(tr("%1: %2").arg(name, rating::describe(now)), 1500);
         });
+    // F-FMT-06: the second file of a RAW+JPEG pair gets the same change (its own sidecar).
+    if (const QString other = m_window.collection()->pairedPath(cur); !other.isEmpty())
+        RatingStore::instance().changeRating(
+            m_app.fileOps(), other, [a](const Rating& stored) { return rating::apply(stored, a); },
+            [self](bool ok, const QString& error, const QString&, const Rating&) {
+                if (self && !ok)
+                    self->m_window.showMessage(error, 5000);
+            });
     // F-CULL-03: on to the next image right away (the write runs in the background).
     if (rating::cullingStep(Rating(), a, autoAdvance()).advance)
         m_window.perform(Action::NextImage);

@@ -250,7 +250,7 @@ QStringList PreferencesDialog::sectionKeys(int section) const {
     case Rating:
         return prefs::ratingPageKeys();
     case Formats:
-        return {key::RawEmbeddedOnly};
+        return {key::RawEmbeddedOnly, key::PairRawJpeg};
     case Advanced:
         return {key::MemoryBudgetMB, key::PrefetchAhead, key::PrefetchBehind};
     default:
@@ -790,6 +790,8 @@ QWidget* PreferencesDialog::buildFormats() {
         // F-FMT-03: played back (Leertaste, , / .); F-FMT-04: pages with ⌥↑/⌥↓.
         {tr("Animiert"), tr("GIF, APNG, WebP, AVIF/HEICS, JXL – mit Wiedergabe")},
         {tr("Vektor"), QStringLiteral("SVG")},
+        // M3 "Rest" group: own decoders (core/SimpleDecoders.h).
+        {tr("Weitere"), QStringLiteral("QOI, PCX, PBM/PGM/PPM/PAM/PFM, SGI, OpenRaster (ORA), Krita (KRA)")},
     };
     for (const auto& [g, f] : groups) {
         const int r = list->rowCount();
@@ -814,6 +816,12 @@ QWidget* PreferencesDialog::buildFormats() {
         bind.check(key::RawEmbeddedOnly, tr("RAW: nur eingebettete Vorschau anzeigen (schneller)"), w));
     v->addWidget(helpLabel(
         tr("Aus: Zuerst die eingebettete Vorschau, danach wird die volle Entwicklung nachgeladen."), w));
+    v->addSpacing(8);
+    v->addWidget(bind.check(key::PairRawJpeg, tr("RAW+JPEG-Paare als ein Bild behandeln"), w)); // F-FMT-06
+    v->addWidget(helpLabel(tr("Gleichnamige RAW- und JPEG-Dateien erscheinen als ein Bild (das JPEG, mit "
+                              "Hinweis „RAW+JPEG“). Bewerten, Verschieben und Löschen betreffen beide "
+                              "Dateien; „RAW anzeigen“ wechselt zur RAW-Datei."),
+                           w));
     return w;
 }
 

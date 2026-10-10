@@ -101,7 +101,7 @@ Jede Anforderung hat eine ID und eine Ausbaustufe:
 | F-OPEN-05 | **Ordner** geöffnet: Die Sammlung ist der Ordnerinhalt; das erste Bild in Sortierreihenfolge wird angezeigt. | M1 |
 | F-OPEN-06 | Versteckte Dateien (Punkt-Dateien, AppleDouble `._*`) und Pakete werden ignoriert. Ob ein Format unterstützt wird, entscheidet der Typ (UTType bzw. Signatur), nicht nur die Dateiendung. | M1 |
 | F-OPEN-07 | Ordnerüberwachung (FSEvents): Neue, gelöschte und umbenannte Dateien aktualisieren die Sammlung live. Das aktuelle Bild bleibt erhalten. Wird das aktuelle Bild extern gelöscht, wird zum nächsten Bild gewechselt. | M2 |
-| F-OPEN-08 | Option „Unterordner einbeziehen“ (rekursiv), umschaltbar pro Sitzung. | M3 |
+| F-OPEN-08 | Option „Unterordner einbeziehen“ (rekursiv), umschaltbar pro Sitzung. Reihenfolge: ordnerweise, die Ordner pfadweise in Finder-Namensreihenfolge (ein Ordner vor seinen Unterordnern, wie eine aufgeklappte Listendarstellung); innerhalb eines Ordners gilt die Sortierung des Fensters. Versteckte Ordner und Pakete werden übersprungen, symbolische Links nicht verfolgt. | M3 |
 | F-OPEN-09 | Zum nächsten/vorherigen Geschwisterordner springen (⌥→ / ⌥←, konfigurierbar). | M3 |
 | F-OPEN-10 | Archive (ZIP/CBZ, RAR/CBR, 7z) und PDF wie Ordner durchblättern. | M4 |
 | F-OPEN-11 | „Zuletzt geöffnet“-Menü (Dateien und Ordner). | M2 |
@@ -159,6 +159,7 @@ Ziel: **So viele Formate wie möglich, ohne Nachinstallation.** Die Formate werd
 - F-FMT-04 (M2): Mehrseitige Formate (TIFF, ICO, HEIF-Sammlungen) mit Seitennavigation (⌥↑/⌥↓) und Anzeige „Seite 2/5“.
 - F-FMT-05 (M2): RAW: Zuerst die eingebettete JPEG-Vorschau anzeigen, dann die volle Entwicklung nachladen. Einstellbar: „Nur eingebettete Vorschau“ für maximale Geschwindigkeit.
 - F-FMT-06 (M3): RAW+JPEG-Paare mit gleichem Basisnamen wahlweise als ein Element behandeln (Standard: beide anzeigen).
+- Stand Restformate (M3): QOI, PCX, PNM/PAM/PFM, SGI, OpenRaster und Krita (zusammengesetztes Bild) über eigene Decoder; XCF und PSB brauchen KImageFormats (nicht vorhanden) und folgen in M4 (14.2).
 
 ### 4.5 Farbe und HDR
 
@@ -696,6 +697,7 @@ Weitere Pflichten:
 ### 14.2 Noch offen
 
 1. **Plattformgleiche Darstellung:** Soll RAW unter Windows/Linux später genauso aussehen wie auf dem Mac? Apple RAW Engine und LibRaw entwickeln unterschiedlich. Entscheidung erst in M4 nötig.
+2. **resvg und KImageFormats (Stand M3):** resvg (SVG 1.1) hat nur eine C-API im Rust-Quellbaum; sie müsste mit einer Rust-Toolchain gebaut oder vorgebaut beigelegt werden (Build-Abhängigkeit, die 14.1 Nr. 4 bisher nicht vorsieht). Bis dahin bleibt Qt SVG. XCF/PSB setzen KImageFormats (LGPL-2.1, Qt-Plugin) voraus. Beides braucht eine Entscheidung über zusätzliche Abhängigkeiten.
 
 ---
 

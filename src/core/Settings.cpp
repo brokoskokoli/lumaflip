@@ -101,6 +101,7 @@ const Registry& registry() {
         i(key::PrefetchAhead, 3, 0, 20);
         i(key::PrefetchBehind, 1, 0, 20);
         b(key::RawEmbeddedOnly, false);
+        b(key::PairRawJpeg, false); // F-FMT-06
         b(key::RatingStoreSidecar, true);
         b(key::RatingStoreEmbedded, false);
         b(key::RatingStoreFinderTags, false);

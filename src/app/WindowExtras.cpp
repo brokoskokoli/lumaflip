@@ -2,6 +2,7 @@
 #include "WindowExtras.h"
 
 #include "Application.h"
+#include "CollectionExtras.h"
 #include "CompareView.h"
 #include "CouplingManager.h"
 #include "CullingController.h"
@@ -65,6 +66,7 @@ WindowExtras::WindowExtras(ViewerWindow& window, Application& app)
     m_overview = new OverviewController(window, app);
     m_loupe = new LoupeController(window);
     m_nav = new NavigationExtras(window, app);
+    m_collection = new CollectionExtras(window, app);
     QWidget* central = window.centralWidget();
     m_filter = new QuickFilterBar(window, app, central);
     m_handle = new MoveHandle(central);
@@ -121,6 +123,8 @@ void WindowExtras::focusContent() {
 }
 
 bool WindowExtras::perform(Action a, QPointF pos) {
+    if (m_collection->perform(a))
+        return true; // subfolders, RAW+JPEG pairs (also in the grid)
     switch (a) {
     case Action::GoToImage:
         m_nav->showGoToDialog();
@@ -193,6 +197,7 @@ void WindowExtras::attachStatusBar(QStatusBar* bar) {
     m_nameLabel = make("lfStatusNameFilter");
     m_shuffleLabel = make("lfStatusShuffle");
     m_coupledLabel = make("lfStatusCoupled");
+    m_collection->attachStatusBar(bar);
     updateStatus();
 }
 
@@ -205,12 +210,15 @@ QStringList WindowExtras::statusParts() const {
         parts << tr("Zufällig");
     if (CouplingManager::of(m_app).isCoupled(&m_window))
         parts << tr("Gekoppelt");
+    parts << m_collection->statusParts();
     return parts;
 }
 
 void WindowExtras::updateStatus() {
     if (m_overview)
         m_overview->updateHeader();
+    if (m_collection)
+        m_collection->updateStatus();
     if (!m_shuffleLabel)
         return;
     const QString name = m_window.collection()->nameFilter();

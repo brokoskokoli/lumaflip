@@ -161,6 +161,63 @@
     </message>
 </context>
 <context>
+    <name>lf::CollectionExtras</name>
+    <message numerus="yes">
+        <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
+        <extracomment>status bar while a folder with subfolders is read (F-OPEN-08)</extracomment>
+        <translation>
+            <numerusform>Načítání podsložek… %1 složek, %n obrázek</numerusform>
+            <numerusform>Načítání podsložek… %1 složek, %n obrázky</numerusform>
+            <numerusform>Načítání podsložek… %1 složek, %n obrázků</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Unterordner gelten nur für Ordner, nicht für einzeln geöffnete Dateien</source>
+        <translation>Podsložky platí jen pro složky, ne pro jednotlivě otevřené soubory</translation>
+    </message>
+    <message>
+        <source>Unterordner einbezogen</source>
+        <translation>Podsložky zahrnuty</translation>
+    </message>
+    <message>
+        <source>Nur dieser Ordner</source>
+        <translation>Pouze tato složka</translation>
+    </message>
+    <message>
+        <source>Dieses Bild ist kein RAW+JPEG-Paar</source>
+        <translation>Tento obrázek není dvojice RAW+JPEG</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG-Paare sind ausgeschaltet (Einstellungen → Formate)</source>
+        <translation>Dvojice RAW+JPEG jsou vypnuté (Nastavení → Formáty)</translation>
+    </message>
+    <message>
+        <source>RAW-Datei</source>
+        <translation>Soubor RAW</translation>
+    </message>
+    <message>
+        <source>JPEG-Datei</source>
+        <translation>Soubor JPEG</translation>
+    </message>
+    <message>
+        <source>in „%1“</source>
+        <extracomment>status bar: the subfolder of the current image (F-OPEN-08); %1 = path below the opened folder</extracomment>
+        <translation>v „%1“</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG · RAW</source>
+        <translation>RAW+JPEG · RAW</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG</source>
+        <translation>RAW+JPEG</translation>
+    </message>
+    <message>
+        <source>Zweite Datei: %1 – „RAW anzeigen“ wechselt</source>
+        <translation>Druhý soubor: %1 – „Zobrazit RAW“ přepne</translation>
+    </message>
+</context>
+<context>
     <name>lf::CompareView</name>
     <message>
         <source>Vergleich</source>
@@ -762,6 +819,19 @@
     </message>
 </context>
 <context>
+    <name>lf::GeoLocation</name>
+    <message>
+        <source>%1° %2′ %3″ %4</source>
+        <extracomment>GPS coordinate in degrees, minutes, seconds, e.g. &quot;48° 8′ 13,6″ N&quot;</extracomment>
+        <translation>%1° %2′ %3″ %4</translation>
+    </message>
+    <message>
+        <source>%1, %2</source>
+        <extracomment>GPS position: latitude, longitude</extracomment>
+        <translation>%1, %2</translation>
+    </message>
+</context>
+<context>
     <name>lf::GridView</name>
     <message>
         <source>Raster</source>
@@ -863,6 +933,29 @@
     </message>
 </context>
 <context>
+    <name>lf::InfoGpsBox</name>
+    <message>
+        <source>Koordinaten kopieren</source>
+        <translation>Kopírovat souřadnice</translation>
+    </message>
+    <message>
+        <source>Karte wird geladen …</source>
+        <translation>Načítání mapy…</translation>
+    </message>
+    <message>
+        <source>Karte anzeigen</source>
+        <translation>Zobrazit mapu</translation>
+    </message>
+    <message>
+        <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
+        <translation>Načte výřez mapy z Apple Map (připojení k internetu)</translation>
+    </message>
+    <message>
+        <source>In Karten öffnen</source>
+        <translation>Otevřít v Mapách</translation>
+    </message>
+</context>
+<context>
     <name>lf::InfoPanel</name>
     <message>
         <source>Ein- oder ausklappen</source>
@@ -930,6 +1023,22 @@
         <translation>Přidáno</translation>
     </message>
     <message>
+        <source>RAW+JPEG-Paar</source>
+        <translation>Dvojice RAW+JPEG</translation>
+    </message>
+    <message>
+        <source>Angezeigt</source>
+        <translation>Zobrazeno</translation>
+    </message>
+    <message>
+        <source>Zweite Datei</source>
+        <translation>Druhý soubor</translation>
+    </message>
+    <message>
+        <source>Größe der zweiten Datei</source>
+        <translation>Velikost druhého souboru</translation>
+    </message>
+    <message>
         <source>Bild</source>
         <translation>Obrázek</translation>
     </message>
@@ -952,6 +1061,10 @@
     <message>
         <source>Nicht lesbar</source>
         <translation>Nelze číst</translation>
+    </message>
+    <message>
+        <source>Alle Metadaten …</source>
+        <translation>Všechna metadata…</translation>
     </message>
     <message>
         <source>Tags</source>
@@ -1303,6 +1416,14 @@
     <message>
         <source>Fenster koppeln …</source>
         <translation>Propojit okna…</translation>
+    </message>
+    <message>
+        <source>Unterordner einbeziehen</source>
+        <translation>Zahrnout podsložky</translation>
+    </message>
+    <message>
+        <source>RAW/JPEG des Paares zeigen</source>
+        <translation>Zobrazit RAW/JPEG dvojice</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2258,6 +2379,10 @@
         <translation>Překlopit svisle</translation>
     </message>
     <message>
+        <source>RAW anzeigen</source>
+        <translation>Zobrazit RAW</translation>
+    </message>
+    <message>
         <source>Fenster</source>
         <translation>Okno</translation>
     </message>
@@ -2415,6 +2540,18 @@
         <translation>Porovnat výběr</translation>
     </message>
     <message>
+        <source>Unterordner einbeziehen</source>
+        <translation>Zahrnout podsložky</translation>
+    </message>
+    <message>
+        <source>Nächster Ordner</source>
+        <translation>Další složka</translation>
+    </message>
+    <message>
+        <source>Vorheriger Ordner</source>
+        <translation>Předchozí složka</translation>
+    </message>
+    <message>
         <source>Gehe zu Bild …</source>
         <translation>Přejít na obrázek…</translation>
     </message>
@@ -2441,6 +2578,24 @@
     <message>
         <source>Entkoppeln</source>
         <translation>Zrušit propojení oken</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MapPreviewController</name>
+    <message>
+        <source>Karten sind auf diesem System nicht verfügbar.</source>
+        <translation>Mapy nejsou v tomto systému k dispozici.</translation>
+    </message>
+    <message>
+        <source>Die Karte konnte nicht geladen werden.</source>
+        <translation>Mapu se nepodařilo načíst.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MapSnapshot</name>
+    <message>
+        <source>Die Karte konnte nicht geladen werden.</source>
+        <translation>Mapu se nepodařilo načíst.</translation>
     </message>
 </context>
 <context>
@@ -2619,6 +2774,80 @@
         <source>Höhe</source>
         <extracomment>GPS altitude</extracomment>
         <translation>Nadmořská výška</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MetadataDialog</name>
+    <message>
+        <source>Alle Metadaten – %1</source>
+        <translation>Všechna metadata – %1</translation>
+    </message>
+    <message>
+        <source>Wird geladen …</source>
+        <translation>Načítání…</translation>
+    </message>
+    <message>
+        <source>Keine Metadaten gefunden.</source>
+        <translation>Nenalezena žádná metadata.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 von %n Einträgen</source>
+        <translation>
+            <numerusform>%1 z %n položky</numerusform>
+            <numerusform>%1 z %n položek</numerusform>
+            <numerusform>%1 z %n položek</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Einträge</source>
+        <translation>
+            <numerusform>%n položka</numerusform>
+            <numerusform>%n položky</numerusform>
+            <numerusform>%n položek</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Wert kopieren</source>
+        <translation>Kopírovat hodnotu</translation>
+    </message>
+    <message>
+        <source>Gruppe kopieren</source>
+        <translation>Kopírovat skupinu</translation>
+    </message>
+    <message>
+        <source>Zeile kopieren</source>
+        <translation>Kopírovat řádek</translation>
+    </message>
+    <message>
+        <source>Alles kopieren</source>
+        <translation>Kopírovat vše</translation>
+    </message>
+    <message>
+        <source>Suchen (Feld oder Wert) …</source>
+        <translation>Hledat (pole nebo hodnota)…</translation>
+    </message>
+    <message>
+        <source>Feld</source>
+        <translation>Pole</translation>
+    </message>
+    <message>
+        <source>Wert</source>
+        <translation>Hodnota</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>Kopírovat</translation>
+    </message>
+    <message>
+        <source>Alle Metadaten</source>
+        <translation>Všechna metadata</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MetadataTree</name>
+    <message>
+        <source>Bild (allgemein)</source>
+        <translation>Obrázek (obecné)</translation>
     </message>
 </context>
 <context>
@@ -3421,6 +3650,10 @@
         <translation>Vektorové</translation>
     </message>
     <message>
+        <source>Weitere</source>
+        <translation>Další</translation>
+    </message>
+    <message>
         <source>Als Standard-App für Bilder festlegen</source>
         <translation>Nastavit jako výchozí aplikaci pro obrázky</translation>
     </message>
@@ -3431,6 +3664,14 @@
     <message>
         <source>Aus: Zuerst die eingebettete Vorschau, danach wird die volle Entwicklung nachgeladen.</source>
         <translation>Vypnuto: Nejprve vložený náhled, poté se dočte plné zpracování.</translation>
+    </message>
+    <message>
+        <source>RAW+JPEG-Paare als ein Bild behandeln</source>
+        <translation>Považovat dvojice RAW+JPEG za jeden obrázek</translation>
+    </message>
+    <message>
+        <source>Gleichnamige RAW- und JPEG-Dateien erscheinen als ein Bild (das JPEG, mit Hinweis „RAW+JPEG“). Bewerten, Verschieben und Löschen betreffen beide Dateien; „RAW anzeigen“ wechselt zur RAW-Datei.</source>
+        <translation>Soubory RAW a JPEG se stejným názvem se zobrazí jako jeden obrázek (JPEG s označením „RAW+JPEG“). Hodnocení, přesun a mazání se týkají obou souborů; „Zobrazit RAW“ přepne na soubor RAW.</translation>
     </message>
     <message>
         <source>Leistung</source>
@@ -3966,6 +4207,49 @@
     </message>
 </context>
 <context>
+    <name>lf::SimpleDecoders</name>
+    <message>
+        <source>Das Archiv enthält kein zusammengesetztes Bild.</source>
+        <translation>Archiv neobsahuje sloučený obrázek.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>Velikost obrázku %1 × %2 je neplatná nebo příliš velká.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist beschädigt: %1</source>
+        <translation>Obrázek v archivu je poškozený: %1</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Soubor nelze číst.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>Soubor je prázdný (0 bajtů).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>Soubor je příliš velký.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist beschädigt oder unvollständig.</source>
+        <translation>Soubor je poškozený nebo neúplný.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Stránka %1 neexistuje.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Nedostatek paměti pro obrázek.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>Nedostatek paměti pro obrázek (%1 × %2 pixelů).</translation>
+    </message>
+</context>
+<context>
     <name>lf::StartScreenRecent</name>
     <message>
         <source>Zuletzt geöffnet</source>
@@ -4151,6 +4435,14 @@
         <source>Abbrechen</source>
         <translation>Zrušit</translation>
     </message>
+    <message numerus="yes">
+        <source>%n Datei(en) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n soubor přesunut do koše</numerusform>
+            <numerusform>%n soubory přesunuty do koše</numerusform>
+            <numerusform>%n souborů přesunuto do koše</numerusform>
+        </translation>
+    </message>
     <message>
         <source>Bild wird kopiert …</source>
         <translation>Kopírování obrázku…</translation>
@@ -4308,6 +4600,33 @@
     <message>
         <source>Filmstreifen</source>
         <translation>Filmový pás</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ZipReader</name>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Soubor nelze číst.</translation>
+    </message>
+    <message>
+        <source>Das ZIP-Archiv ist beschädigt.</source>
+        <translation>Archiv ZIP je poškozený.</translation>
+    </message>
+    <message>
+        <source>ZIP-Archive dieser Art (mehrteilig, ZIP64) werden nicht unterstützt.</source>
+        <translation>Archivy ZIP tohoto druhu (vícedílné, ZIP64) nejsou podporovány.</translation>
+    </message>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>V archivu chybí „%1“.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist zu groß.</source>
+        <translation>„%1“ je příliš velký.</translation>
+    </message>
+    <message>
+        <source>Die Kompressionsart von „%1“ wird nicht unterstützt.</source>
+        <translation>Metoda komprese „%1“ není podporována.</translation>
     </message>
 </context>
 </TS>
