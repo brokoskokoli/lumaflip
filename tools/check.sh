@@ -45,13 +45,13 @@ die() { printf '\033[1;31m%s\033[0m\n' "$*" >&2; exit 1; }
 # LF_BENCH_LOAD_WAIT seconds) until the 1-minute load average is <= the core count.
 # Runs the benchmarks anyway after the timeout, with a note.
 load_avg() {
-  sysctl -n vm.loadavg 2>/dev/null | awk '{print $2}' || true
-  [[ -r /proc/loadavg ]] && cut -d' ' -f1 /proc/loadavg
+  if [[ -r /proc/loadavg ]]; then cut -d' ' -f1 /proc/loadavg
+  else sysctl -n vm.loadavg 2>/dev/null | awk '{print $2}' || true; fi
 }
 wait_for_low_load() {
   local max="${LF_BENCH_LOAD_WAIT:-300}" waited=0 load
   while :; do
-    load="$(load_avg | head -n1)"
+    load="$(load_avg)"
     [[ -z "$load" ]] && return 0
     if awk -v l="$load" -v n="$NCPU" 'BEGIN { exit !(l <= n) }'; then
       [[ $waited -gt 0 ]] && echo "load average $load <= $NCPU cores after ${waited}s"
