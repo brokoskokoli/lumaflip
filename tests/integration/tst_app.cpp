@@ -578,7 +578,9 @@ private slots:
         QVERIFY(w->chromeVisible());
         (void)QTest::qWaitFor([w] { return !(w->windowHandle()->windowStates() & Qt::WindowFullScreen); },
                               3000);
-        QTest::qWait(800);
+        // The exit transition must be over before entering again: macOS drops a request
+        // made during it and the window falls back to normal (slow machines, CI).
+        QTest::qWait(2500);
         // Double click toggles too (default of F-IN-10).
         QTest::mouseDClick(canvas, Qt::LeftButton, {}, QPoint(20, 20));
         QVERIFY(w->isFullScreen());

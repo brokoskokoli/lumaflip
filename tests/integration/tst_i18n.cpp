@@ -246,7 +246,12 @@ private slots:
         QTRY_COMPARE(filter->field()->placeholderText(), QStringLiteral("Filter file names"));
         QTRY_COMPARE(compare.accessibleName(), QStringLiteral("Compare"));
         // The file is decoded again; the new failure brings the English text.
-        QTRY_VERIFY_WITH_TIMEOUT(cardTexts() != germanCard && w->view()->isShowingError(), 5000);
+        // 15 s: slow machines (sanitizers on CI); the texts are printed if it fails.
+        QTRY_VERIFY2_WITH_TIMEOUT(cardTexts() != germanCard && w->view()->isShowingError(),
+                                  qPrintable(QStringLiteral("card: %1 | before: %2 | error shown: %3")
+                                                 .arg(cardTexts(), germanCard)
+                                                 .arg(w->view()->isShowingError())),
+                                  15000);
     }
 
     // F-I18N-03 (review 5): an explicit language also goes to AppleLanguages (AppKit's own
