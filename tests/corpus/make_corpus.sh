@@ -60,5 +60,29 @@ else
   echo "skip: JPEG XL (cjxl not installed)"
 fi
 
+# OpenRaster / Krita (own decoders, M3): ZIP archives with an uncompressed "mimetype" first
+# and the merged image as PNG (zip is part of macOS).
+if command -v zip >/dev/null && [[ -f "$OUT/srgb.png" ]]; then
+  for kind in ora kra; do
+    d="$OUT/.$kind"
+    mkdir -p "$d/data"
+    cp "$OUT/srgb.png" "$d/mergedimage.png"
+    cp "$OUT/srgb.png" "$d/data/layer0.png"
+    if [[ $kind == ora ]]; then
+      printf 'image/openraster' > "$d/mimetype"
+      printf '<?xml version="1.0" encoding="UTF-8"?>\n<image w="64" h="48"><stack><layer src="data/layer0.png" name="quad"/></stack></image>\n' > "$d/stack.xml"
+      extra="stack.xml"
+    else
+      printf 'application/x-krita' > "$d/mimetype"
+      printf '<?xml version="1.0" encoding="UTF-8"?>\n<DOC><IMAGE width="64" height="48" name="quad"/></DOC>\n' > "$d/maindoc.xml"
+      extra="maindoc.xml"
+    fi
+    rm -f "$OUT/quad.$kind"
+    (cd "$d" && zip -q -X -0 "../quad.$kind" mimetype && zip -q -X -r "../quad.$kind" "$extra" mergedimage.png data)
+  done
+else
+  echo "skip: OpenRaster/Krita (zip not available)"
+fi
+
 echo "$HASH" > "$STAMP"
 echo "corpus generated in tests/corpus/$OUT"

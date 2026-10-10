@@ -451,6 +451,115 @@ do {
     writeBytes("garbage.jpg", Data(bytes))
 }
 
+// MARK: - "Rest" formats (own decoders, SPEC 4.4 M3): hand-encoded, quadrant layout
+
+/// 8-bit RGBA quadrant pixels (alpha 255).
+func quadBytes(_ w: Int, _ h: Int) -> [[UInt8]] {
+    var px: [[UInt8]] = []
+    for y in 0..<h {
+        for x in 0..<w {
+            let q = quad(x, y, w, h)
+            px.append([UInt8(q.r * 255), UInt8(q.g * 255), UInt8(q.b * 255), 255])
+        }
+    }
+    return px
+}
+func be32(_ v: Int) -> [UInt8] { [UInt8((v >> 24) & 255), UInt8((v >> 16) & 255), UInt8((v >> 8) & 255), UInt8(v & 255)] }
+func be16(_ v: Int) -> [UInt8] { [UInt8((v >> 8) & 255), UInt8(v & 255)] }
+func le16(_ v: Int) -> [UInt8] { [UInt8(v & 255), UInt8((v >> 8) & 255)] }
+
+do { // QOI: RGBA ops and runs
+    let px = quadBytes(W, H)
+    var out: [UInt8] = Array("qoif".utf8) + be32(W) + be32(H) + [4, 0]
+    var prev: [UInt8] = [0, 0, 0, 255]
+    var run = 0
+    for p in px {
+        if p == prev {
+            run += 1
+            if run == 62 { out.append(0xC0 | UInt8(run - 1)); run = 0 }
+            continue
+        }
+        if run > 0 { out.append(0xC0 | UInt8(run - 1)); run = 0 }
+        out += [0xFF] + p
+        prev = p
+    }
+    if run > 0 { out.append(0xC0 | UInt8(run - 1)) }
+    out += [0, 0, 0, 0, 0, 0, 0, 1]
+    writeBytes("quad.qoi", Data(out))
+}
+do { // PCX: 8 bit, 3 planes, RLE
+    var hdr = [UInt8](repeating: 0, count: 128)
+    hdr[0] = 0x0A; hdr[1] = 5; hdr[2] = 1; hdr[3] = 8
+    hdr.replaceSubrange(8..<12, with: le16(W - 1) + le16(H - 1))
+    hdr[65] = 3
+    hdr.replaceSubrange(66..<68, with: le16(W))
+    hdr[68] = 1
+    var out = hdr
+    let px = quadBytes(W, H)
+    for y in 0..<H {
+        for c in 0..<3 {
+            var x = 0
+            while x < W {
+                let v = px[y * W + x][c]
+                var n = 1
+                while x + n < W && n < 63 && px[y * W + x + n][c] == v { n += 1 }
+                if n > 1 || v >= 0xC0 { out += [0xC0 | UInt8(n), v] } else { out.append(v) }
+                x += n
+            }
+        }
+    }
+    writeBytes("quad.pcx", Data(out))
+}
+do { // PPM (8 bit), PPM (16 bit), PFM (float, white quadrant at 4.0 = HDR)
+    let px = quadBytes(W, H)
+    var p6: [UInt8] = Array("P6\n# Lumaflip corpus\n\(W) \(H)\n255\n".utf8)
+    var p16: [UInt8] = Array("P6\n\(W) \(H)\n65535\n".utf8)
+    for p in px {
+        p6 += p[0..<3]
+        for c in 0..<3 { p16 += be16(Int(p[c]) * 257) }
+    }
+    writeBytes("quad.ppm", Data(p6))
+    writeBytes("quad16.ppm", Data(p16))
+    var pfm: [UInt8] = Array("PF\n\(W) \(H)\n-1.0\n".utf8)
+    for y in (0..<H).reversed() { // bottom-up
+        for x in 0..<W {
+            let p = px[y * W + x]
+            let white = p[0] == 255 && p[1] == 255 && p[2] == 255
+            for c in 0..<3 {
+                let f: Float = white ? 4.0 : Float(p[c]) / 255
+                withUnsafeBytes(of: f.bitPattern.littleEndian) { pfm += $0 }
+            }
+        }
+    }
+    writeBytes("hdr.pfm", Data(pfm))
+}
+do { // SGI: RLE, 8 bit, RGBA (literal packets)
+    let px = quadBytes(W, H)
+    let z = 4
+    var header = [UInt8](repeating: 0, count: 512)
+    header.replaceSubrange(0..<12, with: be16(474) + [1, 1] + be16(3) + be16(W) + be16(H) + be16(z))
+    header.replaceSubrange(16..<20, with: be32(255))
+    var rows: [[UInt8]] = []
+    for c in 0..<z {
+        for y in 0..<H { // bottom-up
+            var row: [UInt8] = []
+            var x = 0
+            while x < W {
+                let n = min(127, W - x)
+                row.append(0x80 | UInt8(n))
+                for k in 0..<n { row.append(px[(H - 1 - y) * W + x + k][c]) }
+                x += n
+            }
+            row.append(0)
+            rows.append(row)
+        }
+    }
+    var offset = 512 + rows.count * 8
+    var starts: [UInt8] = [], lengths: [UInt8] = []
+    for r in rows { starts += be32(offset); lengths += be32(r.count); offset += r.count }
+    writeBytes("quad.sgi", Data(header + starts + lengths + rows.flatMap { $0 }))
+}
+
 // MARK: - SVG (text)
 
 let svg = """

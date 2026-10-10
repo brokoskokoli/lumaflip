@@ -13,9 +13,11 @@ endif()
 
 add_library(lf_core STATIC ${LF_CORE_SOURCES} ${LF_PLATFORM_SOURCES})
 target_include_directories(lf_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+# zlib: raw deflate of ZIP members (OpenRaster/Krita archives, core/ZipReader.cpp).
+find_package(ZLIB REQUIRED)
 target_link_libraries(lf_core
   PUBLIC Qt6::Core Qt6::Gui Qt6::Concurrent Qt6::Svg
-  PRIVATE lf_warnings)
+  PRIVATE lf_warnings ZLIB::ZLIB)
 # F-EDIT-02: lossless JPEG rotation (DCT transform) with libjpeg-turbo's TurboJPEG API,
 # linked statically (BSD-style license; Homebrew's jpeg-turbo is a Qt dependency anyway).
 # Without it the rotation is saved via the EXIF orientation only.
