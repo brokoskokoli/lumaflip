@@ -762,6 +762,41 @@
     </message>
 </context>
 <context>
+    <name>lf::FolderMapModel</name>
+    <message>
+        <source>Keine Bilder</source>
+        <translation>Ingen bilder</translation>
+    </message>
+    <message>
+        <source>Orte werden gelesen … %1 von %2</source>
+        <extracomment>folder map (F-INFO-08) while the GPS positions are read: done / all images</extracomment>
+        <translation>Leser steder… %1 av %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 von %n Bildern mit Ort</source>
+        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Ort&quot; (%1 images with a position, %n all)</extracomment>
+        <translation>
+            <numerusform>%1 av %n bilde med sted</numerusform>
+            <numerusform>%1 av %n bilder med sted</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>lf::FolderMapPanel</name>
+    <message>
+        <source>Keine Bilder in dieser Ansicht.</source>
+        <translation>Ingen bilder i denne visningen.</translation>
+    </message>
+    <message>
+        <source>Keines der Bilder enthält einen Aufnahmeort (GPS).</source>
+        <translation>Ingen av bildene inneholder et opptakssted (GPS).</translation>
+    </message>
+    <message>
+        <source>Karte schließen</source>
+        <translation>Lukk kart</translation>
+    </message>
+</context>
+<context>
     <name>lf::Format</name>
     <message>
         <source>%1 KB</source>
@@ -1076,6 +1111,14 @@
     <message>
         <source>In Karten öffnen</source>
         <translation>Åpne i Kart</translation>
+    </message>
+    <message>
+        <source>Ordnerkarte</source>
+        <translation>Mappekart</translation>
+    </message>
+    <message>
+        <source>Alle Bilder dieser Ansicht mit Aufnahmeort auf einer Karte zeigen (lädt Kartendaten von Apple Karten)</source>
+        <translation>Vis alle bilder i denne visningen med et sted på et kart (laster inn kartdata fra Apple Kart)</translation>
     </message>
 </context>
 <context>
@@ -1567,6 +1610,10 @@
     <message>
         <source>RAW/JPEG des Paares zeigen</source>
         <translation>Vis parets RAW/JPEG</translation>
+    </message>
+    <message>
+        <source>Ordnerkarte</source>
+        <translation>Mappekart</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2685,6 +2732,10 @@
     <message>
         <source>Unterordner einbeziehen</source>
         <translation>Inkluder undermapper</translation>
+    </message>
+    <message>
+        <source>Karte</source>
+        <translation>Kart</translation>
     </message>
     <message>
         <source>Nächster Ordner</source>
@@ -3971,6 +4022,49 @@
     </message>
 </context>
 <context>
+    <name>lf::PsbDecoder</name>
+    <message>
+        <source>Die PSB-Datei ist beschädigt oder unvollständig.</source>
+        <translation>PSB-filen er skadet eller ufullstendig.</translation>
+    </message>
+    <message>
+        <source>Keine PSB-Datei.</source>
+        <translation>Ikke en PSB-fil.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>Bildestørrelsen %1 × %2 er ugyldig eller for stor.</translation>
+    </message>
+    <message>
+        <source>Die Farbtiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
+        <translation>Fargedybden eller fargemodusen i PSB-filen støttes ikke.</translation>
+    </message>
+    <message>
+        <source>Die Komprimierung der PSB-Datei wird nicht unterstützt.</source>
+        <translation>Komprimeringen av PSB-filen støttes ikke.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Ikke nok minne til bildet.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Filen kan ikke leses.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Side %1 finnes ikke.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>Filen er tom (0 byte).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>Filen er for stor.</translation>
+    </message>
+</context>
+<context>
     <name>lf::QtImageDecoder</name>
     <message>
         <source>Die Datei ist leer (0 Byte).</source>
@@ -4306,6 +4400,49 @@
     <message>
         <source>Abbrechen</source>
         <translation>Avbryt</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ResvgDecoder</name>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Filen kan ikke leses.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>Filen er tom (0 byte).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>Filen er for stor.</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei ist ungültig oder beschädigt.</source>
+        <translation>SVG-filen er ugyldig eller skadet.</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei enthält zu viele Elemente.</source>
+        <translation>SVG-filen inneholder for mange elementer.</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei hat keine gültige Größe.</source>
+        <translation>SVG-filen har ingen gyldig størrelse.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Ikke nok minne til bildet.</translation>
+    </message>
+    <message>
+        <source>SVG über resvg ist in diesem Build nicht verfügbar.</source>
+        <translation>SVG via resvg er ikke tilgjengelig i denne versjonen.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>Bildestørrelsen %1 × %2 er ugyldig eller for stor.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Side %1 finnes ikke.</translation>
     </message>
 </context>
 <context>
@@ -4718,6 +4855,10 @@
         <translation>Dra for å flytte vinduet</translation>
     </message>
     <message>
+        <source>Karte</source>
+        <translation>Kart</translation>
+    </message>
+    <message>
         <source>Name: „%1“</source>
         <translation>Navn: «%1»</translation>
     </message>
@@ -4763,6 +4904,49 @@
     <message>
         <source>Filmstreifen</source>
         <translation>Filmstripe</translation>
+    </message>
+</context>
+<context>
+    <name>lf::XcfDecoder</name>
+    <message>
+        <source>Die XCF-Datei ist beschädigt oder unvollständig.</source>
+        <translation>XCF-filen er skadet eller ufullstendig.</translation>
+    </message>
+    <message>
+        <source>Keine XCF-Datei.</source>
+        <translation>Ikke en XCF-fil.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>Bildestørrelsen %1 × %2 er ugyldig eller for stor.</translation>
+    </message>
+    <message>
+        <source>Die Farbtiefe der XCF-Datei wird nicht unterstützt.</source>
+        <translation>Fargedybden i XCF-filen støttes ikke.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Ikke nok minne til bildet.</translation>
+    </message>
+    <message>
+        <source>Die Komprimierung der XCF-Datei wird nicht unterstützt.</source>
+        <translation>Komprimeringen av XCF-filen støttes ikke.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Filen kan ikke leses.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Side %1 finnes ikke.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>Filen er tom (0 byte).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>Filen er for stor.</translation>
     </message>
 </context>
 <context>

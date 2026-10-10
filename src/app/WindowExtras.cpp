@@ -6,6 +6,7 @@
 #include "CompareView.h"
 #include "CouplingManager.h"
 #include "CullingController.h"
+#include "FolderMapPanel.h"
 #include "GridView.h"
 #include "ImageView.h"
 #include "Loupe.h"
@@ -17,6 +18,7 @@
 #include "WindowModes.h"
 #include "core/Collection.h"
 
+#include <QDockWidget>
 #include <QEvent>
 #include <QKeyEvent>
 #include <QLabel>
@@ -123,6 +125,41 @@ void WindowExtras::focusContent() {
         w->setFocus(Qt::OtherFocusReason);
 }
 
+bool WindowExtras::folderMapShown() const {
+    return m_mapDock && !m_mapDock->isHidden();
+}
+
+void WindowExtras::setFolderMapShown(bool on) {
+    if (on == folderMapShown())
+        return;
+    if (!m_mapDock) {
+        if (!on)
+            return;
+        // F-INFO-08: a fixed part of the window like the info panel (SPEC 5.1), on the right.
+        m_mapDock = new QDockWidget(tr("Karte"), &m_window);
+        m_mapDock->setObjectName(QStringLiteral("lfFolderMapDock"));
+        m_mapDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
+        m_mapDock->setTitleBarWidget(new QWidget(m_mapDock));
+        m_mapDock->setAllowedAreas(Qt::RightDockWidgetArea);
+        m_map = new FolderMapPanel(m_window, m_mapDock);
+        m_map->setMinimumWidth(260);
+        m_mapDock->setWidget(m_map);
+        m_mapDock->hide();
+        m_window.addDockWidget(Qt::RightDockWidgetArea, m_mapDock);
+        m_window.resizeDocks({m_mapDock}, {360}, Qt::Horizontal);
+        connect(m_map, &FolderMapPanel::closeRequested, this, [this] { setFolderMapShown(false); });
+    }
+    m_mapDock->setVisible(on);
+    // SPEC 10.3: the map (and its network traffic) exists only while the panel is shown.
+    if (on)
+        m_map->openMap();
+    else
+        m_map->closeMap();
+    if (!on)
+        focusContent();
+    m_app.windowChanged(&m_window); // menu check mark
+}
+
 bool WindowExtras::perform(Action a, QPointF pos) {
     if (m_collection->perform(a))
         return true; // subfolders, RAW+JPEG pairs (also in the grid)
@@ -144,6 +181,9 @@ bool WindowExtras::perform(Action a, QPointF pos) {
         return true;
     case Action::CoupleWindows:
         CouplingManager::of(m_app).showDialog(&m_window);
+        return true;
+    case Action::ToggleFolderMap:
+        setFolderMapShown(!folderMapShown());
         return true;
     default:
         break;

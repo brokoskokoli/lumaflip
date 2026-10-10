@@ -762,6 +762,41 @@
     </message>
 </context>
 <context>
+    <name>lf::FolderMapModel</name>
+    <message>
+        <source>Keine Bilder</source>
+        <translation>Nenhuma imagem</translation>
+    </message>
+    <message>
+        <source>Orte werden gelesen … %1 von %2</source>
+        <extracomment>folder map (F-INFO-08) while the GPS positions are read: done / all images</extracomment>
+        <translation>A ler localizações… %1 de %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 von %n Bildern mit Ort</source>
+        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Ort&quot; (%1 images with a position, %n all)</extracomment>
+        <translation>
+            <numerusform>%1 de %n imagem com localização</numerusform>
+            <numerusform>%1 de %n imagens com localização</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>lf::FolderMapPanel</name>
+    <message>
+        <source>Keine Bilder in dieser Ansicht.</source>
+        <translation>Nenhuma imagem nesta vista.</translation>
+    </message>
+    <message>
+        <source>Keines der Bilder enthält einen Aufnahmeort (GPS).</source>
+        <translation>Nenhuma das imagens contém uma localização (GPS).</translation>
+    </message>
+    <message>
+        <source>Karte schließen</source>
+        <translation>Fechar mapa</translation>
+    </message>
+</context>
+<context>
     <name>lf::Format</name>
     <message>
         <source>%1 KB</source>
@@ -1076,6 +1111,14 @@
     <message>
         <source>In Karten öffnen</source>
         <translation>Abrir no Mapas</translation>
+    </message>
+    <message>
+        <source>Ordnerkarte</source>
+        <translation>Mapa da pasta</translation>
+    </message>
+    <message>
+        <source>Alle Bilder dieser Ansicht mit Aufnahmeort auf einer Karte zeigen (lädt Kartendaten von Apple Karten)</source>
+        <translation>Mostrar num mapa todas as imagens desta vista com localização (carrega dados de mapa do Apple Mapas)</translation>
     </message>
 </context>
 <context>
@@ -1567,6 +1610,10 @@
     <message>
         <source>RAW/JPEG des Paares zeigen</source>
         <translation>Mostrar RAW/JPEG do par</translation>
+    </message>
+    <message>
+        <source>Ordnerkarte</source>
+        <translation>Mapa da pasta</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2685,6 +2732,10 @@
     <message>
         <source>Unterordner einbeziehen</source>
         <translation>Incluir subpastas</translation>
+    </message>
+    <message>
+        <source>Karte</source>
+        <translation>Mapa</translation>
     </message>
     <message>
         <source>Nächster Ordner</source>
@@ -3971,6 +4022,49 @@
     </message>
 </context>
 <context>
+    <name>lf::PsbDecoder</name>
+    <message>
+        <source>Die PSB-Datei ist beschädigt oder unvollständig.</source>
+        <translation>O ficheiro PSB está danificado ou incompleto.</translation>
+    </message>
+    <message>
+        <source>Keine PSB-Datei.</source>
+        <translation>Não é um ficheiro PSB.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>O tamanho da imagem %1 × %2 é inválido ou demasiado grande.</translation>
+    </message>
+    <message>
+        <source>Die Farbtiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
+        <translation>A profundidade ou o modo de cor do ficheiro PSB não é suportado.</translation>
+    </message>
+    <message>
+        <source>Die Komprimierung der PSB-Datei wird nicht unterstützt.</source>
+        <translation>A compressão do ficheiro PSB não é suportada.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Memória insuficiente para a imagem.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Não é possível ler o ficheiro.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>A página %1 não existe.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>O ficheiro está vazio (0 bytes).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>O ficheiro é demasiado grande.</translation>
+    </message>
+</context>
+<context>
     <name>lf::QtImageDecoder</name>
     <message>
         <source>Die Datei ist leer (0 Byte).</source>
@@ -4306,6 +4400,49 @@
     <message>
         <source>Abbrechen</source>
         <translation>Cancelar</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ResvgDecoder</name>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Não é possível ler o ficheiro.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>O ficheiro está vazio (0 bytes).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>O ficheiro é demasiado grande.</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei ist ungültig oder beschädigt.</source>
+        <translation>O ficheiro SVG é inválido ou está danificado.</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei enthält zu viele Elemente.</source>
+        <translation>O ficheiro SVG contém demasiados elementos.</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei hat keine gültige Größe.</source>
+        <translation>O ficheiro SVG não tem um tamanho válido.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Memória insuficiente para a imagem.</translation>
+    </message>
+    <message>
+        <source>SVG über resvg ist in diesem Build nicht verfügbar.</source>
+        <translation>SVG através do resvg não está disponível nesta compilação.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>O tamanho da imagem %1 × %2 é inválido ou demasiado grande.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>A página %1 não existe.</translation>
     </message>
 </context>
 <context>
@@ -4718,6 +4855,10 @@
         <translation>Arraste para mover a janela</translation>
     </message>
     <message>
+        <source>Karte</source>
+        <translation>Mapa</translation>
+    </message>
+    <message>
         <source>Name: „%1“</source>
         <translation>Nome: “%1”</translation>
     </message>
@@ -4763,6 +4904,49 @@
     <message>
         <source>Filmstreifen</source>
         <translation>Tira de película</translation>
+    </message>
+</context>
+<context>
+    <name>lf::XcfDecoder</name>
+    <message>
+        <source>Die XCF-Datei ist beschädigt oder unvollständig.</source>
+        <translation>O ficheiro XCF está danificado ou incompleto.</translation>
+    </message>
+    <message>
+        <source>Keine XCF-Datei.</source>
+        <translation>Não é um ficheiro XCF.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>O tamanho da imagem %1 × %2 é inválido ou demasiado grande.</translation>
+    </message>
+    <message>
+        <source>Die Farbtiefe der XCF-Datei wird nicht unterstützt.</source>
+        <translation>A profundidade de cor do ficheiro XCF não é suportada.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Memória insuficiente para a imagem.</translation>
+    </message>
+    <message>
+        <source>Die Komprimierung der XCF-Datei wird nicht unterstützt.</source>
+        <translation>A compressão do ficheiro XCF não é suportada.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Não é possível ler o ficheiro.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>A página %1 não existe.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>O ficheiro está vazio (0 bytes).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>O ficheiro é demasiado grande.</translation>
     </message>
 </context>
 <context>

@@ -755,6 +755,40 @@
     </message>
 </context>
 <context>
+    <name>lf::FolderMapModel</name>
+    <message>
+        <source>Keine Bilder</source>
+        <translation>沒有影像</translation>
+    </message>
+    <message>
+        <source>Orte werden gelesen … %1 von %2</source>
+        <extracomment>folder map (F-INFO-08) while the GPS positions are read: done / all images</extracomment>
+        <translation>正在讀取位置… %1 / %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 von %n Bildern mit Ort</source>
+        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Ort&quot; (%1 images with a position, %n all)</extracomment>
+        <translation>
+            <numerusform>%n 張影像中有 %1 張含位置</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>lf::FolderMapPanel</name>
+    <message>
+        <source>Keine Bilder in dieser Ansicht.</source>
+        <translation>此檢視中沒有影像。</translation>
+    </message>
+    <message>
+        <source>Keines der Bilder enthält einen Aufnahmeort (GPS).</source>
+        <translation>沒有影像包含拍攝位置（GPS）。</translation>
+    </message>
+    <message>
+        <source>Karte schließen</source>
+        <translation>關閉地圖</translation>
+    </message>
+</context>
+<context>
     <name>lf::Format</name>
     <message>
         <source>%1 KB</source>
@@ -1067,6 +1101,14 @@
     <message>
         <source>In Karten öffnen</source>
         <translation>在「地圖」中打開</translation>
+    </message>
+    <message>
+        <source>Ordnerkarte</source>
+        <translation>資料夾地圖</translation>
+    </message>
+    <message>
+        <source>Alle Bilder dieser Ansicht mit Aufnahmeort auf einer Karte zeigen (lädt Kartendaten von Apple Karten)</source>
+        <translation>在地圖上顯示此檢視中所有含位置的影像（從 Apple 地圖載入地圖資料）</translation>
     </message>
 </context>
 <context>
@@ -1558,6 +1600,10 @@
     <message>
         <source>RAW/JPEG des Paares zeigen</source>
         <translation>顯示配對的 RAW/JPEG</translation>
+    </message>
+    <message>
+        <source>Ordnerkarte</source>
+        <translation>資料夾地圖</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2676,6 +2722,10 @@
     <message>
         <source>Unterordner einbeziehen</source>
         <translation>包含子檔案夾</translation>
+    </message>
+    <message>
+        <source>Karte</source>
+        <translation>地圖</translation>
     </message>
     <message>
         <source>Nächster Ordner</source>
@@ -3954,6 +4004,49 @@
     </message>
 </context>
 <context>
+    <name>lf::PsbDecoder</name>
+    <message>
+        <source>Die PSB-Datei ist beschädigt oder unvollständig.</source>
+        <translation>PSB 檔案已損壞或不完整。</translation>
+    </message>
+    <message>
+        <source>Keine PSB-Datei.</source>
+        <translation>不是 PSB 檔案。</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>影像尺寸 %1 × %2 無效或過大。</translation>
+    </message>
+    <message>
+        <source>Die Farbtiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
+        <translation>不支援此 PSB 檔案的色彩深度或色彩模式。</translation>
+    </message>
+    <message>
+        <source>Die Komprimierung der PSB-Datei wird nicht unterstützt.</source>
+        <translation>不支援此 PSB 檔案的壓縮方式。</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>記憶體不足，無法處理影像。</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>無法讀取檔案。</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>第 %1 頁不存在。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>檔案是空的（0 位元組）。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>檔案過大。</translation>
+    </message>
+</context>
+<context>
     <name>lf::QtImageDecoder</name>
     <message>
         <source>Die Datei ist leer (0 Byte).</source>
@@ -4287,6 +4380,49 @@
     <message>
         <source>Abbrechen</source>
         <translation>取消</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ResvgDecoder</name>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>無法讀取檔案。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>檔案是空的（0 位元組）。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>檔案過大。</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei ist ungültig oder beschädigt.</source>
+        <translation>SVG 檔案無效或已損壞。</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei enthält zu viele Elemente.</source>
+        <translation>SVG 檔案包含的元素過多。</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei hat keine gültige Größe.</source>
+        <translation>SVG 檔案沒有有效的尺寸。</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>記憶體不足，無法處理影像。</translation>
+    </message>
+    <message>
+        <source>SVG über resvg ist in diesem Build nicht verfügbar.</source>
+        <translation>此版本無法透過 resvg 顯示 SVG。</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>影像尺寸 %1 × %2 無效或過大。</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>第 %1 頁不存在。</translation>
     </message>
 </context>
 <context>
@@ -4697,6 +4833,10 @@
         <translation>拖移以移動視窗</translation>
     </message>
     <message>
+        <source>Karte</source>
+        <translation>地圖</translation>
+    </message>
+    <message>
         <source>Name: „%1“</source>
         <translation>名稱：「%1」</translation>
     </message>
@@ -4742,6 +4882,49 @@
     <message>
         <source>Filmstreifen</source>
         <translation>底片條</translation>
+    </message>
+</context>
+<context>
+    <name>lf::XcfDecoder</name>
+    <message>
+        <source>Die XCF-Datei ist beschädigt oder unvollständig.</source>
+        <translation>XCF 檔案已損壞或不完整。</translation>
+    </message>
+    <message>
+        <source>Keine XCF-Datei.</source>
+        <translation>不是 XCF 檔案。</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>影像尺寸 %1 × %2 無效或過大。</translation>
+    </message>
+    <message>
+        <source>Die Farbtiefe der XCF-Datei wird nicht unterstützt.</source>
+        <translation>不支援此 XCF 檔案的色彩深度。</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>記憶體不足，無法處理影像。</translation>
+    </message>
+    <message>
+        <source>Die Komprimierung der XCF-Datei wird nicht unterstützt.</source>
+        <translation>不支援此 XCF 檔案的壓縮方式。</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>無法讀取檔案。</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>第 %1 頁不存在。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>檔案是空的（0 位元組）。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>檔案過大。</translation>
     </message>
 </context>
 <context>

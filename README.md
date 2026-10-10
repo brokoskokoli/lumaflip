@@ -28,8 +28,15 @@ alle Bilder.
 - **RAW+JPEG-Paare** wahlweise als ein Bild (Bewerten, Verschieben, Löschen wirken auf beide).
 - **GPS und Metadaten:** Koordinaten im Infopanel, Mini-Karte erst nach Klick, „In Karten öffnen“;
   Fenster mit allen Rohmetadaten (Suche, Kopieren).
-- **Weitere Formate:** QOI, PCX, PBM/PGM/PPM/PFM, SGI, OpenRaster, Krita; Decoder in einem
-  abgeschotteten Hilfsprozess (defekte Dateien bringen die App nicht zum Absturz).
+- **Ordnerkarte** (Darstellung → Karte, ⇧⌘M, „Ordnerkarte“ im Infopanel): alle Bilder der Ansicht mit
+  Aufnahmeort auf einer Karte, nahe Punkte zusammengefasst, Vorschaubild beim Überfahren; das aktuelle
+  Bild ist rot markiert und folgt beim Blättern, Klick auf eine Markierung zeigt das Bild
+  („312 von 412 Bildern mit Ort“). Kartendaten werden erst nach dem Öffnen geladen.
+- **SVG vollständig** über resvg (SVG 1.1 mit CSS, Filtern, Verläufen und Text); Qt SVG als Rückfall.
+- **Weitere Formate:** GIMP-Dateien (XCF, sichtbare Ebenen mit Deckkraft, Masken und den gängigen
+  Ebenenmodi zusammengesetzt), Photoshop Large Document (PSB), QOI, PCX, PBM/PGM/PPM/PFM, SGI,
+  OpenRaster, Krita; Decoder in einem abgeschotteten Hilfsprozess (defekte Dateien bringen die App
+  nicht zum Absturz).
 
 ## Funktionen (Version 1.0)
 

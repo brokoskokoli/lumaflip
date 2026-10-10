@@ -8,6 +8,7 @@
 #   cmake --build build/fuzz
 #   nice -n 10 build/fuzz/tests/fuzz/fuzz_xmp -max_total_time=60
 #   nice -n 10 build/fuzz/tests/fuzz/fuzz_simple_decoders -max_total_time=60 tests/corpus/generated
+#   nice -n 10 build/fuzz/tests/fuzz/fuzz_layered -max_total_time=60   (XCF, PSB)
 #
 # With a clang that ships libFuzzer (Homebrew llvm: -DCMAKE_CXX_COMPILER=$(brew --prefix
 # llvm)/bin/clang++) the targets are real libFuzzer binaries (coverage guided). Apple's
@@ -30,10 +31,13 @@ else()
 endif()
 
 find_package(ZLIB REQUIRED)
-foreach(target fuzz_xmp fuzz_zip fuzz_simple_decoders fuzz_decoder_ipc)
+foreach(target fuzz_xmp fuzz_zip fuzz_simple_decoders fuzz_decoder_ipc fuzz_layered)
   add_executable(${target} ${target}.cpp FuzzCommon.cpp FuzzTarget.h)
   target_link_libraries(${target} PRIVATE lf_core lf_warnings ZLIB::ZLIB)
   target_include_directories(${target} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+  if(target STREQUAL "fuzz_layered") # XCF/PSB writers of the unit tests as seeds
+    target_include_directories(${target} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/../unit)
+  endif()
   if(LF_HAVE_LIBFUZZER)
     target_compile_options(${target} PRIVATE -fsanitize=fuzzer)
     target_link_options(${target} PRIVATE -fsanitize=fuzzer)

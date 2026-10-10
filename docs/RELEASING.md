@@ -292,13 +292,19 @@ Deutsch zuerst, Englisch darunter.
 - HDR/EDR-Darstellung mit SDR-Vorschau und Belichtungsregler.
 - Unterordner, Nachbarordner (⌥← / ⌥→), „Gehe zu Bild“, zufällige Reihenfolge, Schnellfilter (⌘F).
 - RAW+JPEG-Paare als ein Bild (optional), GPS mit Karte nach Klick, Fenster mit allen Metadaten.
-- Neue Formate: QOI, PCX, PBM/PGM/PPM/PFM, SGI, OpenRaster, Krita; Decoder im Hilfsprozess.
+- Ordnerkarte (Darstellung → Karte, ⇧⌘M): alle Bilder mit Aufnahmeort auf einer Karte, zusammengefasst,
+  aktuelles Bild folgt beim Blättern, Klick zeigt das Bild.
+- SVG vollständig über resvg (CSS, Filter, Text), Qt SVG als Rückfall.
+- Neue Formate: GIMP (XCF), Photoshop Large Document (PSB), QOI, PCX, PBM/PGM/PPM/PFM, SGI, OpenRaster,
+  Krita; Decoder im Hilfsprozess.
 
 **Hinweise**
 - Bei RAW+JPEG gehört `IMG_1.xmp` der RAW-Datei (Lightroom); das JPEG nutzt `IMG_1.JPG.xmp`.
 - Kartenausschnitte werden erst nach „Karte anzeigen“ von Apple geladen und nur bei sichtbarem
   Infopanel; „Karte ausblenden“ nimmt die Zustimmung zurück.
-- Bekannte Grenzen: SVG über Qt SVG (resvg folgt), XCF/PSB und die Ordnerkarte sind noch nicht enthalten.
+- Auch die Ordnerkarte lädt Kartendaten erst, wenn sie geöffnet wird; Schließen beendet das Laden.
+- Bekannte Grenzen: XCF-Ebenenmodi ohne Gegenstück (HSV/LCH …) und GIMP-3-Effekte werden vereinfacht
+  dargestellt.
 
 **New (English)**
 - 18 languages (follows the system language, switchable without restart; translations not yet reviewed).
@@ -309,7 +315,11 @@ Deutsch zuerst, Englisch darunter.
 - HDR/EDR display with SDR preview and exposure control.
 - Subfolders, sibling folders (⌥← / ⌥→), “Go to Image”, shuffle, quick filter (⌘F).
 - RAW+JPEG pairs as one image (optional), GPS with a map after a click, full metadata window.
-- New formats: QOI, PCX, PBM/PGM/PPM/PFM, SGI, OpenRaster, Krita; decoders in a helper process.
+- Folder map (View → Map, ⇧⌘M): every image with a location on a map, clustered; the current image
+  follows as you flip, a click shows the image. Map data is loaded only after you open it.
+- Full SVG via resvg (CSS, filters, text), Qt SVG as the fallback.
+- New formats: GIMP (XCF), Photoshop Large Document (PSB), QOI, PCX, PBM/PGM/PPM/PFM, SGI, OpenRaster,
+  Krita; decoders in a helper process.
 
 ## Lizenzen im Paket (SPEC 11)
 
@@ -326,6 +336,11 @@ Deutsch zuerst, Englisch darunter.
   Lizenzdateien nach `Contents/Resources/licenses/<paket>/` und schreibt Version, SPDX-Lizenz
   (`brew info --json`) und die zugehörigen Binärdateien in `index.json`. Findet es für ein Paket keinen
   Lizenztext, bricht das Paketieren ab.
-- Little CMS, resvg und KImageFormats werden derzeit **nicht** verwendet und deshalb nicht aufgeführt.
+- resvg (Apache-2.0/MIT, SVG im Decoder-Hilfsprozess) wird als `libresvg.0.48.dylib` aus Homebrews Paket
+  `resvg` eingebettet; seine Lizenztexte (`LICENSE-APACHE`, `LICENSE-MIT`) kommen wie bei den anderen
+  Paketen aus dem Keg. Ohne `brew install resvg` baut die App mit Qt SVG allein (`LF_ENABLE_RESVG=AUTO`);
+  für Releases `-DLF_ENABLE_RESVG=ON` setzen. Wird `libresvg.a` statisch gelinkt, steht resvg in
+  `static-components.json` (Texte in `packaging/licenses/resvg-*`).
+- Little CMS und KImageFormats werden derzeit **nicht** verwendet und deshalb nicht aufgeführt.
 - Sparkle (MIT) kommt nicht aus Homebrew: `macos_deploy.py` übernimmt `third_party/Sparkle/LICENSE` und die
   Version aus der `Info.plist` des Frameworks in `index.json`.

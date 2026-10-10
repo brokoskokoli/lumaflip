@@ -755,6 +755,40 @@
     </message>
 </context>
 <context>
+    <name>lf::FolderMapModel</name>
+    <message>
+        <source>Keine Bilder</source>
+        <translation>이미지 없음</translation>
+    </message>
+    <message>
+        <source>Orte werden gelesen … %1 von %2</source>
+        <extracomment>folder map (F-INFO-08) while the GPS positions are read: done / all images</extracomment>
+        <translation>위치 읽는 중… %1/%2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 von %n Bildern mit Ort</source>
+        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Ort&quot; (%1 images with a position, %n all)</extracomment>
+        <translation>
+            <numerusform>이미지 %n개 중 %1개에 위치 정보 있음</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
+    <name>lf::FolderMapPanel</name>
+    <message>
+        <source>Keine Bilder in dieser Ansicht.</source>
+        <translation>이 보기에 이미지가 없습니다.</translation>
+    </message>
+    <message>
+        <source>Keines der Bilder enthält einen Aufnahmeort (GPS).</source>
+        <translation>촬영 위치(GPS)가 포함된 이미지가 없습니다.</translation>
+    </message>
+    <message>
+        <source>Karte schließen</source>
+        <translation>지도 닫기</translation>
+    </message>
+</context>
+<context>
     <name>lf::Format</name>
     <message>
         <source>%1 KB</source>
@@ -1067,6 +1101,14 @@
     <message>
         <source>In Karten öffnen</source>
         <translation>지도에서 열기</translation>
+    </message>
+    <message>
+        <source>Ordnerkarte</source>
+        <translation>폴더 지도</translation>
+    </message>
+    <message>
+        <source>Alle Bilder dieser Ansicht mit Aufnahmeort auf einer Karte zeigen (lädt Kartendaten von Apple Karten)</source>
+        <translation>이 보기에서 위치 정보가 있는 모든 이미지를 지도에 표시합니다(Apple 지도에서 지도 데이터를 불러옴)</translation>
     </message>
 </context>
 <context>
@@ -1558,6 +1600,10 @@
     <message>
         <source>RAW/JPEG des Paares zeigen</source>
         <translation>쌍의 RAW/JPEG 보기</translation>
+    </message>
+    <message>
+        <source>Ordnerkarte</source>
+        <translation>폴더 지도</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2676,6 +2722,10 @@
     <message>
         <source>Unterordner einbeziehen</source>
         <translation>하위 폴더 포함</translation>
+    </message>
+    <message>
+        <source>Karte</source>
+        <translation>지도</translation>
     </message>
     <message>
         <source>Nächster Ordner</source>
@@ -3954,6 +4004,49 @@
     </message>
 </context>
 <context>
+    <name>lf::PsbDecoder</name>
+    <message>
+        <source>Die PSB-Datei ist beschädigt oder unvollständig.</source>
+        <translation>PSB 파일이 손상되었거나 불완전합니다.</translation>
+    </message>
+    <message>
+        <source>Keine PSB-Datei.</source>
+        <translation>PSB 파일이 아닙니다.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>이미지 크기 %1 × %2이(가) 잘못되었거나 너무 큽니다.</translation>
+    </message>
+    <message>
+        <source>Die Farbtiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
+        <translation>PSB 파일의 색상 심도 또는 색상 모드는 지원되지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Die Komprimierung der PSB-Datei wird nicht unterstützt.</source>
+        <translation>PSB 파일의 압축 방식은 지원되지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>이미지를 위한 메모리가 부족합니다.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>파일을 읽을 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>페이지 %1이(가) 존재하지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>파일이 비어 있습니다(0바이트).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>파일이 너무 큽니다.</translation>
+    </message>
+</context>
+<context>
     <name>lf::QtImageDecoder</name>
     <message>
         <source>Die Datei ist leer (0 Byte).</source>
@@ -4287,6 +4380,49 @@
     <message>
         <source>Abbrechen</source>
         <translation>취소</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ResvgDecoder</name>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>파일을 읽을 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>파일이 비어 있습니다(0바이트).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>파일이 너무 큽니다.</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei ist ungültig oder beschädigt.</source>
+        <translation>SVG 파일이 유효하지 않거나 손상되었습니다.</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei enthält zu viele Elemente.</source>
+        <translation>SVG 파일에 요소가 너무 많습니다.</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei hat keine gültige Größe.</source>
+        <translation>SVG 파일의 크기가 올바르지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>이미지를 위한 메모리가 부족합니다.</translation>
+    </message>
+    <message>
+        <source>SVG über resvg ist in diesem Build nicht verfügbar.</source>
+        <translation>이 빌드에서는 resvg를 통한 SVG를 사용할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>이미지 크기 %1 × %2이(가) 잘못되었거나 너무 큽니다.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>페이지 %1이(가) 존재하지 않습니다.</translation>
     </message>
 </context>
 <context>
@@ -4697,6 +4833,10 @@
         <translation>드래그하여 윈도우 이동</translation>
     </message>
     <message>
+        <source>Karte</source>
+        <translation>지도</translation>
+    </message>
+    <message>
         <source>Name: „%1“</source>
         <translation>이름: ‘%1’</translation>
     </message>
@@ -4742,6 +4882,49 @@
     <message>
         <source>Filmstreifen</source>
         <translation>필름 스트립</translation>
+    </message>
+</context>
+<context>
+    <name>lf::XcfDecoder</name>
+    <message>
+        <source>Die XCF-Datei ist beschädigt oder unvollständig.</source>
+        <translation>XCF 파일이 손상되었거나 불완전합니다.</translation>
+    </message>
+    <message>
+        <source>Keine XCF-Datei.</source>
+        <translation>XCF 파일이 아닙니다.</translation>
+    </message>
+    <message>
+        <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
+        <translation>이미지 크기 %1 × %2이(가) 잘못되었거나 너무 큽니다.</translation>
+    </message>
+    <message>
+        <source>Die Farbtiefe der XCF-Datei wird nicht unterstützt.</source>
+        <translation>XCF 파일의 색상 심도는 지원되지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>이미지를 위한 메모리가 부족합니다.</translation>
+    </message>
+    <message>
+        <source>Die Komprimierung der XCF-Datei wird nicht unterstützt.</source>
+        <translation>XCF 파일의 압축 방식은 지원되지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>파일을 읽을 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>페이지 %1이(가) 존재하지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>파일이 비어 있습니다(0바이트).</translation>
+    </message>
+    <message>
+        <source>Die Datei ist zu groß.</source>
+        <translation>파일이 너무 큽니다.</translation>
     </message>
 </context>
 <context>

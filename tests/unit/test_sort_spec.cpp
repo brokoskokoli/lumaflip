@@ -61,17 +61,17 @@ TEST(ImageFormats, F_OPEN_06_KnownSuffixes) {
 
 // Review finding (F-OPEN-06): on macOS only suffixes with a registered backend are claimed;
 // formats nobody can decode (GIMP, Sigma X3F, ...) were listed and produced error cards.
-// M3: Krita, OpenRaster, PCX, QOI … have own decoders now (SimpleDecoders.h).
+// M3: Krita, OpenRaster, PCX, QOI … have own decoders now (SimpleDecoders.h), XCF and PSB too.
 TEST(ImageFormats, F_OPEN_06_OnlySuffixesWithBackend) {
 #if defined(Q_OS_DARWIN) && !defined(LF_GENERIC_PLATFORM) // ImageIO decides the suffixes
     for (const char* s : {"jpg", "jpeg", "jfif", "heic", "heif", "cr3", "jxl", "avif", "dng", "nef", "png",
                           "svg", "svgz", "tif", "webp"})
         EXPECT_TRUE(isImageSuffix(QString::fromLatin1(s))) << s;
-    for (const char* s : {"xcf", "x3f", "ari", "cap", "pdf", "txt"})
+    for (const char* s : {"x3f", "ari", "cap", "pdf", "txt"})
         EXPECT_FALSE(isImageSuffix(QString::fromLatin1(s))) << s;
-    for (const char* s : {"kra", "ora", "qoi", "pcx", "pfm", "sgi"})
+    for (const char* s : {"kra", "ora", "qoi", "pcx", "pfm", "sgi", "xcf", "psb"})
         EXPECT_TRUE(isImageSuffix(QString::fromLatin1(s))) << s;
-    EXPECT_FALSE(hasImageSuffix("x.xcf"));
+    EXPECT_FALSE(hasImageSuffix("x.x3f"));
     EXPECT_TRUE(hasImageSuffix("IMG_0001.HEIC"));
     for (const QString& s : imageSuffixes())
         EXPECT_EQ(s, s.toLower());

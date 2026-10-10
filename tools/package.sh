@@ -30,6 +30,8 @@
 #   LF_REQUIRE_TURBOJPEG   ON (default) or OFF: the build must link libjpeg-turbo's static
 #                      libturbojpeg.a (lossless JPEG rotation, F-EDIT-02; brew install
 #                      jpeg-turbo). OFF only for experiments - never for a release
+#   LF_ENABLE_RESVG    ON (default): SVG via resvg is required (brew install resvg; the dylib
+#                      and its licence texts are bundled by macos_deploy.py); AUTO/OFF for experiments
 #
 # Never deletes anything outside its own fresh temporary directory: staging happens in
 # a new mktemp directory (removed on exit unless --keep-work), results are (over)written
@@ -69,7 +71,7 @@ if [[ $SKIP_BUILD == 0 ]]; then
   cmake -S . -B "$BUILD_DIR" -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$QT_PREFIX" \
     -DLF_WERROR=ON -DLF_SANITIZE=OFF -DLF_BUILD_TESTS=OFF -DQT_NO_PRIVATE_MODULE_WARNING=ON \
     -DLF_ENABLE_SPARKLE="${LF_ENABLE_SPARKLE:-AUTO}" -DLF_SPARKLE_PUBLIC_KEY="${LF_SPARKLE_PUBLIC_KEY:-}" \
-    -DLF_REQUIRE_TURBOJPEG="$REQUIRE_TURBOJPEG" >/dev/null
+    -DLF_REQUIRE_TURBOJPEG="$REQUIRE_TURBOJPEG" -DLF_ENABLE_RESVG="${LF_ENABLE_RESVG:-ON}" >/dev/null
   cmake --build "$BUILD_DIR"
 fi
 BUILT_APP="$BUILD_DIR/src/Lumaflip.app"
