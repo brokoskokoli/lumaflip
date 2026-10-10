@@ -3024,7 +3024,7 @@
     </message>
     <message>
         <source>Alle Bildschirme</source>
-        <translation type="unfinished">All Screens</translation>
+        <translation>All Screens</translation>
     </message>
     <message>
         <source>Bildschirm %1</source>
