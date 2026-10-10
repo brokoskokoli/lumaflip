@@ -6,6 +6,7 @@
 #include "ImageView.h"
 #include "OpenWith.h"
 #include "RenameController.h"
+#include "WindowPanels.h"
 #include "WindowTabbing.h"
 #include "core/Collection.h"
 #include "core/FileOps.h"
@@ -285,7 +286,7 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     connect(m_chromeTimer, &QTimer::timeout, this, [this] {
         if (!isFullScreen())
             return;
-        if (m_statusBar && m_statusBar->underMouse()) {
+        if ((m_statusBar && m_statusBar->underMouse()) || m_panels->underMouse()) {
             m_chromeTimer->start();
             return;
         }
@@ -361,6 +362,7 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
             startDragOut(m_view, cur, m_view->image()->image);
     });
     connect(&st, &Settings::changed, this, &ViewerWindow::applySetting);
+    m_panels = new WindowPanels(*this, provider); // M2: created hidden, shown with the window
 
     m_app.registerWindow(this);
     updateTitle();
@@ -408,6 +410,7 @@ void ViewerWindow::setVisible(bool visible) {
     // presents the first frame: the first frame already has the status bar.
     if (visible) {
         createStatusBar();
+        m_panels->restore(); // M2 panels remembered in the settings
         updateEmptyState();
     }
 }
@@ -1260,6 +1263,19 @@ bool ViewerWindow::perform(Action a, QPointF pos) {
         });
         return true;
     }
+    // ---- M2 panels (WindowPanels) ----
+    case Action::ToggleInfoPanel:
+    case Action::ToggleFilmstrip:
+        if (a == Action::ToggleInfoPanel)
+            m_panels->toggleInfoPanel(); // F-INFO-02
+        else
+            m_panels->toggleFilmstrip(); // F-GRID-01
+        if (isFullScreen()) {
+            setChromeVisible(true); // visible now, hides again with the chrome (F-VIEW-10)
+            m_chromeTimer->start();
+        }
+        m_app.windowChanged(this);
+        return true;
     default:
         return false; // later stages (info panel, culling, slideshow …)
     }
@@ -1311,6 +1327,8 @@ void ViewerWindow::toggleFullScreen() {
 void ViewerWindow::setChromeVisible(bool visible) {
     m_chromeShown = visible;
     applyStatusBarVisibility();
+    if (m_panels)
+        m_panels->setChromeVisible(visible); // M2 panels hide/return with the chrome
 }
 
 bool ViewerWindow::chromeVisible() const {
@@ -1582,7 +1600,8 @@ bool ViewerWindow::eventFilter(QObject* watched, QEvent* event) {
     if (event->type() == QEvent::MouseMove && isFullScreen()) {
         const auto* me = static_cast<QMouseEvent*>(event);
         const QPoint p = mapFromGlobal(me->globalPosition().toPoint());
-        if (p.y() >= height() - kChromeEdgePx || p.y() <= kChromeEdgePx / 4) {
+        if (p.y() >= height() - kChromeEdgePx || p.y() <= kChromeEdgePx / 4 ||
+            m_panels->isRevealEdge(p, kChromeEdgePx)) {
             setChromeVisible(true);
             m_chromeTimer->start();
         }

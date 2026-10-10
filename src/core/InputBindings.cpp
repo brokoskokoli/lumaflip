@@ -518,8 +518,6 @@ bool InputBindings::isActionAvailable(Action a) {
     case Action::NextFrame:
     case Action::PreviousFrame:
     case Action::ToggleSlideshow:
-    case Action::ToggleInfoPanel:
-    case Action::ToggleFilmstrip:
     case Action::ToggleGrid:
     case Action::Magnifier:
     case Action::Rate0:

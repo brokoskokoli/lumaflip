@@ -357,12 +357,8 @@ QWidget* PreferencesDialog::buildWindow() {
     form->addRow(QString(), bind.check(key::TitleShowFolder, tr("Ordnername in der Titelleiste"), w));
     form->addRow(QString(), helpLabel(tr("Zum Beispiel „IMG_1234.jpg — 23 / 412 — Urlaub“."), w));
     form->addRow(tr("Neue Fenster zeigen:"), bind.check(key::ShowStatusBar, tr("Statuszeile"), w));
-    QCheckBox* info = bind.check(key::ShowInfoPanel, tr("Infopanel (%1)").arg(laterNote()), w);
-    QCheckBox* film = bind.check(key::ShowFilmstrip, tr("Filmstreifen (%1)").arg(laterNote()), w);
-    info->setEnabled(false);
-    film->setEnabled(false);
-    form->addRow(QString(), info);
-    form->addRow(QString(), film);
+    form->addRow(QString(), bind.check(key::ShowInfoPanel, tr("Infopanel (⌘I)"), w));   // F-INFO-02
+    form->addRow(QString(), bind.check(key::ShowFilmstrip, tr("Filmstreifen (T)"), w)); // F-GRID-01
     // F-WIN-05
     form->addRow(tr("Tabs:"),
                  bind.check(key::AllowTabs, tr("Fenster als Tabs öffnen (macOS-Tabs erlauben)"), w));
