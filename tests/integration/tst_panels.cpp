@@ -392,8 +392,9 @@ private slots:
         QVERIFY(waitShown(w, path("c.png")));
         QCOMPARE(film->filmModel()->currentRow(), 2);
         // Collection changes (remove/insert) update the strip.
+        QVERIFY(QFile::remove(path("a.png"))); // gone on disk too (the folder watcher may reload)
         w->fileRemoved(path("a.png"));
-        QCOMPARE(film->filmModel()->rowCount(), 2);
+        QTRY_COMPARE(film->filmModel()->rowCount(), 2);
         QCOMPARE(film->filmModel()->currentRow(), w->collection()->currentIndex());
         QVERIFY(!makeImage(path("d.png"), Qt::yellow).isEmpty());
         w->fileAdded(path("d.png"), false);
