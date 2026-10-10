@@ -167,7 +167,8 @@ struct DecoderHelperPool::Private {
     int started = 0;
 };
 
-DecoderHelperPool::DecoderHelperPool(Options options) : d(std::make_unique<Private>()), m_options(std::move(options)) {
+DecoderHelperPool::DecoderHelperPool(Options options)
+    : d(std::make_unique<Private>()), m_options(std::move(options)) {
     m_options.maxProcesses = std::max(1, m_options.maxProcesses);
 }
 
@@ -244,8 +245,9 @@ std::optional<ipc::Response> DecoderHelperPool::call(ipc::Request request, int t
             release();
             qCWarning(lcHelper) << "cannot start" << m_options.executable << startError;
             return fail(Failure::StartFailed,
-                        startError.isEmpty() ? Tr::tr("Der Decoder-Hilfsprozess konnte nicht gestartet werden.")
-                                             : startError);
+                        startError.isEmpty()
+                            ? Tr::tr("Der Decoder-Hilfsprozess konnte nicht gestartet werden.")
+                            : startError);
         }
         QMutexLocker lock(&d->mutex);
         ++d->started;
@@ -293,7 +295,8 @@ QString DecoderHelperPool::defaultExecutable() {
         return QFileInfo(env).isExecutable() ? env : QString();
     if (!QCoreApplication::instance())
         return {};
-    const QString exe = QDir(QCoreApplication::applicationDirPath()).filePath(QStringLiteral("lumaflip-decoder"));
+    const QString exe =
+        QDir(QCoreApplication::applicationDirPath()).filePath(QStringLiteral("lumaflip-decoder"));
     return QFileInfo(exe).isExecutable() ? exe : QString();
 }
 
@@ -329,7 +332,8 @@ std::optional<ImageInfo> RemoteDecoder::info(const QString& path, QString* error
     return resp->info;
 }
 
-std::optional<DecodedImage> RemoteDecoder::decode(const QString& path, const DecodeRequest& req, QString* error) {
+std::optional<DecodedImage> RemoteDecoder::decode(const QString& path, const DecodeRequest& req,
+                                                  QString* error) {
     ipc::Request r;
     r.op = ipc::Op::Decode;
     r.backend = m_local->name();
@@ -378,8 +382,9 @@ namespace {
 }
 } // namespace
 
-ipc::Response serveDecoderRequest(const ipc::Request& request, const QList<std::shared_ptr<Decoder>>& backends,
-                                  qint64 pid, bool sandboxed, bool testOps) {
+ipc::Response serveDecoderRequest(const ipc::Request& request,
+                                  const QList<std::shared_ptr<Decoder>>& backends, qint64 pid, bool sandboxed,
+                                  bool testOps) {
     ipc::Response r;
     r.id = request.id;
     r.pid = pid;

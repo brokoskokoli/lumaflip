@@ -59,14 +59,14 @@ void get(QDataStream& s, DecodeRequest& r) {
 }
 
 void put(QDataStream& s, const ImageInfo& i) {
-    s << i.pixelSize << i.displaySize << qint32(i.exifOrientation) << qint32(i.frameCount) << qint32(i.pageCount)
-      << i.hasAlpha << i.isHdr << i.isAnimated << qint32(i.bitsPerComponent) << i.colorModel << i.profileName
-      << i.formatName;
+    s << i.pixelSize << i.displaySize << qint32(i.exifOrientation) << qint32(i.frameCount)
+      << qint32(i.pageCount) << i.hasAlpha << i.isHdr << i.isAnimated << qint32(i.bitsPerComponent)
+      << i.colorModel << i.profileName << i.formatName;
 }
 void get(QDataStream& s, ImageInfo& i) {
     qint32 o = 1, frames = 1, pages = 1, bits = 8;
-    s >> i.pixelSize >> i.displaySize >> o >> frames >> pages >> i.hasAlpha >> i.isHdr >> i.isAnimated >> bits >>
-        i.colorModel >> i.profileName >> i.formatName;
+    s >> i.pixelSize >> i.displaySize >> o >> frames >> pages >> i.hasAlpha >> i.isHdr >> i.isAnimated >>
+        bits >> i.colorModel >> i.profileName >> i.formatName;
     i.exifOrientation = o;
     i.frameCount = frames;
     i.pageCount = pages;
@@ -74,8 +74,8 @@ void get(QDataStream& s, ImageInfo& i) {
 }
 
 void put(QDataStream& s, const DecodedImage& d) {
-    s << d.fullSize << d.isPreview << d.headroom << qint32(d.frameDurationMs) << qint32(d.page) << qint32(d.frame)
-      << qint32(d.pageCount) << qint32(d.frameCount);
+    s << d.fullSize << d.isPreview << d.headroom << qint32(d.frameDurationMs) << qint32(d.page)
+      << qint32(d.frame) << qint32(d.pageCount) << qint32(d.frameCount);
 }
 void get(QDataStream& s, DecodedImage& d) {
     qint32 dur = 0, page = 0, frame = 0, pages = 1, frames = 1;
@@ -88,7 +88,8 @@ void get(QDataStream& s, DecodedImage& d) {
 }
 
 void put(QDataStream& s, const PixelHeader& p) {
-    s << qint32(p.width) << qint32(p.height) << qint32(p.format) << p.bytesPerLine << p.iccProfile << p.shmSize;
+    s << qint32(p.width) << qint32(p.height) << qint32(p.format) << p.bytesPerLine << p.iccProfile
+      << p.shmSize;
 }
 void get(QDataStream& s, PixelHeader& p) {
     qint32 w = 0, h = 0, f = 0;
@@ -291,7 +292,9 @@ bool writeSharedImage(const QByteArray& name, const QImage& image, PixelHeader* 
     if (!ok) {
         shm_unlink(name.constData());
         if (error)
-            *error = Tr::tr("Nicht genug Speicher für das Bild (%1 × %2 Pixel).").arg(image.width()).arg(image.height());
+            *error = Tr::tr("Nicht genug Speicher für das Bild (%1 × %2 Pixel).")
+                         .arg(image.width())
+                         .arg(image.height());
         return false;
     }
     header->width = image.width();
@@ -327,11 +330,13 @@ QImage readSharedImage(const QByteArray& name, const PixelHeader& h, QString* er
     }
     struct stat st{};
     const auto fmt = QImage::Format(h.format);
-    const bool sane = fstat(fd, &st) == 0 && h.width > 0 && h.height > 0 && h.format > QImage::Format_Invalid &&
-                      h.format < QImage::NImageFormats && h.bytesPerLine > 0 &&
-                      h.shmSize == h.bytesPerLine * h.height && st.st_size >= h.shmSize &&
+    const bool sane = fstat(fd, &st) == 0 && h.width > 0 && h.height > 0 &&
+                      h.format > QImage::Format_Invalid && h.format < QImage::NImageFormats &&
+                      h.bytesPerLine > 0 && h.shmSize == h.bytesPerLine * h.height &&
+                      st.st_size >= h.shmSize &&
                       h.bytesPerLine >= qint64(h.width) * QImage::toPixelFormat(fmt).bitsPerPixel() / 8;
-    void* mem = sane ? mmap(nullptr, size_t(h.shmSize), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0) : MAP_FAILED;
+    void* mem =
+        sane ? mmap(nullptr, size_t(h.shmSize), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0) : MAP_FAILED;
     close(fd);
     if (mem == MAP_FAILED) {
         if (error)
@@ -339,7 +344,8 @@ QImage readSharedImage(const QByteArray& name, const PixelHeader& h, QString* er
         return {};
     }
     auto* m = new Mapping{mem, size_t(h.shmSize)};
-    QImage img(static_cast<uchar*>(mem), h.width, h.height, qsizetype(h.bytesPerLine), fmt, releaseMapping, m);
+    QImage img(static_cast<uchar*>(mem), h.width, h.height, qsizetype(h.bytesPerLine), fmt, releaseMapping,
+               m);
     if (img.isNull()) {
         releaseMapping(m);
         if (error)

@@ -33,8 +33,8 @@ public:
     struct Options {
         QString executable;
         int maxProcesses = 2;
-        int decodeTimeoutMs = 30000; // a single decode (huge SVG, damaged file loops)
-        int infoTimeoutMs = 10000;   // info/metadata/ping
+        int decodeTimeoutMs = 30000;  // a single decode (huge SVG, damaged file loops)
+        int infoTimeoutMs = 10000;    // info/metadata/ping
         QStringList extraEnvironment; // "NAME=value" added to the app's environment
     };
     enum class Failure { None, StartFailed, Crashed, Timeout, Protocol };
@@ -79,7 +79,8 @@ public:
         return m_local->canDecode(path, header);
     }
     std::optional<ImageInfo> info(const QString& path, QString* error) override;
-    std::optional<DecodedImage> decode(const QString& path, const DecodeRequest& req, QString* error) override;
+    std::optional<DecodedImage> decode(const QString& path, const DecodeRequest& req,
+                                       QString* error) override;
     Metadata metadata(const QString& path) override;
 
 private:
@@ -94,8 +95,9 @@ std::shared_ptr<Decoder> isolatedDecoder(std::shared_ptr<Decoder> decoder);
 
 // Answers one request with the backend named in it. Decoded pixels go to the shared memory
 // object ipc::shmName(pid, request.id). Test operations only with `testOps`.
-ipc::Response serveDecoderRequest(const ipc::Request& request, const QList<std::shared_ptr<Decoder>>& backends,
-                                  qint64 pid, bool sandboxed, bool testOps);
+ipc::Response serveDecoderRequest(const ipc::Request& request,
+                                  const QList<std::shared_ptr<Decoder>>& backends, qint64 pid, bool sandboxed,
+                                  bool testOps);
 // Request loop until the app closes `inFd`. Returns the process exit code.
 int runDecoderHelper(int inFd, int outFd, const QList<std::shared_ptr<Decoder>>& backends, bool sandboxed,
                      bool testOps);

@@ -81,7 +81,8 @@ void EdrSurface::renderFrame() {
     }
     if (r != QRhi::FrameOpSuccess)
         return;
-    m_canvas->renderExtended(m_swapChain->currentFrameCommandBuffer(), m_swapChain->currentFrameRenderTarget());
+    m_canvas->renderExtended(m_swapChain->currentFrameCommandBuffer(),
+                             m_swapChain->currentFrameRenderTarget());
     rhi->endFrame(m_swapChain.get());
 }
 

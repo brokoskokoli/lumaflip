@@ -61,7 +61,8 @@ float toneMap(const ToneCurve& c, float x) {
     const float ks = c.kneePq;
     const float t = (e1 - ks) / (1.0f - ks);
     const float t2 = t * t, t3 = t2 * t;
-    const float p = (2 * t3 - 3 * t2 + 1) * ks + (t3 - 2 * t2 + t) * (1 - ks) + (-2 * t3 + 3 * t2) * c.maxLumPq;
+    const float p =
+        (2 * t3 - 3 * t2 + 1) * ks + (t3 - 2 * t2 + t) * (1 - ks) + (-2 * t3 + 3 * t2) * c.maxLumPq;
     const float out = pqDecode(p * c.srcPq) / kReferenceWhiteNits;
     return std::clamp(out, c.knee, c.target);
 }
@@ -114,7 +115,8 @@ bool isHdrContent(float contentPeak, bool floatSource) {
     return floatSource || (std::isfinite(contentPeak) && contentPeak > kHdrThreshold);
 }
 
-Decision decide(float contentPeak, bool floatSource, bool hdrEnabled, const DisplayState& display) {
+Decision decide(float contentPeak, bool floatSource, bool hdrEnabled, const DisplayState& display,
+                float exposureMultiplier) {
     Decision d;
     if (!isHdrContent(contentPeak, floatSource))
         return d; // Sdr, target 1
@@ -122,8 +124,11 @@ Decision decide(float contentPeak, bool floatSource, bool hdrEnabled, const Disp
     const bool edrCapable = display.potentialHeadroom > kHdrThreshold;
     if (hdrEnabled && edrCapable) {
         d.presentation = Presentation::Extended;
-        d.useExtendedSurface = true;
         d.targetHeadroom = std::max(1.0f, display.currentHeadroom);
+        // Nothing above SDR white (a float file without highlights, or darkened by the
+        // exposure): the SDR path shows it exactly, no extended surface needed.
+        const float peak = std::max(contentPeak, 1.0f) * exposureMultiplier;
+        d.useExtendedSurface = std::isfinite(peak) && peak > kHdrThreshold;
     } else {
         d.presentation = Presentation::ToneMapped;
         d.targetHeadroom = 1.0f;

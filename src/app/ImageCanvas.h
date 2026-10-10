@@ -83,8 +83,9 @@ public:
     // EDR surface): premultiplied ARGB32 in the canvas' device pixels and the display's color
     // space; `dirty` = changed rectangle (device px). A null image removes the overlay.
     void setExtendedOverlay(const QImage& overlay, const QRect& dirty);
-    QRhi* sharedRhi() const; // the QRhi of this widget (null until initialized)
+    QRhi* sharedRhi() const;            // the QRhi of this widget (null until initialized)
     int extendedFramesRendered() const; // tests
+    bool hasExtendedOverlay() const;    // tests
 
     // For tests: limit the tile size (0 = use the GPU's max texture size).
     void setMaxTileSize(int px);

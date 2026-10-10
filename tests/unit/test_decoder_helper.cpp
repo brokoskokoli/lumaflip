@@ -182,7 +182,8 @@ DecoderHelperPool::Options helperOptions(int decodeTimeoutMs = 30000) {
     o.executable = QStringLiteral(LF_DECODER_HELPER_BINARY);
     o.maxProcesses = 2;
     o.decodeTimeoutMs = decodeTimeoutMs;
-    o.extraEnvironment = {QStringLiteral("LF_DECODER_HELPER_TEST_OPS=1"), QStringLiteral("QT_QPA_PLATFORM=offscreen")};
+    o.extraEnvironment = {QStringLiteral("LF_DECODER_HELPER_TEST_OPS=1"),
+                          QStringLiteral("QT_QPA_PLATFORM=offscreen")};
     return o;
 }
 
@@ -270,7 +271,8 @@ TEST(DecoderHelper, DecodesLikeInProcess) {
     // Errors of the backend arrive as such (no crash, no restart).
     RemoteDecoder remote(std::make_shared<QtImageDecoder>(), pool);
     QString error;
-    EXPECT_FALSE(remote.decode(corpusFile(QStringLiteral("garbage.jpg")), DecodeRequest{}, &error).has_value());
+    EXPECT_FALSE(
+        remote.decode(corpusFile(QStringLiteral("garbage.jpg")), DecodeRequest{}, &error).has_value());
     EXPECT_FALSE(error.isEmpty());
     EXPECT_EQ(pool->startedProcesses(), 1);
 }
@@ -348,7 +350,8 @@ TEST(DecoderHelper, TimeoutKillsAndRestarts) {
     const auto start = std::chrono::steady_clock::now();
     EXPECT_FALSE(pool.call(op(ipc::Op::TestHang), 300, &f, &error, &pid).has_value());
     const auto ms =
-        std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start).count();
+        std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now() - start)
+            .count();
     EXPECT_EQ(f, DecoderHelperPool::Failure::Timeout);
     EXPECT_EQ(error, messageDecoderTimeout());
     EXPECT_LT(ms, 5000);

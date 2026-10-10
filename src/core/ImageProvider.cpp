@@ -552,7 +552,8 @@ struct ImageProvider::Private {
             job = *best;
         }
 
-        DecodeRequest req = requestFor(job.key.quality, job.key.px, hdrDecoding.load(std::memory_order_relaxed));
+        DecodeRequest req =
+            requestFor(job.key.quality, job.key.px, hdrDecoding.load(std::memory_order_relaxed));
         req.page = job.key.page;
         req.maxBytes = decodeByteCap.load(std::memory_order_relaxed); // P-08
         req.preferEmbeddedPreview =

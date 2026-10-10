@@ -67,10 +67,17 @@ foreach(src ${LF_INTEGRATION_TESTS})
                                              LF_CORPUS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/corpus")
   add_test(NAME ${name} COMMAND ${name})
   set_tests_properties(${name} PROPERTIES LABELS integration)
+  # F-COL-03: the extended range (EDR) surface only where a test asks for it (tst_hdr): the
+  # others read the canvas framebuffer, which an EDR surface would cover.
+  set(_lf_env "LF_NO_EDR=1")
+  if(name STREQUAL "tst_hdr")
+    set(_lf_env "LF_NO_EDR=0")
+  endif()
   if(LF_SANITIZE)
     # ASan/UBSan make the GUI thread several times slower (P-05 blocking check).
-    set_tests_properties(${name} PROPERTIES ENVIRONMENT "LF_UI_GAP_LIMIT_MS=600")
+    list(APPEND _lf_env "LF_UI_GAP_LIMIT_MS=600")
   endif()
+  set_tests_properties(${name} PROPERTIES ENVIRONMENT "${_lf_env}")
 endforeach()
 
 # Benchmarks (P-xx)

@@ -14,8 +14,8 @@
 #include <QLabel>
 #include <QMouseEvent>
 #include <QNativeGestureEvent>
-#include <QPainter>
 #include <QPaintEvent>
+#include <QPainter>
 #include <QPointer>
 #include <QPushButton>
 #include <QStyleHints>
@@ -236,14 +236,15 @@ struct ImageView::Private {
         display = readDisplay();
         const float peak = image ? image->headroom : 1.0f;
         const bool floatSource = image && isFloatFormat(image->image.format());
-        const hdr::Decision next = hdr::decide(peak, floatSource, hdrOn, display);
         const bool hdrContent = hdr::isHdrContent(peak, floatSource);
-        canvas->setHdrMapping(hdrContent ? exposure.multiplier() : 1.0f, next.targetHeadroom);
+        const float exposureMul = hdrContent ? exposure.multiplier() : 1.0f;
+        const hdr::Decision next = hdr::decide(peak, floatSource, hdrOn, display, exposureMul);
+        canvas->setHdrMapping(exposureMul, next.targetHeadroom);
         const bool useExtended = next.useExtendedSurface && !edrFailed && edrPresentationAvailable() &&
                                  q->isVisible() && !card->isVisible();
         const bool changed = next.presentation != decision.presentation || next.badge != decision.badge ||
-                             next.targetHeadroom != decision.targetHeadroom || useExtended != extendedActive ||
-                             exposure.ev() != emittedEv;
+                             next.targetHeadroom != decision.targetHeadroom ||
+                             useExtended != extendedActive || exposure.ev() != emittedEv;
         emittedEv = exposure.ev();
         decision = next;
         setExtended(useExtended);
@@ -344,7 +345,8 @@ struct ImageView::Private {
     QList<QWidget*> overlayWidgets() const {
         QList<QWidget*> out;
         for (QObject* c : q->children())
-            if (c->isWidgetType() && c != canvas && c != edrContainer && static_cast<QWidget*>(c)->isVisible())
+            if (c->isWidgetType() && c != canvas && c != edrContainer &&
+                static_cast<QWidget*>(c)->isVisible())
                 out << static_cast<QWidget*>(c);
         return out;
     }

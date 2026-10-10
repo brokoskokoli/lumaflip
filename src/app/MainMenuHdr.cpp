@@ -22,7 +22,8 @@ void MainMenu::buildHdr(QMenu* view) {
     add(menu, Action::ExposureIncrease, tr("Belichtung erhöhen"));
     add(menu, Action::ExposureDecrease, tr("Belichtung verringern"));
     add(menu, Action::ExposureReset, tr("Belichtung zurücksetzen"));
-    QAction* lock = addCommand(menu, QStringLiteral("hdr:lockExposure"), tr("Belichtung beim Bildwechsel beibehalten"));
+    QAction* lock =
+        addCommand(menu, QStringLiteral("hdr:lockExposure"), tr("Belichtung beim Bildwechsel beibehalten"));
     lock->setCheckable(true);
     connect(lock, &QAction::triggered, this, [this](bool on) {
         if (ViewerWindow* w = m_app.frontWindow())

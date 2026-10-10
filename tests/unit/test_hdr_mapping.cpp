@@ -139,6 +139,15 @@ TEST(HdrMapping, F_COL_03_ExtendedSurfaceOnlyForHdrOnEdrDisplays) {
     // Rounding noise of an SDR decode is not HDR.
     EXPECT_FALSE(isHdrContent(1.002f, false));
     EXPECT_TRUE(isHdrContent(1.0f, true)); // float source (EXR) without highlights
+    // A float file without highlights is HDR content (badge, exposure) but needs no
+    // extended surface - until the exposure pushes it above SDR white.
+    d = decide(1.0f, true, true, edr);
+    EXPECT_TRUE(d.badge);
+    EXPECT_EQ(d.presentation, Presentation::Extended);
+    EXPECT_FALSE(d.useExtendedSurface);
+    EXPECT_TRUE(decide(1.0f, true, true, edr, 2.0f).useExtendedSurface);
+    // Darkened below SDR white: no extended surface either.
+    EXPECT_FALSE(decide(3.0f, false, true, edr, 0.25f).useExtendedSurface);
 }
 
 TEST(HdrMapping, F_COL_03_MeasuredPeakOfFloatImages) {

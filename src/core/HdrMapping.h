@@ -34,12 +34,12 @@ float pqDecode(float signal);
 
 // Precomputed per (content peak, target) pair; uploaded to the shader as uniforms.
 struct ToneCurve {
-    bool active = false;    // content exceeds the target: compress highlights
-    float target = 1.0f;    // largest output value (display headroom)
-    float knee = 1.0f;      // linear value below which the curve is the identity
-    float srcPq = 0.0f;     // PQ signal of the content peak (normalisation)
-    float kneePq = 1.0f;    // KS of BT.2390 (normalised PQ)
-    float maxLumPq = 1.0f;  // target in normalised PQ
+    bool active = false;   // content exceeds the target: compress highlights
+    float target = 1.0f;   // largest output value (display headroom)
+    float knee = 1.0f;     // linear value below which the curve is the identity
+    float srcPq = 0.0f;    // PQ signal of the content peak (normalisation)
+    float kneePq = 1.0f;   // KS of BT.2390 (normalised PQ)
+    float maxLumPq = 1.0f; // target in normalised PQ
 };
 
 // `contentPeak` and `target` are relative values (>= 1 is sensible; smaller values are
@@ -102,8 +102,10 @@ struct Decision {
 
 // `contentPeak`: DecodedImage::headroom of the shown image (1 = SDR); `floatSource`: the
 // file stores float/extended values (EXR, Radiance) even if the peak is <= 1.
-// `hdrEnabled`: the HDR toggle (F-COL-04).
-Decision decide(float contentPeak, bool floatSource, bool hdrEnabled, const DisplayState& display);
+// `hdrEnabled`: the HDR toggle (F-COL-04); `exposureMultiplier`: F-COL-05. The extended
+// surface is only used if something exceeds SDR white after the exposure.
+Decision decide(float contentPeak, bool floatSource, bool hdrEnabled, const DisplayState& display,
+                float exposureMultiplier = 1.0f);
 
 bool isHdrContent(float contentPeak, bool floatSource);
 

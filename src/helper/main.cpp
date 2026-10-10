@@ -26,7 +26,8 @@ int main(int argc, char** argv) {
     const int protocolOut = 1;
 #endif
     if (argc < 2 || qstrcmp(argv[1], "--decoder-helper") != 0) {
-        std::fprintf(stderr, "lumaflip-decoder is started by Lumaflip and is not meant to be run directly.\n");
+        std::fprintf(stderr,
+                     "lumaflip-decoder is started by Lumaflip and is not meant to be run directly.\n");
         return 64;
     }
     // Fonts and image plugins without a window server connection (no Dock icon, no menu).

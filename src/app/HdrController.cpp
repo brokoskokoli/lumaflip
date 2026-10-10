@@ -28,7 +28,8 @@ constexpr int kThirds = 3;
 
 } // namespace
 
-HdrController::HdrController(ViewerWindow& window) : QObject(&window), m_window(window), m_view(window.view()) {
+HdrController::HdrController(ViewerWindow& window)
+    : QObject(&window), m_window(window), m_view(window.view()) {
     setObjectName(QStringLiteral("lfHdrController"));
     Settings& st = Settings::instance();
     m_view->setHdrEnabled(st.value(key::HdrEnabled).toBool());
@@ -43,7 +44,8 @@ HdrController::HdrController(ViewerWindow& window) : QObject(&window), m_window(
 HdrController::~HdrController() = default;
 
 HdrController* HdrController::of(ViewerWindow* window) {
-    return window ? window->findChild<HdrController*>(QStringLiteral("lfHdrController"), Qt::FindDirectChildrenOnly)
+    return window ? window->findChild<HdrController*>(QStringLiteral("lfHdrController"),
+                                                      Qt::FindDirectChildrenOnly)
                   : nullptr;
 }
 
@@ -151,12 +153,12 @@ void HdrController::ensureHud() {
     m_hud->setObjectName(QStringLiteral("lfExposureHud"));
     m_hud->setAttribute(Qt::WA_StyledBackground);
     m_hud->setFocusPolicy(Qt::NoFocus);
-    m_hud->setStyleSheet(
-        QStringLiteral("#lfExposureHud { background: rgba(20, 20, 20, 210); border-radius: 10px; "
-                       "border: 1px solid rgba(255, 255, 255, 40); }"
-                       "#lfExposureHud QLabel, #lfExposureHud QCheckBox { color: #f2f2f2; background: transparent; }"
-                       "#lfExposureHud QToolButton { color: #f2f2f2; background: rgba(255, 255, 255, 28); "
-                       "border: 1px solid rgba(255, 255, 255, 90); border-radius: 5px; padding: 1px 8px; }"));
+    m_hud->setStyleSheet(QStringLiteral(
+        "#lfExposureHud { background: rgba(20, 20, 20, 210); border-radius: 10px; "
+        "border: 1px solid rgba(255, 255, 255, 40); }"
+        "#lfExposureHud QLabel, #lfExposureHud QCheckBox { color: #f2f2f2; background: transparent; }"
+        "#lfExposureHud QToolButton { color: #f2f2f2; background: rgba(255, 255, 255, 28); "
+        "border: 1px solid rgba(255, 255, 255, 90); border-radius: 5px; padding: 1px 8px; }"));
     auto* layout = new QVBoxLayout(m_hud);
     layout->setContentsMargins(14, 10, 14, 10);
     layout->setSpacing(6);
