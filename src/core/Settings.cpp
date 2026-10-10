@@ -432,7 +432,7 @@ QVariant Settings::value(const QString& key) const {
     const KeyInfo* info = findKey(key);
     if (!info)
         return raw; // keys owned by other modules (e.g. window geometry)
-    const QVariant v = normalize(*info, raw);
+    QVariant v = normalize(*info, raw);
     if (v.isValid())
         return v;
     return info->dynamicDefault ? info->dynamicDefault() : info->def;

@@ -268,6 +268,9 @@ private slots:
 
     // Covers: F-INFO-08 ("Ordnerkarte" in the info panel's GPS box)
     void F_INFO_08_mapOpensFromInfoPanel() {
+#ifdef LF_GENERIC_PLATFORM
+        QSKIP("no map snapshots outside macOS (MapKit) (docs/LINUX.md)");
+#endif
         makeTrip();
         ViewerWindow* w = openAndWait(path("2_paris.jpg"));
         QVERIFY(w);

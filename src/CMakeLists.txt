@@ -178,6 +178,16 @@ if(LF_GENERIC_PLATFORM)
   else()
     target_compile_definitions(lf_core PRIVATE LF_HAVE_QTDBUS=0)
   endif()
+  # F-OPEN-10: PDF pages with QtPdf (PDFium) where Qt has the module (GenericPdf.cpp).
+  find_package(Qt6 QUIET COMPONENTS Pdf)
+  if(TARGET Qt6::Pdf)
+    message(STATUS "PDF pages: QtPdf")
+    target_link_libraries(lf_core PRIVATE Qt6::Pdf)
+    target_compile_definitions(lf_core PRIVATE LF_HAVE_QTPDF=1)
+  else()
+    message(STATUS "QtPdf not found: no PDF pages (F-OPEN-10)")
+    target_compile_definitions(lf_core PRIVATE LF_HAVE_QTPDF=0)
+  endif()
 elseif(APPLE)
   target_link_libraries(lf_core PUBLIC
     "-framework Foundation" "-framework AppKit" "-framework ImageIO"

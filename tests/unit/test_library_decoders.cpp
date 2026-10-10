@@ -42,10 +42,7 @@ std::shared_ptr<Decoder> requireBackend(std::shared_ptr<Decoder> d, const char* 
     return d;
 }
 
-#define LF_REQUIRE_BACKEND(var, factory, name)                                                               \
-    auto var = requireBackend(factory(), name);                                                              \
-    if (!var)                                                                                                \
-        GTEST_SKIP() << name << " not built in";
+// (Skips the test when the backend is not built in, see requireBackend().)
 
 // 64×48 test pattern: gradients in R/G, a constant B, alpha ramp optional.
 [[maybe_unused]] QImage pattern(bool alpha) {
@@ -113,7 +110,9 @@ TEST(LibraryDecoders, F_FMT_01_RegisteredSuffixesMatchBackends) {
 
 #if LF_TEST_HAVE_OPENEXR
 TEST(LibraryDecoders, F_FMT_01_OpenExrHalfFloatExtendedRange) {
-    LF_REQUIRE_BACKEND(exr, createOpenExrDecoder, "OpenEXR");
+    auto exr = requireBackend(createOpenExrDecoder(), "OpenEXR");
+    if (!exr)
+        GTEST_SKIP() << "OpenEXR not built in";
     ensureQtApp();
     QTemporaryDir dir;
     const QString path = dir.filePath("hdr.exr");
@@ -159,7 +158,9 @@ TEST(LibraryDecoders, F_FMT_01_OpenExrHalfFloatExtendedRange) {
 
 #if LF_TEST_HAVE_LIBJXL
 TEST(LibraryDecoders, F_FMT_01_JpegXlLosslessRoundTrip) {
-    LF_REQUIRE_BACKEND(jxl, createLibJxlDecoder, "libjxl");
+    auto jxl = requireBackend(createLibJxlDecoder(), "libjxl");
+    if (!jxl)
+        GTEST_SKIP() << "libjxl not built in";
     QTemporaryDir dir;
     const QString path = dir.filePath("lossless.jxl");
     const QImage src = pattern(true);
@@ -260,7 +261,9 @@ bool encodeHeif(const QImage& src, heif_compression_format format, const QString
 } // namespace
 
 TEST(LibraryDecoders, F_FMT_01_HeifAndAvifRoundTrip) {
-    LF_REQUIRE_BACKEND(heif, createLibHeifDecoder, "libheif");
+    auto heif = requireBackend(createLibHeifDecoder(), "libheif");
+    if (!heif)
+        GTEST_SKIP() << "libheif not built in";
     QTemporaryDir dir;
     const QImage src = pattern(true);
     int tested = 0;
@@ -325,7 +328,9 @@ TEST(LibraryDecoders, F_FMT_01_GeneratedCorpusFiles) {
 
 // RAW samples of tests/corpus/download_raw.sh (CC0), when downloaded.
 TEST(LibraryDecoders, F_FMT_05_LibRawPreviewAndFullDecode) {
-    LF_REQUIRE_BACKEND(raw, createLibRawDecoder, "LibRaw");
+    auto raw = requireBackend(createLibRawDecoder(), "LibRaw");
+    if (!raw)
+        GTEST_SKIP() << "LibRaw not built in";
     const char* files[] = {"raw/nikon_d2h.nef", "raw/sony_ilce7s.arw", "raw/sigma_fp.dng",
                            "raw/canon_eos_r6.cr3", "raw/fujifilm_xs10.raf"};
     int previews = 0, full = 0, present = 0;

@@ -153,16 +153,19 @@ protected:
     std::unique_ptr<NameCollator> collator;
 };
 
-const QList<QPair<QString, QByteArray>> kComicPages = {
-    {QStringLiteral("10.png"), png(4, 3)},
-    {QStringLiteral("2.png"), png(4, 3)},
-    {QStringLiteral("1.png"), png(4, 3)},
-    {QStringLiteral("Kapitel 10/01.png"), png(4, 3)},
-    {QStringLiteral("Kapitel 2/01.png"), png(4, 3)},
-    {QStringLiteral("__MACOSX/._1.png"), QByteArray("resource fork")},
-    {QStringLiteral(".hidden.png"), png(4, 3)},
-    {QStringLiteral("notes.txt"), QByteArray("text")},
-};
+const QList<QPair<QString, QByteArray>>& comicPages() {
+    static const QList<QPair<QString, QByteArray>> pages = {
+        {QStringLiteral("10.png"), png(4, 3)},
+        {QStringLiteral("2.png"), png(4, 3)},
+        {QStringLiteral("1.png"), png(4, 3)},
+        {QStringLiteral("Kapitel 10/01.png"), png(4, 3)},
+        {QStringLiteral("Kapitel 2/01.png"), png(4, 3)},
+        {QStringLiteral("__MACOSX/._1.png"), QByteArray("resource fork")},
+        {QStringLiteral(".hidden.png"), png(4, 3)},
+        {QStringLiteral("notes.txt"), QByteArray("text")},
+    };
+    return pages;
+}
 
 } // namespace
 
@@ -213,7 +216,7 @@ TEST_F(ArchiveTest, F_OPEN_10_ZipListingInFinderOrder) {
         GTEST_SKIP() << "libarchive not available";
     QString error;
     const QString zip = path(QStringLiteral("Band.cbz"));
-    ASSERT_TRUE(libarchive::writeArchive(zip, QStringLiteral("zip"), kComicPages, &error))
+    ASSERT_TRUE(libarchive::writeArchive(zip, QStringLiteral("zip"), comicPages(), &error))
         << error.toStdString();
     const archive::Listing l = archive::listLocal(zip);
     ASSERT_TRUE(l.ok) << l.error.toStdString();
@@ -223,7 +226,7 @@ TEST_F(ArchiveTest, F_OPEN_10_ZipListingInFinderOrder) {
     EXPECT_EQ(memberNames(entries),
               (QStringList{"1.png", "2.png", "10.png", "Kapitel 2/01.png", "Kapitel 10/01.png"}));
     EXPECT_EQ(entries.first().name, QStringLiteral("1.png"));
-    EXPECT_EQ(entries.first().size, kComicPages[2].second.size());
+    EXPECT_EQ(entries.first().size, comicPages()[2].second.size());
     EXPECT_TRUE(entries.first().modified.isValid());
 }
 
@@ -257,7 +260,7 @@ TEST_F(ArchiveTest, F_OPEN_10_SevenZipAndOtherFormatsViaLibArchive) {
         GTEST_SKIP() << "libarchive not available";
     QString error;
     const QString seven = path(QStringLiteral("Band.cb7"));
-    ASSERT_TRUE(libarchive::writeArchive(seven, QStringLiteral("7zip"), kComicPages, &error))
+    ASSERT_TRUE(libarchive::writeArchive(seven, QStringLiteral("7zip"), comicPages(), &error))
         << error.toStdString();
     const archive::Listing l = archive::listLocal(seven);
     ASSERT_TRUE(l.ok) << l.error.toStdString();
@@ -265,7 +268,7 @@ TEST_F(ArchiveTest, F_OPEN_10_SevenZipAndOtherFormatsViaLibArchive) {
               (QStringList{"1.png", "2.png", "10.png", "Kapitel 2/01.png", "Kapitel 10/01.png"}));
     const auto bytes = archive::readLocal(seven, QStringLiteral("Kapitel 10/01.png"), &error);
     ASSERT_TRUE(bytes.has_value()) << error.toStdString();
-    EXPECT_EQ(*bytes, kComicPages[3].second);
+    EXPECT_EQ(*bytes, comicPages()[3].second);
     // A RAR cannot be written here; a file with the suffix but other contents fails cleanly.
     const QString rar = writeFile(path(QStringLiteral("x.cbr")), QByteArray("Rar!\x1a\x07\x00garbage", 14));
     const archive::Listing bad = archive::listLocal(rar);
@@ -372,7 +375,7 @@ TEST_F(ArchiveTest, F_OPEN_10_MalformedArchivesFailCleanly) {
         GTEST_SKIP() << "libarchive not available";
     QString error;
     const QString good = path(QStringLiteral("good.zip"));
-    ASSERT_TRUE(libarchive::writeArchive(good, QStringLiteral("zip"), kComicPages, &error));
+    ASSERT_TRUE(libarchive::writeArchive(good, QStringLiteral("zip"), comicPages(), &error));
     QFile f(good);
     ASSERT_TRUE(f.open(QIODevice::ReadOnly));
     const QByteArray bytes = f.readAll();
@@ -426,7 +429,7 @@ TEST_F(ArchiveTest, F_OPEN_10_SandboxedHelperListsAndExtracts) {
         GTEST_SKIP() << "libarchive not available";
     QString error;
     const QString zip = path(QStringLiteral("Band.cbz"));
-    ASSERT_TRUE(libarchive::writeArchive(zip, QStringLiteral("zip"), kComicPages, &error));
+    ASSERT_TRUE(libarchive::writeArchive(zip, QStringLiteral("zip"), comicPages(), &error));
     DecoderHelperPool::Options o;
     o.executable = QStringLiteral(LF_DECODER_HELPER_BINARY);
     o.maxProcesses = 1;
@@ -446,15 +449,15 @@ TEST_F(ArchiveTest, F_OPEN_10_SandboxedHelperListsAndExtracts) {
     const auto got = pool.call(read, 20000, nullptr, &error);
     ASSERT_TRUE(got.has_value()) << error.toStdString();
     ASSERT_TRUE(got->ok) << got->error.toStdString();
-    EXPECT_EQ(got->data, kComicPages[4].second);
+    EXPECT_EQ(got->data, comicPages()[4].second);
     if (archive::libArchiveAvailable()) {
         const QString seven = path(QStringLiteral("Band.7z"));
-        ASSERT_TRUE(libarchive::writeArchive(seven, QStringLiteral("7zip"), kComicPages, &error));
+        ASSERT_TRUE(libarchive::writeArchive(seven, QStringLiteral("7zip"), comicPages(), &error));
         read.path = seven;
         const auto fromSeven = pool.call(read, 20000, nullptr, &error);
         ASSERT_TRUE(fromSeven.has_value()) << error.toStdString();
         EXPECT_TRUE(fromSeven->ok) << fromSeven->error.toStdString();
-        EXPECT_EQ(fromSeven->data, kComicPages[4].second);
+        EXPECT_EQ(fromSeven->data, comicPages()[4].second);
     }
 }
 #endif
@@ -466,7 +469,7 @@ TEST_F(ArchiveTest, F_OPEN_10_CollectionBrowsesArchiveLikeAFolder) {
         GTEST_SKIP() << "libarchive not available";
     QString error;
     const QString zip = path(QStringLiteral("Band.cbz"));
-    ASSERT_TRUE(libarchive::writeArchive(zip, QStringLiteral("zip"), kComicPages, &error));
+    ASSERT_TRUE(libarchive::writeArchive(zip, QStringLiteral("zip"), comicPages(), &error));
     Collection c;
     int finished = 0;
     QObject::connect(&c, &Collection::loadingFinished, [&] { ++finished; });

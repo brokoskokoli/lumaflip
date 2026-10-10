@@ -472,7 +472,7 @@ TEST(DecoderHelper, HelperDeliversIntoAppOwnedSharedMemory) {
         [&] { exitCode = runDecoderHelper(toHelper[0], fromHelper[1], backends, false, false); });
     ipc::Request r = op(ipc::Op::Decode, corpusFile(QStringLiteral("rgba8.png")));
     r.backend = QStringLiteral("Qt");
-    auto roundTrip = [&](ipc::Request req) {
+    auto roundTrip = [&](const ipc::Request& req) {
         EXPECT_EQ(ipc::writeFrame(toHelper[1], ipc::encode(req)), ipc::IoStatus::Ok);
         QByteArray payload;
         EXPECT_EQ(ipc::readFrame(fromHelper[0], &payload, 10000), ipc::IoStatus::Ok);
@@ -550,6 +550,7 @@ TEST(DecoderHelper, NoSegmentLeftWhenAppGoesAwayMidDecode) {
         envStore.emplace_back(*e);
     envStore.emplace_back("QT_QPA_PLATFORM=offscreen");
     std::vector<char*> envp;
+    envp.reserve(envStore.size() + 1);
     for (QByteArray& e : envStore)
         envp.push_back(e.data());
     envp.push_back(nullptr);
@@ -655,6 +656,7 @@ TEST(DecoderHelper, ConcurrentCallsShareThePool) {
     RemoteDecoder remote(std::make_shared<QtImageDecoder>(), pool);
     std::atomic<int> ok{0};
     std::vector<std::thread> threads;
+    threads.reserve(6);
     for (int t = 0; t < 6; ++t) {
         threads.emplace_back([&] {
             for (int i = 0; i < 5; ++i) {

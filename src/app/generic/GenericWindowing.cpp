@@ -90,8 +90,15 @@ void setWindowAlwaysOnTop(QWidget* window, bool on) {
         window->show(); // changing the flags hides the window
 }
 
-void setWindowMinimalChrome(QWidget*, bool) {
-    // The window manager owns the title bar on X11/Wayland.
+void setWindowMinimalChrome(QWidget* window, bool on) {
+    // F-VIEW-13: no title bar - a frameless window; the move handle (WindowExtras) moves it
+    // with QWindow::startSystemMove() (X11 and Wayland).
+    if (!window || window->windowFlags().testFlag(Qt::FramelessWindowHint) == on)
+        return;
+    const bool visible = window->isVisible();
+    window->setWindowFlag(Qt::FramelessWindowHint, on);
+    if (visible)
+        window->show();
 }
 
 NativeWindowState nativeWindowState(QWidget* window) {
@@ -100,6 +107,9 @@ NativeWindowState nativeWindowState(QWidget* window) {
         return s;
     s.valid = true;
     s.floating = window->windowFlags().testFlag(Qt::WindowStaysOnTopHint);
+    // Frameless: the content fills the window and there is no (transparent or visible) title.
+    const bool frameless = window->windowFlags().testFlag(Qt::FramelessWindowHint);
+    s.fullSizeContent = s.titlebarTransparent = s.titleHidden = frameless;
     return s;
 }
 

@@ -23,8 +23,8 @@ Ubuntu 24.04 (other distributions: the same libraries under their names):
 sudo apt install cmake ninja-build clang pkg-config libgtest-dev libarchive-dev \
   libheif-dev libheif-plugin-dav1d libjxl-dev libraw-dev libopenexr-dev librsvg2-bin \
   libgl1-mesa-dev libxkbcommon-x11-0 libxcb-cursor0
-# Qt 6.11 (qtbase, qtsvg, qttools, qtimageformats, qtshadertools), e.g. with aqtinstall:
-pipx run aqtinstall install-qt linux desktop 6.11.2 linux_gcc_64 -m qtimageformats qtshadertools -O ~/Qt
+# Qt 6.11 (qtbase, qtsvg, qttools, qtimageformats, qtshadertools, optional qtpdf), e.g. with aqtinstall:
+pipx run aqtinstall install-qt linux desktop 6.11.2 linux_gcc_64 -m qtimageformats qtshadertools qtpdf -O ~/Qt
 cmake -S . -B build/linux -G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_PREFIX_PATH=~/Qt/6.11.2/gcc_64
 cmake --build build/linux
 build/linux/src/lumaflip [image]
@@ -78,7 +78,7 @@ macOS decodes nearly everything with ImageIO. On Linux the formats come from:
 | JPEG XL | libjxl | first frame of animations |
 | Camera RAW | LibRaw | embedded preview for the fast stages, developed image (camera white balance, sRGB) for zooming; LibRaw is used under its CDDL-1.0 option |
 | OpenEXR | OpenEXR | half/float, extended range (HDR images are tone-mapped: no EDR on Linux) |
-| PDF pages (F-OPEN-10) | – | not on Linux yet |
+| PDF pages (F-OPEN-10) | QtPdf (PDFium) | when Qt has the `qtpdf` module (CI and the AppImage do) |
 
 All library decoders run in the decoder helper process (`lumaflip-decoder`, SPEC 8.5).
 
@@ -107,7 +107,8 @@ threads later).
 Hidden or shown as "not available": Live Text (VisionKit), Quick Look, the Services menu, the
 share sheet, maps (folder map and GPS mini map: MapKit), native window tabs, EDR/HDR presentation
 (HDR images are tone-mapped to SDR), the Dock menu, Sparkle updates, per-window screen profiles,
-writing ratings into image files (sidecar XMP works), Finder-specific sort settings.
+writing ratings into image files (sidecar XMP works), Finder-specific sort settings. The
+"minimal window" mode (F-VIEW-13) is a frameless window there, moved with its handle.
 Integration tests that depend on these are skipped on Linux.
 
 ## CI
