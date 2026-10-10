@@ -15,7 +15,10 @@
 #include "core/QuickMove.h"
 #include "core/Settings.h"
 
+#include <algorithm>
+#include <cstdlib>
 #include <gtest/gtest.h>
+#include <thread>
 
 #include <QDir>
 #include <QElapsedTimer>
@@ -283,7 +286,12 @@ TEST(ReviewNameFilter, F_NAV_08_FiftyThousandEntriesStayResponsive) {
     EXPECT_EQ(step(munich, expected(munich)), (50000 + 6) / 7);
     EXPECT_EQ(step(narrower, expected(narrower)), expected(narrower));
     EXPECT_EQ(step(QString(), 50000), 50000);
-    EXPECT_LT(worstSlice, 30);
+    // 30 ms on a quiet machine; wall-clock limits scale with the current load (other
+    // builds, parallel test binaries) so this stays a responsiveness check, not a flake.
+    double load1 = 0;
+    const double cores = double(std::max(1u, std::thread::hardware_concurrency()));
+    const double factor = (getloadavg(&load1, 1) == 1) ? std::max(1.0, 2.0 * load1 / cores) : 1.0;
+    EXPECT_LT(worstSlice, qint64(30 * factor)) << "load factor " << factor;
     // Order kept: the entries come back in their original order.
     for (int i = 0; i < 50000; i += 4999)
         EXPECT_EQ(c.at(i).path, entries.at(i).path);

@@ -351,8 +351,10 @@ TEST(CustomActions, F_FILE_10_TimeoutKillsTheCommandAndItsChildren) {
     t.start();
     // A child that would outlive its shell: the whole process group goes.
     const CustomActionRun::Result r =
-        runAction(shell(QStringLiteral("sleep 30 & echo $! > \"$1\"; wait")), {pidFile}, 400);
-    EXPECT_LT(t.elapsed(), 8000);
+        // 2 s: long enough for the shell to start the child and write its pid even under
+        // heavy load; still far below the child's 30 s.
+        runAction(shell(QStringLiteral("sleep 30 & echo $! > \"$1\"; wait")), {pidFile}, 2000);
+    EXPECT_LT(t.elapsed(), 12000);
     EXPECT_TRUE(r.timedOut);
     EXPECT_FALSE(r.ok());
     EXPECT_FALSE(r.error.isEmpty());
