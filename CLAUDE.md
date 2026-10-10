@@ -95,7 +95,7 @@ Neue Quelldateien werden per Glob automatisch gebaut (CMake `CONFIGURE_DEPENDS`)
 
 - Autor/Committer ist immer `Stefan Richter <16724498+brokoskokoli@users.noreply.github.com>` (in der
   repo-lokalen git-Konfiguration gesetzt – nie die globale Konfiguration verwenden).
-- **Keine** `Co-Authored-By`-Zeilen oder andere E-Mail-Adressen in Commit-Nachrichten.
+- Commit-Nachrichten enden mit `Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>`; sonst keine E-Mail-Adressen.
 - Keine Firmennamen oder Firmen-E-Mail-Adressen in Dateien oder Historie. Vor jedem Push prüfen:
   `git log --format='%an %ae %cn %ce %B'` und `git log -p --format=` auf fremde E-Mail-Adressen.
-- Repository: `github.com/brokoskokoli/lumaflip` (privat).
+- Repository: `github.com/brokoskokoli/lumaflip`.
