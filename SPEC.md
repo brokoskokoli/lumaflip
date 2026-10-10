@@ -4,7 +4,7 @@
 |---|---|
 | **Name** | **Lumaflip** (luma = Helligkeit/Bildsignal, flip = durchblättern) |
 | **Bundle-ID** | `io.github.brokoskokoli.lumaflip` |
-| **Status** | v0.4 – M1 umgesetzt, M2 (v1.0) in Abnahme; Klarstellungen aus den Spezifikations-Prüfungen eingearbeitet |
+| **Status** | v1.0 – M1 und M2 umgesetzt; Version 1.0.0 in der manuellen Abnahme (docs/TESTING-M2.md) |
 | **Stand** | 2026-10-10 |
 | **Lizenz** | Open Source, GPL-3.0-or-later; veröffentlicht auf GitHub |
 | **Vertrieb** | GitHub Releases, signiert (Developer ID) und notarisiert; zusätzlich Homebrew Cask |
@@ -576,7 +576,7 @@ public:
 - **Grund:** Eine sandboxed App (Pflicht im Mac App Store) erhält beim Doppelklick **nur die geöffnete Datei**, nicht deren Ordner, und auch nicht die `.DS_Store` im Elternordner. Der Kernfall wäre nur mit einer zusätzlichen Ordnerfreigabe per Dialog (Security-Scoped Bookmark) möglich, und die Finder-Sortierung wäre stark eingeschränkt.
 - **Umsetzung:** Signiert mit **Developer ID** (Konto vorhanden), Hardened Runtime, **notarisiert** und „gestapelt“ (`xcrun stapler`).
 - **Veröffentlichung:** Quellcode und Releases auf **GitHub**. Jedes Release enthält ein DMG (Universal oder arm64) und ein ZIP, dazu SHA-256-Prüfsummen. Ein eigener **Homebrew Cask** (zunächst im eigenen Tap, später Antrag für `homebrew/cask`).
-- **Release-Pipeline:** GitHub Actions auf Tag `v*`: bauen → signieren → notarisieren → DMG erzeugen → GitHub Release anlegen → Sparkle-Appcast aktualisieren. Zertifikat und App-Store-Connect-API-Schlüssel liegen als verschlüsselte GitHub Secrets vor, nur für Tag-Builds aus dem Hauptrepo (nicht für Forks oder PRs).
+- **Release-Pipeline:** GitHub Actions auf Tag `v*`: bauen → signieren → notarisieren → DMG erzeugen → GitHub Release als Entwurf anlegen → Sparkle-Appcast aktualisieren (geprüft gegen den vorherigen) → Release veröffentlichen. Appcast-Aktualisierungen laufen nie parallel; der Sparkle-Schlüssel ist nur im Appcast-Schritt verfügbar, Zertifikat und Notar-Schlüssel nur im Build-Schritt. Zertifikat und App-Store-Connect-API-Schlüssel liegen als verschlüsselte GitHub Secrets vor, nur für Tag-Builds aus dem Hauptrepo (nicht für Forks oder PRs).
 - **Updates:** Sparkle 2 mit EdDSA-signiertem Appcast, gehostet über GitHub Pages bzw. Release-Assets.
 - **Reproduzierbarkeit:** Eigene Builds aus dem Quellcode (unsigniert bzw. ad-hoc signiert) sind mit einem dokumentierten Befehl möglich.
 - **Entitlements:** `com.apple.security.automation.apple-events` (nur für das Opt-in in F-SORT-04) und `NSAppleEventsUsageDescription`.
