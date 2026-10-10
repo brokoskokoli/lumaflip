@@ -2,6 +2,7 @@
 #include "Application.h"
 
 #include "DockReopen.h"
+#include "MenuKeyEquivalents.h"
 #include "ImageView.h"
 #include "MainMenu.h"
 #include "PreferencesDialog.h"
@@ -215,6 +216,10 @@ Application::Application(AppServices services, QObject* parent)
         }
         d->menu->refreshState();
     });
+
+    // F-MAC-01: ⇧⌘-letter menu shortcuts must not answer the plain ⌘-letter (⌘R, ⌘F).
+    installMenuKeyEquivalentFix();
+    fixShiftedMenuKeyEquivalents();
 
     // Dock icon clicked (applicationShouldHandleReopen:hasVisibleWindows:, not every
     // activation such as ⌘-Tab): without any window, open an empty one like other
@@ -875,11 +880,18 @@ bool Application::isQuitPending() const {
 // Commands
 // ---------------------------------------------------------------------------------------
 
+bool Application::intercepted(ViewerWindow* window, Action action) const {
+    return d->services.interceptAction && d->services.interceptAction(window, action);
+}
+
 void Application::perform(Action action) {
     // Menu shortcuts act on the key window. If that is not a viewer (preferences,
     // shortcut overview, a message box), image and window commands must not reach the
     // viewer hidden behind it.
     QWidget* active = d->services.activeWindow ? d->services.activeWindow() : nullptr;
+    ViewerWindow* front = frontWindow();
+    if ((!front || (active && !qobject_cast<ViewerWindow*>(active))) && intercepted(nullptr, action))
+        return; // (with a viewer in front, ViewerWindow::perform asks)
     if (active && !qobject_cast<ViewerWindow*>(active)) {
         switch (action) {
         case Action::CloseWindow:
@@ -909,8 +921,8 @@ void Application::perform(Action action) {
         }
         return;
     }
-    if (ViewerWindow* w = frontWindow()) {
-        w->perform(action);
+    if (front) {
+        front->perform(action);
         return;
     }
     switch (action) {

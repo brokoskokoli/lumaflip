@@ -1127,6 +1127,8 @@ void ViewerWindow::handleInput(InputEvent ev, QPointF pos) {
 }
 
 bool ViewerWindow::perform(Action a, QPointF pos) {
+    if (m_app.intercepted(this, a))
+        return true;
     const QPointF anchor = pos.x() >= 0 ? pos : QPointF(m_view->width() / 2.0, m_view->height() / 2.0);
     const double step = std::max(16.0, m_view->height() * 0.1);
     const double page = std::max(32.0, m_view->height() * 0.9);

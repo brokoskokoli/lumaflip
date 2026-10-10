@@ -37,6 +37,9 @@ struct AppServices {
     std::function<QWidget*()> activeWindow;
     // Ends the event loop after quit(); default QCoreApplication::quit (tests record it).
     std::function<void()> quitApp;
+    // Tests: sees every action before a window or the application runs it (menu, keys,
+    // mouse); returning true swallows it.
+    std::function<bool(ViewerWindow* window, Action action)> interceptAction;
 };
 
 // Paths of an open request after looking at the file system (on a worker thread).
@@ -91,6 +94,8 @@ public:
     // (preferences, a dialog) is the key window, ⌘W closes that one and image/window
     // commands are ignored.
     void perform(Action action);
+    // Services::interceptAction (tests); true: swallowed.
+    bool intercepted(ViewerWindow* window, Action action) const;
     void showOpenDialog();
     void showOpenFolderDialog();
     void showPreferences();

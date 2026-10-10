@@ -29,12 +29,24 @@ if(NOT LF_BUILD_UI)
   return() # integration tests and benchmarks need lf_ui
 endif()
 
+# Test support for integration tests (integration/support): real native input events.
+if(APPLE)
+  add_library(lf_test_support STATIC integration/support/NativeEvents.h integration/support/NativeEvents_mac.mm)
+  target_compile_options(lf_test_support PRIVATE $<$<COMPILE_LANGUAGE:OBJCXX>:-fobjc-arc>)
+  target_link_libraries(lf_test_support PUBLIC Qt6::Widgets "-framework AppKit" "-framework Carbon"
+                                        PRIVATE lf_warnings)
+  target_include_directories(lf_test_support PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/integration)
+endif()
+
 # Integration tests: each tests/integration/*.cpp is a Qt Test executable linking the UI.
 file(GLOB LF_INTEGRATION_TESTS CONFIGURE_DEPENDS integration/tst_*.cpp)
 foreach(src ${LF_INTEGRATION_TESTS})
   get_filename_component(name ${src} NAME_WE)
   add_executable(${name} ${src})
   target_link_libraries(${name} PRIVATE lf_ui Qt6::Test lf_warnings)
+  if(TARGET lf_test_support)
+    target_link_libraries(${name} PRIVATE lf_test_support)
+  endif()
   target_compile_definitions(${name} PRIVATE LF_TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data"
                                              LF_CORPUS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/corpus")
   add_test(NAME ${name} COMMAND ${name})
