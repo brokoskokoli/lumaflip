@@ -1,111 +1,246 @@
 <!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+**English** · [Deutsch](README.de.md)
+
+<div align="center">
+
 # Lumaflip
 
-Schneller, freier Bildbetrachter für macOS. Doppelklick auf ein Bild öffnet den ganzen Ordner –
-in **derselben Reihenfolge wie im Finder** –, und mit ← / → blätterst du ohne Wartezeit durch
-alle Bilder.
+**A fast, free image viewer for macOS. Double-click a photo, then flip through the whole folder in Finder order with no waiting.**
 
-> Status: **Version 1.1 (Meilenstein M3) in der Abnahme.** Die Spezifikation steht in [SPEC.md](SPEC.md),
-> die manuelle Abnahme in [docs/TESTING-M3.md](docs/TESTING-M3.md) (Version 1.0: [docs/TESTING-M2.md](docs/TESTING-M2.md)).
+[![CI](https://github.com/brokoskokoli/lumaflip/actions/workflows/ci.yml/badge.svg)](https://github.com/brokoskokoli/lumaflip/actions/workflows/ci.yml)
+[![License: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](LICENSE)
+[![Platform: macOS 15+](https://img.shields.io/badge/platform-macOS%2015%2B%20%C2%B7%20Apple%20Silicon-lightgrey.svg)](#install)
+[![Latest release](https://img.shields.io/github/v/release/brokoskokoli/lumaflip?include_prereleases&sort=semver)](https://github.com/brokoskokoli/lumaflip/releases)
+[![Homebrew cask: planned](https://img.shields.io/badge/homebrew%20cask-planned-orange.svg)](#install)
 
-## Neu in Version 1.1
+</div>
 
-- **18 Sprachen:** Deutsch, Englisch, Französisch, Spanisch, Italienisch, Portugiesisch (BR/PT),
-  Niederländisch, Polnisch, Schwedisch, Dänisch, Norwegisch, Finnisch, Tschechisch, Japanisch,
-  Chinesisch (vereinfacht/traditionell), Koreanisch – folgt der Systemsprache, umschaltbar ohne Neustart
-  (Übersetzungen noch nicht muttersprachlich geprüft).
-- **Aussortieren und Bewerten:** Aussortiermodus (⌘K) mit 0–5 Sternen, Pick/Reject und automatischem
-  Weiterblättern; Bewertungen als XMP-Zusatzdatei (Lightroom, Capture One, darktable), im Bild oder als
-  Finder-Tags; Filter nach Bewertung; „Alle verworfenen in den Papierkorb / nach _Rejected“.
-- **Schnellablage:** `M`/`C` + `1`–`9` verschiebt bzw. kopiert in feste Zielordner, mit Rückgängig und
-  Namenskonflikt-Abfrage.
-- **Raster, Vergleich, Lupe:** Rasteransicht mit Mehrfachauswahl, 2–4 Bilder synchron vergleichen,
-  Lupe am Cursor; gekoppelte Fenster (blättern und zoomen gemeinsam).
-- **HDR/EDR:** HDR-Fotos (iPhone-HEIC, Ultra-HDR-JPEG, AVIF, OpenEXR) mit echter Spitzlicht-Helligkeit
-  auf XDR-Displays, SDR-Vorschau, Belichtungsregler.
-- **Navigation:** Unterordner einbeziehen, Nachbarordner (⌥← / ⌥→), „Gehe zu Bild“ (⌘G), zufällige
-  Reihenfolge, Schnellfilter nach Dateiname (⌘F).
-- **RAW+JPEG-Paare** wahlweise als ein Bild (Bewerten, Verschieben, Löschen wirken auf beide).
-- **GPS und Metadaten:** Koordinaten im Infopanel, Mini-Karte erst nach Klick, „In Karten öffnen“;
-  Fenster mit allen Rohmetadaten (Suche, Kopieren).
-- **Ordnerkarte** (Darstellung → Karte, ⇧⌘M, „Ordnerkarte“ im Infopanel): alle Bilder der Ansicht mit
-  Aufnahmeort auf einer Karte, nahe Punkte zusammengefasst, Vorschaubild beim Überfahren; das aktuelle
-  Bild ist rot markiert und folgt beim Blättern, Klick auf eine Markierung zeigt das Bild
-  („312 von 412 Bildern mit Ort“). Kartendaten werden erst nach dem Öffnen geladen.
-- **SVG vollständig** über resvg (SVG 1.1 mit CSS, Filtern, Verläufen und Text); Qt SVG als Rückfall.
-- **Weitere Formate:** GIMP-Dateien (XCF, sichtbare Ebenen mit Deckkraft, Masken und den gängigen
-  Ebenenmodi zusammengesetzt), Photoshop Large Document (PSB), QOI, PCX, PBM/PGM/PPM/PFM, SGI,
-  OpenRaster, Krita; Decoder in einem abgeschotteten Hilfsprozess (defekte Dateien bringen die App
-  nicht zum Absturz).
+> **Status:** version 1.1 (milestone M3) is in final acceptance testing. See the [changelog](CHANGELOG.md)
+> and the [roadmap](#roadmap).
 
-## Funktionen (Version 1.0)
+## Why Lumaflip?
 
-**Öffnen und Blättern**
-- **Ganzer Ordner per Doppelklick:** Bild öffnen, mit ← / →, Trackpad-Wischen, Mausrad oder Leertaste
-  blättern; Nicht-Bilder werden übersprungen. Startbildschirm mit „Zuletzt geöffnet“.
-- **Finder-Reihenfolge:** übernimmt die Sortierung des Finder-Fensters (Name, Änderungsdatum, Größe,
-  „Hinzugefügt am“, Symbolpositionen …), auf Wunsch live vom offenen Finder-Fenster; eigene Sortierung
-  wird pro Ordner gemerkt.
-- **Ordner bleibt aktuell:** neue, gelöschte und umbenannte Dateien erscheinen sofort, das aktuelle Bild bleibt.
-- **Schnell:** Vorausladen der Nachbarbilder, Darstellung über Metal, flüssig auch auf ProMotion-Displays.
+In macOS Preview, double-clicking a photo opens *just that photo*. The arrow keys can't take you
+to the next image in the folder unless you select every file first and open them together.
+Quick Look closes when you click, has no real zoom and steps through non-images too.
 
-**Formate und Farbe**
-- JPEG, PNG, GIF, BMP, TIFF, WebP, ICO, ICNS, HEIC/HEIF, AVIF, JPEG XL, RAW (CR2, CR3, NEF, ARW, DNG,
-  RAF, ORF, RW2 …), PSD, OpenEXR, Radiance HDR, JPEG 2000, TGA, DDS, KTX und SVG (SVG Tiny 1.2) – ohne
-  Nachinstallation.
-- **Animationen** (GIF, APNG, WebP, AVIF/HEICS, JXL) mit Pause, Einzelbild und Tempo; **mehrseitige**
-  Dateien (TIFF, ICO, HEIF) mit Seitennavigation; RAW zuerst als eingebettete Vorschau.
-- **Farbrichtig:** ICC-Profile, Display P3, CMYK; Profilwechsel beim Verschieben auf einen anderen Monitor.
+Lumaflip opens the image **instantly**, loads the **whole folder** in the background, sorts it
+**the way the Finder window shows it** (name, date modified, date added, size, even icon
+positions), and preloads the neighbours so ← / → is immediate. It is free software with no
+subscription, no account and no telemetry.
 
-**Ansehen und Ordnen**
-- Zoom-Modi (Einpassen, 100 %, Breite/Höhe füllen …), Zoom am Cursor, „Zoom fixieren“ für Serienaufnahmen,
-  Vollbild, Diashow mit Überblendung.
-- **Infopanel** mit Datei-, Bild- und Kameradaten, Histogramm und Finder-Tags; **Filmstreifen** mit Vorschaubildern.
-- **Dateien:** Papierkorb mit Rückgängig, Umbenennen, „Öffnen mit“, Teilen, Bild in andere Apps ziehen,
-  Drehung verlustfrei speichern (JPEG), Kopieren von Bild und Pfad.
+## Features
 
-**Bedienung und Mac-Integration**
-- **Mehrere Fenster** mit Anordnen, Tabs und Wiederherstellung; natives Menü, Hell/Dunkel.
-- **Eingaben frei belegbar:** Mausrad, Klick, Trackpad, alle Tastenkürzel (mit Konfliktprüfung),
-  Profilvorlagen („Mac-Standard“, „Windows-Viewer-Gewohnheiten“, „Fotograf:in“); Einstellungen
-  exportieren und importieren.
-- **Standard-App** für Bilder per Knopf (Dateitypen einzeln abwählbar).
-- **Automatische Updates** (Sparkle, signiert) – abschaltbar.
-- **Datenschutz:** keine Telemetrie, Netzwerkverkehr nur für die abschaltbare Update-Prüfung und – erst
-  nach einem Klick auf „Karte anzeigen“ – für Kartenausschnitte; kein Festplattenvollzugriff nötig.
+**Browse like Finder**
+- Opening one image opens its whole folder. Flip with ← / →, the trackpad, the scroll wheel or the
+  space bar. Non-images are skipped.
+- **Finder sort order**: Lumaflip reads the folder's view settings (list, icon and gallery view,
+  sort column and direction). It can also ask the frontmost Finder window directly (opt-in). If you
+  pick a sort order yourself, Lumaflip remembers it per folder.
+- Folders stay live: new, deleted and renamed files appear right away and the current image stays put.
+- Include subfolders, jump to the sibling folder (⌥← / ⌥→), go to image *n* (⌘G), shuffle, and filter
+  by file name (⌘F).
+- Multiple windows with tiling, tabs and restore. **Linked windows** flip, zoom and pan together.
 
-## Installation
+**Formats** (built in, nothing extra to install)
+- JPEG, PNG, GIF, BMP, TIFF, WebP, ICO, ICNS, **HEIC/HEIF, AVIF, JPEG XL**
+- **RAW** from most cameras (CR2, CR3, NEF, ARW, DNG, RAF, ORF, RW2, …), shown from the embedded preview first
+- **PSD and PSB** (Photoshop Large Document), **XCF** (GIMP, visible layers composited), OpenRaster, Krita
+- **OpenEXR**, Radiance HDR, JPEG 2000, TGA, DDS, KTX, **QOI**, PCX, PBM/PGM/PPM/PFM, SGI
+- **SVG** (full SVG 1.1 with CSS, filters and text via resvg)
+- Animations (GIF, APNG, WebP, AVIF/HEICS, JPEG XL) with pause, frame stepping and speed;
+  multi-page TIFF/ICO/HEIF with page navigation. See the [FAQ](docs/FAQ.md#which-formats-are-supported).
 
-- **DMG:** Unter [Releases](https://github.com/brokoskokoli/lumaflip/releases) die Datei
-  `Lumaflip-<version>.dmg` laden, öffnen und Lumaflip in den Ordner „Programme“ ziehen. Die App ist mit
-  Developer ID signiert und von Apple notarisiert. Prüfsumme: `shasum -a 256 -c Lumaflip-<version>.dmg.sha256`.
-- **Homebrew:** `brew install --cask brokoskokoli/tap/lumaflip` (eigener Tap; Updates danach über
-  Sparkle in der App oder `brew upgrade --cask lumaflip`).
+**Colour and HDR**
+- ICC profiles, Display P3 and CMYK are handled correctly. The colour profile follows the window
+  when you move it to another display.
+- **HDR/EDR**: iPhone HEIC, Ultra HDR JPEG, HDR AVIF and OpenEXR show real highlight brightness on
+  XDR and other EDR displays. Includes an SDR preview toggle and a view-only exposure control.
 
-Voraussetzung: macOS 15 (Sequoia) oder neuer, Apple-Silicon-Mac.
+**Culling and ratings**
+- **Culling mode** (⌘K): 0–5 stars, pick / reject, and optional auto-advance after rating.
+- Ratings are stored where other tools can read them: **Lightroom-compatible XMP sidecars**
+  (also read by Capture One and darktable), embedded XMP, and/or Finder tags.
+- Filter by rating. Move all rejects to the Trash or to a `_Rejected` folder in one step.
+- **Quick move/copy**: `M` / `C` + `1`–`9` sends the image to one of nine preset folders, with
+  undo and name-conflict handling.
+- RAW+JPEG pairs can optionally be treated as a single image.
 
-Beim ersten Öffnen eines Bildes aus Schreibtisch, Dokumenten, Downloads, von einem USB-Stick oder einem
-Netzlaufwerk fragt macOS einmal nach Zugriff: Lumaflip liest den Ordner des geöffneten Bildes, damit du
-blättern kannst.
+**Grid, compare, loupe**
+- Grid view with multi-select, a filmstrip, and side-by-side comparison of 2–4 images with
+  synchronised zoom and pan.
+- Hold `L` for a 100 % / 200 % loupe under the cursor. Lock the zoom (⇧Z) to check focus across a burst.
 
-## Aus dem Quellcode bauen
+**Folder map and metadata**
+- **Folder map** (View → Map, ⇧⌘M): every geotagged image in the folder on one map, with nearby
+  points clustered. The current image is highlighted and follows as you flip.
+- Info panel with file, image and camera data, a histogram and Finder tags, plus a window listing
+  all raw EXIF/IPTC/XMP metadata.
+
+**Made for the Mac**
+- Native menus, light and dark mode, full-screen mode, a slideshow, lossless JPEG rotation, rename,
+  Share, drag out to other apps, and one-click "Set as Default App for Images".
+- Every shortcut and mouse/trackpad action can be remapped, with conflict detection and presets
+  ("Mac Standard", "Windows Viewer Habits", "Photographer / Lightroom").
+- Automatic, signed updates via Sparkle (can be turned off).
+
+**Multilingual**: available in 18 languages. It follows the system language, or you can pick one
+and switch without restarting. [Translations](#translations) are machine-made so far, and reviews
+are welcome.
+
+**Private by design**
+- No telemetry, no account, no cloud. The only network traffic is the update check (can be turned
+  off) and map tiles, which load only after you click "Show map".
+- No Full Disk Access needed.
+- Decoders for less common formats (SVG, XCF, PSB, QOI, …) run in a **sandboxed helper process**
+  with no network and no write access. A malformed file cannot crash the app.
+
+## Screenshots
+
+<!--
+TODO: add screenshots (PNG, 2x Retina, light and dark mode where it matters; no private photos,
+use CC0 images). Planned files:
+  docs/images/viewer.png        – main window: one photo, slim title bar, status bar with "Sorted like Finder: Date Added ↓"
+  docs/images/info-panel.png    – info panel open (camera data, histogram, Finder tags) + filmstrip
+  docs/images/culling.png       – culling mode overlay with stars / pick / reject
+  docs/images/grid.png          – grid view with multi-select
+  docs/images/compare.png       – compare mode, 3 images, synchronised zoom
+  docs/images/folder-map.png    – folder map with clustered markers and hover preview
+  docs/images/hdr.png           – HDR badge + exposure slider (note: EDR highlights don't show in screenshots)
+  docs/images/preferences-input.png – Preferences → Mouse & Keyboard (remappable inputs)
+Then replace this comment with e.g.:
+  <p align="center"><img src="docs/images/viewer.png" width="800" alt="Lumaflip main window"></p>
+-->
+
+*Screenshots are coming soon.*
+
+## Install
+
+Requirements: **macOS 15 Sequoia or later** on an **Apple Silicon** Mac.
+
+- **DMG**: download `Lumaflip-<version>.dmg` from
+  [Releases](https://github.com/brokoskokoli/lumaflip/releases), open it and drag Lumaflip into
+  Applications. Releases are signed with a Developer ID and notarized by Apple. To verify the
+  download: `shasum -a 256 -c Lumaflip-<version>.dmg.sha256`.
+- **Homebrew** *(planned)*: the cask will be published in our own tap first,
+  `brew install --cask brokoskokoli/tap/lumaflip`. Once it is accepted into
+  `homebrew/cask`, the command will be `brew install --cask lumaflip`.
+
+The first time you open an image from Desktop, Documents, Downloads, a removable drive or a network
+volume, macOS asks once for access. Lumaflip needs to read the image's folder so you can flip
+through it.
+
+## Quick start
+
+1. Double-click an image (or choose *Open With → Lumaflip*). To make Lumaflip your default viewer,
+   choose *File → Set as Default App…* (or *Settings → Formats*). You can deselect individual file types.
+2. Flip with ← / →. Press `?` to see every shortcut.
+3. Press `I` for the info panel, `T` for the filmstrip and `G` for the grid.
+4. To cull a shoot, press ⌘K, rate with `1`–`5`, `P` (pick) and `X` (reject), then choose
+   *Move All Rejected to Trash…*.
+
+### Default keyboard shortcuts
+
+All of these can be remapped in *Settings → Mouse & Keyboard*.
+
+| Action | Keys |
+|---|---|
+| Next / previous image | → / ←, Space / ⇧Space, Page Down / Page Up, scroll wheel, mouse buttons 4/5 |
+| First / last image | Home / End, ⌘↑ / ⌘↓ |
+| Next / previous folder | ⌥→ / ⌥← |
+| Zoom in / out | ⌘+ / ⌘−, `+` / `−`, pinch |
+| Fit / 100 % / fill width | ⌘9 or `1` / ⌘0 or `3` / `2` |
+| Toggle fit ↔ 100 % at cursor | `Z` |
+| Lock zoom while flipping | ⇧Z |
+| Loupe (hold) | `L` |
+| Full screen / leave mode | ⌃⌘F, `F`, double-click / Esc |
+| Slideshow | ⇧⌘F, `S` (during a slideshow, `1`–`9` set the interval in seconds) |
+| Rotate left / right | ⌘L / ⌘R (save rotation: ⌘S) |
+| Flip horizontal / vertical | `H` / ⇧H |
+| Info panel / filmstrip / grid | ⌘I or `I` / `T` / `G` |
+| Folder map | ⇧⌘M |
+| Go to image / filter by name | ⌘G / ⌘F |
+| Move to Trash / undo / redo | ⌘⌫ or Delete / ⌘Z / ⇧⌘Z |
+| Rename | Return, F2 |
+| Reveal in Finder | ⇧⌘R |
+| Copy image / copy path | ⌘C / ⌥⌘C |
+| Open in editor | `E` |
+| Culling mode | ⌘K, `K` |
+| Rate / pick / reject / clear | `0`–`5` / `P` / `X` / `U` (in culling mode, where the digits rate instead of zoom) |
+| Quick move / copy to folder *n* | `M` + `1`–`9` / `C` + `1`–`9` |
+| Animation: play/pause / step | Space / `,` `.` |
+| Next / previous page | ⌥↓ / ⌥↑ |
+| HDR on/off / exposure ± / reset | ⇧⌘H / ⌥⌘+ ⌥⌘− / ⌥⌘0 |
+| New window / duplicate window | ⌘N / ⌥⌘N |
+| Settings / shortcut overview | ⌘, / `?` |
+
+## Build from source
 
 ```sh
-brew install cmake ninja qt jpeg-turbo googletest clang-format
-tools/fetch_sparkle.sh                              # optional: Sparkle für automatische Updates
-tools/check.sh --quick                              # bauen + alle Tests
-open build/check/src/Lumaflip.app --args <bild>     # starten
-tools/package.sh                                    # eigenständiges App-Paket + DMG/ZIP in dist/ (ad-hoc signiert)
+brew install cmake ninja qt jpeg-turbo googletest clang-format resvg
+tools/fetch_sparkle.sh                 # optional: Sparkle for automatic updates
+tools/run.sh [image]                   # build only the app and start it
+tools/check.sh --quick --no-gui        # build + unit tests (no windows opened)
+tools/package.sh                       # self-contained app + DMG/ZIP in dist/ (ad-hoc signed)
 ```
 
-Details zu Signatur, Notarisierung und Releases: [docs/RELEASING.md](docs/RELEASING.md).
-Hinweise für Mitwirkende: [CLAUDE.md](CLAUDE.md). Beiträge laufen über das DCO (`git commit -s`).
+Qt 6.11 from Homebrew. resvg is optional; without it, SVG falls back to Qt SVG. More detail is in
+[CONTRIBUTING.md](CONTRIBUTING.md), and signing, notarization and releases are covered in
+[docs/RELEASING.md](docs/RELEASING.md).
 
-## Lizenz
+## Roadmap
 
-Lumaflip ist freie Software unter der **GNU General Public License v3.0 oder später**
-(GPL-3.0-or-later), siehe [LICENSE](LICENSE). Lumaflip verwendet Qt unter der LGPLv3 (dynamisch
-gelinkt), Sparkle (MIT) für Updates und libjpeg-turbo (BSD-artig, statisch gelinkt) für das
-verlustfreie Drehen; die Lizenzen aller mitgelieferten Komponenten zeigt das Fenster
-*Über Lumaflip → Lizenzen von Drittanbietern …*, die Texte liegen im App-Paket unter
-`Contents/Resources/licenses`.
+Milestones M1–M3 are done (see the [changelog](CHANGELOG.md)). Planned for **M4**:
+
+- Browse archives (ZIP/CBZ, RAR/CBR, 7z) and PDF like folders
+- Live Text and subject lift-out (VisionKit)
+- Simple crop, export and convert
+- Photo overlays: focus points, clipping warnings, focus peaking
+- Custom actions (shell command or Shortcuts on a key)
+- **Windows and Linux builds**. The core is already platform-neutral and builds on Linux in CI.
+
+The full specification (in German) is [SPEC.md](SPEC.md).
+
+## Contributing
+
+Bug reports, ideas, translations and pull requests are welcome. Please read
+[CONTRIBUTING.md](CONTRIBUTING.md) first. Features are specified before they are implemented
+(spec-first), every requirement has an ID, and tests reference those IDs. This project follows the
+[Code of Conduct](CODE_OF_CONDUCT.md). Report security issues privately as described in
+[SECURITY.md](SECURITY.md).
+
+## Translations
+
+The UI ships in English, German, French, Spanish, Italian, Portuguese (Brazil and Portugal), Dutch,
+Polish, Swedish, Danish, Norwegian Bokmål, Finnish, Czech, Japanese, Chinese (Simplified and
+Traditional) and Korean. Except for German (the source language), the translations are
+**machine-translated and not yet reviewed**. Corrections from native speakers are very welcome:
+see [translations/README.md](translations/README.md) and the per-language status in
+[translations/REVIEW_STATUS.md](translations/REVIEW_STATUS.md), or open a
+[translation issue](https://github.com/brokoskokoli/lumaflip/issues/new?template=translation.yml).
+
+## Documentation
+
+[docs/README.md](docs/README.md) indexes all documents, including the [FAQ](docs/FAQ.md), the
+specification, manual test plans and the release process.
+
+## License
+
+Lumaflip is free software, licensed under the **GNU General Public License v3.0 or later**
+(GPL-3.0-or-later); see [LICENSE](LICENSE). The repository follows the [REUSE](https://reuse.software)
+specification ([REUSE.toml](REUSE.toml)).
+
+Third-party components in the app bundle include Qt (LGPLv3, dynamically linked and replaceable),
+libjpeg-turbo (BSD-style, statically linked, for lossless JPEG rotation), resvg (Apache-2.0/MIT, SVG
+in the decoder helper) and Sparkle (MIT, updates). You can see every bundled component and its
+licence under *About Lumaflip → Third-Party Licenses…*, and the full texts are in
+`Lumaflip.app/Contents/Resources/licenses/`.
+
+## Acknowledgements
+
+Lumaflip builds on [Qt](https://www.qt.io), Apple ImageIO,
+[libjpeg-turbo](https://libjpeg-turbo.org), [resvg](https://github.com/linebender/resvg) and
+[Sparkle](https://sparkle-project.org). Many ideas come from viewers that came before it:
+FastStone and qimgv (quick move by digit), FastRawViewer (pick/reject with `_Rejected`), nomacs
+(linked windows), ImageGlass (digit zoom modes), Phoenix Slides (slideshow interval by digit) and
+GNOME Loupe/glycin (sandboxed decoders).
