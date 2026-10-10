@@ -161,6 +161,63 @@
     </message>
 </context>
 <context>
+    <name>lf::CompareView</name>
+    <message>
+        <source>Vergleich</source>
+        <translation>비교</translation>
+    </message>
+    <message>
+        <source>%1 — %2</source>
+        <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
+        <translation>%1 — %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CouplingManager</name>
+    <message numerus="yes">
+        <source>%n Fenster gekoppelt</source>
+        <translation>
+            <numerusform>윈도우 %n개를 연결함</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Kein passendes Bild zu „%1“</source>
+        <translation>‘%1’과(와) 일치하는 이미지 없음</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln</source>
+        <translation>윈도우 연결</translation>
+    </message>
+    <message>
+        <source>Gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt. Mit ⌥ lässt sich ein Fenster einzeln verschieben.</source>
+        <translation>연결된 윈도우는 함께 넘기며 확대/축소와 보기 영역을 공유합니다. ⌥을 누른 채 하나의 윈도우만 이동할 수 있습니다.</translation>
+    </message>
+    <message>
+        <source>Dateiname (ohne Endung)</source>
+        <translation>파일 이름(확장자 제외)</translation>
+    </message>
+    <message>
+        <source>Position in der Sammlung</source>
+        <translation>모음 내 위치</translation>
+    </message>
+    <message>
+        <source>Gemeinsam blättern nach:</source>
+        <translation>함께 넘기는 기준:</translation>
+    </message>
+    <message>
+        <source>Koppeln</source>
+        <translation>연결</translation>
+    </message>
+    <message>
+        <source>Entkoppeln</source>
+        <translation>윈도우 연결 해제</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>취소</translation>
+    </message>
+</context>
+<context>
     <name>lf::CullingController</name>
     <message>
         <source>Bewertung wird gelesen …</source>
@@ -691,6 +748,13 @@
     </message>
 </context>
 <context>
+    <name>lf::GridView</name>
+    <message>
+        <source>Raster</source>
+        <translation>격자</translation>
+    </message>
+</context>
+<context>
     <name>lf::HistogramWidget</name>
     <message>
         <source>Histogramm</source>
@@ -1197,6 +1261,34 @@
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
         <translation>빠른 이동: 복사(C, 그다음 1–9)</translation>
+    </message>
+    <message>
+        <source>Gehe zu Bild …</source>
+        <translation>이미지로 이동…</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge</source>
+        <translation>무작위 순서</translation>
+    </message>
+    <message>
+        <source>Nach Dateiname filtern</source>
+        <translation>파일 이름으로 필터링</translation>
+    </message>
+    <message>
+        <source>Mit nächstem vergleichen</source>
+        <translation>다음 이미지와 비교</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>항상 위에</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus</source>
+        <translation>최소 윈도우</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln …</source>
+        <translation>윈도우 연결…</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -1890,6 +1982,14 @@
     </message>
 </context>
 <context>
+    <name>lf::LoupeWidget</name>
+    <message>
+        <source>%1 %</source>
+        <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
+        <translation>%1%</translation>
+    </message>
+</context>
+<context>
     <name>lf::MainMenu</name>
     <message>
         <source>Ablage</source>
@@ -2288,6 +2388,46 @@
         <source>Ziele der Schnellablage festlegen …</source>
         <translation>빠른 이동 대상 설정 …</translation>
     </message>
+    <message>
+        <source>Raster</source>
+        <translation>격자</translation>
+    </message>
+    <message>
+        <source>Mit nächstem vergleichen</source>
+        <translation>다음 이미지와 비교</translation>
+    </message>
+    <message>
+        <source>Auswahl vergleichen</source>
+        <translation>선택 항목 비교</translation>
+    </message>
+    <message>
+        <source>Gehe zu Bild …</source>
+        <translation>이미지로 이동…</translation>
+    </message>
+    <message>
+        <source>Nach Dateiname filtern …</source>
+        <translation>파일 이름으로 필터링…</translation>
+    </message>
+    <message>
+        <source>Namensfilter aufheben</source>
+        <translation>이름 필터 지우기</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>항상 위에</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus</source>
+        <translation>최소 윈도우</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln …</source>
+        <translation>윈도우 연결…</translation>
+    </message>
+    <message>
+        <source>Entkoppeln</source>
+        <translation>윈도우 연결 해제</translation>
+    </message>
 </context>
 <context>
     <name>lf::MenuExtras</name>
@@ -2468,6 +2608,45 @@
     </message>
 </context>
 <context>
+    <name>lf::NavigationExtras</name>
+    <message>
+        <source>Gehe zu Bild</source>
+        <translation>이미지로 이동</translation>
+    </message>
+    <message>
+        <source>Bildnummer (1–%1), oder +n / −n vom aktuellen Bild:</source>
+        <translation>이미지 번호(1–%1) 또는 현재 이미지에서 +n / −n:</translation>
+    </message>
+    <message>
+        <source>Gehe zu</source>
+        <translation>이동</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>취소</translation>
+    </message>
+    <message>
+        <source>Bitte eine Bildnummer zwischen 1 und %1 eingeben</source>
+        <translation>1에서 %1 사이의 이미지 번호를 입력하십시오</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge an</source>
+        <translation>셔플 켬</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge aus</source>
+        <translation>셔플 끔</translation>
+    </message>
+    <message>
+        <source>Ende der zufälligen Reihenfolge</source>
+        <translation>셔플 순서의 끝</translation>
+    </message>
+    <message>
+        <source>Anfang der zufälligen Reihenfolge</source>
+        <translation>셔플 순서의 시작</translation>
+    </message>
+</context>
+<context>
     <name>lf::OpenWithService</name>
     <message>
         <source>Kein Programm zum Bearbeiten gefunden. Wähle eines unter Einstellungen → Allgemein → Editor.</source>
@@ -2500,6 +2679,71 @@
     <message>
         <source>Keine passenden Programme</source>
         <translation>일치하는 앱 없음</translation>
+    </message>
+</context>
+<context>
+    <name>lf::OverviewController</name>
+    <message>
+        <source>Keine Bilder für die Rasteransicht</source>
+        <translation>격자 보기에 표시할 이미지가 없음</translation>
+    </message>
+    <message>
+        <source>Zum Vergleichen mindestens zwei Bilder wählen</source>
+        <translation>비교할 이미지를 두 개 이상 선택하십시오</translation>
+    </message>
+    <message>
+        <source>Es werden die ersten %1 Bilder verglichen</source>
+        <translation>처음 %1개의 이미지를 비교합니다</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er)</source>
+        <translation>
+            <numerusform>이미지 %n개</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n ausgewählt</source>
+        <translation>
+            <numerusform>%n개 선택됨</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Name: „%1“</source>
+        <translation>이름: ‘%1’</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation>%1: %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 – %n Bild(er)</source>
+        <translation>
+            <numerusform>%1 – 이미지 %n개</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>휴지통으로 이동</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>이미지 %n개를 휴지통으로 이동함</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb legen?</source>
+        <translation>
+            <numerusform>이미지 %n개를 휴지통으로 이동하겠습니까?</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Mit ⌘Z lässt sich das widerrufen.</source>
+        <translation>⌘Z로 실행 취소할 수 있습니다.</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>취소</translation>
     </message>
 </context>
 <context>
@@ -2665,6 +2909,22 @@
         <translation>그러면 새로운 윈도우가 맨 앞 윈도우의 탭으로 나타납니다. 윈도우 → ‘모든 윈도우 합치기’로 열린 윈도우를 합칠 수 있습니다.</translation>
     </message>
     <message>
+        <source>Gekoppelte Fenster blättern nach:</source>
+        <translation>연결된 윈도우를 넘기는 기준:</translation>
+    </message>
+    <message>
+        <source>Dateiname (ohne Endung)</source>
+        <translation>파일 이름(확장자 제외)</translation>
+    </message>
+    <message>
+        <source>Position in der Sammlung</source>
+        <translation>모음 내 위치</translation>
+    </message>
+    <message>
+        <source>Fenster → „Fenster koppeln …“: gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt.</source>
+        <translation>윈도우 → ‘윈도우 연결…’: 연결된 윈도우는 함께 넘기며 확대/축소와 보기 영역을 공유합니다.</translation>
+    </message>
+    <message>
         <source>Dunkel</source>
         <translation>어둡게</translation>
     </message>
@@ -2749,6 +3009,30 @@
         <translation>이미지 픽셀 1개 = 1포인트</translation>
     </message>
     <message>
+        <source>Lupe (L gedrückt halten):</source>
+        <translation>돋보기(L 길게 누르기):</translation>
+    </message>
+    <message>
+        <source>200 %</source>
+        <translation>200%</translation>
+    </message>
+    <message>
+        <source>Größe der Lupe:</source>
+        <translation>돋보기 크기:</translation>
+    </message>
+    <message>
+        <source>Klein</source>
+        <translation>작게</translation>
+    </message>
+    <message>
+        <source>Mittel</source>
+        <translation>중간</translation>
+    </message>
+    <message>
+        <source>Groß</source>
+        <translation>크게</translation>
+    </message>
+    <message>
         <source>Diashow (⇧⌘F, S):</source>
         <translation>슬라이드쇼(⇧⌘F, S):</translation>
     </message>
@@ -2769,8 +3053,8 @@
         <translation>크로스페이드</translation>
     </message>
     <message>
-        <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, Esc beendet.</source>
-        <translation>슬라이드쇼 중: 스페이스 바로 일시 정지, 1–9로 간격(초) 설정, ←/→로 넘기기, Esc로 종료.</translation>
+        <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, P/X/U bewerten, Esc beendet.</source>
+        <translation>슬라이드쇼 중: 스페이스 바로 일시 정지, 1–9로 간격(초) 설정, ←/→로 넘기기, P/X/U로 평가, Esc로 종료합니다.</translation>
     </message>
     <message>
         <source>Profilvorlagen</source>
@@ -3288,6 +3572,17 @@
     </message>
 </context>
 <context>
+    <name>lf::QuickFilterBar</name>
+    <message>
+        <source>Dateiname filtern</source>
+        <translation>파일 이름 필터링</translation>
+    </message>
+    <message>
+        <source>Filter aufheben (Esc)</source>
+        <translation>필터 지우기(Esc)</translation>
+    </message>
+</context>
+<context>
     <name>lf::QuickMove</name>
     <message>
         <source>%1  (nicht festgelegt)</source>
@@ -3323,6 +3618,18 @@
     <message>
         <source>Übersprungen – nichts geändert.</source>
         <translation>건너뜀 – 변경된 내용 없음.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „%1“ verschoben</source>
+        <translation>
+            <numerusform>이미지 %n개를 ‘%1’(으)로 이동함</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „%1“ kopiert</source>
+        <translation>
+            <numerusform>이미지 %n개를 ‘%1’(으)로 복사함</numerusform>
+        </translation>
     </message>
     <message>
         <source>Nach „%1“ verschoben</source>
@@ -3915,6 +4222,49 @@
     <message>
         <source>Nur EXIF-Ausrichtung setzen</source>
         <translation>EXIF 방향만 설정</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowExtras</name>
+    <message>
+        <source>Zum Bewegen des Fensters ziehen</source>
+        <translation>드래그하여 윈도우 이동</translation>
+    </message>
+    <message>
+        <source>Name: „%1“</source>
+        <translation>이름: ‘%1’</translation>
+    </message>
+    <message>
+        <source>Zufällig</source>
+        <translation>셔플</translation>
+    </message>
+    <message>
+        <source>Gekoppelt</source>
+        <translation>연결됨</translation>
+    </message>
+    <message>
+        <source>Blättern, Zoom und Ausschnitt laufen mit den anderen gekoppelten Fenstern</source>
+        <translation>넘기기, 확대/축소, 보기 영역이 다른 연결된 윈도우와 연동됩니다</translation>
+    </message>
+    <message>
+        <source>Kein Dateiname passt zu „%1“ – Esc hebt den Filter auf</source>
+        <translation>‘%1’과(와) 일치하는 파일 이름 없음 – Esc를 눌러 필터 지우기</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>항상 위에</translation>
+    </message>
+    <message>
+        <source>Nicht mehr im Vordergrund</source>
+        <translation>항상 위에 끔</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
+        <translation>최소 윈도우 – 위쪽을 드래그하여 윈도우 이동</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus aus</source>
+        <translation>최소 윈도우 끔</translation>
     </message>
 </context>
 <context>

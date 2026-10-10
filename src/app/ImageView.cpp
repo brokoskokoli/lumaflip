@@ -114,6 +114,9 @@ struct ImageView::Private {
     QPointer<QWindow> hookedWindow;
     QPointer<ScreenProfileWatcher> profileWatcher; // F-COL-02
     bool dragOutDefault = false;                   // F-IN-14 "dragOut"
+    bool dragOutEnabled = true;                    // F-GRID-03 compare panes: off
+    int quiet = 0;                                 // > 0: no viewTransformChanged()
+    QTransform lastViewTransform;
 
     // signals state
     double lastFactor = -1;
@@ -144,8 +147,22 @@ struct ImageView::Private {
         model.setViewportSize(canvas->size() * r);
     }
 
+    // sync() for changes the user did not make (new image, resize, screen): no
+    // viewTransformChanged() (M3 synchronized views).
+    void quietSync() {
+        ++quiet;
+        sync();
+        --quiet;
+    }
+
     void sync() {
-        canvas->setViewTransform(model.imageToViewport());
+        const QTransform viewTransform = model.imageToViewport();
+        canvas->setViewTransform(viewTransform);
+        if (viewTransform != lastViewTransform) {
+            lastViewTransform = viewTransform;
+            if (!quiet && image)
+                emit q->viewTransformChanged();
+        }
         const double f = model.factor();
         if (std::abs(f - lastFactor) > 1e-9 || model.mode() != lastMode) {
             lastFactor = f;
@@ -214,7 +231,7 @@ struct ImageView::Private {
         updateOutputColorSpace();
         syncGeometry();
         applyBackground();
-        sync();
+        quietSync();
     }
 
     void hookScreen() {
@@ -334,7 +351,7 @@ struct ImageView::Private {
                 leftDown = true;
                 dragging = false;
                 // F-IN-14: ⌥ swaps panning and drag-out.
-                altDrag = bool(e->modifiers() & Qt::AltModifier) != dragOutDefault;
+                altDrag = dragOutEnabled && bool(e->modifiers() & Qt::AltModifier) != dragOutDefault;
                 pressPos = lastPos = pos;
                 return true;
             }
@@ -437,7 +454,7 @@ void ImageView::setImage(DecodedImagePtr image, bool sameFile) {
     d->image = std::move(image);
     d->needsHigherSent = false;
     d->canvas->setCurrent(d->image, sameAsShown);
-    d->sync();
+    d->quietSync();
 }
 
 void ImageView::showAnimationFrame(DecodedImagePtr frame) {
@@ -462,7 +479,7 @@ void ImageView::clear() {
     d->image.reset();
     d->canvas->setCurrent(nullptr, false);
     d->card->hide();
-    d->sync();
+    d->quietSync();
 }
 
 void ImageView::showError(const QString& title, const QString& detail, const QString& actionText) {
@@ -472,7 +489,7 @@ void ImageView::showError(const QString& title, const QString& detail, const QSt
     d->card->place(size());
     d->card->show();
     d->card->raise();
-    d->sync();
+    d->quietSync();
 }
 
 bool ImageView::isShowingError() const {
@@ -612,7 +629,7 @@ void ImageView::setUpscaleNearest(bool nearest) {
 
 void ImageView::setActualSizeInDevicePixels(bool devicePixels) {
     d->model.setActualSizeInDevicePixels(devicePixels);
-    d->sync();
+    d->quietSync();
 }
 
 void ImageView::setOutputColorSpace(const QColorSpace& colorSpace) {
@@ -632,6 +649,17 @@ void ImageView::setDragOutByDefault(bool dragOut) {
     d->dragOutDefault = dragOut;
 }
 
+void ImageView::setDragOutEnabled(bool enabled) {
+    d->dragOutEnabled = enabled;
+}
+
+QTransform ImageView::imageToWidget() const {
+    if (!d->image)
+        return {};
+    const double r = d->dpr();
+    return d->model.imageToViewport() * QTransform::fromScale(1.0 / r, 1.0 / r);
+}
+
 void ImageView::setColorSpaceResolverForTesting(std::function<QColorSpace(const QWidget*)> resolver) {
     colorSpaceResolver() = std::move(resolver);
 }
@@ -643,7 +671,7 @@ bool ImageView::event(QEvent* event) {
         d->syncGeometry();
         d->applyBackground();
         d->updateOutputColorSpace();
-        d->sync();
+        d->quietSync();
         break;
     case QEvent::ThemeChange:
     case QEvent::ApplicationPaletteChange:
@@ -697,7 +725,7 @@ void ImageView::resizeEvent(QResizeEvent* event) {
     d->canvas->setGeometry(rect());
     d->card->place(size());
     d->syncGeometry();
-    d->sync();
+    d->quietSync();
 }
 
 void ImageView::keyPressEvent(QKeyEvent* event) {
@@ -747,7 +775,7 @@ void ImageView::showEvent(QShowEvent* event) {
     d->updateOutputColorSpace();
     d->applyBackground();
     d->syncGeometry();
-    d->sync();
+    d->quietSync();
 }
 
 } // namespace lf

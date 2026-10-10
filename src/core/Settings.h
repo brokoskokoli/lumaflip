@@ -39,6 +39,11 @@ inline constexpr auto ActualSizeUnit = "view/actualSizeUnit"; // "devicePixels" 
 inline constexpr auto ShowStatusBar = "view/statusBar";
 inline constexpr auto ShowInfoPanel = "view/infoPanel";
 inline constexpr auto ShowFilmstrip = "view/filmstrip";
+// M3: magnifier (F-VIEW-11), grid view (F-GRID-02), coupled windows (F-WIN-07)
+inline constexpr auto LoupeSize = "view/loupeSize";     // "small" | "medium" | "large", default "medium"
+inline constexpr auto LoupeZoom = "view/loupeZoom";     // "100" | "200" (percent), default "200"
+inline constexpr auto GridThumbSize = "view/gridThumb"; // 80..400 logical px, default 160
+inline constexpr auto CoupleBy = "window/coupleBy";     // "name" | "index", default "name"
 // Navigation & sorting
 inline constexpr auto WrapMode = "nav/wrap";               // "stop" | "wrap" | "nextFolder"
 inline constexpr auto FollowFinder = "sort/followFinder";  // bool, default true

@@ -3,6 +3,7 @@
 
 #include "FolderCache.h"
 #include "ImageFormats.h"
+#include "NameFilter.h"
 #include "Platform.h"
 
 #include <QDir>
@@ -367,6 +368,7 @@ struct Job {
     FolderSortMemory folderMemory; // F-SORT-06
     RatingReader ratingReader;     // F-SORT-02 / F-CULL-04 (M3)
     RatingFilter filter;
+    QStringList nameTerms;         // F-NAV-08 (folded, NameFilter.h)
     QString keepPath;              // stays visible although the filter does not match (current image)
     bool revalidate = false;       // explicit open: check a shared snapshot against the folder
     NameCollator* collator = nullptr;
@@ -481,8 +483,9 @@ Result runJob(Job job) {
     }
 
     // M3: ratings from the RatingStore for sorting by rating and for the filter.
-    const bool filtering = job.ratingReader && job.filter.isActive();
-    if (job.ratingReader && (spec.key == SortKey::Rating || filtering)) {
+    const bool ratingFiltering = job.ratingReader && job.filter.isActive();
+    const bool filtering = ratingFiltering || !job.nameTerms.isEmpty(); // F-NAV-08
+    if (job.ratingReader && (spec.key == SortKey::Rating || ratingFiltering)) {
         for (qsizetype i = 0; i < entries.size(); ++i) {
             if ((i & 31) == 31 && cancelled())
                 return r;
@@ -496,7 +499,9 @@ Result runJob(Job job) {
         QVector<FileEntry> shown;
         shown.reserve(entries.size());
         for (FileEntry& e : entries) {
-            if (job.filter.matches(collection::ratingOf(e)) || e.path == job.keepPath)
+            const bool ratingOk =
+                !ratingFiltering || job.filter.matches(collection::ratingOf(e)) || e.path == job.keepPath;
+            if (ratingOk && namefilter::matchesTerms(e.name, job.nameTerms))
                 shown.append(std::move(e));
             else
                 r.hidden.append(std::move(e));
@@ -566,6 +571,8 @@ struct Collection::Private {
     RatingFilter filter;
     QHash<QString, FileEntry> hidden;
     QString stale;
+    QString nameFilter;          // F-NAV-08: as typed
+    QStringList nameTerms;       // folded terms of nameFilter
     bool revalidateNext = false; // the next load comes from an explicit open
     // replayEditsDuringJob() inserted entries whose image properties are still unknown
     // (needed by the sort key): a resort on a worker reads them (never the GUI thread).
@@ -635,6 +642,7 @@ struct Collection::Private {
         j.folderMemory = folderMemory;
         j.ratingReader = ratingReader;
         j.filter = filter;
+        j.nameTerms = nameTerms;
         {
             const QString cur = current >= 0 && current < entries.size() ? entries[current].path : QString();
             if (!stale.isEmpty())
@@ -799,8 +807,12 @@ struct Collection::Private {
     }
 
     bool hiddenByFilter(const FileEntry& e) const {
-        return ratingReader && filter.isActive() && e.ratingRead && !filter.matches(collection::ratingOf(e));
+        return (ratingReader && filter.isActive() && e.ratingRead &&
+                !filter.matches(collection::ratingOf(e))) ||
+               !namefilter::matchesTerms(e.name, nameTerms);
     }
+    // F-NAV-08: a changed name filter applied to the entries in memory (no new job).
+    void applyNameFilter();
 
     void reset(Mode m) {
         cancelPending();
@@ -979,6 +991,8 @@ void Collection::copyFrom(const Collection& other) {
     d->manualSpec = o.manualSpec;
     d->ratingReader = o.ratingReader;
     d->filter = o.filter;
+    d->nameFilter = o.nameFilter;
+    d->nameTerms = o.nameTerms;
     d->hidden = o.hidden;
     d->stale = o.stale;
     const bool specChanged = !(d->spec == o.spec);
@@ -1341,7 +1355,8 @@ void Collection::updateRating(const QString& path, const Rating& r) {
         if (it == d->hidden.end())
             return;
         collection::setRating(*it, r);
-        if (!d->filter.isActive() || d->filter.matches(r)) {
+        if ((!d->filter.isActive() || d->filter.matches(r)) &&
+            namefilter::matchesTerms(it->name, d->nameTerms)) {
             FileEntry e = d->hidden.take(key);
             d->insertEntry(std::move(e), false); // matches again: back at its sorted place
         }
@@ -1363,6 +1378,74 @@ void Collection::updateRating(const QString& path, const Rating& r) {
     d->rebuildIndex();
     d->current = cur.isEmpty() ? -1 : d->indexByPath.value(cur, -1);
     emit entriesChanged();
+}
+
+void Collection::setNameFilter(const QString& query) {
+    d->nameFilter = query;
+    const QStringList t = namefilter::terms(query);
+    if (t == d->nameTerms)
+        return;
+    d->nameTerms = t;
+    if (d->mode == Mode::None)
+        return;
+    if (d->watcher) {
+        d->start(JobKind::Load); // the running job filters with the old terms
+        return;
+    }
+    d->applyNameFilter();
+}
+
+QString Collection::nameFilter() const {
+    return d->nameFilter;
+}
+
+void Collection::Private::applyNameFilter() {
+    const QString oldPath = current >= 0 && current < entries.size() ? entries[current].path : QString();
+    const int oldIndex = current;
+    // Visible entries that no longer match leave (also the current one and a stale one).
+    QVector<FileEntry> kept;
+    kept.reserve(entries.size());
+    for (FileEntry& e : entries) {
+        if (namefilter::matchesTerms(e.name, nameTerms)) {
+            kept.append(std::move(e));
+        } else {
+            if (e.path == stale)
+                stale.clear();
+            const QString p = e.path;
+            hidden.insert(p, std::move(e));
+        }
+    }
+    // Hidden entries that match the name and the rating filter come back, sorted.
+    QVector<FileEntry> back;
+    for (auto it = hidden.begin(); it != hidden.end();) {
+        const FileEntry& e = it.value();
+        const bool ratingOk =
+            !(ratingReader && filter.isActive()) || !e.ratingRead || filter.matches(collection::ratingOf(e));
+        if (ratingOk && namefilter::matchesTerms(e.name, nameTerms)) {
+            back.append(it.value());
+            it = hidden.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    BinaryCollator fallback;
+    const NameCollator& coll = collator ? *collator : fallback;
+    auto less = [&](const FileEntry& a, const FileEntry& b) {
+        return collection::compareEntries(a, b, spec, coll) < 0;
+    };
+    std::sort(back.begin(), back.end(), less);
+    entries.clear();
+    entries.reserve(kept.size() + back.size());
+    std::merge(std::make_move_iterator(kept.begin()), std::make_move_iterator(kept.end()),
+               std::make_move_iterator(back.begin()), std::make_move_iterator(back.end()),
+               std::back_inserter(entries), less);
+    rebuildIndex();
+    const auto it = indexByPath.constFind(oldPath);
+    current = it != indexByPath.cend() ? *it : (entries.isEmpty() ? -1 : 0);
+    emit q->entriesChanged();
+    const QString newPath = current >= 0 ? entries[current].path : QString();
+    if (current != oldIndex || newPath != oldPath)
+        emit q->currentChanged(current, newPath);
 }
 
 void Collection::setProviders(NameCollator* collator, FolderOrderProvider* order,

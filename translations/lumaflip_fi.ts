@@ -161,6 +161,64 @@
     </message>
 </context>
 <context>
+    <name>lf::CompareView</name>
+    <message>
+        <source>Vergleich</source>
+        <translation>Vertailu</translation>
+    </message>
+    <message>
+        <source>%1 — %2</source>
+        <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
+        <translation>%1 — %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CouplingManager</name>
+    <message numerus="yes">
+        <source>%n Fenster gekoppelt</source>
+        <translation>
+            <numerusform>%n ikkuna linkitetty</numerusform>
+            <numerusform>%n ikkunaa linkitetty</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Kein passendes Bild zu „%1“</source>
+        <translation>Ei vastaavaa kuvaa kohteelle ”%1”</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln</source>
+        <translation>Linkitä ikkunat</translation>
+    </message>
+    <message>
+        <source>Gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt. Mit ⌥ lässt sich ein Fenster einzeln verschieben.</source>
+        <translation>Linkitetyt ikkunat selaavat yhdessä ja jakavat zoomauksen ja näkyvän alueen. Pidä ⌥ painettuna siirtääksesi yhtä ikkunaa erikseen.</translation>
+    </message>
+    <message>
+        <source>Dateiname (ohne Endung)</source>
+        <translation>Tiedostonimi (ilman päätettä)</translation>
+    </message>
+    <message>
+        <source>Position in der Sammlung</source>
+        <translation>Sijainti kokoelmassa</translation>
+    </message>
+    <message>
+        <source>Gemeinsam blättern nach:</source>
+        <translation>Selaa yhdessä:</translation>
+    </message>
+    <message>
+        <source>Koppeln</source>
+        <translation>Linkitä</translation>
+    </message>
+    <message>
+        <source>Entkoppeln</source>
+        <translation>Poista ikkunoiden linkitys</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Kumoa</translation>
+    </message>
+</context>
+<context>
     <name>lf::CullingController</name>
     <message>
         <source>Bewertung wird gelesen …</source>
@@ -697,6 +755,13 @@
     </message>
 </context>
 <context>
+    <name>lf::GridView</name>
+    <message>
+        <source>Raster</source>
+        <translation>Ruudukko</translation>
+    </message>
+</context>
+<context>
     <name>lf::HistogramWidget</name>
     <message>
         <source>Histogramm</source>
@@ -1203,6 +1268,34 @@
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
         <translation>Pikasiirto: kopioi (C, sitten 1–9)</translation>
+    </message>
+    <message>
+        <source>Gehe zu Bild …</source>
+        <translation>Siirry kuvaan…</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge</source>
+        <translation>Satunnainen järjestys</translation>
+    </message>
+    <message>
+        <source>Nach Dateiname filtern</source>
+        <translation>Suodata tiedostonimen mukaan</translation>
+    </message>
+    <message>
+        <source>Mit nächstem vergleichen</source>
+        <translation>Vertaa seuraavaan</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>Aina päällimmäisenä</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus</source>
+        <translation>Minimaalinen ikkuna</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln …</source>
+        <translation>Linkitä ikkunat…</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -1896,6 +1989,14 @@
     </message>
 </context>
 <context>
+    <name>lf::LoupeWidget</name>
+    <message>
+        <source>%1 %</source>
+        <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
+        <translation>%1 %</translation>
+    </message>
+</context>
+<context>
     <name>lf::MainMenu</name>
     <message>
         <source>Ablage</source>
@@ -2294,6 +2395,46 @@
         <source>Ziele der Schnellablage festlegen …</source>
         <translation>Määritä pikasiirron kohteet …</translation>
     </message>
+    <message>
+        <source>Raster</source>
+        <translation>Ruudukko</translation>
+    </message>
+    <message>
+        <source>Mit nächstem vergleichen</source>
+        <translation>Vertaa seuraavaan</translation>
+    </message>
+    <message>
+        <source>Auswahl vergleichen</source>
+        <translation>Vertaa valintaa</translation>
+    </message>
+    <message>
+        <source>Gehe zu Bild …</source>
+        <translation>Siirry kuvaan…</translation>
+    </message>
+    <message>
+        <source>Nach Dateiname filtern …</source>
+        <translation>Suodata tiedostonimen mukaan…</translation>
+    </message>
+    <message>
+        <source>Namensfilter aufheben</source>
+        <translation>Tyhjennä nimisuodatin</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>Aina päällimmäisenä</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus</source>
+        <translation>Minimaalinen ikkuna</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln …</source>
+        <translation>Linkitä ikkunat…</translation>
+    </message>
+    <message>
+        <source>Entkoppeln</source>
+        <translation>Poista ikkunoiden linkitys</translation>
+    </message>
 </context>
 <context>
     <name>lf::MenuExtras</name>
@@ -2474,6 +2615,45 @@
     </message>
 </context>
 <context>
+    <name>lf::NavigationExtras</name>
+    <message>
+        <source>Gehe zu Bild</source>
+        <translation>Siirry kuvaan</translation>
+    </message>
+    <message>
+        <source>Bildnummer (1–%1), oder +n / −n vom aktuellen Bild:</source>
+        <translation>Kuvan numero (1–%1) tai +n / −n nykyisestä kuvasta:</translation>
+    </message>
+    <message>
+        <source>Gehe zu</source>
+        <translation>Siirry</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Kumoa</translation>
+    </message>
+    <message>
+        <source>Bitte eine Bildnummer zwischen 1 und %1 eingeben</source>
+        <translation>Anna kuvan numero väliltä 1–%1</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge an</source>
+        <translation>Satunnainen järjestys päällä</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge aus</source>
+        <translation>Satunnainen järjestys pois</translation>
+    </message>
+    <message>
+        <source>Ende der zufälligen Reihenfolge</source>
+        <translation>Satunnaisen järjestyksen loppu</translation>
+    </message>
+    <message>
+        <source>Anfang der zufälligen Reihenfolge</source>
+        <translation>Satunnaisen järjestyksen alku</translation>
+    </message>
+</context>
+<context>
     <name>lf::OpenWithService</name>
     <message>
         <source>Kein Programm zum Bearbeiten gefunden. Wähle eines unter Einstellungen → Allgemein → Editor.</source>
@@ -2506,6 +2686,76 @@
     <message>
         <source>Keine passenden Programme</source>
         <translation>Ei sopivia sovelluksia</translation>
+    </message>
+</context>
+<context>
+    <name>lf::OverviewController</name>
+    <message>
+        <source>Keine Bilder für die Rasteransicht</source>
+        <translation>Ei kuvia ruudukkonäkymään</translation>
+    </message>
+    <message>
+        <source>Zum Vergleichen mindestens zwei Bilder wählen</source>
+        <translation>Valitse vähintään kaksi kuvaa vertailtavaksi</translation>
+    </message>
+    <message>
+        <source>Es werden die ersten %1 Bilder verglichen</source>
+        <translation>Vertaillaan %1 ensimmäistä kuvaa</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er)</source>
+        <translation>
+            <numerusform>%n kuva</numerusform>
+            <numerusform>%n kuvaa</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n ausgewählt</source>
+        <translation>
+            <numerusform>%n valittu</numerusform>
+            <numerusform>%n valittu</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Name: „%1“</source>
+        <translation>Nimi: ”%1”</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation>%1: %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 – %n Bild(er)</source>
+        <translation>
+            <numerusform>%1 – %n kuva</numerusform>
+            <numerusform>%1 – %n kuvaa</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>Siirrä roskakoriin</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n kuva siirretty roskakoriin</numerusform>
+            <numerusform>%n kuvaa siirretty roskakoriin</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb legen?</source>
+        <translation>
+            <numerusform>Siirretäänkö %n kuva roskakoriin?</numerusform>
+            <numerusform>Siirretäänkö %n kuvaa roskakoriin?</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Mit ⌘Z lässt sich das widerrufen.</source>
+        <translation>Tämän voi kumota painamalla ⌘Z.</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Kumoa</translation>
     </message>
 </context>
 <context>
@@ -2671,6 +2921,22 @@
         <translation>Uudet ikkunat avautuvat tällöin välilehtinä etummaiseen ikkunaan; Ikkuna → ”Yhdistä kaikki ikkunat” yhdistää avoimet ikkunat.</translation>
     </message>
     <message>
+        <source>Gekoppelte Fenster blättern nach:</source>
+        <translation>Linkitetyt ikkunat selaavat:</translation>
+    </message>
+    <message>
+        <source>Dateiname (ohne Endung)</source>
+        <translation>Tiedostonimi (ilman päätettä)</translation>
+    </message>
+    <message>
+        <source>Position in der Sammlung</source>
+        <translation>Sijainti kokoelmassa</translation>
+    </message>
+    <message>
+        <source>Fenster → „Fenster koppeln …“: gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt.</source>
+        <translation>Ikkuna → ”Linkitä ikkunat…”: linkitetyt ikkunat selaavat yhdessä ja jakavat zoomauksen ja näkyvän alueen.</translation>
+    </message>
+    <message>
         <source>Dunkel</source>
         <translation>Tumma</translation>
     </message>
@@ -2755,6 +3021,30 @@
         <translation>1 kuvapiste = 1 piste</translation>
     </message>
     <message>
+        <source>Lupe (L gedrückt halten):</source>
+        <translation>Suurennuslasi (pidä L painettuna):</translation>
+    </message>
+    <message>
+        <source>200 %</source>
+        <translation>200 %</translation>
+    </message>
+    <message>
+        <source>Größe der Lupe:</source>
+        <translation>Suurennuslasin koko:</translation>
+    </message>
+    <message>
+        <source>Klein</source>
+        <translation>Pieni</translation>
+    </message>
+    <message>
+        <source>Mittel</source>
+        <translation>Keskikokoinen</translation>
+    </message>
+    <message>
+        <source>Groß</source>
+        <translation>Suuri</translation>
+    </message>
+    <message>
         <source>Diashow (⇧⌘F, S):</source>
         <translation>Diaesitys (⇧⌘F, S):</translation>
     </message>
@@ -2775,8 +3065,8 @@
         <translation>Ristihäivytys</translation>
     </message>
     <message>
-        <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, Esc beendet.</source>
-        <translation>Diaesityksen aikana: välilyönti keskeyttää, 1–9 asettaa välin sekunteina, ←/→ selaa, Esc lopettaa.</translation>
+        <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, P/X/U bewerten, Esc beendet.</source>
+        <translation>Diaesityksen aikana: välilyönti keskeyttää, 1–9 asettaa välin sekunteina, ←/→ selaa, P/X/U arvioivat, Esc lopettaa.</translation>
     </message>
     <message>
         <source>Profilvorlagen</source>
@@ -3295,6 +3585,17 @@
     </message>
 </context>
 <context>
+    <name>lf::QuickFilterBar</name>
+    <message>
+        <source>Dateiname filtern</source>
+        <translation>Suodata tiedostonimiä</translation>
+    </message>
+    <message>
+        <source>Filter aufheben (Esc)</source>
+        <translation>Tyhjennä suodatin (Esc)</translation>
+    </message>
+</context>
+<context>
     <name>lf::QuickMove</name>
     <message>
         <source>%1  (nicht festgelegt)</source>
@@ -3330,6 +3631,20 @@
     <message>
         <source>Übersprungen – nichts geändert.</source>
         <translation>Ohitettu – mitään ei muutettu.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „%1“ verschoben</source>
+        <translation>
+            <numerusform>%n kuva siirretty kohteeseen ”%1”</numerusform>
+            <numerusform>%n kuvaa siirretty kohteeseen ”%1”</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „%1“ kopiert</source>
+        <translation>
+            <numerusform>%n kuva kopioitu kohteeseen ”%1”</numerusform>
+            <numerusform>%n kuvaa kopioitu kohteeseen ”%1”</numerusform>
+        </translation>
     </message>
     <message>
         <source>Nach „%1“ verschoben</source>
@@ -3923,6 +4238,49 @@
     <message>
         <source>Nur EXIF-Ausrichtung setzen</source>
         <translation>Aseta vain EXIF-suunta</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowExtras</name>
+    <message>
+        <source>Zum Bewegen des Fensters ziehen</source>
+        <translation>Siirrä ikkunaa vetämällä</translation>
+    </message>
+    <message>
+        <source>Name: „%1“</source>
+        <translation>Nimi: ”%1”</translation>
+    </message>
+    <message>
+        <source>Zufällig</source>
+        <translation>Satunnainen</translation>
+    </message>
+    <message>
+        <source>Gekoppelt</source>
+        <translation>Linkitetty</translation>
+    </message>
+    <message>
+        <source>Blättern, Zoom und Ausschnitt laufen mit den anderen gekoppelten Fenstern</source>
+        <translation>Selaus, zoomaus ja näkyvä alue seuraavat muita linkitettyjä ikkunoita</translation>
+    </message>
+    <message>
+        <source>Kein Dateiname passt zu „%1“ – Esc hebt den Filter auf</source>
+        <translation>Mikään tiedostonimi ei vastaa hakua ”%1” – Esc tyhjentää suodattimen</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>Aina päällimmäisenä</translation>
+    </message>
+    <message>
+        <source>Nicht mehr im Vordergrund</source>
+        <translation>Ei enää päällimmäisenä</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
+        <translation>Minimaalinen ikkuna – siirrä ikkunaa vetämällä yläreunasta</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus aus</source>
+        <translation>Minimaalinen ikkuna pois</translation>
     </message>
 </context>
 <context>

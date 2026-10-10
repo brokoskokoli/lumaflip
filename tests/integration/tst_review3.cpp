@@ -507,20 +507,13 @@ private slots:
                     return r;
             return -1;
         };
-        for (Action a : {Action::ToggleGrid}) { // M3: rating keys are implemented
+        // M3: the grid (F-GRID-02) and the magnifier (F-VIEW-11) were the last planned actions.
+        for (Action a : {Action::ToggleGrid, Action::Magnifier, Action::ZoomFit}) {
             const int r = row(a);
-            if (r < 0)
-                continue; // no key bound
-            QVERIFY2(table->item(r, 0)->text().contains(QStringLiteral("in einer späteren Version")),
-                     qPrintable(actionLabel(a)));
-            QVERIFY(!(table->item(r, 0)->flags() & Qt::ItemIsEnabled));
+            QVERIFY2(r >= 0, qPrintable(actionLabel(a)));
+            QVERIFY(!table->item(r, 0)->text().contains(QStringLiteral("späteren Version")));
+            QVERIFY(table->item(r, 0)->flags() & Qt::ItemIsEnabled);
         }
-        QVERIFY(row(Action::ToggleGrid) >= 0);
-        const int next = row(Action::ZoomFit); // ⌘9
-        QVERIFY(next >= 0);
-        QVERIFY(!table->item(next, 0)->text().contains(QStringLiteral("späteren Version")));
-        QVERIFY(table->item(next, 0)->flags() & Qt::ItemIsEnabled);
-        QVERIFY(next < row(Action::ToggleGrid)); // planned ones come last
         // M2: the slideshow is available now (F-SLIDE-01).
         const int show = row(Action::ToggleSlideshow);
         QVERIFY(show >= 0);

@@ -229,12 +229,19 @@ QStringList PreferencesDialog::sectionKeys(int section) const {
         return {key::Language,  key::OpenBehavior,         key::RestoreWindows,      key::ConfirmTrash,
                 key::EditorApp, key::RotationSaveStrategy, key::KeepModificationDate};
     case Window:
-        return {key::FitWindowToImage, key::TitleShowFolder, key::ShowStatusBar,
-                key::ShowInfoPanel,    key::ShowFilmstrip,   key::AllowTabs};
+        return {key::FitWindowToImage, key::TitleShowFolder, key::ShowStatusBar, key::ShowInfoPanel,
+                key::ShowFilmstrip,    key::AllowTabs,       key::CoupleBy};
     case Display:
-        return {
-            key::Background,           key::ZoomMode,        key::UpscaleFilter,    key::ActualSizeUnit,
-            key::SlideshowIntervalSec, key::SlideshowRepeat, key::SlideshowShuffle, key::SlideshowCrossfade};
+        return {key::Background,
+                key::ZoomMode,
+                key::UpscaleFilter,
+                key::ActualSizeUnit,
+                key::SlideshowIntervalSec,
+                key::SlideshowRepeat,
+                key::SlideshowShuffle,
+                key::SlideshowCrossfade,
+                key::LoupeSize,
+                key::LoupeZoom};
     case Input:
         return {key::InputPrefix, key::WrapMode};
     case Navigation:
@@ -415,6 +422,14 @@ QWidget* PreferencesDialog::buildWindow() {
                  helpLabel(tr("Neue Fenster erscheinen dann als Tab im vordersten Fenster; "
                               "Fenster → „Alle Fenster zusammenführen“ fasst offene Fenster zusammen."),
                            w));
+    // F-WIN-07
+    form->addRow(tr("Gekoppelte Fenster blättern nach:"),
+                 bind.combo(key::CoupleBy, {"name", "index"},
+                            {tr("Dateiname (ohne Endung)"), tr("Position in der Sammlung")}, w));
+    form->addRow(QString(),
+                 helpLabel(tr("Fenster → „Fenster koppeln …“: gekoppelte Fenster blättern gemeinsam "
+                              "und teilen Zoom und Ausschnitt."),
+                           w));
     return w;
 }
 
@@ -480,6 +495,11 @@ QWidget* PreferencesDialog::buildDisplay() {
                  bind.combo(key::ActualSizeUnit, {"devicePixels", "points"},
                             {tr("1 Bildpixel = 1 Gerätepixel (Retina-korrekt)"), tr("1 Bildpixel = 1 Punkt")},
                             w));
+    // F-VIEW-11
+    form->addRow(tr("Lupe (L gedrückt halten):"),
+                 bind.combo(key::LoupeZoom, {"100", "200"}, {tr("100 %"), tr("200 %")}, w));
+    form->addRow(tr("Größe der Lupe:"), bind.combo(key::LoupeSize, {"small", "medium", "large"},
+                                                   {tr("Klein"), tr("Mittel"), tr("Groß")}, w));
     // F-SLIDE-01/02
     form->addRow(tr("Diashow (⇧⌘F, S):"), bind.spin(key::SlideshowIntervalSec, 1, 60, tr(" s pro Bild"), w));
     form->addRow(QString(), bind.check(key::SlideshowRepeat, tr("Wiederholen"), w));
@@ -487,7 +507,7 @@ QWidget* PreferencesDialog::buildDisplay() {
     form->addRow(QString(), bind.check(key::SlideshowCrossfade, tr("Überblenden"), w));
     form->addRow(QString(),
                  helpLabel(tr("Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, "
-                              "←/→ blättert, Esc beendet."),
+                              "←/→ blättert, P/X/U bewerten, Esc beendet."),
                            w));
     return w;
 }

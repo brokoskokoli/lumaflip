@@ -11,6 +11,7 @@
 #include "RecentItems.h"
 #include "RenameController.h"
 #include "StartScreenRecent.h"
+#include "WindowExtras.h"
 #include "WindowPanels.h"
 #include "WindowTabbing.h"
 #include "core/Collection.h"
@@ -381,6 +382,7 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     m_panels = new WindowPanels(*this, provider); // M2: created hidden, shown with the window
     setupMedia(); // animation, pages, slideshow, saving the rotation (ViewerWindowMedia.cpp)
     m_culling = new CullingController(*this, m_app); // M3: ratings, culling, quick move
+    m_extras = new WindowExtras(*this, m_app);       // M3: grid, compare, loupe, window modes …
 
     m_app.registerWindow(this);
     updateTitle();
@@ -414,6 +416,7 @@ void ViewerWindow::createStatusBar() {
     m_zoomLabel = makeLabel("lfStatusZoom");
     m_sortLabel = makeLabel("lfStatusSort", true);
     m_culling->attachStatusBar(sb); // F-CULL-04 "Filter: ≥ 3 ★ — 12 / 412"
+    m_extras->attachStatusBar(sb);  // M3: name filter, "Zufällig", "Gekoppelt"
     sb->setVisible(Settings::instance().value(key::ShowStatusBar).toBool());
     updateStatus();
     applyStatusBarVisibility();
@@ -427,6 +430,8 @@ void ViewerWindow::setVisible(bool visible) {
         configureViewerWindow(this, Settings::instance().value(key::AllowTabs).toBool());
     QMainWindow::setVisible(visible);
     mediaVisibilityChanged(); // F-FMT-03: no playback in hidden windows
+    if (visible && m_extras)
+        m_extras->windowStateChanged(); // F-VIEW-12/13 on the native window
     // After the native window and the GPU surface exist (show), before the event loop
     // presents the first frame: the first frame already has the status bar.
     if (visible) {
@@ -919,6 +924,8 @@ void ViewerWindow::updateStatus() {
     m_sortLabel->setText(sortText());
     if (m_culling)
         m_culling->updateStatus();
+    if (m_extras)
+        m_extras->updateStatus();
     for (QLabel* l : {m_nameLabel, m_positionLabel, m_frameLabel, m_pixelLabel, m_bytesLabel, m_zoomLabel})
         l->setVisible(!l->text().isEmpty());
 }
@@ -967,12 +974,16 @@ QString ViewerWindow::statusText() const {
             parts << l->text();
     if (const QString filter = m_culling->filterStatus(); !filter.isEmpty())
         parts << filter; // F-CULL-04
+    parts << m_extras->statusParts(); // M3: name filter, shuffle, coupling
     return parts.join(QStringLiteral(" · "));
 }
 
 void ViewerWindow::updateEmptyState() {
     const bool empty = m_collection->count() == 0 && !m_collection->isLoading();
-    if (empty) {
+    const QString filtered = m_extras ? m_extras->emptyStateText() : QString();
+    if (empty && !filtered.isEmpty()) {
+        m_emptyText->setText(filtered); // F-NAV-08: the name filter matches nothing
+    } else if (empty) {
         if (m_opened && !m_collection->folderPath().isEmpty())
             m_emptyText->setText(tr("Keine Bilder in „%1“").arg(QDir(m_collection->folderPath()).dirName()));
         else
@@ -1027,9 +1038,10 @@ void ViewerWindow::layoutOverlays() {
 
     m_emptyState->setGeometry(m_view->rect());
     if (!m_toast->isHidden()) {
+        const QWidget* host = m_toast->parentWidget() ? m_toast->parentWidget() : m_view;
         m_toast->adjustSize();
         const QSize s = m_toast->size();
-        m_toast->move((m_view->width() - s.width()) / 2, std::max(8, m_view->height() - s.height() - 32));
+        m_toast->move((host->width() - s.width()) / 2, std::max(8, host->height() - s.height() - 32));
     }
 }
 
@@ -1045,6 +1057,30 @@ void ViewerWindow::showMessage(const QString& text, int ms) {
     layoutOverlays();
     m_toastTimer->start(ms);
     emit messageShown(text);
+}
+
+void ViewerWindow::setOverlayHost(QWidget* host) {
+    if (!host || m_toast->parentWidget() == host)
+        return;
+    const bool shown = !m_toast->isHidden();
+    m_toast->setParent(host);
+    m_toast->setVisible(shown);
+    if (shown) {
+        m_toast->raise();
+        layoutOverlays();
+    }
+}
+
+void ViewerWindow::refreshStatus() {
+    updateStatus();
+    updateEmptyState();
+}
+
+void ViewerWindow::focusContent() {
+    if (m_extras)
+        m_extras->focusContent();
+    else
+        m_view->setFocus();
 }
 
 QString ViewerWindow::toastText() const {
@@ -1152,7 +1188,8 @@ void ViewerWindow::handleInput(InputEvent ev, QPointF pos) {
     ev.multiPage = ev.multiPage || m_pageCount > 1;  // F-IN-04 (pages)
     if (m_culling->interceptKey(ev))
         return; // F-FILE-08: target digit of a quick move/copy (M/C + 1–9)
-    ev.inCullingMode = ev.inCullingMode || m_culling->isActive(); // 5.2: digits = stars
+    // 5.2: digits = stars (culling mode; M3: also in the grid and the compare mode)
+    ev.inCullingMode = ev.inCullingMode || m_culling->isActive() || m_extras->ratingKeysActive();
     if (handleSlideshowInput(ev))
         return; // F-SLIDE-01: Space pauses, 1–9 set the interval
     const InputBindings& b = m_app.bindings();
@@ -1196,6 +1233,8 @@ void ViewerWindow::handleInput(InputEvent ev, QPointF pos) {
 bool ViewerWindow::perform(Action a, QPointF pos) {
     if (m_app.intercepted(this, a))
         return true;
+    if (m_extras->perform(a, pos))
+        return true; // M3: grid, compare, loupe, go to, shuffle, name filter, window modes
     const QPointF anchor = pos.x() >= 0 ? pos : QPointF(m_view->width() / 2.0, m_view->height() / 2.0);
     const double step = std::max(16.0, m_view->height() * 0.1);
     const double page = std::max(32.0, m_view->height() * 0.9);
@@ -1658,6 +1697,8 @@ void ViewerWindow::changeEvent(QEvent* event) {
             updatePrefetch();
     } else if (event->type() == QEvent::WindowStateChange) {
         mediaVisibilityChanged(); // minimized: animation pauses
+        if (m_extras)
+            m_extras->windowStateChanged(); // F-VIEW-12/13 again after full screen
         setChromeVisible(!isFullScreen());
         if (!currentPath().isEmpty())
             updatePrefetch(); // minimized windows keep only the current image (F-WIN-09)

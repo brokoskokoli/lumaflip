@@ -161,6 +161,64 @@
     </message>
 </context>
 <context>
+    <name>lf::CompareView</name>
+    <message>
+        <source>Vergleich</source>
+        <translation>Vergelijken</translation>
+    </message>
+    <message>
+        <source>%1 — %2</source>
+        <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
+        <translation>%1 — %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CouplingManager</name>
+    <message numerus="yes">
+        <source>%n Fenster gekoppelt</source>
+        <translation>
+            <numerusform>%n venster gekoppeld</numerusform>
+            <numerusform>%n vensters gekoppeld</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Kein passendes Bild zu „%1“</source>
+        <translation>Geen overeenkomende afbeelding voor ‘%1’</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln</source>
+        <translation>Koppel vensters</translation>
+    </message>
+    <message>
+        <source>Gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt. Mit ⌥ lässt sich ein Fenster einzeln verschieben.</source>
+        <translation>Gekoppelde vensters bladeren samen en delen zoom en zichtbaar deel. Houd ⌥ ingedrukt om één venster apart te verschuiven.</translation>
+    </message>
+    <message>
+        <source>Dateiname (ohne Endung)</source>
+        <translation>Bestandsnaam (zonder extensie)</translation>
+    </message>
+    <message>
+        <source>Position in der Sammlung</source>
+        <translation>Positie in de verzameling</translation>
+    </message>
+    <message>
+        <source>Gemeinsam blättern nach:</source>
+        <translation>Samen bladeren op:</translation>
+    </message>
+    <message>
+        <source>Koppeln</source>
+        <translation>Koppel</translation>
+    </message>
+    <message>
+        <source>Entkoppeln</source>
+        <translation>Ontkoppel vensters</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuleer</translation>
+    </message>
+</context>
+<context>
     <name>lf::CullingController</name>
     <message>
         <source>Bewertung wird gelesen …</source>
@@ -697,6 +755,13 @@
     </message>
 </context>
 <context>
+    <name>lf::GridView</name>
+    <message>
+        <source>Raster</source>
+        <translation>Raster</translation>
+    </message>
+</context>
+<context>
     <name>lf::HistogramWidget</name>
     <message>
         <source>Histogramm</source>
@@ -1203,6 +1268,34 @@
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
         <translation>Snel opbergen: kopiëren (C, dan 1–9)</translation>
+    </message>
+    <message>
+        <source>Gehe zu Bild …</source>
+        <translation>Ga naar afbeelding…</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge</source>
+        <translation>Willekeurige volgorde</translation>
+    </message>
+    <message>
+        <source>Nach Dateiname filtern</source>
+        <translation>Filter op bestandsnaam</translation>
+    </message>
+    <message>
+        <source>Mit nächstem vergleichen</source>
+        <translation>Vergelijk met volgende</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>Altijd bovenop</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus</source>
+        <translation>Minimaal venster</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln …</source>
+        <translation>Koppel vensters…</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -1896,6 +1989,14 @@
     </message>
 </context>
 <context>
+    <name>lf::LoupeWidget</name>
+    <message>
+        <source>%1 %</source>
+        <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
+        <translation>%1%</translation>
+    </message>
+</context>
+<context>
     <name>lf::MainMenu</name>
     <message>
         <source>Ablage</source>
@@ -2294,6 +2395,46 @@
         <source>Ziele der Schnellablage festlegen …</source>
         <translation>Doelen voor snel opbergen …</translation>
     </message>
+    <message>
+        <source>Raster</source>
+        <translation>Raster</translation>
+    </message>
+    <message>
+        <source>Mit nächstem vergleichen</source>
+        <translation>Vergelijk met volgende</translation>
+    </message>
+    <message>
+        <source>Auswahl vergleichen</source>
+        <translation>Vergelijk selectie</translation>
+    </message>
+    <message>
+        <source>Gehe zu Bild …</source>
+        <translation>Ga naar afbeelding…</translation>
+    </message>
+    <message>
+        <source>Nach Dateiname filtern …</source>
+        <translation>Filter op bestandsnaam…</translation>
+    </message>
+    <message>
+        <source>Namensfilter aufheben</source>
+        <translation>Wis naamfilter</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>Altijd bovenop</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus</source>
+        <translation>Minimaal venster</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln …</source>
+        <translation>Koppel vensters…</translation>
+    </message>
+    <message>
+        <source>Entkoppeln</source>
+        <translation>Ontkoppel vensters</translation>
+    </message>
 </context>
 <context>
     <name>lf::MenuExtras</name>
@@ -2474,6 +2615,45 @@
     </message>
 </context>
 <context>
+    <name>lf::NavigationExtras</name>
+    <message>
+        <source>Gehe zu Bild</source>
+        <translation>Ga naar afbeelding</translation>
+    </message>
+    <message>
+        <source>Bildnummer (1–%1), oder +n / −n vom aktuellen Bild:</source>
+        <translation>Afbeeldingsnummer (1–%1), of +n / −n vanaf de huidige afbeelding:</translation>
+    </message>
+    <message>
+        <source>Gehe zu</source>
+        <translation>Ga</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuleer</translation>
+    </message>
+    <message>
+        <source>Bitte eine Bildnummer zwischen 1 und %1 eingeben</source>
+        <translation>Voer een afbeeldingsnummer tussen 1 en %1 in</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge an</source>
+        <translation>Willekeurige volgorde aan</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge aus</source>
+        <translation>Willekeurige volgorde uit</translation>
+    </message>
+    <message>
+        <source>Ende der zufälligen Reihenfolge</source>
+        <translation>Einde van de willekeurige volgorde</translation>
+    </message>
+    <message>
+        <source>Anfang der zufälligen Reihenfolge</source>
+        <translation>Begin van de willekeurige volgorde</translation>
+    </message>
+</context>
+<context>
     <name>lf::OpenWithService</name>
     <message>
         <source>Kein Programm zum Bearbeiten gefunden. Wähle eines unter Einstellungen → Allgemein → Editor.</source>
@@ -2506,6 +2686,76 @@
     <message>
         <source>Keine passenden Programme</source>
         <translation>Geen geschikte apps</translation>
+    </message>
+</context>
+<context>
+    <name>lf::OverviewController</name>
+    <message>
+        <source>Keine Bilder für die Rasteransicht</source>
+        <translation>Geen afbeeldingen voor de rasterweergave</translation>
+    </message>
+    <message>
+        <source>Zum Vergleichen mindestens zwei Bilder wählen</source>
+        <translation>Selecteer minstens twee afbeeldingen om te vergelijken</translation>
+    </message>
+    <message>
+        <source>Es werden die ersten %1 Bilder verglichen</source>
+        <translation>De eerste %1 afbeeldingen worden vergeleken</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er)</source>
+        <translation>
+            <numerusform>%n afbeelding</numerusform>
+            <numerusform>%n afbeeldingen</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n ausgewählt</source>
+        <translation>
+            <numerusform>%n geselecteerd</numerusform>
+            <numerusform>%n geselecteerd</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Name: „%1“</source>
+        <translation>Naam: ‘%1’</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation>%1: %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 – %n Bild(er)</source>
+        <translation>
+            <numerusform>%1 – %n afbeelding</numerusform>
+            <numerusform>%1 – %n afbeeldingen</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>Verplaats naar prullenmand</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n afbeelding naar de prullenmand verplaatst</numerusform>
+            <numerusform>%n afbeeldingen naar de prullenmand verplaatst</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb legen?</source>
+        <translation>
+            <numerusform>%n afbeelding naar de prullenmand verplaatsen?</numerusform>
+            <numerusform>%n afbeeldingen naar de prullenmand verplaatsen?</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Mit ⌘Z lässt sich das widerrufen.</source>
+        <translation>Je kunt dit met ⌘Z herstellen.</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuleer</translation>
     </message>
 </context>
 <context>
@@ -2671,6 +2921,22 @@
         <translation>Nieuwe vensters verschijnen dan als tab in het voorste venster; Venster → ‘Voeg alle vensters samen’ voegt open vensters samen.</translation>
     </message>
     <message>
+        <source>Gekoppelte Fenster blättern nach:</source>
+        <translation>Gekoppelde vensters bladeren op:</translation>
+    </message>
+    <message>
+        <source>Dateiname (ohne Endung)</source>
+        <translation>Bestandsnaam (zonder extensie)</translation>
+    </message>
+    <message>
+        <source>Position in der Sammlung</source>
+        <translation>Positie in de verzameling</translation>
+    </message>
+    <message>
+        <source>Fenster → „Fenster koppeln …“: gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt.</source>
+        <translation>Venster → ‘Koppel vensters…’: gekoppelde vensters bladeren samen en delen zoom en zichtbaar deel.</translation>
+    </message>
+    <message>
         <source>Dunkel</source>
         <translation>Donker</translation>
     </message>
@@ -2755,6 +3021,30 @@
         <translation>1 afbeeldingspixel = 1 punt</translation>
     </message>
     <message>
+        <source>Lupe (L gedrückt halten):</source>
+        <translation>Loep (L ingedrukt houden):</translation>
+    </message>
+    <message>
+        <source>200 %</source>
+        <translation>200%</translation>
+    </message>
+    <message>
+        <source>Größe der Lupe:</source>
+        <translation>Grootte van de loep:</translation>
+    </message>
+    <message>
+        <source>Klein</source>
+        <translation>Klein</translation>
+    </message>
+    <message>
+        <source>Mittel</source>
+        <translation>Middel</translation>
+    </message>
+    <message>
+        <source>Groß</source>
+        <translation>Groot</translation>
+    </message>
+    <message>
         <source>Diashow (⇧⌘F, S):</source>
         <translation>Diavoorstelling (⇧⌘F, S):</translation>
     </message>
@@ -2775,8 +3065,8 @@
         <translation>Overvloeien</translation>
     </message>
     <message>
-        <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, Esc beendet.</source>
-        <translation>Tijdens de diavoorstelling: spatiebalk pauzeert, 1–9 stelt het interval in seconden in, ←/→ bladert, Esc stopt.</translation>
+        <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, P/X/U bewerten, Esc beendet.</source>
+        <translation>Tijdens de diavoorstelling: spatie pauzeert, 1–9 stelt de interval in seconden in, ←/→ bladert, P/X/U beoordelen, Esc stopt.</translation>
     </message>
     <message>
         <source>Profilvorlagen</source>
@@ -3295,6 +3585,17 @@
     </message>
 </context>
 <context>
+    <name>lf::QuickFilterBar</name>
+    <message>
+        <source>Dateiname filtern</source>
+        <translation>Bestandsnamen filteren</translation>
+    </message>
+    <message>
+        <source>Filter aufheben (Esc)</source>
+        <translation>Filter wissen (Esc)</translation>
+    </message>
+</context>
+<context>
     <name>lf::QuickMove</name>
     <message>
         <source>%1  (nicht festgelegt)</source>
@@ -3330,6 +3631,20 @@
     <message>
         <source>Übersprungen – nichts geändert.</source>
         <translation>Overgeslagen – niets gewijzigd.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „%1“ verschoben</source>
+        <translation>
+            <numerusform>%n afbeelding verplaatst naar ‘%1’</numerusform>
+            <numerusform>%n afbeeldingen verplaatst naar ‘%1’</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „%1“ kopiert</source>
+        <translation>
+            <numerusform>%n afbeelding gekopieerd naar ‘%1’</numerusform>
+            <numerusform>%n afbeeldingen gekopieerd naar ‘%1’</numerusform>
+        </translation>
     </message>
     <message>
         <source>Nach „%1“ verschoben</source>
@@ -3923,6 +4238,49 @@
     <message>
         <source>Nur EXIF-Ausrichtung setzen</source>
         <translation>Stel alleen EXIF-oriëntatie in</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowExtras</name>
+    <message>
+        <source>Zum Bewegen des Fensters ziehen</source>
+        <translation>Sleep om het venster te verplaatsen</translation>
+    </message>
+    <message>
+        <source>Name: „%1“</source>
+        <translation>Naam: ‘%1’</translation>
+    </message>
+    <message>
+        <source>Zufällig</source>
+        <translation>Willekeurig</translation>
+    </message>
+    <message>
+        <source>Gekoppelt</source>
+        <translation>Gekoppeld</translation>
+    </message>
+    <message>
+        <source>Blättern, Zoom und Ausschnitt laufen mit den anderen gekoppelten Fenstern</source>
+        <translation>Bladeren, zoom en zichtbaar deel volgen de andere gekoppelde vensters</translation>
+    </message>
+    <message>
+        <source>Kein Dateiname passt zu „%1“ – Esc hebt den Filter auf</source>
+        <translation>Geen bestandsnaam komt overeen met ‘%1’ – Esc wist het filter</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>Altijd bovenop</translation>
+    </message>
+    <message>
+        <source>Nicht mehr im Vordergrund</source>
+        <translation>Niet meer bovenop</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
+        <translation>Minimaal venster – sleep bovenaan om het venster te verplaatsen</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus aus</source>
+        <translation>Minimaal venster uit</translation>
     </message>
 </context>
 <context>
