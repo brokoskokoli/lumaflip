@@ -37,7 +37,7 @@ lf::DecodedImagePtr make24MP(QColor color) {
 LF_BENCH(P_03_SwapPreloaded, 16.0) {
     if (QGuiApplication::platformName() == QLatin1String("offscreen") ||
         QGuiApplication::platformName() == QLatin1String("minimal"))
-        return -1;  // no GPU platform
+        return -1; // no GPU platform
     lf::ImageView view;
     view.resize(1200, 800);
     view.show();
@@ -52,7 +52,7 @@ LF_BENCH(P_03_SwapPreloaded, 16.0) {
     view.setImage(a, false);
     view.setPreloadImages({a, b});
     for (int i = 0; i < 10; ++i)
-        canvas->grabFramebuffer();  // upload current + preloaded neighbour
+        canvas->grabFramebuffer(); // upload current + preloaded neighbour
 
     std::vector<double> samples;
     for (int i = 0; i < 9; ++i) {

@@ -6,8 +6,8 @@
 //      24 MP JPEG that was never decoded in this process until the first frame with
 //      the screen-sized image (Quality::Screen, not the embedded preview) is
 //      rendered. Process launch + dyld (~100 ms on the reference Mac) are not
-//      included; P_01_ProcessLaunchToFirstFrame24MP covers them when the app
-//      supports LF_EXIT_AFTER_FIRST_FRAME (see there).
+//      included; P_01_ProcessLaunchToFirstFrame24MP (median of 5 real launches) covers
+//      them when the app supports LF_EXIT_AFTER_FIRST_FRAME (see there).
 //      P_01_ColdOpenFirstPreview24MP is the same path up to the first preview stage
 //      (informational, same limit).
 // P-02 "Öffnen bei laufender App": another (undecoded) 24 MP JPEG in a new window.
@@ -40,6 +40,7 @@
 #include <QTemporaryDir>
 #include <QtTest/QTest>
 
+#include <algorithm>
 #include <cstdio>
 #include <memory>
 
@@ -151,20 +152,47 @@ LF_BENCH(P_01_ColdOpenFirstPreview24MP, 400.0) {
     return coldOpen(QStringLiteral("img_009.jpg"), Stage::AnyImage);
 }
 
-// End-to-end cold start: spawns the built app with a 24 MP JPEG and
-// LF_EXIT_AFTER_FIRST_FRAME=1. The app (hook in main/ViewerWindow) must print one
-// line "LF_FIRST_FRAME_MS=<ms since process start>" to stdout as soon as the first
-// frame with the screen-stage image is presented, then quit with exit code 0.
-// Skipped while the app binary does not contain that hook.
-LF_BENCH(P_01_ProcessLaunchToFirstFrame24MP, 400.0) {
-#ifdef LF_APP_BINARY
-    const QString binary = QStringLiteral(LF_APP_BINARY);
-    QFile bin(binary);
-    if (!bin.open(QIODevice::ReadOnly) || !bin.readAll().contains("LF_EXIT_AFTER_FIRST_FRAME"))
-        return -1; // hook not implemented in the app yet
-    const QString folder = benchFolder(QStringLiteral("p01launch"), 12);
-    if (folder.isEmpty())
+// End-to-end cold start (SPEC P-01, clarified): spawns the built app with a 24 MP JPEG and
+// LF_EXIT_AFTER_FIRST_FRAME=1. The app (hook in main.cpp) prints
+//   stderr: "LF_MAIN_MS=<ms since process start>" when main() is entered (dyld, static init)
+//   stdout: "LF_FIRST_FRAME_MS=<ms since process start>" once the first frame with the
+//           screen-stage image is presented, then exits with code 0.
+// Measured value = LF_FIRST_FRAME_MS (kernel process start -> presented frame).
+// Protocol: one warm-up launch (discarded: it pays the one-time code signature /
+// Gatekeeper check of a freshly built binary and warms the file cache), then the median of
+// 5 launches with warm system caches; min/median/max are printed. The warm-up launch is
+// reported separately as P_01_FirstLaunchAfterBuild (limit 1 s).
+// Assumptions (main.cpp belongs to the app, the benchmark only reads its output):
+//   * A launch with a file argument never restores the previous session (F-WIN-06: an
+//     open request has priority), and the hook additionally keeps the session untouched
+//     while LF_EXIT_AFTER_FIRST_FRAME=1. The benchmark therefore passes no option to turn
+//     session restore off; it measures the normal "double-click on a file" start path.
+//   * The app runs with the user's normal settings (window size, zoom mode etc.).
+// Skipped while the app binary does not contain the hook.
+namespace {
+
+struct Launch {
+    double frameMs = -1; // LF_FIRST_FRAME_MS (process start -> frame)
+    double mainMs = -1;  // LF_MAIN_MS (process start -> main)
+    double wallMs = -1;  // QProcess::start -> line received (includes fork/exec + pipe)
+};
+
+double parseValue(const QByteArray& out, const char* key) {
+    const qsizetype at = out.indexOf(key);
+    if (at < 0)
         return -1;
+    const qsizetype from = at + qsizetype(qstrlen(key));
+    const qsizetype nl = out.indexOf('\n', from);
+    if (nl < 0)
+        return -1;
+    bool ok = false;
+    const double v = out.mid(from, nl - from).trimmed().toDouble(&ok);
+    return ok ? v : -1;
+}
+
+// One launch; frameMs < 0 if the app did not report a frame within 10 s.
+Launch launchOnce(const QString& binary, const QString& file) {
+    Launch r;
     QProcess proc;
     QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
     env.insert(QStringLiteral("LF_EXIT_AFTER_FIRST_FRAME"), QStringLiteral("1"));
@@ -173,34 +201,118 @@ LF_BENCH(P_01_ProcessLaunchToFirstFrame24MP, 400.0) {
     proc.setProcessChannelMode(QProcess::SeparateChannels);
     QElapsedTimer t;
     t.start();
-    proc.start(binary, {folder + QStringLiteral("/img_007.jpg")});
+    proc.start(binary, {file});
     if (!proc.waitForStarted(5000))
-        return 1e9;
+        return r;
     QByteArray out;
-    double appMs = -1;
-    double wallMs = -1;
-    while (t.elapsed() < 10000 && appMs < 0) {
+    while (t.elapsed() < 10000 && r.frameMs < 0) {
         if (!proc.waitForReadyRead(100) && proc.state() == QProcess::NotRunning)
             break;
         out += proc.readAllStandardOutput();
-        const int at = out.indexOf("LF_FIRST_FRAME_MS=");
-        if (at >= 0 && out.indexOf('\n', at) > at) {
-            wallMs = t.nsecsElapsed() / 1e6;
-            appMs = out.mid(at + 18, out.indexOf('\n', at) - at - 18).trimmed().toDouble();
+        if (const double v = parseValue(out, "LF_FIRST_FRAME_MS="); v >= 0) {
+            r.wallMs = t.nsecsElapsed() / 1e6;
+            r.frameMs = v;
         }
     }
     if (!proc.waitForFinished(5000)) {
         proc.kill();
         proc.waitForFinished(1000);
     }
-    if (appMs < 0)
-        return 1e9; // hook present but no frame reported: failure
-    std::printf("      P-01 launch: app reports %.1f ms since process start, %.1f ms wall clock\n", appMs,
-                wallMs);
-    return wallMs;
-#else
-    return -1;
+    r.mainMs = parseValue(proc.readAllStandardError(), "LF_MAIN_MS=");
+    return r;
+}
+
+double median(QVector<double> v) {
+    std::sort(v.begin(), v.end());
+    const qsizetype n = v.size();
+    if (n == 0)
+        return -1;
+    return n % 2 ? v[n / 2] : (v[n / 2 - 1] + v[n / 2]) / 2;
+}
+
+constexpr int kLaunchRuns = 5;
+
+struct LaunchSeries {
+    bool skipped = true;
+    bool failed = false;
+    bool firstAfterBuild = false; // no earlier launch of this build was recorded
+    Launch warmup;
+    QVector<Launch> runs;
+};
+
+// Warm-up + 5 launches, run once per benchmark process and shared by both launch
+// benchmarks (whatever their registration order).
+const LaunchSeries& launchSeries() {
+    static const LaunchSeries series = [] {
+        LaunchSeries s;
+#ifdef LF_APP_BINARY
+        const QString binary = QStringLiteral(LF_APP_BINARY);
+        QFile bin(binary);
+        if (!bin.open(QIODevice::ReadOnly) || !bin.readAll().contains("LF_EXIT_AFTER_FIRST_FRAME"))
+            return s; // hook not implemented in the app yet
+        const QString folder = benchFolder(QStringLiteral("p01launch"), 12);
+        if (folder.isEmpty())
+            return s;
+        s.skipped = false;
+        // "After build": the stamp remembers the last launched build (mtime, size, path).
+        const QFileInfo bi(binary);
+        const QByteArray build = QByteArray::number(bi.lastModified().toMSecsSinceEpoch()) + ' ' +
+                                 QByteArray::number(bi.size()) + ' ' + binary.toUtf8();
+        QFile stamp(QDir::tempPath() + QStringLiteral("/lumaflip-bench-24mp-v1/p01launch.stamp"));
+        s.firstAfterBuild = !stamp.open(QIODevice::ReadOnly) || stamp.readAll() != build;
+        stamp.close();
+        const QString file = folder + QStringLiteral("/img_007.jpg");
+        s.warmup = launchOnce(binary, file);
+        if (stamp.open(QIODevice::WriteOnly | QIODevice::Truncate))
+            stamp.write(build);
+        for (int i = 0; i < kLaunchRuns; ++i) {
+            const Launch l = launchOnce(binary, file);
+            if (l.frameMs < 0) {
+                s.failed = true; // hook present but no frame reported
+                break;
+            }
+            s.runs.append(l);
+        }
 #endif
+        return s;
+    }();
+    return series;
+}
+
+} // namespace
+
+// Informational upper bound for the very first launch (SPEC P-01: < 1 s after
+// installation/update). Only a real "first launch after build" when the line says so.
+LF_BENCH(P_01_FirstLaunchAfterBuild, 1000.0) {
+    const LaunchSeries& s = launchSeries();
+    if (s.skipped)
+        return -1;
+    if (s.warmup.frameMs < 0)
+        return 1e9;
+    std::printf("      P-01 first launch%s: %.1f ms (main entered after %.1f ms, wall clock %.1f ms)\n",
+                s.firstAfterBuild ? " after build" : " (this build was launched before)", s.warmup.frameMs,
+                s.warmup.mainMs, s.warmup.wallMs);
+    return s.warmup.frameMs;
+}
+
+LF_BENCH(P_01_ProcessLaunchToFirstFrame24MP, 400.0) {
+    const LaunchSeries& s = launchSeries();
+    if (s.skipped)
+        return -1;
+    if (s.failed || s.runs.size() != kLaunchRuns)
+        return 1e9;
+    QVector<double> frame, mainMs, wall;
+    for (const Launch& l : s.runs) {
+        frame.append(l.frameMs);
+        mainMs.append(l.mainMs);
+        wall.append(l.wallMs);
+    }
+    const double med = median(frame);
+    std::printf("      P-01 launch, %d runs after 1 warm-up: min %.1f / median %.1f / max %.1f ms "
+                "(main entered after %.1f ms, wall clock %.1f ms; medians)\n",
+                kLaunchRuns, *std::min_element(frame.cbegin(), frame.cend()), med,
+                *std::max_element(frame.cbegin(), frame.cend()), median(mainMs), median(wall));
+    return med;
 }
 
 LF_BENCH(P_02_WarmOpen24MP, 150.0) {

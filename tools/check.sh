@@ -1,19 +1,24 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Runs all mandatory checks (SPEC 15.1).
-# Usage: tools/check.sh [--quick] [--sanitize] [--stage M1] [--format-all] [--tidy]
+# Usage: tools/check.sh [--quick] [--sanitize] [--stage M1] [--format-all] [--tidy|--tidy-all]
 #   --quick       build + tests only
 #   --sanitize    ASan/UBSan build (build/sanitize)
 #   --stage Mn    stage for the spec coverage check (default M1, or $LF_STAGE)
 #   --format-all  clang-format check of every source file; default: only the lines
 #                 changed against `git merge-base HEAD <base>` (base: $LF_BASE_REF,
 #                 main or origin/main) incl. uncommitted changes, plus untracked files
-#   --tidy        clang-tidy (.clang-tidy) on the changed C++/ObjC++ files, if installed
-# Environment: LF_BENCH_TOLERANCE (benchmark limit factor, default 1.2).
+#   --tidy        clang-tidy (.clang-tidy) on the changed .cpp/.mm files (same base as
+#                 the format check); any finding fails. Skipped if clang-tidy is not
+#                 installed, unless LF_REQUIRE_TIDY=1 (CI)
+#   --tidy-all    like --tidy, but on every .cpp/.mm file under src/ and tests/
+# Environment: LF_BENCH_TOLERANCE (benchmark limit factor, default 1.2),
+#   LF_CLANG_TIDY (clang-tidy binary; default: PATH, $(brew --prefix llvm)/bin, xcrun),
+#   LF_REQUIRE_TIDY=1 (fail instead of skipping when clang-tidy is missing).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-QUICK=0; SANITIZE=0; FORMAT_ALL=0; TIDY=0; STAGE="${LF_STAGE:-M1}"
+QUICK=0; SANITIZE=0; FORMAT_ALL=0; TIDY=0; TIDY_ALL=0; STAGE="${LF_STAGE:-M1}"
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --quick) QUICK=1 ;;
@@ -21,6 +26,7 @@ while [[ $# -gt 0 ]]; do
     --stage) STAGE="$2"; shift ;;
     --format-all) FORMAT_ALL=1 ;;
     --tidy) TIDY=1 ;;
+    --tidy-all) TIDY=1; TIDY_ALL=1 ;;
     *) echo "unknown option $1"; exit 2 ;;
   esac; shift
 done
@@ -108,7 +114,8 @@ if [[ $QUICK == 0 ]]; then
   if [[ -n "$missing" ]]; then echo "Missing SPDX header:"; echo "$missing"; exit 1; fi
 
   step "Spec coverage ($STAGE)"
-  python3 tools/spec_coverage.py --stage "$STAGE"
+  # --build-dir: only tests this build registers and runs count (gtest list, ctest, lf_bench).
+  python3 tools/spec_coverage.py --stage "$STAGE" --build-dir "$BUILD_DIR"
 
   if [[ -x "$BUILD_DIR/tests/lf_bench" ]]; then
     step "Benchmarks (tolerance ${LF_BENCH_TOLERANCE:-1.2})"
@@ -123,19 +130,28 @@ fi
 
 if [[ $TIDY == 1 ]]; then
   step "clang-tidy"
-  TIDY_BIN="$(command -v clang-tidy || true)"
+  TIDY_BIN="${LF_CLANG_TIDY:-$(command -v clang-tidy || true)}"
   [[ -z "$TIDY_BIN" && -x "$(brew --prefix llvm 2>/dev/null)/bin/clang-tidy" ]] && TIDY_BIN="$(brew --prefix llvm)/bin/clang-tidy"
   [[ -z "$TIDY_BIN" ]] && TIDY_BIN="$(xcrun --find clang-tidy 2>/dev/null || true)"
-  if [[ -z "$TIDY_BIN" ]]; then
+  if [[ -z "$TIDY_BIN" || ! -x "$TIDY_BIN" ]]; then
+    [[ "${LF_REQUIRE_TIDY:-0}" == 1 ]] && die "clang-tidy not found (LF_REQUIRE_TIDY=1) - brew install llvm"
     echo "clang-tidy not found - skipped (it is part of LLVM: brew install llvm)"
   else
-    tidy_files=$(changed_sources "$BASE" | grep -E '\.(cpp|mm)$' || true)
+    "$TIDY_BIN" --version | head -n 2
+    if [[ $TIDY_ALL == 1 ]]; then
+      tidy_files=$(git ls-files 'src/*.cpp' 'src/*.mm' 'tests/*.cpp' 'tests/*.mm')
+    else
+      tidy_files=$(changed_sources "$BASE" | grep -E '\.(cpp|mm)$' || true)
+    fi
     if [[ -z "$tidy_files" ]]; then
       echo "no changed .cpp/.mm files"
     else
       echo "$tidy_files"
+      # Several files per process, one process per CPU; xargs fails if any run fails.
       # shellcheck disable=SC2086
-      "$TIDY_BIN" -p "$BUILD_DIR" --quiet --warnings-as-errors='*' $tidy_files
+      printf '%s\n' $tidy_files | xargs -P "$NCPU" -n 4 \
+        "$TIDY_BIN" -p "$BUILD_DIR" --quiet --warnings-as-errors='*' \
+        || die "clang-tidy reported findings (see above)"
     fi
   fi
 fi

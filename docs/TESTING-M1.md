@@ -123,6 +123,56 @@ Manuelle Sortierung (Darstellung → Sortieren nach):
 - [ ] „Größe“ wählen: Reihenfolge ändert sich, das aktuelle Bild bleibt, Position im
       Titel passt. „Absteigend“ dreht um. „Wie Finder“ stellt zurück.
 
+### Echte .DS_Store-Testdateien erzeugen (F-SORT-08)
+
+Einmal je macOS-Hauptversion (und nach größeren Finder-Änderungen) lässt man den Finder
+selbst `.DS_Store`-Dateien für künstliche Testordner schreiben. Sie landen im Repo und
+werden von `FinderFixtures.F_SORT_08_F_SORT_03_RealFinderDsStoreFiles` (in
+`lf_unit_tests`) bei jedem Testlauf geprüft: erkannte Sortierung und Reihenfolge.
+
+```sh
+tools/make_finder_fixtures.sh --list        # alle Fälle anzeigen
+tools/make_finder_fixtures.sh               # fragt nach; ca. 1–2 Minuten, Finder nicht benutzen
+```
+
+1. Das Skript legt unter `/private/tmp/lumaflip-finder.XXXXXX` je Fall einen Ordner
+   `Bilder` mit acht kleinen Bildern an (`IMG_2.jpg`, `IMG_10.jpg`, `IMG_2 (1).jpg`,
+   `Ärger.png`, `a b.jpg`, …) mit festen Größen, Änderungs-, Erstellungs- und
+   Hinzugefügt-Daten. Es benutzt **keine** eigenen Ordner.
+2. Es öffnet jeden Ordner per AppleScript im Finder, stellt Listenansicht mit Spalte und
+   Richtung (Name, Änderungsdatum, Erstellungsdatum, Größe, Art; normal/umgekehrt) bzw.
+   Symbolansicht mit Anordnung (Name, Datum, Größe, Art, „Ohne“/„Am Raster“ mit festen
+   Positionen) ein und schließt das Fenster wieder.
+3. Beim ersten Lauf fragt macOS, ob das Terminal den **Finder steuern** darf → „OK“
+   (Systemeinstellungen → Datenschutz & Sicherheit → Automation).
+4. Ergebnis: `tests/data/finder/macos-<Version>/<Fall>/` mit `parent.DS_Store`,
+   `folder.DS_Store` und `expected.json`. Die Dateien werden vorher auf Benutzername,
+   Home-Pfad und Rechnernamen geprüft. Testordner werden danach gelöscht (`--keep`
+   behält sie zum Nachsehen).
+5. Prüfen und einchecken:
+   ```sh
+   cmake --build build/check && build/check/tests/lf_unit_tests --gtest_filter='FinderFixtures.*'
+   git add tests/data/finder/
+   ```
+   Schlägt der Test fehl, weicht Lumaflip vom Finder ab – Fall und Meldung bitte melden
+   (nicht `expected.json` von Hand „reparieren“).
+
+Optionen:
+
+- `--ui-order`: liest in der Listenansicht die angezeigte Zeilenfolge über „System
+  Events“ (braucht zusätzlich **Bedienungshilfen**-Freigabe für das Terminal). Ohne diese
+  Option wird die erwartete Reihenfolge der Listenfälle aus der Finder-Regel berechnet
+  (`"orderSource": "computed"`) und die Richtung „normal“ als Standardrichtung der
+  Spalte angenommen; Symbolansichten nutzen immer die vom Finder gemeldeten
+  Symbolpositionen (`"finder-positions"`). Empfohlen: einmal mit `--ui-order` laufen lassen.
+- `--gui`: zusätzlich die Fälle „Hinzugefügt am“. AppleScript kennt diese Spalte nicht;
+  das Skript drückt Darstellung → Sortieren nach → Hinzugefügt am (⌃⌥⌘4), ebenfalls mit
+  Bedienungshilfen-Freigabe.
+- `--only <Fall>` (mehrfach), `--out <Ordner>`, `--yes` (ohne Rückfrage).
+
+Abgleich im eigenen Ordner (bleibt manuell, siehe die Punkte oben): die eigenen
+`.DS_Store`-Dateien **nicht** einchecken – sie enthalten private Dateinamen.
+
 ## 5. Dateien: Papierkorb, Finder, Zwischenablage, Drehen (12.1 Nr. 6)
 
 Mit Kopien arbeiten (z. B. `cp -R tests/corpus/generated /tmp/lf-test`).
