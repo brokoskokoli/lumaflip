@@ -28,6 +28,8 @@ jobs:
       LF_BENCH_TOLERANCE: "2.0"
       # RAW samples are downloaded below, so the RAW tests must not skip.
       LF_REQUIRE_RAW: "1"
+      # Sparkle is downloaded below: the updater tests (F-MAC-08) must run with it.
+      LF_REQUIRE_SPARKLE: "1"
       # clang-tidy is installed below: a missing binary fails instead of skipping.
       LF_REQUIRE_TIDY: "1"
       # clang-tidy checks the files changed against this ref (tools/check.sh). For a
@@ -52,6 +54,8 @@ jobs:
           key: raw-samples-${{ hashFiles('tests/corpus/download_raw.sh') }}
       - name: Download RAW samples (CC0, pinned by SHA-256)
         run: tests/corpus/download_raw.sh
+      - name: Download Sparkle (F-MAC-08, pinned by SHA-256)
+        run: tools/fetch_sparkle.sh
       - name: All checks (build, tests, format, SPDX, spec coverage, benchmarks, clang-tidy)
         run: tools/check.sh --stage M1 --format-all --tidy
       - name: Upload test logs
@@ -70,6 +74,7 @@ jobs:
     timeout-minutes: 90
     env:
       LF_REQUIRE_RAW: "1"
+      LF_REQUIRE_SPARKLE: "1"
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
@@ -83,6 +88,8 @@ jobs:
           key: raw-samples-${{ hashFiles('tests/corpus/download_raw.sh') }}
       - name: Download RAW samples
         run: tests/corpus/download_raw.sh
+      - name: Download Sparkle (F-MAC-08, pinned by SHA-256)
+        run: tools/fetch_sparkle.sh
       - name: Build + tests with sanitizers
         run: tools/check.sh --quick --sanitize
       - name: Upload test logs

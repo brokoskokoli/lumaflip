@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "PreferencesDialog.h"
 
+#include "Updater.h"
 #include "core/Settings.h"
 
 #include <QAction>
@@ -341,6 +342,7 @@ QWidget* PreferencesDialog::buildGeneral() {
     form->addRow(QString(), bind.check(key::ConfirmTrash, tr("Vor dem Löschen nachfragen"), w));
     form->addRow(QString(),
                  helpLabel(tr("Aus: ⌘⌫ legt das Bild sofort in den Papierkorb, ⌘Z holt es zurück."), w));
+    Updater::addPreferences(form, w); // F-MAC-08 (only if the updater is available)
     return w;
 }
 

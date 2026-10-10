@@ -20,6 +20,12 @@
 #                      reject the app on other Macs).
 #   LF_SIGN_KEYCHAIN   optional keychain that holds the identity (CI)
 #   LF_NOTARY_*        passed through to tools/notarize.sh
+#   LF_ENABLE_SPARKLE  AUTO (default), ON or OFF: automatic updates with Sparkle 2
+#                      (F-MAC-08; tools/fetch_sparkle.sh downloads the framework)
+#   LF_SPARKLE_PUBLIC_KEY  EdDSA public key (base64) for SUPublicEDKey. Empty: Sparkle is
+#                      embedded but the updater stays disabled (local builds)
+#   LF_REQUIRE_SPARKLE=1   fail unless Sparkle is embedded and the bundle has feed + key
+#                      (release builds: never ship without key)
 #
 # Never deletes anything outside its own fresh temporary directory: staging happens in
 # a new mktemp directory (removed on exit unless --keep-work), results are (over)written
@@ -35,7 +41,7 @@ while [[ $# -gt 0 ]]; do
     --notarize) NOTARIZE=1 ;;
     --notarize-dry-run) NOTARIZE=1; NOTARIZE_DRY=1 ;;
     --keep-work) KEEP_WORK=1 ;;
-    -h|--help) sed -n '3,28p' "$0"; exit 0 ;;
+    -h|--help) sed -n '3,32p' "$0"; exit 0 ;;
     *) echo "package.sh: unknown option $1" >&2; exit 2 ;;
   esac; shift
 done
@@ -56,7 +62,8 @@ if [[ $SKIP_BUILD == 0 ]]; then
   # Explicit: optimized (-O3 -DNDEBUG), no sanitizers, no tests - even if the cache in
   # build/release was configured differently before.
   cmake -S . -B "$BUILD_DIR" -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$QT_PREFIX" \
-    -DLF_WERROR=ON -DLF_SANITIZE=OFF -DLF_BUILD_TESTS=OFF -DQT_NO_PRIVATE_MODULE_WARNING=ON >/dev/null
+    -DLF_WERROR=ON -DLF_SANITIZE=OFF -DLF_BUILD_TESTS=OFF -DQT_NO_PRIVATE_MODULE_WARNING=ON \
+    -DLF_ENABLE_SPARKLE="${LF_ENABLE_SPARKLE:-AUTO}" -DLF_SPARKLE_PUBLIC_KEY="${LF_SPARKLE_PUBLIC_KEY:-}" >/dev/null
   cmake --build "$BUILD_DIR"
 fi
 BUILT_APP="$BUILD_DIR/src/Lumaflip.app"
@@ -87,6 +94,21 @@ PY
 VERSION=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$BUILT_APP/Contents/Info.plist")
 ARCHS=$(lipo -archs "$BUILT_APP/Contents/MacOS/Lumaflip")
 echo "Lumaflip $VERSION ($ARCHS)"
+
+step "Check: Sparkle (automatic updates, F-MAC-08)"
+HAS_SPARKLE=0
+if otool -L "$BUILT_APP/Contents/MacOS/Lumaflip" | grep -q '@rpath/Sparkle.framework/'; then HAS_SPARKLE=1; fi
+SU_KEY=$(/usr/libexec/PlistBuddy -c 'Print :SUPublicEDKey' "$BUILT_APP/Contents/Info.plist" 2>/dev/null || true)
+SU_FEED=$(/usr/libexec/PlistBuddy -c 'Print :SUFeedURL' "$BUILT_APP/Contents/Info.plist" 2>/dev/null || true)
+if [[ $HAS_SPARKLE == 1 && -n "$SU_KEY" && -n "$SU_FEED" ]]; then
+  echo "Sparkle embedded, feed $SU_FEED, public key $SU_KEY"
+elif [[ "${LF_REQUIRE_SPARKLE:-0}" == 1 ]]; then
+  die "LF_REQUIRE_SPARKLE=1, but the build has no Sparkle or no SUFeedURL/SUPublicEDKey (run tools/fetch_sparkle.sh, set LF_SPARKLE_PUBLIC_KEY)"
+elif [[ $HAS_SPARKLE == 1 ]]; then
+  echo "Sparkle embedded, but no LF_SPARKLE_PUBLIC_KEY: updater disabled in this bundle"
+else
+  echo "Built without Sparkle: no automatic updates in this bundle"
+fi
 
 # ---- 2. Stage + deploy Qt ---------------------------------------------------------
 WORK_PARENT="$(cd "${TMPDIR:-/tmp}" && pwd -P)"
@@ -120,7 +142,7 @@ if [[ "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleDevelopmentRegion' "$PLIST" 
 fi
 
 step "Deploy Qt frameworks, plugins, translations, licences"
-python3 tools/macos_deploy.py "$APP" --qt-prefix "$QT_PREFIX"
+python3 tools/macos_deploy.py "$APP" --qt-prefix "$QT_PREFIX" --sparkle-dir "$ROOT/third_party/Sparkle"
 
 step "Check: nothing references Homebrew or other foreign paths (otool -L)"
 python3 tools/macos_deploy.py --verify "$APP"
@@ -143,9 +165,30 @@ step "Code signing"
 while IFS= read -r -d '' f; do
   "${SIGN[@]}" "$f"
 done < <(find "$APP/Contents/Frameworks" "$APP/Contents/PlugIns" -type f -name '*.dylib' -print0)
+# ... Sparkle's helpers, inside-out as Sparkle documents it for Developer ID
+# (https://sparkle-project.org/documentation/sandboxing/#code-signing): the XPC services
+# (Downloader keeps its entitlements), Autoupdate, Updater.app, then the framework. Always
+# with Hardened Runtime - the helpers load no libraries of ours, so this also works ad-hoc ...
+SPARKLE_FW="$APP/Contents/Frameworks/Sparkle.framework"
+if [[ -d "$SPARKLE_FW" ]]; then
+  SP_SIGN=("${SIGN[@]}")
+  [[ "$IDENTITY" == "-" ]] && SP_SIGN+=(--options runtime)
+  SPV="$SPARKLE_FW/Versions/B"
+  for xpc in "$SPV"/XPCServices/*.xpc; do
+    [[ -d "$xpc" ]] || continue
+    if [[ "$(basename "$xpc")" == Downloader.xpc ]]; then
+      "${SP_SIGN[@]}" --preserve-metadata=entitlements "$xpc"
+    else
+      "${SP_SIGN[@]}" "$xpc"
+    fi
+  done
+  "${SP_SIGN[@]}" "$SPV/Autoupdate"
+  "${SP_SIGN[@]}" "$SPV/Updater.app"
+  "${SP_SIGN[@]}" "$SPARKLE_FW"
+fi
 # ... then each framework version (its binary + Resources/Info.plist) ...
 for fw in "$APP"/Contents/Frameworks/*.framework; do
-  [[ -d "$fw" ]] || continue
+  [[ -d "$fw" && "$fw" != "$SPARKLE_FW" ]] || continue
   for v in "$fw"/Versions/*; do
     [[ -L "$v" ]] || "${SIGN[@]}" "$v"
   done

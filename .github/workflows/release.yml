@@ -1,12 +1,15 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Release pipeline (SPEC 10.1): tag v* -> the same checks as CI (checks.yml) -> build ->
-# sign -> notarize -> staple -> GitHub Release with DMG, ZIP and SHA-256 files.
-# Required secrets: docs/RELEASING.md.
+# sign -> notarize -> staple -> GitHub Release with DMG, ZIP and SHA-256 files -> Sparkle
+# appcast (EdDSA-signed) on GitHub Pages (branch gh-pages).
+# Required secrets and variables: docs/RELEASING.md.
 #
 # Secret handling: actions pinned by commit SHA; secrets only in the release job (never in
 # the checks); no `set -x`; secret values never appear on a command line (`ps`): the .p12
 # password and the keychain password go to `security -i` on stdin, key files are written
-# with umask 077 into a private directory and removed at the end, even on failure.
+# with umask 077 into a private directory and removed at the end, even on failure. The
+# Sparkle EdDSA private key goes to generate_appcast on stdin (--ed-key-file -); the
+# copy for the key check is a 0600 file in the same private directory.
 name: Release
 on:
   push:
@@ -50,7 +53,7 @@ jobs:
     runs-on: macos-15
     environment: release
     permissions:
-      contents: write   # gh release create
+      contents: write   # gh release create, push of the appcast to gh-pages
     timeout-minutes: 90
     env:
       HOMEBREW_NO_AUTO_UPDATE: "1"
@@ -62,7 +65,10 @@ jobs:
           persist-credentials: false
 
       - name: Install dependencies
-        run: brew install cmake ninja qt
+        run: brew install cmake ninja qt openssl@3
+
+      - name: Download Sparkle (pinned by SHA-256)
+        run: tools/fetch_sparkle.sh
 
       - name: Import signing certificate into a temporary keychain
         env:
@@ -110,6 +116,24 @@ jobs:
           fi
           echo "LF_SIGN_IDENTITY=$identity" >> "$GITHUB_ENV"
 
+      - name: Check Sparkle keys (never ship updates without a matching key pair)
+        env:
+          SPARKLE_PUBLIC_ED_KEY: ${{ vars.SPARKLE_PUBLIC_ED_KEY }}
+          SPARKLE_ED_PRIVATE_KEY: ${{ secrets.SPARKLE_ED_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          umask 077
+          if [[ -z "$SPARKLE_PUBLIC_ED_KEY" ]]; then
+            echo "::error::Repository variable SPARKLE_PUBLIC_ED_KEY is missing (docs/RELEASING.md)"; exit 1
+          fi
+          if [[ -z "$SPARKLE_ED_PRIVATE_KEY" ]]; then
+            echo "::error::Secret SPARKLE_ED_PRIVATE_KEY is missing (docs/RELEASING.md)"; exit 1
+          fi
+          key="$LF_SECRETS_DIR/sparkle_ed.key"
+          printf '%s' "$SPARKLE_ED_PRIVATE_KEY" > "$key"
+          tools/sparkle_key_check.sh "$key" "$SPARKLE_PUBLIC_ED_KEY"
+          rm -f "$key"
+
       - name: Write App Store Connect API key
         env:
           NOTARY_API_KEY_P8_BASE64: ${{ secrets.NOTARY_API_KEY_P8_BASE64 }}
@@ -124,6 +148,10 @@ jobs:
         env:
           LF_NOTARY_KEY_ID: ${{ secrets.NOTARY_API_KEY_ID }}
           LF_NOTARY_ISSUER: ${{ secrets.NOTARY_API_ISSUER_ID }}
+          # F-MAC-08: Sparkle embedded, feed + public key in Info.plist, or the build fails.
+          LF_ENABLE_SPARKLE: "ON"
+          LF_SPARKLE_PUBLIC_KEY: ${{ vars.SPARKLE_PUBLIC_ED_KEY }}
+          LF_REQUIRE_SPARKLE: "1"
         run: tools/package.sh --notarize
 
       - name: Check stapled tickets
@@ -144,11 +172,63 @@ jobs:
             --title "Lumaflip $version" \
             dist/Lumaflip-*.dmg dist/Lumaflip-*.zip dist/Lumaflip-*.sha256
 
+      - name: Update the Sparkle appcast on GitHub Pages
+        # The update archive is the notarized, Developer ID signed DMG (with
+        # SUVerifyUpdateBeforeExtraction Sparkle only allows key rotation for DMGs).
+        # generate_appcast keeps the existing items (their archives stay in the GitHub
+        # Releases), adds this version with its EdDSA signature and signs the feed
+        # (SURequireSignedFeed). Release notes: the GitHub release text, embedded.
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SPARKLE_ED_PRIVATE_KEY: ${{ secrets.SPARKLE_ED_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          work="$RUNNER_TEMP/appcast"
+          mkdir -p "$work/archives"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads "https://github.com/$GITHUB_REPOSITORY.git" gh-pages >/dev/null; then
+            git clone --quiet --depth 1 --branch gh-pages "https://github.com/$GITHUB_REPOSITORY.git" "$work/pages"
+          else
+            git init --quiet --initial-branch gh-pages "$work/pages"
+            git -C "$work/pages" remote add origin "https://github.com/$GITHUB_REPOSITORY.git"
+          fi
+          touch "$work/pages/.nojekyll"   # plain files, no Jekyll processing
+          [[ -f "$work/pages/appcast.xml" ]] && cp "$work/pages/appcast.xml" "$work/archives/appcast.xml"
+          cp "dist/Lumaflip-$version.dmg" "$work/archives/"
+
+          # Release notes: Markdown of the GitHub release -> HTML (GitHub renders and sanitizes it).
+          gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --json body --jq .body > "$work/notes.md"
+          gh api markdown -f mode=gfm -f context="$GITHUB_REPOSITORY" -F text=@"$work/notes.md" \
+            > "$work/archives/Lumaflip-$version.html"
+
+          # Private key on stdin only (printf is a shell builtin: not in any argument list).
+          printf '%s' "$SPARKLE_ED_PRIVATE_KEY" | third_party/Sparkle/bin/generate_appcast \
+            --ed-key-file - \
+            --download-url-prefix "https://github.com/$GITHUB_REPOSITORY/releases/download/$GITHUB_REF_NAME/" \
+            --link "https://github.com/$GITHUB_REPOSITORY" \
+            --maximum-deltas 0 --maximum-versions 10 \
+            -o "$work/archives/appcast.xml" "$work/archives"
+          grep -q "<sparkle:version>$version</sparkle:version>" "$work/archives/appcast.xml" \
+            || { echo "::error::appcast.xml has no item for $version"; exit 1; }
+          printf '%s' "$SPARKLE_ED_PRIVATE_KEY" | third_party/Sparkle/bin/sign_update --verify --ed-key-file - \
+            "$work/archives/appcast.xml"
+
+          mkdir -p "$work/pages/notes"
+          cp "$work/archives/appcast.xml" "$work/pages/appcast.xml"
+          cp "$work/archives/Lumaflip-$version.html" "$work/pages/notes/$version.html"
+          git -C "$work/pages" add appcast.xml notes .nojekyll
+          git -C "$work/pages" commit --quiet -m "Appcast: Lumaflip $version"
+          # Push with GITHUB_TOKEN through gh's credential helper (no token in any URL or argument).
+          gh auth setup-git
+          git -C "$work/pages" push --quiet origin gh-pages
+
       - name: Remove keychain and key files
         if: always()
         run: |
           if [[ -n "${LF_SIGN_KEYCHAIN:-}" ]]; then security delete-keychain "$LF_SIGN_KEYCHAIN" || true; fi
           if [[ -n "${LF_SECRETS_DIR:-}" ]]; then
-            rm -f "$LF_SECRETS_DIR/AuthKey.p8" "$LF_SECRETS_DIR/cert.p12"
+            rm -f "$LF_SECRETS_DIR/AuthKey.p8" "$LF_SECRETS_DIR/cert.p12" "$LF_SECRETS_DIR/sparkle_ed.key"
             rmdir "$LF_SECRETS_DIR" 2>/dev/null || true
           fi
