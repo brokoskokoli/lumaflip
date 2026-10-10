@@ -457,9 +457,9 @@ private slots:
         const QString status = w->statusText();
         QVERIFY2(status.contains(QStringLiteral("IMG_2.jpg")), qPrintable(status));
         QVERIFY2(status.contains(QStringLiteral("%1 / 3").arg(pos)), qPrintable(status));
-        QVERIFY2(status.contains(QStringLiteral(" %")), qPrintable(status)); // zoom
+        QVERIFY2(status.contains(QStringLiteral(" %")), qPrintable(status));       // zoom
         const QString bytes = formatByteSize(QFileInfo(path("IMG_2.jpg")).size()); // German units
-        QVERIFY2(status.contains(bytes), qPrintable(status)); // file size
+        QVERIFY2(status.contains(bytes), qPrintable(status));                      // file size
         // F-SORT-05: detected order is shown
         const QString sort = w->sortText();
         QCOMPARE(sort, describe(w->collection()->sortSpec()));
