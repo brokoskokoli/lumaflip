@@ -63,7 +63,8 @@ using lf::macint::ServiceImage;
     for (const QString& t : write) {
         if (t == QLatin1String(lf::services::kFileUrlType)) {
             NSURL* url = [NSURL fileURLWithPath:ctx.path.toNSString()];
-            wrote = [pboard setString:url.absoluteString forType:NSPasteboardTypeFileURL] || wrote;
+            if (NSString* s = url.absoluteString)
+                wrote = [pboard setString:s forType:NSPasteboardTypeFileURL] || wrote;
             continue;
         }
         if (pixels.isNull() && image)
@@ -171,7 +172,8 @@ namespace lf::macint {
 
 namespace {
 
-const void* const kResponderKey = &kResponderKey;
+char kResponderKeyStorage = 0; // its address is the associated-object key
+const void* const kResponderKey = &kResponderKeyStorage;
 
 NSWindow* nativeWindow(QWidget* widget) {
     QWidget* top = widget ? widget->window() : nullptr;
