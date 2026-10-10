@@ -200,8 +200,8 @@ void PreferencesDialog::showSection(int section) {
 QStringList PreferencesDialog::sectionKeys(int section) const {
     switch (section) {
     case General:
-        return {key::OpenBehavior, key::RestoreWindows, key::ConfirmTrash, key::EditorApp,
-                key::RotationSaveStrategy, key::KeepModificationDate};
+        return {key::OpenBehavior, key::RestoreWindows,       key::ConfirmTrash,
+                key::EditorApp,    key::RotationSaveStrategy, key::KeepModificationDate};
     case Window:
         return {key::FitWindowToImage, key::TitleShowFolder, key::ShowStatusBar,
                 key::ShowInfoPanel,    key::ShowFilmstrip,   key::AllowTabs};

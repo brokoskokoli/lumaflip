@@ -372,8 +372,8 @@ TEST(Review3Input, F_SET_02_PlannedActionsAreNotAvailable) {
     for (Action a : {Action::NextImage, Action::ZoomFit, Action::Trash, Action::ToggleFullScreen,
                      Action::CopyImage, Action::ShowShortcuts, Action::NextFolder, Action::ToggleInfoPanel,
                      Action::ToggleFilmstrip, Action::Rename, Action::OpenInEditor, Action::DragOut,
-                     Action::ToggleSlideshow, Action::ToggleAnimation, Action::NextFrame, Action::PreviousFrame,
-                     Action::NextPage, Action::PreviousPage, Action::SaveRotation})
+                     Action::ToggleSlideshow, Action::ToggleAnimation, Action::NextFrame,
+                     Action::PreviousFrame, Action::NextPage, Action::PreviousPage, Action::SaveRotation})
         EXPECT_TRUE(InputBindings::isActionAvailable(a)) << actionId(a).toStdString();
 }
 
