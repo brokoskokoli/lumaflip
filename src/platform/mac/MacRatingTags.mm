@@ -23,9 +23,10 @@ namespace {
 
 constexpr const char* kTagsAttr = "com.apple.metadata:_kMDItemUserTags";
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::RatingStore", text);
-}
+// Tr::tr() for the code in this file outside QObject classes (lupdate takes the context from it).
+struct Tr {
+    Q_DECLARE_TR_FUNCTIONS(lf::RatingStore)
+};
 
 QString errnoText() {
     return QString::fromLocal8Bit(strerror(errno));
@@ -44,7 +45,7 @@ std::optional<QStringList> readRawTags(const QString& path, QString* error) {
         if (errno == ENOATTR)
             return QStringList();
         if (error)
-            *error = tr("Tags von „%1“ konnten nicht gelesen werden: %2")
+            *error = Tr::tr("Tags von „%1“ konnten nicht gelesen werden: %2")
                          .arg(QFileInfo(path).fileName(), errnoText());
         return std::nullopt;
     }
@@ -52,7 +53,7 @@ std::optional<QStringList> readRawTags(const QString& path, QString* error) {
     const ssize_t got = getxattr(p.constData(), kTagsAttr, buf.data(), buf.size(), 0, 0);
     if (got < 0) {
         if (error)
-            *error = tr("Tags von „%1“ konnten nicht gelesen werden: %2")
+            *error = Tr::tr("Tags von „%1“ konnten nicht gelesen werden: %2")
                          .arg(QFileInfo(path).fileName(), errnoText());
         return std::nullopt;
     }
@@ -90,8 +91,8 @@ bool writeRawTags(const QString& path, const QStringList& rawTags, QString* erro
         }
     }
     if (error)
-        *error =
-            tr("Tags von „%1“ konnten nicht gesetzt werden: %2").arg(QFileInfo(path).fileName(), errnoText());
+        *error = Tr::tr("Tags von „%1“ konnten nicht gesetzt werden: %2")
+                     .arg(QFileInfo(path).fileName(), errnoText());
     return false;
 }
 

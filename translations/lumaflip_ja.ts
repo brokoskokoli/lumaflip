@@ -161,6 +161,89 @@
     </message>
 </context>
 <context>
+    <name>lf::CullingController</name>
+    <message>
+        <source>Bewertung wird gelesen …</source>
+        <translation>評価を読み込み中 …</translation>
+    </message>
+    <message>
+        <source>AUSSORTIEREN</source>
+        <translation>選別</translation>
+    </message>
+    <message>
+        <source>0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg</source>
+        <translation>0–5  星     P  採用     X  不採用     U  フラグ解除</translation>
+    </message>
+    <message>
+        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden</source>
+        <translation>← →  ブラウズ     M/C + 1–9  移動/コピー     ⌘Z  取り消す     Esc  終了</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U markieren</source>
+        <translation>選別モード：数字で星を付け、P/X/U でフラグ</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus beendet</source>
+        <translation>選別モードを終了しました</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation>%1：%2</translation>
+    </message>
+    <message>
+        <source>Filter: %1 — %2 / %3</source>
+        <translation>フィルタ：%1 — %2 / %3</translation>
+    </message>
+    <message>
+        <source>Keine verworfenen Bilder</source>
+        <translation>不採用の画像はありません</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Papierkorb legen?</source>
+        <translation>
+            <numerusform>不採用の画像 %n 枚をゴミ箱に入れますか？</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
+        <translation>
+            <numerusform>不採用の画像 %n 枚をフォルダ「_Rejected」に移動しますか？</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <translation>XMP サイドカーファイルも一緒に移動します。⌘Z で手順全体を取り消せます。</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb</source>
+        <translation>ゴミ箱に入れる</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>移動</translation>
+    </message>
+    <message>
+        <source>Verworfene in den Papierkorb</source>
+        <translation>不採用をゴミ箱へ</translation>
+    </message>
+    <message>
+        <source>Verworfene nach _Rejected</source>
+        <translation>不採用を _Rejected へ</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n 枚の画像をゴミ箱に入れました</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „_Rejected“ verschoben</source>
+        <translation>
+            <numerusform>%n 枚の画像を「_Rejected」に移動しました</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::DecoderRegistry</name>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -407,6 +490,25 @@
     <message>
         <source>Kamera-RAW (Sigma X3F)</source>
         <translation>カメラRAW（Sigma X3F）</translation>
+    </message>
+</context>
+<context>
+    <name>lf::FileBatch</name>
+    <message>
+        <source>„%1“ existiert bereits.</source>
+        <translation>「%1」はすでに存在します。</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht kopiert werden.</source>
+        <translation>「%1」をコピーできませんでした。</translation>
+    </message>
+    <message>
+        <source>Der Ordner „%1“ konnte nicht angelegt werden.</source>
+        <translation>フォルダ「%1」を作成できませんでした。</translation>
+    </message>
+    <message>
+        <source>Die Kopie „%1“ konnte nicht entfernt werden.</source>
+        <translation>コピー「%1」を削除できませんでした。</translation>
     </message>
 </context>
 <context>
@@ -1083,6 +1185,18 @@
     <message>
         <source>Markierung zurücksetzen</source>
         <translation>フラグをリセット</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus</source>
+        <translation>選別モード</translation>
+    </message>
+    <message>
+        <source>Schnellablage: verschieben (M, dann 1–9)</source>
+        <translation>クイック移動：移動（M、続けて 1–9）</translation>
+    </message>
+    <message>
+        <source>Schnellablage: kopieren (C, dann 1–9)</source>
+        <translation>クイック移動：コピー（C、続けて 1–9）</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2106,6 +2220,74 @@
         <source>Geschwindigkeit</source>
         <translation>速度</translation>
     </message>
+    <message>
+        <source>Alle Bilder</source>
+        <translation>すべての画像</translation>
+    </message>
+    <message>
+        <source>Nur Picks</source>
+        <translation>採用のみ</translation>
+    </message>
+    <message>
+        <source>Nur unbewertete</source>
+        <translation>未評価のみ</translation>
+    </message>
+    <message>
+        <source>Nur verworfene</source>
+        <translation>不採用のみ</translation>
+    </message>
+    <message>
+        <source>Mindestens %1 ★</source>
+        <translation>%1 ★ 以上</translation>
+    </message>
+    <message>
+        <source>Aussortieren</source>
+        <translation>選別</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus</source>
+        <translation>選別モード</translation>
+    </message>
+    <message>
+        <source>Bewerten</source>
+        <translation>評価</translation>
+    </message>
+    <message>
+        <source>Nach Bewertung automatisch weiter</source>
+        <translation>評価後に自動で次へ</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation>フィルタ</translation>
+    </message>
+    <message>
+        <source>Alle verworfenen in den Papierkorb …</source>
+        <translation>不採用をすべてゴミ箱へ …</translation>
+    </message>
+    <message>
+        <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
+        <translation>不採用をすべて「_Rejected」へ …</translation>
+    </message>
+    <message>
+        <source>Schnellablage: verschieben (M, dann 1–9)</source>
+        <translation>クイック移動：移動（M、続けて 1–9）</translation>
+    </message>
+    <message>
+        <source>Schnellablage: kopieren (C, dann 1–9)</source>
+        <translation>クイック移動：コピー（C、続けて 1–9）</translation>
+    </message>
+    <message>
+        <source>Verschieben nach</source>
+        <translation>移動先</translation>
+    </message>
+    <message>
+        <source>Kopieren nach</source>
+        <translation>コピー先</translation>
+    </message>
+    <message>
+        <source>Ziele der Schnellablage festlegen …</source>
+        <translation>クイック移動の移動先を設定 …</translation>
+    </message>
 </context>
 <context>
     <name>lf::MenuExtras</name>
@@ -2769,36 +2951,128 @@
         <translation>「Finderと同じ順序で並べ替え」がオフの場合、またはFinderの情報が見つからない場合に適用されます。「表示」→「並べ替え」メニューでの選択はフォルダごとに記憶されます。「すべてのフォルダで使用」を選ぶと、ここでのデフォルトになります。</translation>
     </message>
     <message>
-        <source>Bewertungen speichern:</source>
-        <translation>評価の保存先:</translation>
+        <source>Keine Farbe</source>
+        <translation>色なし</translation>
+    </message>
+    <message>
+        <source>Grau</source>
+        <translation>グレイ</translation>
+    </message>
+    <message>
+        <source>Grün</source>
+        <translation>グリーン</translation>
+    </message>
+    <message>
+        <source>Lila</source>
+        <translation>パープル</translation>
+    </message>
+    <message>
+        <source>Blau</source>
+        <translation>ブルー</translation>
+    </message>
+    <message>
+        <source>Gelb</source>
+        <translation>イエロー</translation>
+    </message>
+    <message>
+        <source>Rot</source>
+        <translation>レッド</translation>
+    </message>
+    <message>
+        <source>Orange</source>
+        <translation>オレンジ</translation>
+    </message>
+    <message>
+        <source>nicht festgelegt</source>
+        <translation>未設定</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>選択 …</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>削除</translation>
+    </message>
+    <message>
+        <source>Ziel %1 der Schnellablage</source>
+        <translation>クイック移動の移動先 %1</translation>
+    </message>
+    <message>
+        <source>Bewertungen speichern</source>
+        <translation>評価の保存先</translation>
     </message>
     <message>
         <source>XMP-Zusatzdatei neben dem Bild (Bild.xmp)</source>
         <translation>画像の横のXMPサイドカーファイル（画像.xmp）</translation>
     </message>
     <message>
-        <source>Kompatibel mit Lightroom, Capture One und darktable.</source>
-        <translation>Lightroom、Capture One、darktableと互換性があります。</translation>
+        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
+        <translation>Lightroom、Capture One、darktable と互換：星は xmp:Rating に、「不採用」は -1 として保存。ファイルの既存の内容は保持されます。</translation>
+    </message>
+    <message>
+        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; die Bildpixel werden nicht neu kodiert. RAW-Dateien werden nie verändert – dafür wird die Zusatzdatei benutzt.</source>
+        <translation>JPEG、HEIC、TIFF、PNG、DNG のみ。画素は再エンコードされません。RAW ファイルは決して変更されず、代わりにサイドカーファイルを使用します。</translation>
+    </message>
+    <message>
+        <source>Änderungsdatum beim Schreiben ins Bild beibehalten</source>
+        <translation>画像に書き込むときに変更日を保持</translation>
+    </message>
+    <message>
+        <source>Im Finder sichtbar und per Spotlight durchsuchbar. Sind mehrere Speicherorte gewählt, werden alle beschrieben; beim Lesen gilt die Reihenfolge Zusatzdatei, Bild, Tags.</source>
+        <translation>Finder に表示され、Spotlight で検索できます。複数の保存先を選んだ場合はすべてに書き込み、読み込み時はサイドカーファイル、画像、タグの順に優先します。</translation>
+    </message>
+    <message>
+        <source>Stern-Symbol:</source>
+        <translation>星の記号：</translation>
+    </message>
+    <message>
+        <source>Tag für Pick:</source>
+        <translation>採用のタグ：</translation>
+    </message>
+    <message>
+        <source>Tag für Verworfen:</source>
+        <translation>不採用のタグ：</translation>
+    </message>
+    <message>
+        <source>Drei Sterne werden zum Tag „★★★“ (Symbol dreimal).</source>
+        <translation>星 3 つはタグ「★★★」になります（記号を 3 回）。</translation>
+    </message>
+    <message>
+        <source>Aussortieren</source>
+        <translation>選別</translation>
+    </message>
+    <message>
+        <source>Nach Bewertung automatisch weiter</source>
+        <translation>評価後に自動で次の画像へ</translation>
+    </message>
+    <message>
+        <source>Zoom im Aussortiermodus fixieren</source>
+        <translation>選別モードでズームを固定</translation>
+    </message>
+    <message>
+        <source>Tastenhilfe im Aussortiermodus zeigen</source>
+        <translation>選別モードでキーのヘルプを表示</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus: ⌘K oder K. Ziffern vergeben dort Sterne statt Zoomstufen; „Bewertungstasten immer aktiv“ gibt es unter Maus &amp; Tastatur.</source>
+        <translation>選別モード：⌘K または K。そこでは数字がズームではなく星になります。「評価キーを常に有効」は「マウスとキーボード」にあります。</translation>
+    </message>
+    <message>
+        <source>Schnellablage</source>
+        <translation>クイック移動</translation>
+    </message>
+    <message>
+        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z macht es rückgängig.</source>
+        <translation>M に続けて 1–9 で画像を移動先フォルダへ移動、C に続けて 1–9 でコピーします。M M または C C で前回の移動先を繰り返します。⌘Z で取り消せます。</translation>
     </message>
     <message>
         <source>Im Bild selbst (eingebettetes XMP)</source>
         <translation>画像ファイル内（埋め込みXMP）</translation>
     </message>
     <message>
-        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; sonst wird die Zusatzdatei benutzt. Die Bildpixel werden nicht neu kodiert.</source>
-        <translation>JPEG、HEIC、TIFF、PNG、DNGのみ。それ以外はサイドカーファイルを使用します。画像のピクセルは再エンコードされません。</translation>
-    </message>
-    <message>
         <source>Finder-Tags</source>
         <translation>Finderタグ</translation>
-    </message>
-    <message>
-        <source>Im Finder sichtbar und per Spotlight durchsuchbar.</source>
-        <translation>Finderに表示され、Spotlightで検索できます。</translation>
-    </message>
-    <message>
-        <source>Bewertungen und der Aussortiermodus folgen %1.</source>
-        <translation>評価と選別モードは%1に従います。</translation>
     </message>
     <message>
         <source>Unterstützte Formate (ohne Nachinstallation):</source>
@@ -3011,6 +3285,206 @@
     <message>
         <source>Nicht genug Speicher für das Bild.</source>
         <translation>画像用のメモリが足りません。</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QuickMove</name>
+    <message>
+        <source>%1  (nicht festgelegt)</source>
+        <translation>%1  （未設定）</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QuickMoveController</name>
+    <message>
+        <source>Verschieben nach … (1–9, M = wie zuletzt)</source>
+        <translation>移動先 …（1–9、M = 前回と同じ）</translation>
+    </message>
+    <message>
+        <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
+        <translation>コピー先 …（1–9、C = 前回と同じ）</translation>
+    </message>
+    <message>
+        <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
+        <translation>まだ移動先を使っていません。先に数字 1–9 を選んでください。</translation>
+    </message>
+    <message>
+        <source>Ziel %1 ist nicht festgelegt (Einstellungen → Bewertung → Schnellablage).</source>
+        <translation>移動先 %1 が設定されていません（設定 → 評価 → クイック移動）。</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>移動</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>コピー</translation>
+    </message>
+    <message>
+        <source>Übersprungen – nichts geändert.</source>
+        <translation>スキップしました。何も変更されていません。</translation>
+    </message>
+    <message>
+        <source>Nach „%1“ verschoben</source>
+        <translation>「%1」に移動しました</translation>
+    </message>
+    <message>
+        <source>Nach „%1“ kopiert</source>
+        <translation>「%1」にコピーしました</translation>
+    </message>
+    <message>
+        <source>Namenskonflikt</source>
+        <translation>名前の競合</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es in „%2“ schon.</source>
+        <translation>「%1」は「%2」にすでに存在します。</translation>
+    </message>
+    <message>
+        <source>Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.</source>
+        <translation>「置き換える」は既存のファイルをゴミ箱に入れ、「両方を残す」は新しいファイルに「%1」のような名前を付けます。⌘Z ですべて取り消せます。</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>置き換える</translation>
+    </message>
+    <message>
+        <source>Beide behalten</source>
+        <translation>両方を残す</translation>
+    </message>
+    <message>
+        <source>Überspringen</source>
+        <translation>スキップ</translation>
+    </message>
+    <message>
+        <source>Für alle %1 Konflikte</source>
+        <translation>%1 件すべての競合に適用</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Rating</name>
+    <message>
+        <source>alle</source>
+        <translation>すべて</translation>
+    </message>
+    <message>
+        <source>nur Picks</source>
+        <translation>採用のみ</translation>
+    </message>
+    <message>
+        <source>≥ %1 ★</source>
+        <translation>%1 ★ 以上</translation>
+    </message>
+    <message>
+        <source>nur unbewertete</source>
+        <translation>未評価のみ</translation>
+    </message>
+    <message>
+        <source>nur verworfene</source>
+        <translation>不採用のみ</translation>
+    </message>
+    <message>
+        <source>Pick</source>
+        <translation>採用</translation>
+    </message>
+    <message>
+        <source>Verworfen</source>
+        <translation>不採用</translation>
+    </message>
+</context>
+<context>
+    <name>lf::RatingStore</name>
+    <message>
+        <source>„%1“ konnte nicht geschrieben werden (Ordner schreibgeschützt?).</source>
+        <translation>「%1」を書き込めませんでした（フォルダが読み出し専用？）。</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>「%1」を読み込めません。</translation>
+    </message>
+    <message>
+        <source>„%1“ ist zu groß.</source>
+        <translation>「%1」は大きすぎます。</translation>
+    </message>
+    <message>
+        <source>Die XMP-Datei „%1“ ist beschädigt oder unbekannt aufgebaut und wird nicht verändert.</source>
+        <translation>XMP ファイル「%1」は破損しているか構造が不明なため、変更しません。</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht ersetzt werden.</source>
+        <translation>「%1」を置き換えられませんでした。</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>ファイルはもう存在しません。</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert.</source>
+        <translation>RAW ファイルは決して変更されません。</translation>
+    </message>
+    <message>
+        <source>In dieses Format kann die Bewertung nicht sicher geschrieben werden.</source>
+        <translation>この形式には評価を安全に書き込めません。</translation>
+    </message>
+    <message>
+        <source>In animierte oder mehrseitige Dateien wird nicht geschrieben.</source>
+        <translation>アニメーションや複数ページのファイルには書き込みません。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist schreibgeschützt.</source>
+        <translation>ファイルは読み出し専用です。</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht ins Bild schreiben.</source>
+        <translation>評価を画像に書き込めませんでした。</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht ohne Neukodieren ins Bild schreiben.</source>
+        <translation>再エンコードせずに評価を画像に書き込めませんでした。</translation>
+    </message>
+    <message>
+        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.</source>
+        <translation>「%1」はその間に変更されました。評価は保存されていません。</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>ファイルを置き換えられませんでした。</translation>
+    </message>
+    <message>
+        <source>Finder-Tags werden auf diesem System nicht unterstützt.</source>
+        <translation>このシステムでは Finder タグはサポートされていません。</translation>
+    </message>
+    <message>
+        <source>Kein Speicherort für Bewertungen gewählt (Einstellungen → Bewertung).</source>
+        <translation>評価の保存先が選択されていません（設定 → 評価）。</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 Die Bewertung steht deshalb in der XMP-Zusatzdatei.</source>
+        <translation>「%1」：%2 そのため評価は XMP サイドカーファイルに保存されています。</translation>
+    </message>
+    <message>
+        <source>Bewertung</source>
+        <translation>評価</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>ファイルを読み込めません。</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
+        <translation>評価を画像に無劣化で書き込めませんでした。</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder der Datei (z. B. eine HDR-Gain-Map) gingen beim Schreiben verloren.</source>
+        <translation>書き込み中にファイルの補助画像（HDR ゲインマップなど）が失われました。</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gelesen werden: %2</source>
+        <translation>「%1」のタグを読み込めませんでした：%2</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
+        <translation>「%1」のタグを設定できませんでした：%2</translation>
     </message>
 </context>
 <context>

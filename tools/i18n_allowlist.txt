@@ -68,3 +68,11 @@ src/platform/mac/ImageIODecoder.mm:Sony SR2
 src/platform/mac/ImageIODecoder.mm:Sony SRF
 src/platform/mac/ImageIODecoder.mm:\xabKTX 11\xbb\r\n\x1a\n
 src/platform/mac/ImageIODecoder.mm:\xabKTX 20\xbb\r\n\x1a\n
+# M3 ratings: XMP markup and property names (file format, never shown)
+src/core/Xmp.cpp:*
+# Default Finder tag names for Pick/Reject (F-CULL-02): stable across languages so that
+# Spotlight searches and other Macs find them; the user can rename them in the preferences
+src/core/Rating.h:Pick
+src/core/Rating.h:Reject
+src/core/Settings.cpp:Pick
+src/core/Settings.cpp:Reject

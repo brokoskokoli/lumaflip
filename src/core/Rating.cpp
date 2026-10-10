@@ -15,9 +15,10 @@ namespace lf {
 
 namespace {
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::Rating", text);
-}
+// Tr::tr() for the code in this file outside QObject classes (lupdate takes the context from it).
+struct Tr {
+    Q_DECLARE_TR_FUNCTIONS(lf::Rating)
+};
 
 } // namespace
 
@@ -77,15 +78,15 @@ RatingFilter RatingFilter::fromId(const QString& id) {
 QString RatingFilter::describe() const {
     switch (kind) {
     case Kind::All:
-        return tr("alle");
+        return Tr::tr("alle");
     case Kind::Picks:
-        return tr("nur Picks");
+        return Tr::tr("nur Picks");
     case Kind::MinStars:
-        return tr("≥ %1 ★").arg(std::clamp(minStars, 1, 5));
+        return Tr::tr("≥ %1 ★").arg(std::clamp(minStars, 1, 5));
     case Kind::Unrated:
-        return tr("nur unbewertete");
+        return Tr::tr("nur unbewertete");
     case Kind::Rejects:
-        return tr("nur verworfene");
+        return Tr::tr("nur verworfene");
     }
     return {};
 }
@@ -99,9 +100,9 @@ QString describe(const Rating& r) {
     if (r.stars > 0)
         s = QString(r.stars, QChar(0x2605)) + QString(5 - r.stars, QChar(0x2606));
     if (r.isPick())
-        s += (s.isEmpty() ? QString() : QStringLiteral(" · ")) + tr("Pick");
+        s += (s.isEmpty() ? QString() : QStringLiteral(" · ")) + Tr::tr("Pick");
     else if (r.isReject())
-        s += (s.isEmpty() ? QString() : QStringLiteral(" · ")) + tr("Verworfen");
+        s += (s.isEmpty() ? QString() : QStringLiteral(" · ")) + Tr::tr("Verworfen");
     return s;
 }
 

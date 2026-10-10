@@ -161,6 +161,89 @@
     </message>
 </context>
 <context>
+    <name>lf::CullingController</name>
+    <message>
+        <source>Bewertung wird gelesen …</source>
+        <translation>正在读取评分 …</translation>
+    </message>
+    <message>
+        <source>AUSSORTIEREN</source>
+        <translation>筛选</translation>
+    </message>
+    <message>
+        <source>0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg</source>
+        <translation>0–5  星级     P  保留     X  舍弃     U  清除标记</translation>
+    </message>
+    <message>
+        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden</source>
+        <translation>← →  浏览     M/C + 1–9  移动/拷贝     ⌘Z  撤销     Esc  退出</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U markieren</source>
+        <translation>筛选模式：数字设置星级，P/X/U 设置标记</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus beendet</source>
+        <translation>已退出筛选模式</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation>%1：%2</translation>
+    </message>
+    <message>
+        <source>Filter: %1 — %2 / %3</source>
+        <translation>过滤：%1 — %2 / %3</translation>
+    </message>
+    <message>
+        <source>Keine verworfenen Bilder</source>
+        <translation>没有舍弃的图像</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Papierkorb legen?</source>
+        <translation>
+            <numerusform>将 %n 张舍弃的图像移到废纸篓？</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
+        <translation>
+            <numerusform>将 %n 张舍弃的图像移到文件夹“_Rejected”？</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <translation>XMP 附属文件会一起移动。⌘Z 可撤销整个步骤。</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb</source>
+        <translation>移到废纸篓</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>移动</translation>
+    </message>
+    <message>
+        <source>Verworfene in den Papierkorb</source>
+        <translation>舍弃的图像移到废纸篓</translation>
+    </message>
+    <message>
+        <source>Verworfene nach _Rejected</source>
+        <translation>舍弃的图像移到 _Rejected</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>已将 %n 张图像移到废纸篓</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „_Rejected“ verschoben</source>
+        <translation>
+            <numerusform>已将 %n 张图像移到“_Rejected”</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::DecoderRegistry</name>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -407,6 +490,25 @@
     <message>
         <source>Kamera-RAW (Sigma X3F)</source>
         <translation>相机 RAW (Sigma X3F)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::FileBatch</name>
+    <message>
+        <source>„%1“ existiert bereits.</source>
+        <translation>“%1”已存在。</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht kopiert werden.</source>
+        <translation>无法拷贝“%1”。</translation>
+    </message>
+    <message>
+        <source>Der Ordner „%1“ konnte nicht angelegt werden.</source>
+        <translation>无法创建文件夹“%1”。</translation>
+    </message>
+    <message>
+        <source>Die Kopie „%1“ konnte nicht entfernt werden.</source>
+        <translation>无法移除拷贝“%1”。</translation>
     </message>
 </context>
 <context>
@@ -1083,6 +1185,18 @@
     <message>
         <source>Markierung zurücksetzen</source>
         <translation>重置标记</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus</source>
+        <translation>筛选模式</translation>
+    </message>
+    <message>
+        <source>Schnellablage: verschieben (M, dann 1–9)</source>
+        <translation>快速归档：移动（M，然后 1–9）</translation>
+    </message>
+    <message>
+        <source>Schnellablage: kopieren (C, dann 1–9)</source>
+        <translation>快速归档：拷贝（C，然后 1–9）</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2106,6 +2220,74 @@
         <source>Geschwindigkeit</source>
         <translation>速度</translation>
     </message>
+    <message>
+        <source>Alle Bilder</source>
+        <translation>全部图像</translation>
+    </message>
+    <message>
+        <source>Nur Picks</source>
+        <translation>仅保留的</translation>
+    </message>
+    <message>
+        <source>Nur unbewertete</source>
+        <translation>仅未评分的</translation>
+    </message>
+    <message>
+        <source>Nur verworfene</source>
+        <translation>仅舍弃的</translation>
+    </message>
+    <message>
+        <source>Mindestens %1 ★</source>
+        <translation>至少 %1 ★</translation>
+    </message>
+    <message>
+        <source>Aussortieren</source>
+        <translation>筛选</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus</source>
+        <translation>筛选模式</translation>
+    </message>
+    <message>
+        <source>Bewerten</source>
+        <translation>评分</translation>
+    </message>
+    <message>
+        <source>Nach Bewertung automatisch weiter</source>
+        <translation>评分后自动前进</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation>过滤</translation>
+    </message>
+    <message>
+        <source>Alle verworfenen in den Papierkorb …</source>
+        <translation>将所有舍弃的移到废纸篓 …</translation>
+    </message>
+    <message>
+        <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
+        <translation>将所有舍弃的移到“_Rejected” …</translation>
+    </message>
+    <message>
+        <source>Schnellablage: verschieben (M, dann 1–9)</source>
+        <translation>快速归档：移动（M，然后 1–9）</translation>
+    </message>
+    <message>
+        <source>Schnellablage: kopieren (C, dann 1–9)</source>
+        <translation>快速归档：拷贝（C，然后 1–9）</translation>
+    </message>
+    <message>
+        <source>Verschieben nach</source>
+        <translation>移动到</translation>
+    </message>
+    <message>
+        <source>Kopieren nach</source>
+        <translation>拷贝到</translation>
+    </message>
+    <message>
+        <source>Ziele der Schnellablage festlegen …</source>
+        <translation>设置快速归档目标 …</translation>
+    </message>
 </context>
 <context>
     <name>lf::MenuExtras</name>
@@ -2769,36 +2951,128 @@
         <translation>在“与访达中的排序相同”关闭或找不到访达信息时适用。在“显示”→“排序方式”菜单中所做的选择会按文件夹记住；“用于所有文件夹”会将其设为此处的默认值。</translation>
     </message>
     <message>
-        <source>Bewertungen speichern:</source>
-        <translation>存储评分：</translation>
+        <source>Keine Farbe</source>
+        <translation>无颜色</translation>
+    </message>
+    <message>
+        <source>Grau</source>
+        <translation>灰色</translation>
+    </message>
+    <message>
+        <source>Grün</source>
+        <translation>绿色</translation>
+    </message>
+    <message>
+        <source>Lila</source>
+        <translation>紫色</translation>
+    </message>
+    <message>
+        <source>Blau</source>
+        <translation>蓝色</translation>
+    </message>
+    <message>
+        <source>Gelb</source>
+        <translation>黄色</translation>
+    </message>
+    <message>
+        <source>Rot</source>
+        <translation>红色</translation>
+    </message>
+    <message>
+        <source>Orange</source>
+        <translation>橙色</translation>
+    </message>
+    <message>
+        <source>nicht festgelegt</source>
+        <translation>未设置</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>选择 …</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>移除</translation>
+    </message>
+    <message>
+        <source>Ziel %1 der Schnellablage</source>
+        <translation>快速归档目标 %1</translation>
+    </message>
+    <message>
+        <source>Bewertungen speichern</source>
+        <translation>评分保存位置</translation>
     </message>
     <message>
         <source>XMP-Zusatzdatei neben dem Bild (Bild.xmp)</source>
         <translation>图像旁的 XMP 附属文件（图像.xmp）</translation>
     </message>
     <message>
-        <source>Kompatibel mit Lightroom, Capture One und darktable.</source>
-        <translation>与 Lightroom、Capture One 和 darktable 兼容。</translation>
+        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
+        <translation>与 Lightroom、Capture One 和 darktable 兼容：星级存于 xmp:Rating，“舍弃”记为 -1。文件的现有内容会保留。</translation>
+    </message>
+    <message>
+        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; die Bildpixel werden nicht neu kodiert. RAW-Dateien werden nie verändert – dafür wird die Zusatzdatei benutzt.</source>
+        <translation>仅限 JPEG、HEIC、TIFF、PNG 和 DNG；像素不会重新编码。RAW 文件绝不会被修改，改用附属文件。</translation>
+    </message>
+    <message>
+        <source>Änderungsdatum beim Schreiben ins Bild beibehalten</source>
+        <translation>写入图像时保留修改日期</translation>
+    </message>
+    <message>
+        <source>Im Finder sichtbar und per Spotlight durchsuchbar. Sind mehrere Speicherorte gewählt, werden alle beschrieben; beim Lesen gilt die Reihenfolge Zusatzdatei, Bild, Tags.</source>
+        <translation>在访达中可见，可用聚焦搜索。若选择了多个位置，则全部写入；读取时顺序为附属文件、图像、标签。</translation>
+    </message>
+    <message>
+        <source>Stern-Symbol:</source>
+        <translation>星形符号：</translation>
+    </message>
+    <message>
+        <source>Tag für Pick:</source>
+        <translation>保留的标签：</translation>
+    </message>
+    <message>
+        <source>Tag für Verworfen:</source>
+        <translation>舍弃的标签：</translation>
+    </message>
+    <message>
+        <source>Drei Sterne werden zum Tag „★★★“ (Symbol dreimal).</source>
+        <translation>三颗星会成为标签“★★★”（符号重复三次）。</translation>
+    </message>
+    <message>
+        <source>Aussortieren</source>
+        <translation>筛选</translation>
+    </message>
+    <message>
+        <source>Nach Bewertung automatisch weiter</source>
+        <translation>评分后自动前进到下一张</translation>
+    </message>
+    <message>
+        <source>Zoom im Aussortiermodus fixieren</source>
+        <translation>在筛选模式下锁定缩放</translation>
+    </message>
+    <message>
+        <source>Tastenhilfe im Aussortiermodus zeigen</source>
+        <translation>在筛选模式下显示按键帮助</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus: ⌘K oder K. Ziffern vergeben dort Sterne statt Zoomstufen; „Bewertungstasten immer aktiv“ gibt es unter Maus &amp; Tastatur.</source>
+        <translation>筛选模式：⌘K 或 K。在此模式下数字设置星级而非缩放级别；“评分按键始终启用”位于“鼠标与键盘”。</translation>
+    </message>
+    <message>
+        <source>Schnellablage</source>
+        <translation>快速归档</translation>
+    </message>
+    <message>
+        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z macht es rückgängig.</source>
+        <translation>M 后按 1–9 将图像移到目标文件夹，C 后按 1–9 则拷贝。M M 或 C C 重复上一个目标。⌘Z 可撤销。</translation>
     </message>
     <message>
         <source>Im Bild selbst (eingebettetes XMP)</source>
         <translation>存储在图像内（嵌入式 XMP）</translation>
     </message>
     <message>
-        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; sonst wird die Zusatzdatei benutzt. Die Bildpixel werden nicht neu kodiert.</source>
-        <translation>仅限 JPEG、HEIC、TIFF、PNG 和 DNG；其他格式使用附属文件。图像像素不会重新编码。</translation>
-    </message>
-    <message>
         <source>Finder-Tags</source>
         <translation>访达标签</translation>
-    </message>
-    <message>
-        <source>Im Finder sichtbar und per Spotlight durchsuchbar.</source>
-        <translation>在访达中可见，并可通过 Spotlight 搜索。</translation>
-    </message>
-    <message>
-        <source>Bewertungen und der Aussortiermodus folgen %1.</source>
-        <translation>评分和筛选模式遵循 %1。</translation>
     </message>
     <message>
         <source>Unterstützte Formate (ohne Nachinstallation):</source>
@@ -3011,6 +3285,206 @@
     <message>
         <source>Nicht genug Speicher für das Bild.</source>
         <translation>内存不足，无法载入图像。</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QuickMove</name>
+    <message>
+        <source>%1  (nicht festgelegt)</source>
+        <translation>%1  （未设置）</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QuickMoveController</name>
+    <message>
+        <source>Verschieben nach … (1–9, M = wie zuletzt)</source>
+        <translation>移动到 …（1–9，M = 同上次）</translation>
+    </message>
+    <message>
+        <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
+        <translation>拷贝到 …（1–9，C = 同上次）</translation>
+    </message>
+    <message>
+        <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
+        <translation>尚未使用过目标，请先选择数字 1–9。</translation>
+    </message>
+    <message>
+        <source>Ziel %1 ist nicht festgelegt (Einstellungen → Bewertung → Schnellablage).</source>
+        <translation>目标 %1 未设置（设置 → 评分 → 快速归档）。</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>移动</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>拷贝</translation>
+    </message>
+    <message>
+        <source>Übersprungen – nichts geändert.</source>
+        <translation>已跳过，未作任何更改。</translation>
+    </message>
+    <message>
+        <source>Nach „%1“ verschoben</source>
+        <translation>已移到“%1”</translation>
+    </message>
+    <message>
+        <source>Nach „%1“ kopiert</source>
+        <translation>已拷贝到“%1”</translation>
+    </message>
+    <message>
+        <source>Namenskonflikt</source>
+        <translation>名称冲突</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es in „%2“ schon.</source>
+        <translation>“%2”中已存在“%1”。</translation>
+    </message>
+    <message>
+        <source>Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.</source>
+        <translation>“替换”会将现有文件移到废纸篓，“保留两者”会为新文件命名为类似“%1”的名称。⌘Z 可撤销全部操作。</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>替换</translation>
+    </message>
+    <message>
+        <source>Beide behalten</source>
+        <translation>保留两者</translation>
+    </message>
+    <message>
+        <source>Überspringen</source>
+        <translation>跳过</translation>
+    </message>
+    <message>
+        <source>Für alle %1 Konflikte</source>
+        <translation>应用于全部 %1 个冲突</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Rating</name>
+    <message>
+        <source>alle</source>
+        <translation>全部</translation>
+    </message>
+    <message>
+        <source>nur Picks</source>
+        <translation>仅保留的</translation>
+    </message>
+    <message>
+        <source>≥ %1 ★</source>
+        <translation>≥ %1 ★</translation>
+    </message>
+    <message>
+        <source>nur unbewertete</source>
+        <translation>仅未评分的</translation>
+    </message>
+    <message>
+        <source>nur verworfene</source>
+        <translation>仅舍弃的</translation>
+    </message>
+    <message>
+        <source>Pick</source>
+        <translation>保留</translation>
+    </message>
+    <message>
+        <source>Verworfen</source>
+        <translation>已舍弃</translation>
+    </message>
+</context>
+<context>
+    <name>lf::RatingStore</name>
+    <message>
+        <source>„%1“ konnte nicht geschrieben werden (Ordner schreibgeschützt?).</source>
+        <translation>无法写入“%1”（文件夹为只读？）。</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>无法读取“%1”。</translation>
+    </message>
+    <message>
+        <source>„%1“ ist zu groß.</source>
+        <translation>“%1”太大。</translation>
+    </message>
+    <message>
+        <source>Die XMP-Datei „%1“ ist beschädigt oder unbekannt aufgebaut und wird nicht verändert.</source>
+        <translation>XMP 文件“%1”已损坏或结构未知，不会被修改。</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht ersetzt werden.</source>
+        <translation>无法替换“%1”。</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>文件已不存在。</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert.</source>
+        <translation>RAW 文件绝不会被修改。</translation>
+    </message>
+    <message>
+        <source>In dieses Format kann die Bewertung nicht sicher geschrieben werden.</source>
+        <translation>无法将评分安全地写入此格式。</translation>
+    </message>
+    <message>
+        <source>In animierte oder mehrseitige Dateien wird nicht geschrieben.</source>
+        <translation>不会写入动画或多页文件。</translation>
+    </message>
+    <message>
+        <source>Die Datei ist schreibgeschützt.</source>
+        <translation>文件为只读。</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht ins Bild schreiben.</source>
+        <translation>无法将评分写入图像。</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht ohne Neukodieren ins Bild schreiben.</source>
+        <translation>无法在不重新编码的情况下将评分写入图像。</translation>
+    </message>
+    <message>
+        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.</source>
+        <translation>“%1”在此期间已被更改，评分未保存。</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>无法替换文件。</translation>
+    </message>
+    <message>
+        <source>Finder-Tags werden auf diesem System nicht unterstützt.</source>
+        <translation>此系统不支持访达标签。</translation>
+    </message>
+    <message>
+        <source>Kein Speicherort für Bewertungen gewählt (Einstellungen → Bewertung).</source>
+        <translation>未选择评分的保存位置（设置 → 评分）。</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 Die Bewertung steht deshalb in der XMP-Zusatzdatei.</source>
+        <translation>“%1”：%2 因此评分保存在 XMP 附属文件中。</translation>
+    </message>
+    <message>
+        <source>Bewertung</source>
+        <translation>评分</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>无法读取文件。</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
+        <translation>无法将评分无损写入图像。</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder der Datei (z. B. eine HDR-Gain-Map) gingen beim Schreiben verloren.</source>
+        <translation>写入时丢失了文件的辅助图像（例如 HDR 增益图）。</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gelesen werden: %2</source>
+        <translation>无法读取“%1”的标签：%2</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
+        <translation>无法设置“%1”的标签：%2</translation>
     </message>
 </context>
 <context>

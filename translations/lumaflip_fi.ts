@@ -161,6 +161,93 @@
     </message>
 </context>
 <context>
+    <name>lf::CullingController</name>
+    <message>
+        <source>Bewertung wird gelesen …</source>
+        <translation>Luetaan arviota …</translation>
+    </message>
+    <message>
+        <source>AUSSORTIEREN</source>
+        <translation>KARSINTA</translation>
+    </message>
+    <message>
+        <source>0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg</source>
+        <translation>0–5  Tähdet     P  Säilytä     X  Hylkää     U  Poista merkintä</translation>
+    </message>
+    <message>
+        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden</source>
+        <translation>← →  Selaa     M/C + 1–9  Siirrä/Kopioi     ⌘Z  Kumoa     Esc  Lopeta</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U markieren</source>
+        <translation>Karsintatila: numerot antavat tähtiä, P/X/U merkitsevät</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus beendet</source>
+        <translation>Karsintatila päättyi</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation>%1: %2</translation>
+    </message>
+    <message>
+        <source>Filter: %1 — %2 / %3</source>
+        <translation>Suodatin: %1 — %2 / %3</translation>
+    </message>
+    <message>
+        <source>Keine verworfenen Bilder</source>
+        <translation>Ei hylättyjä kuvia</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Papierkorb legen?</source>
+        <translation>
+            <numerusform>Siirretäänkö %n hylätty kuva roskakoriin?</numerusform>
+            <numerusform>Siirretäänkö %n hylättyä kuvaa roskakoriin?</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
+        <translation>
+            <numerusform>Siirretäänkö %n hylätty kuva kansioon ”_Rejected”?</numerusform>
+            <numerusform>Siirretäänkö %n hylättyä kuvaa kansioon ”_Rejected”?</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <translation>XMP-sivutiedostot siirtyvät mukana. ⌘Z kumoaa koko vaiheen.</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb</source>
+        <translation>Roskakoriin</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>Siirrä</translation>
+    </message>
+    <message>
+        <source>Verworfene in den Papierkorb</source>
+        <translation>Hylätyt roskakoriin</translation>
+    </message>
+    <message>
+        <source>Verworfene nach _Rejected</source>
+        <translation>Hylätyt kansioon _Rejected</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n kuva siirretty roskakoriin</numerusform>
+            <numerusform>%n kuvaa siirretty roskakoriin</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „_Rejected“ verschoben</source>
+        <translation>
+            <numerusform>%n kuva siirretty kansioon ”_Rejected”</numerusform>
+            <numerusform>%n kuvaa siirretty kansioon ”_Rejected”</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::DecoderRegistry</name>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -407,6 +494,25 @@
     <message>
         <source>Kamera-RAW (Sigma X3F)</source>
         <translation>Kameran RAW (Sigma X3F)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::FileBatch</name>
+    <message>
+        <source>„%1“ existiert bereits.</source>
+        <translation>”%1” on jo olemassa.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht kopiert werden.</source>
+        <translation>Kohdetta ”%1” ei voitu kopioida.</translation>
+    </message>
+    <message>
+        <source>Der Ordner „%1“ konnte nicht angelegt werden.</source>
+        <translation>Kansiota ”%1” ei voitu luoda.</translation>
+    </message>
+    <message>
+        <source>Die Kopie „%1“ konnte nicht entfernt werden.</source>
+        <translation>Kopiota ”%1” ei voitu poistaa.</translation>
     </message>
 </context>
 <context>
@@ -1085,6 +1191,18 @@
     <message>
         <source>Markierung zurücksetzen</source>
         <translation>Poista merkintä</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus</source>
+        <translation>Karsintatila</translation>
+    </message>
+    <message>
+        <source>Schnellablage: verschieben (M, dann 1–9)</source>
+        <translation>Pikasiirto: siirrä (M, sitten 1–9)</translation>
+    </message>
+    <message>
+        <source>Schnellablage: kopieren (C, dann 1–9)</source>
+        <translation>Pikasiirto: kopioi (C, sitten 1–9)</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2108,6 +2226,74 @@
         <source>Geschwindigkeit</source>
         <translation>Nopeus</translation>
     </message>
+    <message>
+        <source>Alle Bilder</source>
+        <translation>Kaikki kuvat</translation>
+    </message>
+    <message>
+        <source>Nur Picks</source>
+        <translation>Vain säilytetyt</translation>
+    </message>
+    <message>
+        <source>Nur unbewertete</source>
+        <translation>Vain arvioimattomat</translation>
+    </message>
+    <message>
+        <source>Nur verworfene</source>
+        <translation>Vain hylätyt</translation>
+    </message>
+    <message>
+        <source>Mindestens %1 ★</source>
+        <translation>Vähintään %1 ★</translation>
+    </message>
+    <message>
+        <source>Aussortieren</source>
+        <translation>Karsinta</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus</source>
+        <translation>Karsintatila</translation>
+    </message>
+    <message>
+        <source>Bewerten</source>
+        <translation>Arvioi</translation>
+    </message>
+    <message>
+        <source>Nach Bewertung automatisch weiter</source>
+        <translation>Jatka arvion jälkeen</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation>Suodatin</translation>
+    </message>
+    <message>
+        <source>Alle verworfenen in den Papierkorb …</source>
+        <translation>Kaikki hylätyt roskakoriin …</translation>
+    </message>
+    <message>
+        <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
+        <translation>Kaikki hylätyt kansioon ”_Rejected” …</translation>
+    </message>
+    <message>
+        <source>Schnellablage: verschieben (M, dann 1–9)</source>
+        <translation>Pikasiirto: siirrä (M, sitten 1–9)</translation>
+    </message>
+    <message>
+        <source>Schnellablage: kopieren (C, dann 1–9)</source>
+        <translation>Pikasiirto: kopioi (C, sitten 1–9)</translation>
+    </message>
+    <message>
+        <source>Verschieben nach</source>
+        <translation>Siirrä kohteeseen</translation>
+    </message>
+    <message>
+        <source>Kopieren nach</source>
+        <translation>Kopioi kohteeseen</translation>
+    </message>
+    <message>
+        <source>Ziele der Schnellablage festlegen …</source>
+        <translation>Määritä pikasiirron kohteet …</translation>
+    </message>
 </context>
 <context>
     <name>lf::MenuExtras</name>
@@ -2772,36 +2958,128 @@
         <translation>Käytetään, kun ”Järjestys kuten Finderissa” on pois päältä tai Finder-tietoja ei löydy. Näytä → Järjestä -valikossa tehty valinta muistetaan kansiokohtaisesti; ”Käytä kaikille kansioille” tekee siitä tämän oletuksen.</translation>
     </message>
     <message>
-        <source>Bewertungen speichern:</source>
-        <translation>Tallenna arviot:</translation>
+        <source>Keine Farbe</source>
+        <translation>Ei väriä</translation>
+    </message>
+    <message>
+        <source>Grau</source>
+        <translation>Harmaa</translation>
+    </message>
+    <message>
+        <source>Grün</source>
+        <translation>Vihreä</translation>
+    </message>
+    <message>
+        <source>Lila</source>
+        <translation>Violetti</translation>
+    </message>
+    <message>
+        <source>Blau</source>
+        <translation>Sininen</translation>
+    </message>
+    <message>
+        <source>Gelb</source>
+        <translation>Keltainen</translation>
+    </message>
+    <message>
+        <source>Rot</source>
+        <translation>Punainen</translation>
+    </message>
+    <message>
+        <source>Orange</source>
+        <translation>Oranssi</translation>
+    </message>
+    <message>
+        <source>nicht festgelegt</source>
+        <translation>ei määritetty</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>Valitse …</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>Poista</translation>
+    </message>
+    <message>
+        <source>Ziel %1 der Schnellablage</source>
+        <translation>Pikasiirron kohde %1</translation>
+    </message>
+    <message>
+        <source>Bewertungen speichern</source>
+        <translation>Tallenna arviot</translation>
     </message>
     <message>
         <source>XMP-Zusatzdatei neben dem Bild (Bild.xmp)</source>
         <translation>XMP-sivutiedosto kuvan viereen (Kuva.xmp)</translation>
     </message>
     <message>
-        <source>Kompatibel mit Lightroom, Capture One und darktable.</source>
-        <translation>Yhteensopiva Lightroomin, Capture Onen ja darktablen kanssa.</translation>
+        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
+        <translation>Yhteensopiva Lightroomin, Capture Onen ja darktablen kanssa: tähdet kentässä xmp:Rating, ”Hylkää” arvona -1. Tiedoston nykyinen sisältö säilyy.</translation>
+    </message>
+    <message>
+        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; die Bildpixel werden nicht neu kodiert. RAW-Dateien werden nie verändert – dafür wird die Zusatzdatei benutzt.</source>
+        <translation>Vain JPEG, HEIC, TIFF, PNG ja DNG; kuvapisteitä ei koodata uudelleen. RAW-tiedostoja ei koskaan muuteta – niille käytetään sivutiedostoa.</translation>
+    </message>
+    <message>
+        <source>Änderungsdatum beim Schreiben ins Bild beibehalten</source>
+        <translation>Säilytä muokkauspäivä kuvaan kirjoitettaessa</translation>
+    </message>
+    <message>
+        <source>Im Finder sichtbar und per Spotlight durchsuchbar. Sind mehrere Speicherorte gewählt, werden alle beschrieben; beim Lesen gilt die Reihenfolge Zusatzdatei, Bild, Tags.</source>
+        <translation>Näkyvät Finderissa ja haettavissa Spotlightilla. Jos valittuna on useita paikkoja, kaikkiin kirjoitetaan; luettaessa järjestys on sivutiedosto, kuva, tunnisteet.</translation>
+    </message>
+    <message>
+        <source>Stern-Symbol:</source>
+        <translation>Tähtisymboli:</translation>
+    </message>
+    <message>
+        <source>Tag für Pick:</source>
+        <translation>Tunniste säilytetyille:</translation>
+    </message>
+    <message>
+        <source>Tag für Verworfen:</source>
+        <translation>Tunniste hylätyille:</translation>
+    </message>
+    <message>
+        <source>Drei Sterne werden zum Tag „★★★“ (Symbol dreimal).</source>
+        <translation>Kolmesta tähdestä tulee tunniste ”★★★” (symboli kolmesti).</translation>
+    </message>
+    <message>
+        <source>Aussortieren</source>
+        <translation>Karsinta</translation>
+    </message>
+    <message>
+        <source>Nach Bewertung automatisch weiter</source>
+        <translation>Jatka automaattisesti arvion jälkeen</translation>
+    </message>
+    <message>
+        <source>Zoom im Aussortiermodus fixieren</source>
+        <translation>Lukitse zoomaus karsintatilassa</translation>
+    </message>
+    <message>
+        <source>Tastenhilfe im Aussortiermodus zeigen</source>
+        <translation>Näytä näppäinohje karsintatilassa</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus: ⌘K oder K. Ziffern vergeben dort Sterne statt Zoomstufen; „Bewertungstasten immer aktiv“ gibt es unter Maus &amp; Tastatur.</source>
+        <translation>Karsintatila: ⌘K tai K. Siellä numerot antavat tähtiä zoomaustasojen sijaan; ”Arviointinäppäimet aina käytössä” löytyy kohdasta Hiiri ja näppäimistö.</translation>
+    </message>
+    <message>
+        <source>Schnellablage</source>
+        <translation>Pikasiirto</translation>
+    </message>
+    <message>
+        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z macht es rückgängig.</source>
+        <translation>M ja sitten 1–9 siirtää kuvan kohdekansioon, C ja sitten 1–9 kopioi sen. M M tai C C toistaa viimeisimmän kohteen. ⌘Z kumoaa.</translation>
     </message>
     <message>
         <source>Im Bild selbst (eingebettetes XMP)</source>
         <translation>Itse kuvaan (upotettu XMP)</translation>
     </message>
     <message>
-        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; sonst wird die Zusatzdatei benutzt. Die Bildpixel werden nicht neu kodiert.</source>
-        <translation>Vain JPEG, HEIC, TIFF, PNG ja DNG; muuten käytetään sivutiedostoa. Kuvan pikseleitä ei koodata uudelleen.</translation>
-    </message>
-    <message>
         <source>Finder-Tags</source>
         <translation>Finderin tagit</translation>
-    </message>
-    <message>
-        <source>Im Finder sichtbar und per Spotlight durchsuchbar.</source>
-        <translation>Näkyvät Finderissa ja ovat haettavissa Spotlightilla.</translation>
-    </message>
-    <message>
-        <source>Bewertungen und der Aussortiermodus folgen %1.</source>
-        <translation>Arviot ja karsintatila noudattavat valintaa: %1.</translation>
     </message>
     <message>
         <source>Unterstützte Formate (ohne Nachinstallation):</source>
@@ -3014,6 +3292,206 @@
     <message>
         <source>Nicht genug Speicher für das Bild.</source>
         <translation>Muisti ei riitä kuvalle.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QuickMove</name>
+    <message>
+        <source>%1  (nicht festgelegt)</source>
+        <translation>%1  (ei määritetty)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QuickMoveController</name>
+    <message>
+        <source>Verschieben nach … (1–9, M = wie zuletzt)</source>
+        <translation>Siirrä kohteeseen … (1–9, M = kuten viimeksi)</translation>
+    </message>
+    <message>
+        <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
+        <translation>Kopioi kohteeseen … (1–9, C = kuten viimeksi)</translation>
+    </message>
+    <message>
+        <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
+        <translation>Kohdetta ei ole vielä käytetty – valitse ensin numero 1–9.</translation>
+    </message>
+    <message>
+        <source>Ziel %1 ist nicht festgelegt (Einstellungen → Bewertung → Schnellablage).</source>
+        <translation>Kohdetta %1 ei ole määritetty (Asetukset → Arvio → Pikasiirto).</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>Siirrä</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>Kopioi</translation>
+    </message>
+    <message>
+        <source>Übersprungen – nichts geändert.</source>
+        <translation>Ohitettu – mitään ei muutettu.</translation>
+    </message>
+    <message>
+        <source>Nach „%1“ verschoben</source>
+        <translation>Siirretty kohteeseen ”%1”</translation>
+    </message>
+    <message>
+        <source>Nach „%1“ kopiert</source>
+        <translation>Kopioitu kohteeseen ”%1”</translation>
+    </message>
+    <message>
+        <source>Namenskonflikt</source>
+        <translation>Nimiristiriita</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es in „%2“ schon.</source>
+        <translation>”%1” on jo kohteessa ”%2”.</translation>
+    </message>
+    <message>
+        <source>Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.</source>
+        <translation>Korvaa siirtää nykyisen tiedoston roskakoriin, ”Säilytä molemmat” antaa uudelle nimen kuten ”%1”. ⌘Z kumoaa kaiken.</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>Korvaa</translation>
+    </message>
+    <message>
+        <source>Beide behalten</source>
+        <translation>Säilytä molemmat</translation>
+    </message>
+    <message>
+        <source>Überspringen</source>
+        <translation>Ohita</translation>
+    </message>
+    <message>
+        <source>Für alle %1 Konflikte</source>
+        <translation>Kaikille %1 ristiriidalle</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Rating</name>
+    <message>
+        <source>alle</source>
+        <translation>kaikki</translation>
+    </message>
+    <message>
+        <source>nur Picks</source>
+        <translation>vain säilytetyt</translation>
+    </message>
+    <message>
+        <source>≥ %1 ★</source>
+        <translation>≥ %1 ★</translation>
+    </message>
+    <message>
+        <source>nur unbewertete</source>
+        <translation>vain arvioimattomat</translation>
+    </message>
+    <message>
+        <source>nur verworfene</source>
+        <translation>vain hylätyt</translation>
+    </message>
+    <message>
+        <source>Pick</source>
+        <translation>Säilytetty</translation>
+    </message>
+    <message>
+        <source>Verworfen</source>
+        <translation>Hylätty</translation>
+    </message>
+</context>
+<context>
+    <name>lf::RatingStore</name>
+    <message>
+        <source>„%1“ konnte nicht geschrieben werden (Ordner schreibgeschützt?).</source>
+        <translation>Kohdetta ”%1” ei voitu kirjoittaa (kansio vain luku?).</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>Kohdetta ”%1” ei voi lukea.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist zu groß.</source>
+        <translation>”%1” on liian suuri.</translation>
+    </message>
+    <message>
+        <source>Die XMP-Datei „%1“ ist beschädigt oder unbekannt aufgebaut und wird nicht verändert.</source>
+        <translation>XMP-tiedosto ”%1” on vioittunut tai rakenteeltaan tuntematon, eikä sitä muuteta.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht ersetzt werden.</source>
+        <translation>Kohdetta ”%1” ei voitu korvata.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>Tiedostoa ei ole enää olemassa.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert.</source>
+        <translation>RAW-tiedostoja ei koskaan muuteta.</translation>
+    </message>
+    <message>
+        <source>In dieses Format kann die Bewertung nicht sicher geschrieben werden.</source>
+        <translation>Arviota ei voi kirjoittaa turvallisesti tähän muotoon.</translation>
+    </message>
+    <message>
+        <source>In animierte oder mehrseitige Dateien wird nicht geschrieben.</source>
+        <translation>Animoituihin tai monisivuisiin tiedostoihin ei kirjoiteta.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist schreibgeschützt.</source>
+        <translation>Tiedosto on vain luku -tilassa.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht ins Bild schreiben.</source>
+        <translation>Arviota ei voitu kirjoittaa kuvaan.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht ohne Neukodieren ins Bild schreiben.</source>
+        <translation>Arviota ei voitu kirjoittaa kuvaan ilman uudelleenkoodausta.</translation>
+    </message>
+    <message>
+        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.</source>
+        <translation>”%1” on muuttunut välillä – arviota ei tallennettu.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>Tiedostoa ei voitu korvata.</translation>
+    </message>
+    <message>
+        <source>Finder-Tags werden auf diesem System nicht unterstützt.</source>
+        <translation>Finder-tunnisteita ei tueta tässä järjestelmässä.</translation>
+    </message>
+    <message>
+        <source>Kein Speicherort für Bewertungen gewählt (Einstellungen → Bewertung).</source>
+        <translation>Arvioille ei ole valittu tallennuspaikkaa (Asetukset → Arvio).</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 Die Bewertung steht deshalb in der XMP-Zusatzdatei.</source>
+        <translation>”%1”: %2 Siksi arvio on XMP-sivutiedostossa.</translation>
+    </message>
+    <message>
+        <source>Bewertung</source>
+        <translation>Arvio</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Tiedostoa ei voi lukea.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
+        <translation>Arviota ei voitu kirjoittaa kuvaan häviöttömästi.</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder der Datei (z. B. eine HDR-Gain-Map) gingen beim Schreiben verloren.</source>
+        <translation>Tiedoston lisäkuvat (esim. HDR-vahvistuskartta) katosivat kirjoitettaessa.</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gelesen werden: %2</source>
+        <translation>Kohteen ”%1” tunnisteita ei voitu lukea: %2</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
+        <translation>Kohteen ”%1” tunnisteita ei voitu asettaa: %2</translation>
     </message>
 </context>
 <context>

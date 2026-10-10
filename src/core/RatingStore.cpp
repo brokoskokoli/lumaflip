@@ -30,9 +30,10 @@ namespace lf {
 
 namespace {
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::RatingStore", text);
-}
+// Tr::tr() for the code in this file outside QObject classes (lupdate takes the context from it).
+struct Tr {
+    Q_DECLARE_TR_FUNCTIONS(lf::RatingStore)
+};
 
 constexpr qint64 kMaxSidecarBytes = 16 * 1024 * 1024;
 
@@ -47,7 +48,7 @@ bool writeNew(const QString& path, const QByteArray& data, QString* error) {
     QFile f(path);
     if (!f.open(QIODevice::WriteOnly | QIODevice::NewOnly) || f.write(data) != data.size() || !f.flush()) {
         if (error)
-            *error = tr("„%1“ konnte nicht geschrieben werden (Ordner schreibgeschützt?).")
+            *error = Tr::tr("„%1“ konnte nicht geschrieben werden (Ordner schreibgeschützt?).")
                          .arg(QFileInfo(path).fileName());
         f.close();
         QFile::remove(path);
@@ -137,9 +138,9 @@ QString ratingio::writeSidecar(const QString& imagePath, const Rating& r) {
     if (exists) {
         QFile f(real);
         if (!f.open(QIODevice::ReadOnly))
-            return tr("„%1“ kann nicht gelesen werden.").arg(QFileInfo(path).fileName());
+            return Tr::tr("„%1“ kann nicht gelesen werden.").arg(QFileInfo(path).fileName());
         if (f.size() > kMaxSidecarBytes)
-            return tr("„%1“ ist zu groß.").arg(QFileInfo(path).fileName());
+            return Tr::tr("„%1“ ist zu groß.").arg(QFileInfo(path).fileName());
         const QByteArray bytes = f.readAll();
         text = xmp::decode(bytes, &bom);
         if (text.trimmed().isEmpty())
@@ -149,7 +150,7 @@ QString ratingio::writeSidecar(const QString& imagePath, const Rating& r) {
     }
     const std::optional<QString> out = xmp::writeRating(text, r);
     if (!out)
-        return tr("Die XMP-Datei „%1“ ist beschädigt oder unbekannt aufgebaut und wird nicht verändert.")
+        return Tr::tr("Die XMP-Datei „%1“ ist beschädigt oder unbekannt aufgebaut und wird nicht verändert.")
             .arg(QFileInfo(path).fileName());
     if (exists && *out == text)
         return {};
@@ -161,8 +162,9 @@ QString ratingio::writeSidecar(const QString& imagePath, const Rating& r) {
         // Same safety as saving an image: flushed, attributes/hard links kept, atomic.
         if (!platform::replaceFile(tmp, real, false, &error)) {
             QFile::remove(tmp);
-            return error.isEmpty() ? tr("„%1“ konnte nicht ersetzt werden.").arg(QFileInfo(path).fileName())
-                                   : error;
+            return error.isEmpty()
+                       ? Tr::tr("„%1“ konnte nicht ersetzt werden.").arg(QFileInfo(path).fileName())
+                       : error;
         }
         return {};
     }
@@ -185,19 +187,19 @@ bool ratingio::canEmbed(const QString& path, QString* reason) {
     const QString target = resolvedFilePath(path);
     const QFileInfo fi(target);
     if (!fi.isFile())
-        return refuse(tr("Die Datei existiert nicht mehr."));
+        return refuse(Tr::tr("Die Datei existiert nicht mehr."));
     const QString type = platform::imageTypeIdentifier(target);
     const bool dng = type == QLatin1String("com.adobe.raw-image") ||
                      fi.suffix().compare(QLatin1String("dng"), Qt::CaseInsensitive) == 0;
     if (!dng && (platform::isCameraRawType(type) || isRawSuffix(fi.suffix().toLower()) ||
                  isRawSuffix(QFileInfo(path).suffix().toLower())))
-        return refuse(tr("RAW-Dateien werden nie verändert."));
+        return refuse(Tr::tr("RAW-Dateien werden nie verändert."));
     if (type.isEmpty() || !platform::canEmbedRatingType(type))
-        return refuse(tr("In dieses Format kann die Bewertung nicht sicher geschrieben werden."));
+        return refuse(Tr::tr("In dieses Format kann die Bewertung nicht sicher geschrieben werden."));
     if (platform::imageCount(target) > 1)
-        return refuse(tr("In animierte oder mehrseitige Dateien wird nicht geschrieben."));
+        return refuse(Tr::tr("In animierte oder mehrseitige Dateien wird nicht geschrieben."));
     if (!fi.isWritable() || !QFileInfo(fi.absolutePath()).isWritable())
-        return refuse(tr("Die Datei ist schreibgeschützt."));
+        return refuse(Tr::tr("Die Datei ist schreibgeschützt."));
     return true;
 }
 
@@ -220,7 +222,7 @@ QString ratingio::writeEmbedded(const QString& path, const Rating& r, bool keepM
     const QString target = resolvedFilePath(path);
     const FileStamp stamp = fileStamp(target);
     if (!stamp.isValid())
-        return tr("„%1“ kann nicht gelesen werden.").arg(QFileInfo(path).fileName());
+        return Tr::tr("„%1“ kann nicht gelesen werden.").arg(QFileInfo(path).fileName());
     const Rating before = platform::readEmbeddedRating(target).value_or(Rating());
     if (before == r)
         return {};
@@ -228,7 +230,7 @@ QString ratingio::writeEmbedded(const QString& path, const Rating& r, bool keepM
     QString error;
     if (!platform::writeEmbeddedRating(target, tmp, r, &error)) {
         QFile::remove(tmp);
-        return refuse(error.isEmpty() ? tr("Die Bewertung ließ sich nicht ins Bild schreiben.") : error);
+        return refuse(error.isEmpty() ? Tr::tr("Die Bewertung ließ sich nicht ins Bild schreiben.") : error);
     }
     // Never silently re-encoded: the compressed JPEG data (and everything behind it) must be
     // unchanged; the rating must read back.
@@ -241,21 +243,21 @@ QString ratingio::writeEmbedded(const QString& path, const Rating& r, bool keepM
         }();
         if (!same) {
             QFile::remove(tmp);
-            return refuse(tr("Die Bewertung ließ sich nicht ohne Neukodieren ins Bild schreiben."));
+            return refuse(Tr::tr("Die Bewertung ließ sich nicht ohne Neukodieren ins Bild schreiben."));
         }
     }
     if (platform::readEmbeddedRating(tmp).value_or(Rating()) != r) {
         QFile::remove(tmp);
-        return refuse(tr("Die Bewertung ließ sich nicht ins Bild schreiben."));
+        return refuse(Tr::tr("Die Bewertung ließ sich nicht ins Bild schreiben."));
     }
     if (fileStamp(target) != stamp) {
         QFile::remove(tmp);
-        return tr("„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.")
+        return Tr::tr("„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.")
             .arg(QFileInfo(path).fileName());
     }
     if (!platform::replaceFile(tmp, target, keepModificationDate, &error)) {
         QFile::remove(tmp);
-        return error.isEmpty() ? tr("Die Datei konnte nicht ersetzt werden.") : error;
+        return error.isEmpty() ? Tr::tr("Die Datei konnte nicht ersetzt werden.") : error;
     }
     if (!keepModificationDate) {
         // The metadata copy carries the original's dates over: the file changed now.
@@ -280,7 +282,7 @@ std::optional<Rating> ratingio::readTags(const QString& path, const RatingTagNam
 
 QString ratingio::writeTags(const QString& path, const Rating& r, const RatingTagNames& names) {
     if (!platform::tagsSupported())
-        return tr("Finder-Tags werden auf diesem System nicht unterstützt.");
+        return Tr::tr("Finder-Tags werden auf diesem System nicht unterstützt.");
     QString error;
     const auto raw = platform::readRawTags(path, &error);
     if (!raw)
@@ -317,7 +319,7 @@ Rating ratingio::read(const QString& path, const RatingOptions& o, const QSet<QS
 RatingWriteResult ratingio::write(const QString& path, const Rating& r, const RatingOptions& o) {
     RatingWriteResult res;
     if (!o.sidecar && !o.embedded && !o.finderTags) {
-        res.error = tr("Kein Speicherort für Bewertungen gewählt (Einstellungen → Bewertung).");
+        res.error = Tr::tr("Kein Speicherort für Bewertungen gewählt (Einstellungen → Bewertung).");
         return res;
     }
     QStringList errors;
@@ -327,7 +329,7 @@ RatingWriteResult ratingio::write(const QString& path, const Rating& r, const Ra
         const QString e = writeEmbedded(path, r, o.keepModificationDate, &refused);
         if (refused) {
             sidecar = true;
-            res.notice = tr("„%1“: %2 Die Bewertung steht deshalb in der XMP-Zusatzdatei.")
+            res.notice = Tr::tr("„%1“: %2 Die Bewertung steht deshalb in der XMP-Zusatzdatei.")
                              .arg(QFileInfo(path).fileName(), e);
         } else if (!e.isEmpty()) {
             errors << e;
@@ -507,7 +509,7 @@ void RatingStore::changeRating(FileOps& ops, const QString& path, Change change,
         self->store(path, value);
         emit self->ratingChanged(path, value);
     };
-    ops.runAsync(tr("Bewertung"), apply, revert, notify,
+    ops.runAsync(Tr::tr("Bewertung"), apply, revert, notify,
                  [self, state, path, done](bool ok, const QString& error) {
                      QString notice;
                      Rating now;

@@ -161,6 +161,93 @@
     </message>
 </context>
 <context>
+    <name>lf::CullingController</name>
+    <message>
+        <source>Bewertung wird gelesen …</source>
+        <translation>Lendo a classificação …</translation>
+    </message>
+    <message>
+        <source>AUSSORTIEREN</source>
+        <translation>TRIAGEM</translation>
+    </message>
+    <message>
+        <source>0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg</source>
+        <translation>0–5  Estrelas     P  Manter     X  Descartar     U  Remover marcação</translation>
+    </message>
+    <message>
+        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden</source>
+        <translation>← →  Navegar     M/C + 1–9  Mover/Copiar     ⌘Z  Desfazer     Esc  Sair</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U markieren</source>
+        <translation>Modo de triagem: dígitos dão estrelas, P/X/U marcam</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus beendet</source>
+        <translation>Modo de triagem encerrado</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation>%1: %2</translation>
+    </message>
+    <message>
+        <source>Filter: %1 — %2 / %3</source>
+        <translation>Filtro: %1 — %2 / %3</translation>
+    </message>
+    <message>
+        <source>Keine verworfenen Bilder</source>
+        <translation>Nenhuma imagem descartada</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Papierkorb legen?</source>
+        <translation>
+            <numerusform>Mover %n imagem descartada para o Lixo?</numerusform>
+            <numerusform>Mover %n imagens descartadas para o Lixo?</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
+        <translation>
+            <numerusform>Mover %n imagem descartada para a pasta “_Rejected”?</numerusform>
+            <numerusform>Mover %n imagens descartadas para a pasta “_Rejected”?</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <translation>Os arquivos XMP complementares vão junto. ⌘Z desfaz a etapa inteira.</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb</source>
+        <translation>Para o Lixo</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>Mover</translation>
+    </message>
+    <message>
+        <source>Verworfene in den Papierkorb</source>
+        <translation>Descartadas para o Lixo</translation>
+    </message>
+    <message>
+        <source>Verworfene nach _Rejected</source>
+        <translation>Descartadas para _Rejected</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n imagem movida para o Lixo</numerusform>
+            <numerusform>%n imagens movidas para o Lixo</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „_Rejected“ verschoben</source>
+        <translation>
+            <numerusform>%n imagem movida para “_Rejected”</numerusform>
+            <numerusform>%n imagens movidas para “_Rejected”</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::DecoderRegistry</name>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -407,6 +494,25 @@
     <message>
         <source>Kamera-RAW (Sigma X3F)</source>
         <translation>RAW de câmera (Sigma X3F)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::FileBatch</name>
+    <message>
+        <source>„%1“ existiert bereits.</source>
+        <translation>“%1” já existe.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht kopiert werden.</source>
+        <translation>Não foi possível copiar “%1”.</translation>
+    </message>
+    <message>
+        <source>Der Ordner „%1“ konnte nicht angelegt werden.</source>
+        <translation>Não foi possível criar a pasta “%1”.</translation>
+    </message>
+    <message>
+        <source>Die Kopie „%1“ konnte nicht entfernt werden.</source>
+        <translation>Não foi possível remover a cópia “%1”.</translation>
     </message>
 </context>
 <context>
@@ -1085,6 +1191,18 @@
     <message>
         <source>Markierung zurücksetzen</source>
         <translation>Redefinir Marcação</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus</source>
+        <translation>Modo de triagem</translation>
+    </message>
+    <message>
+        <source>Schnellablage: verschieben (M, dann 1–9)</source>
+        <translation>Arquivamento rápido: mover (M, depois 1–9)</translation>
+    </message>
+    <message>
+        <source>Schnellablage: kopieren (C, dann 1–9)</source>
+        <translation>Arquivamento rápido: copiar (C, depois 1–9)</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2108,6 +2226,74 @@
         <source>Geschwindigkeit</source>
         <translation>Velocidade</translation>
     </message>
+    <message>
+        <source>Alle Bilder</source>
+        <translation>Todas as Imagens</translation>
+    </message>
+    <message>
+        <source>Nur Picks</source>
+        <translation>Somente Mantidas</translation>
+    </message>
+    <message>
+        <source>Nur unbewertete</source>
+        <translation>Somente Não Classificadas</translation>
+    </message>
+    <message>
+        <source>Nur verworfene</source>
+        <translation>Somente Descartadas</translation>
+    </message>
+    <message>
+        <source>Mindestens %1 ★</source>
+        <translation>Pelo Menos %1 ★</translation>
+    </message>
+    <message>
+        <source>Aussortieren</source>
+        <translation>Triagem</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus</source>
+        <translation>Modo de Triagem</translation>
+    </message>
+    <message>
+        <source>Bewerten</source>
+        <translation>Classificar</translation>
+    </message>
+    <message>
+        <source>Nach Bewertung automatisch weiter</source>
+        <translation>Avançar Após Classificar</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation>Filtro</translation>
+    </message>
+    <message>
+        <source>Alle verworfenen in den Papierkorb …</source>
+        <translation>Todas as Descartadas para o Lixo …</translation>
+    </message>
+    <message>
+        <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
+        <translation>Todas as Descartadas para “_Rejected” …</translation>
+    </message>
+    <message>
+        <source>Schnellablage: verschieben (M, dann 1–9)</source>
+        <translation>Arquivamento rápido: mover (M, depois 1–9)</translation>
+    </message>
+    <message>
+        <source>Schnellablage: kopieren (C, dann 1–9)</source>
+        <translation>Arquivamento rápido: copiar (C, depois 1–9)</translation>
+    </message>
+    <message>
+        <source>Verschieben nach</source>
+        <translation>Mover para</translation>
+    </message>
+    <message>
+        <source>Kopieren nach</source>
+        <translation>Copiar para</translation>
+    </message>
+    <message>
+        <source>Ziele der Schnellablage festlegen …</source>
+        <translation>Definir Destinos Rápidos …</translation>
+    </message>
 </context>
 <context>
     <name>lf::MenuExtras</name>
@@ -2772,36 +2958,128 @@
         <translation>Vale quando “Ordenação como no Finder” está desativada ou quando nenhuma informação do Finder é encontrada. Uma escolha em Visualizar → Ordenar por é memorizada por pasta; “Usar para Todas as Pastas” a torna o padrão aqui.</translation>
     </message>
     <message>
-        <source>Bewertungen speichern:</source>
-        <translation>Salvar classificações:</translation>
+        <source>Keine Farbe</source>
+        <translation>Sem cor</translation>
+    </message>
+    <message>
+        <source>Grau</source>
+        <translation>Cinza</translation>
+    </message>
+    <message>
+        <source>Grün</source>
+        <translation>Verde</translation>
+    </message>
+    <message>
+        <source>Lila</source>
+        <translation>Roxo</translation>
+    </message>
+    <message>
+        <source>Blau</source>
+        <translation>Azul</translation>
+    </message>
+    <message>
+        <source>Gelb</source>
+        <translation>Amarelo</translation>
+    </message>
+    <message>
+        <source>Rot</source>
+        <translation>Vermelho</translation>
+    </message>
+    <message>
+        <source>Orange</source>
+        <translation>Laranja</translation>
+    </message>
+    <message>
+        <source>nicht festgelegt</source>
+        <translation>não definido</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>Escolher …</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>Remover</translation>
+    </message>
+    <message>
+        <source>Ziel %1 der Schnellablage</source>
+        <translation>Destino %1 do arquivamento rápido</translation>
+    </message>
+    <message>
+        <source>Bewertungen speichern</source>
+        <translation>Salvar classificações</translation>
     </message>
     <message>
         <source>XMP-Zusatzdatei neben dem Bild (Bild.xmp)</source>
         <translation>Arquivo XMP auxiliar ao lado da imagem (imagem.xmp)</translation>
     </message>
     <message>
-        <source>Kompatibel mit Lightroom, Capture One und darktable.</source>
-        <translation>Compatível com Lightroom, Capture One e darktable.</translation>
+        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
+        <translation>Compatível com Lightroom, Capture One e darktable: estrelas em xmp:Rating, “Descartar” como -1. O conteúdo existente do arquivo é mantido.</translation>
+    </message>
+    <message>
+        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; die Bildpixel werden nicht neu kodiert. RAW-Dateien werden nie verändert – dafür wird die Zusatzdatei benutzt.</source>
+        <translation>Somente JPEG, HEIC, TIFF, PNG e DNG; os pixels não são recodificados. Arquivos RAW nunca são alterados – para eles é usado o arquivo complementar.</translation>
+    </message>
+    <message>
+        <source>Änderungsdatum beim Schreiben ins Bild beibehalten</source>
+        <translation>Manter a data de modificação ao gravar na imagem</translation>
+    </message>
+    <message>
+        <source>Im Finder sichtbar und per Spotlight durchsuchbar. Sind mehrere Speicherorte gewählt, werden alle beschrieben; beim Lesen gilt die Reihenfolge Zusatzdatei, Bild, Tags.</source>
+        <translation>Visíveis no Finder e pesquisáveis com o Spotlight. Se vários locais forem escolhidos, todos são gravados; na leitura a ordem é arquivo complementar, imagem, etiquetas.</translation>
+    </message>
+    <message>
+        <source>Stern-Symbol:</source>
+        <translation>Símbolo de estrela:</translation>
+    </message>
+    <message>
+        <source>Tag für Pick:</source>
+        <translation>Etiqueta para Manter:</translation>
+    </message>
+    <message>
+        <source>Tag für Verworfen:</source>
+        <translation>Etiqueta para Descartar:</translation>
+    </message>
+    <message>
+        <source>Drei Sterne werden zum Tag „★★★“ (Symbol dreimal).</source>
+        <translation>Três estrelas viram a etiqueta “★★★” (símbolo três vezes).</translation>
+    </message>
+    <message>
+        <source>Aussortieren</source>
+        <translation>Triagem</translation>
+    </message>
+    <message>
+        <source>Nach Bewertung automatisch weiter</source>
+        <translation>Avançar automaticamente após classificar</translation>
+    </message>
+    <message>
+        <source>Zoom im Aussortiermodus fixieren</source>
+        <translation>Fixar o zoom no modo de triagem</translation>
+    </message>
+    <message>
+        <source>Tastenhilfe im Aussortiermodus zeigen</source>
+        <translation>Mostrar a ajuda de teclas no modo de triagem</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus: ⌘K oder K. Ziffern vergeben dort Sterne statt Zoomstufen; „Bewertungstasten immer aktiv“ gibt es unter Maus &amp; Tastatur.</source>
+        <translation>Modo de triagem: ⌘K ou K. Nele os dígitos dão estrelas em vez de níveis de zoom; “Teclas de classificação sempre ativas” fica em Mouse e Teclado.</translation>
+    </message>
+    <message>
+        <source>Schnellablage</source>
+        <translation>Arquivamento rápido</translation>
+    </message>
+    <message>
+        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z macht es rückgängig.</source>
+        <translation>M e depois 1–9 move a imagem para a pasta de destino, C e depois 1–9 a copia. M M ou C C repete o último destino. ⌘Z desfaz.</translation>
     </message>
     <message>
         <source>Im Bild selbst (eingebettetes XMP)</source>
         <translation>Na própria imagem (XMP incorporado)</translation>
     </message>
     <message>
-        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; sonst wird die Zusatzdatei benutzt. Die Bildpixel werden nicht neu kodiert.</source>
-        <translation>Apenas JPEG, HEIC, TIFF, PNG e DNG; caso contrário, é usado o arquivo auxiliar. Os pixels da imagem não são recodificados.</translation>
-    </message>
-    <message>
         <source>Finder-Tags</source>
         <translation>Etiquetas do Finder</translation>
-    </message>
-    <message>
-        <source>Im Finder sichtbar und per Spotlight durchsuchbar.</source>
-        <translation>Visíveis no Finder e pesquisáveis pelo Spotlight.</translation>
-    </message>
-    <message>
-        <source>Bewertungen und der Aussortiermodus folgen %1.</source>
-        <translation>As classificações e o modo de triagem seguem %1.</translation>
     </message>
     <message>
         <source>Unterstützte Formate (ohne Nachinstallation):</source>
@@ -3014,6 +3292,206 @@
     <message>
         <source>Nicht genug Speicher für das Bild.</source>
         <translation>Memória insuficiente para a imagem.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QuickMove</name>
+    <message>
+        <source>%1  (nicht festgelegt)</source>
+        <translation>%1  (não definido)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QuickMoveController</name>
+    <message>
+        <source>Verschieben nach … (1–9, M = wie zuletzt)</source>
+        <translation>Mover para … (1–9, M = como da última vez)</translation>
+    </message>
+    <message>
+        <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
+        <translation>Copiar para … (1–9, C = como da última vez)</translation>
+    </message>
+    <message>
+        <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
+        <translation>Nenhum destino usado ainda – escolha primeiro um dígito de 1 a 9.</translation>
+    </message>
+    <message>
+        <source>Ziel %1 ist nicht festgelegt (Einstellungen → Bewertung → Schnellablage).</source>
+        <translation>O destino %1 não está definido (Ajustes → Classificação → Arquivamento rápido).</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>Mover</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>Copiar</translation>
+    </message>
+    <message>
+        <source>Übersprungen – nichts geändert.</source>
+        <translation>Ignorado – nada foi alterado.</translation>
+    </message>
+    <message>
+        <source>Nach „%1“ verschoben</source>
+        <translation>Movida para “%1”</translation>
+    </message>
+    <message>
+        <source>Nach „%1“ kopiert</source>
+        <translation>Copiada para “%1”</translation>
+    </message>
+    <message>
+        <source>Namenskonflikt</source>
+        <translation>Conflito de nomes</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es in „%2“ schon.</source>
+        <translation>“%1” já existe em “%2”.</translation>
+    </message>
+    <message>
+        <source>Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.</source>
+        <translation>Substituir move o arquivo existente para o Lixo, “Manter ambos” dá ao novo um nome como “%1”. ⌘Z desfaz tudo.</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>Substituir</translation>
+    </message>
+    <message>
+        <source>Beide behalten</source>
+        <translation>Manter ambos</translation>
+    </message>
+    <message>
+        <source>Überspringen</source>
+        <translation>Ignorar</translation>
+    </message>
+    <message>
+        <source>Für alle %1 Konflikte</source>
+        <translation>Para todos os %1 conflitos</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Rating</name>
+    <message>
+        <source>alle</source>
+        <translation>todas</translation>
+    </message>
+    <message>
+        <source>nur Picks</source>
+        <translation>somente mantidas</translation>
+    </message>
+    <message>
+        <source>≥ %1 ★</source>
+        <translation>≥ %1 ★</translation>
+    </message>
+    <message>
+        <source>nur unbewertete</source>
+        <translation>somente não classificadas</translation>
+    </message>
+    <message>
+        <source>nur verworfene</source>
+        <translation>somente descartadas</translation>
+    </message>
+    <message>
+        <source>Pick</source>
+        <translation>Mantida</translation>
+    </message>
+    <message>
+        <source>Verworfen</source>
+        <translation>Descartada</translation>
+    </message>
+</context>
+<context>
+    <name>lf::RatingStore</name>
+    <message>
+        <source>„%1“ konnte nicht geschrieben werden (Ordner schreibgeschützt?).</source>
+        <translation>Não foi possível gravar “%1” (pasta somente leitura?).</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>Não é possível ler “%1”.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist zu groß.</source>
+        <translation>“%1” é grande demais.</translation>
+    </message>
+    <message>
+        <source>Die XMP-Datei „%1“ ist beschädigt oder unbekannt aufgebaut und wird nicht verändert.</source>
+        <translation>O arquivo XMP “%1” está danificado ou tem estrutura desconhecida e não é alterado.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht ersetzt werden.</source>
+        <translation>Não foi possível substituir “%1”.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>O arquivo não existe mais.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert.</source>
+        <translation>Arquivos RAW nunca são alterados.</translation>
+    </message>
+    <message>
+        <source>In dieses Format kann die Bewertung nicht sicher geschrieben werden.</source>
+        <translation>A classificação não pode ser gravada com segurança neste formato.</translation>
+    </message>
+    <message>
+        <source>In animierte oder mehrseitige Dateien wird nicht geschrieben.</source>
+        <translation>Arquivos animados ou com várias páginas não são gravados.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist schreibgeschützt.</source>
+        <translation>O arquivo é somente leitura.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht ins Bild schreiben.</source>
+        <translation>Não foi possível gravar a classificação na imagem.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht ohne Neukodieren ins Bild schreiben.</source>
+        <translation>Não foi possível gravar a classificação na imagem sem recodificar.</translation>
+    </message>
+    <message>
+        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.</source>
+        <translation>“%1” foi alterado nesse meio-tempo – classificação não salva.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>Não foi possível substituir o arquivo.</translation>
+    </message>
+    <message>
+        <source>Finder-Tags werden auf diesem System nicht unterstützt.</source>
+        <translation>Etiquetas do Finder não são suportadas neste sistema.</translation>
+    </message>
+    <message>
+        <source>Kein Speicherort für Bewertungen gewählt (Einstellungen → Bewertung).</source>
+        <translation>Nenhum local escolhido para as classificações (Ajustes → Classificação).</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 Die Bewertung steht deshalb in der XMP-Zusatzdatei.</source>
+        <translation>“%1”: %2 Por isso a classificação fica no arquivo XMP complementar.</translation>
+    </message>
+    <message>
+        <source>Bewertung</source>
+        <translation>Classificação</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Não é possível ler o arquivo.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
+        <translation>Não foi possível gravar a classificação na imagem sem perdas.</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder der Datei (z. B. eine HDR-Gain-Map) gingen beim Schreiben verloren.</source>
+        <translation>Imagens auxiliares do arquivo (p. ex. um gain map HDR) se perderam ao gravar.</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gelesen werden: %2</source>
+        <translation>Não foi possível ler as etiquetas de “%1”: %2</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
+        <translation>Não foi possível definir as etiquetas de “%1”: %2</translation>
     </message>
 </context>
 <context>

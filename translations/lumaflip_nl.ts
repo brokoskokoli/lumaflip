@@ -161,6 +161,93 @@
     </message>
 </context>
 <context>
+    <name>lf::CullingController</name>
+    <message>
+        <source>Bewertung wird gelesen …</source>
+        <translation>Waardering wordt gelezen …</translation>
+    </message>
+    <message>
+        <source>AUSSORTIEREN</source>
+        <translation>SELECTEREN</translation>
+    </message>
+    <message>
+        <source>0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg</source>
+        <translation>0–5  Sterren     P  Kiezen     X  Afwijzen     U  Markering wissen</translation>
+    </message>
+    <message>
+        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden</source>
+        <translation>← →  Bladeren     M/C + 1–9  Verplaatsen/Kopiëren     ⌘Z  Herstel     Esc  Stoppen</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U markieren</source>
+        <translation>Selectiemodus: cijfers geven sterren, P/X/U markeren</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus beendet</source>
+        <translation>Selectiemodus beëindigd</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation>%1: %2</translation>
+    </message>
+    <message>
+        <source>Filter: %1 — %2 / %3</source>
+        <translation>Filter: %1 — %2 / %3</translation>
+    </message>
+    <message>
+        <source>Keine verworfenen Bilder</source>
+        <translation>Geen afgewezen afbeeldingen</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Papierkorb legen?</source>
+        <translation>
+            <numerusform>%n afgewezen afbeelding naar de prullenmand verplaatsen?</numerusform>
+            <numerusform>%n afgewezen afbeeldingen naar de prullenmand verplaatsen?</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
+        <translation>
+            <numerusform>%n afgewezen afbeelding naar de map ‘_Rejected’ verplaatsen?</numerusform>
+            <numerusform>%n afgewezen afbeeldingen naar de map ‘_Rejected’ verplaatsen?</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <translation>XMP-bijbestanden gaan mee. ⌘Z maakt de hele stap ongedaan.</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb</source>
+        <translation>Naar prullenmand</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>Verplaats</translation>
+    </message>
+    <message>
+        <source>Verworfene in den Papierkorb</source>
+        <translation>Afgewezen naar prullenmand</translation>
+    </message>
+    <message>
+        <source>Verworfene nach _Rejected</source>
+        <translation>Afgewezen naar _Rejected</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n afbeelding naar de prullenmand verplaatst</numerusform>
+            <numerusform>%n afbeeldingen naar de prullenmand verplaatst</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „_Rejected“ verschoben</source>
+        <translation>
+            <numerusform>%n afbeelding naar ‘_Rejected’ verplaatst</numerusform>
+            <numerusform>%n afbeeldingen naar ‘_Rejected’ verplaatst</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::DecoderRegistry</name>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -407,6 +494,25 @@
     <message>
         <source>Kamera-RAW (Sigma X3F)</source>
         <translation>Camera-RAW (Sigma X3F)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::FileBatch</name>
+    <message>
+        <source>„%1“ existiert bereits.</source>
+        <translation>‘%1’ bestaat al.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht kopiert werden.</source>
+        <translation>‘%1’ kon niet worden gekopieerd.</translation>
+    </message>
+    <message>
+        <source>Der Ordner „%1“ konnte nicht angelegt werden.</source>
+        <translation>De map ‘%1’ kon niet worden aangemaakt.</translation>
+    </message>
+    <message>
+        <source>Die Kopie „%1“ konnte nicht entfernt werden.</source>
+        <translation>De kopie ‘%1’ kon niet worden verwijderd.</translation>
     </message>
 </context>
 <context>
@@ -1085,6 +1191,18 @@
     <message>
         <source>Markierung zurücksetzen</source>
         <translation>Wis markering</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus</source>
+        <translation>Selectiemodus</translation>
+    </message>
+    <message>
+        <source>Schnellablage: verschieben (M, dann 1–9)</source>
+        <translation>Snel opbergen: verplaatsen (M, dan 1–9)</translation>
+    </message>
+    <message>
+        <source>Schnellablage: kopieren (C, dann 1–9)</source>
+        <translation>Snel opbergen: kopiëren (C, dan 1–9)</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2108,6 +2226,74 @@
         <source>Geschwindigkeit</source>
         <translation>Snelheid</translation>
     </message>
+    <message>
+        <source>Alle Bilder</source>
+        <translation>Alle afbeeldingen</translation>
+    </message>
+    <message>
+        <source>Nur Picks</source>
+        <translation>Alleen gekozen</translation>
+    </message>
+    <message>
+        <source>Nur unbewertete</source>
+        <translation>Alleen zonder waardering</translation>
+    </message>
+    <message>
+        <source>Nur verworfene</source>
+        <translation>Alleen afgewezen</translation>
+    </message>
+    <message>
+        <source>Mindestens %1 ★</source>
+        <translation>Minstens %1 ★</translation>
+    </message>
+    <message>
+        <source>Aussortieren</source>
+        <translation>Selecteren</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus</source>
+        <translation>Selectiemodus</translation>
+    </message>
+    <message>
+        <source>Bewerten</source>
+        <translation>Waarderen</translation>
+    </message>
+    <message>
+        <source>Nach Bewertung automatisch weiter</source>
+        <translation>Na waardering automatisch verder</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation>Filter</translation>
+    </message>
+    <message>
+        <source>Alle verworfenen in den Papierkorb …</source>
+        <translation>Alle afgewezen naar prullenmand …</translation>
+    </message>
+    <message>
+        <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
+        <translation>Alle afgewezen naar ‘_Rejected’ …</translation>
+    </message>
+    <message>
+        <source>Schnellablage: verschieben (M, dann 1–9)</source>
+        <translation>Snel opbergen: verplaatsen (M, dan 1–9)</translation>
+    </message>
+    <message>
+        <source>Schnellablage: kopieren (C, dann 1–9)</source>
+        <translation>Snel opbergen: kopiëren (C, dan 1–9)</translation>
+    </message>
+    <message>
+        <source>Verschieben nach</source>
+        <translation>Verplaats naar</translation>
+    </message>
+    <message>
+        <source>Kopieren nach</source>
+        <translation>Kopieer naar</translation>
+    </message>
+    <message>
+        <source>Ziele der Schnellablage festlegen …</source>
+        <translation>Doelen voor snel opbergen …</translation>
+    </message>
 </context>
 <context>
     <name>lf::MenuExtras</name>
@@ -2772,36 +2958,128 @@
         <translation>Geldt als ‘Sorteer zoals in de Finder’ uit staat of als er geen Finder-informatie wordt gevonden. Een keuze in het menu Weergave → Sorteer op wordt per map onthouden; ‘Gebruik voor alle mappen’ maakt er hier de standaard van.</translation>
     </message>
     <message>
-        <source>Bewertungen speichern:</source>
-        <translation>Bewaar waarderingen:</translation>
+        <source>Keine Farbe</source>
+        <translation>Geen kleur</translation>
+    </message>
+    <message>
+        <source>Grau</source>
+        <translation>Grijs</translation>
+    </message>
+    <message>
+        <source>Grün</source>
+        <translation>Groen</translation>
+    </message>
+    <message>
+        <source>Lila</source>
+        <translation>Paars</translation>
+    </message>
+    <message>
+        <source>Blau</source>
+        <translation>Blauw</translation>
+    </message>
+    <message>
+        <source>Gelb</source>
+        <translation>Geel</translation>
+    </message>
+    <message>
+        <source>Rot</source>
+        <translation>Rood</translation>
+    </message>
+    <message>
+        <source>Orange</source>
+        <translation>Oranje</translation>
+    </message>
+    <message>
+        <source>nicht festgelegt</source>
+        <translation>niet ingesteld</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>Kies …</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>Verwijder</translation>
+    </message>
+    <message>
+        <source>Ziel %1 der Schnellablage</source>
+        <translation>Doel %1 voor snel opbergen</translation>
+    </message>
+    <message>
+        <source>Bewertungen speichern</source>
+        <translation>Waarderingen bewaren</translation>
     </message>
     <message>
         <source>XMP-Zusatzdatei neben dem Bild (Bild.xmp)</source>
         <translation>XMP-bijbestand naast de afbeelding (Afbeelding.xmp)</translation>
     </message>
     <message>
-        <source>Kompatibel mit Lightroom, Capture One und darktable.</source>
-        <translation>Compatibel met Lightroom, Capture One en darktable.</translation>
+        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
+        <translation>Compatibel met Lightroom, Capture One en darktable: sterren in xmp:Rating, ‘Afwijzen’ als -1. Bestaande inhoud van het bestand blijft behouden.</translation>
+    </message>
+    <message>
+        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; die Bildpixel werden nicht neu kodiert. RAW-Dateien werden nie verändert – dafür wird die Zusatzdatei benutzt.</source>
+        <translation>Alleen JPEG, HEIC, TIFF, PNG en DNG; de pixels worden niet opnieuw gecodeerd. RAW-bestanden worden nooit gewijzigd – daarvoor wordt het bijbestand gebruikt.</translation>
+    </message>
+    <message>
+        <source>Änderungsdatum beim Schreiben ins Bild beibehalten</source>
+        <translation>Wijzigingsdatum behouden bij schrijven in de afbeelding</translation>
+    </message>
+    <message>
+        <source>Im Finder sichtbar und per Spotlight durchsuchbar. Sind mehrere Speicherorte gewählt, werden alle beschrieben; beim Lesen gilt die Reihenfolge Zusatzdatei, Bild, Tags.</source>
+        <translation>Zichtbaar in de Finder en doorzoekbaar met Spotlight. Zijn meerdere locaties gekozen, dan worden ze allemaal beschreven; bij lezen geldt de volgorde bijbestand, afbeelding, tags.</translation>
+    </message>
+    <message>
+        <source>Stern-Symbol:</source>
+        <translation>Stersymbool:</translation>
+    </message>
+    <message>
+        <source>Tag für Pick:</source>
+        <translation>Tag voor Kiezen:</translation>
+    </message>
+    <message>
+        <source>Tag für Verworfen:</source>
+        <translation>Tag voor Afwijzen:</translation>
+    </message>
+    <message>
+        <source>Drei Sterne werden zum Tag „★★★“ (Symbol dreimal).</source>
+        <translation>Drie sterren worden de tag ‘★★★’ (symbool drie keer).</translation>
+    </message>
+    <message>
+        <source>Aussortieren</source>
+        <translation>Selecteren</translation>
+    </message>
+    <message>
+        <source>Nach Bewertung automatisch weiter</source>
+        <translation>Na waardering automatisch verder</translation>
+    </message>
+    <message>
+        <source>Zoom im Aussortiermodus fixieren</source>
+        <translation>Zoom vastzetten in selectiemodus</translation>
+    </message>
+    <message>
+        <source>Tastenhilfe im Aussortiermodus zeigen</source>
+        <translation>Toetsenhulp tonen in selectiemodus</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus: ⌘K oder K. Ziffern vergeben dort Sterne statt Zoomstufen; „Bewertungstasten immer aktiv“ gibt es unter Maus &amp; Tastatur.</source>
+        <translation>Selectiemodus: ⌘K of K. Daar geven cijfers sterren in plaats van zoomniveaus; ‘Waarderingstoetsen altijd actief’ staat onder Muis en toetsenbord.</translation>
+    </message>
+    <message>
+        <source>Schnellablage</source>
+        <translation>Snel opbergen</translation>
+    </message>
+    <message>
+        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z macht es rückgängig.</source>
+        <translation>M en dan 1–9 verplaatst de afbeelding naar de doelmap, C en dan 1–9 kopieert haar. M M of C C herhaalt het laatste doel. ⌘Z maakt het ongedaan.</translation>
     </message>
     <message>
         <source>Im Bild selbst (eingebettetes XMP)</source>
         <translation>In de afbeelding zelf (ingesloten XMP)</translation>
     </message>
     <message>
-        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; sonst wird die Zusatzdatei benutzt. Die Bildpixel werden nicht neu kodiert.</source>
-        <translation>Alleen JPEG, HEIC, TIFF, PNG en DNG; anders wordt het bijbestand gebruikt. De pixels worden niet opnieuw gecodeerd.</translation>
-    </message>
-    <message>
         <source>Finder-Tags</source>
         <translation>Finder-tags</translation>
-    </message>
-    <message>
-        <source>Im Finder sichtbar und per Spotlight durchsuchbar.</source>
-        <translation>Zichtbaar in de Finder en doorzoekbaar met Spotlight.</translation>
-    </message>
-    <message>
-        <source>Bewertungen und der Aussortiermodus folgen %1.</source>
-        <translation>Waarderingen en de uitzoekmodus volgen %1.</translation>
     </message>
     <message>
         <source>Unterstützte Formate (ohne Nachinstallation):</source>
@@ -3014,6 +3292,206 @@
     <message>
         <source>Nicht genug Speicher für das Bild.</source>
         <translation>Onvoldoende geheugen voor de afbeelding.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QuickMove</name>
+    <message>
+        <source>%1  (nicht festgelegt)</source>
+        <translation>%1  (niet ingesteld)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QuickMoveController</name>
+    <message>
+        <source>Verschieben nach … (1–9, M = wie zuletzt)</source>
+        <translation>Verplaats naar … (1–9, M = als vorige keer)</translation>
+    </message>
+    <message>
+        <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
+        <translation>Kopieer naar … (1–9, C = als vorige keer)</translation>
+    </message>
+    <message>
+        <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
+        <translation>Nog geen doel gebruikt – kies eerst een cijfer 1–9.</translation>
+    </message>
+    <message>
+        <source>Ziel %1 ist nicht festgelegt (Einstellungen → Bewertung → Schnellablage).</source>
+        <translation>Doel %1 is niet ingesteld (Instellingen → Waardering → Snel opbergen).</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>Verplaatsen</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>Kopiëren</translation>
+    </message>
+    <message>
+        <source>Übersprungen – nichts geändert.</source>
+        <translation>Overgeslagen – niets gewijzigd.</translation>
+    </message>
+    <message>
+        <source>Nach „%1“ verschoben</source>
+        <translation>Verplaatst naar ‘%1’</translation>
+    </message>
+    <message>
+        <source>Nach „%1“ kopiert</source>
+        <translation>Gekopieerd naar ‘%1’</translation>
+    </message>
+    <message>
+        <source>Namenskonflikt</source>
+        <translation>Naamconflict</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es in „%2“ schon.</source>
+        <translation>‘%1’ bestaat al in ‘%2’.</translation>
+    </message>
+    <message>
+        <source>Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.</source>
+        <translation>Vervang verplaatst het bestaande bestand naar de prullenmand, ‘Beide behouden’ geeft het nieuwe een naam als ‘%1’. ⌘Z maakt alles ongedaan.</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>Vervang</translation>
+    </message>
+    <message>
+        <source>Beide behalten</source>
+        <translation>Beide behouden</translation>
+    </message>
+    <message>
+        <source>Überspringen</source>
+        <translation>Sla over</translation>
+    </message>
+    <message>
+        <source>Für alle %1 Konflikte</source>
+        <translation>Voor alle %1 conflicten</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Rating</name>
+    <message>
+        <source>alle</source>
+        <translation>alle</translation>
+    </message>
+    <message>
+        <source>nur Picks</source>
+        <translation>alleen gekozen</translation>
+    </message>
+    <message>
+        <source>≥ %1 ★</source>
+        <translation>≥ %1 ★</translation>
+    </message>
+    <message>
+        <source>nur unbewertete</source>
+        <translation>alleen zonder waardering</translation>
+    </message>
+    <message>
+        <source>nur verworfene</source>
+        <translation>alleen afgewezen</translation>
+    </message>
+    <message>
+        <source>Pick</source>
+        <translation>Gekozen</translation>
+    </message>
+    <message>
+        <source>Verworfen</source>
+        <translation>Afgewezen</translation>
+    </message>
+</context>
+<context>
+    <name>lf::RatingStore</name>
+    <message>
+        <source>„%1“ konnte nicht geschrieben werden (Ordner schreibgeschützt?).</source>
+        <translation>‘%1’ kon niet worden geschreven (map alleen-lezen?).</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>‘%1’ kan niet worden gelezen.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist zu groß.</source>
+        <translation>‘%1’ is te groot.</translation>
+    </message>
+    <message>
+        <source>Die XMP-Datei „%1“ ist beschädigt oder unbekannt aufgebaut und wird nicht verändert.</source>
+        <translation>Het XMP-bestand ‘%1’ is beschadigd of onbekend opgebouwd en wordt niet gewijzigd.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht ersetzt werden.</source>
+        <translation>‘%1’ kon niet worden vervangen.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>Het bestand bestaat niet meer.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert.</source>
+        <translation>RAW-bestanden worden nooit gewijzigd.</translation>
+    </message>
+    <message>
+        <source>In dieses Format kann die Bewertung nicht sicher geschrieben werden.</source>
+        <translation>In dit formaat kan de waardering niet veilig worden geschreven.</translation>
+    </message>
+    <message>
+        <source>In animierte oder mehrseitige Dateien wird nicht geschrieben.</source>
+        <translation>In geanimeerde bestanden of bestanden met meerdere pagina’s wordt niet geschreven.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist schreibgeschützt.</source>
+        <translation>Het bestand is alleen-lezen.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht ins Bild schreiben.</source>
+        <translation>De waardering kon niet in de afbeelding worden geschreven.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht ohne Neukodieren ins Bild schreiben.</source>
+        <translation>De waardering kon niet zonder hercodering in de afbeelding worden geschreven.</translation>
+    </message>
+    <message>
+        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.</source>
+        <translation>‘%1’ is intussen gewijzigd – waardering niet bewaard.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>Het bestand kon niet worden vervangen.</translation>
+    </message>
+    <message>
+        <source>Finder-Tags werden auf diesem System nicht unterstützt.</source>
+        <translation>Finder-tags worden op dit systeem niet ondersteund.</translation>
+    </message>
+    <message>
+        <source>Kein Speicherort für Bewertungen gewählt (Einstellungen → Bewertung).</source>
+        <translation>Geen opslaglocatie voor waarderingen gekozen (Instellingen → Waardering).</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 Die Bewertung steht deshalb in der XMP-Zusatzdatei.</source>
+        <translation>‘%1’: %2 De waardering staat daarom in het XMP-bijbestand.</translation>
+    </message>
+    <message>
+        <source>Bewertung</source>
+        <translation>Waardering</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Het bestand kan niet worden gelezen.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
+        <translation>De waardering kon niet verliesvrij in de afbeelding worden geschreven.</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder der Datei (z. B. eine HDR-Gain-Map) gingen beim Schreiben verloren.</source>
+        <translation>Bijkomende afbeeldingen van het bestand (bijv. een HDR-gain-map) gingen bij het schrijven verloren.</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gelesen werden: %2</source>
+        <translation>Tags van ‘%1’ konden niet worden gelezen: %2</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
+        <translation>Tags van ‘%1’ konden niet worden ingesteld: %2</translation>
     </message>
 </context>
 <context>

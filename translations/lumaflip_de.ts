@@ -2,6 +2,37 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="de" sourcelanguage="de">
 <context>
+    <name>lf::CullingController</name>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Papierkorb legen?</source>
+        <translation>
+            <numerusform>%n verworfenes Bild in den Papierkorb legen?</numerusform>
+            <numerusform>%n verworfene Bilder in den Papierkorb legen?</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
+        <translation>
+            <numerusform>%n verworfenes Bild in den Ordner „_Rejected“ verschieben?</numerusform>
+            <numerusform>%n verworfene Bilder in den Ordner „_Rejected“ verschieben?</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n Bild in den Papierkorb gelegt</numerusform>
+            <numerusform>%n Bilder in den Papierkorb gelegt</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „_Rejected“ verschoben</source>
+        <translation>
+            <numerusform>%n Bild nach „_Rejected“ verschoben</numerusform>
+            <numerusform>%n Bilder nach „_Rejected“ verschoben</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::Format</name>
     <message numerus="yes">
         <source>%n Byte</source>

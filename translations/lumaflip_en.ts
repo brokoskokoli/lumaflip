@@ -161,6 +161,93 @@
     </message>
 </context>
 <context>
+    <name>lf::CullingController</name>
+    <message>
+        <source>Bewertung wird gelesen …</source>
+        <translation>Reading rating …</translation>
+    </message>
+    <message>
+        <source>AUSSORTIEREN</source>
+        <translation>CULLING</translation>
+    </message>
+    <message>
+        <source>0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg</source>
+        <translation>0–5  Stars     P  Pick     X  Reject     U  Unflag</translation>
+    </message>
+    <message>
+        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden</source>
+        <translation>← →  Browse     M/C + 1–9  Move/Copy     ⌘Z  Undo     Esc  Exit</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U markieren</source>
+        <translation>Culling mode: digits set stars, P/X/U flag</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus beendet</source>
+        <translation>Culling mode ended</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation>%1: %2</translation>
+    </message>
+    <message>
+        <source>Filter: %1 — %2 / %3</source>
+        <translation>Filter: %1 — %2 / %3</translation>
+    </message>
+    <message>
+        <source>Keine verworfenen Bilder</source>
+        <translation>No rejected images</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Papierkorb legen?</source>
+        <translation>
+            <numerusform>Move %n rejected image to the Trash?</numerusform>
+            <numerusform>Move %n rejected images to the Trash?</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
+        <translation>
+            <numerusform>Move %n rejected image to the folder “_Rejected”?</numerusform>
+            <numerusform>Move %n rejected images to the folder “_Rejected”?</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <translation>XMP sidecar files go along. ⌘Z undoes the whole step.</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb</source>
+        <translation>Move to Trash</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>Move</translation>
+    </message>
+    <message>
+        <source>Verworfene in den Papierkorb</source>
+        <translation>Rejected to Trash</translation>
+    </message>
+    <message>
+        <source>Verworfene nach _Rejected</source>
+        <translation>Rejected to _Rejected</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n image moved to the Trash</numerusform>
+            <numerusform>%n images moved to the Trash</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „_Rejected“ verschoben</source>
+        <translation>
+            <numerusform>%n image moved to “_Rejected”</numerusform>
+            <numerusform>%n images moved to “_Rejected”</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::DecoderRegistry</name>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -407,6 +494,25 @@
     <message>
         <source>Kamera-RAW (Sigma X3F)</source>
         <translation>Camera RAW (Sigma X3F)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::FileBatch</name>
+    <message>
+        <source>„%1“ existiert bereits.</source>
+        <translation>“%1” already exists.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht kopiert werden.</source>
+        <translation>“%1” could not be copied.</translation>
+    </message>
+    <message>
+        <source>Der Ordner „%1“ konnte nicht angelegt werden.</source>
+        <translation>The folder “%1” could not be created.</translation>
+    </message>
+    <message>
+        <source>Die Kopie „%1“ konnte nicht entfernt werden.</source>
+        <translation>The copy “%1” could not be removed.</translation>
     </message>
 </context>
 <context>
@@ -1085,6 +1191,18 @@
     <message>
         <source>Markierung zurücksetzen</source>
         <translation>Unflag</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus</source>
+        <translation>Culling Mode</translation>
+    </message>
+    <message>
+        <source>Schnellablage: verschieben (M, dann 1–9)</source>
+        <translation>Quick Move: Move (M, then 1–9)</translation>
+    </message>
+    <message>
+        <source>Schnellablage: kopieren (C, dann 1–9)</source>
+        <translation>Quick Move: Copy (C, then 1–9)</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2108,6 +2226,74 @@
         <source>Geschwindigkeit</source>
         <translation>Speed</translation>
     </message>
+    <message>
+        <source>Alle Bilder</source>
+        <translation>All Images</translation>
+    </message>
+    <message>
+        <source>Nur Picks</source>
+        <translation>Picks Only</translation>
+    </message>
+    <message>
+        <source>Nur unbewertete</source>
+        <translation>Unrated Only</translation>
+    </message>
+    <message>
+        <source>Nur verworfene</source>
+        <translation>Rejected Only</translation>
+    </message>
+    <message>
+        <source>Mindestens %1 ★</source>
+        <translation>At Least %1 ★</translation>
+    </message>
+    <message>
+        <source>Aussortieren</source>
+        <translation>Culling</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus</source>
+        <translation>Culling Mode</translation>
+    </message>
+    <message>
+        <source>Bewerten</source>
+        <translation>Rate</translation>
+    </message>
+    <message>
+        <source>Nach Bewertung automatisch weiter</source>
+        <translation>Advance Automatically After Rating</translation>
+    </message>
+    <message>
+        <source>Filter</source>
+        <translation>Filter</translation>
+    </message>
+    <message>
+        <source>Alle verworfenen in den Papierkorb …</source>
+        <translation>Move All Rejected to Trash …</translation>
+    </message>
+    <message>
+        <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
+        <translation>Move All Rejected to “_Rejected” …</translation>
+    </message>
+    <message>
+        <source>Schnellablage: verschieben (M, dann 1–9)</source>
+        <translation>Quick Move: Move (M, then 1–9)</translation>
+    </message>
+    <message>
+        <source>Schnellablage: kopieren (C, dann 1–9)</source>
+        <translation>Quick Move: Copy (C, then 1–9)</translation>
+    </message>
+    <message>
+        <source>Verschieben nach</source>
+        <translation>Move To</translation>
+    </message>
+    <message>
+        <source>Kopieren nach</source>
+        <translation>Copy To</translation>
+    </message>
+    <message>
+        <source>Ziele der Schnellablage festlegen …</source>
+        <translation>Set Quick Move Targets …</translation>
+    </message>
 </context>
 <context>
     <name>lf::MenuExtras</name>
@@ -2772,36 +2958,128 @@
         <translation>Applies when “Sort as in Finder” is off or no Finder information is found. A choice in the View → Sort By menu is remembered per folder; “Use for All Folders” makes it the default here.</translation>
     </message>
     <message>
-        <source>Bewertungen speichern:</source>
-        <translation>Save ratings:</translation>
+        <source>Keine Farbe</source>
+        <translation>No color</translation>
+    </message>
+    <message>
+        <source>Grau</source>
+        <translation>Gray</translation>
+    </message>
+    <message>
+        <source>Grün</source>
+        <translation>Green</translation>
+    </message>
+    <message>
+        <source>Lila</source>
+        <translation>Purple</translation>
+    </message>
+    <message>
+        <source>Blau</source>
+        <translation>Blue</translation>
+    </message>
+    <message>
+        <source>Gelb</source>
+        <translation>Yellow</translation>
+    </message>
+    <message>
+        <source>Rot</source>
+        <translation>Red</translation>
+    </message>
+    <message>
+        <source>Orange</source>
+        <translation>Orange</translation>
+    </message>
+    <message>
+        <source>nicht festgelegt</source>
+        <translation>not set</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>Choose …</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>Remove</translation>
+    </message>
+    <message>
+        <source>Ziel %1 der Schnellablage</source>
+        <translation>Quick move target %1</translation>
+    </message>
+    <message>
+        <source>Bewertungen speichern</source>
+        <translation>Store ratings</translation>
     </message>
     <message>
         <source>XMP-Zusatzdatei neben dem Bild (Bild.xmp)</source>
         <translation>XMP sidecar file next to the image (Image.xmp)</translation>
     </message>
     <message>
-        <source>Kompatibel mit Lightroom, Capture One und darktable.</source>
-        <translation>Compatible with Lightroom, Capture One, and darktable.</translation>
+        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
+        <translation>Compatible with Lightroom, Capture One and darktable: stars in xmp:Rating, “Reject” as -1. Existing content of the file is kept.</translation>
+    </message>
+    <message>
+        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; die Bildpixel werden nicht neu kodiert. RAW-Dateien werden nie verändert – dafür wird die Zusatzdatei benutzt.</source>
+        <translation>JPEG, HEIC, TIFF, PNG and DNG only; the image pixels are not re-encoded. RAW files are never changed – the sidecar file is used for them.</translation>
+    </message>
+    <message>
+        <source>Änderungsdatum beim Schreiben ins Bild beibehalten</source>
+        <translation>Keep the modification date when writing into the image</translation>
+    </message>
+    <message>
+        <source>Im Finder sichtbar und per Spotlight durchsuchbar. Sind mehrere Speicherorte gewählt, werden alle beschrieben; beim Lesen gilt die Reihenfolge Zusatzdatei, Bild, Tags.</source>
+        <translation>Visible in the Finder and searchable with Spotlight. If several locations are selected, all are written; when reading, the order is sidecar file, image, tags.</translation>
+    </message>
+    <message>
+        <source>Stern-Symbol:</source>
+        <translation>Star symbol:</translation>
+    </message>
+    <message>
+        <source>Tag für Pick:</source>
+        <translation>Tag for Pick:</translation>
+    </message>
+    <message>
+        <source>Tag für Verworfen:</source>
+        <translation>Tag for Reject:</translation>
+    </message>
+    <message>
+        <source>Drei Sterne werden zum Tag „★★★“ (Symbol dreimal).</source>
+        <translation>Three stars become the tag “★★★” (symbol three times).</translation>
+    </message>
+    <message>
+        <source>Aussortieren</source>
+        <translation>Culling</translation>
+    </message>
+    <message>
+        <source>Nach Bewertung automatisch weiter</source>
+        <translation>Advance automatically after rating</translation>
+    </message>
+    <message>
+        <source>Zoom im Aussortiermodus fixieren</source>
+        <translation>Lock zoom in culling mode</translation>
+    </message>
+    <message>
+        <source>Tastenhilfe im Aussortiermodus zeigen</source>
+        <translation>Show key help in culling mode</translation>
+    </message>
+    <message>
+        <source>Aussortiermodus: ⌘K oder K. Ziffern vergeben dort Sterne statt Zoomstufen; „Bewertungstasten immer aktiv“ gibt es unter Maus &amp; Tastatur.</source>
+        <translation>Culling mode: ⌘K or K. There, digits set stars instead of zoom levels; “Rating keys always active” is under Mouse &amp; Keyboard.</translation>
+    </message>
+    <message>
+        <source>Schnellablage</source>
+        <translation>Quick Move</translation>
+    </message>
+    <message>
+        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z macht es rückgängig.</source>
+        <translation>M and then 1–9 moves the image into the target folder, C and then 1–9 copies it. M M or C C repeats the last target. ⌘Z undoes it.</translation>
     </message>
     <message>
         <source>Im Bild selbst (eingebettetes XMP)</source>
         <translation>In the image itself (embedded XMP)</translation>
     </message>
     <message>
-        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; sonst wird die Zusatzdatei benutzt. Die Bildpixel werden nicht neu kodiert.</source>
-        <translation>JPEG, HEIC, TIFF, PNG, and DNG only; otherwise the sidecar file is used. The image pixels aren’t re-encoded.</translation>
-    </message>
-    <message>
         <source>Finder-Tags</source>
         <translation>Finder Tags</translation>
-    </message>
-    <message>
-        <source>Im Finder sichtbar und per Spotlight durchsuchbar.</source>
-        <translation>Visible in the Finder and searchable with Spotlight.</translation>
-    </message>
-    <message>
-        <source>Bewertungen und der Aussortiermodus folgen %1.</source>
-        <translation>Ratings and culling mode follow %1.</translation>
     </message>
     <message>
         <source>Unterstützte Formate (ohne Nachinstallation):</source>
@@ -3014,6 +3292,206 @@
     <message>
         <source>Nicht genug Speicher für das Bild.</source>
         <translation>Not enough memory for the image.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QuickMove</name>
+    <message>
+        <source>%1  (nicht festgelegt)</source>
+        <translation>%1  (not set)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QuickMoveController</name>
+    <message>
+        <source>Verschieben nach … (1–9, M = wie zuletzt)</source>
+        <translation>Move to … (1–9, M = same as last)</translation>
+    </message>
+    <message>
+        <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
+        <translation>Copy to … (1–9, C = same as last)</translation>
+    </message>
+    <message>
+        <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
+        <translation>No target used yet – choose a digit 1–9 first.</translation>
+    </message>
+    <message>
+        <source>Ziel %1 ist nicht festgelegt (Einstellungen → Bewertung → Schnellablage).</source>
+        <translation>Target %1 is not set (Settings → Rating → Quick Move).</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>Move</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>Copy</translation>
+    </message>
+    <message>
+        <source>Übersprungen – nichts geändert.</source>
+        <translation>Skipped – nothing changed.</translation>
+    </message>
+    <message>
+        <source>Nach „%1“ verschoben</source>
+        <translation>Moved to “%1”</translation>
+    </message>
+    <message>
+        <source>Nach „%1“ kopiert</source>
+        <translation>Copied to “%1”</translation>
+    </message>
+    <message>
+        <source>Namenskonflikt</source>
+        <translation>Name Conflict</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es in „%2“ schon.</source>
+        <translation>“%1” already exists in “%2”.</translation>
+    </message>
+    <message>
+        <source>Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.</source>
+        <translation>Replace moves the existing file to the Trash, “Keep Both” gives the new one a name like “%1”. ⌘Z undoes everything.</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>Replace</translation>
+    </message>
+    <message>
+        <source>Beide behalten</source>
+        <translation>Keep Both</translation>
+    </message>
+    <message>
+        <source>Überspringen</source>
+        <translation>Skip</translation>
+    </message>
+    <message>
+        <source>Für alle %1 Konflikte</source>
+        <translation>For all %1 conflicts</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Rating</name>
+    <message>
+        <source>alle</source>
+        <translation>all</translation>
+    </message>
+    <message>
+        <source>nur Picks</source>
+        <translation>picks only</translation>
+    </message>
+    <message>
+        <source>≥ %1 ★</source>
+        <translation>≥ %1 ★</translation>
+    </message>
+    <message>
+        <source>nur unbewertete</source>
+        <translation>unrated only</translation>
+    </message>
+    <message>
+        <source>nur verworfene</source>
+        <translation>rejected only</translation>
+    </message>
+    <message>
+        <source>Pick</source>
+        <translation>Pick</translation>
+    </message>
+    <message>
+        <source>Verworfen</source>
+        <translation>Rejected</translation>
+    </message>
+</context>
+<context>
+    <name>lf::RatingStore</name>
+    <message>
+        <source>„%1“ konnte nicht geschrieben werden (Ordner schreibgeschützt?).</source>
+        <translation>“%1” could not be written (folder read-only?).</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>“%1” cannot be read.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist zu groß.</source>
+        <translation>“%1” is too large.</translation>
+    </message>
+    <message>
+        <source>Die XMP-Datei „%1“ ist beschädigt oder unbekannt aufgebaut und wird nicht verändert.</source>
+        <translation>The XMP file “%1” is damaged or has an unknown structure and is not changed.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht ersetzt werden.</source>
+        <translation>“%1” could not be replaced.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>The file no longer exists.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert.</source>
+        <translation>RAW files are never changed.</translation>
+    </message>
+    <message>
+        <source>In dieses Format kann die Bewertung nicht sicher geschrieben werden.</source>
+        <translation>The rating cannot be written safely into this format.</translation>
+    </message>
+    <message>
+        <source>In animierte oder mehrseitige Dateien wird nicht geschrieben.</source>
+        <translation>Animated or multi-page files are not written.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist schreibgeschützt.</source>
+        <translation>The file is read-only.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht ins Bild schreiben.</source>
+        <translation>The rating could not be written into the image.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht ohne Neukodieren ins Bild schreiben.</source>
+        <translation>The rating could not be written into the image without re-encoding.</translation>
+    </message>
+    <message>
+        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.</source>
+        <translation>“%1” was changed in the meantime – rating not saved.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>The file could not be replaced.</translation>
+    </message>
+    <message>
+        <source>Finder-Tags werden auf diesem System nicht unterstützt.</source>
+        <translation>Finder tags are not supported on this system.</translation>
+    </message>
+    <message>
+        <source>Kein Speicherort für Bewertungen gewählt (Einstellungen → Bewertung).</source>
+        <translation>No storage location for ratings selected (Settings → Rating).</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 Die Bewertung steht deshalb in der XMP-Zusatzdatei.</source>
+        <translation>“%1”: %2 The rating is therefore stored in the XMP sidecar file.</translation>
+    </message>
+    <message>
+        <source>Bewertung</source>
+        <translation>Rating</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>The file cannot be read.</translation>
+    </message>
+    <message>
+        <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
+        <translation>The rating could not be written into the image losslessly.</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder der Datei (z. B. eine HDR-Gain-Map) gingen beim Schreiben verloren.</source>
+        <translation>Auxiliary images of the file (e.g. an HDR gain map) were lost while writing.</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gelesen werden: %2</source>
+        <translation>Tags of “%1” could not be read: %2</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
+        <translation>Tags of “%1” could not be set: %2</translation>
     </message>
 </context>
 <context>

@@ -19,9 +19,10 @@ namespace lf {
 
 namespace {
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::FileBatch", text);
-}
+// Tr::tr() for the code in this file outside QObject classes (lupdate takes the context from it).
+struct Tr {
+    Q_DECLARE_TR_FUNCTIONS(lf::FileBatch)
+};
 
 bool present(const QString& p) {
     const QFileInfo fi(p);
@@ -52,9 +53,9 @@ QString sidecarTarget(const QString& sidecar, const QString& imageSource, const 
 
 QString copyFile(const QString& from, const QString& to) {
     if (present(to))
-        return tr("„%1“ existiert bereits.").arg(fileName(to));
+        return Tr::tr("„%1“ existiert bereits.").arg(fileName(to));
     if (!QFile::copy(from, to))
-        return tr("„%1“ konnte nicht kopiert werden.").arg(fileName(from));
+        return Tr::tr("„%1“ konnte nicht kopiert werden.").arg(fileName(from));
     return {};
 }
 
@@ -172,7 +173,7 @@ QString FileBatch::doStep(const TransferItem& item, Step* step) {
                 break;
         }
         if (!QDir().mkpath(folder))
-            return tr("Der Ordner „%1“ konnte nicht angelegt werden.").arg(folder);
+            return Tr::tr("Der Ordner „%1“ konnte nicht angelegt werden.").arg(folder);
         m_createdFolders << top;
     }
     QString target = QDir(folder).filePath(fileName(item.source));
@@ -275,7 +276,7 @@ QString FileBatch::undoStep(const Step& step) {
     if (m_kind == TransferKind::Move) {
         error = fileops::moveNoReplace(step.to, step.from);
     } else if (!QFile::remove(step.to)) {
-        error = tr("Die Kopie „%1“ konnte nicht entfernt werden.").arg(fileName(step.to));
+        error = Tr::tr("Die Kopie „%1“ konnte nicht entfernt werden.").arg(fileName(step.to));
     }
     if (!error.isEmpty())
         return error;

@@ -23,9 +23,10 @@ namespace lf::prefs {
 
 namespace {
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::PreferencesDialog", text);
-}
+// Tr::tr() for the code in this file outside QObject classes (lupdate takes the context from it).
+struct Tr {
+    Q_DECLARE_TR_FUNCTIONS(lf::PreferencesDialog)
+};
 
 Settings& st() {
     return Settings::instance();
@@ -83,8 +84,8 @@ QComboBox* color(const char* k, QWidget* parent) {
     const QString key = QString::fromLatin1(k);
     c->setObjectName(QStringLiteral("setting:") + key);
     // Finder label indices 0..7
-    const QStringList names = {tr("Keine Farbe"), tr("Grau"), tr("Grün"), tr("Lila"),
-                               tr("Blau"),        tr("Gelb"), tr("Rot"),  tr("Orange")};
+    const QStringList names = {Tr::tr("Keine Farbe"), Tr::tr("Grau"), Tr::tr("Grün"), Tr::tr("Lila"),
+                               Tr::tr("Blau"),        Tr::tr("Gelb"), Tr::tr("Rot"),  Tr::tr("Orange")};
     for (int i = 0; i < names.size(); ++i)
         c->addItem(names.at(i), i);
     QObject::connect(c, &QComboBox::activated, c, [c, key](int i) { st().setValue(key, c->itemData(i)); });
@@ -112,11 +113,11 @@ QWidget* targetRow(int slot, QWidget* parent) {
     auto* path = new QLineEdit(row);
     path->setReadOnly(true);
     path->setObjectName(QStringLiteral("quickTarget:%1").arg(slot));
-    path->setPlaceholderText(tr("nicht festgelegt"));
-    auto* choose = new QPushButton(tr("Wählen …"), row);
+    path->setPlaceholderText(Tr::tr("nicht festgelegt"));
+    auto* choose = new QPushButton(Tr::tr("Wählen …"), row);
     choose->setObjectName(QStringLiteral("quickTargetChoose:%1").arg(slot));
     choose->setAutoDefault(false);
-    auto* clear = new QPushButton(tr("Entfernen"), row);
+    auto* clear = new QPushButton(Tr::tr("Entfernen"), row);
     clear->setObjectName(QStringLiteral("quickTargetClear:%1").arg(slot));
     clear->setAutoDefault(false);
     h->addWidget(path, 1);
@@ -132,7 +133,7 @@ QWidget* targetRow(int slot, QWidget* parent) {
     QObject::connect(choose, &QPushButton::clicked, row, [row, slot] {
         const QString start = quickmove::target(slot);
         const QString dir =
-            QFileDialog::getExistingDirectory(row, tr("Ziel %1 der Schnellablage").arg(slot), start);
+            QFileDialog::getExistingDirectory(row, Tr::tr("Ziel %1 der Schnellablage").arg(slot), start);
         if (!dir.isEmpty())
             quickmove::setTarget(slot, dir);
     });
@@ -148,46 +149,47 @@ QWidget* createRatingPage(QWidget* parent) {
     v->setContentsMargins(0, 0, 0, 0);
 
     // ---- F-CULL-02: stores ----
-    auto* stores = new QGroupBox(tr("Bewertungen speichern"), w);
+    auto* stores = new QGroupBox(Tr::tr("Bewertungen speichern"), w);
     auto* form = new QFormLayout(stores);
-    form->addRow(check(key::RatingStoreSidecar, tr("XMP-Zusatzdatei neben dem Bild (Bild.xmp)"), stores));
-    form->addRow(help(tr("Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, "
-                         "„Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten."),
+    form->addRow(check(key::RatingStoreSidecar, Tr::tr("XMP-Zusatzdatei neben dem Bild (Bild.xmp)"), stores));
+    form->addRow(help(Tr::tr("Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, "
+                             "„Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten."),
                       stores));
-    form->addRow(check(key::RatingStoreEmbedded, tr("Im Bild selbst (eingebettetes XMP)"), stores));
+    form->addRow(check(key::RatingStoreEmbedded, Tr::tr("Im Bild selbst (eingebettetes XMP)"), stores));
     form->addRow(
-        help(tr("Nur JPEG, HEIC, TIFF, PNG und DNG; die Bildpixel werden nicht neu kodiert. RAW-Dateien "
-                "werden nie verändert – dafür wird die Zusatzdatei benutzt."),
+        help(Tr::tr("Nur JPEG, HEIC, TIFF, PNG und DNG; die Bildpixel werden nicht neu kodiert. RAW-Dateien "
+                    "werden nie verändert – dafür wird die Zusatzdatei benutzt."),
              stores));
     form->addRow(
-        check(key::RatingKeepModDate, tr("Änderungsdatum beim Schreiben ins Bild beibehalten"), stores));
-    form->addRow(check(key::RatingStoreFinderTags, tr("Finder-Tags"), stores));
+        check(key::RatingKeepModDate, Tr::tr("Änderungsdatum beim Schreiben ins Bild beibehalten"), stores));
+    form->addRow(check(key::RatingStoreFinderTags, Tr::tr("Finder-Tags"), stores));
     form->addRow(
-        help(tr("Im Finder sichtbar und per Spotlight durchsuchbar. Sind mehrere Speicherorte gewählt, "
-                "werden alle beschrieben; beim Lesen gilt die Reihenfolge Zusatzdatei, Bild, Tags."),
+        help(Tr::tr("Im Finder sichtbar und per Spotlight durchsuchbar. Sind mehrere Speicherorte gewählt, "
+                    "werden alle beschrieben; beim Lesen gilt die Reihenfolge Zusatzdatei, Bild, Tags."),
              stores));
-    form->addRow(tr("Stern-Symbol:"), tagRow(key::RatingTagStarSymbol, key::RatingTagStarColor, stores));
-    form->addRow(tr("Tag für Pick:"), tagRow(key::RatingTagPick, key::RatingTagPickColor, stores));
-    form->addRow(tr("Tag für Verworfen:"), tagRow(key::RatingTagReject, key::RatingTagRejectColor, stores));
-    form->addRow(help(tr("Drei Sterne werden zum Tag „★★★“ (Symbol dreimal)."), stores));
+    form->addRow(Tr::tr("Stern-Symbol:"), tagRow(key::RatingTagStarSymbol, key::RatingTagStarColor, stores));
+    form->addRow(Tr::tr("Tag für Pick:"), tagRow(key::RatingTagPick, key::RatingTagPickColor, stores));
+    form->addRow(Tr::tr("Tag für Verworfen:"),
+                 tagRow(key::RatingTagReject, key::RatingTagRejectColor, stores));
+    form->addRow(help(Tr::tr("Drei Sterne werden zum Tag „★★★“ (Symbol dreimal)."), stores));
     v->addWidget(stores);
 
     // ---- F-CULL-03/06 ----
-    auto* culling = new QGroupBox(tr("Aussortieren"), w);
+    auto* culling = new QGroupBox(Tr::tr("Aussortieren"), w);
     auto* cf = new QFormLayout(culling);
-    cf->addRow(check(key::CullAutoAdvance, tr("Nach Bewertung automatisch weiter"), culling));
-    cf->addRow(check(key::CullLockZoom, tr("Zoom im Aussortiermodus fixieren"), culling));
-    cf->addRow(check(key::CullShowHelp, tr("Tastenhilfe im Aussortiermodus zeigen"), culling));
-    cf->addRow(help(tr("Aussortiermodus: ⌘K oder K. Ziffern vergeben dort Sterne statt Zoomstufen; "
-                       "„Bewertungstasten immer aktiv“ gibt es unter Maus & Tastatur."),
+    cf->addRow(check(key::CullAutoAdvance, Tr::tr("Nach Bewertung automatisch weiter"), culling));
+    cf->addRow(check(key::CullLockZoom, Tr::tr("Zoom im Aussortiermodus fixieren"), culling));
+    cf->addRow(check(key::CullShowHelp, Tr::tr("Tastenhilfe im Aussortiermodus zeigen"), culling));
+    cf->addRow(help(Tr::tr("Aussortiermodus: ⌘K oder K. Ziffern vergeben dort Sterne statt Zoomstufen; "
+                           "„Bewertungstasten immer aktiv“ gibt es unter Maus & Tastatur."),
                     culling));
     v->addWidget(culling);
 
     // ---- F-FILE-08 ----
-    auto* quick = new QGroupBox(tr("Schnellablage"), w);
+    auto* quick = new QGroupBox(Tr::tr("Schnellablage"), w);
     auto* qf = new QFormLayout(quick);
-    qf->addRow(help(tr("M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. "
-                       "M M bzw. C C wiederholt das letzte Ziel. ⌘Z macht es rückgängig."),
+    qf->addRow(help(Tr::tr("M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. "
+                           "M M bzw. C C wiederholt das letzte Ziel. ⌘Z macht es rückgängig."),
                     quick));
     for (int n = 1; n <= quickmove::kSlots; ++n)
         qf->addRow(QStringLiteral("%1").arg(n), targetRow(n, quick));

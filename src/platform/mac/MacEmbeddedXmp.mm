@@ -20,9 +20,10 @@ namespace lf::platform {
 
 namespace {
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::RatingStore", text);
-}
+// Tr::tr() for the code in this file outside QObject classes (lupdate takes the context from it).
+struct Tr {
+    Q_DECLARE_TR_FUNCTIONS(lf::RatingStore)
+};
 
 void setError(QString* error, const QString& msg) {
     if (error)
@@ -77,7 +78,7 @@ bool writeImpl(const QString& srcPath, const QString& dstPath, const Rating& rat
     @autoreleasepool {
         CGImageSourceRef src = openSource(srcPath);
         if (!src) {
-            setError(error, tr("Die Datei kann nicht gelesen werden."));
+            setError(error, Tr::tr("Die Datei kann nicht gelesen werden."));
             return false;
         }
         const QStringList auxBefore = auxiliaryTypes(src);
@@ -88,7 +89,7 @@ bool writeImpl(const QString& srcPath, const QString& dstPath, const Rating& rat
                  : nullptr;
         if (!dst) {
             CFRelease(src);
-            setError(error, tr("In dieses Format kann die Bewertung nicht sicher geschrieben werden."));
+            setError(error, Tr::tr("In dieses Format kann die Bewertung nicht sicher geschrieben werden."));
             return false;
         }
         CGMutableImageMetadataRef meta = CGImageMetadataCreateMutable();
@@ -119,7 +120,7 @@ bool writeImpl(const QString& srcPath, const QString& dstPath, const Rating& rat
         if (!ok) {
             NSError* e = err ? CFBridgingRelease(err) : nil;
             setError(error,
-                     tr("Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.") +
+                     Tr::tr("Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.") +
                          (e ? QStringLiteral(" (%1)").arg(QString::fromNSString(e.localizedDescription))
                             : QString()));
             return false;
@@ -131,8 +132,8 @@ bool writeImpl(const QString& srcPath, const QString& dstPath, const Rating& rat
                 CFRelease(written);
             for (const QString& t : auxBefore) {
                 if (!auxAfter.contains(t)) {
-                    setError(error, tr("Zusatzbilder der Datei (z. B. eine HDR-Gain-Map) gingen beim "
-                                       "Schreiben verloren."));
+                    setError(error, Tr::tr("Zusatzbilder der Datei (z. B. eine HDR-Gain-Map) gingen beim "
+                                           "Schreiben verloren."));
                     return false;
                 }
             }

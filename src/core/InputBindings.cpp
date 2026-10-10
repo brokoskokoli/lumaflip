@@ -105,10 +105,12 @@ const ActionInfo kActions[] = {
     {Action::RatePick, "ratePick", QT_TRANSLATE_NOOP("lf::InputBindings", "Behalten (Pick)")},
     {Action::RateReject, "rateReject", QT_TRANSLATE_NOOP("lf::InputBindings", "Verwerfen (Reject)")},
     {Action::RateClear, "rateClear", QT_TRANSLATE_NOOP("lf::InputBindings", "Markierung zurücksetzen")},
-    {Action::ToggleCullingMode, "toggleCullingMode", QT_TRANSLATE_NOOP("lf::InputBindings", "Aussortiermodus")},
+    {Action::ToggleCullingMode, "toggleCullingMode",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Aussortiermodus")},
     {Action::QuickMove, "quickMove",
      QT_TRANSLATE_NOOP("lf::InputBindings", "Schnellablage: verschieben (M, dann 1–9)")},
-    {Action::QuickCopy, "quickCopy", QT_TRANSLATE_NOOP("lf::InputBindings", "Schnellablage: kopieren (C, dann 1–9)")},
+    {Action::QuickCopy, "quickCopy",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Schnellablage: kopieren (C, dann 1–9)")},
 };
 
 const ActionInfo* info(Action a) {
