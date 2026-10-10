@@ -72,6 +72,15 @@ public:
     // file is taken from its embedded preview instead of a full development.
     void setRawEmbeddedOnly(bool embeddedOnly);
     bool rawEmbeddedOnly() const;
+    // F-COL-03: decode HDR content (gain maps, PQ/HLG, float) with extended range for the
+    // Screen and Full stages - on when a display can show it (EDR). Off: gain-map files show
+    // their SDR rendition, PQ/HLG are tone-mapped by the system; float sources (EXR) keep
+    // their range either way (F-COL-05). Preview stages are always SDR (fast, P-04).
+    // Affects later decodes only.
+    void setHdrDecoding(bool on);
+    bool hdrDecoding() const;
+    // The request the provider sends for a stage (tests).
+    static DecodeRequest requestFor(Quality quality, int maxPixelSize, bool hdrDecoding);
     qint64 memoryUsage() const;
 
     // Synchronous metadata/info (cached), for overlays and the info panel.

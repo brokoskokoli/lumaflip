@@ -54,6 +54,9 @@ struct DecodeRequest {
     qint64 maxBytes = 0;
     bool preferEmbeddedPreview = false; // fast path for RAW/JPEG (F-FMT-05)
     bool hdr = false;                   // decode to extended range float if possible (F-COL-03)
+    // Float sources (EXR, Radiance) keep their extended range even without `hdr` (F-COL-05:
+    // the exposure control needs the highlights; the renderer tone-maps them for SDR).
+    bool hdrFloat = false;
 };
 
 // Result of a decode. `image` is already oriented (EXIF applied) and carries its

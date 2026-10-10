@@ -369,11 +369,11 @@ Metadata SimpleFormatDecoder::metadata(const QString& path) {
     return md;
 }
 
-void registerSimpleDecoders(DecoderRegistry& registry) {
-    for (Format f : {Format::Qoi, Format::Pcx, Format::Pnm, Format::Sgi, Format::Ora, Format::Kra}) {
-        registry.add(std::make_shared<SimpleFormatDecoder>(f));
-        registry.addSupportedExtensions(simplefmt::suffixes(f));
-    }
+QList<std::shared_ptr<Decoder>> simpleDecoders() {
+    QList<std::shared_ptr<Decoder>> out;
+    for (Format f : {Format::Qoi, Format::Pcx, Format::Pnm, Format::Sgi, Format::Ora, Format::Kra})
+        out.append(std::make_shared<SimpleFormatDecoder>(f));
+    return out;
 }
 
 QStringList simpleDecoderSuffixes() {

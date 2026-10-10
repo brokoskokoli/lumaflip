@@ -362,6 +362,57 @@
     </message>
 </context>
 <context>
+    <name>lf::DecoderHelper</name>
+    <message>
+        <source>Das Bild hat den Decoder zum Absturz gebracht – die Datei ist vermutlich beschädigt.</source>
+        <translation>Bilden fick avkodaren att krascha – filen är förmodligen skadad.</translation>
+    </message>
+    <message>
+        <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
+        <translation>Avkodningen tog för lång tid och avbröts.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
+        <translation>Avkodarens hjälpprocess kunde inte startas (%1).</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess wird auf diesem System nicht unterstützt.</source>
+        <translation>Avkodarens hjälpprocess stöds inte på det här systemet.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden.</source>
+        <translation>Avkodarens hjälpprocess kunde inte startas.</translation>
+    </message>
+    <message>
+        <source>Unbekannter Decoder „%1“.</source>
+        <translation>Okänd avkodare ”%1”.</translation>
+    </message>
+    <message>
+        <source>Das Bild ist leer.</source>
+        <translation>Bilden är tom.</translation>
+    </message>
+    <message>
+        <source>Unbekannte Anfrage.</source>
+        <translation>Okänd begäran.</translation>
+    </message>
+    <message>
+        <source>Gemeinsamer Speicher ist nicht verfügbar (%1).</source>
+        <translation>Delat minne är inte tillgängligt (%1).</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>Inte tillräckligt med minne för bilden (%1 × %2 pixlar).</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders fehlen.</source>
+        <translation>Avkodarens bilddata saknas.</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders sind ungültig.</source>
+        <translation>Avkodarens bilddata är ogiltiga.</translation>
+    </message>
+</context>
+<context>
     <name>lf::DecoderRegistry</name>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -828,6 +879,70 @@
     <message>
         <source>Raster</source>
         <translation>Rutnät</translation>
+    </message>
+</context>
+<context>
+    <name>lf::HdrController</name>
+    <message>
+        <source>HDR an</source>
+        <translation>HDR på</translation>
+    </message>
+    <message>
+        <source>HDR aus – SDR-Vorschau</source>
+        <translation>HDR av – SDR-förhandsvisning</translation>
+    </message>
+    <message>
+        <source>Die Belichtung lässt sich nur bei HDR-Bildern einstellen.</source>
+        <translation>Exponeringen kan bara justeras för HDR-bilder.</translation>
+    </message>
+    <message>
+        <source>Belichtung %1</source>
+        <translation>Exponering %1</translation>
+    </message>
+    <message>
+        <source>Der Belichtungsregler erscheint bei HDR-Bildern.</source>
+        <translation>Exponeringsreglaget visas för HDR-bilder.</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR (SDR-Vorschau)</source>
+        <extracomment>status bar badge: HDR image shown tone-mapped to SDR</extracomment>
+        <translation>HDR (SDR-förhandsvisning)</translation>
+    </message>
+    <message>
+        <source>%1 · %2</source>
+        <translation>%1 · %2</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, mit erweitertem Dynamikumfang angezeigt (⇧⌘H: SDR-Vorschau)</source>
+        <translation>HDR-bild, visas med utökat dynamiskt omfång (⇧⌘H: SDR-förhandsvisning)</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – HDR ist ausgeschaltet (⇧⌘H)</source>
+        <translation>HDR-bild, visas som SDR-förhandsvisning – HDR är avstängt (⇧⌘H)</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – dieser Bildschirm kann kein HDR darstellen</source>
+        <translation>HDR-bild, visas som SDR-förhandsvisning – den här skärmen kan inte visa HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung</source>
+        <translation>Exponering</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Återställ exponering</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>Behåll</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>Behåll exponeringen vid bildbyte</translation>
     </message>
 </context>
 <context>
@@ -1408,6 +1523,26 @@
     <message>
         <source>Fenster koppeln …</source>
         <translation>Koppla fönster…</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>Visa HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>Öka exponering</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>Minska exponering</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Återställ exponering</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>Visa exponeringsreglage</translation>
     </message>
     <message>
         <source>Unterordner einbeziehen</source>
@@ -2570,6 +2705,34 @@
     <message>
         <source>Entkoppeln</source>
         <translation>Avkoppla fönster</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>Visa HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>Öka exponering</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>Minska exponering</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Återställ exponering</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>Behåll exponeringen vid bildbyte</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>Visa exponeringsreglage</translation>
     </message>
 </context>
 <context>

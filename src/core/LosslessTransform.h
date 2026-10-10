@@ -229,7 +229,7 @@ bool isLosslessCodec(const QString& typeId);
 //     them, the file ID and all attributes stay), then flushed; `replacement` is removed
 //     afterwards. Not atomic - a crash in between leaves the hidden temporary file (and the
 //     undo backup) with the complete new contents.
-// The modification date becomes `replacement`'s, or stays `target`'s if `keepModificationDate`.
+// The modification date becomes the current time, or stays `target`'s if `keepModificationDate`.
 bool replaceFile(const QString& replacement, const QString& target, bool keepModificationDate,
                  QString* error);
 // Copies `path` with all its metadata to the new file `copy` (undo backups): an APFS clone

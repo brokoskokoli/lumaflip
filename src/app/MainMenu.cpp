@@ -293,6 +293,7 @@ void MainMenu::build() {
             w->applySortToAllFolders();
         refreshState();
     });
+    buildHdr(view); // M3: F-COL-04/05
     connect(view, &QMenu::aboutToShow, this, &MainMenu::refreshState);
     connect(sort, &QMenu::aboutToShow, this, &MainMenu::refreshState);
 
@@ -437,6 +438,7 @@ void MainMenu::refreshState() {
     refreshMediaState();
     refreshCullingState();
     refreshViewsState();
+    refreshHdrState();
 }
 
 void MainMenu::refreshWindowList() {

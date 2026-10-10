@@ -362,6 +362,57 @@
     </message>
 </context>
 <context>
+    <name>lf::DecoderHelper</name>
+    <message>
+        <source>Das Bild hat den Decoder zum Absturz gebracht – die Datei ist vermutlich beschädigt.</source>
+        <translation>De afbeelding heeft de decoder laten crashen – het bestand is waarschijnlijk beschadigd.</translation>
+    </message>
+    <message>
+        <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
+        <translation>Het decoderen duurde te lang en is afgebroken.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
+        <translation>Het hulpproces voor het decoderen kon niet worden gestart (%1).</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess wird auf diesem System nicht unterstützt.</source>
+        <translation>Het hulpproces voor het decoderen wordt op dit systeem niet ondersteund.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden.</source>
+        <translation>Het hulpproces voor het decoderen kon niet worden gestart.</translation>
+    </message>
+    <message>
+        <source>Unbekannter Decoder „%1“.</source>
+        <translation>Onbekende decoder ‘%1’.</translation>
+    </message>
+    <message>
+        <source>Das Bild ist leer.</source>
+        <translation>De afbeelding is leeg.</translation>
+    </message>
+    <message>
+        <source>Unbekannte Anfrage.</source>
+        <translation>Onbekend verzoek.</translation>
+    </message>
+    <message>
+        <source>Gemeinsamer Speicher ist nicht verfügbar (%1).</source>
+        <translation>Gedeeld geheugen is niet beschikbaar (%1).</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>Onvoldoende geheugen voor de afbeelding (%1 × %2 pixels).</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders fehlen.</source>
+        <translation>De beeldgegevens van de decoder ontbreken.</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders sind ungültig.</source>
+        <translation>De beeldgegevens van de decoder zijn ongeldig.</translation>
+    </message>
+</context>
+<context>
     <name>lf::DecoderRegistry</name>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -828,6 +879,70 @@
     <message>
         <source>Raster</source>
         <translation>Raster</translation>
+    </message>
+</context>
+<context>
+    <name>lf::HdrController</name>
+    <message>
+        <source>HDR an</source>
+        <translation>HDR aan</translation>
+    </message>
+    <message>
+        <source>HDR aus – SDR-Vorschau</source>
+        <translation>HDR uit – SDR-voorbeeld</translation>
+    </message>
+    <message>
+        <source>Die Belichtung lässt sich nur bei HDR-Bildern einstellen.</source>
+        <translation>De belichting kan alleen bij HDR-afbeeldingen worden aangepast.</translation>
+    </message>
+    <message>
+        <source>Belichtung %1</source>
+        <translation>Belichting %1</translation>
+    </message>
+    <message>
+        <source>Der Belichtungsregler erscheint bei HDR-Bildern.</source>
+        <translation>De belichtingsregelaar verschijnt bij HDR-afbeeldingen.</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR (SDR-Vorschau)</source>
+        <extracomment>status bar badge: HDR image shown tone-mapped to SDR</extracomment>
+        <translation>HDR (SDR-voorbeeld)</translation>
+    </message>
+    <message>
+        <source>%1 · %2</source>
+        <translation>%1 · %2</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, mit erweitertem Dynamikumfang angezeigt (⇧⌘H: SDR-Vorschau)</source>
+        <translation>HDR-afbeelding, weergegeven met uitgebreid dynamisch bereik (⇧⌘H: SDR-voorbeeld)</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – HDR ist ausgeschaltet (⇧⌘H)</source>
+        <translation>HDR-afbeelding, weergegeven als SDR-voorbeeld – HDR staat uit (⇧⌘H)</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – dieser Bildschirm kann kein HDR darstellen</source>
+        <translation>HDR-afbeelding, weergegeven als SDR-voorbeeld – dit scherm kan geen HDR tonen</translation>
+    </message>
+    <message>
+        <source>Belichtung</source>
+        <translation>Belichting</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Belichting herstellen</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>Behouden</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>Belichting behouden bij wisselen van afbeelding</translation>
     </message>
 </context>
 <context>
@@ -1408,6 +1523,26 @@
     <message>
         <source>Fenster koppeln …</source>
         <translation>Koppel vensters…</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>HDR weergeven</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>Belichting verhogen</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>Belichting verlagen</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Belichting herstellen</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>Belichtingsregelaar tonen</translation>
     </message>
     <message>
         <source>Unterordner einbeziehen</source>
@@ -2570,6 +2705,34 @@
     <message>
         <source>Entkoppeln</source>
         <translation>Ontkoppel vensters</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>HDR weergeven</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>Belichting verhogen</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>Belichting verlagen</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Belichting herstellen</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>Belichting behouden bij wisselen van afbeelding</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>Belichtingsregelaar tonen</translation>
     </message>
 </context>
 <context>

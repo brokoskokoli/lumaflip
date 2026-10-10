@@ -32,6 +32,7 @@ class AnimationPlayer;
 class Application;
 class Collection;
 class CullingController; // M3: rating, culling mode, filter, quick move
+class HdrController;     // M3: HDR toggle, badge, exposure (F-COL-04/05)
 class ImageView;
 class SlideshowController;
 class WindowPanels; // M2 panels (info panel, filmstrip)
@@ -68,6 +69,7 @@ public:
     WindowPanels* panels() const { return m_panels; } // F-INFO-02, F-GRID-01
     CullingController* culling() const { return m_culling; } // M3: F-CULL-01..06, F-FILE-08
     WindowExtras* extras() const { return m_extras; }        // M3: F-GRID-02/03, F-VIEW-11..13, F-NAV-06/08
+    HdrController* hdr() const { return m_hdr; }             // M3: F-COL-04/05
     QString currentPath() const;
     QString shownPath() const { return m_shownPath; }
     int displayedImageCount() const { return m_displayCount; } // distinct images shown (benchmarks)
@@ -263,6 +265,7 @@ private:
     WindowPanels* m_panels = nullptr; // M2: info panel + filmstrip (WindowPanels.cpp)
     CullingController* m_culling = nullptr; // M3 (CullingController.cpp)
     WindowExtras* m_extras = nullptr;       // M3 (WindowExtras.cpp)
+    HdrController* m_hdr = nullptr;         // M3 (HdrController.cpp)
     // F-I18N-03: texts of the window after a language switch (ViewerWindowI18n.cpp).
     void retranslateUi();
     QString m_accessFolder; // folder of the access hint (its text is rebuilt)

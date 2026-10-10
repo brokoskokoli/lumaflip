@@ -103,6 +103,15 @@ Umlauten/NFD, Bewertungstasten in der Diashow) und `tst_m3_views` (echte Fenster
 | F-VIEW-13 | Fenster → „Minimaler Fenstermodus“: keine Titelleiste mehr (Ampel bleibt), das Bild reicht bis an den oberen Rand; oben ziehen bewegt das Fenster, Doppelklick dort zoomt es | Fensterverhalten von macOS |
 | F-WIN-07 | Zwei Ordner mit JPEG- und RAW-Varianten derselben Aufnahmen in zwei Fenstern, Fenster → „Fenster koppeln …“: Blättern in einem Fenster blättert das andere zum gleichnamigen Bild, Zoom und Ausschnitt laufen mit; Statuszeile zeigt „Gekoppelt“ | Gefühl mit echten Ordnern |
 
+## M3: HDR/EDR, Belichtung, Decoder-Hilfsprozess (SPEC 4.5, 8.4, 8.5)
+
+| ID | Prüfung | Warum manuell |
+|---|---|---|
+| F-COL-03 | Auf einem MacBook Pro mit XDR-Display (bzw. einem EDR-fähigen externen Monitor): iPhone-HDR-Foto (HEIC mit Gain-Map), Ultra-HDR-JPEG, PQ-AVIF und `tests/corpus/generated/hdr.exr` öffnen und neben Vorschau.app vergleichen: Spitzlichter deutlich heller als Weiß der Oberfläche, gleicher Eindruck wie in Vorschau; Helligkeit des Displays ändern → Spitzlichter folgen nach ≤ ½ s; SDR-Bilder sehen exakt aus wie vorher (kein Helligkeitssprung beim Blättern zwischen SDR- und HDR-Bildern, außer dem der Spitzlichter) | EDR-Helligkeit ist nur am echten Display sichtbar; die Tone-Mapping-Mathematik prüft `test_hdr_mapping`, die Pixel des SDR-Pfads und den Aufbau der EDR-Swapchain `tst_hdr` |
+| F-COL-03 | Über einem HDR-Bild auf einem EDR-Display: Toast (z. B. ⌘C), Umbenennen (Enter, Cursor blinkt), Aussortiermodus, Belichtungsregler (⌥⌘E) und Fehlerkarte erscheinen vollständig, ohne Flackern und mit richtigen Farben; Klicks, Ziehen, Pinch und Tastatur wirken wie bei SDR-Bildern; Mauszeiger (Hand beim Verschieben) stimmt | Die EDR-Fläche ist eine native Ebene über der Qt-Oberfläche; Überlagerungen werden dafür abgegriffen und im HDR-Durchgang gezeichnet (`tst_hdr` prüft, dass sie ankommen) – der optische Eindruck ist nur am Gerät prüfbar |
+| F-COL-04 | ⇧⌘H bzw. Darstellung → HDR → „HDR anzeigen“: HDR-Bild wechselt sofort zwischen HDR und SDR-Vorschau (Spitzlichter weich abgerollt, nicht abgeschnitten), Statuszeile zeigt „HDR“ bzw. „HDR (SDR-Vorschau)“ mit passendem Tooltip; auf einem Display ohne EDR immer SDR-Vorschau | Optischer Eindruck des Tone-Mappings; Umschalten, Abzeichen und Einstellung prüft `tst_hdr` |
+| F-COL-05 | EXR mit hellen Bereichen öffnen, Belichtungsregler (⌥⌘E) und ⌥⌘+/⌥⌘−/⌥⌘0: Spitzlichter werden bei −EV sichtbar, Datei bleibt unverändert (Änderungsdatum); nächstes Bild beginnt bei 0 EV, außer „Beibehalten“ ist an | Optischer Eindruck; Belichtungsmathematik `test_hdr_mapping`, Regler und Zurücksetzen `tst_hdr` |
+
 ## M3: Unterordner, Geschwisterordner, RAW+JPEG-Paare, GPS-Karte, Rohmetadaten, Restformate (SPEC 4.1, 4.4, 4.6)
 
 Automatisch prüfen `test_m3_collection` (rekursives Einlesen, Reihenfolge, Abbruch, Fortschritt,

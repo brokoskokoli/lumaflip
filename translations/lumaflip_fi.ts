@@ -362,6 +362,57 @@
     </message>
 </context>
 <context>
+    <name>lf::DecoderHelper</name>
+    <message>
+        <source>Das Bild hat den Decoder zum Absturz gebracht – die Datei ist vermutlich beschädigt.</source>
+        <translation>Kuva kaatoi purkajan – tiedosto on luultavasti vioittunut.</translation>
+    </message>
+    <message>
+        <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
+        <translation>Purkaminen kesti liian kauan ja keskeytettiin.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
+        <translation>Purkajan apuprosessia ei voitu käynnistää (%1).</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess wird auf diesem System nicht unterstützt.</source>
+        <translation>Purkajan apuprosessia ei tueta tässä järjestelmässä.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden.</source>
+        <translation>Purkajan apuprosessia ei voitu käynnistää.</translation>
+    </message>
+    <message>
+        <source>Unbekannter Decoder „%1“.</source>
+        <translation>Tuntematon purkaja ”%1”.</translation>
+    </message>
+    <message>
+        <source>Das Bild ist leer.</source>
+        <translation>Kuva on tyhjä.</translation>
+    </message>
+    <message>
+        <source>Unbekannte Anfrage.</source>
+        <translation>Tuntematon pyyntö.</translation>
+    </message>
+    <message>
+        <source>Gemeinsamer Speicher ist nicht verfügbar (%1).</source>
+        <translation>Jaettu muisti ei ole käytettävissä (%1).</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>Muisti ei riitä kuvalle (%1 × %2 pikseliä).</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders fehlen.</source>
+        <translation>Purkajan kuvadata puuttuu.</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders sind ungültig.</source>
+        <translation>Purkajan kuvadata on virheellinen.</translation>
+    </message>
+</context>
+<context>
     <name>lf::DecoderRegistry</name>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -828,6 +879,70 @@
     <message>
         <source>Raster</source>
         <translation>Ruudukko</translation>
+    </message>
+</context>
+<context>
+    <name>lf::HdrController</name>
+    <message>
+        <source>HDR an</source>
+        <translation>HDR päällä</translation>
+    </message>
+    <message>
+        <source>HDR aus – SDR-Vorschau</source>
+        <translation>HDR pois – SDR-esikatselu</translation>
+    </message>
+    <message>
+        <source>Die Belichtung lässt sich nur bei HDR-Bildern einstellen.</source>
+        <translation>Valotusta voi säätää vain HDR-kuvissa.</translation>
+    </message>
+    <message>
+        <source>Belichtung %1</source>
+        <translation>Valotus %1</translation>
+    </message>
+    <message>
+        <source>Der Belichtungsregler erscheint bei HDR-Bildern.</source>
+        <translation>Valotuksen liukusäädin näkyy HDR-kuvissa.</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR (SDR-Vorschau)</source>
+        <extracomment>status bar badge: HDR image shown tone-mapped to SDR</extracomment>
+        <translation>HDR (SDR-esikatselu)</translation>
+    </message>
+    <message>
+        <source>%1 · %2</source>
+        <translation>%1 · %2</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, mit erweitertem Dynamikumfang angezeigt (⇧⌘H: SDR-Vorschau)</source>
+        <translation>HDR-kuva, näytetään laajennetulla dynamiikka-alueella (⇧⌘H: SDR-esikatselu)</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – HDR ist ausgeschaltet (⇧⌘H)</source>
+        <translation>HDR-kuva, näytetään SDR-esikatseluna – HDR on pois päältä (⇧⌘H)</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – dieser Bildschirm kann kein HDR darstellen</source>
+        <translation>HDR-kuva, näytetään SDR-esikatseluna – tämä näyttö ei pysty näyttämään HDR:ää</translation>
+    </message>
+    <message>
+        <source>Belichtung</source>
+        <translation>Valotus</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Palauta valotus</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>Säilytä</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>Säilytä valotus kuvaa vaihdettaessa</translation>
     </message>
 </context>
 <context>
@@ -1408,6 +1523,26 @@
     <message>
         <source>Fenster koppeln …</source>
         <translation>Linkitä ikkunat…</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>Näytä HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>Lisää valotusta</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>Vähennä valotusta</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Palauta valotus</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>Näytä valotuksen liukusäädin</translation>
     </message>
     <message>
         <source>Unterordner einbeziehen</source>
@@ -2570,6 +2705,34 @@
     <message>
         <source>Entkoppeln</source>
         <translation>Poista ikkunoiden linkitys</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>Näytä HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>Lisää valotusta</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>Vähennä valotusta</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Palauta valotus</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>Säilytä valotus kuvaa vaihdettaessa</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>Näytä valotuksen liukusäädin</translation>
     </message>
 </context>
 <context>

@@ -356,6 +356,57 @@
     </message>
 </context>
 <context>
+    <name>lf::DecoderHelper</name>
+    <message>
+        <source>Das Bild hat den Decoder zum Absturz gebracht – die Datei ist vermutlich beschädigt.</source>
+        <translation>이미지 때문에 디코더가 중단되었습니다. 파일이 손상되었을 수 있습니다.</translation>
+    </message>
+    <message>
+        <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
+        <translation>디코딩 시간이 너무 오래 걸려 중단되었습니다.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
+        <translation>디코더 보조 프로세스를 시작할 수 없습니다(%1).</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess wird auf diesem System nicht unterstützt.</source>
+        <translation>이 시스템에서는 디코더 보조 프로세스가 지원되지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden.</source>
+        <translation>디코더 보조 프로세스를 시작할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Unbekannter Decoder „%1“.</source>
+        <translation>알 수 없는 디코더 ‘%1’입니다.</translation>
+    </message>
+    <message>
+        <source>Das Bild ist leer.</source>
+        <translation>이미지가 비어 있습니다.</translation>
+    </message>
+    <message>
+        <source>Unbekannte Anfrage.</source>
+        <translation>알 수 없는 요청입니다.</translation>
+    </message>
+    <message>
+        <source>Gemeinsamer Speicher ist nicht verfügbar (%1).</source>
+        <translation>공유 메모리를 사용할 수 없습니다(%1).</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>이미지를 위한 메모리가 부족합니다(%1 × %2픽셀).</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders fehlen.</source>
+        <translation>디코더의 이미지 데이터가 없습니다.</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders sind ungültig.</source>
+        <translation>디코더의 이미지 데이터가 올바르지 않습니다.</translation>
+    </message>
+</context>
+<context>
     <name>lf::DecoderRegistry</name>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -820,6 +871,70 @@
     <message>
         <source>Raster</source>
         <translation>격자</translation>
+    </message>
+</context>
+<context>
+    <name>lf::HdrController</name>
+    <message>
+        <source>HDR an</source>
+        <translation>HDR 켬</translation>
+    </message>
+    <message>
+        <source>HDR aus – SDR-Vorschau</source>
+        <translation>HDR 끔 – SDR 미리 보기</translation>
+    </message>
+    <message>
+        <source>Die Belichtung lässt sich nur bei HDR-Bildern einstellen.</source>
+        <translation>노출은 HDR 이미지에서만 조절할 수 있습니다.</translation>
+    </message>
+    <message>
+        <source>Belichtung %1</source>
+        <translation>노출 %1</translation>
+    </message>
+    <message>
+        <source>Der Belichtungsregler erscheint bei HDR-Bildern.</source>
+        <translation>노출 슬라이더는 HDR 이미지에서 표시됩니다.</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR (SDR-Vorschau)</source>
+        <extracomment>status bar badge: HDR image shown tone-mapped to SDR</extracomment>
+        <translation>HDR(SDR 미리 보기)</translation>
+    </message>
+    <message>
+        <source>%1 · %2</source>
+        <translation>%1 · %2</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, mit erweitertem Dynamikumfang angezeigt (⇧⌘H: SDR-Vorschau)</source>
+        <translation>HDR 이미지, 확장된 다이내믹 레인지로 표시 중(⇧⌘H: SDR 미리 보기)</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – HDR ist ausgeschaltet (⇧⌘H)</source>
+        <translation>HDR 이미지, SDR 미리 보기로 표시 중 – HDR이 꺼져 있습니다(⇧⌘H)</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – dieser Bildschirm kann kein HDR darstellen</source>
+        <translation>HDR 이미지, SDR 미리 보기로 표시 중 – 이 디스플레이는 HDR을 표시할 수 없습니다</translation>
+    </message>
+    <message>
+        <source>Belichtung</source>
+        <translation>노출</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>노출 재설정</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>유지</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>이미지를 바꿀 때 노출 유지</translation>
     </message>
 </context>
 <context>
@@ -1400,6 +1515,26 @@
     <message>
         <source>Fenster koppeln …</source>
         <translation>윈도우 연결…</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>HDR 표시</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>노출 높이기</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>노출 낮추기</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>노출 재설정</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>노출 슬라이더 표시</translation>
     </message>
     <message>
         <source>Unterordner einbeziehen</source>
@@ -2562,6 +2697,34 @@
     <message>
         <source>Entkoppeln</source>
         <translation>윈도우 연결 해제</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>HDR 표시</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>노출 높이기</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>노출 낮추기</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>노출 재설정</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>이미지를 바꿀 때 노출 유지</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>노출 슬라이더 표시</translation>
     </message>
 </context>
 <context>

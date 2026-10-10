@@ -58,6 +58,17 @@ elseif(APPLE)
   target_compile_options(lf_core PRIVATE $<$<COMPILE_LANGUAGE:OBJCXX>:-fobjc-arc>)
 endif()
 
+# ---- lumaflip-decoder: decoder helper process (SPEC 8.5, core/DecoderHelper.h) ----
+# Runs the library decoders (Qt image plugins, QtSvg) outside the app; bundled next to the
+# app binary (Contents/MacOS) and signed by tools/package.sh.
+if(APPLE AND NOT LF_GENERIC_PLATFORM)
+  add_executable(lumaflip-decoder helper/main.cpp)
+  target_link_libraries(lumaflip-decoder PRIVATE lf_core lf_warnings)
+  set(LF_DECODER_HELPER_TARGET lumaflip-decoder CACHE INTERNAL "decoder helper target")
+else()
+  set(LF_DECODER_HELPER_TARGET "" CACHE INTERNAL "decoder helper target")
+endif()
+
 # ---- translations (SPEC 4.16, translations/README.md) ----
 # German is the source language; lumaflip_de.ts holds only its plural forms. Keep the list
 # in sync with src/core/Language.cpp and tools/macos_deploy.py (UI_LANGUAGES).
@@ -152,6 +163,15 @@ qt_add_executable(Lumaflip MACOSX_BUNDLE app/main.cpp ${LF_APP_ICON} ${LF_STATIC
 add_dependencies(Lumaflip lf_lrelease)
 target_link_libraries(Lumaflip PRIVATE lf_ui lf_warnings)
 target_compile_definitions(Lumaflip PRIVATE LF_APP_VERSION="${PROJECT_VERSION}")
+# The decoder helper lives next to the app binary (DecoderHelperPool::defaultExecutable()).
+if(LF_DECODER_HELPER_TARGET)
+  add_dependencies(Lumaflip ${LF_DECODER_HELPER_TARGET})
+  add_custom_command(TARGET Lumaflip POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "$<TARGET_FILE:${LF_DECODER_HELPER_TARGET}>"
+            "$<TARGET_BUNDLE_CONTENT_DIR:Lumaflip>/MacOS/lumaflip-decoder"
+    COMMENT "Bundling lumaflip-decoder"
+    VERBATIM)
+endif()
 set_target_properties(Lumaflip PROPERTIES
   OUTPUT_NAME "${LF_APP_NAME}"
   MACOSX_BUNDLE_INFO_PLIST "${PROJECT_SOURCE_DIR}/packaging/macos/Info.plist.in"

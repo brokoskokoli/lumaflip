@@ -88,8 +88,9 @@ private:
     simplefmt::Format m_format;
 };
 
-// Registers all of the above and their suffixes (called by registerPortableDecoders()).
-void registerSimpleDecoders(DecoderRegistry& registry);
+// One backend per format, in-process (registerPortableDecoders() wraps them for the decoder
+// helper process, the helper itself serves them by name: src/helper/main.cpp).
+QList<std::shared_ptr<Decoder>> simpleDecoders();
 // Suffixes of the own decoders (qoi, pcx, pbm, …, kra).
 QStringList simpleDecoderSuffixes();
 

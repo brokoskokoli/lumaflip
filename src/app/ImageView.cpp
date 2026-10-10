@@ -2,6 +2,8 @@
 #include "ImageView.h"
 
 #include "DisplayColorSpace.h"
+#include "EdrDisplay.h"
+#include "EdrSurface.h"
 #include "ImageCanvas.h"
 #include "ScreenProfileWatcher.h"
 
@@ -11,10 +13,15 @@
 #include <QKeyEvent>
 #include <QLabel>
 #include <QMouseEvent>
+#include <QMoveEvent>
 #include <QNativeGestureEvent>
+#include <QPaintEvent>
+#include <QPainter>
 #include <QPointer>
 #include <QPushButton>
+#include <QResizeEvent>
 #include <QStyleHints>
+#include <QTimer>
 #include <QVBoxLayout>
 #include <QWheelEvent>
 #include <QWindow>
@@ -32,6 +39,28 @@ constexpr double kTrackpadStepThreshold = 80.0;
 std::function<QColorSpace(const QWidget*)>& colorSpaceResolver() {
     static std::function<QColorSpace(const QWidget*)> resolver;
     return resolver;
+}
+
+std::function<hdr::DisplayState(const QWidget*)>& displayStateProvider() {
+    static std::function<hdr::DisplayState(const QWidget*)> provider;
+    return provider;
+}
+
+// Brightness changes the available EDR headroom without a notification (F-COL-03).
+constexpr int kHeadroomPollMs = 250;
+
+bool isFloatFormat(QImage::Format f) {
+    switch (f) {
+    case QImage::Format_RGBA16FPx4:
+    case QImage::Format_RGBA16FPx4_Premultiplied:
+    case QImage::Format_RGBX16FPx4:
+    case QImage::Format_RGBA32FPx4:
+    case QImage::Format_RGBA32FPx4_Premultiplied:
+    case QImage::Format_RGBX32FPx4:
+        return true;
+    default:
+        return false;
+    }
 }
 
 const QColor kDark(30, 30, 30);
@@ -118,6 +147,24 @@ struct ImageView::Private {
     int quiet = 0;                                 // > 0: no viewTransformChanged()
     QTransform lastViewTransform;
 
+    // HDR (F-COL-03/04/05)
+    bool hdrOn = true;
+    hdr::Exposure exposure;
+    hdr::Decision decision;
+    hdr::DisplayState display;
+    bool extendedActive = false;
+    bool edrFailed = false; // the swapchain cannot be used: widget path only
+    double emittedEv = 0.0; // exposure at the last hdrStateChanged()
+    EdrSurface* edr = nullptr;
+    QWidget* edrContainer = nullptr;
+    QTimer* headroomPoll = nullptr;
+    EdrDisplayWatcher* edrWatcher = nullptr;
+    // Widgets above the image, grabbed for the extended pass (EdrSurface.h).
+    QImage overlay;
+    QRect overlayDirty; // logical px of the view
+    bool overlayScheduled = false;
+    bool grabbing = false;
+
     // signals state
     double lastFactor = -1;
     ZoomMode lastMode = ZoomMode::Custom;
@@ -188,6 +235,218 @@ struct ImageView::Private {
             canvas->setCursor(Qt::OpenHandCursor);
         else
             canvas->unsetCursor();
+        if (edr)
+            edr->setCursor(canvas->cursor()); // the native surface covers the canvas
+    }
+
+    // ---- HDR ----
+
+    hdr::DisplayState readDisplay() const {
+        const auto& provider = displayStateProvider();
+        return provider ? provider(q) : edrDisplayState(q);
+    }
+
+    bool imageIsHdr() const {
+        return image && hdr::isHdrContent(image->headroom, isFloatFormat(image->image.format()));
+    }
+
+    // Recomputes what the current image gets (F-COL-03/04) and applies it to the canvas.
+    void updateHdr() {
+        display = readDisplay();
+        const float peak = image ? image->headroom : 1.0f;
+        const bool floatSource = image && isFloatFormat(image->image.format());
+        const bool hdrContent = hdr::isHdrContent(peak, floatSource);
+        const float exposureMul = hdrContent ? exposure.multiplier() : 1.0f;
+        const hdr::Decision next = hdr::decide(peak, floatSource, hdrOn, display, exposureMul);
+        canvas->setHdrMapping(exposureMul, next.targetHeadroom);
+        const bool useExtended = next.useExtendedSurface && !edrFailed && edrPresentationAvailable() &&
+                                 q->isVisible() && !card->isVisible();
+        const bool changed = next.presentation != decision.presentation || next.badge != decision.badge ||
+                             next.targetHeadroom != decision.targetHeadroom ||
+                             useExtended != extendedActive || exposure.ev() != emittedEv;
+        emittedEv = exposure.ev();
+        decision = next;
+        setExtended(useExtended);
+        // Follow the brightness while HDR content is shown on an EDR display.
+        if (next.useExtendedSurface) {
+            if (!headroomPoll) {
+                headroomPoll = new QTimer(q);
+                headroomPoll->setInterval(kHeadroomPollMs);
+                QObject::connect(headroomPoll, &QTimer::timeout, q, [this] {
+                    if (hdr::headroomChanged(display.currentHeadroom, readDisplay().currentHeadroom))
+                        updateHdr();
+                });
+            }
+            if (!headroomPoll->isActive())
+                headroomPoll->start();
+        } else if (headroomPoll) {
+            headroomPoll->stop();
+        }
+        if (changed)
+            emit q->hdrStateChanged();
+    }
+
+    void ensureEdr() {
+        if (edr)
+            return;
+        // The surface is a native child window; its siblings (the canvas, overlays) stay
+        // non-native and keep being composited by Qt.
+        QCoreApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
+        edr = new EdrSurface(canvas);
+        edrContainer = QWidget::createWindowContainer(edr, q);
+        edrContainer->setObjectName(QStringLiteral("lfEdrSurface"));
+        edrContainer->setAttribute(Qt::WA_TransparentForMouseEvents);
+        edrContainer->setAttribute(Qt::WA_DontCreateNativeAncestors);
+        edrContainer->setFocusPolicy(Qt::NoFocus);
+        edrContainer->setGeometry(q->rect());
+        edrContainer->hide();
+        QObject::connect(edr, &EdrSurface::failed, q, [this] {
+            edrFailed = true; // e.g. moved to a screen without EDR support: SDR preview
+            updateHdr();
+        });
+        updateCursor();
+    }
+
+    void setExtended(bool on) {
+        if (on == extendedActive)
+            return;
+        extendedActive = on;
+        if (on) {
+            ensureEdr();
+            edrContainer->setGeometry(q->rect());
+            canvas->setExtendedPresentation(true, [this] {
+                if (edr)
+                    edr->requestFrame();
+            });
+            edrContainer->show();
+            overlay = QImage();
+            markOverlayDirty(q->rect());
+        } else {
+            canvas->setExtendedPresentation(false);
+            canvas->setExtendedOverlay(QImage(), QRect());
+            overlay = QImage();
+            if (edrContainer)
+                edrContainer->hide();
+        }
+    }
+
+    // ---- overlays of the extended pass ----
+
+    bool isOverlay(const QObject* o) const {
+        if (!o->isWidgetType() || o == canvas || o == edrContainer)
+            return false;
+        for (auto* w = static_cast<const QWidget*>(o); w; w = w->parentWidget())
+            if (w->parentWidget() == q)
+                return w != canvas && w != edrContainer;
+        return false;
+    }
+
+    void watchOverlays(QWidget* w) {
+        w->installEventFilter(q); // idempotent (Qt removes duplicates)
+        for (QObject* c : w->children())
+            if (c->isWidgetType())
+                watchOverlays(static_cast<QWidget*>(c));
+    }
+
+    void markOverlayDirty(const QRect& viewRect) {
+        if (!extendedActive)
+            return;
+        overlayDirty = overlayDirty.united(viewRect.intersected(q->rect()));
+        if (overlayScheduled)
+            return;
+        overlayScheduled = true;
+        QTimer::singleShot(0, q, [this] {
+            overlayScheduled = false;
+            grabOverlays();
+        });
+    }
+
+    QList<QWidget*> overlayWidgets() const {
+        QList<QWidget*> out;
+        for (QObject* c : q->children())
+            if (c->isWidgetType() && c != canvas && c != edrContainer &&
+                static_cast<QWidget*>(c)->isVisible())
+                out << static_cast<QWidget*>(c);
+        return out;
+    }
+
+    // Paints the visible widgets above the image into `overlay` (changed part only) and
+    // hands it to the canvas, which draws it over the image in the extended pass.
+    void grabOverlays() {
+        if (!extendedActive)
+            return;
+        const QList<QWidget*> widgets = overlayWidgets();
+        for (QWidget* w : widgets)
+            watchOverlays(w);
+        if (widgets.isEmpty()) {
+            overlay = QImage();
+            overlayDirty = QRect();
+            canvas->setExtendedOverlay(QImage(), QRect());
+            return;
+        }
+        const qreal dpr = q->devicePixelRatioF();
+        const QSize px = (QSizeF(q->size()) * dpr).toSize();
+        if (overlay.size() != px) {
+            overlay = QImage(px, QImage::Format_ARGB32_Premultiplied);
+            overlay.fill(Qt::transparent);
+            overlayDirty = q->rect();
+        }
+        overlay.setDevicePixelRatio(dpr);
+        const QRect dirty = overlayDirty.intersected(q->rect());
+        overlayDirty = QRect();
+        if (dirty.isEmpty())
+            return;
+        grabbing = true;
+        {
+            QPainter p(&overlay);
+            p.setCompositionMode(QPainter::CompositionMode_Source);
+            p.fillRect(dirty, Qt::transparent);
+            p.setCompositionMode(QPainter::CompositionMode_SourceOver);
+            p.setClipRect(dirty);
+            for (QWidget* w : widgets)
+                if (w->geometry().intersects(dirty))
+                    w->render(&p, w->pos(), QRegion(), QWidget::DrawChildren);
+        }
+        grabbing = false;
+        const QRect devDirty = QRectF(QRectF(dirty).topLeft() * dpr, QRectF(dirty).size() * dpr)
+                                   .toAlignedRect()
+                                   .intersected(overlay.rect());
+        canvas->setExtendedOverlay(overlay, devDirty);
+    }
+
+    // Event of a widget above the image while the extended presentation is active.
+    void overlayEvent(QObject* watched, QEvent* event) {
+        if (grabbing || !extendedActive || !isOverlay(watched))
+            return;
+        auto* w = static_cast<QWidget*>(watched);
+        switch (event->type()) {
+        case QEvent::Paint: {
+            const QRect r = static_cast<QPaintEvent*>(event)->rect();
+            markOverlayDirty(QRect(w->mapTo(q, r.topLeft()), r.size()));
+            break;
+        }
+        case QEvent::Show:
+        case QEvent::Hide:
+            markOverlayDirty(QRect(w->mapTo(q, QPoint(0, 0)), w->size()));
+            break;
+        case QEvent::Move: { // old and new place only (a loupe follows the mouse)
+            const QRect now(w->mapTo(q, QPoint(0, 0)), w->size());
+            const auto* me = static_cast<QMoveEvent*>(event);
+            markOverlayDirty(now.united(now.translated(me->oldPos() - me->pos())));
+            break;
+        }
+        case QEvent::Resize: {
+            const QRect now(w->mapTo(q, QPoint(0, 0)), w->size());
+            markOverlayDirty(now.united(QRect(now.topLeft(), static_cast<QResizeEvent*>(event)->oldSize())));
+            break;
+        }
+        case QEvent::ChildAdded:
+            if (auto* c = static_cast<QChildEvent*>(event)->child(); c && c->isWidgetType())
+                watchOverlays(static_cast<QWidget*>(c));
+            break;
+        default:
+            break;
+        }
     }
 
     // Base color of the background setting; `checker` = checkerboard pattern.
@@ -232,6 +491,8 @@ struct ImageView::Private {
         syncGeometry();
         applyBackground();
         quietSync();
+        edrFailed = false; // another screen may support it
+        updateHdr();
     }
 
     void hookScreen() {
@@ -426,12 +687,18 @@ ImageView::ImageView(QWidget* parent) : QWidget(parent), d(new Private) {
     d->card = new ErrorCard(this);
     d->card->hide();
     connect(d->card->actionButton(), &QPushButton::clicked, this, &ImageView::errorActionTriggered);
+    if (edrPresentationAvailable())
+        d->edrWatcher = new EdrDisplayWatcher([this] { d->onScreenChanged(); }, this);
     d->updateOutputColorSpace();
     d->applyBackground();
     d->syncGeometry();
 }
 
 ImageView::~ImageView() {
+    // The EDR surface uses the canvas' QRhi: it goes first.
+    delete d->edrContainer;
+    d->edrContainer = nullptr;
+    d->edr = nullptr;
     delete d;
 }
 
@@ -453,6 +720,9 @@ void ImageView::setImage(DecodedImagePtr image, bool sameFile) {
     }
     d->image = std::move(image);
     d->needsHigherSent = false;
+    if (!sameAsShown)
+        d->exposure.imageChanged(); // F-COL-05: per image unless locked
+    d->updateHdr();
     d->canvas->setCurrent(d->image, sameAsShown);
     d->quietSync();
 }
@@ -479,6 +749,8 @@ void ImageView::clear() {
     d->image.reset();
     d->canvas->setCurrent(nullptr, false);
     d->card->hide();
+    d->exposure.imageChanged();
+    d->updateHdr();
     d->quietSync();
 }
 
@@ -489,6 +761,7 @@ void ImageView::showError(const QString& title, const QString& detail, const QSt
     d->card->place(size());
     d->card->show();
     d->card->raise();
+    d->updateHdr();
     d->quietSync();
 }
 
@@ -664,6 +937,59 @@ void ImageView::setColorSpaceResolverForTesting(std::function<QColorSpace(const 
     colorSpaceResolver() = std::move(resolver);
 }
 
+void ImageView::setHdrEnabled(bool enabled) {
+    if (d->hdrOn == enabled)
+        return;
+    d->hdrOn = enabled;
+    d->updateHdr();
+    emit hdrStateChanged();
+}
+
+bool ImageView::hdrEnabled() const {
+    return d->hdrOn;
+}
+
+hdr::Decision ImageView::hdrDecision() const {
+    return d->decision;
+}
+
+bool ImageView::isExtendedPresentationActive() const {
+    return d->extendedActive;
+}
+
+void ImageView::setExposureEv(double ev) {
+    if (d->exposure.setEv(ev))
+        d->updateHdr(); // emits hdrStateChanged()
+}
+
+void ImageView::stepExposure(int thirds) {
+    if (d->exposure.step(thirds))
+        d->updateHdr();
+}
+
+double ImageView::exposureEv() const {
+    return d->exposure.ev();
+}
+
+void ImageView::setExposureLocked(bool locked) {
+    if (d->exposure.locked() == locked)
+        return;
+    d->exposure.setLocked(locked);
+    emit hdrStateChanged();
+}
+
+bool ImageView::exposureLocked() const {
+    return d->exposure.locked();
+}
+
+bool ImageView::exposureApplies() const {
+    return d->imageIsHdr();
+}
+
+void ImageView::setDisplayStateForTesting(std::function<hdr::DisplayState(const QWidget*)> provider) {
+    displayStateProvider() = std::move(provider);
+}
+
 bool ImageView::event(QEvent* event) {
     switch (event->type()) {
     case QEvent::DevicePixelRatioChange:
@@ -672,6 +998,14 @@ bool ImageView::event(QEvent* event) {
         d->applyBackground();
         d->updateOutputColorSpace();
         d->quietSync();
+        d->edrFailed = false;
+        d->updateHdr();
+        d->markOverlayDirty(rect());
+        break;
+    case QEvent::ChildAdded:
+        // A widget above the image (toast, rename field, HUD ...): grabbed for the extended pass.
+        if (auto* c = static_cast<QChildEvent*>(event)->child(); c && c->isWidgetType() && d->extendedActive)
+            d->watchOverlays(static_cast<QWidget*>(c));
         break;
     case QEvent::ThemeChange:
     case QEvent::ApplicationPaletteChange:
@@ -690,6 +1024,8 @@ bool ImageView::event(QEvent* event) {
 }
 
 bool ImageView::eventFilter(QObject* watched, QEvent* event) {
+    if (watched != d->canvas && d->extendedActive)
+        d->overlayEvent(watched, event);
     if (watched == d->canvas) {
         switch (event->type()) {
         case QEvent::MouseButtonPress:
@@ -723,9 +1059,12 @@ bool ImageView::eventFilter(QObject* watched, QEvent* event) {
 void ImageView::resizeEvent(QResizeEvent* event) {
     QWidget::resizeEvent(event);
     d->canvas->setGeometry(rect());
+    if (d->edrContainer)
+        d->edrContainer->setGeometry(rect());
     d->card->place(size());
     d->syncGeometry();
     d->quietSync();
+    d->markOverlayDirty(rect());
 }
 
 void ImageView::keyPressEvent(QKeyEvent* event) {
@@ -776,6 +1115,12 @@ void ImageView::showEvent(QShowEvent* event) {
     d->applyBackground();
     d->syncGeometry();
     d->quietSync();
+    d->updateHdr();
+}
+
+void ImageView::hideEvent(QHideEvent* event) {
+    QWidget::hideEvent(event);
+    d->updateHdr(); // no extended surface for a hidden view
 }
 
 } // namespace lf

@@ -17,6 +17,7 @@ layout(std140, binding = 0) uniform buf {
     vec4 bgColor;
     vec4 checkerColor;
     vec4 range;
+    vec4 tone;
 } ubuf;
 
 void main()
