@@ -207,6 +207,10 @@ for fw in "$APP"/Contents/Frameworks/*.framework; do
     [[ -L "$v" ]] || "${SIGN[@]}" "$v"
   done
 done
+# ... the decoder helper (SPEC 8.5; Hardened Runtime like the app, no entitlements) ...
+if [[ -f "$APP/Contents/MacOS/lumaflip-decoder" ]]; then
+  "${SIGN[@]}" "$APP/Contents/MacOS/lumaflip-decoder"
+fi
 # ... and finally the app with its entitlements.
 "${SIGN[@]}" --entitlements "$ENTITLEMENTS" "$APP"
 

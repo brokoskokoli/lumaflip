@@ -279,9 +279,13 @@ Lizenzfenster) stehen in [MANUAL_CHECKS.md](MANUAL_CHECKS.md) im Abschnitt „Au
 
 - Qt bleibt dynamisch gelinkt (Frameworks unter `Contents/Frameworks`) und ist damit austauschbar (LGPLv3).
 - Mitgeliefert werden nur Qt-Plugins, die Lumaflip braucht (`PLUGINS` in `tools/macos_deploy.py`):
-  Cocoa-Plattform, macOS-Stil, SVG-Symbole und die Bildformate GIF, ICNS, ICO, JPEG, HEIF (macOS), SVG,
-  TGA, TIFF, WBMP, WebP. Bewusst weggelassen: PDF (zieht Qt PDF nach), MNG (libmng + Little CMS),
+  Cocoa-Plattform, Offscreen-Plattform (nur für den Decoder-Hilfsprozess), macOS-Stil, SVG-Symbole und
+  die Bildformate GIF, ICNS, ICO, JPEG, HEIF (macOS), SVG, TGA, TIFF, WBMP, WebP. Bewusst weggelassen: PDF (zieht Qt PDF nach), MNG (libmng + Little CMS),
   JPEG 2000 (JasPer; dekodiert ImageIO), virtuelle Tastatur (zieht Qt Quick nach).
+- Der Decoder-Hilfsprozess `Contents/MacOS/lumaflip-decoder` (SPEC 8.5: Qt-Bildformat-Plugins und SVG
+  laufen außerhalb der App, in einer Sandbox ohne Netz und ohne Schreibzugriff) wird wie die App
+  eingebettet (`@executable_path/../Frameworks`) und von `package.sh` vor dem Bundle signiert (Hardened
+  Runtime, ohne Entitlements).
 - Für jede eingebettete Bibliothek ermittelt `macos_deploy.py` das Homebrew-Paket, kopiert dessen
   Lizenzdateien nach `Contents/Resources/licenses/<paket>/` und schreibt Version, SPDX-Lizenz
   (`brew info --json`) und die zugehörigen Binärdateien in `index.json`. Findet es für ein Paket keinen

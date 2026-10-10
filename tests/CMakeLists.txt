@@ -33,6 +33,12 @@ if(TARGET lf_lrelease)
   add_dependencies(lf_unit_tests lf_lrelease)
   target_compile_definitions(lf_unit_tests PRIVATE LF_HAVE_TRANSLATIONS=1)
 endif()
+# Decoder helper process tests (SPEC 8.5) start the real helper binary.
+if(LF_DECODER_HELPER_TARGET)
+  add_dependencies(lf_unit_tests ${LF_DECODER_HELPER_TARGET})
+  target_compile_definitions(lf_unit_tests PRIVATE
+    LF_DECODER_HELPER_BINARY="$<TARGET_FILE:${LF_DECODER_HELPER_TARGET}>")
+endif()
 gtest_discover_tests(lf_unit_tests DISCOVERY_MODE PRE_TEST PROPERTIES LABELS unit)
 
 if(NOT LF_BUILD_UI)
