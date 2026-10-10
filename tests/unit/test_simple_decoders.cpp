@@ -11,6 +11,7 @@
 #include "core/ZipReader.h"
 
 #include <QBuffer>
+#include <QElapsedTimer>
 #include <QFile>
 #include <QJsonObject>
 #include <QRandomGenerator>
@@ -18,8 +19,16 @@
 
 #include <gtest/gtest.h>
 
+#include <atomic>
+#include <chrono>
 #include <cstring>
+#include <optional>
+#include <thread>
 #include <zlib.h>
+
+#ifdef Q_OS_DARWIN
+#include <malloc/malloc.h>
+#endif
 
 using namespace lf;
 using namespace lf::test;
@@ -627,6 +636,77 @@ TEST(SimpleDecoders, F_FMT_01_SgiMalformed) {
     bad[512] = char(0x7F); // first row offset far outside the file
     QString err;
     EXPECT_FALSE(simplefmt::decodeSgi(bad, &err).has_value());
+}
+
+// Code review M3 #3/#4: tiny crafted files must fail fast and without allocating the
+// claimed image (CPU/memory DoS inside the decoder helper). Before: PCX looped over a
+// 65535-byte line for every row, SGI/PNM/PFM allocated (and SGI filled) the image first.
+TEST(SimpleDecoders, F_FMT_02_TinyFilesClaimingHugeImagesFailFast) {
+    struct Case {
+        const char* name;
+        QByteArray data;
+        std::optional<simplefmt::Raster> (*decode)(const QByteArray&, QString*);
+    };
+    QList<Case> cases;
+    // PCX: 1 × 4096 pixels, 4 planes of 65535 bytes per line, two bytes of data.
+    QByteArray pcxLine = pcxHeader(1, 4096, 8, 4, 65535);
+    pcxLine.append("\x01\x01", 2);
+    cases.append({"pcx bytesPerLine", pcxLine, &simplefmt::decodePcx});
+    // PCX: 16384² with a plausible line length but no data to speak of.
+    QByteArray pcxHuge = pcxHeader(16384, 16384, 8, 1, 16384);
+    pcxHuge.append("\xC1\x00", 2);
+    cases.append({"pcx huge", pcxHuge, &simplefmt::decodePcx});
+    // SGI: 8192² × 16 bit, header only.
+    for (bool rle : {false, true}) {
+        QByteArray sgiHuge = sgi(1, 1, 3, 2, false).left(512);
+        sgiHuge[2] = char(rle ? 1 : 0);
+        sgiHuge[6] = char(0x20); // width 8192
+        sgiHuge[7] = 0;
+        sgiHuge[8] = char(0x20); // height 8192
+        sgiHuge[9] = 0;
+        cases.append({rle ? "sgi rle" : "sgi verbatim", sgiHuge, &simplefmt::decodeSgi});
+    }
+    cases.append({"ppm", QByteArray("P6 16384 16384 65535\n\x01\x02", 24), &simplefmt::decodePnm});
+    cases.append({"pgm ascii", QByteArray("P2 16384 16384 65535\n1 2 3"), &simplefmt::decodePnm});
+    // 2 MB of samples: before, a 1 GB image was allocated and filled until the data ran out.
+    cases.append({"ppm ascii, some data",
+                  QByteArray("P3 16384 16384 255\n") + QByteArray("1 ").repeated(1 << 20),
+                  &simplefmt::decodePnm});
+    cases.append({"pbm ascii", QByteArray("P1 16384 16384\n0101"), &simplefmt::decodePnm});
+    cases.append({"pam", QByteArray("P7\nWIDTH 16384\nHEIGHT 16384\nDEPTH 4\nMAXVAL 255\nENDHDR\nxx"),
+                  &simplefmt::decodePnm});
+    cases.append({"pfm", QByteArray("PF\n16384 16384\n-1.0\n\x00\x00\x80\x3F", 26), &simplefmt::decodePnm});
+    for (const Case& c : cases) {
+        SCOPED_TRACE(c.name);
+#ifdef Q_OS_DARWIN
+        // Peak of the heap while decoding (malloc keeps no high-water mark).
+        auto inUse = [] {
+            malloc_statistics_t st{};
+            malloc_zone_statistics(nullptr, &st);
+            return st.size_in_use;
+        };
+        const size_t baseline = inUse();
+        std::atomic<bool> stop{false};
+        std::atomic<size_t> peak{baseline};
+        std::thread sampler([&] {
+            while (!stop) {
+                peak = std::max(peak.load(), inUse());
+                std::this_thread::sleep_for(std::chrono::microseconds(100));
+            }
+        });
+#endif
+        QElapsedTimer t;
+        t.start();
+        QString err;
+        EXPECT_FALSE(c.decode(c.data, &err).has_value());
+        EXPECT_LT(t.elapsed(), 50);
+        EXPECT_FALSE(err.isEmpty());
+#ifdef Q_OS_DARWIN
+        stop = true;
+        sampler.join();
+        EXPECT_LT(peak.load(), baseline + (64u << 20)) << "allocated the claimed image";
+#endif
+    }
 }
 
 // ---- ZIP, OpenRaster, Krita ---------------------------------------------------------------

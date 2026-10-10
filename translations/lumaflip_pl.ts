@@ -142,10 +142,6 @@
         <translation>Esc</translation>
     </message>
     <message>
-        <source>%1 (in einer späteren Version)</source>
-        <translation>%1 (w przyszłej wersji)</translation>
-    </message>
-    <message>
         <source>Lumaflip wird als Standard-App festgelegt …</source>
         <translation>Ustawianie Lumaflip jako domyślnej aplikacji…</translation>
     </message>
@@ -169,6 +165,15 @@
             <numerusform>Wczytywanie podfolderów… %1 folderów, %n obraz</numerusform>
             <numerusform>Wczytywanie podfolderów… %1 folderów, %n obrazy</numerusform>
             <numerusform>Wczytywanie podfolderów… %1 folderów, %n obrazów</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.</source>
+        <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
+        <translation>
+            <numerusform>Podfoldery: wyświetlany jest tylko pierwszy %n obraz – otwórz mniejszy folder.</numerusform>
+            <numerusform>Podfoldery: wyświetlane są tylko pierwsze %n obrazy – otwórz mniejszy folder.</numerusform>
+            <numerusform>Podfoldery: wyświetlanych jest tylko pierwszych %n obrazów – otwórz mniejszy folder.</numerusform>
         </translation>
     </message>
     <message>
@@ -376,6 +381,10 @@
     <message>
         <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
         <translation>Dekodowanie trwało zbyt długo i zostało przerwane.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess läuft ohne Sandbox und wird aus Sicherheitsgründen nicht verwendet.</source>
+        <translation>Proces pomocniczy dekodera działa bez piaskownicy i ze względów bezpieczeństwa nie jest używany.</translation>
     </message>
     <message>
         <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
@@ -3225,10 +3234,6 @@
 <context>
     <name>lf::PreferencesDialog</name>
     <message>
-        <source>in einer späteren Version</source>
-        <translation>w przyszłej wersji</translation>
-    </message>
-    <message>
         <source>Einstellungen</source>
         <translation>Ustawienia</translation>
     </message>
@@ -3555,10 +3560,6 @@
     <message>
         <source>Maus, Trackpad und Tasten</source>
         <translation>Mysz, gładzik i klawisze</translation>
-    </message>
-    <message>
-        <source>%1 (%2)</source>
-        <translation>%1 (%2)</translation>
     </message>
     <message>
         <source>Mausrad-Feinheiten</source>

@@ -179,3 +179,35 @@ TEST(FolderWatcher, F_OPEN_08_TreeWatchReportsSubfolders) {
     watcher->unwatchTree(root);
     EXPECT_EQ(mac::activeFolderStreamCount(), streamsBefore);
 }
+
+// Code review M3 #16: writing an XMP sidecar (own rating) or a hidden temporary file does
+// not count as a folder change (no reload); the sidecar is reported on its own. An image
+// still is a change. Plain and tree watches alike.
+TEST(FolderWatcher, F_OPEN_07_SidecarsAndHiddenFilesAreNoFolderChange) {
+    lf::test::ensureQtApp();
+    for (bool tree : {false, true}) {
+        SCOPED_TRACE(tree ? "tree" : "plain");
+        QTemporaryDir dir;
+        const QString root = dir.path();
+        ASSERT_TRUE(QDir(root).mkdir("sub"));
+        const QString folder = tree ? root + "/sub" : root;
+        auto watcher = createFolderWatcher();
+        Counter c(*watcher);
+        QStringList sidecars;
+        QObject::connect(watcher.get(), &FolderWatcher::sidecarChanged,
+                         [&](const QString& p) { sidecars << p; });
+        tree ? watcher->watchTree(root) : watcher->watch(root);
+        settle(c);
+        touch(QDir(folder).filePath("IMG_1.xmp"));
+        touch(QDir(folder).filePath(".IMG_1.xmp.lf-tmp"));
+        ASSERT_TRUE(waitUntil([&] { return !sidecars.isEmpty(); }, 3000)) << "sidecar reported";
+        lf::test::spin(500);
+        EXPECT_EQ(c.count, 0) << "a sidecar is no folder change: " << c.last.toStdString();
+        EXPECT_TRUE(sidecars.contains(QDir(folder).filePath("IMG_1.xmp")))
+            << sidecars.join(u',').toStdString();
+        touch(QDir(folder).filePath("IMG_1.jpg"));
+        ASSERT_TRUE(waitUntil([&] { return c.count > 0; }, 3000)) << "an image is a change";
+        EXPECT_EQ(c.last, folder);
+        tree ? watcher->unwatchTree(root) : watcher->unwatch(root);
+    }
+}

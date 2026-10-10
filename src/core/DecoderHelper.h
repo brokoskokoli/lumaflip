@@ -36,8 +36,13 @@ public:
         int decodeTimeoutMs = 30000;  // a single decode (huge SVG, damaged file loops)
         int infoTimeoutMs = 10000;    // info/metadata/ping
         QStringList extraEnvironment; // "NAME=value" added to the app's environment
+#ifdef Q_OS_MACOS
+        bool requireSandbox = true; // refuse a helper whose Ping says sandboxed = false
+#else
+        bool requireSandbox = false;
+#endif
     };
-    enum class Failure { None, StartFailed, Crashed, Timeout, Protocol };
+    enum class Failure { None, StartFailed, Crashed, Timeout, Protocol, NotSandboxed };
 
     explicit DecoderHelperPool(Options options);
     ~DecoderHelperPool(); // kills the helpers
@@ -45,9 +50,11 @@ public:
     DecoderHelperPool& operator=(const DecoderHelperPool&) = delete;
 
     // Sends `request` (its id is assigned here) to an idle helper and waits for the answer.
-    // On failure `*failure`/`*error` say why (error texts are user facing). Decoded pixels
-    // are mapped into Response::image (and their shared memory name removed) before the
-    // helper takes the next request; on failure the name is removed as well.
+    // `timeoutMs` is one deadline for the whole call (waiting for an idle helper included).
+    // A newly started helper first has to answer a Ping with sandboxed = true (else
+    // Failure::NotSandboxed). On failure `*failure`/`*error` say why (error texts are user
+    // facing). Decode: the pixels arrive in app-owned shared memory (DecoderIpc.h) and are
+    // mapped into Response::image; no shared memory name survives the call.
     std::optional<ipc::Response> call(ipc::Request request, int timeoutMs, Failure* failure = nullptr,
                                       QString* error = nullptr, qint64* helperPid = nullptr);
 
@@ -70,6 +77,7 @@ private:
 
 QString messageDecoderCrashed(); // "Das Bild hat den Decoder zum Absturz gebracht …"
 QString messageDecoderTimeout(); // "Das Dekodieren hat zu lange gedauert …"
+QString messageDecoderNotSandboxed();
 
 class RemoteDecoder final : public Decoder {
 public:
@@ -94,16 +102,26 @@ std::shared_ptr<Decoder> isolatedDecoder(std::shared_ptr<Decoder> decoder);
 
 // ---- helper side (lumaflip-decoder, src/helper/main.cpp) ----
 
-// Answers one request with the backend named in it. Decoded pixels go to the shared memory
-// object ipc::shmName(pid, request.id). Test operations only with `testOps`.
+// The decoded image of the last Decode until the app sends its Deliver (same id).
+struct DecoderHelperState {
+    QImage pending;
+    quint32 pendingId = 0;
+};
+// Answers one request with the backend named in it. Decode keeps the image in `state` and
+// answers with its PixelHeader; the following Deliver copies it into the app's shared
+// memory object. Any other request drops a pending image. Test operations only with
+// `testOps`.
 ipc::Response serveDecoderRequest(const ipc::Request& request,
                                   const QList<std::shared_ptr<Decoder>>& backends, qint64 pid, bool sandboxed,
-                                  bool testOps);
+                                  bool testOps, DecoderHelperState* state);
 // Request loop until the app closes `inFd`. Returns the process exit code.
 int runDecoderHelper(int inFd, int outFd, const QList<std::shared_ptr<Decoder>>& backends, bool sandboxed,
                      bool testOps);
-// macOS: restricts the calling process (no network, no file writes, no new processes).
+// macOS: restricts the calling process with a deny-by-default Seatbelt profile
+// (decoderSandboxProfile()): reading files and a few system services only; no network, no
+// file writes, no new processes, no shared memory except opening the app's "/lfd." objects.
 // Returns false (and why) if the sandbox could not be applied.
 bool applyDecoderSandbox(QString* error);
+const char* decoderSandboxProfile();
 
 } // namespace lf

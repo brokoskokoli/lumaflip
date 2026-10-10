@@ -23,12 +23,12 @@ src/core/Language.cpp:*
 src/core/InputBindings.cpp:Del
 src/core/InputBindings.cpp:Return
 # Decoder helper sandbox (Seatbelt profile) and its log diagnostics (SPEC 8.5)
-src/core/DecoderHelper.cpp:(allow default)\n
-src/core/DecoderHelper.cpp:(deny network*)\n
-src/core/DecoderHelper.cpp:(deny file-write*)\n
-src/core/DecoderHelper.cpp:(allow file-write-data (literal \"/dev/null\"))\n
-src/core/DecoderHelper.cpp:(deny process-exec*)\n
-src/core/DecoderHelper.cpp:(deny process-fork)\n
+src/core/DecoderHelper.cpp:(deny default)\n
+src/core/DecoderHelper.cpp:(allow file-read*)\n
+src/core/DecoderHelper.cpp:(allow signal (target self))\n
+src/core/DecoderHelper.cpp:(allow ipc-posix-shm-read-data ipc-posix-shm-write-data ipc-posix-shm-write-unlink\n
+src/core/DecoderHelper.cpp:  (ipc-posix-name-prefix \"/lfd.\"))\n
+src/core/DecoderHelper.cpp:bootstrap_look_up: %1
 src/core/DecoderHelper.cpp:sandbox_init failed
 src/core/DecoderHelper.cpp:not supported on this platform
 # Debug log only (qCDebug detail of failed decoders)

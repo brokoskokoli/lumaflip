@@ -66,10 +66,13 @@ QDateTime fromTimespec(const struct timespec& ts) {
 }
 
 // F-OPEN-08: a subfolder the Finder shows (not hidden via chflags, not a package such as
-// "X.app" or "Fotos.photoslibrary").
-bool acceptSubfolder(int dfd, const char* name, const QString& fullPath) {
+// "X.app" or "Fotos.photoslibrary") on the same volume: the recursion stops at mount points
+// (another disk, a network share or a disk image mounted inside the tree).
+bool acceptSubfolder(int dfd, const char* name, const QString& fullPath, dev_t parentDevice) {
     struct stat st;
     if (::fstatat(dfd, name, &st, AT_SYMLINK_NOFOLLOW) != 0 || !S_ISDIR(st.st_mode))
+        return false;
+    if (st.st_dev != parentDevice)
         return false;
 #ifdef UF_HIDDEN
     if (st.st_flags & UF_HIDDEN)
@@ -112,6 +115,8 @@ QVector<FileEntry> enumerateFolder(const QString& folderPath, bool* accessDenied
             *privacyDenied = true;
         return out;
     }
+    struct stat folderStat{};
+    const dev_t device = ::fstat(dfd, &folderStat) == 0 ? folderStat.st_dev : dev_t(0);
     errno = 0;
     while (struct dirent* de = ::readdir(dir)) {
         if (de->d_name[0] == '.')
@@ -119,7 +124,7 @@ QVector<FileEntry> enumerateFolder(const QString& folderPath, bool* accessDenied
         if (de->d_type == DT_DIR && subfolders) {
             // F-OPEN-08: real subfolders only (symbolic links are not followed: no cycles).
             const QString name = QFile::decodeName(de->d_name);
-            if (acceptSubfolder(dfd, de->d_name, prefix + name))
+            if (acceptSubfolder(dfd, de->d_name, prefix + name, device))
                 subfolders->append(name);
             continue;
         }
@@ -132,7 +137,7 @@ QVector<FileEntry> enumerateFolder(const QString& folderPath, bool* accessDenied
         if (de->d_type == DT_UNKNOWN && subfolders &&
             ::fstatat(dfd, de->d_name, &st, AT_SYMLINK_NOFOLLOW) == 0 && S_ISDIR(st.st_mode)) {
             const QString dirName = QFile::decodeName(de->d_name);
-            if (acceptSubfolder(dfd, de->d_name, prefix + dirName))
+            if (acceptSubfolder(dfd, de->d_name, prefix + dirName, device))
                 subfolders->append(dirName);
             continue;
         }
@@ -452,6 +457,14 @@ enum class Mode { None, File, Files, Folder };
 enum class JobKind { Load, Resort };
 
 constexpr int kMaxTreeFolders = 100000; // F-OPEN-08: safety limit of a recursive collection
+// F-OPEN-08: a recursive collection stops reading after this many images (a whole disk
+// opened by accident); the window says so (Collection::treeLimitReached).
+constexpr int kMaxTreeImages = 200000;
+// F-NAV-08: up to this many entries the name filter runs on the GUI thread (a few ms);
+// larger collections are filtered on a worker.
+constexpr qsizetype kSyncNameFilterEntries = 5000;
+// Folder change notifications are coalesced for this long before the collection updates.
+constexpr int kChangeDebounceMs = 300;
 
 // F-OPEN-08: progress of a recursive load, written by the worker, polled by the GUI thread.
 struct LoadCounters {
@@ -520,6 +533,7 @@ struct Job {
     QSet<QString> showRaw;                // F-FMT-06: pairs whose RAW is shown (by RAW path)
     QHash<QString, quint64> localChanges; // recursive: folder -> FolderCache::noteLocalChange()
     std::shared_ptr<LoadCounters> progress; // recursive: folders/images read so far
+    int maxTreeImages = kMaxTreeImages;     // recursive: stop reading after this many images
     NameCollator* collator = nullptr;
     FolderOrderProvider* order = nullptr;
     FileAttributeProvider* attributes = nullptr;
@@ -541,7 +555,18 @@ struct Result {
     QHash<QString, FileEntry> partners; // F-FMT-06: pair members not shown (Load jobs)
     // Folder loads: FolderSnapshot::changeSeq of the snapshot used (max: not from a snapshot).
     quint64 changeSeq = std::numeric_limits<quint64>::max();
+    bool truncated = false; // recursive: stopped at Job::maxTreeImages
+    QStringList nameTerms;  // the name filter the result was filtered with
 };
+
+// F-NAV-08: whether the entry's name contains every term; folds the name once per entry.
+bool nameMatches(FileEntry& e, const QStringList& terms) {
+    if (terms.isEmpty())
+        return true;
+    if (e.foldedName.isEmpty())
+        e.foldedName = namefilter::fold(e.name);
+    return namefilter::matchesFolded(e.foldedName, terms);
+}
 
 // Fallback collator if no platform collator is available (should not happen).
 class BinaryCollator : public NameCollator {
@@ -579,6 +604,11 @@ bool readTree(const Job& job, Result& r, QVector<FileEntry>& entries) {
             r.privacyDenied = snap->privacyDenied;
         }
         entries += snap->entries;
+        if (entries.size() >= job.maxTreeImages) {
+            entries.resize(job.maxTreeImages); // F-OPEN-08: safety limit (status message)
+            r.truncated = true;
+            stack.clear();
+        }
         if (job.progress) {
             job.progress->folders.fetch_add(1, std::memory_order_relaxed);
             job.progress->images.fetch_add(int(snap->entries.size()), std::memory_order_relaxed);
@@ -722,20 +752,6 @@ Result runJob(Job job) {
         if (cancelled())
             return r;
     }
-    if (filtering) {
-        QVector<FileEntry> shown;
-        shown.reserve(entries.size());
-        for (FileEntry& e : entries) {
-            const bool ratingOk =
-                !ratingFiltering || job.filter.matches(collection::ratingOf(e)) || e.path == job.keepPath;
-            if (ratingOk && namefilter::matchesTerms(e.name, job.nameTerms))
-                shown.append(std::move(e));
-            else
-                r.hidden.append(std::move(e));
-        }
-        entries = std::move(shown);
-    }
-
     if (spec.key == SortKey::FinderIconPosition) {
         QHash<QString, QPointF> pos;
         if (!job.folder.isEmpty() && job.order)
@@ -773,9 +789,238 @@ Result runJob(Job job) {
     }
     if (cancelled())
         return r;
+    // Shown and filtered-out entries are sorted together: their ranks let the name filter
+    // show and hide entries later without sorting again (F-NAV-08).
+    for (qsizetype i = 0; i < entries.size(); ++i)
+        entries[i].sortRank = int(i);
+    if (filtering) {
+        QVector<FileEntry> shown;
+        shown.reserve(entries.size());
+        for (FileEntry& e : entries) {
+            const bool ratingOk =
+                !ratingFiltering || job.filter.matches(collection::ratingOf(e)) || e.path == job.keepPath;
+            if (ratingOk && nameMatches(e, job.nameTerms))
+                shown.append(std::move(e));
+            else
+                r.hidden.append(std::move(e));
+        }
+        entries = std::move(shown);
+    }
     r.entries = std::move(entries);
     r.spec = spec;
+    r.nameTerms = job.nameTerms;
     return r;
+}
+
+// Sorted position: folder first (recursive collections), then the sort spec.
+bool entryLessFor(const FileEntry& a, const FileEntry& b, const SortSpec& spec, const NameCollator& coll,
+                  bool byFolder) {
+    if (byFolder) {
+        if (const int c = collection::compareFolderPaths(folderOf(a.path), folderOf(b.path), coll))
+            return c < 0;
+    }
+    return collection::compareEntries(a, b, spec, coll) < 0;
+}
+
+// ---- F-NAV-08: the name filter as a pure function (GUI thread or worker) ----
+
+struct NameFilterInput {
+    QVector<FileEntry> entries;       // shown, in order
+    QHash<QString, FileEntry> hidden; // filtered out (rating and/or name)
+    QStringList terms;
+    bool ratingActive = false;
+    RatingFilter filter;
+    QString stale;
+    SortSpec spec;
+    NameCollator* collator = nullptr;
+    bool byFolder = false;
+    std::shared_ptr<void> keepAlive; // default providers (collator)
+};
+
+struct NameFilterOutput {
+    QVector<FileEntry> entries;
+    QHash<QString, FileEntry> hidden;
+    QHash<QString, int> index;
+    bool staleLeft = false; // the stale entry was hidden
+};
+
+// Entries that no longer match leave, hidden ones that match (name and rating) come back.
+// Filtering keeps the order: entries return at the position of their last full sort
+// (FileEntry::sortRank) - no comparisons with the collator unless ranks are missing.
+NameFilterOutput filterByName(NameFilterInput in) {
+    NameFilterOutput out;
+    QVector<FileEntry> kept;
+    kept.reserve(in.entries.size());
+    for (FileEntry& e : in.entries) {
+        if (nameMatches(e, in.terms)) {
+            kept.append(std::move(e));
+        } else {
+            if (!in.stale.isEmpty() && e.path == in.stale)
+                out.staleLeft = true;
+            const QString p = e.path;
+            in.hidden.insert(p, std::move(e));
+        }
+    }
+    QVector<FileEntry> back;
+    for (auto it = in.hidden.begin(); it != in.hidden.end();) {
+        FileEntry& e = it.value();
+        const bool ratingOk = !in.ratingActive || !e.ratingRead || in.filter.matches(collection::ratingOf(e));
+        if (ratingOk && nameMatches(e, in.terms)) {
+            back.append(std::move(e));
+            it = in.hidden.erase(it);
+        } else {
+            ++it;
+        }
+    }
+    bool ranked = std::all_of(back.cbegin(), back.cend(), [](const FileEntry& e) { return e.sortRank >= 0; });
+    for (qsizetype i = 0; ranked && i < kept.size(); ++i)
+        ranked = kept[i].sortRank >= 0 && (i == 0 || kept[i - 1].sortRank < kept[i].sortRank);
+    out.entries.reserve(kept.size() + back.size());
+    if (ranked) {
+        auto byRank = [](const FileEntry& a, const FileEntry& b) { return a.sortRank < b.sortRank; };
+        std::sort(back.begin(), back.end(), byRank);
+        std::merge(std::make_move_iterator(kept.begin()), std::make_move_iterator(kept.end()),
+                   std::make_move_iterator(back.begin()), std::make_move_iterator(back.end()),
+                   std::back_inserter(out.entries), byRank);
+    } else {
+        BinaryCollator fallback;
+        const NameCollator& coll = in.collator ? *in.collator : fallback;
+        auto less = [&](const FileEntry& a, const FileEntry& b) {
+            return entryLessFor(a, b, in.spec, coll, in.byFolder);
+        };
+        std::sort(back.begin(), back.end(), less);
+        std::merge(std::make_move_iterator(kept.begin()), std::make_move_iterator(kept.end()),
+                   std::make_move_iterator(back.begin()), std::make_move_iterator(back.end()),
+                   std::back_inserter(out.entries), less);
+    }
+    out.index.reserve(out.entries.size());
+    for (int i = 0; i < out.entries.size(); ++i)
+        out.index.insert(out.entries[i].path, i);
+    out.hidden = std::move(in.hidden);
+    return out;
+}
+
+// ---- F-OPEN-08: incremental update of a recursive collection (code review M3 #16) ----
+
+// The new contents of one changed folder (or of a new subtree, or a folder that is gone).
+struct FolderContent {
+    QString folder;
+    bool removed = false;               // gone: drop it and every folder below it
+    QStringList folders;                // folders these entries come from (subtree: all)
+    QVector<FileEntry> shown;           // sorted (subtree: grouped by folder)
+    QVector<FileEntry> hidden;          // filtered out
+    QHash<QString, FileEntry> partners; // F-FMT-06
+};
+
+struct DeltaJob {
+    Job base;               // filters, sort spec, providers of the collection
+    QStringList folders;    // changed folders
+    QSet<QString> known;    // folders of the last load
+    quint64 generation = 0; // Private::deltaGeneration
+    quint64 version = 0;    // Private::version when the job started
+};
+
+struct DeltaResult {
+    quint64 generation = 0;
+    quint64 version = 0;
+    QStringList folders; // as requested
+    QVector<FolderContent> contents;
+    bool fullReload = false; // the root itself is gone or unreadable
+};
+
+// Reads only the changed folders (each one from the shared FolderCache) and the subfolders
+// that are new; subfolders that disappeared are reported as removed.
+DeltaResult runDelta(DeltaJob dj) {
+    DeltaResult out;
+    out.generation = dj.generation;
+    out.version = dj.version;
+    out.folders = dj.folders;
+    QSet<QString> handled;
+    for (const QString& f : std::as_const(dj.folders)) {
+        if (dj.base.cancelled())
+            return out;
+        if (handled.contains(f))
+            continue;
+        handled.insert(f);
+        if (!QFileInfo(f).isDir()) {
+            if (f == dj.base.folder) {
+                out.fullReload = true;
+                return out;
+            }
+            FolderContent gone;
+            gone.folder = f;
+            gone.removed = true;
+            out.contents.append(gone);
+            continue;
+        }
+        FolderCache& cache = FolderCache::instance();
+        FolderSnapshotPtr snap = cache.get(f, dj.base.attributes);
+        if (snap->changeSeq < dj.base.localChanges.value(f, 0)) {
+            cache.invalidate(f); // predates an own edit there
+            snap = cache.get(f, dj.base.attributes);
+        }
+        if (f == dj.base.folder && snap->accessDenied) {
+            out.fullReload = true;
+            return out;
+        }
+        Job j = dj.base;
+        j.kind = JobKind::Load;
+        j.folder = f;
+        j.recursive = false;
+        j.followFinder = false; // the collection's current (resolved) spec
+        j.folderMemory = {};
+        j.revalidate = false;
+        j.progress.reset();
+        if (f != dj.base.folder) {
+            j.mustInclude.clear();
+            j.order = nullptr; // Finder icon positions belong to the opened folder only
+        }
+        Result r = runJob(j);
+        if (r.cancelled)
+            return out;
+        FolderContent c;
+        c.folder = f;
+        c.folders = {f};
+        c.shown = std::move(r.entries);
+        c.hidden = r.hidden;
+        c.partners = r.partners;
+        out.contents.append(std::move(c));
+        // Subfolders: new ones are read with everything below them, vanished ones leave.
+        const QString prefix = f.endsWith(u'/') ? f : f + u'/';
+        QSet<QString> present;
+        for (const QString& sub : std::as_const(snap->subfolders)) {
+            const QString path = prefix + sub;
+            present.insert(path);
+            if (dj.known.contains(path) || handled.contains(path))
+                continue;
+            handled.insert(path);
+            Job t = j;
+            t.folder = path;
+            t.recursive = true;
+            t.mustInclude.clear();
+            t.order = nullptr;
+            Result rt = runJob(t);
+            if (rt.cancelled)
+                return out;
+            FolderContent n;
+            n.folder = path;
+            n.folders = rt.folders;
+            n.shown = std::move(rt.entries);
+            n.hidden = rt.hidden;
+            n.partners = rt.partners;
+            out.contents.append(std::move(n));
+        }
+        for (const QString& k : std::as_const(dj.known)) {
+            if (k != f && folderOf(k) == f && !present.contains(k) && !handled.contains(k)) {
+                handled.insert(k);
+                FolderContent gone;
+                gone.folder = k;
+                gone.removed = true;
+                out.contents.append(gone);
+            }
+        }
+    }
+    return out;
 }
 
 } // namespace
@@ -823,7 +1068,10 @@ struct Collection::Private {
     QHash<QString, FileEntry> partners; // pair members not shown, by path
     QSet<QString> showRaw;              // pairs whose RAW is shown (RAW paths)
 
-    // `parent` belongs to this folder collection (recursive: also hidden-free subfolders).
+    // `parent` belongs to this folder collection. Recursive: a folder of the last load, or a
+    // new folder below the root that the tree reader would take (code review M3 #16: not
+    // hidden, no package such as "Fotos.photoslibrary" whose internals change constantly,
+    // same volume). Unknown folders are checked once (lstat, cached).
     bool coversFolder(const QString& parent) const {
         if (parent == folder)
             return true;
@@ -832,27 +1080,92 @@ struct Collection::Private {
         const QString prefix = folder.endsWith(u'/') ? folder : folder + u'/';
         if (!parent.startsWith(prefix))
             return false;
-        const QStringList parts = parent.mid(prefix.size()).split(u'/', Qt::SkipEmptyParts);
-        return std::none_of(parts.cbegin(), parts.cend(),
-                            [](const QString& p) { return p.startsWith(u'.'); });
+        if (treeSet.contains(parent))
+            return true;
+        QString path = folder;
+        for (const QString& part : parent.mid(prefix.size()).split(u'/', Qt::SkipEmptyParts)) {
+            path = (path.endsWith(u'/') ? path : path + u'/') + part;
+            if (treeSet.contains(path) || acceptedFolders.contains(path))
+                continue;
+            if (part.startsWith(u'.') || excludedFolders.contains(path))
+                return false;
+            switch (treeFolderState(path)) {
+            case FolderState::Accepted:
+                acceptedFolders.insert(path);
+                break;
+            case FolderState::Excluded:
+                excludedFolders.insert(path);
+                return false;
+            case FolderState::Missing:
+                return false;
+            }
+        }
+        return true;
+    }
+    enum class FolderState { Accepted, Excluded, Missing };
+    // Like the tree reader's acceptSubfolder(): a real folder, not hidden, no package, on
+    // the volume of its parent.
+    static FolderState treeFolderState(const QString& path) {
+#ifdef Q_OS_UNIX
+        struct stat st{}, parentSt{};
+        if (::lstat(QFile::encodeName(path).constData(), &st) != 0)
+            return FolderState::Missing;
+        if (!S_ISDIR(st.st_mode))
+            return FolderState::Excluded;
+#ifdef UF_HIDDEN
+        if (st.st_flags & UF_HIDDEN)
+            return FolderState::Excluded;
+#endif
+        if (::stat(QFile::encodeName(parentOf(path)).constData(), &parentSt) == 0 &&
+            parentSt.st_dev != st.st_dev)
+            return FolderState::Excluded;
+#else
+        if (!QFileInfo(path).isDir())
+            return FolderState::Missing;
+#endif
+        if (path.lastIndexOf(u'.') > path.lastIndexOf(u'/') && QFileInfo(path).isBundle())
+            return FolderState::Excluded;
+        return FolderState::Accepted;
     }
 
     // Sorted position: folder first (recursive), then the sort spec.
     bool entryLess(const FileEntry& a, const FileEntry& b, const SortSpec& sortSpec,
                    const NameCollator& coll) const {
-        if (recursive && mode != Mode::Files) {
-            if (const int c = collection::compareFolderPaths(folderOf(a.path), folderOf(b.path), coll))
-                return c < 0;
-        }
-        return collection::compareEntries(a, b, sortSpec, coll) < 0;
+        return entryLessFor(a, b, sortSpec, coll, recursive && mode != Mode::Files);
     }
 
-    // F-FMT-06: a file that arrives (insertPath) may complete a pair with a shown entry.
-    // True if `e` was attached (no new entry needed).
-    bool attachToPair(FileEntry& e) {
+    // F-FMT-06: candidates for a file that may complete a pair: pair key -> path of a shown
+    // JPEG/RAW (code review M3 #19: O(1) instead of a scan). Entries added later are added
+    // here; removed ones are skipped on lookup (indexByPath).
+    QMultiHash<QString, QString> pairIndex;
+    void indexPairCandidate(const FileEntry& e) {
+        if (!pairing || !e.pairedPath.isEmpty())
+            return;
+        const QString sfx = collection::suffixOf(e.path);
+        if (!collection::isPairJpegSuffix(sfx) && !isRawSuffix(sfx))
+            return;
+        if (const QString key = collection::pairKey(e.path); !key.isEmpty())
+            pairIndex.insert(key, e.path);
+    }
+    void rebuildPairIndex() {
+        pairIndex.clear();
         if (!pairing)
-            return false;
-        for (int i = 0; i < entries.size(); ++i) {
+            return;
+        for (const FileEntry& e : std::as_const(entries))
+            indexPairCandidate(e);
+    }
+    // Pairs `e` with a shown entry it completes, without signals. Returns the index of that
+    // entry (its contents may have been replaced by `e`), -1 if `e` pairs with nothing.
+    int pairWithShown(FileEntry& e) {
+        if (!pairing)
+            return -1;
+        const QString key = collection::pairKey(e.path);
+        if (key.isEmpty())
+            return -1;
+        for (auto it = pairIndex.constFind(key); it != pairIndex.cend() && it.key() == key; ++it) {
+            const int i = indexByPath.value(it.value(), -1);
+            if (i < 0 || i >= entries.size() || entries[i].path != it.value())
+                continue;
             FileEntry& other = entries[i];
             if (!other.pairedPath.isEmpty() || !collection::isPairPartner(other.path, e.path))
                 continue;
@@ -862,23 +1175,44 @@ struct Collection::Private {
                 e.pairedPath = other.path;
                 other.pairedPath = e.path;
                 partners.insert(e.path, e);
-                emit q->entriesChanged();
-                return true;
+                return i;
             }
             // The JPEG arrives for a shown RAW: the JPEG is shown, the RAW becomes its partner.
             FileEntry raw = other;
             raw.pairedPath = e.path;
             e.pairedPath = raw.path;
             partners.insert(raw.path, raw);
-            const bool wasCurrent = i == current;
             other = e;
-            rebuildIndex();
-            emit q->entriesChanged();
-            if (wasCurrent)
-                emit q->currentChanged(current, other.path);
-            return true;
+            other.sortRank = -1;
+            return i;
         }
-        return false;
+        return -1;
+    }
+
+    // F-FMT-06: a file that arrives (insertPath) may complete a pair with a shown entry.
+    // True if `e` was attached (no new entry needed).
+    bool attachToPair(FileEntry& e) {
+        const FileEntry arrived = e;
+        const QString shownBefore =
+            current >= 0 && current < entries.size() ? entries[current].path : QString();
+        const int i = pairWithShown(e);
+        if (i < 0)
+            return false;
+        ++version;
+        if (watcher) {
+            // A running load works on a snapshot that may predate this file: replay it.
+            removedDuringJob.remove(arrived.path);
+            insertedDuringJob.insert(arrived.path, arrived);
+        }
+        const bool replaced = entries[i].path == e.path; // the JPEG took the shown RAW's place
+        if (replaced) {
+            rebuildIndex();
+            indexPairCandidate(entries[i]);
+        }
+        emit q->entriesChanged();
+        if (replaced && i == current && shownBefore != entries[i].path)
+            emit q->currentChanged(current, entries[i].path);
+        return true;
     }
 
     SortSpec spec{SortKey::Name, true, SortSource::Fallback};
@@ -898,6 +1232,18 @@ struct Collection::Private {
     // replayEditsDuringJob() inserted entries whose image properties are still unknown
     // (needed by the sort key): a resort on a worker reads them (never the GUI thread).
     bool resortForProperties = false;
+
+    // ---- code review M3 #16/#17 ----
+    quint64 version = 0;                   // bumped by every change of entries/hidden/partners
+    QSet<QString> treeSet;                 // treeFolders as a set (coversFolder)
+    mutable QSet<QString> acceptedFolders; // new folders below the root, checked once
+    mutable QSet<QString> excludedFolders; // ... skipped by the tree reader (package, hidden)
+    QSet<QString> pendingFolders;          // changed folders waiting for the debounce timer
+    QTimer* changeTimer = nullptr;
+    quint64 deltaGeneration = 0;
+    bool deltaRunning = false;
+    quint64 nameFilterGeneration = 0;
+    int maxTreeImages = kMaxTreeImages;
 
     std::shared_ptr<std::atomic<quint64>> latest = std::make_shared<std::atomic<quint64>>(0);
     quint64 generation = 0;
@@ -941,6 +1287,7 @@ struct Collection::Private {
     }
 
     void rebuildIndex() {
+        ++version;
         indexByPath.clear();
         indexByPath.reserve(entries.size());
         for (int i = 0; i < entries.size(); ++i)
@@ -966,8 +1313,14 @@ struct Collection::Private {
         j.folder = folder;
         j.mustInclude = mode == Mode::File ? openedFile : QString();
         j.files = files;
-        if (kind == JobKind::Resort)
+        if (kind == JobKind::Resort) {
+            // The filtered-out entries are sorted along (they keep their place for the
+            // filters, and are not lost by a resort).
             j.existing = entries;
+            for (auto it = hidden.cbegin(); it != hidden.cend(); ++it)
+                j.existing.append(it.value());
+        }
+        j.maxTreeImages = maxTreeImages;
         j.followFinder = followFinder;
         j.allowLiveQuery = allowLiveQuery;
         j.manualSpec = manualSpec;
@@ -1009,6 +1362,13 @@ struct Collection::Private {
         cancelPending();
         removedDuringJob.clear();
         insertedDuringJob.clear();
+        ++deltaGeneration; // a running incremental update is superseded
+        deltaRunning = false;
+        if (kind == JobKind::Load) {
+            pendingFolders.clear(); // the load reads them
+            if (changeTimer)
+                changeTimer->stop();
+        }
         if (mode == Mode::None)
             return;
         loading = true;
@@ -1059,12 +1419,16 @@ struct Collection::Private {
         const int oldIndex = current;
         const QVector<FileEntry> old = std::move(entries);
         entries = r.entries;
+        bool foldersDiffer = false;
         if (r.kind == JobKind::Load) {
             partners = r.partners; // F-FMT-06
+            acceptedFolders.clear();
+            excludedFolders.clear();
             if (recursive && mode != Mode::Files && treeFolders != r.folders) {
                 treeFolders = r.folders; // F-OPEN-08
+                treeSet = QSet<QString>(treeFolders.cbegin(), treeFolders.cend());
                 updateLease();
-                emit q->foldersChanged();
+                foldersDiffer = true;
             }
         }
         if (progressTimer)
@@ -1076,6 +1440,8 @@ struct Collection::Private {
         if (!stale.isEmpty() && !std::any_of(entries.cbegin(), entries.cend(),
                                              [&](const FileEntry& e) { return e.path == stale; }))
             stale.clear();
+        rebuildIndex();
+        rebuildPairIndex();
         replayEditsDuringJob(r.spec);
         rebuildIndex();
         if (selectFirstOnLoad) {
@@ -1085,7 +1451,9 @@ struct Collection::Private {
             current = int(entries.size()) - 1;
             selectLastOnLoad = false;
         } else {
-            const auto it = indexByPath.constFind(oldPath);
+            auto it = indexByPath.constFind(oldPath);
+            if (it == indexByPath.cend() && partners.contains(oldPath)) // F-FMT-06: now a partner
+                it = indexByPath.constFind(partners.value(oldPath).pairedPath);
             current = it != indexByPath.cend() ? *it : neighbourIndex(old, oldIndex);
         }
         const bool specChanged = !(spec == r.spec);
@@ -1099,6 +1467,12 @@ struct Collection::Private {
             emit q->sortSpecChanged(spec);
         if (r.accessDenied)
             emit q->accessDenied(folder, r.privacyDenied);
+        if (foldersDiffer)
+            emit q->foldersChanged();
+        if (r.truncated)
+            emit q->treeLimitReached(int(entries.size() + hidden.size()));
+        if (r.nameTerms != nameTerms)
+            scheduleNameFilter(); // typed while the job ran (it filtered with older terms)
         if (resortForProperties) {
             // Entries added meanwhile need image metadata for this sort key: read on a
             // worker by a resort; loading finishes with it.
@@ -1121,9 +1495,26 @@ struct Collection::Private {
                         e.pairedPath.clear();
             }
         }
+        // F-FMT-06 (code review M3 #19): the shown member of a pair was removed while the job
+        // ran: its partner takes the place (as removePath() did on the old entries).
+        for (const QString& p : std::as_const(removedDuringJob)) {
+            const int i = indexByPath.value(p, -1);
+            if (i < 0 || i >= entries.size() || entries[i].pairedPath.isEmpty())
+                continue;
+            auto pit = partners.find(entries[i].pairedPath);
+            if (pit == partners.end() || removedDuringJob.contains(pit.key()))
+                continue;
+            FileEntry other = *pit;
+            partners.erase(pit);
+            other.pairedPath.clear();
+            showRaw.remove(other.path);
+            showRaw.remove(p);
+            entries[i] = std::move(other);
+        }
         if (!removedDuringJob.isEmpty()) {
             entries.removeIf([&](const FileEntry& e) { return removedDuringJob.contains(e.path); });
             files.removeIf([&](const QString& p) { return removedDuringJob.contains(p); });
+            rebuildIndex();
         }
         if (!insertedDuringJob.isEmpty()) {
             QSet<QString> present;
@@ -1132,9 +1523,12 @@ struct Collection::Private {
             BinaryCollator fallback;
             const NameCollator& coll = collator ? *collator : fallback;
             for (auto it = insertedDuringJob.begin(); it != insertedDuringJob.end(); ++it) {
-                if (present.contains(it.key()))
+                if (present.contains(it.key()) || partners.contains(it.key()))
                     continue;
                 FileEntry e = it.value();
+                e.sortRank = -1;
+                if (pairWithShown(e) >= 0) // F-FMT-06: completes a pair of the result
+                    continue;
                 // Image metadata is read by a resort on a worker (apply()), never here on
                 // the GUI thread; until then the entry sorts with the unknown values.
                 if (needsImageProperties(sortSpec.key) && attributes && !e.imagePropertiesRead)
@@ -1142,7 +1536,10 @@ struct Collection::Private {
                 const auto pos = std::upper_bound(
                     entries.begin(), entries.end(), e,
                     [&](const FileEntry& a, const FileEntry& b) { return entryLess(a, b, sortSpec, coll); });
-                entries.insert(pos, std::move(e));
+                const qsizetype at = pos - entries.begin();
+                entries.insert(at, std::move(e));
+                rebuildIndex();
+                indexPairCandidate(entries[at]);
             }
         }
         removedDuringJob.clear();
@@ -1178,8 +1575,15 @@ struct Collection::Private {
                 !filter.matches(collection::ratingOf(e))) ||
                !namefilter::matchesTerms(e.name, nameTerms);
     }
-    // F-NAV-08: a changed name filter applied to the entries in memory (no new job).
-    void applyNameFilter();
+    // F-NAV-08: a changed name filter applied to the entries in memory (no new job): on
+    // the GUI thread for small collections, else on a worker (the result is taken if
+    // nothing changed meanwhile). A running load is never restarted for it.
+    void scheduleNameFilter();
+    void applyNameFilterOutput(NameFilterOutput out);
+    // Code review M3 #16: coalesced folder changes; incremental update of a recursive tree.
+    void processPendingChanges();
+    void startDelta(const QStringList& folders);
+    void applyDelta(const DeltaResult& r);
 
     void reset(Mode m) {
         cancelPending();
@@ -1204,8 +1608,19 @@ struct Collection::Private {
         lastLocalChange = 0; // edits of the previous contents do not concern the new ones
         localChanges.clear();
         treeFolders.clear();
+        treeSet.clear();
+        acceptedFolders.clear();
+        excludedFolders.clear();
         partners.clear();
+        pairIndex.clear();
         showRaw.clear();
+        pendingFolders.clear();
+        ++deltaGeneration;
+        deltaRunning = false;
+        ++nameFilterGeneration;
+        ++version;
+        if (changeTimer)
+            changeTimer->stop();
         if (progressTimer)
             progressTimer->stop();
     }
@@ -1213,6 +1628,8 @@ struct Collection::Private {
     // Inserts a stat'ed entry at its sorted position (GUI thread).
     void insertEntry(FileEntry e, bool makeCurrent) {
         const QString path = e.path;
+        e.sortRank = -1; // not part of the last full sort
+        ++version;
         if (indexByPath.contains(path)) {
             if (makeCurrent)
                 setCurrent(indexByPath.value(path));
@@ -1245,6 +1662,7 @@ struct Collection::Private {
         const int at = int(pos - entries.begin());
         entries.insert(at, std::move(e));
         rebuildIndex();
+        indexPairCandidate(entries[at]);
         const int oldCurrent = current;
         if (current >= at)
             ++current;
@@ -1271,6 +1689,10 @@ Collection::Collection(QObject* parent) : QObject(parent), d(new Private) {
         emit loadProgress(d->progress->folders.load(std::memory_order_relaxed),
                           d->progress->images.load(std::memory_order_relaxed));
     });
+    d->changeTimer = new QTimer(this); // code review M3 #16: coalesces folder changes
+    d->changeTimer->setSingleShot(true);
+    d->changeTimer->setInterval(kChangeDebounceMs);
+    connect(d->changeTimer, &QTimer::timeout, this, [this] { d->processPendingChanges(); });
 }
 
 Collection::~Collection() {
@@ -1374,6 +1796,7 @@ void Collection::copyFrom(const Collection& other) {
     d->fileSet = o.fileSet;
     d->recursive = o.recursive; // F-OPEN-08
     d->treeFolders = o.treeFolders;
+    d->treeSet = o.treeSet;
     d->localChanges = o.localChanges;
     d->pairing = o.pairing; // F-FMT-06
     d->partners = o.partners;
@@ -1393,6 +1816,7 @@ void Collection::copyFrom(const Collection& other) {
     d->entries = o.entries;
     d->lastLocalChange = o.lastLocalChange; // the copied entries contain those edits
     d->rebuildIndex();
+    d->rebuildPairIndex();
     d->current = o.current;
     d->selectFirstOnLoad = o.selectFirstOnLoad;
     d->selectLastOnLoad = o.selectLastOnLoad;
@@ -1553,6 +1977,7 @@ void Collection::reload() {
 
 void Collection::removePath(const QString& path) {
     d->noteLocalChange(path);
+    ++d->version;
     // F-FMT-06: a pair member goes; the pair becomes a single entry.
     const QString partnerKey = d->partners.contains(path) ? path : normalizedPath(path);
     if (auto pit = d->partners.find(partnerKey); pit != d->partners.end()) {
@@ -1574,7 +1999,14 @@ void Collection::removePath(const QString& path) {
         // The shown member goes: the other one takes its place.
         FileEntry other = d->partners.take(d->entries[i].pairedPath);
         if (!other.path.isEmpty()) {
+            if (d->watcher) {
+                // Code review M3 #19: a running load must not bring the removed file back;
+                // apply() lets the partner take its place in the result as well.
+                d->removedDuringJob.insert(d->entries[i].path);
+                d->insertedDuringJob.remove(d->entries[i].path);
+            }
             other.pairedPath.clear();
+            other.sortRank = -1;
             d->showRaw.remove(other.path);
             d->showRaw.remove(d->entries[i].path);
             const bool wasCurrent = i == d->current;
@@ -1675,6 +2107,7 @@ bool Collection::hasPendingInserts() const {
 void Collection::renamePath(const QString& fromPath, const QString& toPath) {
     d->noteLocalChange(fromPath);
     d->noteLocalChange(toPath);
+    ++d->version;
     if (d->partners.contains(fromPath)) {
         // F-FMT-06: a renamed pair member no longer pairs (base names differ).
         removePath(fromPath);
@@ -1815,6 +2248,7 @@ QStringList Collection::allPaths() const {
 }
 
 void Collection::updateRating(const QString& path, const Rating& r) {
+    ++d->version;
     const int i = indexOf(path);
     if (i < 0) {
         const QString key = d->hidden.contains(path) ? path : normalizedPath(path);
@@ -1830,6 +2264,8 @@ void Collection::updateRating(const QString& path, const Rating& r) {
         return;
     }
     collection::setRating(d->entries[i], r);
+    if (d->spec.key == SortKey::Rating)
+        d->entries[i].sortRank = -1; // its place in a full sort changed
     if (!d->ratingReader || !d->filter.isActive() || d->filter.matches(r)) {
         if (d->stale == d->entries[i].path)
             d->stale.clear();
@@ -1855,62 +2291,298 @@ void Collection::setNameFilter(const QString& query) {
     d->nameTerms = t;
     if (d->mode == Mode::None)
         return;
-    if (d->watcher) {
-        d->start(JobKind::Load); // the running job filters with the old terms
+    // A running load is not restarted per key (code review M3 #17): apply() filters its
+    // result again when the terms changed meanwhile.
+    if (d->watcher)
         return;
-    }
-    d->applyNameFilter();
+    d->scheduleNameFilter();
 }
 
 QString Collection::nameFilter() const {
     return d->nameFilter;
 }
 
-void Collection::Private::applyNameFilter() {
+void Collection::Private::scheduleNameFilter() {
+    if (watcher)
+        return; // apply() runs it with the job's result
+    NameFilterInput in;
+    in.entries = entries; // implicitly shared: no copy on the GUI thread
+    in.hidden = hidden;
+    in.terms = nameTerms;
+    in.ratingActive = ratingReader && filter.isActive();
+    in.filter = filter;
+    in.stale = stale;
+    in.spec = spec;
+    in.collator = collator;
+    in.byFolder = recursive && mode != Mode::Files;
+    in.keepAlive = own;
+    const quint64 gen = ++nameFilterGeneration;
+    if (entries.size() + hidden.size() <= kSyncNameFilterEntries) {
+        applyNameFilterOutput(filterByName(std::move(in)));
+        return;
+    }
+    const quint64 ver = version;
+    using Watcher = QFutureWatcher<NameFilterOutput>;
+    auto* w = new Watcher(q);
+    QObject::connect(w, &Watcher::finished, q, [this, w, gen, ver] {
+        w->deleteLater();
+        if (gen != nameFilterGeneration)
+            return; // typed on, or the collection was reopened
+        if (ver != version || watcher) {
+            scheduleNameFilter(); // entries changed meanwhile: filter the current ones
+            return;
+        }
+        applyNameFilterOutput(w->result());
+    });
+    w->setFuture(QtConcurrent::run(filterByName, std::move(in)));
+}
+
+void Collection::Private::applyNameFilterOutput(NameFilterOutput out) {
     const QString oldPath = current >= 0 && current < entries.size() ? entries[current].path : QString();
     const int oldIndex = current;
-    // Visible entries that no longer match leave (also the current one and a stale one).
-    QVector<FileEntry> kept;
-    kept.reserve(entries.size());
-    for (FileEntry& e : entries) {
-        if (namefilter::matchesTerms(e.name, nameTerms)) {
-            kept.append(std::move(e));
-        } else {
-            if (e.path == stale)
-                stale.clear();
-            const QString p = e.path;
-            hidden.insert(p, std::move(e));
-        }
-    }
-    // Hidden entries that match the name and the rating filter come back, sorted.
-    QVector<FileEntry> back;
-    for (auto it = hidden.begin(); it != hidden.end();) {
-        const FileEntry& e = it.value();
-        const bool ratingOk =
-            !(ratingReader && filter.isActive()) || !e.ratingRead || filter.matches(collection::ratingOf(e));
-        if (ratingOk && namefilter::matchesTerms(e.name, nameTerms)) {
-            back.append(it.value());
-            it = hidden.erase(it);
-        } else {
-            ++it;
-        }
-    }
-    BinaryCollator fallback;
-    const NameCollator& coll = collator ? *collator : fallback;
-    auto less = [&](const FileEntry& a, const FileEntry& b) { return entryLess(a, b, spec, coll); };
-    std::sort(back.begin(), back.end(), less);
-    entries.clear();
-    entries.reserve(kept.size() + back.size());
-    std::merge(std::make_move_iterator(kept.begin()), std::make_move_iterator(kept.end()),
-               std::make_move_iterator(back.begin()), std::make_move_iterator(back.end()),
-               std::back_inserter(entries), less);
-    rebuildIndex();
+    entries = std::move(out.entries);
+    hidden = std::move(out.hidden);
+    indexByPath = std::move(out.index);
+    ++version;
+    if (out.staleLeft)
+        stale.clear();
+    rebuildPairIndex();
     const auto it = indexByPath.constFind(oldPath);
     current = it != indexByPath.cend() ? *it : (entries.isEmpty() ? -1 : 0);
     emit q->entriesChanged();
     const QString newPath = current >= 0 ? entries[current].path : QString();
     if (current != oldIndex || newPath != oldPath)
         emit q->currentChanged(current, newPath);
+}
+
+// ---- code review M3 #16: folder changes ----
+
+void Collection::folderContentsChanged(const QString& folderPath) {
+    if (d->mode != Mode::File && d->mode != Mode::Folder)
+        return;
+    const QString f = QDir::cleanPath(folderPath);
+    if (!d->coversFolder(f))
+        return;
+    d->pendingFolders.insert(f);
+    if (!d->changeTimer->isActive())
+        d->changeTimer->start(); // coalesce: one update per burst (copying 500 files)
+}
+
+bool Collection::hasPendingChanges() const {
+    return !d->pendingFolders.isEmpty() || d->deltaRunning;
+}
+
+void Collection::Private::processPendingChanges() {
+    if (pendingFolders.isEmpty() || (mode != Mode::File && mode != Mode::Folder))
+        return;
+    if (deltaRunning)
+        return; // started again when the running update is applied
+    QStringList folders(pendingFolders.cbegin(), pendingFolders.cend());
+    pendingFolders.clear();
+    if (!recursive || watcher || treeFolders.isEmpty()) {
+        q->reload(); // one folder (or a load is running anyway): read it again
+        return;
+    }
+    // F-OPEN-08: only the changed folders (and new subfolders) are read again; the rest of
+    // the tree keeps its entries and order.
+    std::sort(folders.begin(), folders.end());
+    startDelta(folders);
+}
+
+void Collection::Private::startDelta(const QStringList& folders) {
+    DeltaJob dj;
+    dj.base = makeJob(JobKind::Load);
+    dj.base.manualSpec = spec; // the resolved spec of the last load ("Wie Finder" included)
+    dj.base.manualSpec.source = spec.source;
+    dj.folders = folders;
+    dj.known = treeSet;
+    dj.generation = ++deltaGeneration;
+    dj.version = version;
+    deltaRunning = true;
+    using Watcher = QFutureWatcher<DeltaResult>;
+    auto* w = new Watcher(q);
+    QObject::connect(w, &Watcher::finished, q, [this, w] {
+        w->deleteLater();
+        const DeltaResult r = w->result();
+        if (r.generation != deltaGeneration)
+            return;
+        deltaRunning = false;
+        applyDelta(r);
+        if (!pendingFolders.isEmpty() && !changeTimer->isActive())
+            changeTimer->start();
+    });
+    w->setFuture(QtConcurrent::run(runDelta, std::move(dj)));
+}
+
+void Collection::Private::applyDelta(const DeltaResult& r) {
+    if (r.fullReload) {
+        q->reload();
+        return;
+    }
+    if (r.version != version) {
+        // Edited meanwhile (trash, rename …): the result may predate that; read again.
+        for (const QString& f : r.folders)
+            pendingFolders.insert(f);
+        return;
+    }
+    // Folders whose old contents go: every changed folder, and removed folders with
+    // everything below them.
+    QSet<QString> replaced;
+    QStringList removedRoots;
+    for (const FolderContent& c : r.contents) {
+        if (c.removed)
+            removedRoots << c.folder;
+        else
+            replaced.insert(c.folder);
+    }
+    auto isBelowRemoved = [&](const QString& f) {
+        return std::any_of(removedRoots.cbegin(), removedRoots.cend(), [&](const QString& root) {
+            return f == root || f.startsWith(root.endsWith(u'/') ? root : root + u'/');
+        });
+    };
+    auto drop = [&](const QString& path) {
+        const QString f = folderOf(path);
+        return replaced.contains(f) || isBelowRemoved(f);
+    };
+    const QString oldPath = current >= 0 && current < entries.size() ? entries[current].path : QString();
+    const int oldIndex = current;
+    const QVector<FileEntry> old = entries;
+    entries.removeIf([&](const FileEntry& e) { return drop(e.path); });
+    hidden.removeIf([&](const QHash<QString, FileEntry>::iterator& it) { return drop(it.key()); });
+    partners.removeIf([&](const QHash<QString, FileEntry>::iterator& it) { return drop(it.key()); });
+
+    // The tree's folders.
+    const QStringList oldFolders = treeFolders;
+    treeFolders.removeIf([&](const QString& f) { return isBelowRemoved(f); });
+    QSet<QString> present(treeFolders.cbegin(), treeFolders.cend());
+    for (const FolderContent& c : r.contents)
+        for (const QString& f : c.folders)
+            if (!c.removed && !present.contains(f)) {
+                present.insert(f);
+                treeFolders << f;
+            }
+    BinaryCollator fallback;
+    const NameCollator& coll = collator ? *collator : fallback;
+    if (treeFolders != oldFolders) {
+        std::sort(treeFolders.begin(), treeFolders.end(), [&](const QString& a, const QString& b) {
+            return collection::compareFolderPaths(a, b, coll) < 0;
+        });
+        treeSet = present;
+    }
+    QHash<QString, int> folderRank;
+    for (int i = 0; i < treeFolders.size(); ++i)
+        folderRank.insert(treeFolders[i], i);
+    auto rankOf = [&](const FileEntry& e) { return folderRank.value(folderOf(e.path), -1); };
+
+    // Insert each folder's (or new subtree's) sorted block where its folder belongs: the
+    // entries are grouped by folder in tree order.
+    for (const FolderContent& c : r.contents) {
+        if (c.removed)
+            continue;
+        for (FileEntry e : c.hidden) {
+            e.sortRank = -1;
+            hidden.insert(e.path, std::move(e));
+        }
+        for (auto it = c.partners.cbegin(); it != c.partners.cend(); ++it)
+            partners.insert(it.key(), it.value());
+        if (c.shown.isEmpty())
+            continue;
+        const int rank = folderRank.value(c.folders.value(0, c.folder), -1);
+        const auto pos = std::lower_bound(entries.begin(), entries.end(), rank,
+                                          [&](const FileEntry& e, int r2) { return rankOf(e) < r2; });
+        QVector<FileEntry> block = c.shown;
+        for (FileEntry& e : block)
+            e.sortRank = -1;
+        const qsizetype at = pos - entries.begin();
+        QVector<FileEntry> merged;
+        merged.reserve(entries.size() + block.size());
+        merged.append(entries.mid(0, at));
+        merged.append(block);
+        merged.append(entries.mid(at));
+        entries = std::move(merged);
+    }
+    if (treeFolders != oldFolders)
+        updateLease();
+    if (!stale.isEmpty() &&
+        !std::any_of(entries.cbegin(), entries.cend(), [&](const FileEntry& e) { return e.path == stale; }))
+        stale.clear();
+    rebuildIndex();
+    rebuildPairIndex();
+    auto it = indexByPath.constFind(oldPath);
+    if (it == indexByPath.cend() && partners.contains(oldPath))
+        it = indexByPath.constFind(partners.value(oldPath).pairedPath);
+    current = it != indexByPath.cend() ? *it : neighbourIndex(old, oldIndex);
+    emit q->entriesChanged();
+    const QString newPath = current >= 0 ? entries[current].path : QString();
+    if (current != oldIndex || newPath != oldPath)
+        emit q->currentChanged(current, newPath);
+    if (treeFolders != oldFolders)
+        emit q->foldersChanged();
+    if (entries.size() + hidden.size() > maxTreeImages)
+        q->reload(); // the limit applies (status message)
+}
+
+void Collection::sidecarChanged(const QString& sidecarPath) {
+    // Code review M3 #16: an XMP sidecar (e.g. written by this app's own rating) does not
+    // change the image list; only with an active rating filter the rating of the image(s)
+    // it belongs to is read again (worker) and the filter applied.
+    if (!d->ratingReader || !d->filter.isActive() || (d->mode != Mode::File && d->mode != Mode::Folder))
+        return;
+    const QString sidecar = QDir::cleanPath(sidecarPath);
+    const QString folderOfSidecar = folderOf(sidecar);
+    if (!d->coversFolder(folderOfSidecar))
+        return;
+    // "IMG_1.xmp" belongs to IMG_1.* (Adobe), "IMG_1.JPG.xmp" to IMG_1.JPG.
+    QString base = QFileInfo(sidecar).fileName();
+    base.chop(4); // ".xmp"
+    QStringList targets;
+    auto consider = [&](const QString& path) {
+        if (folderOf(path) != folderOfSidecar)
+            return;
+        const QString name = QFileInfo(path).fileName();
+        if (name.compare(base, Qt::CaseInsensitive) == 0 ||
+            QFileInfo(name).completeBaseName().compare(base, Qt::CaseInsensitive) == 0)
+            targets << path;
+    };
+    for (const FileEntry& e : std::as_const(d->entries))
+        consider(e.path);
+    for (auto it = d->hidden.cbegin(); it != d->hidden.cend(); ++it)
+        consider(it.key());
+    if (targets.isEmpty())
+        return;
+    const RatingReader reader = d->ratingReader;
+    using Ratings = QList<std::pair<QString, Rating>>;
+    auto* w = new QFutureWatcher<Ratings>(this);
+    connect(w, &QFutureWatcher<Ratings>::finished, this, [this, w] {
+        w->deleteLater();
+        for (const auto& [path, rating] : w->result())
+            updateRating(path, rating);
+    });
+    w->setFuture(QtConcurrent::run([targets, reader] {
+        Ratings out;
+        for (const QString& t : targets)
+            out.append({t, reader(t)});
+        return out;
+    }));
+}
+
+void Collection::setMaxTreeImages(int maxImages) {
+    d->maxTreeImages = std::max(1, maxImages);
+}
+
+void Collection::showEntriesForTesting(const QVector<FileEntry>& entries) {
+    d->reset(Mode::Files);
+    d->updateLease();
+    d->entries = entries;
+    for (int i = 0; i < d->entries.size(); ++i) {
+        d->files << d->entries[i].path;
+        d->entries[i].sortRank = i;
+    }
+    d->fileSet = QSet<QString>(d->files.cbegin(), d->files.cend());
+    d->rebuildIndex();
+    d->current = d->entries.isEmpty() ? -1 : 0;
+    emit entriesChanged();
+    emit currentChanged(d->current, currentPath());
 }
 
 // ---- M3: subfolders (F-OPEN-08) and RAW+JPEG pairs (F-FMT-06) ----
@@ -1998,6 +2670,7 @@ QStringList Collection::withPairs(const QStringList& paths) const {
 }
 
 bool Collection::togglePairMember(const QString& path) {
+    ++d->version;
     const int i = indexOf(path);
     if (i < 0 || d->entries[i].pairedPath.isEmpty())
         return false;

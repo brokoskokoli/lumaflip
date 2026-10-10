@@ -142,10 +142,6 @@
         <translation>Esc</translation>
     </message>
     <message>
-        <source>%1 (in einer späteren Version)</source>
-        <translation>%1 (in een latere versie)</translation>
-    </message>
-    <message>
         <source>Lumaflip wird als Standard-App festgelegt …</source>
         <translation>Lumaflip wordt ingesteld als standaardapp…</translation>
     </message>
@@ -168,6 +164,14 @@
         <translation>
             <numerusform>Submappen lezen… %1 mappen, %n afbeelding</numerusform>
             <numerusform>Submappen lezen… %1 mappen, %n afbeeldingen</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.</source>
+        <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
+        <translation>
+            <numerusform>Submappen: alleen de eerste %n afbeelding wordt getoond – open een kleinere map.</numerusform>
+            <numerusform>Submappen: alleen de eerste %n afbeeldingen worden getoond – open een kleinere map.</numerusform>
         </translation>
     </message>
     <message>
@@ -370,6 +374,10 @@
     <message>
         <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
         <translation>Het decoderen duurde te lang en is afgebroken.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess läuft ohne Sandbox und wird aus Sicherheitsgründen nicht verwendet.</source>
+        <translation>Het hulpproces voor het decoderen draait zonder sandbox en wordt om veiligheidsredenen niet gebruikt.</translation>
     </message>
     <message>
         <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
@@ -3209,10 +3217,6 @@
 <context>
     <name>lf::PreferencesDialog</name>
     <message>
-        <source>in einer späteren Version</source>
-        <translation>in een latere versie</translation>
-    </message>
-    <message>
         <source>Einstellungen</source>
         <translation>Instellingen</translation>
     </message>
@@ -3539,10 +3543,6 @@
     <message>
         <source>Maus, Trackpad und Tasten</source>
         <translation>Muis, trackpad en toetsen</translation>
-    </message>
-    <message>
-        <source>%1 (%2)</source>
-        <translation>%1 (%2)</translation>
     </message>
     <message>
         <source>Mausrad-Feinheiten</source>

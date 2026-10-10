@@ -27,6 +27,13 @@ CollectionExtras::CollectionExtras(ViewerWindow& window, Application& app)
         m_progress = tr("Unterordner werden gelesen … %1 Ordner, %n Bild(er)", nullptr, images).arg(folders);
         updateStatus();
     });
+    connect(c, &Collection::treeLimitReached, this, [this](int images) {
+        //: status bar: a folder with subfolders has more images than are read (F-OPEN-08)
+        m_window.showMessage(
+            tr("Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.",
+               nullptr, images),
+            8000);
+    });
     connect(c, &Collection::loadingFinished, this, [this] {
         m_progress.clear();
         updateStatus();

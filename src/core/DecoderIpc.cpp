@@ -6,8 +6,13 @@
 #include <QDataStream>
 #include <QIODevice>
 
+#include <QtNumeric>
+
+#include <algorithm>
 #include <cerrno>
+#include <chrono>
 #include <cstring>
+#include <limits>
 
 #ifdef Q_OS_UNIX
 #include <fcntl.h>
@@ -99,10 +104,155 @@ void get(QDataStream& s, PixelHeader& p) {
     p.format = f;
 }
 
+// Metadata values cross the process boundary as a closed set of plain types. A QVariant
+// stream would let a compromised helper make the app construct any registered type (e.g.
+// a QImage, decoded by the app's image plugins - exactly what the helper is for).
+enum class ValueKind : quint8 { Invalid, Bool, Int, UInt, Double, String, DateTime, Map, List, Bytes };
+constexpr int kMaxValueDepth = 8;
+constexpr qint32 kMaxValueItems = 100000;
+
+void putValue(QDataStream& s, const QVariant& v, int depth = 0) {
+    if (depth > kMaxValueDepth) {
+        s << quint8(ValueKind::Invalid);
+        return;
+    }
+    switch (v.typeId()) {
+    case QMetaType::Bool:
+        s << quint8(ValueKind::Bool) << v.toBool();
+        return;
+    case QMetaType::Int:
+    case QMetaType::Long:
+    case QMetaType::LongLong:
+    case QMetaType::Short:
+    case QMetaType::Char:
+    case QMetaType::SChar:
+        s << quint8(ValueKind::Int) << qint64(v.toLongLong());
+        return;
+    case QMetaType::UInt:
+    case QMetaType::ULong:
+    case QMetaType::ULongLong:
+    case QMetaType::UShort:
+    case QMetaType::UChar:
+        s << quint8(ValueKind::UInt) << quint64(v.toULongLong());
+        return;
+    case QMetaType::Double:
+    case QMetaType::Float:
+        s << quint8(ValueKind::Double) << v.toDouble();
+        return;
+    case QMetaType::QDateTime:
+        s << quint8(ValueKind::DateTime) << v.toDateTime();
+        return;
+    case QMetaType::QByteArray:
+        s << quint8(ValueKind::Bytes) << v.toByteArray();
+        return;
+    case QMetaType::QVariantMap: {
+        const QVariantMap m = v.toMap();
+        s << quint8(ValueKind::Map) << qint32(m.size());
+        for (auto it = m.cbegin(); it != m.cend(); ++it) {
+            s << it.key();
+            putValue(s, it.value(), depth + 1);
+        }
+        return;
+    }
+    case QMetaType::QVariantList:
+    case QMetaType::QStringList: {
+        const QVariantList l = v.toList();
+        s << quint8(ValueKind::List) << qint32(l.size());
+        for (const QVariant& x : l)
+            putValue(s, x, depth + 1);
+        return;
+    }
+    default:
+        if (!v.isValid()) {
+            s << quint8(ValueKind::Invalid);
+            return;
+        }
+        s << quint8(ValueKind::String) << v.toString();
+        return;
+    }
+}
+
+QVariant getValue(QDataStream& s, int depth = 0) {
+    quint8 kind = 0;
+    s >> kind;
+    auto corrupt = [&] {
+        s.setStatus(QDataStream::ReadCorruptData);
+        return QVariant();
+    };
+    if (depth > kMaxValueDepth)
+        return corrupt();
+    switch (ValueKind(kind)) {
+    case ValueKind::Invalid:
+        return QVariant();
+    case ValueKind::Bool: {
+        bool b = false;
+        s >> b;
+        return b;
+    }
+    case ValueKind::Int: {
+        qint64 i = 0;
+        s >> i;
+        return QVariant::fromValue(i);
+    }
+    case ValueKind::UInt: {
+        quint64 u = 0;
+        s >> u;
+        return QVariant::fromValue(u);
+    }
+    case ValueKind::Double: {
+        double d = 0;
+        s >> d;
+        return d;
+    }
+    case ValueKind::String: {
+        QString t;
+        s >> t;
+        return t;
+    }
+    case ValueKind::DateTime: {
+        QDateTime t;
+        s >> t;
+        return t;
+    }
+    case ValueKind::Bytes: {
+        QByteArray b;
+        s >> b;
+        return b;
+    }
+    case ValueKind::Map: {
+        qint32 n = 0;
+        s >> n;
+        if (n < 0 || n > kMaxValueItems)
+            return corrupt();
+        QVariantMap m;
+        for (qint32 i = 0; i < n && s.status() == QDataStream::Ok; ++i) {
+            QString key;
+            s >> key;
+            m.insert(key, getValue(s, depth + 1));
+        }
+        return m;
+    }
+    case ValueKind::List: {
+        qint32 n = 0;
+        s >> n;
+        if (n < 0 || n > kMaxValueItems)
+            return corrupt();
+        QVariantList l;
+        for (qint32 i = 0; i < n && s.status() == QDataStream::Ok; ++i)
+            l.append(getValue(s, depth + 1));
+        return l;
+    }
+    }
+    return corrupt();
+}
+
 void put(QDataStream& s, const Metadata& m) {
-    s << m.groups << qint32(m.entries.size());
-    for (const MetadataEntry& e : m.entries)
-        s << e.key << e.label << e.value;
+    putValue(s, m.groups);
+    s << qint32(m.entries.size());
+    for (const MetadataEntry& e : m.entries) {
+        s << e.key << e.label;
+        putValue(s, e.value);
+    }
     putOptional(s, m.captured);
     putOptional(s, m.latitude);
     putOptional(s, m.longitude);
@@ -110,11 +260,17 @@ void put(QDataStream& s, const Metadata& m) {
 }
 void get(QDataStream& s, Metadata& m) {
     qint32 n = 0;
-    s >> m.groups >> n;
+    m.groups = getValue(s).toMap();
+    s >> n;
     m.entries.clear();
+    if (n < 0 || n > kMaxValueItems) {
+        s.setStatus(QDataStream::ReadCorruptData);
+        return;
+    }
     for (qint32 i = 0; i < n && s.status() == QDataStream::Ok; ++i) {
         MetadataEntry e;
-        s >> e.key >> e.label >> e.value;
+        s >> e.key >> e.label;
+        e.value = getValue(s);
         m.entries.append(e);
     }
     getOptional(s, m.captured);
@@ -133,6 +289,7 @@ QByteArray encode(const Request& r) {
     s.setVersion(kStreamVersion);
     s << kProtocolVersion << quint8(1) << r.id << quint8(r.op) << r.backend << r.path;
     put(s, r.decode);
+    s << r.shm;
     return out;
 }
 
@@ -159,6 +316,7 @@ std::optional<Request> decodeRequest(const QByteArray& payload) {
         return std::nullopt;
     s >> r.id >> op >> r.backend >> r.path;
     get(s, r.decode);
+    s >> r.shm;
     if (s.status() != QDataStream::Ok)
         return std::nullopt;
     r.op = Op(op);
@@ -185,8 +343,60 @@ std::optional<Response> decodeResponse(const QByteArray& payload) {
 }
 
 QByteArray shmName(qint64 pid, quint32 requestId) {
-    // "/lfd.<pid>.<id>": at most 4 + 10 + 1 + 10 = 25 characters (PSHMNAMLEN is 31).
-    return "/lfd." + QByteArray::number(pid) + '.' + QByteArray::number(requestId);
+    // "/lfd.<pid>.<id>": at most 5 + 10 + 1 + 10 = 26 characters (PSHMNAMLEN is 31).
+    return kShmPrefix + QByteArray::number(pid) + '.' + QByteArray::number(requestId);
+}
+
+qsizetype parseFrame(const QByteArray& buffer, QByteArray* payload) {
+    if (buffer.size() < 4)
+        return 0;
+    const auto* b = reinterpret_cast<const uchar*>(buffer.constData());
+    const quint32 len = quint32(b[0]) | (quint32(b[1]) << 8) | (quint32(b[2]) << 16) | (quint32(b[3]) << 24);
+    if (len > kMaxFrameBytes)
+        return -1;
+    if (quint64(buffer.size()) - 4 < len)
+        return 0;
+    *payload = buffer.mid(4, qsizetype(len));
+    return 4 + qsizetype(len);
+}
+
+PixelHeader describeImage(const QImage& image) {
+    PixelHeader h;
+    h.width = image.width();
+    h.height = image.height();
+    h.format = int(image.format());
+    h.bytesPerLine = image.bytesPerLine();
+    h.shmSize = qint64(image.bytesPerLine()) * image.height();
+    h.iccProfile = image.colorSpace().isValid() ? image.colorSpace().iccProfile() : QByteArray();
+    return h;
+}
+
+bool validatePixelHeader(const PixelHeader& h, QString* error) {
+    auto invalid = [&] {
+        if (error)
+            *error = Tr::tr("Die Bilddaten des Decoders sind ungültig.");
+        return false;
+    };
+    if (h.width <= 0 || h.height <= 0 || h.bytesPerLine <= 0 || h.shmSize <= 0)
+        return invalid();
+    if (h.format <= QImage::Format_Invalid || h.format >= QImage::NImageFormats)
+        return invalid();
+    const auto fmt = QImage::Format(h.format);
+    // Indexed and 1-bit formats need a colour table the protocol does not carry.
+    if (fmt == QImage::Format_Indexed8 || fmt == QImage::Format_Mono || fmt == QImage::Format_MonoLSB)
+        return invalid();
+    const int bpp = QImage::toPixelFormat(fmt).bitsPerPixel();
+    if (bpp < 8 || bpp % 8 != 0)
+        return invalid();
+    qint64 rowBytes = 0, total = 0;
+    if (qMulOverflow(qint64(h.width), qint64(bpp / 8), &rowBytes) || h.bytesPerLine < rowBytes)
+        return invalid();
+    if (qMulOverflow(h.bytesPerLine, qint64(h.height), &total) || total != h.shmSize)
+        return invalid();
+    if (quint64(h.shmSize) > quint64(std::numeric_limits<size_t>::max()) ||
+        h.bytesPerLine > qint64(std::numeric_limits<qsizetype>::max()))
+        return invalid();
+    return true;
 }
 
 #ifdef Q_OS_UNIX
@@ -210,12 +420,20 @@ bool waitReadable(int fd, int timeoutMs, IoStatus* status) {
     }
 }
 
-// Reads exactly `size` bytes; each wait for data is limited to `timeoutMs` (-1 = no limit).
-IoStatus readExactly(int fd, char* data, size_t size, int timeoutMs) {
+using Clock = std::chrono::steady_clock;
+
+// Milliseconds left until `deadline` (0 when it passed).
+int remainingMs(Clock::time_point deadline) {
+    const auto left = std::chrono::duration_cast<std::chrono::milliseconds>(deadline - Clock::now()).count();
+    return int(std::clamp<qint64>(left, 0, std::numeric_limits<int>::max()));
+}
+
+// Reads exactly `size` bytes until `deadline` (nullptr = no limit).
+IoStatus readExactly(int fd, char* data, size_t size, const Clock::time_point* deadline) {
     size_t done = 0;
     while (done < size) {
         IoStatus st = IoStatus::Ok;
-        if (timeoutMs >= 0 && !waitReadable(fd, timeoutMs, &st))
+        if (deadline && !waitReadable(fd, remainingMs(*deadline), &st))
             return st;
         const ssize_t n = read(fd, data + done, size - done);
         if (n == 0)
@@ -254,9 +472,11 @@ IoStatus writeFrame(int fd, const QByteArray& payload) {
 }
 
 IoStatus readFrame(int fd, QByteArray* payload, int timeoutMs) {
+    // One absolute deadline for the whole frame: a peer that trickles bytes cannot stretch it.
+    const Clock::time_point deadline = Clock::now() + std::chrono::milliseconds(std::max(timeoutMs, 0));
+    const Clock::time_point* limit = timeoutMs < 0 ? nullptr : &deadline;
     unsigned char header[4];
-    // The timeout covers the wait for the answer; once it started, the rest follows quickly.
-    IoStatus st = readExactly(fd, reinterpret_cast<char*>(header), 4, timeoutMs);
+    IoStatus st = readExactly(fd, reinterpret_cast<char*>(header), 4, limit);
     if (st != IoStatus::Ok)
         return st;
     const quint32 len = quint32(header[0]) | (quint32(header[1]) << 8) | (quint32(header[2]) << 16) |
@@ -264,24 +484,28 @@ IoStatus readFrame(int fd, QByteArray* payload, int timeoutMs) {
     if (len > kMaxFrameBytes)
         return IoStatus::TooLarge;
     payload->resize(qsizetype(len));
-    return readExactly(fd, payload->data(), len, timeoutMs < 0 ? -1 : std::max(timeoutMs, 5000));
+    return readExactly(fd, payload->data(), len, limit);
 }
 
-bool writeSharedImage(const QByteArray& name, const QImage& image, PixelHeader* header, QString* error) {
+bool fillSharedImage(const QByteArray& name, const QImage& image, QString* error) {
     const qint64 size = qint64(image.bytesPerLine()) * image.height();
     if (image.isNull() || size <= 0) {
         if (error)
             *error = Tr::tr("Das Bild ist leer.");
         return false;
     }
-    const int fd = shm_open(name.constData(), O_RDWR | O_CREAT | O_EXCL, 0600);
+    const int fd = name.startsWith(kShmPrefix) ? shm_open(name.constData(), O_RDWR, 0) : -1;
     if (fd < 0) {
         if (error)
             *error = Tr::tr("Gemeinsamer Speicher ist nicht verfügbar (%1).")
                          .arg(QString::fromLocal8Bit(strerror(errno)));
         return false;
     }
-    bool ok = ftruncate(fd, off_t(size)) == 0;
+    // The descriptor keeps the memory alive: the name is not needed any more (and must not
+    // outlive the app should it die now).
+    shm_unlink(name.constData());
+    struct stat st{};
+    bool ok = fstat(fd, &st) == 0 && st.st_size >= size;
     void* mem = ok ? mmap(nullptr, size_t(size), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0) : MAP_FAILED;
     ok = mem != MAP_FAILED;
     if (ok) {
@@ -289,21 +513,31 @@ bool writeSharedImage(const QByteArray& name, const QImage& image, PixelHeader* 
         munmap(mem, size_t(size));
     }
     close(fd);
-    if (!ok) {
+    if (!ok && error)
+        *error = Tr::tr("Nicht genug Speicher für das Bild (%1 × %2 Pixel).")
+                     .arg(image.width())
+                     .arg(image.height());
+    return ok;
+}
+
+int createShared(const QByteArray& name, qint64 size, QString* error) {
+    const int fd = size > 0 ? shm_open(name.constData(), O_RDWR | O_CREAT | O_EXCL, 0600) : -1;
+    if (fd < 0) {
+        const int code = size > 0 ? errno : EINVAL;
+        if (error)
+            *error = Tr::tr("Gemeinsamer Speicher ist nicht verfügbar (%1).")
+                         .arg(QString::fromLocal8Bit(strerror(code)));
+        return -1;
+    }
+    if (ftruncate(fd, off_t(size)) != 0) {
+        close(fd);
         shm_unlink(name.constData());
         if (error)
-            *error = Tr::tr("Nicht genug Speicher für das Bild (%1 × %2 Pixel).")
-                         .arg(image.width())
-                         .arg(image.height());
-        return false;
+            *error = Tr::tr("Gemeinsamer Speicher ist nicht verfügbar (%1).")
+                         .arg(QString::fromLocal8Bit(strerror(ENOMEM)));
+        return -1;
     }
-    header->width = image.width();
-    header->height = image.height();
-    header->format = int(image.format());
-    header->bytesPerLine = image.bytesPerLine();
-    header->shmSize = size;
-    header->iccProfile = image.colorSpace().isValid() ? image.colorSpace().iccProfile() : QByteArray();
-    return true;
+    return fd;
 }
 
 namespace {
@@ -318,23 +552,16 @@ void releaseMapping(void* info) {
 }
 } // namespace
 
-QImage readSharedImage(const QByteArray& name, const PixelHeader& h, QString* error) {
-    // Read-write mapping: a QImage on read-only memory deep-copies itself on the first
-    // non-const access (e.g. setColorSpace). Nobody else has the object any more.
-    const int fd = shm_open(name.constData(), O_RDWR, 0);
-    shm_unlink(name.constData()); // the mapping (if any) keeps the memory alive
+QImage mapSharedImage(int fd, const PixelHeader& h, QString* error) {
     if (fd < 0) {
         if (error)
             *error = Tr::tr("Die Bilddaten des Decoders fehlen.");
         return {};
     }
     struct stat st{};
-    const auto fmt = QImage::Format(h.format);
-    const bool sane = fstat(fd, &st) == 0 && h.width > 0 && h.height > 0 &&
-                      h.format > QImage::Format_Invalid && h.format < QImage::NImageFormats &&
-                      h.bytesPerLine > 0 && h.shmSize == h.bytesPerLine * h.height &&
-                      st.st_size >= h.shmSize &&
-                      h.bytesPerLine >= qint64(h.width) * QImage::toPixelFormat(fmt).bitsPerPixel() / 8;
+    const bool sane = validatePixelHeader(h, nullptr) && fstat(fd, &st) == 0 && st.st_size >= h.shmSize;
+    // Read-write mapping: a QImage on read-only memory deep-copies itself on the first
+    // non-const access (e.g. setColorSpace). Nobody else has the object any more.
     void* mem =
         sane ? mmap(nullptr, size_t(h.shmSize), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0) : MAP_FAILED;
     close(fd);
@@ -344,8 +571,8 @@ QImage readSharedImage(const QByteArray& name, const PixelHeader& h, QString* er
         return {};
     }
     auto* m = new Mapping{mem, size_t(h.shmSize)};
-    QImage img(static_cast<uchar*>(mem), h.width, h.height, qsizetype(h.bytesPerLine), fmt, releaseMapping,
-               m);
+    QImage img(static_cast<uchar*>(mem), h.width, h.height, qsizetype(h.bytesPerLine),
+               QImage::Format(h.format), releaseMapping, m);
     if (img.isNull()) {
         releaseMapping(m);
         if (error)
@@ -377,10 +604,13 @@ IoStatus writeFrame(int, const QByteArray&) {
 IoStatus readFrame(int, QByteArray*, int) {
     return IoStatus::Error;
 }
-bool writeSharedImage(const QByteArray&, const QImage&, PixelHeader*, QString*) {
+bool fillSharedImage(const QByteArray&, const QImage&, QString*) {
     return false;
 }
-QImage readSharedImage(const QByteArray&, const PixelHeader&, QString*) {
+int createShared(const QByteArray&, qint64, QString*) {
+    return -1;
+}
+QImage mapSharedImage(int, const PixelHeader&, QString*) {
     return {};
 }
 bool unlinkShared(const QByteArray&) {

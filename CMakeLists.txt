@@ -19,6 +19,7 @@ set(CMAKE_AUTOMOC ON)
 option(LF_WERROR "Treat warnings in own sources as errors" ON)
 option(LF_SANITIZE "Build with AddressSanitizer + UBSan" OFF)
 option(LF_BUILD_TESTS "Build tests" ON)
+option(LF_BUILD_FUZZERS "Build the fuzz targets in tests/fuzz (libFuzzer or standalone driver)" OFF)
 # Release builds: fail instead of silently dropping lossless JPEG rotation (F-EDIT-02) when
 # libjpeg-turbo's static TurboJPEG library (libturbojpeg.a) is missing (src/CMakeLists.txt).
 option(LF_REQUIRE_TURBOJPEG "Require the static libjpeg-turbo TurboJPEG library" OFF)
@@ -116,4 +117,9 @@ add_subdirectory(src)
 if(LF_BUILD_TESTS)
   enable_testing()
   add_subdirectory(tests)
+endif()
+
+# Fuzz targets (SPEC 8.5), see tests/fuzz/CMakeLists.txt.
+if(LF_BUILD_FUZZERS)
+  add_subdirectory(tests/fuzz)
 endif()

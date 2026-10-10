@@ -321,7 +321,7 @@ private slots:
     }
 
     // Covers: F-VIEW-12 (floating window level), F-VIEW-13 (title bar chrome hidden, handle)
-    void F_VIEW_12_13_alwaysOnTopAndMinimalWindow() {
+    void F_VIEW_12_F_VIEW_13_alwaysOnTopAndMinimalWindow() {
         makeFolder();
         ViewerWindow* w = openAndWait(path("alpha.jpg"));
         QVERIFY(w);
@@ -433,7 +433,7 @@ private slots:
         QTRY_COMPARE(w->collection()->count(), 1);
         QCOMPARE(w->currentPath(), path("beta.jpg"));
         QTest::keyClicks(f->field(), QStringLiteral("x"));
-        QCOMPARE(w->collection()->count(), 0);
+        QTRY_COMPARE(w->collection()->count(), 0); // after the typing pause (debounce)
         QTest::keyClick(f->field(), Qt::Key_Backspace);
         QTest::keyClick(f->field(), Qt::Key_Return); // keeps the filter
         QVERIFY(!f->isOpen());

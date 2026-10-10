@@ -78,6 +78,11 @@ public:
     virtual void unwatchTree(const QString& root) { unwatch(root); }
 signals:
     void folderChanged(const QString& folderPath);
+    // An XMP sidecar ("*.xmp") was written, e.g. by this app's own rating: reported apart
+    // from folderChanged (it does not change the image list; code review M3 #16).
+    void sidecarChanged(const QString& sidecarPath);
+    // watchTree(): the system dropped events below `root`; the whole tree must be read again.
+    void rescanNeeded(const QString& root);
 };
 
 // Moves files to the trash and back (F-FILE-01).

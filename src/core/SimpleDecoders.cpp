@@ -26,6 +26,12 @@ template <typename T> std::optional<T> failWith(QString* error, const QString& m
     return std::nullopt;
 }
 
+// PCX rows may be padded by a few bytes beyond the pixels (even byte counts, alignment).
+constexpr qint64 kPcxLineSlack = 16;
+// Upper bound of the compression ratio accepted for the run-length formats (PCX RLE: 63
+// bytes from 2, SGI RLE: 127 values from 2 units); beyond it the input is damaged.
+constexpr qint64 kMaxCompression = 64;
+
 bool validSize(qint64 w, qint64 h) {
     return w > 0 && h > 0 && w <= kMaxEdge && h <= kMaxEdge && w * h <= kMaxPixels;
 }
@@ -102,9 +108,19 @@ std::optional<PcxHeader> pcxHeader(const QByteArray& data) {
                        (h.bpp == 8 && (h.planes == 1 || h.planes == 3 || h.planes == 4));
     if (!combo || h.version > 5 || !validSize(h.w, h.h))
         return std::nullopt;
-    if (h.bytesPerLine <= 0 || qint64(h.bytesPerLine) * 8 < qint64(h.w) * h.bpp)
+    // bytesPerLine covers a row (rounded up to an even count by the format) plus at most a
+    // little padding: a huge value would make the decoder loop over bytes no pixel uses.
+    const qint64 needed = (qint64(h.w) * h.bpp + 7) / 8;
+    if (h.bytesPerLine <= 0 || h.bytesPerLine < needed || h.bytesPerLine > needed + kPcxLineSlack)
         return std::nullopt;
     return h;
+}
+
+// Smallest input that can plausibly describe `outputBytes` bytes: RLE packs at most 63 bytes
+// into 2. A tiny file claiming a huge image is refused before anything is allocated (and a
+// moderately truncated file still shows what is there).
+bool plausibleInput(qint64 inputBytes, qint64 outputBytes) {
+    return inputBytes > 0 && inputBytes >= outputBytes / kMaxCompression;
 }
 
 // ---- PNM ----------------------------------------------------------------------------
@@ -423,11 +439,14 @@ std::optional<Raster> decodePcx(const QByteArray& data, QString* error) {
     const auto h = pcxHeader(data);
     if (!h)
         return failWith<Raster>(error, damaged());
+    const qint64 n = data.size();
+    if (!plausibleInput(n - 128, qint64(h->bytesPerLine) * h->planes * h->h))
+        return failWith<Raster>(error, damaged());
     QImage img = allocate(h->w, h->h, QImage::Format_RGBA8888, error);
     if (img.isNull())
         return std::nullopt;
+    img.fill(Qt::black); // rows after the end of a truncated file
     const uchar* d = bytes(data);
-    const qint64 n = data.size();
     // 256-colour palette at the end (VGA): 0x0C + 768 bytes.
     uchar palette[256][3];
     std::memset(palette, 0, sizeof palette);
@@ -453,6 +472,11 @@ std::optional<Raster> decodePcx(const QByteArray& data, QString* error) {
     const qint64 dataEnd =
         (h->bpp == 8 && h->planes == 1 && n >= 128 + 769 && d[n - 769] == 0x0C) ? n - 769 : n;
     for (int y = 0; y < h->h; ++y) {
+        if (pos >= dataEnd && runLeft == 0) {
+            if (y == 0)
+                return failWith<Raster>(error, damaged());
+            break; // input exhausted: the remaining rows stay black
+        }
         for (qint64 i = 0; i < lineBytes; ++i) {
             if (!h->rle) {
                 line[i] = pos < dataEnd ? d[pos++] : 0;
@@ -521,6 +545,31 @@ std::optional<Raster> decodePnm(const QByteArray& data, QString* error) {
         return failWith<Raster>(error, damaged());
     const bool isFloat = h->kind == 'F' || h->kind == 'f';
     const bool deep = !isFloat && h->maxval > 255;
+    // The data must be there before the image is allocated (a tiny file claiming 16k × 16k).
+    const qint64 samples = h->w * h->h * h->depth; // <= kMaxPixels * 4
+    const qint64 available = data.size() - std::min<qint64>(h->dataOffset, data.size());
+    qint64 need = 0;
+    switch (h->kind) {
+    case '1':
+        need = samples; // "0"/"1", whitespace optional
+        break;
+    case '2':
+    case '3':
+        need = samples * 2 - 1; // digits separated by whitespace
+        break;
+    case '4':
+        need = (h->w + 7) / 8 * h->h;
+        break;
+    case 'F':
+    case 'f':
+        need = samples * 4;
+        break;
+    default: // P5, P6, P7
+        need = samples * (h->maxval > 255 ? 2 : 1);
+        break;
+    }
+    if (h->dataOffset > data.size() || available < need)
+        return failWith<Raster>(error, damaged());
     const QImage::Format fmt =
         isFloat ? QImage::Format_RGBA32FPx4 : (deep ? QImage::Format_RGBA64 : QImage::Format_RGBA8888);
     QImage img = allocate(h->w, h->h, fmt, error);
@@ -655,12 +704,21 @@ std::optional<Raster> decodeSgi(const QByteArray& data, QString* error) {
     if (!h || data.size() < 512)
         return failWith<Raster>(error, damaged());
     const bool deep = h->bpc == 2;
+    const qint64 n = data.size();
+    // Sizes first, then the allocation: a 512-byte file must not cost a 4096² buffer.
+    const qint64 imageBytes = qint64(h->w) * h->bpc * h->h * h->z;
+    if (h->rle) {
+        const qint64 tableEntries = qint64(h->h) * h->z;
+        if (tableEntries * 8 > n - 512 || !plausibleInput(n - 512, imageBytes))
+            return failWith<Raster>(error, damaged());
+    } else if (n - 512 < imageBytes) {
+        return failWith<Raster>(error, damaged());
+    }
     QImage img = allocate(h->w, h->h, deep ? QImage::Format_RGBA64 : QImage::Format_RGBA8888, error);
     if (img.isNull())
         return std::nullopt;
     img.fill(Qt::black); // opaque black; missing channels keep these values
     const uchar* d = bytes(data);
-    const qint64 n = data.size();
     const int channels = std::min(h->z, 4);
     // Output channel for an SGI channel: gray (+alpha) or RGB(A).
     auto target = [&](int z) -> int {
@@ -673,8 +731,6 @@ std::optional<Raster> decodeSgi(const QByteArray& data, QString* error) {
     const qint64 rowBytes = qint64(h->w) * h->bpc;
     if (h->rle) {
         const qint64 tableEntries = qint64(h->h) * h->z;
-        if (512 + tableEntries * 8 > n)
-            return failWith<Raster>(error, damaged());
         for (int z = 0; z < channels; ++z)
             for (int y = 0; y < h->h; ++y) {
                 const qint64 t = qint64(z) * h->h + y;
@@ -715,9 +771,6 @@ std::optional<Raster> decodeSgi(const QByteArray& data, QString* error) {
                 }
             }
     } else {
-        const qint64 need = rowBytes * h->h * h->z;
-        if (n - 512 < need)
-            return failWith<Raster>(error, damaged());
         for (int z = 0; z < channels; ++z)
             for (int y = 0; y < h->h; ++y) {
                 const uchar* src = d + 512 + (qint64(z) * h->h + y) * rowBytes;
