@@ -4,7 +4,7 @@
 |---|---|
 | **Name** | **Lumaflip** (luma = Helligkeit/Bildsignal, flip = durchblättern) |
 | **Bundle-ID** | `io.github.brokoskokoli.lumaflip` |
-| **Status** | v1.0 – M1 und M2 umgesetzt; Version 1.0.0 in der manuellen Abnahme (docs/TESTING-M2.md) |
+| **Status** | v1.x – M1 bis M3 umgesetzt; Version 1.1.0 in der Abnahme (docs/TESTING-M3.md) |
 | **Stand** | 2026-10-10 |
 | **Lizenz** | Open Source, GPL-3.0-or-later; veröffentlicht auf GitHub |
 | **Vertrieb** | GitHub Releases, signiert (Developer ID) und notarisiert; zusätzlich Homebrew Cask |
@@ -102,7 +102,7 @@ Jede Anforderung hat eine ID und eine Ausbaustufe:
 | F-OPEN-06 | Versteckte Dateien (Punkt-Dateien, AppleDouble `._*`) und Pakete werden ignoriert. Ob ein Format unterstützt wird, entscheidet der Typ (UTType bzw. Signatur), nicht nur die Dateiendung. | M1 |
 | F-OPEN-07 | Ordnerüberwachung (FSEvents): Neue, gelöschte und umbenannte Dateien aktualisieren die Sammlung live. Das aktuelle Bild bleibt erhalten. Wird das aktuelle Bild extern gelöscht, wird zum nächsten Bild gewechselt. | M2 |
 | F-OPEN-08 | Option „Unterordner einbeziehen“ (rekursiv), umschaltbar pro Sitzung. Reihenfolge: ordnerweise, die Ordner pfadweise in Finder-Namensreihenfolge (ein Ordner vor seinen Unterordnern, wie eine aufgeklappte Listendarstellung); innerhalb eines Ordners gilt die Sortierung des Fensters. Versteckte Ordner und Pakete werden übersprungen, symbolische Links nicht verfolgt. | M3 |
-| F-OPEN-09 | Zum nächsten/vorherigen Geschwisterordner springen (⌥→ / ⌥←, konfigurierbar). | M3 |
+| F-OPEN-09 | Zum nächsten/vorherigen Geschwisterordner springen (⌥→ / ⌥←, wenn nicht gezoomt; gezoomt gilt F-IN-07 bzw. F-VIEW-04; zusätzlich über Menü und frei belegbares Kürzel). | M3 |
 | F-OPEN-10 | Archive (ZIP/CBZ, RAR/CBR, 7z) und PDF wie Ordner durchblättern. | M4 |
 | F-OPEN-11 | „Zuletzt geöffnet“-Menü (Dateien und Ordner). | M2 |
 | F-OPEN-12 | Startbildschirm ohne Bild: Drop-Fläche, „Öffnen…“, zuletzt geöffnete Elemente (bis zu 8, Dateien und Ordner gemischt in der Reihenfolge der letzten Nutzung, anklickbar). | M2 |
@@ -118,7 +118,7 @@ Jede Anforderung hat eine ID und eine Ausbaustufe:
 | F-NAV-05 | Mausrad, Bild↑/Bild↓, Leertaste, Klick, Doppelklick, mittlere Maustaste und weitere Eingaben sind in den Einstellungen belegbar (siehe 4.14). M1 enthält die Standardbelegung und die Mausrad-Einstellung, M2 alle Optionen aus 4.14. | M1/M2 |
 | F-NAV-06 | Zu Bild Nr. *n* springen (⌘G). Zufällige Reihenfolge an/aus. | M3 |
 | F-NAV-07 | Position anzeigen („23 / 412“) in Titelleiste und Statuszeile. | M1 |
-| F-NAV-08 | Eingetippten Dateinamen suchen bzw. filtern (Schnellfilter). | M3 |
+| F-NAV-08 | Dateinamen filtern (Schnellfilter, ⌘F; Tippen eines Zeichens ohne andere Belegung öffnet das Feld ebenfalls). | M3 |
 
 ### 4.3 Anzeige und Zoom
 
@@ -134,7 +134,7 @@ Jede Anforderung hat eine ID und eine Ausbaustufe:
 | F-VIEW-08 | EXIF-Orientierung wird automatisch angewendet. | M1 |
 | F-VIEW-09 | Hintergrund wählbar: dunkel, hell, Systemdarstellung, Schachbrett (für Transparenz), eigene Farbe. | M1 |
 | F-VIEW-10 | Vollbild (⌃⌘F, `F`, Doppelklick). Im Vollbild werden Bedienelemente ausgeblendet und erscheinen, wenn die Maus an den Rand fährt. | M1 |
-| F-VIEW-11 | Lupe: Taste gedrückt halten (z. B. `L` oder rechte Maustaste) zeigt eine 100-%- bzw. 200-%-Lupe am Cursor. | M3 |
+| F-VIEW-11 | Lupe: Taste gedrückt halten (Standard `L`, wahlweise mittlere Maustaste, F-IN-11) zeigt eine 100-%- bzw. 200-%-Lupe am Cursor. | M3 |
 | F-VIEW-12 | „Immer im Vordergrund“ für das Fenster. | M3 |
 | F-VIEW-13 | Rahmenloser bzw. minimaler Fenstermodus. | M3 |
 
@@ -149,8 +149,9 @@ Ziel: **So viele Formate wie möglich, ohne Nachinstallation.** Die Formate werd
 | RAW | CR2, CR3, CRW, NEF, NRW, ARW, SR2, RAF, ORF, RW2, DNG, PEF, IIQ, 3FR, … | ImageIO (Apple RAW Engine) | M1 |
 | Pro/HDR | PSD (Kompositbild), OpenEXR, Radiance HDR, JPEG 2000, TGA, DDS, KTX | ImageIO | M2 |
 | Animiert | GIF, APNG, animiertes WebP, animiertes AVIF/HEICS, animiertes JXL | ImageIO + eigene Wiedergabe | M2 |
-| Vektor | SVG | Qt SVG (SVG Tiny 1.2, ohne vollständiges CSS/Filter) in v1.0; vollständiges SVG 1.1 über resvg ab M3 | M2 |
-| Rest | QOI, PCX, PSB, XCF, KRA, ORA, PNM/PFM, SGI | KImageFormats bzw. eigene kleine Decoder | M3 |
+| Vektor | SVG | Qt SVG (SVG Tiny 1.2, ohne vollständiges CSS/Filter), im Decoder-Hilfsprozess (8.5); vollständiges SVG 1.1 über resvg in M4 (14.2) | M2 |
+| Rest | QOI, PCX, PNM/PAM/PFM, SGI, ORA, KRA | eigene Decoder im Hilfsprozess | M3 |
+| Rest (Bibliothek) | XCF, PSB | KImageFormats (14.2) | M4 |
 | Exotisch | JPEG XR, DICOM, EPS | später prüfen | M4 |
 
 - F-FMT-01 (M1): Die Formaterkennung erfolgt per Dateisignatur, mit Dateiendung bzw. UTType als Hinweis.
@@ -214,7 +215,7 @@ Ziel: **So viele Formate wie möglich, ohne Nachinstallation.** Die Formate werd
 | ID | Anforderung | Stufe |
 |---|---|---|
 | F-CULL-01 | Bewertung `0`–`5` Sterne, `P` = behalten (Pick), `X` = verwerfen (Reject), `U` = zurücksetzen. | M3 |
-| F-CULL-02 | **Speicherort der Bewertung wählbar** (Einstellungen → Bewertung), Mehrfachauswahl möglich: **(a) XMP-Zusatzdatei** neben dem Bild (`Bild.xmp`, kompatibel zu Lightroom, Capture One, darktable; Standard), **(b) im Bild selbst** als eingebettetes XMP (JPEG, HEIC, TIFF, PNG, DNG; für Formate ohne sicheres Schreiben, z. B. proprietäre RAW-Dateien, fällt die App automatisch auf die Zusatzdatei zurück und zeigt das an), **(c) Finder-Tags** (z. B. Tags „★★★“, „Pick“, „Reject“ und Farbetiketten; Tag-Namen und Farben einstellbar; im Finder sichtbar und durchsuchbar). Beim Lesen werden alle aktivierten Quellen berücksichtigt; bei Widerspruch gewinnt die zuerst gewählte Quelle. Schreiben ins Bild ändert nur den Metadatenblock (keine Neukodierung der Pixel), behält das Änderungsdatum auf Wunsch bei und erfolgt atomar (temporäre Datei + Austausch). | M3 |
+| F-CULL-02 | **Speicherort der Bewertung wählbar** (Einstellungen → Bewertung), Mehrfachauswahl möglich: **(a) XMP-Zusatzdatei** neben dem Bild (`Bild.xmp`, kompatibel zu Lightroom, Capture One, darktable; Standard), **(b) im Bild selbst** als eingebettetes XMP (JPEG, HEIC, TIFF, PNG, DNG; für Formate ohne sicheres Schreiben, z. B. proprietäre RAW-Dateien, fällt die App automatisch auf die Zusatzdatei zurück und zeigt das an), **(c) Finder-Tags** (z. B. Tags „★★★“, „Pick“, „Reject“ und Farbetiketten; Tag-Namen und Farben einstellbar; im Finder sichtbar und durchsuchbar). Beim Lesen werden alle aktivierten Quellen berücksichtigt; bei Widerspruch gilt die feste Reihenfolge XMP-Zusatzdatei → im Bild → Finder-Tags (die erste aktivierte Quelle mit Wert gewinnt). Schreiben ins Bild ändert nur den Metadatenblock (keine Neukodierung der Pixel), behält das Änderungsdatum auf Wunsch bei und erfolgt atomar (temporäre Datei + Austausch). | M3 |
 | F-CULL-03 | Option „Nach Bewertung automatisch weiter“. | M3 |
 | F-CULL-04 | Filter: nur Picks / nur ≥ n Sterne / nur unbewertete / nur Rejects. | M3 |
 | F-CULL-05 | Sammelaktion: „Alle verworfenen in den Papierkorb“ bzw. „… nach `_Rejected/` verschieben“. | M3 |
@@ -281,7 +282,7 @@ Für die wichtigsten Eingaben gibt es in *Einstellungen → Maus & Tastatur* ein
 | F-IN-16 | **Ende der Sammlung** (Wiederholung von F-NAV-03). Nächster Ordner = nächster Geschwisterordner in Finder-Namensreihenfolge, der Bilder enthält; Ordner ohne Bilder werden übersprungen; rückwärts landet man auf dem letzten Bild des vorherigen Ordners. | anhalten · umlaufen · zum nächsten Ordner weitergehen | anhalten |
 
 - F-IN-17 (M2): Neben jeder Option erklärt eine kurze Hilfe die Auswirkung. „Auf Standard zurücksetzen“ gibt es pro Bereich.
-- F-IN-18 (M2): Profilvorlagen mit einem Klick: **„Mac-Standard“** (Vorgabe), **„Windows-Viewer-Gewohnheiten“** (Mausrad = Bild wechseln, Bild↑/↓ = Bild, Enter = Vollbild, wie IrfanView/FastStone), **„Fotograf:in / Lightroom“** (Mausrad = Zoom, Ziffern = Sterne, P/X/U aktiv – Ziffern/P/X/U erst ab M3, wenn die Bewertung umgesetzt ist; in M2 setzt die Vorlage nur Mausrad und Klick).
+- F-IN-18 (M2): Profilvorlagen mit einem Klick: **„Mac-Standard“** (Vorgabe), **„Windows-Viewer-Gewohnheiten“** (Mausrad = Bild wechseln, Bild↑/↓ = Bild, Enter = Vollbild, wie IrfanView/FastStone), **„Fotograf:in / Lightroom“** (Mausrad = Zoom, Ziffern = Sterne, P/X/U aktiv).
 
 ### 4.15 Mehrere Fenster
 
@@ -532,13 +533,14 @@ public:
 - **Bildspeicherung:** Bilder liegen als Texturen (bzw. Kachel-Texturen mit Mipmaps) vor. Die Skalierung übernimmt ein Shader (hochwertiger Verkleinerungsfilter, nearest bzw. linear beim Vergrößern).
 - **Farbe:** Beim Dekodieren bzw. Hochladen wird ins **lineare erweiterte Display P3** (Float16) konvertiert. Die Swapchain ist bei EDR-Displays „extended linear Display P3“ (Qt `QRhiSwapChain::HDRExtendedDisplayP3Linear`, sonst SDR P3/sRGB mit Tone-Mapping).
   - Auf macOS erfolgt die Konvertierung über ColorSync/ImageIO, plattformübergreifend über Little CMS 2 (MIT-Lizenz; **ohne** das GPL-lizenzierte fast_float-Plugin).
+  - Auf macOS liegt die EDR-Fläche als eigenes natives Fenster (QRhiSwapChain HDRExtendedDisplayP3Linear) über der Bildfläche, nur solange ein HDR-Bild bei aktivem HDR auf einem EDR-Display gezeigt wird; Bedienelemente über dem Bild werden in diesen Durchgang übernommen.
   - Der EDR-Spielraum wird über `NSScreen.maximumExtendedDynamicRangeColorComponentValue` abgefragt und laufend aktualisiert.
 - **Gain-Map-HDR** wird auf macOS per ImageIO mit `kCGImageSourceDecodeToHDR` dekodiert.
 
 ### 8.5 Prozessmodell und Sicherheit
 
 - **M1/M2:** Die Dekodierung läuft im Hauptprozess, in Worker-Threads. Abstürze in ImageIO sind selten, und ImageIO ist ohnehin systemseitig gehärtet.
-- **M3:** Die Bibliotheks-Decoder (KImageFormats, LibRaw, libheif …) laufen in einem **Hilfsprozess** (XPC-Service auf macOS bzw. Unterprozess plattformübergreifend). Pixel werden per Shared Memory übergeben. Stürzt der Hilfsprozess ab, wird er neu gestartet, und das Bild erhält eine Fehlerkarte.
+- **M3:** Die Nicht-System-Decoder (Qt-Bildplugins, Qt SVG, eigene Parser der Restformate; später KImageFormats, resvg, LibRaw, libheif) laufen in einem Hilfsprozess (`lumaflip-decoder`, Unterprozess mit Pipe-Protokoll und eigener Sandbox: kein Netz, keine Schreibzugriffe). Pixel werden per Shared Memory übergeben. Stürzt der Hilfsprozess ab oder hängt er, wird er neu gestartet und das Bild erhält eine Fehlerkarte. ImageIO bleibt im Hauptprozess (P-01…P-06).
 - Keine ImageMagick-Abhängigkeit im Hauptprozess (wegen der vielen bekannten Sicherheitslücken).
 - Fuzz-Tests (libFuzzer) für eigene Parser, insbesondere den `.DS_Store`-Leser und den XMP-Schreiber.
 
@@ -604,7 +606,7 @@ public:
 
 ### 10.3 Datenschutz
 
-- Keine Telemetrie, kein Netzwerkverkehr außer der Update-Prüfung (abschaltbar) und ggf. Kartenkacheln bei F-INFO-04 (nur nach Klick).
+- Keine Telemetrie, kein Netzwerkverkehr außer der Update-Prüfung (abschaltbar) und Kartenausschnitten für F-INFO-04. Karten werden erst nach einem Klick auf „Karte anzeigen“ geladen; dabei gehen die Koordinaten an Apple (MapKit). Der Klick gilt für dieses Fenster, bis es geschlossen wird: weitere Bilder mit GPS-Daten laden ihre Karte dort automatisch, „Karte ausblenden“ nimmt die Zustimmung zurück. Die Zustimmung wird nicht gespeichert; neue Fenster und jeder Neustart fragen erneut.
 
 ### 10.4 Dateiverknüpfung
 
@@ -624,7 +626,7 @@ public:
 | Qt 6 | LGPLv3 | Dynamisch linken (Frameworks im App-Bundle); Lizenztexte beilegen; Nutzer dürfen Qt austauschen. |
 | KImageFormats | LGPL-2.1 | dynamisch als Qt-Plugin |
 | Little CMS 2 | MIT | ok; **kein** fast_float-Plugin (GPL) |
-| resvg (ab M3) | Apache-2.0/MIT | ok |
+| resvg (M4, falls entschieden) | Apache-2.0/MIT | ok |
 | LibRaw (später) | CDDL-1.0 gewählt | statisch erlaubt, Namensnennung |
 | libheif / libde265 (später, Win/Linux) | LGPL-3.0 | dynamisch; **HEVC-Patentrisiko** außerhalb von macOS → optional bzw. Systemcodec bevorzugen |
 | libavif/dav1d, libjxl, libjpeg-turbo, libpng, libwebp, libtiff, OpenEXR | BSD/zlib-artig | ok |
@@ -674,7 +676,7 @@ Weitere Pflichten:
 | **M0 – Spike** (vorab) | Qt-6-Gerüst mit QRhiWidget auf Metal, ImageIO-Decoder in Objective-C++, ein Bild farbrichtig anzeigen, ←/→ im Ordner, .DS_Store-Leser als Prototyp. **Ziel: Technikentscheidung absichern** (HDR-Swapchain, Leistung, Farbe). |
 | **M1 – MVP** | F-OPEN-01…06, F-NAV-01…03/07, F-VIEW-01…02/04/06…10, Formatgruppen Standard/Modern/RAW, F-COL-01, F-INFO-01, F-FILE-01…03, F-EDIT-01, F-SORT-01/02/03/05/08, F-MAC-01/02/05, F-SET-01/04, F-PRIV-01/02, F-WIN-01/02/03/08/09/10, F-IN-01 (Mausrad-Einstellung), Signierung und Notarisierung |
 | **M2 – v1.0** | Ordnerüberwachung, Infopanel, Histogramm, Filmstreifen, Diashow, Animation, mehrseitige Formate, SVG, Pro-Formate, verlustfreies Drehen, Umbenennen, Teilen, Drag-out, Tastatur-Editor, alle Eingabe-Einstellungen (4.14) inkl. Profilvorlagen, Fenster anordnen, Tabs, Fensterwiederherstellung, Standard-App-Button, Live-Finder-Abfrage (Opt-in), Sparkle |
-| **M3 – v1.x** | Mehrsprachigkeit (4.16), Aussortiermodus und Bewertungen (XMP-Zusatzdatei, im Bild, Finder-Tags), Fenster koppeln, Schnellablage, Raster und Vergleich, HDR/EDR vollständig, Lupe, rekursive Ordner, Hilfsprozess für Decoder, Restformate |
+| **M3 – v1.x** | Mehrsprachigkeit (4.16), Aussortiermodus und Bewertungen (XMP-Zusatzdatei, im Bild, Finder-Tags), Fenster koppeln, Schnellablage, Raster und Vergleich, HDR/EDR vollständig, Lupe, rekursive Ordner, Hilfsprozess für Decoder, Restformate (ohne XCF/PSB; SVG weiter über Qt SVG) |
 | **M4 – später** | Archive und PDF, Live Text, Zuschneiden und Export, eigene Aktionen, Overlays für Fototechnik, **Windows- und Linux-Builds**, eventuell eine App-Store-Edition |
 
 ---

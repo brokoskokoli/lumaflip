@@ -32,22 +32,22 @@ STAGES = ["M1", "M2", "M3", "M4"]
 MANUAL = ROOT / "docs" / "MANUAL_CHECKS.md"
 
 # One requirement ID inside an identifier, delimited by '_' or the identifier's ends.
-ID_IN_NAME = re.compile(r"(?:^|_)(F_[A-Z]+_\d+|P_\d+)(?=_|$)")
+ID_IN_NAME = re.compile(r"(?:^|_)(F_[A-Z][A-Z0-9]*_\d+|P_\d+)(?=_|$)")
 GTEST = re.compile(r"^\s*(?:TEST|TEST_F|TEST_P|TYPED_TEST|TYPED_TEST_P)\s*\(\s*(\w+)\s*,\s*(\w+)\s*\)", re.M)
-QT_SLOT = re.compile(r"^\s*void\s+((?:F_[A-Z]+_\d+|P_\d+)\w*)\s*\(\s*\)", re.M)
+QT_SLOT = re.compile(r"^\s*void\s+((?:F_[A-Z][A-Z0-9]*_\d+|P_\d+)\w*)\s*\(\s*\)", re.M)
 BENCH = re.compile(r"^\s*LF_BENCH\s*\(\s*(\w+)\s*,", re.M)
-ID_TEXT = re.compile(r"^(F-[A-Z]+-\d+|P-\d+)$")
+ID_TEXT = re.compile(r"^(F-[A-Z][A-Z0-9]*-\d+|P-\d+)$")
 
 
 def stage_ids(spec: str, stage: str) -> set[str]:
     wanted = set(STAGES[: STAGES.index(stage) + 1])
     ids = set()
     # table rows: | F-XXX-01 | text | M1 |   (stage column may be "M1/M2": first stage counts)
-    for m in re.finditer(r"^\|\s*(F-[A-Z]+-\d+)\s*\|.*\|\s*(M\d)[^|]*\|\s*$", spec, re.M):
+    for m in re.finditer(r"^\|\s*(F-[A-Z][A-Z0-9]*-\d+)\s*\|.*\|\s*(M\d)[^|]*\|\s*$", spec, re.M):
         if m.group(2) in wanted:
             ids.add(m.group(1))
     # bullet form: - F-XXX-01 (M1): text
-    for m in re.finditer(r"^- (F-[A-Z]+-\d+) \((M\d)\)", spec, re.M):
+    for m in re.finditer(r"^- (F-[A-Z][A-Z0-9]*-\d+) \((M\d)\)", spec, re.M):
         if m.group(2) in wanted:
             ids.add(m.group(1))
     # input slot table (SPEC 4.14) has no stage column: F-IN-01 is M1, the rest M2
