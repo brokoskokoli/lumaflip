@@ -265,6 +265,14 @@ void MainMenu::build() {
             refreshState();
         });
     }
+    // F-SORT-06: a choice above is remembered for the folder; this makes it the default.
+    sort->addSeparator();
+    QAction* toAll = addCommand(sort, QStringLiteral("sort:applyToAll"), tr("Für alle Ordner verwenden"));
+    connect(toAll, &QAction::triggered, this, [this, front] {
+        if (auto* w = front())
+            w->applySortToAllFolders();
+        refreshState();
+    });
     connect(view, &QMenu::aboutToShow, this, &MainMenu::refreshState);
     connect(sort, &QMenu::aboutToShow, this, &MainMenu::refreshState);
 
@@ -384,15 +392,16 @@ void MainMenu::refreshState() {
         action(Action::ToggleFullScreen)->setChecked(w->isFullScreen());
         const Collection* c = w->collection();
         const SortSpec spec = c->sortSpec();
-        command(QStringLiteral("sort:finder"))->setChecked(c->followsFinder());
+        // What the window shows: a folder's remembered choice may differ from the window's mode.
+        const bool manual = spec.source == SortSource::Manual;
+        command(QStringLiteral("sort:finder"))->setChecked(!manual);
         for (const auto& item : kSortItems)
-            command("sort:" + QString::fromLatin1(item.id))
-                ->setChecked(!c->followsFinder() && spec.key == item.key);
+            command("sort:" + QString::fromLatin1(item.id))->setChecked(manual && spec.key == item.key);
         command(QStringLiteral("sort:asc"))->setChecked(spec.ascending);
         command(QStringLiteral("sort:desc"))->setChecked(!spec.ascending);
     }
-    for (const QString& id :
-         {QStringLiteral("sort:finder"), QStringLiteral("sort:asc"), QStringLiteral("sort:desc")})
+    for (const QString& id : {QStringLiteral("sort:finder"), QStringLiteral("sort:asc"),
+                              QStringLiteral("sort:desc"), QStringLiteral("sort:applyToAll")})
         command(id)->setEnabled(hasWindow);
     for (const auto& item : kSortItems)
         command("sort:" + QString::fromLatin1(item.id))->setEnabled(hasWindow);

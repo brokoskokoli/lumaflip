@@ -21,6 +21,7 @@
 
 class QLabel;
 class QPushButton;
+class QStatusBar;
 class QTimer;
 
 namespace lf {
@@ -42,7 +43,8 @@ public:
     // several files -> exactly those, one folder -> its contents.
     void openPaths(const QStringList& paths);
     void openFile(const QString& path);
-    void openFiles(const QStringList& paths);
+    // `keepAsFileSet`: one file stays a multi-file collection (restored window, F-WIN-06).
+    void openFiles(const QStringList& paths, bool keepAsFileSet = false);
     void openFolder(const QString& folderPath, bool selectLast = false);
     // F-WIN-03 ⌥⌘N: same collection (no re-enumeration), image, zoom and view rotation.
     void copyStateFrom(const ViewerWindow& other);
@@ -71,6 +73,9 @@ public:
     void setSortFollowFinder();      // "Wie Finder" (F-SORT-03)
     void setSortKey(SortKey key);    // manual (F-SORT-02)
     void setSortAscending(bool ascending);
+    // The three above are remembered for the shown folder (F-SORT-06); this makes the
+    // window's current sort the default for all folders ("Für alle Ordner verwenden").
+    void applySortToAllFolders();
     void toggleFullScreen();    // F-VIEW-10
     bool chromeVisible() const; // status bar shown (fullscreen auto-hide)
 
@@ -90,6 +95,8 @@ public:
     void folderChanged(const QString& folderPath);
     void applySetting(const QString& key);
     void refreshActivity(); // front/active state changed: re-prioritise prefetch (F-WIN-09)
+    // Shows/hides the window; the status bar is created on the first show (P-01).
+    void setVisible(bool visible) override;
 
 signals:
     // An image (or a better stage of it) was handed to the view.
@@ -137,6 +144,12 @@ private:
     void updateEmptyStyle(); // start screen readable on any background
     void onStageFailed(const QString& path, Quality quality, const QString& error);
     WrapMode wrapMode() const;
+    void createStatusBar();
+    void beginOpen();   // a new open request: older pending ones (folder switch) are dropped
+    void prepareOpen(); // common part of openFile/openFiles/openFolder
+    void applyDefaultSort();
+    void rememberFolderSort(const FolderSortChoice& choice);
+    static std::optional<FolderSortChoice> rememberedFolderSort(const QString& folder);
 
     Application& m_app;
     Collection* m_collection = nullptr;
@@ -150,7 +163,9 @@ private:
     QTimer* m_chromeTimer = nullptr;
     QTimer* m_resizeTimer = nullptr;
     QTimer* m_geometryTimer = nullptr;
+    QStatusBar* m_statusBar = nullptr; // created on the first show
     QLabel* m_nameLabel = nullptr;
+
     QLabel* m_positionLabel = nullptr;
     QLabel* m_pixelLabel = nullptr;
     QLabel* m_bytesLabel = nullptr;
@@ -160,6 +175,7 @@ private:
     QString m_shownPath; // file the view currently shows (or failed for)
     Quality m_shownQuality = Quality::Preview;
     bool m_shownFailed = false;
+    bool m_shownStale = false; // the provider invalidated the shown file (replace on the next stage)
     QStringList m_wanted; // prefetch window, current first
     QString m_watchedFolder;
     int m_direction = 1; // last flip direction (prefetch, SPEC 7.1)
@@ -175,6 +191,7 @@ private:
     bool m_chromeShown = true; // false: hidden in fullscreen until the mouse reaches an edge
     quint64 m_copyToken = 0;   // latest ⌘C request
     quint64 m_folderSwitchToken = 0;
+    quint64 m_openToken = 0; // latest open request (openPaths classifies asynchronously)
     bool m_folderSwitchPending = false;
     QPushButton* m_openButton = nullptr;
 };

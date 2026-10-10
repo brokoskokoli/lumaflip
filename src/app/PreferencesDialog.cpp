@@ -137,14 +137,7 @@ QString PreferencesDialog::statusText() const {
 }
 
 bool PreferencesDialog::isChoiceAvailable(const QString& slotId, const QString& choiceId) {
-    static const QSet<QString> later = {
-        QStringLiteral("middleClick:magnifier"), // F-IN-11 Lupe
-        QStringLiteral("drag:dragOut"),          // F-IN-14 Datei herausziehen
-        QStringLiteral("space:slideshow"),       // Diashow
-        QStringLiteral("pageUpDown:page"),       // mehrseitige Dateien
-        QStringLiteral("ratingKeys:always"),     // Bewertungen
-    };
-    return !later.contains(slotId + QLatin1Char(':') + choiceId);
+    return InputBindings::isChoiceAvailable(slotId, choiceId);
 }
 
 PreferencesDialog* PreferencesDialog::showPreferences(QWidget* parent) {
@@ -640,9 +633,11 @@ QWidget* PreferencesDialog::buildNavigation() {
                              tr("Aufnahmedatum"), tr("Größe"), tr("Art"), tr("Pixelzahl"), tr("Bewertung")},
                             w));
     form->addRow(QString(), bind.check(key::ManualSortAscending, tr("Aufsteigend"), w));
-    form->addRow(QString(), helpLabel(tr("Gilt, wenn „Sortierung wie im Finder“ aus ist oder keine Finder-"
-                                         "Information gefunden wird. Die Wahl im Menü wird pro Ordner gemerkt."),
-                                      w));
+    form->addRow(QString(),
+                 helpLabel(tr("Gilt, wenn „Sortierung wie im Finder“ aus ist oder keine Finder-Information "
+                              "gefunden wird. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner "
+                              "gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier."),
+                           w));
     return w;
 }
 
@@ -684,7 +679,9 @@ QWidget* PreferencesDialog::buildFormats() {
         {tr("Modern"), QStringLiteral("HEIC/HEIF, AVIF, JPEG XL")},
         {tr("RAW"), QStringLiteral("CR2, CR3, CRW, NEF, NRW, ARW, SR2, RAF, ORF, RW2, DNG, PEF, IIQ, 3FR …")},
         {tr("Pro/HDR"), QStringLiteral("PSD, OpenEXR, Radiance HDR, JPEG 2000, TGA, DDS, KTX")},
-        {tr("Animiert"), QStringLiteral("GIF, APNG, WebP, AVIF/HEICS, JXL")},
+        // F-FMT-03 (playback) is not implemented yet: the first frame is shown.
+        {tr("Animiert"),
+         tr("GIF, APNG, WebP, AVIF/HEICS, JXL – erstes Bild; Wiedergabe %1").arg(laterNote())},
         {tr("Vektor"), QStringLiteral("SVG")},
     };
     for (const auto& [g, f] : groups) {

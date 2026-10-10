@@ -13,6 +13,9 @@
 #include <QStringList>
 #include <QVector>
 
+#include <functional>
+#include <optional>
+
 namespace lf {
 
 class NameCollator;
@@ -20,6 +23,15 @@ class FolderOrderProvider;
 class FileAttributeProvider;
 
 enum class WrapMode { Stop, Wrap };  // F-NAV-03 (NextFolder: M3, handled by the window)
+
+// F-SORT-06: the sort choice remembered for one folder.
+struct FolderSortChoice {
+    bool followFinder = true; // "Wie Finder"
+    SortSpec manual;          // otherwise
+    friend bool operator==(const FolderSortChoice&, const FolderSortChoice&) = default;
+};
+// Looks up the remembered choice of a folder; called on worker threads.
+using FolderSortMemory = std::function<std::optional<FolderSortChoice>(const QString& folderPath)>;
 
 class Collection : public QObject {
     Q_OBJECT
@@ -31,8 +43,10 @@ public:
     // enumerate the folder asynchronously; when done, `entries` are replaced, sorted,
     // and current index points at `filePath` again. Emits loadingFinished().
     void openFile(const QString& filePath);
-    // F-OPEN-04: exactly these files, sorted with the current spec.
-    void openFiles(const QStringList& filePaths);
+    // F-OPEN-04: exactly these files, sorted with the current spec. A single file is
+    // shown with its folder (F-OPEN-02) unless `keepAsFileSet` (a restored multi-file
+    // window that has one file left, F-WIN-06).
+    void openFiles(const QStringList& filePaths, bool keepAsFileSet = false);
     // F-OPEN-05: folder contents, current = first (or the last image with `selectLast`,
     // used when flipping backwards into the previous folder, F-NAV-03 "nextFolder").
     void openFolder(const QString& folderPath, bool selectLast = false);
@@ -67,6 +81,12 @@ public:
     void setSortSpec(const SortSpec& spec);   // manual; re-sorts, keeps current file
     void setFollowFinder(bool follow, bool allowLiveQuery);
     bool followsFinder() const;
+    // The window's sort mode for the next open*(), without re-sorting the current entries
+    // (a manual choice for one folder does not carry over to the next folder, F-SORT-06).
+    void setDefaultSort(bool followFinder, bool allowLiveQuery, const SortSpec& manual);
+    // F-SORT-06: a folder's remembered choice wins over the window's sort mode (folder
+    // collections only). Empty = none.
+    void setFolderSortMemory(FolderSortMemory memory);
 
     // F-OPEN-07: re-enumerate the folder, keep current file (or move to the
     // neighbour if it vanished). Invalidates the shared folder snapshot (FolderCache).

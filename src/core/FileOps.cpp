@@ -19,6 +19,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QFuture>
 #include <QFutureWatcher>
 #include <QList>
 #include <QPointer>
@@ -151,13 +152,19 @@ Outcome copyWork(const QString& from, const QString& to) {
 class FileCommand : public QUndoCommand {
 public:
     FileCommand(FileOps* ops, const QString& text) : QUndoCommand(text), m_ops(ops) {}
-    // File system work for redo (`forward`) or undo. Runs on a worker thread for the
-    // asynchronous API: reads only state written before the work started.
-    virtual Outcome work(bool forward) const = 0;
-    // GUI thread: signals and bookkeeping after successful work.
-    virtual void notify(bool forward, const Outcome& outcome) = 0;
+    // File system work for redo (`forward`) or undo as a self-contained closure (copies of
+    // the paths, no pointer to this command): the asynchronous API runs it on a worker
+    // thread, and the command may be gone by the time it is done.
+    virtual std::function<Outcome()> workFor(bool forward) const = 0;
+    // GUI thread: the signals for successful work, also self-contained (used when the
+    // command is not on the stack any more when its work is done).
+    virtual std::function<void(const Outcome&)> notifierFor(bool forward) const = 0;
+    // GUI thread: bookkeeping after successful work (default: none) and the signals.
+    virtual void notify(bool forward, const Outcome& outcome) { notifierFor(forward)(outcome); }
     // The work of the next undo()/redo() was already done (asynchronously).
     void prepare(const Outcome& outcome) { m_prepared = outcome; }
+    // Expires when the command is deleted (e.g. the stack dropped it).
+    std::weak_ptr<const char> aliveToken() const { return m_alive; }
 
     void redo() final {
         if (m_firstRedo) {
@@ -173,7 +180,7 @@ protected:
 
 private:
     void run(bool forward) {
-        const Outcome o = m_prepared ? *m_prepared : work(forward);
+        const Outcome o = m_prepared ? *m_prepared : workFor(forward)();
         m_prepared.reset();
         if (o.ok) {
             notify(forward, o);
@@ -184,6 +191,7 @@ private:
     }
     std::optional<Outcome> m_prepared;
     bool m_firstRedo = true;
+    std::shared_ptr<const char> m_alive = std::make_shared<const char>('\0');
 };
 
 class TrashCommand : public FileCommand {
@@ -192,22 +200,38 @@ public:
         : FileCommand(ops, tr("In den Papierkorb legen")), m_trash(trash), m_path(std::move(path)),
           m_trashed(std::move(trashed)), m_origin(origin) {}
 
-    Outcome work(bool forward) const override {
+    std::function<Outcome()> workFor(bool forward) const override {
+        TrashService* trash = &m_trash; // owned by the FileOps' creator, outlives its workers
+        const QString path = m_path;
         if (forward)
-            return trashWork(m_trash, m_path);
-        QString error;
-        if (!m_trash.restoreFromTrash(m_trashed, m_path, &error))
-            return failure(error);
-        return success(m_path);
+            return [trash, path] { return trashWork(*trash, path); };
+        const QString trashed = m_trashed;
+        return [trash, path, trashed] {
+            QString error;
+            if (!trash->restoreFromTrash(trashed, path, &error))
+                return failure(error);
+            return success(path);
+        };
+    }
+    std::function<void(const Outcome&)> notifierFor(bool forward) const override {
+        const QPointer<FileOps> ops(m_ops);
+        const QString path = m_path;
+        const QPointer<QObject> origin = m_origin;
+        return [ops, path, origin, forward](const Outcome&) {
+            if (!ops)
+                return;
+            if (forward) {
+                emit ops->fileRemoved(path);
+            } else {
+                emit ops->fileAdded(path);
+                emit ops->fileRestored(path, origin.data());
+            }
+        };
     }
     void notify(bool forward, const Outcome& o) override {
-        if (forward) {
-            m_trashed = o.location;
-            emit m_ops->fileRemoved(m_path);
-        } else {
-            emit m_ops->fileAdded(m_path);
-            emit m_ops->fileRestored(m_path, m_origin.data());
-        }
+        if (forward)
+            m_trashed = o.location; // trashed again: a new location in the trash
+        FileCommand::notify(forward, o);
     }
 
 private:
@@ -222,14 +246,19 @@ public:
     RenameCommand(FileOps* ops, QString from, QString to)
         : FileCommand(ops, tr("Umbenennen")), m_from(std::move(from)), m_to(std::move(to)) {}
 
-    Outcome work(bool forward) const override {
-        return forward ? renameWork(m_from, m_to) : renameWork(m_to, m_from);
+    std::function<Outcome()> workFor(bool forward) const override {
+        const QString a = forward ? m_from : m_to;
+        const QString b = forward ? m_to : m_from;
+        return [a, b] { return renameWork(a, b); };
     }
-    void notify(bool forward, const Outcome&) override {
-        if (forward)
-            emit m_ops->fileRenamed(m_from, m_to);
-        else
-            emit m_ops->fileRenamed(m_to, m_from);
+    std::function<void(const Outcome&)> notifierFor(bool forward) const override {
+        const QPointer<FileOps> ops(m_ops);
+        const QString a = forward ? m_from : m_to;
+        const QString b = forward ? m_to : m_from;
+        return [ops, a, b](const Outcome&) {
+            if (ops)
+                emit ops->fileRenamed(a, b);
+        };
     }
 
 private:
@@ -241,15 +270,22 @@ public:
     MoveCommand(FileOps* ops, QString from, QString to)
         : FileCommand(ops, tr("Verschieben")), m_from(std::move(from)), m_to(std::move(to)) {}
 
-    Outcome work(bool forward) const override {
-        return forward ? renameWork(m_from, m_to) : renameWork(m_to, m_from);
+    std::function<Outcome()> workFor(bool forward) const override {
+        const QString a = forward ? m_from : m_to;
+        const QString b = forward ? m_to : m_from;
+        return [a, b] { return renameWork(a, b); };
     }
-    void notify(bool forward, const Outcome&) override {
+    std::function<void(const Outcome&)> notifierFor(bool forward) const override {
         // Different folders: observers of each folder see a removal / an addition.
-        const QString& a = forward ? m_from : m_to;
-        const QString& b = forward ? m_to : m_from;
-        emit m_ops->fileRemoved(a);
-        emit m_ops->fileAdded(b);
+        const QPointer<FileOps> ops(m_ops);
+        const QString a = forward ? m_from : m_to;
+        const QString b = forward ? m_to : m_from;
+        return [ops, a, b](const Outcome&) {
+            if (!ops)
+                return;
+            emit ops->fileRemoved(a);
+            emit ops->fileAdded(b);
+        };
     }
 
 private:
@@ -261,19 +297,28 @@ public:
     CopyCommand(FileOps* ops, QString from, QString to)
         : FileCommand(ops, tr("Kopieren")), m_from(std::move(from)), m_to(std::move(to)) {}
 
-    Outcome work(bool forward) const override {
+    std::function<Outcome()> workFor(bool forward) const override {
+        const QString from = m_from, to = m_to;
         if (forward)
-            return copyWork(m_from, m_to);
-        if (!QFile::remove(m_to))
-            return failure(
-                tr("Die Kopie „%1“ konnte nicht entfernt werden.").arg(QFileInfo(m_to).fileName()));
-        return success(m_to);
+            return [from, to] { return copyWork(from, to); };
+        return [to] {
+            if (!QFile::remove(to))
+                return failure(
+                    tr("Die Kopie „%1“ konnte nicht entfernt werden.").arg(QFileInfo(to).fileName()));
+            return success(to);
+        };
     }
-    void notify(bool forward, const Outcome&) override {
-        if (forward)
-            emit m_ops->fileAdded(m_to);
-        else
-            emit m_ops->fileRemoved(m_to);
+    std::function<void(const Outcome&)> notifierFor(bool forward) const override {
+        const QPointer<FileOps> ops(m_ops);
+        const QString to = m_to;
+        return [ops, to, forward](const Outcome&) {
+            if (!ops)
+                return;
+            if (forward)
+                emit ops->fileAdded(to);
+            else
+                emit ops->fileRemoved(to);
+        };
     }
 
 private:
@@ -287,23 +332,43 @@ struct Operation {
     std::function<void(const Outcome&)> apply; // GUI thread, only on success (and !noop)
 };
 
+// One queued asynchronous operation.
+struct Task {
+    // GUI thread, when the task's turn has come: the file system work (empty: nothing to do).
+    std::function<std::function<Outcome()>()> start;
+    // GUI thread, with the outcome of the work.
+    std::function<void(const Outcome&)> finish;
+};
+
 } // namespace
 
 struct FileOps::Private {
     FileOps* q;
     TrashService& trash;
     QUndoStack* stack;
-    QList<std::function<void()>> queue; // starters of queued asynchronous operations
+    QList<Task> queue; // queued asynchronous operations (not started yet)
     bool running = false;
-    QPointer<QFutureWatcher<Outcome>> current;
+    QFuture<Outcome> current; // work of the running operation
 
     void setError(QString* error, const QString& msg) const {
         if (error)
             *error = msg;
     }
 
+    // The synchronous API must not interleave with queued asynchronous operations: their
+    // work was planned against the undo stack as it was when they started.
+    bool refuseWhileBusy(QString* error) const {
+        if (!running && queue.isEmpty())
+            return false;
+        qWarning("lf::FileOps: synchronous operation refused while asynchronous ones are pending");
+        setError(error, tr("Ein anderer Dateivorgang läuft noch. Bitte warte, bis er abgeschlossen ist."));
+        return true;
+    }
+
     // Synchronous: work + apply.
     bool runNow(const Operation& op, QString* error) {
+        if (refuseWhileBusy(error))
+            return false;
         const Outcome o = op.work();
         if (!o.ok) {
             setError(error, o.error);
@@ -314,75 +379,104 @@ struct FileOps::Private {
         return true;
     }
 
-    void enqueue(std::function<void()> starter) {
-        queue.append(std::move(starter));
+    void enqueue(Task task) {
+        queue.append(std::move(task));
         if (!running)
             next();
     }
 
     void next() {
-        if (queue.isEmpty()) {
-            if (running) {
-                running = false;
-                emit q->busyChanged(false);
+        for (;;) {
+            if (queue.isEmpty()) {
+                if (running) {
+                    running = false;
+                    emit q->busyChanged(false);
+                }
+                return;
             }
+            if (!running) {
+                running = true;
+                emit q->busyChanged(true);
+            }
+            const Task task = queue.takeFirst();
+            std::function<Outcome()> work = task.start();
+            if (!work)
+                continue; // nothing to do (e.g. undo with an empty stack)
+            auto* w = new QFutureWatcher<Outcome>(q);
+            QObject::connect(w, &QFutureWatcher<Outcome>::finished, q, [this, w, finish = task.finish] {
+                const Outcome o = w->result();
+                w->deleteLater();
+                current = {};
+                finish(o);
+                next();
+            });
+            current = QtConcurrent::run(std::move(work));
+            w->setFuture(current);
             return;
         }
-        if (!running) {
-            running = true;
-            emit q->busyChanged(true);
-        }
-        const std::function<void()> starter = queue.takeFirst();
-        starter(); // eventually calls next() again
-    }
-
-    // Runs `work` on a worker thread, then `finish` on the GUI thread, then the next operation.
-    void runAsync(std::function<Outcome()> work, std::function<void(const Outcome&)> finish) {
-        auto* w = new QFutureWatcher<Outcome>(q);
-        current = w;
-        QObject::connect(w, &QFutureWatcher<Outcome>::finished, q, [this, w, finish] {
-            const Outcome o = w->result();
-            w->deleteLater();
-            finish(o);
-            next();
-        });
-        w->setFuture(QtConcurrent::run(std::move(work)));
     }
 
     void startAsync(const Operation& op, const FileOps::Completion& done) {
-        enqueue([this, op, done] {
-            runAsync(op.work, [op, done](const Outcome& o) {
-                if (o.ok && !o.noop)
-                    op.apply(o);
-                if (done)
-                    done(o.ok, o.error);
-            });
-        });
+        enqueue({[work = op.work] { return work; },
+                 [op, done](const Outcome& o) {
+                     if (o.ok && !o.noop)
+                         op.apply(o);
+                     if (done)
+                         done(o.ok, o.error);
+                 }});
     }
 
-    // Undo (`forward` false) or redo of the next command, work on a worker thread.
+    // Undo (`forward` false) or redo of the next command, work on a worker thread. What to
+    // do is decided when the task starts (earlier queued operations may change the stack).
     void startStep(bool forward) {
-        enqueue([this, forward] {
-            const int idx = stack->index();
-            const int at = forward ? idx : idx - 1;
-            if (at < 0 || at >= stack->count()) {
-                next();
-                return;
-            }
-            auto* cmd = dynamic_cast<FileCommand*>(const_cast<QUndoCommand*>(stack->command(at)));
-            if (!cmd) { // not ours: let the stack run it
-                forward ? stack->redo() : stack->undo();
-                next();
-                return;
-            }
-            runAsync([cmd, forward] { return cmd->work(forward); },
-                     [this, cmd, forward, idx, at](const Outcome& o) {
-                         if (stack->index() != idx || stack->command(at) != cmd)
-                             return; // the stack changed meanwhile (synchronous use)
-                         cmd->prepare(o);
+        struct Plan {
+            int index = -1; // stack index when the work started
+            int at = -1;    // command undone/redone
+            const QUndoCommand* command = nullptr;
+            std::weak_ptr<const char> alive;
+            std::function<void(const Outcome&)> notifier;
+        };
+        auto plan = std::make_shared<Plan>();
+        enqueue({[this, forward, plan]() -> std::function<Outcome()> {
+                     const int idx = stack->index();
+                     const int at = forward ? idx : idx - 1;
+                     if (at < 0 || at >= stack->count())
+                         return {};
+                     const auto* cmd = dynamic_cast<const FileCommand*>(stack->command(at));
+                     if (!cmd) { // not ours: let the stack run it
                          forward ? stack->redo() : stack->undo();
-                     });
-        });
+                         return {};
+                     }
+                     plan->index = idx;
+                     plan->at = at;
+                     plan->command = cmd;
+                     plan->alive = cmd->aliveToken();
+                     plan->notifier = cmd->notifierFor(forward);
+                     return cmd->workFor(forward); // copies: no command pointer on the worker
+                 },
+                 [this, forward, plan](const Outcome& o) { finishStep(forward, *plan, o); }});
+    }
+
+    template <typename Plan> void finishStep(bool forward, const Plan& plan, const Outcome& o) {
+        const bool unchanged = !plan.alive.expired() && stack->index() == plan.index &&
+                               plan.at < stack->count() && stack->command(plan.at) == plan.command;
+        if (unchanged) {
+            auto* cmd = const_cast<FileCommand*>(static_cast<const FileCommand*>(plan.command));
+            cmd->prepare(o);
+            forward ? stack->redo() : stack->undo(); // notifies (or drops a failed command)
+            return;
+        }
+        // The stack changed while the work ran (only possible through QUndoStack directly).
+        // The file system did change: tell every window, and start the history afresh
+        // rather than leaving commands that no longer match the files.
+        if (o.ok) {
+            if (plan.notifier)
+                plan.notifier(o);
+        }
+        stack->clear();
+        emit q->operationFailed(o.ok ? tr("Der Verlauf zum Widerrufen wurde zurückgesetzt, weil er sich "
+                                          "während des Vorgangs geändert hat.")
+                                     : o.error);
     }
 
     // ---- operations ----
@@ -461,10 +555,19 @@ FileOps::FileOps(TrashService& trash, QObject* parent)
     : QObject(parent), d(new Private{this, trash, new QUndoStack(this), {}, false, {}}) {}
 
 FileOps::~FileOps() {
-    // A running worker uses the trash service and the commands: let it finish first.
-    d->queue.clear();
-    if (d->current)
-        d->current->waitForFinished();
+    // The running worker uses the trash service: let it finish first. Queued operations
+    // are carried out now instead of being dropped silently (the app waits for them before
+    // it quits, see Application::quit(); this is the last resort). Nobody listens to
+    // notifications any more at this point, so only the file system work runs.
+    d->current.waitForFinished();
+    while (!d->queue.isEmpty()) {
+        const Task task = d->queue.takeFirst();
+        if (const std::function<Outcome()> work = task.start()) {
+            const Outcome o = work();
+            if (!o.ok)
+                qWarning("lf::FileOps: queued operation failed at shutdown: %s", qPrintable(o.error));
+        }
+    }
     delete d;
 }
 

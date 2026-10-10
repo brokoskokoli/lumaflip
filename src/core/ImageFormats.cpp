@@ -2,6 +2,7 @@
 #include "ImageFormats.h"
 
 #include "Decoder.h"
+#include "Platform.h"
 
 #include <QSet>
 #include <algorithm>
@@ -27,33 +28,63 @@ constexpr const char* kRaw[] = {
 // Rendered by some backend (Qt's PDF plugin) but documents, not images to flip through.
 constexpr const char* kExcluded[] = {"pdf", "ps", "eps", "ai"};
 
-struct Tables {
+// Static lists (no backend needed).
+struct StaticTables {
     QSet<QString> defaults;
-    QSet<QString> all;
     QSet<QString> raw;
-    Tables() {
+    StaticTables() {
         for (const char* s : kCommon)
             defaults.insert(QString::fromLatin1(s));
         for (const char* s : kRaw) {
             defaults.insert(QString::fromLatin1(s));
             raw.insert(QString::fromLatin1(s));
         }
-#ifdef Q_OS_DARWIN
-        // Only what a registered backend can decode (the registry's extension set is
-        // built from the backends alone on macOS).
-        for (const QString& e : DecoderRegistry::instance().supportedExtensions())
-            all.insert(e.toLower());
-        for (const char* s : kExcluded)
-            all.remove(QString::fromLatin1(s));
-#else
-        all = defaults;
-#endif
     }
 };
 
-const Tables& tables() {
-    static const Tables t; // thread-safe static initialisation
+const StaticTables& staticTables() {
+    static const StaticTables t; // thread-safe static initialisation
     return t;
+}
+
+#ifdef Q_OS_DARWIN
+void removeExcluded(QSet<QString>& set) {
+    for (const char* s : kExcluded)
+        set.remove(QString::fromLatin1(s));
+}
+
+// Suffixes of the platform backend alone (ImageIO, a few ms). Answers the common case
+// without building the whole registry, whose Qt image plugins are slow to load (P-01).
+const QSet<QString>& platformSuffixes() {
+    static const QSet<QString> set = [] {
+        DecoderRegistry platform;
+        registerPlatformDecoders(platform);
+        QSet<QString> out;
+        for (const QString& e : platform.supportedExtensions())
+            out.insert(e.toLower());
+        removeExcluded(out);
+        return out;
+    }();
+    return set;
+}
+#endif
+
+// Everything a registered backend can decode.
+const QSet<QString>& allSuffixes() {
+    static const QSet<QString> set = [] {
+#ifdef Q_OS_DARWIN
+        // Only what a registered backend can decode (the registry's extension set is
+        // built from the backends alone on macOS).
+        QSet<QString> out;
+        for (const QString& e : DecoderRegistry::instance().supportedExtensions())
+            out.insert(e.toLower());
+        removeExcluded(out);
+        return out;
+#else
+        return staticTables().defaults;
+#endif
+    }();
+    return set;
 }
 
 QStringList sorted(const QSet<QString>& set) {
@@ -65,11 +96,15 @@ QStringList sorted(const QSet<QString>& set) {
 } // namespace
 
 bool isImageSuffix(const QString& lowerSuffix) {
-    return tables().all.contains(lowerSuffix);
+#ifdef Q_OS_DARWIN
+    if (platformSuffixes().contains(lowerSuffix))
+        return true;
+#endif
+    return allSuffixes().contains(lowerSuffix);
 }
 
 bool isRawSuffix(const QString& lowerSuffix) {
-    return tables().raw.contains(lowerSuffix);
+    return staticTables().raw.contains(lowerSuffix);
 }
 
 bool hasImageSuffix(const QString& fileName) {
@@ -82,7 +117,7 @@ bool hasImageSuffix(const QString& fileName) {
 }
 
 QStringList imageSuffixes() {
-    return sorted(tables().all);
+    return sorted(allSuffixes());
 }
 
 QStringList defaultImageSuffixes() {

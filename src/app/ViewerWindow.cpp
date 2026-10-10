@@ -8,6 +8,7 @@
 #include "core/ImageFormats.h"
 #include "core/Platform.h"
 #include "core/Settings.h"
+#include "core/StartupTrace.h"
 
 #include <QApplication>
 #include <QClipboard>
@@ -87,12 +88,87 @@ SortKey sortKeyFromId(const QString& id) {
     return map.value(id, SortKey::Name);
 }
 
+QString sortKeyId(SortKey k) {
+    static const QHash<SortKey, QString> map = {
+        {SortKey::Name, "name"},
+        {SortKey::DateModified, "dateModified"},
+        {SortKey::DateCreated, "dateCreated"},
+        {SortKey::DateAdded, "dateAdded"},
+        {SortKey::DateCaptured, "dateCaptured"},
+        {SortKey::Size, "size"},
+        {SortKey::Kind, "kind"},
+        {SortKey::PixelCount, "pixelCount"},
+        {SortKey::Rating, "rating"},
+    };
+    return map.value(k, QStringLiteral("name"));
+}
+
 bool isModifierKey(int key) {
     return key == Qt::Key_Shift || key == Qt::Key_Control || key == Qt::Key_Meta || key == Qt::Key_Alt ||
            key == Qt::Key_CapsLock || key == Qt::Key_unknown || key == 0;
 }
 
+// F-SORT-06: per-folder value (Settings::folderValue) "finder" or "<key>:asc|desc".
+const char* const kFolderSortValue = "sort";
+
+QString encodeFolderSort(const FolderSortChoice& c) {
+    if (c.followFinder)
+        return QStringLiteral("finder");
+    return sortKeyId(c.manual.key) + (c.manual.ascending ? QStringLiteral(":asc") : QStringLiteral(":desc"));
+}
+
+std::optional<FolderSortChoice> decodeFolderSort(const QString& s) {
+    if (s == QLatin1String("finder"))
+        return FolderSortChoice{true, SortSpec{SortKey::Name, true, SortSource::Manual}};
+    const qsizetype colon = s.indexOf(QLatin1Char(':'));
+    if (colon <= 0)
+        return std::nullopt;
+    const QString dir = s.mid(colon + 1);
+    if (dir != QLatin1String("asc") && dir != QLatin1String("desc"))
+        return std::nullopt;
+    return FolderSortChoice{
+        false, SortSpec{sortKeyFromId(s.left(colon)), dir == QLatin1String("asc"), SortSource::Manual}};
+}
+
 } // namespace
+
+std::optional<FolderSortChoice> ViewerWindow::rememberedFolderSort(const QString& folder) {
+    // Worker threads (Collection jobs): Settings is thread-safe.
+    return decodeFolderSort(
+        Settings::instance().folderValue(folder, QString::fromLatin1(kFolderSortValue)).toString());
+}
+
+void ViewerWindow::applyDefaultSort() {
+    // The global sort mode (F-SORT-03, F-SORT-02) for the next folder of this window.
+    Settings& st = Settings::instance();
+    m_collection->setDefaultSort(st.value(key::FollowFinder).toBool(),
+                                 st.value(key::FinderLiveQuery).toBool(),
+                                 SortSpec{sortKeyFromId(st.value(key::ManualSortKey).toString()),
+                                          st.value(key::ManualSortAscending).toBool(), SortSource::Manual});
+}
+
+void ViewerWindow::rememberFolderSort(const FolderSortChoice& choice) {
+    if (!m_collection->isFolderCollection() || m_collection->folderPath().isEmpty())
+        return; // multi-file windows: for this window only
+    Settings::instance().setFolderValue(m_collection->folderPath(), QString::fromLatin1(kFolderSortValue),
+                                        encodeFolderSort(choice));
+}
+
+void ViewerWindow::applySortToAllFolders() {
+    // "Für alle Ordner verwenden" (F-SORT-06): this window's choice becomes the global one.
+    const SortSpec s = m_collection->sortSpec();
+    const bool finder = s.source != SortSource::Manual;
+    if (m_collection->isFolderCollection() && !m_collection->folderPath().isEmpty())
+        Settings::instance().setFolderValue(m_collection->folderPath(), QString::fromLatin1(kFolderSortValue),
+                                            QVariant()); // follows the global choice again
+    Settings& st = Settings::instance();
+    if (!finder && s.key != SortKey::FinderIconPosition) {
+        st.setValue(key::ManualSortKey, sortKeyId(s.key));
+        st.setValue(key::ManualSortAscending, s.ascending);
+    }
+    st.setValue(key::FollowFinder, finder);
+    showMessage(tr("Sortierung gilt jetzt für alle Ordner"));
+}
 
 QString zoomModeId(ZoomMode mode) {
     for (const auto& z : kZoomModes)
@@ -115,12 +191,9 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
 
     Settings& st = Settings::instance();
     m_collection = new Collection(this);
-    if (st.value(key::FollowFinder).toBool()) {
-        m_collection->setFollowFinder(true, st.value(key::FinderLiveQuery).toBool());
-    } else {
-        m_collection->setSortSpec(SortSpec{sortKeyFromId(st.value(key::ManualSortKey).toString()),
-                                           st.value(key::ManualSortAscending).toBool(), SortSource::Manual});
-    }
+    applyDefaultSort();
+    // F-SORT-06: a choice made for a folder (Darstellung → Sortieren nach) comes back for it.
+    m_collection->setFolderSortMemory(&rememberedFolderSort);
 
     // ---- central area: access hint bar above the image ----
     auto* central = new QWidget(this);
@@ -152,7 +225,9 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     connect(allow, &QPushButton::clicked, this, [this] { m_app.openUrl(Application::privacySettingsUrl()); });
     connect(dismiss, &QPushButton::clicked, this, &ViewerWindow::hideAccessHint);
 
+    trace::once("ViewerWindow: before ImageView");
     m_view = new ImageView(central);
+    trace::once("ViewerWindow: ImageView created");
     layout->addWidget(hint);
     layout->addWidget(m_view, 1);
     setCentralWidget(central);
@@ -196,26 +271,9 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     }
     m_view->setMouseTracking(true);
 
-    // ---- status bar (F-INFO-01, F-NAV-07, F-SORT-05) ----
-    auto* sb = statusBar();
-    sb->setSizeGripEnabled(false);
-    auto makeLabel = [sb](const char* name, bool permanent = false) {
-        auto* l = new QLabel(sb);
-        l->setObjectName(QString::fromLatin1(name));
-        l->setContentsMargins(6, 0, 6, 0);
-        if (permanent)
-            sb->addPermanentWidget(l);
-        else
-            sb->addWidget(l);
-        return l;
-    };
-    m_nameLabel = makeLabel("lfStatusName");
-    m_positionLabel = makeLabel("lfStatusPosition");
-    m_pixelLabel = makeLabel("lfStatusPixels");
-    m_bytesLabel = makeLabel("lfStatusBytes");
-    m_zoomLabel = makeLabel("lfStatusZoom");
-    m_sortLabel = makeLabel("lfStatusSort", true);
-    sb->setVisible(st.value(key::ShowStatusBar).toBool());
+    trace::once("ViewerWindow: overlays created");
+    // The status bar (text, font metrics) is created when the window is shown: the font
+    // database loads in the background meanwhile (P-01, see setVisible()).
 
     m_chromeTimer = new QTimer(this);
     m_chromeTimer->setSingleShot(true);
@@ -223,7 +281,7 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     connect(m_chromeTimer, &QTimer::timeout, this, [this] {
         if (!isFullScreen())
             return;
-        if (statusBar()->underMouse()) {
+        if (m_statusBar && m_statusBar->underMouse()) {
             m_chromeTimer->start();
             return;
         }
@@ -254,6 +312,7 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged, this,
             &ViewerWindow::updateEmptyStyle);
 
+    trace::once("ViewerWindow: view settings applied");
     // ---- wiring ----
     connect(m_collection, &Collection::currentChanged, this, &ViewerWindow::onCurrentChanged);
     connect(m_collection, &Collection::entriesChanged, this, &ViewerWindow::onEntriesChanged);
@@ -272,6 +331,12 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     connect(&provider, &ImageProvider::imageReady, this, &ViewerWindow::onImageReady);
     connect(&provider, &ImageProvider::imageFailed, this, &ViewerWindow::onImageFailed);
     connect(&provider, &ImageProvider::stageFailed, this, &ViewerWindow::onStageFailed);
+    // The shown image is outdated (file changed, RAW setting changed): the provider decodes
+    // the wanted stages again and they replace it (F-FMT-05).
+    connect(&provider, &ImageProvider::invalidated, this, [this](const QString& path) {
+        if (path == m_shownPath && !m_shownFailed)
+            m_shownStale = true;
+    });
     connect(m_view, &ImageView::userInput, this, &ViewerWindow::handleInput);
     connect(m_view, &ImageView::zoomChanged, this, [this] { updateStatus(); });
     connect(m_view, &ImageView::needsHigherResolution, this, [this] {
@@ -288,6 +353,46 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     updateTitle();
     updateStatus();
     updateEmptyState();
+    trace::once("first ViewerWindow constructed");
+}
+
+void ViewerWindow::createStatusBar() {
+    // F-INFO-01, F-NAV-07, F-SORT-05
+    if (m_statusBar)
+        return;
+    auto* sb = statusBar();
+    m_statusBar = sb;
+    sb->setSizeGripEnabled(false);
+    auto makeLabel = [sb](const char* name, bool permanent = false) {
+        auto* l = new QLabel(sb);
+        l->setObjectName(QString::fromLatin1(name));
+        l->setContentsMargins(6, 0, 6, 0);
+        if (permanent)
+            sb->addPermanentWidget(l);
+        else
+            sb->addWidget(l);
+        return l;
+    };
+    m_nameLabel = makeLabel("lfStatusName");
+    m_positionLabel = makeLabel("lfStatusPosition");
+    m_pixelLabel = makeLabel("lfStatusPixels");
+    m_bytesLabel = makeLabel("lfStatusBytes");
+    m_zoomLabel = makeLabel("lfStatusZoom");
+    m_sortLabel = makeLabel("lfStatusSort", true);
+    sb->setVisible(Settings::instance().value(key::ShowStatusBar).toBool());
+    updateStatus();
+    applyStatusBarVisibility();
+    trace::once("ViewerWindow: status bar created");
+}
+
+void ViewerWindow::setVisible(bool visible) {
+    QMainWindow::setVisible(visible);
+    // After the native window and the GPU surface exist (show), before the event loop
+    // presents the first frame: the first frame already has the status bar.
+    if (visible) {
+        createStatusBar();
+        updateEmptyState();
+    }
 }
 
 ViewerWindow::~ViewerWindow() {
@@ -301,7 +406,21 @@ ViewerWindow::~ViewerWindow() {
 // Opening
 // ---------------------------------------------------------------------------------------
 
+void ViewerWindow::beginOpen() {
+    // A newer open request wins over a pending "next folder" lookup (switchFolder).
+    ++m_folderSwitchToken;
+    ++m_openToken;
+}
+
+void ViewerWindow::prepareOpen() {
+    hideAccessHint();
+    m_opened = true;
+    m_fitToImagePending = Settings::instance().value(key::FitWindowToImage).toBool();
+    applyDefaultSort(); // F-SORT-06: another folder's manual choice does not carry over
+}
+
 void ViewerWindow::openPaths(const QStringList& paths) {
+    beginOpen();
     // Image files open at once; anything else is looked at on a worker thread first.
     QStringList images;
     for (const QString& p : paths)
@@ -315,9 +434,10 @@ void ViewerWindow::openPaths(const QStringList& paths) {
         return;
     }
     QPointer<ViewerWindow> self(this);
-    Application::classifyPaths(paths, this, [self](const ClassifiedPaths& c) {
-        if (!self)
-            return;
+    const quint64 token = m_openToken;
+    Application::classifyPaths(paths, this, [self, token](const ClassifiedPaths& c) {
+        if (!self || token != self->m_openToken)
+            return; // gone, or something newer was opened meanwhile
         if (c.files.size() == 1)
             self->openFile(c.files.first());
         else if (c.files.size() > 1)
@@ -330,9 +450,8 @@ void ViewerWindow::openPaths(const QStringList& paths) {
 }
 
 void ViewerWindow::openFile(const QString& path) {
-    hideAccessHint();
-    m_opened = true;
-    m_fitToImagePending = Settings::instance().value(key::FitWindowToImage).toBool();
+    beginOpen();
+    prepareOpen();
     // F-WIN-09: a folder that another window already enumerated is not read again.
     for (ViewerWindow* other : m_app.windows()) {
         Collection* oc = other->collection();
@@ -346,26 +465,29 @@ void ViewerWindow::openFile(const QString& path) {
             showAccessHint(oc->folderPath(), other->accessHintIsPrivacy());
         onEntriesChanged();
         onCurrentChanged(m_collection->currentIndex(), m_collection->currentPath());
+        // The copy is shown at once; a check in the background picks up changes the
+        // folder watcher cannot report (network volumes without FSEvents) - for every
+        // window showing the folder.
+        m_app.revalidateFolder(oc->folderPath());
         return;
     }
     m_collection->openFile(path);
 }
 
-void ViewerWindow::openFiles(const QStringList& paths) {
-    hideAccessHint();
-    m_opened = true;
-    m_fitToImagePending = Settings::instance().value(key::FitWindowToImage).toBool();
-    m_collection->openFiles(paths);
+void ViewerWindow::openFiles(const QStringList& paths, bool keepAsFileSet) {
+    beginOpen();
+    prepareOpen();
+    m_collection->openFiles(paths, keepAsFileSet);
 }
 
 void ViewerWindow::openFolder(const QString& folderPath, bool selectLast) {
-    hideAccessHint();
-    m_opened = true;
-    m_fitToImagePending = Settings::instance().value(key::FitWindowToImage).toBool();
+    beginOpen();
+    prepareOpen();
     m_collection->openFolder(folderPath, selectLast);
 }
 
 void ViewerWindow::copyStateFrom(const ViewerWindow& other) {
+    beginOpen();
     m_opened = other.m_opened;
     m_view->setZoomMode(other.m_view->zoomMode() == ZoomMode::Custom ? ZoomMode::Fit
                                                                      : other.m_view->zoomMode());
@@ -434,7 +556,7 @@ bool ViewerWindow::restoreSessionState(const QVariantMap& state, const QStringLi
         else
             return false;
     } else if (files.size() == 1) {
-        openFiles(files);
+        openFiles(files, true); // still a multi-file window (one file left), not its folder
     } else if (!files.isEmpty()) {
         openFiles(files);
         m_collection->setCurrentPath(current);
@@ -511,7 +633,10 @@ bool ViewerWindow::display(const QString& path, Quality quality, const DecodedIm
         const DecodedImagePtr cur = m_view->image();
         if (cur == image || int(quality) < int(m_shownQuality))
             return false;
-        if (cur && quality == m_shownQuality && longEdge(image->image) <= longEdge(cur->image))
+        // An outdated image (invalidated, e.g. the RAW setting changed) is replaced by the
+        // new decode of the same stage even if that is not larger.
+        if (cur && quality == m_shownQuality && longEdge(image->image) <= longEdge(cur->image) &&
+            !m_shownStale)
             return false;
     } else {
         // View-only rotation/flip belongs to one image (F-EDIT-01).
@@ -519,10 +644,13 @@ bool ViewerWindow::display(const QString& path, Quality quality, const DecodedIm
         m_view->setFlip(false, false);
         m_flipH = m_flipV = false;
     }
+    if (trace::enabled())
+        trace::once(quality == Quality::Preview ? "display Preview" : "display Screen/Full");
     m_view->setImage(image, same);
     m_shownPath = path;
     m_shownQuality = quality;
     m_shownFailed = false;
+    m_shownStale = false;
     if (!same) {
         ++m_displayCount;
         if (m_fitToImagePending) {
@@ -549,8 +677,9 @@ void ViewerWindow::fitWindowToImage(QSize imagePixels) {
     // Chrome around the image (status bar, hint bar); computed from size hints so it
     // also works before the window is shown and laid out.
     int chromeHeight = 0;
-    if (!statusBar()->isHidden())
-        chromeHeight += statusBar()->sizeHint().height();
+    createStatusBar(); // its height is needed now (only with this option)
+    if (!m_statusBar->isHidden())
+        chromeHeight += m_statusBar->sizeHint().height();
     if (!m_accessHint->isHidden())
         chromeHeight += m_accessHint->sizeHint().height();
     const QSize wanted = (QSizeF(imagePixels) / dpr).toSize() + QSize(0, chromeHeight);
@@ -568,6 +697,7 @@ void ViewerWindow::fitWindowToImage(QSize imagePixels) {
 }
 
 void ViewerWindow::onImageReady(const QString& path, Quality quality, const DecodedImagePtr& image) {
+    trace::once("onImageReady (GUI thread)");
     if (path == currentPath()) {
         display(path, quality, image);
         return;
@@ -600,8 +730,8 @@ void ViewerWindow::onStageFailed(const QString& path, Quality quality, const QSt
         return;
     qDebug("lf: stage %d of %s failed: %s", int(quality), qPrintable(path), qPrintable(error));
     const QString text = tr("Volle Auflösung nicht verfügbar");
-    if (!statusBar()->isHidden())
-        statusBar()->showMessage(text, 5000);
+    if (m_statusBar && !m_statusBar->isHidden())
+        m_statusBar->showMessage(text, 5000);
     else
         showMessage(text, 3000);
 }
@@ -705,6 +835,8 @@ QString ViewerWindow::sortText() const {
 }
 
 void ViewerWindow::updateStatus() {
+    if (!m_statusBar)
+        return; // created when shown
     const QString cur = currentPath();
     const int i = m_collection->currentIndex();
     const int n = m_collection->count();
@@ -733,6 +865,8 @@ void ViewerWindow::updateStatus() {
 
 QString ViewerWindow::statusText() const {
     QStringList parts;
+    if (!m_statusBar)
+        return {};
     for (QLabel* l : {m_nameLabel, m_positionLabel, m_pixelLabel, m_bytesLabel, m_zoomLabel, m_sortLabel})
         if (!l->text().isEmpty())
             parts << l->text();
@@ -747,7 +881,9 @@ void ViewerWindow::updateEmptyState() {
         else
             m_emptyText->setText(tr("Bild oder Ordner hierher ziehen"));
     }
-    m_emptyState->setVisible(empty);
+    // Shown with the window (setVisible): polishing the text overlay before would wait
+    // for the font database, and a window opened with a file never needs it (P-01).
+    m_emptyState->setVisible(empty && isVisible());
     if (empty)
         layoutOverlays();
     applyStatusBarVisibility();
@@ -776,12 +912,19 @@ void ViewerWindow::updateEmptyStyle() {
 
 void ViewerWindow::applyStatusBarVisibility() {
     // No status bar under the empty start screen (it would only be an empty strip).
+    if (!m_statusBar)
+        return; // created when shown
     const bool hasContent = m_collection->count() > 0 || m_collection->isLoading();
-    statusBar()->setVisible(m_chromeShown && hasContent &&
+    m_statusBar->setVisible(m_chromeShown && hasContent &&
                             Settings::instance().value(key::ShowStatusBar).toBool());
 }
 
 void ViewerWindow::layoutOverlays() {
+    // Before the first show the view has no final size yet (its resize lays the overlays
+    // out); laying out the text overlays now would also wait for the fonts (P-01).
+    if (!isVisible())
+        return;
+
     m_emptyState->setGeometry(m_view->rect());
     if (!m_toast->isHidden()) {
         m_toast->adjustSize();
@@ -1101,19 +1244,28 @@ void ViewerWindow::setZoomMode(ZoomMode mode) {
 }
 
 void ViewerWindow::setSortFollowFinder() {
-    m_collection->setFollowFinder(true, Settings::instance().value(key::FinderLiveQuery).toBool());
+    // F-SORT-06: remembered for this folder (before the re-sort, which reads it).
+    rememberFolderSort(FolderSortChoice{true, SortSpec{SortKey::Name, true, SortSource::Manual}});
+    if (m_collection->followsFinder())
+        m_collection->reload(); // the folder had its own manual choice: sort again
+    else
+        m_collection->setFollowFinder(true, Settings::instance().value(key::FinderLiveQuery).toBool());
 }
 
 void ViewerWindow::setSortKey(SortKey k) {
     SortSpec s = m_collection->sortSpec();
     const bool ascending = s.key == SortKey::FinderIconPosition ? true : s.ascending;
-    m_collection->setSortSpec(SortSpec{k, ascending, SortSource::Manual});
+    const SortSpec spec{k, ascending, SortSource::Manual};
+    rememberFolderSort(FolderSortChoice{false, spec});
+    m_collection->setSortSpec(spec);
 }
 
 void ViewerWindow::setSortAscending(bool ascending) {
     SortSpec s = m_collection->sortSpec();
     const SortKey k = s.key == SortKey::FinderIconPosition ? SortKey::Name : s.key;
-    m_collection->setSortSpec(SortSpec{k, ascending, SortSource::Manual});
+    const SortSpec spec{k, ascending, SortSource::Manual};
+    rememberFolderSort(FolderSortChoice{false, spec});
+    m_collection->setSortSpec(spec);
 }
 
 void ViewerWindow::toggleFullScreen() {
@@ -1133,7 +1285,7 @@ void ViewerWindow::setChromeVisible(bool visible) {
 }
 
 bool ViewerWindow::chromeVisible() const {
-    return !statusBar()->isHidden();
+    return m_statusBar && !m_statusBar->isHidden();
 }
 
 void ViewerWindow::trashCurrent() {
@@ -1209,7 +1361,9 @@ void ViewerWindow::copyImage() {
         QGuiApplication::clipboard()->setMimeData(mime);
         showMessage(screenOnly ? tr("Bild kopiert (Bildschirmauflösung)") : tr("Bild kopiert"));
     });
-    w->setFuture(QtConcurrent::run([path, full] {
+    DecodeRequest request;
+    request.maxBytes = m_app.provider().maxDecodeBytes(); // P-08
+    w->setFuture(QtConcurrent::run([path, full, request] {
         ClipboardData r;
         const QFileInfo fi(path);
         if (fi.size() > 0 && fi.size() <= kMaxClipboardFileBytes) {
@@ -1224,7 +1378,7 @@ void ViewerWindow::copyImage() {
             r.image = full->image;
         } else {
             QString error;
-            if (auto d = DecoderRegistry::instance().decode(path, DecodeRequest{}, &error))
+            if (auto d = DecoderRegistry::instance().decode(path, request, &error))
                 r.image = d->image;
         }
         // Float (HDR) buffers are converted for other apps.
@@ -1412,6 +1566,8 @@ void ViewerWindow::saveGeometryNow() {
     if (!isVisible() || isFullScreen() || isMinimized())
         return;
     Settings::instance().setValue(QString::fromLatin1(kGeometryKey), saveGeometry()); // F-MAC-05
+    // P-01: the next launch decodes the opened image for this size before the window exists.
+    Settings::instance().setValue(QString::fromLatin1(key::DecodeTargetHint), decodeTarget());
 }
 
 } // namespace lf

@@ -3,6 +3,7 @@
 #include "ImageFormats.h"
 #include "Platform.h"
 #include "QtImageDecoder.h"
+#include "StartupTrace.h"
 
 #include <QCoreApplication>
 #include <QFile>
@@ -223,7 +224,9 @@ DecoderRegistry& DecoderRegistry::instance() {
         r->addSupportedExtensions(defaultImageSuffixes());
 #endif
         registerPlatformDecoders(*r);
-        registerPortableDecoders(*r);
+        registerPortableDecoders(*r); // loads the Qt image plugins (slow, see ImageFormats.cpp)
+        trace::mark("decoder registry built");
+
         if (r->m_decoders.isEmpty())
             qWarning("lf::DecoderRegistry: no decoder backends registered");
         return r;

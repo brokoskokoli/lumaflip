@@ -228,14 +228,29 @@ void sortEntries(QVector<FileEntry>& entries, const SortSpec& spec, const NameCo
     std::vector<NumKey> keys(static_cast<size_t>(n));
     for (qsizetype i = 0; i < n; ++i)
         keys[size_t(i)] = numKey(entries[i], spec.key);
+    // F-SORT-01 / P-05: the names are prepared once for the collator (e.g. one CFString per
+    // name instead of two per comparison); results are identical to collator.compare().
+    QVector<QString> names;
+    names.reserve(n);
+    for (const FileEntry& e : std::as_const(entries))
+        names.append(e.name);
+    const std::unique_ptr<PreparedNames> prepared = collator.prepare(std::move(names));
     std::vector<qsizetype> order(static_cast<size_t>(n));
     std::iota(order.begin(), order.end(), qsizetype(0));
     std::stable_sort(order.begin(), order.end(), [&](qsizetype i, qsizetype j) {
         const FileEntry& a = entries[i];
         const FileEntry& b = entries[j];
-        int c = comparePrimary(a, b, spec, collator, &keys[size_t(i)], &keys[size_t(j)]);
+        int c;
+        if (spec.key == SortKey::Name) {
+            c = prepared->compare(i, j);
+            c = spec.ascending ? c : -c;
+        } else {
+            c = comparePrimary(a, b, spec, collator, &keys[size_t(i)], &keys[size_t(j)]);
+        }
+        if (c == 0) // tie-break: name ascending, then the path bytes (see tieBreak())
+            c = prepared->compare(i, j);
         if (c == 0)
-            c = tieBreak(a, b, collator);
+            c = sign(a.path.compare(b.path));
         return c < 0;
     });
     QVector<FileEntry> sorted;
@@ -332,6 +347,8 @@ struct Job {
     bool followFinder = true;
     bool allowLiveQuery = false;
     SortSpec manualSpec;
+    FolderSortMemory folderMemory; // F-SORT-06
+    bool revalidate = false;       // explicit open: check a shared snapshot against the folder
     NameCollator* collator = nullptr;
     FolderOrderProvider* order = nullptr;
     FileAttributeProvider* attributes = nullptr;
@@ -379,7 +396,10 @@ Result runJob(Job job) {
         }
     } else {
         // F-WIN-09: one enumeration (+ attributes) per folder change, shared by all windows.
-        const FolderSnapshotPtr snap = FolderCache::instance().get(job.folder, job.attributes);
+        // An explicit open checks the snapshot against the folder (volumes without change
+        // notifications, e.g. network shares, would otherwise show stale contents).
+        const FolderSnapshotPtr snap =
+            FolderCache::instance().get(job.folder, job.attributes, job.revalidate);
         entries = snap->entries;
         r.accessDenied = snap->accessDenied;
         r.privacyDenied = snap->privacyDenied;
@@ -406,14 +426,22 @@ Result runJob(Job job) {
         }
     }
 
+    // F-SORT-06: a choice remembered for this folder wins over the window's sort mode.
+    bool followFinder = job.followFinder;
     SortSpec spec = job.manualSpec;
-    if (job.followFinder) {
+    if (job.folderMemory && job.mode != Mode::Files && !job.folder.isEmpty()) {
+        if (const std::optional<FolderSortChoice> remembered = job.folderMemory(job.folder)) {
+            followFinder = remembered->followFinder;
+            spec = remembered->manual;
+            spec.source = SortSource::Manual;
+        }
+    }
+    if (followFinder) {
         if (!job.folder.isEmpty() && job.order)
             spec = job.order->finderOrder(job.folder, job.allowLiveQuery);
         else
             spec = SortSpec{SortKey::Name, true, SortSource::Fallback};
     }
-    // TODO(F-SORT-06, M2): a remembered per-folder manual spec takes precedence here.
     if (cancelled())
         return r;
 
@@ -475,6 +503,11 @@ struct Collection::Private {
     SortSpec manualSpec{SortKey::Name, true, SortSource::Manual};
     bool followFinder = true;
     bool allowLiveQuery = false;
+    FolderSortMemory folderMemory;
+    bool revalidateNext = false; // the next load comes from an explicit open
+    // replayEditsDuringJob() inserted entries whose image properties are still unknown
+    // (needed by the sort key): a resort on a worker reads them (never the GUI thread).
+    bool resortForProperties = false;
 
     std::shared_ptr<std::atomic<quint64>> latest = std::make_shared<std::atomic<quint64>>(0);
     quint64 generation = 0;
@@ -537,6 +570,9 @@ struct Collection::Private {
         j.followFinder = followFinder;
         j.allowLiveQuery = allowLiveQuery;
         j.manualSpec = manualSpec;
+        j.folderMemory = folderMemory;
+        j.revalidate = kind == JobKind::Load && revalidateNext;
+        revalidateNext = false;
         j.collator = collator;
         j.order = order;
         j.attributes = attributes;
@@ -609,6 +645,13 @@ struct Collection::Private {
             emit q->sortSpecChanged(spec);
         if (r.accessDenied)
             emit q->accessDenied(folder, r.privacyDenied);
+        if (resortForProperties) {
+            // Entries added meanwhile need image metadata for this sort key: read on a
+            // worker by a resort; loading finishes with it.
+            resortForProperties = false;
+            start(JobKind::Resort);
+            return;
+        }
         emit q->loadingFinished();
     }
 
@@ -628,8 +671,10 @@ struct Collection::Private {
                 if (present.contains(it.key()))
                     continue;
                 FileEntry e = it.value();
+                // Image metadata is read by a resort on a worker (apply()), never here on
+                // the GUI thread; until then the entry sorts with the unknown values.
                 if (needsImageProperties(sortSpec.key) && attributes && !e.imagePropertiesRead)
-                    attributes->fillImageProperties(e);
+                    resortForProperties = true;
                 const auto pos = std::upper_bound(
                     entries.begin(), entries.end(), e, [&](const FileEntry& a, const FileEntry& b) {
                         return collection::compareEntries(a, b, sortSpec, coll) < 0;
@@ -664,6 +709,8 @@ struct Collection::Private {
         removedDuringJob.clear();
         insertedDuringJob.clear();
         pendingInserts.clear();
+        resortForProperties = false;
+        revalidateNext = false;
     }
 
     // Inserts a stat'ed entry at its sorted position (GUI thread).
@@ -737,10 +784,11 @@ void Collection::openFile(const QString& filePath) {
     d->current = 0;
     emit entriesChanged();
     emit currentChanged(0, path);
+    d->revalidateNext = true;
     d->start(JobKind::Load);
 }
 
-void Collection::openFiles(const QStringList& filePaths) {
+void Collection::openFiles(const QStringList& filePaths, bool keepAsFileSet) {
     QStringList paths;
     QSet<QString> seen;
     for (const QString& p : filePaths) {
@@ -750,7 +798,7 @@ void Collection::openFiles(const QStringList& filePaths) {
             paths.append(n);
         }
     }
-    if (paths.size() == 1) {
+    if (paths.size() == 1 && !keepAsFileSet) {
         // A single file is a folder collection (F-OPEN-02); several are exactly those (F-OPEN-04).
         openFile(paths.first());
         return;
@@ -784,7 +832,19 @@ void Collection::openFolder(const QString& folderPath, bool selectLast) {
     d->selectLastOnLoad = selectLast;
     emit entriesChanged();
     emit currentChanged(-1, QString());
+    d->revalidateNext = true;
     d->start(JobKind::Load);
+}
+
+void Collection::setDefaultSort(bool followFinder, bool allowLiveQuery, const SortSpec& manual) {
+    d->followFinder = followFinder;
+    d->allowLiveQuery = allowLiveQuery;
+    d->manualSpec = manual;
+    d->manualSpec.source = SortSource::Manual;
+}
+
+void Collection::setFolderSortMemory(FolderSortMemory memory) {
+    d->folderMemory = std::move(memory);
 }
 
 void Collection::copyFrom(const Collection& other) {

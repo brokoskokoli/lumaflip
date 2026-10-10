@@ -19,6 +19,9 @@ inline constexpr auto OpenBehavior = "window/openBehavior";        // "newWindow
 inline constexpr auto FitWindowToImage = "window/fitToImage";      // bool, default false
 inline constexpr auto RestoreWindows = "window/restore";           // bool (F-WIN-06)
 inline constexpr auto TitleShowFolder = "window/titleShowFolder";  // bool, default false (F-WIN-10)
+// QSize (device px) the last window decoded for; read at launch to start decoding the
+// opened image before the window exists (P-01). Not a user setting.
+inline constexpr auto DecodeTargetHint = "window/decodeTarget";
 // Files
 inline constexpr auto ConfirmTrash = "files/confirmTrash"; // bool, default false (F-FILE-01)
 // Display
@@ -77,6 +80,9 @@ public:
 
     // For tests: use an isolated settings file.
     static void useTestingBackend(const QString& iniPath);
+    // For tests: the system setting the default of key::RestoreWindows follows (F-WIN-06,
+    // NSQuitAlwaysKeepsWindows): -1 = ask the system, 0/1 = pretend it is off/on.
+    static void setSystemRestoreWindowsForTesting(int value);
 
     // SPEC 8.6: settings in ~/Library/Preferences/io.github.brokoskokoli.lumaflip.plist,
     // app data in ~/Library/Application Support/Lumaflip/. main() calls

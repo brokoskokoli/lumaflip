@@ -2,6 +2,7 @@
 #include "ImageCanvas.h"
 
 #include "ColorPipeline.h"
+#include "core/StartupTrace.h"
 
 #include <QFile>
 #include <QFuture>
@@ -624,6 +625,7 @@ qint64 ImageCanvas::gpuBytes() const {
 }
 
 void ImageCanvas::initialize(QRhiCommandBuffer*) {
+    trace::once("canvas initialize (RHI ready)");
     if (d->rhi != rhi()) {
         d->releaseAllGpu();
         d->rhi = rhi();
@@ -689,6 +691,8 @@ void ImageCanvas::initialize(QRhiCommandBuffer*) {
 }
 
 void ImageCanvas::render(QRhiCommandBuffer* cb) {
+    if (d->current)
+        trace::once("canvas render begin with image");
     QRhi* rhi = d->rhi;
     QRhiResourceUpdateBatch* rub = rhi->nextResourceUpdateBatch();
     if (!d->staticUploaded) {
@@ -738,6 +742,8 @@ void ImageCanvas::render(QRhiCommandBuffer* cb) {
         }
     }
 
+    if (d->current)
+        trace::once("canvas uploads queued");
     const QColor clear = d->base;
     const QSize target = renderTarget()->pixelSize();
     if (draw && d->pipeline) {
@@ -762,6 +768,10 @@ void ImageCanvas::render(QRhiCommandBuffer* cb) {
         }
     }
     cb->endPass();
+    if (draw)
+        trace::once("canvas first frame with image recorded");
+    else
+        trace::once("canvas first frame (empty) recorded");
     if (moreWork)
         update();
 }

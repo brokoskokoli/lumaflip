@@ -9,7 +9,11 @@
 // (trash on network volumes, cross-volume copies) runs on a worker thread, one operation
 // after the other in request order; signals, the undo command and the completion
 // callback follow on the GUI thread. The synchronous variants remain for callers that
-// need the result at once (tests, scripts).
+// need the result at once (tests, scripts); they must not be mixed with pending
+// asynchronous operations and fail (with an error, nothing done) while isBusy().
+// Asynchronous work never touches an undo command directly, so the undo stack may change
+// meanwhile without dangling pointers. Operations still queued when FileOps is destroyed
+// are carried out then (never dropped); the app waits for them before it quits.
 
 #include <QObject>
 #include <QString>

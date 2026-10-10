@@ -14,11 +14,20 @@
 #include <QPointF>
 #include <QString>
 #include <QStringList>
+#include <QVector>
 #include <functional>
 #include <memory>
 #include <optional>
 
 namespace lf {
+
+// Names prepared for many comparisons, e.g. for one sort (F-SORT-01, P-05).
+class PreparedNames {
+public:
+    virtual ~PreparedNames() = default;
+    // Same result as NameCollator::compare(names[i], names[j]).
+    virtual int compare(qsizetype i, qsizetype j) const = 0;
+};
 
 // Finder-compatible file name comparison (F-SORT-01).
 class NameCollator {
@@ -27,6 +36,9 @@ public:
     // <0, 0, >0 like strcmp. Must be a strict weak ordering (forced ordering: only
     // byte-identical names compare equal).
     virtual int compare(const QString& a, const QString& b) const = 0;
+    // Prepares `names` once (platform collators keep per-name data such as a CFString);
+    // the default compares the strings with compare() each time.
+    virtual std::unique_ptr<PreparedNames> prepare(QVector<QString> names) const;
 };
 
 // Determines the sort order Finder uses for a folder (SPEC 6.1, tiers 1-4).
@@ -76,17 +88,36 @@ public:
 // Misc OS integration (reveal in Finder etc.).
 class Shell {
 public:
-    virtual ~Shell() = default;
+    Shell();
+    virtual ~Shell();
+    Shell(const Shell&) = delete;
+    Shell& operator=(const Shell&) = delete;
     virtual void revealInFileManager(const QString& path) = 0;
     virtual void openWith(const QString& path, const QString& appPath) = 0;  // empty = default app
     virtual QStringList imageDocumentTypes() const = 0;  // UTTypes we register for
     virtual bool makeDefaultViewer(const QStringList& types, QString* error) = 0; // F-MAC-04 (blocking)
-    // Non-blocking variant for the UI: `done` runs on the thread of `context` (not at all
-    // if `context` is gone). The default implementation runs makeDefaultViewer() on a
-    // worker thread.
+    // Non-blocking variant for the UI: `done` runs once with the final result on the thread
+    // of `context` (not at all if `context` is gone). If the system takes long (it may be
+    // waiting for the user to confirm a system dialog), `pending` (optional) is called
+    // first with a message for the user; the final result still follows. The default
+    // implementation runs makeDefaultViewer() on a worker thread.
     using DefaultViewerDone = std::function<void(bool ok, const QString& error)>;
-    virtual void makeDefaultViewerAsync(const QStringList& types, QObject* context, DefaultViewerDone done);
+    using DefaultViewerPending = std::function<void(const QString& message)>;
+    virtual void makeDefaultViewerAsync(const QStringList& types, QObject* context, DefaultViewerDone done,
+                                        DefaultViewerPending pending = {});
+    // Blocks until worker threads started by the default makeDefaultViewerAsync() are done.
+    // Whoever owns the shell calls this before destroying it: those threads call
+    // makeDefaultViewer() on it.
+    void waitForPendingCalls();
+
+private:
+    struct AsyncCalls;
+    std::unique_ptr<AsyncCalls> m_async;
 };
+
+// F-WIN-06: the system wants windows restored at the next launch (macOS: "Fenster beim
+// Beenden schließen" off, i.e. NSQuitAlwaysKeepsWindows; macOS default: false).
+bool systemRestoresWindows();
 
 // ---- factories (implemented per platform) ----
 std::unique_ptr<NameCollator> createNameCollator();
@@ -97,5 +128,8 @@ std::unique_ptr<TrashService> createTrashService();
 std::unique_ptr<Shell> createShell();
 // Registers all platform decoder backends into the registry (macOS: ImageIO).
 void registerPlatformDecoders(class DecoderRegistry& registry);
+// The highest-priority platform decoder alone (macOS: ImageIO), usable before the
+// application object exists (ImageProvider::prestart, P-01); null if there is none.
+std::unique_ptr<Decoder> createPrimaryDecoder();
 
 } // namespace lf

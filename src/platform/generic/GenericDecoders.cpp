@@ -18,4 +18,8 @@ void registerPlatformDecoders(DecoderRegistry& registry) {
 #endif
 }
 
+std::unique_ptr<Decoder> createPrimaryDecoder() {
+    return nullptr; // the portable decoders need the application object (Qt plugins)
+}
+
 } // namespace lf

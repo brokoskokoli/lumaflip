@@ -2,39 +2,26 @@
 #include "app/Application.h"
 #include "app/ImageCanvas.h"
 #include "app/ImageView.h"
+#include "app/StartupWarmup.h"
 #include "app/Translations.h"
 #include "app/ViewerWindow.h"
 #include "core/ImageProvider.h"
 #include "core/InputBindings.h"
 #include "core/Settings.h"
 #include "core/SortSpec.h"
+#include "core/StartupTrace.h"
 
 #include <QApplication>
 #include <QPointer>
+#include <QTimer>
 
 #include <cstdio>
 #include <cstdlib>
-#include <sys/sysctl.h>
-#include <sys/time.h>
-#include <unistd.h>
 
 Q_DECLARE_METATYPE(lf::InputEvent)
 Q_DECLARE_METATYPE(lf::SortSpec)
 
 namespace {
-
-// Milliseconds since this process was started by the kernel (includes dyld, Qt init).
-double msSinceProcessStart() {
-    kinfo_proc info{};
-    size_t size = sizeof(info);
-    int mib[4] = {CTL_KERN, KERN_PROC, KERN_PROC_PID, getpid()};
-    timeval now{};
-    gettimeofday(&now, nullptr);
-    if (sysctl(mib, 4, &info, &size, nullptr, 0) != 0)
-        return -1;
-    const timeval start = info.kp_proc.p_starttime;
-    return (now.tv_sec - start.tv_sec) * 1000.0 + (now.tv_usec - start.tv_usec) / 1000.0;
-}
 
 // Benchmark hook P_01_ProcessLaunchToFirstFrame24MP: with LF_EXIT_AFTER_FIRST_FRAME=1 the
 // app prints "LF_FIRST_FRAME_MS=<ms>" once the first frame showing the opened file at
@@ -57,7 +44,7 @@ void installFirstFrameHook(lf::Application& app) {
         QObject::connect(canvas, &QRhiWidget::frameSubmitted, canvas, [armed] {
             if (!*armed)
                 return;
-            std::printf("LF_FIRST_FRAME_MS=%.1f\n", msSinceProcessStart());
+            std::printf("LF_FIRST_FRAME_MS=%.1f\n", lf::trace::msSinceProcessStart());
             std::fflush(stdout);
             std::_Exit(0);
         });
@@ -73,16 +60,48 @@ void installFirstFrameHook(lf::Application& app) {
     });
 }
 
+// LF_TRACE_STARTUP: the window system events that lead to the first presented frame
+// (the window is exposed only after the event loop has run NSApplication's launch).
+class TraceEvents : public QObject {
+public:
+    bool eventFilter(QObject* o, QEvent* e) override {
+        if (e->type() == QEvent::Expose && o->isWindowType())
+            lf::trace::once("window exposed (event loop)");
+        else if (e->type() == QEvent::FileOpen)
+            lf::trace::once("open request from the system (QFileOpenEvent)");
+        return false;
+    }
+};
+
 } // namespace
 
 int main(int argc, char* argv[]) {
     const bool exitAfterFirstFrame = qgetenv("LF_EXIT_AFTER_FIRST_FRAME") == "1";
     if (exitAfterFirstFrame) // diagnostics: time before main (dyld, static init)
-        std::fprintf(stderr, "LF_MAIN_MS=%.1f\n", msSinceProcessStart());
+        std::fprintf(stderr, "LF_MAIN_MS=%.1f\n", lf::trace::msSinceProcessStart());
+    lf::trace::mark("main");
+    // P-01: the GPU driver and the opened image are loaded in parallel to the creation of
+    // the application object and the window.
+    lf::startup::warmUpGpu();
+    {
+        QStringList args;
+        for (int i = 1; i < argc; ++i)
+            args << QString::fromLocal8Bit(argv[i]);
+        const QString image = lf::startup::firstImageArgument(args);
+        if (!image.isEmpty())
+            lf::ImageProvider::prestart(image, lf::startup::expectedDecodeTarget());
+    }
+    lf::trace::mark("prestart queued");
     QApplication app(argc, argv);
+    lf::trace::mark("QApplication created");
+    lf::startup::warmUpAfterApplication();
+    TraceEvents traceEvents;
+    if (lf::trace::enabled())
+        app.installEventFilter(&traceEvents);
     lf::Settings::configureApplication(); // SPEC 8.6: settings/app data locations
     QApplication::setApplicationVersion(QStringLiteral(LF_APP_VERSION));
     lf::installQtTranslations(); // before the menu bar exists (application menu texts)
+    lf::trace::mark("translations installed");
     if (!exitAfterFirstFrame)
         lf::Settings::migrateLegacyLocations();
 
@@ -92,10 +111,14 @@ int main(int argc, char* argv[]) {
     qRegisterMetaType<lf::Quality>("lf::Quality");
 
     lf::Application shell;
+    lf::trace::mark("Application created");
     if (exitAfterFirstFrame) {
         shell.setSessionEnabled(false);
         installFirstFrameHook(shell);
     }
+    if (lf::trace::enabled())
+        QTimer::singleShot(0, [] { lf::trace::mark("event loop running"); });
     shell.start(QApplication::arguments());
+    lf::trace::mark("start() returned, entering event loop");
     return QApplication::exec();
 }

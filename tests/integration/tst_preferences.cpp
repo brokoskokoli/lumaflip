@@ -143,7 +143,9 @@ private slots:
         PreferencesDialog dlg;
         click(dlg.findChild<QPushButton*>("preset:photographer"));
         QCOMPARE(dlg.findChild<QComboBox*>("slot:wheel")->currentData().toString(), QString("zoom"));
-        QCOMPARE(dlg.findChild<QComboBox*>("slot:ratingKeys")->currentData().toString(), QString("always"));
+        // Not available before 1.0 (F-CULL-01): the preset skips it.
+        QCOMPARE(dlg.findChild<QComboBox*>("slot:ratingKeys")->currentData().toString(),
+                 QString("cullingOnly"));
         click(dlg.findChild<QPushButton*>("preset:windows"));
         QCOMPARE(dlg.findChild<QComboBox*>("slot:wheel")->currentData().toString(), QString("image"));
         QCOMPARE(dlg.findChild<QComboBox*>("slot:esc")->currentData().toString(), QString("exitModeOrClose"));
