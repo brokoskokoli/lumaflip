@@ -3,7 +3,12 @@
 
 #include "AnimationPlayer.h"
 #include "Application.h"
+#include "DragOut.h"
 #include "ImageView.h"
+#include "OpenWith.h"
+#include "RenameController.h"
+#include "WindowPanels.h"
+#include "WindowTabbing.h"
 #include "core/Collection.h"
 #include "core/FileOps.h"
 #include "core/ImageFormats.h"
@@ -282,7 +287,7 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     connect(m_chromeTimer, &QTimer::timeout, this, [this] {
         if (!isFullScreen())
             return;
-        if (m_statusBar && m_statusBar->underMouse()) {
+        if ((m_statusBar && m_statusBar->underMouse()) || m_panels->underMouse()) {
             m_chromeTimer->start();
             return;
         }
@@ -348,7 +353,17 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
             display(cur, Quality::Full, img);
     });
     connect(m_view, &ImageView::errorActionTriggered, this, [this] { perform(Action::RevealInFinder); });
+    // F-FILE-07 / F-IN-14: drag the image out of the window as a file.
+    m_view->setDragOutByDefault(st.value(QStringLiteral("input/drag")).toString() ==
+                                QLatin1String("dragOut"));
+    connect(m_view, &ImageView::dragOutRequested, this, [this] {
+        const QString cur = currentPath();
+        // The shown (screen sized) image: scaling it for the drag stays quick on the GUI thread.
+        if (!cur.isEmpty() && cur == m_shownPath && !m_shownFailed && m_view->image())
+            startDragOut(m_view, cur, m_view->image()->image);
+    });
     connect(&st, &Settings::changed, this, &ViewerWindow::applySetting);
+    m_panels = new WindowPanels(*this, provider); // M2: created hidden, shown with the window
     setupMedia(); // animation, pages, slideshow, saving the rotation (ViewerWindowMedia.cpp)
 
     m_app.registerWindow(this);
@@ -389,12 +404,17 @@ void ViewerWindow::createStatusBar() {
 }
 
 void ViewerWindow::setVisible(bool visible) {
+    // F-WIN-05 / F-WIN-04: tabbing mode and tiling behavior before the window appears (a
+    // "preferred" window opens as a tab).
+    if (visible && !isVisible())
+        configureViewerWindow(this, Settings::instance().value(key::AllowTabs).toBool());
     QMainWindow::setVisible(visible);
     mediaVisibilityChanged(); // F-FMT-03: no playback in hidden windows
     // After the native window and the GPU surface exist (show), before the event loop
     // presents the first frame: the first frame already has the status bar.
     if (visible) {
         createStatusBar();
+        m_panels->restore(); // M2 panels remembered in the settings
         updateEmptyState();
     }
 }
@@ -1255,6 +1275,31 @@ bool ViewerWindow::perform(Action a, QPointF pos) {
     case Action::ShowShortcuts:
         m_app.showShortcuts();
         return true;
+    case Action::Rename: // F-FILE-04
+        return RenameController::of(this, m_app)->start();
+    case Action::OpenInEditor: { // F-FILE-05
+        if (cur.isEmpty())
+            return false;
+        QPointer<ViewerWindow> self(this);
+        OpenWithService::instance().openInEditor(cur, m_app.shell(), this, [self](const QString& message) {
+            if (self)
+                self->showMessage(message, 5000);
+        });
+        return true;
+    }
+    // ---- M2 panels (WindowPanels) ----
+    case Action::ToggleInfoPanel:
+    case Action::ToggleFilmstrip:
+        if (a == Action::ToggleInfoPanel)
+            m_panels->toggleInfoPanel(); // F-INFO-02
+        else
+            m_panels->toggleFilmstrip(); // F-GRID-01
+        if (isFullScreen()) {
+            setChromeVisible(true); // visible now, hides again with the chrome (F-VIEW-10)
+            m_chromeTimer->start();
+        }
+        m_app.windowChanged(this);
+        return true;
     default:
         return false; // later stages (info panel, culling, slideshow …)
     }
@@ -1306,6 +1351,8 @@ void ViewerWindow::toggleFullScreen() {
 void ViewerWindow::setChromeVisible(bool visible) {
     m_chromeShown = visible;
     applyStatusBarVisibility();
+    if (m_panels)
+        m_panels->setChromeVisible(visible); // M2 panels hide/return with the chrome
 }
 
 bool ViewerWindow::chromeVisible() const {
@@ -1475,6 +1522,11 @@ void ViewerWindow::applySetting(const QString& k) {
     } else if (k == QLatin1String(key::PrefetchAhead) || k == QLatin1String(key::PrefetchBehind) ||
                k == QLatin1String(key::WrapMode)) {
         updatePrefetch();
+    } else if (k == QLatin1String("input/drag")) {
+        m_view->setDragOutByDefault(st.value(k).toString() == QLatin1String("dragOut")); // F-IN-14
+    } else if (k == QLatin1String(key::AllowTabs)) {
+        if (isVisible())
+            configureViewerWindow(this, st.value(key::AllowTabs).toBool()); // F-WIN-05
     } else if (k == QLatin1String(key::FollowFinder) || k == QLatin1String(key::FinderLiveQuery) ||
                k == QLatin1String(key::ManualSortKey) || k == QLatin1String(key::ManualSortAscending)) {
         if (st.value(key::FollowFinder).toBool())
@@ -1583,7 +1635,8 @@ bool ViewerWindow::eventFilter(QObject* watched, QEvent* event) {
     if (event->type() == QEvent::MouseMove && isFullScreen()) {
         const auto* me = static_cast<QMouseEvent*>(event);
         const QPoint p = mapFromGlobal(me->globalPosition().toPoint());
-        if (p.y() >= height() - kChromeEdgePx || p.y() <= kChromeEdgePx / 4) {
+        if (p.y() >= height() - kChromeEdgePx || p.y() <= kChromeEdgePx / 4 ||
+            m_panels->isRevealEdge(p, kChromeEdgePx)) {
             setChromeVisible(true);
             m_chromeTimer->start();
         }

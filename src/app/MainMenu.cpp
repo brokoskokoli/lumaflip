@@ -4,7 +4,11 @@
 #include "AboutDialog.h"
 #include "Application.h"
 #include "ImageView.h"
+#include "MenuExtras.h"
+#include "RecentItems.h"
+#include "Updater.h"
 #include "ViewerWindow.h"
+#include "WindowPanels.h"
 #include "core/Collection.h"
 #include "core/FileOps.h"
 #include "core/Settings.h"
@@ -111,6 +115,8 @@ QAction* MainMenu::addCommand(QMenu* menu, const QString& id, const QString& tex
 
 void MainMenu::build() {
     auto front = [this] { return m_app.frontWindow(); };
+    m_extras =
+        new MenuExtras(m_app, [this](const QString& id, QAction* act) { m_commands.insert(id, act); }, this);
 
     // ---- Ablage ----
     QMenu* file = m_bar->addMenu(tr("Ablage"));
@@ -124,13 +130,17 @@ void MainMenu::build() {
             &QAction::triggered, &m_app, &Application::showOpenFolderDialog);
     m_recentMenu = file->addMenu(tr("Zuletzt geöffnet"));
     m_recentMenu->setObjectName(QStringLiteral("menu:recent"));
-    connect(m_recentMenu, &QMenu::aboutToShow, this, &MainMenu::rebuildRecent);
-    rebuildRecent();
+    connect(m_recentMenu, &QMenu::aboutToShow, this, [this] { rebuildRecent(); });
+    rebuildRecent(false); // P-01: no icons at startup
     file->addSeparator();
     add(file, Action::CloseWindow, tr("Schließen"));
     add(file, Action::CloseAllWindows, tr("Alle schließen"));
     file->addSeparator();
     add(file, Action::RevealInFinder, tr("Im Finder zeigen"));
+    add(file, Action::Rename, tr("Umbenennen …")); // F-FILE-04
+    m_extras->addOpenWith(file);                   // F-FILE-05
+    add(file, Action::OpenInEditor, tr("In Standard-Editor öffnen"));
+    m_extras->addShare(file); // F-FILE-06
     add(file, Action::Trash, tr("In den Papierkorb legen"));
     file->addSeparator();
     connect(addCommand(file, QStringLiteral("makeDefault"), tr("Als Standard-App festlegen …")),
@@ -139,6 +149,8 @@ void MainMenu::build() {
     QAction* about = addCommand(file, QStringLiteral("about"), tr("Über Lumaflip"));
     about->setMenuRole(QAction::AboutRole);
     connect(about, &QAction::triggered, this, [] { AboutDialog::showAbout(); });
+    Updater::setUpMenuAction(
+        addCommand(file, QStringLiteral("checkForUpdates"), tr("Nach Updates suchen …")));
     QAction* prefs = add(file, Action::OpenPreferences, tr("Einstellungen …"));
     prefs->setMenuRole(QAction::PreferencesRole);
     QAction* quit =
@@ -204,6 +216,9 @@ void MainMenu::build() {
     status->setCheckable(true);
     connect(status, &QAction::triggered, this,
             [](bool on) { Settings::instance().setValue(key::ShowStatusBar, on); });
+    // M2 side panels (WindowPanels): per window, remembered for new windows.
+    add(view, Action::ToggleInfoPanel, tr("Infopanel"))->setCheckable(true);    // F-INFO-02
+    add(view, Action::ToggleFilmstrip, tr("Filmstreifen"))->setCheckable(true); // F-GRID-01
     QMenu* bg = view->addMenu(tr("Hintergrund"));
     bg->setObjectName(QStringLiteral("menu:background"));
     auto* bgGroup = new QActionGroup(this);
@@ -311,6 +326,8 @@ void MainMenu::build() {
                     w->isMaximized() ? w->showNormal() : w->showMaximized();
             });
     m_windowMenu->addSeparator();
+    m_extras->addWindowCommands(m_windowMenu); // F-WIN-04 Anordnen, F-WIN-05 Tabs
+    m_windowMenu->addSeparator();
     connect(addCommand(m_windowMenu, QStringLiteral("bringAllToFront"), tr("Alle nach vorne bringen")),
             &QAction::triggered, this, [this] {
                 for (ViewerWindow* w : m_app.windows())
@@ -333,19 +350,11 @@ void MainMenu::build() {
     refreshWindowList();
 }
 
-void MainMenu::rebuildRecent() {
-    m_recentMenu->clear();
-    const QStringList recent = m_app.recentPaths();
-    for (const QString& p : recent) {
-        QAction* act = m_recentMenu->addAction(QFileInfo(p).fileName());
-        act->setToolTip(p);
-        connect(act, &QAction::triggered, this, [this, p] { m_app.openPaths({p}); });
-    }
-    if (!recent.isEmpty())
-        m_recentMenu->addSeparator();
-    QAction* clear = m_recentMenu->addAction(tr("Liste löschen"));
-    clear->setEnabled(!recent.isEmpty());
-    connect(clear, &QAction::triggered, this, [this] { m_app.clearRecentPaths(); });
+void MainMenu::rebuildRecent(bool withIcons) {
+    // F-OPEN-11: files and folders, newest first.
+    RecentItems::populateMenu(
+        m_recentMenu, [this](const QString& p) { m_app.openPaths({p}); },
+        [this] { m_app.clearRecentPaths(); }, withIcons);
 }
 
 void MainMenu::refreshShortcuts() {
@@ -372,12 +381,20 @@ void MainMenu::refreshState() {
                      Action::CopyImage,       Action::CopyPath,       Action::NextImage,
                      Action::PreviousImage,   Action::FirstImage,     Action::LastImage,
                      Action::JumpForward,     Action::JumpBackward,   Action::RotateLeft,
-                     Action::RotateRight,     Action::FlipHorizontal, Action::FlipVertical})
+                     Action::RotateRight,     Action::FlipHorizontal, Action::FlipVertical,
+                     Action::Rename,          Action::OpenInEditor})
         if (QAction* act = action(a))
             act->setEnabled(hasWindow);
     for (const QString& id : {QStringLiteral("minimize"), QStringLiteral("zoomWindow")})
         command(id)->setEnabled(hasWindow);
     action(Action::CloseAllWindows)->setEnabled(!m_app.windows().isEmpty());
+    m_extras->refreshState();
+    for (Action a : {Action::ToggleInfoPanel, Action::ToggleFilmstrip}) { // M2 panels
+        action(a)->setEnabled(hasWindow);
+        action(a)->setChecked(w && w->panels() &&
+                              (a == Action::ToggleInfoPanel ? w->panels()->infoPanelEnabled()
+                                                            : w->panels()->filmstripEnabled()));
+    }
 
     Settings& st = Settings::instance();
     command(QStringLiteral("statusBar"))->setChecked(st.value(key::ShowStatusBar).toBool());

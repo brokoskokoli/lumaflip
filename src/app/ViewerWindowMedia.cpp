@@ -12,6 +12,7 @@
 #include "core/FileOps.h"
 #include "core/LosslessTransform.h"
 #include "core/Settings.h"
+#include "core/ThumbnailCache.h"
 
 #include <QDir>
 #include <QFileInfo>
@@ -205,6 +206,7 @@ void ViewerWindow::onFileContentChanged(const QString& path) {
     // F-EDIT-02: the file was rewritten (saved rotation, undo, redo): every cached stage
     // is outdated; windows showing it get the new decode.
     m_app.provider().invalidate(path);
+    ThumbnailCache::instance().invalidate(path); // the key may not change (modification date kept)
     if (path == m_shownPath) {
         m_reloadResetsView = true;
         if (m_anim->isActive() && m_anim->path() == path)

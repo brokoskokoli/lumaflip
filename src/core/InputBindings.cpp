@@ -506,7 +506,6 @@ void InputBindings::applyPreset(const QString& presetId) {
 bool InputBindings::isChoiceAvailable(const QString& slotId, const QString& choiceId) {
     static const QSet<QString> later = {
         QStringLiteral("middleClick:magnifier"), // F-IN-11 Lupe
-        QStringLiteral("drag:dragOut"),          // F-IN-14 Datei herausziehen (F-FILE-07)
         QStringLiteral("ratingKeys:always"),     // Bewertungen (F-CULL-01)
     };
     return !later.contains(slotId + QLatin1Char(':') + choiceId);
@@ -514,13 +513,8 @@ bool InputBindings::isChoiceAvailable(const QString& slotId, const QString& choi
 
 bool InputBindings::isActionAvailable(Action a) {
     switch (a) {
-    case Action::Rename:
-    case Action::OpenInEditor:
-    case Action::ToggleInfoPanel:
-    case Action::ToggleFilmstrip:
     case Action::ToggleGrid:
     case Action::Magnifier:
-    case Action::DragOut:
     case Action::Rate0:
     case Action::Rate1:
     case Action::Rate2:

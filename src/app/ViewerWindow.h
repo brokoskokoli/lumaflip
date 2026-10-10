@@ -33,6 +33,7 @@ class Application;
 class Collection;
 class ImageView;
 class SlideshowController;
+class WindowPanels; // M2 panels (info panel, filmstrip)
 
 QString zoomModeId(ZoomMode mode);          // Settings key::ZoomMode values
 ZoomMode zoomModeFromId(const QString& id); // unknown -> Fit
@@ -62,6 +63,7 @@ public:
     bool isEmpty() const; // nothing opened (start screen)
     Collection* collection() const { return m_collection; }
     ImageView* view() const { return m_view; }
+    WindowPanels* panels() const { return m_panels; } // F-INFO-02, F-GRID-01
     QString currentPath() const;
     QString shownPath() const { return m_shownPath; }
     int displayedImageCount() const { return m_displayCount; } // distinct images shown (benchmarks)
@@ -238,6 +240,7 @@ private:
     quint64 m_openToken = 0; // latest open request (openPaths classifies asynchronously)
     bool m_folderSwitchPending = false;
     QPushButton* m_openButton = nullptr;
+    WindowPanels* m_panels = nullptr; // M2: info panel + filmstrip (WindowPanels.cpp)
 };
 
 } // namespace lf

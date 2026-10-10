@@ -12,7 +12,10 @@ plugin, Qt PDF, ...). This script deploys exactly:
   * Qt's German translations (Contents/Resources/translations),
   * qt.conf, so Qt never looks at the Homebrew prefix,
   * the licence texts of every bundled component (Contents/Resources/licenses) plus
-    index.json, which the About dialog reads.
+    index.json, which the About dialog reads,
+  * Sparkle.framework (automatic updates, F-MAC-08) if the app links it: copied as a
+    whole (helpers Autoupdate, Updater.app, XPC services; symlinks kept) and left
+    untouched otherwise - package.sh signs its parts inside-out (Sparkle's instructions).
 
 All install names are rewritten to @rpath/..., all foreign LC_RPATHs are removed.
 The result is unsigned (install_name_tool invalidates signatures); package.sh signs it.
@@ -21,6 +24,7 @@ import argparse
 import json
 import os
 import pathlib
+import plistlib
 import re
 import shutil
 import subprocess
@@ -53,6 +57,13 @@ PLUGINS = [
 TRANSLATIONS = ["qt_de.qm", "qtbase_de.qm"]
 
 SYSTEM_PREFIXES = ("/System/", "/usr/lib/")
+
+# Prebuilt frameworks that are embedded unchanged (not from Homebrew): name -> licence
+# metadata. Their nested helpers must not be rewritten or thinned.
+EMBEDDED_FRAMEWORKS = {
+    "Sparkle": {"id": "sparkle", "name": "Sparkle 2 (automatische Updates)", "license": "MIT",
+                "homepage": "https://sparkle-project.org"},
+}
 
 # Components whose Homebrew keg carries no licence file: licence text from
 # packaging/licenses/ (path relative to the repository root).
@@ -137,7 +148,8 @@ def framework_parts(path: str) -> tuple[str, str] | None:
 
 
 class Deployer:
-    def __init__(self, app: pathlib.Path, qt_prefix: pathlib.Path, repo: pathlib.Path):
+    def __init__(self, app: pathlib.Path, qt_prefix: pathlib.Path, repo: pathlib.Path,
+                 sparkle_dir: pathlib.Path | None = None):
         self.app = app
         self.contents = app / "Contents"
         self.frameworks = self.contents / "Frameworks"
@@ -148,6 +160,8 @@ class Deployer:
         self.copied: dict[str, pathlib.Path] = {}  # new install name -> path in bundle
         self.origin: dict[str, pathlib.Path] = {}  # new install name -> real source path
         self.users: dict[str, set[str]] = {}       # new install name -> bundled users
+        self.sparkle_dir = sparkle_dir or repo / "third_party" / "Sparkle"
+        self.embedded: dict[str, pathlib.Path] = {}  # framework name -> source directory
 
     # ---- copying ---------------------------------------------------------------------
 
@@ -199,9 +213,13 @@ class Deployer:
                 nd = self.bundle_name(dep)
                 if nd != dep:
                     args += ["-change", dep, nd]
+        # Keep new_rpath if the build already set it (install_name_tool refuses to delete
+        # and add the same rpath in one call); drop every other one.
         for rp in rpaths:
-            args += ["-delete_rpath", rp]
-        args += ["-add_rpath", new_rpath]
+            if rp != new_rpath:
+                args += ["-delete_rpath", rp]
+        if new_rpath not in rpaths:
+            args += ["-add_rpath", new_rpath]
         subprocess.run(args + [str(binary)], check=True, capture_output=True, text=True)
 
     # ---- main steps ------------------------------------------------------------------
@@ -256,6 +274,10 @@ class Deployer:
                 continue
             new_id = self.bundle_name(dep)
             self.users.setdefault(new_id, set()).add(self.describe(binary))
+            fw = framework_parts(dep)
+            if fw and fw[0] in EMBEDDED_FRAMEWORKS:
+                self.embed_framework(fw[0])
+                continue
             if new_id in self.copied:
                 continue
             src = resolve(dep, original, src_rpaths, self.exe)
@@ -263,6 +285,22 @@ class Deployer:
             self.copied[new_id] = dst
             self.origin[new_id] = src.resolve()
             self.collect_with_origin(dst, src.resolve())
+
+    def embed_framework(self, name: str) -> None:
+        """Copies a prebuilt framework as a whole (the build already embeds it; else from
+        its source directory). Symlinks are kept; nothing inside is rewritten."""
+        if name in self.embedded:
+            return
+        src = self.sparkle_dir / f"{name}.framework"
+        if not (src / "Versions" / "Current").exists():
+            raise SystemExit(f"error: {src} missing (tools/fetch_sparkle.sh)")
+        dst = self.frameworks / f"{name}.framework"
+        if not dst.exists():
+            self.frameworks.mkdir(parents=True, exist_ok=True)
+            shutil.copytree(src, dst, symlinks=True)
+        if not (dst / "Versions" / "Current" / name).exists():
+            raise SystemExit(f"error: {dst} is incomplete")
+        self.embedded[name] = src.parent
 
     # ---- licences --------------------------------------------------------------------
 
@@ -306,6 +344,24 @@ class Deployer:
         index.append({"id": "lumaflip", "name": "Lumaflip", "version": "", "license": "GPL-3.0-or-later",
                       "homepage": "https://github.com/brokoskokoli/lumaflip",
                       "files": ["lumaflip/LICENSE"], "binaries": ["MacOS/Lumaflip"]})
+        for name, src_dir in sorted(self.embedded.items()):
+            meta = EMBEDDED_FRAMEWORKS[name]
+            lic = src_dir / "LICENSE"
+            if not lic.is_file():
+                raise SystemExit(f"error: no licence text for {name} ({lic})")
+            dst = out_dir / meta["id"]
+            dst.mkdir(exist_ok=True)
+            shutil.copy2(lic, dst / "LICENSE")
+            os.chmod(dst / "LICENSE", 0o644)
+            plist = self.frameworks / f"{name}.framework" / "Versions" / "Current" / "Resources" / "Info.plist"
+            version = ""
+            if plist.is_file():
+                with open(plist, "rb") as f:
+                    version = plistlib.load(f).get("CFBundleShortVersionString", "")
+            index.append({"id": meta["id"], "name": meta["name"], "version": version,
+                          "license": meta["license"], "homepage": meta["homepage"],
+                          "files": [f"{meta['id']}/LICENSE"],
+                          "binaries": [f"Frameworks/{name}.framework"]})
         for formula in sorted(components):
             c = components[formula]
             dst = out_dir / formula
@@ -360,6 +416,9 @@ def verify(app: pathlib.Path) -> int:
         rel = p.relative_to(contents)
         listing = run("otool", "-L", str(p))
         for line in listing.splitlines()[1:]:
+            # Universal files list each architecture under a header "<path> (architecture x):".
+            if line.endswith(":") and not line.startswith(("\t", " ")):
+                continue
             if FOREIGN_RE.search(line):
                 problems.append(f"{rel}: links {line.strip()}")
         _, deps, rpaths = load_commands(p)
@@ -387,6 +446,8 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("app", type=pathlib.Path)
     ap.add_argument("--qt-prefix", type=pathlib.Path)
+    ap.add_argument("--sparkle-dir", type=pathlib.Path,
+                    help="directory with Sparkle.framework and LICENSE (default: third_party/Sparkle)")
     ap.add_argument("--verify", action="store_true",
                     help="only check that nothing references libraries outside the bundle")
     args = ap.parse_args()
@@ -395,11 +456,12 @@ def main() -> int:
     if not args.qt_prefix:
         ap.error("--qt-prefix is required")
     repo = pathlib.Path(__file__).resolve().parent.parent
-    d = Deployer(args.app.resolve(), args.qt_prefix.resolve(), repo)
+    d = Deployer(args.app.resolve(), args.qt_prefix.resolve(), repo,
+                 args.sparkle_dir.resolve() if args.sparkle_dir else None)
     d.deploy()
     index = d.licenses()
     print(f"deployed {len(PLUGINS)} plugins, {len(d.copied)} libraries/frameworks, "
-          f"{len(index)} licence entries")
+          f"{len(d.embedded)} embedded framework(s), {len(index)} licence entries")
     for e in index:
         print(f"  {e['name']:<55} {e['version']:<12} {e['license']}")
     return 0
