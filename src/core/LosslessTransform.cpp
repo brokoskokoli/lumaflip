@@ -5,14 +5,20 @@
 
 #include "Decoder.h"
 #include "ImageFormats.h"
+#include "UndoBackupStore.h"
 
 #include <QCoreApplication>
+#include <QCryptographicHash>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QUuid>
 
 #include <array>
+
+#ifdef Q_OS_UNIX
+#include <sys/stat.h>
+#endif
 
 #ifdef LF_HAVE_TURBOJPEG
 #include <turbojpeg.h>
@@ -354,6 +360,132 @@ jpeg::DctResult jpeg::transformDct(const QByteArray& in, int op, bool trim, QByt
 #endif
 }
 
+qsizetype jpeg::primaryImageEnd(const QByteArray& d) {
+    qsizetype pos = walkSegments(d, [](const Segment&) { return true; });
+    if (pos < 0)
+        return -1;
+    const qsizetype n = d.size();
+    while (pos + 1 < n) {
+        if (uchar(d[pos]) != 0xFF)
+            return -1;
+        qsizetype m = pos + 1;
+        while (m < n && uchar(d[m]) == 0xFF)
+            ++m;
+        if (m >= n)
+            return -1;
+        const uchar marker = uchar(d[m]);
+        if (marker == 0xD9)
+            return m + 1;
+        if (marker == 0x01 || (marker >= 0xD0 && marker <= 0xD7)) {
+            pos = m + 1;
+            continue;
+        }
+        if (m + 3 > n)
+            return -1;
+        const qsizetype len = be16(d, m + 1);
+        if (len < 2 || m + 1 + len > n)
+            return -1;
+        pos = m + 1 + len;
+        if (marker != 0xDA)
+            continue; // DHT, DQT, DRI, … between the scans
+        // Entropy-coded data: ends at the first marker that is no stuffing/restart marker.
+        while (pos + 1 < n) {
+            if (uchar(d[pos]) != 0xFF) {
+                ++pos;
+                continue;
+            }
+            const uchar next = uchar(d[pos + 1]);
+            if (next == 0x00 || (next >= 0xD0 && next <= 0xD7)) {
+                pos += 2;
+                continue;
+            }
+            if (next == 0xFF) {
+                ++pos; // fill byte
+                continue;
+            }
+            break; // a marker: handled by the outer loop
+        }
+    }
+    return -1;
+}
+
+bool jpeg::hasAdditionalImages(const QByteArray& data) {
+    if (!isJpeg(data))
+        return false;
+    bool mpf = false;
+    walkSegments(data, [&](const Segment& s) {
+        if (s.marker == 0xE2 && s.length >= 4 && data.mid(s.payload, 4) == QByteArray("MPF\0", 4))
+            mpf = true;
+        return !mpf;
+    });
+    if (mpf)
+        return true;
+    const qsizetype end = primaryImageEnd(data);
+    if (end < 0)
+        return false; // no complete primary image: nothing behind it either
+    for (qsizetype i = end; i < data.size(); ++i)
+        if (uchar(data[i]) != 0x00 && uchar(data[i]) != 0xFF)
+            return true; // anything but padding (gain map, second view, maker trailer)
+    return false;
+}
+
+// ---- file identity ----
+
+FileStamp fileStamp(const QString& path) {
+    FileStamp s;
+#ifdef Q_OS_UNIX
+    struct stat st{};
+    if (::stat(QFile::encodeName(path).constData(), &st) != 0 || !S_ISREG(st.st_mode))
+        return s;
+    s.size = qint64(st.st_size);
+#ifdef Q_OS_DARWIN
+    s.mtimeNs = qint64(st.st_mtimespec.tv_sec) * 1'000'000'000 + st.st_mtimespec.tv_nsec;
+#else
+    s.mtimeNs = qint64(st.st_mtim.tv_sec) * 1'000'000'000 + st.st_mtim.tv_nsec;
+#endif
+    s.inode = quint64(st.st_ino);
+    s.device = quint64(st.st_dev);
+#else
+    const QFileInfo fi(path);
+    if (!fi.isFile())
+        return s;
+    s.size = fi.size();
+    s.mtimeNs = fi.lastModified().toMSecsSinceEpoch() * 1'000'000;
+#endif
+    if (s.size <= FileStamp::kHashLimit) {
+        QFile f(path);
+        QCryptographicHash h(QCryptographicHash::Sha256);
+        if (!f.open(QIODevice::ReadOnly) || !h.addData(&f))
+            return FileStamp{};
+        s.hash = h.result();
+    }
+    return s;
+}
+
+QString resolvedFilePath(const QString& path) {
+    const QFileInfo fi(path);
+    const QString canonical = fi.canonicalFilePath();
+    return canonical.isEmpty() ? fi.absoluteFilePath() : canonical;
+}
+
+// ---- durability (test seam) ----
+
+namespace {
+std::mutex g_observerMutex;
+std::function<void(platform::DurabilityStep, const QString&)> g_observer;
+} // namespace
+
+void platform::reportDurabilityStep(DurabilityStep step, const QString& path) {
+    std::lock_guard g(g_observerMutex);
+    if (g_observer)
+        g_observer(step, path);
+}
+
+void platform::setDurabilityObserver(std::function<void(DurabilityStep, const QString&)> observer) {
+    std::lock_guard g(g_observerMutex);
+    g_observer = std::move(observer);
+}
+
 // ---- planning and saving ----
 
 namespace {
@@ -393,27 +525,44 @@ bool isJpegType(const QString& typeId) {
     return typeId == QLatin1String("public.jpeg");
 }
 
+QString messageChangedSincePlan() {
+    return tr("Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte die Drehung erneut "
+              "speichern.");
+}
+
+QString messageAdditionalImages() {
+    return tr("Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), "
+              "die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.");
+}
+
 } // namespace
 
 RotationPlan planRotationSave(const RotationRequest& r) {
     RotationPlan plan;
-    const QFileInfo fi(r.path);
+    if (!QFileInfo::exists(r.path)) {
+        plan.message = tr("Die Datei existiert nicht mehr.");
+        return plan;
+    }
+    // A symbolic link: the real file is saved (next to itself), the link stays a link.
+    plan.target = resolvedFilePath(r.path);
+    const QFileInfo fi(plan.target);
     if (!fi.isFile()) {
         plan.message = tr("Die Datei existiert nicht mehr.");
         return plan;
     }
-    plan.typeId = platform::imageTypeIdentifier(r.path);
+    plan.typeId = platform::imageTypeIdentifier(plan.target);
     if (plan.typeId.isEmpty()) {
         plan.message = tr("Das Dateiformat wird zum Speichern nicht erkannt.");
         return plan;
     }
     // By content type and, as a safety net, by suffix (a DNG may look like a plain TIFF).
-    if (platform::isCameraRawType(plan.typeId) || isRawSuffix(fi.suffix().toLower())) {
+    if (platform::isCameraRawType(plan.typeId) || isRawSuffix(fi.suffix().toLower()) ||
+        isRawSuffix(QFileInfo(r.path).suffix().toLower())) {
         plan.message = tr("RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; "
                           "zum dauerhaften Drehen bitte den RAW-Entwickler benutzen.");
         return plan;
     }
-    if (platform::imageCount(r.path) > 1) {
+    if (platform::imageCount(plan.target) > 1) {
         plan.message = tr("Animierte oder mehrseitige Dateien können nicht gedreht gespeichert werden.");
         return plan;
     }
@@ -421,18 +570,23 @@ RotationPlan planRotationSave(const RotationRequest& r) {
         plan.message = tr("„%1“ ist schreibgeschützt.").arg(fi.fileName());
         return plan;
     }
+    plan.stamp = fileStamp(plan.target);
+    if (!plan.stamp.isValid()) {
+        plan.message = tr("„%1“ kann nicht gelesen werden.").arg(fi.fileName());
+        return plan;
+    }
 
     int current = 1;
     QByteArray bytes;
     const bool isJpeg = isJpegType(plan.typeId);
     if (isJpeg) {
-        bytes = readAll(r.path, &plan.message);
+        bytes = readAll(plan.target, &plan.message);
         if (bytes.isEmpty())
             return plan;
         current = std::max(1, jpeg::exifOrientation(bytes));
     } else {
         QString err;
-        if (auto info = DecoderRegistry::instance().info(r.path, &err))
+        if (auto info = DecoderRegistry::instance().info(plan.target, &err))
             current = clampOrientation(info->exifOrientation);
     }
     const int target = orientation::compose(current, r.quarterTurnsCW, r.flipH, r.flipV);
@@ -444,25 +598,33 @@ RotationPlan planRotationSave(const RotationRequest& r) {
     }
 
     if (isJpeg && r.strategy == RotationStrategy::LosslessJpeg && jpeg::dctTransformAvailable()) {
-        plan.pixelOp = target; // new pixels show as the view does; the tag becomes 1
-        plan.newOrientation = 1;
-        QByteArray probe;
-        QString err;
-        const jpeg::DctResult dr = jpeg::transformDct(bytes, target, false, &probe, &err);
-        if (dr == jpeg::DctResult::Ok) {
-            plan.method = RotationMethod::JpegDct;
-            return plan;
+        if (jpeg::hasAdditionalImages(bytes)) {
+            // tj3Transform keeps only the primary image; MPF offsets would point into nothing
+            // and a gain map would no longer match the rotated pixels: the tag is set instead.
+            plan.notice = messageAdditionalImages() + QLatin1Char(' ') +
+                          tr("Deshalb wurde nur die EXIF-Ausrichtung gesetzt.");
+        } else {
+            plan.pixelOp = target; // new pixels show as the view does; the tag becomes 1
+            plan.newOrientation = 1;
+            QByteArray probe;
+            QString err;
+            const jpeg::DctResult dr = jpeg::transformDct(bytes, target, false, &probe, &err);
+            if (dr == jpeg::DctResult::Ok) {
+                plan.method = RotationMethod::JpegDct;
+                return plan;
+            }
+            if (dr == jpeg::DctResult::NotPerfect) {
+                plan.status = RotationPlan::NeedsTrim;
+                plan.method = RotationMethod::JpegDctTrim;
+                plan.message =
+                    tr("Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfrei "
+                       "drehen geht nur, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten "
+                       "wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.");
+                return plan;
+            }
+            // DCT transform impossible (unusual JPEG): fall through to the orientation tag.
+            plan.pixelOp = 1;
         }
-        if (dr == jpeg::DctResult::NotPerfect) {
-            plan.status = RotationPlan::NeedsTrim;
-            plan.method = RotationMethod::JpegDctTrim;
-            plan.message =
-                tr("Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfrei "
-                   "drehen geht nur, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten "
-                   "wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.");
-            return plan;
-        }
-        // DCT transform impossible (unusual JPEG): fall through to the orientation tag.
     }
 
     plan.newOrientation = target;
@@ -478,7 +640,31 @@ RotationPlan planRotationSave(const RotationRequest& r) {
     plan.newOrientation = 1;
     plan.pixelOp = orientation::multiply(target, orientation::inverse(current));
     if (platform::isLosslessCodec(plan.typeId)) {
-        plan.method = RotationMethod::ReencodeLossless;
+        // "Lossless" only if the codec stores exactly the rotated pixels (color model, bit
+        // depth, palette, alpha): tried in the temporary folder, the file is not touched.
+        const QString probe =
+            QDir(QDir::tempPath())
+                .filePath(QStringLiteral("lumaflip-probe-%1.%2")
+                              .arg(QUuid::createUuid().toString(QUuid::Id128).left(12), fi.suffix()));
+        QString err;
+        bool inexact = false;
+        const bool exact =
+            platform::reencodeTransformed(plan.target, probe, plan.pixelOp, true, &err, &inexact);
+        QFile::remove(probe);
+        if (exact) {
+            plan.method = RotationMethod::ReencodeLossless;
+            return plan;
+        }
+        if (!inexact) {
+            plan.status = RotationPlan::Refused;
+            plan.message = err.isEmpty() ? tr("Die Drehung kann nicht gespeichert werden.") : err;
+            return plan;
+        }
+        plan.status = RotationPlan::NeedsReencode;
+        plan.method = RotationMethod::ReencodeLossy;
+        plan.message = tr("Dieses Format kann keine Ausrichtung speichern, und beim Neukodieren bliebe das "
+                          "Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden "
+                          "verändert).");
         return plan;
     }
     plan.status = RotationPlan::NeedsReencode;
@@ -491,12 +677,13 @@ RotationPlan planRotationSave(const RotationRequest& r) {
 QString executeRotationSave(const RotationRequest& r, const RotationPlan& plan, RotationMethod method) {
     if (method == RotationMethod::None)
         return {};
+    const QString target = plan.target.isEmpty() ? resolvedFilePath(r.path) : plan.target;
     QString error;
-    const QString tmp = siblingTempPath(r.path);
+    const QString tmp = siblingTempPath(target);
     bool ok = false;
     switch (method) {
     case RotationMethod::PatchExif: {
-        QByteArray data = readAll(r.path, &error);
+        QByteArray data = readAll(target, &error);
         if (data.isEmpty())
             return error;
         if (jpeg::patchOrientation(data, plan.newOrientation) != jpeg::PatchResult::Patched)
@@ -506,9 +693,11 @@ QString executeRotationSave(const RotationRequest& r, const RotationPlan& plan, 
     }
     case RotationMethod::JpegDct:
     case RotationMethod::JpegDctTrim: {
-        const QByteArray data = readAll(r.path, &error);
+        const QByteArray data = readAll(target, &error);
         if (data.isEmpty())
             return error;
+        if (jpeg::hasAdditionalImages(data))
+            return messageAdditionalImages();
         QByteArray out;
         const auto dr =
             jpeg::transformDct(data, plan.pixelOp, method == RotationMethod::JpegDctTrim, &out, &error);
@@ -524,11 +713,11 @@ QString executeRotationSave(const RotationRequest& r, const RotationPlan& plan, 
             // Chosen instead of a DCT transform: the orientation that matches the view.
             QString err;
             int current = 1;
-            if (auto info = DecoderRegistry::instance().info(r.path, &err))
+            if (auto info = DecoderRegistry::instance().info(target, &err))
                 current = clampOrientation(info->exifOrientation);
             o = orientation::compose(current, r.quarterTurnsCW, r.flipH, r.flipV);
         }
-        const QByteArray before = isJpegType(plan.typeId) ? readAll(r.path, &error) : QByteArray();
+        const QByteArray before = isJpegType(plan.typeId) ? readAll(target, &error) : QByteArray();
         if (isJpegType(plan.typeId) && jpeg::exifOrientation(before) != 0) {
             QByteArray data = before;
             if (jpeg::patchOrientation(data, o) != jpeg::PatchResult::Patched)
@@ -536,9 +725,10 @@ QString executeRotationSave(const RotationRequest& r, const RotationPlan& plan, 
             ok = writeFile(tmp, data, &error);
             break;
         }
-        ok = platform::writeOrientationLossless(r.path, tmp, o, &error);
+        ok = platform::writeOrientationLossless(target, tmp, o, &error);
         if (ok && isJpegType(plan.typeId)) {
-            // Never silently re-encoded: the compressed image data must be unchanged.
+            // Never silently re-encoded: the compressed image data - and everything behind it
+            // (MPF gain maps, second views) - must be unchanged.
             const QByteArray after = readAll(tmp, &error);
             if (jpeg::scanData(after) != jpeg::scanData(before) || jpeg::scanData(before).isEmpty()) {
                 QFile::remove(tmp);
@@ -549,7 +739,8 @@ QString executeRotationSave(const RotationRequest& r, const RotationPlan& plan, 
     }
     case RotationMethod::ReencodeLossless:
     case RotationMethod::ReencodeLossy:
-        ok = platform::reencodeTransformed(r.path, tmp, plan.pixelOp, &error);
+        ok = platform::reencodeTransformed(target, tmp, plan.pixelOp,
+                                           method == RotationMethod::ReencodeLossless, &error);
         break;
     case RotationMethod::None:
         return {};
@@ -558,7 +749,13 @@ QString executeRotationSave(const RotationRequest& r, const RotationPlan& plan, 
         QFile::remove(tmp);
         return error.isEmpty() ? tr("Die Drehung konnte nicht gespeichert werden.") : error;
     }
-    if (!platform::replaceFile(tmp, r.path, r.keepModificationDate, &error)) {
+    // The file must still be the one that was planned (and read): an edit made meanwhile by
+    // another program is never overwritten.
+    if (plan.stamp.isValid() && fileStamp(target) != plan.stamp) {
+        QFile::remove(tmp);
+        return messageChangedSincePlan();
+    }
+    if (!platform::replaceFile(tmp, target, r.keepModificationDate, &error)) {
         QFile::remove(tmp);
         return error.isEmpty() ? tr("Die Datei konnte nicht ersetzt werden.") : error;
     }
@@ -567,13 +764,91 @@ QString executeRotationSave(const RotationRequest& r, const RotationPlan& plan, 
 
 QString restoreFileFrom(const QString& backup, const QString& target) {
     QString error;
-    const QString tmp = siblingTempPath(target);
+    const QString real = resolvedFilePath(target);
+    const QString tmp = siblingTempPath(real);
     if (!platform::copyWithMetadata(backup, tmp, &error))
         return error;
-    if (!platform::replaceFile(tmp, target, false, &error)) {
+    if (!platform::replaceFile(tmp, real, false, &error)) {
         QFile::remove(tmp);
         return error.isEmpty() ? tr("Die Datei konnte nicht ersetzt werden.") : error;
     }
+    return {};
+}
+
+// ---- RotationEdit ----
+
+namespace {
+const QString kBefore = QStringLiteral("before");
+const QString kAfter = QStringLiteral("after");
+} // namespace
+
+RotationEdit::RotationEdit(RotationRequest request, RotationPlan plan, RotationMethod method,
+                           std::shared_ptr<UndoBackupStore> store)
+    : m_request(std::move(request)), m_plan(std::move(plan)), m_method(method), m_store(std::move(store)) {
+    if (m_plan.target.isEmpty())
+        m_plan.target = resolvedFilePath(m_request.path);
+}
+
+RotationEdit::~RotationEdit() {
+    if (m_id && m_store)
+        m_store->release(m_id);
+}
+
+QString RotationEdit::messageChangedUndo() {
+    return tr("Datei wurde inzwischen verändert – Rückgängig nicht möglich");
+}
+
+QString RotationEdit::messageChangedRedo() {
+    return tr("Datei wurde inzwischen verändert – Wiederholen nicht möglich");
+}
+
+QString RotationEdit::messageBackupDropped() {
+    return tr("Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – "
+              "Rückgängig/Wiederholen ist dafür nicht mehr möglich.");
+}
+
+QString RotationEdit::apply() {
+    return step(true);
+}
+
+QString RotationEdit::revert() {
+    return step(false);
+}
+
+QString RotationEdit::step(bool forward) {
+    std::lock_guard g(m_mutex);
+    const QString& target = m_plan.target;
+    QString error;
+    if (!m_id) {
+        if (!forward)
+            return tr("Es gibt nichts rückgängig zu machen.");
+        // First save: backup of the original, then the save, then a copy of the result.
+        m_id = m_store ? m_store->create() : 0;
+        if (!m_id)
+            return tr("Kein Platz für die Sicherungskopie – nichts gespeichert.");
+        if (!m_store->addCopy(m_id, target, kBefore, true, &error))
+            return error;
+        const QString e = executeRotationSave(m_request, m_plan, m_method);
+        if (!e.isEmpty())
+            return e;
+        m_done = true;
+        m_expected = fileStamp(target);
+        // For redo; a clone costs nothing while the file stays as saved. Without it, redo
+        // reports the missing backup.
+        m_store->addCopy(m_id, target, kAfter, false, &error);
+        return {};
+    }
+    if (m_done == forward)
+        return {}; // already in that state
+    const QString backup = m_store->file(m_id, forward ? kAfter : kBefore);
+    if (backup.isEmpty())
+        return messageBackupDropped();
+    if (fileStamp(target) != m_expected)
+        return forward ? messageChangedRedo() : messageChangedUndo();
+    if (const QString e = restoreFileFrom(backup, target); !e.isEmpty())
+        return e;
+    m_done = forward;
+    m_expected = fileStamp(target);
     return {};
 }
 

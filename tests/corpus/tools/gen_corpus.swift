@@ -363,6 +363,46 @@ write("quad.tga", type("com.truevision.tga-image"), [(makeImage(W, H) { quad($0,
 write("quad.psd", type("com.adobe.photoshop-image"), [(makeImage(W, H) { quad($0, $1, W, H) }, [:])])
 write("quad.jp2", type("public.jpeg-2000"), [(makeImage(W, H) { quad($0, $1, W, H) },
                                               [kCGImageDestinationLossyCompressionQuality: 1.0])])
+write("quad16.psd", type("com.adobe.photoshop-image"), [(makeImage(W, H, bpc: 16) { quad($0, $1, W, H) }, [:])])
+
+// MARK: - GPU texture containers, Radiance
+// ImageIO does not recognise these from the first bytes alone (ImageIODecoder::canDecode
+// checks their magic numbers itself).
+// DDS: uncompressed 32-bit BGRA (ImageIO's own DDS encoder writes files it cannot read back).
+do {
+    var dds = Data("DDS ".utf8)
+    func u32(_ v: UInt32) { withUnsafeBytes(of: v.littleEndian) { dds.append(contentsOf: $0) } }
+    u32(124)                                   // dwSize
+    u32(0x1 | 0x2 | 0x4 | 0x8 | 0x1000)        // CAPS | HEIGHT | WIDTH | PITCH | PIXELFORMAT
+    u32(UInt32(H)); u32(UInt32(W)); u32(UInt32(W * 4)); u32(0); u32(0)
+    for _ in 0..<11 { u32(0) }                 // dwReserved1
+    u32(32); u32(0x40 | 0x1)                   // DDS_PIXELFORMAT: size, RGB | ALPHAPIXELS
+    u32(0); u32(32)                            // FourCC, bit count
+    u32(0x00FF_0000); u32(0x0000_FF00); u32(0x0000_00FF); u32(0xFF00_0000)
+    u32(0x1000); u32(0); u32(0); u32(0); u32(0) // caps (TEXTURE), caps2-4, reserved2
+    for y in 0..<H {
+        for x in 0..<W {
+            let q = quad(x, y, W, H)
+            dds.append(contentsOf: [UInt8(q.b * 255), UInt8(q.g * 255), UInt8(q.r * 255), 255])
+        }
+    }
+    writeBytes("quad.dds", dds)
+}
+// KTX from float pixels: ImageIO reads integer data back from its own KTX files as half floats.
+write("quad.ktx", type("org.khronos.ktx"), [(makeImage(W, H, space: linearSRGBExtended, bpc: 32) { quad($0, $1, W, H) }, [:])])
+write("quad.ktx2", type("org.khronos.ktx2"), [(makeImage(W, H) { quad($0, $1, W, H) }, [:])])
+// Radiance RGBE, flat (uncompressed) scanlines; ImageIO reads but does not write it.
+do {
+    var hdr = Data("#?RADIANCE\nFORMAT=32-bit_rle_rgbe\n\n-Y \(H) +X \(W)\n".utf8)
+    for y in 0..<H {
+        for x in 0..<W {
+            let q = quad(x, y, W, H)
+            // 1.0 = mantissa 128, exponent 129 (2^1 * 128/256)
+            hdr.append(contentsOf: [q.r > 0 ? 128 : 0, q.g > 0 ? 128 : 0, q.b > 0 ? 128 : 0, 129])
+        }
+    }
+    writeBytes("quad.hdr", hdr)
+}
 
 // MARK: - HDR
 
@@ -381,6 +421,9 @@ do {
     let hdr = CGImageCreateCopyWithContentHeadroom(4.0, hdrBase) ?? hdrBase
     write("gainmap.heic", .heic, [(hdr, [kCGImageDestinationEncodeRequest: kCGImageDestinationEncodeToISOGainmap,
                                          kCGImageDestinationLossyCompressionQuality: 0.95])])
+    // The same as JPEG: primary image + MPF + gain map JPEG behind it (Ultra HDR layout).
+    write("gainmap.jpg", .jpeg, [(hdr, [kCGImageDestinationEncodeRequest: kCGImageDestinationEncodeToISOGainmap,
+                                        kCGImageDestinationLossyCompressionQuality: 0.95])])
     // PQ (Rec. 2100) 16-bit AVIF.
     let pqSpace = CGColorSpace(name: CGColorSpace.itur_2100_PQ)!
     let pq = makeImage(W, H, space: pqSpace, bpc: 16) { x, y in

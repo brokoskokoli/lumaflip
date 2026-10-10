@@ -52,9 +52,17 @@
     "quad.tga": {"displaySize": [64, 48], "quadrants": "rgbw", "optional": true},
     "quad.psd": {"displaySize": [64, 48], "quadrants": "rgbw", "optional": true},
     "quad.jp2": {"displaySize": [64, 48], "quadrants": "rgbw", "optional": true},
+    "quad16.psd": {"displaySize": [64, 48], "bits": 16, "quadrants": "rgbw", "optional": true},
+    "quad.dds": {"displaySize": [64, 48], "hasAlpha": true, "quadrants": "rgbw", "format": "DDS"},
+    "quad.ktx": {"displaySize": [64, 48], "isHdr": true, "hasAlpha": true, "bits": 32, "format": "KTX", "optional": true,
+                 "colorSpace": "DisplayP3", "quadrants": {"tl": [234, 51, 35, 255], "tr": [117, 251, 76, 255], "bl": [0, 0, 245, 255], "br": [255, 255, 255, 255]}, "tolerance": 30},
+    "quad.ktx2": {"displaySize": [64, 48], "hasAlpha": true, "bits": 16, "quadrants": "rgbw", "format": "KTX2", "optional": true},
+    "quad.hdr": {"displaySize": [64, 48], "isHdr": true, "bits": 16, "format": "Radiance HDR", "colorSpace": "DisplayP3",
+                 "quadrants": {"tl": [234, 51, 35, 255], "tr": [117, 251, 76, 255], "bl": [0, 0, 245, 255], "br": [255, 255, 255, 255]}, "tolerance": 30},
 
     "hdr.exr": {"displaySize": [64, 48], "isHdr": true, "hasAlpha": true, "bits": 32, "optional": true},
     "gainmap.heic": {"displaySize": [64, 48], "isHdr": true, "optional": true},
+    "gainmap.jpg": {"displaySize": [64, 48], "isHdr": true, "optional": true},
     "pq.avif": {"displaySize": [64, 48], "isHdr": true, "bits": 10, "optional": true}
   },
   "broken": ["truncated.jpg", "empty.jpg", "garbage.jpg"],

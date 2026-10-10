@@ -19,6 +19,9 @@ set(CMAKE_AUTOMOC ON)
 option(LF_WERROR "Treat warnings in own sources as errors" ON)
 option(LF_SANITIZE "Build with AddressSanitizer + UBSan" OFF)
 option(LF_BUILD_TESTS "Build tests" ON)
+# Release builds: fail instead of silently dropping lossless JPEG rotation (F-EDIT-02) when
+# libjpeg-turbo's static TurboJPEG library (libturbojpeg.a) is missing (src/CMakeLists.txt).
+option(LF_REQUIRE_TURBOJPEG "Require the static libjpeg-turbo TurboJPEG library" OFF)
 # The app (widgets, QRhi canvas, bundle) and its integration tests/benchmarks.
 # Off on Linux for now: there only the platform-neutral core is built and
 # unit-tested (SPEC 9.3).

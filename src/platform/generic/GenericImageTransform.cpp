@@ -8,6 +8,7 @@
 #include "core/LosslessTransform.h"
 
 #include <QCoreApplication>
+#include <QDateTime>
 #include <QFile>
 #include <QFileInfo>
 #include <QImage>
@@ -15,8 +16,15 @@
 #include <QImageWriter>
 #include <QTransform>
 
+#include <algorithm>
+#include <cstring>
 #include <filesystem>
 #include <system_error>
+
+#ifdef Q_OS_UNIX
+#include <fcntl.h>
+#include <unistd.h>
+#endif
 
 namespace lf::platform {
 
@@ -29,6 +37,21 @@ QString tr(const char* text) {
 void setError(QString* error, const QString& msg) {
     if (error)
         *error = msg;
+}
+
+// fsync() of a file or folder (POSIX); elsewhere a no-op that reports success.
+bool syncFile(const QString& path) {
+#ifdef Q_OS_UNIX
+    const int fd = ::open(QFile::encodeName(path).constData(), O_RDONLY | O_CLOEXEC);
+    if (fd < 0)
+        return false;
+    const bool ok = ::fsync(fd) == 0;
+    ::close(fd);
+    return ok;
+#else
+    Q_UNUSED(path);
+    return true;
+#endif
 }
 
 QString formatOf(const QString& path) {
@@ -75,7 +98,10 @@ bool writeOrientationLossless(const QString&, const QString&, int, QString* erro
     return false;
 }
 
-bool reencodeTransformed(const QString& src, const QString& dst, int pixelOp, QString* error) {
+bool reencodeTransformed(const QString& src, const QString& dst, int pixelOp, bool requireExact,
+                         QString* error, bool* inexact) {
+    if (inexact)
+        *inexact = false;
     QImageReader r(src);
     r.setAutoTransform(false);
     const QByteArray format = r.format();
@@ -87,13 +113,52 @@ bool reencodeTransformed(const QString& src, const QString& dst, int pixelOp, QS
     static const int m[9][4] = {{1, 0, 0, 1}, {1, 0, 0, 1},  {-1, 0, 0, 1},  {-1, 0, 0, -1}, {1, 0, 0, -1},
                                 {0, 1, 1, 0}, {0, -1, 1, 0}, {0, -1, -1, 0}, {0, 1, -1, 0}};
     const int* t = m[pixelOp >= 1 && pixelOp <= 8 ? pixelOp : 1];
-    // QTransform maps (x, y) -> (m11 x + m21 y, m12 x + m22 y); QImage::transformed re-centers.
-    img = img.transformed(QTransform(t[0], t[2], t[1], t[3], 0, 0));
+    if (img.depth() % 8 == 0) {
+        // Byte-aligned pixels are moved as they are: same format, color table, alpha
+        // (QImage::transformed may convert or extend the color table).
+        const int w = img.width(), h = img.height(), B = img.depth() / 8;
+        const bool swap = t[0] == 0;
+        QImage out(swap ? h : w, swap ? w : h, img.format());
+        if (out.isNull()) {
+            setError(error, tr("Nicht genug Speicher zum Drehen."));
+            return false;
+        }
+        out.setColorTable(img.colorTable());
+        out.setColorSpace(img.colorSpace());
+        out.setDotsPerMeterX(swap ? img.dotsPerMeterY() : img.dotsPerMeterX());
+        out.setDotsPerMeterY(swap ? img.dotsPerMeterX() : img.dotsPerMeterY());
+        const int minX = std::min(0, t[0] * (w - 1)) + std::min(0, t[1] * (h - 1));
+        const int minY = std::min(0, t[2] * (w - 1)) + std::min(0, t[3] * (h - 1));
+        for (int y = 0; y < h; ++y) {
+            const uchar* row = img.constScanLine(y);
+            for (int x = 0; x < w; ++x) {
+                const int X = t[0] * x + t[1] * y - minX, Y = t[2] * x + t[3] * y - minY;
+                std::memcpy(out.scanLine(Y) + qsizetype(X) * B, row + qsizetype(x) * B, size_t(B));
+            }
+        }
+        img = out;
+    } else {
+        // QTransform maps (x, y) -> (m11 x + m21 y, m12 x + m22 y); QImage::transformed re-centers.
+        img = img.transformed(QTransform(t[0], t[2], t[1], t[3], 0, 0));
+    }
     QImageWriter w(dst, format);
-    w.setQuality(95);
+    if (!requireExact)
+        w.setQuality(95);
     if (!w.write(img)) {
         setError(error, tr("Dieses Format kann nicht geschrieben werden."));
         return false;
+    }
+    if (requireExact) {
+        // Read back: same format (color model, depth, palette) and the same pixels.
+        QImageReader back(dst);
+        back.setAutoTransform(false);
+        if (back.read() != img) {
+            QFile::remove(dst);
+            if (inexact)
+                *inexact = true;
+            setError(error, tr("Das Bild lässt sich in diesem Format nicht exakt neu speichern."));
+            return false;
+        }
     }
     return true;
 }
@@ -105,13 +170,49 @@ bool replaceFile(const QString& replacement, const QString& target, bool keepMod
         setError(error, tr("„%1“ existiert nicht mehr.").arg(orig.fileName()));
         return false;
     }
+    if (orig.isSymLink() || !orig.isFile()) {
+        setError(error, tr("„%1“ ist keine normale Datei.").arg(orig.fileName()));
+        return false;
+    }
+    std::error_code ec;
+    const auto links = std::filesystem::hard_link_count(std::filesystem::path(target.toStdU16String()), ec);
+    if (!ec && links > 1) {
+        // Hard links: the contents go into the existing file (see LosslessTransform.h).
+        if (!syncFile(replacement)) {
+            setError(error, tr("Die neue Datei konnte nicht gesichert werden."));
+            return false;
+        }
+        reportDurabilityStep(DurabilityStep::FullSync, replacement);
+        const QDateTime mtime =
+            keepModificationDate ? orig.lastModified() : QFileInfo(replacement).lastModified();
+        QFile in(replacement), out(target);
+        if (!in.open(QIODevice::ReadOnly) || !out.open(QIODevice::ReadWrite)) {
+            setError(error, tr("Die Datei kann nicht geschrieben werden."));
+            return false;
+        }
+        const QByteArray data = in.readAll();
+        const bool ok = out.write(data) == data.size() && out.resize(data.size()) && out.flush() &&
+                        out.setFileTime(mtime, QFileDevice::FileModificationTime);
+        out.close();
+        if (!ok || !syncFile(target)) {
+            setError(error, tr("Die Datei konnte nicht vollständig geschrieben werden."));
+            return false;
+        }
+        reportDurabilityStep(DurabilityStep::InPlaceCopy, target);
+        QFile::remove(replacement);
+        return true;
+    }
     QFile::setPermissions(replacement, QFile::permissions(target));
     if (keepModificationDate) {
         QFile f(replacement);
         if (f.open(QIODevice::ReadWrite))
             f.setFileTime(orig.lastModified(), QFileDevice::FileModificationTime);
     }
-    std::error_code ec;
+    if (!syncFile(replacement)) {
+        setError(error, tr("Die neue Datei konnte nicht gesichert werden."));
+        return false;
+    }
+    reportDurabilityStep(DurabilityStep::FullSync, replacement);
     std::filesystem::rename(std::filesystem::path(replacement.toStdU16String()),
                             std::filesystem::path(target.toStdU16String()), ec);
     if (ec) {
@@ -119,14 +220,22 @@ bool replaceFile(const QString& replacement, const QString& target, bool keepMod
                             .arg(orig.fileName(), QString::fromStdString(ec.message())));
         return false;
     }
+    reportDurabilityStep(DurabilityStep::Rename, target);
+    if (syncFile(orig.absolutePath()))
+        reportDurabilityStep(DurabilityStep::FolderSync, orig.absolutePath());
     return true;
 }
 
-bool copyWithMetadata(const QString& path, const QString& copy, QString* error) {
+bool copyWithMetadata(const QString& path, const QString& copy, QString* error, bool* cloned) {
+    if (cloned)
+        *cloned = false;
     if (!QFile::copy(path, copy)) {
         setError(error, tr("Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden."));
         return false;
     }
+    QFile f(copy);
+    if (f.open(QIODevice::ReadWrite))
+        f.setFileTime(QFileInfo(path).lastModified(), QFileDevice::FileModificationTime);
     return true;
 }
 
