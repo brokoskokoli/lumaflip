@@ -354,7 +354,7 @@ TEST(Review3Provider, P_08_DecodeByteCapFollowsBudget) {
 TEST(Review3Input, F_IN_18_PresetSkipsUnavailableChoices) {
     QTemporaryDir dir;
     Settings::useTestingBackend(dir.filePath("p.ini"));
-    EXPECT_FALSE(InputBindings::isChoiceAvailable("middleClick", "magnifier"));
+    EXPECT_TRUE(InputBindings::isChoiceAvailable("middleClick", "magnifier")); // M3 (F-VIEW-11)
     EXPECT_TRUE(InputBindings::isChoiceAvailable("ratingKeys", "always")); // M3
     EXPECT_TRUE(InputBindings::isChoiceAvailable("ratingKeys", "cullingOnly"));
     InputBindings::applyPreset("photographer");
@@ -367,8 +367,10 @@ TEST(Review3Input, F_IN_18_PresetSkipsUnavailableChoices) {
 }
 
 TEST(Review3Input, F_SET_02_PlannedActionsAreNotAvailable) {
-    for (Action a : {Action::ToggleGrid, Action::Magnifier})
-        EXPECT_FALSE(InputBindings::isActionAvailable(a)) << actionId(a).toStdString();
+    // M3: the grid (F-GRID-02) and the magnifier (F-VIEW-11) were the last planned actions.
+    for (Action a : {Action::ToggleGrid, Action::Magnifier, Action::GoToImage, Action::CoupleWindows})
+        EXPECT_TRUE(InputBindings::isActionAvailable(a)) << actionId(a).toStdString();
+    EXPECT_FALSE(InputBindings::isActionAvailable(Action::None));
     // M2: slideshow, animation, pages and saving the rotation are implemented.
     for (Action a : {Action::NextImage, Action::ZoomFit, Action::Trash, Action::ToggleFullScreen,
                      Action::CopyImage, Action::ShowShortcuts, Action::NextFolder, Action::ToggleInfoPanel,

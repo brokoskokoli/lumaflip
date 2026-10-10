@@ -59,6 +59,11 @@ private:
     void buildHdr(QMenu* view); // M3: "Darstellung → HDR" (MainMenuHdr.cpp)
     void refreshHdrState();
     void refreshCullingState();
+    // M3 view entries (MainMenuViews.cpp): grid, compare, go to, shuffle, name filter
+    // (Darstellung, Navigation) and always on top, minimal window, coupling (Fenster).
+    void buildViews(QMenu* view, QMenu* nav);
+    void buildWindowModes(QMenu* window);
+    void refreshViewsState();
 
     Application& m_app;
     QMenuBar* m_bar = nullptr;

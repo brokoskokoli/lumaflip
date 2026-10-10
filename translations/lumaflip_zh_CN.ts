@@ -161,6 +161,63 @@
     </message>
 </context>
 <context>
+    <name>lf::CompareView</name>
+    <message>
+        <source>Vergleich</source>
+        <translation>比较</translation>
+    </message>
+    <message>
+        <source>%1 — %2</source>
+        <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
+        <translation>%1 — %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CouplingManager</name>
+    <message numerus="yes">
+        <source>%n Fenster gekoppelt</source>
+        <translation>
+            <numerusform>已链接 %n 个窗口</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Kein passendes Bild zu „%1“</source>
+        <translation>没有与“%1”匹配的图像</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln</source>
+        <translation>链接窗口</translation>
+    </message>
+    <message>
+        <source>Gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt. Mit ⌥ lässt sich ein Fenster einzeln verschieben.</source>
+        <translation>已链接的窗口会一起翻页，并共享缩放和可见区域。按住 ⌥ 可单独移动一个窗口。</translation>
+    </message>
+    <message>
+        <source>Dateiname (ohne Endung)</source>
+        <translation>文件名（不含扩展名）</translation>
+    </message>
+    <message>
+        <source>Position in der Sammlung</source>
+        <translation>在集合中的位置</translation>
+    </message>
+    <message>
+        <source>Gemeinsam blättern nach:</source>
+        <translation>共同翻页依据：</translation>
+    </message>
+    <message>
+        <source>Koppeln</source>
+        <translation>链接</translation>
+    </message>
+    <message>
+        <source>Entkoppeln</source>
+        <translation>取消链接窗口</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>取消</translation>
+    </message>
+</context>
+<context>
     <name>lf::CullingController</name>
     <message>
         <source>Bewertung wird gelesen …</source>
@@ -742,6 +799,13 @@
     </message>
 </context>
 <context>
+    <name>lf::GridView</name>
+    <message>
+        <source>Raster</source>
+        <translation>网格</translation>
+    </message>
+</context>
+<context>
     <name>lf::HdrController</name>
     <message>
         <source>HDR an</source>
@@ -1312,6 +1376,34 @@
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
         <translation>快速归档：拷贝（C，然后 1–9）</translation>
+    </message>
+    <message>
+        <source>Gehe zu Bild …</source>
+        <translation>前往图像…</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge</source>
+        <translation>随机顺序</translation>
+    </message>
+    <message>
+        <source>Nach Dateiname filtern</source>
+        <translation>按文件名过滤</translation>
+    </message>
+    <message>
+        <source>Mit nächstem vergleichen</source>
+        <translation>与下一张比较</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>总在最前面</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus</source>
+        <translation>极简窗口</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln …</source>
+        <translation>链接窗口…</translation>
     </message>
     <message>
         <source>HDR anzeigen</source>
@@ -2025,6 +2117,14 @@
     </message>
 </context>
 <context>
+    <name>lf::LoupeWidget</name>
+    <message>
+        <source>%1 %</source>
+        <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
+        <translation>%1%</translation>
+    </message>
+</context>
+<context>
     <name>lf::MainMenu</name>
     <message>
         <source>Ablage</source>
@@ -2424,6 +2524,46 @@
         <translation>设置快速归档目标 …</translation>
     </message>
     <message>
+        <source>Raster</source>
+        <translation>网格</translation>
+    </message>
+    <message>
+        <source>Mit nächstem vergleichen</source>
+        <translation>与下一张比较</translation>
+    </message>
+    <message>
+        <source>Auswahl vergleichen</source>
+        <translation>比较所选项</translation>
+    </message>
+    <message>
+        <source>Gehe zu Bild …</source>
+        <translation>前往图像…</translation>
+    </message>
+    <message>
+        <source>Nach Dateiname filtern …</source>
+        <translation>按文件名过滤…</translation>
+    </message>
+    <message>
+        <source>Namensfilter aufheben</source>
+        <translation>清除名称过滤</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>总在最前面</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus</source>
+        <translation>极简窗口</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln …</source>
+        <translation>链接窗口…</translation>
+    </message>
+    <message>
+        <source>Entkoppeln</source>
+        <translation>取消链接窗口</translation>
+    </message>
+    <message>
         <source>HDR</source>
         <translation>HDR</translation>
     </message>
@@ -2631,6 +2771,45 @@
     </message>
 </context>
 <context>
+    <name>lf::NavigationExtras</name>
+    <message>
+        <source>Gehe zu Bild</source>
+        <translation>前往图像</translation>
+    </message>
+    <message>
+        <source>Bildnummer (1–%1), oder +n / −n vom aktuellen Bild:</source>
+        <translation>图像编号（1–%1），或相对当前图像的 +n / −n：</translation>
+    </message>
+    <message>
+        <source>Gehe zu</source>
+        <translation>前往</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <source>Bitte eine Bildnummer zwischen 1 und %1 eingeben</source>
+        <translation>请输入 1 到 %1 之间的图像编号</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge an</source>
+        <translation>随机顺序：开</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge aus</source>
+        <translation>随机顺序：关</translation>
+    </message>
+    <message>
+        <source>Ende der zufälligen Reihenfolge</source>
+        <translation>已到随机顺序末尾</translation>
+    </message>
+    <message>
+        <source>Anfang der zufälligen Reihenfolge</source>
+        <translation>已到随机顺序开头</translation>
+    </message>
+</context>
+<context>
     <name>lf::OpenWithService</name>
     <message>
         <source>Kein Programm zum Bearbeiten gefunden. Wähle eines unter Einstellungen → Allgemein → Editor.</source>
@@ -2663,6 +2842,71 @@
     <message>
         <source>Keine passenden Programme</source>
         <translation>没有合适的 App</translation>
+    </message>
+</context>
+<context>
+    <name>lf::OverviewController</name>
+    <message>
+        <source>Keine Bilder für die Rasteransicht</source>
+        <translation>没有可在网格视图中显示的图像</translation>
+    </message>
+    <message>
+        <source>Zum Vergleichen mindestens zwei Bilder wählen</source>
+        <translation>请至少选择两张图像进行比较</translation>
+    </message>
+    <message>
+        <source>Es werden die ersten %1 Bilder verglichen</source>
+        <translation>将比较前 %1 张图像</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er)</source>
+        <translation>
+            <numerusform>%n 张图像</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n ausgewählt</source>
+        <translation>
+            <numerusform>已选择 %n 个</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Name: „%1“</source>
+        <translation>名称：“%1”</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation>%1：%2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 – %n Bild(er)</source>
+        <translation>
+            <numerusform>%1 – %n 张图像</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>移到废纸篓</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>已将 %n 张图像移到废纸篓</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb legen?</source>
+        <translation>
+            <numerusform>要将 %n 张图像移到废纸篓吗？</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Mit ⌘Z lässt sich das widerrufen.</source>
+        <translation>可以使用 ⌘Z 撤销此操作。</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -2828,6 +3072,22 @@
         <translation>新窗口将作为标签页显示在最前面的窗口中；“窗口”→“合并所有窗口”可合并已打开的窗口。</translation>
     </message>
     <message>
+        <source>Gekoppelte Fenster blättern nach:</source>
+        <translation>已链接窗口的翻页依据：</translation>
+    </message>
+    <message>
+        <source>Dateiname (ohne Endung)</source>
+        <translation>文件名（不含扩展名）</translation>
+    </message>
+    <message>
+        <source>Position in der Sammlung</source>
+        <translation>在集合中的位置</translation>
+    </message>
+    <message>
+        <source>Fenster → „Fenster koppeln …“: gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt.</source>
+        <translation>窗口 →“链接窗口…”：已链接的窗口会一起翻页，并共享缩放和可见区域。</translation>
+    </message>
+    <message>
         <source>Dunkel</source>
         <translation>深色</translation>
     </message>
@@ -2912,6 +3172,30 @@
         <translation>1 个图像像素 = 1 个点</translation>
     </message>
     <message>
+        <source>Lupe (L gedrückt halten):</source>
+        <translation>放大镜（按住 L）：</translation>
+    </message>
+    <message>
+        <source>200 %</source>
+        <translation>200%</translation>
+    </message>
+    <message>
+        <source>Größe der Lupe:</source>
+        <translation>放大镜大小：</translation>
+    </message>
+    <message>
+        <source>Klein</source>
+        <translation>小</translation>
+    </message>
+    <message>
+        <source>Mittel</source>
+        <translation>中</translation>
+    </message>
+    <message>
+        <source>Groß</source>
+        <translation>大</translation>
+    </message>
+    <message>
         <source>Diashow (⇧⌘F, S):</source>
         <translation>幻灯片放映 (⇧⌘F, S)：</translation>
     </message>
@@ -2932,8 +3216,8 @@
         <translation>交叉淡化</translation>
     </message>
     <message>
-        <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, Esc beendet.</source>
-        <translation>幻灯片放映期间：空格键暂停，1–9 设定间隔秒数，←/→ 翻页，Esc 结束。</translation>
+        <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, P/X/U bewerten, Esc beendet.</source>
+        <translation>幻灯片放映期间：空格键暂停，1–9 设置间隔秒数，←/→ 翻页，P/X/U 评分，Esc 结束。</translation>
     </message>
     <message>
         <source>Profilvorlagen</source>
@@ -3451,6 +3735,17 @@
     </message>
 </context>
 <context>
+    <name>lf::QuickFilterBar</name>
+    <message>
+        <source>Dateiname filtern</source>
+        <translation>过滤文件名</translation>
+    </message>
+    <message>
+        <source>Filter aufheben (Esc)</source>
+        <translation>清除过滤（Esc）</translation>
+    </message>
+</context>
+<context>
     <name>lf::QuickMove</name>
     <message>
         <source>%1  (nicht festgelegt)</source>
@@ -3486,6 +3781,18 @@
     <message>
         <source>Übersprungen – nichts geändert.</source>
         <translation>已跳过，未作任何更改。</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „%1“ verschoben</source>
+        <translation>
+            <numerusform>已将 %n 张图像移到“%1”</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „%1“ kopiert</source>
+        <translation>
+            <numerusform>已将 %n 张图像拷贝到“%1”</numerusform>
+        </translation>
     </message>
     <message>
         <source>Nach „%1“ verschoben</source>
@@ -4078,6 +4385,49 @@
     <message>
         <source>Nur EXIF-Ausrichtung setzen</source>
         <translation>仅设定 EXIF 方向</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowExtras</name>
+    <message>
+        <source>Zum Bewegen des Fensters ziehen</source>
+        <translation>拖移以移动窗口</translation>
+    </message>
+    <message>
+        <source>Name: „%1“</source>
+        <translation>名称：“%1”</translation>
+    </message>
+    <message>
+        <source>Zufällig</source>
+        <translation>随机</translation>
+    </message>
+    <message>
+        <source>Gekoppelt</source>
+        <translation>已链接</translation>
+    </message>
+    <message>
+        <source>Blättern, Zoom und Ausschnitt laufen mit den anderen gekoppelten Fenstern</source>
+        <translation>翻页、缩放和可见区域与其他已链接窗口同步</translation>
+    </message>
+    <message>
+        <source>Kein Dateiname passt zu „%1“ – Esc hebt den Filter auf</source>
+        <translation>没有与“%1”匹配的文件名 – 按 Esc 清除过滤</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>总在最前面</translation>
+    </message>
+    <message>
+        <source>Nicht mehr im Vordergrund</source>
+        <translation>不再总在最前面</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
+        <translation>极简窗口 – 拖移顶部可移动窗口</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus aus</source>
+        <translation>极简窗口：关</translation>
     </message>
 </context>
 <context>

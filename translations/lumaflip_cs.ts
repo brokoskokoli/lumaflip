@@ -161,6 +161,65 @@
     </message>
 </context>
 <context>
+    <name>lf::CompareView</name>
+    <message>
+        <source>Vergleich</source>
+        <translation>Porovnání</translation>
+    </message>
+    <message>
+        <source>%1 — %2</source>
+        <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
+        <translation>%1 — %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CouplingManager</name>
+    <message numerus="yes">
+        <source>%n Fenster gekoppelt</source>
+        <translation>
+            <numerusform>Propojeno %n okno</numerusform>
+            <numerusform>Propojena %n okna</numerusform>
+            <numerusform>Propojeno %n oken</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Kein passendes Bild zu „%1“</source>
+        <translation>Žádný odpovídající obrázek k „%1“</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln</source>
+        <translation>Propojit okna</translation>
+    </message>
+    <message>
+        <source>Gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt. Mit ⌥ lässt sich ein Fenster einzeln verschieben.</source>
+        <translation>Propojená okna listují společně a sdílejí zvětšení a výřez. Podržením ⌥ posunete jen jedno okno.</translation>
+    </message>
+    <message>
+        <source>Dateiname (ohne Endung)</source>
+        <translation>Název souboru (bez přípony)</translation>
+    </message>
+    <message>
+        <source>Position in der Sammlung</source>
+        <translation>Pozice ve sbírce</translation>
+    </message>
+    <message>
+        <source>Gemeinsam blättern nach:</source>
+        <translation>Listovat společně podle:</translation>
+    </message>
+    <message>
+        <source>Koppeln</source>
+        <translation>Propojit</translation>
+    </message>
+    <message>
+        <source>Entkoppeln</source>
+        <translation>Zrušit propojení oken</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Zrušit</translation>
+    </message>
+</context>
+<context>
     <name>lf::CullingController</name>
     <message>
         <source>Bewertung wird gelesen …</source>
@@ -754,6 +813,13 @@
     </message>
 </context>
 <context>
+    <name>lf::GridView</name>
+    <message>
+        <source>Raster</source>
+        <translation>Mřížka</translation>
+    </message>
+</context>
+<context>
     <name>lf::HdrController</name>
     <message>
         <source>HDR an</source>
@@ -1324,6 +1390,34 @@
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
         <translation>Rychlé odkládání: kopírovat (C, pak 1–9)</translation>
+    </message>
+    <message>
+        <source>Gehe zu Bild …</source>
+        <translation>Přejít na obrázek…</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge</source>
+        <translation>Náhodné pořadí</translation>
+    </message>
+    <message>
+        <source>Nach Dateiname filtern</source>
+        <translation>Filtrovat podle názvu souboru</translation>
+    </message>
+    <message>
+        <source>Mit nächstem vergleichen</source>
+        <translation>Porovnat s dalším</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>Vždy navrchu</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus</source>
+        <translation>Minimální okno</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln …</source>
+        <translation>Propojit okna…</translation>
     </message>
     <message>
         <source>HDR anzeigen</source>
@@ -2037,6 +2131,14 @@
     </message>
 </context>
 <context>
+    <name>lf::LoupeWidget</name>
+    <message>
+        <source>%1 %</source>
+        <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
+        <translation>%1 %</translation>
+    </message>
+</context>
+<context>
     <name>lf::MainMenu</name>
     <message>
         <source>Ablage</source>
@@ -2436,6 +2538,46 @@
         <translation>Nastavit cíle odkládání …</translation>
     </message>
     <message>
+        <source>Raster</source>
+        <translation>Mřížka</translation>
+    </message>
+    <message>
+        <source>Mit nächstem vergleichen</source>
+        <translation>Porovnat s dalším</translation>
+    </message>
+    <message>
+        <source>Auswahl vergleichen</source>
+        <translation>Porovnat výběr</translation>
+    </message>
+    <message>
+        <source>Gehe zu Bild …</source>
+        <translation>Přejít na obrázek…</translation>
+    </message>
+    <message>
+        <source>Nach Dateiname filtern …</source>
+        <translation>Filtrovat podle názvu souboru…</translation>
+    </message>
+    <message>
+        <source>Namensfilter aufheben</source>
+        <translation>Zrušit filtr názvu</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>Vždy navrchu</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus</source>
+        <translation>Minimální okno</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln …</source>
+        <translation>Propojit okna…</translation>
+    </message>
+    <message>
+        <source>Entkoppeln</source>
+        <translation>Zrušit propojení oken</translation>
+    </message>
+    <message>
         <source>HDR</source>
         <translation>HDR</translation>
     </message>
@@ -2643,6 +2785,45 @@
     </message>
 </context>
 <context>
+    <name>lf::NavigationExtras</name>
+    <message>
+        <source>Gehe zu Bild</source>
+        <translation>Přejít na obrázek</translation>
+    </message>
+    <message>
+        <source>Bildnummer (1–%1), oder +n / −n vom aktuellen Bild:</source>
+        <translation>Číslo obrázku (1–%1) nebo +n / −n od aktuálního obrázku:</translation>
+    </message>
+    <message>
+        <source>Gehe zu</source>
+        <translation>Přejít</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Zrušit</translation>
+    </message>
+    <message>
+        <source>Bitte eine Bildnummer zwischen 1 und %1 eingeben</source>
+        <translation>Zadejte číslo obrázku od 1 do %1</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge an</source>
+        <translation>Náhodné pořadí zapnuto</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge aus</source>
+        <translation>Náhodné pořadí vypnuto</translation>
+    </message>
+    <message>
+        <source>Ende der zufälligen Reihenfolge</source>
+        <translation>Konec náhodného pořadí</translation>
+    </message>
+    <message>
+        <source>Anfang der zufälligen Reihenfolge</source>
+        <translation>Začátek náhodného pořadí</translation>
+    </message>
+</context>
+<context>
     <name>lf::OpenWithService</name>
     <message>
         <source>Kein Programm zum Bearbeiten gefunden. Wähle eines unter Einstellungen → Allgemein → Editor.</source>
@@ -2675,6 +2856,81 @@
     <message>
         <source>Keine passenden Programme</source>
         <translation>Žádné vhodné aplikace</translation>
+    </message>
+</context>
+<context>
+    <name>lf::OverviewController</name>
+    <message>
+        <source>Keine Bilder für die Rasteransicht</source>
+        <translation>Žádné obrázky pro zobrazení mřížky</translation>
+    </message>
+    <message>
+        <source>Zum Vergleichen mindestens zwei Bilder wählen</source>
+        <translation>Vyberte alespoň dva obrázky k porovnání</translation>
+    </message>
+    <message>
+        <source>Es werden die ersten %1 Bilder verglichen</source>
+        <translation>Porovnávají se první %1 obrázky</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er)</source>
+        <translation>
+            <numerusform>%n obrázek</numerusform>
+            <numerusform>%n obrázky</numerusform>
+            <numerusform>%n obrázků</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n ausgewählt</source>
+        <translation>
+            <numerusform>Vybráno: %n</numerusform>
+            <numerusform>Vybráno: %n</numerusform>
+            <numerusform>Vybráno: %n</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Name: „%1“</source>
+        <translation>Název: „%1“</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation>%1: %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 – %n Bild(er)</source>
+        <translation>
+            <numerusform>%1 – %n obrázek</numerusform>
+            <numerusform>%1 – %n obrázky</numerusform>
+            <numerusform>%1 – %n obrázků</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>Přesunout do koše</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n obrázek přesunut do koše</numerusform>
+            <numerusform>%n obrázky přesunuty do koše</numerusform>
+            <numerusform>%n obrázků přesunuto do koše</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb legen?</source>
+        <translation>
+            <numerusform>Přesunout %n obrázek do koše?</numerusform>
+            <numerusform>Přesunout %n obrázky do koše?</numerusform>
+            <numerusform>Přesunout %n obrázků do koše?</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Mit ⌘Z lässt sich das widerrufen.</source>
+        <translation>Pomocí ⌘Z lze tuto akci odvolat.</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Zrušit</translation>
     </message>
 </context>
 <context>
@@ -2840,6 +3096,22 @@
         <translation>Nová okna se pak zobrazí jako panel v nejpřednějším okně; Okno → „Sloučit všechna okna“ spojí otevřená okna.</translation>
     </message>
     <message>
+        <source>Gekoppelte Fenster blättern nach:</source>
+        <translation>Propojená okna listují podle:</translation>
+    </message>
+    <message>
+        <source>Dateiname (ohne Endung)</source>
+        <translation>Název souboru (bez přípony)</translation>
+    </message>
+    <message>
+        <source>Position in der Sammlung</source>
+        <translation>Pozice ve sbírce</translation>
+    </message>
+    <message>
+        <source>Fenster → „Fenster koppeln …“: gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt.</source>
+        <translation>Okno → „Propojit okna…“: propojená okna listují společně a sdílejí zvětšení a výřez.</translation>
+    </message>
+    <message>
         <source>Dunkel</source>
         <translation>Tmavé</translation>
     </message>
@@ -2924,6 +3196,30 @@
         <translation>1 pixel obrázku = 1 bod</translation>
     </message>
     <message>
+        <source>Lupe (L gedrückt halten):</source>
+        <translation>Lupa (podržte L):</translation>
+    </message>
+    <message>
+        <source>200 %</source>
+        <translation>200 %</translation>
+    </message>
+    <message>
+        <source>Größe der Lupe:</source>
+        <translation>Velikost lupy:</translation>
+    </message>
+    <message>
+        <source>Klein</source>
+        <translation>Malá</translation>
+    </message>
+    <message>
+        <source>Mittel</source>
+        <translation>Střední</translation>
+    </message>
+    <message>
+        <source>Groß</source>
+        <translation>Velká</translation>
+    </message>
+    <message>
         <source>Diashow (⇧⌘F, S):</source>
         <translation>Prezentace (⇧⌘F, S):</translation>
     </message>
@@ -2944,8 +3240,8 @@
         <translation>Prolínání</translation>
     </message>
     <message>
-        <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, Esc beendet.</source>
-        <translation>Během prezentace: mezerník pozastaví, 1–9 nastaví interval v sekundách, ←/→ listuje, Esc ukončí.</translation>
+        <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, P/X/U bewerten, Esc beendet.</source>
+        <translation>Během prezentace: mezerník pozastaví, 1–9 nastaví interval v sekundách, ←/→ listuje, P/X/U hodnotí, Esc ukončí.</translation>
     </message>
     <message>
         <source>Profilvorlagen</source>
@@ -3465,6 +3761,17 @@
     </message>
 </context>
 <context>
+    <name>lf::QuickFilterBar</name>
+    <message>
+        <source>Dateiname filtern</source>
+        <translation>Filtrovat názvy souborů</translation>
+    </message>
+    <message>
+        <source>Filter aufheben (Esc)</source>
+        <translation>Zrušit filtr (Esc)</translation>
+    </message>
+</context>
+<context>
     <name>lf::QuickMove</name>
     <message>
         <source>%1  (nicht festgelegt)</source>
@@ -3500,6 +3807,22 @@
     <message>
         <source>Übersprungen – nichts geändert.</source>
         <translation>Přeskočeno – nic se nezměnilo.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „%1“ verschoben</source>
+        <translation>
+            <numerusform>%n obrázek přesunut do „%1“</numerusform>
+            <numerusform>%n obrázky přesunuty do „%1“</numerusform>
+            <numerusform>%n obrázků přesunuto do „%1“</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „%1“ kopiert</source>
+        <translation>
+            <numerusform>%n obrázek zkopírován do „%1“</numerusform>
+            <numerusform>%n obrázky zkopírovány do „%1“</numerusform>
+            <numerusform>%n obrázků zkopírováno do „%1“</numerusform>
+        </translation>
     </message>
     <message>
         <source>Nach „%1“ verschoben</source>
@@ -4094,6 +4417,49 @@
     <message>
         <source>Nur EXIF-Ausrichtung setzen</source>
         <translation>Jen nastavit orientaci EXIF</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowExtras</name>
+    <message>
+        <source>Zum Bewegen des Fensters ziehen</source>
+        <translation>Přetažením přesunete okno</translation>
+    </message>
+    <message>
+        <source>Name: „%1“</source>
+        <translation>Název: „%1“</translation>
+    </message>
+    <message>
+        <source>Zufällig</source>
+        <translation>Náhodně</translation>
+    </message>
+    <message>
+        <source>Gekoppelt</source>
+        <translation>Propojeno</translation>
+    </message>
+    <message>
+        <source>Blättern, Zoom und Ausschnitt laufen mit den anderen gekoppelten Fenstern</source>
+        <translation>Listování, zvětšení a výřez se řídí ostatními propojenými okny</translation>
+    </message>
+    <message>
+        <source>Kein Dateiname passt zu „%1“ – Esc hebt den Filter auf</source>
+        <translation>Žádný název souboru neodpovídá „%1“ – Esc zruší filtr</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>Vždy navrchu</translation>
+    </message>
+    <message>
+        <source>Nicht mehr im Vordergrund</source>
+        <translation>Již není navrchu</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
+        <translation>Minimální okno – tažením nahoře přesunete okno</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus aus</source>
+        <translation>Minimální okno vypnuto</translation>
     </message>
 </context>
 <context>

@@ -87,6 +87,14 @@ enum class Action {
     ToggleCullingMode, // F-CULL-06
     QuickMove,         // F-FILE-08: M + 1..9 (prefix key)
     QuickCopy,         // F-FILE-08: C + 1..9 (prefix key)
+    // M3 (appended, keep order above stable)
+    GoToImage,           // F-NAV-06 (⌘G)
+    ToggleShuffle,       // F-NAV-06
+    FilterByName,        // F-NAV-08 (⌘F)
+    CompareWithNext,     // F-GRID-03
+    ToggleAlwaysOnTop,   // F-VIEW-12
+    ToggleMinimalWindow, // F-VIEW-13
+    CoupleWindows,       // F-WIN-07
     ToggleHdr,         // F-COL-04: HDR <-> SDR preview
     ExposureIncrease,  // F-COL-05: +1/3 EV (display only)
     ExposureDecrease,  // F-COL-05: -1/3 EV

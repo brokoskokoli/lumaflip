@@ -161,6 +161,63 @@
     </message>
 </context>
 <context>
+    <name>lf::CompareView</name>
+    <message>
+        <source>Vergleich</source>
+        <translation>比較</translation>
+    </message>
+    <message>
+        <source>%1 — %2</source>
+        <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
+        <translation>%1 — %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CouplingManager</name>
+    <message numerus="yes">
+        <source>%n Fenster gekoppelt</source>
+        <translation>
+            <numerusform>%n 個のウインドウをリンクしました</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Kein passendes Bild zu „%1“</source>
+        <translation>「%1」に対応する画像がありません</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln</source>
+        <translation>ウインドウをリンク</translation>
+    </message>
+    <message>
+        <source>Gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt. Mit ⌥ lässt sich ein Fenster einzeln verschieben.</source>
+        <translation>リンクしたウインドウは一緒に画像を切り替え、ズームと表示範囲を共有します。⌥を押したままにすると1つのウインドウだけを動かせます。</translation>
+    </message>
+    <message>
+        <source>Dateiname (ohne Endung)</source>
+        <translation>ファイル名（拡張子なし）</translation>
+    </message>
+    <message>
+        <source>Position in der Sammlung</source>
+        <translation>コレクション内の位置</translation>
+    </message>
+    <message>
+        <source>Gemeinsam blättern nach:</source>
+        <translation>連動する基準：</translation>
+    </message>
+    <message>
+        <source>Koppeln</source>
+        <translation>リンク</translation>
+    </message>
+    <message>
+        <source>Entkoppeln</source>
+        <translation>ウインドウのリンクを解除</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>キャンセル</translation>
+    </message>
+</context>
+<context>
     <name>lf::CullingController</name>
     <message>
         <source>Bewertung wird gelesen …</source>
@@ -742,6 +799,13 @@
     </message>
 </context>
 <context>
+    <name>lf::GridView</name>
+    <message>
+        <source>Raster</source>
+        <translation>グリッド</translation>
+    </message>
+</context>
+<context>
     <name>lf::HdrController</name>
     <message>
         <source>HDR an</source>
@@ -1312,6 +1376,34 @@
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
         <translation>クイック移動：コピー（C、続けて 1–9）</translation>
+    </message>
+    <message>
+        <source>Gehe zu Bild …</source>
+        <translation>画像に移動…</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge</source>
+        <translation>シャッフル</translation>
+    </message>
+    <message>
+        <source>Nach Dateiname filtern</source>
+        <translation>ファイル名で絞り込む</translation>
+    </message>
+    <message>
+        <source>Mit nächstem vergleichen</source>
+        <translation>次の画像と比較</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>常に手前に表示</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus</source>
+        <translation>最小限のウインドウ</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln …</source>
+        <translation>ウインドウをリンク…</translation>
     </message>
     <message>
         <source>HDR anzeigen</source>
@@ -2025,6 +2117,14 @@
     </message>
 </context>
 <context>
+    <name>lf::LoupeWidget</name>
+    <message>
+        <source>%1 %</source>
+        <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
+        <translation>%1%</translation>
+    </message>
+</context>
+<context>
     <name>lf::MainMenu</name>
     <message>
         <source>Ablage</source>
@@ -2424,6 +2524,46 @@
         <translation>クイック移動の移動先を設定 …</translation>
     </message>
     <message>
+        <source>Raster</source>
+        <translation>グリッド</translation>
+    </message>
+    <message>
+        <source>Mit nächstem vergleichen</source>
+        <translation>次の画像と比較</translation>
+    </message>
+    <message>
+        <source>Auswahl vergleichen</source>
+        <translation>選択項目を比較</translation>
+    </message>
+    <message>
+        <source>Gehe zu Bild …</source>
+        <translation>画像に移動…</translation>
+    </message>
+    <message>
+        <source>Nach Dateiname filtern …</source>
+        <translation>ファイル名で絞り込む…</translation>
+    </message>
+    <message>
+        <source>Namensfilter aufheben</source>
+        <translation>名前の絞り込みを解除</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>常に手前に表示</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus</source>
+        <translation>最小限のウインドウ</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln …</source>
+        <translation>ウインドウをリンク…</translation>
+    </message>
+    <message>
+        <source>Entkoppeln</source>
+        <translation>ウインドウのリンクを解除</translation>
+    </message>
+    <message>
         <source>HDR</source>
         <translation>HDR</translation>
     </message>
@@ -2631,6 +2771,45 @@
     </message>
 </context>
 <context>
+    <name>lf::NavigationExtras</name>
+    <message>
+        <source>Gehe zu Bild</source>
+        <translation>画像に移動</translation>
+    </message>
+    <message>
+        <source>Bildnummer (1–%1), oder +n / −n vom aktuellen Bild:</source>
+        <translation>画像番号（1–%1）、または現在の画像からの +n / −n：</translation>
+    </message>
+    <message>
+        <source>Gehe zu</source>
+        <translation>移動</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>キャンセル</translation>
+    </message>
+    <message>
+        <source>Bitte eine Bildnummer zwischen 1 und %1 eingeben</source>
+        <translation>1〜%1 の画像番号を入力してください</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge an</source>
+        <translation>シャッフル：オン</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge aus</source>
+        <translation>シャッフル：オフ</translation>
+    </message>
+    <message>
+        <source>Ende der zufälligen Reihenfolge</source>
+        <translation>シャッフル順の最後です</translation>
+    </message>
+    <message>
+        <source>Anfang der zufälligen Reihenfolge</source>
+        <translation>シャッフル順の最初です</translation>
+    </message>
+</context>
+<context>
     <name>lf::OpenWithService</name>
     <message>
         <source>Kein Programm zum Bearbeiten gefunden. Wähle eines unter Einstellungen → Allgemein → Editor.</source>
@@ -2663,6 +2842,71 @@
     <message>
         <source>Keine passenden Programme</source>
         <translation>対応するアプリがありません</translation>
+    </message>
+</context>
+<context>
+    <name>lf::OverviewController</name>
+    <message>
+        <source>Keine Bilder für die Rasteransicht</source>
+        <translation>グリッド表示する画像がありません</translation>
+    </message>
+    <message>
+        <source>Zum Vergleichen mindestens zwei Bilder wählen</source>
+        <translation>比較するには画像を2枚以上選択してください</translation>
+    </message>
+    <message>
+        <source>Es werden die ersten %1 Bilder verglichen</source>
+        <translation>最初の %1 枚の画像を比較します</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er)</source>
+        <translation>
+            <numerusform>%n 枚の画像</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n ausgewählt</source>
+        <translation>
+            <numerusform>%n 個を選択中</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Name: „%1“</source>
+        <translation>名前：「%1」</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation>%1：%2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 – %n Bild(er)</source>
+        <translation>
+            <numerusform>%1 – %n 枚の画像</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>ゴミ箱に入れる</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n 枚の画像をゴミ箱に入れました</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb legen?</source>
+        <translation>
+            <numerusform>%n 枚の画像をゴミ箱に入れますか？</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Mit ⌘Z lässt sich das widerrufen.</source>
+        <translation>⌘Zで取り消すことができます。</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>キャンセル</translation>
     </message>
 </context>
 <context>
@@ -2828,6 +3072,22 @@
         <translation>新規ウインドウは最前面のウインドウのタブとして開きます。「ウインドウ」→「すべてのウインドウを結合」で開いているウインドウをまとめられます。</translation>
     </message>
     <message>
+        <source>Gekoppelte Fenster blättern nach:</source>
+        <translation>リンクしたウインドウの連動基準：</translation>
+    </message>
+    <message>
+        <source>Dateiname (ohne Endung)</source>
+        <translation>ファイル名（拡張子なし）</translation>
+    </message>
+    <message>
+        <source>Position in der Sammlung</source>
+        <translation>コレクション内の位置</translation>
+    </message>
+    <message>
+        <source>Fenster → „Fenster koppeln …“: gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt.</source>
+        <translation>ウインドウ →「ウインドウをリンク…」：リンクしたウインドウは一緒に切り替わり、ズームと表示範囲を共有します。</translation>
+    </message>
+    <message>
         <source>Dunkel</source>
         <translation>ダーク</translation>
     </message>
@@ -2912,6 +3172,30 @@
         <translation>画像の1ピクセル = 1ポイント</translation>
     </message>
     <message>
+        <source>Lupe (L gedrückt halten):</source>
+        <translation>ルーペ（Lを押したまま）：</translation>
+    </message>
+    <message>
+        <source>200 %</source>
+        <translation>200%</translation>
+    </message>
+    <message>
+        <source>Größe der Lupe:</source>
+        <translation>ルーペのサイズ：</translation>
+    </message>
+    <message>
+        <source>Klein</source>
+        <translation>小</translation>
+    </message>
+    <message>
+        <source>Mittel</source>
+        <translation>中</translation>
+    </message>
+    <message>
+        <source>Groß</source>
+        <translation>大</translation>
+    </message>
+    <message>
         <source>Diashow (⇧⌘F, S):</source>
         <translation>スライドショー（⇧⌘F、S）:</translation>
     </message>
@@ -2932,8 +3216,8 @@
         <translation>クロスフェード</translation>
     </message>
     <message>
-        <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, Esc beendet.</source>
-        <translation>スライドショー中: スペースバーで一時停止、1–9で間隔（秒）を設定、←/→で画像を切り替え、Escで終了します。</translation>
+        <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, P/X/U bewerten, Esc beendet.</source>
+        <translation>スライドショー中：スペースで一時停止、1〜9で間隔（秒）を設定、←/→で切り替え、P/X/Uで評価、Escで終了します。</translation>
     </message>
     <message>
         <source>Profilvorlagen</source>
@@ -3451,6 +3735,17 @@
     </message>
 </context>
 <context>
+    <name>lf::QuickFilterBar</name>
+    <message>
+        <source>Dateiname filtern</source>
+        <translation>ファイル名で絞り込む</translation>
+    </message>
+    <message>
+        <source>Filter aufheben (Esc)</source>
+        <translation>絞り込みを解除（Esc）</translation>
+    </message>
+</context>
+<context>
     <name>lf::QuickMove</name>
     <message>
         <source>%1  (nicht festgelegt)</source>
@@ -3486,6 +3781,18 @@
     <message>
         <source>Übersprungen – nichts geändert.</source>
         <translation>スキップしました。何も変更されていません。</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „%1“ verschoben</source>
+        <translation>
+            <numerusform>%n 枚の画像を「%1」に移動しました</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „%1“ kopiert</source>
+        <translation>
+            <numerusform>%n 枚の画像を「%1」にコピーしました</numerusform>
+        </translation>
     </message>
     <message>
         <source>Nach „%1“ verschoben</source>
@@ -4078,6 +4385,49 @@
     <message>
         <source>Nur EXIF-Ausrichtung setzen</source>
         <translation>EXIFの方向のみを設定</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowExtras</name>
+    <message>
+        <source>Zum Bewegen des Fensters ziehen</source>
+        <translation>ドラッグしてウインドウを移動</translation>
+    </message>
+    <message>
+        <source>Name: „%1“</source>
+        <translation>名前：「%1」</translation>
+    </message>
+    <message>
+        <source>Zufällig</source>
+        <translation>シャッフル</translation>
+    </message>
+    <message>
+        <source>Gekoppelt</source>
+        <translation>リンク中</translation>
+    </message>
+    <message>
+        <source>Blättern, Zoom und Ausschnitt laufen mit den anderen gekoppelten Fenstern</source>
+        <translation>画像の切り替え、ズーム、表示範囲がほかのリンクしたウインドウと連動します</translation>
+    </message>
+    <message>
+        <source>Kein Dateiname passt zu „%1“ – Esc hebt den Filter auf</source>
+        <translation>「%1」に一致するファイル名はありません – Escで絞り込みを解除します</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>常に手前に表示</translation>
+    </message>
+    <message>
+        <source>Nicht mehr im Vordergrund</source>
+        <translation>常に手前に表示：オフ</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
+        <translation>最小限のウインドウ – 上端をドラッグするとウインドウを移動できます</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus aus</source>
+        <translation>最小限のウインドウ：オフ</translation>
     </message>
 </context>
 <context>

@@ -88,6 +88,21 @@ Speicherformat: Sterne in `xmp:Rating` (0–5), „Verwerfen“ als `xmp:Rating=
 | F-CULL-02 | Speicherort „Finder-Tags“ einschalten, bewerten: Im Finder erscheinen „★★★“, „Pick“ (grün) bzw. „Reject“ (rot), Spotlight findet `tag:Pick` | Darstellung im Finder und Spotlight-Index sind nicht automatisierbar; das Schreiben der Tags (mit Farbe) prüft `test_culling` |
 | F-CULL-06 | Aussortiermodus (⌘K) auf hellem und dunklem Hintergrund und im Vollbild: Bewertungsanzeige und Tastenhilfe gut lesbar, Pick grün, Reject rot hinterlegt; Zoom bleibt beim Blättern | Optischer Eindruck |
 
+## M3: Raster, Vergleich, Lupe, Fenstermodi, gekoppelte Fenster (SPEC 4.2, 4.3, 4.10, 4.11, 4.15)
+
+Automatisch prüfen `test_m3_view` (Rasterauswahl und -bewegung, Synchronisierungsrechnung inkl. ⌥,
+Lupengeometrie, Koppeln nach Position/Name, „Gehe zu“, zufällige Reihenfolge, Namensfilter mit
+Umlauten/NFD, Bewertungstasten in der Diashow) und `tst_m3_views` (echte Fenster).
+
+| ID | Prüfung | Warum manuell |
+|---|---|---|
+| F-GRID-02 | Ordner mit 1000+ Fotos, `G`: Vorschauen erscheinen zügig, Scrollen flüssig, Pinch und ⌘+/⌘− ändern die Größe ohne Springen, Sterne-/Pick-/Reject-Markierungen gut lesbar in Hell- und Dunkelmodus; Enter öffnet das Bild unter der Markierung | Gefühl beim Scrollen und Pinch mit echten Fotos und Trackpad |
+| F-GRID-03 | Zwei Aufnahmen einer Serie vergleichen (Raster: beide markieren, Darstellung → „Auswahl vergleichen“): Trackpad-Zoom und Ziehen bewegen beide gleich, mit ⌥-Ziehen nur eines; Tab wechselt den Fokusrahmen | Echte Gesten; Rechnung und Ablauf prüfen die Tests |
+| F-VIEW-11 | `L` gedrückt halten über Bilddetails (auch gedrehtes Bild, Retina und externer Bildschirm): Lupe folgt dem Mauszeiger ohne Verzögerung, 200 % zeigt scharfe Pixel, nach kurzer Zeit volle Auflösung; Loslassen schließt sie. Mit „Mittlere Maustaste: Lupe“ dasselbe mit der Maus | Optischer Eindruck, echte Tastatur/Maus |
+| F-VIEW-12 | Fenster → „Immer im Vordergrund“, dann eine andere App aktivieren: das Lumaflip-Fenster bleibt sichtbar darüber; nach Vollbild und zurück noch immer | Zusammenspiel mit anderen Apps |
+| F-VIEW-13 | Fenster → „Minimaler Fenstermodus“: keine Titelleiste mehr (Ampel bleibt), das Bild reicht bis an den oberen Rand; oben ziehen bewegt das Fenster, Doppelklick dort zoomt es | Fensterverhalten von macOS |
+| F-WIN-07 | Zwei Ordner mit JPEG- und RAW-Varianten derselben Aufnahmen in zwei Fenstern, Fenster → „Fenster koppeln …“: Blättern in einem Fenster blättert das andere zum gleichnamigen Bild, Zoom und Ausschnitt laufen mit; Statuszeile zeigt „Gekoppelt“ | Gefühl mit echten Ordnern |
+
 ## M3: HDR/EDR, Belichtung, Decoder-Hilfsprozess (SPEC 4.5, 8.4, 8.5)
 
 | ID | Prüfung | Warum manuell |

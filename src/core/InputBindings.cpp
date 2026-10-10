@@ -111,6 +111,16 @@ const ActionInfo kActions[] = {
      QT_TRANSLATE_NOOP("lf::InputBindings", "Schnellablage: verschieben (M, dann 1–9)")},
     {Action::QuickCopy, "quickCopy",
      QT_TRANSLATE_NOOP("lf::InputBindings", "Schnellablage: kopieren (C, dann 1–9)")},
+    {Action::GoToImage, "goToImage", QT_TRANSLATE_NOOP("lf::InputBindings", "Gehe zu Bild …")},
+    {Action::ToggleShuffle, "toggleShuffle", QT_TRANSLATE_NOOP("lf::InputBindings", "Zufällige Reihenfolge")},
+    {Action::FilterByName, "filterByName", QT_TRANSLATE_NOOP("lf::InputBindings", "Nach Dateiname filtern")},
+    {Action::CompareWithNext, "compareWithNext",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Mit nächstem vergleichen")},
+    {Action::ToggleAlwaysOnTop, "toggleAlwaysOnTop",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Immer im Vordergrund")},
+    {Action::ToggleMinimalWindow, "toggleMinimalWindow",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Minimaler Fenstermodus")},
+    {Action::CoupleWindows, "coupleWindows", QT_TRANSLATE_NOOP("lf::InputBindings", "Fenster koppeln …")},
     {Action::ToggleHdr, "toggleHdr", QT_TRANSLATE_NOOP("lf::InputBindings", "HDR anzeigen")},
     {Action::ExposureIncrease, "exposureIncrease",
      QT_TRANSLATE_NOOP("lf::InputBindings", "Belichtung erhöhen")},
@@ -233,6 +243,10 @@ QStringList defaultShortcutStrings(Action a) {
         return {"M"};
     case Action::QuickCopy:
         return {"C"};
+    case Action::GoToImage:
+        return {"Ctrl+G"};
+    case Action::FilterByName:
+        return {"Ctrl+F"};
     // F-COL-04/05 (SPEC 5.2 has no keys for them; these collide with nothing there and are
     // free in macOS: ⇧⌘H, ⌥⌘+ / ⌥⌘− / ⌥⌘0, ⌥⌘E).
     case Action::ToggleHdr:
@@ -634,20 +648,15 @@ void InputBindings::applyPreset(const QString& presetId) {
 }
 
 bool InputBindings::isChoiceAvailable(const QString& slotId, const QString& choiceId) {
-    static const QSet<QString> later = {
-        QStringLiteral("middleClick:magnifier"), // F-IN-11 Lupe
-    };
+    // M3: the magnifier (F-IN-11 "Lupe", F-VIEW-11) was the last planned choice. Choices of
+    // later stages go into this set.
+    static const QSet<QString> later = {};
     return !later.contains(slotId + QLatin1Char(':') + choiceId);
 }
 
 bool InputBindings::isActionAvailable(Action a) {
-    switch (a) {
-    case Action::ToggleGrid:
-    case Action::Magnifier:
-        return false;
-    default:
-        return a != Action::None;
-    }
+    // M3: the grid (F-GRID-02) and the magnifier (F-VIEW-11) were the last planned actions.
+    return a != Action::None;
 }
 
 // ---- shortcuts ----

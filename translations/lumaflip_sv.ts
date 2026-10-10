@@ -161,6 +161,64 @@
     </message>
 </context>
 <context>
+    <name>lf::CompareView</name>
+    <message>
+        <source>Vergleich</source>
+        <translation>Jämförelse</translation>
+    </message>
+    <message>
+        <source>%1 — %2</source>
+        <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
+        <translation>%1 — %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CouplingManager</name>
+    <message numerus="yes">
+        <source>%n Fenster gekoppelt</source>
+        <translation>
+            <numerusform>%n fönster kopplat</numerusform>
+            <numerusform>%n fönster kopplade</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Kein passendes Bild zu „%1“</source>
+        <translation>Ingen matchande bild för ”%1”</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln</source>
+        <translation>Koppla fönster</translation>
+    </message>
+    <message>
+        <source>Gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt. Mit ⌥ lässt sich ein Fenster einzeln verschieben.</source>
+        <translation>Kopplade fönster bläddrar tillsammans och delar zoom och synligt område. Håll ned ⌥ för att flytta ett fönster för sig.</translation>
+    </message>
+    <message>
+        <source>Dateiname (ohne Endung)</source>
+        <translation>Filnamn (utan filändelse)</translation>
+    </message>
+    <message>
+        <source>Position in der Sammlung</source>
+        <translation>Position i samlingen</translation>
+    </message>
+    <message>
+        <source>Gemeinsam blättern nach:</source>
+        <translation>Bläddra tillsammans efter:</translation>
+    </message>
+    <message>
+        <source>Koppeln</source>
+        <translation>Koppla</translation>
+    </message>
+    <message>
+        <source>Entkoppeln</source>
+        <translation>Avkoppla fönster</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Avbryt</translation>
+    </message>
+</context>
+<context>
     <name>lf::CullingController</name>
     <message>
         <source>Bewertung wird gelesen …</source>
@@ -748,6 +806,13 @@
     </message>
 </context>
 <context>
+    <name>lf::GridView</name>
+    <message>
+        <source>Raster</source>
+        <translation>Rutnät</translation>
+    </message>
+</context>
+<context>
     <name>lf::HdrController</name>
     <message>
         <source>HDR an</source>
@@ -1318,6 +1383,34 @@
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
         <translation>Snabbarkiv: kopiera (C, sedan 1–9)</translation>
+    </message>
+    <message>
+        <source>Gehe zu Bild …</source>
+        <translation>Gå till bild…</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge</source>
+        <translation>Blanda</translation>
+    </message>
+    <message>
+        <source>Nach Dateiname filtern</source>
+        <translation>Filtrera efter filnamn</translation>
+    </message>
+    <message>
+        <source>Mit nächstem vergleichen</source>
+        <translation>Jämför med nästa</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>Alltid överst</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus</source>
+        <translation>Minimalt fönster</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln …</source>
+        <translation>Koppla fönster…</translation>
     </message>
     <message>
         <source>HDR anzeigen</source>
@@ -2031,6 +2124,14 @@
     </message>
 </context>
 <context>
+    <name>lf::LoupeWidget</name>
+    <message>
+        <source>%1 %</source>
+        <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
+        <translation>%1 %</translation>
+    </message>
+</context>
+<context>
     <name>lf::MainMenu</name>
     <message>
         <source>Ablage</source>
@@ -2430,6 +2531,46 @@
         <translation>Ange mål för snabbarkiv …</translation>
     </message>
     <message>
+        <source>Raster</source>
+        <translation>Rutnät</translation>
+    </message>
+    <message>
+        <source>Mit nächstem vergleichen</source>
+        <translation>Jämför med nästa</translation>
+    </message>
+    <message>
+        <source>Auswahl vergleichen</source>
+        <translation>Jämför markering</translation>
+    </message>
+    <message>
+        <source>Gehe zu Bild …</source>
+        <translation>Gå till bild…</translation>
+    </message>
+    <message>
+        <source>Nach Dateiname filtern …</source>
+        <translation>Filtrera efter filnamn…</translation>
+    </message>
+    <message>
+        <source>Namensfilter aufheben</source>
+        <translation>Rensa namnfilter</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>Alltid överst</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus</source>
+        <translation>Minimalt fönster</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln …</source>
+        <translation>Koppla fönster…</translation>
+    </message>
+    <message>
+        <source>Entkoppeln</source>
+        <translation>Avkoppla fönster</translation>
+    </message>
+    <message>
         <source>HDR</source>
         <translation>HDR</translation>
     </message>
@@ -2637,6 +2778,45 @@
     </message>
 </context>
 <context>
+    <name>lf::NavigationExtras</name>
+    <message>
+        <source>Gehe zu Bild</source>
+        <translation>Gå till bild</translation>
+    </message>
+    <message>
+        <source>Bildnummer (1–%1), oder +n / −n vom aktuellen Bild:</source>
+        <translation>Bildnummer (1–%1), eller +n / −n från aktuell bild:</translation>
+    </message>
+    <message>
+        <source>Gehe zu</source>
+        <translation>Gå</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Avbryt</translation>
+    </message>
+    <message>
+        <source>Bitte eine Bildnummer zwischen 1 und %1 eingeben</source>
+        <translation>Ange ett bildnummer mellan 1 och %1</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge an</source>
+        <translation>Blandning på</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge aus</source>
+        <translation>Blandning av</translation>
+    </message>
+    <message>
+        <source>Ende der zufälligen Reihenfolge</source>
+        <translation>Slutet av den blandade ordningen</translation>
+    </message>
+    <message>
+        <source>Anfang der zufälligen Reihenfolge</source>
+        <translation>Början av den blandade ordningen</translation>
+    </message>
+</context>
+<context>
     <name>lf::OpenWithService</name>
     <message>
         <source>Kein Programm zum Bearbeiten gefunden. Wähle eines unter Einstellungen → Allgemein → Editor.</source>
@@ -2669,6 +2849,76 @@
     <message>
         <source>Keine passenden Programme</source>
         <translation>Inga passande appar</translation>
+    </message>
+</context>
+<context>
+    <name>lf::OverviewController</name>
+    <message>
+        <source>Keine Bilder für die Rasteransicht</source>
+        <translation>Inga bilder för rutnätsvyn</translation>
+    </message>
+    <message>
+        <source>Zum Vergleichen mindestens zwei Bilder wählen</source>
+        <translation>Markera minst två bilder att jämföra</translation>
+    </message>
+    <message>
+        <source>Es werden die ersten %1 Bilder verglichen</source>
+        <translation>De första %1 bilderna jämförs</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er)</source>
+        <translation>
+            <numerusform>%n bild</numerusform>
+            <numerusform>%n bilder</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n ausgewählt</source>
+        <translation>
+            <numerusform>%n markerad</numerusform>
+            <numerusform>%n markerade</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Name: „%1“</source>
+        <translation>Namn: ”%1”</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation>%1: %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 – %n Bild(er)</source>
+        <translation>
+            <numerusform>%1 – %n bild</numerusform>
+            <numerusform>%1 – %n bilder</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>Flytta till papperskorgen</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n bild flyttad till papperskorgen</numerusform>
+            <numerusform>%n bilder flyttade till papperskorgen</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb legen?</source>
+        <translation>
+            <numerusform>Flytta %n bild till papperskorgen?</numerusform>
+            <numerusform>Flytta %n bilder till papperskorgen?</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Mit ⌘Z lässt sich das widerrufen.</source>
+        <translation>Du kan ångra detta med ⌘Z.</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Avbryt</translation>
     </message>
 </context>
 <context>
@@ -2834,6 +3084,22 @@
         <translation>Nya fönster visas då som en flik i det främsta fönstret; Fönster → ”Slå ihop alla fönster” samlar öppna fönster.</translation>
     </message>
     <message>
+        <source>Gekoppelte Fenster blättern nach:</source>
+        <translation>Kopplade fönster bläddrar efter:</translation>
+    </message>
+    <message>
+        <source>Dateiname (ohne Endung)</source>
+        <translation>Filnamn (utan filändelse)</translation>
+    </message>
+    <message>
+        <source>Position in der Sammlung</source>
+        <translation>Position i samlingen</translation>
+    </message>
+    <message>
+        <source>Fenster → „Fenster koppeln …“: gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt.</source>
+        <translation>Fönster → ”Koppla fönster…”: kopplade fönster bläddrar tillsammans och delar zoom och synligt område.</translation>
+    </message>
+    <message>
         <source>Dunkel</source>
         <translation>Mörk</translation>
     </message>
@@ -2918,6 +3184,30 @@
         <translation>1 bildpixel = 1 punkt</translation>
     </message>
     <message>
+        <source>Lupe (L gedrückt halten):</source>
+        <translation>Lupp (håll ned L):</translation>
+    </message>
+    <message>
+        <source>200 %</source>
+        <translation>200 %</translation>
+    </message>
+    <message>
+        <source>Größe der Lupe:</source>
+        <translation>Luppens storlek:</translation>
+    </message>
+    <message>
+        <source>Klein</source>
+        <translation>Liten</translation>
+    </message>
+    <message>
+        <source>Mittel</source>
+        <translation>Mellan</translation>
+    </message>
+    <message>
+        <source>Groß</source>
+        <translation>Stor</translation>
+    </message>
+    <message>
         <source>Diashow (⇧⌘F, S):</source>
         <translation>Bildspel (⇧⌘F, S):</translation>
     </message>
@@ -2938,8 +3228,8 @@
         <translation>Övertoning</translation>
     </message>
     <message>
-        <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, Esc beendet.</source>
-        <translation>Under bildspelet: mellanslag pausar, 1–9 ställer in intervallet i sekunder, ←/→ bläddrar, Esc avslutar.</translation>
+        <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, P/X/U bewerten, Esc beendet.</source>
+        <translation>Under bildspelet: mellanslag pausar, 1–9 ställer in intervallet i sekunder, ←/→ bläddrar, P/X/U betygsätter, Esc avslutar.</translation>
     </message>
     <message>
         <source>Profilvorlagen</source>
@@ -3458,6 +3748,17 @@
     </message>
 </context>
 <context>
+    <name>lf::QuickFilterBar</name>
+    <message>
+        <source>Dateiname filtern</source>
+        <translation>Filtrera filnamn</translation>
+    </message>
+    <message>
+        <source>Filter aufheben (Esc)</source>
+        <translation>Rensa filter (Esc)</translation>
+    </message>
+</context>
+<context>
     <name>lf::QuickMove</name>
     <message>
         <source>%1  (nicht festgelegt)</source>
@@ -3493,6 +3794,20 @@
     <message>
         <source>Übersprungen – nichts geändert.</source>
         <translation>Hoppades över – inget ändrades.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „%1“ verschoben</source>
+        <translation>
+            <numerusform>%n bild flyttad till ”%1”</numerusform>
+            <numerusform>%n bilder flyttade till ”%1”</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „%1“ kopiert</source>
+        <translation>
+            <numerusform>%n bild kopierad till ”%1”</numerusform>
+            <numerusform>%n bilder kopierade till ”%1”</numerusform>
+        </translation>
     </message>
     <message>
         <source>Nach „%1“ verschoben</source>
@@ -4086,6 +4401,49 @@
     <message>
         <source>Nur EXIF-Ausrichtung setzen</source>
         <translation>Ställ endast in EXIF-riktning</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowExtras</name>
+    <message>
+        <source>Zum Bewegen des Fensters ziehen</source>
+        <translation>Dra för att flytta fönstret</translation>
+    </message>
+    <message>
+        <source>Name: „%1“</source>
+        <translation>Namn: ”%1”</translation>
+    </message>
+    <message>
+        <source>Zufällig</source>
+        <translation>Blandat</translation>
+    </message>
+    <message>
+        <source>Gekoppelt</source>
+        <translation>Kopplat</translation>
+    </message>
+    <message>
+        <source>Blättern, Zoom und Ausschnitt laufen mit den anderen gekoppelten Fenstern</source>
+        <translation>Bläddring, zoom och synligt område följer de andra kopplade fönstren</translation>
+    </message>
+    <message>
+        <source>Kein Dateiname passt zu „%1“ – Esc hebt den Filter auf</source>
+        <translation>Inget filnamn matchar ”%1” – Esc rensar filtret</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>Alltid överst</translation>
+    </message>
+    <message>
+        <source>Nicht mehr im Vordergrund</source>
+        <translation>Inte längre överst</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
+        <translation>Minimalt fönster – dra längst upp för att flytta fönstret</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus aus</source>
+        <translation>Minimalt fönster av</translation>
     </message>
 </context>
 <context>

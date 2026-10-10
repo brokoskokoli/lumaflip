@@ -224,7 +224,7 @@ Ziel: **So viele Formate wie möglich, ohne Nachinstallation.** Die Formate werd
 | ID | Anforderung | Stufe |
 |---|---|---|
 | F-GRID-01 | Filmstreifen (`T`, unten oder ausblendbar) mit Vorschaubildern, Markierung des aktuellen Bildes und Klick zum Springen. | M2 |
-| F-GRID-02 | Rasteransicht (`G` bzw. ⌘↑ wie „übergeordneter Ordner“, Enter öffnet das Bild): alle Bilder der Sammlung, Größe per Pinch bzw. ⌘+/⌘− einstellbar, Mehrfachauswahl. | M3 |
+| F-GRID-02 | Rasteransicht (`G`, Enter bzw. ⌘↓ öffnet das Bild; ⌘↑ bleibt „erstes Bild“ gemäß F-NAV-02): alle Bilder der Sammlung, Größe per Pinch bzw. ⌘+/⌘− einstellbar, Mehrfachauswahl. | M3 |
 | F-GRID-03 | Vergleichsmodus: 2–4 markierte Bilder nebeneinander, **synchroner Zoom und Ausschnitt**; mit ⌥ wird ein einzelnes Bild unabhängig bewegt. | M3 |
 | F-GRID-04 | Differenz-Overlay bzw. Überblenden zweier Bilder. | M4 |
 

@@ -660,7 +660,7 @@ private slots:
             const int i = combo ? combo->findData(QString::fromLatin1(choice)) : -1;
             return model && i >= 0 ? model->item(i)->isEnabled() : true;
         };
-        QVERIFY(!choiceEnabled("middleClick", "magnifier"));
+        QVERIFY(choiceEnabled("middleClick", "magnifier")); // M3: loupe (F-VIEW-11)
         QVERIFY(choiceEnabled("drag", "dragOut"));      // F-FILE-07 (M2)
         QVERIFY(choiceEnabled("space", "slideshow"));   // M2: slideshow (F-SLIDE-01)
         QVERIFY(choiceEnabled("pageUpDown", "page"));   // M2: pages (F-FMT-04)

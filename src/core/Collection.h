@@ -126,6 +126,14 @@ public:
     // A rating changed (RatingStore::ratingChanged): updates the entry, applies the filter.
     void updateRating(const QString& path, const Rating& rating);
 
+    // ---- name filter (F-NAV-08, M3) ----
+    // Shows only images whose file name contains every word of `query` (case and
+    // diacritics ignored, NameFilter.h); combines with the rating filter. Applied at once
+    // (no re-enumeration); an image that no longer matches is hidden even if it is current
+    // (the first match becomes current). Empty = off.
+    void setNameFilter(const QString& query);
+    QString nameFilter() const;
+
     // Injection for tests; defaults are created via Platform.h factories.
     void setProviders(NameCollator* collator, FolderOrderProvider* order,
                       FileAttributeProvider* attributes); // non-owning, may be null

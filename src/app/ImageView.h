@@ -15,6 +15,7 @@
 #include <QColorSpace>
 #include <QList>
 #include <QPointF>
+#include <QTransform>
 #include <QWidget>
 
 #include <functional>
@@ -88,6 +89,11 @@ public:
     // F-IN-14 / F-FILE-07: a plain drag starts a drag-out (⌥-drag pans) instead of the
     // default (drag pans, ⌥-drag = drag-out). dragOutRequested() starts the drag.
     void setDragOutByDefault(bool dragOut);
+    // F-GRID-03: without drag-out every drag pans (compare panes: ⌥-drag moves one pane).
+    void setDragOutEnabled(bool enabled);
+    // M3 (F-VIEW-11 loupe): full-size image px -> widget coordinates (logical px), i.e.
+    // what the view shows where. Identity without image.
+    QTransform imageToWidget() const;
     // F-COL-02 tests: replaces windowColorSpace() (the screen's profile); empty = system.
     static void setColorSpaceResolverForTesting(std::function<QColorSpace(const QWidget*)> resolver);
 
@@ -117,6 +123,10 @@ signals:
     void needsHigherResolution();
     void dragOutRequested();
     void errorActionTriggered();
+    // M3 (F-GRID-03, F-WIN-07): zoom or visible part changed by input or by the zoom/pan
+    // methods - not by a new image, a resize or a better stage (synchronized views follow
+    // only what the user did).
+    void viewTransformChanged();
     // F-COL-03/04/05: presentation, toggle, exposure or headroom changed.
     void hdrStateChanged();
 

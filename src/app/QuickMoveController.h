@@ -13,6 +13,7 @@
 #include <QObject>
 #include <QPointer>
 #include <QString>
+#include <QStringList>
 
 #include <functional>
 #include <optional>
@@ -37,8 +38,12 @@ public:
     // A key while the sequence waits for its target; true: consumed (do not handle it).
     bool interceptKey(const InputEvent& event);
     bool isPending() const { return m_chord.isPending(); }
-    // Moves/copies the current image into target `slot` (1..9), e.g. from the menu.
+    // Moves/copies the current image into target `slot` (1..9), e.g. from the menu - or the
+    // images setSubjects() names (grid selection, F-GRID-02).
     void transferCurrent(QuickOp op, int slot);
+    // M3: images the quick move/copy acts on instead of the current one (empty list: the
+    // current image).
+    void setSubjects(std::function<QStringList()> subjects) { m_subjects = std::move(subjects); }
     // Runs `items` as one undo step, asking about name conflicts first (`undoText`;
     // `doneMessage(count)` for the toast). Also used by the culling bulk move (F-CULL-05).
     void transfer(TransferKind kind, QVector<TransferItem> items, const QString& undoText,
@@ -58,6 +63,7 @@ private:
     Application& m_app;
     QuickChord m_chord;
     QTimer* m_timeout = nullptr;
+    std::function<QStringList()> m_subjects;
 };
 
 } // namespace lf

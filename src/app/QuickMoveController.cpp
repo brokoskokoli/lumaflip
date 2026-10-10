@@ -82,16 +82,25 @@ void QuickMoveController::transferCurrent(QuickOp op, int slot) {
             tr("Ziel %1 ist nicht festgelegt (Einstellungen → Bewertung → Schnellablage).").arg(slot), 4000);
         return;
     }
-    const QString cur = m_window.currentPath();
-    if (cur.isEmpty())
+    QStringList paths = m_subjects ? m_subjects() : QStringList();
+    if (paths.isEmpty() && !m_window.currentPath().isEmpty())
+        paths << m_window.currentPath();
+    if (paths.isEmpty())
         return;
     QuickChord::setLastSlot(slot);
     const QString name = QDir(folder).dirName();
     const bool move = op == QuickOp::Move;
-    transfer(move ? TransferKind::Move : TransferKind::Copy, {{cur, folder, ConflictChoice::Skip}},
-             move ? tr("Verschieben") : tr("Kopieren"), [move, name](int done) {
+    QVector<TransferItem> items;
+    for (const QString& p : std::as_const(paths))
+        items.append({p, folder, ConflictChoice::Skip});
+    const bool several = paths.size() > 1;
+    transfer(move ? TransferKind::Move : TransferKind::Copy, items, move ? tr("Verschieben") : tr("Kopieren"),
+             [move, name, several](int done) {
                  if (done == 0)
                      return tr("Übersprungen – nichts geändert.");
+                 if (several)
+                     return move ? tr("%n Bild(er) nach „%1“ verschoben", nullptr, done).arg(name)
+                                 : tr("%n Bild(er) nach „%1“ kopiert", nullptr, done).arg(name);
                  return move ? tr("Nach „%1“ verschoben").arg(name) : tr("Nach „%1“ kopiert").arg(name);
              });
 }
