@@ -140,3 +140,9 @@ SmartScreen reputation builds up per certificate; EV certificates start with rep
 - No system share sheet yet (Windows `DataTransferManager`), no Live Text, no maps.
 - The Explorer sort order of a folder cannot be read; Lumaflip uses name order.
 - Network access of the decoder helper is not blocked (see above).
+- PDF pages (F-OPEN-10) need QtPdf, which the Qt online repository does not ship for
+  `msvc2022_64` without Qt WebEngine; CBZ/CBR/7z archives work.
+- The library decoders of the Linux build (libheif, libjxl, LibRaw, OpenEXR; `src/codecs`)
+  are not built on Windows yet; WIC with the Store codec extensions covers these formats.
+- Native keyboard event injection for the integration tests exists only on macOS; those
+  tests skip on Windows (as on Linux).

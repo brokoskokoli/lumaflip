@@ -290,6 +290,8 @@ if(WIN32)
   # src/app/generic, the Linux/portable variant).
   list(FILTER LF_UI_SOURCES EXCLUDE REGEX ".*_mac\\.(mm|h)$")
   list(FILTER LF_UI_SOURCES EXCLUDE REGEX ".*/MacImage\\.h$")
+  # Type names and suffixes from Qt's MIME database, as on Linux.
+  list(APPEND LF_UI_SOURCES app/generic/GenericDisplayText.cpp)
 elseif(LF_GENERIC_PLATFORM)
   # Without AppKit: the *_mac.mm parts are replaced by src/app/generic (no-ops where macOS
   # has a service and Linux has none; XDG implementations otherwise, docs/LINUX.md).
