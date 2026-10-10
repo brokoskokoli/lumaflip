@@ -157,6 +157,29 @@
     </message>
 </context>
 <context>
+    <name>lf::Archive</name>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>« %1 » manque dans l’archive.</translation>
+    </message>
+    <message>
+        <source>Dieses Archivformat wird nicht unterstützt.</source>
+        <translation>Ce format d’archive n’est pas pris en charge.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist zu groß.</source>
+        <translation>L’image dans l’archive est trop grande.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist beschädigt oder unvollständig.</source>
+        <translation>L’archive est endommagée ou incomplète.</translation>
+    </message>
+    <message>
+        <source>Das Archiv enthält keine Bilder.</source>
+        <translation>L’archive ne contient aucune image.</translation>
+    </message>
+</context>
+<context>
     <name>lf::CollectionExtras</name>
     <message numerus="yes">
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
@@ -230,6 +253,13 @@
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ContainerPolicy</name>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <translation>Les images des archives et des documents PDF sont ouvertes en lecture seule – corbeille, renommage, déplacement et notation ne sont pas possibles ici.</translation>
     </message>
 </context>
 <context>
@@ -363,6 +393,190 @@
             <numerusform>%n image déplacée vers « _Rejected »</numerusform>
             <numerusform>%n images déplacées vers « _Rejected »</numerusform>
         </translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActions</name>
+    <message>
+        <source>Die Aktion braucht einen Namen.</source>
+        <translation>L’action doit avoir un nom.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht einen Befehl.</source>
+        <translation>L’action doit avoir une commande.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht den Namen eines Kurzbefehls.</source>
+        <translation>L’action doit avoir le nom d’un raccourci.</translation>
+    </message>
+    <message>
+        <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
+        <translation>Le nom d’un raccourci ne doit pas commencer par « - ».</translation>
+    </message>
+    <message numerus="yes">
+        <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
+        <translation>
+            <numerusform>L’action a été interrompue après %n seconde.</numerusform>
+            <numerusform>L’action a été interrompue après %n secondes.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Die Aktion wurde abgebrochen.</source>
+        <translation>L’action a été interrompue.</translation>
+    </message>
+    <message>
+        <source>Die Aktion endete mit Fehlercode %1.</source>
+        <translation>L’action s’est terminée avec le code d’erreur %1.</translation>
+    </message>
+    <message>
+        <source>Die Kurzbefehle-App konnte nicht gestartet werden.</source>
+        <translation>Impossible de lancer l’app Raccourcis.</translation>
+    </message>
+    <message>
+        <source>Der Befehl konnte nicht gestartet werden.</source>
+        <translation>Impossible de lancer la commande.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsEditor</name>
+    <message>
+        <source>Eigene Aktion</source>
+        <translation>Action personnalisée</translation>
+    </message>
+    <message>
+        <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
+        <translation>Nom d’un raccourci de l’app Raccourcis ; il reçoit le fichier en entrée.</translation>
+    </message>
+    <message>
+        <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
+        <translation>S’exécute avec /bin/sh ; le fichier est dans &quot;$1&quot; (tous les fichiers : &quot;$@&quot;), p. ex. open -a Preview &quot;$1&quot;. Le chemin n’est jamais inséré dans la commande.</translation>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation>Nom :</translation>
+    </message>
+    <message>
+        <source>Art:</source>
+        <translation>Type :</translation>
+    </message>
+    <message>
+        <source>Befehl:</source>
+        <translation>Commande :</translation>
+    </message>
+    <message>
+        <source>Taste:</source>
+        <translation>Touche :</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nom</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Type</translation>
+    </message>
+    <message>
+        <source>Befehl</source>
+        <translation>Commande</translation>
+    </message>
+    <message>
+        <source>Taste</source>
+        <translation>Touche</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 ist schon belegt (%3).</source>
+        <translation>« %1 » : %2 est déjà utilisé (%3).</translation>
+    </message>
+    <message>
+        <source>Hinzufügen …</source>
+        <translation>Ajouter…</translation>
+    </message>
+    <message>
+        <source>Bearbeiten …</source>
+        <translation>Modifier…</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>Supprimer</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsManager</name>
+    <message>
+        <source>Kurzbefehl</source>
+        <translation>Raccourci</translation>
+    </message>
+    <message>
+        <source>Shell-Befehl</source>
+        <translation>Commande shell</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Aucune image n’est ouverte.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktion ausführen</source>
+        <translation>Exécuter l’action personnalisée</translation>
+    </message>
+    <message>
+        <source>„%1“ zum ersten Mal ausführen?</source>
+        <translation>Exécuter « %1 » pour la première fois ?</translation>
+    </message>
+    <message>
+        <source>Kurzbefehl: %1</source>
+        <translation>Raccourci : %1</translation>
+    </message>
+    <message>
+        <source>Befehl: %1</source>
+        <translation>Commande : %1</translation>
+    </message>
+    <message>
+        <source>Datei: %1</source>
+        <translation>Fichier : %1</translation>
+    </message>
+    <message>
+        <source>Ausführen</source>
+        <translation>Exécuter</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuler</translation>
+    </message>
+    <message>
+        <source>▶ %1: %2</source>
+        <translation>▶ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ läuft …</source>
+        <translation>« %1 » en cours…</translation>
+    </message>
+    <message>
+        <source>✓ %1: fertig</source>
+        <translation>✓ %1 : terminé</translation>
+    </message>
+    <message>
+        <source>✗ %1: %2</source>
+        <translation>✗ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ausgeführt</source>
+        <translation>« %1 » exécuté</translation>
+    </message>
+    <message>
+        <source>„%1“: %2</source>
+        <translation>« %1 » : %2</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Journal des actions</translation>
+    </message>
+    <message>
+        <source>Noch keine Aktion ausgeführt.</source>
+        <translation>Aucune action exécutée pour l’instant.</translation>
+    </message>
+    <message>
+        <source>Leeren</source>
+        <translation>Effacer</translation>
     </message>
 </context>
 <context>
@@ -1616,6 +1830,26 @@
         <translation>Carte du dossier</translation>
     </message>
     <message>
+        <source>Quick Look</source>
+        <translation>Coup d’œil</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Texte en direct</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Définir comme fond d’écran</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Journal des actions</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Lire les BD de droite à gauche</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>Aucune action</translation>
     </message>
@@ -2060,6 +2294,33 @@
     </message>
 </context>
 <context>
+    <name>lf::LiveText</name>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Texte en direct est désactivé dans les réglages.</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Texte en direct n’est pas disponible sur ce Mac.</translation>
+    </message>
+    <message>
+        <source>Live Text: Bild wird analysiert …</source>
+        <translation>Texte en direct : analyse de l’image…</translation>
+    </message>
+    <message>
+        <source>Live Text: Text und Motive auswählbar</source>
+        <translation>Texte en direct : texte et sujets sélectionnables</translation>
+    </message>
+    <message>
+        <source>Live Text: kein Text gefunden</source>
+        <translation>Texte en direct : aucun texte trouvé</translation>
+    </message>
+    <message>
+        <source>Live Text: Analyse fehlgeschlagen (%1)</source>
+        <translation>Texte en direct : échec de l’analyse (%1)</translation>
+    </message>
+</context>
+<context>
     <name>lf::LosslessTransform</name>
     <message>
         <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
@@ -2312,6 +2573,17 @@
         <source>%1 %</source>
         <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
         <translation>%1&#xa0;%</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MacIntegration</name>
+    <message>
+        <source>Es wurden keine Dateien übergeben.</source>
+        <translation>Aucun fichier n’a été transmis.</translation>
+    </message>
+    <message>
+        <source>Der Bildschirm ist nicht mehr da.</source>
+        <translation>L’écran n’est plus connecté.</translation>
     </message>
 </context>
 <context>
@@ -2801,6 +3073,38 @@
         <source>Belichtungsregler einblenden</source>
         <translation>Afficher le curseur d’exposition</translation>
     </message>
+    <message>
+        <source>Quick Look</source>
+        <translation>Coup d’œil</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen …</source>
+        <translation>Définir comme fond d’écran…</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Actions personnalisées</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Texte en direct</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Lire les BD de droite à gauche</translation>
+    </message>
+    <message>
+        <source>Keine – in den Einstellungen anlegen</source>
+        <translation>Aucune – à créer dans les réglages</translation>
+    </message>
+    <message>
+        <source>Protokoll …</source>
+        <translation>Journal…</translation>
+    </message>
+    <message>
+        <source>Aktionen bearbeiten …</source>
+        <translation>Modifier les actions…</translation>
+    </message>
 </context>
 <context>
     <name>lf::MapPreviewController</name>
@@ -3220,6 +3524,37 @@
     <message>
         <source>Abbrechen</source>
         <translation>Annuler</translation>
+    </message>
+</context>
+<context>
+    <name>lf::PdfDocument</name>
+    <message>
+        <source>Die Seite gibt es im PDF-Dokument nicht.</source>
+        <translation>Cette page n’existe pas dans le document PDF.</translation>
+    </message>
+    <message>
+        <source>PDF-Dokumente werden auf diesem System nicht unterstützt.</source>
+        <translation>Les documents PDF ne sont pas pris en charge sur ce système.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist beschädigt.</source>
+        <translation>Le document PDF est endommagé.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>Le fichier n’existe pas.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <translation>Le document PDF est protégé par mot de passe.</translation>
+    </message>
+    <message>
+        <source>Die Seite ist leer.</source>
+        <translation>La page est vide.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für die Seite.</source>
+        <translation>Mémoire insuffisante pour la page.</translation>
     </message>
 </context>
 <context>
@@ -3892,6 +4227,18 @@
         <translation>Les fichiers RAW et JPEG de même nom apparaissent comme une seule image (le JPEG, avec la mention «&#xa0;RAW+JPEG&#xa0;»). Noter, déplacer et supprimer concernent les deux fichiers ; «&#xa0;Afficher le RAW&#xa0;» bascule vers le fichier RAW.</translation>
     </message>
     <message>
+        <source>Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner.</source>
+        <translation>Les archives (ZIP/CBZ, RAR/CBR, 7z/CB7) et les documents PDF s’ouvrent comme des dossiers.</translation>
+    </message>
+    <message>
+        <source>Comics (CBZ, CBR, CB7) von rechts nach links lesen</source>
+        <translation>Lire les BD (CBZ, CBR, CB7) de droite à gauche</translation>
+    </message>
+    <message>
+        <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
+        <translation>Pour les mangas : ← avance, → recule. Espace et Page↓ passent toujours à la page suivante.</translation>
+    </message>
+    <message>
         <source>Leistung</source>
         <translation>Performances</translation>
     </message>
@@ -3914,6 +4261,34 @@
     <message>
         <source>Bilder zurück behalten:</source>
         <translation>Images précédentes conservées&#xa0;:</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Texte en direct</translation>
+    </message>
+    <message>
+        <source>Live Text und Motiv freistellen erlauben (⇧⌘L)</source>
+        <translation>Autoriser Texte en direct et l’isolement du sujet (⇧⌘L)</translation>
+    </message>
+    <message>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <translation>L’image n’est analysée que si vous activez Texte en direct pour une fenêtre – sur ce Mac, sans réseau.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Actions personnalisées</translation>
+    </message>
+    <message>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <translation>Une commande shell ou un raccourci (Raccourcis) reçoit l’image actuelle en argument. Menu : Fichier → Actions personnalisées.</translation>
+    </message>
+    <message>
+        <source>Abbrechen nach:</source>
+        <translation>Interrompre après :</translation>
+    </message>
+    <message>
+        <source> s</source>
+        <translation> s</translation>
     </message>
     <message>
         <source>Einstellungen sichern</source>
@@ -4657,6 +5032,10 @@
         <translation>Ouvrir…</translation>
     </message>
     <message>
+        <source>„%1“ kann nicht geöffnet werden</source>
+        <translation>Impossible d’ouvrir « %1 »</translation>
+    </message>
+    <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
         <translation>Le fichier est endommagé ou son format n’est pas pris en charge.</translation>
     </message>
@@ -4857,6 +5236,39 @@
     </message>
 </context>
 <context>
+    <name>lf::VirtualPath</name>
+    <message>
+        <source>Seite %1</source>
+        <extracomment>one page of a PDF document browsed like a folder (F-OPEN-10)</extracomment>
+        <translation>Page %1</translation>
+    </message>
+    <message>
+        <source>%1 › %2</source>
+        <extracomment>archive or PDF and the image inside it, e.g. &quot;Band 1.cbz › 012.jpg&quot; (F-OPEN-10)</extracomment>
+        <translation>%1 › %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Wallpaper</name>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Aucune image n’est ouverte.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <translation>Les images d’archives et les pages PDF ne peuvent pas devenir fond d’écran.</translation>
+    </message>
+    <message>
+        <source>Es wurde kein Bildschirm gefunden.</source>
+        <translation>Aucun écran trouvé.</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
+        <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
     <name>lf::WindowExtras</name>
     <message>
         <source>Zum Bewegen des Fensters ziehen</source>
@@ -4901,6 +5313,73 @@
     <message>
         <source>Minimaler Fenstermodus aus</source>
         <translation>Fenêtre minimale désactivée</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowIntegration</name>
+    <message>
+        <source>Comics: von rechts nach links lesen (← = weiter)</source>
+        <translation>BD : lecture de droite à gauche (← = suivant)</translation>
+    </message>
+    <message>
+        <source>Comics: von links nach rechts lesen</source>
+        <translation>BD : lecture de gauche à droite</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Texte en direct n’est pas disponible sur ce Mac.</translation>
+    </message>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Texte en direct est désactivé dans les réglages.</translation>
+    </message>
+    <message>
+        <source>Live Text an – Text im Bild auswählen und kopieren</source>
+        <translation>Texte en direct activé – sélectionnez et copiez le texte de l’image</translation>
+    </message>
+    <message>
+        <source>Live Text aus</source>
+        <translation>Texte en direct désactivé</translation>
+    </message>
+    <message>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <translation>Texte en direct n’est pas disponible en affichage HDR – passez en SDR avec ⇧⌘H.</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Aucune image n’est ouverte.</translation>
+    </message>
+    <message>
+        <source>Quick Look ist nicht verfügbar.</source>
+        <translation>Coup d’œil n’est pas disponible.</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Définir comme fond d’écran</translation>
+    </message>
+    <message>
+        <source>„%1“ als Schreibtischhintergrund festlegen?</source>
+        <translation>Définir « %1 » comme fond d’écran ?</translation>
+    </message>
+    <message>
+        <source>Auf allen Bildschirmen</source>
+        <translation>Sur tous les écrans</translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation>Définir</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuler</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festgelegt</source>
+        <translation>Défini comme fond d’écran</translation>
+    </message>
+    <message>
+        <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
+        <translation>Impossible de modifier le fond d’écran : %1</translation>
     </message>
 </context>
 <context>

@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "Collection.h"
 
+#include "Archive.h"
 #include "FolderCache.h"
 #include "ImageFormats.h"
 #include "NameFilter.h"
 #include "Platform.h"
+#include "VirtualPath.h"
 
 #include <QDir>
 #include <QFile>
@@ -453,7 +455,13 @@ void pairRawJpeg(QVector<FileEntry>& entries, QHash<QString, FileEntry>* partner
 // ---------------------------------------------------------------------------------------
 namespace {
 
-enum class Mode { None, File, Files, Folder };
+// Container (F-OPEN-10, M4): the images inside an archive or PDF (VirtualPath.h), read on a
+// worker like a folder; never watched, no file operations.
+enum class Mode { None, File, Files, Folder, Container };
+// Modes without a folder of their own (no recursion, no folder sort memory).
+bool fileLike(Mode m) {
+    return m == Mode::Files || m == Mode::Container;
+}
 enum class JobKind { Load, Resort };
 
 constexpr int kMaxTreeFolders = 100000; // F-OPEN-08: safety limit of a recursive collection
@@ -518,6 +526,7 @@ struct Job {
     QString folder;              // folder to enumerate / ask Finder about; may be empty
     QString mustInclude;         // explicitly opened file, kept even if filtered
     QStringList files;           // Mode::Files
+    QString container;           // Mode::Container: the archive or PDF
     QVector<FileEntry> existing; // JobKind::Resort
     bool followFinder = true;
     bool allowLiveQuery = false;
@@ -557,6 +566,7 @@ struct Result {
     quint64 changeSeq = std::numeric_limits<quint64>::max();
     bool truncated = false; // recursive: stopped at Job::maxTreeImages
     QStringList nameTerms;  // the name filter the result was filtered with
+    QString containerError; // Mode::Container: why the archive shows no images
 };
 
 // F-NAV-08: whether the entry's name contains every term; folds the name once per entry.
@@ -657,6 +667,17 @@ Result runJob(Job job) {
     QVector<FileEntry> entries;
     if (job.kind == JobKind::Resort) {
         entries = std::move(job.existing);
+    } else if (job.mode == Mode::Container) {
+        // F-OPEN-10: the archive's (or PDF's) images, already in member order.
+        BinaryCollator fallbackCollator;
+        const archive::Listing listing = archive::list(job.container);
+        entries = archive::imageEntries(job.container, listing,
+                                        job.collator ? *job.collator
+                                                     : static_cast<NameCollator&>(fallbackCollator));
+        if (!listing.ok)
+            r.containerError = listing.error;
+        else if (entries.isEmpty())
+            r.containerError = archive::messageNoImages();
     } else if (job.mode == Mode::Files) {
         QSet<QString> seen;
         for (const QString& p : std::as_const(job.files)) {
@@ -712,7 +733,7 @@ Result runJob(Job job) {
     // F-SORT-06: a choice remembered for this folder wins over the window's sort mode.
     bool followFinder = job.followFinder;
     SortSpec spec = job.manualSpec;
-    if (job.folderMemory && job.mode != Mode::Files && !job.folder.isEmpty()) {
+    if (job.folderMemory && !fileLike(job.mode) && !job.folder.isEmpty()) {
         if (const std::optional<FolderSortChoice> remembered = job.folderMemory(job.folder)) {
             followFinder = remembered->followFinder;
             spec = remembered->manual;
@@ -728,7 +749,7 @@ Result runJob(Job job) {
     if (cancelled())
         return r;
 
-    if (needsImageProperties(spec.key) && job.attributes) {
+    if (needsImageProperties(spec.key) && job.attributes && job.mode != Mode::Container) {
         for (qsizetype i = 0; i < entries.size(); ++i) {
             if ((i & 31) == 31 && cancelled())
                 return r;
@@ -742,7 +763,7 @@ Result runJob(Job job) {
     // M3: ratings from the RatingStore for sorting by rating and for the filter.
     const bool ratingFiltering = job.ratingReader && job.filter.isActive();
     const bool filtering = ratingFiltering || !job.nameTerms.isEmpty(); // F-NAV-08
-    if (job.ratingReader && (spec.key == SortKey::Rating || ratingFiltering)) {
+    if (job.ratingReader && job.mode != Mode::Container && (spec.key == SortKey::Rating || ratingFiltering)) {
         for (qsizetype i = 0; i < entries.size(); ++i) {
             if ((i & 31) == 31 && cancelled())
                 return r;
@@ -767,8 +788,22 @@ Result runJob(Job job) {
         }
     }
     BinaryCollator fallback;
-    collection::sortEntries(entries, spec, job.collator ? *job.collator : fallback);
-    if (job.recursive && job.mode != Mode::Files) {
+    if (job.mode == Mode::Container && spec.key == SortKey::Name) {
+        // F-OPEN-10: member paths in Finder order (folders inside the archive together);
+        // PDF pages in page order.
+        if (vpath::containerKind(job.container) == vpath::ContainerKind::Pdf) {
+            std::sort(entries.begin(), entries.end(), [&](const FileEntry& a, const FileEntry& b) {
+                const int pa = vpath::pdfPageIndex(vpath::split(a.path)->member);
+                const int pb = vpath::pdfPageIndex(vpath::split(b.path)->member);
+                return spec.ascending ? pa < pb : pa > pb;
+            });
+        } else {
+            archive::sortMemberEntries(entries, job.collator ? *job.collator : fallback, spec.ascending);
+        }
+    } else {
+        collection::sortEntries(entries, spec, job.collator ? *job.collator : fallback);
+    }
+    if (job.recursive && !fileLike(job.mode)) {
         // F-OPEN-08: folder by folder; a resort works on the folders of the last load.
         if (job.kind == JobKind::Resort) {
             QStringList folders;
@@ -1032,6 +1067,7 @@ struct Collection::Private {
     QString openedFile;
     QStringList files;
     QSet<QString> fileSet; // Mode::Files: every file the collection was opened with (F-OPEN-04)
+    QString container;     // Mode::Container: the archive or PDF (F-OPEN-10)
     QSet<QString> leased;  // folders leased in the FolderCache (the folder; recursive: the tree)
     QVector<FileEntry> entries;
     QHash<QString, int> indexByPath;
@@ -1131,7 +1167,7 @@ struct Collection::Private {
     // Sorted position: folder first (recursive), then the sort spec.
     bool entryLess(const FileEntry& a, const FileEntry& b, const SortSpec& sortSpec,
                    const NameCollator& coll) const {
-        return entryLessFor(a, b, sortSpec, coll, recursive && mode != Mode::Files);
+        return entryLessFor(a, b, sortSpec, coll, recursive && !fileLike(mode));
     }
 
     // F-FMT-06: candidates for a file that may complete a pair: pair key -> path of a shown
@@ -1313,6 +1349,7 @@ struct Collection::Private {
         j.folder = folder;
         j.mustInclude = mode == Mode::File ? openedFile : QString();
         j.files = files;
+        j.container = container;
         if (kind == JobKind::Resort) {
             // The filtered-out entries are sorted along (they keep their place for the
             // filters, and are not lost by a resort).
@@ -1337,7 +1374,7 @@ struct Collection::Private {
         }
         j.revalidate = kind == JobKind::Load && revalidateNext;
         revalidateNext = false;
-        j.recursive = recursive && mode != Mode::Files;
+        j.recursive = recursive && !fileLike(mode);
         j.pairing = pairing;
         j.showRaw = showRaw;
         if (const QString cur = current >= 0 && current < entries.size() ? entries[current].path : QString();
@@ -1372,7 +1409,7 @@ struct Collection::Private {
         if (mode == Mode::None)
             return;
         loading = true;
-        if (kind == JobKind::Load && recursive && mode != Mode::Files && progressTimer)
+        if (kind == JobKind::Load && recursive && !fileLike(mode) && progressTimer)
             progressTimer->start(); // F-OPEN-08: progress for the status bar
         auto* w = new QFutureWatcher<Result>(q);
         watcher = w;
@@ -1424,7 +1461,7 @@ struct Collection::Private {
             partners = r.partners; // F-FMT-06
             acceptedFolders.clear();
             excludedFolders.clear();
-            if (recursive && mode != Mode::Files && treeFolders != r.folders) {
+            if (recursive && !fileLike(mode) && treeFolders != r.folders) {
                 treeFolders = r.folders; // F-OPEN-08
                 treeSet = QSet<QString>(treeFolders.cbegin(), treeFolders.cend());
                 updateLease();
@@ -1471,6 +1508,8 @@ struct Collection::Private {
             emit q->foldersChanged();
         if (r.truncated)
             emit q->treeLimitReached(int(entries.size() + hidden.size()));
+        if (!r.containerError.isEmpty() && r.kind == JobKind::Load)
+            emit q->containerFailed(container, r.containerError); // F-OPEN-10
         if (r.nameTerms != nameTerms)
             scheduleNameFilter(); // typed while the job ran (it filtered with older terms)
         if (resortForProperties) {
@@ -1589,6 +1628,7 @@ struct Collection::Private {
         cancelPending();
         mode = m;
         folder.clear();
+        container.clear();
         openedFile.clear();
         files.clear();
         fileSet.clear();
@@ -1774,6 +1814,32 @@ void Collection::openFolder(const QString& folderPath, bool selectLast) {
     d->start(JobKind::Load);
 }
 
+void Collection::openContainer(const QString& containerPath, const QString& selectMember) {
+    d->reset(Mode::Container);
+    d->container = normalizedPath(containerPath);
+    d->updateLease();
+    const QString wanted = selectMember.isEmpty() ? QString() : vpath::join(d->container, selectMember);
+    d->selectFirstOnLoad = wanted.isEmpty();
+    if (!wanted.isEmpty()) {
+        // Shown at once (like openFile(), F-OPEN-03); the listing places it.
+        d->entries = {entryForPath(wanted)};
+        d->entries[0].name = vpath::memberFileName(wanted);
+        d->rebuildIndex();
+        d->current = 0;
+    }
+    emit entriesChanged();
+    emit currentChanged(d->current, currentPath());
+    d->start(JobKind::Load);
+}
+
+QString Collection::containerPath() const {
+    return d->mode == Mode::Container ? d->container : QString();
+}
+
+bool Collection::isContainerCollection() const {
+    return d->mode == Mode::Container;
+}
+
 void Collection::setDefaultSort(bool followFinder, bool allowLiveQuery, const SortSpec& manual) {
     d->followFinder = followFinder;
     d->allowLiveQuery = allowLiveQuery;
@@ -1792,6 +1858,7 @@ void Collection::copyFrom(const Collection& other) {
     d->reset(o.mode);
     d->folder = o.folder;
     d->openedFile = o.openedFile;
+    d->container = o.container; // F-OPEN-10
     d->files = o.files;
     d->fileSet = o.fileSet;
     d->recursive = o.recursive; // F-OPEN-08
@@ -2314,7 +2381,7 @@ void Collection::Private::scheduleNameFilter() {
     in.stale = stale;
     in.spec = spec;
     in.collator = collator;
-    in.byFolder = recursive && mode != Mode::Files;
+    in.byFolder = recursive && !fileLike(mode);
     in.keepAlive = own;
     const quint64 gen = ++nameFilterGeneration;
     if (entries.size() + hidden.size() <= kSyncNameFilterEntries) {

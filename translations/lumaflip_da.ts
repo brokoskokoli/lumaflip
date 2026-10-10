@@ -157,6 +157,29 @@
     </message>
 </context>
 <context>
+    <name>lf::Archive</name>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>“%1” mangler i arkivet.</translation>
+    </message>
+    <message>
+        <source>Dieses Archivformat wird nicht unterstützt.</source>
+        <translation>Dette arkivformat understøttes ikke.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist zu groß.</source>
+        <translation>Billedet i arkivet er for stort.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist beschädigt oder unvollständig.</source>
+        <translation>Arkivet er beskadiget eller ufuldstændigt.</translation>
+    </message>
+    <message>
+        <source>Das Archiv enthält keine Bilder.</source>
+        <translation>Arkivet indeholder ingen billeder.</translation>
+    </message>
+</context>
+<context>
     <name>lf::CollectionExtras</name>
     <message numerus="yes">
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
@@ -230,6 +253,13 @@
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ContainerPolicy</name>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <translation>Billeder i arkiver og PDF-dokumenter er kun åbnet til visning – papirkurv, omdøbning, flytning og bedømmelse virker ikke her.</translation>
     </message>
 </context>
 <context>
@@ -363,6 +393,190 @@
             <numerusform>%n billede flyttet til ”_Rejected”</numerusform>
             <numerusform>%n billeder flyttet til ”_Rejected”</numerusform>
         </translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActions</name>
+    <message>
+        <source>Die Aktion braucht einen Namen.</source>
+        <translation>Handlingen skal have et navn.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht einen Befehl.</source>
+        <translation>Handlingen skal have en kommando.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht den Namen eines Kurzbefehls.</source>
+        <translation>Handlingen skal have navnet på en genvej.</translation>
+    </message>
+    <message>
+        <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
+        <translation>Navnet på en genvej må ikke begynde med “-”.</translation>
+    </message>
+    <message numerus="yes">
+        <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
+        <translation>
+            <numerusform>Handlingen blev afbrudt efter %n sekund.</numerusform>
+            <numerusform>Handlingen blev afbrudt efter %n sekunder.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Die Aktion wurde abgebrochen.</source>
+        <translation>Handlingen blev afbrudt.</translation>
+    </message>
+    <message>
+        <source>Die Aktion endete mit Fehlercode %1.</source>
+        <translation>Handlingen sluttede med fejlkode %1.</translation>
+    </message>
+    <message>
+        <source>Die Kurzbefehle-App konnte nicht gestartet werden.</source>
+        <translation>Appen Genveje kunne ikke startes.</translation>
+    </message>
+    <message>
+        <source>Der Befehl konnte nicht gestartet werden.</source>
+        <translation>Kommandoen kunne ikke startes.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsEditor</name>
+    <message>
+        <source>Eigene Aktion</source>
+        <translation>Egen handling</translation>
+    </message>
+    <message>
+        <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
+        <translation>Navnet på en genvej fra appen Genveje; den får filen som input.</translation>
+    </message>
+    <message>
+        <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
+        <translation>Kører med /bin/sh; filen står i &quot;$1&quot; (alle filer: &quot;$@&quot;), f.eks. open -a Preview &quot;$1&quot;. Stien indsættes aldrig i kommandoen.</translation>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation>Navn:</translation>
+    </message>
+    <message>
+        <source>Art:</source>
+        <translation>Type:</translation>
+    </message>
+    <message>
+        <source>Befehl:</source>
+        <translation>Kommando:</translation>
+    </message>
+    <message>
+        <source>Taste:</source>
+        <translation>Tast:</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Navn</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Type</translation>
+    </message>
+    <message>
+        <source>Befehl</source>
+        <translation>Kommando</translation>
+    </message>
+    <message>
+        <source>Taste</source>
+        <translation>Tast</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 ist schon belegt (%3).</source>
+        <translation>“%1”: %2 er allerede i brug (%3).</translation>
+    </message>
+    <message>
+        <source>Hinzufügen …</source>
+        <translation>Tilføj…</translation>
+    </message>
+    <message>
+        <source>Bearbeiten …</source>
+        <translation>Rediger…</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>Fjern</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsManager</name>
+    <message>
+        <source>Kurzbefehl</source>
+        <translation>Genvej</translation>
+    </message>
+    <message>
+        <source>Shell-Befehl</source>
+        <translation>Shell-kommando</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Der er ikke åbnet noget billede.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktion ausführen</source>
+        <translation>Kør egen handling</translation>
+    </message>
+    <message>
+        <source>„%1“ zum ersten Mal ausführen?</source>
+        <translation>Kør “%1” for første gang?</translation>
+    </message>
+    <message>
+        <source>Kurzbefehl: %1</source>
+        <translation>Genvej: %1</translation>
+    </message>
+    <message>
+        <source>Befehl: %1</source>
+        <translation>Kommando: %1</translation>
+    </message>
+    <message>
+        <source>Datei: %1</source>
+        <translation>Fil: %1</translation>
+    </message>
+    <message>
+        <source>Ausführen</source>
+        <translation>Kør</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuller</translation>
+    </message>
+    <message>
+        <source>▶ %1: %2</source>
+        <translation>▶ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ läuft …</source>
+        <translation>“%1” kører…</translation>
+    </message>
+    <message>
+        <source>✓ %1: fertig</source>
+        <translation>✓ %1: færdig</translation>
+    </message>
+    <message>
+        <source>✗ %1: %2</source>
+        <translation>✗ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ausgeführt</source>
+        <translation>“%1” udført</translation>
+    </message>
+    <message>
+        <source>„%1“: %2</source>
+        <translation>“%1”: %2</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Handlingslog</translation>
+    </message>
+    <message>
+        <source>Noch keine Aktion ausgeführt.</source>
+        <translation>Der er ikke kørt nogen handling endnu.</translation>
+    </message>
+    <message>
+        <source>Leeren</source>
+        <translation>Ryd</translation>
     </message>
 </context>
 <context>
@@ -1616,6 +1830,26 @@
         <translation>Mappekort</translation>
     </message>
     <message>
+        <source>Quick Look</source>
+        <translation>Kvikbenyt</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Livetekst</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Indstil som skrivebordsbaggrund</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Handlingslog</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Læs tegneserier fra højre mod venstre</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>Intet</translation>
     </message>
@@ -2060,6 +2294,33 @@
     </message>
 </context>
 <context>
+    <name>lf::LiveText</name>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Livetekst er slået fra i indstillingerne.</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Livetekst er ikke tilgængelig på denne Mac.</translation>
+    </message>
+    <message>
+        <source>Live Text: Bild wird analysiert …</source>
+        <translation>Livetekst: billedet analyseres…</translation>
+    </message>
+    <message>
+        <source>Live Text: Text und Motive auswählbar</source>
+        <translation>Livetekst: tekst og motiver kan vælges</translation>
+    </message>
+    <message>
+        <source>Live Text: kein Text gefunden</source>
+        <translation>Livetekst: ingen tekst fundet</translation>
+    </message>
+    <message>
+        <source>Live Text: Analyse fehlgeschlagen (%1)</source>
+        <translation>Livetekst: analysen mislykkedes (%1)</translation>
+    </message>
+</context>
+<context>
     <name>lf::LosslessTransform</name>
     <message>
         <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
@@ -2312,6 +2573,17 @@
         <source>%1 %</source>
         <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
         <translation>%1 %</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MacIntegration</name>
+    <message>
+        <source>Es wurden keine Dateien übergeben.</source>
+        <translation>Der blev ikke overført nogen filer.</translation>
+    </message>
+    <message>
+        <source>Der Bildschirm ist nicht mehr da.</source>
+        <translation>Skærmen er ikke længere tilsluttet.</translation>
     </message>
 </context>
 <context>
@@ -2801,6 +3073,38 @@
         <source>Belichtungsregler einblenden</source>
         <translation>Vis eksponeringsskyder</translation>
     </message>
+    <message>
+        <source>Quick Look</source>
+        <translation>Kvikbenyt</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen …</source>
+        <translation>Indstil som skrivebordsbaggrund…</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Egne handlinger</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Livetekst</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Læs tegneserier fra højre mod venstre</translation>
+    </message>
+    <message>
+        <source>Keine – in den Einstellungen anlegen</source>
+        <translation>Ingen – opret dem i indstillingerne</translation>
+    </message>
+    <message>
+        <source>Protokoll …</source>
+        <translation>Log…</translation>
+    </message>
+    <message>
+        <source>Aktionen bearbeiten …</source>
+        <translation>Rediger handlinger…</translation>
+    </message>
 </context>
 <context>
     <name>lf::MapPreviewController</name>
@@ -3220,6 +3524,37 @@
     <message>
         <source>Abbrechen</source>
         <translation>Annuller</translation>
+    </message>
+</context>
+<context>
+    <name>lf::PdfDocument</name>
+    <message>
+        <source>Die Seite gibt es im PDF-Dokument nicht.</source>
+        <translation>Siden findes ikke i PDF-dokumentet.</translation>
+    </message>
+    <message>
+        <source>PDF-Dokumente werden auf diesem System nicht unterstützt.</source>
+        <translation>PDF-dokumenter understøttes ikke på dette system.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist beschädigt.</source>
+        <translation>PDF-dokumentet er beskadiget.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>Filen findes ikke.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <translation>PDF-dokumentet er adgangskodebeskyttet.</translation>
+    </message>
+    <message>
+        <source>Die Seite ist leer.</source>
+        <translation>Siden er tom.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für die Seite.</source>
+        <translation>Ikke nok hukommelse til siden.</translation>
     </message>
 </context>
 <context>
@@ -3892,6 +4227,18 @@
         <translation>RAW- og JPEG-filer med samme navn vises som ét billede (JPEG-filen, mærket ”RAW+JPEG”). Bedømmelse, flytning og sletning gælder begge filer; ”Vis RAW” skifter til RAW-filen.</translation>
     </message>
     <message>
+        <source>Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner.</source>
+        <translation>Arkiver (ZIP/CBZ, RAR/CBR, 7z/CB7) og PDF-dokumenter åbnes som mapper.</translation>
+    </message>
+    <message>
+        <source>Comics (CBZ, CBR, CB7) von rechts nach links lesen</source>
+        <translation>Læs tegneserier (CBZ, CBR, CB7) fra højre mod venstre</translation>
+    </message>
+    <message>
+        <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
+        <translation>Til manga: ← bladrer frem, → tilbage. Mellemrum og Page Down går altid til næste side.</translation>
+    </message>
+    <message>
         <source>Leistung</source>
         <translation>Ydeevne</translation>
     </message>
@@ -3914,6 +4261,34 @@
     <message>
         <source>Bilder zurück behalten:</source>
         <translation>Behold tidligere billeder:</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Livetekst</translation>
+    </message>
+    <message>
+        <source>Live Text und Motiv freistellen erlauben (⇧⌘L)</source>
+        <translation>Tillad Livetekst og frilægning af motiv (⇧⌘L)</translation>
+    </message>
+    <message>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <translation>Billedet analyseres kun, når du slår Livetekst til for et vindue – på denne Mac, uden netværk.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Egne handlinger</translation>
+    </message>
+    <message>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <translation>En shell-kommando eller en genvej (Genveje) får det aktuelle billede som argument. Menu: Arkiv → Egne handlinger.</translation>
+    </message>
+    <message>
+        <source>Abbrechen nach:</source>
+        <translation>Afbryd efter:</translation>
+    </message>
+    <message>
+        <source> s</source>
+        <translation> s</translation>
     </message>
     <message>
         <source>Einstellungen sichern</source>
@@ -4657,6 +5032,10 @@
         <translation>Åbn…</translation>
     </message>
     <message>
+        <source>„%1“ kann nicht geöffnet werden</source>
+        <translation>“%1” kan ikke åbnes</translation>
+    </message>
+    <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
         <translation>Arkivet er beskadiget, eller dets format understøttes ikke.</translation>
     </message>
@@ -4857,6 +5236,39 @@
     </message>
 </context>
 <context>
+    <name>lf::VirtualPath</name>
+    <message>
+        <source>Seite %1</source>
+        <extracomment>one page of a PDF document browsed like a folder (F-OPEN-10)</extracomment>
+        <translation>Side %1</translation>
+    </message>
+    <message>
+        <source>%1 › %2</source>
+        <extracomment>archive or PDF and the image inside it, e.g. &quot;Band 1.cbz › 012.jpg&quot; (F-OPEN-10)</extracomment>
+        <translation>%1 › %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Wallpaper</name>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Der er ikke åbnet noget billede.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <translation>Billeder i arkiver og PDF-sider kan ikke blive skrivebordsbaggrund.</translation>
+    </message>
+    <message>
+        <source>Es wurde kein Bildschirm gefunden.</source>
+        <translation>Der blev ikke fundet nogen skærm.</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
+        <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
     <name>lf::WindowExtras</name>
     <message>
         <source>Zum Bewegen des Fensters ziehen</source>
@@ -4901,6 +5313,73 @@
     <message>
         <source>Minimaler Fenstermodus aus</source>
         <translation>Minimalt vindue fra</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowIntegration</name>
+    <message>
+        <source>Comics: von rechts nach links lesen (← = weiter)</source>
+        <translation>Tegneserier: læs fra højre mod venstre (← = frem)</translation>
+    </message>
+    <message>
+        <source>Comics: von links nach rechts lesen</source>
+        <translation>Tegneserier: læs fra venstre mod højre</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Livetekst er ikke tilgængelig på denne Mac.</translation>
+    </message>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Livetekst er slået fra i indstillingerne.</translation>
+    </message>
+    <message>
+        <source>Live Text an – Text im Bild auswählen und kopieren</source>
+        <translation>Livetekst til – vælg og kopiér tekst i billedet</translation>
+    </message>
+    <message>
+        <source>Live Text aus</source>
+        <translation>Livetekst fra</translation>
+    </message>
+    <message>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <translation>Livetekst er ikke tilgængelig ved HDR-visning – skift til SDR med ⇧⌘H.</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Der er ikke åbnet noget billede.</translation>
+    </message>
+    <message>
+        <source>Quick Look ist nicht verfügbar.</source>
+        <translation>Kvikbenyt er ikke tilgængelig.</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Indstil som skrivebordsbaggrund</translation>
+    </message>
+    <message>
+        <source>„%1“ als Schreibtischhintergrund festlegen?</source>
+        <translation>Indstil “%1” som skrivebordsbaggrund?</translation>
+    </message>
+    <message>
+        <source>Auf allen Bildschirmen</source>
+        <translation>På alle skærme</translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation>Indstil</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuller</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festgelegt</source>
+        <translation>Indstillet som skrivebordsbaggrund</translation>
+    </message>
+    <message>
+        <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
+        <translation>Skrivebordsbaggrunden kunne ikke ændres: %1</translation>
     </message>
 </context>
 <context>

@@ -10,4 +10,12 @@
 "Bild (sonstige)" = "Kuva (muu)";
 "Ordner" = "Kansio";
 "WBMP-Bild" = "WBMP-kuva";
+"Comic-Archiv" = "Sarjakuva-arkisto";
+"Archiv" = "Arkisto";
+"PDF-Dokument" = "PDF-dokumentti";
+"RAR-Archiv" = "RAR-arkisto";
+"7-Zip-Archiv" = "7-Zip-arkisto";
+"Comic-Archiv (ZIP)" = "Sarjakuva-arkisto (ZIP)";
+"Comic-Archiv (RAR)" = "Sarjakuva-arkisto (RAR)";
+"Comic-Archiv (7z)" = "Sarjakuva-arkisto (7z)";
 "NSHumanReadableCopyright" = "© 2026 brokoskokoli ja muut tekijät. Lisenssi: GPL-3.0-or-later.";

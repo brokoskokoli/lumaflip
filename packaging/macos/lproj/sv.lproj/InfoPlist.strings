@@ -10,4 +10,12 @@
 "Bild (sonstige)" = "Bild (övrig)";
 "Ordner" = "Mapp";
 "WBMP-Bild" = "WBMP-bild";
+"Comic-Archiv" = "Seriearkiv";
+"Archiv" = "Arkiv";
+"PDF-Dokument" = "PDF-dokument";
+"RAR-Archiv" = "RAR-arkiv";
+"7-Zip-Archiv" = "7-Zip-arkiv";
+"Comic-Archiv (ZIP)" = "Seriearkiv (ZIP)";
+"Comic-Archiv (RAR)" = "Seriearkiv (RAR)";
+"Comic-Archiv (7z)" = "Seriearkiv (7z)";
 "NSHumanReadableCopyright" = "© 2026 brokoskokoli och bidragsgivare. Licens: GPL-3.0-or-later.";

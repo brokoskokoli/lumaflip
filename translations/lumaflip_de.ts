@@ -62,6 +62,16 @@
     </message>
 </context>
 <context>
+    <name>lf::CustomActions</name>
+    <message numerus="yes">
+        <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
+        <translation>
+            <numerusform>Die Aktion wurde nach %n Sekunde abgebrochen.</numerusform>
+            <numerusform>Die Aktion wurde nach %n Sekunden abgebrochen.</numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::FolderMapModel</name>
     <message numerus="yes">
         <source>%1 von %n Bildern mit Ort</source>

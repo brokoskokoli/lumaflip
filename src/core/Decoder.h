@@ -141,6 +141,9 @@ public:
     virtual int priority() const = 0;
     // `header` holds at least the first 64 bytes of the file.
     virtual bool canDecode(const QString& path, const QByteArray& header) const = 0;
+    // F-OPEN-10 (M4): the backend decodes member paths of containers (VirtualPath.h, e.g.
+    // PDF pages) - only such backends are asked for them.
+    virtual bool handlesVirtualPaths() const { return false; }
     virtual std::optional<ImageInfo> info(const QString& path, QString* error) = 0;
     virtual std::optional<DecodedImage> decode(const QString& path, const DecodeRequest& req,
                                                QString* error) = 0;

@@ -289,7 +289,7 @@ QByteArray encode(const Request& r) {
     s.setVersion(kStreamVersion);
     s << kProtocolVersion << quint8(1) << r.id << quint8(r.op) << r.backend << r.path;
     put(s, r.decode);
-    s << r.shm;
+    s << r.shm << r.member;
     return out;
 }
 
@@ -302,6 +302,10 @@ QByteArray encode(const Response& r) {
     put(s, r.decoded);
     put(s, r.pixels);
     put(s, r.metadata);
+    s << qint32(r.members.size());
+    for (const archive::Member& m : r.members)
+        s << m.name << m.size << m.modified;
+    s << r.data;
     return out;
 }
 
@@ -316,7 +320,7 @@ std::optional<Request> decodeRequest(const QByteArray& payload) {
         return std::nullopt;
     s >> r.id >> op >> r.backend >> r.path;
     get(s, r.decode);
-    s >> r.shm;
+    s >> r.shm >> r.member;
     if (s.status() != QDataStream::Ok)
         return std::nullopt;
     r.op = Op(op);
@@ -337,7 +341,18 @@ std::optional<Response> decodeResponse(const QByteArray& payload) {
     get(s, r.decoded);
     get(s, r.pixels);
     get(s, r.metadata);
-    if (s.status() != QDataStream::Ok)
+    qint32 members = 0;
+    s >> members;
+    if (members < 0 || members > archive::kMaxMembers)
+        return std::nullopt;
+    r.members.reserve(members);
+    for (qint32 i = 0; i < members && s.status() == QDataStream::Ok; ++i) {
+        archive::Member m;
+        s >> m.name >> m.size >> m.modified;
+        r.members.append(m);
+    }
+    s >> r.data;
+    if (s.status() != QDataStream::Ok || r.data.size() > archive::kMaxMemberBytes)
         return std::nullopt;
     return r;
 }

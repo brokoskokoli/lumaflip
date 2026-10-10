@@ -105,6 +105,12 @@ enum class Action {
     ToggleRawJpeg,    // F-FMT-06: show the RAW / the JPEG of a pair
     // M3 (appended, keep order above stable)
     ToggleFolderMap, // F-INFO-08: folder map (⇧⌘M)
+    // M4 (appended, keep order above stable)
+    QuickLook,         // F-MAC-07: Quick Look panel (⌘Y, like Finder)
+    ToggleLiveText,    // F-MAC-06: Live Text / Visual Look Up overlay (⇧⌘L)
+    SetWallpaper,      // F-FILE-09
+    ShowActionLog,     // F-FILE-10: output of the custom actions
+    ToggleRightToLeft, // F-OPEN-10: comic archives read right to left
 };
 
 QString actionId(Action a); // stable string id for settings ("nextImage")

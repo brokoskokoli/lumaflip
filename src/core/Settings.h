@@ -93,6 +93,14 @@ inline constexpr auto SlideshowCrossfade = "slideshow/crossfade";     // bool, d
 // Saving the rotation (F-EDIT-02)
 inline constexpr auto RotationSaveStrategy = "edit/rotationStrategy"; // "exif" | "lossless" (JPEG DCT)
 inline constexpr auto KeepModificationDate = "edit/keepModDate";      // bool, default false
+// M4: archives and PDF (F-OPEN-10), Live Text (F-MAC-06), wallpaper (F-FILE-09), custom
+// actions (F-FILE-10)
+inline constexpr auto ArchiveRightToLeft =
+    "archive/rightToLeft";                              // bool, default false: ←/→ swapped in cbz/cbr/cb7
+inline constexpr auto LiveTextEnabled = "mac/liveText"; // bool, default true (VisionKit may be used)
+inline constexpr auto WallpaperAllScreens = "files/wallpaperAllScreens"; // bool, default false
+inline constexpr auto CustomActions = "actions/custom"; // JSON list (core/CustomActions.h), default "[]"
+inline constexpr auto CustomActionTimeoutSec = "actions/timeoutSec"; // 1..3600, default 60
 } // namespace key
 
 class Settings : public QObject {

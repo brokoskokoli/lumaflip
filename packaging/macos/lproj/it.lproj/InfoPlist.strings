@@ -10,4 +10,12 @@
 "Bild (sonstige)" = "Immagine (altro)";
 "Ordner" = "Cartella";
 "WBMP-Bild" = "Immagine WBMP";
+"Comic-Archiv" = "Archivio fumetto";
+"Archiv" = "Archivio";
+"PDF-Dokument" = "Documento PDF";
+"RAR-Archiv" = "Archivio RAR";
+"7-Zip-Archiv" = "Archivio 7-Zip";
+"Comic-Archiv (ZIP)" = "Archivio fumetto (ZIP)";
+"Comic-Archiv (RAR)" = "Archivio fumetto (RAR)";
+"Comic-Archiv (7z)" = "Archivio fumetto (7z)";
 "NSHumanReadableCopyright" = "© 2026 brokoskokoli e collaboratori. Licenza: GPL-3.0-or-later.";

@@ -157,6 +157,29 @@
     </message>
 </context>
 <context>
+    <name>lf::Archive</name>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>“%1” não está no arquivo.</translation>
+    </message>
+    <message>
+        <source>Dieses Archivformat wird nicht unterstützt.</source>
+        <translation>Este formato de arquivo não é compatível.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist zu groß.</source>
+        <translation>A imagem no arquivo é grande demais.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist beschädigt oder unvollständig.</source>
+        <translation>O arquivo está danificado ou incompleto.</translation>
+    </message>
+    <message>
+        <source>Das Archiv enthält keine Bilder.</source>
+        <translation>O arquivo não contém imagens.</translation>
+    </message>
+</context>
+<context>
     <name>lf::CollectionExtras</name>
     <message numerus="yes">
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
@@ -230,6 +253,13 @@
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ContainerPolicy</name>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <translation>Imagens em arquivos e documentos PDF estão abertas só para visualização – lixeira, renomear, mover e avaliar não funcionam aqui.</translation>
     </message>
 </context>
 <context>
@@ -363,6 +393,190 @@
             <numerusform>%n imagem movida para “_Rejected”</numerusform>
             <numerusform>%n imagens movidas para “_Rejected”</numerusform>
         </translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActions</name>
+    <message>
+        <source>Die Aktion braucht einen Namen.</source>
+        <translation>A ação precisa de um nome.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht einen Befehl.</source>
+        <translation>A ação precisa de um comando.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht den Namen eines Kurzbefehls.</source>
+        <translation>A ação precisa do nome de um atalho.</translation>
+    </message>
+    <message>
+        <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
+        <translation>O nome de um atalho não pode começar com “-”.</translation>
+    </message>
+    <message numerus="yes">
+        <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
+        <translation>
+            <numerusform>A ação foi interrompida após %n segundo.</numerusform>
+            <numerusform>A ação foi interrompida após %n segundos.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Die Aktion wurde abgebrochen.</source>
+        <translation>A ação foi interrompida.</translation>
+    </message>
+    <message>
+        <source>Die Aktion endete mit Fehlercode %1.</source>
+        <translation>A ação terminou com o código de erro %1.</translation>
+    </message>
+    <message>
+        <source>Die Kurzbefehle-App konnte nicht gestartet werden.</source>
+        <translation>Não foi possível iniciar o app Atalhos.</translation>
+    </message>
+    <message>
+        <source>Der Befehl konnte nicht gestartet werden.</source>
+        <translation>Não foi possível iniciar o comando.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsEditor</name>
+    <message>
+        <source>Eigene Aktion</source>
+        <translation>Ação personalizada</translation>
+    </message>
+    <message>
+        <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
+        <translation>Nome de um atalho do app Atalhos; ele recebe o arquivo como entrada.</translation>
+    </message>
+    <message>
+        <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
+        <translation>Executa com /bin/sh; o arquivo está em &quot;$1&quot; (todos os arquivos: &quot;$@&quot;), p. ex. open -a Preview &quot;$1&quot;. O caminho nunca é inserido no comando.</translation>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation>Nome:</translation>
+    </message>
+    <message>
+        <source>Art:</source>
+        <translation>Tipo:</translation>
+    </message>
+    <message>
+        <source>Befehl:</source>
+        <translation>Comando:</translation>
+    </message>
+    <message>
+        <source>Taste:</source>
+        <translation>Tecla:</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nome</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Tipo</translation>
+    </message>
+    <message>
+        <source>Befehl</source>
+        <translation>Comando</translation>
+    </message>
+    <message>
+        <source>Taste</source>
+        <translation>Tecla</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 ist schon belegt (%3).</source>
+        <translation>“%1”: %2 já está em uso (%3).</translation>
+    </message>
+    <message>
+        <source>Hinzufügen …</source>
+        <translation>Adicionar…</translation>
+    </message>
+    <message>
+        <source>Bearbeiten …</source>
+        <translation>Editar…</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>Remover</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsManager</name>
+    <message>
+        <source>Kurzbefehl</source>
+        <translation>Atalho</translation>
+    </message>
+    <message>
+        <source>Shell-Befehl</source>
+        <translation>Comando de shell</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Nenhuma imagem está aberta.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktion ausführen</source>
+        <translation>Executar ação personalizada</translation>
+    </message>
+    <message>
+        <source>„%1“ zum ersten Mal ausführen?</source>
+        <translation>Executar “%1” pela primeira vez?</translation>
+    </message>
+    <message>
+        <source>Kurzbefehl: %1</source>
+        <translation>Atalho: %1</translation>
+    </message>
+    <message>
+        <source>Befehl: %1</source>
+        <translation>Comando: %1</translation>
+    </message>
+    <message>
+        <source>Datei: %1</source>
+        <translation>Arquivo: %1</translation>
+    </message>
+    <message>
+        <source>Ausführen</source>
+        <translation>Executar</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>▶ %1: %2</source>
+        <translation>▶ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ läuft …</source>
+        <translation>“%1” em execução…</translation>
+    </message>
+    <message>
+        <source>✓ %1: fertig</source>
+        <translation>✓ %1: concluído</translation>
+    </message>
+    <message>
+        <source>✗ %1: %2</source>
+        <translation>✗ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ausgeführt</source>
+        <translation>“%1” executado</translation>
+    </message>
+    <message>
+        <source>„%1“: %2</source>
+        <translation>“%1”: %2</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Registro de ações</translation>
+    </message>
+    <message>
+        <source>Noch keine Aktion ausgeführt.</source>
+        <translation>Nenhuma ação executada ainda.</translation>
+    </message>
+    <message>
+        <source>Leeren</source>
+        <translation>Limpar</translation>
     </message>
 </context>
 <context>
@@ -1616,6 +1830,26 @@
         <translation>Mapa da Pasta</translation>
     </message>
     <message>
+        <source>Quick Look</source>
+        <translation>Visualização Rápida</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Texto ao Vivo</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Definir como Imagem da Mesa</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Registro de ações</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Ler quadrinhos da direita para a esquerda</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>Nada</translation>
     </message>
@@ -2060,6 +2294,33 @@
     </message>
 </context>
 <context>
+    <name>lf::LiveText</name>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Texto ao Vivo está desativado nos ajustes.</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Texto ao Vivo não está disponível neste Mac.</translation>
+    </message>
+    <message>
+        <source>Live Text: Bild wird analysiert …</source>
+        <translation>Texto ao Vivo: analisando a imagem…</translation>
+    </message>
+    <message>
+        <source>Live Text: Text und Motive auswählbar</source>
+        <translation>Texto ao Vivo: texto e objetos selecionáveis</translation>
+    </message>
+    <message>
+        <source>Live Text: kein Text gefunden</source>
+        <translation>Texto ao Vivo: nenhum texto encontrado</translation>
+    </message>
+    <message>
+        <source>Live Text: Analyse fehlgeschlagen (%1)</source>
+        <translation>Texto ao Vivo: falha na análise (%1)</translation>
+    </message>
+</context>
+<context>
     <name>lf::LosslessTransform</name>
     <message>
         <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
@@ -2312,6 +2573,17 @@
         <source>%1 %</source>
         <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
         <translation>%1%</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MacIntegration</name>
+    <message>
+        <source>Es wurden keine Dateien übergeben.</source>
+        <translation>Nenhum arquivo foi passado.</translation>
+    </message>
+    <message>
+        <source>Der Bildschirm ist nicht mehr da.</source>
+        <translation>A tela não está mais conectada.</translation>
     </message>
 </context>
 <context>
@@ -2801,6 +3073,38 @@
         <source>Belichtungsregler einblenden</source>
         <translation>Exibir controle de exposição</translation>
     </message>
+    <message>
+        <source>Quick Look</source>
+        <translation>Visualização Rápida</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen …</source>
+        <translation>Definir como Imagem da Mesa…</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Ações personalizadas</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Texto ao Vivo</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Ler quadrinhos da direita para a esquerda</translation>
+    </message>
+    <message>
+        <source>Keine – in den Einstellungen anlegen</source>
+        <translation>Nenhuma – crie nos ajustes</translation>
+    </message>
+    <message>
+        <source>Protokoll …</source>
+        <translation>Registro…</translation>
+    </message>
+    <message>
+        <source>Aktionen bearbeiten …</source>
+        <translation>Editar ações…</translation>
+    </message>
 </context>
 <context>
     <name>lf::MapPreviewController</name>
@@ -3220,6 +3524,37 @@
     <message>
         <source>Abbrechen</source>
         <translation>Cancelar</translation>
+    </message>
+</context>
+<context>
+    <name>lf::PdfDocument</name>
+    <message>
+        <source>Die Seite gibt es im PDF-Dokument nicht.</source>
+        <translation>A página não existe no documento PDF.</translation>
+    </message>
+    <message>
+        <source>PDF-Dokumente werden auf diesem System nicht unterstützt.</source>
+        <translation>Documentos PDF não são compatíveis com este sistema.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist beschädigt.</source>
+        <translation>O documento PDF está danificado.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>O arquivo não existe.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <translation>O documento PDF está protegido por senha.</translation>
+    </message>
+    <message>
+        <source>Die Seite ist leer.</source>
+        <translation>A página está vazia.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für die Seite.</source>
+        <translation>Memória insuficiente para a página.</translation>
     </message>
 </context>
 <context>
@@ -3892,6 +4227,18 @@
         <translation>Arquivos RAW e JPEG com o mesmo nome aparecem como uma imagem (o JPEG, com a marca “RAW+JPEG”). Classificar, mover e apagar afetam os dois arquivos; “Mostrar RAW” alterna para o arquivo RAW.</translation>
     </message>
     <message>
+        <source>Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner.</source>
+        <translation>Arquivos (ZIP/CBZ, RAR/CBR, 7z/CB7) e documentos PDF abrem como pastas.</translation>
+    </message>
+    <message>
+        <source>Comics (CBZ, CBR, CB7) von rechts nach links lesen</source>
+        <translation>Ler quadrinhos (CBZ, CBR, CB7) da direita para a esquerda</translation>
+    </message>
+    <message>
+        <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
+        <translation>Para mangá: ← avança, → volta. Espaço e Page Down sempre vão para a próxima página.</translation>
+    </message>
+    <message>
         <source>Leistung</source>
         <translation>Desempenho</translation>
     </message>
@@ -3914,6 +4261,34 @@
     <message>
         <source>Bilder zurück behalten:</source>
         <translation>Manter imagens anteriores:</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Texto ao Vivo</translation>
+    </message>
+    <message>
+        <source>Live Text und Motiv freistellen erlauben (⇧⌘L)</source>
+        <translation>Permitir Texto ao Vivo e recortar objetos (⇧⌘L)</translation>
+    </message>
+    <message>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <translation>A imagem só é analisada quando você ativa o Texto ao Vivo numa janela – neste Mac, sem rede.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Ações personalizadas</translation>
+    </message>
+    <message>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <translation>Um comando de shell ou um atalho (Atalhos) recebe a imagem atual como argumento. Menu: Arquivo → Ações personalizadas.</translation>
+    </message>
+    <message>
+        <source>Abbrechen nach:</source>
+        <translation>Interromper após:</translation>
+    </message>
+    <message>
+        <source> s</source>
+        <translation> s</translation>
     </message>
     <message>
         <source>Einstellungen sichern</source>
@@ -4657,6 +5032,10 @@
         <translation>Abrir…</translation>
     </message>
     <message>
+        <source>„%1“ kann nicht geöffnet werden</source>
+        <translation>Não é possível abrir “%1”</translation>
+    </message>
+    <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
         <translation>O arquivo está danificado ou o formato dele não é compatível.</translation>
     </message>
@@ -4857,6 +5236,39 @@
     </message>
 </context>
 <context>
+    <name>lf::VirtualPath</name>
+    <message>
+        <source>Seite %1</source>
+        <extracomment>one page of a PDF document browsed like a folder (F-OPEN-10)</extracomment>
+        <translation>Página %1</translation>
+    </message>
+    <message>
+        <source>%1 › %2</source>
+        <extracomment>archive or PDF and the image inside it, e.g. &quot;Band 1.cbz › 012.jpg&quot; (F-OPEN-10)</extracomment>
+        <translation>%1 › %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Wallpaper</name>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Nenhuma imagem está aberta.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <translation>Imagens em arquivos e páginas PDF não podem virar imagem da mesa.</translation>
+    </message>
+    <message>
+        <source>Es wurde kein Bildschirm gefunden.</source>
+        <translation>Nenhuma tela encontrada.</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
+        <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
     <name>lf::WindowExtras</name>
     <message>
         <source>Zum Bewegen des Fensters ziehen</source>
@@ -4901,6 +5313,73 @@
     <message>
         <source>Minimaler Fenstermodus aus</source>
         <translation>Janela mínima desativada</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowIntegration</name>
+    <message>
+        <source>Comics: von rechts nach links lesen (← = weiter)</source>
+        <translation>Quadrinhos: ler da direita para a esquerda (← = avançar)</translation>
+    </message>
+    <message>
+        <source>Comics: von links nach rechts lesen</source>
+        <translation>Quadrinhos: ler da esquerda para a direita</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Texto ao Vivo não está disponível neste Mac.</translation>
+    </message>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Texto ao Vivo está desativado nos ajustes.</translation>
+    </message>
+    <message>
+        <source>Live Text an – Text im Bild auswählen und kopieren</source>
+        <translation>Texto ao Vivo ativado – selecione e copie texto na imagem</translation>
+    </message>
+    <message>
+        <source>Live Text aus</source>
+        <translation>Texto ao Vivo desativado</translation>
+    </message>
+    <message>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <translation>Texto ao Vivo não está disponível durante a exibição HDR – mude para SDR com ⇧⌘H.</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Nenhuma imagem está aberta.</translation>
+    </message>
+    <message>
+        <source>Quick Look ist nicht verfügbar.</source>
+        <translation>Visualização Rápida não está disponível.</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Definir como Imagem da Mesa</translation>
+    </message>
+    <message>
+        <source>„%1“ als Schreibtischhintergrund festlegen?</source>
+        <translation>Definir “%1” como imagem da mesa?</translation>
+    </message>
+    <message>
+        <source>Auf allen Bildschirmen</source>
+        <translation>Em todas as telas</translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation>Definir</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festgelegt</source>
+        <translation>Definido como imagem da mesa</translation>
+    </message>
+    <message>
+        <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
+        <translation>Não foi possível alterar a imagem da mesa: %1</translation>
     </message>
 </context>
 <context>

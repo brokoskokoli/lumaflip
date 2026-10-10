@@ -157,6 +157,29 @@
     </message>
 </context>
 <context>
+    <name>lf::Archive</name>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>归档中缺少“%1”。</translation>
+    </message>
+    <message>
+        <source>Dieses Archivformat wird nicht unterstützt.</source>
+        <translation>不支持此归档格式。</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist zu groß.</source>
+        <translation>归档中的图像太大。</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist beschädigt oder unvollständig.</source>
+        <translation>归档已损坏或不完整。</translation>
+    </message>
+    <message>
+        <source>Das Archiv enthält keine Bilder.</source>
+        <translation>归档中没有图像。</translation>
+    </message>
+</context>
+<context>
     <name>lf::CollectionExtras</name>
     <message numerus="yes">
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
@@ -228,6 +251,13 @@
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ContainerPolicy</name>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <translation>归档和 PDF 文稿中的图像仅供查看——此处不能移到废纸篓、重命名、移动或评分。</translation>
     </message>
 </context>
 <context>
@@ -356,6 +386,189 @@
         <translation>
             <numerusform>已将 %n 张图像移到“_Rejected”</numerusform>
         </translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActions</name>
+    <message>
+        <source>Die Aktion braucht einen Namen.</source>
+        <translation>操作需要名称。</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht einen Befehl.</source>
+        <translation>操作需要命令。</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht den Namen eines Kurzbefehls.</source>
+        <translation>操作需要快捷指令的名称。</translation>
+    </message>
+    <message>
+        <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
+        <translation>快捷指令名称不能以“-”开头。</translation>
+    </message>
+    <message numerus="yes">
+        <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
+        <translation>
+            <numerusform>操作在 %n 秒后中止。</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Die Aktion wurde abgebrochen.</source>
+        <translation>操作已中止。</translation>
+    </message>
+    <message>
+        <source>Die Aktion endete mit Fehlercode %1.</source>
+        <translation>操作结束，错误代码 %1。</translation>
+    </message>
+    <message>
+        <source>Die Kurzbefehle-App konnte nicht gestartet werden.</source>
+        <translation>无法启动“快捷指令”App。</translation>
+    </message>
+    <message>
+        <source>Der Befehl konnte nicht gestartet werden.</source>
+        <translation>无法启动命令。</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsEditor</name>
+    <message>
+        <source>Eigene Aktion</source>
+        <translation>自定操作</translation>
+    </message>
+    <message>
+        <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
+        <translation>“快捷指令”App 中某个快捷指令的名称；它会收到该文件作为输入。</translation>
+    </message>
+    <message>
+        <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
+        <translation>通过 /bin/sh 运行；文件在 &quot;$1&quot; 中（所有文件：&quot;$@&quot;），例如 open -a Preview &quot;$1&quot;。路径绝不会被插入命令中。</translation>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation>名称：</translation>
+    </message>
+    <message>
+        <source>Art:</source>
+        <translation>类型：</translation>
+    </message>
+    <message>
+        <source>Befehl:</source>
+        <translation>命令：</translation>
+    </message>
+    <message>
+        <source>Taste:</source>
+        <translation>按键：</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>名称</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>类型</translation>
+    </message>
+    <message>
+        <source>Befehl</source>
+        <translation>命令</translation>
+    </message>
+    <message>
+        <source>Taste</source>
+        <translation>按键</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 ist schon belegt (%3).</source>
+        <translation>“%1”：%2 已被占用（%3）。</translation>
+    </message>
+    <message>
+        <source>Hinzufügen …</source>
+        <translation>添加…</translation>
+    </message>
+    <message>
+        <source>Bearbeiten …</source>
+        <translation>编辑…</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>移除</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsManager</name>
+    <message>
+        <source>Kurzbefehl</source>
+        <translation>快捷指令</translation>
+    </message>
+    <message>
+        <source>Shell-Befehl</source>
+        <translation>Shell 命令</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>未打开图像。</translation>
+    </message>
+    <message>
+        <source>Eigene Aktion ausführen</source>
+        <translation>运行自定操作</translation>
+    </message>
+    <message>
+        <source>„%1“ zum ersten Mal ausführen?</source>
+        <translation>首次运行“%1”？</translation>
+    </message>
+    <message>
+        <source>Kurzbefehl: %1</source>
+        <translation>快捷指令：%1</translation>
+    </message>
+    <message>
+        <source>Befehl: %1</source>
+        <translation>命令：%1</translation>
+    </message>
+    <message>
+        <source>Datei: %1</source>
+        <translation>文件：%1</translation>
+    </message>
+    <message>
+        <source>Ausführen</source>
+        <translation>运行</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <source>▶ %1: %2</source>
+        <translation>▶ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ läuft …</source>
+        <translation>“%1”正在运行…</translation>
+    </message>
+    <message>
+        <source>✓ %1: fertig</source>
+        <translation>✓ %1：完成</translation>
+    </message>
+    <message>
+        <source>✗ %1: %2</source>
+        <translation>✗ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ausgeführt</source>
+        <translation>已运行“%1”</translation>
+    </message>
+    <message>
+        <source>„%1“: %2</source>
+        <translation>“%1”：%2</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>操作日志</translation>
+    </message>
+    <message>
+        <source>Noch keine Aktion ausgeführt.</source>
+        <translation>尚未运行任何操作。</translation>
+    </message>
+    <message>
+        <source>Leeren</source>
+        <translation>清空</translation>
     </message>
 </context>
 <context>
@@ -1606,6 +1819,26 @@
         <translation>文件夹地图</translation>
     </message>
     <message>
+        <source>Quick Look</source>
+        <translation>快速查看</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>实况文本</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>设定为桌面图片</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>操作日志</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>从右向左阅读漫画</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>无</translation>
     </message>
@@ -2050,6 +2283,33 @@
     </message>
 </context>
 <context>
+    <name>lf::LiveText</name>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>实况文本已在设置中关闭。</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>此 Mac 上不可使用实况文本。</translation>
+    </message>
+    <message>
+        <source>Live Text: Bild wird analysiert …</source>
+        <translation>实况文本：正在分析图像…</translation>
+    </message>
+    <message>
+        <source>Live Text: Text und Motive auswählbar</source>
+        <translation>实况文本：可选择文本和主体</translation>
+    </message>
+    <message>
+        <source>Live Text: kein Text gefunden</source>
+        <translation>实况文本：未找到文本</translation>
+    </message>
+    <message>
+        <source>Live Text: Analyse fehlgeschlagen (%1)</source>
+        <translation>实况文本：分析失败（%1）</translation>
+    </message>
+</context>
+<context>
     <name>lf::LosslessTransform</name>
     <message>
         <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
@@ -2302,6 +2562,17 @@
         <source>%1 %</source>
         <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
         <translation>%1%</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MacIntegration</name>
+    <message>
+        <source>Es wurden keine Dateien übergeben.</source>
+        <translation>未传入任何文件。</translation>
+    </message>
+    <message>
+        <source>Der Bildschirm ist nicht mehr da.</source>
+        <translation>显示器已断开。</translation>
     </message>
 </context>
 <context>
@@ -2791,6 +3062,38 @@
         <source>Belichtungsregler einblenden</source>
         <translation>显示曝光滑块</translation>
     </message>
+    <message>
+        <source>Quick Look</source>
+        <translation>快速查看</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen …</source>
+        <translation>设定为桌面图片…</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>自定操作</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>实况文本</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>从右向左阅读漫画</translation>
+    </message>
+    <message>
+        <source>Keine – in den Einstellungen anlegen</source>
+        <translation>无——在设置中创建</translation>
+    </message>
+    <message>
+        <source>Protokoll …</source>
+        <translation>日志…</translation>
+    </message>
+    <message>
+        <source>Aktionen bearbeiten …</source>
+        <translation>编辑操作…</translation>
+    </message>
 </context>
 <context>
     <name>lf::MapPreviewController</name>
@@ -3202,6 +3505,37 @@
     <message>
         <source>Abbrechen</source>
         <translation>取消</translation>
+    </message>
+</context>
+<context>
+    <name>lf::PdfDocument</name>
+    <message>
+        <source>Die Seite gibt es im PDF-Dokument nicht.</source>
+        <translation>PDF 文稿中没有此页。</translation>
+    </message>
+    <message>
+        <source>PDF-Dokumente werden auf diesem System nicht unterstützt.</source>
+        <translation>此系统不支持 PDF 文稿。</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist beschädigt.</source>
+        <translation>PDF 文稿已损坏。</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>文件不存在。</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <translation>PDF 文稿受密码保护。</translation>
+    </message>
+    <message>
+        <source>Die Seite ist leer.</source>
+        <translation>此页为空。</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für die Seite.</source>
+        <translation>内存不足，无法显示此页。</translation>
     </message>
 </context>
 <context>
@@ -3873,6 +4207,18 @@
         <translation>同名的 RAW 和 JPEG 文件显示为一张图像（标有“RAW+JPEG”的 JPEG）。评分、移动和删除同时作用于两个文件；“显示 RAW”可切换到 RAW 文件。</translation>
     </message>
     <message>
+        <source>Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner.</source>
+        <translation>归档（ZIP/CBZ、RAR/CBR、7z/CB7）和 PDF 文稿像文件夹一样打开。</translation>
+    </message>
+    <message>
+        <source>Comics (CBZ, CBR, CB7) von rechts nach links lesen</source>
+        <translation>从右向左阅读漫画（CBZ、CBR、CB7）</translation>
+    </message>
+    <message>
+        <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
+        <translation>适合漫画：← 向后翻，→ 向前翻。空格键和 Page Down 总是翻到下一页。</translation>
+    </message>
+    <message>
         <source>Leistung</source>
         <translation>性能</translation>
     </message>
@@ -3895,6 +4241,34 @@
     <message>
         <source>Bilder zurück behalten:</source>
         <translation>保留之前的图像：</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>实况文本</translation>
+    </message>
+    <message>
+        <source>Live Text und Motiv freistellen erlauben (⇧⌘L)</source>
+        <translation>允许实况文本和提取主体（⇧⌘L）</translation>
+    </message>
+    <message>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <translation>仅当你为窗口打开实况文本时才会分析图像——在此 Mac 上，不联网。</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>自定操作</translation>
+    </message>
+    <message>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <translation>Shell 命令或快捷指令会收到当前图像作为参数。菜单：文件 → 自定操作。</translation>
+    </message>
+    <message>
+        <source>Abbrechen nach:</source>
+        <translation>超时中止：</translation>
+    </message>
+    <message>
+        <source> s</source>
+        <translation> s</translation>
     </message>
     <message>
         <source>Einstellungen sichern</source>
@@ -4636,6 +5010,10 @@
         <translation>打开…</translation>
     </message>
     <message>
+        <source>„%1“ kann nicht geöffnet werden</source>
+        <translation>无法打开“%1”</translation>
+    </message>
+    <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
         <translation>文件已损坏或其格式不受支持。</translation>
     </message>
@@ -4834,6 +5212,39 @@
     </message>
 </context>
 <context>
+    <name>lf::VirtualPath</name>
+    <message>
+        <source>Seite %1</source>
+        <extracomment>one page of a PDF document browsed like a folder (F-OPEN-10)</extracomment>
+        <translation>第 %1 页</translation>
+    </message>
+    <message>
+        <source>%1 › %2</source>
+        <extracomment>archive or PDF and the image inside it, e.g. &quot;Band 1.cbz › 012.jpg&quot; (F-OPEN-10)</extracomment>
+        <translation>%1 › %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Wallpaper</name>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>未打开图像。</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <translation>归档中的图像和 PDF 页面不能设为桌面图片。</translation>
+    </message>
+    <message>
+        <source>Es wurde kein Bildschirm gefunden.</source>
+        <translation>未找到显示器。</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
+        <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
     <name>lf::WindowExtras</name>
     <message>
         <source>Zum Bewegen des Fensters ziehen</source>
@@ -4878,6 +5289,73 @@
     <message>
         <source>Minimaler Fenstermodus aus</source>
         <translation>极简窗口：关</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowIntegration</name>
+    <message>
+        <source>Comics: von rechts nach links lesen (← = weiter)</source>
+        <translation>漫画：从右向左阅读（← = 下一页）</translation>
+    </message>
+    <message>
+        <source>Comics: von links nach rechts lesen</source>
+        <translation>漫画：从左向右阅读</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>此 Mac 上不可使用实况文本。</translation>
+    </message>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>实况文本已在设置中关闭。</translation>
+    </message>
+    <message>
+        <source>Live Text an – Text im Bild auswählen und kopieren</source>
+        <translation>实况文本已打开——可选择并拷贝图像中的文本</translation>
+    </message>
+    <message>
+        <source>Live Text aus</source>
+        <translation>实况文本已关闭</translation>
+    </message>
+    <message>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <translation>HDR 显示时不可使用实况文本——按 ⇧⌘H 切换到 SDR。</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>未打开图像。</translation>
+    </message>
+    <message>
+        <source>Quick Look ist nicht verfügbar.</source>
+        <translation>快速查看不可用。</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>设定为桌面图片</translation>
+    </message>
+    <message>
+        <source>„%1“ als Schreibtischhintergrund festlegen?</source>
+        <translation>将“%1”设定为桌面图片？</translation>
+    </message>
+    <message>
+        <source>Auf allen Bildschirmen</source>
+        <translation>在所有显示器上</translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation>设定</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>取消</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festgelegt</source>
+        <translation>已设定为桌面图片</translation>
+    </message>
+    <message>
+        <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
+        <translation>无法更改桌面图片：%1</translation>
     </message>
 </context>
 <context>

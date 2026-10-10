@@ -10,4 +10,12 @@
 "Bild (sonstige)" = "Obrázek (ostatní)";
 "Ordner" = "Složka";
 "WBMP-Bild" = "Obrázek WBMP";
+"Comic-Archiv" = "Archiv komiksu";
+"Archiv" = "Archiv";
+"PDF-Dokument" = "Dokument PDF";
+"RAR-Archiv" = "Archiv RAR";
+"7-Zip-Archiv" = "Archiv 7-Zip";
+"Comic-Archiv (ZIP)" = "Archiv komiksu (ZIP)";
+"Comic-Archiv (RAR)" = "Archiv komiksu (RAR)";
+"Comic-Archiv (7z)" = "Archiv komiksu (7z)";
 "NSHumanReadableCopyright" = "© 2026 brokoskokoli a přispěvatelé. Licence: GPL-3.0-or-later.";

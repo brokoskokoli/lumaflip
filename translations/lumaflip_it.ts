@@ -157,6 +157,29 @@
     </message>
 </context>
 <context>
+    <name>lf::Archive</name>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>«%1» manca nell’archivio.</translation>
+    </message>
+    <message>
+        <source>Dieses Archivformat wird nicht unterstützt.</source>
+        <translation>Questo formato di archivio non è supportato.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist zu groß.</source>
+        <translation>L’immagine nell’archivio è troppo grande.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist beschädigt oder unvollständig.</source>
+        <translation>L’archivio è danneggiato o incompleto.</translation>
+    </message>
+    <message>
+        <source>Das Archiv enthält keine Bilder.</source>
+        <translation>L’archivio non contiene immagini.</translation>
+    </message>
+</context>
+<context>
     <name>lf::CollectionExtras</name>
     <message numerus="yes">
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
@@ -230,6 +253,13 @@
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ContainerPolicy</name>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <translation>Le immagini in archivi e documenti PDF sono aperte solo in visualizzazione – cestino, rinomina, spostamento e valutazione non sono disponibili.</translation>
     </message>
 </context>
 <context>
@@ -363,6 +393,190 @@
             <numerusform>%n immagine spostata in “_Rejected”</numerusform>
             <numerusform>%n immagini spostate in “_Rejected”</numerusform>
         </translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActions</name>
+    <message>
+        <source>Die Aktion braucht einen Namen.</source>
+        <translation>L’azione deve avere un nome.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht einen Befehl.</source>
+        <translation>L’azione deve avere un comando.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht den Namen eines Kurzbefehls.</source>
+        <translation>L’azione deve avere il nome di un comando rapido.</translation>
+    </message>
+    <message>
+        <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
+        <translation>Il nome di un comando rapido non può iniziare con «-».</translation>
+    </message>
+    <message numerus="yes">
+        <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
+        <translation>
+            <numerusform>L’azione è stata interrotta dopo %n secondo.</numerusform>
+            <numerusform>L’azione è stata interrotta dopo %n secondi.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Die Aktion wurde abgebrochen.</source>
+        <translation>L’azione è stata interrotta.</translation>
+    </message>
+    <message>
+        <source>Die Aktion endete mit Fehlercode %1.</source>
+        <translation>L’azione è terminata con il codice di errore %1.</translation>
+    </message>
+    <message>
+        <source>Die Kurzbefehle-App konnte nicht gestartet werden.</source>
+        <translation>Impossibile avviare l’app Comandi Rapidi.</translation>
+    </message>
+    <message>
+        <source>Der Befehl konnte nicht gestartet werden.</source>
+        <translation>Impossibile avviare il comando.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsEditor</name>
+    <message>
+        <source>Eigene Aktion</source>
+        <translation>Azione personalizzata</translation>
+    </message>
+    <message>
+        <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
+        <translation>Nome di un comando dell’app Comandi Rapidi; riceve il file come input.</translation>
+    </message>
+    <message>
+        <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
+        <translation>Viene eseguito con /bin/sh; il file è in &quot;$1&quot; (tutti i file: &quot;$@&quot;), ad es. open -a Preview &quot;$1&quot;. Il percorso non viene mai inserito nel comando.</translation>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation>Nome:</translation>
+    </message>
+    <message>
+        <source>Art:</source>
+        <translation>Tipo:</translation>
+    </message>
+    <message>
+        <source>Befehl:</source>
+        <translation>Comando:</translation>
+    </message>
+    <message>
+        <source>Taste:</source>
+        <translation>Tasto:</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nome</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Tipo</translation>
+    </message>
+    <message>
+        <source>Befehl</source>
+        <translation>Comando</translation>
+    </message>
+    <message>
+        <source>Taste</source>
+        <translation>Tasto</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 ist schon belegt (%3).</source>
+        <translation>«%1»: %2 è già in uso (%3).</translation>
+    </message>
+    <message>
+        <source>Hinzufügen …</source>
+        <translation>Aggiungi…</translation>
+    </message>
+    <message>
+        <source>Bearbeiten …</source>
+        <translation>Modifica…</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>Rimuovi</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsManager</name>
+    <message>
+        <source>Kurzbefehl</source>
+        <translation>Comando rapido</translation>
+    </message>
+    <message>
+        <source>Shell-Befehl</source>
+        <translation>Comando shell</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Nessuna immagine aperta.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktion ausführen</source>
+        <translation>Esegui azione personalizzata</translation>
+    </message>
+    <message>
+        <source>„%1“ zum ersten Mal ausführen?</source>
+        <translation>Eseguire «%1» per la prima volta?</translation>
+    </message>
+    <message>
+        <source>Kurzbefehl: %1</source>
+        <translation>Comando rapido: %1</translation>
+    </message>
+    <message>
+        <source>Befehl: %1</source>
+        <translation>Comando: %1</translation>
+    </message>
+    <message>
+        <source>Datei: %1</source>
+        <translation>File: %1</translation>
+    </message>
+    <message>
+        <source>Ausführen</source>
+        <translation>Esegui</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annulla</translation>
+    </message>
+    <message>
+        <source>▶ %1: %2</source>
+        <translation>▶ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ läuft …</source>
+        <translation>«%1» in esecuzione…</translation>
+    </message>
+    <message>
+        <source>✓ %1: fertig</source>
+        <translation>✓ %1: completato</translation>
+    </message>
+    <message>
+        <source>✗ %1: %2</source>
+        <translation>✗ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ausgeführt</source>
+        <translation>«%1» eseguito</translation>
+    </message>
+    <message>
+        <source>„%1“: %2</source>
+        <translation>«%1»: %2</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Registro delle azioni</translation>
+    </message>
+    <message>
+        <source>Noch keine Aktion ausgeführt.</source>
+        <translation>Nessuna azione ancora eseguita.</translation>
+    </message>
+    <message>
+        <source>Leeren</source>
+        <translation>Svuota</translation>
     </message>
 </context>
 <context>
@@ -1616,6 +1830,26 @@
         <translation>Mappa della cartella</translation>
     </message>
     <message>
+        <source>Quick Look</source>
+        <translation>Visualizzazione rapida</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Testo attivo</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Imposta come sfondo scrivania</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Registro delle azioni</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Leggi i fumetti da destra a sinistra</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>Nessuna azione</translation>
     </message>
@@ -2060,6 +2294,33 @@
     </message>
 </context>
 <context>
+    <name>lf::LiveText</name>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Testo attivo è disattivato nelle impostazioni.</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Testo attivo non è disponibile su questo Mac.</translation>
+    </message>
+    <message>
+        <source>Live Text: Bild wird analysiert …</source>
+        <translation>Testo attivo: analisi dell’immagine…</translation>
+    </message>
+    <message>
+        <source>Live Text: Text und Motive auswählbar</source>
+        <translation>Testo attivo: testo e soggetti selezionabili</translation>
+    </message>
+    <message>
+        <source>Live Text: kein Text gefunden</source>
+        <translation>Testo attivo: nessun testo trovato</translation>
+    </message>
+    <message>
+        <source>Live Text: Analyse fehlgeschlagen (%1)</source>
+        <translation>Testo attivo: analisi non riuscita (%1)</translation>
+    </message>
+</context>
+<context>
     <name>lf::LosslessTransform</name>
     <message>
         <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
@@ -2312,6 +2573,17 @@
         <source>%1 %</source>
         <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
         <translation>%1%</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MacIntegration</name>
+    <message>
+        <source>Es wurden keine Dateien übergeben.</source>
+        <translation>Nessun file ricevuto.</translation>
+    </message>
+    <message>
+        <source>Der Bildschirm ist nicht mehr da.</source>
+        <translation>Lo schermo non è più collegato.</translation>
     </message>
 </context>
 <context>
@@ -2801,6 +3073,38 @@
         <source>Belichtungsregler einblenden</source>
         <translation>Mostra cursore esposizione</translation>
     </message>
+    <message>
+        <source>Quick Look</source>
+        <translation>Visualizzazione rapida</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen …</source>
+        <translation>Imposta come sfondo scrivania…</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Azioni personalizzate</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Testo attivo</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Leggi i fumetti da destra a sinistra</translation>
+    </message>
+    <message>
+        <source>Keine – in den Einstellungen anlegen</source>
+        <translation>Nessuna – creale nelle impostazioni</translation>
+    </message>
+    <message>
+        <source>Protokoll …</source>
+        <translation>Registro…</translation>
+    </message>
+    <message>
+        <source>Aktionen bearbeiten …</source>
+        <translation>Modifica azioni…</translation>
+    </message>
 </context>
 <context>
     <name>lf::MapPreviewController</name>
@@ -3220,6 +3524,37 @@
     <message>
         <source>Abbrechen</source>
         <translation>Annulla</translation>
+    </message>
+</context>
+<context>
+    <name>lf::PdfDocument</name>
+    <message>
+        <source>Die Seite gibt es im PDF-Dokument nicht.</source>
+        <translation>La pagina non esiste nel documento PDF.</translation>
+    </message>
+    <message>
+        <source>PDF-Dokumente werden auf diesem System nicht unterstützt.</source>
+        <translation>I documenti PDF non sono supportati su questo sistema.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist beschädigt.</source>
+        <translation>Il documento PDF è danneggiato.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>Il file non esiste.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <translation>Il documento PDF è protetto da password.</translation>
+    </message>
+    <message>
+        <source>Die Seite ist leer.</source>
+        <translation>La pagina è vuota.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für die Seite.</source>
+        <translation>Memoria insufficiente per la pagina.</translation>
     </message>
 </context>
 <context>
@@ -3892,6 +4227,18 @@
         <translation>I file RAW e JPEG con lo stesso nome appaiono come un’unica immagine (il JPEG, con l’indicazione “RAW+JPEG”). Valutazione, spostamento ed eliminazione riguardano entrambi i file; “Mostra RAW” passa al file RAW.</translation>
     </message>
     <message>
+        <source>Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner.</source>
+        <translation>Archivi (ZIP/CBZ, RAR/CBR, 7z/CB7) e documenti PDF si aprono come cartelle.</translation>
+    </message>
+    <message>
+        <source>Comics (CBZ, CBR, CB7) von rechts nach links lesen</source>
+        <translation>Leggi i fumetti (CBZ, CBR, CB7) da destra a sinistra</translation>
+    </message>
+    <message>
+        <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
+        <translation>Per i manga: ← va avanti, → indietro. Spazio e Pag↓ vanno sempre alla pagina successiva.</translation>
+    </message>
+    <message>
         <source>Leistung</source>
         <translation>Prestazioni</translation>
     </message>
@@ -3914,6 +4261,34 @@
     <message>
         <source>Bilder zurück behalten:</source>
         <translation>Immagini precedenti da mantenere:</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Testo attivo</translation>
+    </message>
+    <message>
+        <source>Live Text und Motiv freistellen erlauben (⇧⌘L)</source>
+        <translation>Consenti Testo attivo e isolamento del soggetto (⇧⌘L)</translation>
+    </message>
+    <message>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <translation>L’immagine viene analizzata solo quando attivi Testo attivo per una finestra – su questo Mac, senza rete.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Azioni personalizzate</translation>
+    </message>
+    <message>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <translation>Un comando shell o un comando rapido (Comandi Rapidi) riceve l’immagine attuale come argomento. Menu: File → Azioni personalizzate.</translation>
+    </message>
+    <message>
+        <source>Abbrechen nach:</source>
+        <translation>Interrompi dopo:</translation>
+    </message>
+    <message>
+        <source> s</source>
+        <translation> s</translation>
     </message>
     <message>
         <source>Einstellungen sichern</source>
@@ -4657,6 +5032,10 @@
         <translation>Apri…</translation>
     </message>
     <message>
+        <source>„%1“ kann nicht geöffnet werden</source>
+        <translation>Impossibile aprire «%1»</translation>
+    </message>
+    <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
         <translation>Il file è danneggiato o il suo formato non è supportato.</translation>
     </message>
@@ -4857,6 +5236,39 @@
     </message>
 </context>
 <context>
+    <name>lf::VirtualPath</name>
+    <message>
+        <source>Seite %1</source>
+        <extracomment>one page of a PDF document browsed like a folder (F-OPEN-10)</extracomment>
+        <translation>Pagina %1</translation>
+    </message>
+    <message>
+        <source>%1 › %2</source>
+        <extracomment>archive or PDF and the image inside it, e.g. &quot;Band 1.cbz › 012.jpg&quot; (F-OPEN-10)</extracomment>
+        <translation>%1 › %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Wallpaper</name>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Nessuna immagine aperta.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <translation>Le immagini negli archivi e le pagine PDF non possono diventare sfondo scrivania.</translation>
+    </message>
+    <message>
+        <source>Es wurde kein Bildschirm gefunden.</source>
+        <translation>Nessuno schermo trovato.</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
+        <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
     <name>lf::WindowExtras</name>
     <message>
         <source>Zum Bewegen des Fensters ziehen</source>
@@ -4901,6 +5313,73 @@
     <message>
         <source>Minimaler Fenstermodus aus</source>
         <translation>Finestra minimale disattivata</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowIntegration</name>
+    <message>
+        <source>Comics: von rechts nach links lesen (← = weiter)</source>
+        <translation>Fumetti: lettura da destra a sinistra (← = avanti)</translation>
+    </message>
+    <message>
+        <source>Comics: von links nach rechts lesen</source>
+        <translation>Fumetti: lettura da sinistra a destra</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Testo attivo non è disponibile su questo Mac.</translation>
+    </message>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Testo attivo è disattivato nelle impostazioni.</translation>
+    </message>
+    <message>
+        <source>Live Text an – Text im Bild auswählen und kopieren</source>
+        <translation>Testo attivo acceso – seleziona e copia il testo nell’immagine</translation>
+    </message>
+    <message>
+        <source>Live Text aus</source>
+        <translation>Testo attivo spento</translation>
+    </message>
+    <message>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <translation>Testo attivo non è disponibile durante la visualizzazione HDR – passa a SDR con ⇧⌘H.</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Nessuna immagine aperta.</translation>
+    </message>
+    <message>
+        <source>Quick Look ist nicht verfügbar.</source>
+        <translation>Visualizzazione rapida non è disponibile.</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Imposta come sfondo scrivania</translation>
+    </message>
+    <message>
+        <source>„%1“ als Schreibtischhintergrund festlegen?</source>
+        <translation>Impostare «%1» come sfondo scrivania?</translation>
+    </message>
+    <message>
+        <source>Auf allen Bildschirmen</source>
+        <translation>Su tutti gli schermi</translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation>Imposta</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annulla</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festgelegt</source>
+        <translation>Impostato come sfondo scrivania</translation>
+    </message>
+    <message>
+        <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
+        <translation>Impossibile cambiare lo sfondo scrivania: %1</translation>
     </message>
 </context>
 <context>

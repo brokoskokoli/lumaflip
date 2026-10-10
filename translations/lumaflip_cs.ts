@@ -157,6 +157,29 @@
     </message>
 </context>
 <context>
+    <name>lf::Archive</name>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>„%1“ v archivu chybí.</translation>
+    </message>
+    <message>
+        <source>Dieses Archivformat wird nicht unterstützt.</source>
+        <translation>Tento formát archivu není podporován.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist zu groß.</source>
+        <translation>Obrázek v archivu je příliš velký.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist beschädigt oder unvollständig.</source>
+        <translation>Archiv je poškozený nebo neúplný.</translation>
+    </message>
+    <message>
+        <source>Das Archiv enthält keine Bilder.</source>
+        <translation>Archiv neobsahuje žádné obrázky.</translation>
+    </message>
+</context>
+<context>
     <name>lf::CollectionExtras</name>
     <message numerus="yes">
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
@@ -232,6 +255,13 @@
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ContainerPolicy</name>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <translation>Obrázky v archivech a dokumentech PDF jsou otevřené jen k prohlížení – koš, přejmenování, přesun a hodnocení zde nejsou možné.</translation>
     </message>
 </context>
 <context>
@@ -370,6 +400,191 @@
             <numerusform>%n obrázky přesunuty do „_Rejected“</numerusform>
             <numerusform>%n obrázků přesunuto do „_Rejected“</numerusform>
         </translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActions</name>
+    <message>
+        <source>Die Aktion braucht einen Namen.</source>
+        <translation>Akce potřebuje název.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht einen Befehl.</source>
+        <translation>Akce potřebuje příkaz.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht den Namen eines Kurzbefehls.</source>
+        <translation>Akce potřebuje název zkratky.</translation>
+    </message>
+    <message>
+        <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
+        <translation>Název zkratky nesmí začínat znakem „-“.</translation>
+    </message>
+    <message numerus="yes">
+        <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
+        <translation>
+            <numerusform>Akce byla přerušena po %n sekundě.</numerusform>
+            <numerusform>Akce byla přerušena po %n sekundách.</numerusform>
+            <numerusform>Akce byla přerušena po %n sekundách.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Die Aktion wurde abgebrochen.</source>
+        <translation>Akce byla přerušena.</translation>
+    </message>
+    <message>
+        <source>Die Aktion endete mit Fehlercode %1.</source>
+        <translation>Akce skončila chybovým kódem %1.</translation>
+    </message>
+    <message>
+        <source>Die Kurzbefehle-App konnte nicht gestartet werden.</source>
+        <translation>Aplikaci Zkratky nelze spustit.</translation>
+    </message>
+    <message>
+        <source>Der Befehl konnte nicht gestartet werden.</source>
+        <translation>Příkaz nelze spustit.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsEditor</name>
+    <message>
+        <source>Eigene Aktion</source>
+        <translation>Vlastní akce</translation>
+    </message>
+    <message>
+        <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
+        <translation>Název zkratky z aplikace Zkratky; dostane soubor jako vstup.</translation>
+    </message>
+    <message>
+        <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
+        <translation>Běží přes /bin/sh; soubor je v &quot;$1&quot; (všechny soubory: &quot;$@&quot;), např. open -a Preview &quot;$1&quot;. Cesta se nikdy nevkládá do příkazu.</translation>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation>Název:</translation>
+    </message>
+    <message>
+        <source>Art:</source>
+        <translation>Druh:</translation>
+    </message>
+    <message>
+        <source>Befehl:</source>
+        <translation>Příkaz:</translation>
+    </message>
+    <message>
+        <source>Taste:</source>
+        <translation>Klávesa:</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Název</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Druh</translation>
+    </message>
+    <message>
+        <source>Befehl</source>
+        <translation>Příkaz</translation>
+    </message>
+    <message>
+        <source>Taste</source>
+        <translation>Klávesa</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 ist schon belegt (%3).</source>
+        <translation>„%1“: %2 už je obsazeno (%3).</translation>
+    </message>
+    <message>
+        <source>Hinzufügen …</source>
+        <translation>Přidat…</translation>
+    </message>
+    <message>
+        <source>Bearbeiten …</source>
+        <translation>Upravit…</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>Odstranit</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsManager</name>
+    <message>
+        <source>Kurzbefehl</source>
+        <translation>Zkratka</translation>
+    </message>
+    <message>
+        <source>Shell-Befehl</source>
+        <translation>Příkaz shellu</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Není otevřen žádný obrázek.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktion ausführen</source>
+        <translation>Spustit vlastní akci</translation>
+    </message>
+    <message>
+        <source>„%1“ zum ersten Mal ausführen?</source>
+        <translation>Spustit „%1“ poprvé?</translation>
+    </message>
+    <message>
+        <source>Kurzbefehl: %1</source>
+        <translation>Zkratka: %1</translation>
+    </message>
+    <message>
+        <source>Befehl: %1</source>
+        <translation>Příkaz: %1</translation>
+    </message>
+    <message>
+        <source>Datei: %1</source>
+        <translation>Soubor: %1</translation>
+    </message>
+    <message>
+        <source>Ausführen</source>
+        <translation>Spustit</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Zrušit</translation>
+    </message>
+    <message>
+        <source>▶ %1: %2</source>
+        <translation>▶ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ läuft …</source>
+        <translation>„%1“ běží…</translation>
+    </message>
+    <message>
+        <source>✓ %1: fertig</source>
+        <translation>✓ %1: hotovo</translation>
+    </message>
+    <message>
+        <source>✗ %1: %2</source>
+        <translation>✗ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ausgeführt</source>
+        <translation>„%1“ provedeno</translation>
+    </message>
+    <message>
+        <source>„%1“: %2</source>
+        <translation>„%1“: %2</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Protokol akcí</translation>
+    </message>
+    <message>
+        <source>Noch keine Aktion ausgeführt.</source>
+        <translation>Zatím nebyla spuštěna žádná akce.</translation>
+    </message>
+    <message>
+        <source>Leeren</source>
+        <translation>Vymazat</translation>
     </message>
 </context>
 <context>
@@ -1626,6 +1841,26 @@
         <translation>Mapa složky</translation>
     </message>
     <message>
+        <source>Quick Look</source>
+        <translation>Rychlý náhled</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Živý text</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Nastavit jako obrázek plochy</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Protokol akcí</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Číst komiksy zprava doleva</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>Nic</translation>
     </message>
@@ -2070,6 +2305,33 @@
     </message>
 </context>
 <context>
+    <name>lf::LiveText</name>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Živý text je v nastavení vypnutý.</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Živý text není na tomto Macu k dispozici.</translation>
+    </message>
+    <message>
+        <source>Live Text: Bild wird analysiert …</source>
+        <translation>Živý text: analyzuje se obrázek…</translation>
+    </message>
+    <message>
+        <source>Live Text: Text und Motive auswählbar</source>
+        <translation>Živý text: text a objekty lze vybrat</translation>
+    </message>
+    <message>
+        <source>Live Text: kein Text gefunden</source>
+        <translation>Živý text: nenalezen žádný text</translation>
+    </message>
+    <message>
+        <source>Live Text: Analyse fehlgeschlagen (%1)</source>
+        <translation>Živý text: analýza selhala (%1)</translation>
+    </message>
+</context>
+<context>
     <name>lf::LosslessTransform</name>
     <message>
         <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
@@ -2322,6 +2584,17 @@
         <source>%1 %</source>
         <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
         <translation>%1 %</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MacIntegration</name>
+    <message>
+        <source>Es wurden keine Dateien übergeben.</source>
+        <translation>Nebyly předány žádné soubory.</translation>
+    </message>
+    <message>
+        <source>Der Bildschirm ist nicht mehr da.</source>
+        <translation>Displej už není připojen.</translation>
     </message>
 </context>
 <context>
@@ -2811,6 +3084,38 @@
         <source>Belichtungsregler einblenden</source>
         <translation>Zobrazit posuvník expozice</translation>
     </message>
+    <message>
+        <source>Quick Look</source>
+        <translation>Rychlý náhled</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen …</source>
+        <translation>Nastavit jako obrázek plochy…</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Vlastní akce</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Živý text</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Číst komiksy zprava doleva</translation>
+    </message>
+    <message>
+        <source>Keine – in den Einstellungen anlegen</source>
+        <translation>Žádné – vytvořte je v nastavení</translation>
+    </message>
+    <message>
+        <source>Protokoll …</source>
+        <translation>Protokol…</translation>
+    </message>
+    <message>
+        <source>Aktionen bearbeiten …</source>
+        <translation>Upravit akce…</translation>
+    </message>
 </context>
 <context>
     <name>lf::MapPreviewController</name>
@@ -3238,6 +3543,37 @@
     <message>
         <source>Abbrechen</source>
         <translation>Zrušit</translation>
+    </message>
+</context>
+<context>
+    <name>lf::PdfDocument</name>
+    <message>
+        <source>Die Seite gibt es im PDF-Dokument nicht.</source>
+        <translation>Stránka v dokumentu PDF neexistuje.</translation>
+    </message>
+    <message>
+        <source>PDF-Dokumente werden auf diesem System nicht unterstützt.</source>
+        <translation>Dokumenty PDF nejsou v tomto systému podporovány.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist beschädigt.</source>
+        <translation>Dokument PDF je poškozený.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>Soubor neexistuje.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <translation>Dokument PDF je chráněn heslem.</translation>
+    </message>
+    <message>
+        <source>Die Seite ist leer.</source>
+        <translation>Stránka je prázdná.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für die Seite.</source>
+        <translation>Pro stránku není dost paměti.</translation>
     </message>
 </context>
 <context>
@@ -3911,6 +4247,18 @@
         <translation>Soubory RAW a JPEG se stejným názvem se zobrazí jako jeden obrázek (JPEG s označením „RAW+JPEG“). Hodnocení, přesun a mazání se týkají obou souborů; „Zobrazit RAW“ přepne na soubor RAW.</translation>
     </message>
     <message>
+        <source>Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner.</source>
+        <translation>Archivy (ZIP/CBZ, RAR/CBR, 7z/CB7) a dokumenty PDF se otevírají jako složky.</translation>
+    </message>
+    <message>
+        <source>Comics (CBZ, CBR, CB7) von rechts nach links lesen</source>
+        <translation>Číst komiksy (CBZ, CBR, CB7) zprava doleva</translation>
+    </message>
+    <message>
+        <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
+        <translation>Pro mangu: ← listuje dál, → zpět. Mezerník a Page Down vždy přejdou na další stránku.</translation>
+    </message>
+    <message>
         <source>Leistung</source>
         <translation>Výkon</translation>
     </message>
@@ -3933,6 +4281,34 @@
     <message>
         <source>Bilder zurück behalten:</source>
         <translation>Ponechat předchozí obrázky:</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Živý text</translation>
+    </message>
+    <message>
+        <source>Live Text und Motiv freistellen erlauben (⇧⌘L)</source>
+        <translation>Povolit Živý text a vyjmutí objektu (⇧⌘L)</translation>
+    </message>
+    <message>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <translation>Obrázek se analyzuje jen tehdy, když pro okno zapnete Živý text – na tomto Macu, bez sítě.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Vlastní akce</translation>
+    </message>
+    <message>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <translation>Příkaz shellu nebo zkratka (Zkratky) dostane aktuální obrázek jako argument. Nabídka: Soubor → Vlastní akce.</translation>
+    </message>
+    <message>
+        <source>Abbrechen nach:</source>
+        <translation>Přerušit po:</translation>
+    </message>
+    <message>
+        <source> s</source>
+        <translation> s</translation>
     </message>
     <message>
         <source>Einstellungen sichern</source>
@@ -4678,6 +5054,10 @@
         <translation>Otevřít…</translation>
     </message>
     <message>
+        <source>„%1“ kann nicht geöffnet werden</source>
+        <translation>„%1“ nelze otevřít</translation>
+    </message>
+    <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
         <translation>Soubor je poškozený nebo jeho formát není podporován.</translation>
     </message>
@@ -4880,6 +5260,39 @@
     </message>
 </context>
 <context>
+    <name>lf::VirtualPath</name>
+    <message>
+        <source>Seite %1</source>
+        <extracomment>one page of a PDF document browsed like a folder (F-OPEN-10)</extracomment>
+        <translation>Strana %1</translation>
+    </message>
+    <message>
+        <source>%1 › %2</source>
+        <extracomment>archive or PDF and the image inside it, e.g. &quot;Band 1.cbz › 012.jpg&quot; (F-OPEN-10)</extracomment>
+        <translation>%1 › %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Wallpaper</name>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Není otevřen žádný obrázek.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <translation>Obrázky v archivech a stránky PDF nemohou být obrázkem plochy.</translation>
+    </message>
+    <message>
+        <source>Es wurde kein Bildschirm gefunden.</source>
+        <translation>Nebyl nalezen žádný displej.</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
+        <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
     <name>lf::WindowExtras</name>
     <message>
         <source>Zum Bewegen des Fensters ziehen</source>
@@ -4924,6 +5337,73 @@
     <message>
         <source>Minimaler Fenstermodus aus</source>
         <translation>Minimální okno vypnuto</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowIntegration</name>
+    <message>
+        <source>Comics: von rechts nach links lesen (← = weiter)</source>
+        <translation>Komiksy: číst zprava doleva (← = dál)</translation>
+    </message>
+    <message>
+        <source>Comics: von links nach rechts lesen</source>
+        <translation>Komiksy: číst zleva doprava</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Živý text není na tomto Macu k dispozici.</translation>
+    </message>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Živý text je v nastavení vypnutý.</translation>
+    </message>
+    <message>
+        <source>Live Text an – Text im Bild auswählen und kopieren</source>
+        <translation>Živý text zapnut – vyberte a zkopírujte text v obrázku</translation>
+    </message>
+    <message>
+        <source>Live Text aus</source>
+        <translation>Živý text vypnut</translation>
+    </message>
+    <message>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <translation>Živý text není během zobrazení HDR k dispozici – přepněte na SDR pomocí ⇧⌘H.</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Není otevřen žádný obrázek.</translation>
+    </message>
+    <message>
+        <source>Quick Look ist nicht verfügbar.</source>
+        <translation>Rychlý náhled není k dispozici.</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Nastavit jako obrázek plochy</translation>
+    </message>
+    <message>
+        <source>„%1“ als Schreibtischhintergrund festlegen?</source>
+        <translation>Nastavit „%1“ jako obrázek plochy?</translation>
+    </message>
+    <message>
+        <source>Auf allen Bildschirmen</source>
+        <translation>Na všech displejích</translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation>Nastavit</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Zrušit</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festgelegt</source>
+        <translation>Nastaveno jako obrázek plochy</translation>
+    </message>
+    <message>
+        <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
+        <translation>Obrázek plochy nelze změnit: %1</translation>
     </message>
 </context>
 <context>

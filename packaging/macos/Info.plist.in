@@ -74,11 +74,105 @@
       <key>LSHandlerRank</key><string>Alternate</string>
       <key>LSItemContentTypes</key><array><string>public.folder</string></array>
     </dict>
+    <!-- F-OPEN-10 (M4): archives and PDF documents, browsed like a folder. Alternate only:
+         "Öffnen mit" offers Lumaflip, the default app (Archive Utility, Preview) stays. -->
+    <dict>
+      <key>CFBundleTypeName</key><string>Comic-Archiv</string>
+      <key>CFBundleTypeRole</key><string>Viewer</string>
+      <key>LSHandlerRank</key><string>Alternate</string>
+      <key>LSItemContentTypes</key>
+      <array>
+        <string>io.github.brokoskokoli.lumaflip.cbz</string><string>io.github.brokoskokoli.lumaflip.cbr</string>
+        <string>io.github.brokoskokoli.lumaflip.cb7</string>
+      </array>
+    </dict>
+    <dict>
+      <key>CFBundleTypeName</key><string>Archiv</string>
+      <key>CFBundleTypeRole</key><string>Viewer</string>
+      <key>LSHandlerRank</key><string>Alternate</string>
+      <key>LSItemContentTypes</key>
+      <array>
+        <string>public.zip-archive</string><string>com.rarlab.rar-archive</string><string>org.7-zip.7-zip-archive</string>
+      </array>
+    </dict>
+    <dict>
+      <key>CFBundleTypeName</key><string>PDF-Dokument</string>
+      <key>CFBundleTypeRole</key><string>Viewer</string>
+      <key>LSHandlerRank</key><string>Alternate</string>
+      <key>LSItemContentTypes</key><array><string>com.adobe.pdf</string></array>
+    </dict>
+  </array>
+  <!-- F-MAC-07 (M4): Services menu entry "In Lumaflip öffnen" for files in other apps (Finder);
+       the title is localized in <lang>.lproj/ServicesMenu.strings. Handled by
+       app/MacIntegration_mac.mm (NSApp.servicesProvider, openInLumaflip:userData:error:). -->
+  <key>NSServices</key>
+  <array>
+    <dict>
+      <key>NSMenuItem</key><dict><key>default</key><string>In Lumaflip öffnen</string></dict>
+      <key>NSMessage</key><string>openInLumaflip</string>
+      <key>NSPortName</key><string>${MACOSX_BUNDLE_BUNDLE_NAME}</string>
+      <key>NSRequiredContext</key><dict/>
+      <key>NSSendFileTypes</key>
+      <array>
+        <string>public.image</string><string>public.folder</string><string>public.zip-archive</string>
+        <string>com.rarlab.rar-archive</string><string>org.7-zip.7-zip-archive</string><string>com.adobe.pdf</string>
+      </array>
+    </dict>
   </array>
   <!-- Formats a Lumaflip backend decodes but macOS has no type for (SPEC 10.4).
        WBMP: Qt image plugin. (QOI, KRA, ORA … follow with their backends in M3.) -->
   <key>UTImportedTypeDeclarations</key>
   <array>
+    <!-- F-OPEN-10: archive types macOS may not know (RAR, 7z) and the comic book variants. -->
+    <dict>
+      <key>UTTypeIdentifier</key><string>com.rarlab.rar-archive</string>
+      <key>UTTypeDescription</key><string>RAR-Archiv</string>
+      <key>UTTypeConformsTo</key><array><string>public.archive</string><string>public.data</string></array>
+      <key>UTTypeTagSpecification</key>
+      <dict>
+        <key>public.filename-extension</key><array><string>rar</string></array>
+        <key>public.mime-type</key><array><string>application/vnd.rar</string><string>application/x-rar-compressed</string></array>
+      </dict>
+    </dict>
+    <dict>
+      <key>UTTypeIdentifier</key><string>org.7-zip.7-zip-archive</string>
+      <key>UTTypeDescription</key><string>7-Zip-Archiv</string>
+      <key>UTTypeConformsTo</key><array><string>public.archive</string><string>public.data</string></array>
+      <key>UTTypeTagSpecification</key>
+      <dict>
+        <key>public.filename-extension</key><array><string>7z</string></array>
+        <key>public.mime-type</key><array><string>application/x-7z-compressed</string></array>
+      </dict>
+    </dict>
+    <dict>
+      <key>UTTypeIdentifier</key><string>io.github.brokoskokoli.lumaflip.cbz</string>
+      <key>UTTypeDescription</key><string>Comic-Archiv (ZIP)</string>
+      <key>UTTypeConformsTo</key><array><string>public.zip-archive</string><string>public.data</string></array>
+      <key>UTTypeTagSpecification</key>
+      <dict>
+        <key>public.filename-extension</key><array><string>cbz</string></array>
+        <key>public.mime-type</key><array><string>application/vnd.comicbook+zip</string></array>
+      </dict>
+    </dict>
+    <dict>
+      <key>UTTypeIdentifier</key><string>io.github.brokoskokoli.lumaflip.cbr</string>
+      <key>UTTypeDescription</key><string>Comic-Archiv (RAR)</string>
+      <key>UTTypeConformsTo</key><array><string>com.rarlab.rar-archive</string><string>public.data</string></array>
+      <key>UTTypeTagSpecification</key>
+      <dict>
+        <key>public.filename-extension</key><array><string>cbr</string></array>
+        <key>public.mime-type</key><array><string>application/vnd.comicbook-rar</string></array>
+      </dict>
+    </dict>
+    <dict>
+      <key>UTTypeIdentifier</key><string>io.github.brokoskokoli.lumaflip.cb7</string>
+      <key>UTTypeDescription</key><string>Comic-Archiv (7z)</string>
+      <key>UTTypeConformsTo</key><array><string>org.7-zip.7-zip-archive</string><string>public.data</string></array>
+      <key>UTTypeTagSpecification</key>
+      <dict>
+        <key>public.filename-extension</key><array><string>cb7</string></array>
+      </dict>
+    </dict>
     <dict>
       <key>UTTypeIdentifier</key><string>org.wapforum.wbmp</string>
       <key>UTTypeDescription</key><string>WBMP-Bild</string>

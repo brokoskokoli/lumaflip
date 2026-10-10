@@ -157,6 +157,29 @@
     </message>
 </context>
 <context>
+    <name>lf::Archive</name>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>Brak „%1” w archiwum.</translation>
+    </message>
+    <message>
+        <source>Dieses Archivformat wird nicht unterstützt.</source>
+        <translation>Ten format archiwum nie jest obsługiwany.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist zu groß.</source>
+        <translation>Obraz w archiwum jest za duży.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist beschädigt oder unvollständig.</source>
+        <translation>Archiwum jest uszkodzone lub niekompletne.</translation>
+    </message>
+    <message>
+        <source>Das Archiv enthält keine Bilder.</source>
+        <translation>Archiwum nie zawiera obrazów.</translation>
+    </message>
+</context>
+<context>
     <name>lf::CollectionExtras</name>
     <message numerus="yes">
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
@@ -232,6 +255,13 @@
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ContainerPolicy</name>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <translation>Obrazy w archiwach i dokumentach PDF są otwarte tylko do oglądania – kosz, zmiana nazwy, przenoszenie i ocenianie nie działają tutaj.</translation>
     </message>
 </context>
 <context>
@@ -370,6 +400,191 @@
             <numerusform>%n obrazy przeniesiono do „_Rejected”</numerusform>
             <numerusform>%n obrazów przeniesiono do „_Rejected”</numerusform>
         </translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActions</name>
+    <message>
+        <source>Die Aktion braucht einen Namen.</source>
+        <translation>Akcja wymaga nazwy.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht einen Befehl.</source>
+        <translation>Akcja wymaga polecenia.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht den Namen eines Kurzbefehls.</source>
+        <translation>Akcja wymaga nazwy skrótu.</translation>
+    </message>
+    <message>
+        <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
+        <translation>Nazwa skrótu nie może zaczynać się od „-”.</translation>
+    </message>
+    <message numerus="yes">
+        <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
+        <translation>
+            <numerusform>Akcja została przerwana po %n sekundzie.</numerusform>
+            <numerusform>Akcja została przerwana po %n sekundach.</numerusform>
+            <numerusform>Akcja została przerwana po %n sekundach.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Die Aktion wurde abgebrochen.</source>
+        <translation>Akcja została przerwana.</translation>
+    </message>
+    <message>
+        <source>Die Aktion endete mit Fehlercode %1.</source>
+        <translation>Akcja zakończyła się kodem błędu %1.</translation>
+    </message>
+    <message>
+        <source>Die Kurzbefehle-App konnte nicht gestartet werden.</source>
+        <translation>Nie można uruchomić aplikacji Skróty.</translation>
+    </message>
+    <message>
+        <source>Der Befehl konnte nicht gestartet werden.</source>
+        <translation>Nie można uruchomić polecenia.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsEditor</name>
+    <message>
+        <source>Eigene Aktion</source>
+        <translation>Własna akcja</translation>
+    </message>
+    <message>
+        <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
+        <translation>Nazwa skrótu z aplikacji Skróty; otrzymuje plik jako dane wejściowe.</translation>
+    </message>
+    <message>
+        <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
+        <translation>Działa przez /bin/sh; plik jest w &quot;$1&quot; (wszystkie pliki: &quot;$@&quot;), np. open -a Preview &quot;$1&quot;. Ścieżka nigdy nie jest wstawiana do polecenia.</translation>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation>Nazwa:</translation>
+    </message>
+    <message>
+        <source>Art:</source>
+        <translation>Rodzaj:</translation>
+    </message>
+    <message>
+        <source>Befehl:</source>
+        <translation>Polecenie:</translation>
+    </message>
+    <message>
+        <source>Taste:</source>
+        <translation>Klawisz:</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nazwa</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Rodzaj</translation>
+    </message>
+    <message>
+        <source>Befehl</source>
+        <translation>Polecenie</translation>
+    </message>
+    <message>
+        <source>Taste</source>
+        <translation>Klawisz</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 ist schon belegt (%3).</source>
+        <translation>„%1”: %2 jest już zajęty (%3).</translation>
+    </message>
+    <message>
+        <source>Hinzufügen …</source>
+        <translation>Dodaj…</translation>
+    </message>
+    <message>
+        <source>Bearbeiten …</source>
+        <translation>Edytuj…</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>Usuń</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsManager</name>
+    <message>
+        <source>Kurzbefehl</source>
+        <translation>Skrót</translation>
+    </message>
+    <message>
+        <source>Shell-Befehl</source>
+        <translation>Polecenie powłoki</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Nie otwarto żadnego obrazu.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktion ausführen</source>
+        <translation>Wykonaj własną akcję</translation>
+    </message>
+    <message>
+        <source>„%1“ zum ersten Mal ausführen?</source>
+        <translation>Wykonać „%1” po raz pierwszy?</translation>
+    </message>
+    <message>
+        <source>Kurzbefehl: %1</source>
+        <translation>Skrót: %1</translation>
+    </message>
+    <message>
+        <source>Befehl: %1</source>
+        <translation>Polecenie: %1</translation>
+    </message>
+    <message>
+        <source>Datei: %1</source>
+        <translation>Plik: %1</translation>
+    </message>
+    <message>
+        <source>Ausführen</source>
+        <translation>Wykonaj</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Anuluj</translation>
+    </message>
+    <message>
+        <source>▶ %1: %2</source>
+        <translation>▶ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ läuft …</source>
+        <translation>„%1” działa…</translation>
+    </message>
+    <message>
+        <source>✓ %1: fertig</source>
+        <translation>✓ %1: gotowe</translation>
+    </message>
+    <message>
+        <source>✗ %1: %2</source>
+        <translation>✗ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ausgeführt</source>
+        <translation>Wykonano „%1”</translation>
+    </message>
+    <message>
+        <source>„%1“: %2</source>
+        <translation>„%1”: %2</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Dziennik akcji</translation>
+    </message>
+    <message>
+        <source>Noch keine Aktion ausgeführt.</source>
+        <translation>Nie wykonano jeszcze żadnej akcji.</translation>
+    </message>
+    <message>
+        <source>Leeren</source>
+        <translation>Wyczyść</translation>
     </message>
 </context>
 <context>
@@ -1626,6 +1841,26 @@
         <translation>Mapa folderu</translation>
     </message>
     <message>
+        <source>Quick Look</source>
+        <translation>Szybki podgląd</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Tekst na żywo</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Ustaw jako tło biurka</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Dziennik akcji</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Czytaj komiksy od prawej do lewej</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>Nic</translation>
     </message>
@@ -2070,6 +2305,33 @@
     </message>
 </context>
 <context>
+    <name>lf::LiveText</name>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Tekst na żywo jest wyłączony w ustawieniach.</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Tekst na żywo nie jest dostępny na tym Macu.</translation>
+    </message>
+    <message>
+        <source>Live Text: Bild wird analysiert …</source>
+        <translation>Tekst na żywo: analizowanie obrazu…</translation>
+    </message>
+    <message>
+        <source>Live Text: Text und Motive auswählbar</source>
+        <translation>Tekst na żywo: tekst i obiekty do zaznaczenia</translation>
+    </message>
+    <message>
+        <source>Live Text: kein Text gefunden</source>
+        <translation>Tekst na żywo: nie znaleziono tekstu</translation>
+    </message>
+    <message>
+        <source>Live Text: Analyse fehlgeschlagen (%1)</source>
+        <translation>Tekst na żywo: analiza nie powiodła się (%1)</translation>
+    </message>
+</context>
+<context>
     <name>lf::LosslessTransform</name>
     <message>
         <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
@@ -2322,6 +2584,17 @@
         <source>%1 %</source>
         <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
         <translation>%1%</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MacIntegration</name>
+    <message>
+        <source>Es wurden keine Dateien übergeben.</source>
+        <translation>Nie przekazano żadnych plików.</translation>
+    </message>
+    <message>
+        <source>Der Bildschirm ist nicht mehr da.</source>
+        <translation>Ekran nie jest już podłączony.</translation>
     </message>
 </context>
 <context>
@@ -2811,6 +3084,38 @@
         <source>Belichtungsregler einblenden</source>
         <translation>Pokaż suwak ekspozycji</translation>
     </message>
+    <message>
+        <source>Quick Look</source>
+        <translation>Szybki podgląd</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen …</source>
+        <translation>Ustaw jako tło biurka…</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Własne akcje</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Tekst na żywo</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Czytaj komiksy od prawej do lewej</translation>
+    </message>
+    <message>
+        <source>Keine – in den Einstellungen anlegen</source>
+        <translation>Brak – utwórz w ustawieniach</translation>
+    </message>
+    <message>
+        <source>Protokoll …</source>
+        <translation>Dziennik…</translation>
+    </message>
+    <message>
+        <source>Aktionen bearbeiten …</source>
+        <translation>Edytuj akcje…</translation>
+    </message>
 </context>
 <context>
     <name>lf::MapPreviewController</name>
@@ -3238,6 +3543,37 @@
     <message>
         <source>Abbrechen</source>
         <translation>Anuluj</translation>
+    </message>
+</context>
+<context>
+    <name>lf::PdfDocument</name>
+    <message>
+        <source>Die Seite gibt es im PDF-Dokument nicht.</source>
+        <translation>Ta strona nie istnieje w dokumencie PDF.</translation>
+    </message>
+    <message>
+        <source>PDF-Dokumente werden auf diesem System nicht unterstützt.</source>
+        <translation>Dokumenty PDF nie są obsługiwane w tym systemie.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist beschädigt.</source>
+        <translation>Dokument PDF jest uszkodzony.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>Plik nie istnieje.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <translation>Dokument PDF jest chroniony hasłem.</translation>
+    </message>
+    <message>
+        <source>Die Seite ist leer.</source>
+        <translation>Strona jest pusta.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für die Seite.</source>
+        <translation>Za mało pamięci dla strony.</translation>
     </message>
 </context>
 <context>
@@ -3911,6 +4247,18 @@
         <translation>Pliki RAW i JPEG o tej samej nazwie są widoczne jako jeden obraz (JPEG z oznaczeniem „RAW+JPEG”). Ocena, przenoszenie i usuwanie dotyczą obu plików; „Pokaż RAW” przełącza na plik RAW.</translation>
     </message>
     <message>
+        <source>Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner.</source>
+        <translation>Archiwa (ZIP/CBZ, RAR/CBR, 7z/CB7) i dokumenty PDF otwierają się jak foldery.</translation>
+    </message>
+    <message>
+        <source>Comics (CBZ, CBR, CB7) von rechts nach links lesen</source>
+        <translation>Czytaj komiksy (CBZ, CBR, CB7) od prawej do lewej</translation>
+    </message>
+    <message>
+        <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
+        <translation>Dla mangi: ← dalej, → wstecz. Spacja i Page Down zawsze przechodzą do następnej strony.</translation>
+    </message>
+    <message>
         <source>Leistung</source>
         <translation>Wydajność</translation>
     </message>
@@ -3933,6 +4281,34 @@
     <message>
         <source>Bilder zurück behalten:</source>
         <translation>Zachowuj poprzednie obrazy:</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Tekst na żywo</translation>
+    </message>
+    <message>
+        <source>Live Text und Motiv freistellen erlauben (⇧⌘L)</source>
+        <translation>Zezwalaj na Tekst na żywo i wycinanie obiektów (⇧⌘L)</translation>
+    </message>
+    <message>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <translation>Obraz jest analizowany tylko po włączeniu Tekstu na żywo dla okna – na tym Macu, bez sieci.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Własne akcje</translation>
+    </message>
+    <message>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <translation>Polecenie powłoki lub skrót (Skróty) otrzymuje bieżący obraz jako argument. Menu: Plik → Własne akcje.</translation>
+    </message>
+    <message>
+        <source>Abbrechen nach:</source>
+        <translation>Przerwij po:</translation>
+    </message>
+    <message>
+        <source> s</source>
+        <translation> s</translation>
     </message>
     <message>
         <source>Einstellungen sichern</source>
@@ -4678,6 +5054,10 @@
         <translation>Otwórz…</translation>
     </message>
     <message>
+        <source>„%1“ kann nicht geöffnet werden</source>
+        <translation>Nie można otworzyć „%1”</translation>
+    </message>
+    <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
         <translation>Plik jest uszkodzony lub jego format nie jest obsługiwany.</translation>
     </message>
@@ -4880,6 +5260,39 @@
     </message>
 </context>
 <context>
+    <name>lf::VirtualPath</name>
+    <message>
+        <source>Seite %1</source>
+        <extracomment>one page of a PDF document browsed like a folder (F-OPEN-10)</extracomment>
+        <translation>Strona %1</translation>
+    </message>
+    <message>
+        <source>%1 › %2</source>
+        <extracomment>archive or PDF and the image inside it, e.g. &quot;Band 1.cbz › 012.jpg&quot; (F-OPEN-10)</extracomment>
+        <translation>%1 › %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Wallpaper</name>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Nie otwarto żadnego obrazu.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <translation>Obrazy w archiwach i strony PDF nie mogą być tłem biurka.</translation>
+    </message>
+    <message>
+        <source>Es wurde kein Bildschirm gefunden.</source>
+        <translation>Nie znaleziono ekranu.</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
+        <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
     <name>lf::WindowExtras</name>
     <message>
         <source>Zum Bewegen des Fensters ziehen</source>
@@ -4924,6 +5337,73 @@
     <message>
         <source>Minimaler Fenstermodus aus</source>
         <translation>Minimalne okno wyłączone</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowIntegration</name>
+    <message>
+        <source>Comics: von rechts nach links lesen (← = weiter)</source>
+        <translation>Komiksy: czytanie od prawej do lewej (← = dalej)</translation>
+    </message>
+    <message>
+        <source>Comics: von links nach rechts lesen</source>
+        <translation>Komiksy: czytanie od lewej do prawej</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Tekst na żywo nie jest dostępny na tym Macu.</translation>
+    </message>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Tekst na żywo jest wyłączony w ustawieniach.</translation>
+    </message>
+    <message>
+        <source>Live Text an – Text im Bild auswählen und kopieren</source>
+        <translation>Tekst na żywo włączony – zaznacz i kopiuj tekst na obrazie</translation>
+    </message>
+    <message>
+        <source>Live Text aus</source>
+        <translation>Tekst na żywo wyłączony</translation>
+    </message>
+    <message>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <translation>Tekst na żywo jest niedostępny podczas wyświetlania HDR – przełącz na SDR za pomocą ⇧⌘H.</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Nie otwarto żadnego obrazu.</translation>
+    </message>
+    <message>
+        <source>Quick Look ist nicht verfügbar.</source>
+        <translation>Szybki podgląd jest niedostępny.</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Ustaw jako tło biurka</translation>
+    </message>
+    <message>
+        <source>„%1“ als Schreibtischhintergrund festlegen?</source>
+        <translation>Ustawić „%1” jako tło biurka?</translation>
+    </message>
+    <message>
+        <source>Auf allen Bildschirmen</source>
+        <translation>Na wszystkich ekranach</translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation>Ustaw</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Anuluj</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festgelegt</source>
+        <translation>Ustawiono jako tło biurka</translation>
+    </message>
+    <message>
+        <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
+        <translation>Nie można zmienić tła biurka: %1</translation>
     </message>
 </context>
 <context>

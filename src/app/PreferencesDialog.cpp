@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "PreferencesDialog.h"
 
+#include "CustomActionsUi.h"
 #include "LanguageChooser.h"
 #include "PreferencesExtras.h"
 #include "SystemSymbols.h"
@@ -239,9 +240,11 @@ QStringList PreferencesDialog::sectionKeys(int section) const {
     case Rating:
         return prefs::ratingPageKeys();
     case Formats:
-        return {key::RawEmbeddedOnly, key::PairRawJpeg};
+        return {key::RawEmbeddedOnly, key::PairRawJpeg, key::ArchiveRightToLeft};
     case Advanced:
-        return {key::MemoryBudgetMB, key::PrefetchAhead, key::PrefetchBehind};
+        // The custom actions themselves are the user's data: never reset with the section.
+        return {key::MemoryBudgetMB, key::PrefetchAhead, key::PrefetchBehind, key::LiveTextEnabled,
+                key::CustomActionTimeoutSec};
     default:
         return {};
     }
@@ -811,6 +814,15 @@ QWidget* PreferencesDialog::buildFormats() {
                               "Hinweis „RAW+JPEG“). Bewerten, Verschieben und Löschen betreffen beide "
                               "Dateien; „RAW anzeigen“ wechselt zur RAW-Datei."),
                            w));
+    // F-OPEN-10 (M4): archives and PDF documents are browsed like folders.
+    v->addSpacing(8);
+    v->addWidget(
+        new QLabel(tr("Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner."), w));
+    v->addWidget(
+        bind.check(key::ArchiveRightToLeft, tr("Comics (CBZ, CBR, CB7) von rechts nach links lesen"), w));
+    v->addWidget(helpLabel(tr("Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur "
+                              "nächsten Seite."),
+                           w));
     return w;
 }
 
@@ -828,6 +840,31 @@ QWidget* PreferencesDialog::buildAdvanced() {
     form->addRow(tr("Bilder im Voraus laden:"), bind.spin(key::PrefetchAhead, 0, 20, QString(), perf));
     form->addRow(tr("Bilder zurück behalten:"), bind.spin(key::PrefetchBehind, 0, 20, QString(), perf));
     v->addWidget(perf);
+
+    // F-MAC-06 (M4): Live Text / Visual Look Up through VisionKit, on demand only.
+    auto* mac = new QGroupBox(tr("Live Text"), w);
+    auto* macLayout = new QVBoxLayout(mac);
+    macLayout->addWidget(
+        bind.check(key::LiveTextEnabled, tr("Live Text und Motiv freistellen erlauben (⇧⌘L)"), mac));
+    macLayout->addWidget(
+        helpLabel(tr("Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – "
+                     "auf diesem Mac, ohne Netz."),
+                  mac));
+    v->addWidget(mac);
+
+    // F-FILE-10 (M4): custom actions.
+    auto* actions = new QGroupBox(tr("Eigene Aktionen"), w);
+    auto* actionsLayout = new QVBoxLayout(actions);
+    actionsLayout->addWidget(
+        helpLabel(tr("Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild "
+                     "als Argument. Menü: Ablage → Eigene Aktionen."),
+                  actions));
+    actionsLayout->addWidget(prefs::createCustomActionsEditor(actions));
+    auto* timeoutRow = new QFormLayout;
+    timeoutRow->addRow(tr("Abbrechen nach:"),
+                       bind.spin(key::CustomActionTimeoutSec, 1, 3600, tr(" s"), actions));
+    actionsLayout->addLayout(timeoutRow);
+    v->addWidget(actions);
 
     auto* io = new QGroupBox(tr("Einstellungen sichern"), w);
     auto* row = new QHBoxLayout(io);

@@ -128,6 +128,12 @@ const Registry& registry() {
         b(key::SlideshowCrossfade, true);
         s(key::RotationSaveStrategy, "exif", {"exif", "lossless"});
         b(key::KeepModificationDate, false);
+        // M4 (F-OPEN-10, F-MAC-06, F-FILE-09/10)
+        b(key::ArchiveRightToLeft, false);
+        b(key::LiveTextEnabled, true);
+        b(key::WallpaperAllScreens, false);
+        s(key::CustomActions, "[]", {});
+        i(key::CustomActionTimeoutSec, 60, 1, 3600);
         // Input (4.14)
         b(key::WheelInverted, false);
         i(key::WheelStepsPerImage, 1, 1, 5);

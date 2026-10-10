@@ -10,4 +10,12 @@
 "Bild (sonstige)" = "이미지(기타)";
 "Ordner" = "폴더";
 "WBMP-Bild" = "WBMP 이미지";
+"Comic-Archiv" = "만화 아카이브";
+"Archiv" = "아카이브";
+"PDF-Dokument" = "PDF 문서";
+"RAR-Archiv" = "RAR 아카이브";
+"7-Zip-Archiv" = "7-Zip 아카이브";
+"Comic-Archiv (ZIP)" = "만화 아카이브(ZIP)";
+"Comic-Archiv (RAR)" = "만화 아카이브(RAR)";
+"Comic-Archiv (7z)" = "만화 아카이브(7z)";
 "NSHumanReadableCopyright" = "© 2026 brokoskokoli 및 기여자. 라이선스: GPL-3.0-or-later.";

@@ -10,4 +10,12 @@
 "Bild (sonstige)" = "影像（其他）";
 "Ordner" = "檔案夾";
 "WBMP-Bild" = "WBMP 影像";
+"Comic-Archiv" = "漫畫封存檔";
+"Archiv" = "封存檔";
+"PDF-Dokument" = "PDF 文件";
+"RAR-Archiv" = "RAR 封存檔";
+"7-Zip-Archiv" = "7-Zip 封存檔";
+"Comic-Archiv (ZIP)" = "漫畫封存檔（ZIP）";
+"Comic-Archiv (RAR)" = "漫畫封存檔（RAR）";
+"Comic-Archiv (7z)" = "漫畫封存檔（7z）";
 "NSHumanReadableCopyright" = "© 2026 brokoskokoli 與貢獻者。授權：GPL-3.0-or-later。";

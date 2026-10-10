@@ -157,6 +157,29 @@
     </message>
 </context>
 <context>
+    <name>lf::Archive</name>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>아카이브에 ‘%1’이(가) 없습니다.</translation>
+    </message>
+    <message>
+        <source>Dieses Archivformat wird nicht unterstützt.</source>
+        <translation>이 아카이브 형식은 지원되지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist zu groß.</source>
+        <translation>아카이브의 이미지가 너무 큽니다.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist beschädigt oder unvollständig.</source>
+        <translation>아카이브가 손상되었거나 불완전합니다.</translation>
+    </message>
+    <message>
+        <source>Das Archiv enthält keine Bilder.</source>
+        <translation>아카이브에 이미지가 없습니다.</translation>
+    </message>
+</context>
+<context>
     <name>lf::CollectionExtras</name>
     <message numerus="yes">
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
@@ -228,6 +251,13 @@
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ContainerPolicy</name>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <translation>아카이브와 PDF 문서의 이미지는 보기 전용입니다 – 휴지통, 이름 변경, 이동, 평가를 사용할 수 없습니다.</translation>
     </message>
 </context>
 <context>
@@ -356,6 +386,189 @@
         <translation>
             <numerusform>이미지 %n개를 ‘_Rejected’로 이동함</numerusform>
         </translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActions</name>
+    <message>
+        <source>Die Aktion braucht einen Namen.</source>
+        <translation>동작에 이름이 필요합니다.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht einen Befehl.</source>
+        <translation>동작에 명령이 필요합니다.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht den Namen eines Kurzbefehls.</source>
+        <translation>동작에 단축어 이름이 필요합니다.</translation>
+    </message>
+    <message>
+        <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
+        <translation>단축어 이름은 ‘-’로 시작할 수 없습니다.</translation>
+    </message>
+    <message numerus="yes">
+        <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
+        <translation>
+            <numerusform>동작이 %n초 후 중단되었습니다.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Die Aktion wurde abgebrochen.</source>
+        <translation>동작이 중단되었습니다.</translation>
+    </message>
+    <message>
+        <source>Die Aktion endete mit Fehlercode %1.</source>
+        <translation>동작이 오류 코드 %1(으)로 끝났습니다.</translation>
+    </message>
+    <message>
+        <source>Die Kurzbefehle-App konnte nicht gestartet werden.</source>
+        <translation>단축어 앱을 시작할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Der Befehl konnte nicht gestartet werden.</source>
+        <translation>명령을 시작할 수 없습니다.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsEditor</name>
+    <message>
+        <source>Eigene Aktion</source>
+        <translation>사용자 동작</translation>
+    </message>
+    <message>
+        <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
+        <translation>단축어 앱의 단축어 이름입니다. 파일을 입력으로 받습니다.</translation>
+    </message>
+    <message>
+        <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
+        <translation>/bin/sh로 실행됩니다. 파일은 &quot;$1&quot;에 있습니다(모든 파일: &quot;$@&quot;). 예: open -a Preview &quot;$1&quot;. 경로가 명령에 삽입되지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation>이름:</translation>
+    </message>
+    <message>
+        <source>Art:</source>
+        <translation>종류:</translation>
+    </message>
+    <message>
+        <source>Befehl:</source>
+        <translation>명령:</translation>
+    </message>
+    <message>
+        <source>Taste:</source>
+        <translation>키:</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>이름</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>종류</translation>
+    </message>
+    <message>
+        <source>Befehl</source>
+        <translation>명령</translation>
+    </message>
+    <message>
+        <source>Taste</source>
+        <translation>키</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 ist schon belegt (%3).</source>
+        <translation>‘%1’: %2은(는) 이미 사용 중입니다(%3).</translation>
+    </message>
+    <message>
+        <source>Hinzufügen …</source>
+        <translation>추가…</translation>
+    </message>
+    <message>
+        <source>Bearbeiten …</source>
+        <translation>편집…</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>제거</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsManager</name>
+    <message>
+        <source>Kurzbefehl</source>
+        <translation>단축어</translation>
+    </message>
+    <message>
+        <source>Shell-Befehl</source>
+        <translation>셸 명령</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>열린 이미지가 없습니다.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktion ausführen</source>
+        <translation>사용자 동작 실행</translation>
+    </message>
+    <message>
+        <source>„%1“ zum ersten Mal ausführen?</source>
+        <translation>‘%1’을(를) 처음 실행하겠습니까?</translation>
+    </message>
+    <message>
+        <source>Kurzbefehl: %1</source>
+        <translation>단축어: %1</translation>
+    </message>
+    <message>
+        <source>Befehl: %1</source>
+        <translation>명령: %1</translation>
+    </message>
+    <message>
+        <source>Datei: %1</source>
+        <translation>파일: %1</translation>
+    </message>
+    <message>
+        <source>Ausführen</source>
+        <translation>실행</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>취소</translation>
+    </message>
+    <message>
+        <source>▶ %1: %2</source>
+        <translation>▶ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ läuft …</source>
+        <translation>‘%1’ 실행 중…</translation>
+    </message>
+    <message>
+        <source>✓ %1: fertig</source>
+        <translation>✓ %1: 완료</translation>
+    </message>
+    <message>
+        <source>✗ %1: %2</source>
+        <translation>✗ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ausgeführt</source>
+        <translation>‘%1’ 실행됨</translation>
+    </message>
+    <message>
+        <source>„%1“: %2</source>
+        <translation>‘%1’: %2</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>동작 기록</translation>
+    </message>
+    <message>
+        <source>Noch keine Aktion ausgeführt.</source>
+        <translation>아직 실행된 동작이 없습니다.</translation>
+    </message>
+    <message>
+        <source>Leeren</source>
+        <translation>지우기</translation>
     </message>
 </context>
 <context>
@@ -1606,6 +1819,26 @@
         <translation>폴더 지도</translation>
     </message>
     <message>
+        <source>Quick Look</source>
+        <translation>훑어보기</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>라이브 텍스트</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>데스크탑 사진으로 설정</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>동작 기록</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>만화를 오른쪽에서 왼쪽으로 읽기</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>없음</translation>
     </message>
@@ -2050,6 +2283,33 @@
     </message>
 </context>
 <context>
+    <name>lf::LiveText</name>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>라이브 텍스트가 설정에서 꺼져 있습니다.</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>이 Mac에서는 라이브 텍스트를 사용할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Live Text: Bild wird analysiert …</source>
+        <translation>라이브 텍스트: 이미지 분석 중…</translation>
+    </message>
+    <message>
+        <source>Live Text: Text und Motive auswählbar</source>
+        <translation>라이브 텍스트: 텍스트와 피사체 선택 가능</translation>
+    </message>
+    <message>
+        <source>Live Text: kein Text gefunden</source>
+        <translation>라이브 텍스트: 텍스트를 찾지 못함</translation>
+    </message>
+    <message>
+        <source>Live Text: Analyse fehlgeschlagen (%1)</source>
+        <translation>라이브 텍스트: 분석 실패(%1)</translation>
+    </message>
+</context>
+<context>
     <name>lf::LosslessTransform</name>
     <message>
         <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
@@ -2302,6 +2562,17 @@
         <source>%1 %</source>
         <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
         <translation>%1%</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MacIntegration</name>
+    <message>
+        <source>Es wurden keine Dateien übergeben.</source>
+        <translation>전달된 파일이 없습니다.</translation>
+    </message>
+    <message>
+        <source>Der Bildschirm ist nicht mehr da.</source>
+        <translation>디스플레이가 더 이상 연결되어 있지 않습니다.</translation>
     </message>
 </context>
 <context>
@@ -2791,6 +3062,38 @@
         <source>Belichtungsregler einblenden</source>
         <translation>노출 슬라이더 표시</translation>
     </message>
+    <message>
+        <source>Quick Look</source>
+        <translation>훑어보기</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen …</source>
+        <translation>데스크탑 사진으로 설정…</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>사용자 동작</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>라이브 텍스트</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>만화를 오른쪽에서 왼쪽으로 읽기</translation>
+    </message>
+    <message>
+        <source>Keine – in den Einstellungen anlegen</source>
+        <translation>없음 – 설정에서 만들기</translation>
+    </message>
+    <message>
+        <source>Protokoll …</source>
+        <translation>기록…</translation>
+    </message>
+    <message>
+        <source>Aktionen bearbeiten …</source>
+        <translation>동작 편집…</translation>
+    </message>
 </context>
 <context>
     <name>lf::MapPreviewController</name>
@@ -3202,6 +3505,37 @@
     <message>
         <source>Abbrechen</source>
         <translation>취소</translation>
+    </message>
+</context>
+<context>
+    <name>lf::PdfDocument</name>
+    <message>
+        <source>Die Seite gibt es im PDF-Dokument nicht.</source>
+        <translation>PDF 문서에 해당 페이지가 없습니다.</translation>
+    </message>
+    <message>
+        <source>PDF-Dokumente werden auf diesem System nicht unterstützt.</source>
+        <translation>이 시스템에서는 PDF 문서를 지원하지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist beschädigt.</source>
+        <translation>PDF 문서가 손상되었습니다.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>파일이 없습니다.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <translation>PDF 문서가 암호로 보호되어 있습니다.</translation>
+    </message>
+    <message>
+        <source>Die Seite ist leer.</source>
+        <translation>페이지가 비어 있습니다.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für die Seite.</source>
+        <translation>페이지에 필요한 메모리가 부족합니다.</translation>
     </message>
 </context>
 <context>
@@ -3873,6 +4207,18 @@
         <translation>이름이 같은 RAW 및 JPEG 파일은 하나의 이미지(‘RAW+JPEG’ 표시가 있는 JPEG)로 나타납니다. 등급 지정, 이동, 삭제는 두 파일 모두에 적용되며 ‘RAW 보기’로 RAW 파일로 전환합니다.</translation>
     </message>
     <message>
+        <source>Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner.</source>
+        <translation>아카이브(ZIP/CBZ, RAR/CBR, 7z/CB7)와 PDF 문서는 폴더처럼 열립니다.</translation>
+    </message>
+    <message>
+        <source>Comics (CBZ, CBR, CB7) von rechts nach links lesen</source>
+        <translation>만화(CBZ, CBR, CB7)를 오른쪽에서 왼쪽으로 읽기</translation>
+    </message>
+    <message>
+        <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
+        <translation>만화용: ←는 다음, →는 이전 페이지. 스페이스와 Page Down은 항상 다음 페이지로 이동합니다.</translation>
+    </message>
+    <message>
         <source>Leistung</source>
         <translation>성능</translation>
     </message>
@@ -3895,6 +4241,34 @@
     <message>
         <source>Bilder zurück behalten:</source>
         <translation>이전 이미지 유지:</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>라이브 텍스트</translation>
+    </message>
+    <message>
+        <source>Live Text und Motiv freistellen erlauben (⇧⌘L)</source>
+        <translation>라이브 텍스트 및 피사체 추출 허용(⇧⌘L)</translation>
+    </message>
+    <message>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <translation>창에서 라이브 텍스트를 켤 때만 이 Mac에서 네트워크 없이 이미지를 분석합니다.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>사용자 동작</translation>
+    </message>
+    <message>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <translation>셸 명령 또는 단축어가 현재 이미지를 인수로 받습니다. 메뉴: 파일 → 사용자 동작.</translation>
+    </message>
+    <message>
+        <source>Abbrechen nach:</source>
+        <translation>중단 시간:</translation>
+    </message>
+    <message>
+        <source> s</source>
+        <translation> s</translation>
     </message>
     <message>
         <source>Einstellungen sichern</source>
@@ -4636,6 +5010,10 @@
         <translation>열기…</translation>
     </message>
     <message>
+        <source>„%1“ kann nicht geöffnet werden</source>
+        <translation>‘%1’을(를) 열 수 없습니다</translation>
+    </message>
+    <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
         <translation>파일이 손상되었거나 지원되지 않는 포맷입니다.</translation>
     </message>
@@ -4834,6 +5212,39 @@
     </message>
 </context>
 <context>
+    <name>lf::VirtualPath</name>
+    <message>
+        <source>Seite %1</source>
+        <extracomment>one page of a PDF document browsed like a folder (F-OPEN-10)</extracomment>
+        <translation>%1페이지</translation>
+    </message>
+    <message>
+        <source>%1 › %2</source>
+        <extracomment>archive or PDF and the image inside it, e.g. &quot;Band 1.cbz › 012.jpg&quot; (F-OPEN-10)</extracomment>
+        <translation>%1 › %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Wallpaper</name>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>열린 이미지가 없습니다.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <translation>아카이브의 이미지와 PDF 페이지는 데스크탑 사진으로 설정할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Es wurde kein Bildschirm gefunden.</source>
+        <translation>디스플레이를 찾을 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
+        <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
     <name>lf::WindowExtras</name>
     <message>
         <source>Zum Bewegen des Fensters ziehen</source>
@@ -4878,6 +5289,73 @@
     <message>
         <source>Minimaler Fenstermodus aus</source>
         <translation>최소 윈도우 끔</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowIntegration</name>
+    <message>
+        <source>Comics: von rechts nach links lesen (← = weiter)</source>
+        <translation>만화: 오른쪽에서 왼쪽으로 읽기(← = 다음)</translation>
+    </message>
+    <message>
+        <source>Comics: von links nach rechts lesen</source>
+        <translation>만화: 왼쪽에서 오른쪽으로 읽기</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>이 Mac에서는 라이브 텍스트를 사용할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>라이브 텍스트가 설정에서 꺼져 있습니다.</translation>
+    </message>
+    <message>
+        <source>Live Text an – Text im Bild auswählen und kopieren</source>
+        <translation>라이브 텍스트 켬 – 이미지의 텍스트를 선택하고 복사하세요</translation>
+    </message>
+    <message>
+        <source>Live Text aus</source>
+        <translation>라이브 텍스트 끔</translation>
+    </message>
+    <message>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <translation>HDR 표시 중에는 라이브 텍스트를 사용할 수 없습니다 – ⇧⌘H로 SDR로 전환하세요.</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>열린 이미지가 없습니다.</translation>
+    </message>
+    <message>
+        <source>Quick Look ist nicht verfügbar.</source>
+        <translation>훑어보기를 사용할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>데스크탑 사진으로 설정</translation>
+    </message>
+    <message>
+        <source>„%1“ als Schreibtischhintergrund festlegen?</source>
+        <translation>‘%1’을(를) 데스크탑 사진으로 설정하겠습니까?</translation>
+    </message>
+    <message>
+        <source>Auf allen Bildschirmen</source>
+        <translation>모든 디스플레이</translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation>설정</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>취소</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festgelegt</source>
+        <translation>데스크탑 사진으로 설정됨</translation>
+    </message>
+    <message>
+        <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
+        <translation>데스크탑 사진을 변경할 수 없습니다: %1</translation>
     </message>
 </context>
 <context>
