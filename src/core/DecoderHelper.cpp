@@ -148,6 +148,7 @@ struct HelperProcess {
         for (const QString& extra : o.extraEnvironment)
             envStore.push_back(extra.toLocal8Bit());
         std::vector<char*> envp;
+        envp.reserve(envStore.size() + 1);
         for (QByteArray& e : envStore)
             envp.push_back(e.data());
         envp.push_back(nullptr);

@@ -29,12 +29,14 @@ QString defaultAppPendingMessage() {
 }
 
 void registerDefaultApp(const QStringList& types, const std::function<bool(const QString&)>& isKnownType,
-                        SetDefaultApp setter, int pendingAfterMs, QObject* context,
+                        const SetDefaultApp& setter, int pendingAfterMs, QObject* context,
+                        // By value: the dispatch blocks below keep copies (a reference would dangle).
+                        // NOLINTNEXTLINE(performance-unnecessary-value-param)
                         Shell::DefaultViewerDone done, Shell::DefaultViewerPending pending) {
     auto state = std::make_shared<Registration>();
     QPointer<QObject> guard(context);
     // Runs `fn` on the thread of `context`, unless it is gone.
-    auto post = [guard](std::function<void()> fn) {
+    auto post = [guard](const std::function<void()>& fn) {
         if (QObject* c = guard.data())
             QMetaObject::invokeMethod(
                 c,

@@ -309,7 +309,7 @@ inline QByteArray writeDsStore(const QVector<DsStoreRecord>& records, int record
     QVector<QByteArray> contents = {rootBlock, dsdb};
     contents.append(nodes);
     for (int b = 0; b < blockCount; ++b)
-        file.replace(qsizetype(4 + offsets[b]), contents[b].size(), contents[b]);
+        file.replace(qsizetype(4) + qsizetype(offsets[b]), contents[b].size(), contents[b]);
     return file;
 }
 

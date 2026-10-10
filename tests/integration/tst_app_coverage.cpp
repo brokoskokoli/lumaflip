@@ -100,7 +100,8 @@ class TstAppCoverage : public QObject {
     // Triggers a menu command the way its ⌘ shortcut does, after checking the shortcut.
     void menuShortcut(Action a, const QKeySequence& seq) {
         QAction* act = app->menu()->action(a);
-        QVERIFY2(act, qPrintable(actionId(a)));
+        if (!act)
+            QFAIL(qPrintable(actionId(a)));
         QVERIFY2(act->shortcuts().contains(seq), qPrintable(actionId(a) + " " + seq.toString()));
         QVERIFY(act->isEnabled());
         act->trigger();
@@ -282,6 +283,7 @@ private slots:
         const bool loaded = w && waitLoaded(w);
         const bool shown = w && waitShown(w, locked + "/a.png");
         ::chmod(QFile::encodeName(locked).constData(), 0755);
+        QVERIFY(w);
         QVERIFY(loaded && shown);
         QVERIFY(waitExposed(w));
         QVERIFY(w->accessHint()->isVisible());

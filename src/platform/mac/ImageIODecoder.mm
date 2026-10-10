@@ -699,7 +699,8 @@ bool ImageIODecoder::canDecode(const QString& path, const QByteArray& header) co
         if (!type || !readableTypes().contains(QString::fromNSString(type.identifier)))
             return false;
         UTType* raw = [UTType typeWithIdentifier:@"public.camera-raw-image"];
-        return [type conformsToType:raw] || [type.identifier isEqualToString:@"com.truevision.tga-image"];
+        return (raw && [type conformsToType:raw]) ||
+               [type.identifier isEqualToString:@"com.truevision.tga-image"];
     }
 }
 

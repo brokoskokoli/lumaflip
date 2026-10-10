@@ -744,6 +744,7 @@ private slots:
         const bool loaded = w && waitLoaded(w);
         const bool shown = w && waitShown(w, locked + "/b.png");
         ::chmod(QFile::encodeName(locked).constData(), 0755);
+        QVERIFY(w);
         QVERIFY(loaded);
         QVERIFY(shown); // no error state: the opened file is shown
         QCOMPARE(w->collection()->count(), 1);

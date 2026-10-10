@@ -59,7 +59,7 @@ public:
     RecordingTrash() { QDir().mkpath(m_dir.path()); }
     std::optional<QString> moveToTrash(const QString& path, QString* error) override {
         QThread::msleep(ulong(delayMs.load()));
-        const QString target =
+        QString target =
             m_dir.filePath(QStringLiteral("%1-%2").arg(++m_counter).arg(QFileInfo(path).fileName()));
         if (!QFileInfo::exists(path) || !QFile::rename(path, target)) {
             if (error)
