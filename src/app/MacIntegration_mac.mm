@@ -16,7 +16,8 @@
 #include <QWindow>
 
 #import <AppKit/AppKit.h>
-#import <Quartz/Quartz.h>
+#import <Quartz/Quartz.h> // declarations only: Quartz is loaded on first use (panelClass())
+#include <dlfcn.h>
 #include <objc/runtime.h>
 
 using lf::macint::ServiceContext;
@@ -201,18 +202,49 @@ LFWindowResponder* responderFor(QWidget* widget, bool create) {
 
 } // namespace
 
+namespace {
+
+// QLPreviewPanel without linking Quartz (P-01: the umbrella framework costs startup time).
+// Loaded on first use; nil if it cannot be loaded.
+Class panelClass() {
+    static Class cls = [] {
+        if (!dlopen("/System/Library/Frameworks/Quartz.framework/Quartz", RTLD_LAZY | RTLD_LOCAL))
+            return Class(nil);
+        return NSClassFromString(@"QLPreviewPanel");
+    }();
+    return cls;
+}
+
+// The shared panel if it exists (without creating it or loading Quartz).
+QLPreviewPanel* existingPanel() {
+    static bool loaded = false;
+    if (!loaded) {
+        // Not loaded yet: no panel can exist.
+        if (!dlopen("/System/Library/Frameworks/Quartz.framework/Quartz", RTLD_LAZY | RTLD_NOLOAD))
+            return nil;
+        loaded = true;
+    }
+    Class cls = panelClass();
+    return cls && [cls sharedPreviewPanelExists] ? [cls sharedPreviewPanel] : nil;
+}
+
+} // namespace
+
 bool quickLookToggle(QWidget* window, const QString& path, std::function<void(int)> step) {
     @autoreleasepool {
         LFWindowResponder* r = responderFor(window, true);
         if (!r)
             return false;
-        if ([QLPreviewPanel sharedPreviewPanelExists] && [QLPreviewPanel sharedPreviewPanel].isVisible) {
-            [[QLPreviewPanel sharedPreviewPanel] orderOut:nil];
+        if (QLPreviewPanel* open = existingPanel(); open && open.isVisible) {
+            [open orderOut:nil];
             return true;
         }
+        Class cls = panelClass();
+        if (!cls)
+            return false;
         r.previewURL = [NSURL fileURLWithPath:path.toNSString()];
         r->step = std::move(step);
-        QLPreviewPanel* panel = [QLPreviewPanel sharedPreviewPanel];
+        QLPreviewPanel* panel = [cls sharedPreviewPanel];
         [panel updateController];
         [panel makeKeyAndOrderFront:nil];
         return true;
@@ -225,18 +257,19 @@ void quickLookFollow(QWidget* window, const QString& path) {
         if (!r || !r.controlsPanel)
             return;
         r.previewURL = path.isEmpty() ? nil : [NSURL fileURLWithPath:path.toNSString()];
-        if ([QLPreviewPanel sharedPreviewPanelExists])
-            [[QLPreviewPanel sharedPreviewPanel] reloadData];
+        if (QLPreviewPanel* panel = existingPanel())
+            [panel reloadData];
     }
 }
 
 bool quickLookVisible() {
-    return [QLPreviewPanel sharedPreviewPanelExists] && [QLPreviewPanel sharedPreviewPanel].isVisible;
+    QLPreviewPanel* panel = existingPanel();
+    return panel && panel.isVisible;
 }
 
 void quickLookClose() {
-    if ([QLPreviewPanel sharedPreviewPanelExists])
-        [[QLPreviewPanel sharedPreviewPanel] orderOut:nil];
+    if (QLPreviewPanel* panel = existingPanel())
+        [panel orderOut:nil];
 }
 
 void installServiceResponder(QWidget* window, ServiceContext context, ServiceImage image) {

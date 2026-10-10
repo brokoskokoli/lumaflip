@@ -89,6 +89,21 @@ jobs:
           fi
       - name: All checks (build, tests, format, SPDX, spec coverage, benchmarks, clang-tidy)
         run: tools/check.sh --stage "$LF_STAGE" --format-all --tidy
+      - name: Startup trace (P-01 diagnostics)
+        # The breakdown behind P_01_ProcessLaunchToFirstFrame24MP: six launches with the
+        # benchmark's first-frame hook and the startup trace (LF_TRACE lines on stderr).
+        if: always()
+        run: |
+          app=build/check/src/Lumaflip.app/Contents/MacOS/Lumaflip
+          img="$PWD/tests/corpus/generated/big_24mp.jpg"
+          if [[ ! -x "$app" || ! -f "$img" ]]; then echo "app or $img missing - skipped"; exit 0; fi
+          otool -L "$app"
+          for i in 1 2 3 4 5 6; do
+            echo "--- launch $i"
+            env -u QT_QPA_PLATFORM LF_EXIT_AFTER_FIRST_FRAME=1 LF_TRACE_STARTUP=1 \
+              perl -e 'alarm 20; exec @ARGV' "$app" "$img" 2>&1 \
+              | grep -E 'LF_(TRACE|MAIN_MS|FIRST_FRAME_MS)' || true
+          done
       - name: Upload test logs
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
