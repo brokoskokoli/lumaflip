@@ -646,7 +646,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File …).</source>
+        <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
@@ -1385,13 +1385,9 @@
 </context>
 <context>
     <name>lf::FolderMapView</name>
-    <message numerus="yes">
-        <source>Karten sind unter Windows nicht verfügbar (%n Foto(s) mit Ortsangabe).</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+    <message>
+        <source>Karten sind unter Windows nicht verfügbar. Fotos mit Ortsangabe in diesem Ordner: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

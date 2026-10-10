@@ -111,7 +111,7 @@ QString validate(const CustomAction& a) {
     if (cmdline::isBatchFile(argv.first()))
         return Tr::tr("Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen "
                       "als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript "
-                      "(powershell -File …).");
+                      "(powershell -File Skript.ps1).");
 #endif
     return {};
 }

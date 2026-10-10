@@ -219,16 +219,32 @@ jobs:
         uses: ilammy/msvc-dev-cmd@0b201ec74fa43914dc39ae48a89fd1d8cb592756 # v1.13.0
         with:
           arch: x64
-      - name: Install Qt
-        uses: jurplel/install-qt-action@a9c63c7c123f3069cff414e7e482d95dfa9d8125 # v4.4.1
+      - name: Restore Qt
+        id: qt-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
-          # Pinned: aqt lists a new patch release for Windows later than for Linux.
-          version: "6.11.2"
-          host: windows
-          target: desktop
-          arch: win64_msvc2022_64
-          modules: qtimageformats qtshadertools
-          cache: true
+          path: ${{ runner.temp }}/Qt
+          key: qt-win-6.11.2-msvc2022_64-${{ hashFiles('tools/fetch_qt_windows.py') }}
+      - name: Install Qt 6.11.2 (msvc2022_64)
+        # install-qt-action/aqtinstall do not read the per-architecture repository layout of
+        # Qt 6.11 for Windows yet: tools/fetch_qt_windows.py (official repository, SHA-1 checked).
+        run: |
+          $qtdir = Join-Path $env:RUNNER_TEMP "Qt"
+          if (-not (Test-Path "$qtdir\6.11.2\msvc2022_64\bin\Qt6Core.dll")) {
+            python tools/fetch_qt_windows.py 6.11.2 $qtdir
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+          $prefix = "$qtdir\6.11.2\msvc2022_64"
+          "QT_ROOT_DIR=$prefix" >> $env:GITHUB_ENV
+          "CMAKE_PREFIX_PATH=$prefix" >> $env:GITHUB_ENV
+          "$prefix\bin" >> $env:GITHUB_PATH
+      - name: Save Qt
+        if: steps.qt-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ runner.temp }}/Qt
+          key: qt-win-6.11.2-msvc2022_64-${{ hashFiles('tools/fetch_qt_windows.py') }}
+        continue-on-error: true
       - name: vcpkg (pinned)
         run: |
           $root = Join-Path $env:RUNNER_TEMP "vcpkg"

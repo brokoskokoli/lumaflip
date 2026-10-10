@@ -29,6 +29,9 @@
 #ifdef Q_OS_UNIX
 #include <sys/time.h>
 #endif
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
 
 using namespace lf;
 using lf::test::waitUntil;
@@ -55,6 +58,24 @@ bool touchFolder(const QString& folder, int secondsAhead) {
     times[0].tv_sec += secondsAhead;
     times[1] = times[0];
     return ::utimes(QFile::encodeName(folder).constData(), times) == 0;
+#elif defined(Q_OS_WIN)
+    // SetFileTime on the folder itself (QFile cannot open folders on Windows).
+    const QString native = QDir::toNativeSeparators(folder);
+    HANDLE h = CreateFileW(reinterpret_cast<LPCWSTR>(native.utf16()), FILE_WRITE_ATTRIBUTES,
+                           FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING,
+                           FILE_FLAG_BACKUP_SEMANTICS, nullptr);
+    if (h == INVALID_HANDLE_VALUE)
+        return false;
+    FILETIME now{};
+    GetSystemTimeAsFileTime(&now);
+    ULARGE_INTEGER t{};
+    t.LowPart = now.dwLowDateTime;
+    t.HighPart = now.dwHighDateTime;
+    t.QuadPart += quint64(qint64(secondsAhead) * 10000000);
+    FILETIME ft{t.LowPart, t.HighPart};
+    const bool ok = SetFileTime(h, nullptr, &ft, &ft) != 0;
+    CloseHandle(h);
+    return ok;
 #else
     Q_UNUSED(folder);
     Q_UNUSED(secondsAhead);

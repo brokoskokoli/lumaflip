@@ -54,9 +54,9 @@ private:
         if (!m_label)
             return;
         m_label->setText(QCoreApplication::translate("lf::FolderMapView",
-                                                     "Karten sind unter Windows nicht verfügbar "
-                                                     "(%n Foto(s) mit Ortsangabe).",
-                                                     nullptr, m_count));
+                                                     "Karten sind unter Windows nicht verfügbar. Fotos mit "
+                                                     "Ortsangabe in diesem Ordner: %1")
+                             .arg(m_count));
     }
 
     QPointer<QWidget> m_host;
