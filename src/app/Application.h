@@ -115,7 +115,7 @@ public:
     bool hasSession() const;
     void setSessionEnabled(bool enabled); // false: neither restored nor saved (benchmarks)
 
-    QStringList recentPaths() const; // F-OPEN-11 (simple)
+    QStringList recentPaths() const; // F-OPEN-11, see RecentItems
     void clearRecentPaths();
 
     ImageProvider& provider() const;
@@ -156,7 +156,7 @@ private:
     // `isFolder`: paths is one folder. `reusedOrCreated` tells whether the window was
     // created (or the empty start window was reused) for this request.
     ViewerWindow* openInWindow(const QStringList& paths, bool isFolder, bool* reusedOrCreated = nullptr);
-    void addRecent(const QStringList& paths);
+    void addRecent(const QStringList& files, const QStringList& folders);
     void flushOpenBurst();
     void openClassified(const ClassifiedPaths& c, ViewerWindow* preferred = nullptr);
     void restoreSession(); // checks the saved windows' files (worker)

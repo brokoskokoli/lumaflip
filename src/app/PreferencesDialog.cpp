@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "PreferencesDialog.h"
 
+#include "PreferencesExtras.h"
 #include "core/Settings.h"
 
 #include <QAction>
@@ -198,10 +199,10 @@ void PreferencesDialog::showSection(int section) {
 QStringList PreferencesDialog::sectionKeys(int section) const {
     switch (section) {
     case General:
-        return {key::OpenBehavior, key::RestoreWindows, key::ConfirmTrash};
+        return {key::OpenBehavior, key::RestoreWindows, key::ConfirmTrash, key::EditorApp};
     case Window:
-        return {key::FitWindowToImage, key::TitleShowFolder, key::ShowStatusBar, key::ShowInfoPanel,
-                key::ShowFilmstrip};
+        return {key::FitWindowToImage, key::TitleShowFolder, key::ShowStatusBar,
+                key::ShowInfoPanel,    key::ShowFilmstrip,   key::AllowTabs};
     case Display:
         return {key::Background, key::ZoomMode, key::UpscaleFilter, key::ActualSizeUnit};
     case Input:
@@ -341,6 +342,9 @@ QWidget* PreferencesDialog::buildGeneral() {
     form->addRow(QString(), bind.check(key::ConfirmTrash, tr("Vor dem Löschen nachfragen"), w));
     form->addRow(QString(),
                  helpLabel(tr("Aus: ⌘⌫ legt das Bild sofort in den Papierkorb, ⌘Z holt es zurück."), w));
+    // F-FILE-05
+    form->addRow(tr("Editor:"), prefs::createEditorChooser(w));
+    form->addRow(QString(), helpLabel(tr("Für „In Standard-Editor öffnen“ (Taste E)."), w));
     return w;
 }
 
@@ -359,6 +363,13 @@ QWidget* PreferencesDialog::buildWindow() {
     film->setEnabled(false);
     form->addRow(QString(), info);
     form->addRow(QString(), film);
+    // F-WIN-05
+    form->addRow(tr("Tabs:"),
+                 bind.check(key::AllowTabs, tr("Fenster als Tabs öffnen (macOS-Tabs erlauben)"), w));
+    form->addRow(QString(),
+                 helpLabel(tr("Neue Fenster erscheinen dann als Tab im vordersten Fenster; "
+                              "Fenster → „Alle Fenster zusammenführen“ fasst offene Fenster zusammen."),
+                           w));
     return w;
 }
 
@@ -656,12 +667,15 @@ QWidget* PreferencesDialog::buildNavigation() {
                  helpLabel(tr("Liest die Darstellungsoptionen des Ordners (.DS_Store) und die globalen "
                               "Finder-Einstellungen."),
                            w));
-    form->addRow(QString(), bind.check(key::FinderLiveQuery, tr("Vorderstes Finder-Fenster abfragen"), w));
+    // F-SORT-04: opt-in, explained before macOS asks for the Automation permission.
+    form->addRow(QString(), prefs::createLiveQueryCheck(w));
     form->addRow(
         QString(),
-        helpLabel(tr("Fragt per AppleScript die aktuelle Sortierung des Finder-Fensters ab. macOS bittet "
-                     "dafür einmalig um die Erlaubnis, den Finder zu steuern (Automatisierung)."),
-                  w));
+        helpLabel(
+            tr("Zeigt das vorderste Finder-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen "
+               "aktuelle Sortierung (auch noch nicht gespeicherte). macOS bittet dafür einmalig um die "
+               "Erlaubnis, den Finder zu steuern (Automation)."),
+            w));
     form->addRow(tr("Manuelle Sortierung:"),
                  bind.combo(key::ManualSortKey,
                             {"name", "dateModified", "dateCreated", "dateAdded", "dateCaptured", "size",

@@ -73,6 +73,8 @@ const Registry& registry() {
         r[QString::fromLatin1(key::RestoreWindows)].dynamicDefault = &restoreWindowsDefault;
         b(key::TitleShowFolder, false);
         b(key::ConfirmTrash, false);
+        s(key::EditorApp, "", {}); // F-FILE-05
+        b(key::AllowTabs, false);  // F-WIN-05
         s(key::Background, "dark", {"dark", "light", "system", "checker"}, true);
         s(key::ZoomMode, "fit", {"fit", "fitUpscale", "actual", "fillWidth", "fillHeight", "fill"});
         s(key::UpscaleFilter, "smooth", {"smooth", "nearest"});

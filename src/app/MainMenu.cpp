@@ -4,6 +4,8 @@
 #include "AboutDialog.h"
 #include "Application.h"
 #include "ImageView.h"
+#include "MenuExtras.h"
+#include "RecentItems.h"
 #include "ViewerWindow.h"
 #include "core/Collection.h"
 #include "core/FileOps.h"
@@ -111,6 +113,8 @@ QAction* MainMenu::addCommand(QMenu* menu, const QString& id, const QString& tex
 
 void MainMenu::build() {
     auto front = [this] { return m_app.frontWindow(); };
+    m_extras =
+        new MenuExtras(m_app, [this](const QString& id, QAction* act) { m_commands.insert(id, act); }, this);
 
     // ---- Ablage ----
     QMenu* file = m_bar->addMenu(tr("Ablage"));
@@ -131,6 +135,10 @@ void MainMenu::build() {
     add(file, Action::CloseAllWindows, tr("Alle schließen"));
     file->addSeparator();
     add(file, Action::RevealInFinder, tr("Im Finder zeigen"));
+    add(file, Action::Rename, tr("Umbenennen …")); // F-FILE-04
+    m_extras->addOpenWith(file);                   // F-FILE-05
+    add(file, Action::OpenInEditor, tr("In Standard-Editor öffnen"));
+    m_extras->addShare(file); // F-FILE-06
     add(file, Action::Trash, tr("In den Papierkorb legen"));
     file->addSeparator();
     connect(addCommand(file, QStringLiteral("makeDefault"), tr("Als Standard-App festlegen …")),
@@ -310,6 +318,8 @@ void MainMenu::build() {
                     w->isMaximized() ? w->showNormal() : w->showMaximized();
             });
     m_windowMenu->addSeparator();
+    m_extras->addWindowCommands(m_windowMenu); // F-WIN-04 Anordnen, F-WIN-05 Tabs
+    m_windowMenu->addSeparator();
     connect(addCommand(m_windowMenu, QStringLiteral("bringAllToFront"), tr("Alle nach vorne bringen")),
             &QAction::triggered, this, [this] {
                 for (ViewerWindow* w : m_app.windows())
@@ -333,18 +343,10 @@ void MainMenu::build() {
 }
 
 void MainMenu::rebuildRecent() {
-    m_recentMenu->clear();
-    const QStringList recent = m_app.recentPaths();
-    for (const QString& p : recent) {
-        QAction* act = m_recentMenu->addAction(QFileInfo(p).fileName());
-        act->setToolTip(p);
-        connect(act, &QAction::triggered, this, [this, p] { m_app.openPaths({p}); });
-    }
-    if (!recent.isEmpty())
-        m_recentMenu->addSeparator();
-    QAction* clear = m_recentMenu->addAction(tr("Liste löschen"));
-    clear->setEnabled(!recent.isEmpty());
-    connect(clear, &QAction::triggered, this, [this] { m_app.clearRecentPaths(); });
+    // F-OPEN-11: files and folders, newest first.
+    RecentItems::populateMenu(
+        m_recentMenu, [this](const QString& p) { m_app.openPaths({p}); },
+        [this] { m_app.clearRecentPaths(); });
 }
 
 void MainMenu::refreshShortcuts() {
@@ -371,12 +373,14 @@ void MainMenu::refreshState() {
                      Action::CopyImage,       Action::CopyPath,       Action::NextImage,
                      Action::PreviousImage,   Action::FirstImage,     Action::LastImage,
                      Action::JumpForward,     Action::JumpBackward,   Action::RotateLeft,
-                     Action::RotateRight,     Action::FlipHorizontal, Action::FlipVertical})
+                     Action::RotateRight,     Action::FlipHorizontal, Action::FlipVertical,
+                     Action::Rename,          Action::OpenInEditor})
         if (QAction* act = action(a))
             act->setEnabled(hasWindow);
     for (const QString& id : {QStringLiteral("minimize"), QStringLiteral("zoomWindow")})
         command(id)->setEnabled(hasWindow);
     action(Action::CloseAllWindows)->setEnabled(!m_app.windows().isEmpty());
+    m_extras->refreshState();
 
     Settings& st = Settings::instance();
     command(QStringLiteral("statusBar"))->setChecked(st.value(key::ShowStatusBar).toBool());

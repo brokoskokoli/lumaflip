@@ -13,10 +13,16 @@ TEST(SortSpec, F_SORT_05_DescribeFinderSources) {
               QString::fromUtf8("Wie Finder: Hinzugefügt am ↓"));
     EXPECT_EQ(describe({SortKey::Name, true, SortSource::FinderGlobal}),
               QString::fromUtf8("Wie Finder: Name ↑"));
-    EXPECT_EQ(describe({SortKey::Size, false, SortSource::FinderLive}),
-              QString::fromUtf8("Wie Finder: Größe ↓"));
     EXPECT_EQ(describe({SortKey::FinderIconPosition, true, SortSource::FinderDsStore}),
               QString::fromUtf8("Wie Finder: Symbolposition"));
+}
+
+// F-SORT-04: the order came from the front Finder window (opt-in live query).
+TEST(SortSpec, F_SORT_04_DescribeLiveSource) {
+    EXPECT_EQ(describe({SortKey::Size, false, SortSource::FinderLive}),
+              QString::fromUtf8("Wie Finder (live): Größe ↓"));
+    EXPECT_EQ(describe({SortKey::FinderIconPosition, true, SortSource::FinderLive}),
+              QString::fromUtf8("Wie Finder (live): Symbolposition"));
 }
 
 TEST(SortSpec, F_SORT_05_DescribeFallbackAndManual) {

@@ -3,6 +3,7 @@
 
 #include "DisplayColorSpace.h"
 #include "ImageCanvas.h"
+#include "ScreenProfileWatcher.h"
 
 #include <QApplication>
 #include <QFrame>
@@ -27,6 +28,11 @@ namespace {
 // Trackpad thresholds (logical px accumulated within one gesture).
 constexpr double kSwipeThreshold = 50.0;
 constexpr double kTrackpadStepThreshold = 80.0;
+
+std::function<QColorSpace(const QWidget*)>& colorSpaceResolver() {
+    static std::function<QColorSpace(const QWidget*)> resolver;
+    return resolver;
+}
 
 const QColor kDark(30, 30, 30);
 const QColor kLight(236, 236, 236);
@@ -106,6 +112,8 @@ struct ImageView::Private {
     QColorSpace explicitOutput;
     bool screenHooked = false;
     QPointer<QWindow> hookedWindow;
+    QPointer<ScreenProfileWatcher> profileWatcher; // F-COL-02
+    bool dragOutDefault = false;                   // F-IN-14 "dragOut"
 
     // signals state
     double lastFactor = -1;
@@ -193,7 +201,19 @@ struct ImageView::Private {
     }
 
     void updateOutputColorSpace() {
-        canvas->setOutputColorSpace(explicitOutput.isValid() ? explicitOutput : windowColorSpace(q));
+        if (explicitOutput.isValid()) {
+            canvas->setOutputColorSpace(explicitOutput);
+            return;
+        }
+        const auto& resolve = colorSpaceResolver();
+        canvas->setOutputColorSpace(resolve ? resolve(q) : windowColorSpace(q));
+    }
+
+    void onScreenChanged() {
+        updateOutputColorSpace();
+        syncGeometry();
+        applyBackground();
+        sync();
     }
 
     void hookScreen() {
@@ -201,13 +221,11 @@ struct ImageView::Private {
         if (!w || w == hookedWindow)
             return;
         hookedWindow = w;
-        // F-COL-02 (basic): re-read the output profile when the window changes screens.
-        QObject::connect(w, &QWindow::screenChanged, q, [this] {
-            updateOutputColorSpace();
-            syncGeometry();
-            applyBackground();
-            sync();
-        });
+        // F-COL-02: re-read the output profile when the window moves to another screen
+        // (Qt) or the profile of its display changes (macOS notifications).
+        QObject::connect(w, &QWindow::screenChanged, q, [this] { onScreenChanged(); });
+        delete profileWatcher.data();
+        profileWatcher = new ScreenProfileWatcher(q->window(), [this] { onScreenChanged(); }, q);
     }
 
     InputEvent makeEvent(InputKind kind, Qt::KeyboardModifiers mods) const {
@@ -224,9 +242,12 @@ struct ImageView::Private {
         const bool trackpad = !e->pixelDelta().isNull() || e->phase() != Qt::NoScrollPhase;
         const Qt::KeyboardModifiers mods = e->modifiers();
         if (trackpad) {
-            if (e->phase() == Qt::ScrollBegin) {
+            if (e->phase() == Qt::ScrollBegin || e->phase() == Qt::ScrollEnd) {
+                // F-NAV-04: one swipe per gesture; momentum events after the end are ignored below.
                 trackpadAccum = {};
                 trackpadFired = false;
+                if (e->phase() == Qt::ScrollEnd)
+                    return true;
             }
             const QPointF delta =
                 e->pixelDelta().isNull() ? QPointF(e->angleDelta()) / 8.0 : QPointF(e->pixelDelta());
@@ -311,7 +332,8 @@ struct ImageView::Private {
             if (e->button() == Qt::LeftButton) {
                 leftDown = true;
                 dragging = false;
-                altDrag = e->modifiers() & Qt::AltModifier;
+                // F-IN-14: ⌥ swaps panning and drag-out.
+                altDrag = bool(e->modifiers() & Qt::AltModifier) != dragOutDefault;
                 pressPos = lastPos = pos;
                 return true;
             }
@@ -333,8 +355,15 @@ struct ImageView::Private {
                 return false;
             if (!dragging && (pos - pressPos).manhattanLength() >= QApplication::startDragDistance()) {
                 dragging = true;
-                if (altDrag)
-                    emit q->dragOutRequested(); // F-IN-14: ⌥-drag = drag-out
+                if (altDrag) {
+                    // F-FILE-07: the drag runs until the drop (nested event loop) and
+                    // swallows the release: the gesture is over afterwards.
+                    if (image)
+                        emit q->dragOutRequested();
+                    leftDown = dragging = altDrag = false;
+                    updateCursor();
+                    return true;
+                }
                 updateCursor();
             }
             if (dragging && !altDrag) {
@@ -578,6 +607,14 @@ QColorSpace ImageView::outputColorSpace() const {
 
 QSize ImageView::desiredDecodeSize() const {
     return d->model.desiredDecodeSize();
+}
+
+void ImageView::setDragOutByDefault(bool dragOut) {
+    d->dragOutDefault = dragOut;
+}
+
+void ImageView::setColorSpaceResolverForTesting(std::function<QColorSpace(const QWidget*)> resolver) {
+    colorSpaceResolver() = std::move(resolver);
 }
 
 bool ImageView::event(QEvent* event) {

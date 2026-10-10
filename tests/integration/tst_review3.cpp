@@ -476,8 +476,8 @@ private slots:
                     return r;
             return -1;
         };
-        for (Action a : {Action::ToggleSlideshow, Action::ToggleInfoPanel, Action::Rename, Action::Rate3,
-                         Action::OpenInEditor, Action::ToggleGrid}) {
+        for (Action a :
+             {Action::ToggleSlideshow, Action::ToggleInfoPanel, Action::Rate3, Action::ToggleGrid}) {
             const int r = row(a);
             if (r < 0)
                 continue; // no key bound

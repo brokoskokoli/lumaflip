@@ -16,6 +16,8 @@
 #include <QPointF>
 #include <QWidget>
 
+#include <functional>
+
 namespace lf {
 
 class ImageView : public QWidget {
@@ -76,6 +78,12 @@ public:
 
     // Size in device pixels the image should be decoded to for the current zoom.
     QSize desiredDecodeSize() const;
+
+    // F-IN-14 / F-FILE-07: a plain drag starts a drag-out (⌥-drag pans) instead of the
+    // default (drag pans, ⌥-drag = drag-out). dragOutRequested() starts the drag.
+    void setDragOutByDefault(bool dragOut);
+    // F-COL-02 tests: replaces windowColorSpace() (the screen's profile); empty = system.
+    static void setColorSpaceResolverForTesting(std::function<QColorSpace(const QWidget*)> resolver);
 
 signals:
     void userInput(const lf::InputEvent& event, QPointF positionInWidget);

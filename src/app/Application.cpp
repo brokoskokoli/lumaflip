@@ -5,6 +5,7 @@
 #include "ImageView.h"
 #include "MainMenu.h"
 #include "PreferencesDialog.h"
+#include "RecentItems.h"
 #include "ViewerWindow.h"
 #include "core/Collection.h"
 #include "core/FileOps.h"
@@ -46,9 +47,7 @@ namespace {
 constexpr int kCascadePx = 26;   // F-WIN-08
 constexpr int kTakenPx = 10;     // windows closer than this count as "on top of each other"
 constexpr int kBusyHintMs = 300; // file operation running longer: busy cursor + message
-constexpr int kMaxRecent = 12;
 const char* const kGeometryKey = "window/geometry";
-const char* const kRecentKey = "recent/paths";
 const char* const kSessionKey = "session/windows"; // F-WIN-06
 
 Application* s_instance = nullptr;
@@ -182,6 +181,7 @@ Application::Application(AppServices services, QObject* parent)
                 invalidateFolderOf(to);
                 for (ViewerWindow* w : windows())
                     w->fileRenamed(from, to);
+                RecentItems::rename(from, to); // F-OPEN-11 entry follows F-FILE-04
             });
     connect(&ops, &FileOps::operationFailed, this, [this](const QString& message) {
         if (auto* w = frontWindow())
@@ -415,7 +415,7 @@ void Application::queueOpen(const QString& path) {
                 else if (!c.folders.isEmpty() && w)
                     w->openFolder(abs);
                 if (c.missing.isEmpty())
-                    addRecent({abs});
+                    addRecent(c.files, c.folders);
             });
         }
         d->burstTimer.start();
@@ -434,7 +434,7 @@ void Application::openClassified(const ClassifiedPaths& c, ViewerWindow* preferr
         openInWindow({f}, true);
     if (!c.missing.isEmpty())
         showNotFound(c.missing, preferred);
-    addRecent(c.files + c.folders);
+    addRecent(c.files, c.folders);
 }
 
 void Application::flushOpenBurst() {
@@ -474,7 +474,7 @@ void Application::flushOpenBurst() {
         const QStringList missing = minus(c.missing, {first}); // the first one was reported already
         if (!missing.isEmpty())
             showNotFound(missing, w);
-        addRecent(c.files + c.folders);
+        addRecent(c.files, c.folders);
     });
 }
 
@@ -500,7 +500,7 @@ ViewerWindow* Application::openPaths(const QStringList& paths) {
         }
         if (!c.missing.isEmpty())
             showNotFound(c.missing, w);
-        addRecent(c.files + c.folders);
+        addRecent(c.files, c.folders);
     });
     return imageWindow;
 }
@@ -1089,24 +1089,15 @@ QUrl Application::privacySettingsUrl() {
 }
 
 QStringList Application::recentPaths() const {
-    return Settings::instance().value(QString::fromLatin1(kRecentKey)).toStringList();
+    return RecentItems::paths();
 }
 
 void Application::clearRecentPaths() {
-    Settings::instance().setValue(QString::fromLatin1(kRecentKey), QStringList());
+    RecentItems::clear();
 }
 
-void Application::addRecent(const QStringList& paths) {
-    if (paths.isEmpty())
-        return;
-    QStringList recent = recentPaths();
-    for (auto it = paths.crbegin(); it != paths.crend(); ++it) {
-        recent.removeAll(*it);
-        recent.prepend(*it);
-    }
-    while (recent.size() > kMaxRecent)
-        recent.removeLast();
-    Settings::instance().setValue(QString::fromLatin1(kRecentKey), recent);
+void Application::addRecent(const QStringList& files, const QStringList& folders) {
+    RecentItems::add(files, folders); // F-OPEN-11 (also the system list: Dock menu)
 }
 
 // ---------------------------------------------------------------------------------------
