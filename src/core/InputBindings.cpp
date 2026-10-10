@@ -64,6 +64,7 @@ const ActionInfo kActions[] = {
     {Action::RotateRight, "rotateRight", "Rechts drehen"},
     {Action::FlipHorizontal, "flipHorizontal", "Horizontal spiegeln"},
     {Action::FlipVertical, "flipVertical", "Vertikal spiegeln"},
+    {Action::SaveRotation, "saveRotation", "Drehung speichern"},
     {Action::Trash, "trash", "In den Papierkorb legen"},
     {Action::Undo, "undo", "Rückgängig"},
     {Action::Redo, "redo", "Wiederholen"},
@@ -138,6 +139,8 @@ QStringList defaultShortcutStrings(Action a) {
         return {"H"};
     case Action::FlipVertical:
         return {"Shift+H"};
+    case Action::SaveRotation:
+        return {"Ctrl+S"};
     case Action::ToggleInfoPanel:
         return {"Ctrl+I", "I"};
     case Action::ToggleFilmstrip:
@@ -504,8 +507,6 @@ bool InputBindings::isChoiceAvailable(const QString& slotId, const QString& choi
     static const QSet<QString> later = {
         QStringLiteral("middleClick:magnifier"), // F-IN-11 Lupe
         QStringLiteral("drag:dragOut"),          // F-IN-14 Datei herausziehen (F-FILE-07)
-        QStringLiteral("space:slideshow"),       // Diashow
-        QStringLiteral("pageUpDown:page"),       // mehrseitige Dateien
         QStringLiteral("ratingKeys:always"),     // Bewertungen (F-CULL-01)
     };
     return !later.contains(slotId + QLatin1Char(':') + choiceId);
@@ -513,12 +514,6 @@ bool InputBindings::isChoiceAvailable(const QString& slotId, const QString& choi
 
 bool InputBindings::isActionAvailable(Action a) {
     switch (a) {
-    case Action::NextPage:
-    case Action::PreviousPage:
-    case Action::ToggleAnimation:
-    case Action::NextFrame:
-    case Action::PreviousFrame:
-    case Action::ToggleSlideshow:
     case Action::Rename:
     case Action::OpenInEditor:
     case Action::ToggleInfoPanel:

@@ -325,6 +325,40 @@ private:
     QString m_from, m_to;
 };
 
+// F-EDIT-02: a file rewritten in place; the caller supplies the work for both directions.
+class ModifyCommand : public FileCommand {
+public:
+    ModifyCommand(FileOps* ops, const QString& text, QString path, FileOps::FileWork apply,
+                  FileOps::FileWork revert, std::function<void()> cleanup)
+        : FileCommand(ops, text), m_path(std::move(path)), m_apply(std::move(apply)),
+          m_revert(std::move(revert)), m_cleanup(std::move(cleanup)) {}
+    ~ModifyCommand() override {
+        if (m_cleanup)
+            m_cleanup();
+    }
+
+    std::function<Outcome()> workFor(bool forward) const override {
+        const FileOps::FileWork work = forward ? m_apply : m_revert;
+        return [work] {
+            const QString e = work ? work() : QString();
+            return e.isEmpty() ? success() : failure(e);
+        };
+    }
+    std::function<void(const Outcome&)> notifierFor(bool) const override {
+        const QPointer<FileOps> ops(m_ops);
+        const QString path = m_path;
+        return [ops, path](const Outcome&) {
+            if (ops)
+                emit ops->fileChanged(path);
+        };
+    }
+
+private:
+    QString m_path;
+    FileOps::FileWork m_apply, m_revert;
+    std::function<void()> m_cleanup;
+};
+
 // ---- whole operations: work + what to do afterwards ----
 
 struct Operation {
@@ -550,6 +584,27 @@ struct FileOps::Private {
                 }};
     }
 };
+
+void FileOps::modifyAsync(const QString& path, const QString& undoText, FileWork apply, FileWork revert,
+                          Completion done, std::function<void()> cleanup) {
+    // The command owns `cleanup`; if the operation fails, nobody does: run it then.
+    auto pendingCleanup = std::make_shared<std::function<void()>>(std::move(cleanup));
+    Operation op{[apply] {
+                     const QString e = apply ? apply() : QString();
+                     return e.isEmpty() ? success() : failure(e);
+                 },
+                 [this, path, undoText, apply, revert, pendingCleanup](const Outcome&) {
+                     emit fileChanged(path);
+                     d->stack->push(new ModifyCommand(this, undoText, path, apply, revert,
+                                                      std::exchange(*pendingCleanup, {})));
+                 }};
+    d->startAsync(op, [pendingCleanup, done](bool ok, const QString& error) {
+        if (!ok && *pendingCleanup)
+            std::exchange(*pendingCleanup, {})();
+        if (done)
+            done(ok, error);
+    });
+}
 
 FileOps::FileOps(TrashService& trash, QObject* parent)
     : QObject(parent), d(new Private{this, trash, new QUndoStack(this), {}, false, {}}) {}

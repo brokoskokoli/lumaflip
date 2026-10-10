@@ -198,12 +198,15 @@ void PreferencesDialog::showSection(int section) {
 QStringList PreferencesDialog::sectionKeys(int section) const {
     switch (section) {
     case General:
-        return {key::OpenBehavior, key::RestoreWindows, key::ConfirmTrash};
+        return {key::OpenBehavior, key::RestoreWindows, key::ConfirmTrash, key::RotationSaveStrategy,
+                key::KeepModificationDate};
     case Window:
         return {key::FitWindowToImage, key::TitleShowFolder, key::ShowStatusBar, key::ShowInfoPanel,
                 key::ShowFilmstrip};
     case Display:
-        return {key::Background, key::ZoomMode, key::UpscaleFilter, key::ActualSizeUnit};
+        return {
+            key::Background,           key::ZoomMode,        key::UpscaleFilter,    key::ActualSizeUnit,
+            key::SlideshowIntervalSec, key::SlideshowRepeat, key::SlideshowShuffle, key::SlideshowCrossfade};
     case Input:
         return {key::InputPrefix, key::WrapMode};
     case Navigation:
@@ -341,6 +344,18 @@ QWidget* PreferencesDialog::buildGeneral() {
     form->addRow(QString(), bind.check(key::ConfirmTrash, tr("Vor dem Löschen nachfragen"), w));
     form->addRow(QString(),
                  helpLabel(tr("Aus: ⌘⌫ legt das Bild sofort in den Papierkorb, ⌘Z holt es zurück."), w));
+    // F-EDIT-02: saving the rotation (Bild → Drehung speichern, ⌘S)
+    form->addRow(tr("Drehung speichern:"),
+                 bind.combo(key::RotationSaveStrategy, {"exif", "lossless"},
+                            {tr("EXIF-Ausrichtung setzen"), tr("JPEG verlustfrei drehen (DCT)")}, w));
+    form->addRow(
+        QString(),
+        helpLabel(tr("Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen "
+                     "(JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, "
+                     "damit auch Programme ohne EXIF-Unterstützung das Bild richtig zeigen. RAW-Dateien "
+                     "werden nie verändert; ⌘Z macht das Speichern rückgängig."),
+                  w));
+    form->addRow(QString(), bind.check(key::KeepModificationDate, tr("Änderungsdatum beibehalten"), w));
     return w;
 }
 
@@ -424,6 +439,15 @@ QWidget* PreferencesDialog::buildDisplay() {
                  bind.combo(key::ActualSizeUnit, {"devicePixels", "points"},
                             {tr("1 Bildpixel = 1 Gerätepixel (Retina-korrekt)"), tr("1 Bildpixel = 1 Punkt")},
                             w));
+    // F-SLIDE-01/02
+    form->addRow(tr("Diashow (⇧⌘F, S):"), bind.spin(key::SlideshowIntervalSec, 1, 60, tr(" s pro Bild"), w));
+    form->addRow(QString(), bind.check(key::SlideshowRepeat, tr("Wiederholen"), w));
+    form->addRow(QString(), bind.check(key::SlideshowShuffle, tr("Zufällige Reihenfolge"), w));
+    form->addRow(QString(), bind.check(key::SlideshowCrossfade, tr("Überblenden"), w));
+    form->addRow(QString(),
+                 helpLabel(tr("Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, "
+                              "←/→ blättert, Esc beendet."),
+                           w));
     return w;
 }
 
@@ -718,9 +742,8 @@ QWidget* PreferencesDialog::buildFormats() {
         {tr("Modern"), QStringLiteral("HEIC/HEIF, AVIF, JPEG XL")},
         {tr("RAW"), QStringLiteral("CR2, CR3, CRW, NEF, NRW, ARW, SR2, RAF, ORF, RW2, DNG, PEF, IIQ, 3FR …")},
         {tr("Pro/HDR"), QStringLiteral("PSD, OpenEXR, Radiance HDR, JPEG 2000, TGA, DDS, KTX")},
-        // F-FMT-03 (playback) is not implemented yet: the first frame is shown.
-        {tr("Animiert"),
-         tr("GIF, APNG, WebP, AVIF/HEICS, JXL – erstes Bild; Wiedergabe %1").arg(laterNote())},
+        // F-FMT-03: played back (Leertaste, , / .); F-FMT-04: pages with ⌥↑/⌥↓.
+        {tr("Animiert"), tr("GIF, APNG, WebP, AVIF/HEICS, JXL – mit Wiedergabe")},
         {tr("Vektor"), QStringLiteral("SVG")},
     };
     for (const auto& [g, f] : groups) {

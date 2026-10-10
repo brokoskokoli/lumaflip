@@ -35,6 +35,16 @@ public:
     void setCurrent(DecodedImagePtr image, bool sameFile);
     DecodedImagePtr current() const;
     void setPreload(const QList<DecodedImagePtr>& images);
+    // F-FMT-03: next frame of the current animation. Reuses the current GPU textures when
+    // the frame has the same size and format (one texture upload per frame, no new
+    // allocations); otherwise behaves like setCurrent(frame, true).
+    void replaceFrame(DecodedImagePtr frame);
+    // F-SLIDE-02: the next setCurrent() fades in over the image shown now (with its view
+    // transform) within `ms`, starting when the new image is on the GPU.
+    void startCrossfade(int ms);
+    bool isCrossfading() const;
+    int crossfadeFramesRendered() const; // frames drawn with both images (tests)
+    int framesReusingTextures() const;   // replaceFrame() calls that reused textures (tests)
 
     // Full-resolution image px -> viewport device px.
     void setViewTransform(const QTransform& imageToViewport);

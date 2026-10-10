@@ -527,6 +527,92 @@ CFRef<CGImageSourceRef> openValidated(const QString& path, Layout* layout, QStri
     return src;
 }
 
+// Decodes image `index` of an open source (shared by decode() and the frame reader).
+std::optional<DecodedImage> decodeAt(CGImageSourceRef src, const Layout& l, size_t index,
+                                     const DecodeRequest& req, QString* error) {
+    NSDictionary* props = CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(src, index, nullptr));
+    int o = [value(props, kCGImagePropertyOrientation) intValue];
+    if (o < 1 || o > 8)
+        o = 1;
+    const int pw = [value(props, kCGImagePropertyPixelWidth) intValue];
+    const int ph = [value(props, kCGImagePropertyPixelHeight) intValue];
+    const QSize fullSize = o >= 5 ? QSize(ph, pw) : QSize(pw, ph);
+    const bool hdr = req.hdr && isHdrImage(src, index, props);
+
+    NSMutableDictionary* opts = [NSMutableDictionary dictionary];
+    if (hdr)
+        opts[(__bridge NSString*)kCGImageSourceDecodeRequest] = (__bridge NSString*)kCGImageSourceDecodeToHDR;
+
+    // Full decodes beyond the cap are downsampled to the cap (see header). P-08: the
+    // byte limit counts the output format (16-bit and float sources: 8 bytes/pixel).
+    const bool deepSource = hdr || [value(props, kCGImagePropertyIsFloat) boolValue] ||
+                            [value(props, kCGImagePropertyDepth) intValue] > 8;
+    const qint64 maxPixels = req.maxBytes > 0 ? std::max<qint64>(1, req.maxBytes / (deepSource ? 8 : 4)) : 0;
+    int maxPixelSize = req.maxPixelSize;
+    bool capped = false;
+    if (pw > 0 && ph > 0) {
+        const int cap = cappedLongEdge(pw, ph, maxPixels);
+        if (maxPixelSize <= 0 ? cap < std::max(pw, ph) : maxPixelSize > cap) {
+            maxPixelSize = cap;
+            capped = !req.preferEmbeddedPreview;
+        }
+    }
+
+    CFRef<CGImageRef> img;
+    int drawOrientation = o;
+    if (maxPixelSize > 0 || req.preferEmbeddedPreview) {
+        NSMutableDictionary* t = [opts mutableCopy];
+        // A thumbnail is created as a bitmap anyway; decoding it right here keeps the
+        // work on this worker thread.
+        t[(__bridge NSString*)kCGImageSourceShouldCacheImmediately] = @YES;
+        t[(__bridge NSString*)(req.preferEmbeddedPreview ? kCGImageSourceCreateThumbnailFromImageIfAbsent
+                                                         : kCGImageSourceCreateThumbnailFromImageAlways)] =
+            @YES;
+        t[(__bridge NSString*)kCGImageSourceCreateThumbnailWithTransform] = @YES;
+        if (maxPixelSize > 0)
+            t[(__bridge NSString*)kCGImageSourceThumbnailMaxPixelSize] = @(maxPixelSize);
+        img.reset(CGImageSourceCreateThumbnailAtIndex(src, index, (__bridge CFDictionaryRef)t));
+        if (img)
+            drawOrientation = 1; // already oriented by ImageIO
+    }
+    if (!img && !capped) {
+        // Draw-once full decode: no ImageIO cache. With kCGImageSourceShouldCacheImmediately
+        // ImageIO would keep its own full-size bitmap while we draw into a second one.
+        opts[(__bridge NSString*)kCGImageSourceShouldCache] = @NO;
+        img.reset(CGImageSourceCreateImageAtIndex(src, index, (__bridge CFDictionaryRef)opts));
+        drawOrientation = o;
+    }
+    if (!img) {
+        setError(error, tr("Das Bild konnte nicht dekodiert werden (Datei beschädigt?)."));
+        return std::nullopt;
+    }
+    // HDR only if the decoder actually delivered extended range data.
+    bool hdrOut = false;
+    if (hdr) {
+        CGColorSpaceRef cs = CGImageGetColorSpace(img.get());
+        hdrOut = cs && (CGColorSpaceUsesITUR_2100TF(cs) || CGColorSpaceUsesExtendedRange(cs) ||
+                        CGImageGetContentHeadroom(img.get()) > 1.0f);
+    }
+    auto r = render(img.get(), drawOrientation, hdrOut, error);
+    if (!r)
+        return std::nullopt;
+
+    DecodedImage out;
+    out.fullSize = fullSize.isValid() && !fullSize.isEmpty() ? fullSize : r->image.size();
+    // A capped full decode is the best this backend delivers: not a preview.
+    out.isPreview =
+        !capped && (r->image.width() < out.fullSize.width() || r->image.height() < out.fullSize.height());
+    out.headroom = r->headroom;
+    out.frameDurationMs = l.animated ? frameDurationMs(props) : 0;
+    out.image = std::move(r->image);
+    // F-FMT-03/04: which image of the file this is.
+    out.frameCount = l.animated ? int(l.count) : 1;
+    out.pageCount = l.animated ? 1 : int(std::max<size_t>(1, l.count));
+    out.frame = l.animated ? int(index) : 0;
+    out.page = l.animated ? 0 : req.page;
+    return out;
+}
+
 // ---- metadata formatting (German UI strings) ------------------------------------------
 
 QString formatNumber(double v, int decimals) {
@@ -639,85 +725,47 @@ std::optional<DecodedImage> ImageIODecoder::decode(const QString& path, const De
             setError(error, tr("Die Datei ist unvollständig (abgeschnitten)."));
             return std::nullopt;
         }
-        NSDictionary* props =
-            CFBridgingRelease(CGImageSourceCopyPropertiesAtIndex(src.get(), *index, nullptr));
-        int o = [value(props, kCGImagePropertyOrientation) intValue];
-        if (o < 1 || o > 8)
-            o = 1;
-        const int pw = [value(props, kCGImagePropertyPixelWidth) intValue];
-        const int ph = [value(props, kCGImagePropertyPixelHeight) intValue];
-        const QSize fullSize = o >= 5 ? QSize(ph, pw) : QSize(pw, ph);
-        const bool hdr = req.hdr && isHdrImage(src.get(), *index, props);
+        return decodeAt(src.get(), l, *index, req, error);
+    }
+}
 
-        NSMutableDictionary* opts = [NSMutableDictionary dictionary];
-        if (hdr)
-            opts[(__bridge NSString*)kCGImageSourceDecodeRequest] =
-                (__bridge NSString*)kCGImageSourceDecodeToHDR;
+namespace {
 
-        // Full decodes beyond the cap are downsampled to the cap (see header). P-08: the
-        // byte limit counts the output format (16-bit and float sources: 8 bytes/pixel).
-        const bool deepSource = hdr || [value(props, kCGImagePropertyIsFloat) boolValue] ||
-                                [value(props, kCGImagePropertyDepth) intValue] > 8;
-        const qint64 maxPixels =
-            req.maxBytes > 0 ? std::max<qint64>(1, req.maxBytes / (deepSource ? 8 : 4)) : 0;
-        int maxPixelSize = req.maxPixelSize;
-        bool capped = false;
-        if (pw > 0 && ph > 0) {
-            const int cap = cappedLongEdge(pw, ph, maxPixels);
-            if (maxPixelSize <= 0 ? cap < std::max(pw, ph) : maxPixelSize > cap) {
-                maxPixelSize = cap;
-                capped = !req.preferEmbeddedPreview;
+// F-FMT-03: one source kept open for all frames of an animation.
+class ImageIOFrameReader final : public FrameReader {
+public:
+    ImageIOFrameReader(CFRef<CGImageSourceRef> src, Layout layout)
+        : m_src(std::move(src)), m_layout(std::move(layout)) {}
+    int frameCount() const override { return m_layout.animated ? int(m_layout.count) : 1; }
+    std::optional<DecodedImage> readFrame(int index, const DecodeRequest& req, QString* error) override {
+        @autoreleasepool {
+            if (index < 0 || index >= frameCount()) {
+                setError(error, tr("Einzelbild %1 existiert nicht.").arg(index + 1));
+                return std::nullopt;
             }
+            DecodeRequest r = req;
+            r.frame = index;
+            r.page = 0;
+            const size_t at = m_layout.animated ? size_t(index) : m_layout.primary;
+            return decodeAt(m_src.get(), m_layout, at, r, error);
         }
+    }
 
-        CFRef<CGImageRef> img;
-        int drawOrientation = o;
-        if (maxPixelSize > 0 || req.preferEmbeddedPreview) {
-            NSMutableDictionary* t = [opts mutableCopy];
-            // A thumbnail is created as a bitmap anyway; decoding it right here keeps the
-            // work on this worker thread.
-            t[(__bridge NSString*)kCGImageSourceShouldCacheImmediately] = @YES;
-            t[(__bridge NSString*)(req.preferEmbeddedPreview
-                                       ? kCGImageSourceCreateThumbnailFromImageIfAbsent
-                                       : kCGImageSourceCreateThumbnailFromImageAlways)] = @YES;
-            t[(__bridge NSString*)kCGImageSourceCreateThumbnailWithTransform] = @YES;
-            if (maxPixelSize > 0)
-                t[(__bridge NSString*)kCGImageSourceThumbnailMaxPixelSize] = @(maxPixelSize);
-            img.reset(CGImageSourceCreateThumbnailAtIndex(src.get(), *index, (__bridge CFDictionaryRef)t));
-            if (img)
-                drawOrientation = 1; // already oriented by ImageIO
-        }
-        if (!img && !capped) {
-            // Draw-once full decode: no ImageIO cache. With kCGImageSourceShouldCacheImmediately
-            // ImageIO would keep its own full-size bitmap while we draw into a second one.
-            opts[(__bridge NSString*)kCGImageSourceShouldCache] = @NO;
-            img.reset(CGImageSourceCreateImageAtIndex(src.get(), *index, (__bridge CFDictionaryRef)opts));
-            drawOrientation = o;
-        }
-        if (!img) {
-            setError(error, tr("Das Bild konnte nicht dekodiert werden (Datei beschädigt?)."));
-            return std::nullopt;
-        }
-        // HDR only if the decoder actually delivered extended range data.
-        bool hdrOut = false;
-        if (hdr) {
-            CGColorSpaceRef cs = CGImageGetColorSpace(img.get());
-            hdrOut = cs && (CGColorSpaceUsesITUR_2100TF(cs) || CGColorSpaceUsesExtendedRange(cs) ||
-                            CGImageGetContentHeadroom(img.get()) > 1.0f);
-        }
-        auto r = render(img.get(), drawOrientation, hdrOut, error);
-        if (!r)
-            return std::nullopt;
+private:
+    CFRef<CGImageSourceRef> m_src;
+    Layout m_layout;
+};
 
-        DecodedImage out;
-        out.fullSize = fullSize.isValid() && !fullSize.isEmpty() ? fullSize : r->image.size();
-        // A capped full decode is the best this backend delivers: not a preview.
-        out.isPreview =
-            !capped && (r->image.width() < out.fullSize.width() || r->image.height() < out.fullSize.height());
-        out.headroom = r->headroom;
-        out.frameDurationMs = l.animated ? frameDurationMs(props) : 0;
-        out.image = std::move(r->image);
-        return out;
+} // namespace
+
+std::unique_ptr<FrameReader> ImageIODecoder::openFrames(const QString& path) {
+    @autoreleasepool {
+        Layout l;
+        QString error;
+        CFRef<CGImageSourceRef> src = openValidated(path, &l, &error);
+        if (!src)
+            return nullptr;
+        return std::make_unique<ImageIOFrameReader>(std::move(src), l);
     }
 }
 

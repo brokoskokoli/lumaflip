@@ -45,8 +45,10 @@ public:
     // available (may be nullptr), and schedules loading otherwise; `imageReady`
     // is emitted for every stage that becomes available.
     // `client` identifies the requesting window for prioritisation.
+    // F-FMT-04: `page` selects a page of a multi-page file; pages are cached separately and
+    // DecodedImage::page tells which page an imageReady() result belongs to.
     DecodedImagePtr request(const QString& path, Quality quality, QSize target, const void* client,
-                            int priority = 0);
+                            int priority = 0, int page = 0);
 
     // Tell the provider which files a window will likely need next (prefetch
     // window, SPEC 7.1). `ordered` = paths by priority (current first).
@@ -58,9 +60,10 @@ public:
     // without scheduling anything or changing a client's state; nullptr if none.
     // Windows use it to hand decoded neighbours to the view (P-03) and to show a
     // cached stage instantly when flipping.
-    DecodedImagePtr cached(const QString& path, Quality minQuality = Quality::Preview, QSize target = {});
+    DecodedImagePtr cached(const QString& path, Quality minQuality = Quality::Preview, QSize target = {},
+                           int page = 0);
 
-    // Invalidate (file changed/renamed/deleted).
+    // Invalidate (file changed/renamed/deleted). Drops every page of the file.
     void invalidate(const QString& path);
 
     void setMemoryBudget(qint64 bytes);  // P-09

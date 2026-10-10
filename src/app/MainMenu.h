@@ -48,6 +48,9 @@ private:
                         const QKeySequence& shortcut = {});
     void build();
     void rebuildRecent();
+    // M2 media entries (MainMenuMedia.cpp): slideshow, pages, animation, saving the rotation.
+    void buildMedia(QMenu* view, QMenu* nav, QMenu* image);
+    void refreshMediaState();
 
     Application& m_app;
     QMenuBar* m_bar = nullptr;

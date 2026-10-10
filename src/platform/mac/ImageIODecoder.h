@@ -45,6 +45,8 @@ public:
     std::optional<DecodedImage> decode(const QString& path, const DecodeRequest& req,
                                        QString* error) override;
     Metadata metadata(const QString& path) override;
+    // F-FMT-03: keeps the CGImageSource open for all frames.
+    std::unique_ptr<FrameReader> openFrames(const QString& path) override;
 
     // Lower-case file suffixes of all types ImageIO can read (for the registry).
     static QStringList supportedExtensions();

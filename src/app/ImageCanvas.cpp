@@ -4,6 +4,7 @@
 #include "ColorPipeline.h"
 #include "core/StartupTrace.h"
 
+#include <QElapsedTimer>
 #include <QFile>
 #include <QFuture>
 #include <QLoggingCategory>
@@ -196,7 +197,17 @@ struct ImageCanvas::Private {
     bool dstLutDirty = true;
     float exposure = 1.0f, maxValue = 1.0f;
 
+    // F-SLIDE-02 crossfade: the previous image (with its transform) fades out while the
+    // current one is drawn on top with increasing opacity.
+    std::shared_ptr<Entry> fadeFrom;
+    QTransform fadeView;
+    int fadeMs = 0;
+    QElapsedTimer fadeClock; // started when the new image is on the GPU
+    int crossfadeFrames = 0;
+    int reusedFrames = 0;
+
     std::unique_ptr<QRhiGraphicsPipeline> pipeline;
+    std::unique_ptr<QRhiGraphicsPipeline> blendPipeline; // like `pipeline`, with alpha blending
     std::unique_ptr<QRhiShaderResourceBindings> layoutSrb;
     std::unique_ptr<QRhiBuffer> vbuf;
     std::unique_ptr<QRhiSampler> sampler[2];
@@ -417,7 +428,8 @@ struct ImageCanvas::Private {
         return t.srb[idx].get();
     }
 
-    void fillUbo(const Entry& e, const Tile& t, QSize target, QRhiResourceUpdateBatch* rub) {
+    void fillUbo(const Entry& e, const Tile& t, QSize target, QRhiResourceUpdateBatch* rub,
+                 const QTransform& xf, float opacity) {
         const QSize full = e.src->fullSize.isEmpty() ? e.image.size() : e.src->fullSize;
         const double sx = double(full.width()) / e.image.width();
         const double sy = double(full.height()) / e.image.height();
@@ -425,7 +437,7 @@ struct ImageCanvas::Private {
 
         QMatrix4x4 mvp = rhi->clipSpaceCorrMatrix();
         mvp.ortho(0, target.width(), target.height(), 0, -1, 1);
-        mvp *= QMatrix4x4(view);
+        mvp *= QMatrix4x4(xf);
         mvp.translate(float(coreFull.x()), float(coreFull.y()));
         mvp.scale(float(coreFull.width()), float(coreFull.height()));
 
@@ -470,6 +482,7 @@ struct ImageCanvas::Private {
         v[23] = 1.0f;
         v[24] = exposure;
         v[25] = maxValue;
+        v[26] = opacity; // output alpha: blended over the previous image during a crossfade
         rub->updateDynamicBuffer(t.ubo.get(), 0, kUboSize, data);
     }
 
@@ -478,7 +491,7 @@ struct ImageCanvas::Private {
     void prune() {
         std::vector<std::shared_ptr<Entry>> keep;
         for (const auto& e : entries) {
-            const bool wanted = e == current || e == fallback ||
+            const bool wanted = e == current || e == fallback || e == fadeFrom ||
                                 std::find(preload.begin(), preload.end(), e->src) != preload.end();
             if (wanted)
                 keep.push_back(e);
@@ -497,6 +510,7 @@ struct ImageCanvas::Private {
         for (const auto& e : entries)
             e->releaseGpu();
         pipeline.reset();
+        blendPipeline.reset();
         layoutSrb.reset();
         layoutUbo.reset();
         vbuf.reset();
@@ -532,6 +546,7 @@ void ImageCanvas::setCurrent(DecodedImagePtr image, bool sameFile) {
     if (!image) {
         d->current.reset();
         d->fallback.reset();
+        d->fadeFrom.reset();
     } else {
         auto e = d->findEntry(image);
         if (!e) {
@@ -566,6 +581,58 @@ void ImageCanvas::setPreload(const QList<DecodedImagePtr>& images) {
     }
     d->prune();
     update();
+}
+
+void ImageCanvas::replaceFrame(DecodedImagePtr frame) {
+    if (!frame || frame->image.isNull())
+        return;
+    const std::shared_ptr<Entry> e = d->current;
+    QRhiTexture::Format tex = QRhiTexture::RGBA8;
+    bool premul = false;
+    const bool reusable = e && e->src != frame && e->ready() && !e->cpuColor && e->stale == nullptr &&
+                          !e->tiles.empty() && e != d->fadeFrom && e->image.size() == frame->image.size() &&
+                          directFormat(frame->image.format(), &tex, &premul) && tex == e->texFormat &&
+                          premul == e->premultiplied &&
+                          !needsCpuConversion(effectiveSourceColorSpace(frame->image)) &&
+                          std::find(d->preload.begin(), d->preload.end(), e->src) == d->preload.end();
+    if (!reusable) {
+        setCurrent(std::move(frame), true);
+        return;
+    }
+    // Same GPU textures, new contents: only the texel upload (and mips) per frame.
+    const bool newColor = e->image.colorSpace() != frame->image.colorSpace();
+    e->src = std::move(frame);
+    e->image = e->src->image;
+    if (newColor)
+        d->updateColor(e);
+    for (Tile& t : e->tiles)
+        t.uploaded = false;
+    if (d->fallback == e)
+        d->fallback.reset();
+    d->touch(e);
+    ++d->reusedFrames;
+    update();
+}
+
+void ImageCanvas::startCrossfade(int ms) {
+    if (ms <= 0 || !d->current || !d->current->complete())
+        return; // nothing on screen to fade from
+    d->fadeFrom = d->current;
+    d->fadeView = d->view;
+    d->fadeMs = ms;
+    d->fadeClock.invalidate();
+}
+
+bool ImageCanvas::isCrossfading() const {
+    return d->fadeFrom != nullptr;
+}
+
+int ImageCanvas::crossfadeFramesRendered() const {
+    return d->crossfadeFrames;
+}
+
+int ImageCanvas::framesReusingTextures() const {
+    return d->reusedFrames;
 }
 
 void ImageCanvas::setViewTransform(const QTransform& imageToViewport) {
@@ -655,6 +722,7 @@ void ImageCanvas::initialize(QRhiCommandBuffer*) {
     if (d->pipeline &&
         !d->pipeline->renderPassDescriptor()->isCompatible(renderTarget()->renderPassDescriptor())) {
         d->pipeline.reset();
+        d->blendPipeline.reset();
     }
     if (d->pipeline)
         return;
@@ -691,22 +759,37 @@ void ImageCanvas::initialize(QRhiCommandBuffer*) {
         d->layoutSrb->create();
     }
 
-    d->pipeline.reset(rhi->newGraphicsPipeline());
-    d->pipeline->setTopology(QRhiGraphicsPipeline::TriangleStrip);
-    d->pipeline->setShaderStages(
-        {{QRhiShaderStage::Vertex, loadShader(QStringLiteral(":/shaders/image.vert.qsb"))},
-         {QRhiShaderStage::Fragment, loadShader(QStringLiteral(":/shaders/image.frag.qsb"))}});
-    QRhiVertexInputLayout layout;
-    layout.setBindings({{2 * sizeof(float)}});
-    layout.setAttributes({{0, 0, QRhiVertexInputAttribute::Float2, 0}});
-    d->pipeline->setVertexInputLayout(layout);
-    d->pipeline->setShaderResourceBindings(d->layoutSrb.get());
-    d->pipeline->setRenderPassDescriptor(renderTarget()->renderPassDescriptor());
-    d->pipeline->setSampleCount(sampleCount());
-    if (!d->pipeline->create()) {
-        qCWarning(lcCanvas) << "Pipeline creation failed";
-        d->pipeline.reset();
-    }
+    auto makePipeline = [&](bool blend) {
+        std::unique_ptr<QRhiGraphicsPipeline> p(rhi->newGraphicsPipeline());
+        p->setTopology(QRhiGraphicsPipeline::TriangleStrip);
+        p->setShaderStages(
+            {{QRhiShaderStage::Vertex, loadShader(QStringLiteral(":/shaders/image.vert.qsb"))},
+             {QRhiShaderStage::Fragment, loadShader(QStringLiteral(":/shaders/image.frag.qsb"))}});
+        QRhiVertexInputLayout layout;
+        layout.setBindings({{2 * sizeof(float)}});
+        layout.setAttributes({{0, 0, QRhiVertexInputAttribute::Float2, 0}});
+        p->setVertexInputLayout(layout);
+        p->setShaderResourceBindings(d->layoutSrb.get());
+        p->setRenderPassDescriptor(renderTarget()->renderPassDescriptor());
+        p->setSampleCount(sampleCount());
+        if (blend) {
+            // Color: new over old by the opacity in the alpha channel; alpha stays opaque.
+            QRhiGraphicsPipeline::TargetBlend b;
+            b.enable = true;
+            b.srcColor = QRhiGraphicsPipeline::SrcAlpha;
+            b.dstColor = QRhiGraphicsPipeline::OneMinusSrcAlpha;
+            b.srcAlpha = QRhiGraphicsPipeline::Zero;
+            b.dstAlpha = QRhiGraphicsPipeline::One;
+            p->setTargetBlends({b});
+        }
+        if (!p->create()) {
+            qCWarning(lcCanvas) << "Pipeline creation failed" << (blend ? "(blend)" : "");
+            p.reset();
+        }
+        return p;
+    };
+    d->pipeline = makePipeline(false);
+    d->blendPipeline = makePipeline(true);
 }
 
 void ImageCanvas::render(QRhiCommandBuffer* cb) {
@@ -761,31 +844,64 @@ void ImageCanvas::render(QRhiCommandBuffer* cb) {
         }
     }
 
+    // F-SLIDE-02: crossfade from the previous image once the new one is complete.
+    Entry* fade = nullptr;
+    float opacity = 1.0f;
+    if (d->fadeFrom && (d->fadeFrom == d->current || !d->current || !d->fadeFrom->complete()))
+        d->fadeFrom.reset();
+    if (d->fadeFrom) {
+        if (!d->current->complete()) {
+            fade = d->fadeFrom.get(); // keep the old image until the new one can fade in
+            draw = nullptr;
+        } else {
+            if (!d->fadeClock.isValid())
+                d->fadeClock.start();
+            opacity = float(std::clamp(double(d->fadeClock.elapsed()) / std::max(1, d->fadeMs), 0.0, 1.0));
+            if (opacity >= 1.0f) {
+                d->fadeFrom.reset();
+                d->fallback.reset();
+                d->prune();
+            } else {
+                fade = d->fadeFrom.get();
+                ++d->crossfadeFrames;
+                moreWork = true;
+            }
+        }
+    }
+
     if (d->current)
         trace::once("canvas uploads queued");
     const QColor clear = d->base;
     const QSize target = renderTarget()->pixelSize();
-    if (draw && d->pipeline) {
-        for (Tile& t : draw->tiles) {
+    auto prepare = [&](Entry* e, const QTransform& xf, float alpha) {
+        if (!e || !d->pipeline)
+            return;
+        for (Tile& t : e->tiles) {
             if (t.uploaded && t.tex) {
-                d->srbFor(*draw, t);
-                d->fillUbo(*draw, t, target, rub);
+                d->srbFor(*e, t);
+                d->fillUbo(*e, t, target, rub, xf, alpha);
             }
         }
-    }
+    };
+    prepare(fade, d->fadeView, 1.0f);
+    prepare(draw, d->view, fade ? opacity : 1.0f);
     cb->beginPass(renderTarget(), clear, {1.0f, 0}, rub);
-    if (draw && d->pipeline) {
-        cb->setGraphicsPipeline(d->pipeline.get());
+    auto drawEntry = [&](Entry* e, QRhiGraphicsPipeline* p) {
+        if (!e || !p)
+            return;
+        cb->setGraphicsPipeline(p);
         cb->setViewport({0, 0, float(target.width()), float(target.height())});
         const QRhiCommandBuffer::VertexInput vin(d->vbuf.get(), 0);
-        for (Tile& t : draw->tiles) {
+        for (Tile& t : e->tiles) {
             if (!t.uploaded || !t.tex)
                 continue;
-            cb->setShaderResources(d->srbFor(*draw, t));
+            cb->setShaderResources(d->srbFor(*e, t));
             cb->setVertexInput(0, 1, &vin);
             cb->draw(4);
         }
-    }
+    };
+    drawEntry(fade, d->pipeline.get());
+    drawEntry(draw, fade && d->blendPipeline ? d->blendPipeline.get() : d->pipeline.get());
     cb->endPass();
     if (draw)
         trace::once("canvas first frame with image recorded");

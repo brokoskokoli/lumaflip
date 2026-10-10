@@ -366,11 +366,14 @@ TEST(Review3Input, F_IN_18_PresetSkipsUnavailableChoices) {
 }
 
 TEST(Review3Input, F_SET_02_PlannedActionsAreNotAvailable) {
-    for (Action a : {Action::ToggleSlideshow, Action::ToggleInfoPanel, Action::ToggleGrid, Action::Rename,
-                     Action::OpenInEditor, Action::Rate0, Action::Rate5, Action::RatePick})
+    for (Action a : {Action::ToggleInfoPanel, Action::ToggleGrid, Action::Rename, Action::OpenInEditor,
+                     Action::Rate0, Action::Rate5, Action::RatePick})
         EXPECT_FALSE(InputBindings::isActionAvailable(a)) << actionId(a).toStdString();
+    // M2: slideshow, animation, pages and saving the rotation are implemented.
     for (Action a : {Action::NextImage, Action::ZoomFit, Action::Trash, Action::ToggleFullScreen,
-                     Action::CopyImage, Action::ShowShortcuts, Action::NextFolder})
+                     Action::CopyImage, Action::ShowShortcuts, Action::NextFolder, Action::ToggleSlideshow,
+                     Action::ToggleAnimation, Action::NextFrame, Action::PreviousFrame, Action::NextPage,
+                     Action::PreviousPage, Action::SaveRotation})
         EXPECT_TRUE(InputBindings::isActionAvailable(a)) << actionId(a).toStdString();
 }
 

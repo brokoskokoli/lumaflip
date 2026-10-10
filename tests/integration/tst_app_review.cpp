@@ -643,7 +643,8 @@ private slots:
         };
         QVERIFY(!choiceEnabled("middleClick", "magnifier"));
         QVERIFY(!choiceEnabled("drag", "dragOut"));
-        QVERIFY(!choiceEnabled("space", "slideshow"));
+        QVERIFY(choiceEnabled("space", "slideshow"));   // M2: slideshow (F-SLIDE-01)
+        QVERIFY(choiceEnabled("pageUpDown", "page"));   // M2: pages (F-FMT-04)
         QVERIFY(choiceEnabled("pageUpDown", "folder")); // implemented
         QVERIFY(choiceEnabled("middleClick", "fitActual"));
         auto* wrap = prefs->findChild<QComboBox*>(QStringLiteral("setting:") + QLatin1String(key::WrapMode));
