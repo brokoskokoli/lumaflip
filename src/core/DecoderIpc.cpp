@@ -729,7 +729,7 @@ PSECURITY_DESCRIPTOR lowIntegrityDescriptor() {
 }
 
 QString winError(DWORD code) {
-    return QStringLiteral("Windows-Fehler %1").arg(code);
+    return Tr::tr("Windows-Fehler %1").arg(code);
 }
 
 void releaseView(void* info) {

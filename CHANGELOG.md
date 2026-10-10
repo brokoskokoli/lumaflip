@@ -21,6 +21,12 @@ refer to [SPEC.md](SPEC.md).
 - **Photo overlays**: clipping warning (J), focus peaking (⇧J), AF points from the maker notes
   (⇧A; Canon, Nikon live view, Sony, Fujifilm, EXIF subject area). [F-INFO-07]
 - **Compare**: difference, blend and wipe of two images. [F-GRID-04]
+- **Windows 10/11 (preview)**: the app built with MSVC and Qt 6.11, with a native platform layer
+  — WIC as system decoder (HEIF/AVIF/WebP/JPEG XL/RAW with the Store codec extensions), Explorer
+  name order, Recycle Bin with undo, recursive folder watching, Open with, Default apps,
+  wallpaper, monitor ICC profile and scRGB HDR output, the decoder helper in a low integrity
+  sandbox with a job object. Installer (Inno Setup) and portable ZIP from CI; not code-signed yet
+  (SmartScreen warns). See docs/WINDOWS.md. [SPEC 9.3, 13]
 
 ## [1.1.0] - Unreleased
 

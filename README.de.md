@@ -53,6 +53,16 @@ Voraussetzung: macOS 15 (Sequoia) oder neuer, Apple-Silicon-Mac.
 - **Homebrew** *(geplant)*: `brew install --cask brokoskokoli/tap/lumaflip`, nach Aufnahme in
   `homebrew/cask` auch `brew install --cask lumaflip`.
 
+### Windows (Vorschau)
+
+Windows 10 (1809) oder 11, x64. Vorschau-Builds aus der CI (Job „Windows app“, Artefakt
+`lumaflip-windows-x64`): Installer `Lumaflip-<version>-windows-x64-setup.exe` (pro Benutzer, trägt
+Lumaflip unter „Öffnen mit“ und „Einstellungen → Standard-Apps“ ein, übernimmt keinen Dateityp
+ungefragt) oder die portable ZIP-Datei. Die Builds sind **noch nicht signiert**: SmartScreen warnt
+beim ersten Start („Der Computer wurde durch Windows geschützt“ → „Weitere Informationen“ →
+„Trotzdem ausführen“). HEIC, AVIF, WebP, JPEG XL und RAW über die Codec-Erweiterungen aus dem
+Microsoft Store. Details: [docs/WINDOWS.md](docs/WINDOWS.md).
+
 ## Aus dem Quellcode bauen
 
 ```sh
@@ -60,6 +70,9 @@ brew install cmake ninja qt jpeg-turbo googletest clang-format resvg
 tools/run.sh [bild]                    # nur die App bauen und starten
 tools/check.sh --quick --no-gui        # Build + Unit-Tests ohne Fenster
 ```
+
+Windows (MSVC, Qt msvc2022_64, vcpkg): `cmake --preset windows-release`, siehe
+[docs/WINDOWS.md](docs/WINDOWS.md).
 
 ## Mitmachen
 

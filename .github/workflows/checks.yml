@@ -222,7 +222,8 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@a9c63c7c123f3069cff414e7e482d95dfa9d8125 # v4.4.1
         with:
-          version: "6.11.*"
+          # Pinned: aqt lists a new patch release for Windows later than for Linux.
+          version: "6.11.2"
           host: windows
           target: desktop
           arch: win64_msvc2022_64

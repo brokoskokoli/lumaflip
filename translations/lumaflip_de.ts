@@ -93,6 +93,16 @@
     </message>
 </context>
 <context>
+    <name>lf::FolderMapView</name>
+    <message numerus="yes">
+        <source>Karten sind unter Windows nicht verfügbar (%n Foto(s) mit Ortsangabe).</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+</context>
+<context>
     <name>lf::Format</name>
     <message numerus="yes">
         <source>%n Byte</source>

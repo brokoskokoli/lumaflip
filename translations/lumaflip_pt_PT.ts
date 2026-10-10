@@ -634,6 +634,14 @@
         <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
         <translation>O nome de um atalho não pode começar por “-”.</translation>
     </message>
+    <message>
+        <source>Kurzbefehle gibt es nur unter macOS.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File …).</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
         <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
         <translation>
@@ -845,6 +853,10 @@
     <message>
         <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
         <translation>Memória insuficiente para a imagem (%1 × %2 píxeis).</translation>
+    </message>
+    <message>
+        <source>Windows-Fehler %1</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Die Bilddaten des Decoders fehlen.</source>
@@ -1359,6 +1371,16 @@
     <message>
         <source>Karte schließen</source>
         <translation>Fechar mapa</translation>
+    </message>
+</context>
+<context>
+    <name>lf::FolderMapView</name>
+    <message numerus="yes">
+        <source>Karten sind unter Windows nicht verfügbar (%n Foto(s) mit Ortsangabe).</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -2999,6 +3021,18 @@
         <source>Der Bildschirm ist nicht mehr da.</source>
         <translation>O ecrã já não está ligado.</translation>
     </message>
+    <message>
+        <source>Alle Bildschirme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bildschirm %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Windows hat das Bild nicht als Hintergrund übernommen.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>lf::MainMenu</name>
@@ -3576,6 +3610,10 @@
     <message>
         <source>Die Karte konnte nicht geladen werden.</source>
         <translation>Não foi possível carregar o mapa.</translation>
+    </message>
+    <message>
+        <source>Karten sind unter Windows nicht verfügbar.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5375,6 +5413,18 @@
     <message>
         <source>Zeitüberschreitung bei der Rückmeldung des Systems.</source>
         <translation>Tempo limite excedido à espera da resposta do sistema.</translation>
+    </message>
+    <message>
+        <source>Batch-Dateien werden aus Sicherheitsgründen nicht gestartet.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Das Programm wurde nicht gefunden.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Windows erlaubt Programmen nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

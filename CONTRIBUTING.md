@@ -29,6 +29,25 @@ tools/check.sh --quick --no-gui        # build + unit tests, opens no windows
 - The core also builds without the macOS layer:
   `cmake -B build/generic -DLF_FORCE_GENERIC_PLATFORM=ON …` (similar to the Linux CI job, which builds only the core).
 
+### Windows
+
+Visual Studio 2022 (C++ workload) or the Build Tools, CMake ≥ 3.28, Ninja, Qt 6.11 for
+`msvc2022_64` (with *Qt Image Formats* and *Qt Shader Tools*), Python 3 and
+[vcpkg](https://github.com/microsoft/vcpkg) (`VCPKG_ROOT`; dependencies come from `vcpkg.json`).
+In an *x64 Native Tools Command Prompt*:
+
+```bat
+set CMAKE_PREFIX_PATH=C:\Qt\6.11.2\msvc2022_64
+cmake --preset windows-release
+cmake --build --preset windows-release
+ctest --preset windows-release -L unit
+```
+
+Windows code goes into `src/platform/windows/` (`Win<Role>.cpp` replaces the generic
+`Generic<Role>.cpp`) and `src/app/<Name>_win.cpp` next to `<Name>_mac.mm`; CMake parts into
+`src/platform/windows/*.cmake` or `if(WIN32)` blocks. Own sources build with `/W4 /WX`. Packaging:
+`tools/windows_deploy.py` + `packaging/windows/Lumaflip.iss`. More in [docs/WINDOWS.md](docs/WINDOWS.md).
+
 ### Checks
 
 | Command | What it does |

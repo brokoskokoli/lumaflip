@@ -126,6 +126,16 @@ Requirements: **macOS 15 Sequoia or later** on an **Apple Silicon** Mac.
   `brew install --cask brokoskokoli/tap/lumaflip`. Once it is accepted into
   `homebrew/cask`, the command will be `brew install --cask lumaflip`.
 
+### Windows (preview)
+
+Requirements: **Windows 10 (1809) or 11**, x64. Preview builds come from CI (job *Windows app*,
+artifact `lumaflip-windows-x64`): `Lumaflip-<version>-windows-x64-setup.exe` (installs per user,
+registers Lumaflip under *Open with* and *Settings → Default apps*, never takes over a file type)
+or the portable `Lumaflip-<version>-windows-x64.zip`. These builds are **not code-signed yet**:
+SmartScreen warns on the first start ("Windows protected your PC" → *More info* → *Run anyway*).
+HEIC, AVIF, WebP, JPEG XL and RAW use the codec extensions from the Microsoft Store. Details,
+differences to macOS and known gaps: [docs/WINDOWS.md](docs/WINDOWS.md).
+
 The first time you open an image from Desktop, Documents, Downloads, a removable drive or a network
 volume, macOS asks once for access. Lumaflip needs to read the image's folder so you can flip
 through it.
@@ -184,7 +194,8 @@ tools/check.sh --quick --no-gui        # build + unit tests (no windows opened)
 tools/package.sh                       # self-contained app + DMG/ZIP in dist/ (ad-hoc signed)
 ```
 
-Qt 6.11 from Homebrew. resvg is optional; without it, SVG falls back to Qt SVG. More detail is in
+Qt 6.11 from Homebrew. resvg is optional; without it, SVG falls back to Qt SVG. Windows (MSVC,
+Qt msvc2022_64, vcpkg): `cmake --preset windows-release`, see [docs/WINDOWS.md](docs/WINDOWS.md). More detail is in
 [CONTRIBUTING.md](CONTRIBUTING.md), and signing, notarization and releases are covered in
 [docs/RELEASING.md](docs/RELEASING.md).
 
