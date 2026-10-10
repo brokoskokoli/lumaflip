@@ -77,6 +77,8 @@ void installFirstFrameHook(lf::Application& app) {
 
 int main(int argc, char* argv[]) {
     const bool exitAfterFirstFrame = qgetenv("LF_EXIT_AFTER_FIRST_FRAME") == "1";
+    if (exitAfterFirstFrame) // diagnostics: time before main (dyld, static init)
+        std::fprintf(stderr, "LF_MAIN_MS=%.1f\n", msSinceProcessStart());
     QApplication app(argc, argv);
     lf::Settings::configureApplication(); // SPEC 8.6: settings/app data locations
     QApplication::setApplicationVersion(QStringLiteral(LF_APP_VERSION));
