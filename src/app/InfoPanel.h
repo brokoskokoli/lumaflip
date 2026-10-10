@@ -49,7 +49,7 @@ struct InfoData {
     QList<InfoSection> sections;
     std::optional<QStringList> tags; // nullopt: unreadable (tagError)
     QString tagError;
-    bool unreadable = false; // no decoder can read the image (no histogram either)
+    bool unreadable = false;          // no decoder can read the image (no histogram either)
     std::optional<GeoPoint> location; // F-INFO-04
 };
 
@@ -99,6 +99,7 @@ signals:
 
 protected:
     void showEvent(QShowEvent* event) override;
+    void hideEvent(QHideEvent* event) override; // SPEC 10.3: no map requests while hidden
     bool eventFilter(QObject* watched, QEvent* event) override;
     void changeEvent(QEvent* event) override; // F-I18N-03: language switch
 

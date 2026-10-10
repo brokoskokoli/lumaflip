@@ -20,6 +20,7 @@
 
 #include "FileOps.h"
 #include "Rating.h"
+#include "Sidecars.h"
 
 #include <QHash>
 #include <QMutex>
@@ -57,13 +58,14 @@ namespace ratingio {
 std::optional<Rating> resolve(const RatingOptions& options, const std::optional<Rating>& sidecar,
                               const std::optional<Rating>& embedded, const std::optional<Rating>& tags);
 
-// The sidecar a rating is read from (first existing candidate) / written to (the existing
-// one, else "<base>.xmp"). `xmpNames` (optional): file names of the folder's .xmp files,
-// listed once for many images (no stat per candidate).
-QString existingSidecar(const QString& imagePath, const QSet<QString>* xmpNames = nullptr);
+// The sidecar a rating is read from (first existing one the image owns) / written to (the
+// existing one, else "<file>.xmp" or "<base>.xmp"), see Sidecars.h: a JPEG next to a RAW
+// of the same base name never uses the RAW's "<base>.xmp". `folder` (optional): a listing
+// of the image's folder, made once for many images.
+QString existingSidecar(const QString& imagePath, const sidecars::Folder* folder = nullptr);
 QString sidecarForWriting(const QString& imagePath);
 
-std::optional<Rating> readSidecar(const QString& imagePath, const QSet<QString>* xmpNames = nullptr);
+std::optional<Rating> readSidecar(const QString& imagePath, const sidecars::Folder* folder = nullptr);
 // Writes the rating into the sidecar (other XMP content kept; created if missing; an empty
 // rating in a sidecar that holds nothing else of ours leaves the other content). Atomic.
 QString writeSidecar(const QString& imagePath, const Rating& rating);
@@ -80,7 +82,7 @@ std::optional<Rating> readTags(const QString& path, const RatingTagNames& names)
 QString writeTags(const QString& path, const Rating& rating, const RatingTagNames& names);
 
 // All enabled sources, conflict rule applied. Unrated (nothing stored) = empty Rating.
-Rating read(const QString& path, const RatingOptions& options, const QSet<QString>* xmpNames = nullptr);
+Rating read(const QString& path, const RatingOptions& options, const sidecars::Folder* folder = nullptr);
 // Every enabled store (embedded refused -> sidecar).
 RatingWriteResult write(const QString& path, const Rating& rating, const RatingOptions& options);
 // Many files (F-CULL-04/05): the .xmp files of each folder are listed once.
@@ -136,6 +138,10 @@ public:
     using ChangeDone =
         std::function<void(bool ok, const QString& error, const QString& notice, const Rating& now)>;
     void changeRating(FileOps& ops, const QString& path, Change change, ChangeDone done = {});
+    // Several files as ONE undo step (both files of a RAW+JPEG pair, a grid selection):
+    // each file's new rating is computed from its own stored one; if one write fails, the
+    // files written before get their previous rating back. `done` reports the first path.
+    void changeRatings(FileOps& ops, const QStringList& paths, Change change, ChangeDone done = {});
 
 signals:
     void ratingChanged(const QString& path, const lf::Rating& rating);
