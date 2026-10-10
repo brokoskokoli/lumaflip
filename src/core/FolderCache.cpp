@@ -162,7 +162,8 @@ FolderSnapshotPtr FolderCache::get(const QString& folderPath, FileAttributeProvi
         snap->generation = generation;
         snap->changeSeq = localChangeSeq();          // before listing: an edit while listing counts as newer
         snap->folderStamp = folderStamp(folderPath); // before: a change while enumerating is seen next time
-        snap->entries = collection::enumerateFolder(folderPath, &snap->accessDenied, &snap->privacyDenied);
+        snap->entries = collection::enumerateFolder(folderPath, &snap->accessDenied, &snap->privacyDenied,
+                                                    &snap->subfolders);
         if (attributes) {
             for (FileEntry& entry : snap->entries)
                 attributes->fill(entry);

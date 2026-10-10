@@ -16,6 +16,7 @@
 #include "FileEntry.h"
 
 #include <QString>
+#include <QStringList>
 #include <QVector>
 #include <memory>
 
@@ -25,6 +26,7 @@ class FileAttributeProvider;
 
 struct FolderSnapshot {
     QVector<FileEntry> entries; // unsorted, FileAttributeProvider::fill() applied
+    QStringList subfolders;     // F-OPEN-08: names of visible subfolders (no packages, unsorted)
     bool accessDenied = false;  // folder exists but cannot be listed (F-PRIV-01)
     bool privacyDenied = false; // ... because of macOS privacy protection (TCC, EPERM)
     quint64 generation = 0;

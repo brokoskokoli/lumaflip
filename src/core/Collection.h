@@ -9,7 +9,9 @@
 #include "Rating.h"
 #include "SortSpec.h"
 
+#include <QHash>
 #include <QObject>
+#include <QSet>
 #include <QString>
 #include <QStringList>
 #include <QVector>
@@ -134,6 +136,39 @@ public:
     void setNameFilter(const QString& query);
     QString nameFilter() const;
 
+    // ---- subfolders (F-OPEN-08, M3) ----
+    // Folder collections include all subfolders (recursive, per window/session): reloads.
+    // Folders are read depth-first on a worker (cancellable, progress via loadProgress());
+    // hidden folders and packages are skipped, symbolic links are not followed. Order:
+    // folder by folder, path-wise in Finder name order (a folder's own images before those
+    // of its subfolders, collection::compareFolderPaths()); within a folder the sort spec of
+    // the collection applies ("Wie Finder": the order Finder uses for the opened folder).
+    void setIncludeSubfolders(bool on);
+    bool includesSubfolders() const;
+    // Folders the collection reads: the folder, recursive also every subfolder of the last
+    // load (root first). Empty for multi-file collections. Watch these (F-OPEN-07).
+    QStringList folders() const;
+    // A change in `folderPath` concerns this collection (its folder or, recursive, any
+    // non-hidden subfolder - also one that is new).
+    bool coversFolder(const QString& folderPath) const;
+    // Subfolder of `path` relative to folderPath() ("2024/Urlaub"); empty for the folder
+    // itself and for non-recursive collections.
+    QString relativeFolder(const QString& path) const;
+
+    // ---- RAW+JPEG pairs (F-FMT-06, M3) ----
+    // Pairs with the same base name in one folder are one entry (the JPEG, fast); default
+    // off (both shown). Reloads from the shared snapshot.
+    void setPairRawJpeg(bool on);
+    bool pairsRawJpeg() const;
+    // The other file of the pair `path` belongs to (shown, hidden or not shown); else empty.
+    QString pairedPath(const QString& path) const;
+    // `paths` plus their pair members (each pair: the member not shown first). File
+    // operations (trash, move, rating) use this so they apply to both files.
+    QStringList withPairs(const QStringList& paths) const;
+    // Shows the other member of the pair (JPEG <-> RAW) at the same position; it stays
+    // shown across reloads. False if `path` is no pair.
+    bool togglePairMember(const QString& path);
+
     // Injection for tests; defaults are created via Platform.h factories.
     void setProviders(NameCollator* collator, FolderOrderProvider* order,
                       FileAttributeProvider* attributes); // non-owning, may be null
@@ -146,6 +181,10 @@ signals:
     // F-PRIV-01: the folder cannot be listed. `privacyProtected`: macOS privacy protection
     // (TCC, EPERM) rather than plain POSIX permissions (EACCES).
     void accessDenied(const QString& folderPath, bool privacyProtected);
+    // F-OPEN-08: the set of folders() changed (watch them).
+    void foldersChanged();
+    // F-OPEN-08: while a recursive load runs (about every 250 ms).
+    void loadProgress(int foldersRead, int imagesFound);
 
 private:
     struct Private;
@@ -156,13 +195,26 @@ private:
 namespace collection {
 // Lists supported image files of a folder (no hidden files, no AppleDouble, no packages).
 // `privacyDenied`: the denial is EPERM (macOS privacy protection), not EACCES.
+// `subfolders` (optional, F-OPEN-08): names of the visible subfolders (no hidden folders,
+// no packages, symbolic links not followed).
 QVector<FileEntry> enumerateFolder(const QString& folderPath, bool* accessDenied = nullptr,
-                                   bool* privacyDenied = nullptr);
+                                   bool* privacyDenied = nullptr, QStringList* subfolders = nullptr);
 void sortEntries(QVector<FileEntry>& entries, const SortSpec& spec, const NameCollator& collator);
 // F-NAV-03 "Zum nächsten Ordner": the next (`direction` > 0) or previous sibling folder
 // of `folderPath` in Finder name order that contains images; empty if there is none.
 // Blocking (lists folders): call on a worker thread.
 QString siblingImageFolder(const QString& folderPath, int direction, const NameCollator* collator);
+// F-OPEN-08: order of folders in a recursive collection: path-wise in Finder name order,
+// a folder before its subfolders (depth-first, like an expanded Finder list view).
+int compareFolderPaths(const QString& a, const QString& b, const NameCollator& collator);
+// F-FMT-06: RAW+JPEG pairs (same folder and base name, case-insensitive; JPEG = jpg, jpeg,
+// jpe, jfif; RAW = isRawSuffix()). Each pair becomes one entry: the JPEG (or the RAW if it
+// is in `showRaw`) with FileEntry::pairedPath set; the other file goes to `partners` (keyed
+// by its path, its pairedPath pointing back).
+bool isPairJpegSuffix(const QString& lowerSuffix);
+bool isPairPartner(const QString& a, const QString& b);
+void pairRawJpeg(QVector<FileEntry>& entries, QHash<QString, FileEntry>* partners,
+                 const QSet<QString>& showRaw = {});
 // M3: the rating an entry carries (RatingStore values, F-CULL-02) and setting it.
 Rating ratingOf(const FileEntry& entry);
 void setRating(FileEntry& entry, const Rating& rating);

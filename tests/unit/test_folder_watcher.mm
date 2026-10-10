@@ -148,3 +148,34 @@ TEST(FolderWatcher, F_OPEN_07_UnwatchAfterDeletionClosesStream) {
     watcher->unwatch(link);
     EXPECT_EQ(mac::activeFolderStreamCount(), base);
 }
+
+// F-OPEN-08: a tree watch (recursive collections) reports the subfolder whose contents
+// changed, also for subfolders created after the watch started; one stream for the tree.
+TEST(FolderWatcher, F_OPEN_08_TreeWatchReportsSubfolders) {
+    lf::test::ensureQtApp();
+    QTemporaryDir dir;
+    const QString root = dir.path();
+    ASSERT_TRUE(QDir(root).mkpath("Sub/Deep"));
+    const int streamsBefore = mac::activeFolderStreamCount();
+    auto watcher = createFolderWatcher();
+    QStringList changed;
+    QObject::connect(watcher.get(), &FolderWatcher::folderChanged, [&](const QString& p) { changed << p; });
+    watcher->watchTree(root);
+    EXPECT_EQ(mac::activeFolderStreamCount(), streamsBefore + 1);
+    lf::test::spin(400);
+    changed.clear();
+
+    touch(QDir(root).filePath("Sub/Deep/a.jpg"));
+    ASSERT_TRUE(waitUntil([&] { return changed.contains(QDir(root).filePath("Sub/Deep")); }, 3000))
+        << changed.join(", ").toStdString();
+
+    changed.clear();
+    ASSERT_TRUE(QDir(root).mkpath("Neu"));
+    touch(QDir(root).filePath("Neu/b.jpg"));
+    ASSERT_TRUE(waitUntil([&] { return changed.contains(QDir(root).filePath("Neu")); }, 3000))
+        << changed.join(", ").toStdString();
+    EXPECT_TRUE(waitUntil([&] { return changed.contains(root); }, 3000)); // "Neu" appeared in the root
+
+    watcher->unwatchTree(root);
+    EXPECT_EQ(mac::activeFolderStreamCount(), streamsBefore);
+}

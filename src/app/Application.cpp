@@ -753,17 +753,22 @@ void Application::folderChangedOnDisk(const QString& folder) {
         w->folderChanged(folder);
 }
 
-void Application::setWindowFolder(ViewerWindow*, const QString& oldFolder, const QString& newFolder) {
+void Application::setWindowFolder(ViewerWindow*, const QString& oldFolder, const QString& newFolder,
+                                  bool oldTree, bool newTree) {
+    // Tree watches (F-OPEN-08, recursive collections) are counted apart from plain ones.
+    auto countKey = [](const QString& folder, bool tree) {
+        return tree ? QStringLiteral("\x1f") + folder : folder;
+    };
     if (!oldFolder.isEmpty()) {
-        auto it = d->watchCount.find(oldFolder);
+        auto it = d->watchCount.find(countKey(oldFolder, oldTree));
         if (it != d->watchCount.end() && --*it <= 0) {
             d->watchCount.erase(it);
             if (d->watcher)
-                d->watcher->unwatch(oldFolder);
+                oldTree ? d->watcher->unwatchTree(oldFolder) : d->watcher->unwatch(oldFolder);
         }
     }
-    if (!newFolder.isEmpty() && d->watchCount[newFolder]++ == 0 && d->watcher)
-        d->watcher->watch(newFolder);
+    if (!newFolder.isEmpty() && d->watchCount[countKey(newFolder, newTree)]++ == 0 && d->watcher)
+        newTree ? d->watcher->watchTree(newFolder) : d->watcher->watch(newFolder);
 }
 
 // ---------------------------------------------------------------------------------------

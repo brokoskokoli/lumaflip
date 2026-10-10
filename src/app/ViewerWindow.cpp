@@ -343,6 +343,7 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
         m_app.windowChanged(this);
     });
     connect(m_collection, &Collection::accessDenied, this, &ViewerWindow::showAccessHint);
+    connect(m_collection, &Collection::foldersChanged, this, &ViewerWindow::updateFolderWatch); // F-OPEN-08
     ImageProvider& provider = m_app.provider();
     connect(&provider, &ImageProvider::imageReady, this, &ViewerWindow::onImageReady);
     // F-FMT-04: an error card only for the page that failed (other pages may be fine).
@@ -444,7 +445,7 @@ void ViewerWindow::setVisible(bool visible) {
 ViewerWindow::~ViewerWindow() {
     m_app.provider().removeClient(this);
     if (!m_watchedFolder.isEmpty())
-        m_app.setWindowFolder(this, m_watchedFolder, {});
+        m_app.setWindowFolder(this, m_watchedFolder, {}, m_watchedTree, false);
     m_app.unregisterWindow(this);
 }
 
@@ -1123,10 +1124,12 @@ void ViewerWindow::hideAccessHint() {
 void ViewerWindow::updateFolderWatch() {
     const QString folder =
         m_collection->isFolderCollection() && !m_closed ? m_collection->folderPath() : QString();
-    if (folder == m_watchedFolder)
+    const bool tree = !folder.isEmpty() && m_collection->includesSubfolders(); // F-OPEN-08
+    if (folder == m_watchedFolder && tree == m_watchedTree)
         return;
-    m_app.setWindowFolder(this, m_watchedFolder, folder);
+    m_app.setWindowFolder(this, m_watchedFolder, folder, m_watchedTree, tree);
     m_watchedFolder = folder;
+    m_watchedTree = tree;
 }
 
 // ---------------------------------------------------------------------------------------
@@ -1605,7 +1608,8 @@ void ViewerWindow::fileRenamed(const QString& from, const QString& to) {
 void ViewerWindow::folderChanged(const QString& folderPath) {
     // F-OPEN-07: the app invalidated the shared snapshot once; every window showing the
     // folder re-sorts the one new enumeration (F-WIN-09).
-    if (m_collection->isFolderCollection() && m_collection->folderPath() == folderPath)
+    // F-OPEN-08: also a (new) subfolder of a collection that includes subfolders.
+    if (m_collection->isFolderCollection() && m_collection->coversFolder(folderPath))
         m_collection->reload();
 }
 
@@ -1682,7 +1686,7 @@ void ViewerWindow::closeEvent(QCloseEvent* event) {
     // file operations must not see a closed window any more.
     m_app.provider().removeClient(this);
     if (!m_watchedFolder.isEmpty())
-        m_app.setWindowFolder(this, m_watchedFolder, {});
+        m_app.setWindowFolder(this, m_watchedFolder, {}, m_watchedTree, false);
     m_watchedFolder.clear();
     m_closed = true;
     m_app.unregisterWindow(this);
