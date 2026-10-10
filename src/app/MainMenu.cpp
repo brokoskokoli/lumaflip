@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "MainMenu.h"
 
+#include "AboutDialog.h"
 #include "Application.h"
 #include "ImageView.h"
 #include "ViewerWindow.h"
@@ -137,7 +138,7 @@ void MainMenu::build() {
     // Moved into the application menu ("Lumaflip") on macOS by their roles.
     QAction* about = addCommand(file, QStringLiteral("about"), tr("Über Lumaflip"));
     about->setMenuRole(QAction::AboutRole);
-    connect(about, &QAction::triggered, &m_app, &Application::showAbout);
+    connect(about, &QAction::triggered, this, [] { AboutDialog::showAbout(); });
     QAction* prefs = add(file, Action::OpenPreferences, tr("Einstellungen …"));
     prefs->setMenuRole(QAction::PreferencesRole);
     QAction* quit =

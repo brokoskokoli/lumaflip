@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# clang-tidy profile (SPEC 9.3, 15.1). Run via tools/check.sh --tidy (changed files).
+Checks: >
+  -*,
+  bugprone-*,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-narrowing-conversions,
+  -bugprone-implicit-widening-of-multiplication-result,
+  -bugprone-branch-clone,
+  -bugprone-exception-escape,
+  -bugprone-unchecked-optional-access,
+  -bugprone-suspicious-include,
+  clang-analyzer-*,
+  -clang-analyzer-optin.osx.*,
+  -clang-analyzer-osx.cocoa.RetainCount,
+  -clang-analyzer-cplusplus.NewDeleteLeaks,
+  performance-*,
+  -performance-enum-size,
+  -performance-avoid-endl,
+  modernize-use-override,
+  modernize-use-nullptr,
+  modernize-use-emplace,
+  modernize-use-equals-default,
+  modernize-use-equals-delete,
+  modernize-make-unique,
+  modernize-make-shared,
+  modernize-loop-convert,
+  modernize-redundant-void-arg,
+  modernize-deprecated-headers
+# Qt parent/child ownership (new QWidget(parent)) looks like a leak to the analyzer:
+# cplusplus.NewDeleteLeaks is off for that reason.
+WarningsAsErrors: ''
+HeaderFilterRegex: '(src|tests)/.*\.h$'
+FormatStyle: file
+CheckOptions:
+  - key: performance-unnecessary-value-param.AllowedTypes
+    value: 'QString;QStringList;QByteArray;QImage;QVariant;QList;QVector;QHash;QMap;QSet;QColorSpace;.*Ptr$'
+  - key: performance-unnecessary-copy-initialization.AllowedTypes
+    value: 'QString;QStringList;QByteArray;QImage;QVariant;QList;QVector;QHash;QMap;QSet;QColorSpace;.*Ptr$'
+  - key: modernize-loop-convert.MinConfidence
+    value: reasonable
+  - key: bugprone-assert-side-effect.AssertMacros
+    value: 'assert,Q_ASSERT,Q_ASSERT_X'
