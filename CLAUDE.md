@@ -90,3 +90,12 @@ Neue Quelldateien werden per Glob automatisch gebaut (CMake `CONFIGURE_DEPENDS`)
 - Keine privaten Nutzerdaten in Testdaten (keine echten `.DS_Store`-Dateien aus dem Home-Verzeichnis einchecken – synthetisch erzeugen).
 - Öffentliche Header in `src/core/*.h` sind Schnittstellen zwischen Modulen: Änderungen klein halten und im Commit begründen.
 - Eigene Quellen kompilieren mit `-Werror`.
+
+## Commits und Veröffentlichung
+
+- Autor/Committer ist immer `Stefan Richter <16724498+brokoskokoli@users.noreply.github.com>` (in der
+  repo-lokalen git-Konfiguration gesetzt – nie die globale Konfiguration verwenden).
+- **Keine** `Co-Authored-By`-Zeilen oder andere E-Mail-Adressen in Commit-Nachrichten.
+- Keine Firmennamen oder Firmen-E-Mail-Adressen in Dateien oder Historie. Vor jedem Push prüfen:
+  `git log --format='%an %ae %cn %ce %B'` und `git log -p --format=` auf fremde E-Mail-Adressen.
+- Repository: `github.com/brokoskokoli/lumaflip` (privat).
