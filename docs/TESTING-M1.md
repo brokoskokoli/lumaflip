@@ -260,8 +260,8 @@ Menüs und Erscheinungsbild:
       Rückfragen („Abbrechen“, „Nein“). Defekte Dateien zeigen deutsche Gründe ohne
       Zusätze wie „ImageIO:“ oder „Qt:“.
 - [ ] Einstellungen: Funktionen, die erst später kommen (Infopanel, Filmstreifen,
-      Bewertungen, Lupe, Datei herausziehen, Diashow), sind ausgegraut und mit „ab Version
-      1.0“ beschriftet.
+      Bewertungen, Lupe, Datei herausziehen, Diashow), sind ausgegraut und mit „in einer
+      späteren Version“ beschriftet.
 
 Datenschutz (SPEC 10.2, 12.1 Nr. 8):
 

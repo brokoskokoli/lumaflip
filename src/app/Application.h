@@ -99,15 +99,16 @@ public:
     void showOpenDialog();
     void showOpenFolderDialog();
     void showPreferences();
-    void showAbout();
     void showShortcuts();
     // Dock icon clicked (applicationShouldHandleReopen): an empty window if none is open.
     void handleDockReopen();
-    // F-MAC-04: asks first (non-blocking), then setDefaultViewer().
+    // F-MAC-04: asks first with a checklist of the types (non-blocking, DefaultAppDialog),
+    // then setDefaultViewer() for the selected ones.
     void makeDefaultViewer();
     // Registers the app for the image types without blocking; the result is shown as a
     // message (and in the preferences window) and emitted as defaultViewerFinished().
-    void setDefaultViewer();
+    // `types` empty: the remembered selection (all types the user did not leave out).
+    void setDefaultViewer(const QStringList& types = {});
     bool openUrl(const QUrl& url);    // via Services::openUrl
     static QUrl privacySettingsUrl(); // Datenschutz & Sicherheit -> Dateien und Ordner
     // ⌘Q: remembers the windows (F-WIN-06), then quits. Pending file operations are

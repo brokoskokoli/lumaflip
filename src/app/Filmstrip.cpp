@@ -40,7 +40,7 @@ FilmstripModel::FilmstripModel(Collection& collection, ThumbnailCache& cache, QO
     connect(&m_collection, &Collection::currentChanged, this,
             [this](int index, const QString&) { onCurrentChanged(index); });
     connect(&m_cache, &ThumbnailCache::thumbnailReady, this, &FilmstripModel::onThumbnailReady);
-    connect(&m_cache, &ThumbnailCache::thumbnailFailed, this, &FilmstripModel::onThumbnailReady);
+    connect(&m_cache, &ThumbnailCache::thumbnailFailed, this, &FilmstripModel::onThumbnailFailed);
     rebuild();
 }
 
@@ -59,13 +59,16 @@ QVariant FilmstripModel::data(const QModelIndex& index, int role) const {
     const FileEntry& e = m_collection.at(row);
     switch (role) {
     case Qt::DisplayRole:
-    case Qt::ToolTipRole:
     case Qt::AccessibleTextRole:
         return e.name;
+    case Qt::ToolTipRole:
+        return m_failed.contains(e.path) ? tr("%1 – kann nicht gelesen werden").arg(e.name) : e.name;
     case PathRole:
         return e.path;
     case CurrentRole:
         return row == m_current;
+    case FailedRole:
+        return m_failed.contains(e.path);
     case ThumbnailRole:
         ++m_requests;
         return m_cache.request(e.path, m_thumbSize, this);
@@ -98,8 +101,10 @@ void FilmstripModel::rebuild() {
         const QPair<qint64, qint64> stamp{e.size, e.modified.isValid() ? e.modified.toMSecsSinceEpoch() : -1};
         auto old = m_stamps.constFind(e.path);
         // A file that changed on disk gets a new thumbnail.
-        if (old != m_stamps.cend() && *old != stamp && old->first >= 0 && stamp.first >= 0)
+        if (old != m_stamps.cend() && *old != stamp && old->first >= 0 && stamp.first >= 0) {
             m_cache.invalidate(e.path);
+            m_failed.remove(e.path); // tried again
+        }
         stamps.insert(e.path, stamp);
     }
     m_stamps = std::move(stamps);
@@ -117,6 +122,13 @@ void FilmstripModel::onCurrentChanged(int index) {
         if (r >= 0 && r < m_rows.size())
             emit dataChanged(this->index(r), this->index(r), {CurrentRole});
     emit currentRowChanged(index);
+}
+
+void FilmstripModel::onThumbnailFailed(const QString& path, int thumbSize) {
+    if (thumbSize != m_thumbSize)
+        return;
+    m_failed.insert(path);
+    onThumbnailReady(path, thumbSize);
 }
 
 void FilmstripModel::onThumbnailReady(const QString& path, int thumbSize) {
@@ -168,6 +180,19 @@ void FilmstripDelegate::paint(QPainter* painter, const QStyleOptionViewItem& opt
         painter->setPen(Qt::NoPen);
         painter->setBrush(dark ? QColor(255, 255, 255, 22) : QColor(0, 0, 0, 18));
         painter->drawRoundedRect(target, 3, 3);
+        if (index.data(FilmstripModel::FailedRole).toBool()) {
+            // Unreadable file (F-FMT-02): a small warning mark instead of an endless placeholder.
+            const double d = std::clamp(std::min(target.width(), target.height()) * 0.42, 12.0, 22.0);
+            const QRectF mark(target.center() - QPointF(d / 2, d / 2), QSizeF(d, d));
+            painter->setBrush(QColor(214, 64, 54, dark ? 220 : 200));
+            painter->drawEllipse(mark);
+            QFont f = painter->font();
+            f.setBold(true);
+            f.setPixelSize(int(d * 0.7));
+            painter->setFont(f);
+            painter->setPen(Qt::white);
+            painter->drawText(mark, Qt::AlignCenter, QStringLiteral("!"));
+        }
     }
     if (current) {
         painter->setBrush(Qt::NoBrush);

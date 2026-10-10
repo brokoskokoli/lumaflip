@@ -2,6 +2,7 @@
 #include "ViewerWindow.h"
 
 #include "AnimationPlayer.h"
+#include "DisplayText.h"
 #include "Application.h"
 #include "DragOut.h"
 #include "ImageView.h"
@@ -12,6 +13,7 @@
 #include "WindowPanels.h"
 #include "WindowTabbing.h"
 #include "core/Collection.h"
+#include "core/Decoder.h"
 #include "core/FileOps.h"
 #include "core/ImageFormats.h"
 #include "core/Platform.h"
@@ -889,7 +891,12 @@ void ViewerWindow::updateStatus() {
     m_frameLabel->setText(frameStatusText());
     const DecodedImagePtr img = m_view->image();
     const bool showsCurrent = !cur.isEmpty() && cur == m_shownPath && !m_shownFailed && img;
-    if (showsCurrent) {
+    if (showsCurrent && isVectorFile(cur)) {
+        // SVG: the decoder renders at a working size; the image's own size is what the
+        // info panel shows too (read once per file on a worker).
+        m_pixelLabel->setText(vectorSizeText(cur));
+        m_zoomLabel->setText(QStringLiteral("%1 %").arg(qRound(m_view->zoomFactor() * 100)));
+    } else if (showsCurrent) {
         const QSize full = img->fullSize.isEmpty() ? img->image.size() : img->fullSize;
         m_pixelLabel->setText(QStringLiteral("%1 × %2").arg(full.width()).arg(full.height()));
         m_zoomLabel->setText(QStringLiteral("%1 %").arg(qRound(m_view->zoomFactor() * 100)));
@@ -899,11 +906,38 @@ void ViewerWindow::updateStatus() {
     }
     // Known once the folder is read (no file system access on the GUI thread).
     const qint64 bytes = i >= 0 ? m_collection->at(i).size : -1;
-    m_bytesLabel->setText(bytes >= 0 ? QLocale().formattedDataSize(bytes, 1, QLocale::DataSizeSIFormat)
-                                     : QString());
+    m_bytesLabel->setText(bytes >= 0 ? formatByteSize(bytes) : QString()); // German units
     m_sortLabel->setText(sortText());
     for (QLabel* l : {m_nameLabel, m_positionLabel, m_frameLabel, m_pixelLabel, m_bytesLabel, m_zoomLabel})
         l->setVisible(!l->text().isEmpty());
+}
+
+bool ViewerWindow::isVectorFile(const QString& path) {
+    const QString suffix = QFileInfo(path).suffix().toLower();
+    return suffix == QLatin1String("svg") || suffix == QLatin1String("svgz");
+}
+
+QString ViewerWindow::vectorSizeText(const QString& path) {
+    if (m_vectorSizePath == path)
+        return m_vectorSize.isEmpty() ? tr("Vektor")
+                                      : tr("%1 × %2 (Vektor)").arg(m_vectorSize.width()).arg(m_vectorSize.height());
+    if (m_vectorSizeJob != path) {
+        m_vectorSizeJob = path;
+        auto* w = new QFutureWatcher<QSize>(this);
+        connect(w, &QFutureWatcher<QSize>::finished, this, [this, w, path] {
+            w->deleteLater();
+            if (m_vectorSizeJob == path)
+                m_vectorSizeJob.clear();
+            m_vectorSizePath = path;
+            m_vectorSize = w->result();
+            updateStatus();
+        });
+        w->setFuture(QtConcurrent::run([path] {
+            const auto info = DecoderRegistry::instance().info(path, nullptr);
+            return info ? info->displaySize : QSize();
+        }));
+    }
+    return tr("Vektor");
 }
 
 QString ViewerWindow::statusText() const {

@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "InfoPanel.h"
 
+#include "DisplayText.h"
 #include "HistogramWidget.h"
 #include "core/Decoder.h"
 #include "core/Platform.h"
+#include "core/Settings.h"
 
 #include <QApplication>
 #include <QClipboard>
@@ -68,9 +70,43 @@ QString formatDate(const QDateTime& dt) {
 }
 
 QString formatSize(qint64 bytes) {
-    const QLocale loc;
-    return QStringLiteral("%1 (%2 Byte)")
-        .arg(loc.formattedDataSize(bytes, 1, QLocale::DataSizeSIFormat), loc.toString(bytes));
+    return formatByteSizeExact(bytes); // German units like the rest of the UI
+}
+
+// The decoders deliver stable German keys (Decoder.h); the labels shown are translatable.
+// Unknown keys are shown as they are.
+const char* const kRowLabels[] = {
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Format"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Pixelmaße"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Farbraum"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Profil"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Bittiefe"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "HDR"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Transparenz"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Einzelbilder"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Seiten"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Ausrichtung"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Bewertung"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Hersteller"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Modell"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Objektiv"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Aufnahmedatum"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Brennweite"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Blende"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Belichtungszeit"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "ISO"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Belichtungskorrektur"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Blitz"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Breite"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Länge"),
+    QT_TRANSLATE_NOOP("lf::InfoPanel", "Höhe"),
+};
+
+QString rowLabel(const QString& key) {
+    for (const char* k : kRowLabels)
+        if (key == QString::fromUtf8(k))
+            return tr(k);
+    return key;
 }
 
 // Rows of a decoder group in a fixed, meaningful order; unknown keys follow alphabetically.
@@ -78,11 +114,46 @@ QList<QPair<QString, QString>> orderedRows(const QVariantMap& group, const QStri
     QList<QPair<QString, QString>> rows;
     for (const QString& k : order)
         if (group.contains(k))
-            rows.append({k, group.value(k).toString()});
+            rows.append({rowLabel(k), group.value(k).toString()});
     for (auto it = group.cbegin(); it != group.cend(); ++it)
         if (!order.contains(it.key()))
-            rows.append({it.key(), it.value().toString()});
+            rows.append({rowLabel(it.key()), it.value().toString()});
     return rows;
+}
+
+constexpr int kMinTreeRows = 6; // metadata rows that stay visible in small windows
+
+// A section title that collapses `body` (state remembered in the settings).
+QToolButton* makeSectionHeader(const QString& text, const QString& name, QWidget* parent) {
+    auto* b = new QToolButton(parent);
+    b->setObjectName(name);
+    b->setText(text);
+    b->setCheckable(true);
+    b->setChecked(true); // expanded
+    b->setAutoRaise(true);
+    b->setFocusPolicy(Qt::NoFocus);
+    b->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    b->setArrowType(Qt::DownArrow);
+    b->setToolTip(QCoreApplication::translate("lf::InfoPanel", "Ein- oder ausklappen"));
+    QFont bold = b->font();
+    bold.setBold(true);
+    b->setFont(bold);
+    b->setStyleSheet(QStringLiteral("QToolButton { border: none; padding: 0px; }"));
+    return b;
+}
+
+void connectSection(QToolButton* header, QWidget* body, const QString& settingsKey) {
+    auto apply = [header, body](bool expanded) {
+        header->setArrowType(expanded ? Qt::DownArrow : Qt::RightArrow);
+        body->setVisible(expanded);
+    };
+    const bool expanded = !Settings::instance().value(settingsKey).toBool();
+    header->setChecked(expanded);
+    apply(expanded);
+    QObject::connect(header, &QToolButton::toggled, body, [apply, settingsKey](bool on) {
+        apply(on);
+        Settings::instance().setValue(settingsKey, !on);
+    });
 }
 
 const QStringList kStandardTags = {tr("Rot"),  tr("Orange"), tr("Gelb"), tr("Grün"),
@@ -101,7 +172,8 @@ InfoData InfoPanel::load(const QString& path, const FileEntry& entry, TagService
     const qint64 size = entry.size >= 0 ? entry.size : (fi.exists() ? fi.size() : -1);
     if (size >= 0)
         file.rows.append({tr("Größe"), formatSize(size)});
-    QString kind = entry.kind;
+    // German type names ("JPEG-Bild"); the system's text (system language) only as fallback.
+    QString kind = displayKind(fi.fileName(), entry.kind);
     if (kind.isEmpty())
         kind = QMimeDatabase().mimeTypeForFile(fi).comment();
     if (!kind.isEmpty())
@@ -175,13 +247,17 @@ InfoPanel::InfoPanel(ImageProvider& provider, std::shared_ptr<TagService> tags, 
     m_tree->setFrameShape(QFrame::NoFrame);
     m_tree->setSelectionMode(QAbstractItemView::SingleSelection);
     m_tree->setFocusPolicy(Qt::NoFocus); // arrow keys keep flipping images
-    m_tree->setTextElideMode(Qt::ElideMiddle);
+    // Dates, format names and paths stay readable from the start; the full value is the
+    // tooltip (and "Wert kopieren").
+    m_tree->setTextElideMode(Qt::ElideRight);
     m_tree->setContextMenuPolicy(Qt::CustomContextMenu);
     m_tree->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
     m_tree->header()->setStretchLastSection(true);
     m_tree->setAttribute(Qt::WA_MacShowFocusRect, false);
     m_tree->viewport()->setAutoFillBackground(false);
     connect(m_tree, &QWidget::customContextMenuRequested, this, &InfoPanel::showContextMenu);
+    // The metadata have priority: tags and histogram give way (shrink, collapse) first.
+    m_tree->setMinimumHeight(m_tree->fontMetrics().height() * kMinTreeRows + 8);
     layout->addWidget(m_tree, 1);
 
     // ---- Finder tags (F-INFO-06) ----
@@ -191,10 +267,7 @@ InfoPanel::InfoPanel(ImageProvider& provider, std::shared_ptr<TagService> tags, 
     tl->setContentsMargins(0, 0, 0, 0);
     tl->setSpacing(4);
     auto* head = new QHBoxLayout;
-    auto* title = new QLabel(tr("Tags"), m_tagBox);
-    QFont bold = title->font();
-    bold.setBold(true);
-    title->setFont(bold);
+    QToolButton* title = makeSectionHeader(tr("Tags"), QStringLiteral("lfTagSection"), m_tagBox);
     m_tagRemove = new QToolButton(m_tagBox);
     m_tagRemove->setObjectName(QStringLiteral("lfTagRemove"));
     m_tagRemove->setText(QStringLiteral("−"));
@@ -206,7 +279,11 @@ InfoPanel::InfoPanel(ImageProvider& provider, std::shared_ptr<TagService> tags, 
     head->addStretch();
     head->addWidget(m_tagRemove);
     tl->addLayout(head);
-    m_tagList = new QListWidget(m_tagBox);
+    m_tagBody = new QWidget(m_tagBox);
+    auto* tb = new QVBoxLayout(m_tagBody);
+    tb->setContentsMargins(0, 0, 0, 0);
+    tb->setSpacing(4);
+    m_tagList = new QListWidget(m_tagBody);
     m_tagList->setObjectName(QStringLiteral("lfTagList"));
     m_tagList->setFlow(QListView::LeftToRight);
     m_tagList->setWrapping(true);
@@ -218,8 +295,8 @@ InfoPanel::InfoPanel(ImageProvider& provider, std::shared_ptr<TagService> tags, 
     m_tagList->hide(); // shown when the file has tags
     m_tagList->setContextMenuPolicy(Qt::CustomContextMenu);
     m_tagList->viewport()->setAutoFillBackground(false);
-    tl->addWidget(m_tagList);
-    m_tagEdit = new QLineEdit(m_tagBox);
+    tb->addWidget(m_tagList);
+    m_tagEdit = new QLineEdit(m_tagBody);
     m_tagEdit->setObjectName(QStringLiteral("lfTagEdit"));
     m_tagEdit->setPlaceholderText(tr("Tag hinzufügen …"));
     m_tagEdit->setFocusPolicy(Qt::ClickFocus);
@@ -228,15 +305,17 @@ InfoPanel::InfoPanel(ImageProvider& provider, std::shared_ptr<TagService> tags, 
     completer->setCaseSensitivity(Qt::CaseInsensitive);
     m_tagEdit->setCompleter(completer);
     m_tagEdit->installEventFilter(this);
-    tl->addWidget(m_tagEdit);
-    m_tagError = new QLabel(m_tagBox);
+    tb->addWidget(m_tagEdit);
+    m_tagError = new QLabel(m_tagBody);
     m_tagError->setObjectName(QStringLiteral("lfTagError"));
     m_tagError->setWordWrap(true);
     m_tagError->setForegroundRole(QPalette::PlaceholderText);
     m_tagError->hide();
-    tl->addWidget(m_tagError);
+    tb->addWidget(m_tagError);
+    tl->addWidget(m_tagBody);
     layout->addWidget(m_tagBox);
     m_tagBox->setVisible(m_tagService && m_tagService->isSupported());
+    connectSection(title, m_tagBody, QStringLiteral("info/tagsCollapsed"));
 
     connect(m_tagEdit, &QLineEdit::returnPressed, this, [this] {
         const QString t = m_tagEdit->text().trimmed();
@@ -262,11 +341,11 @@ InfoPanel::InfoPanel(ImageProvider& provider, std::shared_ptr<TagService> tags, 
     });
 
     // ---- histogram (F-INFO-03) ----
-    auto* histTitle = new QLabel(tr("Histogramm"), this);
-    histTitle->setFont(bold);
+    QToolButton* histTitle = makeSectionHeader(tr("Histogramm"), QStringLiteral("lfHistogramSection"), this);
     layout->addWidget(histTitle);
     m_histogram = new HistogramWidget(this);
     layout->addWidget(m_histogram);
+    connectSection(histTitle, m_histogram, QStringLiteral("info/histogramCollapsed"));
 
     connect(&m_provider, &ImageProvider::invalidated, this, [this](const QString& p) {
         m_cache.remove(p);
@@ -280,7 +359,7 @@ InfoPanel::InfoPanel(ImageProvider& provider, std::shared_ptr<TagService> tags, 
     });
     connect(&m_provider, &ImageProvider::imageFailed, this, [this](const QString& p) {
         if (p == m_path && m_histogramPath != p)
-            m_histogram->clear(false);
+            m_histogram->showNote(tr("Kein Histogramm")); // unreadable file (F-FMT-02)
     });
 }
 
@@ -343,12 +422,26 @@ void InfoPanel::startLoad() {
     const QString path = m_path;
     const FileEntry entry = m_entry;
     const std::shared_ptr<TagService> tags = m_tagService;
+    const quint64 tagRevision = m_tagRevision.value(path);
     auto* w = new QFutureWatcher<InfoData>(this);
-    connect(w, &QFutureWatcher<InfoData>::finished, this, [this, w] {
-        const InfoData data = w->result();
+    connect(w, &QFutureWatcher<InfoData>::finished, this, [this, w, tagRevision] {
+        InfoData data = w->result();
         w->deleteLater();
         m_loadRunning = false;
         m_loadingPath.clear();
+        const quint64 now = m_tagRevision.value(data.path);
+        if (now != tagRevision) {
+            // Tags were written meanwhile: what this read saw is stale. Use the stored
+            // result of the write, or (still running) the tags shown for it.
+            const auto written = m_writtenTags.constFind(data.path);
+            if (written != m_writtenTags.cend() && written->revision == now) {
+                data.tags = written->tags;
+                data.tagError = written->error;
+            } else if (data.path == m_tagsPath) {
+                data.tags = m_tags;
+                data.tagError.clear();
+            }
+        }
         if (!m_cache.contains(data.path))
             m_cacheOrder.append(data.path);
         m_cache.insert(data.path, data);
@@ -513,6 +606,7 @@ void InfoPanel::writeTags(const QStringList& tags) {
     m_tagList->addItems(tags);
     m_tagList->setVisible(!tags.isEmpty());
     ++m_tagWrites;
+    const quint64 revision = ++m_tagRevision[m_path];
     struct WriteResult {
         bool ok = false;
         QString error;
@@ -521,13 +615,16 @@ void InfoPanel::writeTags(const QStringList& tags) {
     const QString path = m_path;
     const std::shared_ptr<TagService> service = m_tagService;
     auto* w = new QFutureWatcher<WriteResult>(this);
-    connect(w, &QFutureWatcher<WriteResult>::finished, this, [this, w, path] {
+    connect(w, &QFutureWatcher<WriteResult>::finished, this, [this, w, path, revision] {
         const WriteResult r = w->result();
         w->deleteLater();
         --m_tagWrites;
+        m_writtenTags.insert(path, {revision, r.stored, r.ok ? QString() : r.error});
         auto it = m_cache.find(path);
-        if (it != m_cache.end())
+        if (it != m_cache.end()) {
             it->tags = r.stored;
+            it->tagError = r.ok ? QString() : r.error;
+        }
         if (m_tagWrites == 0)
             applyTags(path, r.stored, r.ok ? QString() : r.error);
         emit tagsWritten(path, r.ok);

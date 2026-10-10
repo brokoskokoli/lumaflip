@@ -118,10 +118,20 @@ private:
     QStringList m_tags;
     QString m_tagsPath;
     int m_tagWrites = 0;
+    // Per path: tag writes started so far. A metadata read that began before a write
+    // returns stale tags; they must not replace what the write stored (review #13).
+    QHash<QString, quint64> m_tagRevision;
+    struct WrittenTags {
+        quint64 revision = 0;
+        std::optional<QStringList> tags;
+        QString error;
+    };
+    QHash<QString, WrittenTags> m_writtenTags; // result of the latest finished write
 
     QTreeWidget* m_tree = nullptr;
     HistogramWidget* m_histogram = nullptr;
     QWidget* m_tagBox = nullptr;
+    QWidget* m_tagBody = nullptr; // collapsible part of the tag section
     QListWidget* m_tagList = nullptr;
     QLineEdit* m_tagEdit = nullptr;
     QToolButton* m_tagRemove = nullptr;

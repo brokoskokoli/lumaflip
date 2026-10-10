@@ -6,6 +6,7 @@
 // window restoration and smaller UX points. Real windows like tst_app (cocoa on macOS).
 
 #include "app/Application.h"
+#include "app/DefaultAppDialog.h"
 #include "app/ImageCanvas.h"
 #include "app/ImageView.h"
 #include "app/MainMenu.h"
@@ -552,11 +553,12 @@ private slots:
         auto* button = prefs->findChild<QPushButton*>(QStringLiteral("makeDefault"));
         QVERIFY(button);
         button->click();
-        auto* question = prefs->findChild<QMessageBox*>(QStringLiteral("lfMakeDefaultQuestion"));
-        QVERIFY(question);
+        auto* question = prefs->findChild<DefaultAppDialog*>(QStringLiteral("lfMakeDefaultDialog"));
+        QVERIFY(question); // the type checklist (tst_m2_fixes_ui: F_MAC_04_*)
         QSignalSpy finished(app.get(), &Application::defaultViewerFinished);
-        QAbstractButton* yes = buttonWithText(question, QStringLiteral("Festlegen"));
+        QAbstractButton* yes = question->confirmButton();
         QVERIFY(yes);
+        QCOMPARE(yes->text(), QStringLiteral("Festlegen"));
         QElapsedTimer t;
         t.start();
         yes->click();
@@ -619,7 +621,7 @@ private slots:
 
     // ---- B15: unfinished settings, end of collection ----
 
-    // Covers: F-SET-01 (settings without effect are disabled with "ab Version 1.0")
+    // Covers: F-SET-01 (settings without effect are disabled with "in einer späteren Version")
     void F_SET_01_unfinishedSettingsDisabled() {
         action(Action::OpenPreferences)->trigger();
         PreferencesDialog* prefs = PreferencesDialog::existingInstance();

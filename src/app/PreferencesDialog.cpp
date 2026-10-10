@@ -51,9 +51,9 @@ QString slotSettingsKey(const QString& slotId) {
                                                       : QString::fromLatin1(key::InputPrefix) + slotId;
 }
 
-// Not implemented before version 1.0: shown, but disabled with this note.
+// Not implemented yet (M3 and later): shown, but disabled with this note.
 QString laterNote() {
-    return QCoreApplication::translate("lf::PreferencesDialog", "ab Version 1.0");
+    return QCoreApplication::translate("lf::PreferencesDialog", "in einer späteren Version");
 }
 
 QLabel* helpLabel(const QString& text, QWidget* parent) {

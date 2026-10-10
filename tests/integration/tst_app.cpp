@@ -9,6 +9,7 @@
 // QAction (shortcut list + trigger); plain keys are sent to the view.
 
 #include "app/Application.h"
+#include "app/DisplayText.h"
 #include "app/ImageCanvas.h"
 #include "app/ImageView.h"
 #include "app/MainMenu.h"
@@ -457,8 +458,7 @@ private slots:
         QVERIFY2(status.contains(QStringLiteral("IMG_2.jpg")), qPrintable(status));
         QVERIFY2(status.contains(QStringLiteral("%1 / 3").arg(pos)), qPrintable(status));
         QVERIFY2(status.contains(QStringLiteral(" %")), qPrintable(status)); // zoom
-        const QString bytes =
-            QLocale().formattedDataSize(QFileInfo(path("IMG_2.jpg")).size(), 1, QLocale::DataSizeSIFormat);
+        const QString bytes = formatByteSize(QFileInfo(path("IMG_2.jpg")).size()); // German units
         QVERIFY2(status.contains(bytes), qPrintable(status)); // file size
         // F-SORT-05: detected order is shown
         const QString sort = w->sortText();

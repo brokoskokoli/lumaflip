@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "Application.h"
 
+#include "DefaultAppDialog.h"
 #include "DockReopen.h"
-#include "MenuKeyEquivalents.h"
 #include "ImageView.h"
+#include "MenuKeyEquivalents.h"
 #include "MainMenu.h"
 #include "PreferencesDialog.h"
 #include "RecentItems.h"
@@ -975,16 +976,6 @@ void Application::showPreferences() {
             Qt::UniqueConnection);
 }
 
-void Application::showAbout() {
-    QMessageBox::about(frontWindow(), tr("Über Lumaflip"),
-                       tr("<h3>Lumaflip %1</h3>"
-                          "<p>Schneller Bildbetrachter für macOS: Doppelklick öffnet den ganzen Ordner – "
-                          "in Finder-Reihenfolge.</p>"
-                          "<p>Freie Software unter der GNU General Public License v3 oder später.<br>"
-                          "Verwendet Qt (LGPLv3).</p>")
-                           .arg(QCoreApplication::applicationVersion()));
-}
-
 void Application::showShortcuts() {
     if (d->shortcuts) {
         d->shortcuts->show();
@@ -1021,7 +1012,7 @@ void Application::showShortcuts() {
         if (InputBindings::isActionAvailable(a))
             rows.append({actionLabel(a), keys.join(QStringLiteral(", "))});
         else
-            later.append({tr("%1 (ab Version 1.0)").arg(actionLabel(a)), keys.join(QStringLiteral(", "))});
+            later.append({tr("%1 (in einer späteren Version)").arg(actionLabel(a)), keys.join(QStringLiteral(", "))});
     }
     const int available = int(rows.size());
     rows += later;
@@ -1046,25 +1037,19 @@ void Application::showShortcuts() {
 }
 
 void Application::makeDefaultViewer() {
-    // Non-blocking question (the answer starts the asynchronous registration).
-    auto* box =
-        new QMessageBox(QMessageBox::Question, tr("Als Standard-App festlegen"),
-                        tr("Soll Lumaflip die Standard-App für gängige Bildformate (JPEG, PNG, HEIC, RAW …) "
-                           "werden?"),
-                        QMessageBox::NoButton, PreferencesDialog::existingInstance());
-    box->setObjectName(QStringLiteral("lfMakeDefaultQuestion"));
-    box->setAttribute(Qt::WA_DeleteOnClose);
-    QPushButton* yes = box->addButton(tr("Festlegen"), QMessageBox::AcceptRole);
-    box->addButton(tr("Abbrechen"), QMessageBox::RejectRole);
-    box->setDefaultButton(yes);
-    connect(box, &QMessageBox::buttonClicked, this, [this, yes](QAbstractButton* b) {
-        if (b == yes)
-            setDefaultViewer();
-    });
-    box->open();
+    // F-MAC-04: non-blocking checklist of the types (all preselected, choice remembered);
+    // confirming starts the asynchronous registration of the selected types only.
+    auto* dlg = new DefaultAppDialog(shell().imageDocumentTypes(), PreferencesDialog::existingInstance());
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+    connect(dlg, &DefaultAppDialog::confirmed, this, [this](const QStringList& types) { setDefaultViewer(types); });
+    dlg->open();
 }
 
-void Application::setDefaultViewer() {
+void Application::setDefaultViewer(const QStringList& selected) {
+    const QStringList types =
+        selected.isEmpty() ? DefaultAppDialog::rememberedSelection(shell().imageDocumentTypes()) : selected;
+    if (types.isEmpty())
+        return; // everything deselected: nothing to change
     if (auto* prefs = PreferencesDialog::existingInstance())
         prefs->showStatus(tr("Lumaflip wird als Standard-App festgelegt …"));
     auto done = [this](bool ok, const QString& error) {
@@ -1088,7 +1073,7 @@ void Application::setDefaultViewer() {
             w->showMessage(message, 5000);
         emit defaultViewerPending(message);
     };
-    shell().makeDefaultViewerAsync(shell().imageDocumentTypes(), this, done, pending);
+    shell().makeDefaultViewerAsync(types, this, done, pending); // unselected types stay untouched
 }
 
 bool Application::openUrl(const QUrl& url) {

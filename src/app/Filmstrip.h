@@ -9,6 +9,7 @@
 
 #include <QAbstractListModel>
 #include <QHash>
+#include <QSet>
 #include <QListView>
 #include <QStyledItemDelegate>
 
@@ -22,7 +23,7 @@ class ThumbnailCache;
 class FilmstripModel : public QAbstractListModel {
     Q_OBJECT
 public:
-    enum Roles { PathRole = Qt::UserRole + 1, CurrentRole, ThumbnailRole };
+    enum Roles { PathRole = Qt::UserRole + 1, CurrentRole, ThumbnailRole, FailedRole };
 
     FilmstripModel(Collection& collection, ThumbnailCache& cache, QObject* parent = nullptr);
     ~FilmstripModel() override;
@@ -44,11 +45,13 @@ private:
     void rebuild();
     void onCurrentChanged(int index);
     void onThumbnailReady(const QString& path, int thumbSize);
+    void onThumbnailFailed(const QString& path, int thumbSize);
 
     Collection& m_collection;
     ThumbnailCache& m_cache;
     QHash<QString, int> m_rows;                     // path -> row
     QHash<QString, QPair<qint64, qint64>> m_stamps; // path -> (size, mtime ms) at the last rebuild
+    QSet<QString> m_failed; // no thumbnail possible (unreadable file): error marker
     int m_current = -1;
     int m_thumbSize = 192;
     mutable int m_requests = 0;
