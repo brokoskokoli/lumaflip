@@ -45,15 +45,15 @@ void installFirstFrameHook(lf::Application& app) {
         if (!canvas)
             return;
         auto armed = std::make_shared<bool>(false);
-        QObject::connect(
-            w, &lf::ViewerWindow::imageShown, canvas, [armed, canvas](const QString&, lf::Quality q) {
-                // The window's stage bookkeeping, not DecodedImage::isPreview (true for any
-                // downscaled image, also the Screen stage).
-                if (q != lf::Quality::Preview) {
-                    *armed = true;
-                    canvas->update();
-                }
-            });
+        QObject::connect(w, &lf::ViewerWindow::imageShown, canvas,
+                         [armed, canvas](const QString&, lf::Quality q) {
+                             // The window's stage bookkeeping, not DecodedImage::isPreview (true for any
+                             // downscaled image, also the Screen stage).
+                             if (q != lf::Quality::Preview) {
+                                 *armed = true;
+                                 canvas->update();
+                             }
+                         });
         QObject::connect(canvas, &QRhiWidget::frameSubmitted, canvas, [armed] {
             if (!*armed)
                 return;
