@@ -252,16 +252,24 @@ public:
     }
 
     QStringList imageDocumentTypes() const override {
-        // File extensions the installer registers Lumaflip for ("Open with", Capabilities).
-        return {QStringLiteral(".jpg"),  QStringLiteral(".jpeg"), QStringLiteral(".png"),
-                QStringLiteral(".gif"),  QStringLiteral(".bmp"),  QStringLiteral(".tif"),
-                QStringLiteral(".tiff"), QStringLiteral(".webp"), QStringLiteral(".heic"),
-                QStringLiteral(".heif"), QStringLiteral(".avif"), QStringLiteral(".jxl"),
-                QStringLiteral(".svg"),  QStringLiteral(".ico"),  QStringLiteral(".jxr"),
-                QStringLiteral(".dds"),  QStringLiteral(".psd"),  QStringLiteral(".exr"),
-                QStringLiteral(".dng"),  QStringLiteral(".cr2"),  QStringLiteral(".cr3"),
-                QStringLiteral(".nef"),  QStringLiteral(".arw"),  QStringLiteral(".raf"),
-                QStringLiteral(".orf"),  QStringLiteral(".rw2")};
+        // The types the installer registers Lumaflip for ("Open with", Capabilities;
+        // packaging/windows/Lumaflip.iss), as MIME types for the type checklist.
+        return {QStringLiteral("image/jpeg"),
+                QStringLiteral("image/png"),
+                QStringLiteral("image/gif"),
+                QStringLiteral("image/tiff"),
+                QStringLiteral("image/bmp"),
+                QStringLiteral("image/webp"),
+                QStringLiteral("image/heic"),
+                QStringLiteral("image/heif"),
+                QStringLiteral("image/avif"),
+                QStringLiteral("image/jxl"),
+                QStringLiteral("image/svg+xml"),
+                QStringLiteral("image/x-icon"),
+                QStringLiteral("image/vnd.ms-photo"),
+                QStringLiteral("image/x-exr"),
+                QStringLiteral("image/vnd.adobe.photoshop"),
+                QStringLiteral("image/x-adobe-dng")};
     }
 
     bool makeDefaultViewer(const QStringList&, QString* error) override {

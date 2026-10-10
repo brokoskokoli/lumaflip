@@ -48,7 +48,7 @@ QList<CustomAction> fromJson(const QString& json) {
     const QJsonDocument doc = QJsonDocument::fromJson(json.toUtf8());
     if (!doc.isArray())
         return out;
-    for (const QJsonValue& v : doc.array()) {
+    for (const auto& v : doc.array()) {
         if (out.size() >= kMaxActions)
             break;
         const QJsonObject o = v.toObject();

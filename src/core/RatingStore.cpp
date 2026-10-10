@@ -149,7 +149,7 @@ QString ratingio::writeSidecar(const QString& imagePath, const Rating& r) {
         }
         return {};
     }
-    const QString e = fileops::moveNoReplace(tmp, path);
+    QString e = fileops::moveNoReplace(tmp, path);
     if (!e.isEmpty()) {
         QFile::remove(tmp);
         return e;
@@ -445,7 +445,7 @@ void RatingStore::request(const QString& path) {
 void RatingStore::setRating(FileOps& ops, const QString& path, const Rating& r, WriteDone done) {
     changeRating(
         ops, path, [r](const Rating&) { return r; },
-        [done](bool ok, const QString& error, const QString& notice, const Rating&) {
+        [done = std::move(done)](bool ok, const QString& error, const QString& notice, const Rating&) {
             if (done)
                 done(ok, error, notice);
         });
@@ -482,7 +482,7 @@ void RatingStore::changeRatings(FileOps& ops, const QStringList& paths, Change c
         }
         return QString();
     };
-    FileOps::FileWork apply = [state, paths, change, o, writeAll] {
+    FileOps::FileWork apply = [state, paths, change = std::move(change), o, writeAll] {
         std::lock_guard g(state->mutex);
         if (!state->planned) {
             for (const QString& p : paths) {
@@ -513,7 +513,7 @@ void RatingStore::changeRatings(FileOps& ops, const QStringList& paths, Change c
         }
     };
     ops.runAsync(paths.size() > 1 ? Tr::tr("Bewertungen") : Tr::tr("Bewertung"), apply, revert, notify,
-                 [self, state, paths, done](bool ok, const QString& error) {
+                 [self, state, paths, done = std::move(done)](bool ok, const QString& error) {
                      QString notice;
                      Rating now;
                      {

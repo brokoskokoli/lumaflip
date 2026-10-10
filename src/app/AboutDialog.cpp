@@ -33,7 +33,7 @@ constexpr auto kGplUrl = "https://www.gnu.org/licenses/gpl-3.0.html";
 
 QStringList jsonStrings(const QJsonValue& v) {
     QStringList out;
-    for (const QJsonValue& e : v.toArray())
+    for (const auto& e : v.toArray())
         out << e.toString();
     return out;
 }
@@ -70,7 +70,7 @@ QVector<ThirdPartyComponent> AboutDialog::loadComponents(const QString& dir, boo
         QJsonParseError err{};
         const QJsonDocument doc = QJsonDocument::fromJson(index.readAll(), &err);
         if (err.error == QJsonParseError::NoError) {
-            for (const QJsonValue& v : doc.array()) {
+            for (const auto& v : doc.array()) {
                 const QJsonObject o = v.toObject();
                 ThirdPartyComponent c;
                 c.id = o.value(QLatin1String("id")).toString();

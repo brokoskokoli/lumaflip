@@ -74,7 +74,7 @@ class FolderTrash : public TrashService {
 public:
     FolderTrash() { dir.setAutoRemove(true); }
     std::optional<QString> moveToTrash(const QString& path, QString* error) override {
-        const QString target =
+        QString target =
             QDir(dir.path())
                 .filePath(QUuid::createUuid().toString(QUuid::Id128) + "-" + QFileInfo(path).fileName());
         if (!QFile::rename(path, target)) {

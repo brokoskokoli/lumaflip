@@ -32,7 +32,7 @@ class ExportTestTrash : public TrashService {
 public:
     explicit ExportTestTrash(QString folder) : m_folder(std::move(folder)) { QDir().mkpath(m_folder); }
     std::optional<QString> moveToTrash(const QString& path, QString* error) override {
-        const QString to = QDir(m_folder).filePath(QFileInfo(path).fileName());
+        QString to = QDir(m_folder).filePath(QFileInfo(path).fileName());
         if (!QFile::rename(path, to)) {
             if (error)
                 *error = QStringLiteral("rename failed");

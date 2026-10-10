@@ -389,6 +389,9 @@ private slots:
             return a.bundleId == QLatin1String("com.apple.Preview");
         }));
         QVERIFY(std::any_of(apps.cbegin(), apps.cend(), [](const AppEntry& a) { return !a.icon.isNull(); }));
+#elif defined(Q_OS_WIN)
+        // SHAssocEnumHandlers: programs (Paint is part of every Windows) with their icons.
+        QVERIFY(std::any_of(apps.cbegin(), apps.cend(), [](const AppEntry& a) { return !a.icon.isNull(); }));
 #else
         // Desktop entries (XdgDesktop.h): each app is its .desktop file.
         for (const AppEntry& a : apps)

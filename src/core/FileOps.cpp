@@ -717,12 +717,13 @@ void FileOps::modifyAsync(const QString& path, const QString& undoText, FileWork
                      const QString e = apply ? apply() : QString();
                      return e.isEmpty() ? success() : failure(e);
                  },
-                 [this, path, undoText, apply, revert, pendingCleanup](const Outcome&) {
+                 [this, path, undoText, apply = std::move(apply), revert = std::move(revert),
+                  pendingCleanup](const Outcome&) {
                      emit fileChanged(path);
                      d->stack->push(new ModifyCommand(this, undoText, path, apply, revert,
                                                       std::exchange(*pendingCleanup, {})));
                  }};
-    d->startAsync(op, [pendingCleanup, done](bool ok, const QString& error) {
+    d->startAsync(op, [pendingCleanup, done = std::move(done)](bool ok, const QString& error) {
         if (!ok && *pendingCleanup)
             std::exchange(*pendingCleanup, {})();
         if (done)
@@ -741,13 +742,14 @@ void FileOps::runAsync(const QString& undoText, FileWork apply, FileWork revert,
                      const QString e = apply ? apply() : QString();
                      return e.isEmpty() ? success() : failure(e);
                  },
-                 [this, undoText, apply, revert, notify, pendingCleanup](const Outcome&) {
+                 [this, undoText, apply = std::move(apply), revert = std::move(revert),
+                  notify = std::move(notify), pendingCleanup](const Outcome&) {
                      if (notify)
                          notify(true);
                      d->stack->push(new ModifyCommand(this, undoText, QString(), apply, revert,
                                                       std::exchange(*pendingCleanup, {}), notify));
                  }};
-    d->startAsync(op, [pendingCleanup, done](bool ok, const QString& error) {
+    d->startAsync(op, [pendingCleanup, done = std::move(done)](bool ok, const QString& error) {
         if (!ok && *pendingCleanup)
             std::exchange(*pendingCleanup, {})();
         if (done)
@@ -806,19 +808,19 @@ bool FileOps::copyTo(const QString& path, const QString& targetFolder, QString* 
 }
 
 void FileOps::moveToTrashAsync(const QString& path, QObject* origin, Completion done) {
-    d->startAsync(d->trashOp(path, origin), done);
+    d->startAsync(d->trashOp(path, origin), std::move(done));
 }
 
 void FileOps::renameAsync(const QString& path, const QString& newFileName, Completion done) {
-    d->startAsync(d->renameOp(path, newFileName), done);
+    d->startAsync(d->renameOp(path, newFileName), std::move(done));
 }
 
 void FileOps::moveToAsync(const QString& path, const QString& targetFolder, Completion done) {
-    d->startAsync(d->moveOp(path, targetFolder), done);
+    d->startAsync(d->moveOp(path, targetFolder), std::move(done));
 }
 
 void FileOps::copyToAsync(const QString& path, const QString& targetFolder, Completion done) {
-    d->startAsync(d->copyOp(path, targetFolder), done);
+    d->startAsync(d->copyOp(path, targetFolder), std::move(done));
 }
 
 void FileOps::undo() {

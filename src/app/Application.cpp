@@ -742,11 +742,11 @@ void Application::placeWindow(ViewerWindow* window) {
     window->move(p);
 }
 
-#ifndef Q_OS_MACOS
+#ifdef Q_OS_WIN
 namespace {
-// Without a global menu bar (Windows, Linux) every window shows the shared menus in a bar
-// of its own; the actions' shortcuts work through it (a hidden, parentless bar would
-// disable them).
+// Without a global menu bar (Windows) every window shows the shared menus in a bar of its
+// own; the actions' shortcuts work through it (a hidden, parentless bar would disable
+// them).
 void attachMenuBar(ViewerWindow* window, MainMenu* menu) {
     if (!window || !menu)
         return;
@@ -760,7 +760,7 @@ void attachMenuBar(ViewerWindow* window, MainMenu* menu) {
 #endif
 
 void Application::registerWindow(ViewerWindow* window) {
-#ifndef Q_OS_MACOS
+#ifdef Q_OS_WIN
     attachMenuBar(window, d->menu);
 #endif
     d->windows.append(window);
@@ -1172,7 +1172,7 @@ void Application::retranslate() {
     d->retranslatePending = false;
     delete d->menu;
     d->menu = new MainMenu(*this);
-#ifndef Q_OS_MACOS
+#ifdef Q_OS_WIN
     for (ViewerWindow* w : windows())
         attachMenuBar(w, d->menu);
 #endif

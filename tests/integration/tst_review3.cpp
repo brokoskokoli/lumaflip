@@ -59,7 +59,7 @@ public:
         QThread::msleep(ulong(delayMs.load()));
         if (QSemaphore* g = gate.load()) // deterministic: blocks until the test releases it
             g->acquire();
-        const QString target =
+        QString target =
             m_dir.filePath(QStringLiteral("%1-%2").arg(++m_counter).arg(QFileInfo(path).fileName()));
         if (!QFileInfo::exists(path) || !QFile::rename(path, target)) {
             if (error)
@@ -337,6 +337,7 @@ private slots:
             }
         QCOMPARE(withPhoto, 1);
         QCOMPARE(app->windows().size(), 1);
+        QVERIFY(w);
         QVERIFY(waitLoaded(w));
         QVERIFY(!w->collection()->isFolderCollection()); // exactly the two files
         QCOMPARE(w->collection()->count(), 2);
@@ -526,10 +527,13 @@ private slots:
     void F_SET_02_shortcutOverviewMarksPlannedActions() {
         app->showShortcuts();
         auto* table = qApp->findChild<QTableWidget*>(QStringLiteral("lfShortcutsTable"));
-        if (!table)
-            for (QWidget* w : QApplication::topLevelWidgets())
-                if ((table = w->findChild<QTableWidget*>(QStringLiteral("lfShortcutsTable"))))
+        if (!table) {
+            for (QWidget* w : QApplication::topLevelWidgets()) {
+                table = w->findChild<QTableWidget*>(QStringLiteral("lfShortcutsTable"));
+                if (table)
                     break;
+            }
+        }
         QVERIFY(table);
         auto row = [&](Action a) {
             for (int r = 0; r < table->rowCount(); ++r)

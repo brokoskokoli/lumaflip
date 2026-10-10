@@ -818,8 +818,13 @@ QString restoreFileFrom(const QString& backup, const QString& target) {
 // ---- FileEdit / RotationEdit ----
 
 namespace {
-const QString kBefore = QStringLiteral("before");
-const QString kAfter = QStringLiteral("after");
+// Names of the backup copies (functions: no QString with static storage duration).
+QString backupBefore() {
+    return QStringLiteral("before");
+}
+QString backupAfter() {
+    return QStringLiteral("after");
+}
 } // namespace
 
 FileEdit::FileEdit(QString target, Save save, std::shared_ptr<UndoBackupStore> store)
@@ -862,21 +867,21 @@ QString FileEdit::step(bool forward) {
         m_id = m_store ? m_store->create() : 0;
         if (!m_id)
             return Tr::tr("Kein Platz für die Sicherungskopie – nichts gespeichert.");
-        if (!m_store->addCopy(m_id, target, kBefore, true, &error))
+        if (!m_store->addCopy(m_id, target, backupBefore(), true, &error))
             return error;
-        const QString e = m_save ? m_save() : QString();
+        QString e = m_save ? m_save() : QString();
         if (!e.isEmpty())
             return e;
         m_done = true;
         m_expected = fileStamp(target);
         // For redo; a clone costs nothing while the file stays as saved. Without it, redo
         // reports the missing backup.
-        m_store->addCopy(m_id, target, kAfter, false, &error);
+        m_store->addCopy(m_id, target, backupAfter(), false, &error);
         return {};
     }
     if (m_done == forward)
         return {}; // already in that state
-    const QString backup = m_store->file(m_id, forward ? kAfter : kBefore);
+    const QString backup = m_store->file(m_id, forward ? backupAfter() : backupBefore());
     if (backup.isEmpty())
         return messageBackupDropped();
     if (fileStamp(target) != m_expected)
@@ -888,7 +893,7 @@ QString FileEdit::step(bool forward) {
     return {};
 }
 
-RotationEdit::RotationEdit(RotationRequest request, RotationPlan plan, RotationMethod method,
+RotationEdit::RotationEdit(const RotationRequest& request, RotationPlan plan, RotationMethod method,
                            std::shared_ptr<UndoBackupStore> store) {
     if (plan.target.isEmpty())
         plan.target = resolvedFilePath(request.path);

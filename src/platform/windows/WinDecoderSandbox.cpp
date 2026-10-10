@@ -223,7 +223,9 @@ bool startDecoderHelper(const QString& exe, const QStringList& args, const QStri
     std::vector<wchar_t> lineBuffer(size_t(line.size()) + 1, L'\0');
     line.toWCharArray(lineBuffer.data());
     std::vector<wchar_t> env = environmentBlock(extraEnvironment);
-    const DWORD flags = EXTENDED_STARTUPINFO_PRESENT | CREATE_UNICODE_ENVIRONMENT | CREATE_NO_WINDOW;
+    // DETACHED_PROCESS: no console (and no console host process, which the child process
+    // policy would refuse - the helper then dies at start-up); its std handles are the pipes.
+    const DWORD flags = EXTENDED_STARTUPINFO_PRESENT | CREATE_UNICODE_ENVIRONMENT | DETACHED_PROCESS;
     PROCESS_INFORMATION pi{};
     const std::wstring app = program.toStdWString();
     BOOL started = FALSE;

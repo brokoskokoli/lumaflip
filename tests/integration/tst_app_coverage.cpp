@@ -393,7 +393,9 @@ private slots:
         // make the longest gap about as long as the whole load. Not with software OpenGL
         // (Linux CI: Mesa llvmpipe), where creating the canvas' GL context and shaders at the
         // first expose is a GUI-thread gap of its own, comparable to this short load.
-        if (qEnvironmentVariableIntValue("LIBGL_ALWAYS_SOFTWARE") == 1)
+        // Likewise Direct3D on WARP (Windows CI runners have no GPU: LF_SOFTWARE_RHI=1).
+        if (qEnvironmentVariableIntValue("LIBGL_ALWAYS_SOFTWARE") == 1 ||
+            qEnvironmentVariableIntValue("LF_SOFTWARE_RHI") == 1)
             return;
         QVERIFY2(
             maxGap <= qint64(50 * std::max(1.0, double(idleGap) / 10.0)) + idleGap ||

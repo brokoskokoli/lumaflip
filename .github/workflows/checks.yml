@@ -365,6 +365,8 @@ jobs:
       # Qt writes its messages to the debugger output when stderr is no console (ctest
       # pipes): keep them in the test logs.
       QT_FORCE_STDERR_LOGGING: "1"
+      # No GPU on the runners: Direct3D 11 runs on WARP (software), see tst_app_coverage.
+      LF_SOFTWARE_RHI: "1"
     defaults:
       run:
         shell: pwsh

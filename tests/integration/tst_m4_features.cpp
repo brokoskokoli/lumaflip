@@ -333,6 +333,9 @@ private slots:
 
     // Covers: F-FILE-10 (custom action in the menu with its key, confirmed first run, log)
     void F_FILE_10_customActionFromTheMenu() {
+#ifdef Q_OS_WIN
+        QSKIP("POSIX shell command and a file name with \" (Windows: test_windows_platform.cpp)");
+#endif
         {
             QFile f(path(QStringLiteral("it's \"here\".png")));
             QVERIFY(f.open(QIODevice::WriteOnly));
