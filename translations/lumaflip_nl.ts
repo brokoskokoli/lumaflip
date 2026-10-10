@@ -94,8 +94,8 @@
         <translation>Niet gevonden: %1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>Afbeeldingen (%1);;Alle bestanden (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>Afbeeldingen, archieven en pdf-documenten (%1);;Afbeeldingen (%2);;Archieven en pdf-documenten (%3);;Alle bestanden (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -177,6 +177,14 @@
     <message>
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>Het archief bevat geen afbeeldingen.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>Het archief is met een wachtwoord beveiligd – versleutelde archieven worden niet ondersteund.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>Het archief is te groot om deze afbeelding eruit te lezen.</translation>
     </message>
 </context>
 <context>
@@ -3620,6 +3628,14 @@
 <context>
     <name>lf::MenuExtras</name>
     <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>Losse pdf-pagina’s kunnen niet aan andere apps worden doorgegeven.</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>De afbeelding wordt uit het archief uitgepakt – probeer het zo opnieuw.</translation>
+    </message>
+    <message>
         <source>Öffnen mit</source>
         <translation>Open met</translation>
     </message>
@@ -5652,6 +5668,14 @@
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
         <translation>Je hebt geen leesrechten voor de map ‘%1’, daarom toont Lumaflip alleen het geopende bestand. Je kunt de toegangsrechten in de Finder wijzigen via Archief → Toon info → ‘Delen en toegangsrechten’.</translation>
+    </message>
+    <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>Geen volgende map of volgend archief</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>Geen vorige map of vorig archief</translation>
     </message>
     <message>
         <source>Kein weiterer Ordner mit Bildern</source>

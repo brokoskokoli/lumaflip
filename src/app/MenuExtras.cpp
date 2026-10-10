@@ -8,10 +8,13 @@
 #include "ViewerWindow.h"
 #include "WindowArranger.h"
 #include "WindowTabbing.h"
+#include "core/ArchiveCache.h"
 #include "core/Settings.h"
+#include "core/VirtualPath.h"
 
 #include <QAction>
 #include <QMenu>
+#include <QThreadPool>
 
 namespace lf {
 
@@ -23,6 +26,29 @@ QString MenuExtras::frontPath() const {
     return w ? w->currentPath() : QString();
 }
 
+QString MenuExtras::frontFile(QString* reason) const {
+    reason->clear();
+    const QString p = frontPath();
+    if (p.isEmpty() || !vpath::isMember(p))
+        return p;
+    // F-OPEN-10: other apps get the extracted copy of an image inside an archive (it carries
+    // the member's file name); a PDF page has no file of its own.
+    if (vpath::containerKind(vpath::containerOf(p)) == vpath::ContainerKind::Pdf) {
+        *reason = tr("Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.");
+        return {};
+    }
+    const QString file = ArchiveCache::instance().cachedFile(p);
+    if (!file.isEmpty())
+        return file;
+    // Not extracted (any more): on a worker, ready when the menu opens again.
+    QThreadPool::globalInstance()->start([p] {
+        QString error;
+        ArchiveCache::instance().materialize(p, &error);
+    });
+    *reason = tr("Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.");
+    return {};
+}
+
 void MenuExtras::addOpenWith(QMenu* file) {
     // F-FILE-05: the list comes from a worker (cached per type); asking already when the
     // File menu opens makes it ready by the time the submenu is shown.
@@ -30,12 +56,20 @@ void MenuExtras::addOpenWith(QMenu* file) {
     m_openWith->setObjectName(QStringLiteral("menu:openWith"));
     m_register(QStringLiteral("openWith"), m_openWith->menuAction());
     connect(file, &QMenu::aboutToShow, this, [this] {
-        const QString p = frontPath();
+        QString reason;
+        const QString p = frontFile(&reason);
         if (!p.isEmpty())
             OpenWithService::instance().request(p);
     });
     connect(m_openWith, &QMenu::aboutToShow, this, [this] {
-        OpenWithService::instance().populateMenu(m_openWith, frontPath(), m_app.shell(), m_app.frontWindow());
+        QString reason;
+        const QString p = frontFile(&reason);
+        if (p.isEmpty() && !reason.isEmpty()) {
+            m_openWith->clear();
+            m_openWith->addAction(reason)->setEnabled(false);
+            return;
+        }
+        OpenWithService::instance().populateMenu(m_openWith, p, m_app.shell(), m_app.frontWindow());
     });
 }
 
@@ -48,7 +82,13 @@ void MenuExtras::addShare(QMenu* file) {
     m_share->menuAction()->setVisible(false); // no share sheet outside macOS (docs/LINUX.md)
 #endif
     auto fill = [this] {
-        const QString p = frontPath();
+        QString reason;
+        const QString p = frontFile(&reason);
+        if (p.isEmpty() && !reason.isEmpty()) {
+            m_share->clear();
+            m_share->addAction(reason)->setEnabled(false);
+            return;
+        }
         populateShareMenu(m_share, p.isEmpty() ? QStringList() : QStringList{p},
                           [this] { showSharePickerForFrontWindow(); });
     };
@@ -56,7 +96,8 @@ void MenuExtras::addShare(QMenu* file) {
     // The services come from a worker (cached per type, never on the GUI thread); asking
     // when the File menu opens makes them ready by the time the submenu is shown.
     connect(file, &QMenu::aboutToShow, this, [this] {
-        const QString p = frontPath();
+        QString reason;
+        const QString p = frontFile(&reason);
         if (!p.isEmpty())
             ShareServiceCache::instance().request(p);
     });
@@ -69,10 +110,17 @@ bool MenuExtras::showSharePickerForFrontWindow() {
     ViewerWindow* w = m_app.frontWindow();
     if (!w || w->currentPath().isEmpty())
         return false;
+    QString reason;
+    const QString file = frontFile(&reason);
+    if (file.isEmpty()) {
+        if (!reason.isEmpty())
+            w->showMessage(reason, 3500); // F-OPEN-10: a PDF page, a member not extracted yet
+        return false;
+    }
     // Anchored at the top middle of the image area.
     ImageView* view = w->view();
     const QPoint topMiddle = view->mapTo(w, QPoint(view->width() / 2, 0));
-    return showSharePicker(w, QRect(topMiddle - QPoint(1, 0), QSize(2, 2)), {w->currentPath()});
+    return showSharePicker(w, QRect(topMiddle - QPoint(1, 0), QSize(2, 2)), {file});
 }
 
 void MenuExtras::addWindowCommands(QMenu* window) {

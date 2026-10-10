@@ -94,8 +94,8 @@
         <translation>Ikke fundet: %1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>Billeder (%1);;Alle arkiver (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>Billeder, arkiver og PDF-dokumenter (%1);;Billeder (%2);;Arkiver og PDF-dokumenter (%3);;Alle arkiver (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -177,6 +177,14 @@
     <message>
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>Arkivet indeholder ingen billeder.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>Arkivet er beskyttet med adgangskode – krypterede arkiver understøttes ikke.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>Arkivet er for stort til at læse dette billede fra det.</translation>
     </message>
 </context>
 <context>
@@ -3620,6 +3628,14 @@
 <context>
     <name>lf::MenuExtras</name>
     <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>Enkelte PDF-sider kan ikke gives videre til andre apps.</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>Billedet pakkes ud af arkivet – prøv igen om et øjeblik.</translation>
+    </message>
+    <message>
         <source>Öffnen mit</source>
         <translation>Åbn med</translation>
     </message>
@@ -5652,6 +5668,14 @@
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
         <translation>Du har ikke læserettigheder til mappen ”%1”, derfor viser Lumaflip kun det åbnede arkiv. Tilladelserne kan ændres i Finder under Arkiv → Vis info → ”Deling og tilladelser”.</translation>
+    </message>
+    <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>Ingen næste mappe eller næste arkiv</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>Ingen forrige mappe eller forrige arkiv</translation>
     </message>
     <message>
         <source>Kein weiterer Ordner mit Bildern</source>

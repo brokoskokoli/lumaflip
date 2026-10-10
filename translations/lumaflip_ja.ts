@@ -94,8 +94,8 @@
         <translation>見つかりません: %1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>画像 (%1);;すべてのファイル (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>画像、アーカイブ、PDF書類 (%1);;画像 (%2);;アーカイブとPDF書類 (%3);;すべてのファイル (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -177,6 +177,14 @@
     <message>
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>アーカイブにイメージがありません。</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>アーカイブはパスワードで保護されています – 暗号化されたアーカイブには対応していません。</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>アーカイブが大きすぎるため、この画像を読み込めません。</translation>
     </message>
 </context>
 <context>
@@ -3608,6 +3616,14 @@
 <context>
     <name>lf::MenuExtras</name>
     <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>PDFの個々のページはほかのアプリに渡せません。</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>画像をアーカイブから展開しています – 少し待ってからもう一度お試しください。</translation>
+    </message>
+    <message>
         <source>Öffnen mit</source>
         <translation>このアプリケーションで開く</translation>
     </message>
@@ -5629,6 +5645,14 @@
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
         <translation>フォルダ「%1」の読み出し権限がないため、Lumaflipは開いたファイルのみを表示しています。アクセス権はFinderの「ファイル」→「情報を見る」→「共有とアクセス権」で変更できます。</translation>
+    </message>
+    <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>次のフォルダまたはアーカイブはありません</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>前のフォルダまたはアーカイブはありません</translation>
     </message>
     <message>
         <source>Kein weiterer Ordner mit Bildern</source>

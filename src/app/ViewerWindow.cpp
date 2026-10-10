@@ -411,6 +411,12 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
                 m_shownFailed = true;
                 updateTitle();
             });
+    // F-OPEN-10: the archive/PDF was rewritten: what was decoded from the old one goes.
+    connect(m_collection, &Collection::containerContentChanged, this, [this] {
+        const QVector<FileEntry> entries = m_collection->entries();
+        for (const FileEntry& e : entries)
+            onFileContentChanged(e.path);
+    });
 
     m_app.registerWindow(this);
     updateTitle();
@@ -564,19 +570,22 @@ void ViewerWindow::openContainer(const QString& containerPath, const QString& me
 }
 
 void ViewerWindow::openFiles(const QStringList& paths, bool keepAsFileSet) {
-    // F-OPEN-10: archives/PDFs cannot be part of a file set; a single one opens like a folder,
-    // next to images only the images open.
+    // F-OPEN-10: archives/PDFs cannot be part of a file set. Without other files the first
+    // opens here like a folder; every other one gets a window of its own (never dropped).
     QStringList files;
     QStringList containers;
     for (const QString& p : paths)
         (vpath::isContainerPath(p) ? containers : files) << p;
     if (files.isEmpty() && !containers.isEmpty()) {
-        openFile(containers.first());
+        openFile(containers.takeFirst());
+        m_app.openContainersInOwnWindows(containers);
         return;
     }
     beginOpen();
     prepareOpen();
     m_collection->openFiles(files, keepAsFileSet);
+    if (!containers.isEmpty())
+        m_app.openContainersInOwnWindows(containers);
 }
 
 void ViewerWindow::openFolder(const QString& folderPath, bool selectLast) {
@@ -1209,8 +1218,12 @@ void ViewerWindow::hideAccessHint() {
 }
 
 void ViewerWindow::updateFolderWatch() {
-    const QString folder =
-        m_collection->isFolderCollection() && !m_closed ? m_collection->folderPath() : QString();
+    // F-OPEN-10: an archive/PDF is watched through its folder (Collection::folderContentsChanged).
+    const QString container = m_collection->containerPath();
+    const QString folder = m_closed                             ? QString()
+                           : !container.isEmpty()               ? QFileInfo(container).absolutePath()
+                           : m_collection->isFolderCollection() ? m_collection->folderPath()
+                                                                : QString();
     const bool tree = !folder.isEmpty() && m_collection->includesSubfolders(); // F-OPEN-08
     if (folder == m_watchedFolder && tree == m_watchedTree)
         return;
@@ -1235,39 +1248,53 @@ void ViewerWindow::navigate(int delta) {
     if (m_collection->jump(delta, wrapMode()))
         return;
     if (Settings::instance().value(key::WrapMode).toString() == QLatin1String("nextFolder") &&
-        m_collection->isFolderCollection())
+        (m_collection->isFolderCollection() || !m_collection->containerPath().isEmpty()))
         switchFolder(m_direction); // F-NAV-03 / F-IN-16 "Zum nächsten Ordner"
     else
         showEdgeHint(delta > 0);
 }
 
 void ViewerWindow::switchFolder(int direction) {
-    if (!m_collection->isFolderCollection() || m_collection->folderPath().isEmpty() || m_folderSwitchPending)
+    // F-OPEN-10: inside an archive or PDF the siblings are folders with images and other
+    // archives/PDFs next to it.
+    const QString container = m_collection->containerPath();
+    const bool inContainer = !container.isEmpty();
+    if (m_folderSwitchPending ||
+        (!inContainer && (!m_collection->isFolderCollection() || m_collection->folderPath().isEmpty())))
         return;
     // Sibling folders are listed and checked for images on a worker thread.
     m_folderSwitchPending = true;
     const quint64 token = ++m_folderSwitchToken;
-    const QString folder = m_collection->folderPath();
+    const QString from = inContainer ? container : m_collection->folderPath();
     auto* w = new QFutureWatcher<QString>(this);
-    connect(w, &QFutureWatcher<QString>::finished, this, [this, w, token, direction] {
+    connect(w, &QFutureWatcher<QString>::finished, this, [this, w, token, direction, inContainer] {
         const QString next = w->result();
         w->deleteLater();
         m_folderSwitchPending = false;
         if (token != m_folderSwitchToken)
             return;
         if (next.isEmpty()) {
-            showMessage(direction > 0 ? tr("Kein weiterer Ordner mit Bildern")
-                                      : tr("Kein vorheriger Ordner mit Bildern"),
-                        1200);
+            if (inContainer)
+                showMessage(direction > 0 ? tr("Kein weiterer Ordner und kein weiteres Archiv")
+                                          : tr("Kein vorheriger Ordner und kein vorheriges Archiv"),
+                            1200);
+            else
+                showMessage(direction > 0 ? tr("Kein weiterer Ordner mit Bildern")
+                                          : tr("Kein vorheriger Ordner mit Bildern"),
+                            1200);
             return;
         }
         m_direction = direction;
-        openFolder(next, direction < 0); // backwards: continue with the last image
-        showMessage(QDir(next).dirName(), 1200);
+        if (vpath::isContainerPath(next))
+            openContainer(next, {});
+        else
+            openFolder(next, direction < 0); // backwards: continue with the last image
+        showMessage(QFileInfo(next).fileName(), 1200);
     });
-    w->setFuture(QtConcurrent::run([folder, direction] {
+    w->setFuture(QtConcurrent::run([from, direction, inContainer] {
         auto collator = createNameCollator();
-        return collection::siblingImageFolder(folder, direction, collator.get());
+        return inContainer ? collection::siblingFolderOrContainer(from, direction, collator.get())
+                           : collection::siblingImageFolder(from, direction, collator.get());
     }));
 }
 

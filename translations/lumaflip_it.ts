@@ -94,8 +94,8 @@
         <translation>Non trovato: %1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>Immagini (%1);;Tutti i file (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>Immagini, archivi e documenti PDF (%1);;Immagini (%2);;Archivi e documenti PDF (%3);;Tutti i file (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -177,6 +177,14 @@
     <message>
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>L’archivio non contiene immagini.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>L’archivio è protetto da password: gli archivi cifrati non sono supportati.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>L’archivio è troppo grande per leggerne questa immagine.</translation>
     </message>
 </context>
 <context>
@@ -3620,6 +3628,14 @@
 <context>
     <name>lf::MenuExtras</name>
     <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>Le singole pagine PDF non possono essere passate ad altre app.</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>L’immagine viene estratta dall’archivio: riprova tra un momento.</translation>
+    </message>
+    <message>
         <source>Öffnen mit</source>
         <translation>Apri con</translation>
     </message>
@@ -5652,6 +5668,14 @@
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
         <translation>Non disponi dei permessi di lettura per la cartella “%1”, quindi Lumaflip mostra solo il file aperto. Puoi modificare i permessi nel Finder in Archivio → Ottieni informazioni → “Condivisione e permessi”.</translation>
+    </message>
+    <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>Nessuna cartella o archivio successivo</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>Nessuna cartella o archivio precedente</translation>
     </message>
     <message>
         <source>Kein weiterer Ordner mit Bildern</source>

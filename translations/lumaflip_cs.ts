@@ -94,8 +94,8 @@
         <translation>Nenalezeno: %1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>Obrázky (%1);;Všechny soubory (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>Obrázky, archivy a dokumenty PDF (%1);;Obrázky (%2);;Archivy a dokumenty PDF (%3);;Všechny soubory (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -177,6 +177,14 @@
     <message>
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>Archiv neobsahuje žádné obrázky.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>Archiv je chráněn heslem – šifrované archivy nejsou podporovány.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>Archiv je příliš velký na to, aby z něj šlo tento obrázek načíst.</translation>
     </message>
 </context>
 <context>
@@ -3632,6 +3640,14 @@
 <context>
     <name>lf::MenuExtras</name>
     <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>Jednotlivé stránky PDF nelze předat jiným aplikacím.</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>Obrázek se rozbaluje z archivu – zkuste to prosím za chvíli znovu.</translation>
+    </message>
+    <message>
         <source>Öffnen mit</source>
         <translation>Otevřít v aplikaci</translation>
     </message>
@@ -5675,6 +5691,14 @@
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
         <translation>Ke složce „%1“ nemáte oprávnění ke čtení, a proto Lumaflip zobrazuje jen otevřený soubor. Oprávnění lze změnit ve Finderu v nabídce Soubor → Informace → „Sdílení a oprávnění“.</translation>
+    </message>
+    <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>Žádná další složka ani archiv</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>Žádná předchozí složka ani archiv</translation>
     </message>
     <message>
         <source>Kein weiterer Ordner mit Bildern</source>

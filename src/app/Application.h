@@ -85,6 +85,9 @@ public:
                               const std::function<void(const ClassifiedPaths&)>& done);
 
     ViewerWindow* newWindow();                           // ⌘N, empty window
+    // F-OPEN-10: archives/PDFs opened together with other files: each in a window of its own
+    // (like folders, F-WIN-02), never in the window asking.
+    void openContainersInOwnWindows(const QStringList& containers);
     ViewerWindow* duplicateWindow(ViewerWindow* source); // ⌥⌘N
     void closeAllWindows();                              // ⌥⌘W
     QList<ViewerWindow*> windows() const;                // creation order
@@ -174,7 +177,9 @@ private:
     ViewerWindow* createWindow();
     // `isFolder`: paths is one folder. `reusedOrCreated` tells whether the window was
     // created (or the empty start window was reused) for this request.
-    ViewerWindow* openInWindow(const QStringList& paths, bool isFolder, bool* reusedOrCreated = nullptr);
+    // `newWindow`: never reuse the front window (archives opened together, F-OPEN-10).
+    ViewerWindow* openInWindow(const QStringList& paths, bool isFolder, bool* reusedOrCreated = nullptr,
+                               bool newWindow = false);
     void addRecent(const QStringList& files, const QStringList& folders);
     void flushOpenBurst();
     void openClassified(const ClassifiedPaths& c, ViewerWindow* preferred = nullptr);
