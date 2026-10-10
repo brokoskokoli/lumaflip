@@ -4,6 +4,8 @@
 <plist version="1.0">
 <dict>
   <key>CFBundleDevelopmentRegion</key><string>de</string>
+  <key>CFBundleLocalizations</key>
+  <array><string>de</string></array>
   <key>CFBundleExecutable</key><string>${MACOSX_BUNDLE_EXECUTABLE_NAME}</string>
   <key>CFBundleIdentifier</key><string>${MACOSX_BUNDLE_GUI_IDENTIFIER}</string>
   <key>CFBundleInfoDictionaryVersion</key><string>6.0</string>
@@ -12,6 +14,8 @@
   <key>CFBundlePackageType</key><string>APPL</string>
   <key>CFBundleShortVersionString</key><string>${MACOSX_BUNDLE_SHORT_VERSION_STRING}</string>
   <key>CFBundleVersion</key><string>${MACOSX_BUNDLE_BUNDLE_VERSION}</string>
+  <key>CFBundleIconFile</key><string>${MACOSX_BUNDLE_ICON_FILE}</string>
+  <key>NSHumanReadableCopyright</key><string>${MACOSX_BUNDLE_COPYRIGHT}</string>
   <key>LSMinimumSystemVersion</key><string>15.0</string>
   <key>LSApplicationCategoryType</key><string>public.app-category.photography</string>
   <key>NSHighResolutionCapable</key><true/>
@@ -19,6 +23,17 @@
   <key>NSPrincipalClass</key><string>NSApplication</string>
   <key>NSAppleEventsUsageDescription</key>
   <string>Lumaflip fragt auf Wunsch das vorderste Finder-Fenster nach seiner Sortierung, damit die Bilder in derselben Reihenfolge angezeigt werden.</string>
+  <!-- TCC prompts (SPEC 10.2): reading the folder of the opened image -->
+  <key>NSDesktopFolderUsageDescription</key>
+  <string>Lumaflip liest den Ordner des geöffneten Bildes, damit du mit den Pfeiltasten blättern kannst.</string>
+  <key>NSDocumentsFolderUsageDescription</key>
+  <string>Lumaflip liest den Ordner des geöffneten Bildes, damit du mit den Pfeiltasten blättern kannst.</string>
+  <key>NSDownloadsFolderUsageDescription</key>
+  <string>Lumaflip liest den Ordner des geöffneten Bildes, damit du mit den Pfeiltasten blättern kannst.</string>
+  <key>NSRemovableVolumesUsageDescription</key>
+  <string>Lumaflip liest den Ordner des geöffneten Bildes, damit du mit den Pfeiltasten blättern kannst.</string>
+  <key>NSNetworkVolumesUsageDescription</key>
+  <string>Lumaflip liest den Ordner des geöffneten Bildes, damit du mit den Pfeiltasten blättern kannst.</string>
   <key>CFBundleDocumentTypes</key>
   <array>
     <dict>
@@ -33,7 +48,7 @@
         <string>public.jpeg-xl</string><string>public.camera-raw-image</string><string>com.adobe.raw-image</string>
         <string>com.adobe.photoshop-image</string><string>com.ilm.openexr-image</string><string>public.radiance</string>
         <string>public.jpeg-2000</string><string>com.truevision.tga-image</string><string>com.microsoft.ico</string>
-        <string>com.apple.icns</string><string>public.svg-image</string>
+        <string>com.apple.icns</string><string>public.svg-image</string><string>public.mpo-image</string>
       </array>
     </dict>
     <dict>
@@ -47,6 +62,21 @@
       <key>CFBundleTypeRole</key><string>Viewer</string>
       <key>LSHandlerRank</key><string>Alternate</string>
       <key>LSItemContentTypes</key><array><string>public.folder</string></array>
+    </dict>
+  </array>
+  <!-- Formats a Lumaflip backend decodes but macOS has no type for (SPEC 10.4).
+       WBMP: Qt image plugin. (QOI, KRA, ORA … follow with their backends in M3.) -->
+  <key>UTImportedTypeDeclarations</key>
+  <array>
+    <dict>
+      <key>UTTypeIdentifier</key><string>org.wapforum.wbmp</string>
+      <key>UTTypeDescription</key><string>WBMP-Bild</string>
+      <key>UTTypeConformsTo</key><array><string>public.image</string><string>public.data</string></array>
+      <key>UTTypeTagSpecification</key>
+      <dict>
+        <key>public.filename-extension</key><array><string>wbmp</string></array>
+        <key>public.mime-type</key><array><string>image/vnd.wap.wbmp</string></array>
+      </dict>
     </dict>
   </array>
 </dict>

@@ -1,0 +1,409 @@
+#!/usr/bin/env python3
+# SPDX-License-Identifier: GPL-3.0-or-later
+"""Makes Lumaflip.app self-contained (SPEC 10.1, 11). Called by tools/package.sh.
+
+Replaces macdeployqt, which with Homebrew's split Qt kegs fails to resolve several
+@rpath references and drags in unrelated modules (Qt Quick via the virtual keyboard
+plugin, Qt PDF, ...). This script deploys exactly:
+
+  * the Qt plugins listed in PLUGINS,
+  * the transitive closure of non-system libraries of the executable and those plugins
+    (Qt frameworks stay frameworks and stay dynamically linked - LGPL, SPEC 11),
+  * Qt's German translations (Contents/Resources/translations),
+  * qt.conf, so Qt never looks at the Homebrew prefix,
+  * the licence texts of every bundled component (Contents/Resources/licenses) plus
+    index.json, which the About dialog reads.
+
+All install names are rewritten to @rpath/..., all foreign LC_RPATHs are removed.
+The result is unsigned (install_name_tool invalidates signatures); package.sh signs it.
+"""
+import argparse
+import json
+import os
+import pathlib
+import re
+import shutil
+import subprocess
+import sys
+
+# Qt plugins shipped in the bundle (relative to <qt>/share/qt/plugins).
+# Not shipped on purpose:
+#   imageformats/libqpdf   - pulls in Qt PDF (+ Qt Network); PDFs are M4 (SPEC 13)
+#   imageformats/libqmng   - MNG is not a supported format; pulls in libmng + Little CMS
+#   imageformats/libqjp2   - JPEG 2000 is decoded by ImageIO; pulls in JasPer
+#   platforms/minimal, platforms/offscreen - only for tests
+#   platforminputcontexts  - Qt Virtual Keyboard pulls in Qt Quick/QML
+PLUGINS = [
+    "platforms/libqcocoa.dylib",
+    "styles/libqmacstyle.dylib",
+    "iconengines/libqsvgicon.dylib",
+    "imageformats/libqgif.dylib",
+    "imageformats/libqicns.dylib",
+    "imageformats/libqico.dylib",
+    "imageformats/libqjpeg.dylib",
+    "imageformats/libqmacheif.dylib",
+    "imageformats/libqsvg.dylib",
+    "imageformats/libqtga.dylib",
+    "imageformats/libqtiff.dylib",
+    "imageformats/libqwbmp.dylib",
+    "imageformats/libqwebp.dylib",
+]
+
+# German Qt translations (qt_de.qm is a meta catalogue that loads qtbase_de.qm).
+TRANSLATIONS = ["qt_de.qm", "qtbase_de.qm"]
+
+SYSTEM_PREFIXES = ("/System/", "/usr/lib/")
+
+# Components whose Homebrew keg carries no licence file: licence text from
+# packaging/licenses/ (path relative to the repository root).
+# Every Qt module keg ("qtbase", "qtsvg", "qtimageformats", ...) uses the Qt entry.
+QT_LICENSE_FILES = ["packaging/licenses/LGPL-3.0.txt", "LICENSE", "packaging/licenses/Qt-NOTICE.txt"]
+LICENSE_FALLBACK: dict[str, list[str]] = {}
+# Additional texts for kegs whose own licence file does not cover the bundled library
+# (gettext ships the GPL text only, but libintl is LGPL-2.1-or-later).
+LICENSE_EXTRA = {"gettext": ["packaging/licenses/LGPL-2.1.txt"]}
+LICENSE_FILE_RE = re.compile(r"^(LICEN[CS]E|COPYING|NOTICE|COPYRIGHT|LGPL|GPL|MIT|BSD|PATENTS)", re.I)
+
+# Human-readable component names for the About dialog.
+DISPLAY_NAMES = {
+    "qtbase": "Qt 6 – Qt Base (Core, Gui, Widgets, Concurrent, DBus)",
+    "qtsvg": "Qt 6 – Qt SVG",
+    "qtimageformats": "Qt 6 – Qt Image Formats (Plugins)",
+    "gettext": "gettext – libintl",
+    "icu4c@78": "ICU",
+    "xz": "xz – liblzma",
+    "webp": "libwebp",
+    "jpeg-turbo": "libjpeg-turbo",
+    "dbus": "D-Bus (libdbus)",
+}
+
+
+def run(*args: str) -> str:
+    return subprocess.run(args, check=True, capture_output=True, text=True).stdout
+
+
+def is_macho(path: pathlib.Path) -> bool:
+    try:
+        with open(path, "rb") as f:
+            magic = f.read(4)
+    except OSError:
+        return False
+    return magic in (b"\xcf\xfa\xed\xfe", b"\xca\xfe\xba\xbe", b"\xce\xfa\xed\xfe", b"\xbe\xba\xfe\xca")
+
+
+def load_commands(binary: pathlib.Path) -> tuple[str | None, list[str], list[str]]:
+    """Returns (install id, dependencies, rpaths) of a Mach-O file."""
+    out = run("otool", "-l", str(binary))
+    ident, deps, rpaths = None, [], []
+    cmd = None
+    for line in out.splitlines():
+        line = line.strip()
+        if line.startswith("cmd "):
+            cmd = line.split()[1]
+        elif line.startswith("name ") and cmd in ("LC_LOAD_DYLIB", "LC_LOAD_WEAK_DYLIB",
+                                                  "LC_REEXPORT_DYLIB", "LC_LAZY_LOAD_DYLIB"):
+            deps.append(line[5:].rsplit(" (offset", 1)[0])
+        elif line.startswith("name ") and cmd == "LC_ID_DYLIB":
+            ident = line[5:].rsplit(" (offset", 1)[0]
+        elif line.startswith("path ") and cmd == "LC_RPATH":
+            rpaths.append(line[5:].rsplit(" (offset", 1)[0])
+    return ident, deps, rpaths
+
+
+def expand(path: str, binary: pathlib.Path, exe: pathlib.Path) -> str:
+    return path.replace("@loader_path", str(binary.parent)).replace("@executable_path", str(exe.parent))
+
+
+def resolve(dep: str, binary: pathlib.Path, rpaths: list[str], exe: pathlib.Path) -> pathlib.Path:
+    if dep.startswith("@rpath/"):
+        rest = dep[len("@rpath/"):]
+        for rp in rpaths:
+            cand = pathlib.Path(expand(rp, binary, exe)) / rest
+            if cand.exists():
+                return cand
+        raise SystemExit(f"error: cannot resolve {dep} of {binary} (rpaths: {rpaths})")
+    cand = pathlib.Path(expand(dep, binary, exe))
+    if not cand.exists():
+        raise SystemExit(f"error: {dep} (needed by {binary}) does not exist")
+    return cand
+
+
+def framework_parts(path: str) -> tuple[str, str] | None:
+    """'/x/QtCore.framework/Versions/A/QtCore' -> ('QtCore', 'A')."""
+    m = re.search(r"([^/]+)\.framework/(?:Versions/([^/]+)/)?([^/]+)$", path)
+    if not m:
+        return None
+    return m.group(1), m.group(2) or "A"
+
+
+class Deployer:
+    def __init__(self, app: pathlib.Path, qt_prefix: pathlib.Path, repo: pathlib.Path):
+        self.app = app
+        self.contents = app / "Contents"
+        self.frameworks = self.contents / "Frameworks"
+        self.plugins_dir = self.contents / "PlugIns"
+        self.exe = self.contents / "MacOS" / app.stem
+        self.qt = qt_prefix
+        self.repo = repo
+        self.copied: dict[str, pathlib.Path] = {}  # new install name -> path in bundle
+        self.origin: dict[str, pathlib.Path] = {}  # new install name -> real source path
+        self.users: dict[str, set[str]] = {}       # new install name -> bundled users
+
+    # ---- copying ---------------------------------------------------------------------
+
+    def bundle_name(self, dep: str) -> str:
+        fw = framework_parts(dep)
+        if fw:
+            name, ver = fw
+            return f"@rpath/{name}.framework/Versions/{ver}/{name}"
+        return "@rpath/" + pathlib.PurePosixPath(dep).name
+
+    def copy_dependency(self, source: pathlib.Path, new_id: str) -> pathlib.Path:
+        real = source.resolve()
+        rel = new_id[len("@rpath/"):]
+        target = self.frameworks / rel
+        fw = framework_parts(new_id)
+        if fw:
+            name, ver = fw
+            fw_src = real.parent  # .../Name.framework/Versions/<ver>
+            fw_dst = self.frameworks / f"{name}.framework"
+            vdir = fw_dst / "Versions" / ver
+            vdir.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(real, vdir / name)
+            if (fw_src / "Resources").is_dir():
+                shutil.copytree(fw_src / "Resources", vdir / "Resources", dirs_exist_ok=True,
+                                symlinks=False)
+            for link, dest in (("Versions/Current", ver), (name, f"Versions/Current/{name}"),
+                               ("Resources", "Versions/Current/Resources")):
+                p = fw_dst / link
+                if not p.is_symlink() and (link != "Resources" or (vdir / "Resources").exists()):
+                    p.symlink_to(dest)
+        else:
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(real, target)
+        os.chmod(target, 0o755)
+        return target
+
+    def describe(self, binary: pathlib.Path) -> str:
+        return str(binary.relative_to(self.contents))
+
+    # ---- rewriting -------------------------------------------------------------------
+
+    def rewrite(self, binary: pathlib.Path, new_rpath: str, new_id: str | None) -> None:
+        ident, deps, rpaths = load_commands(binary)
+        args = ["install_name_tool"]
+        if new_id and ident != new_id:
+            args += ["-id", new_id]
+        for dep in deps:
+            if not dep.startswith(SYSTEM_PREFIXES):
+                nd = self.bundle_name(dep)
+                if nd != dep:
+                    args += ["-change", dep, nd]
+        for rp in rpaths:
+            args += ["-delete_rpath", rp]
+        args += ["-add_rpath", new_rpath]
+        subprocess.run(args + [str(binary)], check=True, capture_output=True, text=True)
+
+    # ---- main steps ------------------------------------------------------------------
+
+    def deploy(self) -> None:
+        plugin_root = self.qt / "share" / "qt" / "plugins"
+        binaries: list[pathlib.Path] = [self.exe]
+        for rel in PLUGINS:
+            src = plugin_root / rel
+            if not src.exists():
+                raise SystemExit(f"error: Qt plugin {src} missing")
+            dst = self.plugins_dir / rel
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(src.resolve(), dst)
+            os.chmod(dst, 0o755)
+            self.origin["plugin:" + rel] = src.resolve()
+            binaries.append(dst)
+
+        for b in binaries:
+            orig = self.origin.get("plugin:" + str(b.relative_to(self.plugins_dir))) \
+                if b != self.exe else b
+            self.collect_with_origin(b, orig)
+
+        # Rewrite install names and rpaths.
+        self.rewrite(self.exe, "@executable_path/../Frameworks", None)
+        for b in binaries[1:]:
+            self.rewrite(b, "@loader_path/../../Frameworks", None)
+        for new_id, path in self.copied.items():
+            rp = "@loader_path/../../.." if framework_parts(new_id) else "@loader_path"
+            self.rewrite(path, rp, new_id)
+
+        # qt.conf: paths are relative to Contents/. Stops Qt from using its built-in
+        # Homebrew prefix for plugins and translations.
+        res = self.contents / "Resources"
+        res.mkdir(exist_ok=True)
+        (res / "qt.conf").write_text("[Paths]\nPlugins = PlugIns\nTranslations = Resources/translations\n")
+
+        tr_dir = res / "translations"
+        tr_dir.mkdir(exist_ok=True)
+        for qm in TRANSLATIONS:
+            src = self.qt / "share" / "qt" / "translations" / qm
+            if not src.exists():
+                raise SystemExit(f"error: Qt translation {src} missing")
+            shutil.copy2(src.resolve(), tr_dir / qm)
+            os.chmod(tr_dir / qm, 0o644)
+
+    def collect_with_origin(self, binary: pathlib.Path, original: pathlib.Path) -> None:
+        _, deps, _ = load_commands(binary)
+        _, _, src_rpaths = load_commands(original)
+        for dep in deps:
+            if dep.startswith(SYSTEM_PREFIXES):
+                continue
+            new_id = self.bundle_name(dep)
+            self.users.setdefault(new_id, set()).add(self.describe(binary))
+            if new_id in self.copied:
+                continue
+            src = resolve(dep, original, src_rpaths, self.exe)
+            dst = self.copy_dependency(src, new_id)
+            self.copied[new_id] = dst
+            self.origin[new_id] = src.resolve()
+            self.collect_with_origin(dst, src.resolve())
+
+    # ---- licences --------------------------------------------------------------------
+
+    def formula_of(self, real: pathlib.Path) -> tuple[str, str, pathlib.Path] | None:
+        parts = real.parts
+        if "Cellar" not in parts:
+            return None
+        i = parts.index("Cellar")
+        return parts[i + 1], parts[i + 2], pathlib.Path(*parts[: i + 3])
+
+    def licenses(self) -> list[dict]:
+        out_dir = self.contents / "Resources" / "licenses"
+        out_dir.mkdir(parents=True, exist_ok=True)
+        components: dict[str, dict] = {}
+        for key, real in self.origin.items():
+            f = self.formula_of(real)
+            if not f:
+                raise SystemExit(f"error: cannot map {real} to a Homebrew formula (licence unknown)")
+            formula, version, keg = f
+            c = components.setdefault(formula, {"formula": formula, "version": version, "keg": keg,
+                                                "binaries": set()})
+            if key.startswith("plugin:"):
+                c["binaries"].add("PlugIns/" + key[len("plugin:"):])
+            else:
+                c["binaries"].add("Frameworks/" + key[len("@rpath/"):])
+
+        info = {}
+        brew = shutil.which("brew")
+        if brew:
+            try:
+                data = json.loads(run(brew, "info", "--json=v2", *sorted(components)))
+                for fm in data.get("formulae", []):
+                    info[fm["name"]] = fm
+            except subprocess.CalledProcessError as e:
+                print(f"warning: brew info failed: {e.stderr}", file=sys.stderr)
+
+        index = []
+        # Lumaflip itself first.
+        (out_dir / "lumaflip").mkdir(exist_ok=True)
+        shutil.copy2(self.repo / "LICENSE", out_dir / "lumaflip" / "LICENSE")
+        index.append({"id": "lumaflip", "name": "Lumaflip", "version": "", "license": "GPL-3.0-or-later",
+                      "homepage": "https://github.com/brokoskokoli/lumaflip",
+                      "files": ["lumaflip/LICENSE"], "binaries": ["MacOS/Lumaflip"]})
+        for formula in sorted(components):
+            c = components[formula]
+            dst = out_dir / formula
+            dst.mkdir(exist_ok=True)
+            files = []
+            for p in sorted(c["keg"].iterdir()):
+                if p.is_file() and LICENSE_FILE_RE.match(p.name) and p.suffix not in (".html", ".htm"):
+                    shutil.copy2(p, dst / p.name)
+                    files.append(f"{formula}/{p.name}")
+            if not files:
+                fallback = QT_LICENSE_FILES if formula.startswith("qt") else LICENSE_FALLBACK.get(formula, [])
+                for rel in fallback:
+                    src = self.repo / rel
+                    name = "GPL-3.0.txt" if rel == "LICENSE" else src.name
+                    shutil.copy2(src, dst / name)
+                    files.append(f"{formula}/{name}")
+            for rel in LICENSE_EXTRA.get(formula, []):
+                src = self.repo / rel
+                shutil.copy2(src, dst / src.name)
+                files.append(f"{formula}/{src.name}")
+            if not files:
+                raise SystemExit(f"error: no licence text for bundled component '{formula}' "
+                                 f"(add it to LICENSE_FALLBACK in {__file__})")
+            for f in files:
+                os.chmod(out_dir / f, 0o644)
+            fi = info.get(formula, {})
+            index.append({
+                "id": formula,
+                "name": DISPLAY_NAMES.get(formula, formula),
+                "version": c["version"],
+                "license": fi.get("license") or "",
+                "homepage": fi.get("homepage") or "",
+                "files": files,
+                "binaries": sorted(c["binaries"]),
+            })
+        (out_dir / "index.json").write_text(json.dumps(index, indent=2, ensure_ascii=False) + "\n")
+        return index
+
+
+FOREIGN_RE = re.compile(r"/opt/homebrew|/usr/local|/Cellar/|/opt/local|/Users/|/private/|/tmp/")
+
+
+def verify(app: pathlib.Path) -> int:
+    """Fails if any Mach-O in the bundle references a library outside the bundle/system."""
+    contents = app / "Contents"
+    exe = contents / "MacOS" / app.stem
+    problems, count = [], 0
+    for p in sorted(contents.rglob("*")):
+        if p.is_symlink() or not p.is_file() or not is_macho(p):
+            continue
+        count += 1
+        rel = p.relative_to(contents)
+        listing = run("otool", "-L", str(p))
+        for line in listing.splitlines()[1:]:
+            if FOREIGN_RE.search(line):
+                problems.append(f"{rel}: links {line.strip()}")
+        _, deps, rpaths = load_commands(p)
+        for rp in rpaths:
+            if FOREIGN_RE.search(rp) or not rp.startswith(("@loader_path", "@executable_path")):
+                problems.append(f"{rel}: foreign LC_RPATH {rp}")
+        for dep in deps:
+            if dep.startswith(SYSTEM_PREFIXES):
+                continue
+            if not dep.startswith("@rpath/"):
+                problems.append(f"{rel}: non-relocatable dependency {dep}")
+                continue
+            if not any((pathlib.Path(expand(rp, p, exe)) / dep[7:]).exists() for rp in rpaths):
+                problems.append(f"{rel}: {dep} not found inside the bundle")
+    for line in problems:
+        print("  " + line, file=sys.stderr)
+    if problems:
+        print(f"error: {len(problems)} problem(s) in {count} Mach-O files", file=sys.stderr)
+        return 1
+    print(f"ok: {count} Mach-O files, all dependencies inside the bundle or the system")
+    return 0
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("app", type=pathlib.Path)
+    ap.add_argument("--qt-prefix", type=pathlib.Path)
+    ap.add_argument("--verify", action="store_true",
+                    help="only check that nothing references libraries outside the bundle")
+    args = ap.parse_args()
+    if args.verify:
+        return verify(args.app.resolve())
+    if not args.qt_prefix:
+        ap.error("--qt-prefix is required")
+    repo = pathlib.Path(__file__).resolve().parent.parent
+    d = Deployer(args.app.resolve(), args.qt_prefix.resolve(), repo)
+    d.deploy()
+    index = d.licenses()
+    print(f"deployed {len(PLUGINS)} plugins, {len(d.copied)} libraries/frameworks, "
+          f"{len(index)} licence entries")
+    for e in index:
+        print(f"  {e['name']:<55} {e['version']:<12} {e['license']}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

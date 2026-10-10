@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+<!-- Hardened Runtime entitlements for the Developer ID build (SPEC 10.1).
+     Deliberately NOT sandboxed: the app must read the whole folder of an opened image
+     and its .DS_Store. Apple Events: only for the opt-in "ask the Finder" (F-SORT-04);
+     the matching prompt text is NSAppleEventsUsageDescription in Info.plist. -->
+<plist version="1.0">
+<dict>
+  <key>com.apple.security.automation.apple-events</key>
+  <true/>
+</dict>
+</plist>
