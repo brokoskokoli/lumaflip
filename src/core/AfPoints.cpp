@@ -332,10 +332,211 @@ Result parseTiff(const QByteArray& data, qint64 base, QSize frame) {
     return subjectArea(c, exif, size);
 }
 
-} // namespace
+// ---- ISOBMFF (HEIF/HEIC, Canon CR3) ----
 
-Result parse(const QByteArray& data) {
-    if (data.size() < 16)
+struct Box {
+    QByteArray type;
+    QByteArray uuid;    // "uuid" boxes: the 16 byte extended type
+    qint64 payload = 0; // first byte after the header (and the uuid)
+    qint64 end = 0;
+};
+
+// The boxes in [begin, end) (bounded: malformed sizes end the list).
+QVector<Box> boxes(const Ctx& c, qint64 begin, qint64 end) {
+    QVector<Box> out;
+    qint64 pos = begin;
+    end = std::min<qint64>(end, c.d->size());
+    while (pos + 8 <= end && out.size() < 1024) {
+        quint64 size = c.u32(pos);
+        Box b;
+        b.type = c.d->mid(pos + 4, 4);
+        qint64 header = 8;
+        if (size == 1) {
+            if (pos + 16 > end)
+                break;
+            size = (quint64(c.u32(pos + 8)) << 32) | c.u32(pos + 12);
+            header = 16;
+        } else if (size == 0) {
+            size = quint64(end - pos); // to the end of the enclosing box
+        }
+        if (size < quint64(header) || size > quint64(end - pos))
+            break;
+        b.end = pos + qint64(size);
+        b.payload = pos + header;
+        if (b.type == "uuid") {
+            if (b.payload + 16 > b.end)
+                break;
+            b.uuid = c.d->mid(b.payload, 16);
+            b.payload += 16;
+        }
+        out << b;
+        pos = b.end;
+    }
+    return out;
+}
+
+std::optional<Box> findBox(const QVector<Box>& list, const char* type) {
+    for (const Box& b : list)
+        if (b.type == type)
+            return b;
+    return std::nullopt;
+}
+
+quint64 sizedValue(const Ctx& c, qint64 pos, int bytes) {
+    if (bytes == 4)
+        return c.u32(pos);
+    if (bytes == 8)
+        return (quint64(c.u32(pos)) << 32) | c.u32(pos + 4);
+    return 0;
+}
+
+int byteAt(const Ctx& c, qint64 pos) {
+    return c.has(pos, 1) ? int(uchar(c.d->at(c.base + pos))) : 0;
+}
+
+// HEIF: the item of type "Exif" (iinf), located by iloc in the file; its payload is a 4 byte
+// offset to the TIFF header followed by the TIFF data (usually behind "Exif\0\0").
+Result heif(const Ctx& c, const Box& meta) {
+    // meta is a full box (version, flags).
+    const QVector<Box> children = boxes(c, meta.payload + 4, meta.end);
+    const auto iinf = findBox(children, "iinf"), iloc = findBox(children, "iloc");
+    if (!iinf || !iloc)
+        return {};
+    const int iinfVersion = byteAt(c, iinf->payload);
+    const qint64 infeStart = iinf->payload + 4 + (iinfVersion == 0 ? 2 : 4);
+    std::optional<quint32> exifId;
+    for (const Box& infe : boxes(c, infeStart, iinf->end)) {
+        if (infe.type != "infe" || !c.has(infe.payload, 12))
+            continue;
+        const int v = byteAt(c, infe.payload);
+        if (v < 2)
+            continue;
+        const quint32 id = v == 2 ? c.u16(infe.payload + 4) : c.u32(infe.payload + 4);
+        const qint64 typePos = infe.payload + 4 + (v == 2 ? 2 : 4) + 2;
+        if (c.d->mid(typePos, 4) == "Exif") {
+            exifId = id;
+            break;
+        }
+    }
+    if (!exifId)
+        return {};
+    const int v = byteAt(c, iloc->payload);
+    qint64 p = iloc->payload + 4;
+    if (!c.has(p, 2))
+        return {};
+    const int offSize = byteAt(c, p) >> 4, lenSize = byteAt(c, p) & 15;
+    const int baseSize = byteAt(c, p + 1) >> 4;
+    const int idxSize = (v == 1 || v == 2) ? (byteAt(c, p + 1) & 15) : 0;
+    p += 2;
+    const quint32 count = v < 2 ? c.u16(p) : c.u32(p);
+    p += v < 2 ? 2 : 4;
+    for (quint32 i = 0; i < count && i < 10000 && p < iloc->end; ++i) {
+        const quint32 id = v < 2 ? c.u16(p) : c.u32(p);
+        p += v < 2 ? 2 : 4;
+        int method = 0;
+        if (v == 1 || v == 2) {
+            method = c.u16(p) & 15;
+            p += 2;
+        }
+        p += 2; // data reference index
+        const quint64 base = sizedValue(c, p, baseSize);
+        p += baseSize;
+        const int extents = c.u16(p);
+        p += 2;
+        quint64 offset = 0, length = 0;
+        for (int e = 0; e < extents && p < iloc->end; ++e) {
+            p += idxSize;
+            const quint64 o = sizedValue(c, p, offSize);
+            p += offSize;
+            const quint64 l = sizedValue(c, p, lenSize);
+            p += lenSize;
+            if (e == 0) {
+                offset = o;
+                length = l;
+            }
+        }
+        if (id != *exifId)
+            continue;
+        if (method != 0)
+            return {}; // in the idat box or by reference: not used for Exif by cameras/phones
+        const quint64 size = quint64(c.d->size());
+        if (base > size || offset > size - base)
+            return {};
+        const quint64 start = base + offset;
+        if (length < 8 || length > size - start)
+            return {};
+        const qint64 item = qint64(start);
+        const qint64 tiff = item + 4 + qint64(c.u32(item));
+        if (tiff + 8 > item + qint64(length))
+            return {};
+        return parseTiff(*c.d, tiff, QSize());
+    }
+    return {};
+}
+
+// Canon CR3: the uuid box in moov holds CMT1 (IFD0), CMT2 (Exif IFD) and CMT3 (the Canon
+// maker note), each a complete TIFF.
+Result cr3(const Ctx& c, const Box& moov) {
+    static const QByteArray canonUuid = QByteArray::fromHex("85c0b687820f11e08111f4ce462b6a48");
+    for (const Box& u : boxes(c, moov.payload, moov.end)) {
+        if (u.type != "uuid" || u.uuid != canonUuid)
+            continue;
+        const QVector<Box> cmt = boxes(c, u.payload, u.end);
+        auto tiffAt = [&](const char* type) -> std::optional<Ctx> {
+            const auto b = findBox(cmt, type);
+            if (!b || b->end - b->payload < 8)
+                return std::nullopt;
+            const QByteArray order = c.d->mid(b->payload, 2);
+            if (order != "II" && order != "MM")
+                return std::nullopt;
+            Ctx t = c;
+            t.base = b->payload;
+            t.little = order == "II";
+            return t;
+        };
+        const auto c1 = tiffAt("CMT1"), c2 = tiffAt("CMT2"), c3 = tiffAt("CMT3");
+        QString make;
+        if (c1)
+            if (const auto e = find(readIfd(*c1, c1->u32(4)), 0x010F))
+                make = ascii(*c1, *e).toUpper();
+        QVector<Entry> exif;
+        QSize size;
+        if (c2) {
+            exif = readIfd(*c2, c2->u32(4));
+            if (const auto w = find(exif, 0xA002), h = find(exif, 0xA003); w && h) {
+                const qint64 W = numberValue(*c2, *w), H = numberValue(*c2, *h);
+                if (W > 0 && H > 0)
+                    size = QSize(int(W), int(H));
+            }
+        }
+        if (c3 && (make.isEmpty() || make.startsWith(QLatin1String("CANON")))) {
+            const Result r = canon(*c3, c3->u32(4));
+            if (r.valid())
+                return r;
+        }
+        return c2 ? subjectArea(*c2, exif, size) : Result{};
+    }
+    return {};
+}
+
+Result parseIsobmff(const QByteArray& data) {
+    Ctx c;
+    c.d = &data;
+    c.little = false;
+    const QVector<Box> top = boxes(c, 0, data.size());
+    if (top.isEmpty() || top.first().type != "ftyp")
+        return {};
+    if (const auto moov = findBox(top, "moov"); moov && data.mid(top.first().payload, 4) == "crx ")
+        return cr3(c, *moov);
+    if (const auto meta = findBox(top, "meta"))
+        return heif(c, *meta);
+    return {};
+}
+
+// `depth`: containers met so far (a RAF holds a JPEG; nothing nests deeper, so a RAF inside a
+// RAF - malformed or hostile - ends here instead of recursing).
+Result parseImpl(const QByteArray& data, int depth) {
+    if (data.size() < 16 || depth > 1)
         return {};
     // Fujifilm RAF: the embedded JPEG carries the EXIF with the maker note.
     if (data.startsWith("FUJIFILMCCD-RAW")) {
@@ -344,7 +545,7 @@ Result parse(const QByteArray& data) {
         c.little = false;
         const qint64 off = c.u32(84), len = c.u32(88);
         if (off > 0 && len > 0 && off + len <= data.size())
-            return parse(QByteArray::fromRawData(data.constData() + off, qsizetype(len)));
+            return parseImpl(QByteArray::fromRawData(data.constData() + off, qsizetype(len)), depth + 1);
         return {};
     }
     if (uchar(data[0]) == 0xFF && uchar(data[1]) == 0xD8) {
@@ -366,7 +567,16 @@ Result parse(const QByteArray& data) {
     // TIFF based (TIFF, DNG, CR2, NEF, ARW …).
     if (data.startsWith(QByteArray("II*\0", 4)) || data.startsWith(QByteArray("MM\0*", 4)))
         return parseTiff(data, 0, QSize());
+    // ISOBMFF: HEIF/HEIC (iPhone), Canon CR3.
+    if (data.mid(4, 4) == "ftyp")
+        return parseIsobmff(data);
     return {};
+}
+
+} // namespace
+
+Result parse(const QByteArray& data) {
+    return parseImpl(data, 0);
 }
 
 Result read(const QString& path) {

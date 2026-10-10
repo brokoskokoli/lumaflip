@@ -9,6 +9,7 @@
 #include "core/CompareBlend.h"
 #include "core/PhotoOverlays.h"
 
+#include <QColorSpace>
 #include <QFile>
 #include <QRegularExpression>
 #include <gtest/gtest.h>
@@ -355,4 +356,201 @@ TEST(CompareBlend, F_GRID_04_DifferenceBlendAndWipeMath) {
     for (auto m : {compare::BlendMode::Off, compare::BlendMode::Difference, compare::BlendMode::Blend,
                    compare::BlendMode::Wipe})
         EXPECT_EQ(compare::blendModeFromId(compare::blendModeId(m)), m);
+}
+
+TEST(CompareBlend, F_GRID_04_DifferenceStaysValidPremultiplied) {
+    // Half transparent pixels: an amplified difference never exceeds alpha.
+    const QRgb a = qRgba(100, 20, 0, 128), b = qRgba(0, 0, 0, 128);
+    for (double amount : {1.0, 4.0, 16.0}) {
+        const QRgb d = compare::differencePixel(a, b, amount);
+        EXPECT_EQ(qAlpha(d), 128);
+        EXPECT_LE(qRed(d), qAlpha(d)) << amount;
+        EXPECT_LE(qGreen(d), qAlpha(d)) << amount;
+    }
+    EXPECT_EQ(qRed(compare::differencePixel(a, b, 1.0)), 100);
+    QImage x(4, 4, QImage::Format_ARGB32_Premultiplied), y(4, 4, QImage::Format_ARGB32_Premultiplied);
+    x.fill(QColor(255, 128, 0, 100));
+    y.fill(QColor(0, 0, 0, 100));
+    const QImage d = compare::composite(x, y, compare::BlendMode::Difference, 16.0);
+    const QRgb p = reinterpret_cast<const QRgb*>(d.constScanLine(1))[1];
+    EXPECT_LE(qRed(p), qAlpha(p));
+    EXPECT_LE(qGreen(p), qAlpha(p));
+}
+
+TEST(CompareBlend, F_GRID_04_PartnerKeepsAspectRatioAndPaneOffset) {
+    // A square image in the place of a 4:3 one: fitted, centred, not stretched.
+    const QTransform place = compare::partnerPlacement(QSizeF(400, 300), QSizeF(300, 300));
+    EXPECT_EQ(place.map(QPointF(0, 0)), QPointF(50, 0));
+    EXPECT_EQ(place.map(QPointF(300, 300)), QPointF(350, 300));
+    // Same aspect ratio, other resolution: exactly the first image's place.
+    const QTransform half = compare::partnerPlacement(QSizeF(400, 300), QSizeF(200, 150));
+    EXPECT_EQ(half.map(QPointF(200, 150)), QPointF(400, 300));
+    // Without pane offset the partner follows the first image's view.
+    const QTransform view = QTransform::fromScale(0.5, 0.5) * QTransform::fromTranslate(10, 20);
+    EXPECT_EQ(compare::alignPartner(place, view, QSizeF(300, 300), QPointF(100, 75), {}, 1.0), place * view);
+    // ⌥-moved partner: the output centre shows the point 10 % further right; ⌥-zoom scales
+    // around the centre.
+    const QTransform moved = compare::alignPartner(QTransform(), QTransform(), QSizeF(100, 100),
+                                                   QPointF(50, 50), QPointF(0.1, 0), 1.0);
+    EXPECT_EQ(moved.map(QPointF(60, 50)), QPointF(50, 50));
+    const QTransform zoomed = compare::alignPartner(QTransform(), QTransform(), QSizeF(100, 100),
+                                                    QPointF(50, 50), QPointF(0.1, 0), 2.0);
+    EXPECT_EQ(zoomed.map(QPointF(60, 50)), QPointF(50, 50));
+    EXPECT_EQ(zoomed.map(QPointF(70, 50)), QPointF(70, 50));
+}
+
+TEST(CompareBlend, F_GRID_04_LayersAreScreenSizedAndInSrgb) {
+    QImage src(100, 50, QImage::Format_RGB32);
+    src.fill(Qt::red);
+    const QImage out = compare::renderLayer(src, QTransform::fromScale(0.5, 0.5), QSize(60, 40), Qt::blue);
+    ASSERT_EQ(out.size(), QSize(60, 40)); // the output size, not the source's
+    EXPECT_EQ(out.pixel(10, 10), qRgb(255, 0, 0));
+    EXPECT_EQ(out.pixel(55, 35), qRgb(0, 0, 255)); // background outside the image
+    // A wide gamut source is converted (equal values in Display P3 are another sRGB color).
+    QImage p3(8, 8, QImage::Format_RGB32);
+    p3.fill(qRgb(40, 160, 60));
+    p3.setColorSpace(QColorSpace(QColorSpace::DisplayP3));
+    const QImage conv = compare::renderLayer(p3, QTransform(), QSize(8, 8), Qt::black);
+    EXPECT_NE(conv.pixel(4, 4), qRgb(40, 160, 60));
+    // Linear float (HDR pipeline) ends encoded: 0.5 linear is about 188 in sRGB.
+    QImage lin(8, 8, QImage::Format_RGBA32FPx4_Premultiplied);
+    lin.fill(QColor::fromRgbF(0.5f, 0.5f, 0.5f, 1.0f));
+    lin.setColorSpace(QColorSpace(QColorSpace::SRgbLinear));
+    const QImage enc = compare::renderLayer(lin, QTransform(), QSize(8, 8), Qt::black);
+    EXPECT_NEAR(qRed(enc.pixel(4, 4)), 188, 3);
+}
+
+TEST(PhotoOverlays, F_INFO_07_PeakingLumaOfLinearAndPremultipliedTexels) {
+    // Encoded 8-bit texels: the plain luma.
+    EXPECT_FLOAT_EQ(overlays::peakingLuma({0.5f, 0.5f, 0.5f, 1.0f}, false, false, 1.0f, 1.0f), 0.5f);
+    // Premultiplied: half transparent white is white.
+    EXPECT_NEAR(overlays::peakingLuma({0.5f, 0.5f, 0.5f, 0.5f}, true, false, 1.0f, 1.0f), 1.0f, 1e-6);
+    // Linear sources are encoded: 0.214 linear ~ 0.5 encoded, the same edge strength as an
+    // encoded image of the same look.
+    EXPECT_NEAR(overlays::peakingLuma({0.214f, 0.214f, 0.214f, 1.0f}, false, true, 1.0f, 1.0f), 0.5f, 0.01f);
+    // HDR: normalised to the display's headroom, so values above SDR white stay below 1.
+    const float hdr = overlays::peakingLuma({3.0f, 3.0f, 3.0f, 1.0f}, false, true, 1.0f, 4.0f);
+    EXPECT_GT(hdr, 0.8f);
+    EXPECT_LT(hdr, 1.0f);
+    // An edge between 0.05 and 0.2 linear is clearly visible after encoding.
+    const float lo = overlays::peakingLuma({0.05f, 0.05f, 0.05f, 1.0f}, false, true, 1.0f, 1.0f);
+    const float hi = overlays::peakingLuma({0.2f, 0.2f, 0.2f, 1.0f}, false, true, 1.0f, 1.0f);
+    EXPECT_GT(hi - lo, 0.2f);
+}
+
+// ---- AF points in ISOBMFF files and malformed containers ----
+
+namespace {
+
+QByteArray be32(quint32 v) {
+    QByteArray a;
+    for (int k = 3; k >= 0; --k)
+        a.append(char((v >> (8 * k)) & 0xFF));
+    return a;
+}
+
+QByteArray be16(int v) {
+    QByteArray a;
+    a.append(char((v >> 8) & 0xFF)).append(char(v & 0xFF));
+    return a;
+}
+
+QByteArray box(const char* type, const QByteArray& payload) {
+    return be32(quint32(8 + payload.size())) + QByteArray(type, 4) + payload;
+}
+
+QByteArray subjectAreaTiff() {
+    TiffWriter t(false);
+    QVector<qint64> pos;
+    t.writeIfd({t.asciiEntry(0x010F, "Apple"), t.longEntry(0x8769, 0)}, &pos);
+    const qint64 exif = t.writeIfd(
+        {t.shortEntry(0x9214, {2000, 1500, 400, 300}), t.longEntry(0xA002, 4000), t.longEntry(0xA003, 3000)});
+    t.patch32(pos[1], quint32(exif));
+    return t.bytes();
+}
+
+// HEIF with an image item (1) and an Exif item (2) in the mdat box, located by iloc v0.
+QByteArray heicWithExif(const QByteArray& tiff) {
+    const QByteArray exifItem = be32(6) + QByteArray("Exif\0\0", 6) + tiff;
+    auto meta = [&](quint32 exifOffset) {
+        auto infe = [](int id, const char* type) {
+            return box("infe",
+                       be32(0x02000000) + be16(id) + be16(0) + QByteArray(type, 4) + QByteArray(1, '\0'));
+        };
+        const QByteArray iinf = box("iinf", be32(0) + be16(2) + infe(1, "hvc1") + infe(2, "Exif"));
+        QByteArray iloc = be32(0);
+        iloc.append(char(0x44)).append(char(0x00)); // offset 4, length 4, base 0
+        iloc.append(be16(2));
+        iloc.append(be16(1) + be16(0) + be16(1) + be32(0) + be32(0)); // the image item (unused)
+        iloc.append(be16(2) + be16(0) + be16(1) + be32(exifOffset) + be32(quint32(exifItem.size())));
+        return box("meta", be32(0) + iinf + box("iloc", iloc));
+    };
+    const QByteArray ftyp = box("ftyp", QByteArray("heic") + be32(0) + QByteArray("mif1heic"));
+    const quint32 offset = quint32(ftyp.size() + meta(0).size() + 8);
+    return ftyp + meta(offset) + box("mdat", exifItem);
+}
+
+QByteArray cr3WithCanonAf() {
+    TiffWriter c1(true);
+    c1.writeIfd({c1.asciiEntry(0x010F, "Canon")});
+    TiffWriter c2(true);
+    c2.writeIfd({c2.longEntry(0xA002, 6000), c2.longEntry(0xA003, 4000)});
+    TiffWriter c3(true);
+    const int n = 2;
+    QVector<int> v{0, 1,   n, n,    6000, 4000, 6000, 4000, 100, 120, 80, 80, quint16(-300),
+                   0, 200, 0, 0b01, 0b10};
+    v[0] = int(v.size() * 2);
+    c3.writeIfd({c3.shortEntry(0x0026, v)});
+    const QByteArray uuid = QByteArray::fromHex("85c0b687820f11e08111f4ce462b6a48");
+    const QByteArray canon =
+        box("uuid", uuid + box("CMT1", c1.bytes()) + box("CMT2", c2.bytes()) + box("CMT3", c3.bytes()));
+    return box("ftyp", QByteArray("crx ") + be32(1) + QByteArray("crx isom")) + box("moov", canon) +
+           box("mdat", QByteArray(64, '\0'));
+}
+
+QByteArray raf(const QByteArray& embedded) {
+    QByteArray r("FUJIFILMCCD-RAW 0201FF383501", 28);
+    r.append(QByteArray(84 - r.size(), '\0'));
+    r.append(be32(100)).append(be32(quint32(embedded.size())));
+    r.append(QByteArray(100 - r.size(), '\0'));
+    return r + embedded;
+}
+
+} // namespace
+
+TEST(AfPoints, F_INFO_07_HeicAndCr3) {
+    // iPhone HEIC: SubjectArea from the Exif item.
+    const QByteArray heic = heicWithExif(subjectAreaTiff());
+    afpoints::Result r = afpoints::parse(heic);
+    ASSERT_TRUE(r.valid());
+    EXPECT_EQ(r.source, QStringLiteral("EXIF"));
+    EXPECT_EQ(r.points[0].rect, QRectF(0.45, 0.45, 0.1, 0.1));
+    // Canon CR3: AFInfo2 from the CMT3 maker note.
+    r = afpoints::parse(cr3WithCanonAf());
+    ASSERT_TRUE(r.valid());
+    EXPECT_EQ(r.source, QStringLiteral("Canon"));
+    ASSERT_EQ(r.points.size(), 2);
+    EXPECT_NEAR(r.points[0].rect.center().x(), 2700.0 / 6000.0, 1e-9);
+    EXPECT_TRUE(r.points[0].inFocus);
+    // Truncated or broken boxes give nothing (and never read out of bounds).
+    for (int cut : {20, 40, 80, int(heic.size()) - 30})
+        EXPECT_FALSE(afpoints::parse(heic.left(cut)).valid()) << cut;
+    QByteArray badSize = heic;
+    badSize.replace(heic.indexOf("meta") - 4, 4, be32(0xFFFFFFF0));
+    EXPECT_FALSE(afpoints::parse(badSize).valid());
+    QByteArray badOffset = heic;
+    badOffset.replace(heic.indexOf("mdat") + 4, 4, be32(0x7FFFFFF0)); // TIFF header far outside
+    EXPECT_FALSE(afpoints::parse(badOffset).valid());
+}
+
+TEST(AfPoints, F_INFO_07_NestedRafHeadersAreBounded) {
+    // A RAF holds a JPEG: that works ...
+    const QByteArray jpeg = jpegWithExif(subjectAreaTiff());
+    EXPECT_TRUE(afpoints::parse(raf(jpeg)).valid());
+    // ... but a RAF inside a RAF (malformed or hostile, thousands deep) is not followed.
+    EXPECT_FALSE(afpoints::parse(raf(raf(jpeg))).valid());
+    QByteArray deep = jpeg;
+    for (int i = 0; i < 5000; ++i)
+        deep = raf(deep);
+    EXPECT_FALSE(afpoints::parse(deep).valid());
 }

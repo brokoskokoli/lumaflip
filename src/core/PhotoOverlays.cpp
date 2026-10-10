@@ -62,6 +62,20 @@ float luma(const std::array<float, 3>& c) {
     return 0.2126f * c[0] + 0.7152f * c[1] + 0.0722f * c[2];
 }
 
+float peakingLuma(const std::array<float, 4>& t, bool premultiplied, bool linearSource, float exposure,
+                  float headroom) {
+    std::array<float, 3> rgb{t[0], t[1], t[2]};
+    if (premultiplied) {
+        const float a = std::clamp(t[3], 0.0f, 1.0f);
+        for (float& c : rgb)
+            c = a > 0.0f ? c / a : 0.0f;
+    }
+    if (linearSource)
+        for (float& c : rgb)
+            c = linearToSrgb(std::clamp(c * exposure / std::max(headroom, 1.0f), 0.0f, 1.0f));
+    return luma(rgb);
+}
+
 float sobel(const std::array<float, 9>& l) {
     const float gx = (l[2] + 2.0f * l[5] + l[8]) - (l[0] + 2.0f * l[3] + l[6]);
     const float gy = (l[6] + 2.0f * l[7] + l[8]) - (l[0] + 2.0f * l[1] + l[2]);

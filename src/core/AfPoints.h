@@ -11,6 +11,8 @@
 //   - Fujifilm: MakerNote FocusPixel (0x1023): the focus point (also inside RAF files,
 //     through the embedded JPEG).
 //   - any camera/phone: EXIF SubjectArea (0x9214) / SubjectLocation (0xA214), e.g. iPhone.
+// Containers: JPEG (APP1), TIFF based RAW, Fujifilm RAF (embedded JPEG, one level only),
+// HEIF/HEIC (the "Exif" item, e.g. iPhone) and Canon CR3 (CMT1-3 boxes: AFInfo2 as above).
 // Everything else (Olympus/OM, Panasonic, Pentax, Nikon phase detect, Canon AFInfo of old
 // bodies) is reported as "not available" (docs/MANUAL_CHECKS.md lists it).
 //
@@ -38,7 +40,8 @@ struct Result {
     bool valid() const { return !points.isEmpty(); }
 };
 
-// Parses a JPEG, a TIFF-based file (CR2, NEF, ARW, DNG, TIFF) or a Fujifilm RAF in memory.
+// Parses a JPEG, a TIFF-based file (CR2, NEF, ARW, DNG, TIFF), a Fujifilm RAF, a HEIF/HEIC
+// or a Canon CR3 in memory. Malformed input gives an empty result (bounds-checked).
 Result parse(const QByteArray& data);
 // Worker thread: reads the file (memory-mapped) and parses it.
 Result read(const QString& path);

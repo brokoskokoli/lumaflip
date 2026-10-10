@@ -48,11 +48,19 @@ float linearToSrgb(float linear);
 // Linear thresholds for content with `contentPeak` (headroom x exposure, 1 = SDR).
 float highThreshold(const Params& p, float contentPeak);
 float lowThreshold(const Params& p);
-// `rgb`: linear light, 1.0 = SDR white (after exposure, before tone mapping).
+// `rgb`: linear light in the source's color space (before the gamut conversion into the
+// output space, which would make saturated colors look clipped), 1.0 = SDR white (after
+// exposure, before tone mapping).
 Clip classify(const std::array<float, 3>& rgb, const Params& p, float contentPeak);
 
 // Rec. 709 luma of encoded RGB.
 float luma(const std::array<float, 3>& rgb);
+// The luma focus peaking works on, from a texel as the shader samples it: premultiplied
+// texels are un-premultiplied; linear sources (float, HDR) are scaled by the exposure,
+// normalised to `headroom` (the largest value the display shows, >= 1) and sRGB-encoded, so
+// the threshold means the same as for encoded images.
+float peakingLuma(const std::array<float, 4>& texel, bool premultiplied, bool linearSource, float exposure,
+                  float headroom);
 // Sobel gradient magnitude of a 3x3 neighbourhood (row-major, l[4] = center).
 float sobel(const std::array<float, 9>& l);
 // Gradient magnitude from which a pixel counts as an edge (sensitivity 0 = only strong

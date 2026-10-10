@@ -17,6 +17,7 @@
 #include "core/VirtualPath.h"
 
 #include <QApplication>
+#include <QDateTime>
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QKeyEvent>
@@ -155,8 +156,13 @@ bool WindowEditing::perform(Action action) {
 void WindowEditing::currentChanged(const QString& path) {
     if (m_crop && path != m_cropPath)
         cancelCrop(); // flipping ends the crop
-    if (m_af->isVisible() && path != m_window.shownPath())
+    if (path != m_af->property("lfPath").toString()) {
+        // Another file: the frames go, and coming back reads them again (A -> B -> A).
         m_af->setPoints({}, {});
+        m_af->setProperty("lfPath", QString());
+        m_afPath.clear();
+        ++m_afToken; // a read still running for the old file is dropped
+    }
 }
 
 void WindowEditing::imageShown(const QString& path) {
@@ -197,12 +203,25 @@ void WindowEditing::updateAfPoints() {
         m_window.refreshStatus();
         return;
     }
-    if (m_af->isVisible() && m_af->property("lfPath").toString() == path)
-        return; // a better stage of the same file
+    // The worker compares the file stamp: a better stage of the same file keeps the frames,
+    // a rewritten file (saved rotation, crop, an edit elsewhere) is read again.
+    const QString knownStamp = m_af->isVisible() && m_afPath == path ? m_afStamp : QString();
     const quint64 token = ++m_afToken;
     m_af->setProperty("lfPath", path);
     QPointer<WindowEditing> self(this);
-    QtConcurrent::run([path] {
+    struct Read {
+        afpoints::Result result;
+        QString stamp;
+        bool unchanged = false;
+    };
+    QtConcurrent::run([path, knownStamp] {
+        Read out;
+        const QFileInfo fi(path);
+        out.stamp = QStringLiteral("%1/%2").arg(fi.lastModified().toMSecsSinceEpoch()).arg(fi.size());
+        if (!knownStamp.isEmpty() && out.stamp == knownStamp) {
+            out.unchanged = true;
+            return out;
+        }
         afpoints::Result r = afpoints::read(path);
         QString error;
         int orientation = 1;
@@ -210,10 +229,14 @@ void WindowEditing::updateAfPoints() {
             if (auto info = DecoderRegistry::instance().info(path, &error))
                 orientation = info->exifOrientation;
         r.points = afpoints::toDisplay(r.points, orientation);
-        return r;
-    }).then(this, [self, token](const afpoints::Result& r) {
-        if (!self || token != self->m_afToken)
+        out.result = r;
+        return out;
+    }).then(this, [self, token, path](const Read& read) {
+        if (!self || token != self->m_afToken || read.unchanged)
             return;
+        const afpoints::Result& r = read.result;
+        self->m_afPath = path;
+        self->m_afStamp = read.stamp;
         self->m_af->setPoints(r.points, r.source);
         self->m_af->show();
         self->m_af->raise();
