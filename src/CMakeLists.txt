@@ -23,14 +23,29 @@ find_path(LF_TURBOJPEG_INCLUDE turbojpeg.h
   HINTS /opt/homebrew/opt/jpeg-turbo/include /usr/local/opt/jpeg-turbo/include)
 find_library(LF_TURBOJPEG_LIB NAMES libturbojpeg.a turbojpeg
   HINTS /opt/homebrew/opt/jpeg-turbo/lib /usr/local/opt/jpeg-turbo/lib)
+# Third-party code linked statically into the app (no dylib for tools/macos_deploy.py to
+# find) is listed in Contents/Resources/static-components.json; the deploy script requires
+# licence texts for every entry (STATIC_COMPONENTS there, texts in packaging/licenses/).
+set(LF_STATIC_COMPONENTS "")
 if(LF_TURBOJPEG_INCLUDE AND LF_TURBOJPEG_LIB)
   message(STATUS "TurboJPEG: ${LF_TURBOJPEG_LIB}")
   target_include_directories(lf_core SYSTEM PRIVATE ${LF_TURBOJPEG_INCLUDE})
   target_link_libraries(lf_core PRIVATE ${LF_TURBOJPEG_LIB})
   target_compile_definitions(lf_core PRIVATE LF_HAVE_TURBOJPEG=1)
+  if(LF_TURBOJPEG_LIB MATCHES "\\.a$")
+    file(REAL_PATH "${LF_TURBOJPEG_LIB}" _lf_turbojpeg_real)
+    list(APPEND LF_STATIC_COMPONENTS "{\"id\": \"jpeg-turbo\", \"library\": \"${_lf_turbojpeg_real}\"}")
+  endif()
 else()
   message(STATUS "TurboJPEG not found: lossless JPEG rotation (F-EDIT-02, DCT) disabled")
 endif()
+if(LF_REQUIRE_TURBOJPEG AND NOT (LF_TURBOJPEG_INCLUDE AND LF_TURBOJPEG_LIB MATCHES "\\.a$"))
+  message(FATAL_ERROR "LF_REQUIRE_TURBOJPEG: the static libturbojpeg.a and turbojpeg.h were not found "
+                      "(brew install jpeg-turbo); found: '${LF_TURBOJPEG_LIB}'")
+endif()
+list(JOIN LF_STATIC_COMPONENTS ",\n  " _lf_static_json)
+file(CONFIGURE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/static-components.json"
+     CONTENT "[\n  ${_lf_static_json}\n]\n" @ONLY)
 if(LF_GENERIC_PLATFORM)
   target_compile_definitions(lf_core PUBLIC LF_GENERIC_PLATFORM=1)
 elseif(APPLE)
@@ -76,7 +91,9 @@ set(QT_I18N_SOURCE_LANGUAGE de)
 # App icon (source: packaging/macos/icon/lumaflip.svg, rendered by tools/make_icon.sh).
 set(LF_APP_ICON "${PROJECT_SOURCE_DIR}/packaging/macos/icon/Lumaflip.icns")
 set_source_files_properties(${LF_APP_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
-qt_add_executable(Lumaflip MACOSX_BUNDLE app/main.cpp ${LF_APP_ICON})
+set(LF_STATIC_MANIFEST "${CMAKE_CURRENT_BINARY_DIR}/static-components.json")
+set_source_files_properties(${LF_STATIC_MANIFEST} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
+qt_add_executable(Lumaflip MACOSX_BUNDLE app/main.cpp ${LF_APP_ICON} ${LF_STATIC_MANIFEST})
 target_link_libraries(Lumaflip PRIVATE lf_ui lf_warnings)
 target_compile_definitions(Lumaflip PRIVATE LF_APP_VERSION="${PROJECT_VERSION}")
 set_target_properties(Lumaflip PROPERTIES
