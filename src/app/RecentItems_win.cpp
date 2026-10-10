@@ -17,8 +17,9 @@ namespace lf {
 
 bool runsAsAppBundle() {
     // The installed/deployed app (not a test binary): Lumaflip.exe.
-    return QFileInfo(QCoreApplication::applicationFilePath()).fileName().compare(QStringLiteral("Lumaflip.exe"),
-                                                                                  Qt::CaseInsensitive) == 0;
+    return QFileInfo(QCoreApplication::applicationFilePath())
+               .fileName()
+               .compare(QStringLiteral("Lumaflip.exe"), Qt::CaseInsensitive) == 0;
 }
 
 void noteSystemRecentDocument(const QString& path) {

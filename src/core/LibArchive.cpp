@@ -16,9 +16,9 @@
 using LaArchive = struct archive;
 using LaEntry = struct archive_entry;
 using ssize_t = la_ssize_t;
-#define LF_ARCHIVE_OPEN_READ(a, path, block)                                                       \
+#define LF_ARCHIVE_OPEN_READ(a, path, block)                                                                 \
     archive_read_open_filename_w(a, reinterpret_cast<const wchar_t*>((path).utf16()), block)
-#define LF_ARCHIVE_OPEN_WRITE(a, path)                                                             \
+#define LF_ARCHIVE_OPEN_WRITE(a, path)                                                                       \
     archive_write_open_filename_w(a, reinterpret_cast<const wchar_t*>((path).utf16()))
 #elif LF_HAVE_LIBARCHIVE
 // The stable C API of libarchive 3 (archive.h / archive_entry.h). macOS ships the library
@@ -64,7 +64,8 @@ int archive_write_free(struct archive*);
 // lf::archive (Archive.h) hides the C struct names inside namespace lf.
 using LaArchive = struct archive;
 using LaEntry = struct archive_entry;
-#define LF_ARCHIVE_OPEN_READ(a, path, block) archive_read_open_filename(a, QFile::encodeName(path).constData(), block)
+#define LF_ARCHIVE_OPEN_READ(a, path, block)                                                                 \
+    archive_read_open_filename(a, QFile::encodeName(path).constData(), block)
 #define LF_ARCHIVE_OPEN_WRITE(a, path) archive_write_open_filename(a, QFile::encodeName(path).constData())
 #endif
 

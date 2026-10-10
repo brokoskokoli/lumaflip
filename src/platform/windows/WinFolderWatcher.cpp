@@ -196,8 +196,8 @@ void readLoop(Stream* s) {
         return;
     for (;;) {
         ResetEvent(ov.hEvent);
-        if (!ReadDirectoryChangesW(s->dir, buffer.data(), DWORD(buffer.size() * sizeof(DWORD)), s->tree ? TRUE : FALSE,
-                                   kFilter, nullptr, &ov, nullptr)) {
+        if (!ReadDirectoryChangesW(s->dir, buffer.data(), DWORD(buffer.size() * sizeof(DWORD)),
+                                   s->tree ? TRUE : FALSE, kFilter, nullptr, &ov, nullptr)) {
             // The folder is gone (deleted, renamed, volume removed): one last notification.
             {
                 QMutexLocker lock(&s->mutex);
@@ -250,7 +250,8 @@ void readLoop(Stream* s) {
                         if (s->tree) {
                             s->changed.insert(parent);
                             // A folder created or renamed below: its contents are new as well.
-                            if (info->Action == FILE_ACTION_ADDED || info->Action == FILE_ACTION_RENAMED_NEW_NAME) {
+                            if (info->Action == FILE_ACTION_ADDED ||
+                                info->Action == FILE_ACTION_RENAMED_NEW_NAME) {
                                 const QString full = QDir::toNativeSeparators(s->key + u'/' + rel);
                                 const DWORD attrs =
                                     GetFileAttributesW(reinterpret_cast<const wchar_t*>(full.utf16()));

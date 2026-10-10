@@ -652,20 +652,23 @@ IoStatus statusOf(DWORD err) {
 
 // One ReadFile/WriteFile of up to `size` bytes, waiting at most until `deadline` (works with
 // overlapped and synchronous handles; a synchronous one cannot time out).
-IoStatus transfer(HANDLE h, bool write, char* data, DWORD size, DWORD* done, const Clock::time_point* deadline) {
+IoStatus transfer(HANDLE h, bool write, char* data, DWORD size, DWORD* done,
+                  const Clock::time_point* deadline) {
     *done = 0;
     OVERLAPPED ov{};
     ov.hEvent = CreateEventW(nullptr, TRUE, FALSE, nullptr);
     if (!ov.hEvent)
         return IoStatus::Error;
     DWORD immediate = 0;
-    const BOOL ok = write ? WriteFile(h, data, size, &immediate, &ov) : ReadFile(h, data, size, &immediate, &ov);
+    const BOOL ok =
+        write ? WriteFile(h, data, size, &immediate, &ov) : ReadFile(h, data, size, &immediate, &ov);
     const DWORD err = ok ? DWORD(ERROR_SUCCESS) : GetLastError();
     IoStatus status = IoStatus::Ok;
     if (ok) {
         *done = immediate; // completed at once (always for synchronous handles)
     } else if (err == ERROR_IO_PENDING) {
-        const DWORD wait = WaitForSingleObject(ov.hEvent, deadline ? DWORD(remainingMs(*deadline)) : INFINITE);
+        const DWORD wait =
+            WaitForSingleObject(ov.hEvent, deadline ? DWORD(remainingMs(*deadline)) : INFINITE);
         if (wait != WAIT_OBJECT_0) {
             CancelIoEx(h, &ov);
             status = IoStatus::Timeout;
@@ -689,9 +692,8 @@ IoStatus readExactly(int fd, char* data, size_t size, const Clock::time_point* d
     size_t done = 0;
     while (done < size) {
         DWORD n = 0;
-        const IoStatus st =
-            transfer(toHandle(fd), false, data + done, DWORD(std::min<size_t>(size - done, size_t(1) << 24)), &n,
-                     deadline);
+        const IoStatus st = transfer(toHandle(fd), false, data + done,
+                                     DWORD(std::min<size_t>(size - done, size_t(1) << 24)), &n, deadline);
         if (st != IoStatus::Ok)
             return st;
         done += n;
@@ -701,7 +703,8 @@ IoStatus readExactly(int fd, char* data, size_t size, const Clock::time_point* d
 
 // "/lfd.<pid>.<id>" -> L"Local\lfd.<pid>.<id>"
 std::wstring mappingName(const QByteArray& name) {
-    const QString n = QStringLiteral("Local\\") + QString::fromLatin1(name.startsWith('/') ? name.mid(1) : name);
+    const QString n =
+        QStringLiteral("Local\\") + QString::fromLatin1(name.startsWith('/') ? name.mid(1) : name);
     return n.toStdWString();
 }
 
@@ -780,8 +783,9 @@ bool fillSharedImage(const QByteArray& name, const QImage& image, QString* error
             *error = Tr::tr("Das Bild ist leer.");
         return false;
     }
-    HANDLE h =
-        name.startsWith(kShmPrefix) ? OpenFileMappingW(FILE_MAP_WRITE, FALSE, mappingName(name).c_str()) : nullptr;
+    HANDLE h = name.startsWith(kShmPrefix)
+                   ? OpenFileMappingW(FILE_MAP_WRITE, FALSE, mappingName(name).c_str())
+                   : nullptr;
     if (!h) {
         if (error)
             *error = Tr::tr("Gemeinsamer Speicher ist nicht verfügbar (%1).").arg(winError(GetLastError()));
@@ -798,14 +802,17 @@ bool fillSharedImage(const QByteArray& name, const QImage& image, QString* error
         UnmapViewOfFile(mem);
     }
     if (!ok && error)
-        *error = Tr::tr("Nicht genug Speicher für das Bild (%1 × %2 Pixel).").arg(image.width()).arg(image.height());
+        *error = Tr::tr("Nicht genug Speicher für das Bild (%1 × %2 Pixel).")
+                     .arg(image.width())
+                     .arg(image.height());
     return ok;
 }
 
 int createShared(const QByteArray& name, qint64 size, QString* error) {
     if (size <= 0) {
         if (error)
-            *error = Tr::tr("Gemeinsamer Speicher ist nicht verfügbar (%1).").arg(winError(ERROR_INVALID_PARAMETER));
+            *error = Tr::tr("Gemeinsamer Speicher ist nicht verfügbar (%1).")
+                         .arg(winError(ERROR_INVALID_PARAMETER));
         return -1;
     }
     PSECURITY_DESCRIPTOR sd = lowIntegrityDescriptor();
@@ -835,8 +842,9 @@ QImage mapSharedImage(int fd, const PixelHeader& h, QString* error) {
         return {};
     }
     HANDLE mapping = toHandle(fd);
-    void* mem =
-        validatePixelHeader(h, nullptr) ? MapViewOfFile(mapping, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0) : nullptr;
+    void* mem = validatePixelHeader(h, nullptr)
+                    ? MapViewOfFile(mapping, FILE_MAP_READ | FILE_MAP_WRITE, 0, 0, 0)
+                    : nullptr;
     CloseHandle(mapping);
     MEMORY_BASIC_INFORMATION mbi{};
     if (mem && (VirtualQuery(mem, &mbi, sizeof mbi) != sizeof mbi || qint64(mbi.RegionSize) < h.shmSize)) {
@@ -848,8 +856,8 @@ QImage mapSharedImage(int fd, const PixelHeader& h, QString* error) {
             *error = Tr::tr("Die Bilddaten des Decoders sind ungültig.");
         return {};
     }
-    QImage img(static_cast<uchar*>(mem), h.width, h.height, qsizetype(h.bytesPerLine), QImage::Format(h.format),
-               releaseView, mem);
+    QImage img(static_cast<uchar*>(mem), h.width, h.height, qsizetype(h.bytesPerLine),
+               QImage::Format(h.format), releaseView, mem);
     if (img.isNull()) {
         UnmapViewOfFile(mem);
         if (error)
@@ -883,19 +891,18 @@ void closeHandle(int fd) {
 bool createPipe(int* readEnd, int* writeEnd, bool overlappedRead, bool overlappedWrite, bool inheritRead,
                 bool inheritWrite) {
     static std::atomic<quint32> counter{0};
-    const std::wstring name = (QStringLiteral(R"(\\.\pipe\lumaflip-)") +
-                               QStringLiteral("%1-%2-%3")
-                                   .arg(GetCurrentProcessId())
-                                   .arg(counter.fetch_add(1))
-                                   .arg(quint64(GetTickCount64())))
+    const std::wstring name = (QStringLiteral(R"(\\.\pipe\lumaflip-)") + QStringLiteral("%1-%2-%3")
+                                                                             .arg(GetCurrentProcessId())
+                                                                             .arg(counter.fetch_add(1))
+                                                                             .arg(quint64(GetTickCount64())))
                                   .toStdWString();
     // The server end is the read end; the client end opened right after is the write end.
     SECURITY_ATTRIBUTES saRead{sizeof(SECURITY_ATTRIBUTES), nullptr, inheritRead ? TRUE : FALSE};
     HANDLE rd = CreateNamedPipeW(name.c_str(),
                                  PIPE_ACCESS_INBOUND | FILE_FLAG_FIRST_PIPE_INSTANCE |
                                      (overlappedRead ? FILE_FLAG_OVERLAPPED : 0),
-                                 PIPE_TYPE_BYTE | PIPE_READMODE_BYTE | PIPE_WAIT | PIPE_REJECT_REMOTE_CLIENTS, 1,
-                                 64 * 1024, 64 * 1024, 0, &saRead);
+                                 PIPE_TYPE_BYTE | PIPE_READMODE_BYTE | PIPE_WAIT | PIPE_REJECT_REMOTE_CLIENTS,
+                                 1, 64 * 1024, 64 * 1024, 0, &saRead);
     if (rd == INVALID_HANDLE_VALUE)
         return false;
     SECURITY_ATTRIBUTES saWrite{sizeof(SECURITY_ATTRIBUTES), nullptr, inheritWrite ? TRUE : FALSE};

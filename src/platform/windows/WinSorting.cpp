@@ -67,8 +67,9 @@ public:
                                            int(n.size()), nullptr, 0, nullptr, nullptr, 0);
             if (size > 0) {
                 key.resize(size);
-                if (LCMapStringEx(LOCALE_NAME_USER_DEFAULT, LCMAP_SORTKEY | kFlags, win::wstr(n), int(n.size()),
-                                  reinterpret_cast<LPWSTR>(key.data()), size, nullptr, nullptr, 0) != size)
+                if (LCMapStringEx(LOCALE_NAME_USER_DEFAULT, LCMAP_SORTKEY | kFlags, win::wstr(n),
+                                  int(n.size()), reinterpret_cast<LPWSTR>(key.data()), size, nullptr, nullptr,
+                                  0) != size)
                     key.clear();
             }
             if (key.isEmpty())

@@ -112,7 +112,8 @@ int renameNoReplace(const QString& from, const QString& to) {
     // MoveFileExW without MOVEFILE_REPLACE_EXISTING fails if `to` exists: the check is part
     // of the rename (also for a case-only rename of the same file, which NTFS allows).
     const QString a = QDir::toNativeSeparators(from), b = QDir::toNativeSeparators(to);
-    if (MoveFileExW(reinterpret_cast<const wchar_t*>(a.utf16()), reinterpret_cast<const wchar_t*>(b.utf16()), 0))
+    if (MoveFileExW(reinterpret_cast<const wchar_t*>(a.utf16()), reinterpret_cast<const wchar_t*>(b.utf16()),
+                    0))
         return 0;
     switch (GetLastError()) {
     case ERROR_ALREADY_EXISTS:

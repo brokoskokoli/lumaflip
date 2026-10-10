@@ -42,7 +42,8 @@ public:
 
     bool canDecode(const QString& path, const QByteArray& header) const override;
     std::optional<ImageInfo> info(const QString& path, QString* error) override;
-    std::optional<DecodedImage> decode(const QString& path, const DecodeRequest& req, QString* error) override;
+    std::optional<DecodedImage> decode(const QString& path, const DecodeRequest& req,
+                                       QString* error) override;
     Metadata metadata(const QString& path) override;
 
     // Lower-case suffixes of all installed WIC decoders (GIF excluded, see above).

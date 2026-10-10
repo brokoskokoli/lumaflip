@@ -14,8 +14,10 @@
 #include <QtCore/qfloat16.h>
 
 #include <algorithm>
+#include <climits>
 #include <cmath>
 #include <mutex>
+#include <string>
 #include <vector>
 
 #include <windows.h>
@@ -114,9 +116,10 @@ QList<Codec> enumerateCodecs() {
                     const WICBitmapPattern& p = patterns[i];
                     if (p.EndOfStream || !p.Pattern || !p.Mask || p.Length == 0)
                         continue;
-                    c.patterns.append({quint64(p.Position.QuadPart),
-                                       QByteArray(reinterpret_cast<const char*>(p.Pattern), qsizetype(p.Length)),
-                                       QByteArray(reinterpret_cast<const char*>(p.Mask), qsizetype(p.Length))});
+                    c.patterns.append(
+                        {quint64(p.Position.QuadPart),
+                         QByteArray(reinterpret_cast<const char*>(p.Pattern), qsizetype(p.Length)),
+                         QByteArray(reinterpret_cast<const char*>(p.Mask), qsizetype(p.Length))});
                 }
             }
         }
@@ -144,25 +147,18 @@ bool matches(const Pattern& p, const QByteArray& header) {
 // ---- errors -------------------------------------------------------------------------------
 
 QString messageFor(HRESULT hr) {
-    switch (hr) {
-    case HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND):
-    case HRESULT_FROM_WIN32(ERROR_PATH_NOT_FOUND):
+    // HRESULT_FROM_WIN32 is a function in current SDKs: no switch over it.
+    if (hr == HRESULT_FROM_WIN32(ERROR_FILE_NOT_FOUND) || hr == HRESULT_FROM_WIN32(ERROR_PATH_NOT_FOUND))
         return DecoderRegistry::messageMissing();
-    case E_ACCESSDENIED:
-    case HRESULT_FROM_WIN32(ERROR_SHARING_VIOLATION):
-    case HRESULT_FROM_WIN32(ERROR_LOCK_VIOLATION):
+    if (hr == E_ACCESSDENIED || hr == HRESULT_FROM_WIN32(ERROR_SHARING_VIOLATION) ||
+        hr == HRESULT_FROM_WIN32(ERROR_LOCK_VIOLATION))
         return DecoderRegistry::messageUnreadable();
-    case WINCODEC_ERR_COMPONENTNOTFOUND:
-    case WINCODEC_ERR_UNSUPPORTEDPIXELFORMAT:
-    case WINCODEC_ERR_UNSUPPORTEDOPERATION:
-    case WINCODEC_ERR_UNKNOWNIMAGEFORMAT:
+    if (hr == WINCODEC_ERR_COMPONENTNOTFOUND || hr == WINCODEC_ERR_UNSUPPORTEDPIXELFORMAT ||
+        hr == WINCODEC_ERR_UNSUPPORTEDOPERATION || hr == WINCODEC_ERR_UNKNOWNIMAGEFORMAT)
         return DecoderRegistry::messageUnsupported();
-    case E_OUTOFMEMORY:
-    case WINCODEC_ERR_INSUFFICIENTBUFFER:
+    if (hr == E_OUTOFMEMORY || hr == WINCODEC_ERR_INSUFFICIENTBUFFER)
         return DecoderRegistry::messageTooLarge();
-    default:
-        return DecoderRegistry::messageDamaged();
-    }
+    return DecoderRegistry::messageDamaged();
 }
 
 void setError(QString* error, HRESULT hr) {
@@ -200,10 +196,12 @@ QString containerName(const GUID& g) {
         const char* name;
     };
     static const Name names[] = {
-        {&GUID_ContainerFormatJpeg, "JPEG"}, {&GUID_ContainerFormatPng, "PNG"}, {&GUID_ContainerFormatTiff, "TIFF"},
-        {&GUID_ContainerFormatBmp, "BMP"},   {&GUID_ContainerFormatIco, "ICO"}, {&GUID_ContainerFormatWmp, "JPEG XR"},
-        {&GUID_ContainerFormatDds, "DDS"},   {&GUID_ContainerFormatGif, "GIF"}, {&GUID_ContainerFormatHeif, "HEIF"},
-        {&GUID_ContainerFormatWebp, "WebP"}, {&GUID_ContainerFormatAdng, "DNG"}, {&GUID_ContainerFormatRaw, "RAW"},
+        {&GUID_ContainerFormatJpeg, "JPEG"}, {&GUID_ContainerFormatPng, "PNG"},
+        {&GUID_ContainerFormatTiff, "TIFF"}, {&GUID_ContainerFormatBmp, "BMP"},
+        {&GUID_ContainerFormatIco, "ICO"},   {&GUID_ContainerFormatWmp, "JPEG XR"},
+        {&GUID_ContainerFormatDds, "DDS"},   {&GUID_ContainerFormatGif, "GIF"},
+        {&GUID_ContainerFormatHeif, "HEIF"}, {&GUID_ContainerFormatWebp, "WebP"},
+        {&GUID_ContainerFormatAdng, "DNG"},  {&GUID_ContainerFormatRaw, "RAW"},
     };
     for (const Name& n : names)
         if (IsEqualGUID(g, *n.guid))
@@ -235,11 +233,13 @@ PixelInfo pixelInfo(IWICImagingFactory* f, const WICPixelFormatGUID& pf) {
         p.alpha = alpha != 0;
         WICPixelFormatNumericRepresentation rep = WICPixelFormatNumericRepresentationUnspecified;
         info->GetNumericRepresentation(&rep);
-        p.isFloat = rep == WICPixelFormatNumericRepresentationFloat || rep == WICPixelFormatNumericRepresentationFixed;
+        p.isFloat = rep == WICPixelFormatNumericRepresentationFloat ||
+                    rep == WICPixelFormatNumericRepresentationFixed;
         p.indexed = rep == WICPixelFormatNumericRepresentationIndexed;
     }
     p.cmyk = IsEqualGUID(pf, GUID_WICPixelFormat32bppCMYK) || IsEqualGUID(pf, GUID_WICPixelFormat64bppCMYK) ||
-             IsEqualGUID(pf, GUID_WICPixelFormat40bppCMYKAlpha) || IsEqualGUID(pf, GUID_WICPixelFormat80bppCMYKAlpha);
+             IsEqualGUID(pf, GUID_WICPixelFormat40bppCMYKAlpha) ||
+             IsEqualGUID(pf, GUID_WICPixelFormat80bppCMYKAlpha);
     return p;
 }
 
@@ -275,9 +275,11 @@ ColorInfo colorInfo(IWICImagingFactory* f, IWICBitmapFrameDecode* frame) {
         contexts[i]->GetType(&type);
         if (type == WICColorContextProfile && out.icc.isEmpty()) {
             UINT size = 0;
-            if (SUCCEEDED(contexts[i]->GetProfileBytes(0, nullptr, &size)) && size > 0 && size < 64 * 1024 * 1024) {
+            if (SUCCEEDED(contexts[i]->GetProfileBytes(0, nullptr, &size)) && size > 0 &&
+                size < 64 * 1024 * 1024) {
                 QByteArray bytes(qsizetype(size), Qt::Uninitialized);
-                if (SUCCEEDED(contexts[i]->GetProfileBytes(size, reinterpret_cast<BYTE*>(bytes.data()), &size))) {
+                if (SUCCEEDED(
+                        contexts[i]->GetProfileBytes(size, reinterpret_cast<BYTE*>(bytes.data()), &size))) {
                     out.icc = bytes;
                     out.iccContext = contexts[i];
                 }
@@ -355,7 +357,8 @@ int orientationOf(IWICBitmapFrameDecode* frame) {
     ComPtr<IWICMetadataQueryReader> q;
     if (FAILED(frame->GetMetadataQueryReader(&q)))
         return 1;
-    for (const wchar_t* name : {L"System.Photo.Orientation", L"/app1/ifd/{ushort=274}", L"/ifd/{ushort=274}"}) {
+    for (const wchar_t* name :
+         {L"System.Photo.Orientation", L"/app1/ifd/{ushort=274}", L"/ifd/{ushort=274}"}) {
         Prop p;
         if (!query(q.Get(), name, &p))
             continue;
@@ -489,7 +492,8 @@ std::optional<ImageInfo> WicDecoder::info(const QString& path, QString* error) {
     return info;
 }
 
-std::optional<DecodedImage> WicDecoder::decode(const QString& path, const DecodeRequest& req, QString* error) {
+std::optional<DecodedImage> WicDecoder::decode(const QString& path, const DecodeRequest& req,
+                                               QString* error) {
     Source s;
     HRESULT hr = open(path, &s);
     FrameData f;
@@ -540,7 +544,8 @@ std::optional<DecodedImage> WicDecoder::decode(const QString& path, const Decode
     QSize out = f.size;
     if (target < longEdge) {
         const double k = double(target) / longEdge;
-        out = QSize(std::max(1, int(std::lround(f.size.width() * k))), std::max(1, int(std::lround(f.size.height() * k))));
+        out = QSize(std::max(1, int(std::lround(f.size.width() * k))),
+                    std::max(1, int(std::lround(f.size.height() * k))));
         ComPtr<IWICBitmapScaler> scaler;
         if (SUCCEEDED(fac->CreateBitmapScaler(&scaler)) &&
             SUCCEEDED(scaler->Initialize(src.Get(), UINT(out.width()), UINT(out.height()),
@@ -572,9 +577,11 @@ std::optional<DecodedImage> WicDecoder::decode(const QString& path, const Decode
         BOOL can = FALSE;
         WICPixelFormatGUID current{};
         src->GetPixelFormat(&current);
-        if (FAILED(fac->CreateFormatConverter(&conv)) || FAILED(conv->CanConvert(current, *t.wic, &can)) || !can)
+        if (FAILED(fac->CreateFormatConverter(&conv)) || FAILED(conv->CanConvert(current, *t.wic, &can)) ||
+            !can)
             continue;
-        hr = conv->Initialize(src.Get(), *t.wic, WICBitmapDitherTypeNone, nullptr, 0.0, WICBitmapPaletteTypeCustom);
+        hr = conv->Initialize(src.Get(), *t.wic, WICBitmapDitherTypeNone, nullptr, 0.0,
+                              WICBitmapPaletteTypeCustom);
         if (FAILED(hr))
             continue;
         img = QImage(out, t.qt);
@@ -638,7 +645,8 @@ Metadata WicDecoder::metadata(const QString& path) {
                 info.isHdr ? QCoreApplication::translate("lf::ImageIODecoder", "Ja")
                            : QCoreApplication::translate("lf::ImageIODecoder", "Nein"));
     if (info.hasAlpha)
-        addMetadata(md, QStringLiteral("file.alpha"), QCoreApplication::translate("lf::ImageIODecoder", "Ja"));
+        addMetadata(md, QStringLiteral("file.alpha"),
+                    QCoreApplication::translate("lf::ImageIODecoder", "Ja"));
     if (info.pageCount > 1)
         addMetadata(md, QStringLiteral("file.pages"), info.pageCount);
     if (info.exifOrientation != 1)
@@ -669,8 +677,9 @@ Metadata WicDecoder::metadata(const QString& path) {
         addMetadata(md, QStringLiteral("shot.exposureBias"), formatExposureBias(*ev));
     if (auto flash = queryDouble(r, L"System.Photo.Flash"))
         addMetadata(md, QStringLiteral("shot.flash"),
-                    (int(*flash) & 0x1) ? QCoreApplication::translate("lf::ImageIODecoder", "Ausgelöst")
-                                        : QCoreApplication::translate("lf::ImageIODecoder", "Nicht ausgelöst"));
+                    (int(*flash) & 0x1)
+                        ? QCoreApplication::translate("lf::ImageIODecoder", "Ausgelöst")
+                        : QCoreApplication::translate("lf::ImageIODecoder", "Nicht ausgelöst"));
 
     // Capture date: the EXIF text (local time, optional offset); else Windows' DateTaken.
     std::optional<QDateTime> captured;
@@ -709,7 +718,8 @@ Metadata WicDecoder::metadata(const QString& path) {
     const auto lat = queryDms(r, L"System.GPS.Latitude");
     const auto lon = queryDms(r, L"System.GPS.Longitude");
     if (lat && lon) {
-        const double la = queryString(r, L"System.GPS.LatitudeRef").toUpper() == u"S" ? -std::abs(*lat) : std::abs(*lat);
+        const double la =
+            queryString(r, L"System.GPS.LatitudeRef").toUpper() == u"S" ? -std::abs(*lat) : std::abs(*lat);
         const double lo =
             queryString(r, L"System.GPS.LongitudeRef").toUpper() == u"W" ? -std::abs(*lon) : std::abs(*lon);
         md.latitude = la;

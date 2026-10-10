@@ -68,8 +68,8 @@ int main(int argc, char** argv) {
 
     QByteArray ico;
     const int count = int(std::size(sizes));
-    putU16(ico, 0);            // reserved
-    putU16(ico, 1);            // type: icon
+    putU16(ico, 0); // reserved
+    putU16(ico, 1); // type: icon
     putU16(ico, quint16(count));
     quint32 offset = 6 + 16 * quint32(count);
     for (int i = 0; i < count; ++i) {

@@ -109,9 +109,10 @@ QString validate(const CustomAction& a) {
     if (argv.isEmpty())
         return Tr::tr("Die Aktion braucht einen Befehl.");
     if (cmdline::isBatchFile(argv.first()))
-        return Tr::tr("Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen "
-                      "als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript "
-                      "(powershell -File Skript.ps1).");
+        return Tr::tr(
+            "Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen "
+            "als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript "
+            "(powershell -File Skript.ps1).");
 #endif
     return {};
 }
@@ -159,13 +160,13 @@ ProcessSpec processFor(const CustomAction& action, const QStringList& files, con
         for (const QString& f : files)
             spec.arguments << QDir::toNativeSeparators(f);
     }
-    return spec;
-#endif
+#else
     // The command is the script; the files are positional parameters ("$1", "$@") - the
     // shell never parses them.
     spec.program = QStringLiteral("/bin/sh");
     spec.arguments = {QStringLiteral("-c"), action.command, QString::fromLatin1(kShellArgv0)};
     spec.arguments << files;
+#endif
     return spec;
 }
 

@@ -63,7 +63,8 @@ QString extensionOf(const QString& filePath) {
 QString defaultExecutable(const QString& ext) {
     wchar_t buf[MAX_PATH * 2] = {};
     DWORD size = DWORD(std::size(buf));
-    if (FAILED(AssocQueryStringW(ASSOCF_INIT_IGNOREUNKNOWN, ASSOCSTR_EXECUTABLE, wstr(ext), nullptr, buf, &size)))
+    if (FAILED(AssocQueryStringW(ASSOCF_INIT_IGNOREUNKNOWN, ASSOCSTR_EXECUTABLE, wstr(ext), nullptr, buf,
+                                 &size)))
         return {};
     return QString::fromWCharArray(buf);
 }
@@ -71,8 +72,8 @@ QString defaultExecutable(const QString& ext) {
 bool startProcess(const QString& program, const QStringList& args, QString* error) {
     if (cmdline::isBatchFile(program)) {
         if (error)
-            *error = QCoreApplication::translate("lf::Shell",
-                                                 "Batch-Dateien werden aus Sicherheitsgründen nicht gestartet.");
+            *error = QCoreApplication::translate(
+                "lf::Shell", "Batch-Dateien werden aus Sicherheitsgründen nicht gestartet.");
         return false;
     }
     QString line = cmdline::build(QDir::toNativeSeparators(program), args);
@@ -82,8 +83,8 @@ bool startProcess(const QString& program, const QStringList& args, QString* erro
     si.cb = sizeof si;
     PROCESS_INFORMATION pi{};
     const QString native = QDir::toNativeSeparators(program);
-    if (!CreateProcessW(wstr(native), buffer.data(), nullptr, nullptr, FALSE, CREATE_UNICODE_ENVIRONMENT, nullptr,
-                        nullptr, &si, &pi)) {
+    if (!CreateProcessW(wstr(native), buffer.data(), nullptr, nullptr, FALSE, CREATE_UNICODE_ENVIRONMENT,
+                        nullptr, nullptr, &si, &pi)) {
         if (error)
             *error = errorText(GetLastError());
         return false;
@@ -127,8 +128,9 @@ QList<AssocHandler> assocHandlers(const QString& filePath, int iconPx) {
             e.icon = iconImage(takeCoString(s), index, iconPx);
         if (e.name.isEmpty())
             e.name = QFileInfo(e.id).completeBaseName();
-        e.isDefault = !def.isEmpty() && QDir::cleanPath(QDir::fromNativeSeparators(e.id))
-                                                .compare(def, Qt::CaseInsensitive) == 0;
+        e.isDefault =
+            !def.isEmpty() &&
+            QDir::cleanPath(QDir::fromNativeSeparators(e.id)).compare(def, Qt::CaseInsensitive) == 0;
         if (!e.id.isEmpty()) {
             if (e.isDefault)
                 out.prepend(e);
@@ -145,7 +147,8 @@ bool openWithHandler(const QString& filePath, const QString& id, QString* error)
     const QString ext = extensionOf(filePath);
     ComScope com(COINIT_APARTMENTTHREADED);
     ComPtr<IEnumAssocHandlers> handlers;
-    if (!ext.isEmpty() && SUCCEEDED(SHAssocEnumHandlers(wstr(ext), ASSOC_FILTER_NONE, &handlers)) && handlers) {
+    if (!ext.isEmpty() && SUCCEEDED(SHAssocEnumHandlers(wstr(ext), ASSOC_FILTER_NONE, &handlers)) &&
+        handlers) {
         ComPtr<IAssocHandler> h;
         ULONG fetched = 0;
         while (handlers->Next(1, &h, &fetched) == S_OK && fetched == 1) {
@@ -186,7 +189,8 @@ AssocHandler programInfo(const QString& exePath, int iconPx) {
                 WORD codePage;
             }* tr = nullptr;
             UINT len = 0;
-            if (VerQueryValueW(data.data(), L"\\VarFileInfo\\Translation", reinterpret_cast<void**>(&tr), &len) &&
+            if (VerQueryValueW(data.data(), L"\\VarFileInfo\\Translation", reinterpret_cast<void**>(&tr),
+                               &len) &&
                 len >= sizeof(Translation)) {
                 const QString key = QStringLiteral("\\StringFileInfo\\%1%2\\FileDescription")
                                         .arg(tr->language, 4, 16, QLatin1Char('0'))
@@ -249,12 +253,14 @@ public:
 
     QStringList imageDocumentTypes() const override {
         // File extensions the installer registers Lumaflip for ("Open with", Capabilities).
-        return {QStringLiteral(".jpg"),  QStringLiteral(".jpeg"), QStringLiteral(".png"), QStringLiteral(".gif"),
-                QStringLiteral(".bmp"),  QStringLiteral(".tif"),  QStringLiteral(".tiff"), QStringLiteral(".webp"),
-                QStringLiteral(".heic"), QStringLiteral(".heif"), QStringLiteral(".avif"), QStringLiteral(".jxl"),
-                QStringLiteral(".svg"),  QStringLiteral(".ico"),  QStringLiteral(".jxr"), QStringLiteral(".dds"),
-                QStringLiteral(".psd"),  QStringLiteral(".exr"),  QStringLiteral(".dng"), QStringLiteral(".cr2"),
-                QStringLiteral(".cr3"),  QStringLiteral(".nef"),  QStringLiteral(".arw"), QStringLiteral(".raf"),
+        return {QStringLiteral(".jpg"),  QStringLiteral(".jpeg"), QStringLiteral(".png"),
+                QStringLiteral(".gif"),  QStringLiteral(".bmp"),  QStringLiteral(".tif"),
+                QStringLiteral(".tiff"), QStringLiteral(".webp"), QStringLiteral(".heic"),
+                QStringLiteral(".heif"), QStringLiteral(".avif"), QStringLiteral(".jxl"),
+                QStringLiteral(".svg"),  QStringLiteral(".ico"),  QStringLiteral(".jxr"),
+                QStringLiteral(".dds"),  QStringLiteral(".psd"),  QStringLiteral(".exr"),
+                QStringLiteral(".dng"),  QStringLiteral(".cr2"),  QStringLiteral(".cr3"),
+                QStringLiteral(".nef"),  QStringLiteral(".arw"),  QStringLiteral(".raf"),
                 QStringLiteral(".orf"),  QStringLiteral(".rw2")};
     }
 
@@ -281,7 +287,8 @@ private:
     static void openDefaultAppsSettings() {
         // The page of the app itself when the installer registered it (per user or for all).
         QString uri = QStringLiteral("ms-settings:defaultapps");
-        if (!QSettings(QStringLiteral("HKEY_CURRENT_USER\\Software\\RegisteredApplications"), QSettings::NativeFormat)
+        if (!QSettings(QStringLiteral("HKEY_CURRENT_USER\\Software\\RegisteredApplications"),
+                       QSettings::NativeFormat)
                  .value(QStringLiteral("Lumaflip"))
                  .toString()
                  .isEmpty())

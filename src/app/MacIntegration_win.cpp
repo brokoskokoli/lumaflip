@@ -58,8 +58,8 @@ public:
         ComPtr<IDesktopWallpaper> wp;
         if (FAILED(CoCreateInstance(CLSID_DesktopWallpaper, nullptr, CLSCTX_ALL, IID_PPV_ARGS(&wp)))) {
             out << WallpaperScreen{QStringLiteral("*"),
-                                   QCoreApplication::translate("lf::MacIntegration", "Alle Bildschirme"), true,
-                                   true};
+                                   QCoreApplication::translate("lf::MacIntegration", "Alle Bildschirme"),
+                                   true, true};
             return out;
         }
         HMONITOR windowMonitor = nullptr;

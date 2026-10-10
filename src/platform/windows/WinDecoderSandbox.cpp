@@ -36,13 +36,14 @@ QString lastError() {
 HANDLE lowIntegrityToken(QString* why) {
     HANDLE token = nullptr;
     if (!OpenProcessToken(GetCurrentProcess(),
-                          TOKEN_DUPLICATE | TOKEN_QUERY | TOKEN_ASSIGN_PRIMARY | TOKEN_ADJUST_DEFAULT, &token)) {
+                          TOKEN_DUPLICATE | TOKEN_QUERY | TOKEN_ASSIGN_PRIMARY | TOKEN_ADJUST_DEFAULT,
+                          &token)) {
         *why = QStringLiteral("OpenProcessToken: ") + lastError();
         return nullptr;
     }
     HANDLE restricted = nullptr;
-    const BOOL ok = CreateRestrictedToken(token, DISABLE_MAX_PRIVILEGE, 0, nullptr, 0, nullptr, 0, nullptr,
-                                          &restricted);
+    const BOOL ok =
+        CreateRestrictedToken(token, DISABLE_MAX_PRIVILEGE, 0, nullptr, 0, nullptr, 0, nullptr, &restricted);
     CloseHandle(token);
     if (!ok) {
         *why = QStringLiteral("CreateRestrictedToken: ") + lastError();
@@ -74,7 +75,8 @@ HANDLE helperJob() {
     if (!job)
         return nullptr;
     JOBOBJECT_EXTENDED_LIMIT_INFORMATION limits{};
-    limits.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE | JOB_OBJECT_LIMIT_ACTIVE_PROCESS |
+    limits.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE |
+                                              JOB_OBJECT_LIMIT_ACTIVE_PROCESS |
                                               JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION;
     limits.BasicLimitInformation.ActiveProcessLimit = 1;
     JOBOBJECT_BASIC_UI_RESTRICTIONS ui{};
@@ -117,7 +119,8 @@ HANDLE inheritableStderr() {
     if (err && err != INVALID_HANDLE_VALUE &&
         DuplicateHandle(GetCurrentProcess(), err, GetCurrentProcess(), &dup, 0, TRUE, DUPLICATE_SAME_ACCESS))
         return dup;
-    dup = CreateFileW(L"NUL", GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, &sa, OPEN_EXISTING, 0, nullptr);
+    dup = CreateFileW(L"NUL", GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, &sa, OPEN_EXISTING, 0,
+                      nullptr);
     return dup == INVALID_HANDLE_VALUE ? nullptr : dup;
 }
 
@@ -182,12 +185,12 @@ bool startDecoderHelper(const QString& exe, const QStringList& args, const QStri
     bool attrsOk = InitializeProcThreadAttributeList(attrs, 4, 0, &attrSize) &&
                    UpdateProcThreadAttribute(attrs, 0, PROC_THREAD_ATTRIBUTE_HANDLE_LIST, inherit,
                                              inheritCount * sizeof(HANDLE), nullptr, nullptr) &&
-                   UpdateProcThreadAttribute(attrs, 0, PROC_THREAD_ATTRIBUTE_JOB_LIST, jobs, sizeof jobs, nullptr,
-                                             nullptr) &&
+                   UpdateProcThreadAttribute(attrs, 0, PROC_THREAD_ATTRIBUTE_JOB_LIST, jobs, sizeof jobs,
+                                             nullptr, nullptr) &&
                    UpdateProcThreadAttribute(attrs, 0, PROC_THREAD_ATTRIBUTE_MITIGATION_POLICY, &mitigations,
                                              sizeof mitigations, nullptr, nullptr) &&
-                   UpdateProcThreadAttribute(attrs, 0, PROC_THREAD_ATTRIBUTE_CHILD_PROCESS_POLICY, &childPolicy,
-                                             sizeof childPolicy, nullptr, nullptr);
+                   UpdateProcThreadAttribute(attrs, 0, PROC_THREAD_ATTRIBUTE_CHILD_PROCESS_POLICY,
+                                             &childPolicy, sizeof childPolicy, nullptr, nullptr);
     if (!attrsOk) {
         const QString why = lastError();
         if (token)
@@ -217,11 +220,12 @@ bool startDecoderHelper(const QString& exe, const QStringList& args, const QStri
         started = CreateProcessAsUserW(token, app.c_str(), lineBuffer.data(), nullptr, nullptr, TRUE, flags,
                                        env.data(), nullptr, &si.StartupInfo, &pi);
         if (!started)
-            qWarning("lumaflip: starting the decoder helper at low integrity failed: %s", qPrintable(lastError()));
+            qWarning("lumaflip: starting the decoder helper at low integrity failed: %s",
+                     qPrintable(lastError()));
     }
     if (!started) // without the low integrity token (the helper reports it; the app may refuse it)
-        started = CreateProcessW(app.c_str(), lineBuffer.data(), nullptr, nullptr, TRUE, flags, env.data(), nullptr,
-                                 &si.StartupInfo, &pi);
+        started = CreateProcessW(app.c_str(), lineBuffer.data(), nullptr, nullptr, TRUE, flags, env.data(),
+                                 nullptr, &si.StartupInfo, &pi);
     const QString startError = started ? QString() : lastError();
     DeleteProcThreadAttributeList(attrs);
     if (token)

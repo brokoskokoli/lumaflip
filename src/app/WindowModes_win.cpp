@@ -48,7 +48,8 @@ void setWindowMinimalChrome(QWidget* window, bool on) {
         style |= WS_CAPTION;
     SetWindowLongPtrW(w, GWL_STYLE, style);
     SetWindowPos(w, nullptr, 0, 0, 0, 0,
-                 SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOOWNERZORDER | SWP_FRAMECHANGED);
+                 SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOOWNERZORDER |
+                     SWP_FRAMECHANGED);
 }
 
 NativeWindowState nativeWindowState(QWidget* window) {

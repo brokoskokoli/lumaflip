@@ -4,9 +4,8 @@
 namespace lf::cmdline {
 
 QString quoteArgument(const QString& arg) {
-    const bool needsQuotes =
-        arg.isEmpty() || arg.contains(u' ') || arg.contains(u'\t') || arg.contains(u'\n') ||
-        arg.contains(u'\v') || arg.contains(u'"');
+    const bool needsQuotes = arg.isEmpty() || arg.contains(u' ') || arg.contains(u'\t') ||
+                             arg.contains(u'\n') || arg.contains(u'\v') || arg.contains(u'"');
     if (!needsQuotes)
         return arg;
     QString out;

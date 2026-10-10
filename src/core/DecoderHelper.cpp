@@ -42,6 +42,8 @@
 #if defined(Q_OS_WIN) && LF_WINDOWS_PLATFORM
 #include "platform/windows/WinDecoderSandbox.h"
 
+#include <string>
+
 #include <windows.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
@@ -189,8 +191,8 @@ struct HelperProcess {
         fromChild = out[0];
         return true;
 #elif LF_WIN_HELPER
-        if (!win::startDecoderHelper(o.executable, {QStringLiteral("--decoder-helper")}, o.extraEnvironment, &win,
-                                     error))
+        if (!win::startDecoderHelper(o.executable, {QStringLiteral("--decoder-helper")}, o.extraEnvironment,
+                                     &win, error))
             return false;
         pid = win.pid;
         toChild = win.toChild;
@@ -661,8 +663,8 @@ bool testOperation(ipc::Op op, const QString& arg, QString* detail) {
         si.cb = sizeof si;
         PROCESS_INFORMATION pi{};
         std::wstring cmd = QDir::toNativeSeparators(arg).toStdWString();
-        if (!CreateProcessW(nullptr, cmd.data(), nullptr, nullptr, FALSE, CREATE_NO_WINDOW, nullptr, nullptr, &si,
-                            &pi)) {
+        if (!CreateProcessW(nullptr, cmd.data(), nullptr, nullptr, FALSE, CREATE_NO_WINDOW, nullptr, nullptr,
+                            &si, &pi)) {
             *detail = QStringLiteral("error %1").arg(GetLastError());
             return false;
         }
@@ -840,7 +842,8 @@ int runDecoderHelper(int inFd, int outFd, const QList<std::shared_ptr<Decoder>>&
         const auto request = ipc::decodeRequest(payload);
         if (!request)
             return 2;
-        const ipc::Response response = serveDecoderRequest(*request, backends, pid, sandboxed, testOps, &state);
+        const ipc::Response response =
+            serveDecoderRequest(*request, backends, pid, sandboxed, testOps, &state);
         if (ipc::writeFrame(outFd, ipc::encode(response)) != ipc::IoStatus::Ok)
             return 0;
     }

@@ -25,6 +25,7 @@
 #include <gtest/gtest.h>
 
 #include <algorithm>
+#include <cstdio>
 #include <functional>
 #include <memory>
 
@@ -60,7 +61,8 @@ QImage testPattern(int w, int h) {
     QImage img(w, h, QImage::Format_RGBA8888);
     for (int y = 0; y < h; ++y)
         for (int x = 0; x < w; ++x)
-            img.setPixelColor(x, y, QColor((x * 255) / std::max(1, w - 1), (y * 255) / std::max(1, h - 1), 80));
+            img.setPixelColor(x, y,
+                              QColor((x * 255) / std::max(1, w - 1), (y * 255) / std::max(1, h - 1), 80));
     // A red corner marks the top left (orientation checks).
     for (int y = 0; y < h / 4; ++y)
         for (int x = 0; x < w / 4; ++x)
@@ -121,9 +123,10 @@ TEST(WindowsPlatform, F_SORT_01_NameOrderLikeExplorer) {
     EXPECT_NE(c->compare(QStringLiteral("a.jpg"), QStringLiteral("A.jpg")), 0);
     EXPECT_EQ(c->compare(QStringLiteral("a.jpg"), QStringLiteral("a.jpg")), 0);
     // The same order as StrCmpLogicalW for a mixed list, and prepared == compare.
-    QVector<QString> names = {QStringLiteral("x10.png"), QStringLiteral("x9.png"), QStringLiteral("X1.png"),
-                              QStringLiteral("x 2.png"), QStringLiteral("_a.png"), QStringLiteral("10.png"),
-                              QStringLiteral("9.png"), QStringLiteral("Über.png"), QStringLiteral("ueber.png")};
+    QVector<QString> names = {
+        QStringLiteral("x10.png"), QStringLiteral("x9.png"),   QStringLiteral("X1.png"),
+        QStringLiteral("x 2.png"), QStringLiteral("_a.png"),   QStringLiteral("10.png"),
+        QStringLiteral("9.png"),   QStringLiteral("Über.png"), QStringLiteral("ueber.png")};
     auto prepared = c->prepare(names);
     for (qsizetype i = 0; i < names.size(); ++i)
         for (qsizetype j = 0; j < names.size(); ++j) {
@@ -154,8 +157,10 @@ TEST(WindowsPlatform, F_FILE_01_RecycleBinMoveAndRestore) {
     if (inTrash->isEmpty())
         GTEST_SKIP() << "Windows did not report the recycled item (no Recycle Bin on this volume?)";
     EXPECT_TRUE(QFileInfo::exists(*inTrash)) << inTrash->toStdString();
-    EXPECT_TRUE(inTrash->contains(QStringLiteral("$Recycle.Bin"), Qt::CaseInsensitive)) << inTrash->toStdString();
-    const QString record = QFileInfo(*inTrash).dir().filePath(QStringLiteral("$I") + QFileInfo(*inTrash).fileName().mid(2));
+    EXPECT_TRUE(inTrash->contains(QStringLiteral("$Recycle.Bin"), Qt::CaseInsensitive))
+        << inTrash->toStdString();
+    const QString record =
+        QFileInfo(*inTrash).dir().filePath(QStringLiteral("$I") + QFileInfo(*inTrash).fileName().mid(2));
     EXPECT_TRUE(QFileInfo::exists(record)) << "the Recycle Bin's record of the item";
 
     // Restoring never overwrites.
@@ -248,7 +253,8 @@ TEST(WindowsPlatform, F_FILE_10_CustomActionArgumentsStayData) {
     a.name = QStringLiteral("Test");
     a.command = QStringLiteral("\"C:\\Program Files\\Tool\\tool.exe\" --open");
     EXPECT_TRUE(customactions::validate(a).isEmpty());
-    const QStringList files = {QStringLiteral("C:/Bilder/a&calc.jpg"), QStringLiteral("C:/Bilder/x \" y.jpg")};
+    const QStringList files = {QStringLiteral("C:/Bilder/a&calc.jpg"),
+                               QStringLiteral("C:/Bilder/x \" y.jpg")};
     const auto spec = customactions::processFor(a, files);
     EXPECT_EQ(spec.program, QStringLiteral("C:\\Program Files\\Tool\\tool.exe"));
     EXPECT_EQ(spec.arguments, (QStringList{QStringLiteral("--open"), QStringLiteral("C:\\Bilder\\a&calc.jpg"),
@@ -296,7 +302,8 @@ TEST(WindowsPlatform, F_FMT_01_WicDecodesLikeQt) {
         int worst = 0;
         for (int row = 0; row < x.height(); ++row)
             for (int i = 0; i < x.width() * 4; ++i)
-                worst = std::max(worst, std::abs(int(x.constScanLine(row)[i]) - int(y.constScanLine(row)[i])));
+                worst =
+                    std::max(worst, std::abs(int(x.constScanLine(row)[i]) - int(y.constScanLine(row)[i])));
         EXPECT_LE(worst, qstrcmp(format, "jpg") == 0 ? 8 : 0);
         const auto info = wic.info(path, &e1);
         ASSERT_TRUE(info.has_value()) << e1.toStdString();
@@ -352,7 +359,8 @@ TEST(WindowsPlatform, F_FMT_02_HelperSandboxOnWindows) {
     DecoderHelperPool::Options o;
     o.executable = QStringLiteral(LF_DECODER_HELPER_BINARY);
     o.maxProcesses = 1;
-    o.extraEnvironment = {QStringLiteral("LF_DECODER_HELPER_TEST_OPS=1"), QStringLiteral("QT_QPA_PLATFORM=offscreen")};
+    o.extraEnvironment = {QStringLiteral("LF_DECODER_HELPER_TEST_OPS=1"),
+                          QStringLiteral("QT_QPA_PLATFORM=offscreen")};
     DecoderHelperPool pool(o);
     auto probe = [&](ipc::Op op, const QString& arg) {
         ipc::Request r;
@@ -382,7 +390,8 @@ TEST(WindowsPlatform, F_FMT_02_HelperSandboxOnWindows) {
     img.fill(QColor(10, 200, 30));
     const QString png = dir.filePath(QStringLiteral("x.png"));
     ASSERT_TRUE(img.save(png));
-    RemoteDecoder remote(std::make_shared<QtImageDecoder>(), std::shared_ptr<DecoderHelperPool>(&pool, [](auto*) {}));
+    RemoteDecoder remote(std::make_shared<QtImageDecoder>(),
+                         std::shared_ptr<DecoderHelperPool>(&pool, [](auto*) {}));
     const auto decoded = remote.decode(png, DecodeRequest{}, &error);
     ASSERT_TRUE(decoded.has_value()) << error.toStdString();
     EXPECT_EQ(decoded->image.size(), QSize(32, 16));

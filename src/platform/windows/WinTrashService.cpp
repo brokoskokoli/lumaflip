@@ -26,6 +26,7 @@
 
 #include <windows.h>
 
+#include <shellapi.h>
 #include <shlobj.h>
 #include <shobjidl.h>
 #include <wrl/client.h>
@@ -58,7 +59,8 @@ public:
     ULONG STDMETHODCALLTYPE AddRef() override { return 2; }
     ULONG STDMETHODCALLTYPE Release() override { return 1; }
 
-    HRESULT STDMETHODCALLTYPE PostDeleteItem(DWORD, IShellItem*, HRESULT hr, IShellItem* newlyCreated) override {
+    HRESULT STDMETHODCALLTYPE PostDeleteItem(DWORD, IShellItem*, HRESULT hr,
+                                             IShellItem* newlyCreated) override {
         result = hr;
         if (SUCCEEDED(hr) && newlyCreated) {
             LPWSTR name = nullptr;
@@ -118,8 +120,9 @@ public:
             ComPtr<IShellItem> item;
             hr = CoCreateInstance(CLSID_FileOperation, nullptr, CLSCTX_ALL, IID_PPV_ARGS(&op));
             if (SUCCEEDED(hr))
-                hr = op->SetOperationFlags(FOF_ALLOWUNDO | FOFX_RECYCLEONDELETE | FOF_NOCONFIRMATION | FOF_SILENT |
-                                           FOF_NOERRORUI | FOF_WANTNUKEWARNING | FOFX_EARLYFAILURE);
+                hr = op->SetOperationFlags(FOF_ALLOWUNDO | FOFX_RECYCLEONDELETE | FOF_NOCONFIRMATION |
+                                           FOF_SILENT | FOF_NOERRORUI | FOF_WANTNUKEWARNING |
+                                           FOFX_EARLYFAILURE);
             if (SUCCEEDED(hr))
                 hr = SHCreateItemFromParsingName(win::wstr(native), nullptr, IID_PPV_ARGS(&item));
             DeleteSink sink;

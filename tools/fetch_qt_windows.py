@@ -8,8 +8,9 @@ Since Qt 6.11 the online repository keeps every architecture in a folder of its 
 (qt6_6112/qt6_6112_msvc2022_64/), which aqtinstall 3.3 does not read yet. This script reads
 that folder's Updates.xml, downloads the archives of the base package (without docs, QML
 and the software OpenGL fallback) and of the requested add-ons, checks their SHA-1 sums
-from the repository and unpacks them with 7-Zip into <output dir>. Prints the Qt prefix
-(<output dir>/<version>/msvc2022_64).
+from the repository and unpacks them with 7-Zip into the Qt prefix
+<output dir>/<version>/msvc2022_64 (the archives hold bin/, lib/, ... without a version
+folder), which it prints.
 """
 from __future__ import annotations
 
@@ -53,7 +54,8 @@ def main() -> int:
     wanted = {f"qt.qt6.{ver}.{args.arch}"} | {f"qt.qt6.{ver}.addons.{a}.{args.arch}"
                                                for a in args.addons.split(",") if a}
     found = set()
-    args.out.mkdir(parents=True, exist_ok=True)
+    prefix = args.out / args.version / short_arch
+    prefix.mkdir(parents=True, exist_ok=True)
     seven = shutil.which("7z") or r"C:\Program Files\7-Zip\7z.exe"
     tmp = args.out / "_download"
     tmp.mkdir(exist_ok=True)
@@ -76,13 +78,12 @@ def main() -> int:
             path = tmp / archive
             path.write_bytes(data)
             print(f"{archive}: {len(data) / 1e6:.1f} MB, SHA-1 ok", flush=True)
-            subprocess.run([seven, "x", "-y", "-bso0", "-bsp0", f"-o{args.out}", str(path)], check=True)
+            subprocess.run([seven, "x", "-y", "-bso0", "-bsp0", f"-o{prefix}", str(path)], check=True)
             path.unlink()
     missing = wanted - found
     if missing:
         raise SystemExit(f"error: packages not in the repository: {sorted(missing)}")
     shutil.rmtree(tmp, ignore_errors=True)
-    prefix = args.out / args.version / short_arch
     if not (prefix / "bin" / "Qt6Core.dll").is_file():
         raise SystemExit(f"error: {prefix} has no bin/Qt6Core.dll")
     # Like the Qt installer: a qt.conf is not needed (Qt 6 is relocatable).
