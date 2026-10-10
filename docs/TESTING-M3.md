@@ -210,8 +210,10 @@ Netzwerkmonitor läuft, Update-Prüfung aus.
 
 ## 12. Bekannte Grenzen von Version 1.1
 
-- SVG läuft weiter über Qt SVG (SVG Tiny 1.2, kein vollständiges CSS/Filter); resvg folgt in M4.
-- XCF und PSB sowie Archive/PDF (F-OPEN-10) folgen in M4.
+- SVG läuft in diesem Stand weiter über Qt SVG (SVG Tiny 1.2, kein vollständiges CSS/Filter).
+  resvg sowie XCF/PSB sind noch nicht enthalten – die SPEC plant sie inzwischen für M3, in dieser
+  Abnahme also als „fehlt noch“ notieren, nicht als Fehler; ebenso die Ordnerkarte (F-INFO-08).
+- Archive/PDF (F-OPEN-10) folgen in M4.
 - Die Übersetzungen sind maschinell entstanden und **noch nicht muttersprachlich geprüft**
   (`translations/REVIEW_STATUS.md`).
 - Netzlaufwerke: Änderungen von anderen Rechnern meldet macOS oft nicht (wie in 1.0).

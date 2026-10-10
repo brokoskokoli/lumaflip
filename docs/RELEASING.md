@@ -298,7 +298,7 @@ Deutsch zuerst, Englisch darunter.
 - Bei RAW+JPEG gehört `IMG_1.xmp` der RAW-Datei (Lightroom); das JPEG nutzt `IMG_1.JPG.xmp`.
 - Kartenausschnitte werden erst nach „Karte anzeigen“ von Apple geladen und nur bei sichtbarem
   Infopanel; „Karte ausblenden“ nimmt die Zustimmung zurück.
-- Bekannte Grenzen: SVG über Qt SVG (resvg folgt), XCF/PSB erst in M4.
+- Bekannte Grenzen: SVG über Qt SVG (resvg folgt), XCF/PSB und die Ordnerkarte sind noch nicht enthalten.
 
 **New (English)**
 - 18 languages (follows the system language, switchable without restart; translations not yet reviewed).
