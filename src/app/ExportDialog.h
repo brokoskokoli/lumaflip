@@ -36,6 +36,9 @@ public:
 
     exporting::Options options() const;
     void setOptions(const exporting::Options& options);
+    // F-EDIT-03 "Zugeschnitten exportieren": only this part (normalized, Options::crop).
+    void setCrop(const QRectF& crop);
+    QRectF crop() const { return m_crop; }
     QStringList sources() const { return m_sources; }
     QString previewName() const; // file name of the first image with the current options
 
@@ -51,6 +54,7 @@ private:
     void chooseFolder();
 
     QStringList m_sources;
+    QRectF m_crop;
     QComboBox* m_format = nullptr;
     QSlider* m_quality = nullptr;
     QLabel* m_qualityValue = nullptr;
@@ -74,6 +78,9 @@ public:
     // `done(result)` on the GUI thread (also after cancelling).
     ExportRunner(QWidget* window, TrashService* trash, QStringList sources, exporting::Options options,
                  std::function<void(const exporting::Result&)> done);
+    // Destroyed with its window while the worker runs: the worker stops after the current
+    // image (it holds only shared copies; nothing is reported any more).
+    ~ExportRunner() override;
     void start();
     QProgressDialog* progressDialog() const { return m_progress; } // tests
     void cancel();

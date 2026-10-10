@@ -6,19 +6,23 @@
 //   - JPEG: lossless (libjpeg-turbo tj3Transform with a crop region, like jpegtran -crop).
 //     The left/top edge must lie on the iMCU grid (8 or 16 px); the selection is extended
 //     to the grid (right/bottom edges stay) and the user is told. EXIF/ICC/XMP markers are
-//     copied, the EXIF pixel dimensions are updated, the EXIF thumbnail (which would show
-//     the uncropped image) is unlinked, the orientation tag stays (the crop is done in
-//     stored pixels). JPEG files with further images (MPF: Ultra HDR gain maps, MPO
-//     stereo pairs) are never cropped losslessly - the secondary images would no longer
-//     match; re-encoding (with loss, without them) is offered as a question instead.
+//     copied, the EXIF and XMP pixel dimensions are updated, the thumbnails that would
+//     still show the uncropped image (EXIF IFD1, Photoshop IRB) are removed - their bytes,
+//     not only the link - and the orientation tag stays (the crop is done in stored pixels). JPEG files with
+//     further images (MPF: Ultra HDR gain maps, MPO stereo pairs) are never cropped losslessly - the
+//     secondary images would no longer match; re-encoding (with loss, without them) is offered as a question
+//     instead.
 //   - lossless codecs (PNG, TIFF, BMP, TGA): re-encoded with the same color model, bit
 //     depth, palette, alpha, ICC profile and metadata; checked by reading the result back.
 //   - lossy codecs (HEIC, AVIF, WebP …) and inexact cases: only after asking (never
 //     silently lossy, SPEC 4.8).
-//   - RAW, animations, multi-page files and images inside archives/PDFs are never cropped
-//     in place ("Exportieren" makes a cropped copy instead).
+//   - RAW, animations, multi-page files, images inside archives/PDFs and formats the
+//     platform cannot encode are never cropped in place: the plan is refused with
+//     `exportInstead`, and the window offers "Zugeschnitten exportieren …" (the export with
+//     exporting::Options::crop writes a new file; animations/multi-page: the first image).
 // "Speichern" replaces the file (FileEdit: undo backups, symbolic/hard link safety, fsync,
-// plan/commit check); "Speichern unter" always writes a new file and never the source.
+// plan/commit check); "Speichern unter" always writes a new file and never the source, and
+// replaces an existing file only when the user agreed (CropRequest::replaceExisting).
 // All file work is for worker threads.
 
 #include "LosslessTransform.h"
@@ -87,6 +91,16 @@ DctResult cropDct(const QByteArray& in, const QRect& stored, QByteArray* out, QS
 bool patchPixelDimensions(QByteArray& data, int width, int height);
 // EXIF PixelXDimension/PixelYDimension, invalid if absent.
 QSize exifPixelDimensions(const QByteArray& data);
+// Removes the EXIF thumbnail: IFD0 no longer links IFD1, and IFD1 and the thumbnail JPEG it
+// points to are overwritten with zeros (same size, nothing else moves). False if there was
+// none.
+bool removeExifThumbnail(QByteArray& data);
+// Removes the Photoshop thumbnail resources (IRB 0x0409/0x040C) from APP13 "Photoshop 3.0"
+// segments (the segment shrinks). Returns how many were removed.
+int removeIrbThumbnails(QByteArray& data);
+// Writes the size into the XMP packet (exif:PixelXDimension/PixelYDimension,
+// tiff:ImageWidth/ImageLength; attribute or element form) where these are present.
+void patchXmpDimensions(QByteArray& data, int width, int height);
 // Decodes to RGB888 with libjpeg-turbo; `fastUpsample` = nearest chroma upsampling (exact
 // comparisons across block borders). Null without libjpeg-turbo.
 QImage decodePixels(const QByteArray& data, bool fastUpsample);
@@ -96,6 +110,9 @@ struct CropRequest {
     QString path;
     QRect rect;     // displayed full-resolution pixels (EXIF orientation applied)
     QString saveAs; // empty: replace `path` (undoable); else a new file (never the source)
+    // "Speichern unter": the user agreed to replace an existing `saveAs` (file dialog or the
+    // question after the suffix was added). Without it an existing file is never replaced.
+    bool replaceExisting = false;
     bool keepModificationDate = false;
 };
 
@@ -117,6 +134,9 @@ struct CropPlan {
     QRect storedRect;     // the saved part in stored pixels
     QRect displayRect;    // the same in displayed pixels (may differ from the request: snapping)
     bool snapped = false; // JPEG: the selection was extended to the block grid
+    // Refused, but "Zugeschnitten exportieren" can write a cropped copy (RAW, animations,
+    // multi-page files, archive/PDF members, formats without an encoder here).
+    bool exportInstead = false;
     QSize mcu;            // JPEG block size
     QString typeId;
     QString message;     // German, user facing (Refused / the question)
@@ -150,6 +170,11 @@ bool reencodeCropped(const QString& src, const QString& dst, const QRect& stored
                      QString* error, bool* inexact = nullptr);
 // German names of auxiliary images of the file (HDR gain map, depth map …), empty if none.
 QStringList auxiliaryImageNames(const QString& path);
+// True if reencodeCropped() can write files of `typeId` (macOS: ImageIO encoders; elsewhere
+// Qt's image writers).
+bool canEncodeType(const QString& typeId);
+// False where reencodeCropped() writes the pixels only (Qt's writers: no EXIF/XMP/IPTC).
+bool reencodeKeepsMetadata();
 } // namespace platform
 
 } // namespace lf

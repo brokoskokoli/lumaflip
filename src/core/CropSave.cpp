@@ -13,6 +13,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QRegularExpression>
 #include <QUuid>
 
 #include <algorithm>
@@ -538,6 +539,142 @@ bool jpeg::patchPixelDimensions(QByteArray& d, int width, int height) {
     return ok;
 }
 
+bool jpeg::removeExifThumbnail(QByteArray& d) {
+    Tiff t;
+    if (!findExif(d, &t))
+        return false;
+    const quint32 ifd0 = t.u32(d, 4);
+    if (ifd0 < 8 || qsizetype(ifd0) + 2 > t.size)
+        return false;
+    const qsizetype next = qsizetype(ifd0) + 2 + qsizetype(t.u16(d, ifd0)) * 12;
+    if (next + 4 > t.size)
+        return false;
+    const quint32 ifd1 = t.u32(d, next);
+    if (ifd1 == 0)
+        return false;
+    t.put32(d, next, 0); // unlinked
+    if (ifd1 < 8 || qsizetype(ifd1) + 2 > t.size)
+        return true;
+    // The thumbnail JPEG (JPEGInterchangeFormat / ...Length) and the IFD itself: zeroed.
+    const qint64 offset = entryValue(d, t, ifdEntry(d, t, ifd1, 0x0201));
+    const qint64 length = entryValue(d, t, ifdEntry(d, t, ifd1, 0x0202));
+    if (offset >= 8 && length > 0 && offset + length <= t.size)
+        std::fill(d.begin() + t.base + offset, d.begin() + t.base + offset + length, '\0');
+    const qsizetype ifdEnd = qsizetype(ifd1) + 2 + qsizetype(t.u16(d, ifd1)) * 12 + 4;
+    if (ifdEnd <= t.size)
+        std::fill(d.begin() + t.base + ifd1, d.begin() + t.base + ifdEnd, '\0');
+    return true;
+}
+
+namespace {
+
+// Replaces the payload of the segment at `s` (Seg::payload/length) with `payload`.
+void replacePayload(QByteArray& d, const Seg& s, const QByteArray& payload) {
+    const qsizetype len = payload.size() + 2;
+    QByteArray head;
+    head.append(char((len >> 8) & 0xFF)).append(char(len & 0xFF));
+    d = d.left(s.payload - 2) + head + payload + d.mid(s.payload + s.length);
+}
+
+} // namespace
+
+int jpeg::removeIrbThumbnails(QByteArray& d) {
+    static const QByteArray id("Photoshop 3.0\0", 14);
+    QList<Seg> segments;
+    eachSegment(d, [&](const Seg& s) {
+        if (s.marker == 0xED && s.length > id.size() && d.mid(s.payload, id.size()) == id)
+            segments << s;
+        return true;
+    });
+    int removed = 0;
+    for (auto it = segments.crbegin(); it != segments.crend(); ++it) { // back to front: offsets stay
+        const Seg& s = *it;
+        const qsizetype end = s.payload + s.length;
+        QByteArray kept = id;
+        qsizetype p = s.payload + id.size();
+        int dropped = 0;
+        bool ok = true;
+        while (p < end) {
+            if (p + 7 > end || d.mid(p, 4) != "8BIM") {
+                ok = false; // not a resource block: leave the segment as it is
+                break;
+            }
+            const quint16 res = be16(d, p + 4);
+            qsizetype q = p + 6;
+            const int nameLen = uchar(d[q]);
+            q += 1 + nameLen;
+            if ((1 + nameLen) % 2)
+                ++q; // the Pascal name is padded to an even length
+            if (q + 4 > end) {
+                ok = false;
+                break;
+            }
+            const qsizetype size = (qsizetype(uchar(d[q])) << 24) | (qsizetype(uchar(d[q + 1])) << 16) |
+                                   (qsizetype(uchar(d[q + 2])) << 8) | qsizetype(uchar(d[q + 3]));
+            qsizetype blockEnd = q + 4 + size;
+            if (size % 2)
+                ++blockEnd;
+            if (blockEnd > end) {
+                ok = false;
+                break;
+            }
+            if (res == 0x0409 || res == 0x040C)
+                ++dropped;
+            else
+                kept += d.mid(p, blockEnd - p);
+            p = blockEnd;
+        }
+        if (ok && dropped > 0) {
+            replacePayload(d, s, kept);
+            removed += dropped;
+        }
+    }
+    return removed;
+}
+
+void jpeg::patchXmpDimensions(QByteArray& d, int width, int height) {
+    static const QByteArray id("http://ns.adobe.com/xap/1.0/\0", 29);
+    QList<Seg> segments;
+    eachSegment(d, [&](const Seg& s) {
+        if (s.marker == 0xE1 && s.length > id.size() && d.mid(s.payload, id.size()) == id)
+            segments << s;
+        return true;
+    });
+    for (auto it = segments.crbegin(); it != segments.crend(); ++it) {
+        const Seg& s = *it;
+        const QByteArray raw = d.mid(s.payload + id.size(), s.length - id.size());
+        QString xml = QString::fromUtf8(raw);
+        if (xml.toUtf8() != raw)
+            continue; // not clean UTF-8: left byte-identical
+        const QString before = xml;
+        for (const auto& [name, value] : {std::pair<const char*, int>{"exif:PixelXDimension", width},
+                                          {"exif:PixelYDimension", height},
+                                          {"tiff:ImageWidth", width},
+                                          {"tiff:ImageLength", height}}) {
+            const QString n = QRegularExpression::escape(QString::fromLatin1(name));
+            const QString v = QString::number(value);
+            // Only the digits (capture 1) are replaced, in the attribute and the element form.
+            for (const QString& pattern : {QStringLiteral("%1\\s*=\\s*[\"'](\\d+)[\"']").arg(n),
+                                           QStringLiteral("<%1>\\s*(\\d+)\\s*</%1>").arg(n)}) {
+                QString out;
+                qsizetype last = 0;
+                QRegularExpressionMatchIterator m = QRegularExpression(pattern).globalMatch(xml);
+                while (m.hasNext()) {
+                    const QRegularExpressionMatch match = m.next();
+                    out += xml.mid(last, match.capturedStart(1) - last) + v;
+                    last = match.capturedEnd(1);
+                }
+                xml = out + xml.mid(last);
+            }
+        }
+        if (xml == before)
+            continue;
+        const QByteArray payload = id + xml.toUtf8();
+        if (payload.size() + 2 <= 0xFFFF)
+            replacePayload(d, s, payload);
+    }
+}
+
 QImage jpeg::decodePixels(const QByteArray& data, bool fastUpsample) {
 #ifdef LF_HAVE_TURBOJPEG
     tjhandle h = tj3Init(TJINIT_DECOMPRESS);
@@ -566,11 +703,14 @@ QImage jpeg::decodePixels(const QByteArray& data, bool fastUpsample) {
 // Planning and saving
 // ---------------------------------------------------------------------------------------
 
-CropPlan planCropSave(const CropRequest& r) {
+namespace {
+
+CropPlan planCropSaveImpl(const CropRequest& r) {
     CropPlan plan;
     if (vpath::isMember(r.path)) {
-        plan.message = Tr::tr("Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert "
-                              "werden – bitte „Exportieren“ benutzen.");
+        plan.message = Tr::tr("Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt "
+                              "kann als neue Datei exportiert werden.");
+        plan.exportInstead = true;
         return plan;
     }
     if (!QFileInfo::exists(r.path)) {
@@ -590,13 +730,16 @@ CropPlan planCropSave(const CropRequest& r) {
     }
     if (platform::isCameraRawType(plan.typeId) || isRawSuffix(fi.suffix().toLower()) ||
         isRawSuffix(QFileInfo(r.path).suffix().toLower())) {
-        plan.message = Tr::tr("RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte "
-                              "„Exportieren“ benutzen.");
+        plan.message = Tr::tr("RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei "
+                              "exportiert werden.");
+        plan.exportInstead = true;
         return plan;
     }
     if (platform::imageCount(plan.target) > 1) {
-        plan.message =
-            Tr::tr("Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.");
+        plan.message = Tr::tr("Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert "
+                              "werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert "
+                              "werden.");
+        plan.exportInstead = true;
         return plan;
     }
     if (r.saveAs.isEmpty()) {
@@ -616,6 +759,10 @@ CropPlan planCropSave(const CropRequest& r) {
         const QFileInfo dest(plan.destination);
         if (!QFileInfo(dest.absolutePath()).isWritable() || (dest.exists() && !dest.isFile())) {
             plan.message = Tr::tr("In „%1“ kann nicht geschrieben werden.").arg(dest.absolutePath());
+            return plan;
+        }
+        if ((dest.exists() || dest.isSymLink()) && !r.replaceExisting) {
+            plan.message = Tr::tr("„%1“ gibt es schon.").arg(dest.fileName());
             return plan;
         }
     }
@@ -718,6 +865,15 @@ CropPlan planCropSave(const CropRequest& r) {
                               "Palette oder Transparenz würden verändert).");
         return plan;
     }
+    if (!platform::canEncodeType(plan.typeId)) {
+        // Asking "Neu kodieren?" would only end in an error.
+        plan.status = CropPlan::Refused;
+        plan.message =
+            Tr::tr("Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem "
+                   "anderen Format exportiert werden.");
+        plan.exportInstead = true;
+        return plan;
+    }
     plan.status = CropPlan::NeedsReencode;
     plan.method = CropMethod::ReencodeLossy;
     plan.message =
@@ -726,6 +882,22 @@ CropPlan planCropSave(const CropRequest& r) {
     if (!aux.isEmpty())
         plan.message += QLatin1Char(' ') +
                         Tr::tr("Zusatzbilder (%1) gehen dabei verloren.").arg(aux.join(QStringLiteral(", ")));
+    return plan;
+}
+
+} // namespace
+
+CropPlan planCropSave(const CropRequest& r) {
+    CropPlan plan = planCropSaveImpl(r);
+    const bool reencode =
+        plan.method == CropMethod::ReencodeLossless || plan.method == CropMethod::ReencodeLossy;
+    if (plan.status != CropPlan::Refused && reencode && !platform::reencodeKeepsMetadata()) {
+        // Never silently: Qt's writers keep the pixels only.
+        const QString lost = Tr::tr("Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.");
+        plan.notice = plan.notice.isEmpty() ? lost : plan.notice + QLatin1Char(' ') + lost;
+        if (plan.status == CropPlan::NeedsReencode)
+            plan.message += QLatin1Char(' ') + lost;
+    }
     return plan;
 }
 
@@ -752,8 +924,11 @@ QString executeCropSave(const CropRequest& r, const CropPlan& plan, CropMethod m
             return error.isEmpty() ? Tr::tr("Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.")
                                    : error;
         jpeg::patchPixelDimensions(out, plan.storedRect.width(), plan.storedRect.height());
-        // The EXIF thumbnail shows the uncropped image: unlinked (the orientation stays).
-        jpeg::patchOrientation(out, clampOrientation(jpeg::exifOrientation(out)), true);
+        jpeg::patchXmpDimensions(out, plan.storedRect.width(), plan.storedRect.height());
+        // The thumbnails show the uncropped image (privacy: what was cut away must go):
+        // removed, not only unlinked. The orientation stays.
+        jpeg::removeExifThumbnail(out);
+        jpeg::removeIrbThumbnails(out);
         ok = filesafety::writeNewFile(tmp, out, &error);
         break;
     }
@@ -774,8 +949,9 @@ QString executeCropSave(const CropRequest& r, const CropPlan& plan, CropMethod m
         QFile::remove(tmp);
         return messageChangedSincePlan();
     }
-    if (inPlace || QFileInfo::exists(destination)) {
-        // In place, or an existing file the user agreed to replace ("Speichern unter").
+    if (inPlace || (r.replaceExisting && QFileInfo::exists(destination))) {
+        // In place, or an existing file the user agreed to replace ("Speichern unter"); any
+        // other existing destination makes moveNoReplace() below fail.
         if (!platform::replaceFile(tmp, destination, inPlace && r.keepModificationDate, &error)) {
             QFile::remove(tmp);
             return error.isEmpty() ? Tr::tr("Die Datei konnte nicht ersetzt werden.") : error;

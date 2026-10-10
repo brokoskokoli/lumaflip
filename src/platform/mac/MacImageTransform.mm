@@ -798,6 +798,17 @@ bool reencodeCropped(const QString& src, const QString& dst, const QRect& stored
     return false;
 }
 
+bool canEncodeType(const QString& typeId) {
+    @autoreleasepool {
+        NSArray* types = CFBridgingRelease(CGImageDestinationCopyTypeIdentifiers());
+        return [types containsObject:typeId.toNSString()];
+    }
+}
+
+bool reencodeKeepsMetadata() {
+    return true; // reencodeCroppedImpl() copies EXIF/XMP/IPTC through CGImageMetadata
+}
+
 QStringList auxiliaryImageNames(const QString& path) {
     @autoreleasepool {
         CGImageSourceRef src = openSource(path);

@@ -11,6 +11,7 @@
 #include "WindowExtras.h"
 #include "core/Decoder.h"
 #include "core/FileOps.h"
+#include "core/ImageExport.h"
 #include "core/PhotoOverlays.h"
 #include "core/Settings.h"
 #include "core/UndoBackupStore.h"
@@ -24,7 +25,10 @@
 #include <QMessageBox>
 #include <QPainter>
 #include <QPushButton>
+#include <QTimer>
 #include <QtConcurrent/QtConcurrentRun>
+
+#include <atomic>
 
 namespace lf {
 
@@ -267,6 +271,7 @@ void WindowEditing::startCrop() {
     }
     Settings& st = Settings::instance();
     m_cropPath = path;
+    ++m_cropToken;
     m_crop = new CropOverlay(view);
     m_crop->setGridShown(st.value(key::CropGrid).toBool());
     m_crop->setPortrait(st.value(key::CropPortrait).toBool());
@@ -291,8 +296,15 @@ void WindowEditing::cancelCrop() {
     m_crop->hide();
     m_crop->deleteLater();
     m_crop = nullptr;
+    // A plan still running or a question still open belongs to this session: dropped (the
+    // token), nothing is written after Esc. A write already under way finishes and reports.
+    ++m_cropToken;
+    if (!m_committing)
+        m_saving = false;
     if (m_question)
         m_question->close();
+    if (m_saveDialog)
+        m_saveDialog->close();
     m_window.view()->setFocus();
     m_app.windowChanged(&m_window);
 }
@@ -319,9 +331,31 @@ bool WindowEditing::eventFilter(QObject* watched, QEvent* event) {
     return true;
 }
 
+QRectF WindowEditing::normalizedCrop() const {
+    if (!m_crop)
+        return {};
+    const QSizeF size(m_crop->imageSize());
+    const QRect r = m_crop->cropRect();
+    if (size.isEmpty() || r.isEmpty())
+        return {};
+    return QRectF(r.x() / size.width(), r.y() / size.height(), r.width() / size.width(),
+                  r.height() / size.height());
+}
+
+void WindowEditing::showQuestion(QMessageBox* box) {
+    box->setAttribute(Qt::WA_DeleteOnClose);
+    box->setWindowModality(Qt::WindowModal);
+    m_question = box;
+    box->open();
+}
+
 void WindowEditing::saveCrop(bool saveAs) {
     if (!m_crop || m_saving)
         return;
+    if (m_committing) {
+        m_window.showMessage(tr("Der vorige Zuschnitt wird noch gespeichert."), 2000);
+        return;
+    }
     CropRequest r;
     r.path = m_cropPath;
     r.rect = m_crop->cropRect();
@@ -341,43 +375,154 @@ void WindowEditing::saveCrop(bool saveAs) {
     auto* dlg = new QFileDialog(&m_window, tr("Zugeschnittenes Bild speichern unter"), suggested);
     dlg->setObjectName(QStringLiteral("lfCropSaveAsDialog"));
     dlg->setAcceptMode(QFileDialog::AcceptSave);
+    // The format of the original first; the export formats write a cropped export instead.
+    QStringList filters{tr("Wie das Original (*.%1)").arg(fi.suffix())};
+    for (const exporting::Format& f : exporting::availableFormats())
+        if (f.suffix.compare(fi.suffix(), Qt::CaseInsensitive) != 0)
+            filters << QStringLiteral("%1 (*.%2)").arg(f.label, f.suffix);
+    dlg->setNameFilters(filters);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     m_saveDialog = dlg;
     connect(dlg, &QFileDialog::fileSelected, this, &WindowEditing::saveCropAs);
     dlg->open();
 }
 
+namespace {
+
+QString canonicalSuffix(const QString& suffix) {
+    const QString s = suffix.toLower();
+    if (s == QLatin1String("jpeg") || s == QLatin1String("jpe"))
+        return QStringLiteral("jpg");
+    if (s == QLatin1String("tiff"))
+        return QStringLiteral("tif");
+    return s;
+}
+
+} // namespace
+
 void WindowEditing::saveCropAs(const QString& chosen) {
-    if (!m_crop || m_saving || chosen.isEmpty())
+    if (!m_crop || m_saving || m_committing || chosen.isEmpty())
         return;
-    // The same format as the original ("Exportieren" converts).
     QString path = chosen;
     const QString srcSuffix = QFileInfo(m_cropPath).suffix();
-    const QString suffix = QFileInfo(path).suffix().toLower();
-    const bool jpegPair =
-        (suffix == QLatin1String("jpg") || suffix == QLatin1String("jpeg")) &&
-        (srcSuffix.toLower() == QLatin1String("jpg") || srcSuffix.toLower() == QLatin1String("jpeg"));
-    if (suffix != srcSuffix.toLower() && !jpegPair)
-        path += QLatin1Char('.') + srcSuffix;
+    const QString suffix = canonicalSuffix(QFileInfo(path).suffix());
+    if (suffix != canonicalSuffix(srcSuffix)) {
+        // Another format the export can write: a cropped export into exactly this file.
+        for (const exporting::Format& f : exporting::availableFormats())
+            if (canonicalSuffix(f.suffix) == suffix) {
+                exportCroppedAs(path, f);
+                return;
+            }
+        path += QLatin1Char('.') + srcSuffix; // else the format of the original
+    }
     CropRequest r;
     r.path = m_cropPath;
     r.rect = m_crop->cropRect();
     r.saveAs = path;
-    planAndSave(r);
+    // The file dialog confirmed replacing `chosen`; a name with the suffix added is asked
+    // here (never replaced silently).
+    r.replaceExisting = path == chosen;
+    const QFileInfo target(path);
+    if (r.replaceExisting || !(target.exists() || target.isSymLink())) {
+        planAndSave(r);
+        return;
+    }
+    auto* box = new QMessageBox(QMessageBox::Warning, tr("Zuschneiden"),
+                                tr("„%1“ gibt es schon. Ersetzen?").arg(target.fileName()),
+                                QMessageBox::NoButton, &m_window);
+    box->setObjectName(QStringLiteral("lfCropReplaceExisting"));
+    box->setInformativeText(
+        tr("Das zugeschnittene Bild bekommt die Endung des Originals (.%1).").arg(srcSuffix));
+    QPushButton* replace = box->addButton(tr("Ersetzen"), QMessageBox::DestructiveRole);
+    replace->setObjectName(QStringLiteral("lfCropReplaceYes"));
+    QPushButton* no = box->addButton(tr("Abbrechen"), QMessageBox::RejectRole);
+    box->setDefaultButton(no);
+    QPointer<WindowEditing> self(this);
+    const quint64 token = m_cropToken;
+    connect(box, &QMessageBox::buttonClicked, this, [self, r, replace, token](QAbstractButton* b) mutable {
+        if (!self || b != replace || token != self->m_cropToken || !self->m_crop)
+            return;
+        r.replaceExisting = true;
+        self->planAndSave(r);
+    });
+    showQuestion(box);
+}
+
+void WindowEditing::exportCroppedAs(const QString& target, const exporting::Format& format) {
+    exporting::Options o = ExportDialog::optionsFromSettings();
+    o.formatId = format.id;
+    o.maxLongEdge = 0;
+    o.crop = normalizedCrop();
+    exporting::Item item;
+    item.source = m_cropPath;
+    item.target = target;
+    item.onConflict = ConflictChoice::Replace; // the file dialog asked
+    m_saving = true;
+    QPointer<WindowEditing> self(this);
+    TrashService* trash = &m_app.fileOps().trashService();
+    const quint64 token = m_cropToken;
+    QtConcurrent::run([item, o, trash] {
+        const std::atomic_bool never{false};
+        return exporting::run({item}, o, never, {}, trash);
+    }).then(this, [self, target, token](const exporting::Result& r) {
+        if (!self)
+            return;
+        if (token == self->m_cropToken)
+            self->m_saving = false;
+        if (r.written == 0) {
+            self->m_window.showMessage(r.errors.isEmpty()
+                                           ? tr("Der Zuschnitt konnte nicht gespeichert werden.")
+                                           : r.errors.join(QLatin1Char('\n')),
+                                       5000);
+            return;
+        }
+        if (token == self->m_cropToken)
+            self->cancelCrop();
+        QString text = tr("Zugeschnitten exportiert als „%1“").arg(QFileInfo(target).fileName());
+        for (const QString& n : r.notices)
+            text += QStringLiteral(" – ") + n;
+        self->m_window.showMessage(text, r.notices.isEmpty() ? 2500 : 6000);
+    });
+}
+
+void WindowEditing::offerCroppedExport(const QString& message) {
+    auto* box = new QMessageBox(QMessageBox::Information, tr("Zuschneiden"), message, QMessageBox::NoButton,
+                                &m_window);
+    box->setObjectName(QStringLiteral("lfCropExportInstead"));
+    QPushButton* exportButton = box->addButton(tr("Zugeschnitten exportieren …"), QMessageBox::AcceptRole);
+    exportButton->setObjectName(QStringLiteral("lfCropExportInsteadYes"));
+    box->addButton(tr("Abbrechen"), QMessageBox::RejectRole);
+    box->setDefaultButton(exportButton);
+    QPointer<WindowEditing> self(this);
+    const quint64 token = m_cropToken;
+    connect(box, &QMessageBox::buttonClicked, this, [self, exportButton, token](QAbstractButton* b) {
+        if (!self || b != exportButton || token != self->m_cropToken || !self->m_crop)
+            return;
+        // After this click handler: the question closes first (window-modal dialogs).
+        QTimer::singleShot(0, self, [self, token] {
+            if (self && token == self->m_cropToken && self->m_crop)
+                self->showExport(self->normalizedCrop());
+        });
+    });
+    showQuestion(box);
 }
 
 void WindowEditing::planAndSave(const CropRequest& request) {
     m_saving = true;
     QPointer<WindowEditing> self(this);
+    const quint64 token = m_cropToken;
     QtConcurrent::run([request] {
         return planCropSave(request);
-    }).then(this, [self, request](const CropPlan& plan) {
-        if (!self)
-            return;
+    }).then(this, [self, request, token](const CropPlan& plan) {
+        if (!self || token != self->m_cropToken)
+            return; // cancelled meanwhile (Esc, flipping): nothing is written
         switch (plan.status) {
         case CropPlan::Refused:
             self->m_saving = false;
-            self->m_window.showMessage(plan.message, 5000);
+            if (plan.exportInstead)
+                self->offerCroppedExport(plan.message);
+            else
+                self->m_window.showMessage(plan.message, 5000);
             return;
         case CropPlan::Ready:
             self->commitCrop(request, plan, plan.method);
@@ -395,18 +540,17 @@ void WindowEditing::planAndSave(const CropRequest& request) {
         reencode->setObjectName(QStringLiteral("lfCropReencodeYes"));
         box->addButton(tr("Abbrechen"), QMessageBox::RejectRole);
         box->setDefaultButton(reencode);
-        box->setAttribute(Qt::WA_DeleteOnClose);
-        box->setWindowModality(Qt::WindowModal);
-        self->m_question = box;
-        connect(box, &QMessageBox::buttonClicked, self, [self, request, plan, reencode](QAbstractButton* b) {
-            if (!self)
-                return;
-            if (b == reencode)
-                self->commitCrop(request, plan, plan.method);
-            else
-                self->m_saving = false;
-        });
-        box->open();
+        connect(box, &QMessageBox::buttonClicked, self,
+                [self, request, plan, reencode, token](QAbstractButton* b) {
+                    if (!self || token != self->m_cropToken)
+                        return;
+                    if (b == reencode)
+                        self->commitCrop(request, plan, plan.method);
+                    else
+                        self->m_saving = false;
+                });
+        // Closed without a button (cancelCrop): the session is over, m_saving was reset there.
+        self->showQuestion(box);
     });
 }
 
@@ -414,20 +558,25 @@ void WindowEditing::commitCrop(const CropRequest& request, const CropPlan& plan,
     QPointer<WindowEditing> self(this);
     const QString notice = plan.notice;
     const bool snapped = plan.snapped;
+    const quint64 token = m_cropToken;
+    m_committing = true;
     if (request.saveAs.isEmpty()) {
         std::shared_ptr<FileEdit> edit = makeCropEdit(request, plan, method, UndoBackupStore::shared());
         FileOps::FileWork apply = [edit] { return edit->apply(); };
         FileOps::FileWork revert = [edit] { return edit->revert(); };
         m_app.fileOps().modifyAsync(request.path, tr("Zuschneiden"), apply, revert,
-                                    [self, method, notice, snapped](bool ok, const QString& error) {
+                                    [self, method, notice, snapped, token](bool ok, const QString& error) {
                                         if (!self)
                                             return;
-                                        self->m_saving = false;
+                                        self->m_committing = false;
+                                        if (token == self->m_cropToken)
+                                            self->m_saving = false;
                                         if (!ok) {
                                             self->m_window.showMessage(error, 5000);
                                             return;
                                         }
-                                        self->cancelCrop();
+                                        if (token == self->m_cropToken)
+                                            self->cancelCrop();
                                         const QString text = describeCropMethod(method, snapped);
                                         self->m_window.showMessage(
                                             notice.isEmpty() ? text : text + QStringLiteral(" – ") + notice,
@@ -437,15 +586,18 @@ void WindowEditing::commitCrop(const CropRequest& request, const CropPlan& plan,
     }
     QtConcurrent::run([request, plan, method] {
         return executeCropSave(request, plan, method);
-    }).then(this, [self, request, notice](const QString& error) {
+    }).then(this, [self, request, notice, token](const QString& error) {
         if (!self)
             return;
-        self->m_saving = false;
+        self->m_committing = false;
+        if (token == self->m_cropToken)
+            self->m_saving = false;
         if (!error.isEmpty()) {
             self->m_window.showMessage(error, 5000);
             return;
         }
-        self->cancelCrop();
+        if (token == self->m_cropToken)
+            self->cancelCrop();
         const QString text =
             tr("Zugeschnitten gespeichert als „%1“").arg(QFileInfo(request.saveAs).fileName());
         self->m_window.showMessage(notice.isEmpty() ? text : text + QStringLiteral(" – ") + notice,
@@ -455,10 +607,12 @@ void WindowEditing::commitCrop(const CropRequest& request, const CropPlan& plan,
 
 // ---- export ----
 
-void WindowEditing::showExport() {
+void WindowEditing::showExport(const QRectF& crop) {
     QStringList sources;
     OverviewController* overview = m_window.extras() ? m_window.extras()->overview() : nullptr;
-    if (overview && overview->mode() != OverviewController::Mode::Viewer)
+    if (!crop.isEmpty() && m_crop)
+        sources << m_cropPath;
+    else if (overview && overview->mode() != OverviewController::Mode::Viewer)
         sources = overview->subjectPaths();
     else if (!m_window.currentPath().isEmpty())
         sources << m_window.currentPath();
@@ -471,13 +625,17 @@ void WindowEditing::showExport() {
     auto* dlg = new ExportDialog(sources, &m_window);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
     dlg->setWindowModality(Qt::WindowModal);
+    if (!crop.isEmpty() && m_crop)
+        dlg->setCrop(crop);
     m_exportDialog = dlg;
     QPointer<WindowEditing> self(this);
     connect(dlg, &QDialog::accepted, this, [self, dlg] {
         if (!self)
             return;
         const exporting::Options o = dlg->options();
-        ExportDialog::saveOptions(o);
+        ExportDialog::saveOptions(o); // without the crop (not a setting)
+        if (!o.crop.isEmpty())
+            self->cancelCrop(); // the cropped copy is on its way
         self->runExport(dlg->sources(), o);
     });
     dlg->open();

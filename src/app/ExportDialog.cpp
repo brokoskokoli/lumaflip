@@ -122,13 +122,24 @@ ExportDialog::ExportDialog(const QStringList& sources, QWidget* parent)
     setOptions(optionsFromSettings());
 }
 
+void ExportDialog::setCrop(const QRectF& crop) {
+    m_crop = crop;
+    retranslateUi();
+}
+
 void ExportDialog::retranslateUi() {
-    setWindowTitle(tr("Exportieren"));
-    m_header->setText(m_sources.size() == 1
-                          ? tr("„%1“ als neue Datei exportieren. Das Original bleibt unverändert.")
-                                .arg(QFileInfo(m_sources.first()).fileName())
-                          : tr("%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.",
-                               nullptr, int(m_sources.size())));
+    setWindowTitle(m_crop.isEmpty() ? tr("Exportieren") : tr("Zugeschnitten exportieren"));
+    if (!m_crop.isEmpty() && m_sources.size() == 1)
+        m_header->setText(tr("Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt "
+                             "unverändert.")
+                              .arg(QFileInfo(m_sources.first()).fileName()));
+    else
+        m_header->setText(
+            m_sources.size() == 1
+                ? tr("„%1“ als neue Datei exportieren. Das Original bleibt unverändert.")
+                      .arg(QFileInfo(m_sources.first()).fileName())
+                : tr("%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.", nullptr,
+                     int(m_sources.size())));
     const QStringList labels{tr("Format:"),   tr("Qualität:"), tr("Maximale Größe:"), tr("Metadaten:"),
                              tr("Farbraum:"), tr("HDR:"),      tr("Dateiname:"),      tr("Zielordner:")};
     for (int i = 0; i < m_labels.size() && i < labels.size(); ++i)
@@ -175,6 +186,7 @@ exporting::Options ExportDialog::options() const {
     o.hdr = exporting::hdrModeFromId(m_hdr->currentData().toString());
     o.pattern = m_pattern->text();
     o.folder = m_nextToSource->isChecked() ? QString() : m_folder->text().trimmed();
+    o.crop = m_crop;
     return o;
 }
 
@@ -261,6 +273,10 @@ ExportRunner::ExportRunner(QWidget* window, TrashService* trash, QStringList sou
     : QObject(window), m_window(window), m_trash(trash), m_sources(std::move(sources)),
       m_options(std::move(options)), m_done(std::move(done)) {
     setObjectName(QStringLiteral("lfExportRunner"));
+}
+
+ExportRunner::~ExportRunner() {
+    m_cancel->store(true);
 }
 
 void ExportRunner::start() {

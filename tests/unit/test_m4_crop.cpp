@@ -18,6 +18,12 @@
 #include <QTemporaryDir>
 #include <gtest/gtest.h>
 
+#include <cmath>
+
+#if LF_TEST_HAVE_TURBOJPEG
+#include <turbojpeg.h>
+#endif
+
 #ifdef Q_OS_UNIX
 #include <sys/stat.h>
 #include <unistd.h>
@@ -439,4 +445,259 @@ TEST(Crop, F_EDIT_03_RefusedForMembersMissingAndWholeImage) {
     const CropPlan whole = planCropSave(r);
     EXPECT_EQ(whole.status, CropPlan::Refused);
     EXPECT_FALSE(whole.message.isEmpty());
+}
+
+// ---- review M4: metadata of the cut-away part, more JPEG layouts, orientation pixels ----
+
+namespace {
+
+QByteArray irbBlock(quint16 id, const QByteArray& data) {
+    QByteArray b("8BIM");
+    b.append(char(id >> 8)).append(char(id & 0xFF));
+    b.append(char(0)).append(char(0)); // empty Pascal name, padded to an even length
+    const quint32 n = quint32(data.size());
+    for (int k = 3; k >= 0; --k)
+        b.append(char((n >> (8 * k)) & 0xFF));
+    b.append(data);
+    if (data.size() % 2)
+        b.append(char(0));
+    return b;
+}
+
+// EXIF with an IFD1 thumbnail that holds `thumbnail`.
+QByteArray exifWithThumbnail(QSize pixels, const QByteArray& thumbnail) {
+    TiffWriter t(false);
+    QVector<qint64> pos0;
+    const qint64 ifd0 = t.writeIfd({t.shortEntry(0x0112, {1}), t.longEntry(0x8769, 0)}, &pos0, 0);
+    const qint64 exif = t.writeIfd(
+        {t.longEntry(0xA002, quint32(pixels.width())), t.longEntry(0xA003, quint32(pixels.height()))});
+    t.patch32(pos0[1], quint32(exif));
+    const qint64 thumb = t.append(thumbnail);
+    const qint64 ifd1 =
+        t.writeIfd({t.longEntry(0x0201, quint32(thumb)), t.longEntry(0x0202, quint32(thumbnail.size()))});
+    t.patch32(ifd0 + 2 + 2 * 12, quint32(ifd1));
+    return t.bytes();
+}
+
+double meanDifference(const QImage& a, const QImage& b) {
+    if (a.size() != b.size() || a.isNull())
+        return 1e9;
+    const QImage x = a.convertToFormat(QImage::Format_RGB32), y = b.convertToFormat(QImage::Format_RGB32);
+    double sum = 0;
+    for (int j = 0; j < x.height(); ++j)
+        for (int i = 0; i < x.width(); ++i) {
+            const QRgb p = x.pixel(i, j), q = y.pixel(i, j);
+            sum +=
+                std::abs(qRed(p) - qRed(q)) + std::abs(qGreen(p) - qGreen(q)) + std::abs(qBlue(p) - qBlue(q));
+        }
+    return sum / (3.0 * x.width() * x.height());
+}
+
+} // namespace
+
+// Privacy: the thumbnails would still show what was cut away - their bytes are gone after
+// the lossless crop (EXIF IFD1 and Photoshop IRB), other IRB resources stay, and the XMP
+// pixel dimensions follow the crop like the EXIF ones.
+TEST(Crop, F_EDIT_03_ThumbnailsRemovedAndXmpDimensionsUpdated) {
+    if (!jpeg::dctTransformAvailable())
+        GTEST_SKIP() << "libjpeg-turbo not linked";
+    QTemporaryDir dir;
+    const QString path = dir.filePath("thumbs.jpg");
+    const QImage img = noisyPattern(QSize(160, 120));
+    const QByteArray exifThumb = "\xFF\xD8 EXIF-THUMBNAIL-SECRET \xFF\xD9";
+    const QByteArray irb = QByteArray("Photoshop 3.0\0", 14) + irbBlock(0x0404, "IPTC-KEEP-ME") +
+                           irbBlock(0x040C, "IRB-THUMBNAIL-SECRET") + irbBlock(0x0409, "OLD-IRB-THUMB");
+    const QByteArray xmp = "<x:xmpmeta xmlns:x=\"adobe:ns:meta/\"><rdf:RDF><rdf:Description "
+                           "exif:PixelXDimension=\"160\" exif:PixelYDimension='120'>"
+                           "<tiff:ImageWidth>160</tiff:ImageWidth><tiff:ImageLength> 120 </tiff:ImageLength>"
+                           "</rdf:Description></rdf:RDF></x:xmpmeta>";
+    const QByteArray original =
+        withSegments(encodeJpeg(img), exifApp1(exifWithThumbnail(img.size(), exifThumb)) +
+                                          jpegSegment(0xED, irb) + xmpApp1(xmp));
+    ASSERT_TRUE(writeBytes(path, original));
+    ASSERT_TRUE(original.contains("EXIF-THUMBNAIL-SECRET"));
+
+    CropRequest r;
+    r.path = path;
+    r.rect = QRect(32, 16, 64, 48);
+    const CropPlan plan = planCropSave(r);
+    ASSERT_EQ(plan.status, CropPlan::Ready) << plan.message.toStdString();
+    ASSERT_EQ(plan.method, CropMethod::JpegLossless);
+    ASSERT_EQ(executeCropSave(r, plan, plan.method), QString());
+    const QByteArray after = readBytes(path);
+    EXPECT_FALSE(after.contains("EXIF-THUMBNAIL-SECRET"));
+    EXPECT_FALSE(after.contains("IRB-THUMBNAIL-SECRET"));
+    EXPECT_FALSE(after.contains("OLD-IRB-THUMB"));
+    EXPECT_TRUE(after.contains("IPTC-KEEP-ME"));
+    EXPECT_EQ(nextIfdOfIfd0(after), 0u);
+    EXPECT_EQ(jpeg::exifPixelDimensions(after), QSize(64, 48));
+    const QByteArray x = segmentPayload(after, 0xE1, "http://ns.adobe.com/xap/1.0/");
+    EXPECT_TRUE(x.contains("exif:PixelXDimension=\"64\"")) << x.toStdString();
+    EXPECT_TRUE(x.contains("exif:PixelYDimension='48'")) << x.toStdString();
+    EXPECT_TRUE(x.contains("<tiff:ImageWidth>64</tiff:ImageWidth>")) << x.toStdString();
+    EXPECT_TRUE(x.contains("<tiff:ImageLength> 48 </tiff:ImageLength>")) << x.toStdString();
+    EXPECT_EQ(jpeg::decodePixels(after, true), jpeg::decodePixels(original, true).copy(plan.storedRect));
+
+    // The helpers on their own: nothing to remove is reported as such.
+    QByteArray plain = encodeJpeg(img);
+    EXPECT_FALSE(jpeg::removeExifThumbnail(plain));
+    EXPECT_EQ(jpeg::removeIrbThumbnails(plain), 0);
+    EXPECT_EQ(plain, encodeJpeg(img));
+}
+
+#if LF_TEST_HAVE_TURBOJPEG
+namespace {
+QByteArray encodeTurbo(const QImage& img, int subsamp, bool progressive, int restartRows) {
+    tjhandle h = tj3Init(TJINIT_COMPRESS);
+    if (!h)
+        return {};
+    tj3Set(h, TJPARAM_SUBSAMP, subsamp);
+    tj3Set(h, TJPARAM_QUALITY, 90);
+    tj3Set(h, TJPARAM_PROGRESSIVE, progressive ? 1 : 0);
+    if (restartRows > 0)
+        tj3Set(h, TJPARAM_RESTARTROWS, restartRows);
+    const QImage rgb = img.convertToFormat(QImage::Format_RGB888);
+    unsigned char* buf = nullptr;
+    size_t size = 0;
+    QByteArray out;
+    if (tj3Compress8(h, rgb.constBits(), rgb.width(), int(rgb.bytesPerLine()), rgb.height(), TJPF_RGB, &buf,
+                     &size) == 0)
+        out = QByteArray(reinterpret_cast<const char*>(buf), qsizetype(size));
+    tj3Free(buf);
+    tj3Destroy(h);
+    return out;
+}
+} // namespace
+
+// The lossless crop beyond 4:2:0 baseline: 4:4:4, 4:2:2, progressive scans, restart markers,
+// and selections that end at a right/bottom edge which is not a multiple of the block size.
+TEST(Crop, F_EDIT_03_LosslessCropSubsamplingProgressiveRestartAndEdges) {
+    if (!jpeg::dctTransformAvailable())
+        GTEST_SKIP() << "libjpeg-turbo not linked";
+    struct Variant {
+        const char* name;
+        int subsamp;
+        bool progressive;
+        int restartRows;
+        QSize mcu;
+    };
+    const Variant variants[] = {{"444", TJSAMP_444, false, 0, QSize(8, 8)},
+                                {"422", TJSAMP_422, false, 0, QSize(16, 8)},
+                                {"420-progressive", TJSAMP_420, true, 0, QSize(16, 16)},
+                                {"420-restart", TJSAMP_420, false, 1, QSize(16, 16)},
+                                {"422-progressive-restart", TJSAMP_422, true, 2, QSize(16, 8)}};
+    const QSize size(203, 157); // neither a multiple of 8 nor of 16
+    const QRect rects[] = {QRect(21, 13, 77, 59), QRect(150, 100, 53, 57), // up to the right and bottom edge
+                           QRect(0, 141, 203, 16)};                        // the partial bottom block row
+    QTemporaryDir dir;
+    int n = 0;
+    for (const Variant& v : variants) {
+        const QImage img = noisyPattern(size, quint32(++n));
+        const QByteArray original = encodeTurbo(img, v.subsamp, v.progressive, v.restartRows);
+        ASSERT_FALSE(original.isEmpty()) << v.name;
+        ASSERT_EQ(jpeg::mcuSize(original), v.mcu) << v.name;
+        for (const QRect& rect : rects) {
+            const QString path =
+                dir.filePath(QStringLiteral("%1-%2.jpg").arg(QLatin1String(v.name)).arg(n++));
+            ASSERT_TRUE(writeBytes(path, original));
+            CropRequest r;
+            r.path = path;
+            r.rect = rect;
+            const CropPlan plan = planCropSave(r);
+            ASSERT_EQ(plan.status, CropPlan::Ready) << v.name << " " << plan.message.toStdString();
+            ASSERT_EQ(plan.method, CropMethod::JpegLossless) << v.name;
+            EXPECT_EQ(plan.storedRect.right(), rect.right()) << v.name; // right/bottom edges stay
+            EXPECT_EQ(plan.storedRect.bottom(), rect.bottom()) << v.name;
+            ASSERT_EQ(executeCropSave(r, plan, plan.method), QString()) << v.name;
+            const QByteArray after = readBytes(path);
+            EXPECT_EQ(jpeg::frameSize(after), plan.storedRect.size()) << v.name;
+            EXPECT_EQ(jpeg::decodePixels(after, true),
+                      jpeg::decodePixels(original, true).copy(plan.storedRect))
+                << v.name << " " << rect.x() << "," << rect.y();
+        }
+    }
+}
+#endif
+
+// With an EXIF orientation the saved crop shows exactly the selected displayed pixels (the
+// decoder applies the orientation; compared by content, not only by size).
+TEST(Crop, F_EDIT_03_OrientedCropShowsTheSelectedPixels) {
+    if (!jpeg::dctTransformAvailable())
+        GTEST_SKIP() << "libjpeg-turbo not linked";
+    QTemporaryDir dir;
+    for (int o : {3, 5, 6, 8}) {
+        const QString path = dir.filePath(QStringLiteral("o%1.jpg").arg(o));
+        const QImage img = noisyPattern(QSize(128, 96), quint32(40 + o));
+        const QByteArray original = withSegments(encodeJpeg(img, 95), exifApp1(exifWith(o, img.size())));
+        ASSERT_TRUE(writeBytes(path, original));
+        QString error;
+        const auto before = DecoderRegistry::instance().decode(path, DecodeRequest{}, &error);
+        ASSERT_TRUE(before) << error.toStdString();
+        CropRequest r;
+        r.path = path;
+        r.rect = QRect(16, 32, 48, 40); // displayed pixels (snapped where needed: plan.displayRect)
+        const CropPlan plan = planCropSave(r);
+        ASSERT_EQ(plan.status, CropPlan::Ready) << plan.message.toStdString();
+        ASSERT_EQ(executeCropSave(r, plan, plan.method), QString());
+        const auto after = DecoderRegistry::instance().decode(path, DecodeRequest{}, &error);
+        ASSERT_TRUE(after) << error.toStdString();
+        const QImage expected = before->image.copy(plan.displayRect);
+        ASSERT_EQ(after->image.size(), expected.size()) << "orientation " << o;
+        // Same pixels up to chroma upsampling at the new edges; a mirrored selection is far off.
+        EXPECT_LT(meanDifference(after->image, expected), 4.0) << "orientation " << o;
+        EXPECT_GT(meanDifference(after->image, expected.flipped(Qt::Horizontal)), 20.0)
+            << "orientation " << o;
+    }
+}
+
+// "Speichern unter" replaces an existing file only with the user's consent; a file that
+// appears after planning is never replaced.
+TEST(Crop, F_EDIT_03_SaveAsReplacesOnlyWhenAgreed) {
+    QTemporaryDir dir;
+    const QString src = dir.filePath("src.png");
+    ASSERT_TRUE(noisyPattern(QSize(60, 40)).save(src, "PNG"));
+    CropRequest r;
+    r.path = src;
+    r.rect = QRect(5, 5, 20, 10);
+    r.saveAs = dir.filePath("taken.png");
+    ASSERT_TRUE(writeBytes(r.saveAs, "old"));
+    CropPlan plan = planCropSave(r);
+    EXPECT_EQ(plan.status, CropPlan::Refused);
+    EXPECT_TRUE(plan.message.contains(QStringLiteral("taken.png")));
+    EXPECT_EQ(readBytes(r.saveAs), QByteArray("old"));
+    r.replaceExisting = true;
+    plan = planCropSave(r);
+    ASSERT_EQ(plan.status, CropPlan::Ready) << plan.message.toStdString();
+    ASSERT_EQ(executeCropSave(r, plan, plan.method), QString());
+    EXPECT_EQ(QImage(r.saveAs).size(), QSize(20, 10));
+
+    r.replaceExisting = false;
+    r.saveAs = dir.filePath("late.png");
+    plan = planCropSave(r);
+    ASSERT_EQ(plan.status, CropPlan::Ready) << plan.message.toStdString();
+    ASSERT_TRUE(writeBytes(r.saveAs, "late"));
+    EXPECT_FALSE(executeCropSave(r, plan, plan.method).isEmpty());
+    EXPECT_EQ(readBytes(r.saveAs), QByteArray("late"));
+}
+
+// What cannot be cropped in place is offered as a cropped export (and says so), never as a
+// question that would end in an error.
+TEST(Crop, F_EDIT_03_RefusalsOfferTheCroppedExport) {
+    QTemporaryDir dir;
+    CropRequest r;
+    r.rect = QRect(0, 0, 10, 10);
+    r.path = dir.filePath("comics.cbz#/001.jpg");
+    CropPlan plan = planCropSave(r);
+    EXPECT_EQ(plan.status, CropPlan::Refused);
+    EXPECT_TRUE(plan.exportInstead);
+    const QString raw = dir.filePath("camera.cr2");
+    ASSERT_TRUE(writeBytes(raw, encodeJpeg(noisyPattern(QSize(40, 30)))));
+    r.path = raw;
+    plan = planCropSave(r);
+    EXPECT_EQ(plan.status, CropPlan::Refused);
+    EXPECT_TRUE(plan.exportInstead) << plan.message.toStdString();
+    r.path = dir.filePath("missing.jpg");
+    EXPECT_FALSE(planCropSave(r).exportInstead);
+    EXPECT_TRUE(platform::canEncodeType(QStringLiteral("public.png")));
+    EXPECT_FALSE(platform::canEncodeType(QStringLiteral("generic.no-such-format")));
 }
