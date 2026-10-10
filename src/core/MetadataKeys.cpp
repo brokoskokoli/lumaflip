@@ -41,6 +41,8 @@ constexpr Label kRows[] = {
     {"camera.make", QT_TRANSLATE_NOOP("lf::Metadata", "Hersteller")},
     {"camera.model", QT_TRANSLATE_NOOP("lf::Metadata", "Modell")},
     {"camera.lens", QT_TRANSLATE_NOOP("lf::Metadata", "Objektiv")},
+    // the date first (fixed order of the info panel since M2)
+    {"shot.captured", QT_TRANSLATE_NOOP("lf::Metadata", "Aufnahmedatum")},
     {"shot.focalLength", QT_TRANSLATE_NOOP("lf::Metadata", "Brennweite")},
     //: aperture (f-number)
     {"shot.aperture", QT_TRANSLATE_NOOP("lf::Metadata", "Blende")},
@@ -48,7 +50,6 @@ constexpr Label kRows[] = {
     {"shot.iso", QT_TRANSLATE_NOOP("lf::Metadata", "ISO")},
     {"shot.exposureBias", QT_TRANSLATE_NOOP("lf::Metadata", "Belichtungskorrektur")},
     {"shot.flash", QT_TRANSLATE_NOOP("lf::Metadata", "Blitz")},
-    {"shot.captured", QT_TRANSLATE_NOOP("lf::Metadata", "Aufnahmedatum")},
     //: GPS latitude
     {"gps.latitude", QT_TRANSLATE_NOOP("lf::Metadata", "Breite")},
     //: GPS longitude
