@@ -90,7 +90,7 @@ const Registry& registry() {
         s(key::LoupeZoom, "200", {"100", "200"});
         i(key::GridThumbSize, 160, 80, 400);         // F-GRID-02
         s(key::CoupleBy, "name", {"name", "index"}); // F-WIN-07
-        b(key::HdrEnabled, true); // F-COL-04
+        b(key::HdrEnabled, true);                    // F-COL-04
         s(key::WrapMode, "stop", {"stop", "wrap", "nextFolder"});
         b(key::FollowFinder, true);
         b(key::FinderLiveQuery, false);

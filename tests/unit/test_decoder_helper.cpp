@@ -282,28 +282,61 @@ TEST(DecoderHelper, SharedMemoryIsRemovedInEveryCase) {
     DecoderHelperPool pool(helperOptions());
     ipc::Request r = op(ipc::Op::Decode, corpusFile(QStringLiteral("rgba8.png")));
     r.backend = QStringLiteral("Qt");
-    // 1. Mapped by the app: gone right away.
+    // 1. Mapped by the pool while it holds the helper: the name is gone, the image valid.
     qint64 pid = 0;
     auto resp = pool.call(r, 10000, nullptr, nullptr, &pid);
     ASSERT_TRUE(resp && resp->ok);
-    const QByteArray first = ipc::shmName(pid, resp->id);
-    EXPECT_TRUE(ipc::sharedExists(first));
-    QString error;
-    EXPECT_FALSE(ipc::readSharedImage(first, resp->pixels, &error).isNull());
-    EXPECT_FALSE(ipc::sharedExists(first));
-    // 2. Never picked up: the helper removes it with the next request.
-    resp = pool.call(r, 10000, nullptr, nullptr, &pid);
-    ASSERT_TRUE(resp && resp->ok);
-    const QByteArray second = ipc::shmName(pid, resp->id);
-    EXPECT_TRUE(ipc::sharedExists(second));
-    ASSERT_TRUE(pool.call(op(ipc::Op::Ping), 10000).has_value());
-    EXPECT_FALSE(ipc::sharedExists(second));
-    // 3. Helper crashes after writing the pixels: the app removes the name it computed.
+    EXPECT_FALSE(resp->image.isNull());
+    EXPECT_EQ(resp->image.size(), QSize(64, 48));
+    EXPECT_FALSE(ipc::sharedExists(ipc::shmName(pid, resp->id)));
+    // 2. Helper crashes after writing the pixels: the app removes the name it computed.
     r.path = QDir::temp().filePath(QStringLiteral("x.lfcrash"));
     resp = pool.call(r, 10000, nullptr, nullptr, &pid);
     EXPECT_FALSE(resp.has_value());
     for (quint32 id = 1; id < 10; ++id)
         EXPECT_FALSE(ipc::sharedExists(ipc::shmName(pid, id)));
+}
+
+// The helper's request loop (in process, over pipes): an image the app never picked up is
+// removed when the next request arrives, and when the app closes the pipe.
+TEST(DecoderHelper, HelperRemovesUnclaimedSharedMemory) {
+    LF_REQUIRE_CORPUS();
+    int toHelper[2], fromHelper[2];
+    ASSERT_EQ(pipe(toHelper), 0);
+    ASSERT_EQ(pipe(fromHelper), 0);
+    const QList<std::shared_ptr<Decoder>> backends = {std::make_shared<QtImageDecoder>()};
+    int exitCode = -1;
+    std::thread loop(
+        [&] { exitCode = runDecoderHelper(toHelper[0], fromHelper[1], backends, false, false); });
+    ipc::Request r = op(ipc::Op::Decode, corpusFile(QStringLiteral("rgba8.png")));
+    r.backend = QStringLiteral("Qt");
+    auto roundTrip = [&](ipc::Request req) {
+        EXPECT_EQ(ipc::writeFrame(toHelper[1], ipc::encode(req)), ipc::IoStatus::Ok);
+        QByteArray payload;
+        EXPECT_EQ(ipc::readFrame(fromHelper[0], &payload, 10000), ipc::IoStatus::Ok);
+        return ipc::decodeResponse(payload);
+    };
+    r.id = 4711;
+    auto resp = roundTrip(r);
+    ASSERT_TRUE(resp && resp->ok);
+    const QByteArray first = ipc::shmName(getpid(), 4711);
+    EXPECT_TRUE(ipc::sharedExists(first)); // not mapped by anyone
+    ipc::Request ping = op(ipc::Op::Ping);
+    ping.id = 4712;
+    ASSERT_TRUE(roundTrip(ping).has_value());
+    EXPECT_FALSE(ipc::sharedExists(first));
+    r.id = 4713;
+    resp = roundTrip(r);
+    ASSERT_TRUE(resp && resp->ok);
+    const QByteArray second = ipc::shmName(getpid(), 4713);
+    EXPECT_TRUE(ipc::sharedExists(second));
+    close(toHelper[1]); // app gone
+    loop.join();
+    EXPECT_EQ(exitCode, 0);
+    EXPECT_FALSE(ipc::sharedExists(second));
+    close(toHelper[0]);
+    close(fromHelper[0]);
+    close(fromHelper[1]);
 }
 
 TEST(DecoderHelper, F_FMT_02_CrashGivesErrorCardAndRestarts) {

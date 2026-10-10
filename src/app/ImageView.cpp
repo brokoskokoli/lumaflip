@@ -13,11 +13,13 @@
 #include <QKeyEvent>
 #include <QLabel>
 #include <QMouseEvent>
+#include <QMoveEvent>
 #include <QNativeGestureEvent>
 #include <QPaintEvent>
 #include <QPainter>
 #include <QPointer>
 #include <QPushButton>
+#include <QResizeEvent>
 #include <QStyleHints>
 #include <QTimer>
 #include <QVBoxLayout>
@@ -425,10 +427,19 @@ struct ImageView::Private {
         }
         case QEvent::Show:
         case QEvent::Hide:
-        case QEvent::Move:
-        case QEvent::Resize:
-            markOverlayDirty(q->rect()); // old and new place
+            markOverlayDirty(QRect(w->mapTo(q, QPoint(0, 0)), w->size()));
             break;
+        case QEvent::Move: { // old and new place only (a loupe follows the mouse)
+            const QRect now(w->mapTo(q, QPoint(0, 0)), w->size());
+            const auto* me = static_cast<QMoveEvent*>(event);
+            markOverlayDirty(now.united(now.translated(me->oldPos() - me->pos())));
+            break;
+        }
+        case QEvent::Resize: {
+            const QRect now(w->mapTo(q, QPoint(0, 0)), w->size());
+            markOverlayDirty(now.united(QRect(now.topLeft(), static_cast<QResizeEvent*>(event)->oldSize())));
+            break;
+        }
         case QEvent::ChildAdded:
             if (auto* c = static_cast<QChildEvent*>(event)->child(); c && c->isWidgetType())
                 watchOverlays(static_cast<QWidget*>(c));

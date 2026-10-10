@@ -44,7 +44,7 @@ inline constexpr auto LoupeSize = "view/loupeSize";     // "small" | "medium" | 
 inline constexpr auto LoupeZoom = "view/loupeZoom";     // "100" | "200" (percent), default "200"
 inline constexpr auto GridThumbSize = "view/gridThumb"; // 80..400 logical px, default 160
 inline constexpr auto CoupleBy = "window/coupleBy";     // "name" | "index", default "name"
-inline constexpr auto HdrEnabled = "view/hdr"; // bool, default true (F-COL-04 HDR toggle)
+inline constexpr auto HdrEnabled = "view/hdr";          // bool, default true (F-COL-04 HDR toggle)
 // Navigation & sorting
 inline constexpr auto WrapMode = "nav/wrap";               // "stop" | "wrap" | "nextFolder"
 inline constexpr auto FollowFinder = "sort/followFinder";  // bool, default true

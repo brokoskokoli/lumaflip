@@ -74,6 +74,9 @@ struct Response {
     PixelHeader pixels;
     // Metadata
     Metadata metadata;
+    // Decode, app side only (not serialized): the pixels, mapped by DecoderHelperPool::call()
+    // while it still holds the helper (its next request would remove the shared memory).
+    QImage image;
 };
 
 QByteArray encode(const Request& r);

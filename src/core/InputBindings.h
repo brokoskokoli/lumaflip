@@ -95,11 +95,11 @@ enum class Action {
     ToggleAlwaysOnTop,   // F-VIEW-12
     ToggleMinimalWindow, // F-VIEW-13
     CoupleWindows,       // F-WIN-07
-    ToggleHdr,         // F-COL-04: HDR <-> SDR preview
-    ExposureIncrease,  // F-COL-05: +1/3 EV (display only)
-    ExposureDecrease,  // F-COL-05: -1/3 EV
-    ExposureReset,     // F-COL-05: 0 EV
-    ToggleExposureHud, // F-COL-05: exposure slider over the image
+    ToggleHdr,           // F-COL-04: HDR <-> SDR preview
+    ExposureIncrease,    // F-COL-05: +1/3 EV (display only)
+    ExposureDecrease,    // F-COL-05: -1/3 EV
+    ExposureReset,       // F-COL-05: 0 EV
+    ToggleExposureHud,   // F-COL-05: exposure slider over the image
 };
 
 QString actionId(Action a); // stable string id for settings ("nextImage")

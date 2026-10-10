@@ -283,6 +283,15 @@ std::optional<ipc::Response> DecoderHelperPool::call(ipc::Request request, int t
         qCWarning(lcHelper) << "helper" << pid << "died:" << request.path;
         return fail(Failure::Crashed, messageDecoderCrashed());
     }
+    if (request.op == ipc::Op::Decode && response->ok) {
+        // Map before the helper is released: its next request removes the object.
+        QString mapError;
+        response->image = ipc::readSharedImage(shm, response->pixels, &mapError);
+        if (response->image.isNull()) {
+            response->ok = false;
+            response->error = mapError;
+        }
+    }
     release();
     return response;
 }
@@ -339,8 +348,7 @@ std::optional<DecodedImage> RemoteDecoder::decode(const QString& path, const Dec
     r.backend = m_local->name();
     r.path = path;
     r.decode = req;
-    qint64 pid = 0;
-    auto resp = m_pool->call(r, m_pool->options().decodeTimeoutMs, nullptr, error, &pid);
+    auto resp = m_pool->call(r, m_pool->options().decodeTimeoutMs, nullptr, error);
     if (!resp)
         return std::nullopt;
     if (!resp->ok) {
@@ -349,9 +357,7 @@ std::optional<DecodedImage> RemoteDecoder::decode(const QString& path, const Dec
         return std::nullopt;
     }
     DecodedImage out = resp->decoded;
-    out.image = ipc::readSharedImage(ipc::shmName(pid, resp->id), resp->pixels, error);
-    if (out.image.isNull())
-        return std::nullopt;
+    out.image = std::move(resp->image);
     return out;
 }
 

@@ -45,8 +45,9 @@ public:
     DecoderHelperPool& operator=(const DecoderHelperPool&) = delete;
 
     // Sends `request` (its id is assigned here) to an idle helper and waits for the answer.
-    // On failure `*failure`/`*error` say why (error texts are user facing). Any shared
-    // memory object of the request is removed when the call fails.
+    // On failure `*failure`/`*error` say why (error texts are user facing). Decoded pixels
+    // are mapped into Response::image (and their shared memory name removed) before the
+    // helper takes the next request; on failure the name is removed as well.
     std::optional<ipc::Response> call(ipc::Request request, int timeoutMs, Failure* failure = nullptr,
                                       QString* error = nullptr, qint64* helperPid = nullptr);
 
