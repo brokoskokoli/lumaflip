@@ -294,7 +294,7 @@ private slots:
         second->openPaths({path("b.png")});
         QVERIFY(QTest::qWaitForWindowExposed(second, 5000));
         QVERIFY(second->panels()->infoPanelShown()); // new windows start like the last one
-        // The settings window offers both panels (no longer "ab Version 1.0").
+        // The settings window offers both panels (no longer "in einer späteren Version").
         app->showPreferences();
         PreferencesDialog* prefs = PreferencesDialog::existingInstance();
         QVERIFY(prefs);

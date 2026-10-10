@@ -13,6 +13,7 @@
 #include "core/LosslessTransform.h"
 #include "core/Settings.h"
 #include "core/ThumbnailCache.h"
+#include "core/UndoBackupStore.h"
 
 #include <QDir>
 #include <QFileInfo>
@@ -23,7 +24,6 @@
 #include <QPushButton>
 #include <QRandomGenerator>
 #include <QStatusBar>
-#include <QTemporaryDir>
 #include <QtConcurrent/QtConcurrentRun>
 
 #include <memory>
@@ -318,16 +318,6 @@ void ViewerWindow::stopSlideshow() {
 // Saving the rotation (F-EDIT-02)
 // ---------------------------------------------------------------------------------------
 
-namespace {
-
-// Backup copies of one saved rotation for undo/redo; removed with the undo command.
-struct RotationUndoFiles {
-    QTemporaryDir dir{QDir::tempPath() + QStringLiteral("/Lumaflip-undo-XXXXXX")};
-    QString before, after;
-};
-
-} // namespace
-
 void ViewerWindow::saveRotation() {
     const QString path = currentPath();
     if (path.isEmpty() || m_shownFailed || m_rotationSaving)
@@ -349,40 +339,28 @@ void ViewerWindow::saveRotation() {
     m_rotationSaving = true;
     QPointer<ViewerWindow> self(this);
 
-    // Carries out `method` through FileOps (undoable); backups live in a temporary folder.
+    // Carries out `method` through FileOps (undoable). RotationEdit keeps the undo backups
+    // (UndoBackupStore: byte budget, clones) and refuses undo/redo after outside changes.
     auto commit = [self, r](const RotationPlan& plan, RotationMethod method) {
         if (!self)
             return;
-        auto files = std::make_shared<RotationUndoFiles>();
-        if (!files->dir.isValid()) {
-            self->m_rotationSaving = false;
-            self->showMessage(tr("Kein Platz für die Sicherungskopie – nichts gespeichert."), 4000);
-            return;
-        }
-        const QString suffix = QFileInfo(r.path).suffix();
-        files->before = files->dir.filePath(QStringLiteral("before.") + suffix);
-        files->after = files->dir.filePath(QStringLiteral("after.") + suffix);
-        FileOps::FileWork apply = [files, r, plan, method]() -> QString {
-            if (QFileInfo::exists(files->after))
-                return restoreFileFrom(files->after, r.path); // redo
-            QString error;
-            if (!platform::copyWithMetadata(r.path, files->before, &error))
-                return error;
-            const QString e = executeRotationSave(r, plan, method);
-            if (!e.isEmpty()) {
-                QFile::remove(files->before);
-                return e;
-            }
-            platform::copyWithMetadata(r.path, files->after, &error); // for redo
-            return {};
-        };
-        FileOps::FileWork revert = [files, r]() -> QString { return restoreFileFrom(files->before, r.path); };
+        auto edit = std::make_shared<RotationEdit>(r, plan, method, UndoBackupStore::shared());
+        FileOps::FileWork apply = [edit] { return edit->apply(); };
+        FileOps::FileWork revert = [edit] { return edit->revert(); };
+        const QString notice = plan.notice;
         self->m_app.fileOps().modifyAsync(
-            r.path, tr("Drehung speichern"), apply, revert, [self, method](bool ok, const QString& error) {
+            r.path, tr("Drehung speichern"), apply, revert,
+            [self, method, notice](bool ok, const QString& error) {
                 if (!self)
                     return;
                 self->m_rotationSaving = false;
-                self->showMessage(ok ? describeRotationMethod(method) : error, ok ? 1800 : 5000);
+                if (!ok) {
+                    self->showMessage(error, 5000);
+                    return;
+                }
+                const QString text = describeRotationMethod(method);
+                self->showMessage(notice.isEmpty() ? text : text + QStringLiteral(" – ") + notice,
+                                  notice.isEmpty() ? 1800 : 6000);
             });
     };
 

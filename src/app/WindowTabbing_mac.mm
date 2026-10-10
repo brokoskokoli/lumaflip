@@ -35,6 +35,10 @@ void configureViewerWindow(QWidget* window, bool allowTabs) {
         if (!w)
             return;
         w.tabbingIdentifier = kTabbingIdentifier;
+        // Tabs switched off while windows are merged: every window becomes a window of its
+        // own again (otherwise they stayed tabs with no command left to separate them).
+        if (!allowTabs && w.tabbedWindows.count > 1)
+            [w moveTabToNewWindow:nil];
         w.tabbingMode = allowTabs ? NSWindowTabbingModePreferred : NSWindowTabbingModeDisallowed;
         // Tiling and full screen need a resizable primary window (Qt's default; keep it).
         NSWindowCollectionBehavior b = w.collectionBehavior;

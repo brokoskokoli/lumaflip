@@ -3,13 +3,17 @@
 
 #include "AnimationPlayer.h"
 #include "Application.h"
+#include "DisplayText.h"
 #include "DragOut.h"
 #include "ImageView.h"
 #include "OpenWith.h"
+#include "RecentItems.h"
 #include "RenameController.h"
+#include "StartScreenRecent.h"
 #include "WindowPanels.h"
 #include "WindowTabbing.h"
 #include "core/Collection.h"
+#include "core/Decoder.h"
 #include "core/FileOps.h"
 #include "core/ImageFormats.h"
 #include "core/Platform.h"
@@ -256,8 +260,12 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     el->addWidget(m_emptyText);
     el->addSpacing(12);
     el->addWidget(open, 0, Qt::AlignHCenter);
+    m_startRecent = new StartScreenRecent(m_emptyState); // F-OPEN-12, filled when shown
+    el->addSpacing(18);
+    el->addWidget(m_startRecent, 0, Qt::AlignHCenter);
     el->addStretch();
     connect(open, &QPushButton::clicked, &m_app, &Application::showOpenDialog);
+    connect(m_startRecent, &StartScreenRecent::openRequested, this, &ViewerWindow::openRecent);
 
     m_toast = new QLabel(m_view);
     m_toast->setObjectName(QStringLiteral("lfToast"));
@@ -889,7 +897,12 @@ void ViewerWindow::updateStatus() {
     m_frameLabel->setText(frameStatusText());
     const DecodedImagePtr img = m_view->image();
     const bool showsCurrent = !cur.isEmpty() && cur == m_shownPath && !m_shownFailed && img;
-    if (showsCurrent) {
+    if (showsCurrent && isVectorFile(cur)) {
+        // SVG: the decoder renders at a working size; the image's own size is what the
+        // info panel shows too (read once per file on a worker).
+        m_pixelLabel->setText(vectorSizeText(cur));
+        m_zoomLabel->setText(QStringLiteral("%1 %").arg(qRound(m_view->zoomFactor() * 100)));
+    } else if (showsCurrent) {
         const QSize full = img->fullSize.isEmpty() ? img->image.size() : img->fullSize;
         m_pixelLabel->setText(QStringLiteral("%1 × %2").arg(full.width()).arg(full.height()));
         m_zoomLabel->setText(QStringLiteral("%1 %").arg(qRound(m_view->zoomFactor() * 100)));
@@ -899,11 +912,39 @@ void ViewerWindow::updateStatus() {
     }
     // Known once the folder is read (no file system access on the GUI thread).
     const qint64 bytes = i >= 0 ? m_collection->at(i).size : -1;
-    m_bytesLabel->setText(bytes >= 0 ? QLocale().formattedDataSize(bytes, 1, QLocale::DataSizeSIFormat)
-                                     : QString());
+    m_bytesLabel->setText(bytes >= 0 ? formatByteSize(bytes) : QString()); // German units
     m_sortLabel->setText(sortText());
     for (QLabel* l : {m_nameLabel, m_positionLabel, m_frameLabel, m_pixelLabel, m_bytesLabel, m_zoomLabel})
         l->setVisible(!l->text().isEmpty());
+}
+
+bool ViewerWindow::isVectorFile(const QString& path) {
+    const QString suffix = QFileInfo(path).suffix().toLower();
+    return suffix == QLatin1String("svg") || suffix == QLatin1String("svgz");
+}
+
+QString ViewerWindow::vectorSizeText(const QString& path) {
+    if (m_vectorSizePath == path)
+        return m_vectorSize.isEmpty()
+                   ? tr("Vektor")
+                   : tr("%1 × %2 (Vektor)").arg(m_vectorSize.width()).arg(m_vectorSize.height());
+    if (m_vectorSizeJob != path) {
+        m_vectorSizeJob = path;
+        auto* w = new QFutureWatcher<QSize>(this);
+        connect(w, &QFutureWatcher<QSize>::finished, this, [this, w, path] {
+            w->deleteLater();
+            if (m_vectorSizeJob == path)
+                m_vectorSizeJob.clear();
+            m_vectorSizePath = path;
+            m_vectorSize = w->result();
+            updateStatus();
+        });
+        w->setFuture(QtConcurrent::run([path] {
+            const auto info = DecoderRegistry::instance().info(path, nullptr);
+            return info ? info->displaySize : QSize();
+        }));
+    }
+    return tr("Vektor");
 }
 
 QString ViewerWindow::statusText() const {
@@ -928,6 +969,8 @@ void ViewerWindow::updateEmptyState() {
     // Shown with the window (setVisible): polishing the text overlay before would wait
     // for the font database, and a window opened with a file never needs it (P-01).
     m_emptyState->setVisible(empty && isVisible());
+    if (empty && isVisible())
+        m_startRecent->refresh();
     if (empty)
         layoutOverlays();
     applyStatusBarVisibility();
@@ -937,6 +980,7 @@ void ViewerWindow::updateEmptyStyle() {
     // The start screen lies on the image background (dark by default): text and the
     // "Öffnen…" button get colors with enough contrast to it.
     const bool dark = m_view->backgroundColor().lightnessF() < 0.5;
+    m_startRecent->setDark(dark);
     m_emptyText->setStyleSheet(dark ? QStringLiteral("color: rgb(200, 200, 200); font-size: 18px;")
                                     : QStringLiteral("color: rgb(70, 70, 70); font-size: 18px;"));
     const QString text = dark ? QStringLiteral("#f2f2f2") : QStringLiteral("#1c1c1c");
@@ -1134,6 +1178,8 @@ void ViewerWindow::handleInput(InputEvent ev, QPointF pos) {
 }
 
 bool ViewerWindow::perform(Action a, QPointF pos) {
+    if (m_app.intercepted(this, a))
+        return true;
     const QPointF anchor = pos.x() >= 0 ? pos : QPointF(m_view->width() / 2.0, m_view->height() / 2.0);
     const double step = std::max(16.0, m_view->height() * 0.1);
     const double page = std::max(32.0, m_view->height() * 0.9);
@@ -1511,8 +1557,29 @@ void ViewerWindow::refreshActivity() {
         updatePrefetch();
 }
 
+void ViewerWindow::openRecent(const QString& path) {
+    // F-OPEN-12: an item may be gone (deleted, volume not mounted): checked off the GUI
+    // thread; then a note here and the entry leaves the list instead of an error card.
+    QPointer<ViewerWindow> self(this);
+    Application::classifyPaths({path}, this, [self, path](const ClassifiedPaths& c) {
+        if (!self)
+            return;
+        if (!c.missing.isEmpty()) {
+            RecentItems::remove(path);
+            self->showMessage(tr("„%1“ ist nicht mehr vorhanden.").arg(QFileInfo(path).fileName()), 5000);
+            return;
+        }
+        self->m_app.openPaths({path});
+    });
+}
+
 void ViewerWindow::applySetting(const QString& k) {
     Settings& st = Settings::instance();
+    if (k == RecentItems::settingsKey()) {
+        if (m_emptyState->isVisible())
+            m_startRecent->refresh(); // F-OPEN-12
+        return;
+    }
     if (k == QLatin1String(key::Background)) {
         m_view->setBackground(st.value(key::Background).toString());
         updateEmptyStyle();

@@ -511,20 +511,20 @@ private slots:
             const int r = row(a);
             if (r < 0)
                 continue; // no key bound
-            QVERIFY2(table->item(r, 0)->text().contains(QStringLiteral("ab Version 1.0")),
+            QVERIFY2(table->item(r, 0)->text().contains(QStringLiteral("in einer späteren Version")),
                      qPrintable(actionLabel(a)));
             QVERIFY(!(table->item(r, 0)->flags() & Qt::ItemIsEnabled));
         }
         QVERIFY(row(Action::ToggleGrid) >= 0);
         const int next = row(Action::ZoomFit); // ⌘9
         QVERIFY(next >= 0);
-        QVERIFY(!table->item(next, 0)->text().contains(QStringLiteral("ab Version")));
+        QVERIFY(!table->item(next, 0)->text().contains(QStringLiteral("späteren Version")));
         QVERIFY(table->item(next, 0)->flags() & Qt::ItemIsEnabled);
         QVERIFY(next < row(Action::ToggleGrid)); // planned ones come last
         // M2: the slideshow is available now (F-SLIDE-01).
         const int show = row(Action::ToggleSlideshow);
         QVERIFY(show >= 0);
-        QVERIFY(!table->item(show, 0)->text().contains(QStringLiteral("ab Version")));
+        QVERIFY(!table->item(show, 0)->text().contains(QStringLiteral("späteren Version")));
         table->window()->close();
     }
 
@@ -541,7 +541,7 @@ private slots:
         for (int r = 0; r < list->rowCount(); ++r) {
             if (list->item(r, 0)->text() == QStringLiteral("Animiert")) {
                 found = true;
-                QVERIFY(!list->item(r, 1)->text().contains(QStringLiteral("ab Version 1.0")));
+                QVERIFY(!list->item(r, 1)->text().contains(QStringLiteral("in einer späteren Version")));
                 QVERIFY(list->item(r, 1)->text().contains(QStringLiteral("Wiedergabe")));
             }
         }

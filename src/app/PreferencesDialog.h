@@ -55,14 +55,25 @@ public:
     int conflictCount() const { return m_conflicts; }
 
 public slots:
-    bool exportSettingsTo(const QString& filePath); // F-SET-03 (shows errors)
-    bool importSettingsFrom(const QString& filePath);
+    // F-SET-03: the file is written/read on a worker thread (the GUI never waits for a slow
+    // volume); settingsTransferFinished() follows on the GUI thread, errors are shown.
+    void exportSettingsTo(const QString& filePath);
+    void importSettingsFrom(const QString& filePath);
+
+public:
+    bool isTransferRunning() const { return m_transfers > 0; }
 
 signals:
+    void settingsTransferFinished(bool ok, const QString& message);
     // "Als Standard-App festlegen" (F-MAC-04); handled by the app shell.
     void makeDefaultRequested();
 
+protected:
+    void changeEvent(QEvent* event) override;
+
 private:
+    static constexpr int kSectionIconSize = 24;
+    void updateSectionIcons();
     QWidget* buildGeneral();
     QWidget* buildWindow();
     QWidget* buildDisplay();
@@ -75,6 +86,8 @@ private:
     QWidget* buildShortcutEditor();
 
     void onSettingChanged(const QString& key);
+    void finishTransfer(bool ok, const QString& message, const QString& title, const QString& error);
+    int m_transfers = 0;
     void addRefresher(const QString& key, std::function<void()> fn);
     void refreshShortcutRow(int row);
     void applyShortcutRow(int row);

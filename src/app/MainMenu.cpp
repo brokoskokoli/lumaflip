@@ -5,6 +5,7 @@
 #include "Application.h"
 #include "ImageView.h"
 #include "MenuExtras.h"
+#include "MenuKeyEquivalents.h"
 #include "RecentItems.h"
 #include "Updater.h"
 #include "ViewerWindow.h"
@@ -366,6 +367,7 @@ void MainMenu::refreshShortcuts() {
             seqs = displayFallback(a);
         it.value()->setShortcuts(seqs);
     }
+    fixShiftedMenuKeyEquivalents(); // F-MAC-01 (MenuKeyEquivalents.h); again before every key
 }
 
 void MainMenu::refreshState() {

@@ -124,7 +124,7 @@ public:
     // yet (isChoiceAvailable) are skipped: the slot gets its default instead.
     static void applyPreset(const QString& presetId);
     // Choices of input slots that are implemented (later ones are shown disabled with
-    // "ab Version 1.0" and never set by a preset).
+    // "in einer späteren Version" and never set by a preset).
     static bool isChoiceAvailable(const QString& slotId, const QString& choiceId);
     // Actions the app can carry out (the others are planned: slideshow, info panel,
     // rating, rename …); the shortcut overview marks them.

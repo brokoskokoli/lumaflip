@@ -30,6 +30,15 @@
 #include <optional>
 #include <system_error>
 
+#include <cerrno>
+#include <cstdio>
+#include <cstring>
+#ifdef Q_OS_UNIX
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#endif
+
 namespace lf {
 
 namespace {
@@ -78,15 +87,71 @@ QString targetTakenError(const QString& source, const QString& target) {
     return {};
 }
 
-// Rename/move without overwriting (caller checked the target). Falls back to
-// copy + remove across volumes.
-QString movePath(const QString& from, const QString& to) {
+} // namespace
+
+// Test seam: runs between the "target taken?" check and the rename (simulates another
+// program creating the target in that moment). Not for production code.
+std::function<void(const QString& from, const QString& to)>& fileOpsBeforeRenameHook() {
+    static std::function<void(const QString&, const QString&)> hook;
+    return hook;
+}
+
+namespace {
+
+// Renames `from` to `to` without ever replacing an existing `to`: the check is part of the
+// rename itself (renamex_np RENAME_EXCL / renameat2 RENAME_NOREPLACE), so a file created
+// at `to` after the caller's check is not overwritten. A case-only rename on a
+// case-insensitive volume (`to` is `from`) uses a plain rename. Returns 0 or an errno.
+int renameNoReplace(const QString& from, const QString& to) {
+#ifndef Q_OS_UNIX
+    if (!sameFile(from, to) && (QFileInfo(to).exists() || QFileInfo(to).isSymLink()))
+        return EEXIST;
     std::error_code ec;
     std::filesystem::rename(fsPath(from), fsPath(to), ec);
-    if (!ec)
+    return ec ? (ec == std::errc::cross_device_link ? EXDEV : EIO) : 0;
+#else
+    const QByteArray a = QFile::encodeName(from), b = QFile::encodeName(to);
+    if (sameFile(from, to))
+        return ::rename(a.constData(), b.constData()) == 0 ? 0 : errno;
+#if defined(Q_OS_DARWIN)
+    if (::renamex_np(a.constData(), b.constData(), RENAME_EXCL) == 0)
+        return 0;
+    if (errno != ENOTSUP && errno != EINVAL)
+        return errno;
+#elif defined(Q_OS_LINUX) && defined(RENAME_NOREPLACE)
+    if (::renameat2(AT_FDCWD, a.constData(), AT_FDCWD, b.constData(), RENAME_NOREPLACE) == 0)
+        return 0;
+    if (errno != ENOSYS && errno != EINVAL)
+        return errno;
+#endif
+    // File systems without an exclusive rename: link + unlink is exclusive as well
+    // (link() fails if `to` exists); folders and volumes without hard links fall back to
+    // check + rename.
+    if (::link(a.constData(), b.constData()) == 0) {
+        ::unlink(a.constData());
+        return 0;
+    }
+    if (errno == EEXIST)
+        return EEXIST;
+    struct stat st{};
+    if (::lstat(b.constData(), &st) == 0)
+        return EEXIST;
+    return ::rename(a.constData(), b.constData()) == 0 ? 0 : errno;
+#endif
+}
+
+// Rename/move without overwriting (the caller checked the target for a friendly message;
+// the rename checks again atomically). Falls back to copy + remove across volumes.
+QString movePath(const QString& from, const QString& to) {
+    if (auto& hook = fileOpsBeforeRenameHook())
+        hook(from, to);
+    const int err = renameNoReplace(from, to);
+    if (err == 0)
         return {};
-    if (ec == std::errc::cross_device_link) {
-        if (!QFile::copy(from, to))
+    if (err == EEXIST)
+        return tr("„%1“ existiert bereits.").arg(QFileInfo(to).fileName());
+    if (err == EXDEV) {
+        if (!QFile::copy(from, to)) // never overwrites
             return tr("„%1“ konnte nicht kopiert werden.").arg(QFileInfo(from).fileName());
         if (!QFile::remove(from)) {
             QFile::remove(to);
@@ -95,7 +160,7 @@ QString movePath(const QString& from, const QString& to) {
         return {};
     }
     return tr("„%1“ konnte nicht verschoben werden: %2")
-        .arg(QFileInfo(from).fileName(), QString::fromStdString(ec.message()));
+        .arg(QFileInfo(from).fileName(), QString::fromLocal8Bit(strerror(err)));
 }
 
 QString joinPath(const QString& folder, const QString& name) {

@@ -666,8 +666,36 @@ QString flashText(int flash) {
 
 // ---- Decoder interface -------------------------------------------------------------------
 
+QString ImageIODecoder::typeByMagic(const QByteArray& header) {
+    // Formats ImageIO reads but does not recognise from the first bytes alone (DDS), and
+    // the other GPU texture containers and Radiance for robustness.
+    struct Magic {
+        qsizetype offset;
+        QByteArrayView bytes;
+        const char* type;
+    };
+    static const Magic magics[] = {
+        {0, QByteArrayView("DDS \x7c\0\0\0", 8), "com.microsoft.dds"}, // magic + header size 124
+        {0, QByteArrayView("\xabKTX 11\xbb\r\n\x1a\n", 12), "org.khronos.ktx"},
+        {0, QByteArrayView("\xabKTX 20\xbb\r\n\x1a\n", 12), "org.khronos.ktx2"},
+        {0, QByteArrayView("\x13\xab\xa1\x5c", 4), "org.khronos.astc"},
+        {0, QByteArrayView("PVR\x03", 4), "public.pvr"},
+        {0, QByteArrayView("\x03RVP", 4), "public.pvr"}, // PVR v3, other byte order
+        {44, QByteArrayView("PVR!", 4), "public.pvr"},   // PVR v2
+        {0, QByteArrayView("#?RADIANCE", 10), "public.radiance"},
+        {0, QByteArrayView("#?RGBE", 6), "public.radiance"},
+    };
+    for (const Magic& m : magics)
+        if (header.size() >= m.offset + m.bytes.size() &&
+            QByteArrayView(header).sliced(m.offset, m.bytes.size()) == m.bytes)
+            return QString::fromLatin1(m.type);
+    return {};
+}
+
 bool ImageIODecoder::canDecode(const QString& path, const QByteArray& header) const {
     @autoreleasepool {
+        if (const QString t = typeByMagic(header); !t.isEmpty())
+            return readableTypes().contains(t);
         if (!header.isEmpty()) {
             CFRef<CFDataRef> data(
                 CFDataCreateWithBytesNoCopy(nullptr, reinterpret_cast<const UInt8*>(header.constData()),
@@ -782,67 +810,62 @@ Metadata ImageIODecoder::metadata(const QString& path) {
             return md;
         const ImageInfo info = infoFromProperties(src.get(), l, l.primary, props);
 
-        QVariantMap file;
-        file.insert(QStringLiteral("Format"), info.formatName);
-        file.insert(QStringLiteral("Pixelmaße"),
+        // Rows with stable keys; groups and labels come from the table in MetadataKeys.cpp.
+        addMetadata(md, QStringLiteral("file.format"), info.formatName);
+        addMetadata(md, QStringLiteral("file.dimensions"),
                     QStringLiteral("%1 × %2").arg(info.displaySize.width()).arg(info.displaySize.height()));
         if (!info.colorModel.isEmpty())
-            file.insert(QStringLiteral("Farbraum"), info.colorModel);
+            addMetadata(md, QStringLiteral("file.colorModel"), info.colorModel);
         if (!info.profileName.isEmpty())
-            file.insert(QStringLiteral("Profil"), info.profileName);
-        file.insert(QStringLiteral("Bittiefe"), tr("%1 Bit").arg(info.bitsPerComponent));
-        file.insert(QStringLiteral("HDR"), info.isHdr ? tr("Ja") : tr("Nein"));
+            addMetadata(md, QStringLiteral("file.profile"), info.profileName);
+        addMetadata(md, QStringLiteral("file.bitDepth"), tr("%1 Bit").arg(info.bitsPerComponent));
+        addMetadata(md, QStringLiteral("file.hdr"), info.isHdr ? tr("Ja") : tr("Nein"));
         if (info.hasAlpha)
-            file.insert(QStringLiteral("Transparenz"), tr("Ja"));
+            addMetadata(md, QStringLiteral("file.alpha"), tr("Ja"));
         if (info.isAnimated)
-            file.insert(QStringLiteral("Einzelbilder"), info.frameCount);
+            addMetadata(md, QStringLiteral("file.frames"), info.frameCount);
         if (info.pageCount > 1)
-            file.insert(QStringLiteral("Seiten"), info.pageCount);
+            addMetadata(md, QStringLiteral("file.pages"), info.pageCount);
         if (info.exifOrientation != 1)
-            file.insert(QStringLiteral("Ausrichtung"), info.exifOrientation);
-        md.groups.insert(QStringLiteral("Datei"), file);
+            addMetadata(md, QStringLiteral("file.orientation"), info.exifOrientation);
 
         NSDictionary* tiff = dictValue(props, kCGImagePropertyTIFFDictionary);
         NSDictionary* exif = dictValue(props, kCGImagePropertyExifDictionary);
         NSDictionary* exifAux = dictValue(props, kCGImagePropertyExifAuxDictionary);
         NSDictionary* gps = dictValue(props, kCGImagePropertyGPSDictionary);
 
-        QVariantMap camera;
-        auto putStr = [](QVariantMap& m, const QString& key, id v) {
+        auto putStr = [&md](const char* key, id v) {
             const QString s = toQString(v).trimmed();
             if (!s.isEmpty())
-                m.insert(key, s);
+                addMetadata(md, QString::fromLatin1(key), s);
         };
-        putStr(camera, QStringLiteral("Hersteller"), value(tiff, kCGImagePropertyTIFFMake));
-        putStr(camera, QStringLiteral("Modell"), value(tiff, kCGImagePropertyTIFFModel));
+        putStr("camera.make", value(tiff, kCGImagePropertyTIFFMake));
+        putStr("camera.model", value(tiff, kCGImagePropertyTIFFModel));
         id lens = value(exif, kCGImagePropertyExifLensModel);
         if (!lens)
             lens = value(exifAux, kCGImagePropertyExifAuxLensModel);
-        putStr(camera, QStringLiteral("Objektiv"), lens);
-        if (!camera.isEmpty())
-            md.groups.insert(QStringLiteral("Kamera"), camera);
+        putStr("camera.lens", lens);
 
-        QVariantMap shot;
         if (auto f = toDouble(value(exif, kCGImagePropertyExifFocalLength)); f && *f > 0) {
             QString s = QStringLiteral("%1 mm").arg(formatNumber(*f, 1));
             if (auto f35 = toDouble(value(exif, kCGImagePropertyExifFocalLenIn35mmFilm));
                 f35 && *f35 > 0 && *f35 != *f)
                 s += QStringLiteral(" (KB: %1 mm)").arg(formatNumber(*f35, 0));
-            shot.insert(QStringLiteral("Brennweite"), s);
+            addMetadata(md, QStringLiteral("shot.focalLength"), s);
         }
         if (auto n = toDouble(value(exif, kCGImagePropertyExifFNumber)); n && *n > 0)
-            shot.insert(QStringLiteral("Blende"), QStringLiteral("f/%1").arg(formatNumber(*n, 1)));
+            addMetadata(md, QStringLiteral("shot.aperture"), QStringLiteral("f/%1").arg(formatNumber(*n, 1)));
         if (auto t = toDouble(value(exif, kCGImagePropertyExifExposureTime)); t && *t > 0)
-            shot.insert(QStringLiteral("Belichtungszeit"), formatExposure(*t));
+            addMetadata(md, QStringLiteral("shot.exposureTime"), formatExposure(*t));
         if (auto iso = toDouble(value(exif, kCGImagePropertyExifISOSpeedRatings)); iso && *iso > 0)
-            shot.insert(QStringLiteral("ISO"), QString::number(qRound(*iso)));
+            addMetadata(md, QStringLiteral("shot.iso"), QString::number(qRound(*iso)));
         if (auto ev = toDouble(value(exif, kCGImagePropertyExifExposureBiasValue)); ev) {
             const QString num = formatNumber(*ev, 1);
-            shot.insert(QStringLiteral("Belichtungskorrektur"),
+            addMetadata(md, QStringLiteral("shot.exposureBias"),
                         QStringLiteral("%1%2 EV").arg(*ev > 0 ? QStringLiteral("+") : QString(), num));
         }
         if (id flash = value(exif, kCGImagePropertyExifFlash))
-            shot.insert(QStringLiteral("Blitz"), flashText([flash intValue]));
+            addMetadata(md, QStringLiteral("shot.flash"), flashText([flash intValue]));
 
         const QString subsec = toQString(value(exif, kCGImagePropertyExifSubsecTimeOriginal));
         auto captured = parseExifDate(toQString(value(exif, kCGImagePropertyExifDateTimeOriginal)),
@@ -861,13 +884,10 @@ Metadata ImageIODecoder::metadata(const QString& path) {
                          .arg(std::abs(off) / 3600, 2, 10, QLatin1Char('0'))
                          .arg((std::abs(off) % 3600) / 60, 2, 10, QLatin1Char('0'));
             }
-            shot.insert(QStringLiteral("Aufnahmedatum"), s);
+            addMetadata(md, QStringLiteral("shot.captured"), s);
         }
-        if (!shot.isEmpty())
-            md.groups.insert(QStringLiteral("Aufnahme"), shot);
 
         if (gps) {
-            QVariantMap g;
             auto lat = toDouble(value(gps, kCGImagePropertyGPSLatitude));
             auto lon = toDouble(value(gps, kCGImagePropertyGPSLongitude));
             if (lat && lon) {
@@ -877,20 +897,18 @@ Metadata ImageIODecoder::metadata(const QString& path) {
                 const double lo = lonRef == u"W" ? -std::abs(*lon) : std::abs(*lon);
                 md.latitude = la;
                 md.longitude = lo;
-                g.insert(QStringLiteral("Breite"),
-                         QStringLiteral("%1° %2").arg(formatNumber(std::abs(la), 6),
-                                                      la < 0 ? QStringLiteral("S") : QStringLiteral("N")));
-                g.insert(QStringLiteral("Länge"),
-                         QStringLiteral("%1° %2").arg(formatNumber(std::abs(lo), 6),
-                                                      lo < 0 ? QStringLiteral("W") : QStringLiteral("O")));
+                addMetadata(md, QStringLiteral("gps.latitude"),
+                            QStringLiteral("%1° %2").arg(formatNumber(std::abs(la), 6),
+                                                         la < 0 ? QStringLiteral("S") : QStringLiteral("N")));
+                addMetadata(md, QStringLiteral("gps.longitude"),
+                            QStringLiteral("%1° %2").arg(formatNumber(std::abs(lo), 6),
+                                                         lo < 0 ? QStringLiteral("W") : QStringLiteral("O")));
             }
             if (auto alt = toDouble(value(gps, kCGImagePropertyGPSAltitude))) {
                 const bool below = [value(gps, kCGImagePropertyGPSAltitudeRef) intValue] == 1;
-                g.insert(QStringLiteral("Höhe"),
-                         QStringLiteral("%1 m").arg(formatNumber(below ? -*alt : *alt, 1)));
+                addMetadata(md, QStringLiteral("gps.altitude"),
+                            QStringLiteral("%1 m").arg(formatNumber(below ? -*alt : *alt, 1)));
             }
-            if (!g.isEmpty())
-                md.groups.insert(QStringLiteral("GPS"), g);
         }
 
         // Rating: XMP first, then IPTC star rating.
@@ -909,11 +927,8 @@ Metadata ImageIODecoder::metadata(const QString& path) {
             if (auto r = toDouble(value(iptc, kCGImagePropertyIPTCStarRating)))
                 md.rating = int(std::lround(*r));
         }
-        if (md.rating >= 0) {
-            QVariantMap fileGroup = md.groups.value(QStringLiteral("Datei")).toMap();
-            fileGroup.insert(QStringLiteral("Bewertung"), md.rating);
-            md.groups.insert(QStringLiteral("Datei"), fileGroup);
-        }
+        if (md.rating >= 0)
+            addMetadata(md, QStringLiteral("file.rating"), md.rating);
     }
     return md;
 }

@@ -50,6 +50,9 @@ public:
 
     // Lower-case file suffixes of all types ImageIO can read (for the registry).
     static QStringList supportedExtensions();
+    // UTType of formats recognised by their magic number here because ImageIO needs more
+    // than the first bytes (DDS) - also KTX, KTX2, ASTC, PVR, Radiance; empty otherwise.
+    static QString typeByMagic(const QByteArray& header);
     // Human readable format name for a UTType identifier, e.g. "Canon CR3".
     static QString formatNameForType(const QString& typeIdentifier);
 };
