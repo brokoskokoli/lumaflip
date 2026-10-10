@@ -15,6 +15,7 @@
 #include <QDockWidget>
 #include <QLabel>
 #include <QPushButton>
+#include <QTimer>
 
 namespace lf {
 
@@ -41,10 +42,18 @@ void ViewerWindow::retranslateUi() {
     if (m_hdr)
         m_hdr->retranslate();
     // An error card holds the decoder's text in the old language: decode the file again
-    // (a new failure shows the card in the current language, onImageFailed()).
-    m_app.provider().forgetFailures();
-    if (m_shownFailed && !currentPath().isEmpty() && currentPath() == m_shownPath)
-        m_app.provider().request(m_shownPath, Quality::Screen, decodeTarget(), this, 0, m_page);
+    // (a new failure shows the card in the current language, onImageFailed()). Once the
+    // switch is complete: Qt's catalogue and ours each send a LanguageChange, and a decode
+    // started after the first one would still produce the old text.
+    if (!m_redecodeQueued) {
+        m_redecodeQueued = true;
+        QTimer::singleShot(0, this, [this] {
+            m_redecodeQueued = false;
+            m_app.provider().forgetFailures();
+            if (m_shownFailed && !currentPath().isEmpty() && currentPath() == m_shownPath)
+                m_app.provider().request(m_shownPath, Quality::Screen, decodeTarget(), this, 0, m_page);
+        });
+    }
     updateTitle();
     updateEmptyState();
     updateStatus();

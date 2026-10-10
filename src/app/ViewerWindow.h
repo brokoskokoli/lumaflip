@@ -240,8 +240,9 @@ private:
     QString m_shownPath; // file the view currently shows (or failed for)
     Quality m_shownQuality = Quality::Preview;
     bool m_shownFailed = false;
-    bool m_shownStale = false; // the provider invalidated the shown file (replace on the next stage)
-    QStringList m_wanted;      // prefetch window, current first
+    bool m_redecodeQueued = false; // F-I18N-03: error card decoded again after a switch
+    bool m_shownStale = false;     // the provider invalidated the shown file (replace on the next stage)
+    QStringList m_wanted;          // prefetch window, current first
     QString m_watchedFolder;
     bool m_watchedTree = false; // F-OPEN-08: m_watchedFolder is watched with its subfolders
     int m_direction = 1;        // last flip direction (prefetch, SPEC 7.1)
