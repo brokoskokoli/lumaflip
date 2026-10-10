@@ -137,7 +137,7 @@ struct CropPlan {
     // Refused, but "Zugeschnitten exportieren" can write a cropped copy (RAW, animations,
     // multi-page files, archive/PDF members, formats without an encoder here).
     bool exportInstead = false;
-    QSize mcu;            // JPEG block size
+    QSize mcu; // JPEG block size
     QString typeId;
     QString message;     // German, user facing (Refused / the question)
     QString notice;      // German, user facing (snapping, auxiliary images)
