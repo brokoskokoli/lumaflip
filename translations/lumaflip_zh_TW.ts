@@ -3395,6 +3395,10 @@
         <translation>1 影像像素 = 1 點</translation>
     </message>
     <message>
+        <source>HDR-Bilder mit erweitertem Dynamikumfang anzeigen</source>
+        <translation>以延伸動態範圍顯示 HDR 影像</translation>
+    </message>
+    <message>
         <source>Lupe (L gedrückt halten):</source>
         <translation>放大鏡（按住 L）：</translation>
     </message>

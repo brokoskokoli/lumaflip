@@ -3410,6 +3410,10 @@
         <translation>1 image pixel = 1 point</translation>
     </message>
     <message>
+        <source>HDR-Bilder mit erweitertem Dynamikumfang anzeigen</source>
+        <translation>Show HDR images with extended dynamic range</translation>
+    </message>
+    <message>
         <source>Lupe (L gedrückt halten):</source>
         <translation>Loupe (hold L):</translation>
     </message>

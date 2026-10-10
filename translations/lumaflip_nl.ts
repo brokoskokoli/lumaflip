@@ -3410,6 +3410,10 @@
         <translation>1 afbeeldingspixel = 1 punt</translation>
     </message>
     <message>
+        <source>HDR-Bilder mit erweitertem Dynamikumfang anzeigen</source>
+        <translation>HDR-afbeeldingen met uitgebreid dynamisch bereik weergeven</translation>
+    </message>
+    <message>
         <source>Lupe (L gedrückt halten):</source>
         <translation>Loep (L ingedrukt houden):</translation>
     </message>

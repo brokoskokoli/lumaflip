@@ -3395,6 +3395,10 @@
         <translation>画像の1ピクセル = 1ポイント</translation>
     </message>
     <message>
+        <source>HDR-Bilder mit erweitertem Dynamikumfang anzeigen</source>
+        <translation>HDR画像を拡張ダイナミックレンジで表示</translation>
+    </message>
+    <message>
         <source>Lupe (L gedrückt halten):</source>
         <translation>ルーペ（Lを押したまま）：</translation>
     </message>

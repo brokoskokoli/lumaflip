@@ -3410,6 +3410,10 @@
         <translation>1 bildepiksel = 1 punkt</translation>
     </message>
     <message>
+        <source>HDR-Bilder mit erweitertem Dynamikumfang anzeigen</source>
+        <translation>Vis HDR-bilder med utvidet dynamisk område</translation>
+    </message>
+    <message>
         <source>Lupe (L gedrückt halten):</source>
         <translation>Lupe (hold nede L):</translation>
     </message>

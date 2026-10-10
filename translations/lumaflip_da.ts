@@ -3410,6 +3410,10 @@
         <translation>1 billedpixel = 1 punkt</translation>
     </message>
     <message>
+        <source>HDR-Bilder mit erweitertem Dynamikumfang anzeigen</source>
+        <translation>Vis HDR-billeder med udvidet dynamikområde</translation>
+    </message>
+    <message>
         <source>Lupe (L gedrückt halten):</source>
         <translation>Lup (hold L nede):</translation>
     </message>

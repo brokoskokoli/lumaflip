@@ -236,6 +236,7 @@ QStringList PreferencesDialog::sectionKeys(int section) const {
                 key::ZoomMode,
                 key::UpscaleFilter,
                 key::ActualSizeUnit,
+                key::HdrEnabled,
                 key::SlideshowIntervalSec,
                 key::SlideshowRepeat,
                 key::SlideshowShuffle,
@@ -495,6 +496,8 @@ QWidget* PreferencesDialog::buildDisplay() {
                  bind.combo(key::ActualSizeUnit, {"devicePixels", "points"},
                             {tr("1 Bildpixel = 1 Gerätepixel (Retina-korrekt)"), tr("1 Bildpixel = 1 Punkt")},
                             w));
+    // F-COL-04: same setting as Darstellung > HDR > HDR anzeigen (⇧⌘H)
+    form->addRow(QString(), bind.check(key::HdrEnabled, tr("HDR-Bilder mit erweitertem Dynamikumfang anzeigen"), w));
     // F-VIEW-11
     form->addRow(tr("Lupe (L gedrückt halten):"),
                  bind.combo(key::LoupeZoom, {"100", "200"}, {tr("100 %"), tr("200 %")}, w));

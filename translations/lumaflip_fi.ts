@@ -3410,6 +3410,10 @@
         <translation>1 kuvapiste = 1 piste</translation>
     </message>
     <message>
+        <source>HDR-Bilder mit erweitertem Dynamikumfang anzeigen</source>
+        <translation>Näytä HDR-kuvat laajennetulla dynamiikka-alueella</translation>
+    </message>
+    <message>
         <source>Lupe (L gedrückt halten):</source>
         <translation>Suurennuslasi (pidä L painettuna):</translation>
     </message>
