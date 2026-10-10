@@ -25,6 +25,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QPointer>
+#include <QScopeGuard>
 #include <QSemaphore>
 #include <QSignalSpy>
 #include <QTableWidget>
@@ -425,15 +426,34 @@ private slots:
         // busy hint comes at once instead of after its delay.
         QSemaphore gate;
         trash->gate = &gate;
+        // Whatever happens below, the worker is never left blocked (the test would hang).
+        const auto releaseGate = qScopeGuard([&] {
+            trash->gate = nullptr;
+            gate.release(100);
+        });
         app->setBusyHintDelayForTesting(0);
+        // The busy message goes to the front window - normally `a`, but the system may still
+        // be activating `b` (opened last) on a loaded machine. Recorded as shown, since
+        // another message may replace the toast meanwhile.
+        QSignalSpy messagesA(a, &ViewerWindow::messageShown);
+        QSignalSpy messagesB(b, &ViewerWindow::messageShown);
+        auto busyIn = [](const QSignalSpy& spy) {
+            for (const QList<QVariant>& m : spy)
+                if (m.first().toString().contains(QStringLiteral("Dateivorgang")))
+                    return true;
+            return false;
+        };
         ops->moveToTrashAsync(path("IMG_2.jpg"));
-        QTRY_VERIFY_WITH_TIMEOUT(a->toastText().contains(QStringLiteral("Dateivorgang")), 10000);
+        QTRY_VERIFY_WITH_TIMEOUT(busyIn(messagesA) || busyIn(messagesB), 10000);
+        ViewerWindow* shownIn = busyIn(messagesA) ? a : b;
+        ViewerWindow* other = shownIn == a ? b : a;
         QVERIFY(ops->isBusy());
-        app->windowActivated(b); // another window comes to the front meanwhile
+        app->windowActivated(other); // another window comes to the front meanwhile
         gate.release();
         QTRY_VERIFY_WITH_TIMEOUT(!ops->isBusy(), 10000);
-        trash->gate = nullptr;
-        QVERIFY(a->toastText().isEmpty());
+        // The busy message is gone from the window that showed it.
+        QVERIFY2(!shownIn->toastText().contains(QStringLiteral("Dateivorgang")),
+                 qPrintable(shownIn->toastText()));
     }
 
     // ---- F-OPEN-12 / Dock (review item 10) ----

@@ -62,7 +62,7 @@ public:
     // Invalidate (file changed/renamed/deleted). Drops every page of the file.
     void invalidate(const QString& path);
 
-    void setMemoryBudget(qint64 bytes);  // P-09
+    void setMemoryBudget(qint64 bytes); // P-09
     qint64 memoryBudget() const;
     static qint64 defaultMemoryBudget(); // 25 % of the RAM, at most 2 GB
     // P-08: no decoded image is larger than this (half the budget, at most 1 GB, at

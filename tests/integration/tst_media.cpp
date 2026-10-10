@@ -164,15 +164,25 @@ private slots:
                 [&](int index, const DecodedImagePtr&) { shown.append({index, clock.elapsed()}); });
         QTRY_VERIFY_WITH_TIMEOUT(shown.size() >= 8, 5000);
         const int durations[3] = {100, 200, 300};
+        // Frames are due at absolute times (first + sum of the durations): a frame shown late
+        // (busy machine) shortens the next one instead of shifting all later frames. So the
+        // offsets from that schedule stay within a bounded band (the first timestamp may be
+        // late itself, so the band is relative); a drift would make them grow frame by frame.
         int checked = 0;
+        qint64 due = shown[0].second;
+        qint64 minOffset = 0, maxOffset = 0;
         for (int i = 1; i < shown.size(); ++i) {
             const int prev = shown[i - 1].first;
             QCOMPARE(shown[i].first, (prev + 1) % 3); // in order, nothing skipped
-            const qint64 dt = shown[i].second - shown[i - 1].second;
-            QVERIFY2(dt >= durations[prev] - 15 && dt <= durations[prev] + 80,
-                     qPrintable(QStringLiteral("frame %1 lasted %2 ms").arg(prev).arg(dt)));
+            due += durations[prev];
+            const qint64 offset = shown[i].second - due;
+            minOffset = std::min(minOffset, offset);
+            maxOffset = std::max(maxOffset, offset);
             ++checked;
         }
+        QVERIFY2(
+            maxOffset - minOffset <= 250,
+            qPrintable(QStringLiteral("offsets from the schedule %1..%2 ms").arg(minOffset).arg(maxOffset)));
         QVERIFY(checked >= 7);
         // The view shows the frames (texture reuse in the canvas, same size).
         auto* canvas = w->view()->findChild<ImageCanvas*>();

@@ -443,6 +443,8 @@ private slots:
         film.resize(640, film.sizeHint().height());
         film.show();
         QVERIFY(QTest::qWaitForWindowExposed(&film));
+        for (int r : film.visibleRows()) // as painting does (see below)
+            film.filmModel()->index(r).data(FilmstripModel::ThumbnailRole);
         QTRY_VERIFY_WITH_TIMEOUT(cache.pendingJobs() == 0 && decoder->decodes.load() > 0, 60000);
         QTest::qWait(100);
         const int visible = int(film.visibleRows().size());
@@ -455,6 +457,10 @@ private slots:
         const int before = decoder->decodes.load();
         collection.setCurrentIndex(149);
         QTRY_VERIFY_WITH_TIMEOUT(film.visibleRows().contains(149), 15000);
+        // What painting the visible rows does - also when the window is covered by others
+        // (parallel GUI test runs) and the system does not let it paint right now.
+        for (int r : film.visibleRows())
+            film.filmModel()->index(r).data(FilmstripModel::ThumbnailRole);
         QTRY_VERIFY_WITH_TIMEOUT(cache.pendingJobs() == 0 && decoder->decodes.load() > before, 60000);
         QTest::qWait(100);
         QVERIFY(decoder->decodes.load() - before <= int(film.visibleRows().size()) + 2);

@@ -61,7 +61,7 @@ struct DecodeRequest {
 // (premultiplied variant) in extended linear Display P3 and set headroom > 1.
 struct DecodedImage {
     QImage image;
-    QSize fullSize;          // oriented full-resolution size of the source
+    QSize fullSize; // oriented full-resolution size of the source
     // Decoder view: the image is smaller than the source (embedded preview or decode-time
     // downsampling - so also true for the Screen stage of a large file). Not a quality
     // gate: whether an image is good enough for a purpose is `quality` below.
