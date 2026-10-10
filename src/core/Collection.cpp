@@ -268,7 +268,8 @@ QString siblingImageFolder(const QString& folderPath, int direction, const NameC
         return {};
     const int step = direction >= 0 ? 1 : -1;
     int checked = 0;
-    for (qsizetype k = i + step; k >= 0 && k < names.size() && checked < kMaxCandidates; k += step, ++checked) {
+    for (qsizetype k = i + step; k >= 0 && k < names.size() && checked < kMaxCandidates;
+         k += step, ++checked) {
         const QString candidate = parent.filePath(names[k]);
         if (!enumerateFolder(candidate).isEmpty())
             return QDir::cleanPath(candidate);
@@ -681,10 +682,10 @@ struct Collection::Private {
             files.append(path);
         BinaryCollator fallback;
         const NameCollator& coll = collator ? *collator : fallback;
-        const auto pos = std::upper_bound(entries.begin(), entries.end(), e,
-                                          [&](const FileEntry& a, const FileEntry& b) {
-                                              return collection::compareEntries(a, b, spec, coll) < 0;
-                                          });
+        const auto pos =
+            std::upper_bound(entries.begin(), entries.end(), e, [&](const FileEntry& a, const FileEntry& b) {
+                return collection::compareEntries(a, b, spec, coll) < 0;
+            });
         const int at = int(pos - entries.begin());
         entries.insert(at, std::move(e));
         rebuildIndex();

@@ -10,7 +10,8 @@
 namespace lf {
 
 QStringList qtTranslationDirs() {
-    return {QDir::cleanPath(QCoreApplication::applicationDirPath() + QStringLiteral("/../Resources/translations")),
+    return {QDir::cleanPath(QCoreApplication::applicationDirPath() +
+                            QStringLiteral("/../Resources/translations")),
             QLibraryInfo::path(QLibraryInfo::TranslationsPath)};
 }
 
@@ -24,7 +25,8 @@ QString installQtTranslations() {
         QLocale::setDefault(QLocale::system());
     auto* t = new QTranslator(QCoreApplication::instance());
     for (const QString& dir : qtTranslationDirs()) {
-        if (t->load(QLocale(QLocale::German, QLocale::Germany), QStringLiteral("qtbase"), QStringLiteral("_"), dir)) {
+        if (t->load(QLocale(QLocale::German, QLocale::Germany), QStringLiteral("qtbase"), QStringLiteral("_"),
+                    dir)) {
             QCoreApplication::installTranslator(t);
             translator = t;
             return t->filePath();

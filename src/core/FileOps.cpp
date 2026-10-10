@@ -42,7 +42,7 @@ struct Outcome {
     bool ok = false;
     bool noop = false; // nothing to do (e.g. already in the target folder)
     QString error;
-    QString location;  // trash location / target path
+    QString location; // trash location / target path
 };
 
 Outcome failure(const QString& error) {
@@ -265,7 +265,8 @@ public:
         if (forward)
             return copyWork(m_from, m_to);
         if (!QFile::remove(m_to))
-            return failure(tr("Die Kopie „%1“ konnte nicht entfernt werden.").arg(QFileInfo(m_to).fileName()));
+            return failure(
+                tr("Die Kopie „%1“ konnte nicht entfernt werden.").arg(QFileInfo(m_to).fileName()));
         return success(m_to);
     }
     void notify(bool forward, const Outcome&) override {

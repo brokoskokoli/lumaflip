@@ -86,7 +86,8 @@ public:
             if (![bundle.pathExtension isEqualToString:@"app"]) {
                 const QString error = tr("Lumaflip läuft nicht als App-Paket und kann nicht als Standard-App "
                                          "festgelegt werden.");
-                QMetaObject::invokeMethod(context, [deliver, error] { deliver(false, error); }, Qt::QueuedConnection);
+                QMetaObject::invokeMethod(
+                    context, [deliver, error] { deliver(false, error); }, Qt::QueuedConnection);
                 return;
             }
             NSMutableArray<NSString*>* errors = [NSMutableArray array];
@@ -101,18 +102,19 @@ public:
                 }
                 NSString* ident = t.toNSString();
                 dispatch_group_enter(group);
-                [[NSWorkspace sharedWorkspace] setDefaultApplicationAtURL:bundle
-                                                        toOpenContentType:type
-                                                        completionHandler:^(NSError* err) {
-                                                          if (err) {
-                                                              @synchronized(errors) {
-                                                                  [errors addObject:[NSString
-                                                                                        stringWithFormat:@"%@: %@", ident,
-                                                                                                         err.localizedDescription]];
-                                                              }
-                                                          }
-                                                          dispatch_group_leave(group);
-                                                        }];
+                [[NSWorkspace sharedWorkspace]
+                    setDefaultApplicationAtURL:bundle
+                             toOpenContentType:type
+                             completionHandler:^(NSError* err) {
+                               if (err) {
+                                   @synchronized(errors) {
+                                       [errors
+                                           addObject:[NSString stringWithFormat:@"%@: %@", ident,
+                                                                                err.localizedDescription]];
+                                   }
+                               }
+                               dispatch_group_leave(group);
+                             }];
             }
             auto finish = ^(BOOL timedOut) {
               if (delivered)

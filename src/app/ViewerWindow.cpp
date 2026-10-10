@@ -17,25 +17,25 @@
 #include <QDropEvent>
 #include <QFile>
 #include <QFileInfo>
+#include <QFutureWatcher>
 #include <QHBoxLayout>
 #include <QKeyEvent>
 #include <QLabel>
 #include <QLocale>
-#include <QFutureWatcher>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QMimeDatabase>
-#include <QStyleHints>
-#include <QtConcurrent/QtConcurrentRun>
 #include <QMouseEvent>
 #include <QPushButton>
 #include <QScreen>
 #include <QStatusBar>
+#include <QStyleHints>
 #include <QTimer>
 #include <QUndoStack>
 #include <QUrl>
 #include <QVBoxLayout>
 #include <QWindow>
+#include <QtConcurrent/QtConcurrentRun>
 
 #include <algorithm>
 #include <cmath>
@@ -251,7 +251,8 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     m_view->setActualSizeInDevicePixels(st.value(key::ActualSizeUnit).toString() != QLatin1String("points"));
     m_view->setZoomMode(zoomModeFromId(st.value(key::ZoomMode).toString()));
     updateEmptyStyle();
-    connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged, this, &ViewerWindow::updateEmptyStyle);
+    connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged, this,
+            &ViewerWindow::updateEmptyStyle);
 
     // ---- wiring ----
     connect(m_collection, &Collection::currentChanged, this, &ViewerWindow::onCurrentChanged);
@@ -389,7 +390,8 @@ void ViewerWindow::copyViewFrom(const ViewerWindow& other) {
     m_flipV = other.m_flipV;
     m_view->setFlip(m_flipH, m_flipV);
     if (other.m_view->zoomMode() == ZoomMode::Custom)
-        m_view->setZoomFactor(other.m_view->zoomFactor(), QPointF(m_view->width() / 2.0, m_view->height() / 2.0));
+        m_view->setZoomFactor(other.m_view->zoomFactor(),
+                              QPointF(m_view->width() / 2.0, m_view->height() / 2.0));
     else
         m_view->setZoomMode(other.m_view->zoomMode());
     m_view->setViewCenter(other.m_view->viewCenter());
@@ -665,9 +667,10 @@ void ViewerWindow::updateTitle() {
     const QString cur = currentPath();
     QString title;
     // F-WIN-10 option: "IMG_1234.jpg — 23 / 412 — Ordner".
-    const QString folderSuffix = !cur.isEmpty() && Settings::instance().value(key::TitleShowFolder).toBool()
-                                     ? QStringLiteral(" — ") + QFileInfo(QFileInfo(cur).absolutePath()).fileName()
-                                     : QString();
+    const QString folderSuffix =
+        !cur.isEmpty() && Settings::instance().value(key::TitleShowFolder).toBool()
+            ? QStringLiteral(" — ") + QFileInfo(QFileInfo(cur).absolutePath()).fileName()
+            : QString();
     if (cur.isEmpty()) {
         title = QStringLiteral("Lumaflip");
         if (m_collection->isLoading())
@@ -757,9 +760,12 @@ void ViewerWindow::updateEmptyStyle() {
     m_emptyText->setStyleSheet(dark ? QStringLiteral("color: rgb(200, 200, 200); font-size: 18px;")
                                     : QStringLiteral("color: rgb(70, 70, 70); font-size: 18px;"));
     const QString text = dark ? QStringLiteral("#f2f2f2") : QStringLiteral("#1c1c1c");
-    const QString fill = dark ? QStringLiteral("rgba(255, 255, 255, 36)") : QStringLiteral("rgba(0, 0, 0, 20)");
-    const QString hover = dark ? QStringLiteral("rgba(255, 255, 255, 64)") : QStringLiteral("rgba(0, 0, 0, 40)");
-    const QString border = dark ? QStringLiteral("rgba(255, 255, 255, 120)") : QStringLiteral("rgba(0, 0, 0, 90)");
+    const QString fill =
+        dark ? QStringLiteral("rgba(255, 255, 255, 36)") : QStringLiteral("rgba(0, 0, 0, 20)");
+    const QString hover =
+        dark ? QStringLiteral("rgba(255, 255, 255, 64)") : QStringLiteral("rgba(0, 0, 0, 40)");
+    const QString border =
+        dark ? QStringLiteral("rgba(255, 255, 255, 120)") : QStringLiteral("rgba(0, 0, 0, 90)");
     m_openButton->setStyleSheet(QStringLiteral("QPushButton#lfOpenButton { color: %1; background-color: %2; "
                                                "border: 1px solid %4; border-radius: 6px; padding: 6px 20px; "
                                                "font-size: 14px; }"
@@ -771,9 +777,9 @@ void ViewerWindow::updateEmptyStyle() {
 void ViewerWindow::applyStatusBarVisibility() {
     // No status bar under the empty start screen (it would only be an empty strip).
     const bool hasContent = m_collection->count() > 0 || m_collection->isLoading();
-    statusBar()->setVisible(m_chromeShown && hasContent && Settings::instance().value(key::ShowStatusBar).toBool());
+    statusBar()->setVisible(m_chromeShown && hasContent &&
+                            Settings::instance().value(key::ShowStatusBar).toBool());
 }
-
 
 void ViewerWindow::layoutOverlays() {
     m_emptyState->setGeometry(m_view->rect());
@@ -812,15 +818,17 @@ void ViewerWindow::showAccessHint(const QString& folder, bool privacy) {
     // POSIX permissions are changed in the Finder.
     m_accessPrivacy = privacy;
     if (privacy) {
-        m_accessText->setText(tr("Lumaflip darf den Ordner „%1“ nicht lesen und zeigt deshalb nur die geöffnete "
-                                 "Datei. Erlaube den Zugriff unter Systemeinstellungen → Datenschutz & Sicherheit → "
-                                 "Dateien und Ordner. Festplattenvollzugriff ist dafür nicht nötig.")
-                                  .arg(QDir(folder).dirName()));
+        m_accessText->setText(
+            tr("Lumaflip darf den Ordner „%1“ nicht lesen und zeigt deshalb nur die geöffnete "
+               "Datei. Erlaube den Zugriff unter Systemeinstellungen → Datenschutz & Sicherheit → "
+               "Dateien und Ordner. Festplattenvollzugriff ist dafür nicht nötig.")
+                .arg(QDir(folder).dirName()));
     } else {
-        m_accessText->setText(tr("Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die "
-                                 "geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → "
-                                 "Informationen → „Teilen & Zugriffsrechte“ ändern.")
-                                  .arg(QDir(folder).dirName()));
+        m_accessText->setText(
+            tr("Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die "
+               "geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → "
+               "Informationen → „Teilen & Zugriffsrechte“ ändern.")
+                .arg(QDir(folder).dirName()));
     }
     if (auto* allow = m_accessHint->findChild<QPushButton*>(QStringLiteral("lfAllowAccess")))
         allow->setVisible(privacy);
@@ -891,7 +899,6 @@ void ViewerWindow::switchFolder(int direction) {
         return collection::siblingImageFolder(folder, direction, collator.get());
     }));
 }
-
 
 void ViewerWindow::handleInput(InputEvent ev, QPointF pos) {
     if (pos.x() >= 0)
@@ -1140,8 +1147,9 @@ void ViewerWindow::trashCurrent() {
     }
     if (findChild<QMessageBox*>(QStringLiteral("lfConfirmTrash")))
         return; // already asking
-    auto* box = new QMessageBox(QMessageBox::Question, tr("In den Papierkorb legen"),
-                                tr("„%1“ in den Papierkorb legen?").arg(fileName(path)), QMessageBox::NoButton, this);
+    auto* box =
+        new QMessageBox(QMessageBox::Question, tr("In den Papierkorb legen"),
+                        tr("„%1“ in den Papierkorb legen?").arg(fileName(path)), QMessageBox::NoButton, this);
     box->setObjectName(QStringLiteral("lfConfirmTrash"));
     box->setInformativeText(tr("Mit ⌘Z lässt sich das widerrufen."));
     QPushButton* yes = box->addButton(tr("In den Papierkorb legen"), QMessageBox::AcceptRole);

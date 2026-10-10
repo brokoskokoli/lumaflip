@@ -6,10 +6,10 @@
 #include <QAction>
 #include <QActionGroup>
 #include <QCheckBox>
-#include <QCoreApplication>
 #include <QColor>
 #include <QColorDialog>
 #include <QComboBox>
+#include <QCoreApplication>
 #include <QFileDialog>
 #include <QFormLayout>
 #include <QGridLayout>
@@ -23,8 +23,8 @@
 #include <QPointer>
 #include <QPushButton>
 #include <QScrollArea>
-#include <QSpinBox>
 #include <QSet>
+#include <QSpinBox>
 #include <QStackedWidget>
 #include <QStandardItemModel>
 #include <QStandardPaths>
@@ -185,7 +185,8 @@ void PreferencesDialog::showSection(int section) {
 
 QStringList PreferencesDialog::sectionKeys(int section) const {
     switch (section) {
-    case General: return {key::OpenBehavior, key::RestoreWindows, key::ConfirmTrash};
+    case General:
+        return {key::OpenBehavior, key::RestoreWindows, key::ConfirmTrash};
     case Window:
         return {key::FitWindowToImage, key::TitleShowFolder, key::ShowStatusBar, key::ShowInfoPanel,
                 key::ShowFilmstrip};
@@ -309,11 +310,13 @@ QWidget* PreferencesDialog::buildGeneral() {
                                          "Dock-Symbol."),
                                       w));
     form->addRow(QString(), bind.check(key::RestoreWindows, tr("Fenster beim nächsten Start wiederherstellen"), w));
-    form->addRow(QString(), helpLabel(tr("Ordner, Bild, Zoom und Position aller Fenster, die beim Beenden offen "
-                                         "waren."),
-                                      w));
+    form->addRow(QString(),
+                 helpLabel(tr("Ordner, Bild, Zoom und Position aller Fenster, die beim Beenden offen "
+                              "waren."),
+                           w));
     form->addRow(QString(), bind.check(key::ConfirmTrash, tr("Vor dem Löschen nachfragen"), w));
-    form->addRow(QString(), helpLabel(tr("Aus: ⌘⌫ legt das Bild sofort in den Papierkorb, ⌘Z holt es zurück."), w));
+    form->addRow(QString(),
+                 helpLabel(tr("Aus: ⌘⌫ legt das Bild sofort in den Papierkorb, ⌘Z holt es zurück."), w));
     return w;
 }
 
@@ -659,7 +662,8 @@ QWidget* PreferencesDialog::buildRating() {
     // Rating (F-CULL-01/02) is not implemented yet: the choices are visible but disabled.
     for (QCheckBox* cb : w->findChildren<QCheckBox*>())
         cb->setEnabled(false);
-    form->insertRow(0, QString(), helpLabel(tr("Bewertungen und der Aussortiermodus folgen %1.").arg(laterNote()), w));
+    form->insertRow(0, QString(),
+                    helpLabel(tr("Bewertungen und der Aussortiermodus folgen %1.").arg(laterNote()), w));
     return w;
 }
 

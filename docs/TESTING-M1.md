@@ -128,14 +128,19 @@ Manuelle Sortierung (Darstellung → Sortieren nach):
 Mit Kopien arbeiten (z. B. `cp -R tests/corpus/generated /tmp/lf-test`).
 
 - [ ] **⌘⌫** legt das aktuelle Bild in den Papierkorb (ohne Rückfrage), das nächste Bild
-      erscheint; im Finder-Papierkorb liegt die Datei.
+      erscheint; im Finder-Papierkorb liegt die Datei. Mit Einstellungen → Allgemein →
+      „Vor dem Löschen nachfragen“ erscheint vorher eine Rückfrage („In den Papierkorb
+      legen“ / „Abbrechen“).
 - [ ] **⌘Z** (Bearbeiten → „… widerrufen“) holt sie zurück, sie wird wieder angezeigt.
       **⇧⌘Z** legt sie erneut in den Papierkorb.
 - [ ] Die Taste **Entf** (⌦, auf kleinen Tastaturen fn+⌫) wirkt wie ⌘⌫.
 - [ ] Zwei Fenster mit demselben Ordner: Löschen in einem Fenster aktualisiert beide.
 - [ ] **⇧⌘R** öffnet ein Finder-Fenster mit markierter Datei.
-- [ ] **⌘C** und in Vorschau.app „Ablage → Neu aus Zwischenablage“: das Bild erscheint;
-      in einem Finder-Fenster „Einsetzen“ legt eine Kopie der Datei ab.
+- [ ] **⌘C** und in Vorschau.app „Ablage → Neu aus Zwischenablage“: das Bild erscheint in
+      **voller Auflösung** (auch bei einem großen Foto, kurz „Bild wird kopiert …“); in einem
+      Finder-Fenster „Einsetzen“ legt eine Kopie der Datei ab.
+- [ ] Bild von einem **Netzlaufwerk** (SMB) in den Papierkorb legen und ⌘Z: das Fenster
+      bleibt bedienbar (Mauszeiger kurz „beschäftigt“, Hinweis „Dateivorgang läuft …“).
 - [ ] **⌥⌘C** und in TextEdit einsetzen: der vollständige Pfad.
 - [ ] **⌘L/⌘R** drehen, **H** / **⇧H** spiegeln – nur die Anzeige: die Vorschau im Finder
       bleibt unverändert; beim nächsten Bild ist die Drehung wieder weg.
@@ -169,8 +174,21 @@ Fenster (SPEC 4.15):
       Titel „… — 1 / 5“, nur diese fünf Bilder.
 - [ ] Einen **Ordner auf das Dock-Symbol** ziehen: das erste Bild in Finder-Reihenfolge.
 - [ ] Bild in ein offenes Lumaflip-Fenster ziehen: es erscheint in diesem Fenster.
-- [ ] ⌘N: leeres Fenster; ⌥⌘N: Kopie des Fensters mit gleichem Ordner, Bild und Zoom;
-      ⌘W schließt eins, ⌥⌘W alle. Ohne Fenster bleibt die Menüleiste nutzbar (⌘O, ⌘N).
+- [ ] ⌘N: leeres Fenster; ⌥⌘N: Kopie des Fensters mit gleichem Ordner, Bild, Zoom und
+      sichtbarem Ausschnitt; ⌘W schließt eins, ⌥⌘W alle. Ohne Fenster bleibt die
+      Menüleiste nutzbar (⌘O, ⌘N), ein Klick auf das Dock-Symbol öffnet ein leeres Fenster.
+- [ ] Startfenster (ohne Bild): „Öffnen…“ ist auf dem dunklen Hintergrund gut lesbar,
+      darunter keine leere Statusleiste.
+- [ ] Einstellungen (⌘,) offen und vorn: ⌘W schließt die Einstellungen (nicht das
+      Bildfenster dahinter); ⌘⌫, ⌘C, ⌘L, ⌘+ wirken dann nicht auf das verdeckte Bild.
+- [ ] Einstellungen → Fenster → „Ordnername in der Titelleiste“: Titel
+      „IMG_1234.jpg — 23 / 412 — Ordner“.
+- [ ] Einstellungen → Navigation → Am Ende der Sammlung „Zum nächsten Ordner“: nach dem
+      letzten Bild geht es im nächsten Geschwisterordner mit Bildern weiter (Finder-
+      Namensreihenfolge), ← am Anfang zurück zum letzten Bild des vorherigen Ordners.
+- [ ] Zwei Fenster offen lassen, Lumaflip mit ⌘Q beenden und neu starten (ohne Datei):
+      beide Fenster kommen mit Ordner, Bild, Zoom und Position zurück (Einstellung
+      „Fenster beim nächsten Start wiederherstellen“; aus = leeres Startfenster).
 - [ ] Menü „Fenster“ und Rechtsklick auf das Dock-Symbol listen alle Fenster; Auswahl holt
       das Fenster nach vorn.
 - [ ] Einstellungen (⌘,) → Allgemein → „Öffnen aus dem Finder“: „Im vordersten Fenster
@@ -187,6 +205,13 @@ Menüs und Erscheinungsbild:
       zeigt die Übersicht. Ein in den Einstellungen geändertes Kürzel erscheint sofort
       im Menü.
 - [ ] Systemeinstellungen → Erscheinungsbild Hell/Dunkel umschalten: Lumaflip folgt.
+- [ ] Alles ist deutsch, auch was Qt erzeugt: Menü „Lumaflip“ mit „Dienste“, „Lumaflip
+      ausblenden“, „Andere ausblenden“, „Alle anzeigen“, „Lumaflip beenden“; Knöpfe in
+      Rückfragen („Abbrechen“, „Nein“). Defekte Dateien zeigen deutsche Gründe ohne
+      Zusätze wie „ImageIO:“ oder „Qt:“.
+- [ ] Einstellungen: Funktionen, die erst später kommen (Infopanel, Filmstreifen,
+      Bewertungen, Lupe, Datei herausziehen, Diashow), sind ausgegraut und mit „ab Version
+      1.0“ beschriftet.
 
 Datenschutz (SPEC 10.2, 12.1 Nr. 8):
 
@@ -202,6 +227,10 @@ Datenschutz (SPEC 10.2, 12.1 Nr. 8):
       darüber eine gelbe Leiste mit Erklärung und „Zugriff erlauben…“. Kein Fehlerzustand.
 - [ ] „Zugriff erlauben…“ öffnet Systemeinstellungen → Datenschutz & Sicherheit →
       **Dateien und Ordner**. Lumaflip verlangt nirgends Festplattenvollzugriff.
+- [ ] Gegenprobe ohne Datenschutzsperre: Ordner im Terminal mit `chmod 100 Ordner`
+      sperren, ein Bild darin per Pfad öffnen: die Leiste nennt fehlende Leserechte (Finder →
+      Informationen → „Teilen & Zugriffsrechte“) und zeigt **keinen** Knopf „Zugriff
+      erlauben…“. Danach `chmod 755 Ordner`.
 - [ ] Zugriff dort erlauben, Bild erneut öffnen: der ganze Ordner ist verfügbar.
 
 ## 8. Bekannte Grenzen von M1
@@ -210,11 +239,11 @@ Datenschutz (SPEC 10.2, 12.1 Nr. 8):
   Lumaflip noch die alte Reihenfolge zeigen (Abhilfe ab M2: Live-Abfrage, Opt-in).
 - Spaltenansicht, Galerie, „Gruppen verwenden“ und Suchergebnisfenster lassen sich nicht
   exakt nachbilden (SPEC 6.3).
-- Ein Klick auf das Dock-Symbol ohne offenes Fenster öffnet noch kein neues Fenster
-  (⌘N bzw. Ablage → Öffnen verwenden).
-- Noch nicht enthalten (M2 und später): Fensterwiederherstellung beim Start, Infopanel,
-  Filmstreifen, Diashow, Umbenennen, Teilen, Drag-out, Fenster anordnen, Merken der
-  manuellen Sortierung pro Ordner.
+- Die Fensterwiederherstellung folgt der Lumaflip-Einstellung, noch nicht der
+  Systemeinstellung „Fenster beim Beenden schließen“.
+- Noch nicht enthalten (M2 und später): Infopanel, Filmstreifen, Diashow, Bewertungen,
+  Lupe, Umbenennen, Teilen, Drag-out, Fenster anordnen, Merken der manuellen Sortierung
+  pro Ordner.
 
 ## 9. Fehler melden
 

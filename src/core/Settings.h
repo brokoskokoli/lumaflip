@@ -20,7 +20,7 @@ inline constexpr auto FitWindowToImage = "window/fitToImage";      // bool, defa
 inline constexpr auto RestoreWindows = "window/restore";           // bool (F-WIN-06)
 inline constexpr auto TitleShowFolder = "window/titleShowFolder";  // bool, default false (F-WIN-10)
 // Files
-inline constexpr auto ConfirmTrash = "files/confirmTrash";         // bool, default false (F-FILE-01)
+inline constexpr auto ConfirmTrash = "files/confirmTrash"; // bool, default false (F-FILE-01)
 // Display
 inline constexpr auto Background = "view/background";              // "dark" | "light" | "system" | "checker" | "#rrggbb"
 inline constexpr auto ZoomMode = "view/zoomMode";                  // "fit" | "fitUpscale" | "actual" | "fillWidth" | "fillHeight" | "fill"

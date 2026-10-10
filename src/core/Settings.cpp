@@ -4,11 +4,11 @@
 #include "InputBindings.h"
 
 #include <QCoreApplication>
-#include <QGuiApplication>
 #include <QCryptographicHash>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QGuiApplication>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -214,7 +214,8 @@ struct Settings::Private {
     static std::unique_ptr<QSettings> makeNativeSettings() {
         // Explicit identity, independent of QCoreApplication's names (SPEC 8.6).
         return std::make_unique<QSettings>(QSettings::NativeFormat, QSettings::UserScope,
-                                           QString::fromLatin1(kOrgDomain), QString::fromLatin1(kSettingsApp));
+                                           QString::fromLatin1(kOrgDomain),
+                                           QString::fromLatin1(kSettingsApp));
     }
 };
 

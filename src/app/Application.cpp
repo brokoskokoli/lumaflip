@@ -160,14 +160,15 @@ Application::Application(AppServices services, QObject* parent)
             if (w == origin)
                 w->fileAdded(path, true);
     });
-    connect(&ops, &FileOps::fileRenamed, this, [this, invalidateFolderOf](const QString& from, const QString& to) {
-        provider().invalidate(from);
-        provider().invalidate(to);
-        invalidateFolderOf(from);
-        invalidateFolderOf(to);
-        for (ViewerWindow* w : windows())
-            w->fileRenamed(from, to);
-    });
+    connect(&ops, &FileOps::fileRenamed, this,
+            [this, invalidateFolderOf](const QString& from, const QString& to) {
+                provider().invalidate(from);
+                provider().invalidate(to);
+                invalidateFolderOf(from);
+                invalidateFolderOf(to);
+                for (ViewerWindow* w : windows())
+                    w->fileRenamed(from, to);
+            });
     connect(&ops, &FileOps::operationFailed, this, [this](const QString& message) {
         if (auto* w = frontWindow())
             w->showMessage(message, 5000);
@@ -266,7 +267,7 @@ void Application::updateBusy(bool busy) {
     } else {
         QGuiApplication::restoreOverrideCursor();
         if (auto* w = frontWindow(); w && w->toastText() == tr("Dateivorgang läuft …"))
-            w->showMessage(QString(), 1);
+            w->hideMessage();
     }
 }
 
@@ -870,10 +871,11 @@ void Application::showShortcuts() {
 
 void Application::makeDefaultViewer() {
     // Non-blocking question (the answer starts the asynchronous registration).
-    auto* box = new QMessageBox(QMessageBox::Question, tr("Als Standard-App festlegen"),
-                                tr("Soll Lumaflip die Standard-App für gängige Bildformate (JPEG, PNG, HEIC, RAW …) "
-                                   "werden?"),
-                                QMessageBox::NoButton, PreferencesDialog::existingInstance());
+    auto* box =
+        new QMessageBox(QMessageBox::Question, tr("Als Standard-App festlegen"),
+                        tr("Soll Lumaflip die Standard-App für gängige Bildformate (JPEG, PNG, HEIC, RAW …) "
+                           "werden?"),
+                        QMessageBox::NoButton, PreferencesDialog::existingInstance());
     box->setObjectName(QStringLiteral("lfMakeDefaultQuestion"));
     box->setAttribute(Qt::WA_DeleteOnClose);
     QPushButton* yes = box->addButton(tr("Festlegen"), QMessageBox::AcceptRole);
@@ -890,12 +892,13 @@ void Application::setDefaultViewer() {
     if (auto* prefs = PreferencesDialog::existingInstance())
         prefs->showStatus(tr("Lumaflip wird als Standard-App festgelegt …"));
     shell().makeDefaultViewerAsync(shell().imageDocumentTypes(), this, [this](bool ok, const QString& error) {
-        const QString message = ok ? tr("Lumaflip ist jetzt die Standard-App für Bilder.")
-                                   : tr("Lumaflip konnte nicht als Standard-App festgelegt werden:\n%1").arg(error);
+        const QString message =
+            ok ? tr("Lumaflip ist jetzt die Standard-App für Bilder.")
+               : tr("Lumaflip konnte nicht als Standard-App festgelegt werden:\n%1").arg(error);
         if (auto* prefs = PreferencesDialog::existingInstance())
             prefs->showStatus(message);
-        auto* box = new QMessageBox(ok ? QMessageBox::Information : QMessageBox::Warning, tr("Lumaflip"), message,
-                                    QMessageBox::Ok, PreferencesDialog::existingInstance());
+        auto* box = new QMessageBox(ok ? QMessageBox::Information : QMessageBox::Warning, tr("Lumaflip"),
+                                    message, QMessageBox::Ok, PreferencesDialog::existingInstance());
         box->setObjectName(QStringLiteral("lfMakeDefaultResult"));
         box->setAttribute(Qt::WA_DeleteOnClose);
         box->open();

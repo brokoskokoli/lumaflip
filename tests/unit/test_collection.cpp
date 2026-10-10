@@ -349,10 +349,12 @@ TEST_F(CollectionTest, F_OPEN_07_RemoveAndInsertPath) {
     EXPECT_EQ(c->currentPath(), path("c.jpg"));
     EXPECT_EQ(currentSignals, 1);
     c->insertPath(path("b.jpg")); // undo: back at its sorted position, current unchanged
+    ASSERT_TRUE(test::waitUntil([&] { return !c->hasPendingInserts(); })); // stat on a worker
     EXPECT_EQ(names(*c), (QStringList{"a.jpg", "b.jpg", "c.jpg"}));
     EXPECT_EQ(c->currentPath(), path("c.jpg"));
     EXPECT_EQ(c->currentIndex(), 2);
     c->insertPath(path("b.jpg")); // duplicate ignored
+    EXPECT_FALSE(c->hasPendingInserts());
     EXPECT_EQ(c->count(), 3);
     c->removePath(path("a.jpg"));
     EXPECT_EQ(c->currentPath(), path("c.jpg"));
@@ -474,12 +476,13 @@ TEST_F(CollectionTest, F_OPEN_07_EditsDuringPendingLoadSurvive) {
     blocking.armed = true;
     c->refresh();
     ASSERT_TRUE(blocking.started.tryAcquire(1, 5000)); // the job has enumerated a, b, c
-    blocking.armed = false;                            // insertPath() fills on this thread
+    blocking.armed = false;                            // insertPath() fills on a worker
     // Trash b, restore-like insert of d, both while the job is blocked.
     ASSERT_TRUE(QFile::remove(path("b.jpg")));
     c->removePath(path("b.jpg"));
     touch(path("d.jpg"));
     c->insertPath(path("d.jpg"));
+    ASSERT_TRUE(test::waitUntil([&] { return !c->hasPendingInserts(); }));
     EXPECT_EQ(names(*c), (QStringList{"a.jpg", "c.jpg", "d.jpg"}));
     blocking.release.release();
     ASSERT_TRUE(waitLoaded(*c, 2));

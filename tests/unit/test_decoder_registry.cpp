@@ -126,9 +126,57 @@ TEST(DecoderRegistry, AllBackendsFailReportsErrors) {
     reg.add(std::make_shared<FakeDecoder>("one", 100, "IMG", true));
     reg.add(std::make_shared<FakeDecoder>("two", 10, "IMG", true));
     QString err;
-    EXPECT_FALSE(reg.decode(img, {}, &err));
-    EXPECT_TRUE(err.contains("one")) << err.toStdString();
-    EXPECT_TRUE(err.contains("two")) << err.toStdString();
+    QString detail;
+    EXPECT_FALSE(reg.decode(img, {}, &err, &detail));
+    // F-FMT-02: the user sees one German reason without backend names; the backend
+    // errors are kept for diagnostics.
+    EXPECT_EQ(err, DecoderRegistry::messageDamaged()) << err.toStdString();
+    EXPECT_FALSE(err.contains("one")) << err.toStdString();
+    EXPECT_TRUE(detail.contains("one")) << detail.toStdString();
+    EXPECT_TRUE(detail.contains("two")) << detail.toStdString();
+}
+
+// Covers: F-FMT-02 (user-facing reasons, German, decided before any backend runs)
+TEST(DecoderRegistry, F_FMT_02_UserFacingErrors) {
+    QTemporaryDir dir;
+    DecoderRegistry reg;
+    auto any = std::make_shared<FakeDecoder>("ImageIO", 100, "");
+    reg.add(any);
+    QString err;
+    // 0 bytes: no backend is asked.
+    const QString empty = writeFile(dir, "empty.jpg", "");
+    EXPECT_FALSE(reg.decode(empty, {}, &err));
+    EXPECT_EQ(err, QString::fromUtf8("Die Datei ist leer."));
+    EXPECT_EQ(any->calls.load(), 0);
+    EXPECT_FALSE(reg.info(empty, &err));
+    EXPECT_EQ(err, QString::fromUtf8("Die Datei ist leer."));
+#ifdef Q_OS_UNIX
+    // Unreadable (no read permission).
+    const QString locked = writeFile(dir, "locked.jpg", "IMG1");
+    QFile::setPermissions(locked, QFileDevice::WriteOwner);
+    if (!QFile(locked).open(QIODevice::ReadOnly)) {
+        EXPECT_FALSE(reg.decode(locked, {}, &err));
+        EXPECT_EQ(err, QString::fromUtf8("Die Datei kann nicht gelesen werden."));
+        EXPECT_EQ(any->calls.load(), 0);
+    }
+    QFile::setPermissions(locked, QFileDevice::ReadOwner | QFileDevice::WriteOwner);
+#endif
+    // No backend for the content.
+    DecoderRegistry jpegOnly;
+    jpegOnly.add(std::make_shared<FakeDecoder>("Qt", 10, "\xFF\xD8\xFF"));
+    const QString text = writeFile(dir, "text.jpg", "just text");
+    EXPECT_FALSE(jpegOnly.decode(text, {}, &err));
+    EXPECT_EQ(err, QString::fromUtf8("Das Dateiformat wird nicht unterstützt."));
+    // Backends fail: "beschädigt", without "Qt:" / "ImageIO:" prefixes.
+    DecoderRegistry failing;
+    failing.add(std::make_shared<FakeDecoder>("ImageIO", 100, "IMG", true));
+    failing.add(std::make_shared<FakeDecoder>("Qt", 10, "IMG", true));
+    const QString broken = writeFile(dir, "broken.jpg", "IMG1 truncated");
+    EXPECT_FALSE(failing.decode(broken, {}, &err));
+    EXPECT_EQ(err, QString::fromUtf8("Die Datei ist beschädigt oder unvollständig."));
+    EXPECT_FALSE(err.contains("ImageIO") || err.contains("Qt:"));
+    EXPECT_FALSE(failing.decode(dir.filePath("missing.jpg"), {}, &err));
+    EXPECT_EQ(err, QString::fromUtf8("Die Datei existiert nicht."));
 }
 
 // F-OPEN-06: support is decided by content (signature), not only by extension.

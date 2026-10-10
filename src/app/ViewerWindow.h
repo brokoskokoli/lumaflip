@@ -134,7 +134,7 @@ private:
     void trashNow(const QString& path);
     void switchFolder(int direction); // F-NAV-03 "nextFolder", Action::NextFolder/PreviousFolder
     void applyStatusBarVisibility();
-    void updateEmptyStyle();          // start screen readable on any background
+    void updateEmptyStyle(); // start screen readable on any background
     void onStageFailed(const QString& path, Quality quality, const QString& error);
     WrapMode wrapMode() const;
 
@@ -172,8 +172,8 @@ private:
     bool m_closed = false;
     bool m_fitToImagePending = false;
     bool m_accessPrivacy = false;
-    bool m_chromeShown = true;      // false: hidden in fullscreen until the mouse reaches an edge
-    quint64 m_copyToken = 0;        // latest ⌘C request
+    bool m_chromeShown = true; // false: hidden in fullscreen until the mouse reaches an edge
+    quint64 m_copyToken = 0;   // latest ⌘C request
     quint64 m_folderSwitchToken = 0;
     bool m_folderSwitchPending = false;
     QPushButton* m_openButton = nullptr;

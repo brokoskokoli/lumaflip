@@ -361,7 +361,8 @@ TEST_F(ImageProviderTest, FailureEmitsImageFailed) {
     provider->request("/f/bad.jpg", Quality::Screen, target, &clientA);
     ASSERT_TRUE(waitUntil([&] { return !failed.isEmpty(); }));
     EXPECT_EQ(failed[0].first, "/f/bad.jpg");
-    EXPECT_TRUE(failed[0].second.contains("kaputt"));
+    // User facing (F-FMT-02): no backend details; this virtual path does not exist.
+    EXPECT_EQ(failed[0].second, DecoderRegistry::messageMissing());
     lf::test::spin(100);
     EXPECT_EQ(failed.size(), 1); // reported once, not retried endlessly
     // A later request reports the known failure again.

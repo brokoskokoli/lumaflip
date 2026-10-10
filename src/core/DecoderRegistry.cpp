@@ -99,7 +99,8 @@ std::optional<T> tryBackends(const DecoderRegistry& reg, const QString& path, QS
         if (auto r = fn(*d, &err))
             return r;
         errors << err;
-        details << QStringLiteral("%1: %2").arg(d->name(), err.isEmpty() ? QStringLiteral("unknown error") : err);
+        details << QStringLiteral("%1: %2").arg(d->name(),
+                                                err.isEmpty() ? QStringLiteral("unknown error") : err);
     }
     const QString joined = details.join(QLatin1Char('\n'));
     qCDebug(lcDecode).noquote() << path << joined;
@@ -147,7 +148,8 @@ QList<std::shared_ptr<Decoder>> DecoderRegistry::candidates(const QString& path)
     return candidates(path, readHeader(path));
 }
 
-QList<std::shared_ptr<Decoder>> DecoderRegistry::candidates(const QString& path, const QByteArray& header) const {
+QList<std::shared_ptr<Decoder>> DecoderRegistry::candidates(const QString& path,
+                                                            const QByteArray& header) const {
     QList<std::shared_ptr<Decoder>> result;
     for (const auto& d : m_decoders) {
         if (d->canDecode(path, header))
@@ -180,8 +182,8 @@ std::optional<ImageInfo> DecoderRegistry::info(const QString& path, QString* err
                                   [&](Decoder& d, QString* err) { return d.info(path, err); });
 }
 
-std::optional<DecodedImage> DecoderRegistry::decode(const QString& path, const DecodeRequest& req, QString* error,
-                                                    QString* detail) const {
+std::optional<DecodedImage> DecoderRegistry::decode(const QString& path, const DecodeRequest& req,
+                                                    QString* error, QString* detail) const {
     return tryBackends<DecodedImage>(*this, path, error, detail,
                                      [&](Decoder& d, QString* err) -> std::optional<DecodedImage> {
                                          auto r = d.decode(path, req, err);

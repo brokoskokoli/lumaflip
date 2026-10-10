@@ -400,8 +400,8 @@ struct ImageProvider::Private {
         DecodeRequest req;
         req.maxPixelSize = job.key.px;
         req.preferEmbeddedPreview =
-            job.key.quality == Quality::Preview ||
-            (rawEmbeddedOnly.load(std::memory_order_relaxed) && isRawSuffix(QFileInfo(job.key.path).suffix().toLower()));
+            job.key.quality == Quality::Preview || (rawEmbeddedOnly.load(std::memory_order_relaxed) &&
+                                                    isRawSuffix(QFileInfo(job.key.path).suffix().toLower()));
         QString error;
         DecodedImagePtr result;
         if (auto img = registry.decode(job.key.path, req, &error))
