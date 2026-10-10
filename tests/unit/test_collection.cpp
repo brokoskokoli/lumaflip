@@ -90,7 +90,7 @@ TEST_F(CollectionTest, F_OPEN_06_EnumerateFiltersHiddenPackagesAndNonImages) {
     touch(path(".hidden.jpg"));
     touch(path("._a.jpg")); // AppleDouble
     touch(path("notes.txt"));
-#ifdef Q_OS_DARWIN
+#if defined(Q_OS_DARWIN) && !defined(LF_GENERIC_PLATFORM) // ImageIO decides the suffixes
     touch(path("layers.xcf")); // no backend on macOS (F-OPEN-06)
     touch(path("doc.pdf"));
 #endif

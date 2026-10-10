@@ -2,7 +2,7 @@
 
 # ---- lf_core: platform-neutral core + platform adapters (static library) ----
 file(GLOB LF_CORE_SOURCES CONFIGURE_DEPENDS core/*.cpp core/*.h)
-if(APPLE)
+if(NOT LF_GENERIC_PLATFORM)
   file(GLOB LF_PLATFORM_SOURCES CONFIGURE_DEPENDS platform/mac/*.mm platform/mac/*.cpp platform/mac/*.h)
 else()
   file(GLOB LF_PLATFORM_SOURCES CONFIGURE_DEPENDS platform/generic/*.cpp platform/generic/*.h)
@@ -14,12 +14,18 @@ target_include_directories(lf_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(lf_core
   PUBLIC Qt6::Core Qt6::Gui Qt6::Concurrent Qt6::Svg
   PRIVATE lf_warnings)
-if(APPLE)
+if(LF_GENERIC_PLATFORM)
+  target_compile_definitions(lf_core PUBLIC LF_GENERIC_PLATFORM=1)
+elseif(APPLE)
   target_link_libraries(lf_core PUBLIC
     "-framework Foundation" "-framework AppKit" "-framework ImageIO"
     "-framework CoreGraphics" "-framework CoreServices" "-framework UniformTypeIdentifiers"
     "-framework QuartzCore" "-framework Metal")
   target_compile_options(lf_core PRIVATE $<$<COMPILE_LANGUAGE:OBJCXX>:-fobjc-arc>)
+endif()
+
+if(NOT LF_BUILD_UI)
+  return() # core only (Linux CI, LF_FORCE_GENERIC_PLATFORM)
 endif()
 
 # ---- lf_ui: widgets (static library so integration tests can link it) ----

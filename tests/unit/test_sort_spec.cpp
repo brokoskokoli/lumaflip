@@ -57,7 +57,7 @@ TEST(ImageFormats, F_OPEN_06_KnownSuffixes) {
 // formats nobody can decode (GIMP, Krita, OpenRaster, PCX, Sigma X3F, ...) were listed and
 // produced error cards.
 TEST(ImageFormats, F_OPEN_06_OnlySuffixesWithBackend) {
-#ifdef Q_OS_DARWIN
+#if defined(Q_OS_DARWIN) && !defined(LF_GENERIC_PLATFORM) // ImageIO decides the suffixes
     for (const char* s : {"jpg", "jpeg", "jfif", "heic", "heif", "cr3", "jxl", "avif", "dng", "nef", "png",
                           "svg", "svgz", "tif", "webp"})
         EXPECT_TRUE(isImageSuffix(QString::fromLatin1(s))) << s;
@@ -67,6 +67,12 @@ TEST(ImageFormats, F_OPEN_06_OnlySuffixesWithBackend) {
     EXPECT_TRUE(hasImageSuffix("IMG_0001.HEIC"));
     for (const QString& s : imageSuffixes())
         EXPECT_EQ(s, s.toLower());
+#elif defined(Q_OS_DARWIN)
+    // LF_FORCE_GENERIC_PLATFORM on macOS: ImageFormats still adds every suffix the
+    // registry knows (incl. all Qt image plugins), so only check the defaults are in.
+    const QStringList all = imageSuffixes();
+    for (const QString& s : defaultImageSuffixes())
+        EXPECT_TRUE(all.contains(s)) << s.toStdString();
 #else
     EXPECT_EQ(imageSuffixes(), defaultImageSuffixes());
 #endif

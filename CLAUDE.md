@@ -9,6 +9,10 @@ Bildbetrachter für macOS (später Windows/Linux). Die verbindliche Spezifikatio
 tools/check.sh --quick          # Build + alle Tests (schnell, vor jedem Commit)
 tools/check.sh --stage M1       # alle Pflichtprüfungen inkl. Format, SPDX, Spec-Abdeckung, Benchmarks
 tools/check.sh --quick --sanitize   # ASan/UBSan
+tools/check.sh --format-all     # clang-format für alle Dateien (Standard: nur geänderte Zeilen ggü. main)
+tools/check.sh --quick --tidy   # zusätzlich clang-tidy (.clang-tidy) auf geänderten Dateien, falls installiert
+python3 tools/spec_coverage.py --verbose   # wo welche Anforderungs-ID getestet wird
+cmake -B build/generic -DLF_FORCE_GENERIC_PLATFORM=ON …  # Core mit src/platform/generic (wie Linux-CI)
 open build/check/src/Lumaflip.app --args <bild>   # App starten
 ```
 
@@ -22,7 +26,7 @@ Bauverzeichnisse liegen unter `build/` – nicht löschen, `cmake --fresh` verwe
 | `src/core/` | Plattformneutraler Kern (C++20, nur QtCore/QtGui): Collection, Sortierung, Decoder-Registry, ImageProvider (Prefetch/Cache), FileOps, Settings, InputBindings, .DS_Store-Parser |
 | `src/core/Platform.h` | Plattform-Schnittstellen + Fabrikfunktionen |
 | `src/platform/mac/` | macOS-Implementierungen in Objective-C++ (`.mm`, ARC): ImageIO-Decoder, Finder-Sortierung, Namensvergleich, Papierkorb, FSEvents, Shell |
-| `src/platform/generic/` | Portable Fallbacks (für spätere Windows/Linux-Builds; werden auf macOS nicht gebaut) |
+| `src/platform/generic/` | Portable Fallbacks (Linux-CI baut damit den Core ohne App, `-DLF_BUILD_UI=OFF`; auf macOS nur mit `-DLF_FORCE_GENERIC_PLATFORM=ON`) |
 | `src/app/` | Qt-Widgets-UI: Application, ViewerWindow, ImageView (QRhi), Panels, Einstellungsdialog. `main.cpp` nur Einstieg |
 | `src/app/shaders/` | GLSL-Shader (`qt_add_shaders`, Präfix `/shaders`) |
 | `tests/unit/` | GoogleTest, linkt `lf_core` (ein Binary) |
@@ -39,7 +43,8 @@ Neue Quelldateien werden per Glob automatisch gebaut (CMake `CONFIGURE_DEPENDS`)
 - Jede Datei beginnt mit `// SPDX-License-Identifier: GPL-3.0-or-later`.
 - UI-Texte auf Deutsch (später übersetzbar: `tr()` verwenden).
 - **Rückverfolgbarkeit:** Tests nennen die Anforderungs-ID im Namen, z. B.
-  `TEST(SortEngine, F_SORT_01_FinderNameOrder)` oder `void F_NAV_01_arrowKeys();`.
+  `TEST(SortEngine, F_SORT_01_FinderNameOrder)`, `void F_NAV_01_arrowKeys();` oder
+  `LF_BENCH(P_05_…)`. Nur Testnamen zählen, keine Kommentare.
   Nicht automatisch testbare Anforderungen kommen mit Begründung in `docs/MANUAL_CHECKS.md`.
 - Die GUI blockiert nie: Dateisystem, Dekodierung und Metadaten nur in Worker-Threads (QThreadPool/QtConcurrent).
 - Fehler sichtbar machen statt verschlucken (Fehlerkarte, Statusmeldung).
