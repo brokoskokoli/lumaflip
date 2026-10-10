@@ -184,8 +184,7 @@ bool replaceFile(const QString& replacement, const QString& target, bool keepMod
             return false;
         }
         reportDurabilityStep(DurabilityStep::FullSync, replacement);
-        const QDateTime mtime =
-            keepModificationDate ? orig.lastModified() : QFileInfo(replacement).lastModified();
+        const QDateTime mtime = keepModificationDate ? orig.lastModified() : QDateTime::currentDateTimeUtc();
         QFile in(replacement), out(target);
         if (!in.open(QIODevice::ReadOnly) || !out.open(QIODevice::ReadWrite)) {
             setError(error, Tr::tr("Die Datei kann nicht geschrieben werden."));
@@ -204,10 +203,12 @@ bool replaceFile(const QString& replacement, const QString& target, bool keepMod
         return true;
     }
     QFile::setPermissions(replacement, QFile::permissions(target));
-    if (keepModificationDate) {
+    {
+        // Kept on request; otherwise "now" (the replacement may carry the original's date).
         QFile f(replacement);
         if (f.open(QIODevice::ReadWrite))
-            f.setFileTime(orig.lastModified(), QFileDevice::FileModificationTime);
+            f.setFileTime(keepModificationDate ? orig.lastModified() : QDateTime::currentDateTimeUtc(),
+                          QFileDevice::FileModificationTime);
     }
     if (!syncFile(replacement)) {
         setError(error, Tr::tr("Die neue Datei konnte nicht gesichert werden."));

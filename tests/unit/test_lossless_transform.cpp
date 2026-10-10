@@ -9,6 +9,7 @@
 
 #include <QBuffer>
 #include <QCryptographicHash>
+#include <QDateTime>
 #include <QDir>
 #include <QFile>
 #include <QImageReader>
@@ -22,6 +23,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/xattr.h>
+#include <unistd.h>
 #endif
 
 using namespace lf;
@@ -362,6 +364,57 @@ TEST(RotationSave, F_EDIT_02_AtomicWritePreservesXattrsAndTags) {
     EXPECT_EQ(orientationOf(path), 6);
     // No temporary file is left behind.
     EXPECT_EQ(QDir(dir.path()).entryList(QDir::Files | QDir::Hidden), QStringList{"tagged.jpg"});
+}
+
+// With "keep modification date" off the saved file gets the current time - also when the
+// orientation is written by ImageIO's metadata copy, which carries the original's dates
+// over to the new file (PNG/HEIC/TIFF), and in the hard link path (contents copied into
+// the existing inode).
+TEST(RotationSave, F_EDIT_02_KeepModDateOffUpdatesMtime) {
+    LF_REQUIRE_CORPUS();
+    const struct timespec old[2] = {{1'500'000'000, 0}, {1'500'000'000, 0}};
+    auto mtimeOf = [](const QString& path) {
+        struct stat st{};
+        stat(QFile::encodeName(path).constData(), &st);
+        return qint64(st.st_mtimespec.tv_sec);
+    };
+    for (const char* name : {"srgb.png", "still.heic", "orient_1.jpg"}) {
+        for (const bool hardLink : {false, true}) {
+            SCOPED_TRACE(testing::Message() << name << (hardLink ? " (hard link)" : ""));
+            if (!QFileInfo::exists(corpusFile(QString::fromLatin1(name))))
+                continue;
+            QTemporaryDir dir;
+            const QString path = dir.filePath(QString::fromLatin1(name));
+            ASSERT_TRUE(QFile::copy(corpusFile(QString::fromLatin1(name)), path));
+            const QByteArray p = QFile::encodeName(path);
+            ASSERT_EQ(utimensat(AT_FDCWD, p.constData(), old, 0), 0);
+            if (hardLink)
+                ASSERT_EQ(link(p.constData(), QFile::encodeName(dir.filePath("other")).constData()), 0);
+            const qint64 start = QDateTime::currentSecsSinceEpoch();
+
+            RotationRequest r;
+            r.path = path;
+            r.quarterTurnsCW = 1;
+            r.keepModificationDate = false;
+            const RotationPlan plan = planRotationSave(r);
+            ASSERT_EQ(plan.status, RotationPlan::Ready) << plan.message.toStdString();
+            ASSERT_EQ(executeRotationSave(r, plan, plan.method), QString());
+            EXPECT_GE(mtimeOf(path), start - 2) << "method " << int(plan.method);
+            if (hardLink)
+                EXPECT_EQ(mtimeOf(dir.filePath("other")), mtimeOf(path));
+        }
+    }
+    // Directly: a replacement that carries an old date (as ImageIO's copy does).
+    QTemporaryDir dir;
+    const QString target = dir.filePath("t.bin"), repl = dir.filePath("r.bin");
+    ASSERT_TRUE(writeFile(target, "old"));
+    ASSERT_TRUE(writeFile(repl, "new"));
+    ASSERT_EQ(utimensat(AT_FDCWD, QFile::encodeName(repl).constData(), old, 0), 0);
+    const qint64 start = QDateTime::currentSecsSinceEpoch();
+    QString error;
+    ASSERT_TRUE(platform::replaceFile(repl, target, false, &error)) << error.toStdString();
+    EXPECT_GE(mtimeOf(target), start - 2);
+    EXPECT_EQ(readFile(target), QByteArray("new"));
 }
 #endif
 
