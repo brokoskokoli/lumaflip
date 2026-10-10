@@ -39,14 +39,15 @@ public:
     explicit ErrorCard(QWidget* parent) : QFrame(parent) {
         setObjectName(QStringLiteral("lfErrorCard"));
         setAttribute(Qt::WA_StyledBackground);
-        setStyleSheet(QStringLiteral("#lfErrorCard { background: rgba(20, 20, 20, 225); border-radius: 12px; "
-                                     "border: 1px solid rgba(255, 255, 255, 40); }"
-                                     "#lfErrorCard QLabel { color: #f2f2f2; background: transparent; }"
-                                     "#lfErrorCard QPushButton { color: #f2f2f2; background: rgba(255, 255, 255, 28); "
-                                     "border: 1px solid rgba(255, 255, 255, 90); border-radius: 6px; "
-                                     "padding: 4px 14px; }"
-                                     "#lfErrorCard QPushButton:hover { background: rgba(255, 255, 255, 50); }"
-                                     "#lfErrorCard QPushButton:pressed { background: rgba(255, 255, 255, 80); }"));
+        setStyleSheet(
+            QStringLiteral("#lfErrorCard { background: rgba(20, 20, 20, 225); border-radius: 12px; "
+                           "border: 1px solid rgba(255, 255, 255, 40); }"
+                           "#lfErrorCard QLabel { color: #f2f2f2; background: transparent; }"
+                           "#lfErrorCard QPushButton { color: #f2f2f2; background: rgba(255, 255, 255, 28); "
+                           "border: 1px solid rgba(255, 255, 255, 90); border-radius: 6px; "
+                           "padding: 4px 14px; }"
+                           "#lfErrorCard QPushButton:hover { background: rgba(255, 255, 255, 50); }"
+                           "#lfErrorCard QPushButton:pressed { background: rgba(255, 255, 255, 80); }"));
         auto* layout = new QVBoxLayout(this);
         layout->setContentsMargins(24, 20, 24, 20);
         layout->setSpacing(8);
@@ -65,7 +66,7 @@ public:
         m_detail->setTextInteractionFlags(Qt::TextSelectableByMouse);
         m_action = new QPushButton(this);
         m_action->setObjectName(QStringLiteral("lfErrorAction"));
-        m_action->setFocusPolicy(Qt::NoFocus);  // arrow keys keep flipping (F-FMT-02)
+        m_action->setFocusPolicy(Qt::NoFocus); // arrow keys keep flipping (F-FMT-02)
         m_action->hide();
         layout->addWidget(m_title);
         layout->addWidget(m_detail);
@@ -167,8 +168,9 @@ struct ImageView::Private {
     QColor resolveBackground(bool* checker) const {
         QString v = background.trimmed().toLower();
         if (v == QLatin1String("system")) {
-            v = QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Light ? QStringLiteral("light")
-                                                                                       : QStringLiteral("dark");
+            v = QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Light
+                    ? QStringLiteral("light")
+                    : QStringLiteral("dark");
         }
         QColor base = kDark;
         *checker = false;
@@ -226,7 +228,8 @@ struct ImageView::Private {
                 trackpadAccum = {};
                 trackpadFired = false;
             }
-            const QPointF delta = e->pixelDelta().isNull() ? QPointF(e->angleDelta()) / 8.0 : QPointF(e->pixelDelta());
+            const QPointF delta =
+                e->pixelDelta().isNull() ? QPointF(e->angleDelta()) / 8.0 : QPointF(e->pixelDelta());
             const bool commandLike = mods & (Qt::ControlModifier | Qt::AltModifier | Qt::MetaModifier);
             if (!commandLike && image && model.isZoomed()) {
                 // Two finger scroll pans; macOS supplies momentum events (F-VIEW-04).
@@ -262,7 +265,7 @@ struct ImageView::Private {
             return true;
         wheelAccum -= whole * 120.0;
         InputEvent ev = makeEvent(InputKind::Wheel, mods);
-        ev.wheelSteps = -whole;  // +down / -up
+        ev.wheelSteps = -whole; // +down / -up
         ev.atScrollEdge = model.atEdge(ev.wheelSteps > 0 ? Qt::BottomEdge : Qt::TopEdge);
         forward(ev, e->position());
         return true;
@@ -286,7 +289,8 @@ struct ImageView::Private {
         case Qt::SwipeNativeGesture: {
             // Qt reports the swipe as an angle: 0 = right, 180 = left.
             InputEvent ev = makeEvent(InputKind::Swipe, e->modifiers());
-            ev.swipeDirection = std::abs(e->value() - 180.0) < 1.0 ? -1 : (std::abs(e->value()) < 1.0 ? 1 : 0);
+            ev.swipeDirection =
+                std::abs(e->value() - 180.0) < 1.0 ? -1 : (std::abs(e->value()) < 1.0 ? 1 : 0);
             if (ev.swipeDirection != 0)
                 forward(ev, pos);
             return true;
@@ -330,7 +334,7 @@ struct ImageView::Private {
             if (!dragging && (pos - pressPos).manhattanLength() >= QApplication::startDragDistance()) {
                 dragging = true;
                 if (altDrag)
-                    emit q->dragOutRequested();  // F-IN-14: ⌥-drag = drag-out
+                    emit q->dragOutRequested(); // F-IN-14: ⌥-drag = drag-out
                 updateCursor();
             }
             if (dragging && !altDrag) {
@@ -352,7 +356,7 @@ struct ImageView::Private {
             if (e->button() == Qt::LeftButton) {
                 leftDown = true;
                 dragging = false;
-                suppressClick = true;  // the release after a double click is not a click
+                suppressClick = true; // the release after a double click is not a click
                 pressPos = lastPos = pos;
                 forward(makeEvent(InputKind::DoubleClick, e->modifiers()), pos);
                 return true;
@@ -380,7 +384,9 @@ ImageView::ImageView(QWidget* parent) : QWidget(parent), d(new Private) {
     d->syncGeometry();
 }
 
-ImageView::~ImageView() { delete d; }
+ImageView::~ImageView() {
+    delete d;
+}
 
 void ImageView::setImage(DecodedImagePtr image, bool sameFile) {
     if (!image || image->image.isNull()) {
@@ -421,11 +427,17 @@ void ImageView::showError(const QString& title, const QString& detail, const QSt
     d->sync();
 }
 
-bool ImageView::isShowingError() const { return !d->card->isHidden(); }
+bool ImageView::isShowingError() const {
+    return !d->card->isHidden();
+}
 
-DecodedImagePtr ImageView::image() const { return d->image; }
+DecodedImagePtr ImageView::image() const {
+    return d->image;
+}
 
-void ImageView::setPreloadImages(const QList<DecodedImagePtr>& images) { d->canvas->setPreload(images); }
+void ImageView::setPreloadImages(const QList<DecodedImagePtr>& images) {
+    d->canvas->setPreload(images);
+}
 
 void ImageView::setZoomMode(ZoomMode mode) {
     d->syncGeometry();
@@ -433,9 +445,13 @@ void ImageView::setZoomMode(ZoomMode mode) {
     d->sync();
 }
 
-ZoomMode ImageView::zoomMode() const { return d->model.mode(); }
+ZoomMode ImageView::zoomMode() const {
+    return d->model.mode();
+}
 
-double ImageView::zoomFactor() const { return d->model.factor(); }
+double ImageView::zoomFactor() const {
+    return d->model.factor();
+}
 
 void ImageView::setZoomFactor(double factor, QPointF anchorInWidget) {
     d->model.setFactor(factor, d->toDevice(anchorInWidget));
@@ -467,9 +483,13 @@ void ImageView::toggleFitActual(QPointF anchorInWidget) {
     d->sync();
 }
 
-void ImageView::setZoomLocked(bool locked) { d->model.setZoomLocked(locked); }
+void ImageView::setZoomLocked(bool locked) {
+    d->model.setZoomLocked(locked);
+}
 
-bool ImageView::zoomLocked() const { return d->model.zoomLocked(); }
+bool ImageView::zoomLocked() const {
+    return d->model.zoomLocked();
+}
 
 void ImageView::panBy(QPointF deltaInWidget) {
     d->model.panBy(d->toDevice(deltaInWidget));
@@ -505,16 +525,22 @@ void ImageView::scrollToBottom() {
     d->sync();
 }
 
-bool ImageView::isZoomed() const { return d->image && d->model.isZoomed(); }
+bool ImageView::isZoomed() const {
+    return d->image && d->model.isZoomed();
+}
 
-bool ImageView::atEdge(Qt::Edge edge) const { return !d->image || d->model.atEdge(edge); }
+bool ImageView::atEdge(Qt::Edge edge) const {
+    return !d->image || d->model.atEdge(edge);
+}
 
 void ImageView::setRotation(int quarterTurnsClockwise) {
     d->model.setRotation(quarterTurnsClockwise);
     d->sync();
 }
 
-int ImageView::rotation() const { return d->model.rotation(); }
+int ImageView::rotation() const {
+    return d->model.rotation();
+}
 
 void ImageView::setFlip(bool horizontal, bool vertical) {
     d->model.setFlip(horizontal, vertical);
@@ -532,7 +558,9 @@ QColor ImageView::backgroundColor() const {
     return checker ? kChecker1 : base;
 }
 
-void ImageView::setUpscaleNearest(bool nearest) { d->canvas->setUpscaleNearest(nearest); }
+void ImageView::setUpscaleNearest(bool nearest) {
+    d->canvas->setUpscaleNearest(nearest);
+}
 
 void ImageView::setActualSizeInDevicePixels(bool devicePixels) {
     d->model.setActualSizeInDevicePixels(devicePixels);
@@ -544,9 +572,13 @@ void ImageView::setOutputColorSpace(const QColorSpace& colorSpace) {
     d->updateOutputColorSpace();
 }
 
-QColorSpace ImageView::outputColorSpace() const { return d->canvas->outputColorSpace(); }
+QColorSpace ImageView::outputColorSpace() const {
+    return d->canvas->outputColorSpace();
+}
 
-QSize ImageView::desiredDecodeSize() const { return d->model.desiredDecodeSize(); }
+QSize ImageView::desiredDecodeSize() const {
+    return d->model.desiredDecodeSize();
+}
 
 bool ImageView::event(QEvent* event) {
     switch (event->type()) {
@@ -587,7 +619,7 @@ bool ImageView::eventFilter(QObject* watched, QEvent* event) {
             break;
         case QEvent::Wheel:
             if (d->handleWheel(static_cast<QWheelEvent*>(event))) {
-                event->accept();  // otherwise QApplication propagates it to the parent
+                event->accept(); // otherwise QApplication propagates it to the parent
                 return true;
             }
             break;
@@ -629,16 +661,25 @@ void ImageView::keyPressEvent(QKeyEvent* event) {
     InputEvent ev = d->makeEvent(InputKind::Key, event->modifiers());
     ev.key = key;
     switch (key) {
-    case Qt::Key_Right: ev.atScrollEdge = atEdge(Qt::RightEdge); break;
-    case Qt::Key_Left: ev.atScrollEdge = atEdge(Qt::LeftEdge); break;
+    case Qt::Key_Right:
+        ev.atScrollEdge = atEdge(Qt::RightEdge);
+        break;
+    case Qt::Key_Left:
+        ev.atScrollEdge = atEdge(Qt::LeftEdge);
+        break;
     case Qt::Key_Up:
     case Qt::Key_PageUp:
-    case Qt::Key_Home: ev.atScrollEdge = atEdge(Qt::TopEdge); break;
+    case Qt::Key_Home:
+        ev.atScrollEdge = atEdge(Qt::TopEdge);
+        break;
     case Qt::Key_Down:
     case Qt::Key_PageDown:
     case Qt::Key_End:
-    case Qt::Key_Space: ev.atScrollEdge = atEdge(Qt::BottomEdge); break;
-    default: break;
+    case Qt::Key_Space:
+        ev.atScrollEdge = atEdge(Qt::BottomEdge);
+        break;
+    default:
+        break;
     }
     d->forward(ev, mapFromGlobal(QCursor::pos()));
     event->accept();

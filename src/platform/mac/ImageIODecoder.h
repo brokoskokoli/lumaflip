@@ -32,7 +32,7 @@
 namespace lf {
 
 class ImageIODecoder final : public Decoder {
-  public:
+public:
     QString name() const override { return QStringLiteral("ImageIO"); }
     int priority() const override { return 100; }
 

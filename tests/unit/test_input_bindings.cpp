@@ -89,9 +89,9 @@ struct Row {
     const char* what;
 };
 
-constexpr auto Cmd = Qt::ControlModifier;  // ⌘ on macOS
-constexpr auto Opt = Qt::AltModifier;      // ⌥
-constexpr auto Shift = Qt::ShiftModifier;  // ⇧
+constexpr auto Cmd = Qt::ControlModifier; // ⌘ on macOS
+constexpr auto Opt = Qt::AltModifier;     // ⌥
+constexpr auto Shift = Qt::ShiftModifier; // ⇧
 
 // The SPEC 4.14 slot table: every slot x every choice with the expected action(s).
 std::vector<Row> slotTable() {
@@ -263,7 +263,9 @@ protected:
 } // namespace
 
 // F-IN-01
-TEST_F(InputBindingsTest, F_IN_01_Wheel) { runSlot("wheel"); }
+TEST_F(InputBindingsTest, F_IN_01_Wheel) {
+    runSlot("wheel");
+}
 // F-IN-02
 TEST_F(InputBindingsTest, F_IN_02_WheelWithModifiers) {
     runSlot("wheel.cmd");
@@ -308,30 +310,56 @@ TEST_F(InputBindingsTest, F_IN_03_WheelTuning) {
     EXPECT_EQ(b.zoomStepPercent(), 50);
 }
 // F-IN-04
-TEST_F(InputBindingsTest, F_IN_04_PageUpDown) { runSlot("pageUpDown"); }
+TEST_F(InputBindingsTest, F_IN_04_PageUpDown) {
+    runSlot("pageUpDown");
+}
 // F-IN-05
-TEST_F(InputBindingsTest, F_IN_05_HomeEnd) { runSlot("homeEnd"); }
+TEST_F(InputBindingsTest, F_IN_05_HomeEnd) {
+    runSlot("homeEnd");
+}
 // F-IN-06
-TEST_F(InputBindingsTest, F_IN_06_Space) { runSlot("space"); }
+TEST_F(InputBindingsTest, F_IN_06_Space) {
+    runSlot("space");
+}
 // F-IN-07
-TEST_F(InputBindingsTest, F_IN_07_ArrowsWhenZoomed) { runSlot("arrowsZoomed"); }
+TEST_F(InputBindingsTest, F_IN_07_ArrowsWhenZoomed) {
+    runSlot("arrowsZoomed");
+}
 // F-IN-08
-TEST_F(InputBindingsTest, F_IN_08_UpDown) { runSlot("upDown"); }
+TEST_F(InputBindingsTest, F_IN_08_UpDown) {
+    runSlot("upDown");
+}
 // F-IN-09
-TEST_F(InputBindingsTest, F_IN_09_Click) { runSlot("click"); }
+TEST_F(InputBindingsTest, F_IN_09_Click) {
+    runSlot("click");
+}
 // F-IN-10
-TEST_F(InputBindingsTest, F_IN_10_DoubleClick) { runSlot("doubleClick"); }
+TEST_F(InputBindingsTest, F_IN_10_DoubleClick) {
+    runSlot("doubleClick");
+}
 // F-IN-11
-TEST_F(InputBindingsTest, F_IN_11_MiddleClick) { runSlot("middleClick"); }
+TEST_F(InputBindingsTest, F_IN_11_MiddleClick) {
+    runSlot("middleClick");
+}
 // F-IN-12
-TEST_F(InputBindingsTest, F_IN_12_BackForwardButtons) { runSlot("backForward"); }
+TEST_F(InputBindingsTest, F_IN_12_BackForwardButtons) {
+    runSlot("backForward");
+}
 // F-IN-13
-TEST_F(InputBindingsTest, F_IN_13_Swipe) { runSlot("swipe"); }
+TEST_F(InputBindingsTest, F_IN_13_Swipe) {
+    runSlot("swipe");
+}
 // F-IN-14
-TEST_F(InputBindingsTest, F_IN_14_Drag) { runSlot("drag"); }
+TEST_F(InputBindingsTest, F_IN_14_Drag) {
+    runSlot("drag");
+}
 // F-IN-15
-TEST_F(InputBindingsTest, F_IN_15_Esc) { runSlot("esc"); }
-TEST_F(InputBindingsTest, RatingKeysSlot) { runSlot("ratingKeys"); }
+TEST_F(InputBindingsTest, F_IN_15_Esc) {
+    runSlot("esc");
+}
+TEST_F(InputBindingsTest, RatingKeysSlot) {
+    runSlot("ratingKeys");
+}
 
 // F-IN-16
 TEST_F(InputBindingsTest, F_IN_16_EndOfCollectionMirrorsWrapMode) {
@@ -350,15 +378,24 @@ TEST_F(InputBindingsTest, F_IN_16_EndOfCollectionMirrorsWrapMode) {
 
 TEST_F(InputBindingsTest, SlotTableMatchesSpecDefaults) {
     const QHash<QString, QString> expected = {
-        {"wheel", "image"},          {"wheel.cmd", "zoom"},
-        {"wheel.alt", "scrollOrImage"}, {"wheel.shift", "scrollHorizontal"},
-        {"pageUpDown", "image"},     {"homeEnd", "image"},
-        {"space", "animationOrImage"}, {"arrowsZoomed", "image"},
-        {"upDown", "scrollOrImage"}, {"click", "none"},
-        {"doubleClick", "fullscreen"}, {"middleClick", "fitActual"},
-        {"backForward", "image"},    {"swipe", "image"},
-        {"drag", "pan"},             {"esc", "exitMode"},
-        {"endOfCollection", "stop"}, {"ratingKeys", "cullingOnly"},
+        {"wheel", "image"},
+        {"wheel.cmd", "zoom"},
+        {"wheel.alt", "scrollOrImage"},
+        {"wheel.shift", "scrollHorizontal"},
+        {"pageUpDown", "image"},
+        {"homeEnd", "image"},
+        {"space", "animationOrImage"},
+        {"arrowsZoomed", "image"},
+        {"upDown", "scrollOrImage"},
+        {"click", "none"},
+        {"doubleClick", "fullscreen"},
+        {"middleClick", "fitActual"},
+        {"backForward", "image"},
+        {"swipe", "image"},
+        {"drag", "pan"},
+        {"esc", "exitMode"},
+        {"endOfCollection", "stop"},
+        {"ratingKeys", "cullingOnly"},
     };
     InputBindings b;
     QSet<QString> seen;
@@ -369,7 +406,7 @@ TEST_F(InputBindingsTest, SlotTableMatchesSpecDefaults) {
         EXPECT_EQ(b.choice(s.id), s.defaultChoice) << s.id.toStdString();
         EXPECT_FALSE(s.label.isEmpty());
         EXPECT_EQ(s.choices.size(), s.choiceLabels.size());
-        EXPECT_EQ(s.choices.size(), s.choiceHelp.size());  // F-IN-17 help per choice
+        EXPECT_EQ(s.choices.size(), s.choiceHelp.size()); // F-IN-17 help per choice
         EXPECT_TRUE(s.choices.contains(s.defaultChoice));
     }
     EXPECT_EQ(seen.size(), expected.size());
@@ -383,12 +420,12 @@ TEST_F(InputBindingsTest, F_IN_18_Presets) {
     InputBindings::applyPreset("photographer");
     {
         InputBindings b;
-        EXPECT_EQ(b.resolve(wheelEv(-1)), Action::ZoomIn);       // wheel = zoom
+        EXPECT_EQ(b.resolve(wheelEv(-1)), Action::ZoomIn); // wheel = zoom
         // Rating keys "always" are not available before 1.0: the preset leaves the
         // culling-only default (digits keep zooming outside the culling mode).
         EXPECT_EQ(b.choice("ratingKeys"), "cullingOnly");
         EXPECT_EQ(b.resolve(keyEv(Qt::Key_3)), Action::ZoomActual);
-        EXPECT_EQ(b.resolve(keyEv(Qt::Key_0, Cmd)), Action::ZoomActual);  // ⌘0 still zooms
+        EXPECT_EQ(b.resolve(keyEv(Qt::Key_0, Cmd)), Action::ZoomActual); // ⌘0 still zooms
     }
     InputBindings::applyPreset("windows");
     {
@@ -458,7 +495,7 @@ TEST_F(InputBindingsTest, F_VIEW_02_ZoomShortcuts) {
     EXPECT_EQ(b.resolve(keyEv(Qt::Key_Equal, Cmd)), Action::ZoomIn);
     EXPECT_EQ(b.resolve(keyEv(Qt::Key_Minus, Cmd)), Action::ZoomOut);
     EXPECT_EQ(b.resolve(keyEv(Qt::Key_Plus)), Action::ZoomIn);
-    EXPECT_EQ(b.resolve(keyEv(Qt::Key_Plus, Shift)), Action::ZoomIn);  // "+" typed with ⇧
+    EXPECT_EQ(b.resolve(keyEv(Qt::Key_Plus, Shift)), Action::ZoomIn); // "+" typed with ⇧
     EXPECT_EQ(b.resolve(keyEv(Qt::Key_Minus)), Action::ZoomOut);
     EXPECT_EQ(b.resolve(keyEv(Qt::Key_1)), Action::ZoomFit);
     EXPECT_EQ(b.resolve(keyEv(Qt::Key_2)), Action::ZoomFillWidth);
@@ -485,7 +522,7 @@ TEST_F(InputBindingsTest, Keys_OptionArrowsPanWhenZoomed) {
 
 TEST_F(InputBindingsTest, Keys_FullScreen) {
     InputBindings b;
-    EXPECT_EQ(b.resolve(keyEv(Qt::Key_F, Cmd | Qt::MetaModifier)), Action::ToggleFullScreen);  // ⌃⌘F
+    EXPECT_EQ(b.resolve(keyEv(Qt::Key_F, Cmd | Qt::MetaModifier)), Action::ToggleFullScreen); // ⌃⌘F
     EXPECT_EQ(b.resolve(keyEv(Qt::Key_F)), Action::ToggleFullScreen);
     EXPECT_EQ(b.resolve(kindEv(InputKind::DoubleClick)), Action::ToggleFullScreen);
     EXPECT_EQ(b.resolve(keyEv(Qt::Key_Escape)), Action::ExitModeOrNothing);
@@ -543,8 +580,8 @@ TEST_F(InputBindingsTest, SPEC_5_2_DefaultShortcutTable) {
 TEST_F(InputBindingsTest, Keys_RatingKeysInCullingMode) {
     InputBindings b;
     const std::pair<int, Action> keys[] = {
-        {Qt::Key_0, Action::Rate0}, {Qt::Key_1, Action::Rate1}, {Qt::Key_2, Action::Rate2},
-        {Qt::Key_3, Action::Rate3}, {Qt::Key_4, Action::Rate4}, {Qt::Key_5, Action::Rate5},
+        {Qt::Key_0, Action::Rate0},    {Qt::Key_1, Action::Rate1},      {Qt::Key_2, Action::Rate2},
+        {Qt::Key_3, Action::Rate3},    {Qt::Key_4, Action::Rate4},      {Qt::Key_5, Action::Rate5},
         {Qt::Key_P, Action::RatePick}, {Qt::Key_X, Action::RateReject}, {Qt::Key_U, Action::RateClear},
     };
     for (const auto& [k, a] : keys)
@@ -556,7 +593,7 @@ TEST_F(InputBindingsTest, Keys_RatingKeysInCullingMode) {
 TEST_F(InputBindingsTest, F_SET_02_RebindAndConflicts) {
     InputBindings b;
     EXPECT_TRUE(b.conflicts().isEmpty());
-    b.setShortcut(Action::ToggleGrid, QKeySequence("T"));  // collides with filmstrip
+    b.setShortcut(Action::ToggleGrid, QKeySequence("T")); // collides with filmstrip
     auto c = b.conflicts();
     EXPECT_TRUE(c.contains(Action::ToggleGrid));
     EXPECT_TRUE(c.contains(Action::ToggleFilmstrip));

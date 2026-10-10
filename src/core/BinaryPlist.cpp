@@ -21,7 +21,7 @@ constexpr quint64 kMaxOutputBytes = 16u << 20;
 constexpr quint64 kNodeOverhead = 16; // bytes charged per node on top of its payload
 
 class Parser {
-  public:
+public:
     explicit Parser(const QByteArray& data)
         : d_(reinterpret_cast<const uchar*>(data.constData())), n_(data.size()) {}
 
@@ -57,7 +57,7 @@ class Parser {
         return v;
     }
 
-  private:
+private:
     const uchar* d_;
     quint64 n_;
     int offsetIntSize_ = 0;

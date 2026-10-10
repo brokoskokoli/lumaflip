@@ -6,8 +6,8 @@
 // translates Qt events into InputEvent and executes the returned Action.
 
 #include <QHash>
-#include <QList>
 #include <QKeySequence>
+#include <QList>
 #include <QString>
 #include <QStringList>
 #include <QVector>
@@ -16,62 +16,109 @@ namespace lf {
 
 enum class Action {
     None,
-    NextImage, PreviousImage, FirstImage, LastImage,
-    JumpForward, JumpBackward,            // n images (setting)
-    NextFolder, PreviousFolder,           // M3
-    NextPage, PreviousPage,               // multi-page
-    ZoomIn, ZoomOut, ZoomActual, ZoomFit, ZoomFillWidth, ToggleFitActualAtCursor, ToggleZoomLock,
-    ScrollUp, ScrollDown, ScrollLeft, ScrollRight, ScrollPageUp, ScrollPageDown, ScrollHome, ScrollEnd,
-    ToggleFullScreen, ExitModeOrNothing, ExitModeOrCloseWindow, CloseWindow,
-    ToggleAnimation, NextFrame, PreviousFrame,
+    NextImage,
+    PreviousImage,
+    FirstImage,
+    LastImage,
+    JumpForward,
+    JumpBackward, // n images (setting)
+    NextFolder,
+    PreviousFolder, // M3
+    NextPage,
+    PreviousPage, // multi-page
+    ZoomIn,
+    ZoomOut,
+    ZoomActual,
+    ZoomFit,
+    ZoomFillWidth,
+    ToggleFitActualAtCursor,
+    ToggleZoomLock,
+    ScrollUp,
+    ScrollDown,
+    ScrollLeft,
+    ScrollRight,
+    ScrollPageUp,
+    ScrollPageDown,
+    ScrollHome,
+    ScrollEnd,
+    ToggleFullScreen,
+    ExitModeOrNothing,
+    ExitModeOrCloseWindow,
+    CloseWindow,
+    ToggleAnimation,
+    NextFrame,
+    PreviousFrame,
     ToggleSlideshow,
-    RotateLeft, RotateRight, FlipHorizontal, FlipVertical,
-    Trash, Rename, RevealInFinder, CopyImage, CopyPath, OpenInEditor,
-    ToggleInfoPanel, ToggleFilmstrip, ToggleGrid, ShowShortcuts,
-    NewWindow, DuplicateWindow,
-    Magnifier,                            // hold
+    RotateLeft,
+    RotateRight,
+    FlipHorizontal,
+    FlipVertical,
+    Trash,
+    Rename,
+    RevealInFinder,
+    CopyImage,
+    CopyPath,
+    OpenInEditor,
+    ToggleInfoPanel,
+    ToggleFilmstrip,
+    ToggleGrid,
+    ShowShortcuts,
+    NewWindow,
+    DuplicateWindow,
+    Magnifier, // hold
     DragOut,
     StartPan,
     // appended (keep order above stable)
-    Rate0, Rate1, Rate2, Rate3, Rate4, Rate5, RatePick, RateReject, RateClear,  // F-CULL-01
-    Undo, Redo, OpenPreferences, CloseAllWindows,
+    Rate0,
+    Rate1,
+    Rate2,
+    Rate3,
+    Rate4,
+    Rate5,
+    RatePick,
+    RateReject,
+    RateClear, // F-CULL-01
+    Undo,
+    Redo,
+    OpenPreferences,
+    CloseAllWindows,
 };
 
-QString actionId(Action a);          // stable string id for settings ("nextImage")
+QString actionId(Action a); // stable string id for settings ("nextImage")
 Action actionFromId(const QString& id);
-QString actionLabel(Action a);       // German UI label
+QString actionLabel(Action a); // German UI label
 
 enum class InputKind { Key, Wheel, Click, DoubleClick, MiddleClick, BackButton, ForwardButton, Swipe, Drag };
 
 struct InputEvent {
     InputKind kind = InputKind::Key;
-    int key = 0;                 // Qt::Key for Key
+    int key = 0; // Qt::Key for Key
     Qt::KeyboardModifiers modifiers;
-    int wheelSteps = 0;          // +down/-up after accumulation (Wheel)
-    int swipeDirection = 0;      // -1 left, +1 right (Swipe)
-    bool zoomed = false;         // image larger than viewport
-    bool animated = false;       // current image is animated
-    bool atScrollEdge = false;   // for "scroll then flip" (F-IN-07)
+    int wheelSteps = 0;        // +down/-up after accumulation (Wheel)
+    int swipeDirection = 0;    // -1 left, +1 right (Swipe)
+    bool zoomed = false;       // image larger than viewport
+    bool animated = false;     // current image is animated
+    bool atScrollEdge = false; // for "scroll then flip" (F-IN-07)
     bool inCullingMode = false;
-    bool multiPage = false;      // current file has several pages (F-IN-04 "page")
-    bool inLeftHalf = false;     // click position (F-IN-09 "image": left half = previous)
+    bool multiPage = false;  // current file has several pages (F-IN-04 "page")
+    bool inLeftHalf = false; // click position (F-IN-09 "image": left half = previous)
 };
 
 // Configurable "slots" of SPEC 4.14 (F-IN-01..16). Each slot has a set of
 // allowed choices; the choice id is persisted under Settings key "input/<slot>".
 struct InputSlot {
-    QString id;                  // e.g. "wheel", "wheel.cmd", "pageUpDown", "space", ...
-    QString label;               // German
-    QStringList choices;         // choice ids
-    QStringList choiceLabels;    // German
-    QStringList choiceHelp;      // German one-line explanation per choice (F-IN-17)
+    QString id;               // e.g. "wheel", "wheel.cmd", "pageUpDown", "space", ...
+    QString label;            // German
+    QStringList choices;      // choice ids
+    QStringList choiceLabels; // German
+    QStringList choiceHelp;   // German one-line explanation per choice (F-IN-17)
     QString defaultChoice;
 };
 
 class InputBindings {
 public:
-    InputBindings();                        // loads from Settings::instance()
-    static const QVector<InputSlot>& inputSlots();  // ("slots" is a Qt keyword)
+    InputBindings();                               // loads from Settings::instance()
+    static const QVector<InputSlot>& inputSlots(); // ("slots" is a Qt keyword)
     // Presets (F-IN-18): "mac", "windows", "photographer". Choices that are not available
     // yet (isChoiceAvailable) are skipped: the slot gets its default instead.
     static void applyPreset(const QString& presetId);
@@ -83,16 +130,16 @@ public:
     static bool isActionAvailable(Action a);
 
     QString choice(const QString& slotId) const;
-    void setChoice(const QString& slotId, const QString& choiceId);  // persists
+    void setChoice(const QString& slotId, const QString& choiceId); // persists
 
     // Free key shortcuts (F-SET-02) for actions not covered by slots. An action can
     // have several alternative shortcuts (SPEC 5.2, e.g. Cmd+0 and "3").
-    static QVector<Action> allActions();     // every action except None
+    static QVector<Action> allActions(); // every action except None
     static QList<QKeySequence> defaultShortcuts(Action a);
-    QKeySequence shortcut(Action a) const;   // first (primary) shortcut
+    QKeySequence shortcut(Action a) const; // first (primary) shortcut
     QList<QKeySequence> shortcuts(Action a) const;
-    void setShortcut(Action a, const QKeySequence& seq);  // replaces all with one (empty = none)
-    void setShortcuts(Action a, const QList<QKeySequence>& seqs);  // persists
+    void setShortcut(Action a, const QKeySequence& seq);          // replaces all with one (empty = none)
+    void setShortcuts(Action a, const QList<QKeySequence>& seqs); // persists
     void resetShortcuts();
     // Actions whose shortcut collides with another action in the same context
     // (rating keys only apply in culling mode and never conflict with zoom digits).
@@ -106,7 +153,7 @@ public:
     int wheelStepsPerImage() const;
     int wheelMinIntervalMs() const;
     int zoomStepPercent() const;
-    int jumpSize() const;  // for JumpForward/JumpBackward
+    int jumpSize() const; // for JumpForward/JumpBackward
 
     void reload();
 

@@ -176,7 +176,7 @@ private:
     Quality m_shownQuality = Quality::Preview;
     bool m_shownFailed = false;
     bool m_shownStale = false; // the provider invalidated the shown file (replace on the next stage)
-    QStringList m_wanted; // prefetch window, current first
+    QStringList m_wanted;      // prefetch window, current first
     QString m_watchedFolder;
     int m_direction = 1; // last flip direction (prefetch, SPEC 7.1)
     int m_displayCount = 0;

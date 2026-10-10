@@ -30,7 +30,7 @@ class TestPreferences : public QObject {
         const int idx = combo->findData(value);
         QVERIFY(idx >= 0);
         combo->setCurrentIndex(idx);
-        emit combo->activated(idx);  // what a user selection emits
+        emit combo->activated(idx); // what a user selection emits
     }
     static void click(QWidget* w) {
         auto* b = qobject_cast<QAbstractButton*>(w);
@@ -57,8 +57,9 @@ private slots:
     void F_SET_01_allSections() {
         PreferencesDialog dlg;
         QCOMPARE(dlg.sectionCount(), 8);
-        const QStringList expected = {"Allgemein", "Fenster", "Anzeige", "Maus & Tastatur",
-                                      "Navigation & Sortierung", "Bewertung", "Formate", "Erweitert"};
+        const QStringList expected = {
+            "Allgemein", "Fenster", "Anzeige",  "Maus & Tastatur", "Navigation & Sortierung",
+            "Bewertung", "Formate", "Erweitert"};
         auto* toolbar = dlg.findChild<QToolBar*>("sectionToolbar");
         QVERIFY(toolbar);
         QCOMPARE(toolbar->actions().size(), 8);
@@ -66,7 +67,7 @@ private slots:
             QCOMPARE(dlg.sectionTitle(i), expected[i]);
             QCOMPARE(toolbar->actions().at(i)->text().replace("&&", "&"), expected[i]);
             QVERIFY(dlg.findChild<QScrollArea*>(QStringLiteral("section:%1").arg(i)));
-            QVERIFY(dlg.findChild<QPushButton*>(QStringLiteral("reset:%1").arg(i)));  // F-IN-17 per section
+            QVERIFY(dlg.findChild<QPushButton*>(QStringLiteral("reset:%1").arg(i))); // F-IN-17 per section
         }
         toolbar->actions().at(PreferencesDialog::Rating)->trigger();
         QCOMPARE(dlg.currentSection(), int(PreferencesDialog::Rating));
@@ -77,15 +78,18 @@ private slots:
             if (k.startsWith(key::ShortcutPrefix))
                 continue;
             if (k.startsWith(key::InputPrefix) && !k.contains("Tuning") && k != key::JumpSize) {
-                QVERIFY2(dlg.findChild<QComboBox*>("slot:" + k.mid(int(qstrlen(key::InputPrefix)))), qPrintable(k));
+                QVERIFY2(dlg.findChild<QComboBox*>("slot:" + k.mid(int(qstrlen(key::InputPrefix)))),
+                         qPrintable(k));
                 continue;
             }
             QVERIFY2(dlg.findChild<QWidget*>("setting:" + k), qPrintable(k));
         }
         // rating storage choices (settings only; the feature itself is M3)
         QVERIFY(dlg.findChild<QCheckBox*>(QStringLiteral("setting:") + key::RatingStoreSidecar)->isChecked());
-        QVERIFY(!dlg.findChild<QCheckBox*>(QStringLiteral("setting:") + key::RatingStoreEmbedded)->isChecked());
-        QVERIFY(!dlg.findChild<QCheckBox*>(QStringLiteral("setting:") + key::RatingStoreFinderTags)->isChecked());
+        QVERIFY(
+            !dlg.findChild<QCheckBox*>(QStringLiteral("setting:") + key::RatingStoreEmbedded)->isChecked());
+        QVERIFY(
+            !dlg.findChild<QCheckBox*>(QStringLiteral("setting:") + key::RatingStoreFinderTags)->isChecked());
     }
 
     void singleInstance() {
@@ -120,8 +124,9 @@ private slots:
         // endOfCollection mirrors the navigation setting
         choose(dlg.findChild<QComboBox*>("slot:endOfCollection"), "wrap");
         QCOMPARE(Settings::instance().value(key::WrapMode).toString(), QString("wrap"));
-        QCOMPARE(dlg.findChild<QComboBox*>(QStringLiteral("setting:") + key::WrapMode)->currentData().toString(),
-                 QString("wrap"));
+        QCOMPARE(
+            dlg.findChild<QComboBox*>(QStringLiteral("setting:") + key::WrapMode)->currentData().toString(),
+            QString("wrap"));
 
         // external change updates the UI
         Settings::instance().setValue("input/esc", "exitModeOrClose");
@@ -152,12 +157,14 @@ private slots:
         auto* t = dlg.shortcutTable();
         bool hasReturn = false;
         for (int c = 0; c < PreferencesDialog::MaxShortcutsPerAction; ++c)
-            hasReturn = hasReturn || edit(t, Action::ToggleFullScreen, c)->keySequence() == QKeySequence("Return");
+            hasReturn =
+                hasReturn || edit(t, Action::ToggleFullScreen, c)->keySequence() == QKeySequence("Return");
         QVERIFY(hasReturn);
         click(dlg.findChild<QPushButton*>("preset:mac"));
         for (const InputSlot& s : InputBindings::inputSlots())
             if (s.id != "endOfCollection")
-                QCOMPARE(dlg.findChild<QComboBox*>("slot:" + s.id)->currentData().toString(), s.defaultChoice);
+                QCOMPARE(dlg.findChild<QComboBox*>("slot:" + s.id)->currentData().toString(),
+                         s.defaultChoice);
         QCOMPARE(dlg.conflictCount(), 0);
     }
 
@@ -171,14 +178,16 @@ private slots:
         QCOMPARE(edit(t, Action::ZoomActual, 1)->keySequence(), QKeySequence("3"));
         QCOMPARE(dlg.conflictCount(), 0);
 
-        edit(t, Action::ToggleGrid, 0)->setKeySequence(QKeySequence("T"));  // = filmstrip
+        edit(t, Action::ToggleGrid, 0)->setKeySequence(QKeySequence("T")); // = filmstrip
         QCOMPARE(InputBindings().shortcut(Action::ToggleGrid), QKeySequence("T"));
         QVERIFY(conflictMarked(t, Action::ToggleGrid));
         QVERIFY(conflictMarked(t, Action::ToggleFilmstrip));
         QVERIFY(!conflictMarked(t, Action::ZoomFit));
         QCOMPARE(dlg.conflictCount(), 2);
         QVERIFY(dlg.findChild<QLabel*>("conflictLabel")->text().contains("doppelt"));
-        QVERIFY(t->item(rowOf(t, Action::ToggleGrid), 0)->toolTip().contains(actionLabel(Action::ToggleFilmstrip)));
+        QVERIFY(t->item(rowOf(t, Action::ToggleGrid), 0)
+                    ->toolTip()
+                    .contains(actionLabel(Action::ToggleFilmstrip)));
 
         // per-row reset restores the standard and clears the marking
         click(dlg.findChild<QWidget*>("resetShortcut:toggleGrid"));
@@ -204,9 +213,10 @@ private slots:
         click(dlg.findChild<QPushButton*>(QStringLiteral("reset:%1").arg(PreferencesDialog::Display)));
         QCOMPARE(Settings::instance().value(key::ZoomMode).toString(), QString("fit"));
         QCOMPARE(Settings::instance().value(key::Background).toString(), QString("dark"));
-        QCOMPARE(dlg.findChild<QComboBox*>(QStringLiteral("setting:") + key::ZoomMode)->currentData().toString(),
-                 QString("fit"));
-        QCOMPARE(Settings::instance().value(key::PrefetchAhead).toInt(), 9);  // other section untouched
+        QCOMPARE(
+            dlg.findChild<QComboBox*>(QStringLiteral("setting:") + key::ZoomMode)->currentData().toString(),
+            QString("fit"));
+        QCOMPARE(Settings::instance().value(key::PrefetchAhead).toInt(), 9); // other section untouched
         dlg.resetSection(PreferencesDialog::Input);
         QCOMPARE(Settings::instance().value("input/wheel").toString(), QString("image"));
         QCOMPARE(dlg.findChild<QComboBox*>("slot:wheel")->currentData().toString(), QString("image"));

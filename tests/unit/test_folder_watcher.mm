@@ -90,7 +90,7 @@ TEST(FolderWatcher, F_WIN_09_SharedStreamPerFolder) {
     auto w2 = createFolderWatcher();
     Counter c1(*w1), c2(*w2);
     w1->watch(dir.path());
-    w1->watch(dir.path());  // ref-counted
+    w1->watch(dir.path()); // ref-counted
     w2->watch(dir.path());
     EXPECT_EQ(mac::activeFolderStreamCount(), base + 1);
     settle(c1);
@@ -100,10 +100,10 @@ TEST(FolderWatcher, F_WIN_09_SharedStreamPerFolder) {
     ASSERT_TRUE(waitUntil([&] { return c1.count > 0 && c2.count > 0; }, 2000));
 
     w1->unwatch(dir.path());
-    EXPECT_EQ(mac::activeFolderStreamCount(), base + 1);  // w1 still holds one ref, w2 one
+    EXPECT_EQ(mac::activeFolderStreamCount(), base + 1); // w1 still holds one ref, w2 one
     w1->unwatch(dir.path());
-    EXPECT_EQ(mac::activeFolderStreamCount(), base + 1);  // w2 still watching
-    w2.reset();  // destruction releases its watches
+    EXPECT_EQ(mac::activeFolderStreamCount(), base + 1); // w2 still watching
+    w2.reset();                                          // destruction releases its watches
     EXPECT_EQ(mac::activeFolderStreamCount(), base);
 }
 

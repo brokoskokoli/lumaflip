@@ -9,10 +9,10 @@ namespace lf {
 
 namespace {
 constexpr double kEps = 1e-9;
-constexpr double kEdgeTolerance = 0.5;  // device px
+constexpr double kEdgeTolerance = 0.5; // device px
 
 constexpr std::array<double, 25> kLadder = {
-    0.01, 0.02, 0.03, 0.05, 1.0 / 16, 1.0 / 12, 0.125, 1.0 / 6, 0.25, 1.0 / 3, 0.5, 2.0 / 3, 1.0,
+    0.01, 0.02, 0.03, 0.05, 1.0 / 16, 1.0 / 12, 0.125, 1.0 / 6, 0.25, 1.0 / 3, 0.5,  2.0 / 3, 1.0,
     1.5,  2.0,  3.0,  4.0,  6.0,      8.0,      12.0,  16.0,    24.0, 32.0,    48.0, 64.0};
 } // namespace
 
@@ -75,13 +75,21 @@ void ZoomModel::setImageSize(QSize fullSize) {
     applyMode(false);
 }
 
-double ZoomModel::unityScale() const { return m_actualDevicePixels ? 1.0 : m_dpr; }
+double ZoomModel::unityScale() const {
+    return m_actualDevicePixels ? 1.0 : m_dpr;
+}
 
-double ZoomModel::factor() const { return m_scale / unityScale(); }
+double ZoomModel::factor() const {
+    return m_scale / unityScale();
+}
 
-double ZoomModel::scaleForFactor(double factor) const { return factor * unityScale(); }
+double ZoomModel::scaleForFactor(double factor) const {
+    return factor * unityScale();
+}
 
-bool ZoomModel::isFitLike(ZoomMode mode) const { return mode != ZoomMode::Custom && mode != ZoomMode::Actual; }
+bool ZoomModel::isFitLike(ZoomMode mode) const {
+    return mode != ZoomMode::Custom && mode != ZoomMode::Actual;
+}
 
 double ZoomModel::scaleForMode(ZoomMode mode) const {
     const QSizeF d = displayedImageSize();
@@ -149,7 +157,7 @@ void ZoomModel::setScale(double scale, QPointF anchor) {
     if (m_image.isEmpty())
         return;
     scale = std::clamp(scale, minScale(), maxScale());
-    const QPointF p = (anchor - m_offset) / m_scale;  // display point under anchor
+    const QPointF p = (anchor - m_offset) / m_scale; // display point under anchor
     m_scale = scale;
     m_mode = ZoomMode::Custom;
     m_offset = anchor - p * m_scale;
@@ -184,7 +192,8 @@ void ZoomModel::zoomStep(int steps, QPointF anchor) {
 void ZoomModel::toggleFitActual(QPointF anchor) {
     if (m_image.isEmpty())
         return;
-    const bool atActual = m_mode == ZoomMode::Actual || std::abs(m_scale - unityScale()) < 1e-6 * unityScale();
+    const bool atActual =
+        m_mode == ZoomMode::Actual || std::abs(m_scale - unityScale()) < 1e-6 * unityScale();
     if (atActual) {
         m_mode = ZoomMode::Fit;
         applyMode(false);
@@ -288,10 +297,18 @@ QPointF ZoomModel::imageToDisplay(QPointF p) const {
     const double W = m_image.width(), H = m_image.height();
     QPointF d;
     switch (m_rotation) {
-    case 1: d = QPointF(H - p.y(), p.x()); break;
-    case 2: d = QPointF(W - p.x(), H - p.y()); break;
-    case 3: d = QPointF(p.y(), W - p.x()); break;
-    default: d = p; break;
+    case 1:
+        d = QPointF(H - p.y(), p.x());
+        break;
+    case 2:
+        d = QPointF(W - p.x(), H - p.y());
+        break;
+    case 3:
+        d = QPointF(p.y(), W - p.x());
+        break;
+    default:
+        d = p;
+        break;
     }
     const QSizeF ds = displayedImageSize();
     if (m_flipH)
@@ -310,7 +327,8 @@ QTransform ZoomModel::imageToViewport() const {
     const QPointF off = snappedOffset();
     const double s = m_scale;
     // QTransform: x' = m11*x + m21*y + dx ; y' = m12*x + m22*y + dy
-    return QTransform(ex.x() * s, ex.y() * s, ey.x() * s, ey.y() * s, o.x() * s + off.x(), o.y() * s + off.y());
+    return QTransform(ex.x() * s, ex.y() * s, ey.x() * s, ey.y() * s, o.x() * s + off.x(),
+                      o.y() * s + off.y());
 }
 
 QPointF ZoomModel::viewportToImage(QPointF viewportPoint) const {

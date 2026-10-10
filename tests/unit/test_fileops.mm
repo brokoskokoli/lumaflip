@@ -26,7 +26,7 @@ public:
     void cleanup() {
         for (const QString& p : std::as_const(locations)) {
             if (!p.isEmpty() && QFileInfo(p).isFile())
-                QFile::remove(p);  // only the exact path the API returned
+                QFile::remove(p); // only the exact path the API returned
         }
     }
     std::optional<QString> moveToTrash(const QString& path, QString* error) override {
@@ -63,7 +63,8 @@ protected:
         lf::test::ensureQtApp();
         ASSERT_TRUE(dir.isValid());
         ops = std::make_unique<FileOps>(trash);
-        QObject::connect(ops.get(), &FileOps::fileRemoved, [this](const QString& p) { log << "removed " + p; });
+        QObject::connect(ops.get(), &FileOps::fileRemoved,
+                         [this](const QString& p) { log << "removed " + p; });
         QObject::connect(ops.get(), &FileOps::fileAdded, [this](const QString& p) { log << "added " + p; });
         QObject::connect(ops.get(), &FileOps::fileRenamed,
                          [this](const QString& a, const QString& b) { log << "renamed " + a + " " + b; });
@@ -104,7 +105,7 @@ TEST_F(FileOpsTest, F_FILE_01_TrashUndoRedo) {
     ASSERT_EQ(trash.locations.size(), 2);
     EXPECT_TRUE(QFileInfo::exists(trash.locations[1]));
     EXPECT_EQ(log.last(), "removed " + p);
-    trash.cleanup();  // keep the user's trash clean: only the exact returned path
+    trash.cleanup(); // keep the user's trash clean: only the exact returned path
     EXPECT_FALSE(QFileInfo::exists(trash.locations[1]));
 }
 
@@ -114,9 +115,9 @@ TEST_F(FileOpsTest, F_FILE_01_UndoFailsIfOriginalPathTaken) {
     writeFile(p, "new");
     ops->undoStack()->undo();
     ASSERT_EQ(errors.size(), 1);
-    EXPECT_EQ(readFile(p), "new");  // not overwritten
+    EXPECT_EQ(readFile(p), "new"); // not overwritten
     EXPECT_TRUE(QFileInfo::exists(trash.locations[0]));
-    EXPECT_EQ(ops->undoStack()->count(), 0);  // failed command dropped
+    EXPECT_EQ(ops->undoStack()->count(), 0); // failed command dropped
 }
 
 TEST_F(FileOpsTest, F_FILE_01_MissingFileIsError) {
@@ -213,6 +214,6 @@ TEST_F(FileOpsTest, F_FILE_08_CopyUndoRedoAndConflict) {
     ops->undoStack()->redo();
     EXPECT_EQ(readFile(copy), "C");
 
-    EXPECT_FALSE(ops->copyTo(a, path("target"), &err));  // exists now
+    EXPECT_FALSE(ops->copyTo(a, path("target"), &err)); // exists now
     EXPECT_FALSE(err.isEmpty());
 }

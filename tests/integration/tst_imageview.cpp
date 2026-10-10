@@ -51,7 +51,9 @@ bool close(QColor a, QColor b, int tol) {
            std::abs(a.blue() - b.blue()) <= tol;
 }
 
-QString str(QColor c) { return QStringLiteral("(%1,%2,%3)").arg(c.red()).arg(c.green()).arg(c.blue()); }
+QString str(QColor c) {
+    return QStringLiteral("(%1,%2,%3)").arg(c.red()).arg(c.green()).arg(c.blue());
+}
 
 } // namespace
 
@@ -125,7 +127,7 @@ private slots:
         const QColorSpace p3(QColorSpace::DisplayP3);
         view->setOutputColorSpace(p3);
         view->setImage(makeDecoded(solid({64, 64}, QColor(255, 0, 0), QColorSpace::SRgb)), false);
-        const QColor want = expected(QColor(255, 0, 0), QColorSpace::SRgb, p3);  // ~ (234, 51, 35)
+        const QColor want = expected(QColor(255, 0, 0), QColorSpace::SRgb, p3); // ~ (234, 51, 35)
         const QColor c = centerPixel();
         QVERIFY2(close(c, want, 2), qPrintable(str(c) + " vs " + str(want)));
         QVERIFY(c.red() < 245 && c.green() > 30);
@@ -136,7 +138,7 @@ private slots:
         view->setOutputColorSpace(p3);
         view->setImage(makeDecoded(solid({64, 64}, QColor(255, 0, 0), p3)), false);
         const QColor c = centerPixel();
-        QVERIFY2(close(c, QColor(255, 0, 0), 1), qPrintable(str(c)));  // full P3 red
+        QVERIFY2(close(c, QColor(255, 0, 0), 1), qPrintable(str(c))); // full P3 red
         view->setImage(makeDecoded(solid({64, 64}, QColor(40, 200, 90), p3)), false);
         const QColor g = centerPixel();
         QVERIFY2(close(g, QColor(40, 200, 90), 1), qPrintable(str(g)));
@@ -185,8 +187,9 @@ private slots:
     void F_COL_01_highBitDepthFormats() {
         const QColorSpace p3(QColorSpace::DisplayP3);
         // 16-bit integer (converted to half float on the CPU).
-        view->setImage(makeDecoded(solid({64, 64}, QColor(200, 100, 50), QColorSpace::SRgb, QImage::Format_RGBA64)),
-                       false);
+        view->setImage(
+            makeDecoded(solid({64, 64}, QColor(200, 100, 50), QColorSpace::SRgb, QImage::Format_RGBA64)),
+            false);
         QColor c = centerPixel();
         QVERIFY2(close(c, QColor(200, 100, 50), 1), qPrintable(str(c)));
         // Linear half float in P3 (HDR decode format, SDR range).
@@ -261,7 +264,8 @@ private slots:
         for (int y = -int(30 * dpr); y < int(30 * dpr); y += 2)
             for (int x = -int(30 * dpr); x < int(30 * dpr); x += 2)
                 seen.insert(fb.pixel(c + QPoint(x, y)) & 0xffffff);
-        QVERIFY2(seen.contains(0xffffff) && seen.contains(0xcccccc), qPrintable(QString::number(seen.size())));
+        QVERIFY2(seen.contains(0xffffff) && seen.contains(0xcccccc),
+                 qPrintable(QString::number(seen.size())));
         // Outside the image: the plain dark background.
         QCOMPARE(fb.pixelColor(2, 2), QColor(30, 30, 30));
 
@@ -324,8 +328,8 @@ private slots:
         img.setColorSpace(QColorSpace::SRgb);
         view->setImage(makeDecoded(img), false);
         const QImage fb = grab();
-        const QRect r = QRect(QPoint(0, 0), fb.size()).adjusted(fb.width() / 4, fb.height() / 4, -fb.width() / 4,
-                                                                -fb.height() / 4);
+        const QRect r = QRect(QPoint(0, 0), fb.size())
+                            .adjusted(fb.width() / 4, fb.height() / 4, -fb.width() / 4, -fb.height() / 4);
         int lo = 255, hi = 0;
         for (int y = r.top(); y < r.bottom(); y += 3)
             for (int x = r.left(); x < r.right(); ++x) {
@@ -354,7 +358,8 @@ private slots:
             int wrong = 0;
             for (int y = 0; y < img.height(); ++y)
                 for (int x = 0; x < img.width(); ++x)
-                    wrong += (fb.pixel(origin + QPoint(x, y)) & 0xffffff) != (img.pixel(x, y) & 0xffffff) ? 1 : 0;
+                    wrong +=
+                        (fb.pixel(origin + QPoint(x, y)) & 0xffffff) != (img.pixel(x, y) & 0xffffff) ? 1 : 0;
             QVERIFY2(wrong == 0, qPrintable(QString::number(wrong)));
         }
     }
@@ -447,7 +452,8 @@ private slots:
         QVERIFY(!canvas->isIdle());
         QVERIFY2(t.elapsed() < 1000, qPrintable(QString::number(t.elapsed())));
         const QImage fb = grab();
-        qInfo() << "huge image" << size << "rendered after" << t.elapsed() << "ms, tiles" << canvas->currentTileCount();
+        qInfo() << "huge image" << size << "rendered after" << t.elapsed() << "ms, tiles"
+                << canvas->currentTileCount();
         QVERIFY(canvas->currentTileCount() >= 2);
         const QPoint c(fb.width() / 2, fb.height() / 2);
         const int dx = fb.width() / 4, dy = int(fb.width() / 2.0 * size.height() / size.width() / 2);
@@ -466,7 +472,8 @@ private slots:
 
     void F_FMT_02_errorCardVisible() {
         view->resize(400, 300);
-        view->showError(QStringLiteral("Datei kann nicht geöffnet werden"), QStringLiteral("kaputt.jpg: Defekte Datei"));
+        view->showError(QStringLiteral("Datei kann nicht geöffnet werden"),
+                        QStringLiteral("kaputt.jpg: Defekte Datei"));
         QVERIFY(!view->image());
         auto* card = view->findChild<QFrame*>(QStringLiteral("lfErrorCard"));
         QVERIFY(card);
@@ -493,7 +500,8 @@ private slots:
     void F_VIEW_03_stageSwapIsSeamless() {
         // Preview stage (1000x500 of a 4000x2000 image), zoomed in -> needs more.
         QSignalSpy needs(view.get(), &ImageView::needsHigherResolution);
-        view->setImage(makeDecoded(solid({1000, 500}, Qt::gray, QColorSpace::SRgb), {4000, 2000}, true), false);
+        view->setImage(makeDecoded(solid({1000, 500}, Qt::gray, QColorSpace::SRgb), {4000, 2000}, true),
+                       false);
         view->setZoomFactor(0.5, QPointF(60, 40));
         view->panBy(QPointF(-30, 10));
         QCOMPARE(needs.count(), 1);
@@ -505,7 +513,7 @@ private slots:
         QCOMPARE(view->zoomFactor(), f);
         QCOMPARE(view->isZoomed(), zoomed);
         QCOMPARE(view->atEdge(Qt::LeftEdge), left);
-        QCOMPARE(needs.count(), 1);  // full resolution loaded: no further request
+        QCOMPARE(needs.count(), 1); // full resolution loaded: no further request
         QCOMPARE(grab(), before);   // same geometry, same content
     }
 
@@ -527,13 +535,13 @@ private slots:
         view->setPreloadImages({a, b});
         grab();
         for (int i = 0; i < 5; ++i)
-            canvas->grabFramebuffer();  // uploads the preloaded neighbour
+            canvas->grabFramebuffer(); // uploads the preloaded neighbour
         QElapsedTimer t;
         t.start();
         view->setImage(b, false);
         const QImage fb = canvas->grabFramebuffer();
         const qint64 ms = t.elapsed();
-        QVERIFY(canvas->isIdle());  // nothing left to upload: texture came from the cache
+        QVERIFY(canvas->isIdle()); // nothing left to upload: texture came from the cache
         QCOMPARE(fb.pixelColor(fb.width() / 2, fb.height() / 2), QColor(0, 0, 255));
         qInfo() << "preloaded swap + frame + readback:" << ms << "ms";
         view->setPreloadImages({});
@@ -552,8 +560,8 @@ private slots:
         QCOMPARE(ev.wheelSteps, 1);
         QVERIFY(!ev.zoomed);
         // High resolution wheel: two half notches = one step.
-        QWheelEvent half(QPointF(50, 50), view->mapToGlobal(QPointF(50, 50)), QPoint(), QPoint(0, 60), Qt::NoButton,
-                         Qt::ControlModifier, Qt::NoScrollPhase, false);
+        QWheelEvent half(QPointF(50, 50), view->mapToGlobal(QPointF(50, 50)), QPoint(), QPoint(0, 60),
+                         Qt::NoButton, Qt::ControlModifier, Qt::NoScrollPhase, false);
         QApplication::sendEvent(canvas, &half);
         QCOMPARE(spy.count(), 1);
         QApplication::sendEvent(canvas, &half);
@@ -580,8 +588,9 @@ private slots:
         // Trackpad horizontal swipe while not zoomed.
         const int n = spy.count();
         for (int i = 0; i < 5; ++i) {
-            QWheelEvent swipe(QPointF(50, 50), view->mapToGlobal(QPointF(50, 50)), QPoint(-20, 0), QPoint(-40, 0),
-                              Qt::NoButton, Qt::NoModifier, i == 0 ? Qt::ScrollBegin : Qt::ScrollUpdate, true);
+            QWheelEvent swipe(QPointF(50, 50), view->mapToGlobal(QPointF(50, 50)), QPoint(-20, 0),
+                              QPoint(-40, 0), Qt::NoButton, Qt::NoModifier,
+                              i == 0 ? Qt::ScrollBegin : Qt::ScrollUpdate, true);
             QApplication::sendEvent(canvas, &swipe);
         }
         QCOMPARE(spy.count(), n + 1);
@@ -599,8 +608,9 @@ private slots:
         QVERIFY(!view->atEdge(Qt::TopEdge));
         // Trackpad scroll pans (no InputEvent).
         for (int i = 0; i < 50; ++i) {
-            QWheelEvent scroll(QPointF(50, 50), view->mapToGlobal(QPointF(50, 50)), QPoint(0, 100), QPoint(0, 200),
-                               Qt::NoButton, Qt::NoModifier, i == 0 ? Qt::ScrollBegin : Qt::ScrollUpdate, true);
+            QWheelEvent scroll(QPointF(50, 50), view->mapToGlobal(QPointF(50, 50)), QPoint(0, 100),
+                               QPoint(0, 200), Qt::NoButton, Qt::NoModifier,
+                               i == 0 ? Qt::ScrollBegin : Qt::ScrollUpdate, true);
             QApplication::sendEvent(canvas, &scroll);
         }
         QVERIFY(view->atEdge(Qt::TopEdge));
@@ -611,7 +621,7 @@ private slots:
             QTest::mouseMove(canvas, QPoint(150 - i * 7, 120 - i * 6));
         QTest::mouseRelease(canvas, Qt::LeftButton, {}, QPoint(10, 0));
         QVERIFY(!view->atEdge(Qt::TopEdge));
-        QCOMPARE(spy.count(), 0);  // a drag is not a click
+        QCOMPARE(spy.count(), 0); // a drag is not a click
         // ⌥-drag requests drag-out.
         QTest::mousePress(canvas, Qt::LeftButton, Qt::AltModifier, QPoint(50, 50));
         QTest::mouseMove(canvas, QPoint(90, 90));
@@ -619,13 +629,15 @@ private slots:
         QCOMPARE(dragOut.count(), 1);
         // Pinch zoom
         const double f = view->zoomFactor();
-        QNativeGestureEvent pinch(Qt::ZoomNativeGesture, QPointingDevice::primaryPointingDevice(), 2, QPointF(50, 50),
-                                  QPointF(50, 50), view->mapToGlobal(QPointF(50, 50)), 0.5, QPointF());
+        QNativeGestureEvent pinch(Qt::ZoomNativeGesture, QPointingDevice::primaryPointingDevice(), 2,
+                                  QPointF(50, 50), QPointF(50, 50), view->mapToGlobal(QPointF(50, 50)), 0.5,
+                                  QPointF());
         QApplication::sendEvent(canvas, &pinch);
         QVERIFY2(qAbs(view->zoomFactor() - f * 1.5) < 1e-6,
                  qPrintable(QStringLiteral("%1 -> %2").arg(f).arg(view->zoomFactor())));
         QNativeGestureEvent smart(Qt::SmartZoomNativeGesture, QPointingDevice::primaryPointingDevice(), 2,
-                                  QPointF(50, 50), QPointF(50, 50), view->mapToGlobal(QPointF(50, 50)), 0, QPointF());
+                                  QPointF(50, 50), QPointF(50, 50), view->mapToGlobal(QPointF(50, 50)), 0,
+                                  QPointF());
         QApplication::sendEvent(canvas, &smart);
         QCOMPARE(view->zoomMode(), ZoomMode::Actual);
     }

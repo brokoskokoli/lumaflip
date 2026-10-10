@@ -25,8 +25,8 @@ bool writeJpeg(const QString& path, int w, int h, const char* dateTimeOriginal, 
     bool ok = false;
     @autoreleasepool {
         CGColorSpaceRef cs = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
-        CGContextRef ctx = CGBitmapContextCreate(nullptr, size_t(w), size_t(h), 8, 0, cs,
-                                                 kCGImageAlphaNoneSkipLast);
+        CGContextRef ctx =
+            CGBitmapContextCreate(nullptr, size_t(w), size_t(h), 8, 0, cs, kCGImageAlphaNoneSkipLast);
         CGContextSetRGBFillColor(ctx, 0.3, 0.5, 0.7, 1);
         CGContextFillRect(ctx, CGRectMake(0, 0, w, h));
         CGImageRef img = CGBitmapContextCreateImage(ctx);
@@ -52,7 +52,7 @@ bool writeJpeg(const QString& path, int w, int h, const char* dateTimeOriginal, 
 }
 
 class ImagePropsSortTest : public ::testing::Test {
-  protected:
+protected:
     void SetUp() override {
         test::ensureApp();
         ASSERT_TRUE(dir.isValid());

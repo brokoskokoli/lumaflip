@@ -44,7 +44,7 @@ QStringList names(const Collection& c) {
 }
 
 class CollectionTest : public ::testing::Test {
-  protected:
+protected:
     void SetUp() override {
         test::ensureApp();
         ASSERT_TRUE(dir.isValid());
@@ -91,7 +91,7 @@ TEST_F(CollectionTest, F_OPEN_06_EnumerateFiltersHiddenPackagesAndNonImages) {
     touch(path("._a.jpg")); // AppleDouble
     touch(path("notes.txt"));
 #if defined(Q_OS_DARWIN) && !defined(LF_GENERIC_PLATFORM) // ImageIO decides the suffixes
-    touch(path("layers.xcf")); // no backend on macOS (F-OPEN-06)
+    touch(path("layers.xcf"));                            // no backend on macOS (F-OPEN-06)
     touch(path("doc.pdf"));
 #endif
     touch(path("noext"));
@@ -574,7 +574,7 @@ TEST_F(CollectionTest, F_WIN_09_CopyFromTakesOverWithoutEnumeration) {
     EXPECT_EQ(copy->folderPath(), c->folderPath());
     EXPECT_TRUE(copy->isFolderCollection());
     EXPECT_EQ(currents, QStringList{path("b.jpg")});
-    EXPECT_EQ(order.calls, callsBefore);  // nothing enumerated or sorted again
+    EXPECT_EQ(order.calls, callsBefore); // nothing enumerated or sorted again
     // Independent afterwards (F-WIN-01).
     copy->next(WrapMode::Stop);
     EXPECT_EQ(c->currentPath(), path("b.jpg"));

@@ -195,7 +195,8 @@ void Hub::close(Stream& s) {
     FSEventStreamRelease(s.ref);
     s.ref = nullptr;
     // Wait for a callback that may still be running with this context.
-    dispatch_sync(m_queue, ^{});
+    dispatch_sync(m_queue, ^{
+                  });
 }
 
 void Hub::subscribe(MacFolderWatcher* w, const QString& folder) {

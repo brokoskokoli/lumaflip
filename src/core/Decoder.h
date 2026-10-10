@@ -7,12 +7,12 @@
 #include <QByteArray>
 #include <QColorSpace>
 #include <QDateTime>
-#include <QSet>
-#include <QStringList>
 #include <QImage>
 #include <QList>
+#include <QSet>
 #include <QSize>
 #include <QString>
+#include <QStringList>
 #include <QVariantMap>
 #include <memory>
 #include <optional>
@@ -20,18 +20,18 @@
 namespace lf {
 
 struct ImageInfo {
-    QSize pixelSize;            // as stored, before orientation
-    QSize displaySize;          // after EXIF orientation
-    int exifOrientation = 1;    // 1..8
-    int frameCount = 1;         // animation frames
-    int pageCount = 1;          // multi-page (TIFF, ICO, HEIF collections)
+    QSize pixelSize;         // as stored, before orientation
+    QSize displaySize;       // after EXIF orientation
+    int exifOrientation = 1; // 1..8
+    int frameCount = 1;      // animation frames
+    int pageCount = 1;       // multi-page (TIFF, ICO, HEIF collections)
     bool hasAlpha = false;
-    bool isHdr = false;         // gain map, PQ/HLG, float formats
+    bool isHdr = false; // gain map, PQ/HLG, float formats
     bool isAnimated = false;
     int bitsPerComponent = 8;
-    QString colorModel;         // "RGB", "CMYK", "Gray"
-    QString profileName;        // ICC description, empty if none
-    QString formatName;         // "JPEG", "HEIC", "Canon CR3", ...
+    QString colorModel;  // "RGB", "CMYK", "Gray"
+    QString profileName; // ICC description, empty if none
+    QString formatName;  // "JPEG", "HEIC", "Canon CR3", ...
 };
 
 struct DecodeRequest {
@@ -44,8 +44,8 @@ struct DecodeRequest {
     // the output format into account (16-bit/float = 8 bytes per pixel); larger images are
     // downsampled while decoding. 0 = no limit beyond the backend's own caps.
     qint64 maxBytes = 0;
-    bool preferEmbeddedPreview = false;  // fast path for RAW/JPEG (F-FMT-05)
-    bool hdr = false;                    // decode to extended range float if possible (F-COL-03)
+    bool preferEmbeddedPreview = false; // fast path for RAW/JPEG (F-FMT-05)
+    bool hdr = false;                   // decode to extended range float if possible (F-COL-03)
 };
 
 // Result of a decode. `image` is already oriented (EXIF applied) and carries its
@@ -53,10 +53,10 @@ struct DecodeRequest {
 // (premultiplied variant) in extended linear Display P3 and set headroom > 1.
 struct DecodedImage {
     QImage image;
-    QSize fullSize;           // oriented full-resolution size of the source
-    bool isPreview = false;   // true if this is a reduced/embedded preview
-    float headroom = 1.0f;    // HDR peak relative to SDR white
-    int frameDurationMs = 0;  // for animations
+    QSize fullSize;          // oriented full-resolution size of the source
+    bool isPreview = false;  // true if this is a reduced/embedded preview
+    float headroom = 1.0f;   // HDR peak relative to SDR white
+    int frameDurationMs = 0; // for animations
 };
 
 struct Metadata {
@@ -65,7 +65,7 @@ struct Metadata {
     QVariantMap groups;
     std::optional<QDateTime> captured;
     std::optional<double> latitude, longitude;
-    int rating = -1;  // xmp:Rating if present
+    int rating = -1; // xmp:Rating if present
 };
 
 class Decoder {

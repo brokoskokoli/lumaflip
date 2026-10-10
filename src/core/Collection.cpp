@@ -368,7 +368,7 @@ struct Result {
 
 // Fallback collator if no platform collator is available (should not happen).
 class BinaryCollator : public NameCollator {
-  public:
+public:
     int compare(const QString& a, const QString& b) const override {
         const int c = a.compare(b, Qt::CaseInsensitive);
         return c ? c : a.compare(b);

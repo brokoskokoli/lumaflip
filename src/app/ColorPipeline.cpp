@@ -29,7 +29,9 @@ TransferKind kindOf(const QColorSpace& cs, float* gamma) {
     }
 }
 
-QColorSpace linearOf(const QColorSpace& cs) { return cs.withTransferFunction(QColorSpace::TransferFunction::Linear); }
+QColorSpace linearOf(const QColorSpace& cs) {
+    return cs.withTransferFunction(QColorSpace::TransferFunction::Linear);
+}
 
 } // namespace
 
@@ -38,7 +40,9 @@ QColorSpace effectiveSourceColorSpace(const QImage& image) {
     return cs.isValid() ? cs : QColorSpace(QColorSpace::SRgb);
 }
 
-bool needsCpuConversion(const QColorSpace& src) { return !isMatrixRgb(src); }
+bool needsCpuConversion(const QColorSpace& src) {
+    return !isMatrixRgb(src);
+}
 
 QColorSpace sanitizeOutputColorSpace(const QColorSpace& dst) {
     if (isMatrixRgb(dst) && dst.isValidTarget())
@@ -75,7 +79,7 @@ ColorPipeline makeColorPipeline(const QColorSpace& srcIn, const QColorSpace& dst
     const QColorSpace dst = sanitizeOutputColorSpace(dstIn);
     fillDestinationTransfer(p, dst);
     if (src == dst || !isMatrixRgb(src)) {
-        p.identity = true;  // equal, or already converted on the CPU
+        p.identity = true; // equal, or already converted on the CPU
         return p;
     }
     p.identity = false;

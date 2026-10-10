@@ -24,7 +24,8 @@ namespace {
 
 // Builds a w x h RGB image in `space` filled with a gray value, or with noise.
 CGImageRef makeImage(int w, int h, CGColorSpaceRef space, int gray, bool noise = false) {
-    CGContextRef ctx = CGBitmapContextCreate(nullptr, size_t(w), size_t(h), 8, 0, space, kCGImageAlphaNoneSkipLast);
+    CGContextRef ctx =
+        CGBitmapContextCreate(nullptr, size_t(w), size_t(h), 8, 0, space, kCGImageAlphaNoneSkipLast);
     if (!ctx)
         return nullptr;
     // Raw component values in `space` (fill colors would be converted from device RGB).
@@ -41,8 +42,8 @@ CGImageRef makeImage(int w, int h, CGColorSpaceRef space, int gray, bool noise =
 
 bool writeImage(const QString& path, CGImageRef img, UTType* type, NSDictionary* props = nil) {
     NSURL* url = [NSURL fileURLWithPath:path.toNSString()];
-    CGImageDestinationRef dst =
-        CGImageDestinationCreateWithURL((__bridge CFURLRef)url, (__bridge CFStringRef)type.identifier, 1, nullptr);
+    CGImageDestinationRef dst = CGImageDestinationCreateWithURL(
+        (__bridge CFURLRef)url, (__bridge CFStringRef)type.identifier, 1, nullptr);
     if (!dst)
         return false;
     CGImageDestinationAddImage(dst, img, (__bridge CFDictionaryRef)props);
@@ -54,7 +55,8 @@ bool writeImage(const QString& path, CGImageRef img, UTType* type, NSDictionary*
 [[maybe_unused]] qint64 physFootprint() {
     task_vm_info_data_t info{};
     mach_msg_type_number_t count = TASK_VM_INFO_COUNT;
-    if (task_info(mach_task_self(), TASK_VM_INFO, reinterpret_cast<task_info_t>(&info), &count) != KERN_SUCCESS)
+    if (task_info(mach_task_self(), TASK_VM_INFO, reinterpret_cast<task_info_t>(&info), &count) !=
+        KERN_SUCCESS)
         return 0;
     return qint64(info.phys_footprint);
 }
@@ -78,7 +80,8 @@ TEST(ImageIODecoderReview, F_FMT_02_TruncatedSmallJpegWithExifThumbnail) {
         NSDictionary* props = @{
             (id)kCGImageDestinationEmbedThumbnail : @YES,
             (id)kCGImageDestinationLossyCompressionQuality : @0.9,
-            (id)kCGImagePropertyExifDictionary : @{(id)kCGImagePropertyExifDateTimeOriginal : @"2024:01:01 12:00:00"},
+            (id)kCGImagePropertyExifDictionary :
+                @{(id)kCGImagePropertyExifDateTimeOriginal : @"2024:01:01 12:00:00"},
         };
         ASSERT_TRUE(writeImage(path, img, UTTypeJPEG, props));
         CGImageRelease(img);
@@ -217,7 +220,7 @@ TEST(ImageIODecoderReview, ReviewFullDecodeMemoryBound) {
     }
     const qint64 delta = std::max(peak.load(), base + held) - base;
     EXPECT_LT(held, outBytes * 5 / 4) << "held " << held / (1 << 20) << " MB";
-    EXPECT_LT(delta, outBytes * 5 / 2) << "peak " << delta / (1 << 20) << " MB for a " << outBytes / (1 << 20)
-                                       << " MB image";
+    EXPECT_LT(delta, outBytes * 5 / 2)
+        << "peak " << delta / (1 << 20) << " MB for a " << outBytes / (1 << 20) << " MB image";
 #endif
 }

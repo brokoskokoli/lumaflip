@@ -126,7 +126,8 @@ TEST(NameCollationMac, F_SORT_01_FollowsLocaleChanges) {
     for (int i = 0; i < 1000; ++i)
         (void)collator->compare("a.jpg", "b.jpg");
     EXPECT_EQ(mac::nameCollatorLocaleFetches(), fetched); // cached between changes
-    [[NSNotificationCenter defaultCenter] postNotificationName:NSCurrentLocaleDidChangeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NSCurrentLocaleDidChangeNotification
+                                                        object:nil];
     EXPECT_LT(collator->compare("a.jpg", "b.jpg"), 0);
     EXPECT_EQ(mac::nameCollatorLocaleFetches(), fetched + 1);
     // Results still match NSString with the (re-fetched) current locale.

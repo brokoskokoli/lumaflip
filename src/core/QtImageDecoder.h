@@ -15,7 +15,7 @@
 namespace lf {
 
 class QtImageDecoder final : public Decoder {
-  public:
+public:
     QString name() const override { return QStringLiteral("Qt"); }
     int priority() const override { return 10; }
     bool canDecode(const QString& path, const QByteArray& header) const override;
@@ -28,7 +28,7 @@ class QtImageDecoder final : public Decoder {
 };
 
 class SvgDecoder final : public Decoder {
-  public:
+public:
     // Longer edge used when the full resolution is requested (maxPixelSize == 0).
     static constexpr int kDefaultLongEdge = 2048;
 

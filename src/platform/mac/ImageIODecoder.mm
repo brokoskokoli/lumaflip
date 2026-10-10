@@ -35,7 +35,7 @@ void setError(QString* error, const QString& msg) {
 
 // RAII owner for CoreFoundation references (ARC does not manage CF types).
 template <typename T> class CFRef {
-  public:
+public:
     CFRef() = default;
     explicit CFRef(T ref) : m_ref(ref) {}
     ~CFRef() { reset(); }
@@ -58,7 +58,7 @@ template <typename T> class CFRef {
     T get() const { return m_ref; }
     explicit operator bool() const { return m_ref != nullptr; }
 
-  private:
+private:
     T m_ref = nullptr;
 };
 

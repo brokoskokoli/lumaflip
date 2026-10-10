@@ -27,12 +27,12 @@ namespace lf {
 enum class TransferKind : int { Linear = 0, SRgb = 1, Gamma = 2, Lut = 3 };
 
 struct ColorPipeline {
-    bool identity = true;          // no conversion needed (fast path)
+    bool identity = true; // no conversion needed (fast path)
     TransferKind srcKind = TransferKind::SRgb;
     float srcGamma = 2.2f;
     TransferKind dstKind = TransferKind::SRgb;
     float dstGamma = 2.2f;
-    float matrix[9] = {1, 0, 0, 0, 1, 0, 0, 0, 1};  // row-major, linear src -> linear dst
+    float matrix[9] = {1, 0, 0, 0, 1, 0, 0, 0, 1}; // row-major, linear src -> linear dst
     // Lookup tables, kLutSize RGBA texels each (A unused), only for kind == Lut.
     // src: index = encoded value in [0,1] -> linear.
     // dst: index = sqrt(linear) in [0,1] -> encoded (sqrt spacing keeps shadows precise).

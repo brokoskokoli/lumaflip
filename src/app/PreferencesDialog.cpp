@@ -40,11 +40,13 @@ namespace {
 
 QPointer<PreferencesDialog> g_instance;
 
-Settings& st() { return Settings::instance(); }
+Settings& st() {
+    return Settings::instance();
+}
 
 QString slotSettingsKey(const QString& slotId) {
     return slotId == QLatin1String("endOfCollection") ? QString::fromLatin1(key::WrapMode)
-                                                       : QString::fromLatin1(key::InputPrefix) + slotId;
+                                                      : QString::fromLatin1(key::InputPrefix) + slotId;
 }
 
 // Not implemented before version 1.0: shown, but disabled with this note.
@@ -68,8 +70,10 @@ bool editableAction(Action a) {
     case Action::DragOut:
     case Action::StartPan:
     case Action::ExitModeOrNothing:
-    case Action::ExitModeOrCloseWindow: return false;
-    default: return true;
+    case Action::ExitModeOrCloseWindow:
+        return false;
+    default:
+        return true;
     }
 }
 
@@ -97,17 +101,19 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent) {
     m_sectionActions = new QActionGroup(this);
     m_sectionActions->setExclusive(true);
     const QStyle::StandardPixmap icons[SectionCount] = {
-        QStyle::SP_ComputerIcon,       QStyle::SP_TitleBarNormalButton, QStyle::SP_DesktopIcon,
-        QStyle::SP_DialogHelpButton,   QStyle::SP_ArrowRight,           QStyle::SP_DialogApplyButton,
+        QStyle::SP_ComputerIcon,           QStyle::SP_TitleBarNormalButton, QStyle::SP_DesktopIcon,
+        QStyle::SP_DialogHelpButton,       QStyle::SP_ArrowRight,           QStyle::SP_DialogApplyButton,
         QStyle::SP_FileDialogDetailedView, QStyle::SP_FileDialogInfoView};
-    QWidget* (PreferencesDialog::*builders[SectionCount])() = {
-        &PreferencesDialog::buildGeneral,    &PreferencesDialog::buildWindow,  &PreferencesDialog::buildDisplay,
-        &PreferencesDialog::buildInput,      &PreferencesDialog::buildNavigation, &PreferencesDialog::buildRating,
+    QWidget* (PreferencesDialog::* builders[SectionCount])() = {
+        &PreferencesDialog::buildGeneral,    &PreferencesDialog::buildWindow,
+        &PreferencesDialog::buildDisplay,    &PreferencesDialog::buildInput,
+        &PreferencesDialog::buildNavigation, &PreferencesDialog::buildRating,
         &PreferencesDialog::buildFormats,    &PreferencesDialog::buildAdvanced};
     for (int i = 0; i < SectionCount; ++i) {
         // "&" would be taken as a mnemonic marker
         QString title = sectionTitle(i);
-        QAction* act = toolbar->addAction(style()->standardIcon(icons[i]), title.replace('&', QStringLiteral("&&")));
+        QAction* act =
+            toolbar->addAction(style()->standardIcon(icons[i]), title.replace('&', QStringLiteral("&&")));
         act->setCheckable(true);
         act->setData(i);
         m_sectionActions->addAction(act);
@@ -149,23 +155,36 @@ PreferencesDialog* PreferencesDialog::showPreferences(QWidget* parent) {
     return g_instance;
 }
 
-PreferencesDialog* PreferencesDialog::existingInstance() { return g_instance; }
+PreferencesDialog* PreferencesDialog::existingInstance() {
+    return g_instance;
+}
 
 QString PreferencesDialog::sectionTitle(int section) const {
     switch (section) {
-    case General: return tr("Allgemein");
-    case Window: return tr("Fenster");
-    case Display: return tr("Anzeige");
-    case Input: return tr("Maus & Tastatur");
-    case Navigation: return tr("Navigation & Sortierung");
-    case Rating: return tr("Bewertung");
-    case Formats: return tr("Formate");
-    case Advanced: return tr("Erweitert");
-    default: return {};
+    case General:
+        return tr("Allgemein");
+    case Window:
+        return tr("Fenster");
+    case Display:
+        return tr("Anzeige");
+    case Input:
+        return tr("Maus & Tastatur");
+    case Navigation:
+        return tr("Navigation & Sortierung");
+    case Rating:
+        return tr("Bewertung");
+    case Formats:
+        return tr("Formate");
+    case Advanced:
+        return tr("Erweitert");
+    default:
+        return {};
     }
 }
 
-int PreferencesDialog::currentSection() const { return m_stack->currentIndex(); }
+int PreferencesDialog::currentSection() const {
+    return m_stack->currentIndex();
+}
 
 void PreferencesDialog::showSection(int section) {
     if (section < 0 || section >= SectionCount)
@@ -183,15 +202,21 @@ QStringList PreferencesDialog::sectionKeys(int section) const {
     case Window:
         return {key::FitWindowToImage, key::TitleShowFolder, key::ShowStatusBar, key::ShowInfoPanel,
                 key::ShowFilmstrip};
-    case Display: return {key::Background, key::ZoomMode, key::UpscaleFilter, key::ActualSizeUnit};
-    case Input: return {key::InputPrefix, key::WrapMode};
+    case Display:
+        return {key::Background, key::ZoomMode, key::UpscaleFilter, key::ActualSizeUnit};
+    case Input:
+        return {key::InputPrefix, key::WrapMode};
     case Navigation:
         return {key::WrapMode, key::FollowFinder, key::FinderLiveQuery, key::ManualSortKey,
                 key::ManualSortAscending};
-    case Rating: return {key::RatingStoreSidecar, key::RatingStoreEmbedded, key::RatingStoreFinderTags};
-    case Formats: return {key::RawEmbeddedOnly};
-    case Advanced: return {key::MemoryBudgetMB, key::PrefetchAhead, key::PrefetchBehind};
-    default: return {};
+    case Rating:
+        return {key::RatingStoreSidecar, key::RatingStoreEmbedded, key::RatingStoreFinderTags};
+    case Formats:
+        return {key::RawEmbeddedOnly};
+    case Advanced:
+        return {key::MemoryBudgetMB, key::PrefetchAhead, key::PrefetchBehind};
+    default:
+        return {};
     }
 }
 
@@ -259,7 +284,8 @@ struct Binder {
         });
         return cb;
     }
-    QComboBox* combo(const QString& k, const QStringList& values, const QStringList& labels, QWidget* parent) const {
+    QComboBox* combo(const QString& k, const QStringList& values, const QStringList& labels,
+                     QWidget* parent) const {
         auto* c = new QComboBox(parent);
         c->setObjectName(QStringLiteral("setting:") + k);
         for (int i = 0; i < values.size(); ++i)
@@ -286,7 +312,10 @@ struct Binder {
 };
 } // namespace
 
-#define LF_BINDER Binder bind{this, [this](const QString& k, std::function<void()> fn) { addRefresher(k, std::move(fn)); }}
+#define LF_BINDER                                                                                            \
+    Binder bind {                                                                                            \
+        this, [this](const QString& k, std::function<void()> fn) { addRefresher(k, std::move(fn)); }         \
+    }
 
 // ---- sections ----
 
@@ -299,10 +328,12 @@ QWidget* PreferencesDialog::buildGeneral() {
                             {tr("Immer in neuem Fenster"), tr("Im vordersten Fenster ersetzen"),
                              tr("Neues Fenster, außer die Datei ist schon offen")},
                             w));
-    form->addRow(QString(), helpLabel(tr("Gilt für Doppelklick im Finder, „Öffnen mit“ und Drag & Drop auf das "
-                                         "Dock-Symbol."),
-                                      w));
-    form->addRow(QString(), bind.check(key::RestoreWindows, tr("Fenster beim nächsten Start wiederherstellen"), w));
+    form->addRow(QString(),
+                 helpLabel(tr("Gilt für Doppelklick im Finder, „Öffnen mit“ und Drag & Drop auf das "
+                              "Dock-Symbol."),
+                           w));
+    form->addRow(QString(),
+                 bind.check(key::RestoreWindows, tr("Fenster beim nächsten Start wiederherstellen"), w));
     form->addRow(QString(),
                  helpLabel(tr("Ordner, Bild, Zoom und Position aller Fenster, die beim Beenden offen "
                               "waren."),
@@ -384,14 +415,15 @@ QWidget* PreferencesDialog::buildDisplay() {
 
     form->addRow(tr("Zoom beim Öffnen:"),
                  bind.combo(key::ZoomMode, {"fit", "fitUpscale", "actual", "fillWidth", "fillHeight", "fill"},
-                            {tr("Einpassen (nicht vergrößern)"), tr("Einpassen inkl. Vergrößern"), tr("100 %"),
-                             tr("Breite füllen"), tr("Höhe füllen"), tr("Fenster füllen")},
+                            {tr("Einpassen (nicht vergrößern)"), tr("Einpassen inkl. Vergrößern"),
+                             tr("100 %"), tr("Breite füllen"), tr("Höhe füllen"), tr("Fenster füllen")},
                             w));
     form->addRow(tr("Vergrößern über 100 %:"),
                  bind.combo(key::UpscaleFilter, {"smooth", "nearest"}, {tr("Glatt"), tr("Pixel scharf")}, w));
     form->addRow(tr("100 % bedeutet:"),
                  bind.combo(key::ActualSizeUnit, {"devicePixels", "points"},
-                            {tr("1 Bildpixel = 1 Gerätepixel (Retina-korrekt)"), tr("1 Bildpixel = 1 Punkt")}, w));
+                            {tr("1 Bildpixel = 1 Gerätepixel (Retina-korrekt)"), tr("1 Bildpixel = 1 Punkt")},
+                            w));
     return w;
 }
 
@@ -467,11 +499,13 @@ QWidget* PreferencesDialog::buildInput() {
     auto* tuneBox = new QGroupBox(tr("Mausrad-Feinheiten"), w);
     auto* form = new QFormLayout(tuneBox);
     form->addRow(QString(), bind.check(key::WheelInverted, tr("Richtung umkehren"), tuneBox));
-    form->addRow(tr("Raststufen pro Bildwechsel:"), bind.spin(key::WheelStepsPerImage, 1, 5, QString(), tuneBox));
+    form->addRow(tr("Raststufen pro Bildwechsel:"),
+                 bind.spin(key::WheelStepsPerImage, 1, 5, QString(), tuneBox));
     form->addRow(tr("Mindestabstand zwischen Bildwechseln:"),
                  bind.spin(key::WheelMinIntervalMs, 0, 300, tr(" ms"), tuneBox));
-    form->addRow(QString(), helpLabel(tr("Verhindert das Überspringen von Bildern bei Rädern ohne Rasterung."),
-                                      tuneBox));
+    form->addRow(
+        QString(),
+        helpLabel(tr("Verhindert das Überspringen von Bildern bei Rädern ohne Rasterung."), tuneBox));
     form->addRow(tr("Zoomschritt pro Raste:"), bind.spin(key::ZoomStepPercent, 5, 50, tr(" %"), tuneBox));
     form->addRow(tr("Sprungweite (Bild↑/Bild↓):"), bind.spin(key::JumpSize, 2, 100, tr(" Bilder"), tuneBox));
     v->addWidget(tuneBox);
@@ -577,7 +611,7 @@ void PreferencesDialog::applyShortcutRow(int row) {
     const auto current = m_bindings.shortcuts(a);
     for (int i = MaxShortcutsPerAction; i < current.size(); ++i)
         list.append(current[i]);
-    m_bindings.setShortcuts(a, list);  // emits changed -> updateConflicts()
+    m_bindings.setShortcuts(a, list); // emits changed -> updateConflicts()
     updateConflicts();
 }
 
@@ -603,9 +637,10 @@ void PreferencesDialog::updateConflicts() {
             item->setToolTip(QString());
         }
     }
-    m_conflictLabel->setText(m_conflicts ? tr("%n Aktion(en) mit doppelt belegten Tasten – bitte eine davon ändern.",
-                                              nullptr, m_conflicts)
-                                         : QString());
+    m_conflictLabel->setText(
+        m_conflicts
+            ? tr("%n Aktion(en) mit doppelt belegten Tasten – bitte eine davon ändern.", nullptr, m_conflicts)
+            : QString());
     m_conflictLabel->setVisible(m_conflicts > 0);
 }
 
@@ -617,18 +652,20 @@ QWidget* PreferencesDialog::buildNavigation() {
                  bind.combo(key::WrapMode, {"stop", "wrap", "nextFolder"},
                             {tr("Anhalten"), tr("Umlaufen"), tr("Zum nächsten Ordner")}, w));
     form->addRow(QString(), bind.check(key::FollowFinder, tr("Sortierung wie im Finder"), w));
-    form->addRow(QString(), helpLabel(tr("Liest die Darstellungsoptionen des Ordners (.DS_Store) und die globalen "
-                                         "Finder-Einstellungen."),
-                                      w));
-    form->addRow(QString(), bind.check(key::FinderLiveQuery, tr("Vorderstes Finder-Fenster abfragen"), w));
     form->addRow(QString(),
-                 helpLabel(tr("Fragt per AppleScript die aktuelle Sortierung des Finder-Fensters ab. macOS bittet "
-                              "dafür einmalig um die Erlaubnis, den Finder zu steuern (Automatisierung)."),
+                 helpLabel(tr("Liest die Darstellungsoptionen des Ordners (.DS_Store) und die globalen "
+                              "Finder-Einstellungen."),
                            w));
+    form->addRow(QString(), bind.check(key::FinderLiveQuery, tr("Vorderstes Finder-Fenster abfragen"), w));
+    form->addRow(
+        QString(),
+        helpLabel(tr("Fragt per AppleScript die aktuelle Sortierung des Finder-Fensters ab. macOS bittet "
+                     "dafür einmalig um die Erlaubnis, den Finder zu steuern (Automatisierung)."),
+                  w));
     form->addRow(tr("Manuelle Sortierung:"),
                  bind.combo(key::ManualSortKey,
-                            {"name", "dateModified", "dateCreated", "dateAdded", "dateCaptured", "size", "kind",
-                             "pixelCount", "rating"},
+                            {"name", "dateModified", "dateCreated", "dateAdded", "dateCaptured", "size",
+                             "kind", "pixelCount", "rating"},
                             {tr("Name"), tr("Änderungsdatum"), tr("Erstellungsdatum"), tr("Hinzugefügt am"),
                              tr("Aufnahmedatum"), tr("Größe"), tr("Art"), tr("Pixelzahl"), tr("Bewertung")},
                             w));
@@ -648,10 +685,12 @@ QWidget* PreferencesDialog::buildRating() {
     form->addRow(tr("Bewertungen speichern:"),
                  bind.check(key::RatingStoreSidecar, tr("XMP-Zusatzdatei neben dem Bild (Bild.xmp)"), w));
     form->addRow(QString(), helpLabel(tr("Kompatibel mit Lightroom, Capture One und darktable."), w));
-    form->addRow(QString(), bind.check(key::RatingStoreEmbedded, tr("Im Bild selbst (eingebettetes XMP)"), w));
-    form->addRow(QString(), helpLabel(tr("Nur JPEG, HEIC, TIFF, PNG und DNG; sonst wird die Zusatzdatei benutzt. "
-                                         "Die Bildpixel werden nicht neu kodiert."),
-                                      w));
+    form->addRow(QString(),
+                 bind.check(key::RatingStoreEmbedded, tr("Im Bild selbst (eingebettetes XMP)"), w));
+    form->addRow(QString(),
+                 helpLabel(tr("Nur JPEG, HEIC, TIFF, PNG und DNG; sonst wird die Zusatzdatei benutzt. "
+                              "Die Bildpixel werden nicht neu kodiert."),
+                           w));
     form->addRow(QString(), bind.check(key::RatingStoreFinderTags, tr("Finder-Tags"), w));
     form->addRow(QString(), helpLabel(tr("Im Finder sichtbar und per Spotlight durchsuchbar."), w));
     // Rating (F-CULL-01/02) is not implemented yet: the choices are visible but disabled.
@@ -703,9 +742,10 @@ QWidget* PreferencesDialog::buildFormats() {
     row->addStretch(1);
     v->addLayout(row);
     v->addSpacing(12);
-    v->addWidget(bind.check(key::RawEmbeddedOnly, tr("RAW: nur eingebettete Vorschau anzeigen (schneller)"), w));
-    v->addWidget(helpLabel(tr("Aus: Zuerst die eingebettete Vorschau, danach wird die volle Entwicklung nachgeladen."),
-                           w));
+    v->addWidget(
+        bind.check(key::RawEmbeddedOnly, tr("RAW: nur eingebettete Vorschau anzeigen (schneller)"), w));
+    v->addWidget(helpLabel(
+        tr("Aus: Zuerst die eingebettete Vorschau, danach wird die volle Entwicklung nachgeladen."), w));
     return w;
 }
 
@@ -742,20 +782,23 @@ QWidget* PreferencesDialog::buildAdvanced() {
     const QString filter = tr("Lumaflip-Einstellungen (*.json)");
     connect(exp, &QPushButton::clicked, this, [this, filter] {
         const QString dir = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
-        const QString path = QFileDialog::getSaveFileName(this, tr("Einstellungen exportieren"),
-                                                          dir + QStringLiteral("/Lumaflip-Einstellungen.json"), filter);
+        const QString path =
+            QFileDialog::getSaveFileName(this, tr("Einstellungen exportieren"),
+                                         dir + QStringLiteral("/Lumaflip-Einstellungen.json"), filter);
         if (!path.isEmpty())
             exportSettingsTo(path);
     });
     connect(imp, &QPushButton::clicked, this, [this, filter] {
-        const QString path = QFileDialog::getOpenFileName(this, tr("Einstellungen importieren"), QString(), filter);
+        const QString path =
+            QFileDialog::getOpenFileName(this, tr("Einstellungen importieren"), QString(), filter);
         if (!path.isEmpty())
             importSettingsFrom(path);
     });
     connect(all, &QPushButton::clicked, this, [this] {
-        const auto answer = QMessageBox::question(this, tr("Alle Einstellungen zurücksetzen?"),
-                                                  tr("Alle Einstellungen einschließlich der Tastenkürzel werden auf "
-                                                     "die Standardwerte zurückgesetzt."));
+        const auto answer =
+            QMessageBox::question(this, tr("Alle Einstellungen zurücksetzen?"),
+                                  tr("Alle Einstellungen einschließlich der Tastenkürzel werden auf "
+                                     "die Standardwerte zurückgesetzt."));
         if (answer == QMessageBox::Yes) {
             for (const QString& k : Settings::knownKeys())
                 st().resetToDefaults(k);

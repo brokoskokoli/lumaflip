@@ -134,7 +134,7 @@ std::optional<SortSpec> liveQuery(const QString& folder) {
 }
 
 class MacFolderOrderProvider final : public FolderOrderProvider {
-  public:
+public:
     SortSpec finderOrder(const QString& folderPath, bool allowLiveQuery) override {
         const QString folder = QDir::cleanPath(folderPath);
         if (allowLiveQuery) {

@@ -40,7 +40,7 @@ QShader loadShader(const QString& name) {
 }
 
 struct UploadPlan {
-    QImage::Format targetFormat = QImage::Format_Invalid;  // Invalid = upload as is
+    QImage::Format targetFormat = QImage::Format_Invalid; // Invalid = upload as is
     QRhiTexture::Format texFormat = QRhiTexture::RGBA8;
     bool premultiplied = false;
 };
@@ -109,17 +109,17 @@ QImage convertImage(QImage img, QImage::Format format, bool toOutput, QColorSpac
 }
 
 struct Tile {
-    QRect core;    // loaded-image px
-    QRect padded;  // loaded-image px (texture contents)
+    QRect core;   // loaded-image px
+    QRect padded; // loaded-image px (texture contents)
     std::unique_ptr<QRhiTexture> tex;
     std::unique_ptr<QRhiBuffer> ubo;
-    std::unique_ptr<QRhiShaderResourceBindings> srb[2];  // [0] smooth, [1] nearest magnification
+    std::unique_ptr<QRhiShaderResourceBindings> srb[2]; // [0] smooth, [1] nearest magnification
     bool uploaded = false;
 };
 
 struct Entry {
     DecodedImagePtr src;
-    QImage image;          // upload source (possibly converted)
+    QImage image; // upload source (possibly converted)
     bool converting = false;
     bool cpuColor = false; // image was converted to the output space on the CPU
     QColorSpace convertedFor;
@@ -161,9 +161,12 @@ struct Entry {
 
 qint64 bytesPerPixel(QRhiTexture::Format f) {
     switch (f) {
-    case QRhiTexture::RGBA16F: return 8;
-    case QRhiTexture::RGBA32F: return 16;
-    default: return 4;
+    case QRhiTexture::RGBA16F:
+        return 8;
+    case QRhiTexture::RGBA32F:
+        return 16;
+    default:
+        return 4;
     }
 }
 
@@ -178,7 +181,7 @@ struct ImageCanvas::Private {
 
     std::vector<std::shared_ptr<Entry>> entries;
     std::shared_ptr<Entry> current;
-    std::shared_ptr<Entry> fallback;  // previous stage of the same file
+    std::shared_ptr<Entry> fallback; // previous stage of the same file
     std::vector<DecodedImagePtr> preload;
     quint64 useCounter = 0;
 
@@ -189,7 +192,7 @@ struct ImageCanvas::Private {
     double checkerCell = 16;
     bool nearest = false;
     QColorSpace output{QColorSpace::SRgb};
-    ColorPipeline dstTransfer;  // only the destination TRC part is used
+    ColorPipeline dstTransfer; // only the destination TRC part is used
     bool dstLutDirty = true;
     float exposure = 1.0f, maxValue = 1.0f;
 
@@ -239,17 +242,18 @@ struct ImageCanvas::Private {
         e->image = QImage();
         std::weak_ptr<Entry> weak = e;
         const QColorSpace out = output;
-        QtConcurrent::run([src, fmt, cpuColor, out] { return convertImage(src, fmt, cpuColor, out); })
-            .then(q, [this, weak, out](QImage converted) {
-                auto e = weak.lock();
-                if (!e || e->convertedFor != out)
-                    return;  // dropped meanwhile or output changed (a new conversion runs)
-                e->image = std::move(converted);
-                e->converting = false;
-                updateColor(e);
-                q->update();
-                emit q->conversionFinished();
-            });
+        QtConcurrent::run([src, fmt, cpuColor, out] {
+            return convertImage(src, fmt, cpuColor, out);
+        }).then(q, [this, weak, out](QImage converted) {
+            auto e = weak.lock();
+            if (!e || e->convertedFor != out)
+                return; // dropped meanwhile or output changed (a new conversion runs)
+            e->image = std::move(converted);
+            e->converting = false;
+            updateColor(e);
+            q->update();
+            emit q->conversionFinished();
+        });
     }
 
     void updateColor(const std::shared_ptr<Entry>& e) {
@@ -359,14 +363,15 @@ struct ImageCanvas::Private {
                 if (!t.tex->create()) {
                     qCWarning(lcCanvas) << "Texture creation failed" << t.padded.size();
                     t.tex.reset();
-                    t.uploaded = true;  // do not retry every frame
+                    t.uploaded = true; // do not retry every frame
                     continue;
                 }
             }
             // Raw data path: copies only the tile's rows (QImage based sub-uploads
             // would copy the whole image per tile for 32-bit formats).
             const qsizetype bpl = e.image.bytesPerLine();
-            const uchar* first = e.image.constBits() + qsizetype(t.padded.y()) * bpl + qsizetype(t.padded.x()) * bpp;
+            const uchar* first =
+                e.image.constBits() + qsizetype(t.padded.y()) * bpl + qsizetype(t.padded.x()) * bpp;
             const qsizetype size = qsizetype(t.padded.height() - 1) * bpl + qsizetype(t.padded.width()) * bpp;
             QRhiTextureSubresourceUploadDescription desc(
                 QByteArray::fromRawData(reinterpret_cast<const char*>(first), size));
@@ -383,7 +388,8 @@ struct ImageCanvas::Private {
         QVector<qfloat16> half(data.size());
         for (qsizetype i = 0; i < data.size(); ++i)
             half[i] = qfloat16(data[i]);
-        QRhiTextureSubresourceUploadDescription desc(half.constData(), quint32(half.size() * sizeof(qfloat16)));
+        QRhiTextureSubresourceUploadDescription desc(half.constData(),
+                                                     quint32(half.size() * sizeof(qfloat16)));
         rub->uploadTexture(tex, QRhiTextureUploadDescription({0, 0, desc}));
     }
 
@@ -398,13 +404,14 @@ struct ImageCanvas::Private {
             t.srb[idx].reset(rhi->newShaderResourceBindings());
             t.srb[idx]->setBindings(
                 {QRhiShaderResourceBinding::uniformBuffer(
-                     0, QRhiShaderResourceBinding::VertexStage | QRhiShaderResourceBinding::FragmentStage, t.ubo.get()),
-                 QRhiShaderResourceBinding::sampledTexture(1, QRhiShaderResourceBinding::FragmentStage, t.tex.get(),
-                                                           sampler[idx].get()),
+                     0, QRhiShaderResourceBinding::VertexStage | QRhiShaderResourceBinding::FragmentStage,
+                     t.ubo.get()),
+                 QRhiShaderResourceBinding::sampledTexture(1, QRhiShaderResourceBinding::FragmentStage,
+                                                           t.tex.get(), sampler[idx].get()),
                  QRhiShaderResourceBinding::sampledTexture(2, QRhiShaderResourceBinding::FragmentStage, src,
                                                            sampler[0].get()),
-                 QRhiShaderResourceBinding::sampledTexture(3, QRhiShaderResourceBinding::FragmentStage, dstLut.get(),
-                                                           sampler[0].get())});
+                 QRhiShaderResourceBinding::sampledTexture(3, QRhiShaderResourceBinding::FragmentStage,
+                                                           dstLut.get(), sampler[0].get())});
             t.srb[idx]->create();
         }
         return t.srb[idx].get();
@@ -422,7 +429,7 @@ struct ImageCanvas::Private {
         mvp.translate(float(coreFull.x()), float(coreFull.y()));
         mvp.scale(float(coreFull.width()), float(coreFull.height()));
 
-        QMatrix4x4 cm;  // identity; upper 3x3 from the pipeline (row-major input)
+        QMatrix4x4 cm; // identity; upper 3x3 from the pipeline (row-major input)
         for (int r = 0; r < 3; ++r)
             for (int c = 0; c < 3; ++c)
                 cm(r, c) = e.color.matrix[r * 3 + c];
@@ -540,7 +547,9 @@ void ImageCanvas::setCurrent(DecodedImagePtr image, bool sameFile) {
     update();
 }
 
-DecodedImagePtr ImageCanvas::current() const { return d->current ? d->current->src : nullptr; }
+DecodedImagePtr ImageCanvas::current() const {
+    return d->current ? d->current->src : nullptr;
+}
 
 void ImageCanvas::setPreload(const QList<DecodedImagePtr>& images) {
     d->preload.clear();
@@ -566,8 +575,8 @@ void ImageCanvas::setViewTransform(const QTransform& imageToViewport) {
     update();
 }
 
-void ImageCanvas::setBackground(const QColor& base, bool checker, const QColor& checker1, const QColor& checker2,
-                                double checkerCellDevicePx) {
+void ImageCanvas::setBackground(const QColor& base, bool checker, const QColor& checker1,
+                                const QColor& checker2, double checkerCellDevicePx) {
     d->base = base;
     d->checker = checker;
     d->checker1 = checker1;
@@ -588,7 +597,9 @@ void ImageCanvas::setOutputColorSpace(const QColorSpace& cs) {
     update();
 }
 
-QColorSpace ImageCanvas::outputColorSpace() const { return d->output; }
+QColorSpace ImageCanvas::outputColorSpace() const {
+    return d->output;
+}
 
 void ImageCanvas::setExposure(float multiplier, float maxValue) {
     d->exposure = multiplier;
@@ -603,9 +614,13 @@ void ImageCanvas::setMaxTileSize(int px) {
     update();
 }
 
-int ImageCanvas::maxTextureSize() const { return d->maxTexture; }
+int ImageCanvas::maxTextureSize() const {
+    return d->maxTexture;
+}
 
-bool ImageCanvas::isRhiAvailable() const { return !d->rhiFailed; }
+bool ImageCanvas::isRhiAvailable() const {
+    return !d->rhiFailed;
+}
 
 bool ImageCanvas::isIdle() const {
     if (!d->current)
@@ -613,7 +628,9 @@ bool ImageCanvas::isIdle() const {
     return d->current->complete();
 }
 
-int ImageCanvas::currentTileCount() const { return d->current ? int(d->current->tiles.size()) : 0; }
+int ImageCanvas::currentTileCount() const {
+    return d->current ? int(d->current->tiles.size()) : 0;
+}
 
 qint64 ImageCanvas::gpuBytes() const {
     qint64 sum = 0;
@@ -635,7 +652,8 @@ void ImageCanvas::initialize(QRhiCommandBuffer*) {
         return;
     }
     d->maxTexture = d->rhi->resourceLimit(QRhi::TextureSizeMax);
-    if (d->pipeline && !d->pipeline->renderPassDescriptor()->isCompatible(renderTarget()->renderPassDescriptor())) {
+    if (d->pipeline &&
+        !d->pipeline->renderPassDescriptor()->isCompatible(renderTarget()->renderPassDescriptor())) {
         d->pipeline.reset();
     }
     if (d->pipeline)
@@ -664,19 +682,20 @@ void ImageCanvas::initialize(QRhiCommandBuffer*) {
             {QRhiShaderResourceBinding::uniformBuffer(
                  0, QRhiShaderResourceBinding::VertexStage | QRhiShaderResourceBinding::FragmentStage,
                  d->layoutUbo.get()),
-             QRhiShaderResourceBinding::sampledTexture(1, QRhiShaderResourceBinding::FragmentStage, d->dummyLut.get(),
-                                                       d->sampler[0].get()),
-             QRhiShaderResourceBinding::sampledTexture(2, QRhiShaderResourceBinding::FragmentStage, d->dummyLut.get(),
-                                                       d->sampler[0].get()),
-             QRhiShaderResourceBinding::sampledTexture(3, QRhiShaderResourceBinding::FragmentStage, d->dstLut.get(),
-                                                       d->sampler[0].get())});
+             QRhiShaderResourceBinding::sampledTexture(1, QRhiShaderResourceBinding::FragmentStage,
+                                                       d->dummyLut.get(), d->sampler[0].get()),
+             QRhiShaderResourceBinding::sampledTexture(2, QRhiShaderResourceBinding::FragmentStage,
+                                                       d->dummyLut.get(), d->sampler[0].get()),
+             QRhiShaderResourceBinding::sampledTexture(3, QRhiShaderResourceBinding::FragmentStage,
+                                                       d->dstLut.get(), d->sampler[0].get())});
         d->layoutSrb->create();
     }
 
     d->pipeline.reset(rhi->newGraphicsPipeline());
     d->pipeline->setTopology(QRhiGraphicsPipeline::TriangleStrip);
-    d->pipeline->setShaderStages({{QRhiShaderStage::Vertex, loadShader(QStringLiteral(":/shaders/image.vert.qsb"))},
-                                  {QRhiShaderStage::Fragment, loadShader(QStringLiteral(":/shaders/image.frag.qsb"))}});
+    d->pipeline->setShaderStages(
+        {{QRhiShaderStage::Vertex, loadShader(QStringLiteral(":/shaders/image.vert.qsb"))},
+         {QRhiShaderStage::Fragment, loadShader(QStringLiteral(":/shaders/image.frag.qsb"))}});
     QRhiVertexInputLayout layout;
     layout.setBindings({{2 * sizeof(float)}});
     layout.setAttributes({{0, 0, QRhiVertexInputAttribute::Float2, 0}});
@@ -722,7 +741,7 @@ void ImageCanvas::render(QRhiCommandBuffer* cb) {
         else if (d->current->stale && d->current->stale->complete())
             draw = d->current->stale.get(); // output changed, re-conversion pending
         else if (d->current->ready())
-            draw = d->current.get();  // partially uploaded huge image: draw what is there
+            draw = d->current.get(); // partially uploaded huge image: draw what is there
         moreWork = !d->current->complete() && d->current->ready();
         if (d->current->complete())
             d->fallback.reset();

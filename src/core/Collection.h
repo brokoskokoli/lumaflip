@@ -22,7 +22,7 @@ class NameCollator;
 class FolderOrderProvider;
 class FileAttributeProvider;
 
-enum class WrapMode { Stop, Wrap };  // F-NAV-03 (NextFolder: M3, handled by the window)
+enum class WrapMode { Stop, Wrap }; // F-NAV-03 (NextFolder: M3, handled by the window)
 
 // F-SORT-06: the sort choice remembered for one folder.
 struct FolderSortChoice {
@@ -55,7 +55,7 @@ public:
     // loading, the same load is started for this collection.
     void copyFrom(const Collection& other);
 
-    QString folderPath() const;      // empty for openFiles() with mixed folders
+    QString folderPath() const; // empty for openFiles() with mixed folders
     bool isFolderCollection() const;
     bool isLoading() const;
 
@@ -64,7 +64,7 @@ public:
     const QVector<FileEntry>& entries() const;
     int indexOf(const QString& path) const;
 
-    int currentIndex() const;        // -1 if empty
+    int currentIndex() const; // -1 if empty
     QString currentPath() const;
     void setCurrentIndex(int index);
     bool setCurrentPath(const QString& path);
@@ -78,7 +78,7 @@ public:
 
     // Sorting (F-SORT-*). `followFinder` = mode "Wie Finder".
     SortSpec sortSpec() const;
-    void setSortSpec(const SortSpec& spec);   // manual; re-sorts, keeps current file
+    void setSortSpec(const SortSpec& spec); // manual; re-sorts, keeps current file
     void setFollowFinder(bool follow, bool allowLiveQuery);
     bool followsFinder() const;
     // The window's sort mode for the next open*(), without re-sorting the current entries
@@ -110,11 +110,11 @@ public:
 
     // Injection for tests; defaults are created via Platform.h factories.
     void setProviders(NameCollator* collator, FolderOrderProvider* order,
-                      FileAttributeProvider* attributes);  // non-owning, may be null
+                      FileAttributeProvider* attributes); // non-owning, may be null
 
 signals:
     void loadingFinished();
-    void entriesChanged();                 // list or order changed
+    void entriesChanged(); // list or order changed
     void currentChanged(int index, const QString& path);
     void sortSpecChanged(const lf::SortSpec& spec);
     // F-PRIV-01: the folder cannot be listed. `privacyProtected`: macOS privacy protection

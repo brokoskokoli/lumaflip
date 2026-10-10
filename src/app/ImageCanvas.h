@@ -49,13 +49,13 @@ public:
 
     // For tests: limit the tile size (0 = use the GPU's max texture size).
     void setMaxTileSize(int px);
-    int maxTextureSize() const;      // 0 until the RHI is initialized
-    bool isRhiAvailable() const;     // false if no QRhi could be created
+    int maxTextureSize() const;  // 0 until the RHI is initialized
+    bool isRhiAvailable() const; // false if no QRhi could be created
     // True when the current image is fully uploaded (or there is none) and no
     // conversion is pending.
     bool isIdle() const;
     int currentTileCount() const;
-    qint64 gpuBytes() const;         // texture memory held by the cache
+    qint64 gpuBytes() const; // texture memory held by the cache
 
 signals:
     void conversionFinished();

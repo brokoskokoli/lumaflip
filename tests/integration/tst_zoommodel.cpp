@@ -10,8 +10,12 @@ using namespace lf;
 
 namespace {
 
-bool fuzzy(double a, double b, double eps = 1e-6) { return std::abs(a - b) <= eps; }
-bool fuzzyPt(QPointF a, QPointF b, double eps = 1e-6) { return fuzzy(a.x(), b.x(), eps) && fuzzy(a.y(), b.y(), eps); }
+bool fuzzy(double a, double b, double eps = 1e-6) {
+    return std::abs(a - b) <= eps;
+}
+bool fuzzyPt(QPointF a, QPointF b, double eps = 1e-6) {
+    return fuzzy(a.x(), b.x(), eps) && fuzzy(a.y(), b.y(), eps);
+}
 
 ZoomModel makeModel(QSize viewport, QSize image, double dpr = 1.0) {
     ZoomModel m;
@@ -30,10 +34,10 @@ private slots:
         ZoomModel big = makeModel({1000, 800}, {4000, 2000});
         QCOMPARE(big.mode(), ZoomMode::Fit);
         QVERIFY(fuzzy(big.scale(), 0.25));
-        QCOMPARE(big.imageRectInViewport(), QRectF(0, 150, 1000, 500));  // centered
+        QCOMPARE(big.imageRectInViewport(), QRectF(0, 150, 1000, 500)); // centered
 
         ZoomModel small = makeModel({1000, 800}, {200, 100});
-        QVERIFY(fuzzy(small.scale(), 1.0));  // no upscaling of small images
+        QVERIFY(fuzzy(small.scale(), 1.0)); // no upscaling of small images
         QCOMPARE(small.imageRectInViewport(), QRectF(400, 350, 200, 100));
         QVERIFY(!small.isZoomed());
     }
@@ -51,7 +55,7 @@ private slots:
         QVERIFY(fuzzy(m.scale(), 8.0));
         m.setMode(ZoomMode::Fill);
         QVERIFY(fuzzy(m.scale(), 8.0));
-        QVERIFY(m.isZoomed());  // fill crops the wider dimension
+        QVERIFY(m.isZoomed()); // fill crops the wider dimension
 
         ZoomModel big = makeModel({1000, 800}, {4000, 2000});
         big.setMode(ZoomMode::FillWidth);
@@ -84,7 +88,7 @@ private slots:
         m.zoomStep(1, {500, 400});
         QVERIFY(fuzzy(m.factor(), 1.0 / 3));
         QCOMPARE(m.mode(), ZoomMode::Custom);
-        m.zoomStep(3, {500, 400});  // 1/2, 2/3, 1
+        m.zoomStep(3, {500, 400}); // 1/2, 2/3, 1
         QVERIFY(fuzzy(m.factor(), 1.0));
         QCOMPARE(m.mode(), ZoomMode::Actual);
         m.zoomStep(1, {500, 400});
@@ -155,7 +159,7 @@ private slots:
     void F_VIEW_05_zoomLockKeepsFactorAndCenter() {
         ZoomModel m = makeModel({1000, 800}, {4000, 2000});
         m.setFactor(0.5, {500, 400});
-        m.panBy({600, 0});  // look further left
+        m.panBy({600, 0}); // look further left
         const QSizeF d = m.displayedImageSize();
         const QPointF rel = m.viewportToImage({500, 400});
         const QPointF relN(rel.x() / d.width(), rel.y() / d.height());
@@ -177,19 +181,19 @@ private slots:
         // 1000x800 points on a Retina display = 2000x1600 device px.
         ZoomModel m = makeModel({2000, 1600}, {1000, 500}, 2.0);
         m.setMode(ZoomMode::Actual);
-        QVERIFY(fuzzy(m.scale(), 1.0));  // 1 image px = 1 device px
+        QVERIFY(fuzzy(m.scale(), 1.0)); // 1 image px = 1 device px
         QCOMPARE(m.imageRectInViewport().size(), QSizeF(1000, 500));
         QVERIFY(fuzzy(m.factor(), 1.0));
         // Fit does not upscale beyond 100 % (device pixels).
         m.setMode(ZoomMode::Fit);
         QVERIFY(fuzzy(m.scale(), 1.0));
 
-        m.setActualSizeInDevicePixels(false);  // 100 % = 1 image px per point
+        m.setActualSizeInDevicePixels(false); // 100 % = 1 image px per point
         m.setMode(ZoomMode::Actual);
         QVERIFY(fuzzy(m.scale(), 2.0));
         QVERIFY(fuzzy(m.factor(), 1.0));
         m.setMode(ZoomMode::Fit);
-        QVERIFY(fuzzy(m.scale(), 2.0));  // fits (2000/1000 = 2) and 100 % in points = 2
+        QVERIFY(fuzzy(m.scale(), 2.0)); // fits (2000/1000 = 2) and 100 % in points = 2
         QVERIFY(fuzzy(m.factor(), 1.0));
     }
 
@@ -200,18 +204,18 @@ private slots:
         const QTransform t0 = m.imageToViewport();
         QCOMPARE(t0.map(QPointF(0, 0)), QPointF(300, 400));
 
-        m.setRotation(1);  // 90° clockwise
+        m.setRotation(1); // 90° clockwise
         QCOMPARE(m.displayedImageSize(), QSizeF(200, 400));
         QCOMPARE(m.imageRectInViewport(), QRectF(400, 300, 200, 400));
-        QCOMPARE(m.imageToViewport().map(QPointF(0, 0)), QPointF(600, 300));    // top-left -> top-right
-        QCOMPARE(m.imageToViewport().map(QPointF(400, 0)), QPointF(600, 700));  // top-right -> bottom-right
-        QCOMPARE(m.imageToViewport().map(QPointF(0, 200)), QPointF(400, 300));  // bottom-left -> top-left
+        QCOMPARE(m.imageToViewport().map(QPointF(0, 0)), QPointF(600, 300));   // top-left -> top-right
+        QCOMPARE(m.imageToViewport().map(QPointF(400, 0)), QPointF(600, 700)); // top-right -> bottom-right
+        QCOMPARE(m.imageToViewport().map(QPointF(0, 200)), QPointF(400, 300)); // bottom-left -> top-left
 
         m.setRotation(2);
         QCOMPARE(m.imageToViewport().map(QPointF(0, 0)), QPointF(700, 600));
         m.setRotation(3);
         QCOMPARE(m.imageToViewport().map(QPointF(0, 0)), QPointF(400, 700));
-        m.setRotation(-3);  // normalised: == 1
+        m.setRotation(-3); // normalised: == 1
         QCOMPARE(m.rotation(), 1);
         m.setRotation(4);
         QCOMPARE(m.rotation(), 0);
@@ -248,8 +252,8 @@ private slots:
         m.setMode(ZoomMode::Actual);
         QCOMPARE(m.desiredDecodeSize(), QSize(4000, 2000));
         m.setFactor(3.0, {500, 400});
-        QCOMPARE(m.desiredDecodeSize(), QSize(4000, 2000));  // never above full size
-        m.setRotation(1);  // view rotation does not change the decode orientation
+        QCOMPARE(m.desiredDecodeSize(), QSize(4000, 2000)); // never above full size
+        m.setRotation(1); // view rotation does not change the decode orientation
         QCOMPARE(m.desiredDecodeSize(), QSize(4000, 2000));
         ZoomModel empty;
         empty.setViewportSize({640, 480});
@@ -258,7 +262,7 @@ private slots:
 
     void needsHigherResolution() {
         ZoomModel m = makeModel({1000, 800}, {4000, 2000});
-        QVERIFY(!m.needsHigherResolution({1000, 500}));  // fit: 1 device px per loaded px
+        QVERIFY(!m.needsHigherResolution({1000, 500})); // fit: 1 device px per loaded px
         m.setFactor(0.5, {500, 400});
         QVERIFY(m.needsHigherResolution({1000, 500}));
         QVERIFY(!m.needsHigherResolution({4000, 2000}));

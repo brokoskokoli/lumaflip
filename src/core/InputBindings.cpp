@@ -14,7 +14,9 @@ namespace lf {
 
 namespace {
 
-QString tr(const char* text) { return QCoreApplication::translate("lf::InputBindings", text); }
+QString tr(const char* text) {
+    return QCoreApplication::translate("lf::InputBindings", text);
+}
 
 struct ActionInfo {
     Action action;
@@ -102,53 +104,100 @@ const ActionInfo* info(Action a) {
 // "Meta" is the Control key (⌃).
 QStringList defaultShortcutStrings(Action a) {
     switch (a) {
-    case Action::NewWindow: return {"Ctrl+N"};
-    case Action::DuplicateWindow: return {"Alt+Ctrl+N"};
-    case Action::FirstImage: return {"Ctrl+Up"};
-    case Action::LastImage: return {"Ctrl+Down"};
-    case Action::ZoomIn: return {"Ctrl++", "Ctrl+=", "+"};
-    case Action::ZoomOut: return {"Ctrl+-", "-"};
-    case Action::ZoomActual: return {"Ctrl+0", "3"};
-    case Action::ZoomFit: return {"Ctrl+9", "1"};
-    case Action::ZoomFillWidth: return {"2"};
-    case Action::ToggleFitActualAtCursor: return {"Z"};
-    case Action::ToggleZoomLock: return {"Shift+Z"};
-    case Action::ToggleFullScreen: return {"Meta+Ctrl+F", "F"};
-    case Action::ToggleSlideshow: return {"Shift+Ctrl+F", "S"};
-    case Action::RotateLeft: return {"Ctrl+L"};
-    case Action::RotateRight: return {"Ctrl+R"};
-    case Action::FlipHorizontal: return {"H"};
-    case Action::FlipVertical: return {"Shift+H"};
-    case Action::ToggleInfoPanel: return {"Ctrl+I", "I"};
-    case Action::ToggleFilmstrip: return {"T"};
-    case Action::ToggleGrid: return {"G"};
-    case Action::Trash: return {"Ctrl+Backspace", "Del"};
-    case Action::Undo: return {"Ctrl+Z"};
-    case Action::Redo: return {"Shift+Ctrl+Z"};
-    case Action::Rename: return {"Return", "F2"};
-    case Action::RevealInFinder: return {"Shift+Ctrl+R"};
-    case Action::CopyImage: return {"Ctrl+C"};
-    case Action::CopyPath: return {"Alt+Ctrl+C"};
-    case Action::OpenInEditor: return {"E"};
-    case Action::NextFrame: return {"."};
-    case Action::PreviousFrame: return {","};
-    case Action::NextPage: return {"Alt+Down"};
-    case Action::PreviousPage: return {"Alt+Up"};
-    case Action::OpenPreferences: return {"Ctrl+,"};
-    case Action::ShowShortcuts: return {"?"};
-    case Action::CloseWindow: return {"Ctrl+W"};
-    case Action::CloseAllWindows: return {"Alt+Ctrl+W"};
-    case Action::Magnifier: return {"L"};
-    case Action::Rate0: return {"0"};
-    case Action::Rate1: return {"1"};
-    case Action::Rate2: return {"2"};
-    case Action::Rate3: return {"3"};
-    case Action::Rate4: return {"4"};
-    case Action::Rate5: return {"5"};
-    case Action::RatePick: return {"P"};
-    case Action::RateReject: return {"X"};
-    case Action::RateClear: return {"U"};
-    default: return {};
+    case Action::NewWindow:
+        return {"Ctrl+N"};
+    case Action::DuplicateWindow:
+        return {"Alt+Ctrl+N"};
+    case Action::FirstImage:
+        return {"Ctrl+Up"};
+    case Action::LastImage:
+        return {"Ctrl+Down"};
+    case Action::ZoomIn:
+        return {"Ctrl++", "Ctrl+=", "+"};
+    case Action::ZoomOut:
+        return {"Ctrl+-", "-"};
+    case Action::ZoomActual:
+        return {"Ctrl+0", "3"};
+    case Action::ZoomFit:
+        return {"Ctrl+9", "1"};
+    case Action::ZoomFillWidth:
+        return {"2"};
+    case Action::ToggleFitActualAtCursor:
+        return {"Z"};
+    case Action::ToggleZoomLock:
+        return {"Shift+Z"};
+    case Action::ToggleFullScreen:
+        return {"Meta+Ctrl+F", "F"};
+    case Action::ToggleSlideshow:
+        return {"Shift+Ctrl+F", "S"};
+    case Action::RotateLeft:
+        return {"Ctrl+L"};
+    case Action::RotateRight:
+        return {"Ctrl+R"};
+    case Action::FlipHorizontal:
+        return {"H"};
+    case Action::FlipVertical:
+        return {"Shift+H"};
+    case Action::ToggleInfoPanel:
+        return {"Ctrl+I", "I"};
+    case Action::ToggleFilmstrip:
+        return {"T"};
+    case Action::ToggleGrid:
+        return {"G"};
+    case Action::Trash:
+        return {"Ctrl+Backspace", "Del"};
+    case Action::Undo:
+        return {"Ctrl+Z"};
+    case Action::Redo:
+        return {"Shift+Ctrl+Z"};
+    case Action::Rename:
+        return {"Return", "F2"};
+    case Action::RevealInFinder:
+        return {"Shift+Ctrl+R"};
+    case Action::CopyImage:
+        return {"Ctrl+C"};
+    case Action::CopyPath:
+        return {"Alt+Ctrl+C"};
+    case Action::OpenInEditor:
+        return {"E"};
+    case Action::NextFrame:
+        return {"."};
+    case Action::PreviousFrame:
+        return {","};
+    case Action::NextPage:
+        return {"Alt+Down"};
+    case Action::PreviousPage:
+        return {"Alt+Up"};
+    case Action::OpenPreferences:
+        return {"Ctrl+,"};
+    case Action::ShowShortcuts:
+        return {"?"};
+    case Action::CloseWindow:
+        return {"Ctrl+W"};
+    case Action::CloseAllWindows:
+        return {"Alt+Ctrl+W"};
+    case Action::Magnifier:
+        return {"L"};
+    case Action::Rate0:
+        return {"0"};
+    case Action::Rate1:
+        return {"1"};
+    case Action::Rate2:
+        return {"2"};
+    case Action::Rate3:
+        return {"3"};
+    case Action::Rate4:
+        return {"4"};
+    case Action::Rate5:
+        return {"5"};
+    case Action::RatePick:
+        return {"P"};
+    case Action::RateReject:
+        return {"X"};
+    case Action::RateClear:
+        return {"U"};
+    default:
+        return {};
     }
 }
 
@@ -162,13 +211,19 @@ bool isCullingAction(Action a) {
     case Action::Rate5:
     case Action::RatePick:
     case Action::RateReject:
-    case Action::RateClear: return true;
-    default: return false;
+    case Action::RateClear:
+        return true;
+    default:
+        return false;
     }
 }
 
-QString shortcutKey(Action a) { return QString::fromLatin1(key::ShortcutPrefix) + actionId(a); }
-QString slotKey(const QString& slotId) { return QString::fromLatin1(key::InputPrefix) + slotId; }
+QString shortcutKey(Action a) {
+    return QString::fromLatin1(key::ShortcutPrefix) + actionId(a);
+}
+QString slotKey(const QString& slotId) {
+    return QString::fromLatin1(key::InputPrefix) + slotId;
+}
 
 constexpr Qt::KeyboardModifiers kRelevantMods =
     Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier | Qt::MetaModifier;
@@ -191,7 +246,9 @@ QStringList toStrings(const QList<QKeySequence>& list) {
     return out;
 }
 
-int clampInt(const QVariant& v, int lo, int hi) { return std::clamp(v.toInt(), lo, hi); }
+int clampInt(const QVariant& v, int lo, int hi) {
+    return std::clamp(v.toInt(), lo, hi);
+}
 
 } // namespace
 
@@ -234,14 +291,15 @@ const QVector<InputSlot>& InputBindings::inputSlots() {
         // F-IN-01
         add("wheel", "Mausrad",
             {{"image", "Bild wechseln", "Nach unten drehen zeigt das nächste, nach oben das vorherige Bild."},
-             {"zoom", "Zoomen (am Cursor)", "Nach oben drehen vergrößert, nach unten verkleinert – am Mauszeiger."},
+             {"zoom", "Zoomen (am Cursor)",
+              "Nach oben drehen vergrößert, nach unten verkleinert – am Mauszeiger."},
              {"scrollOrImage", "Ausschnitt scrollen (sonst Bild wechseln)",
               "Gezoomt wird der Ausschnitt verschoben, sonst wird das Bild gewechselt."}},
             "image");
         // F-IN-02
         const auto wheelMod = {
-            std::tuple<const char*, const char*, const char*>{"image", "Bild wechseln",
-                                                              "Bild wechseln, solange die Taste gehalten wird."},
+            std::tuple<const char*, const char*, const char*>{
+                "image", "Bild wechseln", "Bild wechseln, solange die Taste gehalten wird."},
             {"zoom", "Zoomen (am Cursor)", "Zoomen am Mauszeiger, solange die Taste gehalten wird."},
             {"scrollOrImage", "Ausschnitt scrollen (sonst Bild wechseln)",
              "Gezoomt wird der Ausschnitt verschoben, sonst wird das Bild gewechselt."},
@@ -275,7 +333,8 @@ const QVector<InputSlot>& InputBindings::inputSlots() {
             "animationOrImage");
         // F-IN-07
         add("arrowsZoomed", "← / →, wenn gezoomt",
-            {{"image", "Immer Bild wechseln", "Pfeiltasten wechseln das Bild; mit ⌥ wird der Ausschnitt verschoben."},
+            {{"image", "Immer Bild wechseln",
+              "Pfeiltasten wechseln das Bild; mit ⌥ wird der Ausschnitt verschoben."},
              {"scrollThenImage", "Erst bis zum Rand scrollen, dann Bild wechseln",
               "Der Ausschnitt wird verschoben; am Bildrand wechselt das Bild."},
              {"scroll", "Ausschnitt scrollen (Bild mit ⌥←/⌥→)",
@@ -293,7 +352,8 @@ const QVector<InputSlot>& InputBindings::inputSlots() {
         // F-IN-09
         add("click", "Einfacher Klick ins Bild",
             {{"none", "Nichts", "Ein Klick hat keine Wirkung (Ziehen verschiebt weiterhin)."},
-             {"fitActual", "Einpassen ↔ 100 % am Cursor", "Ein Klick zoomt auf 100 % an der Klickstelle und zurück."},
+             {"fitActual", "Einpassen ↔ 100 % am Cursor",
+              "Ein Klick zoomt auf 100 % an der Klickstelle und zurück."},
              {"image", "Nächstes Bild (linke Hälfte: vorheriges)",
               "Klick in die rechte Hälfte: nächstes Bild, linke Hälfte: vorheriges."}},
             "none");
@@ -308,12 +368,14 @@ const QVector<InputSlot>& InputBindings::inputSlots() {
             {{"none", "Nichts", "Die mittlere Maustaste hat keine Wirkung."},
              {"fullscreen", "Vollbild", "Schaltet das Vollbild um."},
              {"close", "Fenster schließen", "Schließt das Fenster."},
-             {"fitActual", "Einpassen ↔ 100 %", "Schaltet zwischen Einpassen und 100 % an der Klickstelle um."},
+             {"fitActual", "Einpassen ↔ 100 %",
+              "Schaltet zwischen Einpassen und 100 % an der Klickstelle um."},
              {"magnifier", "Lupe (gedrückt halten)", "Zeigt eine Lupe, solange die Taste gedrückt ist."}},
             "fitActual");
         // F-IN-12
         add("backForward", "Maustasten 4/5 (Zurück/Vor)",
-            {{"image", "Vorheriges/nächstes Bild", "Zurück-Taste: vorheriges Bild, Vor-Taste: nächstes Bild."},
+            {{"image", "Vorheriges/nächstes Bild",
+              "Zurück-Taste: vorheriges Bild, Vor-Taste: nächstes Bild."},
              {"none", "Nichts", "Die Tasten haben keine Wirkung."}},
             "image");
         // F-IN-13
@@ -341,13 +403,15 @@ const QVector<InputSlot>& InputBindings::inputSlots() {
         add("endOfCollection", "Ende der Sammlung",
             {{"stop", "Anhalten", "Am Ende bleibt das letzte Bild stehen (mit kurzem Hinweis)."},
              {"wrap", "Umlaufen", "Nach dem letzten Bild folgt wieder das erste."},
-             {"nextFolder", "Zum nächsten Ordner", "Nach dem letzten Bild geht es im nächsten Ordner weiter."}},
+             {"nextFolder", "Zum nächsten Ordner",
+              "Nach dem letzten Bild geht es im nächsten Ordner weiter."}},
             "stop");
         // Not in the 4.14 table, needed for the F-IN-18 preset "Fotograf:in" and the 5.2
         // conflict rule: digits/P/X/U rate only in culling mode unless enabled here.
         add("ratingKeys", "Bewertungstasten (0–5, P/X/U)",
             {{"cullingOnly", "Nur im Aussortiermodus", "Ziffern wählen sonst den Zoommodus (1/2/3)."},
-             {"always", "Immer aktiv", "Ziffern vergeben immer Sterne; P/X/U markieren. Zoom-Ziffern sind aus."}},
+             {"always", "Immer aktiv",
+              "Ziffern vergeben immer Sterne; P/X/U markieren. Zoom-Ziffern sind aus."}},
             "cullingOnly");
         return v;
     }();
@@ -365,14 +429,16 @@ const InputSlot* findSlot(const QString& id) {
 
 // ---- construction / persistence ----
 
-InputBindings::InputBindings() { reload(); }
+InputBindings::InputBindings() {
+    reload();
+}
 
 void InputBindings::reload() {
     Settings& st = Settings::instance();
     m_choices.clear();
     for (const auto& s : inputSlots()) {
-        const QString k = s.id == QLatin1String("endOfCollection") ? QString::fromLatin1(key::WrapMode)
-                                                                   : slotKey(s.id);
+        const QString k =
+            s.id == QLatin1String("endOfCollection") ? QString::fromLatin1(key::WrapMode) : slotKey(s.id);
         QString c = st.value(k).toString();
         if (!s.choices.contains(c))
             c = s.defaultChoice;
@@ -409,9 +475,11 @@ void InputBindings::applyPreset(const QString& presetId) {
     QList<QKeySequence> rename = defaultShortcuts(Action::Rename);
     if (presetId == QLatin1String("windows")) {
         // IrfanView / FastStone habits
-        p = {{"wheel", "image"},       {"wheel.cmd", "zoom"}, {"pageUpDown", "image"},
-             {"homeEnd", "image"},     {"space", "image"},    {"arrowsZoomed", "image"},
-             {"upDown", "scrollOrImage"}, {"doubleClick", "fullscreen"}, {"esc", "exitModeOrClose"}};
+        p = {{"wheel", "image"},          {"wheel.cmd", "zoom"},
+             {"pageUpDown", "image"},     {"homeEnd", "image"},
+             {"space", "image"},          {"arrowsZoomed", "image"},
+             {"upDown", "scrollOrImage"}, {"doubleClick", "fullscreen"},
+             {"esc", "exitModeOrClose"}};
         fullScreen.append(QKeySequence(Qt::Key_Return));
         fullScreen.append(QKeySequence(Qt::Key_Enter));
         rename = {QKeySequence(Qt::Key_F2)};
@@ -424,7 +492,7 @@ void InputBindings::applyPreset(const QString& presetId) {
     InputBindings b;
     for (const auto& s : inputSlots()) {
         if (s.id == QLatin1String("endOfCollection"))
-            continue;  // navigation setting, not part of the input profile
+            continue; // navigation setting, not part of the input profile
         const QString wanted = p.value(s.id, s.defaultChoice);
         b.setChoice(s.id, isChoiceAvailable(s.id, wanted) ? wanted : s.defaultChoice);
     }
@@ -482,7 +550,9 @@ QVector<Action> InputBindings::allActions() {
     return v;
 }
 
-QList<QKeySequence> InputBindings::defaultShortcuts(Action a) { return fromStrings(defaultShortcutStrings(a)); }
+QList<QKeySequence> InputBindings::defaultShortcuts(Action a) {
+    return fromStrings(defaultShortcutStrings(a));
+}
 
 QKeySequence InputBindings::shortcut(Action a) const {
     const auto list = shortcuts(a);
@@ -542,7 +612,9 @@ QVector<Action> InputBindings::conflicts() const {
 
 // ---- wheel tuning (F-IN-03) ----
 
-bool InputBindings::wheelInverted() const { return Settings::instance().value(key::WheelInverted).toBool(); }
+bool InputBindings::wheelInverted() const {
+    return Settings::instance().value(key::WheelInverted).toBool();
+}
 int InputBindings::wheelStepsPerImage() const {
     return clampInt(Settings::instance().value(key::WheelStepsPerImage), 1, 5);
 }
@@ -552,7 +624,9 @@ int InputBindings::wheelMinIntervalMs() const {
 int InputBindings::zoomStepPercent() const {
     return clampInt(Settings::instance().value(key::ZoomStepPercent), 5, 50);
 }
-int InputBindings::jumpSize() const { return clampInt(Settings::instance().value(key::JumpSize), 2, 100); }
+int InputBindings::jumpSize() const {
+    return clampInt(Settings::instance().value(key::JumpSize), 2, 100);
+}
 
 // ---- resolve ----
 
@@ -618,7 +692,7 @@ Action InputBindings::resolve(const InputEvent& ev) const {
         if (ev.swipeDirection == 0)
             return Action::None;
         const QString c = choice(QStringLiteral("swipe"));
-        const bool forward = ev.swipeDirection < 0;  // fingers move left -> next (like Preview)
+        const bool forward = ev.swipeDirection < 0; // fingers move left -> next (like Preview)
         if (c == QLatin1String("off"))
             return Action::None;
         if (c == QLatin1String("scroll") || ev.zoomed)
@@ -630,7 +704,8 @@ Action InputBindings::resolve(const InputEvent& ev) const {
         const bool alt = mods & Qt::AltModifier;
         return dragOut != alt ? Action::DragOut : Action::StartPan;
     }
-    case InputKind::Key: break;
+    case InputKind::Key:
+        break;
     }
 
     // ---- keys ----
@@ -652,7 +727,8 @@ Action InputBindings::resolve(const InputEvent& ev) const {
         return Action::None;
     };
     // 1. Conflict rule (5.2): in culling mode (or if enabled) rating keys win over zoom digits.
-    const bool ratingActive = ev.inCullingMode || choice(QStringLiteral("ratingKeys")) == QLatin1String("always");
+    const bool ratingActive =
+        ev.inCullingMode || choice(QStringLiteral("ratingKeys")) == QLatin1String("always");
     if (ratingActive) {
         if (Action a = matchShortcut(true); a != Action::None)
             return a;
@@ -661,7 +737,7 @@ Action InputBindings::resolve(const InputEvent& ev) const {
     if (Action a = matchShortcut(false); a != Action::None) {
         if (ratingActive && (a == Action::ZoomActual || a == Action::ZoomFit || a == Action::ZoomFillWidth) &&
             mods == Qt::NoModifier && ev.key >= Qt::Key_0 && ev.key <= Qt::Key_9)
-            return Action::None;  // digits belong to ratings while rating keys are active
+            return Action::None; // digits belong to ratings while rating keys are active
         return a;
     }
     // 3. Keys configured through slots (4.14).
@@ -682,7 +758,7 @@ Action InputBindings::resolve(const InputEvent& ev) const {
             return alt ? img : (ev.atScrollEdge ? img : scroll);
         if (c == QLatin1String("scroll"))
             return alt ? img : scroll;
-        return alt ? scroll : img;  // "image"; ⌥ pans (F-VIEW-04)
+        return alt ? scroll : img; // "image"; ⌥ pans (F-VIEW-04)
     }
     case Qt::Key_Up:
     case Qt::Key_Down: {
@@ -742,9 +818,11 @@ Action InputBindings::resolve(const InputEvent& ev) const {
     case Qt::Key_Escape:
         if (!noMods)
             return Action::None;
-        return choice(QStringLiteral("esc")) == QLatin1String("exitModeOrClose") ? Action::ExitModeOrCloseWindow
-                                                                                 : Action::ExitModeOrNothing;
-    default: break;
+        return choice(QStringLiteral("esc")) == QLatin1String("exitModeOrClose")
+                   ? Action::ExitModeOrCloseWindow
+                   : Action::ExitModeOrNothing;
+    default:
+        break;
     }
     return Action::None;
 }

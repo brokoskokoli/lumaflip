@@ -18,7 +18,7 @@ namespace lf {
 namespace {
 
 class GenericNameCollator final : public NameCollator {
-  public:
+public:
     GenericNameCollator() : collator_(QLocale::system()) {
         collator_.setNumericMode(true);
         collator_.setCaseSensitivity(Qt::CaseInsensitive);
@@ -35,13 +35,13 @@ class GenericNameCollator final : public NameCollator {
         return c < 0 ? -1 : (c > 0 ? 1 : 0);
     }
 
-  private:
+private:
     mutable QMutex mutex_;
     QCollator collator_;
 };
 
 class GenericFolderOrderProvider final : public FolderOrderProvider {
-  public:
+public:
     SortSpec finderOrder(const QString& folderPath, bool) override {
         // .DS_Store files copied from a Mac still carry the Finder settings.
         return finder::resolve(finder::readFolderRecords(folderPath), finder::GlobalContext{});
@@ -52,7 +52,7 @@ class GenericFolderOrderProvider final : public FolderOrderProvider {
 };
 
 class GenericFileAttributeProvider final : public FileAttributeProvider {
-  public:
+public:
     void fill(FileEntry& entry) override {
         if (!entry.created.isValid())
             entry.created = QFileInfo(entry.path).birthTime(QTimeZone::UTC);
@@ -60,7 +60,7 @@ class GenericFileAttributeProvider final : public FileAttributeProvider {
             entry.kind = kindFor(entry.name);
     }
 
-  private:
+private:
     QMutex mutex_;
     QHash<QString, QString> kinds_;
     QMimeDatabase mimeDb_;

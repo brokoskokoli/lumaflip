@@ -30,7 +30,7 @@ QDateTime fromTimespec(const struct timespec& ts) {
 }
 
 class MacFileAttributeProvider final : public FileAttributeProvider {
-  public:
+public:
     void fill(FileEntry& entry) override {
         fillTimes(entry);
         if (entry.kind.isEmpty())
@@ -65,7 +65,7 @@ class MacFileAttributeProvider final : public FileAttributeProvider {
         }
     }
 
-  private:
+private:
     static int ratingFrom(double v) {
         // XMP: -1 = rejected, 0 = unrated, 1..5 stars.
         if (!(v >= 0))
@@ -88,9 +88,9 @@ class MacFileAttributeProvider final : public FileAttributeProvider {
                 dto = exif[(id)kCGImagePropertyExifDateTimeDigitized];
             if ([dto isKindOfClass:[NSString class]]) {
                 NSString* offset = exif[@"OffsetTimeOriginal"];
-                const QDateTime dt =
-                    exifDate(QString::fromNSString(dto),
-                             [offset isKindOfClass:[NSString class]] ? QString::fromNSString(offset) : QString());
+                const QDateTime dt = exifDate(
+                    QString::fromNSString(dto),
+                    [offset isKindOfClass:[NSString class]] ? QString::fromNSString(offset) : QString());
                 if (dt.isValid())
                     entry.captured = dt;
             }

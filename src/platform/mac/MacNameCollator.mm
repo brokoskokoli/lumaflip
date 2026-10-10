@@ -38,7 +38,7 @@ void observeLocaleChanges() {
 }
 
 class MacNameCollator final : public NameCollator {
-  public:
+public:
     MacNameCollator() { observeLocaleChanges(); }
     ~MacNameCollator() override {
         for (CFLocaleRef l : retired_)

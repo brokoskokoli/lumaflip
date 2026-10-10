@@ -17,9 +17,9 @@ namespace lf {
 class DecoderRegistry;
 
 enum class Quality {
-    Preview,  // embedded preview / small thumbnail, fast (stage 1)
-    Screen,   // downsampled to the target size (stage 2)
-    Full,     // full resolution (stage 3, when zooming beyond fit)
+    Preview, // embedded preview / small thumbnail, fast (stage 1)
+    Screen,  // downsampled to the target size (stage 2)
+    Full,    // full resolution (stage 3, when zooming beyond fit)
 };
 
 using DecodedImagePtr = std::shared_ptr<const DecodedImage>;
@@ -32,7 +32,7 @@ public:
     explicit ImageProvider(QObject* parent = nullptr);
     ~ImageProvider() override;
 
-    static ImageProvider& instance();  // shared by all windows
+    static ImageProvider& instance(); // shared by all windows
 
     // P-01: starts decoding `path` (normalized absolute path, as collections use it) at
     // Screen quality for a view of `target` device pixels on a background thread, with
@@ -45,8 +45,8 @@ public:
     // available (may be nullptr), and schedules loading otherwise; `imageReady`
     // is emitted for every stage that becomes available.
     // `client` identifies the requesting window for prioritisation.
-    DecodedImagePtr request(const QString& path, Quality quality, QSize target,
-                            const void* client, int priority = 0);
+    DecodedImagePtr request(const QString& path, Quality quality, QSize target, const void* client,
+                            int priority = 0);
 
     // Tell the provider which files a window will likely need next (prefetch
     // window, SPEC 7.1). `ordered` = paths by priority (current first).

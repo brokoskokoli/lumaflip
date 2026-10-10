@@ -43,7 +43,7 @@ public:
     bool zoomLocked() const { return m_locked; }
 
     // ---- zoom ----
-    void setMode(ZoomMode mode);   // re-centers; also becomes the mode for new images
+    void setMode(ZoomMode mode); // re-centers; also becomes the mode for new images
     ZoomMode mode() const { return m_mode; }
     // Scale in device pixels per image pixel.
     double scale() const { return m_scale; }
@@ -64,26 +64,26 @@ public:
     void toggleFitActual(QPointF anchor);
 
     // ---- pan ----
-    void panBy(QPointF deltaDevicePx);   // moves the image by delta (clamped)
+    void panBy(QPointF deltaDevicePx); // moves the image by delta (clamped)
     void scrollToTop();
     void scrollToBottom();
     // Offset of the displayed image's top-left in the viewport (device px).
     QPointF offset() const { return m_offset; }
-    void setOffset(QPointF offset);      // clamped
-    bool isZoomed() const;               // displayed image larger than viewport
-    bool atEdge(Qt::Edge edge) const;    // that edge of the image is visible
+    void setOffset(QPointF offset);   // clamped
+    bool isZoomed() const;            // displayed image larger than viewport
+    bool atEdge(Qt::Edge edge) const; // that edge of the image is visible
 
     // ---- rotation / flip (F-EDIT-01) ----
-    void setRotation(int quarterTurnsClockwise);  // keeps the center point fixed
+    void setRotation(int quarterTurnsClockwise); // keeps the center point fixed
     int rotation() const { return m_rotation; }
     void setFlip(bool horizontal, bool vertical);
     bool flipHorizontal() const { return m_flipH; }
     bool flipVertical() const { return m_flipV; }
 
     // ---- derived ----
-    QSizeF displayedImageSize() const;   // after rotation, unscaled (image px)
-    QRectF imageRectInViewport() const;  // device px
-    QTransform imageToViewport() const;  // full-size image px -> viewport device px
+    QSizeF displayedImageSize() const;  // after rotation, unscaled (image px)
+    QRectF imageRectInViewport() const; // device px
+    QTransform imageToViewport() const; // full-size image px -> viewport device px
     QPointF viewportToImage(QPointF viewportPoint) const;
     // Size (in oriented image px, not view-rotated) to decode for the current
     // zoom: the on-screen size, never larger than the full size.
@@ -97,8 +97,8 @@ private:
     bool isFitLike(ZoomMode mode) const;
     void applyMode(bool keepRelativeCenter);
     void clampOffset();
-    QPointF centerInDisplay() const;            // viewport center in display coords (unscaled)
-    QPointF imageToDisplay(QPointF imagePoint) const;  // unscaled, no offset
+    QPointF centerInDisplay() const;                  // viewport center in display coords (unscaled)
+    QPointF imageToDisplay(QPointF imagePoint) const; // unscaled, no offset
     QPointF snappedOffset() const;
     void setCenterInDisplay(QPointF displayPoint);
 
@@ -108,7 +108,7 @@ private:
     bool m_actualDevicePixels = true;
     bool m_locked = false;
     ZoomMode m_mode = ZoomMode::Fit;
-    ZoomMode m_baseMode = ZoomMode::Fit;   // mode applied to new images when not locked
+    ZoomMode m_baseMode = ZoomMode::Fit; // mode applied to new images when not locked
     double m_scale = 1.0;
     QPointF m_offset;
     int m_rotation = 0;

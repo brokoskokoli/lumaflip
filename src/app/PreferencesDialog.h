@@ -55,7 +55,7 @@ public:
     int conflictCount() const { return m_conflicts; }
 
 public slots:
-    bool exportSettingsTo(const QString& filePath);    // F-SET-03 (shows errors)
+    bool exportSettingsTo(const QString& filePath); // F-SET-03 (shows errors)
     bool importSettingsFrom(const QString& filePath);
 
 signals:

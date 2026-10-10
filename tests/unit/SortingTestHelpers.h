@@ -54,7 +54,7 @@ inline void putBE(QByteArray& out, quint64 v, int size) {
 
 // ---- binary plist writer ----
 class BplistWriter {
-  public:
+public:
     static QByteArray write(const QVariant& root) {
         BplistWriter w;
         const int top = w.add(root);
@@ -76,7 +76,7 @@ class BplistWriter {
         return out;
     }
 
-  private:
+private:
     QVector<QByteArray> objs_;
 
     static void marker(QByteArray& o, int type, qsizetype len) {
@@ -334,7 +334,7 @@ inline bool writeFile(const QString& path, const QByteArray& data) {
 
 // ---- fake providers ----
 class FakeOrderProvider : public FolderOrderProvider {
-  public:
+public:
     SortSpec spec{SortKey::Name, true, SortSource::FinderDsStore};
     QHash<QString, QPointF> positions;
     std::atomic<int> delayMs{0};
@@ -360,7 +360,7 @@ class FakeOrderProvider : public FolderOrderProvider {
 };
 
 class FakeAttributeProvider : public FileAttributeProvider {
-  public:
+public:
     QHash<QString, QDateTime> added; // by file name
     QHash<QString, QString> kinds;   // by file name
     void fill(FileEntry& e) override {

@@ -39,9 +39,9 @@ enum class Type { Bool, Int, String, KeyList };
 struct KeyInfo {
     Type type = Type::String;
     QVariant def;
-    QStringList allowed;  // String: allowed values (empty = any)
+    QStringList allowed; // String: allowed values (empty = any)
     bool colorAllowed = false;
-    int min = 0, max = 0;  // Int
+    int min = 0, max = 0;                   // Int
     QVariant (*dynamicDefault)() = nullptr; // default that follows a system setting
 };
 
@@ -53,12 +53,14 @@ QVariant restoreWindowsDefault() {
     return o >= 0 ? o == 1 : systemRestoresWindows();
 }
 
-using Registry = QMap<QString, KeyInfo>;  // sorted
+using Registry = QMap<QString, KeyInfo>; // sorted
 
 const Registry& registry() {
     static const Registry reg = [] {
         Registry r;
-        auto b = [&r](const char* k, bool d) { r.insert(QString::fromLatin1(k), {Type::Bool, d, {}, false, 0, 0}); };
+        auto b = [&r](const char* k, bool d) {
+            r.insert(QString::fromLatin1(k), {Type::Bool, d, {}, false, 0, 0});
+        };
         auto i = [&r](const char* k, int d, int lo, int hi) {
             r.insert(QString::fromLatin1(k), {Type::Int, d, {}, false, lo, hi});
         };
@@ -100,7 +102,7 @@ const Registry& registry() {
         i(key::JumpSize, 10, 2, 100);
         for (const auto& slot : InputBindings::inputSlots()) {
             if (slot.id == QLatin1String("endOfCollection"))
-                continue;  // stored as key::WrapMode
+                continue; // stored as key::WrapMode
             r.insert(QString::fromLatin1(key::InputPrefix) + slot.id,
                      {Type::String, slot.defaultChoice, slot.choices, false, 0, 0});
         }
@@ -108,7 +110,8 @@ const Registry& registry() {
             QStringList d;
             for (const auto& seq : InputBindings::defaultShortcuts(a))
                 d << seq.toString(QKeySequence::PortableText);
-            r.insert(QString::fromLatin1(key::ShortcutPrefix) + actionId(a), {Type::KeyList, d, {}, false, 0, 0});
+            r.insert(QString::fromLatin1(key::ShortcutPrefix) + actionId(a),
+                     {Type::KeyList, d, {}, false, 0, 0});
         }
         return r;
     }();
@@ -190,10 +193,14 @@ QVariant toStorage(const KeyInfo* info, const QVariant& v) {
 
 QString typeName(Type t) {
     switch (t) {
-    case Type::Bool: return QStringLiteral("bool");
-    case Type::Int: return QStringLiteral("int");
-    case Type::String: return QStringLiteral("string");
-    case Type::KeyList: return QStringLiteral("list of shortcuts");
+    case Type::Bool:
+        return QStringLiteral("bool");
+    case Type::Int:
+        return QStringLiteral("int");
+    case Type::String:
+        return QStringLiteral("string");
+    case Type::KeyList:
+        return QStringLiteral("list of shortcuts");
     }
     return {};
 }
@@ -315,12 +322,11 @@ int Settings::migrateLegacyLocations() {
     return copied;
 }
 
-Settings::Settings(QObject* parent) : QObject(parent), d(new Private) {
-}
+Settings::Settings(QObject* parent) : QObject(parent), d(new Private) {}
 
 Settings& Settings::instance() {
     static Settings* s = [] {
-        auto* st = new Settings;  // intentionally leaked: lives until process exit
+        auto* st = new Settings; // intentionally leaked: lives until process exit
         if (auto* app = QCoreApplication::instance(); app && st->thread() != app->thread())
             st->moveToThread(app->thread());
         return st;
@@ -337,7 +343,9 @@ void Settings::useTestingBackend(const QString& iniPath) {
     s.d->folders = {};
 }
 
-QStringList Settings::knownKeys() { return registry().keys(); }
+QStringList Settings::knownKeys() {
+    return registry().keys();
+}
 
 QVariant Settings::defaultValue(const QString& key) const {
     const KeyInfo* info = findKey(key);
@@ -358,7 +366,7 @@ QVariant Settings::value(const QString& key) const {
     }
     const KeyInfo* info = findKey(key);
     if (!info)
-        return raw;  // keys owned by other modules (e.g. window geometry)
+        return raw; // keys owned by other modules (e.g. window geometry)
     const QVariant v = normalize(*info, raw);
     if (v.isValid())
         return v;
@@ -453,7 +461,8 @@ bool Settings::importFrom(const QString& filePath, QString* error) {
     if (pe.error != QJsonParseError::NoError)
         return fail(tr("Keine gültige Einstellungsdatei (JSON-Fehler: %1).").arg(pe.errorString()));
     const QJsonObject root = doc.object();
-    if (!doc.isObject() || root.value(QStringLiteral("format")).toString() != QLatin1String("lumaflip-settings") ||
+    if (!doc.isObject() ||
+        root.value(QStringLiteral("format")).toString() != QLatin1String("lumaflip-settings") ||
         !root.value(QStringLiteral("settings")).isObject())
         return fail(tr("Keine Lumaflip-Einstellungsdatei."));
     const QJsonObject values = root.value(QStringLiteral("settings")).toObject();
@@ -463,13 +472,19 @@ bool Settings::importFrom(const QString& filePath, QString* error) {
     for (auto it = values.constBegin(); it != values.constEnd(); ++it) {
         const KeyInfo* info = findKey(it.key());
         if (!info)
-            continue;  // unknown keys (newer/older versions) are ignored
+            continue; // unknown keys (newer/older versions) are ignored
         const QJsonValue jv = it.value();
         bool typeOk = false;
         switch (info->type) {
-        case Type::Bool: typeOk = jv.isBool(); break;
-        case Type::Int: typeOk = jv.isDouble() && jv.toDouble() == double(jv.toInt()); break;
-        case Type::String: typeOk = jv.isString(); break;
+        case Type::Bool:
+            typeOk = jv.isBool();
+            break;
+        case Type::Int:
+            typeOk = jv.isDouble() && jv.toDouble() == double(jv.toInt());
+            break;
+        case Type::String:
+            typeOk = jv.isString();
+            break;
         case Type::KeyList: {
             typeOk = jv.isArray();
             for (const auto& e : jv.toArray())
@@ -485,7 +500,8 @@ bool Settings::importFrom(const QString& filePath, QString* error) {
         accepted.append({it.key(), v});
     }
     if (!problems.isEmpty())
-        return fail(tr("Import abgebrochen, nichts wurde geändert:\n%1").arg(problems.join(QLatin1Char('\n'))));
+        return fail(
+            tr("Import abgebrochen, nichts wurde geändert:\n%1").arg(problems.join(QLatin1Char('\n'))));
     for (const auto& [k, v] : accepted)
         setValue(k, v);
     return true;
@@ -520,7 +536,7 @@ QVariant Settings::folderValue(const QString& folderPath, const QString& key) co
 }
 
 void Settings::setFolderValue(const QString& folderPath, const QString& key, const QVariant& value) {
-    (void)folderValue(folderPath, key);  // ensure loaded
+    (void)folderValue(folderPath, key); // ensure loaded
     QMutexLocker lock(&d->mutex);
     const QString h = folderHash(folderPath);
     QJsonObject entry = d->folders.value(h).toObject();

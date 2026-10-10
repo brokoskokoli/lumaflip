@@ -27,11 +27,11 @@ void ensureSettingsTestApp() {
     static int argc = 1;
     static char name[] = "lf_unit_tests";
     static char* argv[] = {name, nullptr};
-    new QCoreApplication(argc, argv);  // lives for the whole test process
+    new QCoreApplication(argc, argv); // lives for the whole test process
 }
 
 QString freshIniPath() {
-    static QTemporaryDir dir;  // removed at process exit
+    static QTemporaryDir dir; // removed at process exit
     static int counter = 0;
     return dir.filePath(QStringLiteral("settings-%1.ini").arg(++counter));
 }
@@ -96,9 +96,11 @@ TEST_F(SettingsTest, F_SET_04_SensibleDefaults) {
     for (const auto& slot : InputBindings::inputSlots()) {
         if (slot.id == "endOfCollection")
             continue;
-        EXPECT_EQ(s().value(QString(key::InputPrefix) + slot.id).toString(), slot.defaultChoice) << slot.id.toStdString();
+        EXPECT_EQ(s().value(QString(key::InputPrefix) + slot.id).toString(), slot.defaultChoice)
+            << slot.id.toStdString();
     }
-    EXPECT_EQ(s().value(QString(key::ShortcutPrefix) + "zoomActual").toStringList(), QStringList({"Ctrl+0", "3"}));
+    EXPECT_EQ(s().value(QString(key::ShortcutPrefix) + "zoomActual").toStringList(),
+              QStringList({"Ctrl+0", "3"}));
 }
 
 // F-SET-04
@@ -139,7 +141,7 @@ TEST_F(SettingsTest, ValuesPersistInBackendFile) {
     s().setValue(key::ShowFilmstrip, true);
     s().setValue(QString(key::ShortcutPrefix) + "trash", QStringList());
     s().setValue(QString(key::ShortcutPrefix) + "zoomFit", QStringList{"Ctrl+9"});
-    Settings::useTestingBackend(ini);  // reopen same file (flushes the old object)
+    Settings::useTestingBackend(ini); // reopen same file (flushes the old object)
     EXPECT_EQ(s().value(key::PrefetchAhead).toInt(), 7);
     EXPECT_TRUE(s().value(key::ShowFilmstrip).toBool());
     EXPECT_TRUE(s().value(QString(key::ShortcutPrefix) + "trash").toStringList().isEmpty());
@@ -193,7 +195,8 @@ TEST_F(SettingsTest, F_SET_03_ExportImportRoundtrip) {
     EXPECT_EQ(s().value(key::PrefetchBehind).toInt(), 4);
     EXPECT_TRUE(s().value(key::FinderLiveQuery).toBool());
     EXPECT_EQ(s().value(QString(key::InputPrefix) + "space").toString(), "slideshow");
-    EXPECT_EQ(s().value(QString(key::ShortcutPrefix) + "trash").toStringList(), QStringList{"Ctrl+Backspace"});
+    EXPECT_EQ(s().value(QString(key::ShortcutPrefix) + "trash").toStringList(),
+              QStringList{"Ctrl+Backspace"});
     EXPECT_GE(spy.count(), 5);
 }
 

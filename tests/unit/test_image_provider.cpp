@@ -385,7 +385,7 @@ TEST_F(ImageProviderTest, FullOnlyOnExplicitRequest) {
 TEST_F(ImageProviderTest, P_03_CachedPeekHasNoSideEffects) {
     EXPECT_EQ(provider->cached("/c/a.jpg"), nullptr);
     lf::test::spin(50);
-    EXPECT_TRUE(decoder->recorded().isEmpty());  // peeking schedules nothing
+    EXPECT_TRUE(decoder->recorded().isEmpty()); // peeking schedules nothing
 
     provider->setWanted(&clientA, {"/c/a.jpg", "/c/b.jpg"}, target, true);
     ASSERT_TRUE(waitReady("/c/b.jpg", Quality::Screen));

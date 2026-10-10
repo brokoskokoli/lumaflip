@@ -15,7 +15,7 @@ constexpr quint32 kMaxBlocks = 1u << 20;
 constexpr int kMaxRecords = 1 << 20;
 
 class Reader {
-  public:
+public:
     explicit Reader(const QByteArray& data)
         : d_(reinterpret_cast<const uchar*>(data.constData())), n_(quint64(data.size())) {}
 
@@ -28,7 +28,7 @@ class Reader {
         return std::move(records_);
     }
 
-  private:
+private:
     const uchar* d_;
     quint64 n_;
     std::vector<quint32> blocks_;

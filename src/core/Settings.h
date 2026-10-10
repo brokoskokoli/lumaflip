@@ -15,30 +15,31 @@ namespace lf {
 
 namespace key {
 // General / windows (4.15)
-inline constexpr auto OpenBehavior = "window/openBehavior";        // "newWindow" | "replaceFront" | "newUnlessOpen"
-inline constexpr auto FitWindowToImage = "window/fitToImage";      // bool, default false
-inline constexpr auto RestoreWindows = "window/restore";           // bool (F-WIN-06)
-inline constexpr auto TitleShowFolder = "window/titleShowFolder";  // bool, default false (F-WIN-10)
+inline constexpr auto OpenBehavior = "window/openBehavior"; // "newWindow" | "replaceFront" | "newUnlessOpen"
+inline constexpr auto FitWindowToImage = "window/fitToImage";     // bool, default false
+inline constexpr auto RestoreWindows = "window/restore";          // bool (F-WIN-06)
+inline constexpr auto TitleShowFolder = "window/titleShowFolder"; // bool, default false (F-WIN-10)
 // QSize (device px) the last window decoded for; read at launch to start decoding the
 // opened image before the window exists (P-01). Not a user setting.
 inline constexpr auto DecodeTargetHint = "window/decodeTarget";
 // Files
 inline constexpr auto ConfirmTrash = "files/confirmTrash"; // bool, default false (F-FILE-01)
 // Display
-inline constexpr auto Background = "view/background";              // "dark" | "light" | "system" | "checker" | "#rrggbb"
-inline constexpr auto ZoomMode = "view/zoomMode";                  // "fit" | "fitUpscale" | "actual" | "fillWidth" | "fillHeight" | "fill"
-inline constexpr auto UpscaleFilter = "view/upscaleFilter";        // "smooth" | "nearest"
-inline constexpr auto ActualSizeUnit = "view/actualSizeUnit";      // "devicePixels" | "points"
+inline constexpr auto Background = "view/background"; // "dark" | "light" | "system" | "checker" | "#rrggbb"
+inline constexpr auto ZoomMode =
+    "view/zoomMode"; // "fit" | "fitUpscale" | "actual" | "fillWidth" | "fillHeight" | "fill"
+inline constexpr auto UpscaleFilter = "view/upscaleFilter";   // "smooth" | "nearest"
+inline constexpr auto ActualSizeUnit = "view/actualSizeUnit"; // "devicePixels" | "points"
 inline constexpr auto ShowStatusBar = "view/statusBar";
 inline constexpr auto ShowInfoPanel = "view/infoPanel";
 inline constexpr auto ShowFilmstrip = "view/filmstrip";
 // Navigation & sorting
-inline constexpr auto WrapMode = "nav/wrap";                       // "stop" | "wrap" | "nextFolder"
-inline constexpr auto FollowFinder = "sort/followFinder";          // bool, default true
-inline constexpr auto FinderLiveQuery = "sort/finderLive";         // bool, default false (opt-in)
-inline constexpr auto ManualSortKey = "sort/manualKey";           // "name" | "dateModified" | "dateCreated" |
-                                                                   // "dateAdded" | "dateCaptured" | "size" |
-                                                                   // "kind" | "pixelCount" | "rating"
+inline constexpr auto WrapMode = "nav/wrap";               // "stop" | "wrap" | "nextFolder"
+inline constexpr auto FollowFinder = "sort/followFinder";  // bool, default true
+inline constexpr auto FinderLiveQuery = "sort/finderLive"; // bool, default false (opt-in)
+inline constexpr auto ManualSortKey = "sort/manualKey";    // "name" | "dateModified" | "dateCreated" |
+                                                           // "dateAdded" | "dateCaptured" | "size" |
+                                                           // "kind" | "pixelCount" | "rating"
 inline constexpr auto ManualSortAscending = "sort/manualAscending"; // bool, default true
 // Input (4.14) - values are choice ids, see InputBindings.h ("input/<slotId>",
 // "input/shortcut/<actionId>" = list of portable key sequence strings)
@@ -50,10 +51,10 @@ inline constexpr auto WheelMinIntervalMs = "input/wheelTuning.intervalMs"; // 0.
 inline constexpr auto ZoomStepPercent = "input/wheelTuning.zoomStep";      // 5..50, default 15
 inline constexpr auto JumpSize = "input/jumpSize";                         // 2..100, default 10 (F-IN-04)
 // Performance
-inline constexpr auto MemoryBudgetMB = "perf/memoryBudgetMB";      // 0 = auto (25% RAM, max 2048)
-inline constexpr auto PrefetchAhead = "perf/prefetchAhead";        // default 3
-inline constexpr auto PrefetchBehind = "perf/prefetchBehind";      // default 1
-inline constexpr auto RawEmbeddedOnly = "perf/rawEmbeddedOnly";    // bool, default false
+inline constexpr auto MemoryBudgetMB = "perf/memoryBudgetMB";   // 0 = auto (25% RAM, max 2048)
+inline constexpr auto PrefetchAhead = "perf/prefetchAhead";     // default 3
+inline constexpr auto PrefetchBehind = "perf/prefetchBehind";   // default 1
+inline constexpr auto RawEmbeddedOnly = "perf/rawEmbeddedOnly"; // bool, default false
 // Ratings (F-CULL-02, M3)
 inline constexpr auto RatingStoreSidecar = "rating/sidecar";       // default true
 inline constexpr auto RatingStoreEmbedded = "rating/embedded";     // default false
@@ -65,13 +66,13 @@ class Settings : public QObject {
 public:
     static Settings& instance();
 
-    QVariant value(const QString& key) const;          // falls back to default
+    QVariant value(const QString& key) const; // falls back to default
     void setValue(const QString& key, const QVariant& value);
     QVariant defaultValue(const QString& key) const;
-    void resetToDefaults(const QString& prefix = {});  // prefix "" = all
-    static QStringList knownKeys();                    // every key with a default (sorted)
+    void resetToDefaults(const QString& prefix = {}); // prefix "" = all
+    static QStringList knownKeys();                   // every key with a default (sorted)
 
-    bool exportTo(const QString& filePath, QString* error) const;   // F-SET-03
+    bool exportTo(const QString& filePath, QString* error) const; // F-SET-03
     bool importFrom(const QString& filePath, QString* error);
 
     // Per-folder memory (F-SORT-06): manual sort spec etc., stored in app support dir.
