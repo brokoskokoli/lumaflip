@@ -704,7 +704,9 @@ bool replaceFile(const QString& replacement, const QString& target, bool keepMod
                                 .arg(QFileInfo(target).fileName()));
             return false;
         }
-        const struct timespec mtime = keepModificationDate ? st.st_mtimespec : rs.st_mtimespec;
+        // Not kept: the file changed now (the replacement may carry the original's date -
+        // ImageIO's metadata copy and clones do).
+        const struct timespec mtime = keepModificationDate ? st.st_mtimespec : timespec{0, UTIME_NOW};
         if (!copyIntoInode(from, to, st.st_atimespec, mtime, error)) {
             QString ignored;
             if (copyIntoInode(old, to, st.st_atimespec, st.st_mtimespec, &ignored))
@@ -745,6 +747,11 @@ bool replaceFile(const QString& replacement, const QString& target, bool keepMod
     setattrlist(from.constData(), &crList, &created, sizeof(created), 0);
     if (keepModificationDate) {
         const struct timespec times[2] = {st.st_atimespec, st.st_mtimespec};
+        utimensat(AT_FDCWD, from.constData(), times, 0);
+    } else {
+        // F-EDIT-02: the replacement may carry the original's modification date (ImageIO's
+        // metadata copy keeps it), but the file changed now.
+        const struct timespec times[2] = {{0, UTIME_OMIT}, {0, UTIME_NOW}};
         utimensat(AT_FDCWD, from.constData(), times, 0);
     }
     // The data must be on the disk before the name points to it: otherwise a power loss

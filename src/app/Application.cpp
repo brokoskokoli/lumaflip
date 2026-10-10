@@ -3,6 +3,7 @@
 
 #include "DefaultAppDialog.h"
 #include "DockReopen.h"
+#include "EdrDisplay.h"
 #include "ImageView.h"
 #include "MainMenu.h"
 #include "MenuKeyEquivalents.h"
@@ -144,6 +145,13 @@ Application::Application(AppServices services, QObject* parent)
     if (const int mb = st.value(key::MemoryBudgetMB).toInt(); mb > 0)
         provider().setMemoryBudget(qint64(mb) << 20);
     provider().setRawEmbeddedOnly(st.value(key::RawEmbeddedOnly).toBool());
+    // F-COL-03: HDR content with its extended range when a display can show it (EDR).
+    auto updateHdrDecoding = [this] {
+        provider().setHdrDecoding(edrPresentationAvailable() && anyScreenSupportsEdr());
+    };
+    updateHdrDecoding();
+    connect(qApp, &QGuiApplication::screenAdded, this, updateHdrDecoding);
+    connect(qApp, &QGuiApplication::screenRemoved, this, updateHdrDecoding);
     trace::mark("Application: settings read");
 
     // One folder watcher for all windows; every folder is watched once (F-WIN-09, F-OPEN-07).

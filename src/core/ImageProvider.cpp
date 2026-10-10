@@ -209,6 +209,7 @@ struct ImageProvider::Private {
 
     // ---- shared with workers ----
     std::atomic<bool> rawEmbeddedOnly{false};
+    std::atomic<bool> hdrDecoding{false};
     std::atomic<qint64> decodeByteCap{kMaxDecodeBytes};
     QMutex mutex;
     QHash<Key, Job> jobs; // pending + running
@@ -551,9 +552,9 @@ struct ImageProvider::Private {
             job = *best;
         }
 
-        DecodeRequest req;
+        DecodeRequest req =
+            requestFor(job.key.quality, job.key.px, hdrDecoding.load(std::memory_order_relaxed));
         req.page = job.key.page;
-        req.maxPixelSize = job.key.px;
         req.maxBytes = decodeByteCap.load(std::memory_order_relaxed); // P-08
         req.preferEmbeddedPreview =
             job.key.quality == Quality::Preview || (rawEmbeddedOnly.load(std::memory_order_relaxed) &&
@@ -662,8 +663,9 @@ void ImageProvider::prestart(const QString& path, QSize target) {
         const QByteArray header = f.open(QIODevice::ReadOnly) ? f.read(kPrestartHeaderBytes) : QByteArray();
         f.close();
         if (!header.isEmpty() && decoder->canDecode(st->path, header)) {
-            DecodeRequest req;
-            req.maxPixelSize = st->px;
+            // Before the application object exists nobody knows the displays: HDR content is
+            // decoded with its range (shown tone-mapped where the display has no EDR).
+            DecodeRequest req = requestFor(Quality::Screen, st->px, true);
             req.maxBytes = decodeByteCapFor(defaultMemoryBudget());
             QString error;
             if (auto img = decoder->decode(st->path, req, &error); img && !img->image.isNull())
@@ -832,6 +834,23 @@ void ImageProvider::setRawEmbeddedOnly(bool embeddedOnly) {
     }
     for (const QString& p : std::as_const(raws))
         invalidate(p);
+}
+
+void ImageProvider::setHdrDecoding(bool on) {
+    d->hdrDecoding.store(on);
+}
+
+bool ImageProvider::hdrDecoding() const {
+    return d->hdrDecoding.load();
+}
+
+DecodeRequest ImageProvider::requestFor(Quality quality, int maxPixelSize, bool hdrDecoding) {
+    DecodeRequest req;
+    req.maxPixelSize = maxPixelSize;
+    const bool screenOrFull = quality != Quality::Preview;
+    req.hdr = hdrDecoding && screenOrFull;
+    req.hdrFloat = screenOrFull;
+    return req;
 }
 
 bool ImageProvider::rawEmbeddedOnly() const {

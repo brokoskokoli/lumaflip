@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "Decoder.h"
+#include "DecoderHelper.h"
 #include "ImageFormats.h"
 #include "Platform.h"
 #include "QtImageDecoder.h"
@@ -67,6 +68,10 @@ QString failedError(const QString& path, const QStringList& backendErrors) {
     const QFileInfo fi(path);
     if (!fi.exists())
         return DecoderRegistry::messageMissing();
+    // The decoder helper crashed or hung (SPEC 8.5): say so (the file is the likely cause).
+    for (const QString& e : backendErrors)
+        if (e == messageDecoderCrashed() || e == messageDecoderTimeout())
+            return e;
     // Out of memory is not a defect of the file (both backends say "Speicher").
     for (const QString& e : backendErrors)
         if (e.contains(QStringLiteral("Speicher")))

@@ -38,10 +38,13 @@ import sys
 #   imageformats/libqpdf   - pulls in Qt PDF (+ Qt Network); PDFs are M4 (SPEC 13)
 #   imageformats/libqmng   - MNG is not a supported format; pulls in libmng + Little CMS
 #   imageformats/libqjp2   - JPEG 2000 is decoded by ImageIO; pulls in JasPer
-#   platforms/minimal, platforms/offscreen - only for tests
+#   platforms/minimal      - only for tests
 #   platforminputcontexts  - Qt Virtual Keyboard pulls in Qt Quick/QML
+# platforms/offscreen is shipped for the decoder helper (HELPER below): fonts and image
+# plugins without a window server connection.
 PLUGINS = [
     "platforms/libqcocoa.dylib",
+    "platforms/libqoffscreen.dylib",
     "styles/libqmacstyle.dylib",
     "iconengines/libqsvgicon.dylib",
     "imageformats/libqgif.dylib",
@@ -55,6 +58,10 @@ PLUGINS = [
     "imageformats/libqwbmp.dylib",
     "imageformats/libqwebp.dylib",
 ]
+
+# Decoder helper process (SPEC 8.5), next to the app binary in Contents/MacOS: deployed like
+# the app (dependencies, rpath) and signed before the bundle by tools/package.sh.
+HELPER = "lumaflip-decoder"
 
 # UI languages (SPEC 4.16, F-I18N-02; src/core/Language.cpp, translations/CMakeLists.txt).
 # German is the source language (lumaflip_de.qm holds its plural forms only).
@@ -196,6 +203,7 @@ class Deployer:
         self.frameworks = self.contents / "Frameworks"
         self.plugins_dir = self.contents / "PlugIns"
         self.exe = self.contents / "MacOS" / app.stem
+        self.helper = self.contents / "MacOS" / HELPER
         self.qt = qt_prefix
         self.repo = repo
         self.copied: dict[str, pathlib.Path] = {}  # new install name -> path in bundle
@@ -279,13 +287,14 @@ class Deployer:
             self.origin["plugin:" + rel] = src.resolve()
             binaries.append(dst)
 
-        for b in binaries:
-            orig = self.origin.get("plugin:" + str(b.relative_to(self.plugins_dir))) \
-                if b != self.exe else b
+        executables = [self.exe] + ([self.helper] if self.helper.exists() else [])
+        for b in binaries + executables[1:]:
+            orig = b if b in executables else self.origin.get("plugin:" + str(b.relative_to(self.plugins_dir)))
             self.collect_with_origin(b, orig)
 
         # Rewrite install names and rpaths.
-        self.rewrite(self.exe, "@executable_path/../Frameworks", None)
+        for exe in executables:
+            self.rewrite(exe, "@executable_path/../Frameworks", None)
         for b in binaries[1:]:
             self.rewrite(b, "@loader_path/../../Frameworks", None)
         for new_id, path in self.copied.items():
@@ -416,7 +425,8 @@ class Deployer:
         shutil.copy2(self.repo / "LICENSE", out_dir / "lumaflip" / "LICENSE")
         index.append({"id": "lumaflip", "name": "Lumaflip", "version": "", "license": "GPL-3.0-or-later",
                       "homepage": "https://github.com/brokoskokoli/lumaflip",
-                      "files": ["lumaflip/LICENSE"], "binaries": ["MacOS/Lumaflip"]})
+                      "files": ["lumaflip/LICENSE"],
+                      "binaries": ["MacOS/Lumaflip"] + ([f"MacOS/{HELPER}"] if self.helper.exists() else [])})
         for name, src_dir in sorted(self.embedded.items()):
             meta = EMBEDDED_FRAMEWORKS[name]
             lic = src_dir / "LICENSE"
@@ -472,7 +482,7 @@ class Deployer:
             })
         # Statically linked libraries: their own texts (also when the same project is bundled
         # as a dylib, e.g. libjpeg for Qt's JPEG plugin - the entry then lists both uses).
-        exe_rel = f"MacOS/{self.exe.name}"
+        exe_rels = [f"MacOS/{self.exe.name}"] + ([f"MacOS/{HELPER}"] if self.helper.exists() else [])
         for sc in self.static_components():
             cid, meta = sc["id"], sc["meta"]
             dst = out_dir / cid
@@ -485,12 +495,12 @@ class Deployer:
             existing = next((e for e in index if e["id"] == cid), None)
             if existing:
                 existing["files"] = sorted(set(existing["files"]) | set(files))
-                existing["binaries"] = sorted(set(existing["binaries"]) | {exe_rel + " (statisch)"})
+                existing["binaries"] = sorted(set(existing["binaries"]) | {e + " (statisch)" for e in exe_rels})
                 existing["license"] = existing["license"] or meta["license"]
             else:
                 index.append({"id": cid, "name": meta["name"], "version": sc["version"],
                               "license": meta["license"], "homepage": meta["homepage"],
-                              "files": files, "binaries": [exe_rel + " (statisch)"]})
+                              "files": files, "binaries": [e + " (statisch)" for e in exe_rels]})
         (out_dir / "index.json").write_text(json.dumps(index, indent=2, ensure_ascii=False) + "\n")
         return index
 

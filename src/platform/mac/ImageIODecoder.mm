@@ -543,7 +543,8 @@ std::optional<DecodedImage> decodeAt(CGImageSourceRef src, const Layout& l, size
     const int pw = [value(props, kCGImagePropertyPixelWidth) intValue];
     const int ph = [value(props, kCGImagePropertyPixelHeight) intValue];
     const QSize fullSize = o >= 5 ? QSize(ph, pw) : QSize(pw, ph);
-    const bool hdr = req.hdr && isHdrImage(src, index, props);
+    const bool floatSource = [value(props, kCGImagePropertyIsFloat) boolValue];
+    const bool hdr = (req.hdr || (req.hdrFloat && floatSource)) && isHdrImage(src, index, props);
 
     NSMutableDictionary* opts = [NSMutableDictionary dictionary];
     if (hdr)

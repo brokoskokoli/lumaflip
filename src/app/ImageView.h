@@ -7,6 +7,7 @@
 // clicks) as InputEvent to its owner via userInput().
 
 #include "app/ZoomModel.h" // ZoomMode (moved there so the pure geometry is testable)
+#include "core/HdrMapping.h"
 #include "core/ImageProvider.h"
 #include "core/InputBindings.h"
 
@@ -96,6 +97,25 @@ public:
     // F-COL-02 tests: replaces windowColorSpace() (the screen's profile); empty = system.
     static void setColorSpaceResolverForTesting(std::function<QColorSpace(const QWidget*)> resolver);
 
+    // ---- HDR (F-COL-03/04/05, core/HdrMapping.h, EdrSurface.h) ----
+    // The HDR toggle: on = HDR images with extended dynamic range on EDR displays, off = SDR
+    // preview (tone-mapped). Default on.
+    void setHdrEnabled(bool enabled);
+    bool hdrEnabled() const;
+    // What the current image gets on this window's display (presentation, badge).
+    hdr::Decision hdrDecision() const;
+    bool isExtendedPresentationActive() const; // the EDR surface shows the image
+    // Exposure of HDR content in EV (display only, F-COL-05). Back to 0 when another file is
+    // shown, unless locked.
+    void setExposureEv(double ev);
+    void stepExposure(int thirds);
+    double exposureEv() const;
+    void setExposureLocked(bool locked);
+    bool exposureLocked() const;
+    bool exposureApplies() const; // the current image is HDR content
+    // F-COL-03 tests: replaces edrDisplayState() (the screen's EDR headroom); empty = system.
+    static void setDisplayStateForTesting(std::function<hdr::DisplayState(const QWidget*)> provider);
+
 signals:
     void userInput(const lf::InputEvent& event, QPointF positionInWidget);
     void zoomChanged(double factor, lf::ZoomMode mode);
@@ -107,6 +127,8 @@ signals:
     // methods - not by a new image, a resize or a better stage (synchronized views follow
     // only what the user did).
     void viewTransformChanged();
+    // F-COL-03/04/05: presentation, toggle, exposure or headroom changed.
+    void hdrStateChanged();
 
 protected:
     bool event(QEvent* event) override;
@@ -114,6 +136,7 @@ protected:
     void resizeEvent(QResizeEvent* event) override;
     void keyPressEvent(QKeyEvent* event) override;
     void showEvent(QShowEvent* event) override;
+    void hideEvent(QHideEvent* event) override;
 
 private:
     struct Private;

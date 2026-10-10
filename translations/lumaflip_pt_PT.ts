@@ -306,6 +306,57 @@
     </message>
 </context>
 <context>
+    <name>lf::DecoderHelper</name>
+    <message>
+        <source>Das Bild hat den Decoder zum Absturz gebracht – die Datei ist vermutlich beschädigt.</source>
+        <translation>A imagem fez o descodificador falhar – o ficheiro está provavelmente danificado.</translation>
+    </message>
+    <message>
+        <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
+        <translation>A descodificação demorou demasiado e foi cancelada.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
+        <translation>Não foi possível iniciar o processo auxiliar de descodificação (%1).</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess wird auf diesem System nicht unterstützt.</source>
+        <translation>O processo auxiliar de descodificação não é suportado neste sistema.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden.</source>
+        <translation>Não foi possível iniciar o processo auxiliar de descodificação.</translation>
+    </message>
+    <message>
+        <source>Unbekannter Decoder „%1“.</source>
+        <translation>Descodificador desconhecido “%1”.</translation>
+    </message>
+    <message>
+        <source>Das Bild ist leer.</source>
+        <translation>A imagem está vazia.</translation>
+    </message>
+    <message>
+        <source>Unbekannte Anfrage.</source>
+        <translation>Pedido desconhecido.</translation>
+    </message>
+    <message>
+        <source>Gemeinsamer Speicher ist nicht verfügbar (%1).</source>
+        <translation>A memória partilhada não está disponível (%1).</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>Memória insuficiente para a imagem (%1 × %2 píxeis).</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders fehlen.</source>
+        <translation>Os dados de imagem do descodificador estão em falta.</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders sind ungültig.</source>
+        <translation>Os dados de imagem do descodificador são inválidos.</translation>
+    </message>
+</context>
+<context>
     <name>lf::DecoderRegistry</name>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -759,6 +810,70 @@
     <message>
         <source>Raster</source>
         <translation>Grelha</translation>
+    </message>
+</context>
+<context>
+    <name>lf::HdrController</name>
+    <message>
+        <source>HDR an</source>
+        <translation>HDR ativado</translation>
+    </message>
+    <message>
+        <source>HDR aus – SDR-Vorschau</source>
+        <translation>HDR desativado – pré-visualização SDR</translation>
+    </message>
+    <message>
+        <source>Die Belichtung lässt sich nur bei HDR-Bildern einstellen.</source>
+        <translation>A exposição só pode ser ajustada em imagens HDR.</translation>
+    </message>
+    <message>
+        <source>Belichtung %1</source>
+        <translation>Exposição %1</translation>
+    </message>
+    <message>
+        <source>Der Belichtungsregler erscheint bei HDR-Bildern.</source>
+        <translation>O controlo de exposição aparece em imagens HDR.</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR (SDR-Vorschau)</source>
+        <extracomment>status bar badge: HDR image shown tone-mapped to SDR</extracomment>
+        <translation>HDR (pré-visualização SDR)</translation>
+    </message>
+    <message>
+        <source>%1 · %2</source>
+        <translation>%1 · %2</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, mit erweitertem Dynamikumfang angezeigt (⇧⌘H: SDR-Vorschau)</source>
+        <translation>Imagem HDR, apresentada com gama dinâmica alargada (⇧⌘H: pré-visualização SDR)</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – HDR ist ausgeschaltet (⇧⌘H)</source>
+        <translation>Imagem HDR, apresentada como pré-visualização SDR – o HDR está desativado (⇧⌘H)</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – dieser Bildschirm kann kein HDR darstellen</source>
+        <translation>Imagem HDR, apresentada como pré-visualização SDR – este ecrã não apresenta HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung</source>
+        <translation>Exposição</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Repor exposição</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>Manter</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>Manter a exposição ao mudar de imagem</translation>
     </message>
 </context>
 <context>
@@ -1296,6 +1411,26 @@
     <message>
         <source>Fenster koppeln …</source>
         <translation>Ligar janelas…</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>Mostrar HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>Aumentar exposição</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>Diminuir exposição</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Repor exposição</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>Mostrar controlo de exposição</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2434,6 +2569,34 @@
     <message>
         <source>Entkoppeln</source>
         <translation>Desligar janelas</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>Mostrar HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>Aumentar exposição</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>Diminuir exposição</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Repor exposição</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>Manter a exposição ao mudar de imagem</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>Mostrar controlo de exposição</translation>
     </message>
 </context>
 <context>

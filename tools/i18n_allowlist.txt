@@ -15,6 +15,15 @@ src/core/Language.cpp:*
 # Portable key names (QKeySequence::PortableText)
 src/core/InputBindings.cpp:Del
 src/core/InputBindings.cpp:Return
+# Decoder helper sandbox (Seatbelt profile) and its log diagnostics (SPEC 8.5)
+src/core/DecoderHelper.cpp:(allow default)\n
+src/core/DecoderHelper.cpp:(deny network*)\n
+src/core/DecoderHelper.cpp:(deny file-write*)\n
+src/core/DecoderHelper.cpp:(allow file-write-data (literal \"/dev/null\"))\n
+src/core/DecoderHelper.cpp:(deny process-exec*)\n
+src/core/DecoderHelper.cpp:(deny process-fork)\n
+src/core/DecoderHelper.cpp:sandbox_init failed
+src/core/DecoderHelper.cpp:not supported on this platform
 # Debug log only (qCDebug detail of failed decoders)
 src/core/DecoderRegistry.cpp:unknown error
 # Updater diagnostics (log, Updater::unavailableReason())

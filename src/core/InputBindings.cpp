@@ -121,6 +121,15 @@ const ActionInfo kActions[] = {
     {Action::ToggleMinimalWindow, "toggleMinimalWindow",
      QT_TRANSLATE_NOOP("lf::InputBindings", "Minimaler Fenstermodus")},
     {Action::CoupleWindows, "coupleWindows", QT_TRANSLATE_NOOP("lf::InputBindings", "Fenster koppeln …")},
+    {Action::ToggleHdr, "toggleHdr", QT_TRANSLATE_NOOP("lf::InputBindings", "HDR anzeigen")},
+    {Action::ExposureIncrease, "exposureIncrease",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Belichtung erhöhen")},
+    {Action::ExposureDecrease, "exposureDecrease",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Belichtung verringern")},
+    {Action::ExposureReset, "exposureReset",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Belichtung zurücksetzen")},
+    {Action::ToggleExposureHud, "toggleExposureHud",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Belichtungsregler einblenden")},
 };
 
 const ActionInfo* info(Action a) {
@@ -238,6 +247,18 @@ QStringList defaultShortcutStrings(Action a) {
         return {"Ctrl+G"};
     case Action::FilterByName:
         return {"Ctrl+F"};
+    // F-COL-04/05 (SPEC 5.2 has no keys for them; these collide with nothing there and are
+    // free in macOS: ⇧⌘H, ⌥⌘+ / ⌥⌘− / ⌥⌘0, ⌥⌘E).
+    case Action::ToggleHdr:
+        return {"Shift+Ctrl+H"};
+    case Action::ExposureIncrease:
+        return {"Alt+Ctrl+=", "Alt+Ctrl++"};
+    case Action::ExposureDecrease:
+        return {"Alt+Ctrl+-"};
+    case Action::ExposureReset:
+        return {"Alt+Ctrl+0"};
+    case Action::ToggleExposureHud:
+        return {"Alt+Ctrl+E"};
     default:
         return {};
     }

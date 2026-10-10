@@ -311,6 +311,57 @@
     </message>
 </context>
 <context>
+    <name>lf::DecoderHelper</name>
+    <message>
+        <source>Das Bild hat den Decoder zum Absturz gebracht – die Datei ist vermutlich beschädigt.</source>
+        <translation>Obrázek způsobil pád dekodéru – soubor je pravděpodobně poškozený.</translation>
+    </message>
+    <message>
+        <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
+        <translation>Dekódování trvalo příliš dlouho a bylo přerušeno.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
+        <translation>Pomocný proces dekodéru nelze spustit (%1).</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess wird auf diesem System nicht unterstützt.</source>
+        <translation>Pomocný proces dekodéru není v tomto systému podporován.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden.</source>
+        <translation>Pomocný proces dekodéru nelze spustit.</translation>
+    </message>
+    <message>
+        <source>Unbekannter Decoder „%1“.</source>
+        <translation>Neznámý dekodér „%1“.</translation>
+    </message>
+    <message>
+        <source>Das Bild ist leer.</source>
+        <translation>Obrázek je prázdný.</translation>
+    </message>
+    <message>
+        <source>Unbekannte Anfrage.</source>
+        <translation>Neznámý požadavek.</translation>
+    </message>
+    <message>
+        <source>Gemeinsamer Speicher ist nicht verfügbar (%1).</source>
+        <translation>Sdílená paměť není k dispozici (%1).</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>Nedostatek paměti pro obrázek (%1 × %2 pixelů).</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders fehlen.</source>
+        <translation>Chybí obrazová data z dekodéru.</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders sind ungültig.</source>
+        <translation>Obrazová data z dekodéru jsou neplatná.</translation>
+    </message>
+</context>
+<context>
     <name>lf::DecoderRegistry</name>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -766,6 +817,70 @@
     <message>
         <source>Raster</source>
         <translation>Mřížka</translation>
+    </message>
+</context>
+<context>
+    <name>lf::HdrController</name>
+    <message>
+        <source>HDR an</source>
+        <translation>HDR zapnuto</translation>
+    </message>
+    <message>
+        <source>HDR aus – SDR-Vorschau</source>
+        <translation>HDR vypnuto – náhled SDR</translation>
+    </message>
+    <message>
+        <source>Die Belichtung lässt sich nur bei HDR-Bildern einstellen.</source>
+        <translation>Expozici lze upravit jen u obrázků HDR.</translation>
+    </message>
+    <message>
+        <source>Belichtung %1</source>
+        <translation>Expozice %1</translation>
+    </message>
+    <message>
+        <source>Der Belichtungsregler erscheint bei HDR-Bildern.</source>
+        <translation>Posuvník expozice se zobrazí u obrázků HDR.</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR (SDR-Vorschau)</source>
+        <extracomment>status bar badge: HDR image shown tone-mapped to SDR</extracomment>
+        <translation>HDR (náhled SDR)</translation>
+    </message>
+    <message>
+        <source>%1 · %2</source>
+        <translation>%1 · %2</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, mit erweitertem Dynamikumfang angezeigt (⇧⌘H: SDR-Vorschau)</source>
+        <translation>Obrázek HDR zobrazený s rozšířeným dynamickým rozsahem (⇧⌘H: náhled SDR)</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – HDR ist ausgeschaltet (⇧⌘H)</source>
+        <translation>Obrázek HDR zobrazený jako náhled SDR – HDR je vypnuto (⇧⌘H)</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – dieser Bildschirm kann kein HDR darstellen</source>
+        <translation>Obrázek HDR zobrazený jako náhled SDR – tento displej neumí zobrazit HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung</source>
+        <translation>Expozice</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Obnovit expozici</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>Zachovat</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>Zachovat expozici při změně obrázku</translation>
     </message>
 </context>
 <context>
@@ -1303,6 +1418,26 @@
     <message>
         <source>Fenster koppeln …</source>
         <translation>Propojit okna…</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>Zobrazit HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>Zvýšit expozici</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>Snížit expozici</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Obnovit expozici</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>Zobrazit posuvník expozice</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2441,6 +2576,34 @@
     <message>
         <source>Entkoppeln</source>
         <translation>Zrušit propojení oken</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>Zobrazit HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>Zvýšit expozici</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>Snížit expozici</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Obnovit expozici</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>Zachovat expozici při změně obrázku</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>Zobrazit posuvník expozice</translation>
     </message>
 </context>
 <context>

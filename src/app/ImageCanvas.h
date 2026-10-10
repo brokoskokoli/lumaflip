@@ -14,6 +14,13 @@
 // GPU texture cache (P-03, SPEC 7.1): the current image and every image passed
 // to setPreload() keep their textures, so switching to a preloaded neighbour
 // only swaps uniforms and draws.
+//
+// HDR (F-COL-03/05, core/HdrMapping.h): every image is tone-mapped from its peak
+// (DecodedImage::headroom x exposure) to the target of the pass - 1 (SDR) for the widget
+// itself, the display's headroom for renderExtended(). SDR content at exposure 1 takes
+// exactly the previous code path (bit-identical output). The extended range presentation
+// (EdrSurface.h) renders with the same QRhi and texture cache into an extended linear
+// Display P3 swapchain; while it is active the widget only clears (it is covered).
 
 #include "core/ImageProvider.h"
 
@@ -22,6 +29,11 @@
 #include <QRhiWidget>
 #include <QSize>
 #include <QTransform>
+
+#include <functional>
+
+class QRhi;
+class QRhiRenderTarget;
 
 namespace lf {
 
@@ -54,8 +66,26 @@ public:
     // Output color space (see DisplayColorSpace.h). Invalid = sRGB.
     void setOutputColorSpace(const QColorSpace& cs);
     QColorSpace outputColorSpace() const;
-    // Linear exposure multiplier and max linear value (EDR headroom, M3). SDR: 1, 1.
-    void setExposure(float multiplier, float maxValue);
+    // F-COL-05 exposure (linear multiplier, display only) and F-COL-03 headroom of the
+    // extended range presentation (>= 1).
+    void setHdrMapping(float exposureMultiplier, float extendedHeadroom);
+    float exposureMultiplier() const;
+    float extendedHeadroom() const;
+    // Extended range presentation on/off. While on, frame requests go to `requestFrame`
+    // (the EdrSurface) and renderExtended() draws the image.
+    void setExtendedPresentation(bool on, std::function<void()> requestFrame = {});
+    bool extendedPresentation() const;
+    // Records one frame into `rt` (extended linear Display P3, e.g. a swapchain with
+    // QRhiSwapChain::HDRExtendedDisplayP3Linear) with `cb`, inside a frame the caller began on
+    // sharedRhi(). Returns false if the RHI is not ready.
+    bool renderExtended(QRhiCommandBuffer* cb, QRhiRenderTarget* rt);
+    // UI overlay for renderExtended() (widgets above the image are hidden behind the native
+    // EDR surface): premultiplied ARGB32 in the canvas' device pixels and the display's color
+    // space; `dirty` = changed rectangle (device px). A null image removes the overlay.
+    void setExtendedOverlay(const QImage& overlay, const QRect& dirty);
+    QRhi* sharedRhi() const;            // the QRhi of this widget (null until initialized)
+    int extendedFramesRendered() const; // tests
+    bool hasExtendedOverlay() const;    // tests
 
     // For tests: limit the tile size (0 = use the GPU's max texture size).
     void setMaxTileSize(int px);
@@ -69,6 +99,9 @@ public:
 
 signals:
     void conversionFinished();
+    // The QRhi goes away (window change, shutdown): users of sharedRhi() must drop
+    // everything they created with it now.
+    void rhiAboutToBeReleased();
 
 protected:
     void initialize(QRhiCommandBuffer* cb) override;

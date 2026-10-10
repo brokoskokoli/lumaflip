@@ -6,6 +6,7 @@
 #include "CullingController.h"
 #include "DisplayText.h"
 #include "DragOut.h"
+#include "HdrController.h"
 #include "ImageView.h"
 #include "OpenWith.h"
 #include "RecentItems.h"
@@ -383,6 +384,7 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     setupMedia(); // animation, pages, slideshow, saving the rotation (ViewerWindowMedia.cpp)
     m_culling = new CullingController(*this, m_app); // M3: ratings, culling, quick move
     m_extras = new WindowExtras(*this, m_app);       // M3: grid, compare, loupe, window modes …
+    m_hdr = new HdrController(*this);                // M3: HDR toggle, badge, exposure
 
     m_app.registerWindow(this);
     updateTitle();
@@ -417,6 +419,7 @@ void ViewerWindow::createStatusBar() {
     m_sortLabel = makeLabel("lfStatusSort", true);
     m_culling->attachStatusBar(sb); // F-CULL-04 "Filter: ≥ 3 ★ — 12 / 412"
     m_extras->attachStatusBar(sb);  // M3: name filter, "Zufällig", "Gekoppelt"
+    m_hdr->attachStatusBar(sb);     // F-COL-04 badge
     sb->setVisible(Settings::instance().value(key::ShowStatusBar).toBool());
     updateStatus();
     applyStatusBarVisibility();
@@ -1243,6 +1246,8 @@ bool ViewerWindow::perform(Action a, QPointF pos) {
         return true; // animation, pages, slideshow, saving the rotation
     if (m_culling->perform(a))
         return true; // M3: rating, culling mode, quick move (CullingController)
+    if (m_hdr->perform(a))
+        return true; // M3: HDR toggle, exposure (HdrController)
     switch (a) {
     case Action::NextImage:
         navigate(1);
