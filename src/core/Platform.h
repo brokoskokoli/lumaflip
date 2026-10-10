@@ -85,6 +85,19 @@ public:
                                   QString* error) = 0;
 };
 
+// Finder tags of a file (F-INFO-06; later also ratings as tags, F-CULL-02). Blocking file
+// system calls: use on worker threads. Implementations are stateless and thread-safe.
+class TagService {
+public:
+    virtual ~TagService() = default;
+    // False if the platform has no file tags (the info panel then hides the section).
+    virtual bool isSupported() const = 0;
+    // Tag names in the order the system stores them; nullopt + error if unreadable.
+    virtual std::optional<QStringList> tags(const QString& path, QString* error) = 0;
+    // Replaces all tags of `path`.
+    virtual bool setTags(const QString& path, const QStringList& tags, QString* error) = 0;
+};
+
 // Misc OS integration (reveal in Finder etc.).
 class Shell {
 public:
@@ -126,6 +139,7 @@ std::unique_ptr<FileAttributeProvider> createFileAttributeProvider();
 std::unique_ptr<FolderWatcher> createFolderWatcher(QObject* parent = nullptr);
 std::unique_ptr<TrashService> createTrashService();
 std::unique_ptr<Shell> createShell();
+std::unique_ptr<TagService> createTagService(); // F-INFO-06
 // Registers all platform decoder backends into the registry (macOS: ImageIO).
 void registerPlatformDecoders(class DecoderRegistry& registry);
 // The highest-priority platform decoder alone (macOS: ImageIO), usable before the

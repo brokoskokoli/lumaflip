@@ -521,8 +521,6 @@ bool InputBindings::isActionAvailable(Action a) {
     case Action::ToggleSlideshow:
     case Action::Rename:
     case Action::OpenInEditor:
-    case Action::ToggleInfoPanel:
-    case Action::ToggleFilmstrip:
     case Action::ToggleGrid:
     case Action::Magnifier:
     case Action::DragOut:
