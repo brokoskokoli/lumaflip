@@ -312,6 +312,7 @@ void MainMenu::build() {
     add(image, Action::FlipVertical, tr("Vertikal spiegeln"));
     buildMedia(view, nav, image); // slideshow, pages, animation, save rotation (MainMenuMedia.cpp)
     buildCulling();               // M3: "Aussortieren" (MainMenuCulling.cpp)
+    buildViews(view, nav);        // M3: grid, compare, go to, shuffle, name filter (MainMenuViews.cpp)
 
     // ---- Fenster ----
     m_windowMenu = m_bar->addMenu(tr("Fenster"));
@@ -329,6 +330,8 @@ void MainMenu::build() {
             });
     m_windowMenu->addSeparator();
     m_extras->addWindowCommands(m_windowMenu); // F-WIN-04 Anordnen, F-WIN-05 Tabs
+    m_windowMenu->addSeparator();
+    buildWindowModes(m_windowMenu); // M3: F-VIEW-12/13, F-WIN-07
     m_windowMenu->addSeparator();
     connect(addCommand(m_windowMenu, QStringLiteral("bringAllToFront"), tr("Alle nach vorne bringen")),
             &QAction::triggered, this, [this] {
@@ -428,6 +431,7 @@ void MainMenu::refreshState() {
         command("sort:" + QString::fromLatin1(item.id))->setEnabled(hasWindow);
     refreshMediaState();
     refreshCullingState();
+    refreshViewsState();
 }
 
 void MainMenu::refreshWindowList() {

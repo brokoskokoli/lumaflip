@@ -2,6 +2,7 @@
 #include "Filmstrip.h"
 
 #include "core/Collection.h"
+#include "core/RatingStore.h"
 #include "core/ThumbnailCache.h"
 
 #include <QEvent>
@@ -41,6 +42,8 @@ FilmstripModel::FilmstripModel(Collection& collection, ThumbnailCache& cache, QO
             [this](int index, const QString&) { onCurrentChanged(index); });
     connect(&m_cache, &ThumbnailCache::thumbnailReady, this, &FilmstripModel::onThumbnailReady);
     connect(&m_cache, &ThumbnailCache::thumbnailFailed, this, &FilmstripModel::onThumbnailFailed);
+    connect(&RatingStore::instance(), &RatingStore::ratingChanged, this,
+            [this](const QString& path) { onRatingChanged(path); });
     rebuild();
 }
 
@@ -72,6 +75,17 @@ QVariant FilmstripModel::data(const QModelIndex& index, int role) const {
     case ThumbnailRole:
         ++m_requests;
         return m_cache.request(e.path, m_thumbSize, this);
+    case RatingRole: {
+        if (std::optional<Rating> r = RatingStore::instance().cached(e.path))
+            return QVariant::fromValue(*r);
+        if (e.ratingRead)
+            return QVariant::fromValue(collection::ratingOf(e));
+        if (!m_ratingAsked.contains(e.path)) {
+            m_ratingAsked.insert(e.path);
+            RatingStore::instance().request(e.path); // ratingChanged() follows
+        }
+        return {};
+    }
     default:
         return {};
     }
@@ -122,6 +136,12 @@ void FilmstripModel::onCurrentChanged(int index) {
         if (r >= 0 && r < m_rows.size())
             emit dataChanged(this->index(r), this->index(r), {CurrentRole});
     emit currentRowChanged(index);
+}
+
+void FilmstripModel::onRatingChanged(const QString& path) {
+    const int row = m_rows.value(path, -1);
+    if (row >= 0)
+        emit dataChanged(index(row), index(row), {RatingRole});
 }
 
 void FilmstripModel::onThumbnailFailed(const QString& path, int thumbSize) {

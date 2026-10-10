@@ -4,6 +4,7 @@
 // ViewerWindow.cpp, which only calls the hooks below.
 
 #include "AnimationPlayer.h"
+#include "CullingController.h"
 #include "Application.h"
 #include "ImageView.h"
 #include "SlideshowController.h"
@@ -11,6 +12,7 @@
 #include "core/Collection.h"
 #include "core/FileOps.h"
 #include "core/LosslessTransform.h"
+#include "core/SlideshowInput.h"
 #include "core/Settings.h"
 #include "core/ThumbnailCache.h"
 #include "core/UndoBackupStore.h"
@@ -184,20 +186,27 @@ bool ViewerWindow::performMedia(Action a) {
 bool ViewerWindow::handleSlideshowInput(const InputEvent& ev) {
     if (!isSlideshowRunning() || ev.kind != InputKind::Key)
         return false;
-    const Qt::KeyboardModifiers mods = ev.modifiers & ~Qt::KeypadModifier;
-    if (mods != Qt::NoModifier)
-        return false;
-    if (ev.key == Qt::Key_Space) {
+    const InputBindings& b = m_app.bindings();
+    // F-SLIDE-03: rating stays possible (P/X/U always; the digits where rating keys are
+    // active anyway, SPEC 5.2). Feedback: the rating toast or the culling overlay.
+    const bool ratingKeys =
+        m_culling->isActive() || b.choice(QStringLiteral("ratingKeys")) == QLatin1String("always");
+    const slideshowinput::Result r = slideshowinput::dispatch(b, ev, ratingKeys);
+    switch (r.kind) {
+    case slideshowinput::Kind::TogglePause:
         m_slideshow->togglePause();
         showMessage(m_slideshow->isPaused() ? tr("Diashow angehalten") : tr("Diashow läuft weiter"), 900);
         return true;
-    }
-    if (ev.key >= Qt::Key_1 && ev.key <= Qt::Key_9) {
-        const int seconds = ev.key - Qt::Key_0;
-        m_slideshow->setIntervalMs(seconds * 1000);
-        Settings::instance().setValue(key::SlideshowIntervalSec, seconds);
-        showMessage(tr("Intervall: %n Sekunde(n)", nullptr, seconds), 900);
+    case slideshowinput::Kind::SetInterval:
+        m_slideshow->setIntervalMs(r.seconds * 1000);
+        Settings::instance().setValue(key::SlideshowIntervalSec, r.seconds);
+        showMessage(tr("Intervall: %n Sekunde(n)", nullptr, r.seconds), 900);
         return true;
+    case slideshowinput::Kind::Rate:
+        m_culling->rate(r.rating);
+        return true;
+    case slideshowinput::Kind::None:
+        break;
     }
     return false;
 }

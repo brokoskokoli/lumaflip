@@ -35,6 +35,7 @@ class CullingController; // M3: rating, culling mode, filter, quick move
 class ImageView;
 class SlideshowController;
 class WindowPanels; // M2 panels (info panel, filmstrip)
+class WindowExtras; // M3 grid, compare, loupe, window modes, go to, shuffle, name filter
 
 QString zoomModeId(ZoomMode mode);          // Settings key::ZoomMode values
 ZoomMode zoomModeFromId(const QString& id); // unknown -> Fit
@@ -66,6 +67,7 @@ public:
     ImageView* view() const { return m_view; }
     WindowPanels* panels() const { return m_panels; } // F-INFO-02, F-GRID-01
     CullingController* culling() const { return m_culling; } // M3: F-CULL-01..06, F-FILE-08
+    WindowExtras* extras() const { return m_extras; } // M3: F-GRID-02/03, F-VIEW-11..13, F-NAV-06/08
     QString currentPath() const;
     QString shownPath() const { return m_shownPath; }
     int displayedImageCount() const { return m_displayCount; } // distinct images shown (benchmarks)
@@ -94,6 +96,10 @@ public:
     QString toastText() const; // visible transient message (edge hint, errors), else empty
     void showMessage(const QString& text, int ms = 1500);
     void hideMessage();
+    // M3: transient messages appear over this widget (image view, grid or compare view).
+    void setOverlayHost(QWidget* host);
+    void refreshStatus(); // status line again (filters, shuffle, coupling changed)
+    void focusContent();  // keyboard focus to the image view, grid or compare view
     QSize decodeTarget() const; // device pixels for Quality::Screen
 
     // Called by the Application for file operations of any window (F-FILE-01).
@@ -255,6 +261,7 @@ private:
     void openRecent(const QString& path);
     WindowPanels* m_panels = nullptr; // M2: info panel + filmstrip (WindowPanels.cpp)
     CullingController* m_culling = nullptr; // M3 (CullingController.cpp)
+    WindowExtras* m_extras = nullptr;       // M3 (WindowExtras.cpp)
     // F-I18N-03: texts of the window after a language switch (ViewerWindowI18n.cpp).
     void retranslateUi();
     QString m_accessFolder; // folder of the access hint (its text is rebuilt)

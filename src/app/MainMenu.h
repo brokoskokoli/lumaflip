@@ -57,6 +57,11 @@ private:
     // quick move/copy (F-CULL-01..06, F-FILE-08).
     void buildCulling();
     void refreshCullingState();
+    // M3 view entries (MainMenuViews.cpp): grid, compare, go to, shuffle, name filter
+    // (Darstellung, Navigation) and always on top, minimal window, coupling (Fenster).
+    void buildViews(QMenu* view, QMenu* nav);
+    void buildWindowModes(QMenu* window);
+    void refreshViewsState();
 
     Application& m_app;
     QMenuBar* m_bar = nullptr;
