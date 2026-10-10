@@ -338,13 +338,15 @@ private slots:
             conflict->close();
 
         // Raw metadata window (F-INFO-05).
-        MetadataDialog meta;
-        meta.setPath(image);
-        meta.show();
-        QVERIFY(QTest::qWaitForWindowExposed(&meta));
-        QTRY_VERIFY(!meta.isLoading());
-        collect(QStringLiteral("metadata"), &meta);
-        meta.close();
+        // MetadataDialog deletes itself on close (WA_DeleteOnClose): heap only.
+        QPointer<MetadataDialog> meta = new MetadataDialog;
+        meta->setPath(image);
+        meta->show();
+        QVERIFY(QTest::qWaitForWindowExposed(meta.data()));
+        QTRY_VERIFY(!meta->isLoading());
+        collect(QStringLiteral("metadata"), meta.data());
+        meta->close();
+        QTRY_VERIFY(meta.isNull());
 
         // Default app (F-MAC-04).
         DefaultAppDialog defaults({QStringLiteral("public.jpeg"), QStringLiteral("public.png"),

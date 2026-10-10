@@ -2,6 +2,7 @@
 // F-FILE-06: NSSharingServicePicker and the sharing services for the File menu.
 
 #include "MacImage.h"
+#include "NativeView_mac.h"
 #include "Share.h"
 
 #include <QFileInfo>
@@ -92,7 +93,7 @@ bool showSharePicker(QWidget* anchor, const QRect& rectInWindow, const QStringLi
         QWindow* handle = top ? top->windowHandle() : nullptr;
         if (!handle || !handle->handle())
             return false;
-        NSView* view = (__bridge NSView*)reinterpret_cast<void*>(handle->winId());
+        NSView* view = lf::mac::nativeViewOf(handle);
         NSArray* items = nsItems(paths);
         if (!view || items.count == 0)
             return false;

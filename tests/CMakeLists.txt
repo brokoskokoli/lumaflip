@@ -66,7 +66,9 @@ foreach(src ${LF_INTEGRATION_TESTS})
   target_compile_definitions(${name} PRIVATE LF_TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data"
                                              LF_CORPUS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/corpus")
   add_test(NAME ${name} COMMAND ${name})
-  set_tests_properties(${name} PROPERTIES LABELS integration)
+  # GUI tests use thread pools and real windows: let ctest count each as 4 CPUs so a
+  # parallel run (-j NCPU) starts only a few at a time (avoids load spikes and flaky timing).
+  set_tests_properties(${name} PROPERTIES LABELS integration PROCESSORS 4)
   # F-COL-03: the extended range (EDR) surface only where a test asks for it (tst_hdr): the
   # others read the canvas framebuffer, which an EDR surface would cover.
   set(_lf_env "LF_NO_EDR=1")

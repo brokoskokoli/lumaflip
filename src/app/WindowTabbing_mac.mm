@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // F-WIN-05 (tabs) and F-WIN-04 (system tiling) on the NSWindow behind a Qt top-level.
 
+#include "NativeView_mac.h"
 #include "WindowTabbing.h"
 
 #include <QWidget>
@@ -23,7 +24,7 @@ NSWindow* nativeWindow(QWidget* widget, bool create) {
     QWindow* handle = top->windowHandle();
     if (!handle || !handle->handle())
         return nil;
-    NSView* view = (__bridge NSView*)reinterpret_cast<void*>(handle->winId());
+    NSView* view = lf::mac::nativeViewOf(handle);
     return view.window;
 }
 

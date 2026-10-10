@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "DisplayColorSpace.h"
+#include "NativeView_mac.h"
 
 #include <QByteArray>
 #include <QWidget>
@@ -15,7 +16,7 @@ QColorSpace windowColorSpace(const QWidget* widget) {
         const QWidget* top = widget ? widget->window() : nullptr;
         QWindow* handle = top ? top->windowHandle() : nullptr;
         if (handle && handle->handle()) {
-            NSView* view = (__bridge NSView*)reinterpret_cast<void*>(handle->winId());
+            NSView* view = lf::mac::nativeViewOf(handle);
             if (view.window)
                 ns = view.window.colorSpace;
         }

@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+#include "NativeView_mac.h"
 #include "ScreenProfileWatcher.h"
 
 #include <QPointer>
@@ -16,7 +17,7 @@ NSWindow* nativeWindow(QWidget* widget) {
     QWindow* handle = top ? top->windowHandle() : nullptr;
     if (!handle || !handle->handle())
         return nil;
-    NSView* view = (__bridge NSView*)reinterpret_cast<void*>(handle->winId());
+    NSView* view = lf::mac::nativeViewOf(handle);
     return view.window;
 }
 
