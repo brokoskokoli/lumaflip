@@ -807,6 +807,10 @@ QStringList ImageProvider::forgetFailures() {
     QSet<QString> paths;
     for (auto it = d->failed.cbegin(); it != d->failed.cend(); ++it)
         paths.insert(it.key().path);
+    // Also files where only a stage failed (e.g. the Screen stage was the one that reached
+    // the window): a retry would otherwise repeat the remembered error text.
+    for (auto it = d->failedStages.cbegin(); it != d->failedStages.cend(); ++it)
+        paths.insert(it.key().path);
     if (paths.isEmpty())
         return {};
     d->failed.clear();

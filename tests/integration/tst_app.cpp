@@ -582,12 +582,12 @@ private slots:
         // Double click toggles too (default of F-IN-10).
         QTest::mouseDClick(canvas, Qt::LeftButton, {}, QPoint(20, 20));
         QVERIFY(w->isFullScreen());
-        // Let the native transition finish first (slow machines, CI): macOS would apply
-        // its end after the toggle below and leave the window in fullscreen.
-        (void)QTest::qWaitFor([w] { return w->windowHandle()->windowStates() & Qt::WindowFullScreen; }, 3000);
-        QTest::qWait(800);
+        // Let the native transition finish first (slow machines, CI): while it runs, the
+        // window state is not final yet and a toggle can go the wrong way. The state flag is
+        // set at once, so only time tells (the earlier steps wait for the chrome as well).
+        QTest::qWait(2500);
         w->toggleFullScreen();
-        QVERIFY(!w->isFullScreen());
+        QTRY_VERIFY_WITH_TIMEOUT(!w->isFullScreen(), 5000);
         (void)QTest::qWaitFor([w] { return !(w->windowHandle()->windowStates() & Qt::WindowFullScreen); },
                               3000);
         QTest::qWait(800);
