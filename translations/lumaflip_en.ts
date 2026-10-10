@@ -446,10 +446,6 @@
         <translation>Lossless cropping of JPEG files is not available in this version.</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
-        <translation>Images in archives and PDF documents cannot be saved cropped – please use “Export”.</translation>
-    </message>
-    <message>
         <source>Die Datei existiert nicht mehr.</source>
         <translation>The file no longer exists.</translation>
     </message>
@@ -458,12 +454,16 @@
         <translation>The file format isn’t recognized for saving.</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
-        <translation>RAW files are never changed. For a cropped copy please use “Export”.</translation>
+        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>Images in archives and PDF documents are not changed. The selection can be exported as a new file.</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
-        <translation>Animated or multi-page files cannot be saved cropped.</translation>
+        <source>RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>RAW files are never changed. The selection can be exported as a new file.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
+        <translation>Animated or multi-page files cannot be saved cropped. The selection of the first image can be exported as a new file.</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
@@ -476,6 +476,10 @@
     <message>
         <source>In „%1“ kann nicht geschrieben werden.</source>
         <translation>Cannot write to “%1”.</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>“%1” already exists.</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
@@ -506,12 +510,20 @@
         <translation>Re-encoding would not keep the image exactly the same (color model, bit depth, palette or transparency would change).</translation>
     </message>
     <message>
+        <source>Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.</source>
+        <translation>This format cannot be written here. The selection can be exported in another format.</translation>
+    </message>
+    <message>
         <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
         <translation>This format is lossy. The crop can only be saved by re-encoding the image – some image quality is lost.</translation>
     </message>
     <message>
         <source>Zusatzbilder (%1) gehen dabei verloren.</source>
         <translation>Additional images (%1) are lost.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.</source>
+        <translation>Metadata (EXIF, XMP, IPTC) is lost when re-encoding.</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
@@ -686,12 +698,20 @@
 <context>
     <name>lf::CustomActionsEditor</name>
     <message>
+        <source>%1 ist schon belegt (%2); im Bildfenster hat die eigene Aktion Vorrang.</source>
+        <translation>%1 is already in use (%2); in the image window the custom action takes precedence.</translation>
+    </message>
+    <message>
         <source>Eigene Aktion</source>
         <translation>Custom Action</translation>
     </message>
     <message>
         <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
         <translation>Name of a shortcut from the Shortcuts app; it receives the file as input.</translation>
+    </message>
+    <message>
+        <source>Programm mit Argumenten, z. B. &quot;C:\Tools\tool.exe&quot; --flag; die Datei wird als eigenes Argument angehängt und nie über cmd.exe gestartet. Batch-Dateien (.bat, .cmd) sind nicht erlaubt.</source>
+        <translation>Program with arguments, e.g. &quot;C:\Tools\tool.exe&quot; --flag; the file is appended as a separate argument and never started through cmd.exe. Batch files (.bat, .cmd) are not allowed.</translation>
     </message>
     <message>
         <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
@@ -730,8 +750,8 @@
         <translation>Key</translation>
     </message>
     <message>
-        <source>„%1“: %2 ist schon belegt (%3).</source>
-        <translation>“%1”: %2 is already in use (%3).</translation>
+        <source>„%1“: %2</source>
+        <translation>“%1”: %2</translation>
     </message>
     <message>
         <source>Hinzufügen …</source>
@@ -1138,6 +1158,14 @@
     <message>
         <source>Exportieren</source>
         <translation>Export</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren</source>
+        <translation>Export Cropped</translation>
+    </message>
+    <message>
+        <source>Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>Export the selection of “%1” as a new file. The original stays unchanged.</translation>
     </message>
     <message>
         <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
@@ -1619,12 +1647,24 @@
         <translation>%1: The destination folder cannot be created.</translation>
     </message>
     <message>
+        <source>Die vorhandene Datei konnte nicht in den Papierkorb gelegt werden.</source>
+        <translation>The existing file could not be moved to the Trash.</translation>
+    </message>
+    <message>
+        <source>Die vorhandene Datei liegt im Papierkorb, die neue konnte nicht an ihre Stelle gelegt werden: %1</source>
+        <translation>The existing file is in the Trash, but the new one could not be put in its place: %1</translation>
+    </message>
+    <message>
         <source>Das Bild konnte nicht geschrieben werden.</source>
         <translation>The image could not be written.</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden.</source>
         <translation>The image couldn’t be decoded.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) werden hier nicht übernommen.</source>
+        <translation>Metadata (EXIF, XMP, IPTC) is not carried over here.</translation>
     </message>
     <message>
         <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
@@ -1645,6 +1685,10 @@
     <message>
         <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
         <translation>%1 cannot store an HDR gain map – the image was exported as SDR.</translation>
+    </message>
+    <message>
+        <source>Bilder aus Archiven und PDF-Dokumenten werden als 8-Bit-sRGB exportiert – HDR und erweiterter Farbraum gehen verloren.</source>
+        <translation>Images from archives and PDF documents are exported as 8-bit sRGB – HDR and wide gamut are lost.</translation>
     </message>
 </context>
 <context>
@@ -5926,6 +5970,10 @@
         <translation>Crop: drag a frame – Enter saves, Esc cancels</translation>
     </message>
     <message>
+        <source>Der vorige Zuschnitt wird noch gespeichert.</source>
+        <translation>The previous crop is still being saved.</translation>
+    </message>
+    <message>
         <source>Kein Bildbereich ausgewählt.</source>
         <translation>No image area selected.</translation>
     </message>
@@ -5939,8 +5987,36 @@
         <translation>Save Cropped Image As</translation>
     </message>
     <message>
+        <source>Wie das Original (*.%1)</source>
+        <translation>Same as the original (*.%1)</translation>
+    </message>
+    <message>
         <source>Zuschneiden</source>
         <translation>Crop</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon. Ersetzen?</source>
+        <translation>“%1” already exists. Replace it?</translation>
+    </message>
+    <message>
+        <source>Das zugeschnittene Bild bekommt die Endung des Originals (.%1).</source>
+        <translation>The cropped image gets the extension of the original (.%1).</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>Replace</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>The crop could not be saved.</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportiert als „%1“</source>
+        <translation>Cropped copy exported as “%1”</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren …</source>
+        <translation>Export Cropped…</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>

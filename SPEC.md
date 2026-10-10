@@ -199,7 +199,7 @@ Ziel: **So viele Formate wie möglich, ohne Nachinstallation.** Die Formate werd
 | F-FILE-07 | Bild aus dem Fenster per Drag & Drop in andere Apps ziehen (als Datei). | M2 |
 | F-FILE-08 | **Schnellablage:** `M` + `1`–`9` verschiebt, `C` + `1`–`9` kopiert in konfigurierte Zielordner. `M M` wiederholt das letzte Ziel. Alles ist rückgängig machbar. | M3 |
 | F-FILE-09 | Als Schreibtischhintergrund setzen. | M4 |
-| F-FILE-10 | Eigene Aktionen: Shell-Befehl oder Shortcuts-Kurzbefehl mit dem Dateipfad als Argument, auf eine Taste legbar. | M4 |
+| F-FILE-10 | Eigene Aktionen: Shell-Befehl oder Shortcuts-Kurzbefehl mit dem Dateipfad als Argument, auf eine Taste legbar (auch ohne ⌘/⌃, z. B. F5 oder K; eine Überschneidung mit einer Taste der App wird beim Festlegen angezeigt, im Bildfenster hat die eigene Aktion Vorrang). Der erste Lauf eines Befehls wird bestätigt – auch nach dem Import von Einstellungen. | M4 |
 | F-FILE-11 | Bei Namenskonflikten (Verschieben/Kopieren): Dialog mit Ersetzen / Beide behalten / Überspringen. | M3 |
 
 ### 4.8 Einfache Bearbeitung
@@ -208,8 +208,8 @@ Ziel: **So viele Formate wie möglich, ohne Nachinstallation.** Die Formate werd
 |---|---|---|
 | F-EDIT-01 | Drehen um 90° (⌘L / ⌘R) und Spiegeln, zunächst **nur in der Anzeige**. | M1 |
 | F-EDIT-02 | Drehung speichern: JPEG **verlustfrei** (Transformation der DCT-Blöcke bzw. EXIF-Orientierung setzen – Strategie einstellbar), andere Formate über das EXIF-Orientation-Tag, wo möglich. Nie still verlustbehaftet neu kodieren; falls das nötig wäre, vorher nachfragen. | M2 |
-| F-EDIT-03 | Zuschneiden (einfach, JPEG wenn möglich verlustfrei an MCU-Grenzen), „Speichern unter“. | M4 |
-| F-EDIT-04 | Exportieren / Konvertieren eines Bildes (JPEG/PNG/HEIC/AVIF/JXL/TIFF, Qualität, maximale Größe, Metadaten entfernen). | M4 |
+| F-EDIT-03 | Zuschneiden (einfach, JPEG wenn möglich verlustfrei an MCU-Grenzen), „Speichern unter“ (eine vorhandene Datei nur nach Rückfrage ersetzen). Was nicht an Ort und Stelle zugeschnitten werden kann (RAW, Animationen, Bilder in Archiven/PDFs, Formate ohne Encoder), wird als „Zugeschnitten exportieren“ angeboten. | M4 |
+| F-EDIT-04 | Exportieren / Konvertieren eines Bildes (JPEG/PNG/HEIC/AVIF/TIFF und JXL, sofern ein Encoder verfügbar ist; Qualität, maximale Größe, Metadaten entfernen). Angeboten werden nur Formate, die die Plattform schreiben kann – macOS-ImageIO kann JXL nur lesen, deshalb fehlt JXL dort. | M4 |
 
 ### 4.9 Aussortieren (Culling) und Bewertung
 
