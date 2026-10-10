@@ -577,8 +577,8 @@ private slots:
         const QByteArray before = sha(jpg);
         action(Action::RotateRight)->trigger();
         action(Action::SaveRotation)->trigger();
-        QMessageBox* box = nullptr;
-        QTRY_VERIFY_WITH_TIMEOUT((box = w->findChild<QMessageBox*>(QStringLiteral("lfRotationTrim"))), 5000);
+        QTRY_VERIFY_WITH_TIMEOUT(w->findChild<QMessageBox*>(QStringLiteral("lfRotationTrim")), 5000);
+        auto* box = w->findChild<QMessageBox*>(QStringLiteral("lfRotationTrim"));
         QCOMPARE(sha(jpg), before); // nothing written while asking
         auto* trim = box->findChild<QPushButton*>(QStringLiteral("lfRotationPrimary"));
         QVERIFY(trim);

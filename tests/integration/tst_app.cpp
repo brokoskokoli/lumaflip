@@ -811,7 +811,8 @@ private slots:
         QCOMPARE(c->collection()->count(), b->collection()->count());
         QCOMPARE(c->view()->zoomMode(), ZoomMode::Actual);
         QVERIFY(!c->collection()->isLoading()); // no second enumeration (F-WIN-09)
-        QVERIFY(c->pos() != a->pos() && c->pos() != b->pos());
+        // macOS may still move a new window into the screen right after showing it.
+        QTRY_VERIFY(c->pos() != a->pos() && c->pos() != b->pos());
 
         // ⌘N: empty window, cascaded as well.
         menuShortcut(Action::NewWindow, QKeySequence(Qt::ControlModifier | Qt::Key_N));

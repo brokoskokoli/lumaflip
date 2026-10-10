@@ -252,8 +252,7 @@ bool isHdrImage(CGImageSourceRef src, size_t index, NSDictionary* props) {
 }
 
 QString colorModelName(NSDictionary* props) {
-    const QString m = toQString(value(props, kCGImagePropertyColorModel));
-    return m;
+    return toQString(value(props, kCGImagePropertyColorModel));
 }
 
 // Fills everything except frame/page counts.
