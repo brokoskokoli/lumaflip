@@ -8,6 +8,7 @@
 #include <QComboBox>
 #include <QKeySequenceEdit>
 #include <QLabel>
+#include <QMessageBox>
 #include <QPushButton>
 #include <QScrollArea>
 #include <QSignalSpy>
@@ -137,8 +138,13 @@ private slots:
         spin->setValue(200);
         QCOMPARE(Settings::instance().value(key::WheelMinIntervalMs).toInt(), 200);
         auto* check = dlg.findChild<QCheckBox*>(QStringLiteral("setting:") + key::FinderLiveQuery);
-        check->setChecked(true);
+        check->setChecked(true); // F-SORT-04: explained first, stored on "Aktivieren"
+        auto* explanation = dlg.findChild<QMessageBox*>(QStringLiteral("lfLiveQueryExplanation"));
+        QVERIFY(explanation);
+        QVERIFY(!Settings::instance().value(key::FinderLiveQuery).toBool());
+        click(explanation->findChild<QPushButton*>(QStringLiteral("lfLiveQueryEnable")));
         QVERIFY(Settings::instance().value(key::FinderLiveQuery).toBool());
+        QVERIFY(check->isChecked());
         choose(dlg.findChild<QComboBox*>(QStringLiteral("setting:") + key::ZoomMode), "fillWidth");
         QCOMPARE(Settings::instance().value(key::ZoomMode).toString(), QString("fillWidth"));
     }

@@ -642,7 +642,7 @@ private slots:
             return model && i >= 0 ? model->item(i)->isEnabled() : true;
         };
         QVERIFY(!choiceEnabled("middleClick", "magnifier"));
-        QVERIFY(!choiceEnabled("drag", "dragOut"));
+        QVERIFY(choiceEnabled("drag", "dragOut")); // F-FILE-07 (M2)
         QVERIFY(!choiceEnabled("space", "slideshow"));
         QVERIFY(choiceEnabled("pageUpDown", "folder")); // implemented
         QVERIFY(choiceEnabled("middleClick", "fitActual"));

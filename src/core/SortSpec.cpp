@@ -48,7 +48,8 @@ QString describe(const SortSpec& spec) {
     if (spec.key != SortKey::FinderIconPosition)
         keyPart += spec.ascending ? QStringLiteral(" ↑") : QStringLiteral(" ↓");
     switch (spec.source) {
-    case SortSource::FinderLive:
+    case SortSource::FinderLive: // F-SORT-04: asked the front Finder window
+        return QCoreApplication::translate("SortSpec", "Wie Finder (live): %1").arg(keyPart);
     case SortSource::FinderDsStore:
     case SortSource::FinderGlobal:
         return QCoreApplication::translate("SortSpec", "Wie Finder: %1").arg(keyPart);

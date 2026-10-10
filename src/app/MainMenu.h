@@ -20,6 +20,7 @@ class QMenuBar;
 namespace lf {
 
 class Application;
+class MenuExtras;
 
 class MainMenu : public QObject {
     Q_OBJECT
@@ -35,7 +36,8 @@ public:
     // "statusBar", "minimize", "zoomWindow", "bringAllToFront", "zoom:<modeId>",
     // "background:<id>", "background:custom", "sort:finder", "sort:<key>", "sort:asc", "sort:desc".
     QAction* command(const QString& id) const;
-    QStringList windowMenuTitles() const; // window entries of the Window menu
+    MenuExtras* extras() const { return m_extras; } // M2 submenus (open with, share, arrange, tabs)
+    QStringList windowMenuTitles() const;           // window entries of the Window menu
     QStringList dockMenuTitles() const;
 
     void refreshShortcuts();  // after the bindings changed
@@ -47,7 +49,7 @@ private:
     QAction* addCommand(QMenu* menu, const QString& id, const QString& text,
                         const QKeySequence& shortcut = {});
     void build();
-    void rebuildRecent();
+    void rebuildRecent(bool withIcons = true);
 
     Application& m_app;
     QMenuBar* m_bar = nullptr;
@@ -59,6 +61,7 @@ private:
     QList<QAction*> m_dockEntries;
     QHash<int, QAction*> m_actions;
     QHash<QString, QAction*> m_commands;
+    MenuExtras* m_extras = nullptr;
     QAction* m_undo = nullptr;
     QAction* m_redo = nullptr;
 };
