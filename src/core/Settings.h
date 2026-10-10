@@ -106,19 +106,19 @@ inline constexpr auto CropAspect = "crop/aspect";     // "free" | "original" | "
 inline constexpr auto CropPortrait = "crop/portrait"; // bool, default false
 inline constexpr auto CropGrid = "crop/grid";         // bool, default true (rule of thirds)
 inline constexpr auto ExportFormat = "export/format"; // "jpeg" | "heic" | "avif" | "jxl" | "png" | "tiff"
-inline constexpr auto ExportQuality = "export/quality";     // 1..100, default 90
-inline constexpr auto ExportMaxEdge = "export/maxEdge";     // px, 0 = original size
-inline constexpr auto ExportMetadata = "export/metadata";   // "all" | "noGps" | "none"
-inline constexpr auto ExportColor = "export/colorSpace";    // "keep" | "srgb" | "p3"
-inline constexpr auto ExportHdr = "export/hdr";             // "keep" | "sdr"
-inline constexpr auto ExportPattern = "export/namePattern"; // default "{name}-export"
-inline constexpr auto ExportFolder = "export/folder";       // "" = next to the source
-inline constexpr auto OverlayClipping = "overlay/clipping"; // bool, default false
-inline constexpr auto OverlayPeaking = "overlay/peaking";   // bool, default false
-inline constexpr auto OverlayAfPoints = "overlay/afPoints"; // bool, default false
-inline constexpr auto OverlayClipHighPercent = "overlay/clipHigh"; // 50..100, default 98
-inline constexpr auto OverlayClipLowPercent = "overlay/clipLow";   // 0..50, default 2
-inline constexpr auto OverlayClipHdrReference = "overlay/clipHdrReference"; // "headroom" | "sdr"
+inline constexpr auto ExportQuality = "export/quality";                         // 1..100, default 90
+inline constexpr auto ExportMaxEdge = "export/maxEdge";                         // px, 0 = original size
+inline constexpr auto ExportMetadata = "export/metadata";                       // "all" | "noGps" | "none"
+inline constexpr auto ExportColor = "export/colorSpace";                        // "keep" | "srgb" | "p3"
+inline constexpr auto ExportHdr = "export/hdr";                                 // "keep" | "sdr"
+inline constexpr auto ExportPattern = "export/namePattern";                     // default "{name}-export"
+inline constexpr auto ExportFolder = "export/folder";                           // "" = next to the source
+inline constexpr auto OverlayClipping = "overlay/clipping";                     // bool, default false
+inline constexpr auto OverlayPeaking = "overlay/peaking";                       // bool, default false
+inline constexpr auto OverlayAfPoints = "overlay/afPoints";                     // bool, default false
+inline constexpr auto OverlayClipHighPercent = "overlay/clipHigh";              // 50..100, default 98
+inline constexpr auto OverlayClipLowPercent = "overlay/clipLow";                // 0..50, default 2
+inline constexpr auto OverlayClipHdrReference = "overlay/clipHdrReference";     // "headroom" | "sdr"
 inline constexpr auto OverlayPeakingSensitivity = "overlay/peakingSensitivity"; // 0..100, default 50
 inline constexpr auto OverlayPeakingColor = "overlay/peakingColor"; // "#rrggbb", default "#ff2020"
 } // namespace key

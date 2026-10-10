@@ -9,6 +9,19 @@ refer to [SPEC.md](SPEC.md).
 
 ## [Unreleased]
 
+### Added
+
+- **Crop** (⇧C): handles, aspect presets (free, original, 1:1, 4:3, 3:2, 16:9, portrait), rule of
+  thirds, size in pixels; Enter saves into the file (undoable), "Save As…" writes a new file. JPEGs
+  are cropped losslessly on the block grid; PNG/TIFF re-encoded exactly; lossy formats only after
+  asking. [F-EDIT-03]
+- **Export / convert** (⇧⌘E) the image or the grid selection to JPEG, HEIC, AVIF, PNG or TIFF with
+  quality, maximum size, metadata (all / without GPS / none), color space, HDR gain map or SDR,
+  name pattern and target folder; progress with cancel; sources are never changed. [F-EDIT-04]
+- **Photo overlays**: clipping warning (J), focus peaking (⇧J), AF points from the maker notes
+  (⇧A; Canon, Nikon live view, Sony, Fujifilm, EXIF subject area). [F-INFO-07]
+- **Compare**: difference, blend and wipe of two images. [F-GRID-04]
+
 ## [1.1.0] - Unreleased
 
 Milestone M3 — the first public release. Acceptance testing: [docs/TESTING-M3.md](docs/TESTING-M3.md).

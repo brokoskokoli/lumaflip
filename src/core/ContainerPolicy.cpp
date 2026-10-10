@@ -33,6 +33,7 @@ bool isBlocked(Action action) {
     case Action::ToggleSubfolders:
     case Action::SetWallpaper:
     case Action::QuickLook:
+    case Action::CropImage: // F-EDIT-03 (exporting a member works, F-EDIT-04)
         return true;
     default:
         return false;

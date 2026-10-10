@@ -132,7 +132,8 @@ QString ascii(const Ctx& c, const Entry& e) {
 QRectF normalized(double cx, double cy, double w, double h, QSizeF size) {
     if (size.width() <= 0 || size.height() <= 0)
         return {};
-    return QRectF((cx - w / 2) / size.width(), (cy - h / 2) / size.height(), w / size.width(), h / size.height())
+    return QRectF((cx - w / 2) / size.width(), (cy - h / 2) / size.height(), w / size.width(),
+                  h / size.height())
         .intersected(QRectF(0, 0, 1, 1));
 }
 
@@ -373,7 +374,8 @@ Result read(const QString& path) {
     if (!f.open(QIODevice::ReadOnly) || f.size() < 16)
         return {};
     if (uchar* p = f.map(0, f.size())) {
-        const Result r = parse(QByteArray::fromRawData(reinterpret_cast<const char*>(p), qsizetype(f.size())));
+        const Result r =
+            parse(QByteArray::fromRawData(reinterpret_cast<const char*>(p), qsizetype(f.size())));
         f.unmap(p);
         return r;
     }

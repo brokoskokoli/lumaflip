@@ -44,7 +44,8 @@ bool writeSourceJpeg(const QString& path) {
             },
             (__bridge NSString*)kCGImagePropertyExifDictionary :
                 @{(__bridge NSString*)kCGImagePropertyExifUserComment : @"lumaflip-test"},
-            (__bridge NSString*)kCGImagePropertyTIFFDictionary : @{(__bridge NSString*)kCGImagePropertyTIFFMake : @"Test"},
+            (__bridge NSString*)
+            kCGImagePropertyTIFFDictionary : @{(__bridge NSString*)kCGImagePropertyTIFFMake : @"Test"},
         };
         CGImageDestinationAddImage(d, cg, (__bridge CFDictionaryRef)props);
         const bool ok = CGImageDestinationFinalize(d);
@@ -118,9 +119,10 @@ TEST(ExportMac, F_EDIT_04_MetadataModesAndOrientation) {
     ASSERT_EQ(exporting::exportOne(src, none, o), QString());
     p = propertiesOf(none);
     EXPECT_EQ(p[(__bridge NSString*)kCGImagePropertyGPSDictionary], nil);
-    EXPECT_EQ([p[(__bridge NSString*)kCGImagePropertyTIFFDictionary][(__bridge NSString*)kCGImagePropertyTIFFMake]
-                  length],
-              0u);
+    EXPECT_EQ(
+        [p[(__bridge NSString*)kCGImagePropertyTIFFDictionary][(__bridge NSString*)kCGImagePropertyTIFFMake]
+            length],
+        0u);
     EXPECT_FALSE(readBytes(none).contains("lumaflip-test"));
     EXPECT_EQ([p[(__bridge NSString*)kCGImagePropertyPixelWidth] intValue], 48);
 
@@ -180,8 +182,8 @@ TEST(ExportMac, F_EDIT_04_HdrGainMapKeptOrToneMapped) {
         CGImageDestinationRef d =
             CGImageDestinationCreateWithURL((__bridge CFURLRef)urlOf(src), CFSTR("public.jpeg"), 1, nullptr);
         NSDictionary* opts = @{
-            (__bridge NSString*)kCGImageDestinationEncodeRequest :
-                (__bridge NSString*)kCGImageDestinationEncodeToISOGainmap
+            (__bridge NSString*)
+            kCGImageDestinationEncodeRequest : (__bridge NSString*)kCGImageDestinationEncodeToISOGainmap
         };
         CGImageDestinationAddImage(d, withHeadroom ? withHeadroom : img, (__bridge CFDictionaryRef)opts);
         const bool ok = CGImageDestinationFinalize(d);

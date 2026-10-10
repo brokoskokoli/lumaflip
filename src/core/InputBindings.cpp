@@ -144,6 +144,13 @@ const ActionInfo kActions[] = {
      QT_TRANSLATE_NOOP("lf::InputBindings", "Protokoll der Aktionen")},
     {Action::ToggleRightToLeft, "toggleRightToLeft",
      QT_TRANSLATE_NOOP("lf::InputBindings", "Comics von rechts nach links lesen")},
+    {Action::CropImage, "cropImage", QT_TRANSLATE_NOOP("lf::InputBindings", "Zuschneiden")},
+    {Action::ExportImage, "exportImage", QT_TRANSLATE_NOOP("lf::InputBindings", "Exportieren")},
+    {Action::ToggleClipping, "toggleClipping",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Über-/Unterbelichtungswarnung")},
+    {Action::ToggleFocusPeaking, "toggleFocusPeaking",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Focus Peaking")},
+    {Action::ToggleAfPoints, "toggleAfPoints", QT_TRANSLATE_NOOP("lf::InputBindings", "Fokuspunkte")},
 };
 
 const ActionInfo* info(Action a) {
@@ -286,6 +293,19 @@ QStringList defaultShortcutStrings(Action a) {
         return {"Ctrl+Y"};
     case Action::ToggleLiveText:
         return {"Shift+Ctrl+L"};
+    // M4 part 2 (not in SPEC 5.2), free in macOS and above: ⇧C crop (C alone is the quick
+    // copy prefix), ⇧⌘E export (⌥⌘E is the exposure slider), J / ⇧J clipping and focus
+    // peaking (J as in common photo tools), ⇧A AF points.
+    case Action::CropImage:
+        return {"Shift+C"};
+    case Action::ExportImage:
+        return {"Shift+Ctrl+E"};
+    case Action::ToggleClipping:
+        return {"J"};
+    case Action::ToggleFocusPeaking:
+        return {"Shift+J"};
+    case Action::ToggleAfPoints:
+        return {"Shift+A"};
     default:
         return {};
     }

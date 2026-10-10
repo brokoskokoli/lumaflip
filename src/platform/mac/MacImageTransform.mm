@@ -190,7 +190,8 @@ CGImageRef rotatedImage(CGImageRef img, const Pixels& p, int op) {
 // F-EDIT-03: copies the part `r` of `src` into a new image of the same layout and color space.
 CGImageRef croppedImage(CGImageRef img, const Pixels& p, const QRect& r) {
     const size_t B = p.bpp / 8;
-    if (r.isEmpty() || r.left() < 0 || r.top() < 0 || size_t(r.right()) >= p.width || size_t(r.bottom()) >= p.height)
+    if (r.isEmpty() || r.left() < 0 || r.top() < 0 || size_t(r.right()) >= p.width ||
+        size_t(r.bottom()) >= p.height)
         return nullptr;
     const size_t W2 = size_t(r.width()), H2 = size_t(r.height());
     const size_t rowOut = W2 * B;
@@ -200,7 +201,8 @@ CGImageRef croppedImage(CGImageRef img, const Pixels& p, const QRect& r) {
     const auto* in = static_cast<const uint8_t*>(p.data.bytes);
     auto* dst = static_cast<uint8_t*>(out.mutableBytes);
     for (size_t y = 0; y < H2; ++y)
-        std::memcpy(dst + y * rowOut, in + (size_t(r.top()) + y) * p.bytesPerRow + size_t(r.left()) * B, rowOut);
+        std::memcpy(dst + y * rowOut, in + (size_t(r.top()) + y) * p.bytesPerRow + size_t(r.left()) * B,
+                    rowOut);
     CGDataProviderRef provider = CGDataProviderCreateWithCFData((__bridge CFDataRef)out);
     CGImageRef result = CGImageCreate(W2, H2, p.bpc, p.bpp, rowOut, p.space, p.info, provider,
                                       CGImageGetDecode(img), false, CGImageGetRenderingIntent(img));

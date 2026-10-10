@@ -102,7 +102,8 @@ CGImageRef render(CGImageRef img, int o, size_t outW, size_t outH, const Target&
                uint32_t(kCGBitmapByteOrder16Little);
     } else if (t.gray) {
         bpc = t.deep ? 16 : 8;
-        info = uint32_t(kCGImageAlphaNone) | uint32_t(t.deep ? kCGBitmapByteOrder16Host : kCGBitmapByteOrderDefault);
+        info = uint32_t(kCGImageAlphaNone) |
+               uint32_t(t.deep ? kCGBitmapByteOrder16Host : kCGBitmapByteOrderDefault);
     } else {
         bpc = t.deep ? 16 : 8;
         info = uint32_t(t.alpha ? kCGImageAlphaPremultipliedLast : kCGImageAlphaNoneSkipLast) |
@@ -145,20 +146,21 @@ CGMutableImageMetadataRef outputMetadata(CGImageMetadataRef meta, MetadataMode m
     CGMutableImageMetadataRef m = CGImageMetadataCreateMutableCopy(meta);
     if (!m)
         return nullptr;
-    CGImageMetadataSetValueMatchingImageProperty(m, kCGImagePropertyTIFFDictionary, kCGImagePropertyTIFFOrientation,
-                                                 (__bridge CFTypeRef) @1);
-    CGImageMetadataSetValueMatchingImageProperty(m, kCGImagePropertyExifDictionary,
-                                                 kCGImagePropertyExifPixelXDimension, (__bridge CFTypeRef) @(w));
-    CGImageMetadataSetValueMatchingImageProperty(m, kCGImagePropertyExifDictionary,
-                                                 kCGImagePropertyExifPixelYDimension, (__bridge CFTypeRef) @(h));
+    CGImageMetadataSetValueMatchingImageProperty(m, kCGImagePropertyTIFFDictionary,
+                                                 kCGImagePropertyTIFFOrientation, (__bridge CFTypeRef) @1);
+    CGImageMetadataSetValueMatchingImageProperty(
+        m, kCGImagePropertyExifDictionary, kCGImagePropertyExifPixelXDimension, (__bridge CFTypeRef) @(w));
+    CGImageMetadataSetValueMatchingImageProperty(
+        m, kCGImagePropertyExifDictionary, kCGImagePropertyExifPixelYDimension, (__bridge CFTypeRef) @(h));
     if (mode == MetadataMode::RemoveGps) {
         NSMutableArray<NSString*>* gps = [NSMutableArray array];
-        CGImageMetadataEnumerateTagsUsingBlock(m, nullptr, nullptr, ^bool(CFStringRef path, CGImageMetadataTagRef tag) {
-          NSString* name = CFBridgingRelease(CGImageMetadataTagCopyName(tag));
-          if ([name hasPrefix:@"GPS"])
-              [gps addObject:(__bridge NSString*)path];
-          return true;
-        });
+        CGImageMetadataEnumerateTagsUsingBlock(
+            m, nullptr, nullptr, ^bool(CFStringRef path, CGImageMetadataTagRef tag) {
+              NSString* name = CFBridgingRelease(CGImageMetadataTagCopyName(tag));
+              if ([name hasPrefix:@"GPS"])
+                  [gps addObject:(__bridge NSString*)path];
+              return true;
+            });
         for (NSString* path in gps)
             CGImageMetadataRemoveTagWithPath(m, nullptr, (__bridge CFStringRef)path);
     }
@@ -167,10 +169,12 @@ CGMutableImageMetadataRef outputMetadata(CGImageMetadataRef meta, MetadataMode m
 
 bool write(CGImageRef image, CGImageMetadataRef meta, const QString& dst, const Format& f, const Options& o,
            bool gainMap, QString* error) {
-    CGImageDestinationRef d = CGImageDestinationCreateWithURL((__bridge CFURLRef)fileURL(dst),
-                                                              (__bridge CFStringRef)f.typeId.toNSString(), 1, nullptr);
+    CGImageDestinationRef d = CGImageDestinationCreateWithURL(
+        (__bridge CFURLRef)fileURL(dst), (__bridge CFStringRef)f.typeId.toNSString(), 1, nullptr);
     if (!d) {
-        setError(error, QCoreApplication::translate("lf::ImageExport", "Dieses Format kann auf diesem Mac nicht geschrieben werden."));
+        setError(error,
+                 QCoreApplication::translate("lf::ImageExport",
+                                             "Dieses Format kann auf diesem Mac nicht geschrieben werden."));
         return false;
     }
     NSMutableDictionary* opts = [NSMutableDictionary dictionary];
@@ -188,7 +192,8 @@ bool write(CGImageRef image, CGImageMetadataRef meta, const QString& dst, const 
     CFRelease(d);
     if (!ok) {
         QFile::remove(dst);
-        setError(error, QCoreApplication::translate("lf::ImageExport", "Das Bild konnte nicht geschrieben werden."));
+        setError(error,
+                 QCoreApplication::translate("lf::ImageExport", "Das Bild konnte nicht geschrieben werden."));
     }
     return ok;
 }
@@ -230,7 +235,8 @@ bool exportCGImage(CGImageRef img, int orientation, CGImageMetadataRef meta, boo
     const bool white = hasAlpha(img) && !t.alpha; // JPEG: transparency on white
     CGImageRef out = render(img, orientation, w, h, t, white);
     if (!out) {
-        setError(error, QCoreApplication::translate("lf::ImageExport", "Nicht genug Speicher zum Exportieren."));
+        setError(error,
+                 QCoreApplication::translate("lf::ImageExport", "Nicht genug Speicher zum Exportieren."));
         return false;
     }
     if (hdr) {
@@ -274,13 +280,15 @@ QStringList exportTypeIdentifiers() {
     }
 }
 
-bool exportImage(const QString& source, const QString& dst, const Options& o, QString* error, QString* notice) {
+bool exportImage(const QString& source, const QString& dst, const Options& o, QString* error,
+                 QString* notice) {
     @autoreleasepool {
         NSDictionary* openOpts = @{(__bridge NSString*)kCGImageSourceShouldCache : @NO};
         CGImageSourceRef src = CGImageSourceCreateWithURL((__bridge CFURLRef)fileURL(source),
                                                           (__bridge CFDictionaryRef)openOpts);
         if (!src) {
-            setError(error, QCoreApplication::translate("lf::ImageExport", "Die Datei kann nicht gelesen werden."));
+            setError(error,
+                     QCoreApplication::translate("lf::ImageExport", "Die Datei kann nicht gelesen werden."));
             return false;
         }
         const size_t index = CGImageSourceGetPrimaryImageIndex(src);
@@ -294,22 +302,28 @@ bool exportImage(const QString& source, const QString& dst, const Options& o, QS
             if (o.hdr == HdrMode::Keep && f.gainMap) {
                 NSDictionary* hdrOpts = @{
                     (__bridge NSString*)kCGImageSourceShouldCache : @NO,
-                    (__bridge NSString*)kCGImageSourceDecodeRequest : (__bridge NSString*)kCGImageSourceDecodeToHDR
+                    (__bridge NSString*)
+                    kCGImageSourceDecodeRequest : (__bridge NSString*)kCGImageSourceDecodeToHDR
                 };
-                if (CGImageRef h = CGImageSourceCreateImageAtIndex(src, index, (__bridge CFDictionaryRef)hdrOpts)) {
+                if (CGImageRef h =
+                        CGImageSourceCreateImageAtIndex(src, index, (__bridge CFDictionaryRef)hdrOpts)) {
                     CGImageRelease(img);
                     img = h;
                     hdr = true;
                 }
             } else if (o.hdr == HdrMode::Keep && notice) {
-                *notice = QCoreApplication::translate("lf::ImageExport", "%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.").arg(f.label);
+                *notice = QCoreApplication::translate(
+                              "lf::ImageExport",
+                              "%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.")
+                              .arg(f.label);
             }
         }
         if (!img) {
             if (meta)
                 CFRelease(meta);
             CFRelease(src);
-            setError(error, QCoreApplication::translate("lf::ImageExport", "Das Bild konnte nicht dekodiert werden."));
+            setError(error, QCoreApplication::translate("lf::ImageExport",
+                                                        "Das Bild konnte nicht dekodiert werden."));
             return false;
         }
         const bool ok = exportCGImage(img, orientation, meta, hdr, dst, o, error);
@@ -321,7 +335,8 @@ bool exportImage(const QString& source, const QString& dst, const Options& o, QS
     }
 }
 
-bool exportDecoded(const QImage& image, const QString& dst, const Options& o, QString* error, QString* notice) {
+bool exportDecoded(const QImage& image, const QString& dst, const Options& o, QString* error,
+                   QString* notice) {
     Q_UNUSED(notice);
     @autoreleasepool {
         // Pixels of archive members and PDF pages: as 8-bit sRGB (they carry no metadata).
@@ -330,19 +345,22 @@ bool exportDecoded(const QImage& image, const QString& dst, const Options& o, QS
             rgba = rgba.convertedToColorSpace(QColorSpace(QColorSpace::SRgb), QImage::Format_RGBA8888);
         rgba = rgba.convertToFormat(QImage::Format_RGBA8888);
         if (rgba.isNull()) {
-            setError(error, QCoreApplication::translate("lf::ImageExport", "Das Bild konnte nicht dekodiert werden."));
+            setError(error, QCoreApplication::translate("lf::ImageExport",
+                                                        "Das Bild konnte nicht dekodiert werden."));
             return false;
         }
         NSData* data = [NSData dataWithBytes:rgba.constBits() length:size_t(rgba.sizeInBytes())];
         CGDataProviderRef provider = CGDataProviderCreateWithCFData((__bridge CFDataRef)data);
         CGColorSpaceRef cs = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
-        CGImageRef img = CGImageCreate(size_t(rgba.width()), size_t(rgba.height()), 8, 32, size_t(rgba.bytesPerLine()),
-                                       cs, CGBitmapInfo(uint32_t(kCGImageAlphaLast) | uint32_t(kCGBitmapByteOrderDefault)), provider, nullptr, false,
-                                       kCGRenderingIntentDefault);
+        CGImageRef img =
+            CGImageCreate(size_t(rgba.width()), size_t(rgba.height()), 8, 32, size_t(rgba.bytesPerLine()), cs,
+                          CGBitmapInfo(uint32_t(kCGImageAlphaLast) | uint32_t(kCGBitmapByteOrderDefault)),
+                          provider, nullptr, false, kCGRenderingIntentDefault);
         CGColorSpaceRelease(cs);
         CGDataProviderRelease(provider);
         if (!img) {
-            setError(error, QCoreApplication::translate("lf::ImageExport", "Nicht genug Speicher zum Exportieren."));
+            setError(error,
+                     QCoreApplication::translate("lf::ImageExport", "Nicht genug Speicher zum Exportieren."));
             return false;
         }
         const bool ok = exportCGImage(img, 1, nullptr, false, dst, o, error);

@@ -250,9 +250,43 @@
         <translation>Sammenligning</translation>
     </message>
     <message>
+        <source>%1×</source>
+        <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
+        <translation>%1×</translation>
+    </message>
+    <message>
+        <source>%1 %</source>
+        <translation>%1 %</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Side om side</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>Forskel</translation>
+    </message>
+    <message>
+        <source>Überblenden</source>
+        <translation>Overtoning</translation>
+    </message>
+    <message>
+        <source>Wischen</source>
+        <translation>Gardin</translation>
+    </message>
+    <message>
+        <source>Die ersten beiden Bilder übereinander vergleichen</source>
+        <translation>Sammenlign de to første billeder oven på hinanden</translation>
+    </message>
+    <message>
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+    <message>
+        <source>%1 ⇄ %2</source>
+        <extracomment>compare caption while two images are blended: &quot;first.jpg ⇄ second.jpg&quot;</extracomment>
+        <translation>%1 ⇄ %2</translation>
     </message>
 </context>
 <context>
@@ -306,6 +340,193 @@
     <message>
         <source>Abbrechen</source>
         <translation>Annuller</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropOverlay</name>
+    <message>
+        <source>Seitenverhältnis</source>
+        <translation>Billedformat</translation>
+    </message>
+    <message>
+        <source>Hochformat</source>
+        <translation>Stående</translation>
+    </message>
+    <message>
+        <source>Seitenverhältnis hochkant statt quer</source>
+        <translation>Billedformat stående i stedet for liggende</translation>
+    </message>
+    <message>
+        <source>Drittel</source>
+        <translation>Tredjedele</translation>
+    </message>
+    <message>
+        <source>Raster der Drittel-Regel einblenden</source>
+        <translation>Vis gitter for tredjedelsreglen</translation>
+    </message>
+    <message>
+        <source>Speichern</source>
+        <translation>Gem</translation>
+    </message>
+    <message>
+        <source>Zuschnitt in der Datei speichern (Enter, widerrufbar)</source>
+        <translation>Gem beskæringen i filen (Retur, kan fortrydes)</translation>
+    </message>
+    <message>
+        <source>Speichern unter …</source>
+        <translation>Gem som…</translation>
+    </message>
+    <message>
+        <source>Zuschnitt als neue Datei speichern – das Original bleibt unverändert</source>
+        <translation>Gem beskæringen som ny fil – originalen forbliver uændret</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuller</translation>
+    </message>
+    <message>
+        <source>Zuschneiden beenden (Esc)</source>
+        <translation>Afslut beskæring (Esc)</translation>
+    </message>
+    <message>
+        <source>%1 × %2 px</source>
+        <extracomment>crop size in pixels, e.g. &quot;1920 × 1080 px&quot;</extracomment>
+        <translation>%1 × %2 px</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropSave</name>
+    <message>
+        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.</source>
+        <translation>Filen er blevet ændret i mellemtiden – intet gemt. Beskær igen.</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
+        <translation>Filen indeholder flere billeder (f.eks. et HDR-gainmap eller et andet stereobillede), som ikke længere ville passe efter en tabsfri beskæring. Beskæring kan kun ske ved genkodning – derved går lidt billedkvalitet og disse ekstra billeder tabt.</translation>
+    </message>
+    <message>
+        <source>Frei</source>
+        <translation>Frit</translation>
+    </message>
+    <message>
+        <source>Original</source>
+        <translation>Original</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
+        <translation>JPEG-biblioteket kunne ikke startes.</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Daten konnten nicht verlustfrei zugeschnitten werden (%1).</source>
+        <translation>JPEG-dataene kunne ikke beskæres tabsfrit (%1).</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.</source>
+        <translation>Markeringen ligger ikke på JPEG-blokgitteret.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden von JPEG-Dateien ist in dieser Version nicht verfügbar.</source>
+        <translation>Tabsfri beskæring af JPEG-filer er ikke tilgængelig i denne version.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
+        <translation>Billeder i arkiver og PDF-dokumenter kan ikke gemmes beskåret – brug ”Eksportér”.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>Arkivet findes ikke længere.</translation>
+    </message>
+    <message>
+        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <translation>Arkivformatet genkendes ikke, så der kan ikke gemmes.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
+        <translation>RAW-filer ændres aldrig. Brug ”Eksportér” til en beskåret kopi.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
+        <translation>Animerede filer og filer med flere sider kan ikke gemmes beskåret.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist schreibgeschützt.</source>
+        <translation>”%1” er skrivebeskyttet.</translation>
+    </message>
+    <message>
+        <source>„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.</source>
+        <translation>”Gem som” overskriver aldrig originalen – vælg et andet navn.</translation>
+    </message>
+    <message>
+        <source>In „%1“ kann nicht geschrieben werden.</source>
+        <translation>Der kan ikke skrives i ”%1”.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>”%1” kan ikke læses.</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>Intet område markeret.</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.</source>
+        <translation>Markeringen omfatter hele billedet – intet at beskære.</translation>
+    </message>
+    <message>
+        <source>Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
+        <translation>Til den tabsfri beskæring blev markeringen tilpasset JPEG-blokgitteret (%1 × %2 pixel) og er nu %3 × %4 pixel.</translation>
+    </message>
+    <message>
+        <source>Diese JPEG-Datei lässt sich nicht verlustfrei zuschneiden. Beim Neukodieren geht etwas Bildqualität verloren.</source>
+        <translation>Denne JPEG-fil kan ikke beskæres tabsfrit. Ved genkodning går lidt billedkvalitet tabt.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nicht gespeichert werden.</source>
+        <translation>Beskæringen kan ikke gemmes.</translation>
+    </message>
+    <message>
+        <source>Beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
+        <translation>Ved genkodning ville billedet ikke forblive helt identisk (farvemodel, bitdybde, palet eller gennemsigtighed ville ændres).</translation>
+    </message>
+    <message>
+        <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <translation>Dette format er med tab. Beskæringen kan kun gemmes ved at genkode billedet – derved går lidt billedkvalitet tabt.</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder (%1) gehen dabei verloren.</source>
+        <translation>Ekstra billeder (%1) går tabt.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
+        <translation>Tabsfri beskæring er ikke mulig for dette billede.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>Beskæringen kunne ikke gemmes.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>Arkivet kunne ikke erstattes.</translation>
+    </message>
+    <message>
+        <source>Nichts zuzuschneiden</source>
+        <translation>Intet at beskære</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten (an JPEG-Blöcke angepasst)</source>
+        <translation>Beskåret tabsfrit (tilpasset JPEG-blokke)</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten</source>
+        <translation>Beskåret tabsfrit</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (verlustfrei neu kodiert)</source>
+        <translation>Beskåret (tabsfrit genkodet)</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (neu kodiert)</source>
+        <translation>Beskåret (genkodet)</translation>
     </message>
 </context>
 <context>
@@ -884,6 +1105,136 @@
     </message>
 </context>
 <context>
+    <name>lf::ExportDialog</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>Eksportér</translation>
+    </message>
+    <message>
+        <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>Eksportér ”%1” som ny fil. Originalen forbliver uændret.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.</source>
+        <translation>
+            <numerusform>Eksportér %n billede som ny fil. Originalen forbliver uændret.</numerusform>
+            <numerusform>Eksportér %n billeder som nye filer. Originalerne forbliver uændrede.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation>Format:</translation>
+    </message>
+    <message>
+        <source>Qualität:</source>
+        <translation>Kvalitet:</translation>
+    </message>
+    <message>
+        <source>Maximale Größe:</source>
+        <translation>Maksimal størrelse:</translation>
+    </message>
+    <message>
+        <source>Metadaten:</source>
+        <translation>Metadata:</translation>
+    </message>
+    <message>
+        <source>Farbraum:</source>
+        <translation>Farverum:</translation>
+    </message>
+    <message>
+        <source>HDR:</source>
+        <translation>HDR:</translation>
+    </message>
+    <message>
+        <source>Dateiname:</source>
+        <translation>Filnavn:</translation>
+    </message>
+    <message>
+        <source>Zielordner:</source>
+        <translation>Destinationsmappe:</translation>
+    </message>
+    <message>
+        <source>Originalgröße</source>
+        <translation>Originalstørrelse</translation>
+    </message>
+    <message>
+        <source> px (lange Kante)</source>
+        <extracomment>suffix of the maximum size (long edge in pixels)</extracomment>
+        <translation> px (lang side)</translation>
+    </message>
+    <message>
+        <source>Alle behalten</source>
+        <translation>Behold alle</translation>
+    </message>
+    <message>
+        <source>Ohne Ortsdaten (GPS)</source>
+        <translation>Uden placering (GPS)</translation>
+    </message>
+    <message>
+        <source>Alle entfernen</source>
+        <translation>Fjern alle</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>Bevar</translation>
+    </message>
+    <message>
+        <source>In sRGB umwandeln</source>
+        <translation>Konvertér til sRGB</translation>
+    </message>
+    <message>
+        <source>In Display P3 umwandeln</source>
+        <translation>Konvertér til Display P3</translation>
+    </message>
+    <message>
+        <source>Gain-Map behalten (wo das Format es kann)</source>
+        <translation>Behold gainmap (hvor formatet kan)</translation>
+    </message>
+    <message>
+        <source>Als SDR (Tone Mapping)</source>
+        <translation>Som SDR (tonemapping)</translation>
+    </message>
+    <message>
+        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung</source>
+        <translation>Pladsholdere: {name} = originalens navn, {n} = løbenummer, {format} = filtypenavn</translation>
+    </message>
+    <message>
+        <source>Neben dem Original</source>
+        <translation>Ved siden af originalen</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>Vælg…</translation>
+    </message>
+    <message>
+        <source>Erste Datei: %1</source>
+        <translation>Første fil: %1</translation>
+    </message>
+    <message>
+        <source>Zielordner für den Export</source>
+        <translation>Destinationsmappe til eksporten</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ExportRunner</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>Eksportér</translation>
+    </message>
+    <message>
+        <source>Exportiere …</source>
+        <translation>Eksporterer…</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuller</translation>
+    </message>
+    <message>
+        <source>Exportiere %1 von %2: %3</source>
+        <translation>Eksporterer %1 af %2: %3</translation>
+    </message>
+</context>
+<context>
     <name>lf::FileBatch</name>
     <message>
         <source>„%1“ existiert bereits.</source>
@@ -1211,6 +1562,49 @@
     <message>
         <source>Wird berechnet …</source>
         <translation>Beregner…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ImageExport</name>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>”%1” findes allerede.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht exportiert werden.</source>
+        <translation>Billedet kunne ikke eksporteres.</translation>
+    </message>
+    <message>
+        <source>%1: Der Zielordner kann nicht angelegt werden.</source>
+        <translation>%1: Destinationsmappen kan ikke oprettes.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht geschrieben werden.</source>
+        <translation>Billedet kunne ikke skrives.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden.</source>
+        <translation>Billedet kunne ikke afkodes.</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
+        <translation>Dette format kan ikke skrives på denne Mac.</translation>
+    </message>
+    <message>
+        <source>Unbekanntes Zielformat.</source>
+        <translation>Ukendt destinationsformat.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher zum Exportieren.</source>
+        <translation>Ikke nok hukommelse til at eksportere.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Arkivet kan ikke læses.</translation>
+    </message>
+    <message>
+        <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
+        <translation>%1 kan ikke gemme et HDR-gainmap – billedet blev eksporteret som SDR.</translation>
     </message>
 </context>
 <context>
@@ -1848,6 +2242,26 @@
     <message>
         <source>Comics von rechts nach links lesen</source>
         <translation>Læs tegneserier fra højre mod venstre</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>Beskær</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>Eksportér</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung</source>
+        <translation>Advarsel om over-/undereksponering</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>Fokus-peaking</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>AF-punkter</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2878,8 +3292,48 @@
         <translation>Tilfældig rækkefølge</translation>
     </message>
     <message>
+        <source>Exportieren …</source>
+        <translation>Eksporter…</translation>
+    </message>
+    <message>
+        <source>Zuschneiden …</source>
+        <translation>Beskær…</translation>
+    </message>
+    <message>
+        <source>Overlays</source>
+        <translation>Overlejringer</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtung</source>
+        <translation>Over-/undereksponering</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>Fokus-peaking</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>AF-punkter</translation>
+    </message>
+    <message>
+        <source>Vergleich überlagern</source>
+        <translation>Læg sammenligning ovenpå</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Side om side</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>Forskel</translation>
+    </message>
+    <message>
         <source>Überblenden</source>
         <translation>Overtoning</translation>
+    </message>
+    <message>
+        <source>Wischen (geteilte Ansicht)</source>
+        <translation>Gardin (delt visning)</translation>
     </message>
     <message>
         <source>Diashow</source>
@@ -3842,6 +4296,38 @@
     <message>
         <source>Groß</source>
         <translation>Stor</translation>
+    </message>
+    <message>
+        <source>Überbelichtung ab (J):</source>
+        <translation>Overeksponering fra (J):</translation>
+    </message>
+    <message>
+        <source>Unterbelichtung bis:</source>
+        <translation>Undereksponering op til:</translation>
+    </message>
+    <message>
+        <source>HDR-Überbelichtung bezogen auf:</source>
+        <translation>HDR-overeksponering i forhold til:</translation>
+    </message>
+    <message>
+        <source>Spitzenhelligkeit des Bildes</source>
+        <translation>Billedets maksimale lysstyrke</translation>
+    </message>
+    <message>
+        <source>SDR-Weiß</source>
+        <translation>SDR-hvid</translation>
+    </message>
+    <message>
+        <source>Focus Peaking (⇧J), Empfindlichkeit:</source>
+        <translation>Fokus-peaking (⇧J), følsomhed:</translation>
+    </message>
+    <message>
+        <source>Focus-Peaking-Farbe:</source>
+        <translation>Farve til fokus-peaking:</translation>
+    </message>
+    <message>
+        <source>Weiß</source>
+        <translation>Hvid</translation>
     </message>
     <message>
         <source>Diashow (⇧⌘F, S):</source>
@@ -5266,6 +5752,123 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowEditing</name>
+    <message>
+        <source>Über-/Unterbelichtungswarnung an (rot: Lichter, blau: Schatten)</source>
+        <translation>Advarsel om over-/undereksponering til (rød: højlys, blå: skygger)</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung aus</source>
+        <translation>Advarsel om over-/undereksponering fra</translation>
+    </message>
+    <message>
+        <source>Focus Peaking an</source>
+        <translation>Fokus-peaking til</translation>
+    </message>
+    <message>
+        <source>Focus Peaking aus</source>
+        <translation>Fokus-peaking fra</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte an</source>
+        <translation>AF-punkter til</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte aus</source>
+        <translation>AF-punkter fra</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte: %1</source>
+        <extracomment>%1 = where the AF points come from (&quot;Canon&quot;, &quot;Sony&quot;, &quot;EXIF&quot; …)</extracomment>
+        <translation>AF-punkter: %1</translation>
+    </message>
+    <message>
+        <source>Keine Fokuspunkte in den Metadaten</source>
+        <translation>Ingen AF-punkter i metadataene</translation>
+    </message>
+    <message>
+        <source>Zuschneiden geht in der Einzelbildansicht.</source>
+        <translation>Beskæring virker i enkeltbilledvisningen.</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Zuschneiden.</source>
+        <translation>Intet billede at beskære.</translation>
+    </message>
+    <message>
+        <source>Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab</source>
+        <translation>Beskær: træk en ramme – Retur gemmer, Esc annullerer</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>Intet område markeret.</translation>
+    </message>
+    <message>
+        <source>%1-zugeschnitten.%2</source>
+        <extracomment>default file name of a cropped copy: &quot;&lt;name&gt;-zugeschnitten.&lt;suffix&gt;&quot;</extracomment>
+        <translation>%1-beskaaret.%2</translation>
+    </message>
+    <message>
+        <source>Zugeschnittenes Bild speichern unter</source>
+        <translation>Gem beskåret billede som</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>Beskær</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
+        <translation>Beskæringen kan kun gemmes ved genkodning.</translation>
+    </message>
+    <message>
+        <source>Neu kodieren</source>
+        <translation>Genkod</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuller</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten gespeichert als „%1“</source>
+        <translation>Beskæring gemt som ”%1”</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Exportieren.</source>
+        <translation>Intet billede at eksportere.</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>Eksportér</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder konnten nicht exportiert werden.</source>
+        <translation>
+            <numerusform>%n billede kunne ikke eksporteres.</numerusform>
+            <numerusform>%n billeder kunne ikke eksporteres.</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Export abgebrochen – %n Bilder exportiert</source>
+        <translation>
+            <numerusform>Eksport annulleret – %n billede eksporteret</numerusform>
+            <numerusform>Eksport annulleret – %n billeder eksporteret</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder exportiert</source>
+        <translation>
+            <numerusform>%n billede eksporteret</numerusform>
+            <numerusform>%n billeder eksporteret</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n übersprungen</source>
+        <translation>
+            <numerusform>%n sprunget over</numerusform>
+            <numerusform>%n sprunget over</numerusform>
+        </translation>
     </message>
 </context>
 <context>

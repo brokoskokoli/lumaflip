@@ -250,9 +250,43 @@
         <translation>Comparação</translation>
     </message>
     <message>
+        <source>%1×</source>
+        <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
+        <translation>%1×</translation>
+    </message>
+    <message>
+        <source>%1 %</source>
+        <translation>%1%</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Lado a lado</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>Diferença</translation>
+    </message>
+    <message>
+        <source>Überblenden</source>
+        <translation>Dissolver</translation>
+    </message>
+    <message>
+        <source>Wischen</source>
+        <translation>Cortina</translation>
+    </message>
+    <message>
+        <source>Die ersten beiden Bilder übereinander vergleichen</source>
+        <translation>Comparar as duas primeiras imagens sobrepostas</translation>
+    </message>
+    <message>
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+    <message>
+        <source>%1 ⇄ %2</source>
+        <extracomment>compare caption while two images are blended: &quot;first.jpg ⇄ second.jpg&quot;</extracomment>
+        <translation>%1 ⇄ %2</translation>
     </message>
 </context>
 <context>
@@ -306,6 +340,193 @@
     <message>
         <source>Abbrechen</source>
         <translation>Cancelar</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropOverlay</name>
+    <message>
+        <source>Seitenverhältnis</source>
+        <translation>Proporção</translation>
+    </message>
+    <message>
+        <source>Hochformat</source>
+        <translation>Retrato</translation>
+    </message>
+    <message>
+        <source>Seitenverhältnis hochkant statt quer</source>
+        <translation>Proporção em retrato em vez de paisagem</translation>
+    </message>
+    <message>
+        <source>Drittel</source>
+        <translation>Terços</translation>
+    </message>
+    <message>
+        <source>Raster der Drittel-Regel einblenden</source>
+        <translation>Mostrar a grelha da regra dos terços</translation>
+    </message>
+    <message>
+        <source>Speichern</source>
+        <translation>Guardar</translation>
+    </message>
+    <message>
+        <source>Zuschnitt in der Datei speichern (Enter, widerrufbar)</source>
+        <translation>Guardar o recorte no ficheiro (Enter, pode ser anulado)</translation>
+    </message>
+    <message>
+        <source>Speichern unter …</source>
+        <translation>Guardar como…</translation>
+    </message>
+    <message>
+        <source>Zuschnitt als neue Datei speichern – das Original bleibt unverändert</source>
+        <translation>Guardar o recorte como novo ficheiro – o original não é alterado</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Zuschneiden beenden (Esc)</source>
+        <translation>Encerrar recorte (Esc)</translation>
+    </message>
+    <message>
+        <source>%1 × %2 px</source>
+        <extracomment>crop size in pixels, e.g. &quot;1920 × 1080 px&quot;</extracomment>
+        <translation>%1 × %2 px</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropSave</name>
+    <message>
+        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.</source>
+        <translation>O ficheiro foi alterado entretanto – nada foi guardado. Recorte novamente.</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
+        <translation>O ficheiro contém outras imagens (p. ex. um mapa de ganho HDR ou uma segunda vista estéreo) que deixariam de corresponder após um recorte sem perdas. Só é possível recortar recodificando – perde-se alguma qualidade e estas imagens adicionais.</translation>
+    </message>
+    <message>
+        <source>Frei</source>
+        <translation>Livre</translation>
+    </message>
+    <message>
+        <source>Original</source>
+        <translation>Original</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
+        <translation>Não foi possível iniciar a biblioteca JPEG.</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Daten konnten nicht verlustfrei zugeschnitten werden (%1).</source>
+        <translation>Não foi possível recortar os dados JPEG sem perdas (%1).</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.</source>
+        <translation>A seleção não está na grelha de blocos JPEG.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden von JPEG-Dateien ist in dieser Version nicht verfügbar.</source>
+        <translation>O recorte sem perdas de arquivos JPEG não está disponível nesta versão.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
+        <translation>Imagens em arquivos comprimidos e documentos PDF não podem ser guardadas recortadas – utilize “Exportar”.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>O ficheiro já não existe.</translation>
+    </message>
+    <message>
+        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <translation>O formato do ficheiro não é reconhecido para guardar.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
+        <translation>Os ficheiros RAW nunca são alterados. Para uma cópia recortada, utilize “Exportar”.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
+        <translation>Ficheiros animados ou com várias páginas não podem ser guardados recortados.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist schreibgeschützt.</source>
+        <translation>“%1” é só de leitura.</translation>
+    </message>
+    <message>
+        <source>„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.</source>
+        <translation>“Guardar como” nunca substitui o original – escolha outro nome.</translation>
+    </message>
+    <message>
+        <source>In „%1“ kann nicht geschrieben werden.</source>
+        <translation>Não é possível escrever em “%1”.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>Não é possível ler “%1”.</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>Nenhuma área selecionada.</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.</source>
+        <translation>A seleção abrange a imagem inteira – nada a recortar.</translation>
+    </message>
+    <message>
+        <source>Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
+        <translation>Para o recorte sem perdas, a seleção foi ajustada à grelha de blocos JPEG (%1 × %2 píxeis) e tem agora %3 × %4 píxeis.</translation>
+    </message>
+    <message>
+        <source>Diese JPEG-Datei lässt sich nicht verlustfrei zuschneiden. Beim Neukodieren geht etwas Bildqualität verloren.</source>
+        <translation>Este ficheiro JPEG não pode ser recortado sem perdas. Ao recodificar perde-se alguma qualidade.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nicht gespeichert werden.</source>
+        <translation>O recorte não pode ser guardado.</translation>
+    </message>
+    <message>
+        <source>Beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
+        <translation>Ao recodificar, a imagem não ficaria exatamente igual (modelo de cor, profundidade de bits, paleta ou transparência mudariam).</translation>
+    </message>
+    <message>
+        <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <translation>Este formato tem perdas. O recorte só pode ser guardado recodificando a imagem – perde-se alguma qualidade.</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder (%1) gehen dabei verloren.</source>
+        <translation>As imagens adicionais (%1) são perdidas.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
+        <translation>Não é possível recortar esta imagem sem perdas.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>Não foi possível guardar o recorte.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>Não foi possível substituir o ficheiro.</translation>
+    </message>
+    <message>
+        <source>Nichts zuzuschneiden</source>
+        <translation>Nada a recortar</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten (an JPEG-Blöcke angepasst)</source>
+        <translation>Recortada sem perdas (ajustada aos blocos JPEG)</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten</source>
+        <translation>Recortada sem perdas</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (verlustfrei neu kodiert)</source>
+        <translation>Recortada (recodificada sem perdas)</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (neu kodiert)</source>
+        <translation>Recortada (recodificada)</translation>
     </message>
 </context>
 <context>
@@ -884,6 +1105,136 @@
     </message>
 </context>
 <context>
+    <name>lf::ExportDialog</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exportar</translation>
+    </message>
+    <message>
+        <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>Exportar “%1” como novo ficheiro. O original não é alterado.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.</source>
+        <translation>
+            <numerusform>Exportar %n imagem como novo ficheiro. O original não é alterado.</numerusform>
+            <numerusform>Exportar %n imagens como novos ficheiros. Os originais não são alterados.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation>Formato:</translation>
+    </message>
+    <message>
+        <source>Qualität:</source>
+        <translation>Qualidade:</translation>
+    </message>
+    <message>
+        <source>Maximale Größe:</source>
+        <translation>Tamanho máximo:</translation>
+    </message>
+    <message>
+        <source>Metadaten:</source>
+        <translation>Metadados:</translation>
+    </message>
+    <message>
+        <source>Farbraum:</source>
+        <translation>Espaço de cor:</translation>
+    </message>
+    <message>
+        <source>HDR:</source>
+        <translation>HDR:</translation>
+    </message>
+    <message>
+        <source>Dateiname:</source>
+        <translation>Nome do ficheiro:</translation>
+    </message>
+    <message>
+        <source>Zielordner:</source>
+        <translation>Pasta de destino:</translation>
+    </message>
+    <message>
+        <source>Originalgröße</source>
+        <translation>Tamanho original</translation>
+    </message>
+    <message>
+        <source> px (lange Kante)</source>
+        <extracomment>suffix of the maximum size (long edge in pixels)</extracomment>
+        <translation> px (lado maior)</translation>
+    </message>
+    <message>
+        <source>Alle behalten</source>
+        <translation>Manter todos</translation>
+    </message>
+    <message>
+        <source>Ohne Ortsdaten (GPS)</source>
+        <translation>Sem localização (GPS)</translation>
+    </message>
+    <message>
+        <source>Alle entfernen</source>
+        <translation>Remover todos</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>Manter</translation>
+    </message>
+    <message>
+        <source>In sRGB umwandeln</source>
+        <translation>Converter para sRGB</translation>
+    </message>
+    <message>
+        <source>In Display P3 umwandeln</source>
+        <translation>Converter para Display P3</translation>
+    </message>
+    <message>
+        <source>Gain-Map behalten (wo das Format es kann)</source>
+        <translation>Manter o mapa de ganho (se o formato permitir)</translation>
+    </message>
+    <message>
+        <source>Als SDR (Tone Mapping)</source>
+        <translation>Como SDR (mapeamento de tons)</translation>
+    </message>
+    <message>
+        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung</source>
+        <translation>Variáveis: {name} = nome do original, {n} = número sequencial, {format} = extensão do ficheiro</translation>
+    </message>
+    <message>
+        <source>Neben dem Original</source>
+        <translation>Ao lado do original</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>Escolher…</translation>
+    </message>
+    <message>
+        <source>Erste Datei: %1</source>
+        <translation>Primeiro ficheiro: %1</translation>
+    </message>
+    <message>
+        <source>Zielordner für den Export</source>
+        <translation>Pasta de destino da exportação</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ExportRunner</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exportar</translation>
+    </message>
+    <message>
+        <source>Exportiere …</source>
+        <translation>A exportar…</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Exportiere %1 von %2: %3</source>
+        <translation>A exportar %1 de %2: %3</translation>
+    </message>
+</context>
+<context>
     <name>lf::FileBatch</name>
     <message>
         <source>„%1“ existiert bereits.</source>
@@ -1211,6 +1562,49 @@
     <message>
         <source>Wird berechnet …</source>
         <translation>A calcular…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ImageExport</name>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>“%1” já existe.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht exportiert werden.</source>
+        <translation>Não foi possível exportar a imagem.</translation>
+    </message>
+    <message>
+        <source>%1: Der Zielordner kann nicht angelegt werden.</source>
+        <translation>%1: não é possível criar a pasta de destino.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht geschrieben werden.</source>
+        <translation>Não foi possível escrever a imagem.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden.</source>
+        <translation>Não foi possível descodificar a imagem.</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
+        <translation>Este formato não pode ser escrito neste Mac.</translation>
+    </message>
+    <message>
+        <source>Unbekanntes Zielformat.</source>
+        <translation>Formato de destino desconhecido.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher zum Exportieren.</source>
+        <translation>Memória insuficiente para exportar.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Não é possível ler o ficheiro.</translation>
+    </message>
+    <message>
+        <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
+        <translation>%1 não pode armazenar um mapa de ganho HDR – a imagem foi exportada como SDR.</translation>
     </message>
 </context>
 <context>
@@ -1848,6 +2242,26 @@
     <message>
         <source>Comics von rechts nach links lesen</source>
         <translation>Ler banda desenhada da direita para a esquerda</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>Recortar</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exportar</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung</source>
+        <translation>Aviso de super-/subexposição</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>Focus peaking</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>Pontos AF</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2878,8 +3292,48 @@
         <translation>Ordem aleatória</translation>
     </message>
     <message>
+        <source>Exportieren …</source>
+        <translation>Exportar…</translation>
+    </message>
+    <message>
+        <source>Zuschneiden …</source>
+        <translation>Recortar…</translation>
+    </message>
+    <message>
+        <source>Overlays</source>
+        <translation>Sobreposições</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtung</source>
+        <translation>Super-/subexposição</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>Focus peaking</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>Pontos AF</translation>
+    </message>
+    <message>
+        <source>Vergleich überlagern</source>
+        <translation>Sobrepor comparação</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Lado a lado</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>Diferença</translation>
+    </message>
+    <message>
         <source>Überblenden</source>
         <translation>Dissolver</translation>
+    </message>
+    <message>
+        <source>Wischen (geteilte Ansicht)</source>
+        <translation>Cortina (vista dividida)</translation>
     </message>
     <message>
         <source>Diashow</source>
@@ -3842,6 +4296,38 @@
     <message>
         <source>Groß</source>
         <translation>Grande</translation>
+    </message>
+    <message>
+        <source>Überbelichtung ab (J):</source>
+        <translation>Superexposição a partir de (J):</translation>
+    </message>
+    <message>
+        <source>Unterbelichtung bis:</source>
+        <translation>Subexposição até:</translation>
+    </message>
+    <message>
+        <source>HDR-Überbelichtung bezogen auf:</source>
+        <translation>Superexposição HDR em relação a:</translation>
+    </message>
+    <message>
+        <source>Spitzenhelligkeit des Bildes</source>
+        <translation>Brilho máximo da imagem</translation>
+    </message>
+    <message>
+        <source>SDR-Weiß</source>
+        <translation>Branco SDR</translation>
+    </message>
+    <message>
+        <source>Focus Peaking (⇧J), Empfindlichkeit:</source>
+        <translation>Focus peaking (⇧J), sensibilidade:</translation>
+    </message>
+    <message>
+        <source>Focus-Peaking-Farbe:</source>
+        <translation>Cor do focus peaking:</translation>
+    </message>
+    <message>
+        <source>Weiß</source>
+        <translation>Branco</translation>
     </message>
     <message>
         <source>Diashow (⇧⌘F, S):</source>
@@ -5266,6 +5752,123 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowEditing</name>
+    <message>
+        <source>Über-/Unterbelichtungswarnung an (rot: Lichter, blau: Schatten)</source>
+        <translation>Aviso de super-/subexposição ativado (vermelho: altas luzes, azul: sombras)</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung aus</source>
+        <translation>Aviso de super-/subexposição desativado</translation>
+    </message>
+    <message>
+        <source>Focus Peaking an</source>
+        <translation>Focus peaking ativado</translation>
+    </message>
+    <message>
+        <source>Focus Peaking aus</source>
+        <translation>Focus peaking desativado</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte an</source>
+        <translation>Pontos AF ativados</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte aus</source>
+        <translation>Pontos AF desativados</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte: %1</source>
+        <extracomment>%1 = where the AF points come from (&quot;Canon&quot;, &quot;Sony&quot;, &quot;EXIF&quot; …)</extracomment>
+        <translation>Pontos AF: %1</translation>
+    </message>
+    <message>
+        <source>Keine Fokuspunkte in den Metadaten</source>
+        <translation>Nenhum ponto AF nos metadados</translation>
+    </message>
+    <message>
+        <source>Zuschneiden geht in der Einzelbildansicht.</source>
+        <translation>O recorte funciona na vista de imagem única.</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Zuschneiden.</source>
+        <translation>Nenhuma imagem para recortar.</translation>
+    </message>
+    <message>
+        <source>Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab</source>
+        <translation>Recortar: arraste uma moldura – Enter guarda, Esc cancela</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>Nenhuma área selecionada.</translation>
+    </message>
+    <message>
+        <source>%1-zugeschnitten.%2</source>
+        <extracomment>default file name of a cropped copy: &quot;&lt;name&gt;-zugeschnitten.&lt;suffix&gt;&quot;</extracomment>
+        <translation>%1-recortada.%2</translation>
+    </message>
+    <message>
+        <source>Zugeschnittenes Bild speichern unter</source>
+        <translation>Guardar imagem recortada como</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>Recortar</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
+        <translation>O recorte só pode ser guardado recodificando.</translation>
+    </message>
+    <message>
+        <source>Neu kodieren</source>
+        <translation>Recodificar</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten gespeichert als „%1“</source>
+        <translation>Recorte guardado como “%1”</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Exportieren.</source>
+        <translation>Nenhuma imagem para exportar.</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exportar</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder konnten nicht exportiert werden.</source>
+        <translation>
+            <numerusform>Não foi possível exportar %n imagem.</numerusform>
+            <numerusform>Não foi possível exportar %n imagens.</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Export abgebrochen – %n Bilder exportiert</source>
+        <translation>
+            <numerusform>Exportação cancelada – %n imagem exportada</numerusform>
+            <numerusform>Exportação cancelada – %n imagens exportadas</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder exportiert</source>
+        <translation>
+            <numerusform>%n imagem exportada</numerusform>
+            <numerusform>%n imagens exportadas</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n übersprungen</source>
+        <translation>
+            <numerusform>%n ignorada</numerusform>
+            <numerusform>%n ignoradas</numerusform>
+        </translation>
     </message>
 </context>
 <context>

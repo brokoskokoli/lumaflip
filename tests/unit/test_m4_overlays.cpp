@@ -27,7 +27,8 @@ std::array<float, 9> neighbourhood(const QImage& img, int x, int y) {
         for (int dx = -1; dx <= 1; ++dx) {
             const QColor c = img.pixelColor(std::clamp(x + dx, 0, img.width() - 1),
                                             std::clamp(y + dy, 0, img.height() - 1));
-            l[size_t((dy + 1) * 3 + dx + 1)] = overlays::luma({float(c.redF()), float(c.greenF()), float(c.blueF())});
+            l[size_t((dy + 1) * 3 + dx + 1)] =
+                overlays::luma({float(c.redF()), float(c.greenF()), float(c.blueF())});
         }
     return l;
 }
@@ -46,8 +47,9 @@ QByteArray jpegWithExif(const QByteArray& tiff) {
 }
 
 // TIFF with Make, an Exif IFD (pixel dimensions) and a maker note blob placed by `place`.
-QByteArray tiffWithMakerNote(bool little, const QByteArray& make, QSize pixels,
-                             const std::function<QByteArray(TiffWriter&, qint64 makerNoteOffset)>& makerNote) {
+QByteArray
+tiffWithMakerNote(bool little, const QByteArray& make, QSize pixels,
+                  const std::function<QByteArray(TiffWriter&, qint64 makerNoteOffset)>& makerNote) {
     TiffWriter t(little);
     QVector<qint64> pos0;
     t.writeIfd({t.asciiEntry(0x010F, make), t.longEntry(0x8769, 0)}, &pos0);
@@ -77,10 +79,12 @@ TEST(PhotoOverlays, F_INFO_07_ClippingThresholdsSdr) {
     p.clipping = true;
     p.clipHigh = 0.98f;
     p.clipLow = 0.02f;
-    EXPECT_EQ(overlays::classify({1.0f, 0.2f, 0.2f}, p, 1.0f), overlays::Clip::Highlight); // one channel blown
+    EXPECT_EQ(overlays::classify({1.0f, 0.2f, 0.2f}, p, 1.0f),
+              overlays::Clip::Highlight); // one channel blown
     EXPECT_EQ(overlays::classify({0.5f, 0.5f, 0.5f}, p, 1.0f), overlays::Clip::None);
     EXPECT_EQ(overlays::classify({0.0f, 0.0f, 0.001f}, p, 1.0f), overlays::Clip::Shadow);
-    EXPECT_EQ(overlays::classify({0.0f, 0.01f, 0.0f}, p, 1.0f), overlays::Clip::None); // 0.01 linear ~ 10 % sRGB
+    EXPECT_EQ(overlays::classify({0.0f, 0.01f, 0.0f}, p, 1.0f),
+              overlays::Clip::None); // 0.01 linear ~ 10 % sRGB
     // The threshold is an sRGB-encoded fraction: 98 % encoded = 0.955 linear.
     EXPECT_NEAR(overlays::highThreshold(p, 1.0f), overlays::srgbToLinear(0.98f), 1e-6);
     EXPECT_EQ(overlays::classify({0.96f, 0.0f, 0.0f}, p, 1.0f), overlays::Clip::Highlight);
@@ -128,7 +132,8 @@ TEST(PhotoOverlays, F_INFO_07_FocusPeakingKernelOnSyntheticEdges) {
     EXPECT_GT(overlays::peakingThreshold(0.5f), overlays::peakingThreshold(1.0f));
     // Direction independent: a horizontal edge gives the same magnitude.
     const QImage rotated = hard.transformed(QTransform().rotate(90));
-    EXPECT_NEAR(overlays::sobel(neighbourhood(hard, 8, 8)), overlays::sobel(neighbourhood(rotated, 7, 8)), 1e-5);
+    EXPECT_NEAR(overlays::sobel(neighbourhood(hard, 8, 8)), overlays::sobel(neighbourhood(rotated, 7, 8)),
+                1e-5);
     // The peaking color replaces the pixel; clipping wins over peaking.
     overlays::Params p;
     p.peaking = true;
@@ -182,34 +187,36 @@ TEST(PhotoOverlays, F_INFO_07_ShaderUniformBlocksMatch) {
 
 TEST(AfPoints, F_INFO_07_CanonAfInfo2) {
     for (bool little : {true, false}) {
-        const QByteArray tiff = tiffWithMakerNote(little, "Canon", QSize(6000, 4000), [&](TiffWriter& t, qint64 at) {
-            // Two AF areas on a 6000 x 4000 AF image: the first (in focus) 300 px left of and
-            // 200 px above the center, the second at the center.
-            const int n = 2;
-            QVector<int> v{0, 1, n, n, 6000, 4000, 6000, 4000, 100, 120, 80, 80, quint16(-300), 0, 200, 0, 0b01, 0b10};
-            v[0] = int(v.size() * 2);
-            // A maker note IFD with one entry whose data lies behind it (offsets are relative
-            // to the TIFF header, so build it in place).
-            QByteArray ifd;
-            auto put16 = [&](QByteArray& a, int x) {
-                if (little)
-                    a.append(char(x & 0xFF)).append(char((x >> 8) & 0xFF));
-                else
-                    a.append(char((x >> 8) & 0xFF)).append(char(x & 0xFF));
-            };
-            auto put32 = [&](QByteArray& a, quint32 x) {
-                for (int k = 0; k < 4; ++k)
-                    a.append(char((x >> (little ? 8 * k : 8 * (3 - k))) & 0xFF));
-            };
-            put16(ifd, 1);
-            put16(ifd, 0x0026);
-            put16(ifd, 3);
-            put32(ifd, quint32(v.size()));
-            put32(ifd, quint32(at + 2 + 12 + 4));
-            put32(ifd, 0);
-            ifd.append(t.shorts(v));
-            return ifd;
-        });
+        const QByteArray tiff =
+            tiffWithMakerNote(little, "Canon", QSize(6000, 4000), [&](TiffWriter& t, qint64 at) {
+                // Two AF areas on a 6000 x 4000 AF image: the first (in focus) 300 px left of and
+                // 200 px above the center, the second at the center.
+                const int n = 2;
+                QVector<int> v{0, 1,   n, n,    6000, 4000, 6000, 4000, 100, 120, 80, 80, quint16(-300),
+                               0, 200, 0, 0b01, 0b10};
+                v[0] = int(v.size() * 2);
+                // A maker note IFD with one entry whose data lies behind it (offsets are relative
+                // to the TIFF header, so build it in place).
+                QByteArray ifd;
+                auto put16 = [&](QByteArray& a, int x) {
+                    if (little)
+                        a.append(char(x & 0xFF)).append(char((x >> 8) & 0xFF));
+                    else
+                        a.append(char((x >> 8) & 0xFF)).append(char(x & 0xFF));
+                };
+                auto put32 = [&](QByteArray& a, quint32 x) {
+                    for (int k = 0; k < 4; ++k)
+                        a.append(char((x >> (little ? 8 * k : 8 * (3 - k))) & 0xFF));
+                };
+                put16(ifd, 1);
+                put16(ifd, 0x0026);
+                put16(ifd, 3);
+                put32(ifd, quint32(v.size()));
+                put32(ifd, quint32(at + 2 + 12 + 4));
+                put32(ifd, 0);
+                ifd.append(t.shorts(v));
+                return ifd;
+            });
         const afpoints::Result r = afpoints::parse(jpegWithExif(tiff));
         ASSERT_TRUE(r.valid()) << little;
         EXPECT_EQ(r.source, QStringLiteral("Canon"));
@@ -261,19 +268,20 @@ TEST(AfPoints, F_INFO_07_SonyFujiNikonAndSubjectArea) {
     EXPECT_NEAR(r.points[0].rect.center().y(), 0.25, 1e-9);
 
     // Nikon AFInfo2 0100, contrast-detect area: "Nikon\0" + version + embedded TIFF.
-    const QByteArray nikon = tiffWithMakerNote(true, "NIKON CORPORATION", QSize(6000, 4000), [](TiffWriter&, qint64) {
-        TiffWriter inner(false); // Nikon maker notes are big endian
-        QByteArray af("0100", 4);
-        af.append(char(1)).append(char(0)).append(char(0)).append(char(0)); // contrast AF on
-        af.append(QByteArray(8, '\0'));
-        af.append(inner.shorts({600, 400, 150, 100, 60, 40}));               // image, x, y, w, h
-        af.append(char(1)).append(char(0));                                  // in focus
-        inner.writeIfd({inner.undefinedEntry(0x00B7, af)});
-        QByteArray tiff = inner.bytes();
-        tiff.replace(4, 4, inner.u32(8)); // IFD at 8
-        QByteArray mn("Nikon\0\x02\x10\0\0", 10);
-        return mn + tiff;
-    });
+    const QByteArray nikon =
+        tiffWithMakerNote(true, "NIKON CORPORATION", QSize(6000, 4000), [](TiffWriter&, qint64) {
+            TiffWriter inner(false); // Nikon maker notes are big endian
+            QByteArray af("0100", 4);
+            af.append(char(1)).append(char(0)).append(char(0)).append(char(0)); // contrast AF on
+            af.append(QByteArray(8, '\0'));
+            af.append(inner.shorts({600, 400, 150, 100, 60, 40})); // image, x, y, w, h
+            af.append(char(1)).append(char(0));                    // in focus
+            inner.writeIfd({inner.undefinedEntry(0x00B7, af)});
+            QByteArray tiff = inner.bytes();
+            tiff.replace(4, 4, inner.u32(8)); // IFD at 8
+            QByteArray mn("Nikon\0\x02\x10\0\0", 10);
+            return mn + tiff;
+        });
     r = afpoints::parse(jpegWithExif(nikon));
     ASSERT_TRUE(r.valid());
     EXPECT_EQ(r.source, QStringLiteral("Nikon"));
@@ -285,8 +293,8 @@ TEST(AfPoints, F_INFO_07_SonyFujiNikonAndSubjectArea) {
     TiffWriter t(false);
     QVector<qint64> pos;
     t.writeIfd({t.asciiEntry(0x010F, "Apple"), t.longEntry(0x8769, 0)}, &pos);
-    const qint64 exif = t.writeIfd({t.shortEntry(0x9214, {2000, 1500, 400, 300}), t.longEntry(0xA002, 4000),
-                                    t.longEntry(0xA003, 3000)});
+    const qint64 exif = t.writeIfd(
+        {t.shortEntry(0x9214, {2000, 1500, 400, 300}), t.longEntry(0xA002, 4000), t.longEntry(0xA003, 3000)});
     t.patch32(pos[1], quint32(exif));
     r = afpoints::parse(jpegWithExif(t.bytes()));
     ASSERT_TRUE(r.valid());
@@ -335,8 +343,9 @@ TEST(CompareBlend, F_GRID_04_DifferenceBlendAndWipeMath) {
     EXPECT_EQ(blend.pixel(9, 0), qRgb(150, 0, 50));
     // Off or mismatched sizes: the first image.
     EXPECT_EQ(compare::composite(a, b, compare::BlendMode::Off, 0.5).pixel(0, 0), a.pixel(0, 0));
-    EXPECT_EQ(compare::composite(a, QImage(3, 3, QImage::Format_RGB32), compare::BlendMode::Blend, 0.5).pixel(0, 0),
-              a.pixel(0, 0));
+    EXPECT_EQ(
+        compare::composite(a, QImage(3, 3, QImage::Format_RGB32), compare::BlendMode::Blend, 0.5).pixel(0, 0),
+        a.pixel(0, 0));
 
     QImage c = a;
     c.setPixel(4, 1, qRgb(190, 0, 0));

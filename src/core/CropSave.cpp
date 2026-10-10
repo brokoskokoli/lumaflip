@@ -215,7 +215,8 @@ QString crop::aspectId(Aspect a) {
 }
 
 crop::Aspect crop::aspectFromId(const QString& id) {
-    for (Aspect a : {Aspect::Free, Aspect::Original, Aspect::Square, Aspect::R4x3, Aspect::R3x2, Aspect::R16x9})
+    for (Aspect a :
+         {Aspect::Free, Aspect::Original, Aspect::Square, Aspect::R4x3, Aspect::R3x2, Aspect::R16x9})
         if (aspectId(a) == id)
             return a;
     return Aspect::Free;
@@ -277,7 +278,8 @@ std::array<double, 4> crop::thirds(const QRectF& r) {
 namespace {
 
 // Corner drag: `fixed` stays, the moving corner goes towards (sx, sy) = direction signs.
-QRectF cornerRect(QPointF fixed, QPointF moving, int sx, int sy, const QRectF& b, double ratio, double minSize) {
+QRectF cornerRect(QPointF fixed, QPointF moving, int sx, int sy, const QRectF& b, double ratio,
+                  double minSize) {
     double w = std::max(minSize, (moving.x() - fixed.x()) * sx);
     double h = std::max(minSize, (moving.y() - fixed.y()) * sy);
     const double maxW = sx > 0 ? b.right() - fixed.x() : fixed.x() - b.left();
@@ -320,7 +322,8 @@ QRectF crop::dragRect(const QRectF& s, Handle handle, QPointF delta, const QRect
         return r;
     }
     case Handle::New: {
-        const QPointF a(std::clamp(anchor.x(), b.left(), b.right()), std::clamp(anchor.y(), b.top(), b.bottom()));
+        const QPointF a(std::clamp(anchor.x(), b.left(), b.right()),
+                        std::clamp(anchor.y(), b.top(), b.bottom()));
         const QPointF p = a + delta;
         return cornerRect(a, p, p.x() >= a.x() ? 1 : -1, p.y() >= a.y() ? 1 : -1, b, ratio, minSize);
     }
@@ -355,7 +358,8 @@ QRectF crop::dragRect(const QRectF& s, Handle handle, QPointF delta, const QRect
         const bool bottom = handle == Handle::Bottom;
         const double fixedY = bottom ? s.top() : s.bottom();
         const double maxH = bottom ? b.bottom() - fixedY : fixedY - b.top();
-        double h = std::clamp(s.height() + (bottom ? delta.y() : -delta.y()), minSize, std::max(minSize, maxH));
+        double h =
+            std::clamp(s.height() + (bottom ? delta.y() : -delta.y()), minSize, std::max(minSize, maxH));
         double w = s.width();
         double x = s.left();
         if (ratio > 0) {
@@ -425,8 +429,8 @@ QSize jpeg::mcuSize(const QByteArray& data) {
     if (!h)
         return {};
     QSize s;
-    if (tj3DecompressHeader(h, reinterpret_cast<const unsigned char*>(data.constData()), size_t(data.size())) ==
-        0) {
+    if (tj3DecompressHeader(h, reinterpret_cast<const unsigned char*>(data.constData()),
+                            size_t(data.size())) == 0) {
         const int ss = tj3Get(h, TJPARAM_SUBSAMP);
         if (ss >= 0 && ss < TJ_NUMSAMP)
             s = QSize(tjMCUWidth[ss], tjMCUHeight[ss]);
@@ -545,8 +549,8 @@ QImage jpeg::decodePixels(const QByteArray& data, bool fastUpsample) {
         const int w = tj3Get(h, TJPARAM_JPEGWIDTH), hgt = tj3Get(h, TJPARAM_JPEGHEIGHT);
         tj3Set(h, TJPARAM_FASTUPSAMPLE, fastUpsample ? 1 : 0);
         img = QImage(w, hgt, QImage::Format_RGB888);
-        if (!img.isNull() && tj3Decompress8(h, src, size_t(data.size()), img.bits(), int(img.bytesPerLine()),
-                                            TJPF_RGB) < 0)
+        if (!img.isNull() &&
+            tj3Decompress8(h, src, size_t(data.size()), img.bits(), int(img.bytesPerLine()), TJPF_RGB) < 0)
             img = QImage();
     }
     tj3Destroy(h);
@@ -591,7 +595,8 @@ CropPlan planCropSave(const CropRequest& r) {
         return plan;
     }
     if (platform::imageCount(plan.target) > 1) {
-        plan.message = Tr::tr("Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.");
+        plan.message =
+            Tr::tr("Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.");
         return plan;
     }
     if (r.saveAs.isEmpty()) {
@@ -603,8 +608,9 @@ CropPlan planCropSave(const CropRequest& r) {
     } else {
         plan.destination = resolvedFilePath(r.saveAs);
         if (plan.destination == plan.target) {
-            plan.message = Tr::tr("„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen "
-                                  "wählen.");
+            plan.message =
+                Tr::tr("„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen "
+                       "wählen.");
             return plan;
         }
         const QFileInfo dest(plan.destination);
@@ -694,7 +700,8 @@ CropPlan planCropSave(const CropRequest& r) {
         const QString probe = tempProbePath(fi.suffix());
         QString err;
         bool inexact = false;
-        const bool exact = platform::reencodeCropped(plan.target, probe, plan.storedRect, true, &err, &inexact);
+        const bool exact =
+            platform::reencodeCropped(plan.target, probe, plan.storedRect, true, &err, &inexact);
         QFile::remove(probe);
         if (exact) {
             plan.method = CropMethod::ReencodeLossless;
@@ -713,11 +720,12 @@ CropPlan planCropSave(const CropRequest& r) {
     }
     plan.status = CropPlan::NeedsReencode;
     plan.method = CropMethod::ReencodeLossy;
-    plan.message = Tr::tr("Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem "
-                          "das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.");
+    plan.message =
+        Tr::tr("Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem "
+               "das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.");
     if (!aux.isEmpty())
-        plan.message += QLatin1Char(' ') + Tr::tr("Zusatzbilder (%1) gehen dabei verloren.")
-                                               .arg(aux.join(QStringLiteral(", ")));
+        plan.message += QLatin1Char(' ') +
+                        Tr::tr("Zusatzbilder (%1) gehen dabei verloren.").arg(aux.join(QStringLiteral(", ")));
     return plan;
 }
 

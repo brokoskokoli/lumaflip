@@ -88,7 +88,8 @@ std::array<float, 3> apply(const std::array<float, 3>& shown, const std::array<f
         out = {float(p.peakingColor.redF()), float(p.peakingColor.greenF()), float(p.peakingColor.blueF())};
     switch (classify(linear, p, contentPeak)) {
     case Clip::Highlight:
-        out = {float(p.highlightColor.redF()), float(p.highlightColor.greenF()), float(p.highlightColor.blueF())};
+        out = {float(p.highlightColor.redF()), float(p.highlightColor.greenF()),
+               float(p.highlightColor.blueF())};
         break;
     case Clip::Shadow:
         out = {float(p.shadowColor.redF()), float(p.shadowColor.greenF()), float(p.shadowColor.blueF())};

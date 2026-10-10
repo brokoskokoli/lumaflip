@@ -54,18 +54,18 @@ QString uniqueName(const QString& folder, const QString& fileName, const QSet<QS
 
 QVector<Format> knownFormats() {
     return {
-        {QStringLiteral("jpeg"), QStringLiteral("public.jpeg"), QStringLiteral("jpg"), QStringLiteral("JPEG"), true,
-         true},
-        {QStringLiteral("heic"), QStringLiteral("public.heic"), QStringLiteral("heic"), QStringLiteral("HEIC"), true,
-         true},
-        {QStringLiteral("avif"), QStringLiteral("public.avif"), QStringLiteral("avif"), QStringLiteral("AVIF"), true,
-         false},
-        {QStringLiteral("jxl"), QStringLiteral("public.jpeg-xl"), QStringLiteral("jxl"), QStringLiteral("JPEG XL"),
-         true, false},
-        {QStringLiteral("png"), QStringLiteral("public.png"), QStringLiteral("png"), QStringLiteral("PNG"), false,
-         false},
-        {QStringLiteral("tiff"), QStringLiteral("public.tiff"), QStringLiteral("tif"), QStringLiteral("TIFF"), false,
-         false},
+        {QStringLiteral("jpeg"), QStringLiteral("public.jpeg"), QStringLiteral("jpg"), QStringLiteral("JPEG"),
+         true, true},
+        {QStringLiteral("heic"), QStringLiteral("public.heic"), QStringLiteral("heic"),
+         QStringLiteral("HEIC"), true, true},
+        {QStringLiteral("avif"), QStringLiteral("public.avif"), QStringLiteral("avif"),
+         QStringLiteral("AVIF"), true, false},
+        {QStringLiteral("jxl"), QStringLiteral("public.jpeg-xl"), QStringLiteral("jxl"),
+         QStringLiteral("JPEG XL"), true, false},
+        {QStringLiteral("png"), QStringLiteral("public.png"), QStringLiteral("png"), QStringLiteral("PNG"),
+         false, false},
+        {QStringLiteral("tiff"), QStringLiteral("public.tiff"), QStringLiteral("tif"), QStringLiteral("TIFF"),
+         false, false},
     };
 }
 
@@ -251,7 +251,8 @@ Result run(const QVector<Item>& items, const Options& options, const std::atomic
         const QString folder = QFileInfo(target).absolutePath();
         if (!QDir().mkpath(folder)) {
             ++r.failed;
-            r.errors << Tr::tr("%1: Der Zielordner kann nicht angelegt werden.").arg(QFileInfo(target).fileName());
+            r.errors
+                << Tr::tr("%1: Der Zielordner kann nicht angelegt werden.").arg(QFileInfo(target).fileName());
             continue;
         }
         if (QFileInfo::exists(target) || QFileInfo(target).isSymLink()) {

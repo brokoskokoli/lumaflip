@@ -108,7 +108,8 @@ using Progress = std::function<void(int done, int total, const QString& current)
 Result run(const QVector<Item>& items, const Options& options, const std::atomic_bool& cancel,
            const Progress& progress, TrashService* trash);
 // One image (no conflict handling): writes `target` (must not exist). Empty = success.
-QString exportOne(const QString& source, const QString& target, const Options& options, QString* notice = nullptr);
+QString exportOne(const QString& source, const QString& target, const Options& options,
+                  QString* notice = nullptr);
 
 } // namespace exporting
 
@@ -117,11 +118,11 @@ namespace platform {
 QStringList exportTypeIdentifiers();
 // Encodes `source` (a file the platform can read) into the new file `dst`. `notice` gets a
 // German note when an option could not be applied (e.g. HDR without gain map support).
-bool exportImage(const QString& source, const QString& dst, const exporting::Options& options,
-                 QString* error, QString* notice);
+bool exportImage(const QString& source, const QString& dst, const exporting::Options& options, QString* error,
+                 QString* notice);
 // The same for decoded pixels (images in archives, PDF pages).
-bool exportDecoded(const QImage& image, const QString& dst, const exporting::Options& options,
-                   QString* error, QString* notice);
+bool exportDecoded(const QImage& image, const QString& dst, const exporting::Options& options, QString* error,
+                   QString* notice);
 } // namespace platform
 
 } // namespace lf

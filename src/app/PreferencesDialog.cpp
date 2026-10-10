@@ -228,10 +228,22 @@ QStringList PreferencesDialog::sectionKeys(int section) const {
         return {key::FitWindowToImage, key::TitleShowFolder, key::ShowStatusBar, key::ShowInfoPanel,
                 key::ShowFilmstrip,    key::AllowTabs,       key::CoupleBy};
     case Display:
-        return {key::Background,      key::ZoomMode,         key::UpscaleFilter,
-                key::ActualSizeUnit,  key::HdrEnabled,       key::SlideshowIntervalSec,
-                key::SlideshowRepeat, key::SlideshowShuffle, key::SlideshowCrossfade,
-                key::LoupeSize,       key::LoupeZoom};
+        return {key::Background,
+                key::ZoomMode,
+                key::UpscaleFilter,
+                key::ActualSizeUnit,
+                key::HdrEnabled,
+                key::SlideshowIntervalSec,
+                key::SlideshowRepeat,
+                key::SlideshowShuffle,
+                key::SlideshowCrossfade,
+                key::LoupeSize,
+                key::LoupeZoom,
+                key::OverlayClipHighPercent,
+                key::OverlayClipLowPercent,
+                key::OverlayClipHdrReference,
+                key::OverlayPeakingSensitivity,
+                key::OverlayPeakingColor};
     case Input:
         return {key::InputPrefix, key::WrapMode};
     case Navigation:
@@ -495,6 +507,17 @@ QWidget* PreferencesDialog::buildDisplay() {
                  bind.combo(key::LoupeZoom, {"100", "200"}, {tr("100 %"), tr("200 %")}, w));
     form->addRow(tr("Größe der Lupe:"), bind.combo(key::LoupeSize, {"small", "medium", "large"},
                                                    {tr("Klein"), tr("Mittel"), tr("Groß")}, w));
+    // F-INFO-07 (Darstellung → Overlays)
+    form->addRow(tr("Überbelichtung ab (J):"), bind.spin(key::OverlayClipHighPercent, 50, 100, tr(" %"), w));
+    form->addRow(tr("Unterbelichtung bis:"), bind.spin(key::OverlayClipLowPercent, 0, 50, tr(" %"), w));
+    form->addRow(tr("HDR-Überbelichtung bezogen auf:"),
+                 bind.combo(key::OverlayClipHdrReference, {"headroom", "sdr"},
+                            {tr("Spitzenhelligkeit des Bildes"), tr("SDR-Weiß")}, w));
+    form->addRow(tr("Focus Peaking (⇧J), Empfindlichkeit:"),
+                 bind.spin(key::OverlayPeakingSensitivity, 0, 100, tr(" %"), w));
+    form->addRow(tr("Focus-Peaking-Farbe:"),
+                 bind.combo(key::OverlayPeakingColor, {"#ff2020", "#ffe000", "#20ff40", "#20a0ff", "#ffffff"},
+                            {tr("Rot"), tr("Gelb"), tr("Grün"), tr("Blau"), tr("Weiß")}, w));
     // F-SLIDE-01/02
     form->addRow(tr("Diashow (⇧⌘F, S):"), bind.spin(key::SlideshowIntervalSec, 1, 60, tr(" s pro Bild"), w));
     form->addRow(QString(), bind.check(key::SlideshowRepeat, tr("Wiederholen"), w));

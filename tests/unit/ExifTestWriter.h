@@ -50,7 +50,9 @@ public:
         return a;
     }
 
-    Entry shortEntry(quint16 tag, const QVector<int>& v) const { return {tag, 3, quint32(v.size()), shorts(v)}; }
+    Entry shortEntry(quint16 tag, const QVector<int>& v) const {
+        return {tag, 3, quint32(v.size()), shorts(v)};
+    }
     Entry longEntry(quint16 tag, quint32 v) const { return {tag, 4, 1, u32(v)}; }
     Entry asciiEntry(quint16 tag, const QByteArray& s) const {
         QByteArray d = s;
@@ -147,8 +149,9 @@ inline QImage noisyPattern(QSize size, quint32 seed = 7) {
     QRandomGenerator rng(seed);
     for (int y = 0; y < size.height(); ++y)
         for (int x = 0; x < size.width(); ++x)
-            img.setPixel(x, y, qRgb((x * 3 + int(rng.bounded(40))) & 0xFF, (y * 5 + int(rng.bounded(40))) & 0xFF,
-                                    int(rng.bounded(256))));
+            img.setPixel(x, y,
+                         qRgb((x * 3 + int(rng.bounded(40))) & 0xFF, (y * 5 + int(rng.bounded(40))) & 0xFF,
+                              int(rng.bounded(256))));
     QPainter p(&img);
     p.fillRect(QRect(0, 0, size.width() / 3, size.height() / 4), Qt::red);
     p.fillRect(QRect(size.width() / 2, size.height() / 2, size.width() / 5, size.height() / 6), Qt::blue);

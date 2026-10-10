@@ -35,7 +35,7 @@ public:
     // Commands without an Action: "open", "openFolder", "makeDefault", "about", "quit",
     // "statusBar", "minimize", "zoomWindow", "bringAllToFront", "zoom:<modeId>",
     // "background:<id>", "background:custom", "sort:finder", "sort:<key>", "sort:asc", "sort:desc",
-    // "customAction:<id>" (F-FILE-10).
+    // "customAction:<id>" (F-FILE-10), "compare:<off|difference|blend|wipe>" (F-GRID-04).
     QAction* command(const QString& id) const;
     MenuExtras* extras() const { return m_extras; } // M2 submenus (open with, share, arrange, tabs)
     QStringList windowMenuTitles() const;           // window entries of the Window menu
@@ -70,6 +70,10 @@ private:
     void buildM4(QMenu* file, QMenu* view);
     void refreshM4State();
     void rebuildCustomActions();
+    // M4 part 2 (MainMenuEdit.cpp): crop (Bild), export (Ablage), photo overlays and compare
+    // blending (Darstellung).
+    void buildEdit(QMenu* file, QMenu* view, QMenu* image);
+    void refreshEditState();
     QMenu* m_customMenu = nullptr;
     QList<QAction*> m_customEntries;
 

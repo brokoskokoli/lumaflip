@@ -41,9 +41,9 @@ namespace crop {
 
 // Aspect presets of the crop overlay (ids for Settings key::CropAspect).
 enum class Aspect { Free, Original, Square, R4x3, R3x2, R16x9 };
-QString aspectId(Aspect a);         // "free", "original", "1:1", "4:3", "3:2", "16:9"
+QString aspectId(Aspect a);             // "free", "original", "1:1", "4:3", "3:2", "16:9"
 Aspect aspectFromId(const QString& id); // unknown -> Free
-QString aspectLabel(Aspect a);      // UI label (translated)
+QString aspectLabel(Aspect a);          // UI label (translated)
 // Width/height ratio of the preset for an image of `original` size (displayed), in the
 // landscape form for the fixed ratios and flipped with `portrait`; 0 = free.
 double aspectRatio(Aspect a, QSizeF original, bool portrait);

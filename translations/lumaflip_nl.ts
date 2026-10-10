@@ -250,9 +250,43 @@
         <translation>Vergelijken</translation>
     </message>
     <message>
+        <source>%1×</source>
+        <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
+        <translation>%1×</translation>
+    </message>
+    <message>
+        <source>%1 %</source>
+        <translation>%1%</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Naast elkaar</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>Verschil</translation>
+    </message>
+    <message>
+        <source>Überblenden</source>
+        <translation>Overvloeien</translation>
+    </message>
+    <message>
+        <source>Wischen</source>
+        <translation>Veeg</translation>
+    </message>
+    <message>
+        <source>Die ersten beiden Bilder übereinander vergleichen</source>
+        <translation>De eerste twee afbeeldingen over elkaar vergelijken</translation>
+    </message>
+    <message>
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+    <message>
+        <source>%1 ⇄ %2</source>
+        <extracomment>compare caption while two images are blended: &quot;first.jpg ⇄ second.jpg&quot;</extracomment>
+        <translation>%1 ⇄ %2</translation>
     </message>
 </context>
 <context>
@@ -306,6 +340,193 @@
     <message>
         <source>Abbrechen</source>
         <translation>Annuleer</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropOverlay</name>
+    <message>
+        <source>Seitenverhältnis</source>
+        <translation>Beeldverhouding</translation>
+    </message>
+    <message>
+        <source>Hochformat</source>
+        <translation>Staand</translation>
+    </message>
+    <message>
+        <source>Seitenverhältnis hochkant statt quer</source>
+        <translation>Beeldverhouding staand in plaats van liggend</translation>
+    </message>
+    <message>
+        <source>Drittel</source>
+        <translation>Derden</translation>
+    </message>
+    <message>
+        <source>Raster der Drittel-Regel einblenden</source>
+        <translation>Raster van de regel van derden tonen</translation>
+    </message>
+    <message>
+        <source>Speichern</source>
+        <translation>Bewaar</translation>
+    </message>
+    <message>
+        <source>Zuschnitt in der Datei speichern (Enter, widerrufbar)</source>
+        <translation>Uitsnede in het bestand bewaren (Enter, kan ongedaan worden gemaakt)</translation>
+    </message>
+    <message>
+        <source>Speichern unter …</source>
+        <translation>Bewaar als…</translation>
+    </message>
+    <message>
+        <source>Zuschnitt als neue Datei speichern – das Original bleibt unverändert</source>
+        <translation>Uitsnede als nieuw bestand bewaren – het origineel blijft ongewijzigd</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuleer</translation>
+    </message>
+    <message>
+        <source>Zuschneiden beenden (Esc)</source>
+        <translation>Bijsnijden beëindigen (Esc)</translation>
+    </message>
+    <message>
+        <source>%1 × %2 px</source>
+        <extracomment>crop size in pixels, e.g. &quot;1920 × 1080 px&quot;</extracomment>
+        <translation>%1 × %2 px</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropSave</name>
+    <message>
+        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.</source>
+        <translation>Het bestand is intussen gewijzigd – niets bewaard. Snijd opnieuw bij.</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
+        <translation>Het bestand bevat nog andere afbeeldingen (bijv. een HDR-gainmap of een tweede stereobeeld) die na verliesloos bijsnijden niet meer zouden passen. Bijsnijden kan alleen door opnieuw te coderen – daarbij gaan wat beeldkwaliteit en deze extra afbeeldingen verloren.</translation>
+    </message>
+    <message>
+        <source>Frei</source>
+        <translation>Vrij</translation>
+    </message>
+    <message>
+        <source>Original</source>
+        <translation>Origineel</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
+        <translation>De JPEG-bibliotheek kan niet worden gestart.</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Daten konnten nicht verlustfrei zugeschnitten werden (%1).</source>
+        <translation>De JPEG-gegevens konden niet verliesloos worden bijgesneden (%1).</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.</source>
+        <translation>De selectie ligt niet op het JPEG-blokraster.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden von JPEG-Dateien ist in dieser Version nicht verfügbar.</source>
+        <translation>Verliesloos bijsnijden van JPEG-bestanden is in deze versie niet beschikbaar.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
+        <translation>Afbeeldingen in archieven en PDF-documenten kunnen niet bijgesneden worden bewaard – gebruik ‘Exporteer’.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>Het bestand bestaat niet meer.</translation>
+    </message>
+    <message>
+        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <translation>De bestandsstructuur wordt voor bewaren niet herkend.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
+        <translation>RAW-bestanden worden nooit gewijzigd. Gebruik ‘Exporteer’ voor een bijgesneden kopie.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
+        <translation>Geanimeerde bestanden of bestanden met meerdere pagina’s kunnen niet bijgesneden worden bewaard.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist schreibgeschützt.</source>
+        <translation>‘%1’ is alleen-lezen.</translation>
+    </message>
+    <message>
+        <source>„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.</source>
+        <translation>‘Bewaar als’ overschrijft nooit het origineel – kies een andere naam.</translation>
+    </message>
+    <message>
+        <source>In „%1“ kann nicht geschrieben werden.</source>
+        <translation>Kan niet schrijven in ‘%1’.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>‘%1’ kan niet worden gelezen.</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>Geen gebied geselecteerd.</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.</source>
+        <translation>De selectie omvat de hele afbeelding – niets om bij te snijden.</translation>
+    </message>
+    <message>
+        <source>Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
+        <translation>Voor verliesloos bijsnijden is de selectie op het JPEG-blokraster (%1 × %2 pixels) uitgelijnd en is nu %3 × %4 pixels groot.</translation>
+    </message>
+    <message>
+        <source>Diese JPEG-Datei lässt sich nicht verlustfrei zuschneiden. Beim Neukodieren geht etwas Bildqualität verloren.</source>
+        <translation>Dit JPEG-bestand kan niet verliesloos worden bijgesneden. Bij opnieuw coderen gaat wat beeldkwaliteit verloren.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nicht gespeichert werden.</source>
+        <translation>De uitsnede kan niet worden bewaard.</translation>
+    </message>
+    <message>
+        <source>Beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
+        <translation>Bij opnieuw coderen blijft de afbeelding niet exact gelijk (kleurmodel, bitdiepte, palet of transparantie zouden veranderen).</translation>
+    </message>
+    <message>
+        <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <translation>Dit formaat is lossy. De uitsnede kan alleen worden bewaard door de afbeelding opnieuw te coderen – daarbij gaat wat beeldkwaliteit verloren.</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder (%1) gehen dabei verloren.</source>
+        <translation>Extra afbeeldingen (%1) gaan daarbij verloren.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
+        <translation>Verliesloos bijsnijden is voor deze afbeelding niet mogelijk.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>De uitsnede kon niet worden bewaard.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>Het bestand kan niet worden vervangen.</translation>
+    </message>
+    <message>
+        <source>Nichts zuzuschneiden</source>
+        <translation>Niets om bij te snijden</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten (an JPEG-Blöcke angepasst)</source>
+        <translation>Verliesloos bijgesneden (uitgelijnd op JPEG-blokken)</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten</source>
+        <translation>Verliesloos bijgesneden</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (verlustfrei neu kodiert)</source>
+        <translation>Bijgesneden (verliesloos opnieuw gecodeerd)</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (neu kodiert)</source>
+        <translation>Bijgesneden (opnieuw gecodeerd)</translation>
     </message>
 </context>
 <context>
@@ -884,6 +1105,136 @@
     </message>
 </context>
 <context>
+    <name>lf::ExportDialog</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exporteer</translation>
+    </message>
+    <message>
+        <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>‘%1’ als nieuw bestand exporteren. Het origineel blijft ongewijzigd.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.</source>
+        <translation>
+            <numerusform>%n afbeelding als nieuw bestand exporteren. Het origineel blijft ongewijzigd.</numerusform>
+            <numerusform>%n afbeeldingen als nieuwe bestanden exporteren. De originelen blijven ongewijzigd.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation>Formaat:</translation>
+    </message>
+    <message>
+        <source>Qualität:</source>
+        <translation>Kwaliteit:</translation>
+    </message>
+    <message>
+        <source>Maximale Größe:</source>
+        <translation>Maximale grootte:</translation>
+    </message>
+    <message>
+        <source>Metadaten:</source>
+        <translation>Metadata:</translation>
+    </message>
+    <message>
+        <source>Farbraum:</source>
+        <translation>Kleurruimte:</translation>
+    </message>
+    <message>
+        <source>HDR:</source>
+        <translation>HDR:</translation>
+    </message>
+    <message>
+        <source>Dateiname:</source>
+        <translation>Bestandsnaam:</translation>
+    </message>
+    <message>
+        <source>Zielordner:</source>
+        <translation>Doelmap:</translation>
+    </message>
+    <message>
+        <source>Originalgröße</source>
+        <translation>Oorspronkelijke grootte</translation>
+    </message>
+    <message>
+        <source> px (lange Kante)</source>
+        <extracomment>suffix of the maximum size (long edge in pixels)</extracomment>
+        <translation> px (lange zijde)</translation>
+    </message>
+    <message>
+        <source>Alle behalten</source>
+        <translation>Alles behouden</translation>
+    </message>
+    <message>
+        <source>Ohne Ortsdaten (GPS)</source>
+        <translation>Zonder locatie (GPS)</translation>
+    </message>
+    <message>
+        <source>Alle entfernen</source>
+        <translation>Alles verwijderen</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>Behouden</translation>
+    </message>
+    <message>
+        <source>In sRGB umwandeln</source>
+        <translation>Omzetten naar sRGB</translation>
+    </message>
+    <message>
+        <source>In Display P3 umwandeln</source>
+        <translation>Omzetten naar Display P3</translation>
+    </message>
+    <message>
+        <source>Gain-Map behalten (wo das Format es kann)</source>
+        <translation>Gainmap behouden (waar het formaat dat kan)</translation>
+    </message>
+    <message>
+        <source>Als SDR (Tone Mapping)</source>
+        <translation>Als SDR (tone mapping)</translation>
+    </message>
+    <message>
+        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung</source>
+        <translation>Variabelen: {name} = naam van het origineel, {n} = volgnummer, {format} = extensie</translation>
+    </message>
+    <message>
+        <source>Neben dem Original</source>
+        <translation>Naast het origineel</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>Kies…</translation>
+    </message>
+    <message>
+        <source>Erste Datei: %1</source>
+        <translation>Eerste bestand: %1</translation>
+    </message>
+    <message>
+        <source>Zielordner für den Export</source>
+        <translation>Doelmap voor de export</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ExportRunner</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exporteer</translation>
+    </message>
+    <message>
+        <source>Exportiere …</source>
+        <translation>Exporteren…</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuleer</translation>
+    </message>
+    <message>
+        <source>Exportiere %1 von %2: %3</source>
+        <translation>Exporteren %1 van %2: %3</translation>
+    </message>
+</context>
+<context>
     <name>lf::FileBatch</name>
     <message>
         <source>„%1“ existiert bereits.</source>
@@ -1211,6 +1562,49 @@
     <message>
         <source>Wird berechnet …</source>
         <translation>Berekenen…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ImageExport</name>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>‘%1’ bestaat al.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht exportiert werden.</source>
+        <translation>De afbeelding kon niet worden geëxporteerd.</translation>
+    </message>
+    <message>
+        <source>%1: Der Zielordner kann nicht angelegt werden.</source>
+        <translation>%1: de doelmap kan niet worden aangemaakt.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht geschrieben werden.</source>
+        <translation>De afbeelding kon niet worden geschreven.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden.</source>
+        <translation>De afbeelding kan niet worden gedecodeerd.</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
+        <translation>Dit formaat kan op deze Mac niet worden geschreven.</translation>
+    </message>
+    <message>
+        <source>Unbekanntes Zielformat.</source>
+        <translation>Onbekend doelformaat.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher zum Exportieren.</source>
+        <translation>Niet genoeg geheugen om te exporteren.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>Het bestand kan niet worden gelezen.</translation>
+    </message>
+    <message>
+        <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
+        <translation>%1 kan geen HDR-gainmap opslaan – de afbeelding is als SDR geëxporteerd.</translation>
     </message>
 </context>
 <context>
@@ -1848,6 +2242,26 @@
     <message>
         <source>Comics von rechts nach links lesen</source>
         <translation>Strips van rechts naar links lezen</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>Snijd bij</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exporteer</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung</source>
+        <translation>Waarschuwing over-/onderbelichting</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>Focus peaking</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>AF-punten</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2878,8 +3292,48 @@
         <translation>Willekeurige volgorde</translation>
     </message>
     <message>
+        <source>Exportieren …</source>
+        <translation>Exporteer…</translation>
+    </message>
+    <message>
+        <source>Zuschneiden …</source>
+        <translation>Snijd bij…</translation>
+    </message>
+    <message>
+        <source>Overlays</source>
+        <translation>Overlays</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtung</source>
+        <translation>Over-/onderbelichting</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>Focus peaking</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>AF-punten</translation>
+    </message>
+    <message>
+        <source>Vergleich überlagern</source>
+        <translation>Vergelijking overlappen</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Naast elkaar</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>Verschil</translation>
+    </message>
+    <message>
         <source>Überblenden</source>
         <translation>Overvloeien</translation>
+    </message>
+    <message>
+        <source>Wischen (geteilte Ansicht)</source>
+        <translation>Veeg (gesplitste weergave)</translation>
     </message>
     <message>
         <source>Diashow</source>
@@ -3842,6 +4296,38 @@
     <message>
         <source>Groß</source>
         <translation>Groot</translation>
+    </message>
+    <message>
+        <source>Überbelichtung ab (J):</source>
+        <translation>Overbelichting vanaf (J):</translation>
+    </message>
+    <message>
+        <source>Unterbelichtung bis:</source>
+        <translation>Onderbelichting tot:</translation>
+    </message>
+    <message>
+        <source>HDR-Überbelichtung bezogen auf:</source>
+        <translation>HDR-overbelichting ten opzichte van:</translation>
+    </message>
+    <message>
+        <source>Spitzenhelligkeit des Bildes</source>
+        <translation>Piekhelderheid van de afbeelding</translation>
+    </message>
+    <message>
+        <source>SDR-Weiß</source>
+        <translation>SDR-wit</translation>
+    </message>
+    <message>
+        <source>Focus Peaking (⇧J), Empfindlichkeit:</source>
+        <translation>Focus peaking (⇧J), gevoeligheid:</translation>
+    </message>
+    <message>
+        <source>Focus-Peaking-Farbe:</source>
+        <translation>Kleur van focus peaking:</translation>
+    </message>
+    <message>
+        <source>Weiß</source>
+        <translation>Wit</translation>
     </message>
     <message>
         <source>Diashow (⇧⌘F, S):</source>
@@ -5266,6 +5752,123 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowEditing</name>
+    <message>
+        <source>Über-/Unterbelichtungswarnung an (rot: Lichter, blau: Schatten)</source>
+        <translation>Waarschuwing over-/onderbelichting aan (rood: hoge lichten, blauw: schaduwen)</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung aus</source>
+        <translation>Waarschuwing over-/onderbelichting uit</translation>
+    </message>
+    <message>
+        <source>Focus Peaking an</source>
+        <translation>Focus peaking aan</translation>
+    </message>
+    <message>
+        <source>Focus Peaking aus</source>
+        <translation>Focus peaking uit</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte an</source>
+        <translation>AF-punten aan</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte aus</source>
+        <translation>AF-punten uit</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte: %1</source>
+        <extracomment>%1 = where the AF points come from (&quot;Canon&quot;, &quot;Sony&quot;, &quot;EXIF&quot; …)</extracomment>
+        <translation>AF-punten: %1</translation>
+    </message>
+    <message>
+        <source>Keine Fokuspunkte in den Metadaten</source>
+        <translation>Geen AF-punten in de metadata</translation>
+    </message>
+    <message>
+        <source>Zuschneiden geht in der Einzelbildansicht.</source>
+        <translation>Bijsnijden werkt in de weergave van één afbeelding.</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Zuschneiden.</source>
+        <translation>Geen afbeelding om bij te snijden.</translation>
+    </message>
+    <message>
+        <source>Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab</source>
+        <translation>Bijsnijden: sleep een kader – Enter bewaart, Esc annuleert</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>Geen gebied geselecteerd.</translation>
+    </message>
+    <message>
+        <source>%1-zugeschnitten.%2</source>
+        <extracomment>default file name of a cropped copy: &quot;&lt;name&gt;-zugeschnitten.&lt;suffix&gt;&quot;</extracomment>
+        <translation>%1-bijgesneden.%2</translation>
+    </message>
+    <message>
+        <source>Zugeschnittenes Bild speichern unter</source>
+        <translation>Bijgesneden afbeelding bewaren als</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>Snijd bij</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
+        <translation>De uitsnede kan alleen door opnieuw coderen worden bewaard.</translation>
+    </message>
+    <message>
+        <source>Neu kodieren</source>
+        <translation>Codeer opnieuw</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuleer</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten gespeichert als „%1“</source>
+        <translation>Uitsnede bewaard als ‘%1’</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Exportieren.</source>
+        <translation>Geen afbeelding om te exporteren.</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>Exporteer</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder konnten nicht exportiert werden.</source>
+        <translation>
+            <numerusform>%n afbeelding kon niet worden geëxporteerd.</numerusform>
+            <numerusform>%n afbeeldingen konden niet worden geëxporteerd.</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Export abgebrochen – %n Bilder exportiert</source>
+        <translation>
+            <numerusform>Export geannuleerd – %n afbeelding geëxporteerd</numerusform>
+            <numerusform>Export geannuleerd – %n afbeeldingen geëxporteerd</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder exportiert</source>
+        <translation>
+            <numerusform>%n afbeelding geëxporteerd</numerusform>
+            <numerusform>%n afbeeldingen geëxporteerd</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n übersprungen</source>
+        <translation>
+            <numerusform>%n overgeslagen</numerusform>
+            <numerusform>%n overgeslagen</numerusform>
+        </translation>
     </message>
 </context>
 <context>

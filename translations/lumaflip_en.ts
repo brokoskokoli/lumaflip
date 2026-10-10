@@ -250,9 +250,43 @@
         <translation>Compare</translation>
     </message>
     <message>
+        <source>%1×</source>
+        <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
+        <translation>%1×</translation>
+    </message>
+    <message>
+        <source>%1 %</source>
+        <translation>%1%</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Side by Side</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>Difference</translation>
+    </message>
+    <message>
+        <source>Überblenden</source>
+        <translation>Crossfade</translation>
+    </message>
+    <message>
+        <source>Wischen</source>
+        <translation>Wipe</translation>
+    </message>
+    <message>
+        <source>Die ersten beiden Bilder übereinander vergleichen</source>
+        <translation>Compare the first two images on top of each other</translation>
+    </message>
+    <message>
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+    <message>
+        <source>%1 ⇄ %2</source>
+        <extracomment>compare caption while two images are blended: &quot;first.jpg ⇄ second.jpg&quot;</extracomment>
+        <translation>%1 ⇄ %2</translation>
     </message>
 </context>
 <context>
@@ -306,6 +340,193 @@
     <message>
         <source>Abbrechen</source>
         <translation>Cancel</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropOverlay</name>
+    <message>
+        <source>Seitenverhältnis</source>
+        <translation>Aspect ratio</translation>
+    </message>
+    <message>
+        <source>Hochformat</source>
+        <translation>Portrait</translation>
+    </message>
+    <message>
+        <source>Seitenverhältnis hochkant statt quer</source>
+        <translation>Aspect ratio in portrait instead of landscape</translation>
+    </message>
+    <message>
+        <source>Drittel</source>
+        <translation>Thirds</translation>
+    </message>
+    <message>
+        <source>Raster der Drittel-Regel einblenden</source>
+        <translation>Show the rule-of-thirds grid</translation>
+    </message>
+    <message>
+        <source>Speichern</source>
+        <translation>Save</translation>
+    </message>
+    <message>
+        <source>Zuschnitt in der Datei speichern (Enter, widerrufbar)</source>
+        <translation>Save the crop into the file (Enter, can be undone)</translation>
+    </message>
+    <message>
+        <source>Speichern unter …</source>
+        <translation>Save As…</translation>
+    </message>
+    <message>
+        <source>Zuschnitt als neue Datei speichern – das Original bleibt unverändert</source>
+        <translation>Save the crop as a new file – the original stays unchanged</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <source>Zuschneiden beenden (Esc)</source>
+        <translation>Stop cropping (Esc)</translation>
+    </message>
+    <message>
+        <source>%1 × %2 px</source>
+        <extracomment>crop size in pixels, e.g. &quot;1920 × 1080 px&quot;</extracomment>
+        <translation>%1 × %2 px</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CropSave</name>
+    <message>
+        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.</source>
+        <translation>The file has been changed in the meantime – nothing saved. Please crop again.</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
+        <translation>The file contains further images (e.g. an HDR gain map or a second stereo image) that would no longer match after a lossless crop. Cropping is only possible by re-encoding – some image quality and these additional images are lost.</translation>
+    </message>
+    <message>
+        <source>Frei</source>
+        <translation>Free</translation>
+    </message>
+    <message>
+        <source>Original</source>
+        <translation>Original</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
+        <translation>The JPEG library couldn’t be started.</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Daten konnten nicht verlustfrei zugeschnitten werden (%1).</source>
+        <translation>The JPEG data could not be cropped losslessly (%1).</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.</source>
+        <translation>The selection is not on the JPEG block grid.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden von JPEG-Dateien ist in dieser Version nicht verfügbar.</source>
+        <translation>Lossless cropping of JPEG files is not available in this version.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
+        <translation>Images in archives and PDF documents cannot be saved cropped – please use “Export”.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>The file no longer exists.</translation>
+    </message>
+    <message>
+        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <translation>The file format isn’t recognized for saving.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
+        <translation>RAW files are never changed. For a cropped copy please use “Export”.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
+        <translation>Animated or multi-page files cannot be saved cropped.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist schreibgeschützt.</source>
+        <translation>“%1” is read-only.</translation>
+    </message>
+    <message>
+        <source>„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.</source>
+        <translation>“Save As” never overwrites the original – please choose another name.</translation>
+    </message>
+    <message>
+        <source>In „%1“ kann nicht geschrieben werden.</source>
+        <translation>Cannot write to “%1”.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>“%1” can’t be read.</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>No image area selected.</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.</source>
+        <translation>The selection covers the whole image – nothing to crop.</translation>
+    </message>
+    <message>
+        <source>Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
+        <translation>For the lossless crop the selection was aligned to the JPEG block grid (%1 × %2 pixels) and is now %3 × %4 pixels.</translation>
+    </message>
+    <message>
+        <source>Diese JPEG-Datei lässt sich nicht verlustfrei zuschneiden. Beim Neukodieren geht etwas Bildqualität verloren.</source>
+        <translation>This JPEG file cannot be cropped losslessly. Re-encoding loses some image quality.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nicht gespeichert werden.</source>
+        <translation>The crop cannot be saved.</translation>
+    </message>
+    <message>
+        <source>Beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
+        <translation>Re-encoding would not keep the image exactly the same (color model, bit depth, palette or transparency would change).</translation>
+    </message>
+    <message>
+        <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <translation>This format is lossy. The crop can only be saved by re-encoding the image – some image quality is lost.</translation>
+    </message>
+    <message>
+        <source>Zusatzbilder (%1) gehen dabei verloren.</source>
+        <translation>Additional images (%1) are lost.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
+        <translation>Lossless cropping is not possible for this image.</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>The crop could not be saved.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>The file couldn’t be replaced.</translation>
+    </message>
+    <message>
+        <source>Nichts zuzuschneiden</source>
+        <translation>Nothing to crop</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten (an JPEG-Blöcke angepasst)</source>
+        <translation>Cropped losslessly (aligned to JPEG blocks)</translation>
+    </message>
+    <message>
+        <source>Verlustfrei zugeschnitten</source>
+        <translation>Cropped losslessly</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (verlustfrei neu kodiert)</source>
+        <translation>Cropped (re-encoded losslessly)</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten (neu kodiert)</source>
+        <translation>Cropped (re-encoded)</translation>
     </message>
 </context>
 <context>
@@ -884,6 +1105,136 @@
     </message>
 </context>
 <context>
+    <name>lf::ExportDialog</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>Export</translation>
+    </message>
+    <message>
+        <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>Export “%1” as a new file. The original stays unchanged.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.</source>
+        <translation>
+            <numerusform>Export %n image as a new file. The original stays unchanged.</numerusform>
+            <numerusform>Export %n images as new files. The originals stay unchanged.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Format:</source>
+        <translation>Format:</translation>
+    </message>
+    <message>
+        <source>Qualität:</source>
+        <translation>Quality:</translation>
+    </message>
+    <message>
+        <source>Maximale Größe:</source>
+        <translation>Maximum size:</translation>
+    </message>
+    <message>
+        <source>Metadaten:</source>
+        <translation>Metadata:</translation>
+    </message>
+    <message>
+        <source>Farbraum:</source>
+        <translation>Color space:</translation>
+    </message>
+    <message>
+        <source>HDR:</source>
+        <translation>HDR:</translation>
+    </message>
+    <message>
+        <source>Dateiname:</source>
+        <translation>File name:</translation>
+    </message>
+    <message>
+        <source>Zielordner:</source>
+        <translation>Destination folder:</translation>
+    </message>
+    <message>
+        <source>Originalgröße</source>
+        <translation>Original size</translation>
+    </message>
+    <message>
+        <source> px (lange Kante)</source>
+        <extracomment>suffix of the maximum size (long edge in pixels)</extracomment>
+        <translation> px (long edge)</translation>
+    </message>
+    <message>
+        <source>Alle behalten</source>
+        <translation>Keep all</translation>
+    </message>
+    <message>
+        <source>Ohne Ortsdaten (GPS)</source>
+        <translation>Without location (GPS)</translation>
+    </message>
+    <message>
+        <source>Alle entfernen</source>
+        <translation>Remove all</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>Keep</translation>
+    </message>
+    <message>
+        <source>In sRGB umwandeln</source>
+        <translation>Convert to sRGB</translation>
+    </message>
+    <message>
+        <source>In Display P3 umwandeln</source>
+        <translation>Convert to Display P3</translation>
+    </message>
+    <message>
+        <source>Gain-Map behalten (wo das Format es kann)</source>
+        <translation>Keep the gain map (where the format supports it)</translation>
+    </message>
+    <message>
+        <source>Als SDR (Tone Mapping)</source>
+        <translation>As SDR (tone mapping)</translation>
+    </message>
+    <message>
+        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung</source>
+        <translation>Placeholders: {name} = name of the original, {n} = sequence number, {format} = file extension</translation>
+    </message>
+    <message>
+        <source>Neben dem Original</source>
+        <translation>Next to the original</translation>
+    </message>
+    <message>
+        <source>Wählen …</source>
+        <translation>Choose…</translation>
+    </message>
+    <message>
+        <source>Erste Datei: %1</source>
+        <translation>First file: %1</translation>
+    </message>
+    <message>
+        <source>Zielordner für den Export</source>
+        <translation>Destination folder for the export</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ExportRunner</name>
+    <message>
+        <source>Exportieren</source>
+        <translation>Export</translation>
+    </message>
+    <message>
+        <source>Exportiere …</source>
+        <translation>Exporting…</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <source>Exportiere %1 von %2: %3</source>
+        <translation>Exporting %1 of %2: %3</translation>
+    </message>
+</context>
+<context>
     <name>lf::FileBatch</name>
     <message>
         <source>„%1“ existiert bereits.</source>
@@ -1211,6 +1562,49 @@
     <message>
         <source>Wird berechnet …</source>
         <translation>Calculating…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ImageExport</name>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>“%1” already exists.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht exportiert werden.</source>
+        <translation>The image could not be exported.</translation>
+    </message>
+    <message>
+        <source>%1: Der Zielordner kann nicht angelegt werden.</source>
+        <translation>%1: The destination folder cannot be created.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht geschrieben werden.</source>
+        <translation>The image could not be written.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden.</source>
+        <translation>The image couldn’t be decoded.</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
+        <translation>This format cannot be written on this Mac.</translation>
+    </message>
+    <message>
+        <source>Unbekanntes Zielformat.</source>
+        <translation>Unknown target format.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher zum Exportieren.</source>
+        <translation>Not enough memory to export.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>The file can’t be read.</translation>
+    </message>
+    <message>
+        <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
+        <translation>%1 cannot store an HDR gain map – the image was exported as SDR.</translation>
     </message>
 </context>
 <context>
@@ -1848,6 +2242,26 @@
     <message>
         <source>Comics von rechts nach links lesen</source>
         <translation>Read Comics Right to Left</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>Crop</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>Export</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung</source>
+        <translation>Clipping warning</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>Focus Peaking</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>AF Points</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2878,8 +3292,48 @@
         <translation>Shuffle</translation>
     </message>
     <message>
+        <source>Exportieren …</source>
+        <translation>Export…</translation>
+    </message>
+    <message>
+        <source>Zuschneiden …</source>
+        <translation>Crop…</translation>
+    </message>
+    <message>
+        <source>Overlays</source>
+        <translation>Overlays</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtung</source>
+        <translation>Over-/Underexposure</translation>
+    </message>
+    <message>
+        <source>Focus Peaking</source>
+        <translation>Focus Peaking</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte</source>
+        <translation>AF Points</translation>
+    </message>
+    <message>
+        <source>Vergleich überlagern</source>
+        <translation>Overlay Comparison</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Side by Side</translation>
+    </message>
+    <message>
+        <source>Differenz</source>
+        <translation>Difference</translation>
+    </message>
+    <message>
         <source>Überblenden</source>
         <translation>Crossfade</translation>
+    </message>
+    <message>
+        <source>Wischen (geteilte Ansicht)</source>
+        <translation>Wipe (split view)</translation>
     </message>
     <message>
         <source>Diashow</source>
@@ -3842,6 +4296,38 @@
     <message>
         <source>Groß</source>
         <translation>Large</translation>
+    </message>
+    <message>
+        <source>Überbelichtung ab (J):</source>
+        <translation>Overexposure from (J):</translation>
+    </message>
+    <message>
+        <source>Unterbelichtung bis:</source>
+        <translation>Underexposure up to:</translation>
+    </message>
+    <message>
+        <source>HDR-Überbelichtung bezogen auf:</source>
+        <translation>HDR overexposure relative to:</translation>
+    </message>
+    <message>
+        <source>Spitzenhelligkeit des Bildes</source>
+        <translation>Peak brightness of the image</translation>
+    </message>
+    <message>
+        <source>SDR-Weiß</source>
+        <translation>SDR white</translation>
+    </message>
+    <message>
+        <source>Focus Peaking (⇧J), Empfindlichkeit:</source>
+        <translation>Focus peaking (⇧J), sensitivity:</translation>
+    </message>
+    <message>
+        <source>Focus-Peaking-Farbe:</source>
+        <translation>Focus peaking color:</translation>
+    </message>
+    <message>
+        <source>Weiß</source>
+        <translation>White</translation>
     </message>
     <message>
         <source>Diashow (⇧⌘F, S):</source>
@@ -5266,6 +5752,123 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowEditing</name>
+    <message>
+        <source>Über-/Unterbelichtungswarnung an (rot: Lichter, blau: Schatten)</source>
+        <translation>Clipping warning on (red: highlights, blue: shadows)</translation>
+    </message>
+    <message>
+        <source>Über-/Unterbelichtungswarnung aus</source>
+        <translation>Clipping warning off</translation>
+    </message>
+    <message>
+        <source>Focus Peaking an</source>
+        <translation>Focus peaking on</translation>
+    </message>
+    <message>
+        <source>Focus Peaking aus</source>
+        <translation>Focus peaking off</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte an</source>
+        <translation>AF points on</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte aus</source>
+        <translation>AF points off</translation>
+    </message>
+    <message>
+        <source>Fokuspunkte: %1</source>
+        <extracomment>%1 = where the AF points come from (&quot;Canon&quot;, &quot;Sony&quot;, &quot;EXIF&quot; …)</extracomment>
+        <translation>AF points: %1</translation>
+    </message>
+    <message>
+        <source>Keine Fokuspunkte in den Metadaten</source>
+        <translation>No AF points in the metadata</translation>
+    </message>
+    <message>
+        <source>Zuschneiden geht in der Einzelbildansicht.</source>
+        <translation>Cropping works in the single image view.</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Zuschneiden.</source>
+        <translation>No image to crop.</translation>
+    </message>
+    <message>
+        <source>Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab</source>
+        <translation>Crop: drag a frame – Enter saves, Esc cancels</translation>
+    </message>
+    <message>
+        <source>Kein Bildbereich ausgewählt.</source>
+        <translation>No image area selected.</translation>
+    </message>
+    <message>
+        <source>%1-zugeschnitten.%2</source>
+        <extracomment>default file name of a cropped copy: &quot;&lt;name&gt;-zugeschnitten.&lt;suffix&gt;&quot;</extracomment>
+        <translation>%1-cropped.%2</translation>
+    </message>
+    <message>
+        <source>Zugeschnittenes Bild speichern unter</source>
+        <translation>Save Cropped Image As</translation>
+    </message>
+    <message>
+        <source>Zuschneiden</source>
+        <translation>Crop</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
+        <translation>The crop can only be saved by re-encoding.</translation>
+    </message>
+    <message>
+        <source>Neu kodieren</source>
+        <translation>Re-encode</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten gespeichert als „%1“</source>
+        <translation>Cropped copy saved as “%1”</translation>
+    </message>
+    <message>
+        <source>Kein Bild zum Exportieren.</source>
+        <translation>No image to export.</translation>
+    </message>
+    <message>
+        <source>Exportieren</source>
+        <translation>Export</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder konnten nicht exportiert werden.</source>
+        <translation>
+            <numerusform>%n image could not be exported.</numerusform>
+            <numerusform>%n images could not be exported.</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Export abgebrochen – %n Bilder exportiert</source>
+        <translation>
+            <numerusform>Export cancelled – %n image exported</numerusform>
+            <numerusform>Export cancelled – %n images exported</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bilder exportiert</source>
+        <translation>
+            <numerusform>%n image exported</numerusform>
+            <numerusform>%n images exported</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n übersprungen</source>
+        <translation>
+            <numerusform>%n skipped</numerusform>
+            <numerusform>%n skipped</numerusform>
+        </translation>
     </message>
 </context>
 <context>

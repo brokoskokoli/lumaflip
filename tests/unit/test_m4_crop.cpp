@@ -52,8 +52,8 @@ QByteArray exifWith(int orientation, QSize pixels, bool little = false) {
     QVector<qint64> pos0;
     const qint64 ifd0 =
         t.writeIfd({t.shortEntry(0x0112, {orientation}), t.longEntry(0x8769, 0)}, &pos0, 0); // patched below
-    const qint64 exif = t.writeIfd({t.longEntry(0xA002, quint32(pixels.width())),
-                                    t.longEntry(0xA003, quint32(pixels.height()))});
+    const qint64 exif = t.writeIfd(
+        {t.longEntry(0xA002, quint32(pixels.width())), t.longEntry(0xA003, quint32(pixels.height()))});
     t.patch32(pos0[1], quint32(exif));
     const qint64 ifd1 = t.writeIfd({t.longEntry(0x0201, 0), t.longEntry(0x0202, 0)});
     t.patch32(ifd0 + 2 + 2 * 12, quint32(ifd1)); // IFD0's next-IFD field
@@ -125,11 +125,13 @@ QImage oriented(const QImage& img, int o) {
 
 TEST(Crop, F_EDIT_03_McuSnappingKeepsRightBottomEdges) {
     const QSize image(100, 80);
-    EXPECT_EQ(crop::snapToMcu(QRect(17, 9, 40, 30), QSize(16, 16), image), QRect(QPoint(16, 0), QPoint(56, 38)));
+    EXPECT_EQ(crop::snapToMcu(QRect(17, 9, 40, 30), QSize(16, 16), image),
+              QRect(QPoint(16, 0), QPoint(56, 38)));
     EXPECT_EQ(crop::snapToMcu(QRect(16, 8, 40, 30), QSize(8, 8), image), QRect(16, 8, 40, 30)); // on the grid
     EXPECT_EQ(crop::snapToMcu(QRect(7, 7, 10, 10), QSize(8, 16), image), QRect(QPoint(0, 0), QPoint(16, 16)));
     // Clipped to the image; an invalid block size leaves the rectangle as it is.
-    EXPECT_EQ(crop::snapToMcu(QRect(90, 70, 40, 40), QSize(16, 16), image), QRect(QPoint(80, 64), QPoint(99, 79)));
+    EXPECT_EQ(crop::snapToMcu(QRect(90, 70, 40, 40), QSize(16, 16), image),
+              QRect(QPoint(80, 64), QPoint(99, 79)));
     EXPECT_EQ(crop::snapToMcu(QRect(3, 5, 10, 10), QSize(), image), QRect(3, 5, 10, 10));
 }
 
@@ -152,7 +154,8 @@ TEST(Crop, F_EDIT_03_AspectPresetsAndHandles) {
     EXPECT_DOUBLE_EQ(crop::aspectRatio(Aspect::R3x2, QSizeF(400, 300), true), 2.0 / 3.0); // portrait
     EXPECT_DOUBLE_EQ(crop::aspectRatio(Aspect::R16x9, QSizeF(), false), 16.0 / 9.0);
     EXPECT_DOUBLE_EQ(crop::aspectRatio(Aspect::Square, QSizeF(1, 2), true), 1.0);
-    for (Aspect a : {Aspect::Free, Aspect::Original, Aspect::Square, Aspect::R4x3, Aspect::R3x2, Aspect::R16x9})
+    for (Aspect a :
+         {Aspect::Free, Aspect::Original, Aspect::Square, Aspect::R4x3, Aspect::R3x2, Aspect::R16x9})
         EXPECT_EQ(crop::aspectFromId(crop::aspectId(a)), a);
 
     const QRectF bounds(0, 0, 400, 300);
@@ -173,7 +176,8 @@ TEST(Crop, F_EDIT_03_AspectPresetsAndHandles) {
     EXPECT_NEAR(e.width() / e.height(), 1.5, 1e-9);
     EXPECT_EQ(e.right(), start.right());
     // A new rectangle from the anchor, never smaller than the minimum.
-    const QRectF n = crop::dragRect({}, crop::Handle::New, QPointF(-30, -2), bounds, 0.0, 8.0, QPointF(200, 150));
+    const QRectF n =
+        crop::dragRect({}, crop::Handle::New, QPointF(-30, -2), bounds, 0.0, 8.0, QPointF(200, 150));
     EXPECT_EQ(n, QRectF(170, 142, 30, 8));
     const auto th = crop::thirds(QRectF(0, 0, 300, 90));
     EXPECT_DOUBLE_EQ(th[0], 100.0);
@@ -226,11 +230,12 @@ TEST(Crop, F_EDIT_03_MetadataIccAndXmpPreserved) {
     const QImage img = noisyPattern(QSize(160, 120));
     const QByteArray icc = QColorSpace(QColorSpace::DisplayP3).iccProfile();
     ASSERT_FALSE(icc.isEmpty());
-    const QByteArray xmp = "<x:xmpmeta xmlns:x=\"adobe:ns:meta/\"><rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/"
-                           "22-rdf-syntax-ns#\"><rdf:Description xmp:Rating=\"4\" xmlns:xmp=\"http://ns.adobe.com/"
-                           "xap/1.0/\"/></rdf:RDF></x:xmpmeta>";
-    const QByteArray original = withSegments(
-        encodeJpeg(img), exifApp1(exifWith(6, img.size(), true)) + iccApp2(icc) + xmpApp1(xmp));
+    const QByteArray xmp =
+        "<x:xmpmeta xmlns:x=\"adobe:ns:meta/\"><rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/"
+        "22-rdf-syntax-ns#\"><rdf:Description xmp:Rating=\"4\" xmlns:xmp=\"http://ns.adobe.com/"
+        "xap/1.0/\"/></rdf:RDF></x:xmpmeta>";
+    const QByteArray original =
+        withSegments(encodeJpeg(img), exifApp1(exifWith(6, img.size(), true)) + iccApp2(icc) + xmpApp1(xmp));
     ASSERT_TRUE(writeBytes(path, original));
     ASSERT_NE(nextIfdOfIfd0(original), 0u);
 
@@ -241,10 +246,10 @@ TEST(Crop, F_EDIT_03_MetadataIccAndXmpPreserved) {
     ASSERT_EQ(plan.status, CropPlan::Ready) << plan.message.toStdString();
     ASSERT_EQ(executeCropSave(r, plan, plan.method), QString());
     const QByteArray after = readBytes(path);
-    EXPECT_EQ(jpeg::exifOrientation(after), 6);                            // orientation unchanged
-    EXPECT_EQ(jpeg::exifPixelDimensions(after), plan.storedRect.size());   // dimensions updated
-    EXPECT_EQ(nextIfdOfIfd0(after), 0u);                                   // old thumbnail unlinked
-    EXPECT_EQ(segmentPayload(after, 0xE2, "ICC_PROFILE").mid(14), icc);    // ICC byte-identical
+    EXPECT_EQ(jpeg::exifOrientation(after), 6);                          // orientation unchanged
+    EXPECT_EQ(jpeg::exifPixelDimensions(after), plan.storedRect.size()); // dimensions updated
+    EXPECT_EQ(nextIfdOfIfd0(after), 0u);                                 // old thumbnail unlinked
+    EXPECT_EQ(segmentPayload(after, 0xE2, "ICC_PROFILE").mid(14), icc);  // ICC byte-identical
     EXPECT_TRUE(segmentPayload(after, 0xE1, "http://ns.adobe.com/xap/1.0/").contains("xmp:Rating=\"4\""));
     // The decoder sees the new size with the orientation applied.
     QString error;
@@ -397,8 +402,9 @@ TEST(Crop, F_EDIT_03_PngReencodedExactlyWithProfile) {
     QImage img(57, 43, QImage::Format_RGBA64);
     for (int y = 0; y < img.height(); ++y)
         for (int x = 0; x < img.width(); ++x)
-            img.setPixelColor(x, y, QColor::fromRgba64(quint16(x * 1100 + 7), quint16(y * 1500 + 3),
-                                                        quint16((x * y * 37) & 0xFFFF), quint16(40000 + x * 300)));
+            img.setPixelColor(x, y,
+                              QColor::fromRgba64(quint16(x * 1100 + 7), quint16(y * 1500 + 3),
+                                                 quint16((x * y * 37) & 0xFFFF), quint16(40000 + x * 300)));
     img.setColorSpace(QColorSpace(QColorSpace::DisplayP3));
     ASSERT_TRUE(img.save(path, "PNG"));
     CropRequest r;
@@ -413,7 +419,8 @@ TEST(Crop, F_EDIT_03_PngReencodedExactlyWithProfile) {
     QImageReader back(path);
     const QImage out = back.read();
     ASSERT_EQ(out.size(), QSize(30, 20));
-    EXPECT_EQ(out.convertToFormat(QImage::Format_RGBA64), img.copy(r.rect).convertToFormat(QImage::Format_RGBA64));
+    EXPECT_EQ(out.convertToFormat(QImage::Format_RGBA64),
+              img.copy(r.rect).convertToFormat(QImage::Format_RGBA64));
     EXPECT_EQ(out.colorSpace().primaries(), QColorSpace::Primaries::DciP3D65);
 }
 
