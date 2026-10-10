@@ -320,7 +320,7 @@ private slots:
         app->closeAllWindows();
         QCOMPARE(app->windows().size(), 0);
 
-        // Without arguments an empty start window appears (drop area + "Öffnen…").
+        // Without arguments an empty start window appears (drop area + "Öffnen …").
         app->start({QStringLiteral("Lumaflip")});
         QTRY_COMPARE_WITH_TIMEOUT(app->windows().size(), 1, 2000);
         ViewerWindow* w = app->windows().first();
@@ -764,7 +764,7 @@ private slots:
         QVERIFY(allow->isVisible());
         QVERIFY(text->text().contains(
             QStringLiteral("Festplattenvollzugriff ist dafür nicht nötig"))); // F-PRIV-02
-        QCOMPARE(allow->text(), QStringLiteral("Zugriff erlauben…"));
+        QCOMPARE(allow->text(), QStringLiteral("Zugriff erlauben …"));
         allow->click();
         QCOMPARE(openedUrls.size(), 1);
         QCOMPARE(openedUrls.first().scheme(), QStringLiteral("x-apple.systempreferences"));

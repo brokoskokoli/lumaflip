@@ -8,7 +8,9 @@
 // padding, formatting) stays byte for byte. A packet that is not well-formed is refused.
 //
 // Simple properties are handled in both RDF forms: as an attribute of rdf:Description
-// (`xmp:Rating="3"`, what Adobe writes) and as a child element (`<xmp:Rating>3</xmp:Rating>`).
+// (`xmp:Rating="3"`, what Adobe writes) and as a child element (`<xmp:Rating>3</xmp:Rating>`,
+// also with the namespace declared on the element itself); rewriting a child element only
+// replaces its content, the start tag stays as it is.
 // New properties are added as attributes of the first rdf:Description (with an xmlns
 // declaration if the namespace is not in scope there).
 
@@ -59,8 +61,14 @@ std::optional<Rating> readRating(const QString& xml);
 std::optional<QString> writeRating(const QString& xml, const Rating& rating);
 // A complete new sidecar file with only the rating.
 QString newSidecar(const Rating& rating);
+// `xml` inside an "<?xpacket …?>" wrapper (unchanged if it has one), as embedded XMP wants.
+QString wrapPacket(const QString& xml);
 
-// Sidecar file contents as text (UTF-8, a UTF-8 BOM is dropped) and back.
+// Sidecar file contents as text (UTF-8, a UTF-8 BOM is dropped; UTF-16 with a BOM) and back
+// in the same encoding.
+enum class Encoding { Utf8, Utf8Bom, Utf16LE, Utf16BE };
+QString decode(const QByteArray& bytes, Encoding* encoding);
+QByteArray encode(const QString& text, Encoding encoding);
 QString decode(const QByteArray& bytes, bool* hadBom = nullptr);
 QByteArray encode(const QString& text, bool withBom = false);
 

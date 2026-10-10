@@ -36,10 +36,14 @@ InfoGpsBox::InfoGpsBox(std::unique_ptr<MapSnapshotProvider> provider, QWidget* p
     m_showMap = new QPushButton(this);
     m_showMap->setObjectName(QStringLiteral("lfGpsShowMap"));
     m_showMap->setFocusPolicy(Qt::NoFocus);
+    m_hideMap = new QPushButton(this);
+    m_hideMap->setObjectName(QStringLiteral("lfGpsHideMap"));
+    m_hideMap->setFocusPolicy(Qt::NoFocus);
     m_openMaps = new QPushButton(this);
     m_openMaps->setObjectName(QStringLiteral("lfGpsOpenMaps"));
     m_openMaps->setFocusPolicy(Qt::NoFocus);
     buttons->addWidget(m_showMap);
+    buttons->addWidget(m_hideMap);
     buttons->addWidget(m_openMaps);
     buttons->addStretch();
     layout->addLayout(buttons);
@@ -61,6 +65,7 @@ InfoGpsBox::InfoGpsBox(std::unique_ptr<MapSnapshotProvider> provider, QWidget* p
         m_controller->setSize(QSize(kMapWidth, kMapHeight), dpr > 0 ? dpr : 2.0);
         m_controller->showMap(); // the click is the consent (SPEC 10.3)
     });
+    connect(m_hideMap, &QPushButton::clicked, this, [this] { m_controller->hideMap(); });
     connect(m_openMaps, &QPushButton::clicked, this, [this] {
         if (const auto p = m_controller->location()) {
             const QUrl url = geo::mapsUrl(*p, m_label);
@@ -95,6 +100,10 @@ void InfoGpsBox::setLocation(const std::optional<GeoPoint>& p, const QString& la
     updateState();
 }
 
+void InfoGpsBox::setPanelVisible(bool visible) {
+    m_controller->setActive(visible);
+}
+
 void InfoGpsBox::updateState() {
     const auto p = m_controller->location();
     setVisible(p.has_value());
@@ -105,6 +114,7 @@ void InfoGpsBox::updateState() {
     using S = MapPreviewController::State;
     const S s = m_controller->state();
     m_showMap->setVisible(s == S::Idle || s == S::Failed);
+    m_hideMap->setVisible(m_controller->hasConsent() && (s == S::Loading || s == S::Ready || s == S::Failed));
     m_status->setVisible(s == S::Loading || s == S::Failed);
     if (s == S::Loading)
         m_status->setText(tr("Karte wird geladen …"));
@@ -118,6 +128,9 @@ void InfoGpsBox::updateState() {
 void InfoGpsBox::retranslateUi() {
     m_showMap->setText(tr("Karte anzeigen"));
     m_showMap->setToolTip(tr("Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)"));
+    m_hideMap->setText(tr("Karte ausblenden"));
+    m_hideMap->setToolTip(
+        tr("Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)"));
     m_openMaps->setText(tr("In Karten öffnen"));
     updateState();
 }

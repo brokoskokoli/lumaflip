@@ -24,7 +24,7 @@ struct ThirdPartyComponent {
 };
 
 // "Über Lumaflip": name, version, short description, copyright, GPL notice and the
-// button "Lizenzen von Drittanbietern…" (SPEC 11).
+// button "Lizenzen von Drittanbietern …" (SPEC 11).
 class AboutDialog : public QDialog {
     Q_OBJECT
 public:

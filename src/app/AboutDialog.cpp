@@ -154,7 +154,7 @@ AboutDialog::AboutDialog(QWidget* parent, const QString& licensesDir)
     layout->addWidget(text);
 
     auto* buttons = new QDialogButtonBox(QDialogButtonBox::Close, this);
-    auto* licenses = buttons->addButton(tr("Lizenzen von Drittanbietern…"), QDialogButtonBox::ActionRole);
+    auto* licenses = buttons->addButton(tr("Lizenzen von Drittanbietern …"), QDialogButtonBox::ActionRole);
     licenses->setObjectName(QStringLiteral("lfLicensesButton"));
     connect(licenses, &QPushButton::clicked, this, &AboutDialog::showLicenses);
     connect(buttons, &QDialogButtonBox::rejected, this, &QDialog::close);

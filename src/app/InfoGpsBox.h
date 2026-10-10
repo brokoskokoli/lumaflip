@@ -2,8 +2,9 @@
 #pragma once
 
 // F-INFO-04: the GPS part of the info panel - position in degrees/minutes/seconds,
-// "Karte anzeigen" (mini map, loaded only after this click, SPEC 10.3) and
-// "In Karten öffnen" (Apple Maps). Hidden for images without a position.
+// "Karte anzeigen" (mini map, loaded only after this click and only while the panel is
+// visible, SPEC 10.3), "Karte ausblenden" (takes the consent back) and "In Karten öffnen"
+// (Apple Maps). Hidden for images without a position.
 
 #include "core/GeoLocation.h"
 
@@ -26,9 +27,12 @@ public:
 
     // The image's position (nullopt: box hidden); `label` names the pin in Maps.
     void setLocation(const std::optional<GeoPoint>& p, const QString& label = QString());
+    // The info panel is shown/hidden: a hidden panel never requests a map (default: shown).
+    void setPanelVisible(bool visible);
 
     MapPreviewController* controller() const { return m_controller; }
     QPushButton* showMapButton() const { return m_showMap; }
+    QPushButton* hideMapButton() const { return m_hideMap; }
     QPushButton* openMapsButton() const { return m_openMaps; }
     QLabel* mapLabel() const { return m_map; }
     QLabel* coordinatesLabel() const { return m_coords; }
@@ -48,6 +52,7 @@ private:
     QLabel* m_status = nullptr;
     QLabel* m_map = nullptr;
     QPushButton* m_showMap = nullptr;
+    QPushButton* m_hideMap = nullptr;
     QPushButton* m_openMaps = nullptr;
     QString m_label;
     std::function<void(const QUrl&)> m_opener;

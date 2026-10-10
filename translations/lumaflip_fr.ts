@@ -71,7 +71,7 @@
         <translation>&lt;p&gt;Visionneuse d’images rapide pour macOS&#xa0;: un double-clic ouvre tout le dossier, dans le même ordre que dans le Finder.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli et contributeurs&lt;/p&gt;&lt;p&gt;Lumaflip est un logiciel libre&#xa0;: vous pouvez le redistribuer et le modifier selon les termes de la &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; version 3 ou (à votre choix) de toute version ultérieure. Lumaflip est fourni sans aucune garantie.&lt;/p&gt;&lt;p&gt;Code source&#xa0;: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Utilise Qt %3 (LGPLv3).&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Lizenzen von Drittanbietern…</source>
+        <source>Lizenzen von Drittanbietern …</source>
         <translation>Licences de tiers…</translation>
     </message>
 </context>
@@ -278,11 +278,11 @@
     <name>lf::CullingController</name>
     <message>
         <source>Bewertung wird gelesen …</source>
-        <translation>Lecture de la note …</translation>
+        <translation>Lecture de la note…</translation>
     </message>
     <message>
         <source>AUSSORTIEREN</source>
-        <translation>TRI</translation>
+        <translation>SÉLECTION</translation>
     </message>
     <message>
         <source>0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg</source>
@@ -294,11 +294,11 @@
     </message>
     <message>
         <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U markieren</source>
-        <translation>Mode tri : les chiffres donnent des étoiles, P/X/U marquent</translation>
+        <translation>Mode sélection : les chiffres donnent des étoiles, P/X/U marquent</translation>
     </message>
     <message>
         <source>Aussortiermodus beendet</source>
-        <translation>Mode tri terminé</translation>
+        <translation>Mode sélection terminé</translation>
     </message>
     <message>
         <source>%1: %2</source>
@@ -327,8 +327,8 @@
         </translation>
     </message>
     <message>
-        <source>XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
-        <translation>Les fichiers annexes XMP suivent. ⌘Z annule toute l’étape.</translation>
+        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <translation>Seules les images affichées (filtres actuels). Les fichiers annexes XMP et le second fichier des paires RAW+JPEG suivent. ⌘Z annule toute l’étape.</translation>
     </message>
     <message>
         <source>In den Papierkorb</source>
@@ -1058,6 +1058,14 @@
         <translation>Charge un extrait de carte depuis Apple Plans (connexion Internet)</translation>
     </message>
     <message>
+        <source>Karte ausblenden</source>
+        <translation>Masquer la carte</translation>
+    </message>
+    <message>
+        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)</source>
+        <translation>Ne plus charger d’extraits de carte (jusqu’au prochain clic sur «&#xa0;Afficher la carte&#xa0;»)</translation>
+    </message>
+    <message>
         <source>In Karten öffnen</source>
         <translation>Ouvrir dans Plans</translation>
     </message>
@@ -1486,7 +1494,7 @@
     </message>
     <message>
         <source>Aussortiermodus</source>
-        <translation>Mode tri</translation>
+        <translation>Mode sélection</translation>
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
@@ -1950,7 +1958,7 @@
     </message>
     <message>
         <source>Nur im Aussortiermodus</source>
-        <translation>Uniquement en mode tri</translation>
+        <translation>Uniquement en mode sélection</translation>
     </message>
     <message>
         <source>Ziffern wählen sonst den Zoommodus (1/2/3).</source>
@@ -2608,11 +2616,11 @@
     </message>
     <message>
         <source>Aussortieren</source>
-        <translation>Tri</translation>
+        <translation>Sélection</translation>
     </message>
     <message>
         <source>Aussortiermodus</source>
-        <translation>Mode tri</translation>
+        <translation>Mode sélection</translation>
     </message>
     <message>
         <source>Bewerten</source>
@@ -2628,11 +2636,11 @@
     </message>
     <message>
         <source>Alle verworfenen in den Papierkorb …</source>
-        <translation>Toutes les rejetées à la corbeille …</translation>
+        <translation>Toutes les rejetées à la corbeille…</translation>
     </message>
     <message>
         <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
-        <translation>Toutes les rejetées vers « _Rejected » …</translation>
+        <translation>Toutes les rejetées vers « _Rejected »…</translation>
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
@@ -2652,7 +2660,7 @@
     </message>
     <message>
         <source>Ziele der Schnellablage festlegen …</source>
-        <translation>Définir les cibles du classement …</translation>
+        <translation>Définir les cibles du classement…</translation>
     </message>
     <message>
         <source>Raster</source>
@@ -3531,7 +3539,7 @@
     </message>
     <message>
         <source>Feld anklicken und neue Taste drücken. Bis zu drei Kürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
-        <translation>Cliquez sur le champ et appuyez sur la nouvelle touche. Jusqu’à trois raccourcis par action. Les chiffres et P/X/U pour la notation ne s’appliquent qu’en mode tri.</translation>
+        <translation>Cliquez sur le champ et appuyez sur la nouvelle touche. Jusqu’à trois raccourcis par action. Les chiffres et P/X/U pour la notation ne s’appliquent qu’en mode sélection.</translation>
     </message>
     <message>
         <source>Aktion</source>
@@ -3678,7 +3686,7 @@
     </message>
     <message>
         <source>Wählen …</source>
-        <translation>Choisir …</translation>
+        <translation>Choisir…</translation>
     </message>
     <message>
         <source>Entfernen</source>
@@ -3730,7 +3738,7 @@
     </message>
     <message>
         <source>Aussortieren</source>
-        <translation>Tri</translation>
+        <translation>Sélection</translation>
     </message>
     <message>
         <source>Nach Bewertung automatisch weiter</source>
@@ -3738,15 +3746,15 @@
     </message>
     <message>
         <source>Zoom im Aussortiermodus fixieren</source>
-        <translation>Figer le zoom en mode tri</translation>
+        <translation>Figer le zoom en mode sélection</translation>
     </message>
     <message>
         <source>Tastenhilfe im Aussortiermodus zeigen</source>
-        <translation>Afficher l’aide des touches en mode tri</translation>
+        <translation>Afficher l’aide des touches en mode sélection</translation>
     </message>
     <message>
         <source>Aussortiermodus: ⌘K oder K. Ziffern vergeben dort Sterne statt Zoomstufen; „Bewertungstasten immer aktiv“ gibt es unter Maus &amp; Tastatur.</source>
-        <translation>Mode tri : ⌘K ou K. Les chiffres y donnent des étoiles au lieu des niveaux de zoom ; « Touches de notation toujours actives » se trouve sous Souris et clavier.</translation>
+        <translation>Mode sélection : ⌘K ou K. Les chiffres y donnent des étoiles au lieu des niveaux de zoom ; « Touches de notation toujours actives » se trouve sous Souris et clavier.</translation>
     </message>
     <message>
         <source>Schnellablage</source>
@@ -4011,11 +4019,11 @@
     <name>lf::QuickMoveController</name>
     <message>
         <source>Verschieben nach … (1–9, M = wie zuletzt)</source>
-        <translation>Déplacer vers … (1–9, M = comme la dernière fois)</translation>
+        <translation>Déplacer vers… (1–9, M = comme la dernière fois)</translation>
     </message>
     <message>
         <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
-        <translation>Copier vers … (1–9, C = comme la dernière fois)</translation>
+        <translation>Copier vers… (1–9, C = comme la dernière fois)</translation>
     </message>
     <message>
         <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
@@ -4194,8 +4202,16 @@
         <translation>Note</translation>
     </message>
     <message>
+        <source>Bewertungen</source>
+        <translation>Notes</translation>
+    </message>
+    <message>
         <source>Die Datei kann nicht gelesen werden.</source>
         <translation>Impossible de lire le fichier.</translation>
+    </message>
+    <message>
+        <source>Das XMP im Bild ist beschädigt und wird nicht verändert.</source>
+        <translation>Le XMP de l’image est endommagé et n’est pas modifié.</translation>
     </message>
     <message>
         <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
@@ -4484,7 +4500,7 @@
         <translation>Le tri s’applique désormais à tous les dossiers</translation>
     </message>
     <message>
-        <source>Zugriff erlauben…</source>
+        <source>Zugriff erlauben …</source>
         <translation>Autoriser l’accès…</translation>
     </message>
     <message>
@@ -4492,7 +4508,7 @@
         <translation>Masquer</translation>
     </message>
     <message>
-        <source>Öffnen…</source>
+        <source>Öffnen …</source>
         <translation>Ouvrir…</translation>
     </message>
     <message>

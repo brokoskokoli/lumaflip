@@ -252,21 +252,19 @@ void OverviewController::rate(const QStringList& paths, Action action) {
         return;
     QPointer<OverviewController> self(this);
     // F-FMT-06: a pair's second file gets the same rating (own sidecar, written after the
-    // shown file's).
+    // shown file's). The whole selection is one undo step.
     QStringList all;
     for (const QString& path : paths) {
         all << path;
         if (const QString other = m_window.collection()->pairedPath(path); !other.isEmpty())
             all << other;
     }
-    for (const QString& path : std::as_const(all)) {
-        RatingStore::instance().changeRating(
-            m_app.fileOps(), path, [action](const Rating& stored) { return rating::apply(stored, action); },
-            [self](bool ok, const QString& error, const QString&, const Rating&) {
-                if (self && !ok)
-                    self->m_window.showMessage(error, 5000);
-            });
-    }
+    RatingStore::instance().changeRatings(
+        m_app.fileOps(), all, [action](const Rating& stored) { return rating::apply(stored, action); },
+        [self](bool ok, const QString& error, const QString&, const Rating&) {
+            if (self && !ok)
+                self->m_window.showMessage(error, 5000);
+        });
     if (paths.size() == 1)
         m_window.showMessage(tr("%1: %2").arg(QFileInfo(paths.first()).fileName(), actionLabel(action)),
                              1500);

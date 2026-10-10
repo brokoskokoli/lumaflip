@@ -71,7 +71,7 @@
         <translation>&lt;p&gt;Rychlý prohlížeč obrázků pro macOS: dvojí kliknutí otevře celou složku – ve stejném pořadí jako ve Finderu.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli a přispěvatelé&lt;/p&gt;&lt;p&gt;Lumaflip je svobodný software: můžete jej šířit a upravovat podle podmínek licence &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; verze 3 nebo (podle své volby) jakékoli pozdější verze. Lumaflip je poskytován bez jakékoli záruky.&lt;/p&gt;&lt;p&gt;Zdrojový kód: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Používá Qt %3 (LGPLv3).&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Lizenzen von Drittanbietern…</source>
+        <source>Lizenzen von Drittanbietern …</source>
         <translation>Licence třetích stran…</translation>
     </message>
 </context>
@@ -280,7 +280,7 @@
     <name>lf::CullingController</name>
     <message>
         <source>Bewertung wird gelesen …</source>
-        <translation>Načítání hodnocení …</translation>
+        <translation>Načítání hodnocení…</translation>
     </message>
     <message>
         <source>AUSSORTIEREN</source>
@@ -331,8 +331,8 @@
         </translation>
     </message>
     <message>
-        <source>XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
-        <translation>Doprovodné soubory XMP se přesunou s nimi. ⌘Z odvolá celý krok.</translation>
+        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <translation>Jen zobrazené obrázky (aktuální filtry). Doprovodné soubory XMP a druhý soubor dvojic RAW+JPEG se přesunou s nimi. ⌘Z odvolá celý krok.</translation>
     </message>
     <message>
         <source>In den Papierkorb</source>
@@ -1064,6 +1064,14 @@
     <message>
         <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
         <translation>Načte výřez mapy z Apple Map (připojení k internetu)</translation>
+    </message>
+    <message>
+        <source>Karte ausblenden</source>
+        <translation>Skrýt mapu</translation>
+    </message>
+    <message>
+        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)</source>
+        <translation>Nenačítat další výřezy mapy (do dalšího kliknutí na „Zobrazit mapu“)</translation>
     </message>
     <message>
         <source>In Karten öffnen</source>
@@ -2636,11 +2644,11 @@
     </message>
     <message>
         <source>Alle verworfenen in den Papierkorb …</source>
-        <translation>Všechny zamítnuté do koše …</translation>
+        <translation>Všechny zamítnuté do koše…</translation>
     </message>
     <message>
         <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
-        <translation>Všechny zamítnuté do „_Rejected“ …</translation>
+        <translation>Všechny zamítnuté do „_Rejected“…</translation>
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
@@ -2660,7 +2668,7 @@
     </message>
     <message>
         <source>Ziele der Schnellablage festlegen …</source>
-        <translation>Nastavit cíle odkládání …</translation>
+        <translation>Nastavit cíle odkládání…</translation>
     </message>
     <message>
         <source>Raster</source>
@@ -3694,7 +3702,7 @@
     </message>
     <message>
         <source>Wählen …</source>
-        <translation>Vybrat …</translation>
+        <translation>Vybrat…</translation>
     </message>
     <message>
         <source>Entfernen</source>
@@ -4027,11 +4035,11 @@
     <name>lf::QuickMoveController</name>
     <message>
         <source>Verschieben nach … (1–9, M = wie zuletzt)</source>
-        <translation>Přesunout do … (1–9, M = jako minule)</translation>
+        <translation>Přesunout do… (1–9, M = jako minule)</translation>
     </message>
     <message>
         <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
-        <translation>Kopírovat do … (1–9, C = jako minule)</translation>
+        <translation>Kopírovat do… (1–9, C = jako minule)</translation>
     </message>
     <message>
         <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
@@ -4212,8 +4220,16 @@
         <translation>Hodnocení</translation>
     </message>
     <message>
+        <source>Bewertungen</source>
+        <translation>Hodnocení</translation>
+    </message>
+    <message>
         <source>Die Datei kann nicht gelesen werden.</source>
         <translation>Soubor nelze přečíst.</translation>
+    </message>
+    <message>
+        <source>Das XMP im Bild ist beschädigt und wird nicht verändert.</source>
+        <translation>XMP v obrázku je poškozené a nebude změněno.</translation>
     </message>
     <message>
         <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
@@ -4502,7 +4518,7 @@
         <translation>Řazení nyní platí pro všechny složky</translation>
     </message>
     <message>
-        <source>Zugriff erlauben…</source>
+        <source>Zugriff erlauben …</source>
         <translation>Povolit přístup…</translation>
     </message>
     <message>
@@ -4510,7 +4526,7 @@
         <translation>Skrýt</translation>
     </message>
     <message>
-        <source>Öffnen…</source>
+        <source>Öffnen …</source>
         <translation>Otevřít…</translation>
     </message>
     <message>

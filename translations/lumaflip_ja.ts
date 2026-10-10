@@ -71,7 +71,7 @@
         <translation>&lt;p&gt;macOS用の高速な画像ビューア: ダブルクリックするとフォルダ全体が開きます – Finderと同じ順序で。&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli および貢献者&lt;/p&gt;&lt;p&gt;Lumaflipはフリーソフトウェアです。&lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; バージョン3、または（任意で）それ以降のバージョンの条件に従って、再配布や改変ができます。Lumaflipはいかなる保証もなく提供されます。&lt;/p&gt;&lt;p&gt;ソースコード: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Qt %3（LGPLv3）を使用しています。&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Lizenzen von Drittanbietern…</source>
+        <source>Lizenzen von Drittanbietern …</source>
         <translation>サードパーティのライセンス…</translation>
     </message>
 </context>
@@ -276,7 +276,7 @@
     <name>lf::CullingController</name>
     <message>
         <source>Bewertung wird gelesen …</source>
-        <translation>評価を読み込み中 …</translation>
+        <translation>評価を読み込み中…</translation>
     </message>
     <message>
         <source>AUSSORTIEREN</source>
@@ -323,8 +323,8 @@
         </translation>
     </message>
     <message>
-        <source>XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
-        <translation>XMP サイドカーファイルも一緒に移動します。⌘Z で手順全体を取り消せます。</translation>
+        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <translation>表示中の画像のみ（現在のフィルタ）。XMP サイドカーファイルと RAW+JPEG ペアのもう一方のファイルも一緒に移動します。⌘Z で手順全体を取り消せます。</translation>
     </message>
     <message>
         <source>In den Papierkorb</source>
@@ -858,7 +858,7 @@
     <message>
         <source>%1° %2′ %3″ %4</source>
         <extracomment>GPS coordinate in degrees, minutes, seconds, e.g. &quot;48° 8′ 13,6″ N&quot;</extracomment>
-        <translation>%1° %2′ %3″ %4</translation>
+        <translation>%4 %1° %2′ %3″</translation>
     </message>
     <message>
         <source>%1, %2</source>
@@ -1048,6 +1048,14 @@
     <message>
         <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
         <translation>Appleマップから地図の一部を読み込みます（インターネット接続）</translation>
+    </message>
+    <message>
+        <source>Karte ausblenden</source>
+        <translation>マップを隠す</translation>
+    </message>
+    <message>
+        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)</source>
+        <translation>マップの読み込みを停止します（次に「マップを表示」をクリックするまで）</translation>
     </message>
     <message>
         <source>In Karten öffnen</source>
@@ -2620,11 +2628,11 @@
     </message>
     <message>
         <source>Alle verworfenen in den Papierkorb …</source>
-        <translation>不採用をすべてゴミ箱へ …</translation>
+        <translation>不採用をすべてゴミ箱へ…</translation>
     </message>
     <message>
         <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
-        <translation>不採用をすべて「_Rejected」へ …</translation>
+        <translation>不採用をすべて「_Rejected」へ…</translation>
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
@@ -2644,7 +2652,7 @@
     </message>
     <message>
         <source>Ziele der Schnellablage festlegen …</source>
-        <translation>クイック移動の移動先を設定 …</translation>
+        <translation>クイック移動の移動先を設定…</translation>
     </message>
     <message>
         <source>Raster</source>
@@ -3662,7 +3670,7 @@
     </message>
     <message>
         <source>Wählen …</source>
-        <translation>選択 …</translation>
+        <translation>選択…</translation>
     </message>
     <message>
         <source>Entfernen</source>
@@ -3995,11 +4003,11 @@
     <name>lf::QuickMoveController</name>
     <message>
         <source>Verschieben nach … (1–9, M = wie zuletzt)</source>
-        <translation>移動先 …（1–9、M = 前回と同じ）</translation>
+        <translation>移動先…（1–9、M = 前回と同じ）</translation>
     </message>
     <message>
         <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
-        <translation>コピー先 …（1–9、C = 前回と同じ）</translation>
+        <translation>コピー先…（1–9、C = 前回と同じ）</translation>
     </message>
     <message>
         <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
@@ -4176,8 +4184,16 @@
         <translation>評価</translation>
     </message>
     <message>
+        <source>Bewertungen</source>
+        <translation>評価</translation>
+    </message>
+    <message>
         <source>Die Datei kann nicht gelesen werden.</source>
         <translation>ファイルを読み込めません。</translation>
+    </message>
+    <message>
+        <source>Das XMP im Bild ist beschädigt und wird nicht verändert.</source>
+        <translation>画像内の XMP が破損しているため、変更しません。</translation>
     </message>
     <message>
         <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
@@ -4466,7 +4482,7 @@
         <translation>並べ替えがすべてのフォルダに適用されるようになりました</translation>
     </message>
     <message>
-        <source>Zugriff erlauben…</source>
+        <source>Zugriff erlauben …</source>
         <translation>アクセスを許可…</translation>
     </message>
     <message>
@@ -4474,7 +4490,7 @@
         <translation>隠す</translation>
     </message>
     <message>
-        <source>Öffnen…</source>
+        <source>Öffnen …</source>
         <translation>開く…</translation>
     </message>
     <message>

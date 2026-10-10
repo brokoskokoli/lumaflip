@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 cmake_minimum_required(VERSION 3.28)
 
-project(Lumaflip VERSION 1.0.0 LANGUAGES C CXX)
+project(Lumaflip VERSION 1.1.0 LANGUAGES C CXX)
 if(APPLE)
   enable_language(OBJC OBJCXX)
 endif()

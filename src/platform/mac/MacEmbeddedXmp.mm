@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Ratings embedded as XMP (F-CULL-02 b) with ImageIO: CGImageDestinationCopyImageSource
 // copies the compressed image data unchanged and merges the given metadata
-// (kCGImageDestinationMergeMetadata; properties set to kCFNull are removed). Reading
+// (kCGImageDestinationMergeMetadata; properties set to kCFNull are removed). PNG files get
+// their iTXt XMP chunk written directly (PngXmp.h). Reading
 // enumerates the XMP tags by namespace, so the Lumaflip namespace is found whatever
 // prefix the file uses.
 
+#include "core/PngXmp.h"
 #include "core/RatingStore.h"
 #include "core/Xmp.h"
 
@@ -74,6 +76,37 @@ QString stringOf(CFTypeRef value) {
     return {};
 }
 
+// PNG: ImageIO's metadata copy does not write PNG XMP so that it reads back; the iTXt chunk
+// "XML:com.adobe.xmp" is written directly instead (PngXmp.h: every other chunk byte for
+// byte, the pixels untouched).
+bool writePng(const QString& srcPath, const QString& dstPath, const Rating& rating, QString* error) {
+    QFile in(srcPath);
+    if (!in.open(QIODevice::ReadOnly) || in.size() > (qint64(1) << 31)) {
+        setError(error, Tr::tr("Die Datei kann nicht gelesen werden."));
+        return false;
+    }
+    const QByteArray data = in.readAll();
+    in.close();
+    const std::optional<QString> packet = pngxmp::read(data);
+    if (!packet) {
+        setError(error, Tr::tr("In dieses Format kann die Bewertung nicht sicher geschrieben werden."));
+        return false;
+    }
+    const std::optional<QString> written = xmp::writeRating(*packet, rating);
+    if (!written) {
+        setError(error, Tr::tr("Das XMP im Bild ist beschädigt und wird nicht verändert."));
+        return false;
+    }
+    const std::optional<QByteArray> out = pngxmp::withPacket(data, xmp::wrapPacket(*written));
+    QFile f(dstPath);
+    if (!out || !f.open(QIODevice::WriteOnly | QIODevice::NewOnly) || f.write(*out) != out->size() ||
+        !f.flush()) {
+        setError(error, Tr::tr("Die Bewertung ließ sich nicht ins Bild schreiben."));
+        return false;
+    }
+    return true;
+}
+
 bool writeImpl(const QString& srcPath, const QString& dstPath, const Rating& rating, QString* error) {
     @autoreleasepool {
         CGImageSourceRef src = openSource(srcPath);
@@ -83,6 +116,10 @@ bool writeImpl(const QString& srcPath, const QString& dstPath, const Rating& rat
         }
         const QStringList auxBefore = auxiliaryTypes(src);
         CFStringRef type = CGImageSourceGetType(src);
+        if (type && CFStringCompare(type, CFSTR("public.png"), 0) == kCFCompareEqualTo) {
+            CFRelease(src);
+            return writePng(srcPath, dstPath, rating, error);
+        }
         CGImageDestinationRef dst =
             type ? CGImageDestinationCreateWithURL((__bridge CFURLRef)fileURL(dstPath), type,
                                                    CGImageSourceGetCount(src), nullptr)

@@ -4,12 +4,13 @@
 #include "FileBatch.h"
 
 #include "Platform.h"
-#include "Rating.h"
+#include "Sidecars.h"
 
 #include <QCoreApplication>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QHash>
 #include <QSet>
 
 #include <filesystem>
@@ -23,6 +24,8 @@ namespace {
 struct Tr {
     Q_DECLARE_TR_FUNCTIONS(lf::FileBatch)
 };
+
+const QString kSkip = QStringLiteral("skip");
 
 bool present(const QString& p) {
     const QFileInfo fi(p);
@@ -40,15 +43,20 @@ QString fileName(const QString& p) {
     return QFileInfo(p).fileName();
 }
 
-// Target name of a sidecar when its image goes to `imageTarget`.
-QString sidecarTarget(const QString& sidecar, const QString& imageSource, const QString& imageTarget) {
-    const QFileInfo target(imageTarget);
-    const QString sideName = fileName(sidecar);
-    const QString srcName = fileName(imageSource);
-    if (sideName.startsWith(srcName + QLatin1Char('.'))) // "IMG.jpg.xmp"
-        return target.dir().filePath(target.fileName() + sideName.mid(srcName.size()));
-    // "IMG.xmp": base name of the new image, same extension as the sidecar.
-    return target.dir().filePath(target.completeBaseName() + QLatin1Char('.') + QFileInfo(sidecar).suffix());
+// "IMG_1" of "IMG_1.CR3" (everything before the last dot; the whole name without one).
+QString baseOf(const QString& name) {
+    const qsizetype dot = name.lastIndexOf(QLatin1Char('.'));
+    return dot <= 0 ? name : name.left(dot);
+}
+
+// ".CR3" of "IMG_1.CR3", empty without a suffix.
+QString dotSuffixOf(const QString& name) {
+    const qsizetype dot = name.lastIndexOf(QLatin1Char('.'));
+    return dot <= 0 ? QString() : name.mid(dot);
+}
+
+bool isSidecar(const QString& path) {
+    return path.endsWith(QLatin1String(".xmp"), Qt::CaseInsensitive);
 }
 
 QString copyFile(const QString& from, const QString& to) {
@@ -57,6 +65,81 @@ QString copyFile(const QString& from, const QString& to) {
     if (!QFile::copy(from, to))
         return Tr::tr("„%1“ konnte nicht kopiert werden.").arg(fileName(from));
     return {};
+}
+
+QString transferFile(TransferKind kind, const QString& from, const QString& to) {
+    return kind == TransferKind::Move ? fileops::moveNoReplace(from, to) : copyFile(from, to);
+}
+
+// Takes a moved/copied file back (undo, rollback).
+QString takeBack(TransferKind kind, const QString& from, const QString& to) {
+    if (kind == TransferKind::Move)
+        return fileops::moveNoReplace(to, from);
+    if (!QFile::remove(to))
+        return Tr::tr("Die Kopie „%1“ konnte nicht entfernt werden.").arg(fileName(to));
+    return {};
+}
+
+// Folding of names in one folder (NFC; case-insensitive volumes also case-folded).
+class Folding {
+public:
+    QString fold(const QString& folder, const QString& name) {
+        auto it = m_insensitive.constFind(folder);
+        if (it == m_insensitive.cend())
+            it = m_insensitive.insert(folder, sidecars::isCaseInsensitiveVolume(folder));
+        const QString n = name.normalized(QString::NormalizationForm_C);
+        return *it ? n.toCaseFolded() : n;
+    }
+
+private:
+    QHash<QString, bool> m_insensitive;
+};
+
+// Target names of a unit: the members' and their sidecars' (`newBase`: renamed, "IMG_1 2").
+struct UnitTargets {
+    QStringList files;    // file names, parallel to the members
+    QStringList sidecars; // file names, parallel to the sidecars
+};
+
+UnitTargets unitTargets(const QStringList& members, const QStringList& sidecarPaths, const QString& newBase,
+                        Folding& folding) {
+    UnitTargets t;
+    for (const QString& m : members) {
+        const QString name = fileName(m);
+        t.files << (newBase.isEmpty() ? name : newBase + dotSuffixOf(name));
+    }
+    for (const QString& s : sidecarPaths) {
+        const QString sideName = fileName(s);
+        const QString folder = QFileInfo(s).absolutePath();
+        QString target;
+        for (qsizetype i = 0; i < members.size() && target.isEmpty(); ++i) {
+            const QString memberName = fileName(members[i]);
+            // "IMG_1.JPG.xmp": the member's new name plus the rest.
+            if (sideName.size() > memberName.size() + 1 && sideName[memberName.size()] == u'.' &&
+                folding.fold(folder, sideName.left(memberName.size())) == folding.fold(folder, memberName))
+                target = t.files[i] + sideName.mid(memberName.size());
+        }
+        if (target.isEmpty()) // "IMG_1.xmp": the unit's (new) base name, the sidecar's suffix
+            target = newBase.isEmpty() ? sideName : newBase + dotSuffixOf(sideName);
+        t.sidecars << target;
+    }
+    return t;
+}
+
+// F-FILE-11 "Beide behalten" for a unit: the first "<base> n" free for every target name.
+QString keepBothBase(const QString& folder, const QStringList& members, const QStringList& sidecarPaths,
+                     Folding& folding) {
+    const QString base = baseOf(fileName(members.first()));
+    for (int n = 2; n < 100000; ++n) {
+        const QString candidate = QStringLiteral("%1 %2").arg(base).arg(n);
+        const UnitTargets t = unitTargets(members, sidecarPaths, candidate, folding);
+        bool free = true;
+        for (const QString& name : t.files + t.sidecars)
+            free = free && !present(QDir(folder).filePath(name));
+        if (free)
+            return candidate;
+    }
+    return base;
 }
 
 } // namespace
@@ -83,53 +166,67 @@ QString filebatch::keepBothName(const QString& folder, const QString& name,
     return name;
 }
 
-QStringList filebatch::conflicts(const QVector<TransferItem>& items, TransferKind kind) {
-    QStringList out;
-    if (kind == TransferKind::Trash)
-        return out;
-    for (const TransferItem& it : items) {
-        const QString target = QDir(it.targetFolder).filePath(fileName(it.source));
-        if (present(target) && !sameFile(it.source, target))
-            out << it.source;
+QVector<QVector<int>> filebatch::units(const QVector<TransferItem>& items, TransferKind kind) {
+    QVector<QVector<int>> out;
+    QHash<QString, int> byKey;
+    Folding folding;
+    for (int i = 0; i < items.size(); ++i) {
+        const QFileInfo fi(items[i].source);
+        const QString name = fi.fileName();
+        const QString base = baseOf(name);
+        if (base == name || base.isEmpty()) {
+            out.append({i});
+            continue;
+        }
+        const QString folder = fi.absolutePath();
+        const QString key =
+            folding.fold(folder, folder + QLatin1Char('/') + base) + QLatin1Char('\n') +
+            (kind == TransferKind::Trash ? QString() : QDir::cleanPath(items[i].targetFolder));
+        const auto it = byKey.constFind(key);
+        if (it != byKey.cend()) {
+            out[*it].append(i);
+            continue;
+        }
+        byKey.insert(key, int(out.size()));
+        out.append({i});
     }
     return out;
 }
 
-QStringList filebatch::ownSidecars(const QString& imagePath) {
+QStringList filebatch::conflicts(const QVector<TransferItem>& items, TransferKind kind) {
     QStringList out;
-    QSet<QString> seen;
-    auto add = [&](const QString& p) {
-        const QFileInfo fi(p);
-        if (!fi.isFile())
-            return;
-        const QString key = fi.canonicalFilePath();
-        if (seen.contains(key))
-            return;
-        seen.insert(key);
-        out << fi.absoluteFilePath();
-    };
-    for (const QString& p : {imagePath + QStringLiteral(".xmp"), imagePath + QStringLiteral(".XMP")})
-        if (QFileInfo::exists(p))
-            add(p);
-    const QFileInfo img(imagePath);
-    const QString base = img.completeBaseName();
-    const QDir dir = img.dir();
-    // The Adobe sidecar ("IMG.xmp") only if no other file shares the base name.
-    bool shared = false;
-    for (const QString& other : dir.entryList({base + QStringLiteral(".*")}, QDir::Files | QDir::Hidden)) {
-        const QString suffix = QFileInfo(other).suffix().toLower();
-        if (other == img.fileName() || suffix == QLatin1String("xmp") ||
-            QFileInfo(other).completeBaseName() != base)
-            continue;
-        shared = true;
-        break;
+    if (kind == TransferKind::Trash)
+        return out;
+    for (const QVector<int>& unit : units(items, kind)) {
+        for (int i : unit) {
+            const TransferItem& it = items[i];
+            const QString target = QDir(it.targetFolder).filePath(fileName(it.source));
+            if (present(target) && !sameFile(it.source, target)) {
+                out << items[unit.first()].source;
+                break;
+            }
+        }
     }
-    if (!shared)
-        for (const QString& p :
-             {dir.filePath(base + QStringLiteral(".xmp")), dir.filePath(base + QStringLiteral(".XMP"))})
-            if (QFileInfo::exists(p))
-                add(p);
     return out;
+}
+
+QStringList filebatch::unitNames(const QVector<TransferItem>& items, TransferKind kind,
+                                 const QString& source) {
+    for (const QVector<int>& unit : units(items, kind)) {
+        QStringList names;
+        bool found = false;
+        for (int i : unit) {
+            names << fileName(items[i].source);
+            found = found || items[i].source == source;
+        }
+        if (found)
+            return names;
+    }
+    return {fileName(source)};
+}
+
+QStringList filebatch::ownSidecars(const QString& imagePath) {
+    return sidecars::travelling({imagePath});
 }
 
 // ---- FileBatch ----
@@ -142,28 +239,65 @@ QVector<FileBatch::Step> FileBatch::steps() const {
     return m_steps;
 }
 
+int FileBatch::doneUnits() const {
+    std::lock_guard g(m_mutex);
+    return int(m_steps.size());
+}
+
 QStringList FileBatch::skipped() const {
     std::lock_guard g(m_mutex);
     return m_skipped;
 }
 
-QString FileBatch::doStep(const TransferItem& item, Step* step) {
-    step->from = item.source;
+QString FileBatch::doStep(const QVector<int>& unit, Step* step) {
+    QStringList members;
+    for (int i : unit) {
+        if (present(m_items[i].source))
+            members << m_items[i].source;
+        else
+            m_skipped << m_items[i].source;
+    }
+    if (members.isEmpty())
+        return kSkip;
+    const TransferItem& first = m_items[unit.first()];
+    // One listing per source folder for the whole batch: units differ in their base names,
+    // so moving one unit does not change what another one owns.
+    const QString sourceFolder = QFileInfo(members.first()).absolutePath();
+    auto listing = m_listings.find(sourceFolder);
+    if (listing == m_listings.end())
+        listing = m_listings.insert(sourceFolder, sidecars::Folder::list(sourceFolder));
+    const QStringList sidecarPaths = sidecars::travelling(members, &*listing);
+    auto restoreReplaced = [&] {
+        for (auto it = step->replaced.crbegin(); it != step->replaced.crend(); ++it) {
+            QString ignored;
+            m_trash.restoreFromTrash(it->second, it->first, &ignored);
+        }
+        step->replaced.clear();
+    };
+
     if (m_kind == TransferKind::Trash) {
-        const QStringList sidecars = filebatch::ownSidecars(item.source);
-        QString error;
-        const auto loc = m_trash.moveToTrash(item.source, &error);
-        if (!loc)
-            return error;
-        step->to = *loc;
-        for (const QString& s : sidecars) {
+        for (const QString& m : std::as_const(members)) {
+            QString error;
+            const auto loc = m_trash.moveToTrash(m, &error);
+            if (!loc) {
+                for (auto it = step->files.crbegin(); it != step->files.crend(); ++it) {
+                    QString ignored;
+                    m_trash.restoreFromTrash(it->second, it->first, &ignored);
+                }
+                step->files.clear();
+                return error;
+            }
+            step->files.append({m, *loc});
+        }
+        for (const QString& s : sidecarPaths) {
             QString ignored;
             if (const auto sl = m_trash.moveToTrash(s, &ignored))
                 step->sidecars.append({s, *sl});
         }
         return {};
     }
-    const QString folder = item.targetFolder;
+
+    const QString folder = first.targetFolder;
     if (!QFileInfo(folder).isDir()) {
         // Create the missing folders; remember the topmost new one for undo.
         QString top = folder;
@@ -176,58 +310,82 @@ QString FileBatch::doStep(const TransferItem& item, Step* step) {
             return Tr::tr("Der Ordner „%1“ konnte nicht angelegt werden.").arg(folder);
         m_createdFolders << top;
     }
-    QString target = QDir(folder).filePath(fileName(item.source));
-    if (present(target)) {
-        if (sameFile(item.source, target) && m_kind == TransferKind::Move)
-            return QStringLiteral("skip"); // already there
-        switch (item.onConflict) {
+    Folding folding;
+    bool conflict = false;
+    for (const QString& m : std::as_const(members)) {
+        const QString target = QDir(folder).filePath(fileName(m));
+        if (!present(target))
+            continue;
+        if (sameFile(m, target) && m_kind == TransferKind::Move)
+            return kSkip; // already there
+        conflict = true;
+    }
+    QString newBase;
+    if (conflict) {
+        switch (first.onConflict) {
         case ConflictChoice::Skip:
-            return QStringLiteral("skip");
+            return kSkip;
         case ConflictChoice::KeepBoth:
-            target = QDir(folder).filePath(filebatch::keepBothName(folder, fileName(item.source)));
+            newBase = keepBothBase(folder, members, sidecarPaths, folding);
             break;
-        case ConflictChoice::Replace: {
-            if (sameFile(item.source, target))
-                return QStringLiteral("skip");
+        case ConflictChoice::Replace:
+            for (const QString& m : std::as_const(members))
+                if (sameFile(m, QDir(folder).filePath(fileName(m))))
+                    return kSkip;
+            break;
+        }
+    }
+    const UnitTargets t = unitTargets(members, sidecarPaths, newBase, folding);
+    if (conflict && first.onConflict == ConflictChoice::Replace) {
+        // The old targets - and the sidecars they had under our sidecars' names - go.
+        for (const QString& name : t.files + t.sidecars) {
+            const QString target = QDir(folder).filePath(name);
+            if (!present(target))
+                continue;
             QString error;
             const auto loc = m_trash.moveToTrash(target, &error);
-            if (!loc)
+            if (!loc) {
+                restoreReplaced();
                 return error;
-            step->replacedFrom = target;
-            step->replacedTrash = *loc;
-            break;
-        }
+            }
+            step->replaced.append({target, *loc});
         }
     }
-    const QStringList sidecars = filebatch::ownSidecars(item.source);
-    const QString e = m_kind == TransferKind::Move ? fileops::moveNoReplace(item.source, target)
-                                                   : copyFile(item.source, target);
-    if (!e.isEmpty()) {
-        if (!step->replacedTrash.isEmpty()) {
-            QString ignored;
-            m_trash.restoreFromTrash(step->replacedTrash, step->replacedFrom, &ignored);
+    for (qsizetype i = 0; i < members.size(); ++i) {
+        const QString target = QDir(folder).filePath(t.files[i]);
+        if (const QString e = transferFile(m_kind, members[i], target); !e.isEmpty()) {
+            for (auto it = step->files.crbegin(); it != step->files.crend(); ++it)
+                takeBack(m_kind, it->first, it->second);
+            step->files.clear();
+            restoreReplaced();
+            return e;
         }
-        return e;
+        step->files.append({members[i], target});
     }
-    step->to = target;
-    for (const QString& s : sidecars) {
-        const QString t = sidecarTarget(s, item.source, target);
-        if (present(t))
+    for (qsizetype i = 0; i < sidecarPaths.size(); ++i) {
+        const QString target = QDir(folder).filePath(t.sidecars[i]);
+        if (present(target))
             continue; // keep the other file's sidecar; ours stays where it was
-        const QString se = m_kind == TransferKind::Move ? fileops::moveNoReplace(s, t) : copyFile(s, t);
-        if (se.isEmpty())
-            step->sidecars.append({s, t});
+        if (transferFile(m_kind, sidecarPaths[i], target).isEmpty())
+            step->sidecars.append({sidecarPaths[i], target});
     }
     return {};
 }
 
 QString FileBatch::redoStep(Step& step) {
     if (m_kind == TransferKind::Trash) {
-        QString error;
-        const auto loc = m_trash.moveToTrash(step.from, &error);
-        if (!loc)
-            return error;
-        step.to = *loc;
+        for (qsizetype i = 0; i < step.files.size(); ++i) {
+            QString error;
+            const auto loc = m_trash.moveToTrash(step.files[i].first, &error);
+            if (!loc) {
+                for (qsizetype k = i - 1; k >= 0; --k) {
+                    QString ignored;
+                    m_trash.restoreFromTrash(step.files[k].second, step.files[k].first, &ignored);
+                }
+                return error;
+            }
+            step.files[i].second = *loc;
+        }
         for (auto& [s, t] : step.sidecars) {
             QString ignored;
             if (const auto sl = m_trash.moveToTrash(s, &ignored))
@@ -235,70 +393,77 @@ QString FileBatch::redoStep(Step& step) {
         }
         return {};
     }
-    QDir().mkpath(QFileInfo(step.to).absolutePath());
-    if (!step.replacedFrom.isEmpty()) {
+    if (!step.files.isEmpty())
+        QDir().mkpath(QFileInfo(step.files.first().second).absolutePath());
+    auto restoreReplaced = [&](qsizetype count) {
+        for (qsizetype k = count - 1; k >= 0; --k) {
+            QString ignored;
+            m_trash.restoreFromTrash(step.replaced[k].second, step.replaced[k].first, &ignored);
+        }
+    };
+    for (qsizetype i = 0; i < step.replaced.size(); ++i) {
         QString error;
-        const auto loc = m_trash.moveToTrash(step.replacedFrom, &error);
-        if (!loc)
+        const auto loc = m_trash.moveToTrash(step.replaced[i].first, &error);
+        if (!loc) {
+            restoreReplaced(i);
             return error;
-        step.replacedTrash = *loc;
+        }
+        step.replaced[i].second = *loc;
     }
-    const QString e = m_kind == TransferKind::Move ? fileops::moveNoReplace(step.from, step.to)
-                                                   : copyFile(step.from, step.to);
-    if (!e.isEmpty())
-        return e;
-    for (const auto& [s, t] : std::as_const(step.sidecars)) {
-        if (m_kind == TransferKind::Move)
-            fileops::moveNoReplace(s, t);
-        else
-            copyFile(s, t);
+    for (qsizetype i = 0; i < step.files.size(); ++i) {
+        const auto& [from, to] = step.files[i];
+        if (const QString e = transferFile(m_kind, from, to); !e.isEmpty()) {
+            for (qsizetype k = i - 1; k >= 0; --k)
+                takeBack(m_kind, step.files[k].first, step.files[k].second);
+            restoreReplaced(step.replaced.size()); // the replaced targets come back
+            return e;
+        }
     }
+    for (const auto& [s, t] : std::as_const(step.sidecars))
+        transferFile(m_kind, s, t);
     return {};
 }
 
 QString FileBatch::undoStep(const Step& step) {
-    QString error;
+    QString first;
     if (m_kind == TransferKind::Trash) {
-        if (!m_trash.restoreFromTrash(step.to, step.from, &error))
-            return error;
+        for (const auto& [from, loc] : step.files) {
+            QString error;
+            if (!m_trash.restoreFromTrash(loc, from, &error) && first.isEmpty())
+                first = error;
+        }
         for (const auto& [s, t] : step.sidecars) {
             QString ignored;
             m_trash.restoreFromTrash(t, s, &ignored);
         }
-        return {};
+        return first;
     }
-    for (const auto& [s, t] : step.sidecars) {
-        if (m_kind == TransferKind::Move)
-            fileops::moveNoReplace(t, s);
-        else
-            QFile::remove(t);
+    for (const auto& [s, t] : step.sidecars)
+        takeBack(m_kind, s, t);
+    for (auto it = step.files.crbegin(); it != step.files.crend(); ++it)
+        if (const QString e = takeBack(m_kind, it->first, it->second); !e.isEmpty() && first.isEmpty())
+            first = e;
+    if (!first.isEmpty())
+        return first; // the replaced files cannot come back while ours are in the way
+    for (auto it = step.replaced.crbegin(); it != step.replaced.crend(); ++it) {
+        QString error;
+        if (!m_trash.restoreFromTrash(it->second, it->first, &error) && first.isEmpty())
+            first = error;
     }
-    if (m_kind == TransferKind::Move) {
-        error = fileops::moveNoReplace(step.to, step.from);
-    } else if (!QFile::remove(step.to)) {
-        error = Tr::tr("Die Kopie „%1“ konnte nicht entfernt werden.").arg(fileName(step.to));
-    }
-    if (!error.isEmpty())
-        return error;
-    if (!step.replacedTrash.isEmpty() &&
-        !m_trash.restoreFromTrash(step.replacedTrash, step.replacedFrom, &error))
-        return error;
-    return {};
+    return first;
 }
 
 QString FileBatch::apply() {
     std::lock_guard g(m_mutex);
     if (!m_planned) {
         m_planned = true;
-        for (const TransferItem& item : std::as_const(m_items)) {
-            if (!present(item.source)) {
-                m_skipped << item.source;
-                continue;
-            }
+        for (const QVector<int>& unit : filebatch::units(m_items, m_kind)) {
             Step step;
-            const QString e = doStep(item, &step);
-            if (e == QLatin1String("skip")) {
-                m_skipped << item.source;
+            const QString e = doStep(unit, &step);
+            if (e == kSkip) {
+                for (int i : unit)
+                    if (!m_skipped.contains(m_items[i].source))
+                        m_skipped << m_items[i].source;
                 continue;
             }
             if (!e.isEmpty()) {
@@ -308,13 +473,17 @@ QString FileBatch::apply() {
                 for (const QString& f : std::as_const(m_createdFolders))
                     QDir().rmdir(f);
                 m_steps.clear();
+                m_listings.clear();
                 m_createdFolders.clear();
                 return e;
             }
             m_steps.append(step);
         }
+        m_listings.clear();
         return {};
     }
+    for (const QString& f : std::as_const(m_createdFolders))
+        QDir().mkpath(f);
     for (qsizetype i = 0; i < m_steps.size(); ++i) {
         if (const QString e = redoStep(m_steps[i]); !e.isEmpty()) {
             for (qsizetype k = i - 1; k >= 0; --k)
@@ -347,22 +516,28 @@ void FileBatch::notify(FileOps& ops, bool forward) const {
     const QVector<Step> s = steps();
     if (forward) {
         for (const Step& st : s) {
-            if (!st.replacedFrom.isEmpty())
-                emit ops.fileRemoved(st.replacedFrom);
-            if (m_kind != TransferKind::Copy)
-                emit ops.fileRemoved(st.from);
-            if (m_kind != TransferKind::Trash)
-                emit ops.fileAdded(st.to);
+            for (const auto& r : st.replaced)
+                if (!isSidecar(r.first))
+                    emit ops.fileRemoved(r.first);
+            for (const auto& [from, to] : st.files) {
+                if (m_kind != TransferKind::Copy)
+                    emit ops.fileRemoved(from);
+                if (m_kind != TransferKind::Trash)
+                    emit ops.fileAdded(to);
+            }
         }
         return;
     }
     for (auto it = s.crbegin(); it != s.crend(); ++it) {
-        if (m_kind != TransferKind::Trash)
-            emit ops.fileRemoved(it->to);
-        if (m_kind != TransferKind::Copy)
-            emit ops.fileAdded(it->from);
-        if (!it->replacedFrom.isEmpty())
-            emit ops.fileAdded(it->replacedFrom);
+        for (auto f = it->files.crbegin(); f != it->files.crend(); ++f) {
+            if (m_kind != TransferKind::Trash)
+                emit ops.fileRemoved(f->second);
+            if (m_kind != TransferKind::Copy)
+                emit ops.fileAdded(f->first);
+        }
+        for (const auto& r : it->replaced)
+            if (!isSidecar(r.first))
+                emit ops.fileAdded(r.first);
     }
 }
 

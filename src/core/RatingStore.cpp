@@ -61,19 +61,6 @@ bool writeNew(const QString& path, const QByteArray& data, QString* error) {
     return true;
 }
 
-// Another image shares the base name ("IMG_1.CR3" next to "IMG_1.JPG").
-bool baseNameShared(const QString& imagePath) {
-    const QFileInfo img(imagePath);
-    const QString base = img.completeBaseName();
-    for (const QString& other : img.dir().entryList({base + QStringLiteral(".*")}, QDir::Files)) {
-        const QFileInfo o(other);
-        if (other != img.fileName() && o.completeBaseName() == base &&
-            o.suffix().compare(QLatin1String("xmp"), Qt::CaseInsensitive) != 0)
-            return true;
-    }
-    return false;
-}
-
 QString joinErrors(const QStringList& errors) {
     return errors.join(QLatin1Char(' '));
 }
@@ -96,31 +83,19 @@ std::optional<Rating> ratingio::resolve(const RatingOptions& o, const std::optio
 
 // ---- sidecars ----
 
-QString ratingio::existingSidecar(const QString& imagePath, const QSet<QString>* xmpNames) {
-    for (const QString& c : rating::sidecarCandidates(imagePath)) {
-        if (xmpNames) {
-            if (xmpNames->contains(QFileInfo(c).fileName()))
-                return c;
-        } else if (QFileInfo(c).isFile()) {
-            return c;
-        }
-    }
-    return {};
+QString ratingio::existingSidecar(const QString& imagePath, const sidecars::Folder* folder) {
+    const QStringList found = sidecars::readable(imagePath, folder);
+    return found.isEmpty() ? QString() : found.first();
 }
 
 QString ratingio::sidecarForWriting(const QString& imagePath) {
-    const QString existing = existingSidecar(imagePath);
-    if (!existing.isEmpty())
-        return existing;
-    // RAW+JPEG pair: the Adobe sidecar ("IMG_1.xmp") belongs to the RAW file; other files
-    // get their own ("IMG_1.JPG.xmp") so the two ratings stay apart.
-    if (!isRawSuffix(QFileInfo(imagePath).suffix().toLower()) && baseNameShared(imagePath))
-        return rating::sidecarPathWithExtension(imagePath);
-    return rating::sidecarPath(imagePath);
+    // RAW+JPEG pair: the Adobe sidecar ("IMG_1.xmp") belongs to the RAW file; the JPEG
+    // reads and writes its own ("IMG_1.JPG.xmp") so the two ratings stay apart.
+    return sidecars::forWriting(imagePath);
 }
 
-std::optional<Rating> ratingio::readSidecar(const QString& imagePath, const QSet<QString>* xmpNames) {
-    const QString path = existingSidecar(imagePath, xmpNames);
+std::optional<Rating> ratingio::readSidecar(const QString& imagePath, const sidecars::Folder* folder) {
+    const QString path = existingSidecar(imagePath, folder);
     if (path.isEmpty())
         return std::nullopt;
     QFile f(path);
@@ -134,7 +109,7 @@ QString ratingio::writeSidecar(const QString& imagePath, const Rating& r) {
     const QString real = resolvedFilePath(path);
     const bool exists = QFileInfo(real).isFile();
     QString text;
-    bool bom = false;
+    xmp::Encoding encoding = xmp::Encoding::Utf8;
     if (exists) {
         QFile f(real);
         if (!f.open(QIODevice::ReadOnly))
@@ -142,7 +117,7 @@ QString ratingio::writeSidecar(const QString& imagePath, const Rating& r) {
         if (f.size() > kMaxSidecarBytes)
             return Tr::tr("„%1“ ist zu groß.").arg(QFileInfo(path).fileName());
         const QByteArray bytes = f.readAll();
-        text = xmp::decode(bytes, &bom);
+        text = xmp::decode(bytes, &encoding);
         if (text.trimmed().isEmpty())
             text.clear();
     } else if (r.isEmpty()) {
@@ -156,7 +131,7 @@ QString ratingio::writeSidecar(const QString& imagePath, const Rating& r) {
         return {};
     QString error;
     const QString tmp = hiddenSibling(real);
-    if (!writeNew(tmp, xmp::encode(*out, bom), &error))
+    if (!writeNew(tmp, xmp::encode(*out, encoding), &error))
         return error;
     if (exists) {
         // Same safety as saving an image: flushed, attributes/hard links kept, atomic.
@@ -297,17 +272,17 @@ QString ratingio::writeTags(const QString& path, const Rating& r, const RatingTa
 
 // ---- all stores ----
 
-Rating ratingio::read(const QString& path, const RatingOptions& o, const QSet<QString>* xmpNames) {
+Rating ratingio::read(const QString& path, const RatingOptions& o, const sidecars::Folder* folder) {
     // Lazy: the first enabled store with a value wins, later ones are not read.
     if (o.sidecar)
-        if (auto r = readSidecar(path, xmpNames))
+        if (auto r = readSidecar(path, folder))
             return *r;
     if (o.embedded) {
         if (auto r = readEmbedded(path))
             return *r;
         // Formats that cannot carry it keep the rating in the sidecar (fallback).
         if (!o.sidecar)
-            if (auto r = readSidecar(path, xmpNames))
+            if (auto r = readSidecar(path, folder))
                 return *r;
     }
     if (o.finderTags)
@@ -348,17 +323,14 @@ RatingWriteResult ratingio::write(const QString& path, const Rating& r, const Ra
 QHash<QString, Rating> ratingio::readMany(const QStringList& paths, const RatingOptions& o,
                                           const std::function<bool()>& cancelled) {
     QHash<QString, Rating> out;
-    QHash<QString, QSet<QString>> xmpByFolder;
+    QHash<QString, sidecars::Folder> listings;
     for (const QString& p : paths) {
         if (cancelled && cancelled())
             break;
         const QString folder = QFileInfo(p).absolutePath();
-        auto it = xmpByFolder.find(folder);
-        if (it == xmpByFolder.end()) {
-            const QStringList names = QDir(folder).entryList(
-                {QStringLiteral("*.xmp"), QStringLiteral("*.XMP")}, QDir::Files | QDir::Hidden);
-            it = xmpByFolder.insert(folder, QSet<QString>(names.cbegin(), names.cend()));
-        }
+        auto it = listings.find(folder);
+        if (it == listings.end())
+            it = listings.insert(folder, sidecars::Folder::list(folder));
         out.insert(p, read(p, o, &*it));
     }
     return out;
@@ -474,52 +446,79 @@ void RatingStore::setRating(FileOps& ops, const QString& path, const Rating& r, 
 }
 
 void RatingStore::changeRating(FileOps& ops, const QString& path, Change change, ChangeDone done) {
+    changeRatings(ops, QStringList{path}, std::move(change), std::move(done));
+}
+
+void RatingStore::changeRatings(FileOps& ops, const QStringList& paths, Change change, ChangeDone done) {
+    if (paths.isEmpty())
+        return;
     struct State {
         std::mutex mutex;
         bool planned = false;
-        Rating previous, next;
+        QVector<Rating> previous, next;
         QString notice;
     };
     auto state = std::make_shared<State>();
     const RatingOptions o = options();
     QPointer<RatingStore> self(this);
-    FileOps::FileWork apply = [state, path, change, o] {
+    // Writes `values` to the files; on an error the files written so far get `undo` back
+    // (all or nothing, best effort).
+    auto writeAll = [paths, o](const QVector<Rating>& values, const QVector<Rating>& undo, QString* notice) {
+        for (qsizetype i = 0; i < paths.size(); ++i) {
+            const RatingWriteResult res = ratingio::write(paths[i], values[i], o);
+            if (notice && notice->isEmpty())
+                *notice = res.notice;
+            if (!res.ok()) {
+                for (qsizetype k = i; k >= 0; --k)
+                    ratingio::write(paths[k], undo[k], o);
+                return res.error;
+            }
+        }
+        return QString();
+    };
+    FileOps::FileWork apply = [state, paths, change, o, writeAll] {
         std::lock_guard g(state->mutex);
         if (!state->planned) {
-            state->previous = ratingio::read(path, o);
-            state->next = change ? change(state->previous) : state->previous;
+            for (const QString& p : paths) {
+                const Rating before = ratingio::read(p, o);
+                state->previous.append(before);
+                state->next.append(change ? change(before) : before);
+            }
             state->planned = true;
         }
-        const RatingWriteResult res = ratingio::write(path, state->next, o);
-        state->notice = res.notice;
-        return res.error;
+        state->notice.clear();
+        return writeAll(state->next, state->previous, &state->notice);
     };
-    FileOps::FileWork revert = [state, path, o] {
+    FileOps::FileWork revert = [state, writeAll] {
         std::lock_guard g(state->mutex);
-        return ratingio::write(path, state->previous, o).error;
+        return writeAll(state->previous, state->next, nullptr);
     };
-    FileOps::StepNotifier notify = [self, state, path](bool forward) {
+    FileOps::StepNotifier notify = [self, state, paths](bool forward) {
         if (!self)
             return;
-        Rating value;
+        QVector<Rating> values;
         {
             std::lock_guard g(state->mutex);
-            value = forward ? state->next : state->previous;
+            values = forward ? state->next : state->previous;
         }
-        self->store(path, value);
-        emit self->ratingChanged(path, value);
+        for (qsizetype i = 0; i < paths.size() && i < values.size(); ++i) {
+            self->store(paths[i], values[i]);
+            emit self->ratingChanged(paths[i], values[i]);
+        }
     };
-    ops.runAsync(Tr::tr("Bewertung"), apply, revert, notify,
-                 [self, state, path, done](bool ok, const QString& error) {
+    ops.runAsync(paths.size() > 1 ? Tr::tr("Bewertungen") : Tr::tr("Bewertung"), apply, revert, notify,
+                 [self, state, paths, done](bool ok, const QString& error) {
                      QString notice;
                      Rating now;
                      {
                          std::lock_guard g(state->mutex);
                          notice = state->notice;
-                         now = ok ? state->next : state->previous;
+                         const QVector<Rating>& v = ok ? state->next : state->previous;
+                         now = v.isEmpty() ? Rating() : v.first();
                      }
                      if (!ok && self)
-                         self->request(path); // the stores may be partly written: show what is on disk now
+                         for (const QString& p : paths)
+                             self->request(p); // show what is on disk now
                      if (done)
                          done(ok, error, notice, now);
                  });

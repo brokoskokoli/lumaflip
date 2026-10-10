@@ -49,9 +49,10 @@ public:
     void transfer(TransferKind kind, QVector<TransferItem> items, const QString& undoText,
                   std::function<QString(int done)> doneMessage);
 
-    // F-FILE-11 dialog (non-blocking). `count` > 1 shows "Für alle anwenden". `done` gets the
-    // choice (nullopt: cancelled) and whether it applies to all remaining conflicts.
-    static void askConflict(QWidget* parent, const QString& fileName, const QString& folder, int count,
+    // F-FILE-11 dialog (non-blocking) for one unit (`fileNames`: one file, or both files of
+    // a RAW+JPEG pair - one choice for both). `count` > 1 shows "Für alle anwenden". `done`
+    // gets the choice (nullopt: cancelled) and whether it applies to all remaining conflicts.
+    static void askConflict(QWidget* parent, const QStringList& fileNames, const QString& folder, int count,
                             std::function<void(std::optional<ConflictChoice> choice, bool forAll)> done);
 
 private:
