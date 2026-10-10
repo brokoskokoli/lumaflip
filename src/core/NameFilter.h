@@ -20,5 +20,7 @@ QStringList terms(const QString& query);
 bool matches(const QString& fileName, const QString& query);
 // Same with pre-folded terms (many names, one query).
 bool matchesTerms(const QString& fileName, const QStringList& foldedTerms);
+// Same with an already folded name (fold() computed once per file).
+bool matchesFolded(const QString& foldedName, const QStringList& foldedTerms);
 
 } // namespace lf::namefilter

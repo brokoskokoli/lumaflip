@@ -55,11 +55,6 @@ QString slotSettingsKey(const QString& slotId) {
                                                       : QString::fromLatin1(key::InputPrefix) + slotId;
 }
 
-// Not implemented yet (M3 and later): shown, but disabled with this note.
-QString laterNote() {
-    return QCoreApplication::translate("lf::PreferencesDialog", "in einer späteren Version");
-}
-
 QLabel* helpLabel(const QString& text, QWidget* parent) {
     auto* l = new QLabel(text, parent);
     l->setWordWrap(true);
@@ -549,11 +544,8 @@ QWidget* PreferencesDialog::buildInput() {
         auto* combo = new QComboBox(slotBox);
         combo->setObjectName(QStringLiteral("slot:") + s.id);
         for (int i = 0; i < s.choices.size(); ++i) {
-            const bool available = isChoiceAvailable(s.id, s.choices[i]);
-            combo->addItem(available ? s.choiceLabels.value(i)
-                                     : tr("%1 (%2)").arg(s.choiceLabels.value(i), laterNote()),
-                           s.choices[i]);
-            if (!available) {
+            combo->addItem(s.choiceLabels.value(i), s.choices[i]);
+            if (!isChoiceAvailable(s.id, s.choices[i])) { // a choice of a later stage
                 if (auto* model = qobject_cast<QStandardItemModel*>(combo->model()))
                     model->item(i)->setEnabled(false);
             }

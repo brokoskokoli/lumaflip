@@ -10,7 +10,13 @@
 // notification is queued for the GUI thread, further events are absorbed.
 //
 // F-OPEN-08: a tree subscription (watchTree) uses one stream for a folder and everything
-// below it; the changed folders are collected and each one is reported.
+// below it; the changed folders are collected and each one is reported. Dropped events
+// (the system could not keep up) are reported as rescanNeeded(root).
+//
+// Code review M3 #16: file events that cannot change the image list do not count as a
+// folder change: hidden files (the app's own temporary files while saving a sidecar or an
+// image; .DS_Store still counts, it carries Finder's sort order) and XMP sidecars, which
+// are reported on their own (sidecarChanged) so a rating filter can re-read one rating.
 
 #include "MacFolderWatcher.h"
 #include "core/Platform.h"
@@ -26,7 +32,9 @@
 #include <algorithm>
 #include <atomic>
 #include <memory>
+#include <optional>
 #include <sys/stat.h>
+#include <utility>
 
 #include <CoreServices/CoreServices.h>
 #include <dispatch/dispatch.h>
@@ -65,7 +73,10 @@ struct Stream {
     Hub* hub = nullptr;
     bool tree = false; // F-OPEN-08: the folder and all folders below it
     QMutex changedMutex;
-    QSet<QString> changed; // tree: changed folders relative to key ("" = the folder itself)
+    QSet<QString> changed;  // tree: changed folders relative to key ("" = the folder itself)
+    bool dirty = false;     // plain: the folder changed
+    bool rescan = false;    // tree: events were dropped
+    QSet<QString> sidecars; // XMP files written (relative to key)
 };
 
 // GUI-thread object owning all streams. Lives forever (leaked on purpose so no
@@ -143,6 +154,8 @@ public:
         }
     }
     void notifyChanged(const QString& folder) { emit folderChanged(folder); }
+    void notifySidecar(const QString& path) { emit sidecarChanged(path); }
+    void notifyRescan(const QString& root) { emit rescanNeeded(root); }
 
 private:
     QHash<QString, int> m_refs;
@@ -178,15 +191,39 @@ std::optional<QString> treeRelative(const Stream& s, const QByteArray& parent) {
     return std::nullopt;
 }
 
-void treeCallback(Stream* s, size_t numEvents, char** paths, const FSEventStreamEventFlags flags[]) {
+// What a file event means for the image list.
+enum class EventKind { Change, Sidecar, Ignore };
+
+EventKind classify(const QByteArray& path, FSEventStreamEventFlags f) {
+    if (!(f & kFSEventStreamEventFlagItemIsFile) || (f & kFSEventStreamEventFlagItemIsDir))
+        return EventKind::Change; // folders (and events without item information) count
+    const qsizetype slash = path.lastIndexOf('/');
+    const QByteArray name = path.mid(slash + 1);
+    if (name.startsWith('.'))
+        return name == ".DS_Store" ? EventKind::Change : EventKind::Ignore;
+    if (name.size() > 4 && name.right(4).toLower() == ".xmp")
+        return EventKind::Sidecar;
+    return EventKind::Change;
+}
+
+constexpr FSEventStreamEventFlags kDropped =
+    kFSEventStreamEventFlagRootChanged | kFSEventStreamEventFlagMustScanSubDirs |
+    kFSEventStreamEventFlagKernelDropped | kFSEventStreamEventFlagUserDropped;
+
+void streamCallback(ConstFSEventStreamRef, void* info, size_t numEvents, void* eventPaths,
+                    const FSEventStreamEventFlags flags[], const FSEventStreamEventId[]) {
+    auto* s = static_cast<Stream*>(info);
+    auto** paths = static_cast<char**>(eventPaths);
     bool any = false;
     {
         QMutexLocker lock(&s->changedMutex);
         for (size_t i = 0; i < numEvents; ++i) {
             const FSEventStreamEventFlags f = flags[i];
-            if (f & (kFSEventStreamEventFlagRootChanged | kFSEventStreamEventFlagMustScanSubDirs |
-                     kFSEventStreamEventFlagKernelDropped | kFSEventStreamEventFlagUserDropped)) {
-                s->changed.insert(QString()); // the folder itself (collections revalidate the tree)
+            if (f & kDropped) {
+                if (s->tree)
+                    s->rescan = true; // collections read the tree again
+                else
+                    s->dirty = true;
                 any = true;
                 continue;
             }
@@ -196,44 +233,37 @@ void treeCallback(Stream* s, size_t numEvents, char** paths, const FSEventStream
             const qsizetype slash = p.lastIndexOf('/');
             if (slash < 0)
                 continue;
-            if (const auto rel = treeRelative(*s, slash == 0 ? QByteArray("/") : p.left(slash))) {
-                s->changed.insert(*rel);
+            const QByteArray parent = slash == 0 ? QByteArray("/") : p.left(slash);
+            // Plain streams: direct children only ("<folder>/<name>" without further '/').
+            std::optional<QString> rel;
+            if (s->tree)
+                rel = treeRelative(*s, parent);
+            else if (sameFolder(*s, parent))
+                rel = QString();
+            if (!rel)
+                continue;
+            switch (classify(p, f)) {
+            case EventKind::Ignore:
+                break;
+            case EventKind::Sidecar: {
+                const QString name =
+                    QString::fromUtf8(p.mid(slash + 1)).normalized(QString::NormalizationForm_C);
+                s->sidecars.insert(rel->isEmpty() ? name : *rel + u'/' + name);
                 any = true;
+                break;
+            }
+            case EventKind::Change:
+                if (s->tree)
+                    s->changed.insert(*rel);
+                else
+                    s->dirty = true;
+                any = true;
+                break;
             }
         }
     }
     if (any)
         s->hub->notify(s);
-}
-
-void streamCallback(ConstFSEventStreamRef, void* info, size_t numEvents, void* eventPaths,
-                    const FSEventStreamEventFlags flags[], const FSEventStreamEventId[]) {
-    auto* s = static_cast<Stream*>(info);
-    auto** paths = static_cast<char**>(eventPaths);
-    if (s->tree) {
-        treeCallback(s, numEvents, paths, flags);
-        return;
-    }
-    for (size_t i = 0; i < numEvents; ++i) {
-        const FSEventStreamEventFlags f = flags[i];
-        if (f & (kFSEventStreamEventFlagRootChanged | kFSEventStreamEventFlagMustScanSubDirs |
-                 kFSEventStreamEventFlagKernelDropped | kFSEventStreamEventFlagUserDropped)) {
-            s->hub->notify(s);
-            return;
-        }
-        // Direct child?  "<folder>/<name>" without further '/'.
-        QByteArray p(paths[i]);
-        while (p.size() > 1 && p.endsWith('/'))
-            p.chop(1);
-        const qsizetype slash = p.lastIndexOf('/');
-        if (slash < 0)
-            continue;
-        const QByteArray parent = slash == 0 ? QByteArray("/") : p.left(slash);
-        if (sameFolder(*s, parent)) {
-            s->hub->notify(s);
-            return;
-        }
-    }
 }
 
 bool Hub::open(Stream& s) {
@@ -321,23 +351,31 @@ void Hub::deliver(const QString& key) {
         return;
     it->stream->pending.store(false);
     const QList<Subscriber> subs = it->subscribers; // slots may (un)watch
-    if (it->stream->tree) {
-        QSet<QString> changed;
-        {
-            QMutexLocker lock(&it->stream->changedMutex);
-            changed.swap(it->stream->changed);
-        }
-        QStringList rels(changed.cbegin(), changed.cend());
-        rels.sort(); // a folder before its subfolders
-        for (const Subscriber& s : subs)
-            for (const QString& rel : std::as_const(rels))
-                if (s.watcher)
-                    s.watcher->notifyChanged(rel.isEmpty() ? s.folder : QDir(s.folder).filePath(rel));
-        return;
+    QSet<QString> changed, sidecars;
+    bool dirty = false, rescan = false;
+    {
+        QMutexLocker lock(&it->stream->changedMutex);
+        changed.swap(it->stream->changed);
+        sidecars.swap(it->stream->sidecars);
+        dirty = std::exchange(it->stream->dirty, false);
+        rescan = std::exchange(it->stream->rescan, false);
     }
+    QStringList rels(changed.cbegin(), changed.cend());
+    rels.sort(); // a folder before its subfolders
+    const QStringList files(sidecars.cbegin(), sidecars.cend());
     for (const Subscriber& s : subs) {
-        if (s.watcher)
+        if (!s.watcher)
+            continue;
+        if (rescan)
+            s.watcher->notifyRescan(s.folder);
+        else if (dirty)
             s.watcher->notifyChanged(s.folder);
+        for (const QString& rel : std::as_const(rels))
+            if (s.watcher && !rescan)
+                s.watcher->notifyChanged(rel.isEmpty() ? s.folder : QDir(s.folder).filePath(rel));
+        for (const QString& file : files)
+            if (s.watcher)
+                s.watcher->notifySidecar(QDir(s.folder).filePath(file));
     }
 }
 

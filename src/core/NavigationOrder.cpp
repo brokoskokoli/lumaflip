@@ -21,10 +21,17 @@ std::optional<int> parseGoTo(const QString& text, int current, int count) {
     const bool relative = sign == QLatin1Char('+') || sign == QLatin1Char('-') || sign == QChar(0x2212);
     if (relative)
         t.remove(0, 1);
-    bool ok = false;
-    const qlonglong n = t.toLongLong(&ok);
-    if (!ok || n < 0)
+    if (t.isEmpty())
         return std::nullopt;
+    // Saturating: any number beyond the collection means "the end" (code review M3 #21:
+    // "+9223372036854775807" overflowed `current + n`, longer numbers were rejected).
+    constexpr qlonglong kCap = qlonglong(1) << 40; // far beyond any collection, no overflow
+    qlonglong n = 0;
+    for (const QChar c : std::as_const(t)) {
+        if (c < QLatin1Char('0') || c > QLatin1Char('9'))
+            return std::nullopt;
+        n = std::min(kCap, n * 10 + (c.unicode() - '0'));
+    }
     qlonglong index = 0;
     if (relative)
         index = qlonglong(std::max(0, current)) + (sign == QLatin1Char('+') ? n : -n);

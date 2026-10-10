@@ -662,6 +662,8 @@ TEST(QuickMove, F_FILE_08_ChordMoveCopyAndRepeatLast) {
     EXPECT_EQ(r.op, QuickOp::Move);
     EXPECT_EQ(r.slot, 3);
     EXPECT_FALSE(c.isPending());
+    EXPECT_EQ(QuickChord::lastSlot(), 0); // remembered only once the move ran (window)
+    QuickChord::setLastSlot(3);
     // M M repeats the last target.
     c.start(QuickOp::Move);
     r = c.feed(Qt::Key_M, Qt::NoModifier);
@@ -673,6 +675,7 @@ TEST(QuickMove, F_FILE_08_ChordMoveCopyAndRepeatLast) {
     r = c.feed(Qt::Key_7, Qt::NoModifier);
     EXPECT_EQ(r.op, QuickOp::Copy);
     EXPECT_EQ(r.slot, 7);
+    QuickChord::setLastSlot(7);
     c.start(QuickOp::Copy);
     r = c.feed(Qt::Key_C, Qt::NoModifier);
     EXPECT_EQ(r.kind, QuickChord::Kind::Execute);

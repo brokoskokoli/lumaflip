@@ -992,7 +992,7 @@ QString ViewerWindow::statusText() const {
         if (!l->text().isEmpty())
             parts << l->text();
     if (const QString filter = m_culling->filterStatus(); !filter.isEmpty())
-        parts << filter; // F-CULL-04
+        parts << filter;              // F-CULL-04
     parts << m_extras->statusParts(); // M3: name filter, shuffle, coupling
     return parts.join(QStringLiteral(" · "));
 }
@@ -1638,9 +1638,9 @@ void ViewerWindow::fileRenamed(const QString& from, const QString& to) {
 void ViewerWindow::folderChanged(const QString& folderPath) {
     // F-OPEN-07: the app invalidated the shared snapshot once; every window showing the
     // folder re-sorts the one new enumeration (F-WIN-09).
-    // F-OPEN-08: also a (new) subfolder of a collection that includes subfolders.
-    if (m_collection->isFolderCollection() && m_collection->coversFolder(folderPath))
-        m_collection->reload();
+    // F-OPEN-08: also a (new) subfolder of a collection that includes subfolders. Changes
+    // are coalesced; a tree reads only the changed folders again (code review M3 #16).
+    m_collection->folderContentsChanged(folderPath);
 }
 
 void ViewerWindow::refreshActivity() {

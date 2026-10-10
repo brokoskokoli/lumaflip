@@ -38,10 +38,6 @@ QList<QKeySequence> displayFallback(Action a) {
         return {QKeySequence(Qt::Key_Left)};
     case Action::JumpForward:
         return {};
-    case Action::NextFolder: // F-OPEN-09: ⌥→ / ⌥← come from the arrow key slot (F-IN-16)
-        return {QKeySequence(Qt::AltModifier | Qt::Key_Right)};
-    case Action::PreviousFolder:
-        return {QKeySequence(Qt::AltModifier | Qt::Key_Left)};
     default:
         return {};
     }

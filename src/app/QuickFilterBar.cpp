@@ -10,6 +10,7 @@
 #include <QKeyEvent>
 #include <QLabel>
 #include <QLineEdit>
+#include <QTimer>
 #include <QToolButton>
 
 namespace lf {
@@ -43,16 +44,26 @@ QuickFilterBar::QuickFilterBar(ViewerWindow& window, Application& app, QWidget* 
     h->addWidget(m_count);
     h->addWidget(closeButton);
     connect(closeButton, &QToolButton::clicked, this, &QuickFilterBar::clearAndClose);
-    connect(m_edit, &QLineEdit::textChanged, this, [this](const QString& t) {
-        m_window.collection()->setNameFilter(t); // live (F-NAV-08)
-        updateCount();
-    });
+    // Live (F-NAV-08), but not per keystroke: typing "urlaub" filters once (code review M3
+    // #17); Enter, Esc and closing apply at once.
+    m_debounce = new QTimer(this);
+    m_debounce->setSingleShot(true);
+    m_debounce->setInterval(kDebounceMs);
+    connect(m_debounce, &QTimer::timeout, this, &QuickFilterBar::applyFilter);
+    connect(m_edit, &QLineEdit::textChanged, this, [this] { m_debounce->start(); });
     connect(m_window.collection(), &Collection::entriesChanged, this, &QuickFilterBar::updateCount);
     hide();
 }
 
 QString QuickFilterBar::text() const {
     return m_edit->text();
+}
+
+void QuickFilterBar::applyFilter() {
+    m_debounce->stop();
+    if (m_window.collection()->nameFilter() != m_edit->text())
+        m_window.collection()->setNameFilter(m_edit->text());
+    updateCount();
 }
 
 void QuickFilterBar::updateCount() {
@@ -89,6 +100,8 @@ void QuickFilterBar::open(const QString& initialText) {
 }
 
 void QuickFilterBar::close() {
+    if (m_debounce->isActive())
+        applyFilter();
     const bool hadFocus = m_edit->hasFocus();
     hide();
     if (hadFocus)
@@ -96,7 +109,8 @@ void QuickFilterBar::close() {
 }
 
 void QuickFilterBar::clearAndClose() {
-    m_edit->clear(); // textChanged: the filter goes
+    m_edit->clear();
+    m_debounce->stop();
     m_window.collection()->setNameFilter(QString());
     close();
     m_window.focusContent();

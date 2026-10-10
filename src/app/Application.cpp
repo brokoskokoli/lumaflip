@@ -159,6 +159,18 @@ Application::Application(AppServices services, QObject* parent)
     d->watcher = createFolderWatcher(this);
     trace::mark("Application: folder watcher");
     connect(d->watcher.get(), &FolderWatcher::folderChanged, this, &Application::folderChangedOnDisk);
+    // Code review M3 #16: sidecars (own rating writes) do not reload the folder; dropped
+    // events below a tree root read the whole tree again.
+    connect(d->watcher.get(), &FolderWatcher::sidecarChanged, this, [this](const QString& sidecar) {
+        for (ViewerWindow* w : windows())
+            w->collection()->sidecarChanged(sidecar);
+    });
+    connect(d->watcher.get(), &FolderWatcher::rescanNeeded, this, [this](const QString& root) {
+        FolderCache::instance().invalidate(root);
+        for (ViewerWindow* w : windows())
+            if (w->collection()->isFolderCollection() && w->collection()->coversFolder(root))
+                w->collection()->reload();
+    });
 
     // File operations of any window update every window (F-FILE-01). The shared folder
     // snapshot is outdated as well; the windows themselves are updated in place.
@@ -1035,33 +1047,20 @@ void Application::showShortcuts() {
         {tr("Erstes / letztes Bild"), tr("Pos1 / Ende")},
         {tr("Vollbild / Modus verlassen"), tr("Esc")},
     };
-    // Planned actions (slideshow, info panel, rating, rename …) have keys already but do
-    // nothing yet: listed last, grayed out and marked, never as usable.
-    QList<QPair<QString, QString>> later;
     for (Action a : InputBindings::allActions()) {
         const QList<QKeySequence> seqs = bindings().shortcuts(a);
-        if (seqs.isEmpty())
+        if (seqs.isEmpty() || !InputBindings::isActionAvailable(a))
             continue;
         QStringList keys;
         for (const QKeySequence& s : seqs)
             keys << s.toString(QKeySequence::NativeText);
-        if (InputBindings::isActionAvailable(a))
-            rows.append({actionLabel(a), keys.join(QStringLiteral(", "))});
-        else
-            later.append(
-                {tr("%1 (in einer späteren Version)").arg(actionLabel(a)), keys.join(QStringLiteral(", "))});
+        rows.append({actionLabel(a), keys.join(QStringLiteral(", "))});
     }
-    const int available = int(rows.size());
-    rows += later;
     table->setObjectName(QStringLiteral("lfShortcutsTable"));
     table->setRowCount(int(rows.size()));
     for (int r = 0; r < rows.size(); ++r) {
         auto* name = new QTableWidgetItem(rows[r].first);
         auto* keys = new QTableWidgetItem(rows[r].second);
-        if (r >= available) {
-            name->setFlags(name->flags() & ~Qt::ItemIsEnabled);
-            keys->setFlags(keys->flags() & ~Qt::ItemIsEnabled);
-        }
         table->setItem(r, 0, name);
         table->setItem(r, 1, keys);
     }
