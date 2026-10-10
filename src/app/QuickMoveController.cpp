@@ -87,6 +87,7 @@ void QuickMoveController::transferCurrent(QuickOp op, int slot) {
         paths << m_window.currentPath();
     if (paths.isEmpty())
         return;
+    const bool several = paths.size() > 1;
     paths = m_window.collection()->withPairs(paths); // F-FMT-06: RAW+JPEG pairs move together
     QuickChord::setLastSlot(slot);
     const QString name = QDir(folder).dirName();
@@ -94,7 +95,6 @@ void QuickMoveController::transferCurrent(QuickOp op, int slot) {
     QVector<TransferItem> items;
     for (const QString& p : std::as_const(paths))
         items.append({p, folder, ConflictChoice::Skip});
-    const bool several = paths.size() > 1;
     transfer(move ? TransferKind::Move : TransferKind::Copy, items, move ? tr("Verschieben") : tr("Kopieren"),
              [move, name, several](int done) {
                  if (done == 0)
@@ -140,7 +140,9 @@ void QuickMoveController::runWithChoices(TransferKind kind, QVector<TransferItem
         }
         const QString folder = it != items.end() ? it->targetFolder : QString();
         QPointer<QuickMoveController> self(this);
-        askConflict(&m_window, QFileInfo(source).fileName(), folder, int(conflicts.size() - next),
+        // F-FMT-06: a RAW+JPEG pair is one question ("IMG_1.CR3 + IMG_1.JPG").
+        const QStringList names = filebatch::unitNames(items, kind, source);
+        askConflict(&m_window, names, folder, int(conflicts.size() - next),
                     [self, kind, items, conflicts, next, undoText,
                      doneMessage](std::optional<ConflictChoice> choice, bool all) mutable {
                         if (!self || !choice)
@@ -157,19 +159,19 @@ void QuickMoveController::runWithChoices(TransferKind kind, QVector<TransferItem
     }
     auto batch = std::make_shared<FileBatch>(m_app.fileOps().trashService(), kind, items);
     QPointer<ViewerWindow> window(&m_window);
-    runBatchAsync(
-        m_app.fileOps(), undoText, batch, [window, batch, doneMessage](bool ok, const QString& error) {
-            if (!window)
-                return;
-            if (!ok) {
-                window->showMessage(error, 5000);
-                return;
-            }
-            window->showMessage(doneMessage ? doneMessage(int(batch->steps().size())) : QString(), 2500);
-        });
+    runBatchAsync(m_app.fileOps(), undoText, batch,
+                  [window, batch, doneMessage](bool ok, const QString& error) {
+                      if (!window)
+                          return;
+                      if (!ok) {
+                          window->showMessage(error, 5000);
+                          return;
+                      }
+                      window->showMessage(doneMessage ? doneMessage(batch->doneUnits()) : QString(), 2500);
+                  });
 }
 
-void QuickMoveController::askConflict(QWidget* parent, const QString& fileName, const QString& folder,
+void QuickMoveController::askConflict(QWidget* parent, const QStringList& fileNames, const QString& folder,
                                       int count,
                                       std::function<void(std::optional<ConflictChoice>, bool)> done) {
     auto* box = new QMessageBox(parent);
@@ -177,13 +179,18 @@ void QuickMoveController::askConflict(QWidget* parent, const QString& fileName, 
     box->setAttribute(Qt::WA_DeleteOnClose);
     box->setIcon(QMessageBox::Question);
     box->setWindowTitle(tr("Namenskonflikt"));
-    box->setText(tr("„%1“ gibt es in „%2“ schon.").arg(fileName, QDir(folder).dirName()));
+    // A RAW+JPEG pair is one unit: both names, both renamed alike (FileBatch).
+    const QString shown = fileNames.join(QStringLiteral(" + "));
+    QStringList renamed;
+    for (const QString& fileName : fileNames)
+        renamed << filebatch::keepBothName(folder, fileName, [&](const QString& p) {
+            return QFileInfo(p).fileName() == fileName; // no disk access here
+        });
+    box->setText(tr("„%1“ gibt es in „%2“ schon.").arg(shown, QDir(folder).dirName()));
     box->setInformativeText(
         tr("Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der "
            "neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.")
-            .arg(filebatch::keepBothName(folder, fileName, [&](const QString& p) {
-                return QFileInfo(p).fileName() == fileName; // no disk access here
-            })));
+            .arg(renamed.join(QStringLiteral(" + "))));
     QPushButton* replace = box->addButton(tr("Ersetzen"), QMessageBox::DestructiveRole);
     replace->setObjectName(QStringLiteral("lfConflictReplace"));
     QPushButton* keepBoth = box->addButton(tr("Beide behalten"), QMessageBox::AcceptRole);

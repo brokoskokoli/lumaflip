@@ -21,9 +21,9 @@ void ViewerWindow::retranslateUi() {
         if (auto* b = findChild<QPushButton*>(QLatin1String(name)))
             b->setText(text);
     };
-    setButton("lfAllowAccess", tr("Zugriff erlauben…"));
+    setButton("lfAllowAccess", tr("Zugriff erlauben …"));
     setButton("lfDismissAccess", tr("Ausblenden"));
-    setButton("lfOpenButton", tr("Öffnen…"));
+    setButton("lfOpenButton", tr("Öffnen …"));
     if (m_accessHint && !m_accessHint->isHidden() && !m_accessFolder.isEmpty())
         showAccessHint(m_accessFolder, m_accessPrivacy);
     if (auto* dock = findChild<QDockWidget*>(QStringLiteral("lfInfoDock")))

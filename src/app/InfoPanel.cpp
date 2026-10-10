@@ -245,6 +245,7 @@ InfoPanel::InfoPanel(ImageProvider& provider, std::shared_ptr<TagService> tags, 
 
     // ---- GPS (F-INFO-04) and all metadata (F-INFO-05) ----
     m_gps = new InfoGpsBox(createMapSnapshotProvider(), this);
+    m_gps->setPanelVisible(false); // SPEC 10.3: maps only while the panel is shown
     m_gps->hide();
     layout->addWidget(m_gps);
     m_allMetadata = new QPushButton(this);
@@ -391,8 +392,14 @@ void InfoPanel::setFile(const QString& path, const FileEntry* entry) {
     refreshHistogram();
 }
 
+void InfoPanel::hideEvent(QHideEvent* event) {
+    QWidget::hideEvent(event);
+    m_gps->setPanelVisible(false);
+}
+
 void InfoPanel::showEvent(QShowEvent* event) {
     QWidget::showEvent(event);
+    m_gps->setPanelVisible(true);
     if (!m_path.isEmpty() && m_shownPath != m_path && m_cache.contains(m_path))
         apply(m_cache.value(m_path));
     startLoad();

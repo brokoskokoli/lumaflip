@@ -616,7 +616,7 @@ TEST_F(CullingTest, F_CULL_05_RejectsToRejectedFolderAndUndo) {
     ASSERT_TRUE(writeFile(path("r1.jpg.xmp"), xmp::newSidecar(stars(0, PickFlag::Reject)).toUtf8()));
     ASSERT_TRUE(writeFile(path("r2.CR3"), "2"));
     ASSERT_TRUE(writeFile(path("r2.xmp"), xmp::newSidecar(stars(0, PickFlag::Reject)).toUtf8()));
-    ASSERT_TRUE(writeFile(path("r2.JPG"), "pair")); // shares "r2.xmp": that one stays
+    ASSERT_TRUE(writeFile(path("r2.JPG"), "pair")); // never reads "r2.xmp" (the RAW's, Sidecars.h)
     const QString rejected = path("_Rejected");
     QVector<TransferItem> items{{path("r1.jpg"), rejected, ConflictChoice::KeepBoth},
                                 {path("r2.CR3"), rejected, ConflictChoice::KeepBoth}};
@@ -630,7 +630,8 @@ TEST_F(CullingTest, F_CULL_05_RejectsToRejectedFolderAndUndo) {
     EXPECT_TRUE(QFileInfo::exists(rejected + "/r1.jpg"));
     EXPECT_TRUE(QFileInfo::exists(rejected + "/r1.jpg.xmp"));
     EXPECT_TRUE(QFileInfo::exists(rejected + "/r2.CR3"));
-    EXPECT_TRUE(QFileInfo::exists(path("r2.xmp"))); // shared with r2.JPG
+    EXPECT_TRUE(QFileInfo::exists(rejected + "/r2.xmp")); // the RAW's Adobe sidecar goes along
+    EXPECT_TRUE(QFileInfo::exists(path("r2.JPG")));
     EXPECT_EQ(trash.trashed, 0);
     ops.undo();
     ASSERT_TRUE(lf::test::waitUntil([&] { return !ops.isBusy() && ops.undoStack()->index() == 0; }));

@@ -307,6 +307,12 @@ struct ImageView::Private {
         updateCursor();
     }
 
+    void resetEdrFailure() {
+        edrFailed = false;
+        if (edr)
+            edr->resetFailure();
+    }
+
     void setExtended(bool on) {
         if (on == extendedActive)
             return;
@@ -314,11 +320,13 @@ struct ImageView::Private {
         if (on) {
             ensureEdr();
             edrContainer->setGeometry(q->rect());
+            // Show first: the surface gets its platform window, so the first frame request
+            // below can be scheduled (EdrSurface::requestFrame).
+            edrContainer->show();
             canvas->setExtendedPresentation(true, [this] {
                 if (edr)
                     edr->requestFrame();
             });
-            edrContainer->show();
             overlay = QImage();
             markOverlayDirty(q->rect());
         } else {
@@ -491,7 +499,7 @@ struct ImageView::Private {
         syncGeometry();
         applyBackground();
         quietSync();
-        edrFailed = false; // another screen may support it
+        resetEdrFailure(); // another screen may support it
         updateHdr();
     }
 
@@ -998,7 +1006,7 @@ bool ImageView::event(QEvent* event) {
         d->applyBackground();
         d->updateOutputColorSpace();
         d->quietSync();
-        d->edrFailed = false;
+        d->resetEdrFailure();
         d->updateHdr();
         d->markOverlayDirty(rect());
         break;

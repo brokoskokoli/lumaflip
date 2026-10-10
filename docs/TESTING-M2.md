@@ -58,14 +58,14 @@ tools/package.sh                       # dist/Lumaflip-1.0.0.dmg + .zip + .sha25
       Ausgabe).
 - [ ] `package.sh` meldet „TurboJPEG: …/libturbojpeg.a“ und keine Homebrew-Verweise.
 - [ ] DMG öffnen, Lumaflip nach „Programme“ ziehen, starten: Über Lumaflip zeigt
-      **Version 1.0.0**; „Lizenzen von Drittanbietern…“ listet u. a. Qt, libjpeg-turbo, Sparkle.
+      **Version 1.0.0**; „Lizenzen von Drittanbietern …“ listet u. a. Qt, libjpeg-turbo, Sparkle.
 - [ ] Mit dem **Release-DMG von GitHub** (notarisiert): Gatekeeper zeigt nur „aus dem Internet
       geladen“ (Abschnitt „Auslieferung“ in MANUAL_CHECKS.md).
 
 ## 2. Startbildschirm und „Zuletzt geöffnet“ (F-OPEN-11, F-OPEN-12)
 
 - [ ] Lumaflip ohne Datei starten: Startbildschirm mit Drop-Fläche („Bild oder Ordner hierher
-      ziehen“), „Öffnen…“ und – nach einigen geöffneten Bildern/Ordnern – bis zu **8 zuletzt
+      ziehen“), „Öffnen …“ und – nach einigen geöffneten Bildern/Ordnern – bis zu **8 zuletzt
       geöffnete Elemente**, Dateien und Ordner gemischt, neueste zuerst. Klick öffnet sie.
       (F-OPEN-12)
 - [ ] Ablage → Zuletzt geöffnet zeigt dieselben Einträge; Rechtsklick aufs Dock-Symbol zeigt

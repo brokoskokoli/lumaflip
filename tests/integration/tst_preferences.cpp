@@ -75,16 +75,21 @@ private slots:
         QVERIFY(!dlg.isModal());
 
         // every setting of Settings.h has an editor (input/ keys via slot combos/tuning/shortcuts)
+        QStringList missing;
         for (const QString& k : Settings::knownKeys()) {
             if (k.startsWith(key::ShortcutPrefix))
                 continue;
+            if (k == key::GridThumbSize)
+                continue; // remembered size of the grid, set there with ⌘+/⌘− or pinch (F-GRID-02)
             if (k.startsWith(key::InputPrefix) && !k.contains("Tuning") && k != key::JumpSize) {
-                QVERIFY2(dlg.findChild<QComboBox*>("slot:" + k.mid(int(qstrlen(key::InputPrefix)))),
-                         qPrintable(k));
+                if (!dlg.findChild<QComboBox*>("slot:" + k.mid(int(qstrlen(key::InputPrefix)))))
+                    missing << k;
                 continue;
             }
-            QVERIFY2(dlg.findChild<QWidget*>("setting:" + k), qPrintable(k));
+            if (!dlg.findChild<QWidget*>("setting:" + k))
+                missing << k;
         }
+        QVERIFY2(missing.isEmpty(), qPrintable(missing.join(", ")));
         // rating storage choices (settings only; the feature itself is M3)
         QVERIFY(dlg.findChild<QCheckBox*>(QStringLiteral("setting:") + key::RatingStoreSidecar)->isChecked());
         QVERIFY(
@@ -154,9 +159,8 @@ private slots:
         PreferencesDialog dlg;
         click(dlg.findChild<QPushButton*>("preset:photographer"));
         QCOMPARE(dlg.findChild<QComboBox*>("slot:wheel")->currentData().toString(), QString("zoom"));
-        // Not available before 1.0 (F-CULL-01): the preset skips it.
-        QCOMPARE(dlg.findChild<QComboBox*>("slot:ratingKeys")->currentData().toString(),
-                 QString("cullingOnly"));
+        // Digits = stars everywhere (SPEC F-IN-18 "Ziffern = Sterne"; available since M3, F-CULL-01).
+        QCOMPARE(dlg.findChild<QComboBox*>("slot:ratingKeys")->currentData().toString(), QString("always"));
         click(dlg.findChild<QPushButton*>("preset:windows"));
         QCOMPARE(dlg.findChild<QComboBox*>("slot:wheel")->currentData().toString(), QString("image"));
         QCOMPARE(dlg.findChild<QComboBox*>("slot:esc")->currentData().toString(), QString("exitModeOrClose"));

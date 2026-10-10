@@ -48,7 +48,7 @@ Bauverzeichnisse liegen unter `build/` – nicht löschen, `cmake --fresh` verwe
 - **Release-Werkzeuge:** `tools/package.sh` (verlangt das statische `libturbojpeg.a`,
   `brew install jpeg-turbo`; Sparkle lokal optional), `tools/sparkle_key_check.sh --self-test`
   (läuft in `check.sh`), `tools/appcast_verify.py` – Details in `docs/RELEASING.md`.
-- **Manuelle Abnahme:** `docs/TESTING-M2.md` (v1.0), `docs/TESTING-M1.md`, `docs/MANUAL_CHECKS.md`.
+- **Manuelle Abnahme:** `docs/TESTING-M3.md` (v1.1), `docs/TESTING-M2.md` (v1.0), `docs/TESTING-M1.md`, `docs/MANUAL_CHECKS.md`.
 
 ## Aufbau
 

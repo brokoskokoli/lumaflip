@@ -5,6 +5,7 @@
 
 #include <QHash>
 #include <QStringDecoder>
+#include <QStringEncoder>
 #include <QVector>
 #include <QXmlStreamReader>
 
@@ -255,12 +256,18 @@ std::optional<QString> setProperty(const QString& xml, const QString& nsUri, con
         } else if (e.parent >= 0 && isDescription(doc.elements[e.parent]) && e.nsUri == nsUri &&
                    e.local == localName) {
             if (value && !written) {
-                qsizetype qe = e.tagStart + 1;
-                while (qe < e.tagEnd && !isSpace(xml[qe]) && xml[qe] != u'/' && xml[qe] != u'>')
-                    ++qe;
-                const QString q = xml.mid(e.tagStart + 1, qe - e.tagStart - 1);
-                edits.append(
-                    {e.tagStart, e.endEnd, QStringLiteral("<%1>%2</%1>").arg(q, escapeText(*value))});
+                // Only the content changes: the start tag keeps its attributes and namespace
+                // declarations (`<xmp:Rating xmlns:xmp="…">`, `<Rating xmlns="…">`).
+                if (e.selfClosing) {
+                    qsizetype qe = e.tagStart + 1;
+                    while (qe < e.tagEnd && !isSpace(xml[qe]) && xml[qe] != u'/' && xml[qe] != u'>')
+                        ++qe;
+                    const QString q = xml.mid(e.tagStart + 1, qe - e.tagStart - 1);
+                    edits.append(
+                        {e.tagEnd - 2, e.tagEnd, QStringLiteral(">%1</%2>").arg(escapeText(*value), q)});
+                } else {
+                    edits.append({e.tagEnd, e.endStart, escapeText(*value)});
+                }
                 written = true;
             } else {
                 edits.append({leadingSpace(xml, e.tagStart), e.endEnd, QString()});
@@ -430,27 +437,58 @@ QString newSidecar(const Rating& rating) {
     return writeRating(empty, rating).value_or(empty);
 }
 
-QString decode(const QByteArray& bytes, bool* hadBom) {
-    if (hadBom)
-        *hadBom = false;
+QString wrapPacket(const QString& xml) {
+    if (xml.contains(QLatin1String("<?xpacket")))
+        return xml;
+    return QStringLiteral("<?xpacket begin=\"\uFEFF\" id=\"W5M0MpCehiHzreSzNTczkc9d\"?>\n") + xml +
+           QStringLiteral("<?xpacket end=\"w\"?>");
+}
+
+QString decode(const QByteArray& bytes, Encoding* encoding) {
+    if (encoding)
+        *encoding = Encoding::Utf8;
     if (bytes.startsWith("\xEF\xBB\xBF")) {
-        if (hadBom)
-            *hadBom = true;
+        if (encoding)
+            *encoding = Encoding::Utf8Bom;
         return QString::fromUtf8(bytes.mid(3));
     }
     if (bytes.startsWith("\xFE\xFF") || bytes.startsWith("\xFF\xFE")) {
-        auto dec =
-            QStringDecoder(bytes.startsWith("\xFE\xFF") ? QStringDecoder::Utf16BE : QStringDecoder::Utf16LE);
+        const bool be = bytes.startsWith("\xFE\xFF");
+        if (encoding)
+            *encoding = be ? Encoding::Utf16BE : Encoding::Utf16LE;
+        auto dec = QStringDecoder(be ? QStringDecoder::Utf16BE : QStringDecoder::Utf16LE);
         return dec.decode(bytes.mid(2));
     }
     return QString::fromUtf8(bytes);
 }
 
+QString decode(const QByteArray& bytes, bool* hadBom) {
+    Encoding e = Encoding::Utf8;
+    const QString text = decode(bytes, &e);
+    if (hadBom)
+        *hadBom = e == Encoding::Utf8Bom;
+    return text;
+}
+
+QByteArray encode(const QString& text, Encoding encoding) {
+    switch (encoding) {
+    case Encoding::Utf8:
+        return text.toUtf8();
+    case Encoding::Utf8Bom:
+        return QByteArray("\xEF\xBB\xBF") + text.toUtf8();
+    case Encoding::Utf16LE:
+    case Encoding::Utf16BE: {
+        // Same encoding as the file had (its XML declaration may say "UTF-16").
+        const bool be = encoding == Encoding::Utf16BE;
+        auto enc = QStringEncoder(be ? QStringEncoder::Utf16BE : QStringEncoder::Utf16LE);
+        return QByteArray(be ? "\xFE\xFF" : "\xFF\xFE") + QByteArray(enc.encode(text));
+    }
+    }
+    return text.toUtf8();
+}
+
 QByteArray encode(const QString& text, bool withBom) {
-    QByteArray out = text.toUtf8();
-    if (withBom)
-        out.prepend("\xEF\xBB\xBF");
-    return out;
+    return encode(text, withBom ? Encoding::Utf8Bom : Encoding::Utf8);
 }
 
 QString findPacket(const QByteArray& bytes) {

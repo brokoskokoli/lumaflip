@@ -273,7 +273,7 @@ private slots:
             {Qt::Key_9, cmd, Action::ZoomFit},
             {Qt::Key_F, ctrl | cmd, Action::ToggleFullScreen},
             {Qt::Key_F, shift | cmd, Action::ToggleSlideshow},
-            {Qt::Key_F, cmd, Action::None}, // nothing (was: slideshow)
+            {Qt::Key_F, cmd, Action::FilterByName}, // F-NAV-08 name filter (M3; was: slideshow)
             {Qt::Key_L, cmd, Action::RotateLeft},
             {Qt::Key_R, cmd, Action::RotateRight},
             {Qt::Key_R, shift | cmd, Action::RevealInFinder},

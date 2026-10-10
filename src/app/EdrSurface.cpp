@@ -25,10 +25,19 @@ EdrSurface::~EdrSurface() {
 }
 
 void EdrSurface::requestFrame() {
-    if (m_pending || m_failed)
+    if (m_failed)
+        return;
+    m_dirty = true;
+    // Without a platform window (not shown yet) or while unexposed, requestUpdate() never
+    // delivers an UpdateRequest: the dirty flag is consumed by the next expose instead.
+    if (m_pending || !handle() || !isExposed())
         return;
     m_pending = true;
     requestUpdate();
+}
+
+void EdrSurface::resetFailure() {
+    m_failed = false;
 }
 
 void EdrSurface::releaseSwapChain() {
@@ -70,6 +79,8 @@ bool EdrSurface::ensureSwapChain() {
 }
 
 void EdrSurface::renderFrame() {
+    m_pending = false;
+    m_dirty = false;
     if (!ensureSwapChain())
         return;
     QRhi* rhi = m_canvas->sharedRhi();
@@ -89,7 +100,6 @@ void EdrSurface::renderFrame() {
 bool EdrSurface::event(QEvent* e) {
     switch (e->type()) {
     case QEvent::UpdateRequest:
-        m_pending = false;
         renderFrame();
         return true;
     case QEvent::PlatformSurface:
@@ -104,8 +114,12 @@ bool EdrSurface::event(QEvent* e) {
 }
 
 void EdrSurface::exposeEvent(QExposeEvent*) {
+    // Exposed: draw (also consumes a frame requested before the surface could take update
+    // requests). Unexposed: an outstanding update request may never arrive - forget it.
     if (isExposed())
         renderFrame();
+    else
+        m_pending = false;
 }
 
 } // namespace lf

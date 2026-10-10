@@ -71,7 +71,7 @@
         <translation>&lt;p&gt;Snabb bildvisare för macOS: ett dubbelklick öppnar hela mappen – i samma ordning som i Finder.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli och bidragsgivare&lt;/p&gt;&lt;p&gt;Lumaflip är fri programvara: du kan distribuera och ändra den enligt villkoren i &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; version 3 eller (om du så vill) någon senare version. Lumaflip tillhandahålls utan några som helst garantier.&lt;/p&gt;&lt;p&gt;Källkod: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Använder Qt %3 (LGPLv3).&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Lizenzen von Drittanbietern…</source>
+        <source>Lizenzen von Drittanbietern …</source>
         <translation>Licenser från tredje part…</translation>
     </message>
 </context>
@@ -162,8 +162,8 @@
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
         <extracomment>status bar while a folder with subfolders is read (F-OPEN-08)</extracomment>
         <translation>
-            <numerusform>Läser undermappar … %1 mappar, %n bild</numerusform>
-            <numerusform>Läser undermappar … %1 mappar, %n bilder</numerusform>
+            <numerusform>Läser undermappar… %1 mappar, %n bild</numerusform>
+            <numerusform>Läser undermappar… %1 mappar, %n bilder</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -282,7 +282,7 @@
     <name>lf::CullingController</name>
     <message>
         <source>Bewertung wird gelesen …</source>
-        <translation>Läser betyg …</translation>
+        <translation>Läser betyg…</translation>
     </message>
     <message>
         <source>AUSSORTIEREN</source>
@@ -331,8 +331,8 @@
         </translation>
     </message>
     <message>
-        <source>XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
-        <translation>XMP-sidofiler följer med. ⌘Z ångrar hela steget.</translation>
+        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <translation>Endast de visade bilderna (aktuella filter). XMP-sidofiler och den andra filen i RAW+JPEG-par följer med. ⌘Z ångrar hela steget.</translation>
     </message>
     <message>
         <source>In den Papierkorb</source>
@@ -1055,7 +1055,7 @@
     </message>
     <message>
         <source>Karte wird geladen …</source>
-        <translation>Läser in karta …</translation>
+        <translation>Läser in karta…</translation>
     </message>
     <message>
         <source>Karte anzeigen</source>
@@ -1064,6 +1064,14 @@
     <message>
         <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
         <translation>Läser in ett kartutsnitt från Apple Kartor (internetanslutning)</translation>
+    </message>
+    <message>
+        <source>Karte ausblenden</source>
+        <translation>Göm karta</translation>
+    </message>
+    <message>
+        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)</source>
+        <translation>Läs inte in fler kartutsnitt (förrän nästa klick på ”Visa karta”)</translation>
     </message>
     <message>
         <source>In Karten öffnen</source>
@@ -1179,7 +1187,7 @@
     </message>
     <message>
         <source>Alle Metadaten …</source>
-        <translation>Alla metadata …</translation>
+        <translation>Alla metadata…</translation>
     </message>
     <message>
         <source>Tags</source>
@@ -2636,11 +2644,11 @@
     </message>
     <message>
         <source>Alle verworfenen in den Papierkorb …</source>
-        <translation>Alla förkastade till papperskorgen …</translation>
+        <translation>Alla förkastade till papperskorgen…</translation>
     </message>
     <message>
         <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
-        <translation>Alla förkastade till ”_Rejected” …</translation>
+        <translation>Alla förkastade till ”_Rejected”…</translation>
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
@@ -2660,7 +2668,7 @@
     </message>
     <message>
         <source>Ziele der Schnellablage festlegen …</source>
-        <translation>Ange mål för snabbarkiv …</translation>
+        <translation>Ange mål för snabbarkiv…</translation>
     </message>
     <message>
         <source>Raster</source>
@@ -2985,7 +2993,7 @@
     </message>
     <message>
         <source>Suchen (Feld oder Wert) …</source>
-        <translation>Sök (fält eller värde) …</translation>
+        <translation>Sök (fält eller värde)…</translation>
     </message>
     <message>
         <source>Feld</source>
@@ -3414,6 +3422,10 @@
         <translation>1 bildpixel = 1 punkt</translation>
     </message>
     <message>
+        <source>HDR-Bilder mit erweitertem Dynamikumfang anzeigen</source>
+        <translation>Visa HDR-bilder med utökat dynamiskt omfång</translation>
+    </message>
+    <message>
         <source>Lupe (L gedrückt halten):</source>
         <translation>Lupp (håll ned L):</translation>
     </message>
@@ -3674,7 +3686,7 @@
     </message>
     <message>
         <source>Wählen …</source>
-        <translation>Välj …</translation>
+        <translation>Välj…</translation>
     </message>
     <message>
         <source>Entfernen</source>
@@ -4007,11 +4019,11 @@
     <name>lf::QuickMoveController</name>
     <message>
         <source>Verschieben nach … (1–9, M = wie zuletzt)</source>
-        <translation>Flytta till … (1–9, M = som senast)</translation>
+        <translation>Flytta till… (1–9, M = som senast)</translation>
     </message>
     <message>
         <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
-        <translation>Kopiera till … (1–9, C = som senast)</translation>
+        <translation>Kopiera till… (1–9, C = som senast)</translation>
     </message>
     <message>
         <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
@@ -4190,8 +4202,16 @@
         <translation>Betyg</translation>
     </message>
     <message>
+        <source>Bewertungen</source>
+        <translation>Betyg</translation>
+    </message>
+    <message>
         <source>Die Datei kann nicht gelesen werden.</source>
         <translation>Filen kan inte läsas.</translation>
+    </message>
+    <message>
+        <source>Das XMP im Bild ist beschädigt und wird nicht verändert.</source>
+        <translation>XMP-datan i bilden är skadad och ändras inte.</translation>
     </message>
     <message>
         <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
@@ -4480,7 +4500,7 @@
         <translation>Sorteringen gäller nu för alla mappar</translation>
     </message>
     <message>
-        <source>Zugriff erlauben…</source>
+        <source>Zugriff erlauben …</source>
         <translation>Tillåt åtkomst…</translation>
     </message>
     <message>
@@ -4488,7 +4508,7 @@
         <translation>Göm</translation>
     </message>
     <message>
-        <source>Öffnen…</source>
+        <source>Öffnen …</source>
         <translation>Öppna…</translation>
     </message>
     <message>

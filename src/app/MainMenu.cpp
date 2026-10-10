@@ -345,7 +345,10 @@ void MainMenu::build() {
                 }
             });
     m_windowListStart = m_windowMenu->addSeparator();
-    connect(m_windowMenu, &QMenu::aboutToShow, this, &MainMenu::refreshWindowList);
+    connect(m_windowMenu, &QMenu::aboutToShow, this, [this] {
+        refreshWindowList();
+        refreshState(); // check marks of "Immer im Vordergrund" / "Minimaler Fenstermodus"
+    });
 
     // ---- Hilfe ----
     QMenu* help = m_bar->addMenu(tr("Hilfe"));

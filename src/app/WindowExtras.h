@@ -11,6 +11,7 @@
 
 #include <QObject>
 #include <QPointF>
+#include <QPointer>
 #include <QStringList>
 
 class QLabel;
@@ -72,6 +73,9 @@ private:
     QuickFilterBar* m_filter = nullptr;
     CollectionExtras* m_collection = nullptr;
     QWidget* m_handle = nullptr;
+    // Remembered once: the window's own centralWidget() must not be queried from the
+    // event filter while the window is being destroyed (its layout is already gone).
+    QPointer<QWidget> m_central;
     QLabel* m_shuffleLabel = nullptr;
     QLabel* m_coupledLabel = nullptr;
     QLabel* m_nameLabel = nullptr;

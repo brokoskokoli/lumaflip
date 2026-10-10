@@ -194,12 +194,22 @@ private slots:
         QTRY_COMPARE_WITH_TIMEOUT(w->collection()->count(), 4, 5000);
         // Per window: a second window keeps its own setting; the session remembers it.
         QVERIFY(w->sessionState().value(QStringLiteral("subfolders")).toBool());
-        ViewerWindow* other = app->openPaths({path("Reise")});
-        QVERIFY(other);
+        // A folder is opened asynchronously (openPaths returns only image windows).
+        QVERIFY(!app->openPaths({path("Reise")}));
+        QTRY_COMPARE_WITH_TIMEOUT(app->windows().size(), 2, 5000);
+        ViewerWindow* other = app->windows().last();
+        QVERIFY(other != w);
+        QVERIFY(QTest::qWaitForWindowExposed(other, 5000));
         QVERIFY(waitLoaded(other));
         QVERIFY(!other->collection()->includesSubfolders());
-        toggle->trigger(); // acts on the front window
+        QTRY_COMPARE(app->frontWindow(), other);
         app->menu()->refreshState();
+        QVERIFY(!toggle->isChecked()); // the menu follows the front window
+        toggle->trigger();             // acts on the front window only
+        QVERIFY(other->collection()->includesSubfolders());
+        QVERIFY(w->collection()->includesSubfolders());
+        app->menu()->refreshState();
+        QVERIFY(toggle->isChecked());
     }
 
     // Covers: F-OPEN-09 (menu items with ⌥→ / ⌥←, next/previous sibling folder)

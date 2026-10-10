@@ -92,15 +92,42 @@ void MapPreviewController::setLocation(const std::optional<GeoPoint>& p) {
         setState(State::NoLocation);
         return;
     }
-    if (m_consent)
+    if (m_consent && m_active)
         request();
     else
-        setState(State::Idle); // SPEC 10.3: no network before the click
+        setState(State::Idle); // SPEC 10.3: no network before the click / while hidden
 }
 
 void MapPreviewController::showMap() {
     m_consent = true;
-    if (m_location && (m_state == State::Idle || m_state == State::Failed))
+    if (m_active && m_location && (m_state == State::Idle || m_state == State::Failed))
+        request();
+}
+
+void MapPreviewController::hideMap() {
+    m_consent = false;
+    ++m_token; // a pending snapshot is dropped
+    if (m_provider)
+        m_provider->cancel();
+    m_image = QImage();
+    m_error.clear();
+    setState(m_location ? State::Idle : State::NoLocation);
+}
+
+void MapPreviewController::setActive(bool active) {
+    if (m_active == active)
+        return;
+    m_active = active;
+    if (!active) {
+        if (m_state == State::Loading) {
+            ++m_token;
+            if (m_provider)
+                m_provider->cancel();
+            setState(State::Idle); // loads again when the panel shows up
+        }
+        return;
+    }
+    if (m_consent && m_location && m_state == State::Idle)
         request();
 }
 

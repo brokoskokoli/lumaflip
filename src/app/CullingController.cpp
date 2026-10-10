@@ -7,6 +7,7 @@
 #include "ImageView.h"
 #include "QuickMoveController.h"
 #include "ViewerWindow.h"
+#include "core/BulkRejects.h"
 #include "core/Collection.h"
 #include "core/FileBatch.h"
 #include "core/FileOps.h"
@@ -225,8 +226,13 @@ void CullingController::rate(Action a) {
         return;
     QPointer<CullingController> self(this);
     const QString name = QFileInfo(cur).fileName();
-    RatingStore::instance().changeRating(
-        m_app.fileOps(), cur, [a](const Rating& stored) { return rating::apply(stored, a); },
+    // F-FMT-06: the second file of a RAW+JPEG pair gets the same change (its own sidecar),
+    // in the same undo step.
+    QStringList paths{cur};
+    if (const QString other = m_window.collection()->pairedPath(cur); !other.isEmpty())
+        paths << other;
+    RatingStore::instance().changeRatings(
+        m_app.fileOps(), paths, [a](const Rating& stored) { return rating::apply(stored, a); },
         [self, name](bool ok, const QString& error, const QString& notice, const Rating& now) {
             if (!self)
                 return;
@@ -242,14 +248,6 @@ void CullingController::rate(Action a) {
             if (!self->m_active) // without the overlay: a short confirmation
                 self->m_window.showMessage(tr("%1: %2").arg(name, rating::describe(now)), 1500);
         });
-    // F-FMT-06: the second file of a RAW+JPEG pair gets the same change (its own sidecar).
-    if (const QString other = m_window.collection()->pairedPath(cur); !other.isEmpty())
-        RatingStore::instance().changeRating(
-            m_app.fileOps(), other, [a](const Rating& stored) { return rating::apply(stored, a); },
-            [self](bool ok, const QString& error, const QString&, const Rating&) {
-                if (self && !ok)
-                    self->m_window.showMessage(error, 5000);
-            });
     // F-CULL-03: on to the next image right away (the write runs in the background).
     if (rating::cullingStep(Rating(), a, autoAdvance()).advance)
         m_window.perform(Action::NextImage);
@@ -274,20 +272,24 @@ QString CullingController::filterStatus() const {
 }
 
 void CullingController::bulkRejects(bool toTrash) {
-    const QStringList paths = m_window.collection()->allPaths();
-    if (paths.isEmpty())
+    // Only what the window shows under its filters (name filter, rating filter); the other
+    // file of a shown RAW+JPEG pair goes along (BulkRejects.h).
+    QVector<QPair<QString, QString>> shown;
+    for (const FileEntry& e : m_window.collection()->entries())
+        shown.append({e.path, e.pairedPath});
+    if (shown.isEmpty())
         return;
-    // Ratings of every image (also the ones the filter hides) on a worker.
+    // Ratings fresh from the disk on a worker.
     const RatingOptions o = RatingStore::instance().options();
     QPointer<CullingController> self(this);
-    auto* w = new QFutureWatcher<QStringList>(this);
-    connect(w, &QFutureWatcher<QStringList>::finished, this, [self, w, toTrash] {
-        const QStringList rejects = w->result();
+    auto* w = new QFutureWatcher<bulkrejects::Plan>(this);
+    connect(w, &QFutureWatcher<bulkrejects::Plan>::finished, this, [self, w, toTrash] {
+        const bulkrejects::Plan plan = w->result();
         w->deleteLater();
         if (!self)
             return;
         ViewerWindow& win = self->m_window;
-        if (rejects.isEmpty()) {
+        if (plan.images == 0) {
             win.showMessage(tr("Keine verworfenen Bilder"), 2500);
             return;
         }
@@ -295,40 +297,35 @@ void CullingController::bulkRejects(bool toTrash) {
         box->setObjectName(QStringLiteral("lfBulkRejectsDialog"));
         box->setAttribute(Qt::WA_DeleteOnClose);
         box->setIcon(QMessageBox::Question);
-        box->setText(
-            toTrash ? tr("%n verworfene(s) Bild(er) in den Papierkorb legen?", nullptr, int(rejects.size()))
-                    : tr("%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?", nullptr,
-                         int(rejects.size())));
-        box->setInformativeText(tr("XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig."));
+        box->setText(toTrash ? tr("%n verworfene(s) Bild(er) in den Papierkorb legen?", nullptr, plan.images)
+                             : tr("%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?", nullptr,
+                                  plan.images));
+        box->setInformativeText(tr("Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und "
+                                   "die zweite Datei von RAW+JPEG-Paaren gehen mit. ⌘Z macht den ganzen "
+                                   "Schritt rückgängig."));
         QPushButton* go =
             box->addButton(toTrash ? tr("In den Papierkorb") : tr("Verschieben"), QMessageBox::AcceptRole);
         go->setObjectName(QStringLiteral("lfBulkRejectsConfirm"));
         box->addButton(QMessageBox::Cancel);
         box->setDefaultButton(go);
-        connect(box, &QMessageBox::finished, self, [self, box, go, rejects, toTrash](int) {
+        connect(box, &QMessageBox::finished, self, [self, box, go, plan, toTrash](int) {
             if (!self || box->clickedButton() != go)
                 return;
-            QVector<TransferItem> items;
-            for (const QString& p : rejects)
-                items.append(
-                    {p, QFileInfo(p).dir().filePath(QStringLiteral("_Rejected")), ConflictChoice::Skip});
             const QString undo =
                 toTrash ? tr("Verworfene in den Papierkorb") : tr("Verworfene nach _Rejected");
             self->m_quick->transfer(
-                toTrash ? TransferKind::Trash : TransferKind::Move, items, undo, [toTrash](int n) {
+                toTrash ? TransferKind::Trash : TransferKind::Move, plan.items, undo, [toTrash](int n) {
                     return toTrash ? tr("%n Bild(er) in den Papierkorb gelegt", nullptr, n)
                                    : tr("%n Bild(er) nach „_Rejected“ verschoben", nullptr, n);
                 });
         });
         box->open();
     });
-    w->setFuture(QtConcurrent::run([paths, o] {
-        QStringList rejects;
-        const QHash<QString, Rating> all = ratingio::readMany(paths, o);
-        for (const QString& p : paths)
-            if (all.value(p).isReject())
-                rejects << p;
-        return rejects;
+    w->setFuture(QtConcurrent::run([shown, o, toTrash] {
+        QStringList paths;
+        for (const auto& s : shown)
+            paths << s.first;
+        return bulkrejects::plan(shown, ratingio::readMany(paths, o), toTrash);
     }));
 }
 

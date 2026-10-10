@@ -35,6 +35,8 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QLineEdit>
+#include <QMenu>
+#include <QMouseEvent>
 #include <QPushButton>
 #include <QTemporaryDir>
 #include <QThreadPool>
@@ -117,6 +119,17 @@ class TstM3Views : public QObject {
     static bool waitLoaded(ViewerWindow* w, int ms = 5000) {
         return QTest::qWaitFor([w] { return !w->collection()->isLoading(); }, ms);
     }
+    // Check mark of a menu entry as the user sees it: the menus holding it are opened
+    // (aboutToShow refreshes the state for the front window).
+    bool menuShowsChecked(Action a) {
+        QAction* act = app->menu()->action(a);
+        if (!act)
+            return false;
+        for (QObject* o : act->associatedObjects())
+            if (auto* m = qobject_cast<QMenu*>(o))
+                emit m->aboutToShow();
+        return act->isChecked();
+    }
     ViewerWindow* openAndWait(const QString& file) {
         ViewerWindow* w = app->openPaths({file});
         if (!w || !QTest::qWaitForWindowExposed(w, 5000) || !waitLoaded(w))
@@ -182,7 +195,7 @@ private slots:
         QVERIFY(!w->view()->isVisible());
         QCOMPARE(g->gridModel()->rowCount(), 3);
         QCOMPARE(g->cursorPath(), path("alpha.jpg"));
-        QVERIFY(app->menu()->action(Action::ToggleGrid)->isChecked());
+        QVERIFY(menuShowsChecked(Action::ToggleGrid));
         // ⇧→ extends, ⌘-click toggles.
         QTest::keyClick(g, Qt::Key_Right, Qt::ShiftModifier);
         QCOMPARE(g->selectedPaths(), (QStringList{path("alpha.jpg"), path("beta.jpg")}));
@@ -285,10 +298,16 @@ private slots:
         QTest::keyPress(w->view(), Qt::Key_L);
         QVERIFY(l->isActive());
         QVERIFY(l->widget() && l->widget()->isVisible());
+        // The loupe starts at the real cursor (wherever it is); move it to the center with a
+        // synthesized mouse move (the real cursor is never touched).
+        QMouseEvent move(QEvent::MouseMove, QPointF(at), QPointF(w->view()->mapToGlobal(at)), Qt::NoButton,
+                         Qt::NoButton, Qt::NoModifier);
+        QCoreApplication::sendEvent(w->view(), &move);
+        QCOMPARE(l->widget()->cursorPos(), QPointF(at));
         const loupe::Geometry g = l->widget()->loupeGeometry();
-        QVERIFY(g.overImage || !w->view()->rect().contains(QCursor::pos()));
+        QVERIFY(g.overImage);
         QCOMPARE(l->widget()->magnification(), 2.0); // default "200"
-        QVERIFY(std::abs(g.deviceScale - 2.0) < 1e-6 || !g.overImage);
+        QVERIFY(std::abs(g.deviceScale - 2.0) < 1e-6);
         QTest::keyRelease(w->view(), Qt::Key_L);
         QVERIFY(!l->isActive());
         QVERIFY(!l->widget()->isVisible());
@@ -312,9 +331,10 @@ private slots:
         NativeWindowState s = nativeWindowState(w);
         QVERIFY(s.valid);
         QVERIFY(s.floating);
-        QVERIFY(app->menu()->action(Action::ToggleAlwaysOnTop)->isChecked());
+        QVERIFY(menuShowsChecked(Action::ToggleAlwaysOnTop));
         w->perform(Action::ToggleAlwaysOnTop);
         QVERIFY(!nativeWindowState(w).floating);
+        QVERIFY(!menuShowsChecked(Action::ToggleAlwaysOnTop));
 
         w->perform(Action::ToggleMinimalWindow);
         s = nativeWindowState(w);

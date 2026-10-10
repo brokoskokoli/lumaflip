@@ -14,6 +14,7 @@
 
 #include "FileOps.h"
 #include "Platform.h"
+#include "Sidecars.h"
 
 #include <QCoreApplication>
 #include <QDir>
@@ -206,6 +207,31 @@ Outcome renameWork(const QString& from, const QString& to) {
     return e.isEmpty() ? success(to) : failure(e);
 }
 
+// F-FILE-04 with F-CULL-02: the XMP sidecars of the file follow its new name
+// ("IMG_1.JPG.xmp" -> "Urlaub.JPG.xmp"; "IMG_1.xmp" if the file owns it, Sidecars.h), so
+// the rating stays with the file. A sidecar whose new name is taken stays.
+Outcome renameWithSidecarsWork(const QString& from, const QString& to) {
+    const QStringList sidecarPaths = sidecars::travelling({from});
+    Outcome r = renameWork(from, to);
+    if (!r.ok || sidecarPaths.isEmpty())
+        return r;
+    const QString fromName = QFileInfo(from).fileName();
+    const QFileInfo target(to);
+    for (const QString& s : sidecarPaths) {
+        const QString name = QFileInfo(s).fileName();
+        QString newName;
+        if (name.size() > fromName.size() && name.startsWith(fromName, Qt::CaseInsensitive) &&
+            name[fromName.size()] == u'.')
+            newName = target.fileName() + name.mid(fromName.size());
+        else
+            newName = target.completeBaseName() + QLatin1Char('.') + QFileInfo(s).suffix();
+        const QString dest = target.dir().filePath(newName);
+        if (dest != s && !QFileInfo::exists(dest))
+            fileops::moveNoReplace(s, dest);
+    }
+    return r;
+}
+
 Outcome copyWork(const QString& from, const QString& to) {
     if (const QString e = targetTakenError(from, to); !e.isEmpty())
         return failure(e);
@@ -315,7 +341,7 @@ public:
     std::function<Outcome()> workFor(bool forward) const override {
         const QString a = forward ? m_from : m_to;
         const QString b = forward ? m_to : m_from;
-        return [a, b] { return renameWork(a, b); };
+        return [a, b] { return renameWithSidecarsWork(a, b); };
     }
     std::function<void(const Outcome&)> notifierFor(bool forward) const override {
         const QPointer<FileOps> ops(m_ops);
@@ -609,7 +635,7 @@ struct FileOps::Private {
                         o.noop = true;
                         return o;
                     }
-                    return renameWork(path, target);
+                    return renameWithSidecarsWork(path, target);
                 },
                 [this, path](const Outcome& r) {
                     emit q->fileRenamed(path, r.location);

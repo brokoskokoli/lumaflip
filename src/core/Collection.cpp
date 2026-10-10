@@ -2116,14 +2116,42 @@ void Collection::renamePath(const QString& fromPath, const QString& toPath) {
     }
     const int i = indexOf(fromPath);
     const QString to = normalizedPath(toPath);
+    // F-FMT-06: the shown member of a pair was renamed. If the new name still pairs (e.g. only
+    // the case changed), the partner points to the new name; otherwise the pair ends and the
+    // partner becomes an entry of its own (`freed`, inserted at the end).
+    FileEntry freed;
+    auto repair = [&](FileEntry& e, const QString& oldPath) {
+        if (e.pairedPath.isEmpty())
+            return;
+        const auto pit = d->partners.find(e.pairedPath);
+        if (pit == d->partners.end()) {
+            e.pairedPath.clear();
+            return;
+        }
+        if (!to.isEmpty() && collection::isPairPartner(to, pit->path)) {
+            pit->pairedPath = to;
+            if (d->showRaw.remove(oldPath))
+                d->showRaw.insert(to);
+            return;
+        }
+        freed = std::move(*pit);
+        d->partners.erase(pit);
+        freed.pairedPath.clear();
+        d->showRaw.remove(oldPath);
+        d->showRaw.remove(freed.path);
+        e.pairedPath.clear();
+    };
     if (i < 0 && d->hidden.contains(fromPath)) {
         // Hidden by the rating filter: stays hidden under the new name.
         FileEntry e = d->hidden.take(fromPath);
+        repair(e, fromPath);
         if (!to.isEmpty() && (d->mode == Mode::Files || d->coversFolder(parentOf(to)))) {
             e.path = to;
             e.name = QFileInfo(to).fileName();
             d->hidden.insert(to, e);
         }
+        if (!freed.path.isEmpty())
+            d->insertEntry(std::move(freed), false);
         return;
     }
     if (d->stale == fromPath)
@@ -2139,6 +2167,7 @@ void Collection::renamePath(const QString& fromPath, const QString& toPath) {
     }
     const QString from = d->entries[i].path;
     FileEntry e = d->entries[i];
+    repair(e, from);
     e.path = to;
     e.name = QFileInfo(to).fileName();
     e.finderIconPosition.reset();
@@ -2180,6 +2209,8 @@ void Collection::renamePath(const QString& fromPath, const QString& toPath) {
     emit entriesChanged();
     if (d->current != oldCurrent || wasCurrent)
         emit currentChanged(d->current, currentPath());
+    if (!freed.path.isEmpty())
+        d->insertEntry(std::move(freed), false); // the former partner shows up on its own
 }
 
 void Collection::setRatingReader(RatingReader reader) {

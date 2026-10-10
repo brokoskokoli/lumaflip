@@ -124,6 +124,7 @@ QWidget* targetRow(int slot, QWidget* parent) {
     h->addWidget(choose);
     h->addWidget(clear);
     const QString key = QString::fromLatin1(key::QuickTargetPrefix) + QString::number(slot);
+    row->setObjectName(QStringLiteral("setting:") + key); // the editor of this setting (F-SET-01)
     follow(row, key, [path, clear, slot] {
         const QString t = quickmove::target(slot);
         path->setText(QDir::toNativeSeparators(t));

@@ -1,16 +1,26 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Multilingual UI, GUI part (SPEC 4.16): live language switch (F-I18N-03) and layout in
-// every language (F-I18N-06): menus, the preferences window and the info panel are built
-// in each shipped language; no label, button or check box may be cut off.
+// every language (F-I18N-06): menus, the preferences window, the info panel and the other
+// windows and dialogs are built in each shipped language; no label, button or check box may
+// be cut off.
 //
 // Opens windows: run only with permission on the developer's laptop (CLAUDE.md).
 
 #include "app/Application.h"
+#include "app/CouplingManager.h"
+#include "app/CullingController.h"
+#include "app/DefaultAppDialog.h"
 #include "app/InfoPanel.h"
 #include "app/MainMenu.h"
+#include "app/MetadataDialog.h"
+#include "app/NavigationExtras.h"
 #include "app/PreferencesDialog.h"
+#include "app/QuickMoveController.h"
 #include "app/Translations.h"
+#include "app/ViewerWindow.h"
+#include "app/WindowExtras.h"
 #include "core/ImageProvider.h"
+#include "core/InputBindings.h"
 #include "core/Language.h"
 #include "core/Settings.h"
 
@@ -18,6 +28,8 @@
 #include <QApplication>
 #include <QCheckBox>
 #include <QComboBox>
+#include <QDialog>
+#include <QFile>
 #include <QImage>
 #include <QLabel>
 #include <QMenu>
@@ -200,6 +212,129 @@ private slots:
                     problems << QStringLiteral("row label \"%1\"").arg(label);
             }
         }
+        QVERIFY2(problems.isEmpty(),
+                 qPrintable(lang + QStringLiteral(":\n") + problems.join(QLatin1Char('\n'))));
+    }
+
+    // F-I18N-06: the other windows and dialogs in every language - name conflict, raw
+    // metadata, "Gehe zu Bild", default app, start screen, error card, shortcut overview,
+    // culling key help and "Fenster koppeln": no label or button cut off.
+    void F_I18N_06_dialogsTextsFit_data() { languages_data(); }
+    void F_I18N_06_dialogsTextsFit() {
+        QFETCH(QString, lang);
+        QVERIFY(installTranslations(lang));
+        QStringList problems;
+        auto collect = [&](const QString& what, QWidget* root) {
+            QVERIFY2(root, qPrintable(what));
+            for (const QString& c : clippedTexts(root))
+                problems << what + QStringLiteral(": ") + c;
+        };
+        auto topLevel = [](const QString& name) -> QWidget* {
+            QWidget* found = nullptr;
+            (void)QTest::qWaitFor(
+                [&] {
+                    for (QWidget* w : QApplication::topLevelWidgets())
+                        if (w->objectName() == name && w->isVisible())
+                            found = w;
+                    return found != nullptr;
+                },
+                3000);
+            return found;
+        };
+        const QString image = m_dir.filePath(QStringLiteral("probe.png"));
+        QImage img(64, 48, QImage::Format_RGB32);
+        img.fill(Qt::darkCyan);
+        QVERIFY(img.save(image));
+        const QString broken = m_dir.filePath(QStringLiteral("zz_broken.jpg"));
+        {
+            QFile f(broken);
+            QVERIFY(f.open(QIODevice::WriteOnly));
+            f.write("not a jpeg");
+        }
+
+        // Name conflict (F-FILE-11), for a RAW+JPEG pair (the longest texts).
+        QuickMoveController::askConflict(nullptr,
+                                         {QStringLiteral("IMG_0001.CR3"), QStringLiteral("IMG_0001.JPG")},
+                                         m_dir.path(), 3, [](std::optional<ConflictChoice>, bool) {});
+        QWidget* conflict = topLevel(QStringLiteral("lfConflictDialog"));
+        collect(QStringLiteral("conflict"), conflict);
+        if (conflict)
+            conflict->close();
+
+        // Raw metadata window (F-INFO-05).
+        MetadataDialog meta;
+        meta.setPath(image);
+        meta.show();
+        QVERIFY(QTest::qWaitForWindowExposed(&meta));
+        QTRY_VERIFY(!meta.isLoading());
+        collect(QStringLiteral("metadata"), &meta);
+        meta.close();
+
+        // Default app (F-MAC-04).
+        DefaultAppDialog defaults({QStringLiteral("public.jpeg"), QStringLiteral("public.png"),
+                                   QStringLiteral("public.heic"), QStringLiteral("com.adobe.raw-image")});
+        defaults.show();
+        QVERIFY(QTest::qWaitForWindowExposed(&defaults));
+        collect(QStringLiteral("default app"), &defaults);
+        defaults.close();
+
+        Application app;
+        // Start screen (empty window).
+        ViewerWindow* empty = app.newWindow();
+        QVERIFY(empty && QTest::qWaitForWindowExposed(empty));
+        collect(QStringLiteral("start screen"), empty);
+
+        // "Gehe zu Bild" (F-NAV-06) and the culling key help (F-CULL-06).
+        ViewerWindow* w = app.openPaths({image});
+        QVERIFY(w && QTest::qWaitForWindowExposed(w));
+        QTRY_COMPARE(w->shownPath(), image);
+        w->resize(900, 640);
+        w->perform(Action::GoToImage);
+        QDialog* goTo = w->extras()->navigation()->goToDialog();
+        QVERIFY(goTo && QTest::qWaitForWindowExposed(goTo));
+        collect(QStringLiteral("go to"), goTo);
+        goTo->close();
+        w->culling()->setActive(true);
+        QTRY_VERIFY(w->culling()->overlay() && w->culling()->overlay()->isVisible());
+        {
+            // The overlay paints its help lines; each must fit the overlay (same font and
+            // margins as CullingOverlay::paintEvent).
+            QWidget* overlay = w->culling()->overlay();
+            QFont hf = overlay->font();
+            hf.setPointSizeF(hf.pointSizeF() * 1.25);
+            const QFontMetrics fh(hf);
+            for (const char* line :
+                 {"0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg",
+                  "← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden"}) {
+                const QString text = QCoreApplication::translate("lf::CullingController", line);
+                if (fh.horizontalAdvance(text) + 2 * 10 + 8 > overlay->width() - 32)
+                    problems << QStringLiteral("culling help \"%1\" (%2 > %3 px)")
+                                    .arg(text)
+                                    .arg(fh.horizontalAdvance(text) + 28)
+                                    .arg(overlay->width() - 32);
+            }
+        }
+        w->culling()->setActive(false);
+
+        // Error card (F-FMT-02).
+        ViewerWindow* bad = app.openPaths({broken});
+        QVERIFY(bad && QTest::qWaitForWindowExposed(bad));
+        bad->resize(900, 640);
+        QWidget* card = nullptr;
+        QTRY_VERIFY((card = bad->findChild<QWidget*>(QStringLiteral("lfErrorCard"))) && card->isVisible());
+        collect(QStringLiteral("error card"), card);
+
+        // Shortcut overview (F-IN-*).
+        app.showShortcuts();
+        collect(QStringLiteral("shortcuts"), topLevel(QStringLiteral("lfShortcutsDialog")));
+
+        // "Fenster koppeln" (F-WIN-*): needs two windows.
+        CouplingManager::of(app).showDialog(w);
+        QWidget* couple = topLevel(QStringLiteral("lfCoupleDialog"));
+        collect(QStringLiteral("couple windows"), couple);
+        if (couple)
+            couple->close();
+
         QVERIFY2(problems.isEmpty(),
                  qPrintable(lang + QStringLiteral(":\n") + problems.join(QLatin1Char('\n'))));
     }

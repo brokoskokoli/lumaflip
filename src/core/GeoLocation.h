@@ -3,8 +3,10 @@
 
 // GPS position of an image (F-INFO-04): display texts, the "In Karten öffnen" link and the
 // mini map. SPEC 10.3: map tiles are network traffic and are only loaded after the user
-// asked for them (click on "Karte anzeigen"). MapPreviewController enforces that: it
-// never asks its MapSnapshotProvider before showMap() was called.
+// asked for them (click on "Karte anzeigen"), only while the info panel is visible and only
+// for the image it shows; "Karte ausblenden" takes the consent back. MapPreviewController
+// enforces that: it never asks its MapSnapshotProvider before showMap(), after hideMap() or
+// while it is inactive (setActive(false): the panel is hidden).
 
 #include "LocaleFormat.h"
 
@@ -73,7 +75,15 @@ public:
     // controller (one window) from now on, so the next images with a position load their
     // map without another click; it is not stored.
     void showMap();
+    // "Karte ausblenden": the consent is taken back, a pending request is dropped and the
+    // map goes; the next image needs a click again.
+    void hideMap();
     bool hasConsent() const { return m_consent; }
+    // Whether the map may be requested at all (the info panel is visible). Inactive: no
+    // request, a pending one is dropped; becoming active again (with consent) loads the map
+    // of the current position. Default: active.
+    void setActive(bool active);
+    bool isActive() const { return m_active; }
     void setSize(QSize pointSize, qreal devicePixelRatio);
 
     State state() const { return m_state; }
@@ -91,6 +101,7 @@ private:
     MapSnapshotProvider* m_provider = nullptr;
     std::optional<GeoPoint> m_location;
     bool m_consent = false;
+    bool m_active = true;
     State m_state = State::NoLocation;
     QImage m_image;
     QString m_error;

@@ -71,7 +71,7 @@
         <translation>&lt;p&gt;Szybka przeglądarka obrazów dla macOS: dwukrotne kliknięcie otwiera cały folder – w tej samej kolejności co w Finderze.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli i współtwórcy&lt;/p&gt;&lt;p&gt;Lumaflip jest wolnym oprogramowaniem: możesz je rozpowszechniać i modyfikować na warunkach licencji &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; w wersji 3 lub (według własnego wyboru) dowolnej późniejszej wersji. Lumaflip jest udostępniany bez żadnej gwarancji.&lt;/p&gt;&lt;p&gt;Kod źródłowy: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Używa Qt %3 (LGPLv3).&lt;/p&gt;</translation>
     </message>
     <message>
-        <source>Lizenzen von Drittanbietern…</source>
+        <source>Lizenzen von Drittanbietern …</source>
         <translation>Licencje innych firm…</translation>
     </message>
 </context>
@@ -285,7 +285,7 @@
     <name>lf::CullingController</name>
     <message>
         <source>Bewertung wird gelesen …</source>
-        <translation>Odczyt oceny …</translation>
+        <translation>Odczyt oceny…</translation>
     </message>
     <message>
         <source>AUSSORTIEREN</source>
@@ -336,8 +336,8 @@
         </translation>
     </message>
     <message>
-        <source>XMP-Zusatzdateien gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
-        <translation>Pliki pomocnicze XMP są przenoszone razem z nimi. ⌘Z cofa cały krok.</translation>
+        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <translation>Tylko wyświetlane obrazy (bieżące filtry). Pliki pomocnicze XMP i drugi plik par RAW+JPEG są przenoszone razem z nimi. ⌘Z cofa cały krok.</translation>
     </message>
     <message>
         <source>In den Papierkorb</source>
@@ -1073,6 +1073,14 @@
     <message>
         <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
         <translation>Wczytuje fragment mapy z Apple Mapy (połączenie z internetem)</translation>
+    </message>
+    <message>
+        <source>Karte ausblenden</source>
+        <translation>Ukryj mapę</translation>
+    </message>
+    <message>
+        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)</source>
+        <translation>Nie wczytuj już fragmentów mapy (do następnego kliknięcia „Pokaż mapę”)</translation>
     </message>
     <message>
         <source>In Karten öffnen</source>
@@ -2645,11 +2653,11 @@
     </message>
     <message>
         <source>Alle verworfenen in den Papierkorb …</source>
-        <translation>Wszystkie odrzucone do kosza …</translation>
+        <translation>Wszystkie odrzucone do kosza…</translation>
     </message>
     <message>
         <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
-        <translation>Wszystkie odrzucone do „_Rejected” …</translation>
+        <translation>Wszystkie odrzucone do „_Rejected”…</translation>
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
@@ -2669,7 +2677,7 @@
     </message>
     <message>
         <source>Ziele der Schnellablage festlegen …</source>
-        <translation>Ustaw cele odkładania …</translation>
+        <translation>Ustaw cele odkładania…</translation>
     </message>
     <message>
         <source>Raster</source>
@@ -3430,6 +3438,10 @@
         <translation>1 piksel obrazu = 1 punkt</translation>
     </message>
     <message>
+        <source>HDR-Bilder mit erweitertem Dynamikumfang anzeigen</source>
+        <translation>Wyświetlaj obrazy HDR z rozszerzonym zakresem dynamiki</translation>
+    </message>
+    <message>
         <source>Lupe (L gedrückt halten):</source>
         <translation>Lupa (przytrzymaj L):</translation>
     </message>
@@ -3691,7 +3703,7 @@
     </message>
     <message>
         <source>Wählen …</source>
-        <translation>Wybierz …</translation>
+        <translation>Wybierz…</translation>
     </message>
     <message>
         <source>Entfernen</source>
@@ -4024,11 +4036,11 @@
     <name>lf::QuickMoveController</name>
     <message>
         <source>Verschieben nach … (1–9, M = wie zuletzt)</source>
-        <translation>Przenieś do … (1–9, M = jak ostatnio)</translation>
+        <translation>Przenieś do… (1–9, M = jak ostatnio)</translation>
     </message>
     <message>
         <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
-        <translation>Kopiuj do … (1–9, C = jak ostatnio)</translation>
+        <translation>Kopiuj do… (1–9, C = jak ostatnio)</translation>
     </message>
     <message>
         <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
@@ -4209,8 +4221,16 @@
         <translation>Ocena</translation>
     </message>
     <message>
+        <source>Bewertungen</source>
+        <translation>Oceny</translation>
+    </message>
+    <message>
         <source>Die Datei kann nicht gelesen werden.</source>
         <translation>Nie można odczytać pliku.</translation>
+    </message>
+    <message>
+        <source>Das XMP im Bild ist beschädigt und wird nicht verändert.</source>
+        <translation>XMP w obrazie jest uszkodzony i nie zostanie zmieniony.</translation>
     </message>
     <message>
         <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
@@ -4499,7 +4519,7 @@
         <translation>Sortowanie obowiązuje teraz dla wszystkich folderów</translation>
     </message>
     <message>
-        <source>Zugriff erlauben…</source>
+        <source>Zugriff erlauben …</source>
         <translation>Zezwól na dostęp…</translation>
     </message>
     <message>
@@ -4507,7 +4527,7 @@
         <translation>Ukryj</translation>
     </message>
     <message>
-        <source>Öffnen…</source>
+        <source>Öffnen …</source>
         <translation>Otwórz…</translation>
     </message>
     <message>
