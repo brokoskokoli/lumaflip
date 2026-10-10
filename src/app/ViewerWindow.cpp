@@ -14,6 +14,7 @@
 #include "RenameController.h"
 #include "StartScreenRecent.h"
 #include "WindowExtras.h"
+#include "WindowIntegration.h"
 #include "WindowPanels.h"
 #include "WindowTabbing.h"
 #include "core/Collection.h"
@@ -24,6 +25,7 @@
 #include "core/Platform.h"
 #include "core/Settings.h"
 #include "core/StartupTrace.h"
+#include "core/VirtualPath.h"
 
 #include <QApplication>
 #include <QClipboard>
@@ -84,8 +86,9 @@ int longEdge(const QImage& img) {
     return std::max(img.width(), img.height());
 }
 
+// F-OPEN-10: images inside an archive/PDF show as "Band 1.cbz › 012.jpg".
 QString fileName(const QString& path) {
-    return QFileInfo(path).fileName();
+    return vpath::displayName(path);
 }
 
 SortKey sortKeyFromId(const QString& id) {
@@ -379,6 +382,10 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
         const QString cur = currentPath();
         // Whatever stage is shown (also Full): the GUI thread only samples a thumbnail, the
         // image data for other apps is scaled on a worker (DragOut.h).
+        if (vpath::isMember(cur)) { // F-OPEN-10: no file of its own
+            perform(Action::DragOut);
+            return;
+        }
         if (!cur.isEmpty() && cur == m_shownPath && !m_shownFailed && m_view->image())
             startDragOut(m_view, cur, m_view->image()->image);
     });
@@ -388,6 +395,18 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     m_culling = new CullingController(*this, m_app); // M3: ratings, culling, quick move
     m_extras = new WindowExtras(*this, m_app);       // M3: grid, compare, loupe, window modes …
     m_hdr = new HdrController(*this);                // M3: HDR toggle, badge, exposure
+    m_integration = new WindowIntegration(*this, m_app); // M4: archives, Live Text, Quick Look …
+    connect(this, &ViewerWindow::imageShown, m_integration,
+            [this](const QString& path) { m_integration->imageShown(path); });
+    // F-OPEN-10: an archive/PDF that cannot be read or holds no images.
+    connect(m_collection, &Collection::containerFailed, this,
+            [this](const QString& container, const QString& error) {
+                m_view->showError(tr("„%1“ kann nicht geöffnet werden").arg(QFileInfo(container).fileName()),
+                                  error);
+                m_shownPath.clear();
+                m_shownFailed = true;
+                updateTitle();
+            });
 
     m_app.registerWindow(this);
     updateTitle();
@@ -502,6 +521,11 @@ void ViewerWindow::openPaths(const QStringList& paths) {
 }
 
 void ViewerWindow::openFile(const QString& path) {
+    if (vpath::isContainerPath(path) || vpath::isMember(path)) {
+        openContainer(vpath::containerOf(path),
+                      vpath::isMember(path) ? vpath::split(path)->member : QString());
+        return;
+    }
     beginOpen();
     prepareOpen();
     // F-WIN-09: a folder that another window already enumerated is not read again.
@@ -526,10 +550,26 @@ void ViewerWindow::openFile(const QString& path) {
     m_collection->openFile(path);
 }
 
-void ViewerWindow::openFiles(const QStringList& paths, bool keepAsFileSet) {
+void ViewerWindow::openContainer(const QString& containerPath, const QString& member) {
     beginOpen();
     prepareOpen();
-    m_collection->openFiles(paths, keepAsFileSet);
+    m_collection->openContainer(containerPath, member); // F-OPEN-10
+}
+
+void ViewerWindow::openFiles(const QStringList& paths, bool keepAsFileSet) {
+    // F-OPEN-10: archives/PDFs cannot be part of a file set; a single one opens like a folder,
+    // next to images only the images open.
+    QStringList files;
+    QStringList containers;
+    for (const QString& p : paths)
+        (vpath::isContainerPath(p) ? containers : files) << p;
+    if (files.isEmpty() && !containers.isEmpty()) {
+        openFile(containers.first());
+        return;
+    }
+    beginOpen();
+    prepareOpen();
+    m_collection->openFiles(files, keepAsFileSet);
 }
 
 void ViewerWindow::openFolder(const QString& folderPath, bool selectLast) {
@@ -574,7 +614,9 @@ void ViewerWindow::copyViewFrom(const ViewerWindow& other) {
 QVariantMap ViewerWindow::sessionState() const {
     QVariantMap m;
     const Collection* c = m_collection;
-    if (c->isFolderCollection()) {
+    if (c->isContainerCollection()) {
+        m.insert(QStringLiteral("container"), c->containerPath()); // F-OPEN-10
+    } else if (c->isFolderCollection()) {
         m.insert(QStringLiteral("folder"), c->folderPath());
     } else {
         QStringList files;
@@ -602,6 +644,14 @@ bool ViewerWindow::restoreSessionState(const QVariantMap& state, const QStringLi
     for (const QString& f : state.value(QStringLiteral("files")).toStringList())
         if (existing.contains(f))
             files << f;
+    // F-OPEN-10: an archive or PDF, with its current image.
+    if (const QString container = state.value(QStringLiteral("container")).toString(); !container.isEmpty()) {
+        if (!existing.contains(container))
+            return false;
+        const auto member = vpath::split(current);
+        openContainer(container, member && member->container == container ? member->member : QString());
+        return true;
+    }
     const bool subfolders = state.value(QStringLiteral("subfolders")).toBool(); // F-OPEN-08
     m_collection->setIncludeSubfolders(subfolders && !folder.isEmpty());
     if (!folder.isEmpty() && subfolders && existing.contains(folder) &&
@@ -645,6 +695,8 @@ QString ViewerWindow::currentPath() const {
 
 void ViewerWindow::onCurrentChanged(int, const QString& path) {
     mediaCurrentChanged(path);
+    if (m_integration)
+        m_integration->currentChanged(path);
     updateTitle();
     updateStatus();
     if (path.isEmpty()) {
@@ -895,7 +947,7 @@ void ViewerWindow::updateTitle() {
                         .arg(n);
         title += folderSuffix;
     }
-    setWindowFilePath(cur); // proxy icon in the title bar
+    setWindowFilePath(vpath::containerOf(cur)); // proxy icon in the title bar (F-OPEN-10: the archive)
     if (title != windowTitle()) {
         setWindowTitle(title);
         emit titleChanged();
@@ -994,6 +1046,8 @@ QString ViewerWindow::statusText() const {
     if (const QString filter = m_culling->filterStatus(); !filter.isEmpty())
         parts << filter;              // F-CULL-04
     parts << m_extras->statusParts(); // M3: name filter, shuffle, coupling
+    if (const QString live = m_integration->statusText(); !live.isEmpty())
+        parts << live; // F-MAC-06
     return parts.join(QStringLiteral(" · "));
 }
 
@@ -1214,7 +1268,7 @@ void ViewerWindow::handleInput(InputEvent ev, QPointF pos) {
     if (handleSlideshowInput(ev))
         return; // F-SLIDE-01: Space pauses, 1–9 set the interval
     const InputBindings& b = m_app.bindings();
-    const Action a = b.resolve(ev);
+    const Action a = m_integration->adjustInput(b.resolve(ev), ev); // F-OPEN-10: right to left
     if (a == Action::None)
         return;
     if (ev.kind == InputKind::Wheel) {
@@ -1254,6 +1308,8 @@ void ViewerWindow::handleInput(InputEvent ev, QPointF pos) {
 bool ViewerWindow::perform(Action a, QPointF pos) {
     if (m_app.intercepted(this, a))
         return true;
+    if (m_integration && m_integration->perform(a))
+        return true; // M4: container guard, Quick Look, Live Text, wallpaper, action log
     if (m_extras->perform(a, pos))
         return true; // M3: grid, compare, loupe, go to, shuffle, name filter, window modes
     const QPointF anchor = pos.x() >= 0 ? pos : QPointF(m_view->width() / 2.0, m_view->height() / 2.0);

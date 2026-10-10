@@ -26,6 +26,7 @@
 //
 // All functions are thread-safe (no shared state).
 
+#include "Archive.h"
 #include "Decoder.h"
 
 #include <QByteArray>
@@ -36,7 +37,7 @@
 
 namespace lf::ipc {
 
-inline constexpr quint32 kProtocolVersion = 2;
+inline constexpr quint32 kProtocolVersion = 3; // 3: archive operations (F-OPEN-10)
 // Upper bound of one frame (metadata, ICC profiles, error texts - never pixels).
 inline constexpr quint32 kMaxFrameBytes = 64u * 1024 * 1024;
 
@@ -46,6 +47,9 @@ enum class Op : quint8 {
     Decode = 3,   // Decoder::decode (pixels via shared memory)
     Metadata = 4, // Decoder::metadata
     Deliver = 5,  // copy the image of the preceding Decode (same id) into Request::shm
+    // F-OPEN-10 (M4): archives are parsed in the helper too (archive::listLocal/readLocal).
+    ArchiveList = 6, // members of the archive/PDF `path` -> Response::members
+    ArchiveRead = 7, // bytes of member `member` of `path` -> Response::data (<= kMaxMemberBytes)
     // Only honoured when the helper runs with LF_DECODER_HELPER_TEST_OPS=1 (tests). Each
     // answers ok = the operation succeeded (all of them must fail in the sandbox):
     TestCrash = 100,      // abort()
@@ -64,6 +68,7 @@ struct Request {
     QString path;
     DecodeRequest decode;
     QByteArray shm; // Deliver: name of the shared memory object created by the app
+    QString member; // ArchiveRead
 };
 
 // Pixel buffer description of a decoded image (the bytes are in shared memory).
@@ -90,6 +95,10 @@ struct Response {
     PixelHeader pixels;
     // Metadata
     Metadata metadata;
+    // ArchiveList / ArchiveRead (F-OPEN-10); at most archive::kMaxMembers members and
+    // archive::kMaxMemberBytes bytes (decodeResponse() rejects more)
+    QVector<archive::Member> members;
+    QByteArray data;
     // Decode, app side only (not serialized): the pixels, mapped by DecoderHelperPool::call()
     // while it still holds the helper (its next request would remove the shared memory).
     QImage image;

@@ -55,6 +55,15 @@ public:
     // F-OPEN-05: folder contents, current = first (or the last image with `selectLast`,
     // used when flipping backwards into the previous folder, F-NAV-03 "nextFolder").
     void openFolder(const QString& folderPath, bool selectLast = false);
+    // F-OPEN-10 (M4): the images inside an archive (ZIP/CBZ, RAR/CBR, 7z/CB7) or the pages
+    // of a PDF, listed on a worker (Archive.h) in Finder order of the member paths (PDF: page
+    // order) unless a manual sort is chosen. `selectMember` (name inside the container) is
+    // shown at once and stays current; else the first image. Entry paths are member paths
+    // (VirtualPath.h). Never watched; insertPath()/renamePath() do not apply.
+    // containerFailed() if the container cannot be read or holds no images.
+    void openContainer(const QString& containerPath, const QString& selectMember = QString());
+    QString containerPath() const; // empty unless a container collection
+    bool isContainerCollection() const;
     // F-WIN-09 / F-WIN-03: take over the state of `other` (input, entries, sort mode,
     // current file) without enumerating the folder again. If `other` is still
     // loading, the same load is started for this collection.
@@ -204,6 +213,8 @@ signals:
     void loadProgress(int foldersRead, int imagesFound);
     // F-OPEN-08: the recursive load stopped at the image limit (setMaxTreeImages()).
     void treeLimitReached(int images);
+    // F-OPEN-10: the archive/PDF cannot be read or holds no images (`error`, user facing).
+    void containerFailed(const QString& containerPath, const QString& error);
 
 private:
     struct Private;

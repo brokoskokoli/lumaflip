@@ -2,6 +2,7 @@
 // registerPortableDecoders() (declared in QtImageDecoder.h). Separate translation unit so
 // that using the decoders alone does not pull in the DecoderRegistry implementation.
 #include "DecoderHelper.h"
+#include "PdfDocument.h"
 #include "PsbDecoder.h"
 #include "QtImageDecoder.h"
 #include "ResvgDecoder.h"
@@ -27,6 +28,9 @@ void registerPortableDecoders(DecoderRegistry& registry) {
     registry.addSupportedExtensions({QStringLiteral("xcf"), QStringLiteral("psb")});
     registry.addSupportedExtensions({QStringLiteral("svg"), QStringLiteral("svgz")});
     registry.addSupportedExtensions(QtImageDecoder::supportedExtensions());
+    // F-OPEN-10 (M4): PDF pages browsed like a folder (member paths only; "pdf" files in a
+    // folder stay excluded, ImageFormats.cpp). Rendered in the helper as well.
+    registry.add(isolatedDecoder(std::make_shared<pdf::PdfPageDecoder>()));
 }
 
 } // namespace lf

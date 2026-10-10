@@ -74,6 +74,22 @@ else()
   message(STATUS "resvg not found or disabled: SVG via QtSvg only (SVG Tiny 1.2)")
   target_compile_definitions(lf_core PRIVATE LF_HAVE_RESVG=0)
 endif()
+# F-OPEN-10 (M4): RAR/CBR and 7z/CB7 via libarchive (core/LibArchive.cpp). macOS ships it
+# (/usr/lib/libarchive.2.dylib; the SDK has libarchive.tbd but no header, so the few C
+# functions are declared in LibArchive.cpp). Elsewhere it is used when the system has it.
+if(APPLE AND NOT LF_GENERIC_PLATFORM)
+  set(LF_LIBARCHIVE_LIB archive)
+else()
+  find_library(LF_LIBARCHIVE_LIB NAMES archive)
+endif()
+if(LF_LIBARCHIVE_LIB)
+  message(STATUS "libarchive: ${LF_LIBARCHIVE_LIB} (RAR/CBR, 7z/CB7)")
+  target_link_libraries(lf_core PRIVATE ${LF_LIBARCHIVE_LIB})
+  target_compile_definitions(lf_core PRIVATE LF_HAVE_LIBARCHIVE=1)
+else()
+  message(STATUS "libarchive not found: RAR/CBR and 7z/CB7 archives are not supported")
+  target_compile_definitions(lf_core PRIVATE LF_HAVE_LIBARCHIVE=0)
+endif()
 list(JOIN LF_STATIC_COMPONENTS ",\n  " _lf_static_json)
 file(CONFIGURE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/static-components.json"
      CONTENT "[\n  ${_lf_static_json}\n]\n" @ONLY)
@@ -150,6 +166,66 @@ if(APPLE)
   target_compile_options(lf_ui PRIVATE $<$<COMPILE_LANGUAGE:OBJCXX>:-fobjc-arc>)
   # F-INFO-04: mini map in the info panel (MKMapSnapshotter, only after a click).
   target_link_libraries(lf_ui PUBLIC "-framework MapKit" "-framework CoreLocation")
+  # F-MAC-07: Quick Look panel (QLPreviewPanel); F-FILE-09 wallpaper uses AppKit only.
+  target_link_libraries(lf_ui PUBLIC "-framework Quartz")
+  # F-MAC-06: Live Text needs VisionKit's ImageAnalyzer / ImageAnalysisOverlayView, which are
+  # Swift-only API. app/LiveTextBridge.swift is compiled with swiftc into one object of lf_ui
+  # (no Swift language support in the project needed); the Swift runtime is part of macOS
+  # (/usr/lib/swift), the linker finds its libraries through autolinking.
+  set(LF_ENABLE_LIVETEXT "AUTO" CACHE STRING "Live Text via VisionKit (needs swiftc): AUTO, ON or OFF")
+  set_property(CACHE LF_ENABLE_LIVETEXT PROPERTY STRINGS AUTO ON OFF)
+  find_program(LF_SWIFTC swiftc)
+  list(LENGTH CMAKE_OSX_ARCHITECTURES _lf_arch_count)
+  set(LF_LIVETEXT OFF)
+  if(NOT LF_ENABLE_LIVETEXT STREQUAL "OFF" AND LF_SWIFTC AND _lf_arch_count LESS_EQUAL 1)
+    set(LF_LIVETEXT ON)
+  elseif(LF_ENABLE_LIVETEXT STREQUAL "ON")
+    message(FATAL_ERROR "LF_ENABLE_LIVETEXT=ON needs swiftc and a single architecture")
+  endif()
+  if(LF_LIVETEXT)
+    if(CMAKE_OSX_ARCHITECTURES)
+      set(_lf_swift_arch "${CMAKE_OSX_ARCHITECTURES}")
+    else()
+      set(_lf_swift_arch "${CMAKE_HOST_SYSTEM_PROCESSOR}")
+    endif()
+    if(CMAKE_OSX_SYSROOT)
+      set(_lf_sdk "${CMAKE_OSX_SYSROOT}")
+    else()
+      execute_process(COMMAND xcrun --show-sdk-path OUTPUT_VARIABLE _lf_sdk OUTPUT_STRIP_TRAILING_WHITESPACE)
+    endif()
+    set(_lf_swift_min "${CMAKE_OSX_DEPLOYMENT_TARGET}")
+    if(NOT _lf_swift_min)
+      set(_lf_swift_min "15.0") # LSMinimumSystemVersion (Info.plist.in)
+    endif()
+    # /usr/bin/swiftc is a shim: the toolchain (with lib/swift/macosx) comes from xcrun.
+    execute_process(COMMAND xcrun --find swiftc OUTPUT_VARIABLE _lf_swift_real
+                    OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET)
+    if(NOT _lf_swift_real)
+      set(_lf_swift_real "${LF_SWIFTC}")
+    endif()
+    get_filename_component(_lf_swift_bin "${_lf_swift_real}" DIRECTORY)
+    set(_lf_swift_src "${CMAKE_CURRENT_SOURCE_DIR}/app/LiveTextBridge.swift")
+    set(_lf_swift_obj "${CMAKE_CURRENT_BINARY_DIR}/LiveTextBridge.o")
+    add_custom_command(OUTPUT "${_lf_swift_obj}"
+      COMMAND "${LF_SWIFTC}" -parse-as-library -swift-version 5 -module-name LumaflipLiveText
+              -target "${_lf_swift_arch}-apple-macos${_lf_swift_min}" -sdk "${_lf_sdk}"
+              -O -c "${_lf_swift_src}" -o "${_lf_swift_obj}"
+      DEPENDS "${_lf_swift_src}"
+      COMMENT "Compiling LiveTextBridge.swift (F-MAC-06)"
+      VERBATIM)
+    set_source_files_properties("${_lf_swift_obj}" PROPERTIES EXTERNAL_OBJECT TRUE GENERATED TRUE)
+    target_sources(lf_ui PRIVATE "${_lf_swift_obj}")
+    target_compile_definitions(lf_ui PRIVATE LF_HAVE_LIVETEXT=1)
+    target_link_directories(lf_ui PUBLIC "${_lf_sdk}/usr/lib/swift")
+    if(IS_DIRECTORY "${_lf_swift_bin}/../lib/swift/macosx")
+      target_link_directories(lf_ui PUBLIC "${_lf_swift_bin}/../lib/swift/macosx")
+    endif()
+    target_link_options(lf_ui PUBLIC "LINKER:-rpath,/usr/lib/swift")
+    message(STATUS "Live Text (VisionKit via ${LF_SWIFTC}): on")
+  else()
+    target_compile_definitions(lf_ui PRIVATE LF_HAVE_LIVETEXT=0)
+    message(STATUS "Live Text: off (no swiftc or several architectures)")
+  endif()
 endif()
 # F-MAC-08: Sparkle 2 (see LF_ENABLE_SPARKLE in the top-level CMakeLists.txt).
 if(LF_SPARKLE)
@@ -181,7 +257,9 @@ set_source_files_properties(${LF_STATIC_MANIFEST} PROPERTIES MACOSX_PACKAGE_LOCA
 # System Settings, CFBundleLocalizations in Info.plist.in) and native panels follow.
 set_source_files_properties(${LF_QM_FILES} PROPERTIES MACOSX_PACKAGE_LOCATION Resources/translations
                                                       GENERATED TRUE)
-file(GLOB LF_LPROJ_STRINGS CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/packaging/macos/lproj/*.lproj/InfoPlist.strings")
+# ServicesMenu.strings: the title of the "In Lumaflip öffnen" service (F-MAC-07).
+file(GLOB LF_LPROJ_STRINGS CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/packaging/macos/lproj/*.lproj/InfoPlist.strings"
+     "${PROJECT_SOURCE_DIR}/packaging/macos/lproj/*.lproj/ServicesMenu.strings")
 foreach(_strings IN LISTS LF_LPROJ_STRINGS)
   get_filename_component(_lproj "${_strings}" DIRECTORY)
   get_filename_component(_lproj "${_lproj}" NAME)

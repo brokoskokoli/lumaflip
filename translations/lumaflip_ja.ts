@@ -157,6 +157,29 @@
     </message>
 </context>
 <context>
+    <name>lf::Archive</name>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>「%1」がアーカイブにありません。</translation>
+    </message>
+    <message>
+        <source>Dieses Archivformat wird nicht unterstützt.</source>
+        <translation>このアーカイブ形式には対応していません。</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist zu groß.</source>
+        <translation>アーカイブ内のイメージが大きすぎます。</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist beschädigt oder unvollständig.</source>
+        <translation>アーカイブが破損しているか不完全です。</translation>
+    </message>
+    <message>
+        <source>Das Archiv enthält keine Bilder.</source>
+        <translation>アーカイブにイメージがありません。</translation>
+    </message>
+</context>
+<context>
     <name>lf::CollectionExtras</name>
     <message numerus="yes">
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
@@ -228,6 +251,13 @@
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ContainerPolicy</name>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <translation>アーカイブやPDF書類内のイメージは表示専用です。ゴミ箱、名前変更、移動、評価は使えません。</translation>
     </message>
 </context>
 <context>
@@ -356,6 +386,189 @@
         <translation>
             <numerusform>%n 枚の画像を「_Rejected」に移動しました</numerusform>
         </translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActions</name>
+    <message>
+        <source>Die Aktion braucht einen Namen.</source>
+        <translation>アクションには名前が必要です。</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht einen Befehl.</source>
+        <translation>アクションにはコマンドが必要です。</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht den Namen eines Kurzbefehls.</source>
+        <translation>アクションにはショートカット名が必要です。</translation>
+    </message>
+    <message>
+        <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
+        <translation>ショートカット名を「-」で始めることはできません。</translation>
+    </message>
+    <message numerus="yes">
+        <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
+        <translation>
+            <numerusform>アクションは %n 秒後に中止されました。</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Die Aktion wurde abgebrochen.</source>
+        <translation>アクションは中断されました。</translation>
+    </message>
+    <message>
+        <source>Die Aktion endete mit Fehlercode %1.</source>
+        <translation>アクションはエラーコード %1 で終了しました。</translation>
+    </message>
+    <message>
+        <source>Die Kurzbefehle-App konnte nicht gestartet werden.</source>
+        <translation>ショートカットAppを起動できませんでした。</translation>
+    </message>
+    <message>
+        <source>Der Befehl konnte nicht gestartet werden.</source>
+        <translation>コマンドを開始できませんでした。</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsEditor</name>
+    <message>
+        <source>Eigene Aktion</source>
+        <translation>カスタムアクション</translation>
+    </message>
+    <message>
+        <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
+        <translation>ショートカットAppのショートカット名。ファイルが入力として渡されます。</translation>
+    </message>
+    <message>
+        <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
+        <translation>/bin/sh で実行されます。ファイルは &quot;$1&quot;（すべてのファイル: &quot;$@&quot;）にあります。例: open -a Preview &quot;$1&quot;。パスがコマンドに挿入されることはありません。</translation>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation>名前:</translation>
+    </message>
+    <message>
+        <source>Art:</source>
+        <translation>種類:</translation>
+    </message>
+    <message>
+        <source>Befehl:</source>
+        <translation>コマンド:</translation>
+    </message>
+    <message>
+        <source>Taste:</source>
+        <translation>キー:</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>名前</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>種類</translation>
+    </message>
+    <message>
+        <source>Befehl</source>
+        <translation>コマンド</translation>
+    </message>
+    <message>
+        <source>Taste</source>
+        <translation>キー</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 ist schon belegt (%3).</source>
+        <translation>「%1」: %2 はすでに使われています（%3）。</translation>
+    </message>
+    <message>
+        <source>Hinzufügen …</source>
+        <translation>追加…</translation>
+    </message>
+    <message>
+        <source>Bearbeiten …</source>
+        <translation>編集…</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>削除</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsManager</name>
+    <message>
+        <source>Kurzbefehl</source>
+        <translation>ショートカット</translation>
+    </message>
+    <message>
+        <source>Shell-Befehl</source>
+        <translation>シェルコマンド</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>イメージが開かれていません。</translation>
+    </message>
+    <message>
+        <source>Eigene Aktion ausführen</source>
+        <translation>カスタムアクションを実行</translation>
+    </message>
+    <message>
+        <source>„%1“ zum ersten Mal ausführen?</source>
+        <translation>「%1」を初めて実行しますか？</translation>
+    </message>
+    <message>
+        <source>Kurzbefehl: %1</source>
+        <translation>ショートカット: %1</translation>
+    </message>
+    <message>
+        <source>Befehl: %1</source>
+        <translation>コマンド: %1</translation>
+    </message>
+    <message>
+        <source>Datei: %1</source>
+        <translation>ファイル: %1</translation>
+    </message>
+    <message>
+        <source>Ausführen</source>
+        <translation>実行</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>キャンセル</translation>
+    </message>
+    <message>
+        <source>▶ %1: %2</source>
+        <translation>▶ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ läuft …</source>
+        <translation>「%1」を実行中…</translation>
+    </message>
+    <message>
+        <source>✓ %1: fertig</source>
+        <translation>✓ %1: 完了</translation>
+    </message>
+    <message>
+        <source>✗ %1: %2</source>
+        <translation>✗ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ausgeführt</source>
+        <translation>「%1」を実行しました</translation>
+    </message>
+    <message>
+        <source>„%1“: %2</source>
+        <translation>「%1」: %2</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>アクションのログ</translation>
+    </message>
+    <message>
+        <source>Noch keine Aktion ausgeführt.</source>
+        <translation>まだアクションは実行されていません。</translation>
+    </message>
+    <message>
+        <source>Leeren</source>
+        <translation>消去</translation>
     </message>
 </context>
 <context>
@@ -1606,6 +1819,26 @@
         <translation>フォルダマップ</translation>
     </message>
     <message>
+        <source>Quick Look</source>
+        <translation>クイックルック</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>テキスト認識表示</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>デスクトップピクチャに設定</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>アクションのログ</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>コミックを右から左に読む</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>なし</translation>
     </message>
@@ -2050,6 +2283,33 @@
     </message>
 </context>
 <context>
+    <name>lf::LiveText</name>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>テキスト認識表示は設定でオフになっています。</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>このMacではテキスト認識表示を使用できません。</translation>
+    </message>
+    <message>
+        <source>Live Text: Bild wird analysiert …</source>
+        <translation>テキスト認識表示: イメージを解析中…</translation>
+    </message>
+    <message>
+        <source>Live Text: Text und Motive auswählbar</source>
+        <translation>テキスト認識表示: テキストと被写体を選択できます</translation>
+    </message>
+    <message>
+        <source>Live Text: kein Text gefunden</source>
+        <translation>テキスト認識表示: テキストが見つかりません</translation>
+    </message>
+    <message>
+        <source>Live Text: Analyse fehlgeschlagen (%1)</source>
+        <translation>テキスト認識表示: 解析に失敗しました（%1）</translation>
+    </message>
+</context>
+<context>
     <name>lf::LosslessTransform</name>
     <message>
         <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
@@ -2302,6 +2562,17 @@
         <source>%1 %</source>
         <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
         <translation>%1%</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MacIntegration</name>
+    <message>
+        <source>Es wurden keine Dateien übergeben.</source>
+        <translation>ファイルが渡されませんでした。</translation>
+    </message>
+    <message>
+        <source>Der Bildschirm ist nicht mehr da.</source>
+        <translation>ディスプレイが接続されていません。</translation>
     </message>
 </context>
 <context>
@@ -2791,6 +3062,38 @@
         <source>Belichtungsregler einblenden</source>
         <translation>露出スライダを表示</translation>
     </message>
+    <message>
+        <source>Quick Look</source>
+        <translation>クイックルック</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen …</source>
+        <translation>デスクトップピクチャに設定…</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>カスタムアクション</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>テキスト認識表示</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>コミックを右から左に読む</translation>
+    </message>
+    <message>
+        <source>Keine – in den Einstellungen anlegen</source>
+        <translation>なし – 設定で作成します</translation>
+    </message>
+    <message>
+        <source>Protokoll …</source>
+        <translation>ログ…</translation>
+    </message>
+    <message>
+        <source>Aktionen bearbeiten …</source>
+        <translation>アクションを編集…</translation>
+    </message>
 </context>
 <context>
     <name>lf::MapPreviewController</name>
@@ -3202,6 +3505,37 @@
     <message>
         <source>Abbrechen</source>
         <translation>キャンセル</translation>
+    </message>
+</context>
+<context>
+    <name>lf::PdfDocument</name>
+    <message>
+        <source>Die Seite gibt es im PDF-Dokument nicht.</source>
+        <translation>このページはPDF書類にありません。</translation>
+    </message>
+    <message>
+        <source>PDF-Dokumente werden auf diesem System nicht unterstützt.</source>
+        <translation>このシステムではPDF書類に対応していません。</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist beschädigt.</source>
+        <translation>PDF書類が破損しています。</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>ファイルが存在しません。</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <translation>PDF書類はパスワードで保護されています。</translation>
+    </message>
+    <message>
+        <source>Die Seite ist leer.</source>
+        <translation>ページが空です。</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für die Seite.</source>
+        <translation>ページに必要なメモリが足りません。</translation>
     </message>
 </context>
 <context>
@@ -3873,6 +4207,18 @@
         <translation>同じ名前のRAWファイルとJPEGファイルは1枚の画像（「RAW+JPEG」と表示されたJPEG）として表示されます。評価、移動、削除は両方のファイルに適用されます。「RAWを表示」でRAWファイルに切り替わります。</translation>
     </message>
     <message>
+        <source>Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner.</source>
+        <translation>アーカイブ（ZIP/CBZ、RAR/CBR、7z/CB7）とPDF書類はフォルダのように開きます。</translation>
+    </message>
+    <message>
+        <source>Comics (CBZ, CBR, CB7) von rechts nach links lesen</source>
+        <translation>コミック（CBZ、CBR、CB7）を右から左に読む</translation>
+    </message>
+    <message>
+        <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
+        <translation>マンガ向け: ← で次へ、→ で前へ。スペースとPage Downは常に次のページに進みます。</translation>
+    </message>
+    <message>
         <source>Leistung</source>
         <translation>パフォーマンス</translation>
     </message>
@@ -3895,6 +4241,34 @@
     <message>
         <source>Bilder zurück behalten:</source>
         <translation>保持する前の画像:</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>テキスト認識表示</translation>
+    </message>
+    <message>
+        <source>Live Text und Motiv freistellen erlauben (⇧⌘L)</source>
+        <translation>テキスト認識表示と被写体の切り抜きを許可（⇧⌘L）</translation>
+    </message>
+    <message>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <translation>イメージは、ウインドウでテキスト認識表示をオンにしたときだけ、このMac上でネットワークを使わずに解析されます。</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>カスタムアクション</translation>
+    </message>
+    <message>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <translation>シェルコマンドまたはショートカット（ショートカットApp）は現在のイメージを引数として受け取ります。メニュー: ファイル → カスタムアクション。</translation>
+    </message>
+    <message>
+        <source>Abbrechen nach:</source>
+        <translation>中止までの時間:</translation>
+    </message>
+    <message>
+        <source> s</source>
+        <translation> s</translation>
     </message>
     <message>
         <source>Einstellungen sichern</source>
@@ -4636,6 +5010,10 @@
         <translation>開く…</translation>
     </message>
     <message>
+        <source>„%1“ kann nicht geöffnet werden</source>
+        <translation>「%1」を開けません</translation>
+    </message>
+    <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
         <translation>ファイルが破損しているか、フォーマットがサポートされていません。</translation>
     </message>
@@ -4834,6 +5212,39 @@
     </message>
 </context>
 <context>
+    <name>lf::VirtualPath</name>
+    <message>
+        <source>Seite %1</source>
+        <extracomment>one page of a PDF document browsed like a folder (F-OPEN-10)</extracomment>
+        <translation>%1ページ</translation>
+    </message>
+    <message>
+        <source>%1 › %2</source>
+        <extracomment>archive or PDF and the image inside it, e.g. &quot;Band 1.cbz › 012.jpg&quot; (F-OPEN-10)</extracomment>
+        <translation>%1 › %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Wallpaper</name>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>イメージが開かれていません。</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <translation>アーカイブ内のイメージやPDFページはデスクトップピクチャにできません。</translation>
+    </message>
+    <message>
+        <source>Es wurde kein Bildschirm gefunden.</source>
+        <translation>ディスプレイが見つかりません。</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
+        <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
     <name>lf::WindowExtras</name>
     <message>
         <source>Zum Bewegen des Fensters ziehen</source>
@@ -4878,6 +5289,73 @@
     <message>
         <source>Minimaler Fenstermodus aus</source>
         <translation>最小限のウインドウ：オフ</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowIntegration</name>
+    <message>
+        <source>Comics: von rechts nach links lesen (← = weiter)</source>
+        <translation>コミック: 右から左に読む（← = 次へ）</translation>
+    </message>
+    <message>
+        <source>Comics: von links nach rechts lesen</source>
+        <translation>コミック: 左から右に読む</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>このMacではテキスト認識表示を使用できません。</translation>
+    </message>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>テキスト認識表示は設定でオフになっています。</translation>
+    </message>
+    <message>
+        <source>Live Text an – Text im Bild auswählen und kopieren</source>
+        <translation>テキスト認識表示オン – イメージ内のテキストを選択してコピーできます</translation>
+    </message>
+    <message>
+        <source>Live Text aus</source>
+        <translation>テキスト認識表示オフ</translation>
+    </message>
+    <message>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <translation>HDR表示中はテキスト認識表示を使用できません。⇧⌘HでSDRに切り替えてください。</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>イメージが開かれていません。</translation>
+    </message>
+    <message>
+        <source>Quick Look ist nicht verfügbar.</source>
+        <translation>クイックルックは使用できません。</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>デスクトップピクチャに設定</translation>
+    </message>
+    <message>
+        <source>„%1“ als Schreibtischhintergrund festlegen?</source>
+        <translation>「%1」をデスクトップピクチャに設定しますか？</translation>
+    </message>
+    <message>
+        <source>Auf allen Bildschirmen</source>
+        <translation>すべてのディスプレイ</translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation>設定</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>キャンセル</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festgelegt</source>
+        <translation>デスクトップピクチャに設定しました</translation>
+    </message>
+    <message>
+        <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
+        <translation>デスクトップピクチャを変更できませんでした: %1</translation>
     </message>
 </context>
 <context>

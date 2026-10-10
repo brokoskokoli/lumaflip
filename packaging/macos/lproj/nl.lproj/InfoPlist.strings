@@ -10,4 +10,12 @@
 "Bild (sonstige)" = "Afbeelding (overig)";
 "Ordner" = "Map";
 "WBMP-Bild" = "WBMP-afbeelding";
+"Comic-Archiv" = "Stripboekarchief";
+"Archiv" = "Archief";
+"PDF-Dokument" = "PDF-document";
+"RAR-Archiv" = "RAR-archief";
+"7-Zip-Archiv" = "7-Zip-archief";
+"Comic-Archiv (ZIP)" = "Stripboekarchief (ZIP)";
+"Comic-Archiv (RAR)" = "Stripboekarchief (RAR)";
+"Comic-Archiv (7z)" = "Stripboekarchief (7z)";
 "NSHumanReadableCopyright" = "© 2026 brokoskokoli en bijdragers. Licentie: GPL-3.0-or-later.";

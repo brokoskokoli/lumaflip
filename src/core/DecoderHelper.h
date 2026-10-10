@@ -87,6 +87,7 @@ public:
     bool canDecode(const QString& path, const QByteArray& header) const override {
         return m_local->canDecode(path, header);
     }
+    bool handlesVirtualPaths() const override { return m_local->handlesVirtualPaths(); }
     std::optional<ImageInfo> info(const QString& path, QString* error) override;
     std::optional<DecodedImage> decode(const QString& path, const DecodeRequest& req,
                                        QString* error) override;

@@ -5,6 +5,7 @@
 #include "DockReopen.h"
 #include "EdrDisplay.h"
 #include "ImageView.h"
+#include "MacIntegration.h"
 #include "MainMenu.h"
 #include "MenuKeyEquivalents.h"
 #include "PreferencesDialog.h"
@@ -253,6 +254,12 @@ Application::Application(AppServices services, QObject* parent)
     installDockReopenHandler([self] {
         if (self)
             self->handleDockReopen();
+    });
+
+    // F-MAC-07: Services - the windows' images for other apps, "In Lumaflip öffnen" for files.
+    macint::registerServicesProvider([self](const QStringList& files) {
+        if (self)
+            self->openPaths(files);
     });
 
     d->burstTimer.setSingleShot(true);

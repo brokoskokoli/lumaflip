@@ -157,6 +157,29 @@
     </message>
 </context>
 <context>
+    <name>lf::Archive</name>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>”%1” puuttuu arkistosta.</translation>
+    </message>
+    <message>
+        <source>Dieses Archivformat wird nicht unterstützt.</source>
+        <translation>Tätä arkistomuotoa ei tueta.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist zu groß.</source>
+        <translation>Arkiston kuva on liian suuri.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist beschädigt oder unvollständig.</source>
+        <translation>Arkisto on vioittunut tai keskeneräinen.</translation>
+    </message>
+    <message>
+        <source>Das Archiv enthält keine Bilder.</source>
+        <translation>Arkistossa ei ole kuvia.</translation>
+    </message>
+</context>
+<context>
     <name>lf::CollectionExtras</name>
     <message numerus="yes">
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
@@ -230,6 +253,13 @@
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ContainerPolicy</name>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <translation>Arkistojen ja PDF-dokumenttien kuvat on avattu vain katseltaviksi – roskakori, uudelleennimeäminen, siirtäminen ja arviointi eivät toimi täällä.</translation>
     </message>
 </context>
 <context>
@@ -363,6 +393,190 @@
             <numerusform>%n kuva siirretty kansioon ”_Rejected”</numerusform>
             <numerusform>%n kuvaa siirretty kansioon ”_Rejected”</numerusform>
         </translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActions</name>
+    <message>
+        <source>Die Aktion braucht einen Namen.</source>
+        <translation>Toiminto tarvitsee nimen.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht einen Befehl.</source>
+        <translation>Toiminto tarvitsee komennon.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht den Namen eines Kurzbefehls.</source>
+        <translation>Toiminto tarvitsee pikakomennon nimen.</translation>
+    </message>
+    <message>
+        <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
+        <translation>Pikakomennon nimi ei saa alkaa merkillä ”-”.</translation>
+    </message>
+    <message numerus="yes">
+        <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
+        <translation>
+            <numerusform>Toiminto keskeytettiin %n sekunnin jälkeen.</numerusform>
+            <numerusform>Toiminto keskeytettiin %n sekunnin jälkeen.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Die Aktion wurde abgebrochen.</source>
+        <translation>Toiminto keskeytettiin.</translation>
+    </message>
+    <message>
+        <source>Die Aktion endete mit Fehlercode %1.</source>
+        <translation>Toiminto päättyi virhekoodiin %1.</translation>
+    </message>
+    <message>
+        <source>Die Kurzbefehle-App konnte nicht gestartet werden.</source>
+        <translation>Pikakomennot-appia ei voitu käynnistää.</translation>
+    </message>
+    <message>
+        <source>Der Befehl konnte nicht gestartet werden.</source>
+        <translation>Komentoa ei voitu käynnistää.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsEditor</name>
+    <message>
+        <source>Eigene Aktion</source>
+        <translation>Oma toiminto</translation>
+    </message>
+    <message>
+        <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
+        <translation>Pikakomennot-apin pikakomennon nimi; se saa tiedoston syötteenä.</translation>
+    </message>
+    <message>
+        <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
+        <translation>Suoritetaan /bin/sh:lla; tiedosto on muuttujassa &quot;$1&quot; (kaikki tiedostot: &quot;$@&quot;), esim. open -a Preview &quot;$1&quot;. Polkua ei koskaan lisätä komentoon.</translation>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation>Nimi:</translation>
+    </message>
+    <message>
+        <source>Art:</source>
+        <translation>Tyyppi:</translation>
+    </message>
+    <message>
+        <source>Befehl:</source>
+        <translation>Komento:</translation>
+    </message>
+    <message>
+        <source>Taste:</source>
+        <translation>Näppäin:</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Nimi</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Tyyppi</translation>
+    </message>
+    <message>
+        <source>Befehl</source>
+        <translation>Komento</translation>
+    </message>
+    <message>
+        <source>Taste</source>
+        <translation>Näppäin</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 ist schon belegt (%3).</source>
+        <translation>”%1”: %2 on jo käytössä (%3).</translation>
+    </message>
+    <message>
+        <source>Hinzufügen …</source>
+        <translation>Lisää…</translation>
+    </message>
+    <message>
+        <source>Bearbeiten …</source>
+        <translation>Muokkaa…</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>Poista</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsManager</name>
+    <message>
+        <source>Kurzbefehl</source>
+        <translation>Pikakomento</translation>
+    </message>
+    <message>
+        <source>Shell-Befehl</source>
+        <translation>Komentotulkin komento</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Kuvaa ei ole avattu.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktion ausführen</source>
+        <translation>Suorita oma toiminto</translation>
+    </message>
+    <message>
+        <source>„%1“ zum ersten Mal ausführen?</source>
+        <translation>Suoritetaanko ”%1” ensimmäistä kertaa?</translation>
+    </message>
+    <message>
+        <source>Kurzbefehl: %1</source>
+        <translation>Pikakomento: %1</translation>
+    </message>
+    <message>
+        <source>Befehl: %1</source>
+        <translation>Komento: %1</translation>
+    </message>
+    <message>
+        <source>Datei: %1</source>
+        <translation>Tiedosto: %1</translation>
+    </message>
+    <message>
+        <source>Ausführen</source>
+        <translation>Suorita</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Kumoa</translation>
+    </message>
+    <message>
+        <source>▶ %1: %2</source>
+        <translation>▶ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ läuft …</source>
+        <translation>”%1” on käynnissä…</translation>
+    </message>
+    <message>
+        <source>✓ %1: fertig</source>
+        <translation>✓ %1: valmis</translation>
+    </message>
+    <message>
+        <source>✗ %1: %2</source>
+        <translation>✗ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ausgeführt</source>
+        <translation>”%1” suoritettu</translation>
+    </message>
+    <message>
+        <source>„%1“: %2</source>
+        <translation>”%1”: %2</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Toimintoloki</translation>
+    </message>
+    <message>
+        <source>Noch keine Aktion ausgeführt.</source>
+        <translation>Toimintoja ei ole vielä suoritettu.</translation>
+    </message>
+    <message>
+        <source>Leeren</source>
+        <translation>Tyhjennä</translation>
     </message>
 </context>
 <context>
@@ -1616,6 +1830,26 @@
         <translation>Kansion kartta</translation>
     </message>
     <message>
+        <source>Quick Look</source>
+        <translation>Pikakatselu</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Live Text</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Aseta työpöydän kuvaksi</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Toimintoloki</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Lue sarjakuvat oikealta vasemmalle</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>Ei mitään</translation>
     </message>
@@ -2060,6 +2294,33 @@
     </message>
 </context>
 <context>
+    <name>lf::LiveText</name>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Live Text on poistettu käytöstä asetuksissa.</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Live Text ei ole käytettävissä tässä Macissa.</translation>
+    </message>
+    <message>
+        <source>Live Text: Bild wird analysiert …</source>
+        <translation>Live Text: kuvaa analysoidaan…</translation>
+    </message>
+    <message>
+        <source>Live Text: Text und Motive auswählbar</source>
+        <translation>Live Text: teksti ja kohteet valittavissa</translation>
+    </message>
+    <message>
+        <source>Live Text: kein Text gefunden</source>
+        <translation>Live Text: tekstiä ei löytynyt</translation>
+    </message>
+    <message>
+        <source>Live Text: Analyse fehlgeschlagen (%1)</source>
+        <translation>Live Text: analyysi epäonnistui (%1)</translation>
+    </message>
+</context>
+<context>
     <name>lf::LosslessTransform</name>
     <message>
         <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
@@ -2312,6 +2573,17 @@
         <source>%1 %</source>
         <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
         <translation>%1 %</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MacIntegration</name>
+    <message>
+        <source>Es wurden keine Dateien übergeben.</source>
+        <translation>Tiedostoja ei välitetty.</translation>
+    </message>
+    <message>
+        <source>Der Bildschirm ist nicht mehr da.</source>
+        <translation>Näyttö ei ole enää liitettynä.</translation>
     </message>
 </context>
 <context>
@@ -2801,6 +3073,38 @@
         <source>Belichtungsregler einblenden</source>
         <translation>Näytä valotuksen liukusäädin</translation>
     </message>
+    <message>
+        <source>Quick Look</source>
+        <translation>Pikakatselu</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen …</source>
+        <translation>Aseta työpöydän kuvaksi…</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Omat toiminnot</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Live Text</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Lue sarjakuvat oikealta vasemmalle</translation>
+    </message>
+    <message>
+        <source>Keine – in den Einstellungen anlegen</source>
+        <translation>Ei yhtään – luo asetuksissa</translation>
+    </message>
+    <message>
+        <source>Protokoll …</source>
+        <translation>Loki…</translation>
+    </message>
+    <message>
+        <source>Aktionen bearbeiten …</source>
+        <translation>Muokkaa toimintoja…</translation>
+    </message>
 </context>
 <context>
     <name>lf::MapPreviewController</name>
@@ -3220,6 +3524,37 @@
     <message>
         <source>Abbrechen</source>
         <translation>Kumoa</translation>
+    </message>
+</context>
+<context>
+    <name>lf::PdfDocument</name>
+    <message>
+        <source>Die Seite gibt es im PDF-Dokument nicht.</source>
+        <translation>Sivua ei ole PDF-dokumentissa.</translation>
+    </message>
+    <message>
+        <source>PDF-Dokumente werden auf diesem System nicht unterstützt.</source>
+        <translation>PDF-dokumentteja ei tueta tässä järjestelmässä.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist beschädigt.</source>
+        <translation>PDF-dokumentti on vioittunut.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>Tiedostoa ei ole olemassa.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <translation>PDF-dokumentti on suojattu salasanalla.</translation>
+    </message>
+    <message>
+        <source>Die Seite ist leer.</source>
+        <translation>Sivu on tyhjä.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für die Seite.</source>
+        <translation>Muisti ei riitä sivulle.</translation>
     </message>
 </context>
 <context>
@@ -3892,6 +4227,18 @@
         <translation>Samannimiset RAW- ja JPEG-tiedostot näkyvät yhtenä kuvana (JPEG, merkintänä ”RAW+JPEG”). Arviointi, siirtäminen ja poistaminen koskevat molempia tiedostoja; ”Näytä RAW” vaihtaa RAW-tiedostoon.</translation>
     </message>
     <message>
+        <source>Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner.</source>
+        <translation>Arkistot (ZIP/CBZ, RAR/CBR, 7z/CB7) ja PDF-dokumentit avautuvat kuin kansiot.</translation>
+    </message>
+    <message>
+        <source>Comics (CBZ, CBR, CB7) von rechts nach links lesen</source>
+        <translation>Lue sarjakuvat (CBZ, CBR, CB7) oikealta vasemmalle</translation>
+    </message>
+    <message>
+        <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
+        <translation>Mangaa varten: ← selaa eteenpäin, → taaksepäin. Välilyönti ja Page Down siirtyvät aina seuraavalle sivulle.</translation>
+    </message>
+    <message>
         <source>Leistung</source>
         <translation>Suorituskyky</translation>
     </message>
@@ -3914,6 +4261,34 @@
     <message>
         <source>Bilder zurück behalten:</source>
         <translation>Säilytettävät aiemmat kuvat:</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Live Text</translation>
+    </message>
+    <message>
+        <source>Live Text und Motiv freistellen erlauben (⇧⌘L)</source>
+        <translation>Salli Live Text ja kohteen irrotus (⇧⌘L)</translation>
+    </message>
+    <message>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <translation>Kuva analysoidaan vain, kun otat Live Textin käyttöön ikkunassa – tässä Macissa, ilman verkkoa.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Omat toiminnot</translation>
+    </message>
+    <message>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <translation>Komentotulkin komento tai pikakomento (Pikakomennot) saa nykyisen kuvan argumenttina. Valikko: Arkisto → Omat toiminnot.</translation>
+    </message>
+    <message>
+        <source>Abbrechen nach:</source>
+        <translation>Keskeytä kun on kulunut:</translation>
+    </message>
+    <message>
+        <source> s</source>
+        <translation> s</translation>
     </message>
     <message>
         <source>Einstellungen sichern</source>
@@ -4657,6 +5032,10 @@
         <translation>Avaa…</translation>
     </message>
     <message>
+        <source>„%1“ kann nicht geöffnet werden</source>
+        <translation>”%1” ei aukea</translation>
+    </message>
+    <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
         <translation>Tiedosto on vahingoittunut tai sen muotoa ei tueta.</translation>
     </message>
@@ -4857,6 +5236,39 @@
     </message>
 </context>
 <context>
+    <name>lf::VirtualPath</name>
+    <message>
+        <source>Seite %1</source>
+        <extracomment>one page of a PDF document browsed like a folder (F-OPEN-10)</extracomment>
+        <translation>Sivu %1</translation>
+    </message>
+    <message>
+        <source>%1 › %2</source>
+        <extracomment>archive or PDF and the image inside it, e.g. &quot;Band 1.cbz › 012.jpg&quot; (F-OPEN-10)</extracomment>
+        <translation>%1 › %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Wallpaper</name>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Kuvaa ei ole avattu.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <translation>Arkistojen kuvia ja PDF-sivuja ei voi asettaa työpöydän kuvaksi.</translation>
+    </message>
+    <message>
+        <source>Es wurde kein Bildschirm gefunden.</source>
+        <translation>Näyttöä ei löytynyt.</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
+        <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
     <name>lf::WindowExtras</name>
     <message>
         <source>Zum Bewegen des Fensters ziehen</source>
@@ -4901,6 +5313,73 @@
     <message>
         <source>Minimaler Fenstermodus aus</source>
         <translation>Minimaalinen ikkuna pois</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowIntegration</name>
+    <message>
+        <source>Comics: von rechts nach links lesen (← = weiter)</source>
+        <translation>Sarjakuvat: luetaan oikealta vasemmalle (← = eteenpäin)</translation>
+    </message>
+    <message>
+        <source>Comics: von links nach rechts lesen</source>
+        <translation>Sarjakuvat: luetaan vasemmalta oikealle</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Live Text ei ole käytettävissä tässä Macissa.</translation>
+    </message>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Live Text on poistettu käytöstä asetuksissa.</translation>
+    </message>
+    <message>
+        <source>Live Text an – Text im Bild auswählen und kopieren</source>
+        <translation>Live Text päällä – valitse ja kopioi kuvan tekstiä</translation>
+    </message>
+    <message>
+        <source>Live Text aus</source>
+        <translation>Live Text pois</translation>
+    </message>
+    <message>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <translation>Live Text ei ole käytettävissä HDR-näytön aikana – vaihda SDR:ään näppäimillä ⇧⌘H.</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Kuvaa ei ole avattu.</translation>
+    </message>
+    <message>
+        <source>Quick Look ist nicht verfügbar.</source>
+        <translation>Pikakatselu ei ole käytettävissä.</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Aseta työpöydän kuvaksi</translation>
+    </message>
+    <message>
+        <source>„%1“ als Schreibtischhintergrund festlegen?</source>
+        <translation>Asetetaanko ”%1” työpöydän kuvaksi?</translation>
+    </message>
+    <message>
+        <source>Auf allen Bildschirmen</source>
+        <translation>Kaikilla näytöillä</translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation>Aseta</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Kumoa</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festgelegt</source>
+        <translation>Asetettu työpöydän kuvaksi</translation>
+    </message>
+    <message>
+        <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
+        <translation>Työpöydän kuvaa ei voitu vaihtaa: %1</translation>
     </message>
 </context>
 <context>

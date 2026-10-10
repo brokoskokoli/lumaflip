@@ -157,6 +157,29 @@
     </message>
 </context>
 <context>
+    <name>lf::Archive</name>
+    <message>
+        <source>„%1“ fehlt im Archiv.</source>
+        <translation>‘%1’ ontbreekt in het archief.</translation>
+    </message>
+    <message>
+        <source>Dieses Archivformat wird nicht unterstützt.</source>
+        <translation>Deze archiefindeling wordt niet ondersteund.</translation>
+    </message>
+    <message>
+        <source>Das Bild im Archiv ist zu groß.</source>
+        <translation>De afbeelding in het archief is te groot.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist beschädigt oder unvollständig.</source>
+        <translation>Het archief is beschadigd of onvolledig.</translation>
+    </message>
+    <message>
+        <source>Das Archiv enthält keine Bilder.</source>
+        <translation>Het archief bevat geen afbeeldingen.</translation>
+    </message>
+</context>
+<context>
     <name>lf::CollectionExtras</name>
     <message numerus="yes">
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
@@ -230,6 +253,13 @@
         <source>%1 — %2</source>
         <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
         <translation>%1 — %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ContainerPolicy</name>
+    <message>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <translation>Afbeeldingen in archieven en PDF-documenten zijn alleen geopend om te bekijken – prullenmand, hernoemen, verplaatsen en beoordelen werken hier niet.</translation>
     </message>
 </context>
 <context>
@@ -363,6 +393,190 @@
             <numerusform>%n afbeelding naar ‘_Rejected’ verplaatst</numerusform>
             <numerusform>%n afbeeldingen naar ‘_Rejected’ verplaatst</numerusform>
         </translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActions</name>
+    <message>
+        <source>Die Aktion braucht einen Namen.</source>
+        <translation>De actie heeft een naam nodig.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht einen Befehl.</source>
+        <translation>De actie heeft een opdracht nodig.</translation>
+    </message>
+    <message>
+        <source>Die Aktion braucht den Namen eines Kurzbefehls.</source>
+        <translation>De actie heeft de naam van een opdracht (Opdrachten) nodig.</translation>
+    </message>
+    <message>
+        <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
+        <translation>De naam van een opdracht mag niet met ‘-’ beginnen.</translation>
+    </message>
+    <message numerus="yes">
+        <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
+        <translation>
+            <numerusform>De actie is na %n seconde afgebroken.</numerusform>
+            <numerusform>De actie is na %n seconden afgebroken.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Die Aktion wurde abgebrochen.</source>
+        <translation>De actie is afgebroken.</translation>
+    </message>
+    <message>
+        <source>Die Aktion endete mit Fehlercode %1.</source>
+        <translation>De actie eindigde met foutcode %1.</translation>
+    </message>
+    <message>
+        <source>Die Kurzbefehle-App konnte nicht gestartet werden.</source>
+        <translation>De Opdrachten-app kon niet worden gestart.</translation>
+    </message>
+    <message>
+        <source>Der Befehl konnte nicht gestartet werden.</source>
+        <translation>De opdracht kon niet worden gestart.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsEditor</name>
+    <message>
+        <source>Eigene Aktion</source>
+        <translation>Eigen actie</translation>
+    </message>
+    <message>
+        <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
+        <translation>Naam van een opdracht uit de Opdrachten-app; die krijgt het bestand als invoer.</translation>
+    </message>
+    <message>
+        <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
+        <translation>Draait met /bin/sh; het bestand staat in &quot;$1&quot; (alle bestanden: &quot;$@&quot;), bijv. open -a Preview &quot;$1&quot;. Het pad wordt nooit in de opdracht ingevoegd.</translation>
+    </message>
+    <message>
+        <source>Name:</source>
+        <translation>Naam:</translation>
+    </message>
+    <message>
+        <source>Art:</source>
+        <translation>Soort:</translation>
+    </message>
+    <message>
+        <source>Befehl:</source>
+        <translation>Opdracht:</translation>
+    </message>
+    <message>
+        <source>Taste:</source>
+        <translation>Toets:</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Naam</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Soort</translation>
+    </message>
+    <message>
+        <source>Befehl</source>
+        <translation>Opdracht</translation>
+    </message>
+    <message>
+        <source>Taste</source>
+        <translation>Toets</translation>
+    </message>
+    <message>
+        <source>„%1“: %2 ist schon belegt (%3).</source>
+        <translation>‘%1’: %2 is al in gebruik (%3).</translation>
+    </message>
+    <message>
+        <source>Hinzufügen …</source>
+        <translation>Voeg toe…</translation>
+    </message>
+    <message>
+        <source>Bearbeiten …</source>
+        <translation>Wijzig…</translation>
+    </message>
+    <message>
+        <source>Entfernen</source>
+        <translation>Verwijder</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CustomActionsManager</name>
+    <message>
+        <source>Kurzbefehl</source>
+        <translation>Opdracht</translation>
+    </message>
+    <message>
+        <source>Shell-Befehl</source>
+        <translation>Shell-opdracht</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Er is geen afbeelding geopend.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktion ausführen</source>
+        <translation>Eigen actie uitvoeren</translation>
+    </message>
+    <message>
+        <source>„%1“ zum ersten Mal ausführen?</source>
+        <translation>‘%1’ voor het eerst uitvoeren?</translation>
+    </message>
+    <message>
+        <source>Kurzbefehl: %1</source>
+        <translation>Opdracht: %1</translation>
+    </message>
+    <message>
+        <source>Befehl: %1</source>
+        <translation>Opdracht: %1</translation>
+    </message>
+    <message>
+        <source>Datei: %1</source>
+        <translation>Bestand: %1</translation>
+    </message>
+    <message>
+        <source>Ausführen</source>
+        <translation>Uitvoeren</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuleer</translation>
+    </message>
+    <message>
+        <source>▶ %1: %2</source>
+        <translation>▶ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ läuft …</source>
+        <translation>‘%1’ wordt uitgevoerd…</translation>
+    </message>
+    <message>
+        <source>✓ %1: fertig</source>
+        <translation>✓ %1: klaar</translation>
+    </message>
+    <message>
+        <source>✗ %1: %2</source>
+        <translation>✗ %1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ausgeführt</source>
+        <translation>‘%1’ uitgevoerd</translation>
+    </message>
+    <message>
+        <source>„%1“: %2</source>
+        <translation>‘%1’: %2</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Logboek van acties</translation>
+    </message>
+    <message>
+        <source>Noch keine Aktion ausgeführt.</source>
+        <translation>Nog geen actie uitgevoerd.</translation>
+    </message>
+    <message>
+        <source>Leeren</source>
+        <translation>Wissen</translation>
     </message>
 </context>
 <context>
@@ -1616,6 +1830,26 @@
         <translation>Kaart van map</translation>
     </message>
     <message>
+        <source>Quick Look</source>
+        <translation>Snelle weergave</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Livetekst</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Instellen als bureaubladachtergrond</translation>
+    </message>
+    <message>
+        <source>Protokoll der Aktionen</source>
+        <translation>Logboek van acties</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Strips van rechts naar links lezen</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>Niets</translation>
     </message>
@@ -2060,6 +2294,33 @@
     </message>
 </context>
 <context>
+    <name>lf::LiveText</name>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Livetekst is uitgeschakeld in de instellingen.</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Livetekst is niet beschikbaar op deze Mac.</translation>
+    </message>
+    <message>
+        <source>Live Text: Bild wird analysiert …</source>
+        <translation>Livetekst: afbeelding wordt geanalyseerd…</translation>
+    </message>
+    <message>
+        <source>Live Text: Text und Motive auswählbar</source>
+        <translation>Livetekst: tekst en onderwerpen selecteerbaar</translation>
+    </message>
+    <message>
+        <source>Live Text: kein Text gefunden</source>
+        <translation>Livetekst: geen tekst gevonden</translation>
+    </message>
+    <message>
+        <source>Live Text: Analyse fehlgeschlagen (%1)</source>
+        <translation>Livetekst: analyse mislukt (%1)</translation>
+    </message>
+</context>
+<context>
     <name>lf::LosslessTransform</name>
     <message>
         <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
@@ -2312,6 +2573,17 @@
         <source>%1 %</source>
         <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
         <translation>%1%</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MacIntegration</name>
+    <message>
+        <source>Es wurden keine Dateien übergeben.</source>
+        <translation>Er zijn geen bestanden doorgegeven.</translation>
+    </message>
+    <message>
+        <source>Der Bildschirm ist nicht mehr da.</source>
+        <translation>Het beeldscherm is niet meer aangesloten.</translation>
     </message>
 </context>
 <context>
@@ -2801,6 +3073,38 @@
         <source>Belichtungsregler einblenden</source>
         <translation>Belichtingsregelaar tonen</translation>
     </message>
+    <message>
+        <source>Quick Look</source>
+        <translation>Snelle weergave</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen …</source>
+        <translation>Instellen als bureaubladachtergrond…</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Eigen acties</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Livetekst</translation>
+    </message>
+    <message>
+        <source>Comics von rechts nach links lesen</source>
+        <translation>Strips van rechts naar links lezen</translation>
+    </message>
+    <message>
+        <source>Keine – in den Einstellungen anlegen</source>
+        <translation>Geen – maak ze aan in de instellingen</translation>
+    </message>
+    <message>
+        <source>Protokoll …</source>
+        <translation>Logboek…</translation>
+    </message>
+    <message>
+        <source>Aktionen bearbeiten …</source>
+        <translation>Acties wijzigen…</translation>
+    </message>
 </context>
 <context>
     <name>lf::MapPreviewController</name>
@@ -3220,6 +3524,37 @@
     <message>
         <source>Abbrechen</source>
         <translation>Annuleer</translation>
+    </message>
+</context>
+<context>
+    <name>lf::PdfDocument</name>
+    <message>
+        <source>Die Seite gibt es im PDF-Dokument nicht.</source>
+        <translation>De pagina bestaat niet in het PDF-document.</translation>
+    </message>
+    <message>
+        <source>PDF-Dokumente werden auf diesem System nicht unterstützt.</source>
+        <translation>PDF-documenten worden op dit systeem niet ondersteund.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist beschädigt.</source>
+        <translation>Het PDF-document is beschadigd.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>Het bestand bestaat niet.</translation>
+    </message>
+    <message>
+        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <translation>Het PDF-document is met een wachtwoord beveiligd.</translation>
+    </message>
+    <message>
+        <source>Die Seite ist leer.</source>
+        <translation>De pagina is leeg.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für die Seite.</source>
+        <translation>Niet genoeg geheugen voor de pagina.</translation>
     </message>
 </context>
 <context>
@@ -3892,6 +4227,18 @@
         <translation>RAW- en JPEG-bestanden met dezelfde naam verschijnen als één afbeelding (de JPEG, met de markering ‘RAW+JPEG’). Beoordelen, verplaatsen en verwijderen gelden voor beide bestanden; ‘Toon RAW’ wisselt naar het RAW-bestand.</translation>
     </message>
     <message>
+        <source>Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner.</source>
+        <translation>Archieven (ZIP/CBZ, RAR/CBR, 7z/CB7) en PDF-documenten openen als mappen.</translation>
+    </message>
+    <message>
+        <source>Comics (CBZ, CBR, CB7) von rechts nach links lesen</source>
+        <translation>Strips (CBZ, CBR, CB7) van rechts naar links lezen</translation>
+    </message>
+    <message>
+        <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
+        <translation>Voor manga: ← bladert verder, → terug. Spatie en Page Down gaan altijd naar de volgende pagina.</translation>
+    </message>
+    <message>
         <source>Leistung</source>
         <translation>Prestaties</translation>
     </message>
@@ -3914,6 +4261,34 @@
     <message>
         <source>Bilder zurück behalten:</source>
         <translation>Vorige afbeeldingen bewaren:</translation>
+    </message>
+    <message>
+        <source>Live Text</source>
+        <translation>Livetekst</translation>
+    </message>
+    <message>
+        <source>Live Text und Motiv freistellen erlauben (⇧⌘L)</source>
+        <translation>Livetekst en onderwerp vrijstaand maken toestaan (⇧⌘L)</translation>
+    </message>
+    <message>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <translation>De afbeelding wordt alleen geanalyseerd als je Livetekst voor een venster inschakelt – op deze Mac, zonder netwerk.</translation>
+    </message>
+    <message>
+        <source>Eigene Aktionen</source>
+        <translation>Eigen acties</translation>
+    </message>
+    <message>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <translation>Een shell-opdracht of een opdracht (Opdrachten) krijgt de huidige afbeelding als argument. Menu: Archief → Eigen acties.</translation>
+    </message>
+    <message>
+        <source>Abbrechen nach:</source>
+        <translation>Afbreken na:</translation>
+    </message>
+    <message>
+        <source> s</source>
+        <translation> s</translation>
     </message>
     <message>
         <source>Einstellungen sichern</source>
@@ -4657,6 +5032,10 @@
         <translation>Open…</translation>
     </message>
     <message>
+        <source>„%1“ kann nicht geöffnet werden</source>
+        <translation>‘%1’ kan niet worden geopend</translation>
+    </message>
+    <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
         <translation>Het bestand is beschadigd of de structuur ervan wordt niet ondersteund.</translation>
     </message>
@@ -4857,6 +5236,39 @@
     </message>
 </context>
 <context>
+    <name>lf::VirtualPath</name>
+    <message>
+        <source>Seite %1</source>
+        <extracomment>one page of a PDF document browsed like a folder (F-OPEN-10)</extracomment>
+        <translation>Pagina %1</translation>
+    </message>
+    <message>
+        <source>%1 › %2</source>
+        <extracomment>archive or PDF and the image inside it, e.g. &quot;Band 1.cbz › 012.jpg&quot; (F-OPEN-10)</extracomment>
+        <translation>%1 › %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Wallpaper</name>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Er is geen afbeelding geopend.</translation>
+    </message>
+    <message>
+        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <translation>Afbeeldingen in archieven en PDF-pagina’s kunnen geen bureaubladachtergrond worden.</translation>
+    </message>
+    <message>
+        <source>Es wurde kein Bildschirm gefunden.</source>
+        <translation>Er is geen beeldscherm gevonden.</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
+        <translation>%1: %2</translation>
+    </message>
+</context>
+<context>
     <name>lf::WindowExtras</name>
     <message>
         <source>Zum Bewegen des Fensters ziehen</source>
@@ -4901,6 +5313,73 @@
     <message>
         <source>Minimaler Fenstermodus aus</source>
         <translation>Minimaal venster uit</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowIntegration</name>
+    <message>
+        <source>Comics: von rechts nach links lesen (← = weiter)</source>
+        <translation>Strips: van rechts naar links lezen (← = verder)</translation>
+    </message>
+    <message>
+        <source>Comics: von links nach rechts lesen</source>
+        <translation>Strips: van links naar rechts lezen</translation>
+    </message>
+    <message>
+        <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
+        <translation>Livetekst is niet beschikbaar op deze Mac.</translation>
+    </message>
+    <message>
+        <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
+        <translation>Livetekst is uitgeschakeld in de instellingen.</translation>
+    </message>
+    <message>
+        <source>Live Text an – Text im Bild auswählen und kopieren</source>
+        <translation>Livetekst aan – selecteer en kopieer tekst in de afbeelding</translation>
+    </message>
+    <message>
+        <source>Live Text aus</source>
+        <translation>Livetekst uit</translation>
+    </message>
+    <message>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <translation>Livetekst is niet beschikbaar tijdens HDR-weergave – schakel met ⇧⌘H naar SDR.</translation>
+    </message>
+    <message>
+        <source>Es ist kein Bild geöffnet.</source>
+        <translation>Er is geen afbeelding geopend.</translation>
+    </message>
+    <message>
+        <source>Quick Look ist nicht verfügbar.</source>
+        <translation>Snelle weergave is niet beschikbaar.</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festlegen</source>
+        <translation>Instellen als bureaubladachtergrond</translation>
+    </message>
+    <message>
+        <source>„%1“ als Schreibtischhintergrund festlegen?</source>
+        <translation>‘%1’ instellen als bureaubladachtergrond?</translation>
+    </message>
+    <message>
+        <source>Auf allen Bildschirmen</source>
+        <translation>Op alle beeldschermen</translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation>Instellen</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuleer</translation>
+    </message>
+    <message>
+        <source>Als Schreibtischhintergrund festgelegt</source>
+        <translation>Ingesteld als bureaubladachtergrond</translation>
+    </message>
+    <message>
+        <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
+        <translation>De bureaubladachtergrond kon niet worden gewijzigd: %1</translation>
     </message>
 </context>
 <context>
