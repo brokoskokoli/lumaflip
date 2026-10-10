@@ -17,6 +17,8 @@ open build/check/src/Lumaflip.app --args <bild>   # App starten
 ```
 
 Abhängigkeiten: `brew install cmake ninja qt googletest clang-format` (Qt 6.11 via Homebrew).
+Optional `tools/fetch_sparkle.sh` (Sparkle 2 nach `third_party/`, automatische Updates F-MAC-08;
+ohne baut die App mit abgeschaltetem Updater, siehe `docs/RELEASING.md`).
 Bauverzeichnisse liegen unter `build/` – nicht löschen, `cmake --fresh` verwenden, falls nötig.
 
 ## Aufbau

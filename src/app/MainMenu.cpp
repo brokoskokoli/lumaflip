@@ -4,6 +4,7 @@
 #include "AboutDialog.h"
 #include "Application.h"
 #include "ImageView.h"
+#include "Updater.h"
 #include "ViewerWindow.h"
 #include "WindowPanels.h"
 #include "core/Collection.h"
@@ -140,6 +141,8 @@ void MainMenu::build() {
     QAction* about = addCommand(file, QStringLiteral("about"), tr("Über Lumaflip"));
     about->setMenuRole(QAction::AboutRole);
     connect(about, &QAction::triggered, this, [] { AboutDialog::showAbout(); });
+    Updater::setUpMenuAction(
+        addCommand(file, QStringLiteral("checkForUpdates"), tr("Nach Updates suchen …")));
     QAction* prefs = add(file, Action::OpenPreferences, tr("Einstellungen …"));
     prefs->setMenuRole(QAction::PreferencesRole);
     QAction* quit =

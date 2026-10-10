@@ -21,6 +21,9 @@
   <key>NSHighResolutionCapable</key><true/>
   <key>NSSupportsAutomaticGraphicsSwitching</key><true/>
   <key>NSPrincipalClass</key><string>NSApplication</string>
+  <!-- Sparkle (F-MAC-08): feed + EdDSA key, only in builds with LF_SPARKLE_PUBLIC_KEY
+       (src/CMakeLists.txt). No SUEnableAutomaticChecks: Sparkle asks on the second launch. -->
+  ${LF_SPARKLE_PLIST_ENTRIES}
   <key>NSAppleEventsUsageDescription</key>
   <string>Lumaflip fragt auf Wunsch das vorderste Finder-Fenster nach seiner Sortierung, damit die Bilder in derselben Reihenfolge angezeigt werden.</string>
   <!-- TCC prompts (SPEC 10.2): reading the folder of the opened image -->

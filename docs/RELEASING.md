@@ -12,6 +12,8 @@ Runtime, **notarisiert** und „gestapelt“, ohne Sandbox (SPEC 10.1). Jedes Re
 | `tools/package.sh` | Release-Build (`build/release`), Qt einbetten, Lizenztexte beilegen, Homebrew-Verweise prüfen, signieren, DMG + ZIP + SHA-256 nach `dist/` |
 | `tools/macos_deploy.py` | Wird von `package.sh` aufgerufen: kopiert Qt-Frameworks, -Plugins, Übersetzungen und alle abhängigen Bibliotheken ins Bundle, schreibt `qt.conf` und `Contents/Resources/licenses/` (inkl. `index.json` für das Über-Fenster); `--verify` prüft mit `otool`, dass nichts mehr auf `/opt/homebrew` zeigt |
 | `tools/notarize.sh` | Lädt App oder DMG zum Apple-Notardienst hoch (`notarytool submit --wait`), heftet das Ticket an (`stapler staple`); `--dry-run` zeigt nur die Befehle |
+| `tools/fetch_sparkle.sh` | Lädt Sparkle 2 (MIT) in der festgelegten Version, prüft die SHA-256 und entpackt nach `third_party/Sparkle/` (in `.gitignore`): Framework, `bin/generate_appcast`, `bin/sign_update`, `bin/generate_keys`, `LICENSE` |
+| `tools/sparkle_key_check.sh` | Prüft, ob ein exportierter privater Sparkle-Schlüssel zum öffentlichen Schlüssel der App passt (`--print-public` gibt den öffentlichen Schlüssel aus) |
 | `.github/workflows/release.yml` | Läuft bei Tag `v*` im Hauptrepo: Versionsabgleich → Prüfungen (`checks.yml`) → Paket → Signatur → Notarisierung → GitHub Release |
 | `.github/workflows/checks.yml` | Wiederverwendbarer Workflow mit allen Pflichtprüfungen (SPEC 15.1); `ci.yml` (Push/PR) und `release.yml` rufen ihn unverändert auf |
 | `packaging/macos/Lumaflip.entitlements` | Einzige Berechtigung: `com.apple.security.automation.apple-events` (Opt-in F-SORT-04). Keine Sandbox |
@@ -92,6 +94,10 @@ Unter Settings → Secrets and variables → Actions (oder als Secrets der Umgeb
 | `NOTARY_API_KEY_ID` | Key-ID des API-Schlüssels (z. B. `ABC123DEFG`) | App Store Connect → Benutzer und Zugriff → Integrationen → App Store Connect API |
 | `NOTARY_API_ISSUER_ID` | Issuer-ID (UUID) | dieselbe Seite, oben |
 | `NOTARY_API_KEY_P8_BASE64` | Inhalt der `AuthKey_<id>.p8`, Base64-kodiert: `base64 -i AuthKey_ABC123DEFG.p8 \| pbcopy` | wird nur einmal zum Download angeboten; Rolle „Developer“ genügt |
+| `SPARKLE_ED_PRIVATE_KEY` | Privater EdDSA-Schlüssel für Sparkle, Inhalt der mit `generate_keys -x` exportierten Datei (eine Zeile Base64) | siehe „Automatische Updates (Sparkle)“ unten |
+
+Dazu eine **Variable** (kein Secret, der Schlüssel ist öffentlich) unter Settings → Secrets and variables →
+Actions → Variables: `SPARKLE_PUBLIC_ED_KEY` = öffentlicher EdDSA-Schlüssel (44 Zeichen Base64).
 
 Der Workflow legt einen temporären Schlüsselbund an (zufälliges Passwort), importiert das Zertifikat,
 ermittelt die Identität `Developer ID Application: …` daraus und löscht Schlüsselbund und Schlüsseldatei
@@ -113,6 +119,104 @@ Ablauf und Absicherung von `release.yml`:
   daher keinen Vorteil. Das `.p12`-Passwort darf keinen Zeilenumbruch enthalten.
 - `.p12` und `.p8` werden mit `umask 077` in ein eigenes Verzeichnis (`0700`) unter `$RUNNER_TEMP`
   geschrieben und im letzten Schritt (`if: always()`) gelöscht; kein `set -x`, `persist-credentials: false`.
+
+## Automatische Updates (Sparkle)
+
+F-MAC-08: Lumaflip bringt [Sparkle 2](https://sparkle-project.org) (MIT) mit. Die App liest den Appcast
+`https://brokoskokoli.github.io/lumaflip/appcast.xml` (GitHub Pages, Branch `gh-pages`), lädt Updates aus
+den GitHub Releases (die notarisierte DMG) und installiert sie nur, wenn ihre **EdDSA-Signatur** zum
+öffentlichen Schlüssel in der App passt. Der Appcast selbst ist ebenfalls signiert (`SURequireSignedFeed`),
+Updates werden vor dem Entpacken geprüft (`SUVerifyUpdateBeforeExtraction`).
+
+**Datenschutz (SPEC 10.3):** Die Update-Prüfung ist der einzige Netzwerkverkehr. `SUEnableAutomaticChecks`
+steht bewusst **nicht** in der `Info.plist`: Beim ersten Start passiert nichts, beim zweiten fragt Sparkle,
+ob automatisch gesucht werden soll. Danach ist es in Einstellungen → Allgemein umschaltbar
+(„Automatisch nach Updates suchen“, „Updates automatisch installieren“); „Nach Updates suchen …“ im
+Programmmenü prüft sofort. Sparkle prüft höchstens einmal am Tag und sendet kein Systemprofil.
+
+### Bauen mit und ohne Sparkle
+
+```sh
+tools/fetch_sparkle.sh                 # einmalig: Sparkle 2.10.0 nach third_party/Sparkle
+cmake … -DLF_ENABLE_SPARKLE=AUTO       # Standard: an, wenn third_party/Sparkle existiert
+cmake … -DLF_ENABLE_SPARKLE=OFF        # ohne Sparkle: kein Menüpunkt, keine Einstellungen
+cmake … -DLF_SPARKLE_PUBLIC_KEY=<base64>   # Feed + Schlüssel in die Info.plist (sonst Updater aus)
+LF_SPARKLE_PUBLIC_KEY=<base64> LF_REQUIRE_SPARKLE=1 tools/package.sh   # wie im Release
+```
+
+- Ohne `LF_SPARKLE_PUBLIC_KEY` (lokale Builds, CI-Prüfungen) wird Sparkle zwar eingebettet, die
+  `Info.plist` bekommt aber weder `SUFeedURL` noch `SUPublicEDKey`: Der Updater bleibt aus (Hinweis im
+  Log `lumaflip.updater`), Menüpunkt und Einstellungen sind ausgeblendet. **Nie ohne Schlüssel ausliefern:**
+  Der Release-Workflow setzt `LF_REQUIRE_SPARKLE=1`, `package.sh` bricht dann ohne Framework, Feed oder
+  Schlüssel ab.
+- `tools/package.sh` kopiert `Sparkle.framework` vollständig nach `Contents/Frameworks` (mit `Autoupdate`,
+  `Updater.app`, `XPCServices/Installer.xpc`, `XPCServices/Downloader.xpc`) und signiert es nach Sparkles
+  Anleitung von innen nach außen, immer mit Hardened Runtime: XPC-Dienste (Downloader mit
+  `--preserve-metadata=entitlements`) → `Autoupdate` → `Updater.app` → Framework, danach Qt und die App.
+  Sparkles `LICENSE` steht in `Contents/Resources/licenses/sparkle/` und im Über-Fenster.
+- Sparkle aktualisieren: Version und SHA-256 in `tools/fetch_sparkle.sh` anpassen (Wert = `digest` des
+  Release-Assets, `gh api repos/sparkle-project/Sparkle/releases/tags/<version>`), `tools/fetch_sparkle.sh`
+  ausführen, Update-Test aus [MANUAL_CHECKS.md](MANUAL_CHECKS.md) wiederholen.
+
+### Schlüsselpaar einmalig erzeugen
+
+Nur einmal und nur auf dem eigenen Mac (nicht in der CI). `generate_keys` legt den privaten Schlüssel im
+**Anmelde-Schlüsselbund** ab (Eintrag „Private key for signing Sparkle updates“) und gibt den öffentlichen aus:
+
+```sh
+tools/fetch_sparkle.sh
+third_party/Sparkle/bin/generate_keys              # erzeugt das Paar (oder zeigt ein vorhandenes)
+third_party/Sparkle/bin/generate_keys -p           # nur den öffentlichen Schlüssel ausgeben
+third_party/Sparkle/bin/generate_keys -x sparkle_private.key   # privaten Schlüssel exportieren
+tools/sparkle_key_check.sh sparkle_private.key "<öffentlicher Schlüssel>"   # passt das Paar?
+```
+
+1. **Öffentlicher Schlüssel** → Repo-Variable `SPARKLE_PUBLIC_ED_KEY` (Settings → Secrets and variables →
+   Actions → Variables). Für lokale Testbuilds: `-DLF_SPARKLE_PUBLIC_KEY=…` bzw.
+   `LF_SPARKLE_PUBLIC_KEY=… tools/package.sh`.
+2. **Privater Schlüssel** → Secret `SPARKLE_ED_PRIVATE_KEY` (am besten in der Umgebung `release`): Inhalt von
+   `sparkle_private.key` einfügen, z. B. `gh secret set SPARKLE_ED_PRIVATE_KEY --env release < sparkle_private.key`.
+   Danach `sparkle_private.key` löschen (`rm -P` bzw. sicher entsorgen). Zusätzlich offline sichern
+   (Passwortmanager): Geht der Schlüssel verloren, ist ein Wechsel nur über die Developer-ID-Signatur möglich
+   (siehe unten).
+3. **GitHub Pages** einschalten: Settings → Pages → Source „Deploy from a branch“, Branch `gh-pages`,
+   Ordner `/ (root)`. Den Branch legt der erste Release-Lauf an.
+
+### Was der Release-Workflow macht
+
+1. `tools/fetch_sparkle.sh`, dann Schlüsselprüfung: Fehlen Variable oder Secret oder passen sie nicht
+   zusammen (`tools/sparkle_key_check.sh`), bricht der Workflow **vor** dem Bauen ab.
+2. `package.sh --notarize` mit `LF_ENABLE_SPARKLE=ON`, `LF_SPARKLE_PUBLIC_KEY`, `LF_REQUIRE_SPARKLE=1`.
+3. Nach `gh release create`: `gh-pages` klonen (bzw. neu anlegen), vorhandene `appcast.xml` und die neue DMG
+   in ein Arbeitsverzeichnis, Release-Text als HTML (GitHub-Markdown-API) daneben, dann
+   `generate_appcast --ed-key-file -` – der private Schlüssel kommt nur über stdin (`printf` ist ein
+   Shell-Builtin, erscheint also in keiner Argumentliste und wird nie ausgegeben). Vorhandene Einträge
+   bleiben erhalten (höchstens 10), keine Delta-Updates. `sign_update --verify` prüft die Feed-Signatur.
+4. `appcast.xml` und `notes/<version>.html` werden als Commit auf `gh-pages` gepusht (`GITHUB_TOKEN` über
+   `gh auth setup-git`, kein Token in einer URL).
+
+Bricht nur der Appcast-Schritt ab (z. B. Pages-Push), steht das GitHub Release schon, und ein erneuter Lauf
+scheitert an `gh release create`. Dann den Appcast lokal erzeugen: DMG aus dem Release und die aktuelle
+`appcast.xml` von `gh-pages` in ein leeres Verzeichnis legen, `third_party/Sparkle/bin/generate_appcast
+--download-url-prefix https://github.com/brokoskokoli/lumaflip/releases/download/vX.Y.Z/ --maximum-deltas 0 <dir>`
+(Schlüssel aus dem Schlüsselbund) und `appcast.xml` auf `gh-pages` committen.
+
+### Schlüssel fehlt, ist falsch oder kompromittiert
+
+- **Variable oder Secret fehlt / passen nicht:** Kein Release wird gebaut (Schritt „Check Sparkle keys“).
+- **Lokaler Build ohne Schlüssel:** Updater aus, nichts wird veröffentlicht.
+- **Schlüssel wechseln (Rotation):** Sparkle erlaubt pro Update nur *eine* Änderung – entweder den
+  EdDSA-Schlüssel oder das Developer-ID-Zertifikat, nie beide zugleich. Wegen
+  `SUVerifyUpdateBeforeExtraction` geht ein Schlüsselwechsel nur mit einer Developer-ID-signierten **DMG**
+  als Update (das liefert der Workflow). Ablauf: neues Paar mit
+  `generate_keys --account lumaflip-2` erzeugen, Variable `SPARKLE_PUBLIC_ED_KEY` auf den neuen öffentlichen,
+  Secret `SPARKLE_ED_PRIVATE_KEY` auf den neuen privaten Schlüssel setzen, Release taggen. Bestehende
+  Installationen akzeptieren dieses Update, weil die DMG mit demselben Developer-ID-Zertifikat signiert
+  ist; der Appcast wird dabei neu (mit dem neuen Schlüssel) signiert. Das Zertifikat erst in einem späteren
+  Release wechseln.
+- **Privater Schlüssel kompromittiert:** sofort rotieren (wie oben) und das Secret ersetzen; zusätzlich alte
+  Exporte löschen. Ausliefern könnte ein Angreifer ein so signiertes Update nur über die Feed-URL
+  (`gh-pages`) – trotzdem nicht warten.
 
 ## Homebrew Cask
 
@@ -141,3 +245,5 @@ Lizenzfenster) stehen in [MANUAL_CHECKS.md](MANUAL_CHECKS.md) im Abschnitt „Au
   (`brew info --json`) und die zugehörigen Binärdateien in `index.json`. Findet es für ein Paket keinen
   Lizenztext, bricht das Paketieren ab.
 - Little CMS, resvg und KImageFormats werden derzeit **nicht** verwendet und deshalb nicht aufgeführt.
+- Sparkle (MIT) kommt nicht aus Homebrew: `macos_deploy.py` übernimmt `third_party/Sparkle/LICENSE` und die
+  Version aus der `Info.plist` des Frameworks in `index.json`.

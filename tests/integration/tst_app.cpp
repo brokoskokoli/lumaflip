@@ -626,7 +626,7 @@ private slots:
         // The trash runs on a worker thread (network volumes must not block the GUI).
         QTRY_VERIFY2(!QFileInfo::exists(path("IMG_2.jpg")), qPrintable(w1->toastText()));
         QTRY_COMPARE(w1->collection()->count(), 2);
-        QCOMPARE(trash->locations.size(), 1);
+        QTRY_COMPARE(trash->locations.size(), 1); // recorded on the worker after the move
         QCOMPARE(w2->collection()->count(), 2);
         QCOMPARE(w1->currentPath(), path("IMG_10.jpg")); // next image
         QCOMPARE(w2->currentPath(), path("IMG_1.png"));

@@ -4,6 +4,8 @@
 file(GLOB LF_CORE_SOURCES CONFIGURE_DEPENDS core/*.cpp core/*.h)
 if(NOT LF_GENERIC_PLATFORM)
   file(GLOB LF_PLATFORM_SOURCES CONFIGURE_DEPENDS platform/mac/*.mm platform/mac/*.cpp platform/mac/*.h)
+  # The Sparkle backend belongs to the UI library (below), only when Sparkle is enabled.
+  list(FILTER LF_PLATFORM_SOURCES EXCLUDE REGEX ".*/SparkleUpdater\\.(mm|h)$")
 else()
   file(GLOB LF_PLATFORM_SOURCES CONFIGURE_DEPENDS platform/generic/*.cpp platform/generic/*.h)
 endif()
@@ -37,6 +39,16 @@ target_compile_definitions(lf_ui PRIVATE LF_APP_VERSION="${PROJECT_VERSION}") # 
 if(APPLE)
   target_compile_options(lf_ui PRIVATE $<$<COMPILE_LANGUAGE:OBJCXX>:-fobjc-arc>)
 endif()
+# F-MAC-08: Sparkle 2 (see LF_ENABLE_SPARKLE in the top-level CMakeLists.txt).
+if(LF_SPARKLE)
+  target_sources(lf_ui PRIVATE platform/mac/SparkleUpdater.mm platform/mac/SparkleUpdater.h)
+  target_compile_definitions(lf_ui PUBLIC LF_HAVE_SPARKLE=1)
+  # -iframework: Sparkle's headers are third-party code (no -Werror on their warnings).
+  target_compile_options(lf_ui PRIVATE "$<$<COMPILE_LANGUAGE:OBJCXX>:SHELL:-iframework ${LF_SPARKLE_DIR}>")
+  target_link_libraries(lf_ui PUBLIC "${LF_SPARKLE_DIR}/Sparkle.framework")
+else()
+  target_compile_definitions(lf_ui PUBLIC LF_HAVE_SPARKLE=0)
+endif()
 file(GLOB LF_SHADERS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/app/shaders/*.vert ${CMAKE_CURRENT_SOURCE_DIR}/app/shaders/*.frag)
 if(LF_SHADERS)
   qt_add_shaders(lf_ui "lf_shaders" PREFIX "/shaders" BASE app/shaders FILES ${LF_SHADERS})
@@ -61,3 +73,23 @@ set_target_properties(Lumaflip PROPERTIES
   MACOSX_BUNDLE_COPYRIGHT "© 2026 brokoskokoli und Mitwirkende. Lizenz: GPL-3.0-or-later."
   MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
   MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}")
+
+# Sparkle (F-MAC-08): Info.plist entries (feed, public key, signed feed, verification
+# before extraction) only with a public key - never a feed without a key. The framework
+# is embedded into Contents/Frameworks like in the release bundle (tools/package.sh).
+set(LF_SPARKLE_PLIST_ENTRIES "")
+if(LF_SPARKLE)
+  if(NOT LF_SPARKLE_PUBLIC_KEY STREQUAL "")
+    string(CONCAT LF_SPARKLE_PLIST_ENTRIES
+      "<key>SUFeedURL</key><string>${LF_SPARKLE_FEED_URL}</string>\n"
+      "  <key>SUPublicEDKey</key><string>${LF_SPARKLE_PUBLIC_KEY}</string>\n"
+      "  <key>SURequireSignedFeed</key><true/>\n"
+      "  <key>SUVerifyUpdateBeforeExtraction</key><true/>")
+  endif()
+  target_link_options(Lumaflip PRIVATE "LINKER:-rpath,@executable_path/../Frameworks")
+  add_custom_command(TARGET Lumaflip POST_BUILD
+    COMMAND ditto "${LF_SPARKLE_DIR}/Sparkle.framework"
+            "$<TARGET_BUNDLE_CONTENT_DIR:Lumaflip>/Frameworks/Sparkle.framework"
+    COMMENT "Embedding Sparkle.framework"
+    VERBATIM)
+endif()
