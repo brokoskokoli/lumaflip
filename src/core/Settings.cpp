@@ -86,6 +86,10 @@ const Registry& registry() {
         b(key::ShowStatusBar, true);
         b(key::ShowInfoPanel, false);
         b(key::ShowFilmstrip, false);
+        s(key::LoupeSize, "medium", {"small", "medium", "large"}); // F-VIEW-11
+        s(key::LoupeZoom, "200", {"100", "200"});
+        i(key::GridThumbSize, 160, 80, 400); // F-GRID-02
+        s(key::CoupleBy, "name", {"name", "index"}); // F-WIN-07
         s(key::WrapMode, "stop", {"stop", "wrap", "nextFolder"});
         b(key::FollowFinder, true);
         b(key::FinderLiveQuery, false);
