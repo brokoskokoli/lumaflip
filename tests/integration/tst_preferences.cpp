@@ -234,11 +234,20 @@ private slots:
         PreferencesDialog dlg;
         const QString file = m_dir.filePath("export.json");
         Settings::instance().setValue(key::ShowFilmstrip, true);
-        QVERIFY(dlg.exportSettingsTo(file));
+        QSignalSpy done(&dlg, &PreferencesDialog::settingsTransferFinished);
+        dlg.exportSettingsTo(file);       // written on a worker thread
+        QVERIFY(dlg.isTransferRunning()); // returned at once, the result follows
+        QTRY_COMPARE(done.size(), 1);
+        QVERIFY(!dlg.isTransferRunning());
+        QVERIFY(done.takeFirst().at(0).toBool());
         Settings::instance().setValue(key::ShowFilmstrip, false);
-        QVERIFY(dlg.importSettingsFrom(file));
+        dlg.importSettingsFrom(file); // read on a worker thread, applied on the GUI thread
+        QTRY_COMPARE(done.size(), 1);
+        QVERIFY(done.takeFirst().at(0).toBool());
         QVERIFY(dlg.findChild<QCheckBox*>(QStringLiteral("setting:") + key::ShowFilmstrip)->isChecked());
-        QVERIFY(!dlg.importSettingsFrom(m_dir.filePath("nope.json")));
+        dlg.importSettingsFrom(m_dir.filePath("nope.json"));
+        QTRY_COMPARE(done.size(), 1);
+        QVERIFY(!done.takeFirst().at(0).toBool());
         QVERIFY(dlg.findChild<QLabel*>("messageLabel")->text().contains("fehlgeschlagen"));
     }
 

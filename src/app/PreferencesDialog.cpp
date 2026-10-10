@@ -2,6 +2,7 @@
 #include "PreferencesDialog.h"
 
 #include "PreferencesExtras.h"
+#include "SystemSymbols.h"
 #include "Updater.h"
 #include "core/Settings.h"
 
@@ -14,6 +15,7 @@
 #include <QCoreApplication>
 #include <QFileDialog>
 #include <QFormLayout>
+#include <QFutureWatcher>
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QHBoxLayout>
@@ -35,6 +37,7 @@
 #include <QToolBar>
 #include <QToolButton>
 #include <QVBoxLayout>
+#include <QtConcurrent/QtConcurrentRun>
 
 namespace lf {
 
@@ -51,9 +54,9 @@ QString slotSettingsKey(const QString& slotId) {
                                                       : QString::fromLatin1(key::InputPrefix) + slotId;
 }
 
-// Not implemented before version 1.0: shown, but disabled with this note.
+// Not implemented yet (M3 and later): shown, but disabled with this note.
 QString laterNote() {
-    return QCoreApplication::translate("lf::PreferencesDialog", "ab Version 1.0");
+    return QCoreApplication::translate("lf::PreferencesDialog", "in einer späteren Version");
 }
 
 QLabel* helpLabel(const QString& text, QWidget* parent) {
@@ -102,10 +105,7 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent) {
 
     m_sectionActions = new QActionGroup(this);
     m_sectionActions->setExclusive(true);
-    const QStyle::StandardPixmap icons[SectionCount] = {
-        QStyle::SP_ComputerIcon,           QStyle::SP_TitleBarNormalButton, QStyle::SP_DesktopIcon,
-        QStyle::SP_DialogHelpButton,       QStyle::SP_ArrowRight,           QStyle::SP_DialogApplyButton,
-        QStyle::SP_FileDialogDetailedView, QStyle::SP_FileDialogInfoView};
+    toolbar->setIconSize(QSize(kSectionIconSize, kSectionIconSize));
     QWidget* (PreferencesDialog::* builders[SectionCount])() = {
         &PreferencesDialog::buildGeneral,    &PreferencesDialog::buildWindow,
         &PreferencesDialog::buildDisplay,    &PreferencesDialog::buildInput,
@@ -114,14 +114,15 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent) {
     for (int i = 0; i < SectionCount; ++i) {
         // "&" would be taken as a mnemonic marker
         QString title = sectionTitle(i);
-        QAction* act =
-            toolbar->addAction(style()->standardIcon(icons[i]), title.replace('&', QStringLiteral("&&")));
+        QAction* act = toolbar->addAction(title.replace('&', QStringLiteral("&&")));
         act->setCheckable(true);
         act->setData(i);
         m_sectionActions->addAction(act);
         connect(act, &QAction::triggered, this, [this, i] { showSection(i); });
         m_stack->addWidget(page((this->*builders[i])(), i));
     }
+
+    updateSectionIcons();
 
     m_messageLabel = new QLabel(this);
     m_messageLabel->setObjectName(QStringLiteral("messageLabel"));
@@ -844,29 +845,111 @@ QWidget* PreferencesDialog::buildAdvanced() {
     return w;
 }
 
-// ---- export / import (F-SET-03) ----
+// ---- section icons (SF Symbols, F-MAC-02) ----
 
-bool PreferencesDialog::exportSettingsTo(const QString& filePath) {
-    QString error;
-    const bool ok = st().exportTo(filePath, &error);
-    m_messageLabel->setText(ok ? tr("Einstellungen exportiert: %1").arg(filePath)
-                               : tr("Export fehlgeschlagen: %1").arg(error));
-    m_messageLabel->show();
-    if (!ok && isVisible())
-        QMessageBox::warning(this, tr("Export fehlgeschlagen"), error);
-    return ok;
+void PreferencesDialog::updateSectionIcons() {
+    // SF Symbols like the system settings; template images in the text color of the
+    // current palette (light/dark). Qt's standard icons only if a symbol is missing.
+    struct SectionIcon {
+        const char* symbols[2]; // preferred, fallback
+        QStyle::StandardPixmap fallback;
+    };
+    static const SectionIcon icons[SectionCount] = {
+        {{"gearshape", "gear"}, QStyle::SP_ComputerIcon},                   // Allgemein
+        {{"macwindow", "rectangle"}, QStyle::SP_TitleBarNormalButton},      // Fenster
+        {{"photo", "photo.on.rectangle"}, QStyle::SP_DesktopIcon},          // Anzeige
+        {{"computermouse", "keyboard"}, QStyle::SP_DialogHelpButton},       // Maus & Tastatur
+        {{"arrow.left.arrow.right", "arrow.right"}, QStyle::SP_ArrowRight}, // Navigation & Sortierung
+        {{"star", "star.fill"}, QStyle::SP_DialogApplyButton},              // Bewertung
+        {{"doc.richtext", "doc"}, QStyle::SP_FileDialogDetailedView},       // Formate
+        {{"slider.horizontal.3", "slider.horizontal.below.rectangle"},
+         QStyle::SP_FileDialogInfoView}, // Erweitert
+    };
+    const QColor color = palette().color(QPalette::WindowText);
+    const auto acts = m_sectionActions->actions();
+    for (int i = 0; i < SectionCount && i < acts.size(); ++i) {
+        QIcon icon;
+        QString used;
+        for (const char* name : icons[i].symbols) {
+            icon = systemSymbolIcon(QString::fromLatin1(name), kSectionIconSize, color);
+            if (!icon.isNull()) {
+                used = QString::fromLatin1(name);
+                break;
+            }
+        }
+        if (icon.isNull())
+            icon = style()->standardIcon(icons[i].fallback);
+        acts[i]->setIcon(icon);
+        acts[i]->setProperty("symbol", used); // tests / diagnostics
+    }
 }
 
-bool PreferencesDialog::importSettingsFrom(const QString& filePath) {
-    QString error;
-    const bool ok = st().importFrom(filePath, &error);
-    m_bindings.reload();
-    m_messageLabel->setText(ok ? tr("Einstellungen importiert: %1").arg(filePath)
-                               : tr("Import fehlgeschlagen: %1").arg(error));
+void PreferencesDialog::changeEvent(QEvent* event) {
+    QDialog::changeEvent(event);
+    if (event->type() == QEvent::PaletteChange || event->type() == QEvent::ThemeChange ||
+        event->type() == QEvent::StyleChange)
+        updateSectionIcons(); // dark/light mode: template symbols take the new text color
+}
+
+// ---- export / import (F-SET-03) ----
+
+void PreferencesDialog::exportSettingsTo(const QString& filePath) {
+    const QByteArray data = st().exportData(); // values now (GUI thread), the file on a worker
+    ++m_transfers;
+    auto* w = new QFutureWatcher<QString>(this);
+    connect(w, &QFutureWatcher<QString>::finished, this, [this, w, filePath] {
+        const QString error = w->result();
+        w->deleteLater();
+        finishTransfer(error.isEmpty(),
+                       error.isEmpty() ? tr("Einstellungen exportiert: %1").arg(filePath)
+                                       : tr("Export fehlgeschlagen: %1").arg(error),
+                       tr("Export fehlgeschlagen"), error);
+    });
+    w->setFuture(QtConcurrent::run([filePath, data] {
+        QString error;
+        if (!Settings::writeExport(filePath, data, &error) && error.isEmpty())
+            error = tr("Unbekannter Fehler");
+        return error;
+    }));
+}
+
+void PreferencesDialog::importSettingsFrom(const QString& filePath) {
+    struct ReadResult {
+        std::optional<QByteArray> data;
+        QString error;
+    };
+    ++m_transfers;
+    auto* w = new QFutureWatcher<ReadResult>(this);
+    connect(w, &QFutureWatcher<ReadResult>::finished, this, [this, w, filePath] {
+        const ReadResult r = w->result();
+        w->deleteLater();
+        QString error = r.error;
+        const bool ok = r.data && st().importData(*r.data, &error); // applied on the GUI thread
+        m_bindings.reload();
+        finishTransfer(ok,
+                       ok ? tr("Einstellungen importiert: %1").arg(filePath)
+                          : tr("Import fehlgeschlagen: %1").arg(error),
+                       tr("Import fehlgeschlagen"), error);
+    });
+    w->setFuture(QtConcurrent::run([filePath] {
+        ReadResult r;
+        r.data = Settings::readImport(filePath, &r.error);
+        return r;
+    }));
+}
+
+void PreferencesDialog::finishTransfer(bool ok, const QString& message, const QString& title,
+                                       const QString& error) {
+    --m_transfers;
+    m_messageLabel->setText(message);
     m_messageLabel->show();
-    if (!ok && isVisible())
-        QMessageBox::warning(this, tr("Import fehlgeschlagen"), error);
-    return ok;
+    if (!ok && isVisible()) {
+        auto* box = new QMessageBox(QMessageBox::Warning, title, error, QMessageBox::Ok, this);
+        box->setObjectName(QStringLiteral("lfSettingsTransferError"));
+        box->setAttribute(Qt::WA_DeleteOnClose);
+        box->open(); // non-blocking
+    }
+    emit settingsTransferFinished(ok, message);
 }
 
 } // namespace lf

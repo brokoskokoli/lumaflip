@@ -37,19 +37,28 @@ QPainterPath channelPath(const std::array<quint32, Histogram::kBins>& bins, doub
 
 HistogramWidget::HistogramWidget(QWidget* parent) : QWidget(parent) {
     setObjectName(QStringLiteral("lfHistogram"));
-    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+    setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Maximum); // up to sizeHint, down to 48 px
     setAccessibleName(tr("Histogramm"));
 }
 
 void HistogramWidget::setHistogram(const Histogram& histogram) {
     m_histogram = histogram;
     m_busy = false;
+    m_note.clear();
     update();
 }
 
 void HistogramWidget::clear(bool busy) {
     m_histogram = Histogram();
     m_busy = busy;
+    m_note.clear();
+    update();
+}
+
+void HistogramWidget::showNote(const QString& note) {
+    m_histogram = Histogram();
+    m_busy = false;
+    m_note = note;
     update();
 }
 
@@ -58,7 +67,7 @@ QSize HistogramWidget::sizeHint() const {
 }
 
 QSize HistogramWidget::minimumSizeHint() const {
-    return {120, 80};
+    return {120, 48}; // shrinks in small windows (the metadata have priority)
 }
 
 void HistogramWidget::changeEvent(QEvent* event) {
@@ -83,9 +92,9 @@ void HistogramWidget::paintEvent(QPaintEvent*) {
         p.drawLine(QPointF(x, frame.top() + 2), QPointF(x, frame.bottom() - 2));
     }
     if (m_histogram.isEmpty()) {
-        if (m_busy) {
+        if (m_busy || !m_note.isEmpty()) {
             p.setPen(pal.color(QPalette::PlaceholderText));
-            p.drawText(frame, Qt::AlignCenter, tr("Wird berechnet …"));
+            p.drawText(frame, Qt::AlignCenter, m_busy ? tr("Wird berechnet …") : m_note);
         }
         return;
     }

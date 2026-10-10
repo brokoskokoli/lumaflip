@@ -240,6 +240,14 @@ private:
     quint64 m_openToken = 0; // latest open request (openPaths classifies asynchronously)
     bool m_folderSwitchPending = false;
     QPushButton* m_openButton = nullptr;
+    // Vector images (SVG): status bar shows the intrinsic size, not the render size.
+    static bool isVectorFile(const QString& path);
+    QString vectorSizeText(const QString& path);
+    QString m_vectorSizePath;
+    QString m_vectorSizeJob;
+    QSize m_vectorSize;
+    class StartScreenRecent* m_startRecent = nullptr; // F-OPEN-12
+    void openRecent(const QString& path);
     WindowPanels* m_panels = nullptr; // M2: info panel + filmstrip (WindowPanels.cpp)
 };
 

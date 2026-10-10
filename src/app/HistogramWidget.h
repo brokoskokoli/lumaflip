@@ -18,6 +18,9 @@ public:
     void setHistogram(const Histogram& histogram);
     // No data: "Wird berechnet …" (busy) or an empty frame.
     void clear(bool busy);
+    // No histogram possible (unreadable file): `note` instead of the frame contents.
+    void showNote(const QString& note);
+    QString note() const { return m_note; }
     const Histogram& histogram() const { return m_histogram; }
     bool isBusy() const { return m_busy; }
 
@@ -31,6 +34,7 @@ protected:
 private:
     Histogram m_histogram;
     bool m_busy = false;
+    QString m_note;
 };
 
 } // namespace lf
