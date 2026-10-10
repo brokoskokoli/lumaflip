@@ -3,6 +3,7 @@
 
 #include "DisplayText.h"
 #include "HistogramWidget.h"
+#include "core/AppScoped.h"
 #include "core/Decoder.h"
 #include "core/Platform.h"
 #include "core/Settings.h"
@@ -46,23 +47,23 @@ QString tr(const char* text) {
 // Metadata reads (any number of windows) share two low-priority threads; parented to the
 // application so they are joined before Qt shuts down.
 QThreadPool* infoPool() {
-    static QThreadPool* pool = [] {
-        auto* p = new QThreadPool(QCoreApplication::instance());
+    static AppScoped<QThreadPool> pool([](QObject* parent) {
+        auto* p = new QThreadPool(parent);
         p->setMaxThreadCount(2);
         p->setThreadPriority(QThread::LowPriority);
         return p;
-    }();
-    return pool;
+    });
+    return &pool.get();
 }
 
 // Tag writes run one after another (the order of changes must be kept).
 QThreadPool* tagWritePool() {
-    static QThreadPool* pool = [] {
-        auto* p = new QThreadPool(QCoreApplication::instance());
+    static AppScoped<QThreadPool> pool([](QObject* parent) {
+        auto* p = new QThreadPool(parent);
         p->setMaxThreadCount(1);
         return p;
-    }();
-    return pool;
+    });
+    return &pool.get();
 }
 
 QString formatDate(const QDateTime& dt) {
@@ -682,9 +683,10 @@ void InfoPanel::refreshHistogram() {
         return;
     }
     m_histogram->clear(true);
-    // The screen stage (or better) of the image; a preview would give a coarse result.
-    const DecodedImagePtr img = m_provider.cached(m_path, Quality::Screen);
-    if (!img || img->isPreview || !m_histogramJob.isEmpty())
+    // The screen stage (or better) of the image, whatever size the window decoded it at;
+    // a preview would give a coarse result (DecodedImage::quality, not isPreview).
+    const DecodedImagePtr img = m_provider.cached(m_path, Quality::Preview);
+    if (!img || img->quality == Quality::Preview || !m_histogramJob.isEmpty())
         return; // imageShown() / the running job come back here
     const QString path = m_path;
     m_histogramJob = path;

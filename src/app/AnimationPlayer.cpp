@@ -6,6 +6,7 @@
 #include <QCoreApplication>
 #include <QMutex>
 #include <QPointer>
+#include <QSet>
 #include <QThreadPool>
 #include <QTimer>
 
@@ -34,11 +35,23 @@ int longEdge(QSize s) {
 
 // Shared with the decode tasks: the open reader of one animation.
 struct AnimationPlayer::Shared {
-    QMutex mutex;
+    QMutex mutex; // reader (held while a frame decodes)
     QString path;
     DecodeRequest request;
+    Quality quality = Quality::Screen; // stage of the frames (that of the first frame)
     std::unique_ptr<FrameReader> reader;
     bool opened = false;
+
+    // The player results go to. Reset (under ownerMutex) by the player when it stops this
+    // animation or is destroyed, so a task never posts to a deleted object: it posts while
+    // holding the lock, and Qt drops events of an object destroyed later.
+    QMutex ownerMutex;
+    AnimationPlayer* owner = nullptr;
+
+    void detach() {
+        QMutexLocker lock(&ownerMutex);
+        owner = nullptr;
+    }
 };
 
 AnimationPlayer::AnimationPlayer(QObject* parent) : QObject(parent), m_timer(new QTimer(this)) {
@@ -48,7 +61,27 @@ AnimationPlayer::AnimationPlayer(QObject* parent) : QObject(parent), m_timer(new
     m_clock.start();
 }
 
-AnimationPlayer::~AnimationPlayer() = default;
+AnimationPlayer::~AnimationPlayer() {
+    if (m_shared)
+        m_shared->detach(); // a running decode keeps `m_shared` alive but posts nothing
+}
+
+void AnimationPlayer::setMemoryBudget(qint64 bytes) {
+    m_budget = std::max<qint64>(0, bytes);
+}
+
+void AnimationPlayer::setMaxDecodeBytes(qint64 bytes) {
+    m_maxDecodeBytes = std::max<qint64>(0, bytes);
+}
+
+qint64 AnimationPlayer::ringBytes() const {
+    // P-09: a share of the image cache budget, never more than kRingBytes.
+    return m_budget > 0 ? std::min(kRingBytes, m_budget / 4) : kRingBytes;
+}
+
+qint64 AnimationPlayer::cacheAllBytes() const {
+    return m_budget > 0 ? std::min(kCacheAllBytes, m_budget / 4) : kCacheAllBytes;
+}
 
 int AnimationPlayer::durationMs(const DecodedImage& frame) {
     return frame.frameDurationMs > 0 ? frame.frameDurationMs : kDefaultDurationMs;
@@ -64,11 +97,17 @@ void AnimationPlayer::open(const QString& path, const DecodedImagePtr& first, in
     m_shownCount = 0;
     m_shared = std::make_shared<Shared>();
     m_shared->path = path;
-    // Frames at the size of the shown first frame, so they replace it 1:1.
+    m_shared->owner = this;
+    // Frames at the size of the shown first frame, so they replace it 1:1 - also in the
+    // same buffer format (HDR) and within the provider's per-image cap (P-08).
     if (first && !first->fullSize.isEmpty() && first->image.size() != first->fullSize)
         m_shared->request.maxPixelSize = longEdge(first->image.size());
+    m_shared->request.hdr = first && first->headroom > 1.0f;
+    m_shared->request.maxBytes = m_maxDecodeBytes;
+    if (first)
+        m_shared->quality = first->quality;
     m_frameBytes = first ? first->image.sizeInBytes() : 0;
-    m_cacheAll = m_frameBytes > 0 && m_frameBytes * m_count <= kCacheAllBytes;
+    m_cacheAll = m_frameBytes > 0 && m_frameBytes * m_count <= cacheAllBytes();
     if (first)
         m_frames.insert(0, first);
     if (autoplay)
@@ -82,6 +121,8 @@ void AnimationPlayer::stop() {
     ++m_generation; // results of running decodes are dropped
     m_timer->stop();
     m_frames.clear();
+    if (m_shared)
+        m_shared->detach();
     m_shared.reset();
     m_path.clear();
     m_count = 0;
@@ -160,9 +201,18 @@ qint64 AnimationPlayer::heldBytes() const {
 }
 
 qint64 AnimationPlayer::maxHeldBytes() const {
+    return m_frameBytes * maxFrames();
+}
+
+int AnimationPlayer::maxFrames() const {
+    if (m_count < 1)
+        return 0;
     if (m_cacheAll)
-        return m_frameBytes * m_count;
-    return m_frameBytes * (framesAhead() + 3); // ahead + current + previous + a stepped-to frame
+        return m_count;
+    // Hard cap: the ring budget, but at least the current and the next frame (playback
+    // needs both; a single frame is already bounded by the decode cap, P-08).
+    const qint64 n = ringBytes() / std::max<qint64>(1, m_frameBytes);
+    return int(std::clamp<qint64>(n, std::min(2, m_count), m_count));
 }
 
 int AnimationPlayer::wrap(int index) const {
@@ -174,8 +224,10 @@ int AnimationPlayer::framesAhead() const {
         return 0;
     if (m_cacheAll)
         return m_count - 1;
-    const qint64 n = kRingBytes / std::max<qint64>(1, m_frameBytes);
-    return int(std::clamp<qint64>(n, 2, m_count - 1));
+    // Room for the current frame and one more (the previous or a stepped-to frame) if the
+    // budget allows; at least one frame ahead.
+    const int n = maxFrames();
+    return std::clamp(n >= 3 ? n - 2 : n - 1, 1, m_count - 1);
 }
 
 void AnimationPlayer::armTimer() {
@@ -217,13 +269,25 @@ void AnimationPlayer::showFrame(int index) {
 void AnimationPlayer::evict() {
     if (m_cacheAll)
         return;
+    // Kept, in this order, while there is room (maxFrames): the current frame, the frames
+    // ahead, a stepped-to frame, the previous frame.
     const int ahead = framesAhead();
-    for (auto it = m_frames.begin(); it != m_frames.end();) {
-        const int i = it.key();
-        const int dist = wrap(i - m_current); // frames ahead of the current one
-        const bool keep = i == m_current || dist <= ahead || i == wrap(m_current - 1) || i == m_pendingStep;
-        it = keep ? std::next(it) : m_frames.erase(it);
+    const int cap = maxFrames();
+    QList<int> keep{m_current};
+    for (int k = 1; k <= ahead; ++k)
+        keep << wrap(m_current + k);
+    if (m_pendingStep >= 0)
+        keep << m_pendingStep;
+    keep << wrap(m_current - 1);
+    QSet<int> kept;
+    for (int i : std::as_const(keep)) {
+        if (kept.size() >= cap)
+            break;
+        if (m_frames.contains(i) || i == m_pendingStep || i == wrap(m_current + 1))
+            kept.insert(i); // also reserves room for a frame still being decoded
     }
+    for (auto it = m_frames.begin(); it != m_frames.end();)
+        it = kept.contains(it.key()) ? std::next(it) : m_frames.erase(it);
 }
 
 void AnimationPlayer::scheduleDecode() {
@@ -232,7 +296,7 @@ void AnimationPlayer::scheduleDecode() {
     int index = -1;
     if (m_pendingStep >= 0 && !m_frames.contains(m_pendingStep)) {
         index = m_pendingStep;
-    } else {
+    } else if (m_cacheAll || int(m_frames.size()) < maxFrames()) { // P-09: never above the cap
         const int ahead = framesAhead();
         for (int k = 1; k <= ahead; ++k) {
             const int i = wrap(m_current + k);
@@ -247,8 +311,7 @@ void AnimationPlayer::scheduleDecode() {
     m_busy = true;
     const std::shared_ptr<Shared> shared = m_shared;
     const quint64 gen = m_generation;
-    QPointer<AnimationPlayer> self(this);
-    animationPool()->start([shared, gen, index, self] {
+    animationPool()->start([shared, gen, index] {
         DecodedImagePtr result;
         QString error;
         {
@@ -261,16 +324,18 @@ void AnimationPlayer::scheduleDecode() {
                 error = DecoderRegistry::messageUnreadable();
             } else if (auto img = shared->reader->readFrame(index, shared->request, &error)) {
                 img->frame = index;
+                img->quality = shared->quality;
                 result = std::make_shared<const DecodedImage>(std::move(*img));
             }
         }
-        QMetaObject::invokeMethod(
-            self.data(),
-            [self, gen, index, result, error] {
-                if (self)
-                    self->decoded(gen, index, result, error);
-            },
-            Qt::QueuedConnection);
+        // Posted while holding ownerMutex: the player cannot be destroyed in between (its
+        // destructor detaches under the same lock), and Qt discards the event if the player
+        // is destroyed before it is delivered.
+        QMutexLocker lock(&shared->ownerMutex);
+        if (AnimationPlayer* owner = shared->owner)
+            QMetaObject::invokeMethod(
+                owner, [owner, gen, index, result, error] { owner->decoded(gen, index, result, error); },
+                Qt::QueuedConnection);
     });
 }
 

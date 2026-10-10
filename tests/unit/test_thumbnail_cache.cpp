@@ -21,6 +21,10 @@ using namespace lf;
 
 namespace {
 
+// Thumbnails are made on lowest-priority threads: on a fully loaded machine (parallel test
+// runs) they may wait for seconds. Generous bound; the tests are about order and results.
+constexpr int kThumbWaitMs = 60000;
+
 // Decodes every file to a solid 800×600 image whose color depends on the file name.
 class CountingDecoder : public Decoder {
 public:
@@ -80,15 +84,14 @@ protected:
     }
 
     static bool waitReady(ThumbnailCache& cache, const QString& path, int size) {
-        return test::waitUntil([&] { return !cache.cached(path, size).isNull(); }, 5000);
+        return test::waitUntil([&] { return !cache.cached(path, size).isNull(); }, kThumbWaitMs);
     }
 
     QString diskFile(const ThumbnailCache& cache, const QString& path, int size) const {
         const QFileInfo fi(path);
         return cache.directory() + QLatin1Char('/') +
-               QString::fromLatin1(ThumbnailCache::cacheKey(
-                   path, fi.size(), fi.lastModified(QTimeZone::UTC).toMSecsSinceEpoch(), size)) +
-               QStringLiteral(".thumb");
+               ThumbnailCache::diskFileName(path, fi.size(),
+                                            fi.lastModified(QTimeZone::UTC).toMSecsSinceEpoch(), size);
     }
 
     QTemporaryDir files;
@@ -223,7 +226,7 @@ TEST_F(ThumbnailCacheTest, F_GRID_01_RetainDropsRequestsOutOfView) {
     cache.retain(&client, {paths.last()});
     EXPECT_LE(cache.pendingJobs(), 2);
     gate.release(100);
-    ASSERT_TRUE(test::waitUntil([&] { return cache.pendingJobs() == 0; }, 5000));
+    ASSERT_TRUE(test::waitUntil([&] { return cache.pendingJobs() == 0; }, kThumbWaitMs));
     EXPECT_LE(decoder->decodes.load(), 2);
     EXPECT_FALSE(cache.cached(paths.last(), 128).isNull()); // the visible one was made
     decoder->gate = nullptr;
@@ -244,7 +247,7 @@ TEST_F(ThumbnailCacheTest, F_GRID_01_NewestRequestFirstAndFailuresNotRetried) {
     cache.request(older, 128, &client);
     cache.request(newest, 128, &client); // what the user looks at now
     gate.release(100);
-    ASSERT_TRUE(test::waitUntil([&] { return order.size() == 3; }, 5000));
+    ASSERT_TRUE(test::waitUntil([&] { return order.size() == 3; }, kThumbWaitMs));
     EXPECT_EQ(order, (QStringList{"first.jpg", "newest.jpg", "older.jpg"}));
     decoder->gate = nullptr;
 
@@ -253,11 +256,11 @@ TEST_F(ThumbnailCacheTest, F_GRID_01_NewestRequestFirstAndFailuresNotRetried) {
     int failed = 0;
     QObject::connect(&cache, &ThumbnailCache::thumbnailFailed, [&] { ++failed; });
     cache.request(gone, 128, &client);
-    ASSERT_TRUE(test::waitUntil([&] { return failed == 1; }, 5000));
+    ASSERT_TRUE(test::waitUntil([&] { return failed == 1; }, kThumbWaitMs));
     cache.request(gone, 128, &client);
     EXPECT_EQ(cache.pendingJobs(), 0);
     cache.invalidate(gone);
     cache.request(gone, 128, &client);
     EXPECT_EQ(cache.pendingJobs(), 1);
-    ASSERT_TRUE(test::waitUntil([&] { return failed == 2; }, 5000));
+    ASSERT_TRUE(test::waitUntil([&] { return failed == 2; }, kThumbWaitMs));
 }

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "ThumbnailCache.h"
 
+#include "AppScoped.h"
 #include "Decoder.h"
 
 #include <QBuffer>
@@ -43,8 +44,18 @@ struct Job {
     QString path;
     int thumbSize = 0;
     QSet<const void*> clients;
-    quint64 seq = 0; // newest request first (what the user looks at now)
+    quint64 seq = 0;        // newest request first (what the user looks at now)
+    quint64 generation = 0; // of `path` when the job started (invalidate() bumps it)
 };
+
+constexpr int kMaxGenerations = 4096; // bound of the per-path generation table
+
+// First 16 hex digits of the SHA-1 of the path: prefix of all disk files of one path, so
+// invalidate() finds them whatever thumbnail size or file stamp they were made for.
+QString pathTag(const QString& path) {
+    return QString::fromLatin1(
+        QCryptographicHash::hash(path.toUtf8(), QCryptographicHash::Sha1).toHex().left(16));
+}
 
 struct Result {
     QImage image;
@@ -88,6 +99,10 @@ struct ThumbnailCache::Private {
     QHash<QString, Job> queued; // memKey -> job
     QSet<QString> running;      // memKeys
     int runners = 0;
+    // invalidate(): results of jobs started before are dropped (generation), and the
+    // path's disk files are deleted before anything reads or writes them again.
+    QHash<QString, quint64> generations;
+    QSet<QString> purgeDisk; // paths whose disk files must go
     std::atomic<int> decodes{0};
     std::atomic<int> hits{0};
 
@@ -124,30 +139,57 @@ struct ThumbnailCache::Private {
                     if (it->seq > best->seq)
                         best = it;
                 job = best.value();
+                job.generation = generations.value(job.path);
                 running.insert(best.key());
                 queued.erase(best);
             }
-            const Result r = generate(job.path, job.thumbSize);
+            purgeIfPending(job.path);
+            const Result r = generate(job.path, job.thumbSize, job.generation);
             const QString key = memKey(job.path, job.thumbSize);
             QMetaObject::invokeMethod(q, [this, key, job, r] { deliver(key, job, r); }, Qt::QueuedConnection);
         }
     }
 
-    QString diskPath(const QByteArray& key) const {
-        return options.directory + QLatin1Char('/') + QString::fromLatin1(key) + QLatin1String(kSuffix);
+    QString diskPath(const QString& path, qint64 size, qint64 mtime, int thumbSize) const {
+        return options.directory + QLatin1Char('/') + diskFileName(path, size, mtime, thumbSize);
     }
 
-    Result generate(const QString& path, int thumbSize) {
+    // Any thread: deletes the disk files of `path` if invalidate() asked for it.
+    void purgeIfPending(const QString& path) {
+        {
+            QMutexLocker lock(&mutex);
+            if (!purgeDisk.remove(path))
+                return;
+        }
+        if (options.directory.isEmpty())
+            return;
+        QMutexLocker lock(&diskMutex);
+        const QDir dir(options.directory);
+        const QFileInfoList files =
+            dir.entryInfoList({pathTag(path) + QStringLiteral("-*") + QLatin1String(kSuffix)}, QDir::Files);
+        for (const QFileInfo& fi : files) {
+            const qint64 size = fi.size();
+            if (QFile::remove(fi.absoluteFilePath()) && diskBytes >= 0)
+                diskBytes = std::max<qint64>(0, diskBytes - size);
+        }
+    }
+
+    bool isCurrent(const QString& path, quint64 generation) const {
+        QMutexLocker lock(&mutex);
+        return generations.value(path) == generation && !purgeDisk.contains(path);
+    }
+
+    Result generate(const QString& path, int thumbSize, quint64 generation) {
         Result r;
         const QFileInfo fi(path);
         if (!fi.isFile())
             return r;
         const qint64 size = fi.size();
         const qint64 mtime = fi.lastModified(QTimeZone::UTC).toMSecsSinceEpoch();
-        const QByteArray key = cacheKey(path, size, mtime, thumbSize);
+        const QString file = diskPath(path, size, mtime, thumbSize);
         const bool disk = !options.directory.isEmpty();
         if (disk) {
-            QFile f(diskPath(key));
+            QFile f(file);
             if (f.open(QIODevice::ReadOnly)) {
                 const QByteArray bytes = f.readAll();
                 // Last use = modification time of the cache file (LRU eviction order).
@@ -185,11 +227,13 @@ struct ThumbnailCache::Private {
         ++decodes;
         r.image = toThumbnail(decoded->image, thumbSize);
         if (disk && !r.image.isNull())
-            store(key, r.image);
+            store(file, r.image, path, generation);
         return r;
     }
 
-    void store(const QByteArray& key, const QImage& image) {
+    // Writes the thumbnail unless `path` was invalidated since the job started (checked
+    // under diskMutex, which a purge holds as well: a stale thumbnail is never kept).
+    void store(const QString& file, const QImage& image, const QString& path, quint64 generation) {
         QByteArray bytes;
         {
             QBuffer buf(&bytes);
@@ -199,13 +243,14 @@ struct ThumbnailCache::Private {
                 return;
         }
         QMutexLocker lock(&diskMutex);
+        if (!isCurrent(path, generation))
+            return;
         if (!dirCreated) {
             if (!QDir().mkpath(options.directory))
                 return;
             dirCreated = true;
         }
         scanLocked();
-        const QString file = diskPath(key);
         const qint64 old = QFileInfo(file).size(); // 0 if missing
         QSaveFile f(file);
         if (!f.open(QIODevice::WriteOnly) || f.write(bytes) != bytes.size() || !f.commit())
@@ -253,6 +298,17 @@ struct ThumbnailCache::Private {
         {
             QMutexLocker lock(&mutex);
             running.remove(key);
+            if (generations.value(job.path) != job.generation) {
+                // Started before invalidate(): the result may show the old file. Generated
+                // again for the clients that asked (unless they asked again meanwhile).
+                if (!job.clients.isEmpty() && !queued.contains(key)) {
+                    Job again = job;
+                    again.seq = ++seq;
+                    queued.insert(key, again);
+                    startRunners();
+                }
+                return;
+            }
         }
         if (r.image.isNull()) {
             failed.insert(key);
@@ -277,14 +333,15 @@ ThumbnailCache::~ThumbnailCache() {
 }
 
 ThumbnailCache& ThumbnailCache::instance() {
-    // Parented to the application so the worker threads are joined before Qt shuts down.
-    static ThumbnailCache* cache = [] {
+    // Owned by the application object so the worker threads are joined before Qt shuts
+    // down; created again for a new application object (AppScoped).
+    static AppScoped<ThumbnailCache> cache([](QObject* parent) {
         Options o;
         o.directory = defaultDirectory();
         o.threads = std::clamp(QThread::idealThreadCount() / 4, 1, 2);
-        return new ThumbnailCache(DecoderRegistry::instance(), o, QCoreApplication::instance());
-    }();
-    return *cache;
+        return new ThumbnailCache(DecoderRegistry::instance(), o, parent);
+    });
+    return cache.get();
 }
 
 QString ThumbnailCache::defaultDirectory() {
@@ -295,6 +352,11 @@ QString ThumbnailCache::defaultDirectory() {
 
 void ThumbnailCache::setDefaultDirectory(const QString& directory) {
     defaultDirectoryOverride() = directory;
+}
+
+QString ThumbnailCache::diskFileName(const QString& path, qint64 fileSize, qint64 modifiedMs, int thumbSize) {
+    return pathTag(path) + QLatin1Char('-') +
+           QString::fromLatin1(cacheKey(path, fileSize, modifiedMs, thumbSize)) + QLatin1String(kSuffix);
 }
 
 QByteArray ThumbnailCache::cacheKey(const QString& path, qint64 fileSize, qint64 modifiedMs, int thumbSize) {
@@ -359,6 +421,25 @@ void ThumbnailCache::invalidate(const QString& path) {
             d->memory.remove(k);
     for (auto it = d->failed.begin(); it != d->failed.end();)
         it = it->startsWith(prefix) ? d->failed.erase(it) : std::next(it);
+    {
+        QMutexLocker lock(&d->mutex);
+        if (d->generations.size() >= kMaxGenerations && !d->generations.contains(path)) {
+            // Only jobs compare generations: entries of paths without a job can go.
+            QSet<QString> busy;
+            for (const Job& j : std::as_const(d->queued))
+                busy.insert(j.path);
+            for (const QString& k : std::as_const(d->running))
+                busy.insert(k.section(QLatin1Char('\n'), 0, 0));
+            d->generations.removeIf([&](const auto& it) { return !busy.contains(it.key()); });
+        }
+        ++d->generations[path];
+        if (d->options.directory.isEmpty())
+            return;
+        d->purgeDisk.insert(path);
+    }
+    // The disk files go on a worker (no file system access on the GUI thread); a job of
+    // the path purges first if it gets there earlier.
+    d->pool.start([priv = d.get(), path] { priv->purgeIfPending(path); });
 }
 
 int ThumbnailCache::pendingJobs() const {

@@ -252,6 +252,9 @@ private slots:
     void F_OPEN_04_multiFileOpenGroupedWithin150ms() {
         makeStandardFolder();
         QVERIFY(!makeImage(path("IMG_4.png"), Qt::gray).isEmpty()); // in the folder, not opened
+        // Deterministic timing: the interval cannot run out between the events however slow
+        // the machine is; the end of the interval is triggered explicitly below.
+        app->setOpenGroupingIntervalForTesting(60 * 60 * 1000);
         for (const char* n : {"IMG_10.jpg", "IMG_1.png"}) {
             QFileOpenEvent ev(path(QString::fromLatin1(n)));
             QCoreApplication::sendEvent(qApp, &ev);
@@ -262,21 +265,30 @@ private slots:
         // The first file is shown immediately, the group follows after the interval.
         QCOMPARE(app->windows().size(), 1);
         ViewerWindow* w = app->windows().first();
-        QTRY_VERIFY_WITH_TIMEOUT(!w->collection()->isFolderCollection(), 3000); // exactly these files
+        QVERIFY(app->isOpenBurstPending());
+        app->flushOpenBurstForTesting(); // the interval ends
+        QVERIFY(!app->isOpenBurstPending());
+        QTRY_VERIFY_WITH_TIMEOUT(!w->collection()->isFolderCollection(), 10000); // exactly these files
         QVERIFY(waitLoaded(w));
         QCOMPARE(w->collection()->count(), 3);
         QCOMPARE(app->windows().size(), 1);
         QCOMPARE(w->currentPath(), path("IMG_10.jpg")); // first requested stays current
 
-        // Requests further apart than the interval are separate (new window each, F-WIN-02).
-        QTest::qWait(Application::kOpenGroupingMs + 100);
+        // Requests in separate intervals are separate (new window each, F-WIN-02).
         QFileOpenEvent a(path("IMG_1.png"));
         QCoreApplication::sendEvent(qApp, &a);
-        QTest::qWait(Application::kOpenGroupingMs + 150);
+        app->flushOpenBurstForTesting();
         QFileOpenEvent b(path("IMG_2.jpg"));
         QCoreApplication::sendEvent(qApp, &b);
-        QTest::qWait(Application::kOpenGroupingMs + 150);
-        QCOMPARE(app->windows().size(), 3);
+        app->flushOpenBurstForTesting();
+        QTRY_COMPARE(app->windows().size(), 3);
+        // The real interval is the specified one, and it ends by itself.
+        app->setOpenGroupingIntervalForTesting(0);
+        QFileOpenEvent c(path("IMG_4.png"));
+        QCoreApplication::sendEvent(qApp, &c);
+        QVERIFY(app->isOpenBurstPending());
+        QTRY_VERIFY_WITH_TIMEOUT(!app->isOpenBurstPending(), Application::kOpenGroupingMs * 20);
+        QTRY_COMPARE(app->windows().size(), 4);
         for (ViewerWindow* x : app->windows().mid(1)) {
             QVERIFY(waitLoaded(x));
             QVERIFY(x->collection()->isFolderCollection());
@@ -627,9 +639,9 @@ private slots:
         QTRY_VERIFY2(!QFileInfo::exists(path("IMG_2.jpg")), qPrintable(w1->toastText()));
         QTRY_COMPARE(w1->collection()->count(), 2);
         QTRY_COMPARE(trash->locations.size(), 1); // recorded on the worker after the move
-        QCOMPARE(w2->collection()->count(), 2);
-        QCOMPARE(w1->currentPath(), path("IMG_10.jpg")); // next image
-        QCOMPARE(w2->currentPath(), path("IMG_1.png"));
+        QTRY_COMPARE(w2->collection()->count(), 2);
+        QTRY_COMPARE(w1->currentPath(), path("IMG_10.jpg")); // next image
+        QTRY_COMPARE(w2->currentPath(), path("IMG_1.png"));
         QVERIFY(waitShown(w1, path("IMG_10.jpg")));
 
         // Undo (⌘Z) restores the file and shows it again in the window that trashed it.
@@ -639,7 +651,7 @@ private slots:
         QTRY_COMPARE(w1->collection()->count(), 3);
         QTRY_COMPARE(w2->collection()->count(), 3);
         QTRY_COMPARE(w1->currentPath(), path("IMG_2.jpg"));
-        QCOMPARE(w2->currentPath(), path("IMG_1.png"));
+        QTRY_COMPARE(w2->currentPath(), path("IMG_1.png"));
         QVERIFY(waitShown(w1, path("IMG_2.jpg")));
 
         // ⌘⌫ is the menu shortcut; redo trashes again, undo restores.
@@ -888,10 +900,15 @@ private slots:
         ViewerWindow* a = app->openPaths({path("IMG_2.jpg")});
         QVERIFY(waitLoaded(a));
         QVERIFY(waitWindowShown(a));
-        // The same folder in a second window is not enumerated again.
+        // The same folder in a second window is not enumerated again: the window takes the
+        // other one's entries at once. (It loads only if the first window is reloading right
+        // now - a late watcher event for the files just created - and then shares that load.)
+        const bool aLoading = a->collection()->isLoading();
         ViewerWindow* b = app->openPaths({path("IMG_10.jpg")});
         QVERIFY(a != b);
-        QVERIFY(!b->collection()->isLoading());
+        QCOMPARE(b->collection()->isLoading(), aLoading);
+        QCOMPARE(b->collection()->count(), aLoading ? 1 : 3);
+        QVERIFY(waitLoaded(b));
         QCOMPARE(b->collection()->count(), 3);
         QCOMPARE(b->currentPath(), path("IMG_10.jpg"));
         QCOMPARE(a->currentPath(), path("IMG_2.jpg"));

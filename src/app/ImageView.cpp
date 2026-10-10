@@ -153,8 +153,9 @@ struct ImageView::Private {
             emit q->zoomChanged(f, lastMode);
         }
         if (image) {
-            const bool need = model.needsHigherResolution(image->image.size()) &&
-                              (image->isPreview || image->image.size() != model.imageSize());
+            // By size only (smaller than the full size and magnified): DecodedImage::isPreview
+            // is no quality marker (it is true for the Screen stage of large files as well).
+            const bool need = model.needsHigherResolution(image->image.size());
             if (need && !needsHigherSent) {
                 needsHigherSent = true;
                 emit q->needsHigherResolution();

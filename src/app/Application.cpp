@@ -877,6 +877,25 @@ bool Application::isQuitPending() const {
     return d->quitWhenIdle;
 }
 
+void Application::setOpenGroupingIntervalForTesting(int ms) {
+    d->burstTimer.setInterval(ms > 0 ? ms : kOpenGroupingMs);
+}
+
+bool Application::isOpenBurstPending() const {
+    return d->burstTimer.isActive();
+}
+
+void Application::flushOpenBurstForTesting() {
+    if (!d->burstTimer.isActive())
+        return;
+    d->burstTimer.stop();
+    flushOpenBurst();
+}
+
+void Application::setBusyHintDelayForTesting(int ms) {
+    d->busyTimer.setInterval(ms >= 0 ? ms : kBusyHintMs);
+}
+
 // ---------------------------------------------------------------------------------------
 // Commands
 // ---------------------------------------------------------------------------------------

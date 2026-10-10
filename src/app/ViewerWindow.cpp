@@ -343,7 +343,12 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     connect(m_collection, &Collection::accessDenied, this, &ViewerWindow::showAccessHint);
     ImageProvider& provider = m_app.provider();
     connect(&provider, &ImageProvider::imageReady, this, &ViewerWindow::onImageReady);
-    connect(&provider, &ImageProvider::imageFailed, this, &ViewerWindow::onImageFailed);
+    // F-FMT-04: an error card only for the page that failed (other pages may be fine).
+    connect(&provider, &ImageProvider::pageFailed, this,
+            [this](const QString& path, int page, const QString& error) {
+                if (page == m_page)
+                    onImageFailed(path, error);
+            });
     connect(&provider, &ImageProvider::stageFailed, this, &ViewerWindow::onStageFailed);
     // The shown image is outdated (file changed, RAW setting changed): the provider decodes
     // the wanted stages again and they replace it (F-FMT-05).
@@ -366,7 +371,8 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
                                 QLatin1String("dragOut"));
     connect(m_view, &ImageView::dragOutRequested, this, [this] {
         const QString cur = currentPath();
-        // The shown (screen sized) image: scaling it for the drag stays quick on the GUI thread.
+        // Whatever stage is shown (also Full): the GUI thread only samples a thumbnail, the
+        // image data for other apps is scaled on a worker (DragOut.h).
         if (!cur.isEmpty() && cur == m_shownPath && !m_shownFailed && m_view->image())
             startDragOut(m_view, cur, m_view->image()->image);
     });
@@ -647,7 +653,7 @@ void ViewerWindow::showCurrent(const QString& path) {
     }
     // A cached lower stage is shown at once (P-04); the better one follows via imageReady.
     if (auto img = provider.cached(path, Quality::Preview, {}, m_page)) {
-        display(path, img->isPreview ? Quality::Preview : Quality::Screen, img);
+        display(path, img->quality, img);
         return;
     }
     // Nothing yet: keep showing the previous image until the preview arrives, but
@@ -1026,6 +1032,7 @@ void ViewerWindow::showMessage(const QString& text, int ms) {
     m_toast->raise();
     layoutOverlays();
     m_toastTimer->start(ms);
+    emit messageShown(text);
 }
 
 QString ViewerWindow::toastText() const {

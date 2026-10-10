@@ -4,10 +4,12 @@
 #include "MacImage.h"
 #include "Share.h"
 
+#include <QFileInfo>
 #include <QWidget>
 #include <QWindow>
 
 #import <AppKit/AppKit.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 namespace lf {
 
@@ -39,6 +41,18 @@ QString serviceTitle(NSSharingService* s) {
 
 } // namespace
 
+QString shareTypeKey(const QString& path) {
+    const QString suffix = QFileInfo(path).suffix().toLower();
+    @autoreleasepool {
+        UTType* type = suffix.isEmpty() ? nil : [UTType typeWithFilenameExtension:suffix.toNSString()];
+        if (type && !type.dynamic)
+            return QString::fromNSString(type.identifier);
+    }
+    return suffix;
+}
+
+// Any thread (ShareServiceCache runs it on a worker): the services are only listed and
+// their icons drawn into bitmaps; performing one happens on the GUI thread.
 QList<ShareService> shareServices(const QStringList& paths) {
     @autoreleasepool {
         QList<ShareService> out;

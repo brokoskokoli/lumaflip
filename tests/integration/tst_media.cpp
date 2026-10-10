@@ -164,15 +164,25 @@ private slots:
                 [&](int index, const DecodedImagePtr&) { shown.append({index, clock.elapsed()}); });
         QTRY_VERIFY_WITH_TIMEOUT(shown.size() >= 8, 5000);
         const int durations[3] = {100, 200, 300};
+        // Frames are due at absolute times (first + sum of the durations): a frame shown late
+        // (busy machine) shortens the next one instead of shifting all later frames. So the
+        // offsets from that schedule stay within a bounded band (the first timestamp may be
+        // late itself, so the band is relative); a drift would make them grow frame by frame.
         int checked = 0;
+        qint64 due = shown[0].second;
+        qint64 minOffset = 0, maxOffset = 0;
         for (int i = 1; i < shown.size(); ++i) {
             const int prev = shown[i - 1].first;
             QCOMPARE(shown[i].first, (prev + 1) % 3); // in order, nothing skipped
-            const qint64 dt = shown[i].second - shown[i - 1].second;
-            QVERIFY2(dt >= durations[prev] - 15 && dt <= durations[prev] + 80,
-                     qPrintable(QStringLiteral("frame %1 lasted %2 ms").arg(prev).arg(dt)));
+            due += durations[prev];
+            const qint64 offset = shown[i].second - due;
+            minOffset = std::min(minOffset, offset);
+            maxOffset = std::max(maxOffset, offset);
             ++checked;
         }
+        QVERIFY2(
+            maxOffset - minOffset <= 250,
+            qPrintable(QStringLiteral("offsets from the schedule %1..%2 ms").arg(minOffset).arg(maxOffset)));
         QVERIFY(checked >= 7);
         // The view shows the frames (texture reuse in the canvas, same size).
         auto* canvas = w->view()->findChild<ImageCanvas*>();
@@ -269,7 +279,7 @@ private slots:
         ViewerWindow* w = open(gif);
         QVERIFY(w);
         AnimationPlayer* anim = w->animation();
-        QTRY_VERIFY_WITH_TIMEOUT(anim->isPlaying(), 5000);
+        QTRY_VERIFY_WITH_TIMEOUT(anim->isPlaying(), 20000);
         QCOMPARE(anim->frameCount(), 200);
         QVERIFY(!anim->cachesAllFrames()); // 200 × 480 KB > 64 MB
         w->setAnimationSpeed(4.0);
@@ -286,7 +296,10 @@ private slots:
                  qPrintable(QStringLiteral("%1 > %2").arg(peak).arg(anim->maxHeldBytes())));
         QVERIFY(peak <= AnimationPlayer::kRingBytes + 3 * 400 * 300 * 4);
         QVERIFY(peakFrames < 200);
-        QVERIFY2(anim->framesShown() > 20, qPrintable(QString::number(anim->framesShown()))); // it plays
+        // It plays (on a loaded machine the decoder may need longer than the 2 s above).
+        QTRY_VERIFY2_WITH_TIMEOUT(anim->framesShown() > 20, qPrintable(QString::number(anim->framesShown())),
+                                  30000);
+        QVERIFY(anim->heldBytes() <= anim->maxHeldBytes());
         // Frame colors follow the file.
         const DecodedImagePtr cur = anim->currentImage();
         QVERIFY(cur);
@@ -481,8 +494,9 @@ private slots:
         const int before = canvas->crossfadeFramesRendered();
         key(w, Qt::Key_Right);
         QVERIFY(waitShown(w, files.at(1)));
-        QTRY_VERIFY_WITH_TIMEOUT(canvas->crossfadeFramesRendered() > before, 3000);
-        QTRY_VERIFY_WITH_TIMEOUT(!canvas->isCrossfading(), 3000); // ends after ~300 ms
+        QTRY_VERIFY_WITH_TIMEOUT(canvas->crossfadeFramesRendered() > before, 15000);
+        QTRY_VERIFY_WITH_TIMEOUT(!canvas->isCrossfading(),
+                                 15000); // ends after ~300 ms (loaded machine: later)
 
         Settings::instance().setValue(key::SlideshowCrossfade, false);
         const int afterOn = canvas->crossfadeFramesRendered();

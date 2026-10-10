@@ -25,6 +25,8 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QPointer>
+#include <QScopeGuard>
+#include <QSemaphore>
 #include <QSignalSpy>
 #include <QTableWidget>
 #include <QTemporaryDir>
@@ -49,6 +51,8 @@ public:
     RecordingTrash() { QDir().mkpath(m_dir.path()); }
     std::optional<QString> moveToTrash(const QString& path, QString* error) override {
         QThread::msleep(ulong(delayMs.load()));
+        if (QSemaphore* g = gate.load()) // deterministic: blocks until the test releases it
+            g->acquire();
         const QString target =
             m_dir.filePath(QStringLiteral("%1-%2").arg(++m_counter).arg(QFileInfo(path).fileName()));
         if (!QFileInfo::exists(path) || !QFile::rename(path, target)) {
@@ -70,6 +74,7 @@ public:
         return true;
     }
     std::atomic<int> delayMs{0};
+    std::atomic<QSemaphore*> gate{nullptr};
 
 private:
     QTemporaryDir m_dir;
@@ -417,12 +422,38 @@ private slots:
         ViewerWindow* b = app->openPaths({path("B/b.png")});
         QVERIFY(waitLoaded(b) && a != b);
         app->windowActivated(a);
-        trash->delayMs = 700;
+        // The operation runs until the test lets it finish (no timing assumptions), and the
+        // busy hint comes at once instead of after its delay.
+        QSemaphore gate;
+        trash->gate = &gate;
+        // Whatever happens below, the worker is never left blocked (the test would hang).
+        const auto releaseGate = qScopeGuard([&] {
+            trash->gate = nullptr;
+            gate.release(100);
+        });
+        app->setBusyHintDelayForTesting(0);
+        // The busy message goes to the front window - normally `a`, but the system may still
+        // be activating `b` (opened last) on a loaded machine. Recorded as shown, since
+        // another message may replace the toast meanwhile.
+        QSignalSpy messagesA(a, &ViewerWindow::messageShown);
+        QSignalSpy messagesB(b, &ViewerWindow::messageShown);
+        auto busyIn = [](const QSignalSpy& spy) {
+            for (const QList<QVariant>& m : spy)
+                if (m.first().toString().contains(QStringLiteral("Dateivorgang")))
+                    return true;
+            return false;
+        };
         ops->moveToTrashAsync(path("IMG_2.jpg"));
-        QTRY_VERIFY(a->toastText().contains(QStringLiteral("Dateivorgang")));
-        app->windowActivated(b); // another window comes to the front meanwhile
-        QTRY_VERIFY(!ops->isBusy());
-        QVERIFY(a->toastText().isEmpty());
+        QTRY_VERIFY_WITH_TIMEOUT(busyIn(messagesA) || busyIn(messagesB), 10000);
+        ViewerWindow* shownIn = busyIn(messagesA) ? a : b;
+        ViewerWindow* other = shownIn == a ? b : a;
+        QVERIFY(ops->isBusy());
+        app->windowActivated(other); // another window comes to the front meanwhile
+        gate.release();
+        QTRY_VERIFY_WITH_TIMEOUT(!ops->isBusy(), 10000);
+        // The busy message is gone from the window that showed it.
+        QVERIFY2(!shownIn->toastText().contains(QStringLiteral("Dateivorgang")),
+                 qPrintable(shownIn->toastText()));
     }
 
     // ---- F-OPEN-12 / Dock (review item 10) ----

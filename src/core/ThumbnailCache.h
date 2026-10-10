@@ -43,6 +43,9 @@ public:
     static void setDefaultDirectory(const QString& directory);
     // Disk cache key (hex SHA-1) of one thumbnail.
     static QByteArray cacheKey(const QString& path, qint64 fileSize, qint64 modifiedMs, int thumbSize);
+    // Name of its file in directory(): "<path tag>-<cacheKey>.thumb"; the path tag (hash
+    // of the path alone) lets invalidate() find every thumbnail of a file.
+    static QString diskFileName(const QString& path, qint64 fileSize, qint64 modifiedMs, int thumbSize);
 
     // The thumbnail of `path` (longer edge at most `thumbSize` device pixels, sRGB) if it
     // is in memory; otherwise a null image, and it is generated (or read from disk) on a
@@ -54,8 +57,11 @@ public:
     // thumbnails that scrolled out of view. An empty list drops all of them.
     void retain(const void* client, const QStringList& paths);
     void removeClient(const void* client);
-    // The file changed: memory entries and the failure mark are dropped (the disk entry
-    // has another key now and ages out).
+    // The file changed: memory entries, the failure mark and the disk files of every
+    // thumbnail size are dropped (the disk files on a worker, before any job of the path
+    // reads the disk again) - also when the change kept size and modification date
+    // (rotation saved with "keep modification date"). Results of jobs that started before
+    // are discarded and generated again.
     void invalidate(const QString& path);
 
     // Diagnostics/tests.
