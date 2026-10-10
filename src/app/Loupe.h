@@ -62,7 +62,6 @@ private:
     ViewerWindow& m_window;
     QPointer<LoupeWidget> m_widget;
     bool m_active = false;
-    bool m_byMouse = false;
     bool m_fullRequested = false;
 };
 

@@ -149,7 +149,10 @@ LoupeController::LoupeController(ViewerWindow& window) : QObject(&window), m_win
     });
 }
 
-LoupeController::~LoupeController() = default;
+LoupeController::~LoupeController() {
+    if (m_active)
+        QGuiApplication::restoreOverrideCursor(); // the window closed while the key was held
+}
 
 void LoupeController::begin(QPointF pos) {
     ImageView* view = m_window.view();
@@ -164,7 +167,6 @@ void LoupeController::begin(QPointF pos) {
     if (!m_active) {
         m_active = true;
         m_fullRequested = false;
-        m_byMouse = QGuiApplication::mouseButtons() & Qt::MiddleButton;
         view->installEventFilter(this);
         for (QWidget* child : view->findChildren<QWidget*>())
             if (child != m_widget)
@@ -216,12 +218,16 @@ bool LoupeController::eventFilter(QObject* watched, QEvent* event) {
         break;
     }
     case QEvent::MouseButtonRelease:
-        if (m_byMouse && static_cast<QMouseEvent*>(event)->button() == Qt::MiddleButton)
+        // Started by the middle button (input choice "Lupe") or a key: either release ends it.
+        if (static_cast<QMouseEvent*>(event)->button() == Qt::MiddleButton)
             end();
         break;
     case QEvent::KeyRelease: {
         auto* ke = static_cast<QKeyEvent*>(event);
-        if (!m_byMouse && !ke->isAutoRepeat())
+        const int k = ke->key();
+        const bool modifier =
+            k == Qt::Key_Shift || k == Qt::Key_Control || k == Qt::Key_Meta || k == Qt::Key_Alt;
+        if (!ke->isAutoRepeat() && !modifier)
             end();
         break;
     }
