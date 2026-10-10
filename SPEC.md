@@ -4,7 +4,7 @@
 |---|---|
 | **Name** | **Lumaflip** (luma = Helligkeit/Bildsignal, flip = durchblättern) |
 | **Bundle-ID** | `io.github.brokoskokoli.lumaflip` |
-| **Status** | Entwurf v0.2 – Spezifikationsphase |
+| **Status** | v0.3 – Umsetzung M1 läuft; Klarstellungen aus den Spezifikations-Prüfungen eingearbeitet |
 | **Stand** | 2026-10-10 |
 | **Lizenz** | Open Source, GPL-3.0-or-later; veröffentlicht auf GitHub |
 | **Vertrieb** | GitHub Releases, signiert (Developer ID) und notarisiert; zusätzlich Homebrew Cask |
@@ -126,7 +126,7 @@ Jede Anforderung hat eine ID und eine Ausbaustufe:
 |---|---|---|
 | F-VIEW-01 | Zoom-Modi: **Einpassen** (Standard; kleine Bilder werden nicht vergrößert), **Einpassen inkl. Vergrößern**, **100 % / 1:1 Pixel**, **Breite füllen**, **Höhe füllen**, **Fenster füllen**. | M1 |
 | F-VIEW-02 | Tastenkürzel: ⌘0 = 100 %, ⌘9 = Einpassen, ⌘+ / ⌘− = Zoom. Zusätzlich die Einzeltasten `1`/`2`/`3` für die Modi, sofern nicht im Aussortiermodus. | M1 |
-| F-VIEW-03 | `Z` bzw. Klick schaltet zwischen Einpassen und 100 % **an der Cursorposition** um. | M2 |
+| F-VIEW-03 | `Z` bzw. – falls in F-IN-09 gewählt – Klick schaltet zwischen Einpassen und 100 % **an der Cursorposition** um. | M2 |
 | F-VIEW-04 | Ausschnitt verschieben per Ziehen, Pfeiltasten (wenn gezoomt, mit ⌥) und Trackpad. Trägheitsscrollen wie bei macOS üblich. | M1 |
 | F-VIEW-05 | „Zoom fixieren“: Zoomstufe und Ausschnitt bleiben beim Blättern erhalten (wichtig für Serienaufnahmen). | M2 |
 | F-VIEW-06 | Hochwertiges Skalieren: Beim Verkleinern Mipmaps bzw. Lanczos-ähnliche Filterung, beim Vergrößern über 100 % wahlweise „Pixel scharf“ (nearest) oder glatt. | M1 |
@@ -277,7 +277,7 @@ Für die wichtigsten Eingaben gibt es in *Einstellungen → Maus & Tastatur* ein
 | F-IN-13 | **Trackpad-Wischen** (zwei Finger, horizontal) | Bild wechseln · Ausschnitt scrollen · aus | Bild wechseln (gezoomt: scrollen) |
 | F-IN-14 | **Ziehen mit linker Maustaste** | Ausschnitt verschieben · Datei herausziehen (Drag-out) · ⌥-Ziehen für die jeweils andere Aktion | Ausschnitt verschieben; ⌥ = Drag-out |
 | F-IN-15 | **Esc** | Vollbild bzw. Modus verlassen, sonst nichts · …, sonst Fenster schließen | Vollbild bzw. Modus verlassen, sonst nichts |
-| F-IN-16 | **Ende der Sammlung** (Wiederholung von F-NAV-03) | anhalten · umlaufen · zum nächsten Ordner weitergehen | anhalten |
+| F-IN-16 | **Ende der Sammlung** (Wiederholung von F-NAV-03). Nächster Ordner = nächster Geschwisterordner in Finder-Namensreihenfolge, der Bilder enthält; Ordner ohne Bilder werden übersprungen; rückwärts landet man auf dem letzten Bild des vorherigen Ordners. | anhalten · umlaufen · zum nächsten Ordner weitergehen | anhalten |
 
 - F-IN-17 (M2): Neben jeder Option erklärt eine kurze Hilfe die Auswirkung. „Auf Standard zurücksetzen“ gibt es pro Bereich.
 - F-IN-18 (M2): Profilvorlagen mit einem Klick: **„Mac-Standard“** (Vorgabe), **„Windows-Viewer-Gewohnheiten“** (Mausrad = Bild wechseln, Bild↑/↓ = Bild, Enter = Vollbild, wie IrfanView/FastStone), **„Fotograf:in / Lightroom“** (Mausrad = Zoom, Ziffern = Sterne, P/X/U aktiv).
@@ -291,7 +291,7 @@ Für die wichtigsten Eingaben gibt es in *Einstellungen → Maus & Tastatur* ein
 | F-WIN-03 | ⌘N öffnet ein neues leeres Fenster, ⌥⌘N dupliziert das aktuelle Fenster mit gleichem Ordner, Bild und Zoom (z. B. um zwei Stellen desselben Ordners nebeneinander zu sehen). ⌘W schließt das Fenster, ⌥⌘W alle Fenster. | M1 |
 | F-WIN-04 | Menü **Fenster → Anordnen**: alle Fenster des aktuellen Bildschirms nebeneinander, untereinander, im Raster (2×2, 3×2 …) oder kaskadiert. Bei macOS-15-Fensterkacheln werden die Systembefehle zusätzlich unterstützt. | M2 |
 | F-WIN-05 | macOS-Tabs (Fenster → Alle Fenster zusammenführen) werden unterstützt. Standard: keine Tabs. | M2 |
-| F-WIN-06 | Fensterwiederherstellung: Beim nächsten Start werden alle Fenster mit Ordner, Bild, Zoom und Position wiederhergestellt (abschaltbar, folgt der Systemeinstellung „Fenster beim Beenden schließen“). | M2 |
+| F-WIN-06 | Fensterwiederherstellung: Beim nächsten Start werden alle Fenster mit Ordner, Bild, Zoom und Position wiederhergestellt (abschaltbar). Der Standard folgt der Systemeinstellung „Fenster beim Beenden schließen“ (`NSQuitAlwaysKeepsWindows`; macOS-Standard: keine Wiederherstellung). Wird die App durch eine Öffnen-Anfrage gestartet (Finder, Dock, `open`), wird **nicht** wiederhergestellt: Das geöffnete Bild hat Vorrang (P-01, Szenario 1). | M2 |
 | F-WIN-07 | **Fenster koppeln:** Mehrere Fenster lassen sich koppeln. Dann laufen Blättern (synchron nach Index oder nach Dateiname), Zoom und Ausschnitt gemeinsam, z. B. um zwei Ordner mit Varianten derselben Aufnahmen zu vergleichen (Vorbild: nomacs). | M3 |
 | F-WIN-08 | Neue Fenster werden kaskadiert bzw. an freien Stellen platziert, nie exakt übereinander. Die Fenstergröße folgt der letzten Größe bzw. passt sich wahlweise an das Bild an (Einstellung: „Fenstergröße an Bild anpassen“, Standard aus). | M1 |
 | F-WIN-09 | **Gemeinsame Ressourcen:** Alle Fenster teilen sich einen Decoder-Pool, den Vorschau-Cache und das Speicherbudget (P-09). Das Vorladen wird nach Fensteraktivität priorisiert (vorderstes Fenster zuerst, verdeckte und minimierte Fenster halten nur das aktuelle Bild). Der Ordner wird pro Pfad nur einmal eingelesen und überwacht, auch wenn mehrere Fenster ihn zeigen. | M1 |
@@ -335,7 +335,7 @@ Sie folgt den macOS-Konventionen und ergänzt Einzeltasten für Fortgeschrittene
 | 100 % | ⌘0, `3` |
 | Einpassen | ⌘9, `1` |
 | Breite füllen | `2` |
-| Einpassen ↔ 100 % an Cursor | `Z`, Klick |
+| Einpassen ↔ 100 % an Cursor | `Z` (Klick nur, wenn in F-IN-09 gewählt; Standard: Klick ohne Wirkung) |
 | Zoom fixieren | ⇧`Z` |
 | Vollbild | ⌃⌘F, `F`, Doppelklick |
 | Vollbild verlassen / Modus verlassen | Esc |
@@ -381,7 +381,8 @@ Bild geöffnet
   │      2. <Ordner>/.DS_Store, Eintrag "."
   │      → Ansicht (vstl) → Listenansicht: lsvC/lsvp.sortColumn + ascending
   │                       → Symbolansicht: icvp.arrangeBy (bei "none": Iloc-Positionen)
-  │                       → Spalten-/Galerieansicht: globale Einstellung
+  │                       → Galerieansicht: glvp.arrangeBy des Ordners, sonst globale GalleryViewSettings
+  │                       → Spaltenansicht: globale Einstellung (ColumnViewOptions.ArrangeBy)
   │
   ├─ [Stufe 2] Globale Finder-Einstellungen (com.apple.finder):
   │      Spezialorte (Schreibtisch, iCloud …) → StandardViewSettings → FXPreferredViewStyle
@@ -400,7 +401,7 @@ Bild geöffnet
 | F-SORT-05 | Die UI zeigt die erkannte Sortierung an („Wie Finder: Hinzugefügt am ↓“ bzw. „Name ↑ (Finder-Info nicht gefunden)“). | M1 |
 | F-SORT-06 | Manuelle Wahl wird pro Ordner gemerkt (in den App-Einstellungen, nicht im Ordner). Es gibt eine Option „Für alle Ordner verwenden“. | M2 |
 | F-SORT-07 | Nach Dateisystemänderungen (F-OPEN-07) wird neu sortiert, und das aktuelle Bild bleibt erhalten. | M2 |
-| F-SORT-08 | Der .DS_Store-Leser ist robust gegen unbekannte oder defekte Daten: Er wirft keine Fehler, sondern fällt auf die nächste Stufe zurück. Er wird mit echten .DS_Store-Testdateien abgesichert. | M1 |
+| F-SORT-08 | Der .DS_Store-Leser ist robust gegen unbekannte oder defekte Daten: Er wirft keine Fehler, sondern fällt auf die nächste Stufe zurück. Er wird mit echten .DS_Store-Testdateien abgesichert: Diese erzeugt der Finder selbst in künstlichen Testordnern per Skript (`tools/make_finder_fixtures.sh`, AppleScript), je macOS-Hauptversion, ohne Nutzerdaten. Zusätzlich manueller Abgleich in eigenen Ordnern (`docs/TESTING-M<n>.md`). | M1 |
 
 ### 6.3 Bekannte Grenzen (werden dokumentiert, nicht gelöst)
 
@@ -417,14 +418,14 @@ Referenzsystem: MacBook mit Apple M1, 16 GB, interne SSD.
 
 | ID | Kennzahl | Ziel |
 |---|---|---|
-| P-01 | Kaltstart bis erstes Bild sichtbar (24-MP-JPEG) | < 400 ms |
+| P-01 | Kaltstart: Zeit vom Prozessstart bis zum ersten dargestellten Frame mit dem geöffneten Bild in Bildschirmauflösung (nicht nur eingebettete Vorschau), 24-MP-JPEG. App läuft vorher nicht, System-Caches sind warm; Median aus 5 Läufen. Ausgenommen ist der erste Start nach Installation/Update (einmalige Gatekeeper-/Signaturprüfung), dafür gilt < 1 s. Die Zeit von Doppelklick bis Prozessstart (LaunchServices) wird manuell geprüft (gesamt < 500 ms). | < 400 ms |
 | P-02 | Warmstart bzw. Öffnen bei laufender App | < 150 ms |
 | P-03 | Bildwechsel zu vorgeladenem Nachbarn | < 16 ms (ein Frame) |
 | P-04 | Bildwechsel zu nicht vorgeladenem Bild: erste Darstellung (Vorschau/Thumbnail) | < 100 ms |
 | P-05 | Ordner mit 10 000 Dateien einlesen und sortieren (nach Name) | < 500 ms, ohne die UI zu blockieren |
 | P-06 | Dauerhaftes Halten von → bei 24-MP-JPEGs | ≥ 15 Bilder/s angezeigt (mit Vorschau-Stufe) |
 | P-07 | Zoomen und Verschieben | konstant 60 fps bzw. ProMotion 120 fps |
-| P-08 | Sehr große Bilder (z. B. 30 000 × 20 000 px) | Anzeige ohne Absturz, kachelbasiert, Speicher begrenzt |
+| P-08 | Sehr große Bilder (z. B. 30 000 × 20 000 px) | Anzeige ohne Absturz, kachelbasiert; der dekodierte Pixelpuffer eines Bildes überschreitet nie das Speicherbudget (P-09) – größere Bilder werden beim Dekodieren verkleinert bzw. ab Zoom > Einpassen regionsweise dekodiert |
 | P-09 | Speicher des Bild-Caches | Standard max. 25 % des RAM bzw. 2 GB, einstellbar |
 
 ### 7.1 Strategie
