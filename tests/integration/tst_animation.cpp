@@ -107,6 +107,18 @@ class TstAnimation : public QObject {
         }
         return seen;
     }
+    // The window itself repaints with the new frames (on screen - no framebuffer grab here,
+    // which would render a frame of its own): at least `changes` new images within `ms`.
+    void expectWidgetRepaints(ViewerWindow* w, int ms, int changes) {
+        ImageCanvas* canvas = canvasOf(w);
+        QVERIFY(canvas);
+        const int before = canvas->drawnImageChanges();
+        QTest::qWait(ms);
+        const int drawn = canvas->drawnImageChanges() - before;
+        QVERIFY2(
+            drawn >= changes,
+            qPrintable(QStringLiteral("%1 new images drawn in %2 ms; %3").arg(drawn).arg(ms).arg(state(w))));
+    }
     static QString describe(const QList<QColor>& colors) {
         QStringList l;
         for (const QColor& c : colors)
@@ -197,6 +209,9 @@ private slots:
         QCOMPARE(anim->loopCount(), 0); // the corpus files loop endlessly
         ImageCanvas* canvas = canvasOf(w);
         QVERIFY(canvas);
+        expectWidgetRepaints(w, 1000, 3);
+        if (QTest::currentTestFailed())
+            return;
         // 100 + 200 + 300 ms per round: two rounds show every frame at least once.
         const QList<QColor> seen = sampleColors(canvas, 1500);
         QSet<int> channels;
@@ -225,6 +240,9 @@ private slots:
         QVERIFY(waitShown(w, gif));
         AnimationPlayer* anim = w->animation();
         QTRY_VERIFY2_WITH_TIMEOUT(anim->isPlaying(), qPrintable(state(w)), 5000);
+        expectWidgetRepaints(w, 800, 4);
+        if (QTest::currentTestFailed())
+            return;
         const QList<QColor> seen = sampleColors(canvasOf(w), 1200);
         // Four differently colored frames of 80 ms: several colors within 1.2 s.
         QVERIFY2(seen.size() >= 3,
