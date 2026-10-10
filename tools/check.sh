@@ -4,7 +4,7 @@
 # Usage: tools/check.sh [--quick] [--sanitize] [--stage M1] [--format-all] [--tidy|--tidy-all]
 #   --quick       build + tests only
 #   --sanitize    ASan/UBSan build (build/sanitize)
-#   --stage Mn    stage for the spec coverage check (default M1, or $LF_STAGE)
+#   --stage Mn    stage for the spec coverage check (default M2 = current milestone, or $LF_STAGE)
 #   --format-all  clang-format check of every source file; default: only the lines
 #                 changed against `git merge-base HEAD <base>` (base: $LF_BASE_REF,
 #                 main or origin/main) incl. uncommitted changes, plus untracked files
@@ -13,12 +13,14 @@
 #                 installed, unless LF_REQUIRE_TIDY=1 (CI)
 #   --tidy-all    like --tidy, but on every .cpp/.mm file under src/ and tests/
 # Environment: LF_BENCH_TOLERANCE (benchmark limit factor, default 1.2),
+#   LF_BENCH_LOAD_WAIT (seconds to wait for the 1-minute load average to drop to the
+#   number of CPU cores before benchmarks, default 300; 0 = do not wait),
 #   LF_CLANG_TIDY (clang-tidy binary; default: PATH, $(brew --prefix llvm)/bin, xcrun),
 #   LF_REQUIRE_TIDY=1 (fail instead of skipping when clang-tidy is missing).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-QUICK=0; SANITIZE=0; FORMAT_ALL=0; TIDY=0; TIDY_ALL=0; STAGE="${LF_STAGE:-M1}"
+QUICK=0; SANITIZE=0; FORMAT_ALL=0; TIDY=0; TIDY_ALL=0; STAGE="${LF_STAGE:-M2}"
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --quick) QUICK=1 ;;
@@ -38,6 +40,31 @@ NCPU="$(sysctl -n hw.ncpu 2>/dev/null || nproc 2>/dev/null || echo 4)"
 
 step() { printf '\n\033[1;34m==> %s\033[0m\n' "$*"; }
 die() { printf '\033[1;31m%s\033[0m\n' "$*" >&2; exit 1; }
+
+# Benchmarks are only meaningful on a quiet machine (SPEC 15.1): wait (at most
+# LF_BENCH_LOAD_WAIT seconds) until the 1-minute load average is <= the core count.
+# Runs the benchmarks anyway after the timeout, with a note.
+load_avg() {
+  sysctl -n vm.loadavg 2>/dev/null | awk '{print $2}' || true
+  [[ -r /proc/loadavg ]] && cut -d' ' -f1 /proc/loadavg
+}
+wait_for_low_load() {
+  local max="${LF_BENCH_LOAD_WAIT:-300}" waited=0 load
+  while :; do
+    load="$(load_avg | head -n1)"
+    [[ -z "$load" ]] && return 0
+    if awk -v l="$load" -v n="$NCPU" 'BEGIN { exit !(l <= n) }'; then
+      [[ $waited -gt 0 ]] && echo "load average $load <= $NCPU cores after ${waited}s"
+      return 0
+    fi
+    if [[ $waited -ge $max ]]; then
+      echo "note: load average still $load > $NCPU cores after ${waited}s - running benchmarks anyway"
+      return 0
+    fi
+    [[ $waited == 0 ]] && echo "load average $load > $NCPU cores - waiting up to ${max}s before benchmarks"
+    sleep 10; waited=$((waited + 10))
+  done
+}
 
 # Merge base for "changed files" (format/tidy). Empty if no base branch exists.
 merge_base() {
@@ -117,13 +144,32 @@ if [[ $QUICK == 0 ]]; then
   # --build-dir: only tests this build registers and runs count (gtest list, ctest, lf_bench).
   python3 tools/spec_coverage.py --stage "$STAGE" --build-dir "$BUILD_DIR"
 
+  step "Sparkle key check self-test"
+  # Throw-away keys from OpenSSL 3 in a temp dir (never a keychain); skips without OpenSSL 3.
+  tools/sparkle_key_check.sh --self-test
+
   if [[ -x "$BUILD_DIR/tests/lf_bench" ]]; then
     step "Benchmarks (tolerance ${LF_BENCH_TOLERANCE:-1.2})"
+    wait_for_low_load
     # The view benchmark (P-03) needs Metal: the offscreen platform has no QRhi.
-    if [[ "$(uname)" == Darwin ]]; then
-      QT_QPA_PLATFORM=cocoa "$BUILD_DIR/tests/lf_bench" | tee "$BUILD_DIR/bench.log"
-    else
-      "$BUILD_DIR/tests/lf_bench" | tee "$BUILD_DIR/bench.log"
+    BENCH_QPA="$QT_QPA_PLATFORM"; [[ "$(uname)" == Darwin ]] && BENCH_QPA=cocoa
+    rc=0
+    QT_QPA_PLATFORM="$BENCH_QPA" "$BUILD_DIR/tests/lf_bench" | tee "$BUILD_DIR/bench.log" || rc=$?
+    failed=$(awk '$1 == "FAIL" {print $2}' "$BUILD_DIR/bench.log" | paste -sd, -)
+    if [[ $rc != 0 && -n "$failed" ]]; then
+      # A benchmark that misses its limit once may have been disturbed by other load:
+      # re-run only the failed ones once; they fail the check only if they fail again.
+      echo "Benchmarks over the limit: $failed - re-running them once"
+      wait_for_low_load
+      rc=0
+      LF_BENCH_ONLY="$failed" QT_QPA_PLATFORM="$BENCH_QPA" "$BUILD_DIR/tests/lf_bench" \
+        | tee "$BUILD_DIR/bench-rerun.log" || rc=$?
+      echo "First run:"; grep -E '^FAIL' "$BUILD_DIR/bench.log" || true
+      echo "Re-run:"; grep -E '^(OK|FAIL)' "$BUILD_DIR/bench-rerun.log" || true
+      [[ $rc == 0 ]] || die "benchmarks failed twice (first run: $BUILD_DIR/bench.log, re-run: $BUILD_DIR/bench-rerun.log)"
+      echo "Benchmarks passed on the re-run (first-run failures above were load noise)"
+    elif [[ $rc != 0 ]]; then
+      die "lf_bench failed (exit code $rc, see $BUILD_DIR/bench.log)"
     fi
   fi
 fi

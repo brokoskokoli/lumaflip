@@ -25,7 +25,11 @@
 #   LF_SPARKLE_PUBLIC_KEY  EdDSA public key (base64) for SUPublicEDKey. Empty: Sparkle is
 #                      embedded but the updater stays disabled (local builds)
 #   LF_REQUIRE_SPARKLE=1   fail unless Sparkle is embedded and the bundle has feed + key
-#                      (release builds: never ship without key)
+#                      (release builds: never ship without key). Default 0: locally
+#                      Sparkle is optional (AUTO: embedded if tools/fetch_sparkle.sh ran)
+#   LF_REQUIRE_TURBOJPEG   ON (default) or OFF: the build must link libjpeg-turbo's static
+#                      libturbojpeg.a (lossless JPEG rotation, F-EDIT-02; brew install
+#                      jpeg-turbo). OFF only for experiments - never for a release
 #
 # Never deletes anything outside its own fresh temporary directory: staging happens in
 # a new mktemp directory (removed on exit unless --keep-work), results are (over)written
@@ -41,7 +45,7 @@ while [[ $# -gt 0 ]]; do
     --notarize) NOTARIZE=1 ;;
     --notarize-dry-run) NOTARIZE=1; NOTARIZE_DRY=1 ;;
     --keep-work) KEEP_WORK=1 ;;
-    -h|--help) sed -n '3,32p' "$0"; exit 0 ;;
+    -h|--help) sed -n '3,36p' "$0"; exit 0 ;;
     *) echo "package.sh: unknown option $1" >&2; exit 2 ;;
   esac; shift
 done
@@ -52,6 +56,7 @@ BUILD_DIR="build/release"
 DIST="$ROOT/dist"
 IDENTITY="${LF_SIGN_IDENTITY:--}"
 ENTITLEMENTS="$ROOT/packaging/macos/Lumaflip.entitlements"
+REQUIRE_TURBOJPEG="${LF_REQUIRE_TURBOJPEG:-ON}"
 
 step() { printf '\n\033[1;34m==> %s\033[0m\n' "$*"; }
 die() { printf '\033[1;31mpackage.sh: %s\033[0m\n' "$*" >&2; exit 1; }
@@ -63,7 +68,8 @@ if [[ $SKIP_BUILD == 0 ]]; then
   # build/release was configured differently before.
   cmake -S . -B "$BUILD_DIR" -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$QT_PREFIX" \
     -DLF_WERROR=ON -DLF_SANITIZE=OFF -DLF_BUILD_TESTS=OFF -DQT_NO_PRIVATE_MODULE_WARNING=ON \
-    -DLF_ENABLE_SPARKLE="${LF_ENABLE_SPARKLE:-AUTO}" -DLF_SPARKLE_PUBLIC_KEY="${LF_SPARKLE_PUBLIC_KEY:-}" >/dev/null
+    -DLF_ENABLE_SPARKLE="${LF_ENABLE_SPARKLE:-AUTO}" -DLF_SPARKLE_PUBLIC_KEY="${LF_SPARKLE_PUBLIC_KEY:-}" \
+    -DLF_REQUIRE_TURBOJPEG="$REQUIRE_TURBOJPEG" >/dev/null
   cmake --build "$BUILD_DIR"
 fi
 BUILT_APP="$BUILD_DIR/src/Lumaflip.app"
@@ -91,6 +97,14 @@ if not own or bad:
     sys.exit("package.sh: not optimized: " + (", ".join(bad[:5]) or "no compile commands for src/"))
 print(f"Release, {len(own)} sources with -O2/-O3 -DNDEBUG, no sanitizers")
 PY
+if [[ "$REQUIRE_TURBOJPEG" == ON ]]; then
+  step "Check: libjpeg-turbo linked statically (F-EDIT-02)"
+  # Also guards --skip-build and CMake versions without the LF_REQUIRE_TURBOJPEG option.
+  TJ_LIB=$(sed -nE 's/^LF_TURBOJPEG_LIB:[A-Z]+=(.*)$/\1/p' "$BUILD_DIR/CMakeCache.txt")
+  [[ "$TJ_LIB" == */libturbojpeg.a ]] \
+    || die "release builds need the static libturbojpeg.a (found: '${TJ_LIB:-none}') - brew install jpeg-turbo, or LF_REQUIRE_TURBOJPEG=OFF for experiments"
+  echo "TurboJPEG: $TJ_LIB"
+fi
 VERSION=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$BUILT_APP/Contents/Info.plist")
 ARCHS=$(lipo -archs "$BUILT_APP/Contents/MacOS/Lumaflip")
 echo "Lumaflip $VERSION ($ARCHS)"

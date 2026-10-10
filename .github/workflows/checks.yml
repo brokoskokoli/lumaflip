@@ -14,13 +14,16 @@ permissions:
   contents: read
 
 env:
+  # Current milestone: spec coverage requires every F-/P-ID up to this stage
+  # (tools/check.sh --stage). Raise it here when the next stage starts (M3, M4).
+  LF_STAGE: M2
   HOMEBREW_NO_AUTO_UPDATE: "1"
   HOMEBREW_NO_INSTALL_CLEANUP: "1"
   HOMEBREW_NO_ENV_HINTS: "1"
 
 jobs:
   check:
-    name: macOS checks (M1)
+    name: macOS checks
     runs-on: macos-15
     timeout-minutes: 90
     env:
@@ -56,8 +59,18 @@ jobs:
         run: tests/corpus/download_raw.sh
       - name: Download Sparkle (F-MAC-08, pinned by SHA-256)
         run: tools/fetch_sparkle.sh
+      - name: Require Finder fixtures once they exist (F-SORT-08)
+        # tools/make_finder_fixtures.sh writes tests/data/finder/macos-<n>/ on a real Mac;
+        # from then on a missing or unreadable fixture set fails instead of skipping.
+        run: |
+          if [[ -d tests/data/finder ]]; then
+            echo "LF_REQUIRE_FINDER_FIXTURES=1" >> "$GITHUB_ENV"
+            echo "Finder fixtures present: LF_REQUIRE_FINDER_FIXTURES=1"
+          else
+            echo "No tests/data/finder yet - the Finder fixture test skips"
+          fi
       - name: All checks (build, tests, format, SPDX, spec coverage, benchmarks, clang-tidy)
-        run: tools/check.sh --stage M1 --format-all --tidy
+        run: tools/check.sh --stage "$LF_STAGE" --format-all --tidy
       - name: Upload test logs
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
@@ -90,6 +103,9 @@ jobs:
         run: tests/corpus/download_raw.sh
       - name: Download Sparkle (F-MAC-08, pinned by SHA-256)
         run: tools/fetch_sparkle.sh
+      - name: Require Finder fixtures once they exist (F-SORT-08)
+        run: |
+          if [[ -d tests/data/finder ]]; then echo "LF_REQUIRE_FINDER_FIXTURES=1" >> "$GITHUB_ENV"; fi
       - name: Build + tests with sanitizers
         run: tools/check.sh --quick --sanitize
       - name: Upload test logs

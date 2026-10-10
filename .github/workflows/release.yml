@@ -1,15 +1,26 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Release pipeline (SPEC 10.1): tag v* -> the same checks as CI (checks.yml) -> build ->
-# sign -> notarize -> staple -> GitHub Release with DMG, ZIP and SHA-256 files -> Sparkle
-# appcast (EdDSA-signed) on GitHub Pages (branch gh-pages).
+# sign -> notarize -> staple -> GitHub Release (draft) with DMG, ZIP and SHA-256 files ->
+# Sparkle appcast (EdDSA-signed) on GitHub Pages (branch gh-pages) -> release published.
 # Required secrets and variables: docs/RELEASING.md.
 #
-# Secret handling: actions pinned by commit SHA; secrets only in the release job (never in
-# the checks); no `set -x`; secret values never appear on a command line (`ps`): the .p12
-# password and the keychain password go to `security -i` on stdin, key files are written
-# with umask 077 into a private directory and removed at the end, even on failure. The
-# Sparkle EdDSA private key goes to generate_appcast on stdin (--ed-key-file -); the
-# copy for the key check is a 0600 file in the same private directory.
+# Jobs and their secrets (each job only gets what it needs):
+#   version       tag == CMakeLists.txt version                     no secrets
+#   checks        checks.yml (= CI)                                 no secrets
+#   sparkle-keys  private Sparkle key matches the public key        SPARKLE_ED_PRIVATE_KEY
+#   build         package.sh --notarize, artifact "release-dist"    .p12 + notary key (no Sparkle key)
+#   draft         GitHub Release as DRAFT, assets (--clobber)       GITHUB_TOKEN only
+#   appcast       generate_appcast from the artifact's DMG, verify, SPARKLE_ED_PRIVATE_KEY
+#                 push gh-pages, THEN publish the release           (no brew, no build tools)
+# The release becomes public only after the appcast push succeeded; every job can be
+# re-run (draft assets are replaced, an unchanged appcast is not committed again).
+#
+# Secret handling: actions pinned by commit SHA; no `set -x`; secret values never appear on
+# a command line (`ps`): the .p12 password and the keychain password go to `security -i`
+# on stdin, key files are written with umask 077 into a private directory and removed at
+# the end, even on failure. The Sparkle EdDSA private key goes to generate_appcast and
+# sign_update on stdin (--ed-key-file -); the copy for the key check is a 0600 file in a
+# private directory.
 name: Release
 on:
   push:
@@ -21,6 +32,11 @@ permissions:
 concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
+
+env:
+  HOMEBREW_NO_AUTO_UPDATE: "1"
+  HOMEBREW_NO_INSTALL_CLEANUP: "1"
+  HOMEBREW_NO_ENV_HINTS: "1"
 
 jobs:
   version:
@@ -45,27 +61,53 @@ jobs:
     needs: version
     uses: ./.github/workflows/checks.yml
 
-  release:
+  sparkle-keys:
+    # Never ship updates without a matching key pair: fails before anything is built.
+    name: Sparkle key pair
+    needs: version
+    runs-on: ubuntu-24.04
+    environment: release
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Check Sparkle keys
+        env:
+          SPARKLE_PUBLIC_ED_KEY: ${{ vars.SPARKLE_PUBLIC_ED_KEY }}
+          SPARKLE_ED_PRIVATE_KEY: ${{ secrets.SPARKLE_ED_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          umask 077
+          if [[ -z "$SPARKLE_PUBLIC_ED_KEY" ]]; then
+            echo "::error::Repository variable SPARKLE_PUBLIC_ED_KEY is missing (docs/RELEASING.md)"; exit 1
+          fi
+          if [[ -z "$SPARKLE_ED_PRIVATE_KEY" ]]; then
+            echo "::error::Secret SPARKLE_ED_PRIVATE_KEY is missing (docs/RELEASING.md)"; exit 1
+          fi
+          dir=$(mktemp -d "$RUNNER_TEMP/sparkle.XXXXXX")
+          trap 'rm -f -- "$dir/sparkle_ed.key"; rmdir -- "$dir"' EXIT
+          printf '%s' "$SPARKLE_ED_PRIVATE_KEY" > "$dir/sparkle_ed.key"
+          tools/sparkle_key_check.sh "$dir/sparkle_ed.key" "$SPARKLE_PUBLIC_ED_KEY"
+
+  build:
     # Only tag builds in the main repository - never for forks or pull requests
     # (secrets are not available there anyway, but the job must not even start).
+    name: Build, sign, notarize
     if: github.repository == 'brokoskokoli/lumaflip' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
-    needs: [version, checks]
+    needs: [version, checks, sparkle-keys]
     runs-on: macos-15
     environment: release
-    permissions:
-      contents: write   # gh release create, push of the appcast to gh-pages
     timeout-minutes: 90
-    env:
-      HOMEBREW_NO_AUTO_UPDATE: "1"
-      HOMEBREW_NO_INSTALL_CLEANUP: "1"
-      HOMEBREW_NO_ENV_HINTS: "1"
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           persist-credentials: false
 
       - name: Install dependencies
-        run: brew install cmake ninja qt openssl@3
+        # jpeg-turbo: static libturbojpeg for lossless JPEG rotation (F-EDIT-02); package.sh
+        # requires it (LF_REQUIRE_TURBOJPEG=ON).
+        run: brew install cmake ninja qt jpeg-turbo
 
       - name: Download Sparkle (pinned by SHA-256)
         run: tools/fetch_sparkle.sh
@@ -116,24 +158,6 @@ jobs:
           fi
           echo "LF_SIGN_IDENTITY=$identity" >> "$GITHUB_ENV"
 
-      - name: Check Sparkle keys (never ship updates without a matching key pair)
-        env:
-          SPARKLE_PUBLIC_ED_KEY: ${{ vars.SPARKLE_PUBLIC_ED_KEY }}
-          SPARKLE_ED_PRIVATE_KEY: ${{ secrets.SPARKLE_ED_PRIVATE_KEY }}
-        run: |
-          set -euo pipefail
-          umask 077
-          if [[ -z "$SPARKLE_PUBLIC_ED_KEY" ]]; then
-            echo "::error::Repository variable SPARKLE_PUBLIC_ED_KEY is missing (docs/RELEASING.md)"; exit 1
-          fi
-          if [[ -z "$SPARKLE_ED_PRIVATE_KEY" ]]; then
-            echo "::error::Secret SPARKLE_ED_PRIVATE_KEY is missing (docs/RELEASING.md)"; exit 1
-          fi
-          key="$LF_SECRETS_DIR/sparkle_ed.key"
-          printf '%s' "$SPARKLE_ED_PRIVATE_KEY" > "$key"
-          tools/sparkle_key_check.sh "$key" "$SPARKLE_PUBLIC_ED_KEY"
-          rm -f "$key"
-
       - name: Write App Store Connect API key
         env:
           NOTARY_API_KEY_P8_BASE64: ${{ secrets.NOTARY_API_KEY_P8_BASE64 }}
@@ -162,43 +186,147 @@ jobs:
             spctl --assess --type open --context context:primary-signature -vvv "$f"
           done
 
-      - name: Create GitHub Release
+      - name: Upload release files
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: release-dist
+          path: |
+            dist/Lumaflip-*.dmg
+            dist/Lumaflip-*.zip
+            dist/Lumaflip-*.sha256
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Remove keychain and key files
+        if: always()
+        run: |
+          if [[ -n "${LF_SIGN_KEYCHAIN:-}" ]]; then security delete-keychain "$LF_SIGN_KEYCHAIN" || true; fi
+          if [[ -n "${LF_SECRETS_DIR:-}" ]]; then
+            rm -f "$LF_SECRETS_DIR/AuthKey.p8" "$LF_SECRETS_DIR/cert.p12"
+            rmdir "$LF_SECRETS_DIR" 2>/dev/null || true
+          fi
+
+  draft:
+    # Idempotent: creates the release as a draft, or replaces the assets of an existing
+    # draft (re-run). A release that is already public is never touched.
+    name: GitHub Release (draft)
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write   # gh release create/upload
+    timeout-minutes: 15
+    steps:
+      - name: Download release files
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: release-dist
+          path: dist
+      - name: Create or update the draft release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           version="${GITHUB_REF_NAME#v}"
-          gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --verify-tag --generate-notes \
-            --title "Lumaflip $version" \
-            dist/Lumaflip-*.dmg dist/Lumaflip-*.zip dist/Lumaflip-*.sha256
+          cd dist
+          sha256sum -c Lumaflip-*.sha256
+          files=(Lumaflip-"$version".dmg Lumaflip-"$version".zip Lumaflip-"$version".dmg.sha256 Lumaflip-"$version".zip.sha256)
+          if state=$(gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft 2>/dev/null); then
+            if [[ "$state" != true ]]; then
+              echo "::error::Release $GITHUB_REF_NAME is already published - its files are not replaced. Tag a new version."
+              exit 1
+            fi
+            echo "Draft $GITHUB_REF_NAME exists - replacing its files"
+            gh release upload "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --clobber "${files[@]}"
+          else
+            gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft --verify-tag \
+              --generate-notes --title "Lumaflip $version" "${files[@]}"
+          fi
 
-      - name: Update the Sparkle appcast on GitHub Pages
+  appcast:
+    # Gets only the Sparkle key (no certificate, no notary key), installs nothing with brew
+    # and builds nothing: Sparkle's tools come from the pinned, SHA-256-checked archive
+    # (tools/fetch_sparkle.sh), the DMG from the build job's artifact.
+    # One appcast update at a time across all tags (global group): two releases never
+    # read the same old appcast. Note: GitHub keeps only one *pending* job per group -
+    # a third release tagged while one runs and one waits cancels the waiting one (re-run it).
+    name: Sparkle appcast + publish release
+    needs: [version, build, draft]
+    runs-on: macos-15
+    environment: release
+    permissions:
+      contents: write   # push to gh-pages, read/publish the draft release
+    concurrency:
+      group: release-appcast
+      cancel-in-progress: false
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+
+      - name: Download Sparkle tools (pinned by SHA-256)
+        run: tools/fetch_sparkle.sh
+
+      - name: Download release files
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: release-dist
+          path: dist
+
+      - name: Check DMG checksum and Sparkle keys
+        env:
+          SPARKLE_PUBLIC_ED_KEY: ${{ vars.SPARKLE_PUBLIC_ED_KEY }}
+          SPARKLE_ED_PRIVATE_KEY: ${{ secrets.SPARKLE_ED_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          umask 077
+          (cd dist && shasum -a 256 -c "Lumaflip-${GITHUB_REF_NAME#v}.dmg.sha256")
+          dir=$(mktemp -d "$RUNNER_TEMP/sparkle.XXXXXX")
+          trap 'rm -f -- "$dir/sparkle_ed.key"; rmdir -- "$dir"' EXIT
+          printf '%s' "$SPARKLE_ED_PRIVATE_KEY" > "$dir/sparkle_ed.key"
+          tools/sparkle_key_check.sh "$dir/sparkle_ed.key" "$SPARKLE_PUBLIC_ED_KEY"
+
+      - name: Generate, verify and push the appcast, then publish the release
         # The update archive is the notarized, Developer ID signed DMG (with
         # SUVerifyUpdateBeforeExtraction Sparkle only allows key rotation for DMGs).
-        # generate_appcast keeps the existing items (their archives stay in the GitHub
-        # Releases), adds this version with its EdDSA signature and signs the feed
-        # (SURequireSignedFeed). Release notes: the GitHub release text, embedded.
+        # generate_appcast keeps all existing items (--maximum-versions 0; their archives
+        # stay in the GitHub Releases), adds this version with its EdDSA signature and signs
+        # the feed (SURequireSignedFeed). tools/appcast_verify.py compares old and new feed
+        # (all old items with unchanged enclosure URLs, exactly one new item) before the push.
         env:
           GH_TOKEN: ${{ github.token }}
           SPARKLE_ED_PRIVATE_KEY: ${{ secrets.SPARKLE_ED_PRIVATE_KEY }}
         run: |
           set -euo pipefail
           version="${GITHUB_REF_NAME#v}"
-          work="$RUNNER_TEMP/appcast"
-          mkdir -p "$work/archives"
+          url_prefix="https://github.com/$GITHUB_REPOSITORY/releases/download/$GITHUB_REF_NAME/"
+          repo_url="https://github.com/$GITHUB_REPOSITORY.git"
+          work=$(mktemp -d "$RUNNER_TEMP/appcast.XXXXXX")
+          mkdir "$work/archives"
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if git ls-remote --exit-code --heads "https://github.com/$GITHUB_REPOSITORY.git" gh-pages >/dev/null; then
-            git clone --quiet --depth 1 --branch gh-pages "https://github.com/$GITHUB_REPOSITORY.git" "$work/pages"
+          # Push/fetch with GITHUB_TOKEN through gh's credential helper (no token in any URL or argument).
+          gh auth setup-git
+
+          # Full clone of gh-pages (history needed for rebasing on a concurrent push).
+          if git ls-remote --exit-code --heads "$repo_url" gh-pages >/dev/null; then
+            git clone --quiet --branch gh-pages --single-branch "$repo_url" "$work/pages"
+            base=$(git -C "$work/pages" rev-parse HEAD)
           else
             git init --quiet --initial-branch gh-pages "$work/pages"
-            git -C "$work/pages" remote add origin "https://github.com/$GITHUB_REPOSITORY.git"
+            git -C "$work/pages" remote add origin "$repo_url"
+            base=""
           fi
           touch "$work/pages/.nojekyll"   # plain files, no Jekyll processing
-          [[ -f "$work/pages/appcast.xml" ]] && cp "$work/pages/appcast.xml" "$work/archives/appcast.xml"
+          old="-"
+          if [[ -f "$work/pages/appcast.xml" ]]; then
+            cp "$work/pages/appcast.xml" "$work/old-appcast.xml"
+            cp "$work/pages/appcast.xml" "$work/archives/appcast.xml"
+            old="$work/old-appcast.xml"
+          fi
           cp "dist/Lumaflip-$version.dmg" "$work/archives/"
 
-          # Release notes: Markdown of the GitHub release -> HTML (GitHub renders and sanitizes it).
+          # Release notes: Markdown of the (draft) GitHub release -> HTML (GitHub renders and sanitizes it).
           gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --json body --jq .body > "$work/notes.md"
           gh api markdown -f mode=gfm -f context="$GITHUB_REPOSITORY" -F text=@"$work/notes.md" \
             > "$work/archives/Lumaflip-$version.html"
@@ -206,12 +334,13 @@ jobs:
           # Private key on stdin only (printf is a shell builtin: not in any argument list).
           printf '%s' "$SPARKLE_ED_PRIVATE_KEY" | third_party/Sparkle/bin/generate_appcast \
             --ed-key-file - \
-            --download-url-prefix "https://github.com/$GITHUB_REPOSITORY/releases/download/$GITHUB_REF_NAME/" \
+            --download-url-prefix "$url_prefix" \
             --link "https://github.com/$GITHUB_REPOSITORY" \
-            --maximum-deltas 0 --maximum-versions 10 \
+            --maximum-deltas 0 --maximum-versions 0 \
             -o "$work/archives/appcast.xml" "$work/archives"
-          grep -q "<sparkle:version>$version</sparkle:version>" "$work/archives/appcast.xml" \
-            || { echo "::error::appcast.xml has no item for $version"; exit 1; }
+          python3 -I tools/appcast_verify.py --old "$old" --new "$work/archives/appcast.xml" \
+            --version "$version" --url "${url_prefix}Lumaflip-$version.dmg" \
+            --archive "dist/Lumaflip-$version.dmg"
           printf '%s' "$SPARKLE_ED_PRIVATE_KEY" | third_party/Sparkle/bin/sign_update --verify --ed-key-file - \
             "$work/archives/appcast.xml"
 
@@ -219,16 +348,36 @@ jobs:
           cp "$work/archives/appcast.xml" "$work/pages/appcast.xml"
           cp "$work/archives/Lumaflip-$version.html" "$work/pages/notes/$version.html"
           git -C "$work/pages" add appcast.xml notes .nojekyll
-          git -C "$work/pages" commit --quiet -m "Appcast: Lumaflip $version"
-          # Push with GITHUB_TOKEN through gh's credential helper (no token in any URL or argument).
-          gh auth setup-git
-          git -C "$work/pages" push --quiet origin gh-pages
-
-      - name: Remove keychain and key files
-        if: always()
-        run: |
-          if [[ -n "${LF_SIGN_KEYCHAIN:-}" ]]; then security delete-keychain "$LF_SIGN_KEYCHAIN" || true; fi
-          if [[ -n "${LF_SECRETS_DIR:-}" ]]; then
-            rm -f "$LF_SECRETS_DIR/AuthKey.p8" "$LF_SECRETS_DIR/cert.p12" "$LF_SECRETS_DIR/sparkle_ed.key"
-            rmdir "$LF_SECRETS_DIR" 2>/dev/null || true
+          if git -C "$work/pages" diff --cached --quiet; then
+            echo "Appcast unchanged (re-run) - nothing to commit"
+          else
+            git -C "$work/pages" commit --quiet -m "Appcast: Lumaflip $version"
           fi
+
+          # Push with retries. Another push to gh-pages in between (not an appcast update:
+          # those are serialized by the concurrency group) is rebased onto; if appcast.xml
+          # itself changed meanwhile, the feed would have to be regenerated - stop instead.
+          pushed=0
+          for attempt in 1 2 3 4 5; do
+            if [[ -n "$base" ]] && [[ "$(git -C "$work/pages" rev-parse HEAD)" == "$base" ]]; then
+              pushed=1; break   # nothing new to push
+            fi
+            if git -C "$work/pages" push --quiet origin HEAD:gh-pages; then pushed=1; break; fi
+            echo "::warning::Push to gh-pages failed (attempt $attempt) - fetching and rebasing"
+            sleep $((attempt * 5))
+            git -C "$work/pages" fetch --quiet origin gh-pages
+            if [[ -n "$base" ]]; then
+              if ! git -C "$work/pages" diff --quiet "$base" FETCH_HEAD -- appcast.xml; then
+                echo "::error::appcast.xml on gh-pages changed during this run - re-run the appcast job"; exit 1
+              fi
+            elif git -C "$work/pages" cat-file -e FETCH_HEAD:appcast.xml 2>/dev/null; then
+              echo "::error::gh-pages got an appcast.xml during this run - re-run the appcast job"; exit 1
+            fi
+            git -C "$work/pages" rebase --quiet FETCH_HEAD
+            base=$(git -C "$work/pages" rev-parse FETCH_HEAD)
+          done
+          [[ $pushed == 1 ]] || { echo "::error::Could not push the appcast to gh-pages"; exit 1; }
+
+          # Only now (appcast is online) the release becomes public.
+          gh release edit "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft=false
+          echo "Released $GITHUB_REF_NAME; appcast: https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/appcast.xml"
