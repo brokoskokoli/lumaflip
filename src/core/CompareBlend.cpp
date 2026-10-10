@@ -51,7 +51,7 @@ QRgb blendPixel(QRgb a, QRgb b, double t) {
 QImage composite(const QImage& a0, const QImage& b0, BlendMode mode, double value) {
     if (a0.isNull())
         return {};
-    const QImage a = a0.convertToFormat(QImage::Format_ARGB32_Premultiplied);
+    QImage a = a0.convertToFormat(QImage::Format_ARGB32_Premultiplied);
     if (mode == BlendMode::Off || b0.isNull() || b0.size() != a0.size())
         return a;
     const QImage b = b0.convertToFormat(QImage::Format_ARGB32_Premultiplied);

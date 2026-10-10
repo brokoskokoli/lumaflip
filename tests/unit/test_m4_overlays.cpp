@@ -14,7 +14,7 @@
 #include <QRegularExpression>
 #include <gtest/gtest.h>
 
-#include <cstring>
+#include <bit>
 
 using namespace lf;
 using namespace lf::test;
@@ -28,7 +28,7 @@ std::array<float, 9> neighbourhood(const QImage& img, int x, int y) {
         for (int dx = -1; dx <= 1; ++dx) {
             const QColor c = img.pixelColor(std::clamp(x + dx, 0, img.width() - 1),
                                             std::clamp(y + dy, 0, img.height() - 1));
-            l[size_t((dy + 1) * 3 + dx + 1)] =
+            l[size_t(dy + 1) * 3 + size_t(dx + 1)] =
                 overlays::luma({float(c.redF()), float(c.greenF()), float(c.blueF())});
         }
     return l;
@@ -155,7 +155,8 @@ TEST(PhotoOverlays, F_INFO_07_OverlaysOffKeepPixelsIdentical) {
         const std::array<float, 3> shown{v, 1.0f - v, v * 0.5f};
         const std::array<float, 3> linear{2.0f * v, 0.0f, 0.0f};
         const auto out = overlays::apply(shown, linear, &edge, off, 4.0f);
-        EXPECT_EQ(std::memcmp(out.data(), shown.data(), sizeof(shown)), 0) << i; // bit-identical
+        for (size_t k = 0; k < shown.size(); ++k) // bit-identical
+            EXPECT_EQ(std::bit_cast<quint32>(out[k]), std::bit_cast<quint32>(shown[k])) << i;
     }
 }
 
