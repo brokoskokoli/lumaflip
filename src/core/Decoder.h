@@ -76,14 +76,37 @@ public:
     virtual std::optional<DecodedImage> readFrame(int index, const DecodeRequest& req, QString* error) = 0;
 };
 
+// One metadata row (F-INFO-02): a stable, language-independent key "<group>.<field>"
+// (e.g. "camera.model", "shot.exposureTime"; see metadataKeys()), its label (German, from
+// metadataLabel()) and the display value.
+struct MetadataEntry {
+    QString key;
+    QString label;
+    QVariant value;
+};
+
 struct Metadata {
     // Grouped key/value pairs for the info panel (F-INFO-02), e.g.
     // {"Kamera": {"Modell": "...", ...}, "Aufnahme": {...}, "GPS": {...}}
+    // (group and row names are the German labels of the keys below).
     QVariantMap groups;
+    // The same rows with stable keys, in display order (filled by backends that use
+    // addMetadata(); the ImageIO backend does). Consumers should prefer this.
+    QList<MetadataEntry> entries;
     std::optional<QDateTime> captured;
     std::optional<double> latitude, longitude;
     int rating = -1; // xmp:Rating if present
 };
+
+// The single translation table of metadata labels (context "lf::Metadata", tr-able):
+// "camera.model" -> "Modell", group "camera" -> "Kamera". Empty for unknown keys.
+QString metadataLabel(const QString& key);
+QString metadataGroupLabel(const QString& group);
+// All keys in display order ("file.format", "file.dimensions", …, "gps.altitude").
+QStringList metadataKeys();
+// Adds a row to `md` under `key`: to `entries` and - under the German labels - to `groups`.
+// An existing row with that key is replaced.
+void addMetadata(Metadata& md, const QString& key, const QVariant& value);
 
 class Decoder {
 public:

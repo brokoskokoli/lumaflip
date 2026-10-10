@@ -12,7 +12,9 @@ plugin, Qt PDF, ...). This script deploys exactly:
   * Qt's German translations (Contents/Resources/translations),
   * qt.conf, so Qt never looks at the Homebrew prefix,
   * the licence texts of every bundled component (Contents/Resources/licenses) plus
-    index.json, which the About dialog reads,
+    index.json, which the About dialog reads - including the third-party libraries
+    linked statically into the executable (libjpeg-turbo), listed by the build in
+    Contents/Resources/static-components.json and checked against STATIC_COMPONENTS,
   * Sparkle.framework (automatic updates, F-MAC-08) if the app links it: copied as a
     whole (helpers Autoupdate, Updater.app, XPC services; symlinks kept) and left
     untouched otherwise - package.sh signs its parts inside-out (Sparkle's instructions).
@@ -64,6 +66,24 @@ EMBEDDED_FRAMEWORKS = {
     "Sparkle": {"id": "sparkle", "name": "Sparkle 2 (automatische Updates)", "license": "MIT",
                 "homepage": "https://sparkle-project.org"},
 }
+
+# Third-party libraries linked statically into the executable: no dylib in the bundle
+# reveals them, so the build lists the ones it linked in Contents/Resources/
+# static-components.json ([{"id": ..., "library": <real path of the .a>}], written by
+# src/CMakeLists.txt). Every listed id must be described here, with licence texts checked
+# in under packaging/licenses/. `symbols`: if the executable exports one of them, the
+# component must be in the manifest (catches a static library added without an entry).
+STATIC_COMPONENTS = {
+    "jpeg-turbo": {
+        "name": "libjpeg-turbo – TurboJPEG (verlustfreies Drehen von JPEG-Dateien)",
+        "license": "IJG AND BSD-3-Clause AND Zlib",
+        "homepage": "https://libjpeg-turbo.org",
+        "files": ["packaging/licenses/libjpeg-turbo-LICENSE.txt",
+                  "packaging/licenses/libjpeg-turbo-README.ijg.txt"],
+        "symbols": ["_tj3Transform", "_tj3Init"],
+    },
+}
+STATIC_MANIFEST = "static-components.json"
 
 # Components whose Homebrew keg carries no licence file: licence text from
 # packaging/licenses/ (path relative to the repository root).
@@ -311,6 +331,36 @@ class Deployer:
         i = parts.index("Cellar")
         return parts[i + 1], parts[i + 2], pathlib.Path(*parts[: i + 3])
 
+    def static_components(self) -> list[dict]:
+        """Statically linked third-party libraries (manifest written by the build), checked
+        against STATIC_COMPONENTS: every entry needs its licence texts; a library whose
+        symbols are in the executable must be listed."""
+        manifest = self.contents / "Resources" / STATIC_MANIFEST
+        listed = json.loads(manifest.read_text()) if manifest.is_file() else []
+        ids = [e.get("id") for e in listed]
+        try:
+            exported = set(run("nm", "-gU", str(self.exe)).split())
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            exported = set()
+        for cid, meta in STATIC_COMPONENTS.items():
+            if cid not in ids and any(s in exported for s in meta.get("symbols", [])):
+                raise SystemExit(f"error: {self.exe.name} contains {cid} ({meta['symbols'][0]}) but "
+                                 f"{STATIC_MANIFEST} does not list it - licence would be missing")
+        result = []
+        for entry in listed:
+            cid = entry.get("id")
+            meta = STATIC_COMPONENTS.get(cid)
+            if not meta:
+                raise SystemExit(f"error: statically linked component '{cid}' has no licence entry "
+                                 f"(add it to STATIC_COMPONENTS in {__file__})")
+            files = [self.repo / rel for rel in meta["files"]]
+            missing = [str(f) for f in files if not f.is_file()]
+            if not files or missing:
+                raise SystemExit(f"error: licence text(s) for statically linked '{cid}' missing: {missing}")
+            f = self.formula_of(pathlib.Path(entry.get("library", "")).resolve())
+            result.append({"id": cid, "meta": meta, "files": files, "version": f[1] if f else ""})
+        return result
+
     def licenses(self) -> list[dict]:
         out_dir = self.contents / "Resources" / "licenses"
         out_dir.mkdir(parents=True, exist_ok=True)
@@ -397,6 +447,27 @@ class Deployer:
                 "files": files,
                 "binaries": sorted(c["binaries"]),
             })
+        # Statically linked libraries: their own texts (also when the same project is bundled
+        # as a dylib, e.g. libjpeg for Qt's JPEG plugin - the entry then lists both uses).
+        exe_rel = f"MacOS/{self.exe.name}"
+        for sc in self.static_components():
+            cid, meta = sc["id"], sc["meta"]
+            dst = out_dir / cid
+            dst.mkdir(exist_ok=True)
+            files = []
+            for src in sc["files"]:
+                shutil.copy2(src, dst / src.name)
+                os.chmod(dst / src.name, 0o644)
+                files.append(f"{cid}/{src.name}")
+            existing = next((e for e in index if e["id"] == cid), None)
+            if existing:
+                existing["files"] = sorted(set(existing["files"]) | set(files))
+                existing["binaries"] = sorted(set(existing["binaries"]) | {exe_rel + " (statisch)"})
+                existing["license"] = existing["license"] or meta["license"]
+            else:
+                index.append({"id": cid, "name": meta["name"], "version": sc["version"],
+                              "license": meta["license"], "homepage": meta["homepage"],
+                              "files": files, "binaries": [exe_rel + " (statisch)"]})
         (out_dir / "index.json").write_text(json.dumps(index, indent=2, ensure_ascii=False) + "\n")
         return index
 
