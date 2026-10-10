@@ -19,6 +19,9 @@
 #include <sys/types.h>
 #endif
 #ifdef Q_OS_WIN
+#include <memory>
+#include <string>
+
 #include <windows.h>
 
 #include <shellapi.h>
@@ -211,9 +214,11 @@ void CustomActionRun::start() {
 #endif
 #ifdef Q_OS_WIN
     // The command line exactly as core/CommandLine.h builds it (CommandLineToArgvW rules).
-    const QString commandLine = cmdline::build(QDir::toNativeSeparators(spec.program), spec.arguments);
+    // CreateProcessW may modify the buffer: a writable copy that lives as long as the modifier.
+    auto commandLine = std::make_shared<std::wstring>(
+        cmdline::build(QDir::toNativeSeparators(spec.program), spec.arguments).toStdWString());
     m_process->setCreateProcessArgumentsModifier([commandLine](QProcess::CreateProcessArguments* args) {
-        args->arguments = commandLine;
+        args->arguments = commandLine->data();
         args->flags |= CREATE_NO_WINDOW;
     });
 #endif

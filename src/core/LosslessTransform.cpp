@@ -19,6 +19,9 @@
 #ifdef Q_OS_UNIX
 #include <sys/stat.h>
 #endif
+#ifdef Q_OS_WIN
+#include <windows.h>
+#endif
 
 #ifdef LF_HAVE_TURBOJPEG
 #include <turbojpeg.h>
@@ -446,6 +449,26 @@ FileStamp fileStamp(const QString& path) {
 #endif
     s.inode = quint64(st.st_ino);
     s.device = quint64(st.st_dev);
+#elif defined(Q_OS_WIN)
+    // File identity like st_ino/st_dev: volume serial number + file index (hard links share it).
+    const QString native = QDir::toNativeSeparators(path);
+    HANDLE h = CreateFileW(reinterpret_cast<LPCWSTR>(native.utf16()), FILE_READ_ATTRIBUTES,
+                           FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE, nullptr, OPEN_EXISTING,
+                           FILE_ATTRIBUTE_NORMAL, nullptr);
+    if (h == INVALID_HANDLE_VALUE)
+        return s;
+    BY_HANDLE_FILE_INFORMATION info{};
+    const bool ok = GetFileInformationByHandle(h, &info) != 0;
+    CloseHandle(h);
+    if (!ok || (info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+        return s;
+    s.size = qint64((quint64(info.nFileSizeHigh) << 32) | info.nFileSizeLow);
+    // FILETIME: 100 ns since 1601-01-01 -> ns since 1970-01-01.
+    const qint64 ticks =
+        qint64((quint64(info.ftLastWriteTime.dwHighDateTime) << 32) | info.ftLastWriteTime.dwLowDateTime);
+    s.mtimeNs = (ticks - 116444736000000000LL) * 100;
+    s.inode = (quint64(info.nFileIndexHigh) << 32) | info.nFileIndexLow;
+    s.device = quint64(info.dwVolumeSerialNumber);
 #else
     const QFileInfo fi(path);
     if (!fi.isFile())
