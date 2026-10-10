@@ -43,9 +43,10 @@ namespace lf {
 
 namespace {
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::FileOps", text);
-}
+// tr() for the code in this file outside QObject classes (lupdate takes the context from it).
+struct Tr {
+    Q_DECLARE_TR_FUNCTIONS(lf::FileOps)
+};
 
 // Result of the file system part of an operation.
 struct Outcome {
@@ -82,7 +83,7 @@ bool sameFile(const QString& a, const QString& b) {
 QString targetTakenError(const QString& source, const QString& target) {
     if (QFileInfo(target).exists() || QFileInfo(target).isSymLink()) {
         if (!sameFile(source, target))
-            return tr("„%1“ existiert bereits.").arg(QFileInfo(target).fileName());
+            return Tr::tr("„%1“ existiert bereits.").arg(QFileInfo(target).fileName());
     }
     return {};
 }
@@ -149,17 +150,17 @@ QString movePath(const QString& from, const QString& to) {
     if (err == 0)
         return {};
     if (err == EEXIST)
-        return tr("„%1“ existiert bereits.").arg(QFileInfo(to).fileName());
+        return Tr::tr("„%1“ existiert bereits.").arg(QFileInfo(to).fileName());
     if (err == EXDEV) {
         if (!QFile::copy(from, to)) // never overwrites
-            return tr("„%1“ konnte nicht kopiert werden.").arg(QFileInfo(from).fileName());
+            return Tr::tr("„%1“ konnte nicht kopiert werden.").arg(QFileInfo(from).fileName());
         if (!QFile::remove(from)) {
             QFile::remove(to);
-            return tr("„%1“ konnte nicht entfernt werden.").arg(QFileInfo(from).fileName());
+            return Tr::tr("„%1“ konnte nicht entfernt werden.").arg(QFileInfo(from).fileName());
         }
         return {};
     }
-    return tr("„%1“ konnte nicht verschoben werden: %2")
+    return Tr::tr("„%1“ konnte nicht verschoben werden: %2")
         .arg(QFileInfo(from).fileName(), QString::fromLocal8Bit(strerror(err)));
 }
 
@@ -169,20 +170,20 @@ QString joinPath(const QString& folder, const QString& name) {
 
 QString sourceError(const QString& path) {
     if (!QFileInfo::exists(path))
-        return tr("„%1“ existiert nicht.").arg(QFileInfo(path).fileName());
+        return Tr::tr("„%1“ existiert nicht.").arg(QFileInfo(path).fileName());
     return {};
 }
 
 QString folderError(const QString& folder) {
     if (!QFileInfo(folder).isDir())
-        return tr("Der Zielordner „%1“ existiert nicht.").arg(folder);
+        return Tr::tr("Der Zielordner „%1“ existiert nicht.").arg(folder);
     return {};
 }
 
 QString nameError(const QString& newFileName) {
     if (newFileName.isEmpty() || newFileName == QLatin1String(".") || newFileName == QLatin1String("..") ||
         newFileName.contains(QLatin1Char('/')) || newFileName.contains(QChar(0)))
-        return tr("„%1“ ist kein gültiger Dateiname.").arg(newFileName);
+        return Tr::tr("„%1“ ist kein gültiger Dateiname.").arg(newFileName);
     return {};
 }
 
@@ -209,7 +210,7 @@ Outcome copyWork(const QString& from, const QString& to) {
     if (const QString e = targetTakenError(from, to); !e.isEmpty())
         return failure(e);
     if (!QFile::copy(from, to))
-        return failure(tr("„%1“ konnte nicht kopiert werden.").arg(QFileInfo(from).fileName()));
+        return failure(Tr::tr("„%1“ konnte nicht kopiert werden.").arg(QFileInfo(from).fileName()));
     return success(to);
 }
 
@@ -262,7 +263,7 @@ private:
 class TrashCommand : public FileCommand {
 public:
     TrashCommand(FileOps* ops, TrashService& trash, QString path, QString trashed, QObject* origin)
-        : FileCommand(ops, tr("In den Papierkorb legen")), m_trash(trash), m_path(std::move(path)),
+        : FileCommand(ops, Tr::tr("In den Papierkorb legen")), m_trash(trash), m_path(std::move(path)),
           m_trashed(std::move(trashed)), m_origin(origin) {}
 
     std::function<Outcome()> workFor(bool forward) const override {
@@ -309,7 +310,7 @@ private:
 class RenameCommand : public FileCommand {
 public:
     RenameCommand(FileOps* ops, QString from, QString to)
-        : FileCommand(ops, tr("Umbenennen")), m_from(std::move(from)), m_to(std::move(to)) {}
+        : FileCommand(ops, Tr::tr("Umbenennen")), m_from(std::move(from)), m_to(std::move(to)) {}
 
     std::function<Outcome()> workFor(bool forward) const override {
         const QString a = forward ? m_from : m_to;
@@ -333,7 +334,7 @@ private:
 class MoveCommand : public FileCommand {
 public:
     MoveCommand(FileOps* ops, QString from, QString to)
-        : FileCommand(ops, tr("Verschieben")), m_from(std::move(from)), m_to(std::move(to)) {}
+        : FileCommand(ops, Tr::tr("Verschieben")), m_from(std::move(from)), m_to(std::move(to)) {}
 
     std::function<Outcome()> workFor(bool forward) const override {
         const QString a = forward ? m_from : m_to;
@@ -360,7 +361,7 @@ private:
 class CopyCommand : public FileCommand {
 public:
     CopyCommand(FileOps* ops, QString from, QString to)
-        : FileCommand(ops, tr("Kopieren")), m_from(std::move(from)), m_to(std::move(to)) {}
+        : FileCommand(ops, Tr::tr("Kopieren")), m_from(std::move(from)), m_to(std::move(to)) {}
 
     std::function<Outcome()> workFor(bool forward) const override {
         const QString from = m_from, to = m_to;
@@ -369,7 +370,7 @@ public:
         return [to] {
             if (!QFile::remove(to))
                 return failure(
-                    tr("Die Kopie „%1“ konnte nicht entfernt werden.").arg(QFileInfo(to).fileName()));
+                    Tr::tr("Die Kopie „%1“ konnte nicht entfernt werden.").arg(QFileInfo(to).fileName()));
             return success(to);
         };
     }
@@ -460,7 +461,8 @@ struct FileOps::Private {
         if (!running && queue.isEmpty())
             return false;
         qWarning("lf::FileOps: synchronous operation refused while asynchronous ones are pending");
-        setError(error, tr("Ein anderer Dateivorgang läuft noch. Bitte warte, bis er abgeschlossen ist."));
+        setError(error,
+                 Tr::tr("Ein anderer Dateivorgang läuft noch. Bitte warte, bis er abgeschlossen ist."));
         return true;
     }
 
@@ -573,8 +575,8 @@ struct FileOps::Private {
                 plan.notifier(o);
         }
         stack->clear();
-        emit q->operationFailed(o.ok ? tr("Der Verlauf zum Widerrufen wurde zurückgesetzt, weil er sich "
-                                          "während des Vorgangs geändert hat.")
+        emit q->operationFailed(o.ok ? Tr::tr("Der Verlauf zum Widerrufen wurde zurückgesetzt, weil er sich "
+                                              "während des Vorgangs geändert hat.")
                                      : o.error);
     }
 
@@ -640,7 +642,7 @@ struct FileOps::Private {
                         return failure(e);
                     const QString target = joinPath(targetFolder, QFileInfo(path).fileName());
                     if (QFileInfo(target).exists() || QFileInfo(target).isSymLink())
-                        return failure(tr("„%1“ existiert bereits.").arg(QFileInfo(target).fileName()));
+                        return failure(Tr::tr("„%1“ existiert bereits.").arg(QFileInfo(target).fileName()));
                     return copyWork(path, target);
                 },
                 [this, path](const Outcome& r) {

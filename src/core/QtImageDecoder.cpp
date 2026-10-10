@@ -15,9 +15,10 @@
 namespace lf {
 namespace {
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::QtImageDecoder", text);
-}
+// tr() for the code in this file outside QObject classes (lupdate takes the context from it).
+struct Tr {
+    Q_DECLARE_TR_FUNCTIONS(lf::QtImageDecoder)
+};
 
 void setError(QString* error, const QString& msg) {
     if (error)
@@ -133,8 +134,8 @@ std::optional<ImageInfo> QtImageDecoder::info(const QString& path, QString* erro
     r.setAutoTransform(false);
     if (!r.canRead()) {
         setError(error, QFileInfo(path).size() == 0
-                            ? tr("Die Datei ist leer (0 Byte).")
-                            : tr("Unbekanntes oder nicht unterstütztes Dateiformat."));
+                            ? Tr::tr("Die Datei ist leer (0 Byte).")
+                            : Tr::tr("Unbekanntes oder nicht unterstütztes Dateiformat."));
         return std::nullopt;
     }
     ImageInfo info;
@@ -169,20 +170,20 @@ std::optional<DecodedImage> QtImageDecoder::decode(const QString& path, const De
     r.setAutoTransform(true);
     if (!r.canRead()) {
         setError(error, QFileInfo(path).size() == 0
-                            ? tr("Die Datei ist leer (0 Byte).")
-                            : tr("Unbekanntes oder nicht unterstütztes Dateiformat."));
+                            ? Tr::tr("Die Datei ist leer (0 Byte).")
+                            : Tr::tr("Unbekanntes oder nicht unterstütztes Dateiformat."));
         return std::nullopt;
     }
     const bool animated = r.supportsAnimation() && r.imageCount() > 1;
     const int index = animated ? req.frame : req.page;
     if (index < 0 || (index > 0 && r.imageCount() > 0 && index >= r.imageCount())) {
-        setError(error, tr("Seite %1 existiert nicht.").arg(index + 1));
+        setError(error, Tr::tr("Seite %1 existiert nicht.").arg(index + 1));
         return std::nullopt;
     }
     if (index > 0 && !r.jumpToImage(index)) {
         for (int i = 0; i < index; ++i) {
             if (r.read().isNull()) {
-                setError(error, tr("Seite %1 existiert nicht.").arg(index + 1));
+                setError(error, Tr::tr("Seite %1 existiert nicht.").arg(index + 1));
                 return std::nullopt;
             }
         }
@@ -209,7 +210,7 @@ std::optional<DecodedImage> QtImageDecoder::decode(const QString& path, const De
         r.setScaledSize(fitLongEdge(stored, maxEdge));
     QImage img = r.read();
     if (img.isNull()) {
-        setError(error, tr("Das Bild konnte nicht dekodiert werden: %1").arg(r.errorString()));
+        setError(error, Tr::tr("Das Bild konnte nicht dekodiert werden: %1").arg(r.errorString()));
         return std::nullopt;
     }
     DecodedImage out;
@@ -226,11 +227,9 @@ Metadata QtImageDecoder::metadata(const QString& path) {
     const auto info = this->info(path, &err);
     if (!info)
         return md;
-    QVariantMap file;
-    file.insert(QStringLiteral("Format"), info->formatName);
-    file.insert(QStringLiteral("Pixelmaße"),
+    addMetadata(md, QStringLiteral("file.format"), info->formatName);
+    addMetadata(md, QStringLiteral("file.dimensions"),
                 QStringLiteral("%1 × %2").arg(info->displaySize.width()).arg(info->displaySize.height()));
-    md.groups.insert(QStringLiteral("Datei"), file);
     return md;
 }
 
@@ -260,7 +259,7 @@ bool SvgDecoder::canDecode(const QString& path, const QByteArray& header) const 
 std::optional<ImageInfo> SvgDecoder::info(const QString& path, QString* error) {
     QSvgRenderer r(path);
     if (!r.isValid()) {
-        setError(error, tr("Die SVG-Datei ist ungültig oder beschädigt."));
+        setError(error, Tr::tr("Die SVG-Datei ist ungültig oder beschädigt."));
         return std::nullopt;
     }
     ImageInfo info;
@@ -275,7 +274,7 @@ std::optional<DecodedImage> SvgDecoder::decode(const QString& path, const Decode
                                                QString* error) {
     QSvgRenderer r(path);
     if (!r.isValid()) {
-        setError(error, tr("Die SVG-Datei ist ungültig oder beschädigt."));
+        setError(error, Tr::tr("Die SVG-Datei ist ungültig oder beschädigt."));
         return std::nullopt;
     }
     const QSize intrinsic = svgSize(r);
@@ -283,7 +282,7 @@ std::optional<DecodedImage> SvgDecoder::decode(const QString& path, const Decode
     const QSize size = req.maxPixelSize > 0 ? fitLongEdge(intrinsic, req.maxPixelSize) : full;
     QImage img(size, QImage::Format_RGBA8888_Premultiplied);
     if (img.isNull()) {
-        setError(error, tr("Nicht genug Speicher für das Bild."));
+        setError(error, Tr::tr("Nicht genug Speicher für das Bild."));
         return std::nullopt;
     }
     img.fill(Qt::transparent);
@@ -303,11 +302,9 @@ std::optional<DecodedImage> SvgDecoder::decode(const QString& path, const Decode
 Metadata SvgDecoder::metadata(const QString& path) {
     Metadata md;
     if (const auto info = this->info(path, nullptr)) {
-        QVariantMap file;
-        file.insert(QStringLiteral("Format"), info->formatName);
-        file.insert(QStringLiteral("Pixelmaße"),
+        addMetadata(md, QStringLiteral("file.format"), info->formatName);
+        addMetadata(md, QStringLiteral("file.dimensions"),
                     QStringLiteral("%1 × %2").arg(info->displaySize.width()).arg(info->displaySize.height()));
-        md.groups.insert(QStringLiteral("Datei"), file);
     }
     return md;
 }

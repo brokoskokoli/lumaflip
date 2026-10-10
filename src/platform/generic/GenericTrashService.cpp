@@ -12,9 +12,10 @@ namespace lf {
 
 namespace {
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::TrashService", text);
-}
+// tr() for the code in this file outside QObject classes (lupdate takes the context from it).
+struct Tr {
+    Q_DECLARE_TR_FUNCTIONS(lf::TrashService)
+};
 
 class GenericTrashService final : public TrashService {
 public:
@@ -22,8 +23,8 @@ public:
         QString inTrash;
         if (!QFile::moveToTrash(path, &inTrash)) {
             if (error)
-                *error =
-                    tr("„%1“ konnte nicht in den Papierkorb gelegt werden.").arg(QFileInfo(path).fileName());
+                *error = Tr::tr("„%1“ konnte nicht in den Papierkorb gelegt werden.")
+                             .arg(QFileInfo(path).fileName());
             return std::nullopt;
         }
         return inTrash;
@@ -33,12 +34,12 @@ public:
         const QFileInfo orig(originalPath);
         if (orig.exists() || orig.isSymLink()) {
             if (error)
-                *error = tr("„%1“ existiert bereits und wird nicht überschrieben.").arg(orig.fileName());
+                *error = Tr::tr("„%1“ existiert bereits und wird nicht überschrieben.").arg(orig.fileName());
             return false;
         }
         if (trashedPath.isEmpty() || !QFile::rename(trashedPath, originalPath)) {
             if (error)
-                *error = tr("„%1“ konnte nicht wiederhergestellt werden.").arg(orig.fileName());
+                *error = Tr::tr("„%1“ konnte nicht wiederhergestellt werden.").arg(orig.fileName());
             return false;
         }
         // freedesktop: drop the matching .trashinfo file if present.

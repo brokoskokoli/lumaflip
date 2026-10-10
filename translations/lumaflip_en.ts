@@ -1,0 +1,3461 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="en" sourcelanguage="de">
+<context>
+    <name>SortSpec</name>
+    <message>
+        <source>Name</source>
+        <translation>Name</translation>
+    </message>
+    <message>
+        <source>Änderungsdatum</source>
+        <translation>Date Modified</translation>
+    </message>
+    <message>
+        <source>Erstellungsdatum</source>
+        <translation>Date Created</translation>
+    </message>
+    <message>
+        <source>Hinzugefügt am</source>
+        <translation>Date Added</translation>
+    </message>
+    <message>
+        <source>Aufnahmedatum</source>
+        <translation>Date Taken</translation>
+    </message>
+    <message>
+        <source>Größe</source>
+        <translation>Size</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Kind</translation>
+    </message>
+    <message>
+        <source>Pixelzahl</source>
+        <translation>Pixel Count</translation>
+    </message>
+    <message>
+        <source>Bewertung</source>
+        <translation>Rating</translation>
+    </message>
+    <message>
+        <source>Symbolposition</source>
+        <translation>Icon Position</translation>
+    </message>
+    <message>
+        <source>Wie Finder (live): %1</source>
+        <translation>As in Finder (live): %1</translation>
+    </message>
+    <message>
+        <source>Wie Finder: %1</source>
+        <translation>As in Finder: %1</translation>
+    </message>
+    <message>
+        <source>%1 (Finder-Info nicht gefunden)</source>
+        <translation>%1 (Finder info not found)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::AboutDialog</name>
+    <message>
+        <source>Über Lumaflip</source>
+        <translation>About Lumaflip</translation>
+    </message>
+    <message>
+        <source>Version %1</source>
+        <translation>Version %1</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Schneller Bildbetrachter für macOS: Doppelklick öffnet den ganzen Ordner – in derselben Reihenfolge wie im Finder.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli und Mitwirkende&lt;/p&gt;&lt;p&gt;Lumaflip ist freie Software: Du kannst sie unter den Bedingungen der &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; Version 3 oder (nach deiner Wahl) jeder späteren Version weitergeben und verändern. Lumaflip wird ohne jede Gewährleistung bereitgestellt.&lt;/p&gt;&lt;p&gt;Quellcode: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Verwendet Qt %3 (LGPLv3).&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Fast image viewer for macOS: a double-click opens the whole folder — in the same order as in the Finder.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli and contributors&lt;/p&gt;&lt;p&gt;Lumaflip is free software: you can redistribute and modify it under the terms of the &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; version 3 or (at your option) any later version. Lumaflip is provided without any warranty.&lt;/p&gt;&lt;p&gt;Source code: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Uses Qt %3 (LGPLv3).&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Lizenzen von Drittanbietern…</source>
+        <translation>Third-Party Licenses…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Application</name>
+    <message>
+        <source>Lumaflip</source>
+        <translation>Lumaflip</translation>
+    </message>
+    <message>
+        <source>Dateivorgänge werden abgeschlossen, dann wird Lumaflip beendet …</source>
+        <translation>Finishing file operations, then Lumaflip will quit…</translation>
+    </message>
+    <message>
+        <source>Dateivorgang läuft …</source>
+        <translation>File operation in progress…</translation>
+    </message>
+    <message>
+        <source>Nicht gefunden: %1</source>
+        <translation>Not found: %1</translation>
+    </message>
+    <message>
+        <source>Bilder (%1);;Alle Dateien (*)</source>
+        <translation>Images (%1);;All Files (*)</translation>
+    </message>
+    <message>
+        <source>Öffnen</source>
+        <translation>Open</translation>
+    </message>
+    <message>
+        <source>Ordner öffnen</source>
+        <translation>Open Folder</translation>
+    </message>
+    <message>
+        <source>Tastenkürzel</source>
+        <translation>Keyboard Shortcuts</translation>
+    </message>
+    <message>
+        <source>Aktion</source>
+        <translation>Action</translation>
+    </message>
+    <message>
+        <source>Taste(n)</source>
+        <translation>Key(s)</translation>
+    </message>
+    <message>
+        <source>Nächstes / vorheriges Bild</source>
+        <translation>Next / previous image</translation>
+    </message>
+    <message>
+        <source>→ / ←, Leertaste / ⇧Leertaste, Bild↓ / Bild↑, Mausrad</source>
+        <translation>→ / ←, Space / ⇧Space, Page↓ / Page↑, scroll wheel</translation>
+    </message>
+    <message>
+        <source>Erstes / letztes Bild</source>
+        <translation>First / last image</translation>
+    </message>
+    <message>
+        <source>Pos1 / Ende</source>
+        <translation>Home / End</translation>
+    </message>
+    <message>
+        <source>Vollbild / Modus verlassen</source>
+        <translation>Exit full screen / mode</translation>
+    </message>
+    <message>
+        <source>Esc</source>
+        <translation>Esc</translation>
+    </message>
+    <message>
+        <source>%1 (in einer späteren Version)</source>
+        <translation>%1 (in a future version)</translation>
+    </message>
+    <message>
+        <source>Lumaflip wird als Standard-App festgelegt …</source>
+        <translation>Setting Lumaflip as the default app…</translation>
+    </message>
+    <message>
+        <source>Lumaflip ist jetzt die Standard-App für Bilder.</source>
+        <translation>Lumaflip is now the default app for images.</translation>
+    </message>
+    <message>
+        <source>Lumaflip konnte nicht als Standard-App festgelegt werden:
+%1</source>
+        <translation>Lumaflip couldn’t be set as the default app:
+%1</translation>
+    </message>
+</context>
+<context>
+    <name>lf::DecoderRegistry</name>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>The file doesn’t exist.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer.</source>
+        <translation>The file is empty.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>The file can’t be read.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist beschädigt oder unvollständig.</source>
+        <translation>The file is damaged or incomplete.</translation>
+    </message>
+    <message>
+        <source>Das Dateiformat wird nicht unterstützt.</source>
+        <translation>The file format isn’t supported.</translation>
+    </message>
+    <message>
+        <source>Das Bild ist zu groß, um es vollständig zu laden.</source>
+        <translation>The image is too large to load completely.</translation>
+    </message>
+    <message>
+        <source>Das Bild ist leer.</source>
+        <translation>The image is empty.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::DefaultAppDialog</name>
+    <message>
+        <source>Als Standard-App festlegen</source>
+        <translation>Set as Default App</translation>
+    </message>
+    <message>
+        <source>Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht ausgewählte Formate bleiben beim bisherigen Programm.</source>
+        <translation>Lumaflip will become the default app for the selected image formats. Formats that aren’t selected stay with their current app.</translation>
+    </message>
+    <message>
+        <source>Alle auswählen</source>
+        <translation>Select All</translation>
+    </message>
+    <message>
+        <source>Keine auswählen</source>
+        <translation>Select None</translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation>Set</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Cancel</translation>
+    </message>
+</context>
+<context>
+    <name>lf::DisplayText</name>
+    <message>
+        <source>JPEG-Bild</source>
+        <translation>JPEG image</translation>
+    </message>
+    <message>
+        <source>PNG-Bild</source>
+        <translation>PNG image</translation>
+    </message>
+    <message>
+        <source>APNG-Bild</source>
+        <translation>APNG image</translation>
+    </message>
+    <message>
+        <source>GIF-Bild</source>
+        <translation>GIF image</translation>
+    </message>
+    <message>
+        <source>TIFF-Bild</source>
+        <translation>TIFF image</translation>
+    </message>
+    <message>
+        <source>BMP-Bild</source>
+        <translation>BMP image</translation>
+    </message>
+    <message>
+        <source>WebP-Bild</source>
+        <translation>WebP image</translation>
+    </message>
+    <message>
+        <source>HEIC-Bild</source>
+        <translation>HEIC image</translation>
+    </message>
+    <message>
+        <source>HEIF-Bild</source>
+        <translation>HEIF image</translation>
+    </message>
+    <message>
+        <source>AVIF-Bild</source>
+        <translation>AVIF image</translation>
+    </message>
+    <message>
+        <source>JPEG-XL-Bild</source>
+        <translation>JPEG XL image</translation>
+    </message>
+    <message>
+        <source>JPEG-2000-Bild</source>
+        <translation>JPEG 2000 image</translation>
+    </message>
+    <message>
+        <source>Photoshop-Dokument</source>
+        <translation>Photoshop document</translation>
+    </message>
+    <message>
+        <source>Photoshop-Dokument (groß)</source>
+        <translation>Photoshop document (large)</translation>
+    </message>
+    <message>
+        <source>OpenEXR-Bild</source>
+        <translation>OpenEXR image</translation>
+    </message>
+    <message>
+        <source>Radiance-HDR-Bild</source>
+        <translation>Radiance HDR image</translation>
+    </message>
+    <message>
+        <source>TGA-Bild</source>
+        <translation>TGA image</translation>
+    </message>
+    <message>
+        <source>DDS-Textur</source>
+        <translation>DDS texture</translation>
+    </message>
+    <message>
+        <source>KTX-Textur</source>
+        <translation>KTX texture</translation>
+    </message>
+    <message>
+        <source>Windows-Symbol (ICO)</source>
+        <translation>Windows icon (ICO)</translation>
+    </message>
+    <message>
+        <source>Windows-Mauszeiger (CUR)</source>
+        <translation>Windows cursor (CUR)</translation>
+    </message>
+    <message>
+        <source>Apple-Symbol (ICNS)</source>
+        <translation>Apple icon (ICNS)</translation>
+    </message>
+    <message>
+        <source>SVG-Vektorgrafik</source>
+        <translation>SVG vector graphic</translation>
+    </message>
+    <message>
+        <source>PDF-Dokument</source>
+        <translation>PDF document</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Adobe DNG)</source>
+        <translation>Camera RAW (Adobe DNG)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Canon CR2)</source>
+        <translation>Camera RAW (Canon CR2)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Canon CR3)</source>
+        <translation>Camera RAW (Canon CR3)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Canon CRW)</source>
+        <translation>Camera RAW (Canon CRW)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Nikon NEF)</source>
+        <translation>Camera RAW (Nikon NEF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Nikon NRW)</source>
+        <translation>Camera RAW (Nikon NRW)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Sony ARW)</source>
+        <translation>Camera RAW (Sony ARW)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Sony SR2)</source>
+        <translation>Camera RAW (Sony SR2)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Sony SRF)</source>
+        <translation>Camera RAW (Sony SRF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Fujifilm RAF)</source>
+        <translation>Camera RAW (Fujifilm RAF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Olympus ORF)</source>
+        <translation>Camera RAW (Olympus ORF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Panasonic RW2)</source>
+        <translation>Camera RAW (Panasonic RW2)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW</source>
+        <translation>Camera RAW</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Pentax PEF)</source>
+        <translation>Camera RAW (Pentax PEF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Phase One IIQ)</source>
+        <translation>Camera RAW (Phase One IIQ)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Hasselblad 3FR)</source>
+        <translation>Camera RAW (Hasselblad 3FR)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Hasselblad FFF)</source>
+        <translation>Camera RAW (Hasselblad FFF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Epson ERF)</source>
+        <translation>Camera RAW (Epson ERF)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Minolta MRW)</source>
+        <translation>Camera RAW (Minolta MRW)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Leaf MOS)</source>
+        <translation>Camera RAW (Leaf MOS)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Leica RWL)</source>
+        <translation>Camera RAW (Leica RWL)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Samsung SRW)</source>
+        <translation>Camera RAW (Samsung SRW)</translation>
+    </message>
+    <message>
+        <source>Kamera-RAW (Sigma X3F)</source>
+        <translation>Camera RAW (Sigma X3F)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::FileOps</name>
+    <message>
+        <source>„%1“ existiert bereits.</source>
+        <translation>“%1” already exists.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht kopiert werden.</source>
+        <translation>“%1” couldn’t be copied.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht entfernt werden.</source>
+        <translation>“%1” couldn’t be removed.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht verschoben werden: %2</source>
+        <translation>“%1” couldn’t be moved: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert nicht.</source>
+        <translation>“%1” doesn’t exist.</translation>
+    </message>
+    <message>
+        <source>Der Zielordner „%1“ existiert nicht.</source>
+        <translation>The destination folder “%1” doesn’t exist.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist kein gültiger Dateiname.</source>
+        <translation>“%1” isn’t a valid file name.</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>Move to Trash</translation>
+    </message>
+    <message>
+        <source>Umbenennen</source>
+        <translation>Rename</translation>
+    </message>
+    <message>
+        <source>Verschieben</source>
+        <translation>Move</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>Copy</translation>
+    </message>
+    <message>
+        <source>Die Kopie „%1“ konnte nicht entfernt werden.</source>
+        <translation>The copy “%1” couldn’t be removed.</translation>
+    </message>
+    <message>
+        <source>Ein anderer Dateivorgang läuft noch. Bitte warte, bis er abgeschlossen ist.</source>
+        <translation>Another file operation is still in progress. Please wait until it finishes.</translation>
+    </message>
+    <message>
+        <source>Der Verlauf zum Widerrufen wurde zurückgesetzt, weil er sich während des Vorgangs geändert hat.</source>
+        <translation>The undo history was reset because it changed during the operation.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Filmstrip</name>
+    <message>
+        <source>Filmstreifen</source>
+        <translation>Filmstrip</translation>
+    </message>
+</context>
+<context>
+    <name>lf::FilmstripModel</name>
+    <message>
+        <source>%1 – kann nicht gelesen werden</source>
+        <translation>%1 — can’t be read</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Format</name>
+    <message>
+        <source>%1 KB</source>
+        <extracomment>SI kilobyte (1000 bytes) as in the Finder; e.g. French &quot;%1 ko&quot;</extracomment>
+        <translation>%1 KB</translation>
+    </message>
+    <message>
+        <source>%1 MB</source>
+        <extracomment>SI megabyte as in the Finder; e.g. French &quot;%1 Mo&quot;</extracomment>
+        <translation>%1 MB</translation>
+    </message>
+    <message>
+        <source>%1 GB</source>
+        <extracomment>SI gigabyte as in the Finder; e.g. French &quot;%1 Go&quot;</extracomment>
+        <translation>%1 GB</translation>
+    </message>
+    <message>
+        <source>%1 TB</source>
+        <extracomment>SI terabyte as in the Finder; e.g. French &quot;%1 To&quot;</extracomment>
+        <translation>%1 TB</translation>
+    </message>
+    <message>
+        <source>%1 PB</source>
+        <extracomment>SI petabyte as in the Finder; e.g. French &quot;%1 Po&quot;</extracomment>
+        <translation>%1 PB</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Byte</source>
+        <extracomment>file size below 1000 bytes; %n is the number of bytes</extracomment>
+        <translation>
+            <numerusform>%n byte</numerusform>
+            <numerusform>%n bytes</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 (%2 Byte)</source>
+        <extracomment>size and exact number of bytes, e.g. &quot;2,8 MB (2.812.345 Byte)&quot;; plural by the byte count</extracomment>
+        <translation>
+            <numerusform>%1 (%2 byte)</numerusform>
+            <numerusform>%1 (%2 bytes)</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>1/%1 s</source>
+        <extracomment>exposure time as a fraction of a second, e.g. &quot;1/250 s&quot;</extracomment>
+        <translation>1/%1 s</translation>
+    </message>
+    <message>
+        <source>%1 s</source>
+        <extracomment>exposure time in seconds, e.g. &quot;2,5 s&quot;</extracomment>
+        <translation>%1 s</translation>
+    </message>
+    <message>
+        <source>f/%1</source>
+        <extracomment>aperture (f-number), e.g. &quot;f/2,8&quot;</extracomment>
+        <translation>f/%1</translation>
+    </message>
+    <message>
+        <source>%1 EV</source>
+        <extracomment>exposure compensation in exposure values; %1 is the signed number, e.g. &quot;+0,7&quot;</extracomment>
+        <translation>%1 EV</translation>
+    </message>
+    <message>
+        <source>%1 mm</source>
+        <extracomment>focal length in millimetres</extracomment>
+        <translation>%1 mm</translation>
+    </message>
+    <message>
+        <source> (KB: %1 mm)</source>
+        <extracomment>appended to the focal length: the 35 mm equivalent (&quot;KB&quot; = Kleinbild), e.g. &quot; (35-mm-equiv.: 52 mm)&quot;</extracomment>
+        <translation> (35 mm equiv.: %1 mm)</translation>
+    </message>
+    <message>
+        <source>%1° %2</source>
+        <extracomment>GPS coordinate: degrees and hemisphere letter, e.g. &quot;48,137154° N&quot;</extracomment>
+        <translation>%1° %2</translation>
+    </message>
+    <message>
+        <source>S</source>
+        <comment>south</comment>
+        <extracomment>GPS hemisphere: abbreviation of &quot;south&quot;</extracomment>
+        <translation>S</translation>
+    </message>
+    <message>
+        <source>N</source>
+        <comment>north</comment>
+        <extracomment>GPS hemisphere: abbreviation of &quot;north&quot;</extracomment>
+        <translation>N</translation>
+    </message>
+    <message>
+        <source>W</source>
+        <comment>west</comment>
+        <extracomment>GPS hemisphere: abbreviation of &quot;west&quot;</extracomment>
+        <translation>W</translation>
+    </message>
+    <message>
+        <source>O</source>
+        <comment>east</comment>
+        <extracomment>GPS hemisphere: abbreviation of &quot;east&quot; (German &quot;O&quot; = Ost)</extracomment>
+        <translation>E</translation>
+    </message>
+    <message>
+        <source>%1 m</source>
+        <extracomment>altitude in metres</extracomment>
+        <translation>%1 m</translation>
+    </message>
+</context>
+<context>
+    <name>lf::HistogramWidget</name>
+    <message>
+        <source>Histogramm</source>
+        <translation>Histogram</translation>
+    </message>
+    <message>
+        <source>Wird berechnet …</source>
+        <translation>Calculating…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ImageIODecoder</name>
+    <message>
+        <source>Das Bild hat keine Pixel.</source>
+        <translation>The image has no pixels.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>Not enough memory for the image (%1 × %2 pixels).</translation>
+    </message>
+    <message>
+        <source>Bildpuffer konnte nicht angelegt werden.</source>
+        <translation>Couldn’t allocate the image buffer.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht.</source>
+        <translation>The file doesn’t exist.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>The file is empty (0 bytes).</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>The file can’t be read.</translation>
+    </message>
+    <message>
+        <source>Unbekanntes oder nicht unterstütztes Dateiformat.</source>
+        <translation>Unknown or unsupported file format.</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält keine lesbaren Bilddaten (beschädigt?).</source>
+        <translation>The file contains no readable image data (damaged?).</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden (Datei beschädigt?).</source>
+        <translation>The image couldn’t be decoded (file damaged?).</translation>
+    </message>
+    <message>
+        <source>Ausgelöst</source>
+        <translation>Fired</translation>
+    </message>
+    <message>
+        <source>Nicht ausgelöst</source>
+        <translation>Did not fire</translation>
+    </message>
+    <message>
+        <source>Die Bildinformationen sind beschädigt.</source>
+        <translation>The image information is damaged.</translation>
+    </message>
+    <message>
+        <source>Einzelbild %1 existiert nicht.</source>
+        <translation>Frame %1 doesn’t exist.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Page %1 doesn’t exist.</translation>
+    </message>
+    <message>
+        <source>Die Datei ist unvollständig (abgeschnitten).</source>
+        <translation>The file is incomplete (truncated).</translation>
+    </message>
+    <message>
+        <source>%1 Bit</source>
+        <translation>%1-bit</translation>
+    </message>
+    <message>
+        <source>Ja</source>
+        <translation>Yes</translation>
+    </message>
+    <message>
+        <source>Nein</source>
+        <translation>No</translation>
+    </message>
+    <message>
+        <source>HEIC-Sequenz</source>
+        <translation>HEIC sequence</translation>
+    </message>
+    <message>
+        <source>AVIF-Sequenz</source>
+        <translation>AVIF sequence</translation>
+    </message>
+</context>
+<context>
+    <name>lf::InfoPanel</name>
+    <message>
+        <source>Ein- oder ausklappen</source>
+        <translation>Expand or collapse</translation>
+    </message>
+    <message>
+        <source>Rot</source>
+        <extracomment>Finder standard tag names: use the names macOS shows in this language</extracomment>
+        <translation>Red</translation>
+    </message>
+    <message>
+        <source>Orange</source>
+        <translation>Orange</translation>
+    </message>
+    <message>
+        <source>Gelb</source>
+        <translation>Yellow</translation>
+    </message>
+    <message>
+        <source>Grün</source>
+        <translation>Green</translation>
+    </message>
+    <message>
+        <source>Blau</source>
+        <translation>Blue</translation>
+    </message>
+    <message>
+        <source>Lila</source>
+        <translation>Purple</translation>
+    </message>
+    <message>
+        <source>Grau</source>
+        <translation>Gray</translation>
+    </message>
+    <message>
+        <source>Datei</source>
+        <translation>File</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Name</translation>
+    </message>
+    <message>
+        <source>Pfad</source>
+        <translation>Path</translation>
+    </message>
+    <message>
+        <source>Größe</source>
+        <translation>Size</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Kind</translation>
+    </message>
+    <message>
+        <source>Erstellt</source>
+        <translation>Created</translation>
+    </message>
+    <message>
+        <source>Geändert</source>
+        <translation>Modified</translation>
+    </message>
+    <message>
+        <source>Hinzugefügt</source>
+        <translation>Added</translation>
+    </message>
+    <message>
+        <source>Bild</source>
+        <translation>Image</translation>
+    </message>
+    <message>
+        <source>Kamera</source>
+        <translation>Camera</translation>
+    </message>
+    <message>
+        <source>Aufnahme</source>
+        <translation>Capture</translation>
+    </message>
+    <message>
+        <source>GPS</source>
+        <translation>GPS</translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation>Format</translation>
+    </message>
+    <message>
+        <source>Nicht lesbar</source>
+        <translation>Unreadable</translation>
+    </message>
+    <message>
+        <source>Tags</source>
+        <translation>Tags</translation>
+    </message>
+    <message>
+        <source>Ausgewählten Tag entfernen</source>
+        <translation>Remove Selected Tag</translation>
+    </message>
+    <message>
+        <source>Tag hinzufügen …</source>
+        <translation>Add Tag…</translation>
+    </message>
+    <message>
+        <source>„%1“ entfernen</source>
+        <translation>Remove “%1”</translation>
+    </message>
+    <message>
+        <source>Histogramm</source>
+        <translation>Histogram</translation>
+    </message>
+    <message>
+        <source>Kein Histogramm</source>
+        <translation>No Histogram</translation>
+    </message>
+    <message>
+        <source>Wird geladen …</source>
+        <translation>Loading…</translation>
+    </message>
+    <message>
+        <source>Wert kopieren</source>
+        <translation>Copy Value</translation>
+    </message>
+    <message>
+        <source>Zeile kopieren</source>
+        <translation>Copy Row</translation>
+    </message>
+    <message>
+        <source>Abschnitt kopieren</source>
+        <translation>Copy Section</translation>
+    </message>
+    <message>
+        <source>Alle Angaben kopieren</source>
+        <translation>Copy All Info</translation>
+    </message>
+</context>
+<context>
+    <name>lf::InputBindings</name>
+    <message>
+        <source>Nächstes Bild</source>
+        <translation>Next Image</translation>
+    </message>
+    <message>
+        <source>Vorheriges Bild</source>
+        <translation>Previous Image</translation>
+    </message>
+    <message>
+        <source>Erstes Bild</source>
+        <translation>First Image</translation>
+    </message>
+    <message>
+        <source>Letztes Bild</source>
+        <translation>Last Image</translation>
+    </message>
+    <message>
+        <source>Mehrere Bilder vor</source>
+        <translation>Jump Forward Several Images</translation>
+    </message>
+    <message>
+        <source>Mehrere Bilder zurück</source>
+        <translation>Jump Back Several Images</translation>
+    </message>
+    <message>
+        <source>Nächster Ordner</source>
+        <translation>Next Folder</translation>
+    </message>
+    <message>
+        <source>Vorheriger Ordner</source>
+        <translation>Previous Folder</translation>
+    </message>
+    <message>
+        <source>Nächste Seite</source>
+        <translation>Next Page</translation>
+    </message>
+    <message>
+        <source>Vorherige Seite</source>
+        <translation>Previous Page</translation>
+    </message>
+    <message>
+        <source>Vergrößern</source>
+        <translation>Zoom In</translation>
+    </message>
+    <message>
+        <source>Verkleinern</source>
+        <translation>Zoom Out</translation>
+    </message>
+    <message>
+        <source>100 %</source>
+        <translation>100%</translation>
+    </message>
+    <message>
+        <source>Einpassen</source>
+        <translation>Zoom to Fit</translation>
+    </message>
+    <message>
+        <source>Breite füllen</source>
+        <translation>Fill Width</translation>
+    </message>
+    <message>
+        <source>Einpassen ↔ 100 % am Cursor</source>
+        <translation>Zoom to Fit ↔ 100% at Cursor</translation>
+    </message>
+    <message>
+        <source>Zoom fixieren</source>
+        <translation>Lock Zoom</translation>
+    </message>
+    <message>
+        <source>Ausschnitt nach oben</source>
+        <translation>Pan Up</translation>
+    </message>
+    <message>
+        <source>Ausschnitt nach unten</source>
+        <translation>Pan Down</translation>
+    </message>
+    <message>
+        <source>Ausschnitt nach links</source>
+        <translation>Pan Left</translation>
+    </message>
+    <message>
+        <source>Ausschnitt nach rechts</source>
+        <translation>Pan Right</translation>
+    </message>
+    <message>
+        <source>Ausschnitt eine Seite nach oben</source>
+        <translation>Pan Up One Page</translation>
+    </message>
+    <message>
+        <source>Ausschnitt eine Seite nach unten</source>
+        <translation>Pan Down One Page</translation>
+    </message>
+    <message>
+        <source>Zum Bildanfang scrollen</source>
+        <translation>Scroll to Top of Image</translation>
+    </message>
+    <message>
+        <source>Zum Bildende scrollen</source>
+        <translation>Scroll to Bottom of Image</translation>
+    </message>
+    <message>
+        <source>Vollbild</source>
+        <translation>Full Screen</translation>
+    </message>
+    <message>
+        <source>Vollbild bzw. Modus verlassen</source>
+        <translation>Exit Full Screen or Mode</translation>
+    </message>
+    <message>
+        <source>Modus verlassen, sonst Fenster schließen</source>
+        <translation>Exit Mode, Otherwise Close Window</translation>
+    </message>
+    <message>
+        <source>Fenster schließen</source>
+        <translation>Close Window</translation>
+    </message>
+    <message>
+        <source>Alle Fenster schließen</source>
+        <translation>Close All Windows</translation>
+    </message>
+    <message>
+        <source>Animation abspielen/pausieren</source>
+        <translation>Play/Pause Animation</translation>
+    </message>
+    <message>
+        <source>Nächstes Einzelbild</source>
+        <translation>Next Frame</translation>
+    </message>
+    <message>
+        <source>Vorheriges Einzelbild</source>
+        <translation>Previous Frame</translation>
+    </message>
+    <message>
+        <source>Diashow</source>
+        <translation>Slideshow</translation>
+    </message>
+    <message>
+        <source>Links drehen</source>
+        <translation>Rotate Left</translation>
+    </message>
+    <message>
+        <source>Rechts drehen</source>
+        <translation>Rotate Right</translation>
+    </message>
+    <message>
+        <source>Horizontal spiegeln</source>
+        <translation>Flip Horizontal</translation>
+    </message>
+    <message>
+        <source>Vertikal spiegeln</source>
+        <translation>Flip Vertical</translation>
+    </message>
+    <message>
+        <source>Drehung speichern</source>
+        <translation>Save Rotation</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>Move to Trash</translation>
+    </message>
+    <message>
+        <source>Rückgängig</source>
+        <translation>Undo</translation>
+    </message>
+    <message>
+        <source>Wiederholen</source>
+        <translation>Redo</translation>
+    </message>
+    <message>
+        <source>Umbenennen</source>
+        <translation>Rename</translation>
+    </message>
+    <message>
+        <source>Im Finder zeigen</source>
+        <translation>Show in Finder</translation>
+    </message>
+    <message>
+        <source>Bild kopieren</source>
+        <translation>Copy Image</translation>
+    </message>
+    <message>
+        <source>Pfad kopieren</source>
+        <translation>Copy Path</translation>
+    </message>
+    <message>
+        <source>Im Editor öffnen</source>
+        <translation>Open in Editor</translation>
+    </message>
+    <message>
+        <source>Infopanel</source>
+        <translation>Info Panel</translation>
+    </message>
+    <message>
+        <source>Filmstreifen</source>
+        <translation>Filmstrip</translation>
+    </message>
+    <message>
+        <source>Raster</source>
+        <translation>Grid</translation>
+    </message>
+    <message>
+        <source>Tastenkürzel-Übersicht</source>
+        <translation>Keyboard Shortcuts Overview</translation>
+    </message>
+    <message>
+        <source>Einstellungen</source>
+        <translation>Settings</translation>
+    </message>
+    <message>
+        <source>Neues Fenster</source>
+        <translation>New Window</translation>
+    </message>
+    <message>
+        <source>Fenster duplizieren</source>
+        <translation>Duplicate Window</translation>
+    </message>
+    <message>
+        <source>Lupe (gedrückt halten)</source>
+        <translation>Loupe (Press and Hold)</translation>
+    </message>
+    <message>
+        <source>Datei herausziehen</source>
+        <translation>Drag Out File</translation>
+    </message>
+    <message>
+        <source>Ausschnitt verschieben</source>
+        <translation>Pan</translation>
+    </message>
+    <message>
+        <source>Bewertung entfernen (0 Sterne)</source>
+        <translation>Remove Rating (0 Stars)</translation>
+    </message>
+    <message>
+        <source>1 Stern</source>
+        <translation>1 Star</translation>
+    </message>
+    <message>
+        <source>2 Sterne</source>
+        <translation>2 Stars</translation>
+    </message>
+    <message>
+        <source>3 Sterne</source>
+        <translation>3 Stars</translation>
+    </message>
+    <message>
+        <source>4 Sterne</source>
+        <translation>4 Stars</translation>
+    </message>
+    <message>
+        <source>5 Sterne</source>
+        <translation>5 Stars</translation>
+    </message>
+    <message>
+        <source>Behalten (Pick)</source>
+        <translation>Pick</translation>
+    </message>
+    <message>
+        <source>Verwerfen (Reject)</source>
+        <translation>Reject</translation>
+    </message>
+    <message>
+        <source>Markierung zurücksetzen</source>
+        <translation>Unflag</translation>
+    </message>
+    <message>
+        <source>Nichts</source>
+        <translation>Nothing</translation>
+    </message>
+    <message>
+        <source>Mausrad</source>
+        <translation>Scroll Wheel</translation>
+    </message>
+    <message>
+        <source>Bild wechseln</source>
+        <translation>Change Image</translation>
+    </message>
+    <message>
+        <source>Nach unten drehen zeigt das nächste, nach oben das vorherige Bild.</source>
+        <translation>Scrolling down shows the next image, scrolling up the previous one.</translation>
+    </message>
+    <message>
+        <source>Zoomen (am Cursor)</source>
+        <translation>Zoom (at Cursor)</translation>
+    </message>
+    <message>
+        <source>Nach oben drehen vergrößert, nach unten verkleinert – am Mauszeiger.</source>
+        <translation>Scrolling up zooms in, scrolling down zooms out — at the pointer.</translation>
+    </message>
+    <message>
+        <source>Ausschnitt scrollen (sonst Bild wechseln)</source>
+        <translation>Scroll View (Otherwise Change Image)</translation>
+    </message>
+    <message>
+        <source>Gezoomt wird der Ausschnitt verschoben, sonst wird das Bild gewechselt.</source>
+        <translation>When zoomed, the view is panned; otherwise the image changes.</translation>
+    </message>
+    <message>
+        <source>Bild wechseln, solange die Taste gehalten wird.</source>
+        <translation>Change images while the key is held down.</translation>
+    </message>
+    <message>
+        <source>Zoomen am Mauszeiger, solange die Taste gehalten wird.</source>
+        <translation>Zoom at the pointer while the key is held down.</translation>
+    </message>
+    <message>
+        <source>Horizontal scrollen</source>
+        <translation>Scroll Horizontally</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt wird waagerecht verschoben.</source>
+        <translation>The view is panned horizontally.</translation>
+    </message>
+    <message>
+        <source>Mausrad mit ⌘</source>
+        <translation>Scroll Wheel with ⌘</translation>
+    </message>
+    <message>
+        <source>Mausrad mit ⌥</source>
+        <translation>Scroll Wheel with ⌥</translation>
+    </message>
+    <message>
+        <source>Mausrad mit ⇧</source>
+        <translation>Scroll Wheel with ⇧</translation>
+    </message>
+    <message>
+        <source>Bild↑ / Bild↓</source>
+        <translation>Page↑ / Page↓</translation>
+    </message>
+    <message>
+        <source>Vorheriges/nächstes Bild</source>
+        <translation>Previous/Next Image</translation>
+    </message>
+    <message>
+        <source>Wechselt ein Bild zurück bzw. vor.</source>
+        <translation>Goes back or forward one image.</translation>
+    </message>
+    <message>
+        <source>Mehrere Bilder zurück/vor</source>
+        <translation>Several Images Back/Forward</translation>
+    </message>
+    <message>
+        <source>Springt um die eingestellte Sprungweite (Standard 10).</source>
+        <translation>Jumps by the set jump distance (default 10).</translation>
+    </message>
+    <message>
+        <source>Vorheriger/nächster Ordner</source>
+        <translation>Previous/Next Folder</translation>
+    </message>
+    <message>
+        <source>Wechselt in den benachbarten Ordner.</source>
+        <translation>Goes to the adjacent folder.</translation>
+    </message>
+    <message>
+        <source>Seite zurück/vor (sonst Bild)</source>
+        <translation>Page Back/Forward (Otherwise Image)</translation>
+    </message>
+    <message>
+        <source>Bei mehrseitigen Dateien wird geblättert, sonst das Bild gewechselt.</source>
+        <translation>Turns pages in multipage files; otherwise changes the image.</translation>
+    </message>
+    <message>
+        <source>Ausschnitt seitenweise scrollen (sonst Bild)</source>
+        <translation>Scroll View by Page (Otherwise Image)</translation>
+    </message>
+    <message>
+        <source>Gezoomt um eine Bildschirmhöhe scrollen, sonst Bild wechseln.</source>
+        <translation>When zoomed, scrolls by one screen height; otherwise changes the image.</translation>
+    </message>
+    <message>
+        <source>Pos1 / Ende</source>
+        <translation>Home / End</translation>
+    </message>
+    <message>
+        <source>Erstes/letztes Bild</source>
+        <translation>First/Last Image</translation>
+    </message>
+    <message>
+        <source>Springt zum ersten bzw. letzten Bild der Sammlung.</source>
+        <translation>Jumps to the first or last image of the collection.</translation>
+    </message>
+    <message>
+        <source>Bildanfang/-ende (sonst erstes/letztes Bild)</source>
+        <translation>Top/Bottom of Image (Otherwise First/Last Image)</translation>
+    </message>
+    <message>
+        <source>Gezoomt an den Anfang bzw. das Ende des Bildes scrollen, sonst erstes/letztes Bild.</source>
+        <translation>When zoomed, scrolls to the top or bottom of the image; otherwise goes to the first/last image.</translation>
+    </message>
+    <message>
+        <source>Leertaste / ⇧Leertaste</source>
+        <translation>Space / ⇧Space</translation>
+    </message>
+    <message>
+        <source>Nächstes/vorheriges Bild</source>
+        <translation>Next/Previous Image</translation>
+    </message>
+    <message>
+        <source>Leertaste: nächstes Bild, mit ⇧: vorheriges Bild.</source>
+        <translation>Space: next image; with ⇧: previous image.</translation>
+    </message>
+    <message>
+        <source>Animation abspielen/pausieren, sonst Bild</source>
+        <translation>Play/Pause Animation, Otherwise Image</translation>
+    </message>
+    <message>
+        <source>Bei animierten Bildern Wiedergabe umschalten, sonst Bild wechseln.</source>
+        <translation>Toggles playback for animated images; otherwise changes the image.</translation>
+    </message>
+    <message>
+        <source>Einpassen ↔ 100 %</source>
+        <translation>Zoom to Fit ↔ 100%</translation>
+    </message>
+    <message>
+        <source>Schaltet zwischen Einpassen und 100 % um.</source>
+        <translation>Toggles between Zoom to Fit and 100%.</translation>
+    </message>
+    <message>
+        <source>Diashow starten/pausieren</source>
+        <translation>Start/Pause Slideshow</translation>
+    </message>
+    <message>
+        <source>Startet bzw. pausiert die Diashow.</source>
+        <translation>Starts or pauses the slideshow.</translation>
+    </message>
+    <message>
+        <source>← / →, wenn gezoomt</source>
+        <translation>← / → When Zoomed</translation>
+    </message>
+    <message>
+        <source>Immer Bild wechseln</source>
+        <translation>Always Change Image</translation>
+    </message>
+    <message>
+        <source>Pfeiltasten wechseln das Bild; mit ⌥ wird der Ausschnitt verschoben.</source>
+        <translation>Arrow keys change the image; with ⌥ they pan the view.</translation>
+    </message>
+    <message>
+        <source>Erst bis zum Rand scrollen, dann Bild wechseln</source>
+        <translation>Scroll to Edge First, Then Change Image</translation>
+    </message>
+    <message>
+        <source>Der Ausschnitt wird verschoben; am Bildrand wechselt das Bild.</source>
+        <translation>The view is panned; at the edge of the image, the image changes.</translation>
+    </message>
+    <message>
+        <source>Ausschnitt scrollen (Bild mit ⌥←/⌥→)</source>
+        <translation>Scroll View (Image with ⌥←/⌥→)</translation>
+    </message>
+    <message>
+        <source>Pfeiltasten verschieben den Ausschnitt; Bildwechsel mit ⌥←/⌥→.</source>
+        <translation>Arrow keys pan the view; ⌥←/⌥→ changes the image.</translation>
+    </message>
+    <message>
+        <source>↑ / ↓</source>
+        <translation>↑ / ↓</translation>
+    </message>
+    <message>
+        <source>Ausschnitt scrollen, sonst vorheriges/nächstes Bild</source>
+        <translation>Scroll View, Otherwise Previous/Next Image</translation>
+    </message>
+    <message>
+        <source>Gezoomt wird der Ausschnitt verschoben, sonst das Bild gewechselt.</source>
+        <translation>When zoomed, the view is panned; otherwise the image changes.</translation>
+    </message>
+    <message>
+        <source>Ausschnitt scrollen (wenn gezoomt), sonst nichts</source>
+        <translation>Scroll View (When Zoomed), Otherwise Nothing</translation>
+    </message>
+    <message>
+        <source>Gezoomt wird der Ausschnitt verschoben, sonst passiert nichts.</source>
+        <translation>When zoomed, the view is panned; otherwise nothing happens.</translation>
+    </message>
+    <message>
+        <source>↑ zeigt das vorherige, ↓ das nächste Bild.</source>
+        <translation>↑ shows the previous image, ↓ the next one.</translation>
+    </message>
+    <message>
+        <source>Zoomen</source>
+        <translation>Zoom</translation>
+    </message>
+    <message>
+        <source>↑ vergrößert, ↓ verkleinert.</source>
+        <translation>↑ zooms in, ↓ zooms out.</translation>
+    </message>
+    <message>
+        <source>Einfacher Klick ins Bild</source>
+        <translation>Single Click on Image</translation>
+    </message>
+    <message>
+        <source>Ein Klick hat keine Wirkung (Ziehen verschiebt weiterhin).</source>
+        <translation>A click has no effect (dragging still pans).</translation>
+    </message>
+    <message>
+        <source>Ein Klick zoomt auf 100 % an der Klickstelle und zurück.</source>
+        <translation>A click zooms to 100% at the click point and back.</translation>
+    </message>
+    <message>
+        <source>Nächstes Bild (linke Hälfte: vorheriges)</source>
+        <translation>Next Image (Left Half: Previous)</translation>
+    </message>
+    <message>
+        <source>Klick in die rechte Hälfte: nächstes Bild, linke Hälfte: vorheriges.</source>
+        <translation>Click in the right half: next image; left half: previous image.</translation>
+    </message>
+    <message>
+        <source>Doppelklick ins Bild</source>
+        <translation>Double-Click on Image</translation>
+    </message>
+    <message>
+        <source>Vollbild umschalten</source>
+        <translation>Toggle Full Screen</translation>
+    </message>
+    <message>
+        <source>Doppelklick wechselt in das Vollbild und zurück.</source>
+        <translation>Double-clicking enters and exits full screen.</translation>
+    </message>
+    <message>
+        <source>Doppelklick schaltet zwischen Einpassen und 100 % um.</source>
+        <translation>Double-clicking toggles between Zoom to Fit and 100%.</translation>
+    </message>
+    <message>
+        <source>Doppelklick schließt das Fenster.</source>
+        <translation>Double-clicking closes the window.</translation>
+    </message>
+    <message>
+        <source>Mittlere Maustaste</source>
+        <translation>Middle Mouse Button</translation>
+    </message>
+    <message>
+        <source>Die mittlere Maustaste hat keine Wirkung.</source>
+        <translation>The middle mouse button has no effect.</translation>
+    </message>
+    <message>
+        <source>Schaltet das Vollbild um.</source>
+        <translation>Toggles full screen.</translation>
+    </message>
+    <message>
+        <source>Schließt das Fenster.</source>
+        <translation>Closes the window.</translation>
+    </message>
+    <message>
+        <source>Schaltet zwischen Einpassen und 100 % an der Klickstelle um.</source>
+        <translation>Toggles between Zoom to Fit and 100% at the click point.</translation>
+    </message>
+    <message>
+        <source>Zeigt eine Lupe, solange die Taste gedrückt ist.</source>
+        <translation>Shows a loupe while the button is held down.</translation>
+    </message>
+    <message>
+        <source>Maustasten 4/5 (Zurück/Vor)</source>
+        <translation>Mouse Buttons 4/5 (Back/Forward)</translation>
+    </message>
+    <message>
+        <source>Zurück-Taste: vorheriges Bild, Vor-Taste: nächstes Bild.</source>
+        <translation>Back button: previous image; Forward button: next image.</translation>
+    </message>
+    <message>
+        <source>Die Tasten haben keine Wirkung.</source>
+        <translation>The buttons have no effect.</translation>
+    </message>
+    <message>
+        <source>Trackpad-Wischen (zwei Finger, horizontal)</source>
+        <translation>Trackpad Swipe (Two Fingers, Horizontal)</translation>
+    </message>
+    <message>
+        <source>Bild wechseln (gezoomt: scrollen)</source>
+        <translation>Change Image (Zoomed: Scroll)</translation>
+    </message>
+    <message>
+        <source>Wischen wechselt das Bild; im gezoomten Zustand wird der Ausschnitt verschoben.</source>
+        <translation>Swiping changes the image; when zoomed, it pans the view.</translation>
+    </message>
+    <message>
+        <source>Ausschnitt scrollen</source>
+        <translation>Scroll View</translation>
+    </message>
+    <message>
+        <source>Wischen verschiebt immer nur den Ausschnitt.</source>
+        <translation>Swiping only ever pans the view.</translation>
+    </message>
+    <message>
+        <source>Aus</source>
+        <translation>Off</translation>
+    </message>
+    <message>
+        <source>Wischen wird ignoriert.</source>
+        <translation>Swipes are ignored.</translation>
+    </message>
+    <message>
+        <source>Ziehen mit linker Maustaste</source>
+        <translation>Drag with Left Mouse Button</translation>
+    </message>
+    <message>
+        <source>Ausschnitt verschieben (⌥: Datei herausziehen)</source>
+        <translation>Pan (⌥: Drag Out File)</translation>
+    </message>
+    <message>
+        <source>Ziehen verschiebt den Ausschnitt; mit ⌥ wird die Datei in andere Apps gezogen.</source>
+        <translation>Dragging pans the view; with ⌥, the file is dragged into other apps.</translation>
+    </message>
+    <message>
+        <source>Datei herausziehen (⌥: Ausschnitt verschieben)</source>
+        <translation>Drag Out File (⌥: Pan)</translation>
+    </message>
+    <message>
+        <source>Ziehen zieht die Datei in andere Apps; mit ⌥ wird der Ausschnitt verschoben.</source>
+        <translation>Dragging drags the file into other apps; with ⌥, the view is panned.</translation>
+    </message>
+    <message>
+        <source>Esc</source>
+        <translation>Esc</translation>
+    </message>
+    <message>
+        <source>Vollbild bzw. Modus verlassen, sonst nichts</source>
+        <translation>Exit Full Screen or Mode, Otherwise Nothing</translation>
+    </message>
+    <message>
+        <source>Esc beendet Vollbild, Diashow oder andere Modi und tut sonst nichts.</source>
+        <translation>Esc exits full screen, the slideshow, or other modes and otherwise does nothing.</translation>
+    </message>
+    <message>
+        <source>Vollbild bzw. Modus verlassen, sonst Fenster schließen</source>
+        <translation>Exit Full Screen or Mode, Otherwise Close Window</translation>
+    </message>
+    <message>
+        <source>Esc beendet Modi; ist keiner aktiv, wird das Fenster geschlossen.</source>
+        <translation>Esc exits modes; if none is active, the window is closed.</translation>
+    </message>
+    <message>
+        <source>Ende der Sammlung</source>
+        <translation>End of Collection</translation>
+    </message>
+    <message>
+        <source>Anhalten</source>
+        <translation>Stop</translation>
+    </message>
+    <message>
+        <source>Am Ende bleibt das letzte Bild stehen (mit kurzem Hinweis).</source>
+        <translation>The last image stays on screen at the end (with a brief notice).</translation>
+    </message>
+    <message>
+        <source>Umlaufen</source>
+        <translation>Wrap Around</translation>
+    </message>
+    <message>
+        <source>Nach dem letzten Bild folgt wieder das erste.</source>
+        <translation>The last image is followed by the first one again.</translation>
+    </message>
+    <message>
+        <source>Zum nächsten Ordner</source>
+        <translation>Continue to Next Folder</translation>
+    </message>
+    <message>
+        <source>Nach dem letzten Bild geht es im nächsten Ordner weiter.</source>
+        <translation>After the last image, browsing continues in the next folder.</translation>
+    </message>
+    <message>
+        <source>Bewertungstasten (0–5, P/X/U)</source>
+        <translation>Rating Keys (0–5, P/X/U)</translation>
+    </message>
+    <message>
+        <source>Nur im Aussortiermodus</source>
+        <translation>Only in Culling Mode</translation>
+    </message>
+    <message>
+        <source>Ziffern wählen sonst den Zoommodus (1/2/3).</source>
+        <translation>Otherwise, digits select the zoom mode (1/2/3).</translation>
+    </message>
+    <message>
+        <source>Immer aktiv</source>
+        <translation>Always Active</translation>
+    </message>
+    <message>
+        <source>Ziffern vergeben immer Sterne; P/X/U markieren. Zoom-Ziffern sind aus.</source>
+        <translation>Digits always assign stars; P/X/U flag. Zoom digits are off.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::LicensesDialog</name>
+    <message>
+        <source>Lizenzen von Drittanbietern</source>
+        <translation>Third-Party Licenses</translation>
+    </message>
+    <message>
+        <source>Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im Programmpaket unter Contents/Resources/licenses.</source>
+        <translation>Lumaflip includes the following components. The license texts are also located in the app bundle under Contents/Resources/licenses.</translation>
+    </message>
+    <message>
+        <source>Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das Programmpaket gelegt.</source>
+        <translation>Developer build: The license texts are only added to the app bundle during packaging (tools/package.sh).</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Version: %1&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Version: %1&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Lizenz: %1&lt;/p&gt;</source>
+        <translation>&lt;p&gt;License: %1&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;Enthalten in: %1&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Included in: %1&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>(Datei fehlt)</source>
+        <translation>(file missing)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::LosslessTransform</name>
+    <message>
+        <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
+        <translation>The JPEG library couldn’t be started.</translation>
+    </message>
+    <message>
+        <source>Die JPEG-Daten konnten nicht verlustfrei umgeordnet werden (%1).</source>
+        <translation>The JPEG data couldn’t be rearranged losslessly (%1).</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Drehen der JPEG-Daten ist in dieser Version nicht verfügbar.</source>
+        <translation>Lossless rotation of JPEG data isn’t available in this version.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gelesen werden.</source>
+        <translation>“%1” can’t be read.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht geschrieben werden (Ordner schreibgeschützt?).</source>
+        <translation>The file couldn’t be written (folder read-only?).</translation>
+    </message>
+    <message>
+        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte die Drehung erneut speichern.</source>
+        <translation>The file was changed in the meantime — nothing was saved. Please save the rotation again.</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
+        <translation>The file contains additional images (e.g., an HDR gain map or a second stereo image) that would be lost when rearranging the JPEG data losslessly.</translation>
+    </message>
+    <message>
+        <source>Die Datei existiert nicht mehr.</source>
+        <translation>The file no longer exists.</translation>
+    </message>
+    <message>
+        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <translation>The file format isn’t recognized for saving.</translation>
+    </message>
+    <message>
+        <source>RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; zum dauerhaften Drehen bitte den RAW-Entwickler benutzen.</source>
+        <translation>RAW files are never modified. The rotation applies only to the display; to rotate permanently, please use your RAW developer.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht gedreht gespeichert werden.</source>
+        <translation>Animated or multipage files can’t be saved rotated.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist schreibgeschützt.</source>
+        <translation>“%1” is read-only.</translation>
+    </message>
+    <message>
+        <source>Deshalb wurde nur die EXIF-Ausrichtung gesetzt.</source>
+        <translation>So only the EXIF orientation was set.</translation>
+    </message>
+    <message>
+        <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfrei drehen geht nur, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
+        <translation>The image’s width or height isn’t a multiple of the JPEG block size. Lossless rotation is only possible if a narrow edge (up to 15 pixels) is trimmed. Alternatively, only the EXIF orientation is set.</translation>
+    </message>
+    <message>
+        <source>Die Drehung kann nicht gespeichert werden.</source>
+        <translation>The rotation can’t be saved.</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann keine Ausrichtung speichern, und beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
+        <translation>This format can’t store an orientation, and re-encoding wouldn’t keep the image exactly the same (color model, bit depth, palette, or transparency would change).</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann keine Ausrichtung speichern. Die Drehung lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <translation>This format can’t store an orientation. The rotation can only be saved by re-encoding the image, which loses some image quality.</translation>
+    </message>
+    <message>
+        <source>Die EXIF-Ausrichtung konnte nicht gesetzt werden.</source>
+        <translation>The EXIF orientation couldn’t be set.</translation>
+    </message>
+    <message>
+        <source>Verlustfreies Drehen ist für dieses Bild nicht möglich.</source>
+        <translation>Lossless rotation isn’t possible for this image.</translation>
+    </message>
+    <message>
+        <source>Die Ausrichtung ließ sich nicht ohne Neukodieren speichern.</source>
+        <translation>The orientation couldn’t be saved without re-encoding.</translation>
+    </message>
+    <message>
+        <source>Die Drehung konnte nicht gespeichert werden.</source>
+        <translation>The rotation couldn’t be saved.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht ersetzt werden.</source>
+        <translation>The file couldn’t be replaced.</translation>
+    </message>
+    <message>
+        <source>Datei wurde inzwischen verändert – Rückgängig nicht möglich</source>
+        <translation>File was changed in the meantime — can’t undo</translation>
+    </message>
+    <message>
+        <source>Datei wurde inzwischen verändert – Wiederholen nicht möglich</source>
+        <translation>File was changed in the meantime — can’t redo</translation>
+    </message>
+    <message>
+        <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Rückgängig/Wiederholen ist dafür nicht mehr möglich.</source>
+        <translation>The backup copy for this step was deleted to save space — undo/redo is no longer possible for it.</translation>
+    </message>
+    <message>
+        <source>Es gibt nichts rückgängig zu machen.</source>
+        <translation>There’s nothing to undo.</translation>
+    </message>
+    <message>
+        <source>Kein Platz für die Sicherungskopie – nichts gespeichert.</source>
+        <translation>No space for the backup copy — nothing was saved.</translation>
+    </message>
+    <message>
+        <source>Keine Drehung zu speichern</source>
+        <translation>No rotation to save</translation>
+    </message>
+    <message>
+        <source>Drehung gespeichert (EXIF-Ausrichtung)</source>
+        <translation>Rotation saved (EXIF orientation)</translation>
+    </message>
+    <message>
+        <source>Drehung verlustfrei gespeichert</source>
+        <translation>Rotation saved losslessly</translation>
+    </message>
+    <message>
+        <source>Drehung verlustfrei gespeichert (Rand beschnitten)</source>
+        <translation>Rotation saved losslessly (edge trimmed)</translation>
+    </message>
+    <message>
+        <source>Drehung gespeichert (verlustfrei neu kodiert)</source>
+        <translation>Rotation saved (losslessly re-encoded)</translation>
+    </message>
+    <message>
+        <source>Drehung gespeichert (neu kodiert)</source>
+        <translation>Rotation saved (re-encoded)</translation>
+    </message>
+    <message>
+        <source>Für dieses Format kann die Ausrichtung nicht gespeichert werden.</source>
+        <translation>The orientation can’t be saved for this format.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden.</source>
+        <translation>The image couldn’t be decoded.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher zum Drehen.</source>
+        <translation>Not enough memory to rotate.</translation>
+    </message>
+    <message>
+        <source>Dieses Format kann nicht geschrieben werden.</source>
+        <translation>This format can’t be written.</translation>
+    </message>
+    <message>
+        <source>Das Bild lässt sich in diesem Format nicht exakt neu speichern.</source>
+        <translation>The image can’t be saved again exactly in this format.</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert nicht mehr.</source>
+        <translation>“%1” no longer exists.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist keine normale Datei.</source>
+        <translation>“%1” isn’t a regular file.</translation>
+    </message>
+    <message>
+        <source>Die neue Datei konnte nicht gesichert werden.</source>
+        <translation>The new file couldn’t be saved.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht geschrieben werden.</source>
+        <translation>The file can’t be written.</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht vollständig geschrieben werden.</source>
+        <translation>The file couldn’t be written completely.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht ersetzt werden: %2</source>
+        <translation>“%1” couldn’t be replaced: %2</translation>
+    </message>
+    <message>
+        <source>Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.</source>
+        <translation>Couldn’t create the backup copy for Undo.</translation>
+    </message>
+    <message>
+        <source>HDR-Gain-Map</source>
+        <translation>HDR gain map</translation>
+    </message>
+    <message>
+        <source>Tiefenkarte</source>
+        <translation>depth map</translation>
+    </message>
+    <message>
+        <source>Porträt-Maske</source>
+        <translation>portrait matte</translation>
+    </message>
+    <message>
+        <source>Segmentierungsmaske</source>
+        <translation>segmentation matte</translation>
+    </message>
+    <message>
+        <source>Die Datei enthält Zusatzbilder (%1), die beim Speichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gespeichert und gilt weiter nur in der Anzeige.</source>
+        <translation>The file contains auxiliary images (%1) that would be lost when saving the orientation. Therefore, the rotation wasn’t saved and still applies only to the display.</translation>
+    </message>
+    <message>
+        <source>Die neue Datei kann nicht gelesen werden.</source>
+        <translation>The new file can’t be read.</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht geschrieben werden: %1</source>
+        <translation>The file can’t be written: %1</translation>
+    </message>
+    <message>
+        <source>Die Datei konnte nicht vollständig geschrieben werden: %1</source>
+        <translation>The file couldn’t be written completely: %1</translation>
+    </message>
+    <message>
+        <source>Die Datei kann nicht gelesen werden.</source>
+        <translation>The file can’t be read.</translation>
+    </message>
+    <message>
+        <source>Die Ausrichtung konnte nicht verlustfrei geschrieben werden.</source>
+        <translation>The orientation couldn’t be written losslessly.</translation>
+    </message>
+    <message>
+        <source>Die Ausrichtung konnte nicht verlustfrei geschrieben werden (%1).</source>
+        <translation>The orientation couldn’t be written losslessly (%1).</translation>
+    </message>
+    <message>
+        <source>Das Bild lässt sich nicht exakt neu speichern.</source>
+        <translation>The image can’t be saved again exactly.</translation>
+    </message>
+    <message>
+        <source>Die neue Datei fehlt.</source>
+        <translation>The new file is missing.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Platz, um „%1“ sicher zu überschreiben.</source>
+        <translation>Not enough space to safely overwrite “%1”.</translation>
+    </message>
+    <message>
+        <source>Der alte Inhalt liegt in „%1“.</source>
+        <translation>The old contents are in “%1”.</translation>
+    </message>
+    <message>
+        <source>Die Dateiattribute konnten nicht übernommen werden.</source>
+        <translation>The file attributes couldn’t be carried over.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MainMenu</name>
+    <message>
+        <source>Ablage</source>
+        <translation>File</translation>
+    </message>
+    <message>
+        <source>Neues Fenster</source>
+        <translation>New Window</translation>
+    </message>
+    <message>
+        <source>Fenster duplizieren</source>
+        <translation>Duplicate Window</translation>
+    </message>
+    <message>
+        <source>Öffnen …</source>
+        <translation>Open…</translation>
+    </message>
+    <message>
+        <source>Ordner öffnen …</source>
+        <translation>Open Folder…</translation>
+    </message>
+    <message>
+        <source>Zuletzt geöffnet</source>
+        <translation>Open Recent</translation>
+    </message>
+    <message>
+        <source>Schließen</source>
+        <translation>Close</translation>
+    </message>
+    <message>
+        <source>Alle schließen</source>
+        <translation>Close All</translation>
+    </message>
+    <message>
+        <source>Im Finder zeigen</source>
+        <translation>Show in Finder</translation>
+    </message>
+    <message>
+        <source>Umbenennen …</source>
+        <translation>Rename…</translation>
+    </message>
+    <message>
+        <source>In Standard-Editor öffnen</source>
+        <translation>Open in Default Editor</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>Move to Trash</translation>
+    </message>
+    <message>
+        <source>Als Standard-App festlegen …</source>
+        <translation>Set as Default App…</translation>
+    </message>
+    <message>
+        <source>Über Lumaflip</source>
+        <translation>About Lumaflip</translation>
+    </message>
+    <message>
+        <source>Nach Updates suchen …</source>
+        <translation>Check for Updates…</translation>
+    </message>
+    <message>
+        <source>Einstellungen …</source>
+        <translation>Settings…</translation>
+    </message>
+    <message>
+        <source>Lumaflip beenden</source>
+        <translation>Quit Lumaflip</translation>
+    </message>
+    <message>
+        <source>Bearbeiten</source>
+        <translation>Edit</translation>
+    </message>
+    <message>
+        <source>Widerrufen</source>
+        <translation>Undo</translation>
+    </message>
+    <message>
+        <source>Wiederholen</source>
+        <translation>Redo</translation>
+    </message>
+    <message>
+        <source>„%1“ widerrufen</source>
+        <translation>Undo %1</translation>
+    </message>
+    <message>
+        <source>„%1“ wiederholen</source>
+        <translation>Redo %1</translation>
+    </message>
+    <message>
+        <source>Kopieren</source>
+        <translation>Copy</translation>
+    </message>
+    <message>
+        <source>Pfad kopieren</source>
+        <translation>Copy Path</translation>
+    </message>
+    <message>
+        <source>Darstellung</source>
+        <translation>View</translation>
+    </message>
+    <message>
+        <source>Einpassen</source>
+        <translation>Zoom to Fit</translation>
+    </message>
+    <message>
+        <source>Einpassen inkl. Vergrößern</source>
+        <translation>Fit (Allow Enlarging)</translation>
+    </message>
+    <message>
+        <source>100 % (1:1 Pixel)</source>
+        <translation>Actual Size</translation>
+    </message>
+    <message>
+        <source>Breite füllen</source>
+        <translation>Fill Width</translation>
+    </message>
+    <message>
+        <source>Höhe füllen</source>
+        <translation>Fill Height</translation>
+    </message>
+    <message>
+        <source>Fenster füllen</source>
+        <translation>Fill Window</translation>
+    </message>
+    <message>
+        <source>Vergrößern</source>
+        <translation>Zoom In</translation>
+    </message>
+    <message>
+        <source>Verkleinern</source>
+        <translation>Zoom Out</translation>
+    </message>
+    <message>
+        <source>Einpassen ↔ 100 %</source>
+        <translation>Zoom to Fit ↔ 100%</translation>
+    </message>
+    <message>
+        <source>Zoom fixieren</source>
+        <translation>Lock Zoom</translation>
+    </message>
+    <message>
+        <source>Vollbild</source>
+        <translation>Full Screen</translation>
+    </message>
+    <message>
+        <source>Statusleiste</source>
+        <translation>Status Bar</translation>
+    </message>
+    <message>
+        <source>Infopanel</source>
+        <translation>Info Panel</translation>
+    </message>
+    <message>
+        <source>Filmstreifen</source>
+        <translation>Filmstrip</translation>
+    </message>
+    <message>
+        <source>Hintergrund</source>
+        <translation>Background</translation>
+    </message>
+    <message>
+        <source>Dunkel</source>
+        <translation>Dark</translation>
+    </message>
+    <message>
+        <source>Hell</source>
+        <translation>Light</translation>
+    </message>
+    <message>
+        <source>Wie System</source>
+        <translation>Match System</translation>
+    </message>
+    <message>
+        <source>Schachbrett</source>
+        <translation>Checkerboard</translation>
+    </message>
+    <message>
+        <source>Eigene Farbe …</source>
+        <translation>Custom Color…</translation>
+    </message>
+    <message>
+        <source>Hintergrundfarbe</source>
+        <translation>Background Color</translation>
+    </message>
+    <message>
+        <source>Sortieren nach</source>
+        <translation>Sort By</translation>
+    </message>
+    <message>
+        <source>Wie Finder</source>
+        <translation>As in Finder</translation>
+    </message>
+    <message>
+        <source>Aufsteigend</source>
+        <translation>Ascending</translation>
+    </message>
+    <message>
+        <source>Absteigend</source>
+        <translation>Descending</translation>
+    </message>
+    <message>
+        <source>Für alle Ordner verwenden</source>
+        <translation>Use for All Folders</translation>
+    </message>
+    <message>
+        <source>Navigation</source>
+        <translation>Navigation</translation>
+    </message>
+    <message>
+        <source>Nächstes Bild</source>
+        <translation>Next Image</translation>
+    </message>
+    <message>
+        <source>Vorheriges Bild</source>
+        <translation>Previous Image</translation>
+    </message>
+    <message>
+        <source>Erstes Bild</source>
+        <translation>First Image</translation>
+    </message>
+    <message>
+        <source>Letztes Bild</source>
+        <translation>Last Image</translation>
+    </message>
+    <message>
+        <source>Mehrere Bilder vor</source>
+        <translation>Jump Forward Several Images</translation>
+    </message>
+    <message>
+        <source>Mehrere Bilder zurück</source>
+        <translation>Jump Back Several Images</translation>
+    </message>
+    <message>
+        <source>Bild</source>
+        <translation>Image</translation>
+    </message>
+    <message>
+        <source>Links drehen</source>
+        <translation>Rotate Left</translation>
+    </message>
+    <message>
+        <source>Rechts drehen</source>
+        <translation>Rotate Right</translation>
+    </message>
+    <message>
+        <source>Horizontal spiegeln</source>
+        <translation>Flip Horizontal</translation>
+    </message>
+    <message>
+        <source>Vertikal spiegeln</source>
+        <translation>Flip Vertical</translation>
+    </message>
+    <message>
+        <source>Fenster</source>
+        <translation>Window</translation>
+    </message>
+    <message>
+        <source>Minimieren</source>
+        <translation>Minimize</translation>
+    </message>
+    <message>
+        <source>Zoomen</source>
+        <translation>Zoom</translation>
+    </message>
+    <message>
+        <source>Alle nach vorne bringen</source>
+        <translation>Bring All to Front</translation>
+    </message>
+    <message>
+        <source>Hilfe</source>
+        <translation>Help</translation>
+    </message>
+    <message>
+        <source>Tastenkürzel</source>
+        <translation>Keyboard Shortcuts</translation>
+    </message>
+    <message>
+        <source>Wiederholen</source>
+        <comment>slideshow option: start again after the last image</comment>
+        <translation>Repeat</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge</source>
+        <translation>Shuffle</translation>
+    </message>
+    <message>
+        <source>Überblenden</source>
+        <translation>Crossfade</translation>
+    </message>
+    <message>
+        <source>Diashow</source>
+        <translation>Slideshow</translation>
+    </message>
+    <message>
+        <source>Diashow-Optionen</source>
+        <translation>Slideshow Options</translation>
+    </message>
+    <message>
+        <source>Nächste Seite</source>
+        <translation>Next Page</translation>
+    </message>
+    <message>
+        <source>Vorherige Seite</source>
+        <translation>Previous Page</translation>
+    </message>
+    <message>
+        <source>Drehung speichern</source>
+        <translation>Save Rotation</translation>
+    </message>
+    <message>
+        <source>Animation</source>
+        <translation>Animation</translation>
+    </message>
+    <message>
+        <source>Abspielen/Pause</source>
+        <translation>Play/Pause</translation>
+    </message>
+    <message>
+        <source>Nächstes Einzelbild</source>
+        <translation>Next Frame</translation>
+    </message>
+    <message>
+        <source>Vorheriges Einzelbild</source>
+        <translation>Previous Frame</translation>
+    </message>
+    <message>
+        <source>Geschwindigkeit</source>
+        <translation>Speed</translation>
+    </message>
+</context>
+<context>
+    <name>lf::MenuExtras</name>
+    <message>
+        <source>Öffnen mit</source>
+        <translation>Open With</translation>
+    </message>
+    <message>
+        <source>Teilen</source>
+        <translation>Share</translation>
+    </message>
+    <message>
+        <source>Anordnen</source>
+        <translation>Arrange</translation>
+    </message>
+    <message>
+        <source>Nebeneinander</source>
+        <translation>Side by Side</translation>
+    </message>
+    <message>
+        <source>Untereinander</source>
+        <translation>Stacked</translation>
+    </message>
+    <message>
+        <source>Raster</source>
+        <translation>Grid</translation>
+    </message>
+    <message>
+        <source>Kaskadieren</source>
+        <translation>Cascade</translation>
+    </message>
+    <message>
+        <source>Vorherigen Tab zeigen</source>
+        <translation>Show Previous Tab</translation>
+    </message>
+    <message>
+        <source>Nächsten Tab zeigen</source>
+        <translation>Show Next Tab</translation>
+    </message>
+    <message>
+        <source>Tab in neues Fenster bewegen</source>
+        <translation>Move Tab to New Window</translation>
+    </message>
+    <message>
+        <source>Alle Fenster zusammenführen</source>
+        <translation>Merge All Windows</translation>
+    </message>
+    <message>
+        <source>Tableiste ein-/ausblenden</source>
+        <translation>Show/Hide Tab Bar</translation>
+    </message>
+    <message>
+        <source>Tabs in den Einstellungen erlauben (Fenster)</source>
+        <translation>Allow Tabs in Settings (Windows)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Metadata</name>
+    <message>
+        <source>Datei</source>
+        <translation>File</translation>
+    </message>
+    <message>
+        <source>Kamera</source>
+        <translation>Camera</translation>
+    </message>
+    <message>
+        <source>Aufnahme</source>
+        <extracomment>group: exposure/shooting data</extracomment>
+        <translation>Capture</translation>
+    </message>
+    <message>
+        <source>GPS</source>
+        <translation>GPS</translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation>Format</translation>
+    </message>
+    <message>
+        <source>Pixelmaße</source>
+        <extracomment>image size in pixels (width × height)</extracomment>
+        <translation>Dimensions</translation>
+    </message>
+    <message>
+        <source>Farbraum</source>
+        <translation>Color Space</translation>
+    </message>
+    <message>
+        <source>Profil</source>
+        <translation>Profile</translation>
+    </message>
+    <message>
+        <source>Bittiefe</source>
+        <translation>Bit Depth</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>Transparenz</source>
+        <translation>Transparency</translation>
+    </message>
+    <message>
+        <source>Einzelbilder</source>
+        <extracomment>number of animation frames</extracomment>
+        <translation>Frames</translation>
+    </message>
+    <message>
+        <source>Seiten</source>
+        <translation>Pages</translation>
+    </message>
+    <message>
+        <source>Ausrichtung</source>
+        <translation>Orientation</translation>
+    </message>
+    <message>
+        <source>Bewertung</source>
+        <extracomment>star rating</extracomment>
+        <translation>Rating</translation>
+    </message>
+    <message>
+        <source>Hersteller</source>
+        <translation>Make</translation>
+    </message>
+    <message>
+        <source>Modell</source>
+        <translation>Model</translation>
+    </message>
+    <message>
+        <source>Objektiv</source>
+        <translation>Lens</translation>
+    </message>
+    <message>
+        <source>Brennweite</source>
+        <translation>Focal Length</translation>
+    </message>
+    <message>
+        <source>Blende</source>
+        <extracomment>aperture (f-number)</extracomment>
+        <translation>Aperture</translation>
+    </message>
+    <message>
+        <source>Belichtungszeit</source>
+        <translation>Exposure Time</translation>
+    </message>
+    <message>
+        <source>ISO</source>
+        <translation>ISO</translation>
+    </message>
+    <message>
+        <source>Belichtungskorrektur</source>
+        <translation>Exposure Compensation</translation>
+    </message>
+    <message>
+        <source>Blitz</source>
+        <translation>Flash</translation>
+    </message>
+    <message>
+        <source>Aufnahmedatum</source>
+        <translation>Date Taken</translation>
+    </message>
+    <message>
+        <source>Breite</source>
+        <extracomment>GPS latitude</extracomment>
+        <translation>Latitude</translation>
+    </message>
+    <message>
+        <source>Länge</source>
+        <extracomment>GPS longitude</extracomment>
+        <translation>Longitude</translation>
+    </message>
+    <message>
+        <source>Höhe</source>
+        <extracomment>GPS altitude</extracomment>
+        <translation>Altitude</translation>
+    </message>
+</context>
+<context>
+    <name>lf::OpenWithService</name>
+    <message>
+        <source>Kein Programm zum Bearbeiten gefunden. Wähle eines unter Einstellungen → Allgemein → Editor.</source>
+        <translation>No app found for editing. Choose one in Settings → General → Editor.</translation>
+    </message>
+    <message>
+        <source>Kein Bild geöffnet</source>
+        <translation>No image open</translation>
+    </message>
+    <message>
+        <source>Andere …</source>
+        <translation>Other…</translation>
+    </message>
+    <message>
+        <source>Programm wählen</source>
+        <translation>Choose App</translation>
+    </message>
+    <message>
+        <source>Programme (*.app)</source>
+        <translation>Apps (*.app)</translation>
+    </message>
+    <message>
+        <source>Programme werden gesucht …</source>
+        <translation>Searching for apps…</translation>
+    </message>
+    <message>
+        <source>%1 (Standard)</source>
+        <translation>%1 (default)</translation>
+    </message>
+    <message>
+        <source>Keine passenden Programme</source>
+        <translation>No Matching Apps</translation>
+    </message>
+</context>
+<context>
+    <name>lf::PreferencesDialog</name>
+    <message>
+        <source>in einer späteren Version</source>
+        <translation>in a future version</translation>
+    </message>
+    <message>
+        <source>Einstellungen</source>
+        <translation>Settings</translation>
+    </message>
+    <message>
+        <source>Allgemein</source>
+        <translation>General</translation>
+    </message>
+    <message>
+        <source>Fenster</source>
+        <translation>Windows</translation>
+    </message>
+    <message>
+        <source>Anzeige</source>
+        <translation>Display</translation>
+    </message>
+    <message>
+        <source>Maus &amp; Tastatur</source>
+        <translation>Mouse &amp; Keyboard</translation>
+    </message>
+    <message>
+        <source>Navigation &amp; Sortierung</source>
+        <translation>Navigation &amp; Sorting</translation>
+    </message>
+    <message>
+        <source>Bewertung</source>
+        <translation>Rating</translation>
+    </message>
+    <message>
+        <source>Formate</source>
+        <translation>Formats</translation>
+    </message>
+    <message>
+        <source>Erweitert</source>
+        <translation>Advanced</translation>
+    </message>
+    <message>
+        <source>Auf Standard zurücksetzen</source>
+        <translation>Restore Defaults</translation>
+    </message>
+    <message>
+        <source>Sprache:</source>
+        <translation>Language:</translation>
+    </message>
+    <message>
+        <source>Wirkt sofort. Systemfenster wie „Öffnen“ folgen der Sprache, die macOS für Lumaflip verwendet (Systemeinstellungen → Allgemein → Sprache &amp; Region).</source>
+        <translation>Takes effect immediately. System windows such as “Open” follow the language macOS uses for Lumaflip (System Settings → General → Language &amp; Region).</translation>
+    </message>
+    <message>
+        <source>Öffnen aus dem Finder:</source>
+        <translation>Opening from the Finder:</translation>
+    </message>
+    <message>
+        <source>Immer in neuem Fenster</source>
+        <translation>Always in New Window</translation>
+    </message>
+    <message>
+        <source>Im vordersten Fenster ersetzen</source>
+        <translation>Replace in Frontmost Window</translation>
+    </message>
+    <message>
+        <source>Neues Fenster, außer die Datei ist schon offen</source>
+        <translation>New Window Unless File Is Already Open</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Finder, „Öffnen mit“ und Drag &amp; Drop auf das Dock-Symbol.</source>
+        <translation>Applies to double-clicking in the Finder, “Open With”, and drag and drop onto the Dock icon.</translation>
+    </message>
+    <message>
+        <source>Fenster beim nächsten Start wiederherstellen</source>
+        <translation>Restore windows on next launch</translation>
+    </message>
+    <message>
+        <source>Ordner, Bild, Zoom und Position aller Fenster, die beim Beenden offen waren.</source>
+        <translation>Folder, image, zoom, and position of all windows that were open when quitting.</translation>
+    </message>
+    <message>
+        <source>Vor dem Löschen nachfragen</source>
+        <translation>Ask before deleting</translation>
+    </message>
+    <message>
+        <source>Aus: ⌘⌫ legt das Bild sofort in den Papierkorb, ⌘Z holt es zurück.</source>
+        <translation>Off: ⌘⌫ moves the image to the Trash immediately; ⌘Z brings it back.</translation>
+    </message>
+    <message>
+        <source>Editor:</source>
+        <translation>Editor:</translation>
+    </message>
+    <message>
+        <source>Für „In Standard-Editor öffnen“ (Taste E).</source>
+        <translation>For “Open in Default Editor” (E key).</translation>
+    </message>
+    <message>
+        <source>Drehung speichern:</source>
+        <translation>Save rotation:</translation>
+    </message>
+    <message>
+        <source>EXIF-Ausrichtung setzen</source>
+        <translation>Set EXIF orientation</translation>
+    </message>
+    <message>
+        <source>JPEG verlustfrei drehen (DCT)</source>
+        <translation>Rotate JPEG losslessly (DCT)</translation>
+    </message>
+    <message>
+        <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Programme ohne EXIF-Unterstützung das Bild richtig zeigen. RAW-Dateien werden nie verändert; ⌘Z macht das Speichern rückgängig.</source>
+        <translation>Neither option changes any image pixels. “EXIF orientation” only changes a flag (JPEG, HEIC, TIFF, PNG); “rotate losslessly” rearranges the JPEG blocks so that apps without EXIF support also show the image correctly. RAW files are never modified; ⌘Z undoes the save.</translation>
+    </message>
+    <message>
+        <source>Änderungsdatum beibehalten</source>
+        <translation>Keep modification date</translation>
+    </message>
+    <message>
+        <source>Fenstergröße an Bild anpassen</source>
+        <translation>Resize window to fit image</translation>
+    </message>
+    <message>
+        <source>Aus: Neue Fenster übernehmen die zuletzt benutzte Größe.</source>
+        <translation>Off: New windows use the most recently used size.</translation>
+    </message>
+    <message>
+        <source>Ordnername in der Titelleiste</source>
+        <translation>Folder name in title bar</translation>
+    </message>
+    <message>
+        <source>Zum Beispiel „IMG_1234.jpg — 23 / 412 — Urlaub“.</source>
+        <translation>For example, “IMG_1234.jpg — 23 / 412 — Vacation”.</translation>
+    </message>
+    <message>
+        <source>Neue Fenster zeigen:</source>
+        <translation>New windows show:</translation>
+    </message>
+    <message>
+        <source>Statuszeile</source>
+        <translation>Status bar</translation>
+    </message>
+    <message>
+        <source>Infopanel (⌘I)</source>
+        <translation>Info panel (⌘I)</translation>
+    </message>
+    <message>
+        <source>Filmstreifen (T)</source>
+        <translation>Filmstrip (T)</translation>
+    </message>
+    <message>
+        <source>Tabs:</source>
+        <translation>Tabs:</translation>
+    </message>
+    <message>
+        <source>Fenster als Tabs öffnen (macOS-Tabs erlauben)</source>
+        <translation>Open windows as tabs (allow macOS tabs)</translation>
+    </message>
+    <message>
+        <source>Neue Fenster erscheinen dann als Tab im vordersten Fenster; Fenster → „Alle Fenster zusammenführen“ fasst offene Fenster zusammen.</source>
+        <translation>New windows then appear as a tab in the frontmost window; Window → “Merge All Windows” combines open windows.</translation>
+    </message>
+    <message>
+        <source>Dunkel</source>
+        <translation>Dark</translation>
+    </message>
+    <message>
+        <source>Hell</source>
+        <translation>Light</translation>
+    </message>
+    <message>
+        <source>Wie Systemdarstellung</source>
+        <translation>Match System Appearance</translation>
+    </message>
+    <message>
+        <source>Schachbrett (Transparenz)</source>
+        <translation>Checkerboard (Transparency)</translation>
+    </message>
+    <message>
+        <source>Eigene Farbe</source>
+        <translation>Custom Color</translation>
+    </message>
+    <message>
+        <source>Farbe wählen …</source>
+        <translation>Choose Color…</translation>
+    </message>
+    <message>
+        <source>Hintergrundfarbe</source>
+        <translation>Background Color</translation>
+    </message>
+    <message>
+        <source>Hintergrund:</source>
+        <translation>Background:</translation>
+    </message>
+    <message>
+        <source>Zoom beim Öffnen:</source>
+        <translation>Zoom when opening:</translation>
+    </message>
+    <message>
+        <source>Einpassen (nicht vergrößern)</source>
+        <translation>Fit (Don’t Enlarge)</translation>
+    </message>
+    <message>
+        <source>Einpassen inkl. Vergrößern</source>
+        <translation>Fit (Allow Enlarging)</translation>
+    </message>
+    <message>
+        <source>100 %</source>
+        <translation>100%</translation>
+    </message>
+    <message>
+        <source>Breite füllen</source>
+        <translation>Fill Width</translation>
+    </message>
+    <message>
+        <source>Höhe füllen</source>
+        <translation>Fill Height</translation>
+    </message>
+    <message>
+        <source>Fenster füllen</source>
+        <translation>Fill Window</translation>
+    </message>
+    <message>
+        <source>Vergrößern über 100 %:</source>
+        <translation>Enlarging beyond 100%:</translation>
+    </message>
+    <message>
+        <source>Glatt</source>
+        <translation>Smooth</translation>
+    </message>
+    <message>
+        <source>Pixel scharf</source>
+        <translation>Sharp Pixels</translation>
+    </message>
+    <message>
+        <source>100 % bedeutet:</source>
+        <translation>100% means:</translation>
+    </message>
+    <message>
+        <source>1 Bildpixel = 1 Gerätepixel (Retina-korrekt)</source>
+        <translation>1 image pixel = 1 device pixel (Retina-accurate)</translation>
+    </message>
+    <message>
+        <source>1 Bildpixel = 1 Punkt</source>
+        <translation>1 image pixel = 1 point</translation>
+    </message>
+    <message>
+        <source>Diashow (⇧⌘F, S):</source>
+        <translation>Slideshow (⇧⌘F, S):</translation>
+    </message>
+    <message>
+        <source> s pro Bild</source>
+        <translation> s per image</translation>
+    </message>
+    <message>
+        <source>Wiederholen</source>
+        <translation>Repeat</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge</source>
+        <translation>Shuffle</translation>
+    </message>
+    <message>
+        <source>Überblenden</source>
+        <translation>Crossfade</translation>
+    </message>
+    <message>
+        <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, Esc beendet.</source>
+        <translation>During the slideshow: Space pauses, 1–9 sets the interval in seconds, ←/→ flips through images, Esc ends it.</translation>
+    </message>
+    <message>
+        <source>Profilvorlagen</source>
+        <translation>Presets</translation>
+    </message>
+    <message>
+        <source>Mac-Standard</source>
+        <translation>Mac Standard</translation>
+    </message>
+    <message>
+        <source>Windows-Viewer-Gewohnheiten</source>
+        <translation>Windows Viewer Habits</translation>
+    </message>
+    <message>
+        <source>Fotograf:in / Lightroom</source>
+        <translation>Photographer / Lightroom</translation>
+    </message>
+    <message>
+        <source>Maus, Trackpad und Tasten</source>
+        <translation>Mouse, Trackpad, and Keys</translation>
+    </message>
+    <message>
+        <source>%1 (%2)</source>
+        <translation>%1 (%2)</translation>
+    </message>
+    <message>
+        <source>Mausrad-Feinheiten</source>
+        <translation>Scroll Wheel Fine-Tuning</translation>
+    </message>
+    <message>
+        <source>Richtung umkehren</source>
+        <translation>Reverse direction</translation>
+    </message>
+    <message>
+        <source>Raststufen pro Bildwechsel:</source>
+        <translation>Notches per image change:</translation>
+    </message>
+    <message>
+        <source>Mindestabstand zwischen Bildwechseln:</source>
+        <translation>Minimum time between image changes:</translation>
+    </message>
+    <message>
+        <source> ms</source>
+        <translation> ms</translation>
+    </message>
+    <message>
+        <source>Verhindert das Überspringen von Bildern bei Rädern ohne Rasterung.</source>
+        <translation>Prevents skipping images with wheels that don’t have notches.</translation>
+    </message>
+    <message>
+        <source>Zoomschritt pro Raste:</source>
+        <translation>Zoom step per notch:</translation>
+    </message>
+    <message>
+        <source> %</source>
+        <translation> %</translation>
+    </message>
+    <message>
+        <source>Sprungweite (Bild↑/Bild↓):</source>
+        <translation>Jump distance (Page↑/Page↓):</translation>
+    </message>
+    <message>
+        <source> Bilder</source>
+        <translation> images</translation>
+    </message>
+    <message>
+        <source>Tastenkürzel</source>
+        <translation>Keyboard Shortcuts</translation>
+    </message>
+    <message>
+        <source>Feld anklicken und neue Taste drücken. Bis zu drei Kürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
+        <translation>Click a field and press the new key. Up to three shortcuts per action. Digits and P/X/U for rating only apply in culling mode.</translation>
+    </message>
+    <message>
+        <source>Aktion</source>
+        <translation>Action</translation>
+    </message>
+    <message>
+        <source>Kürzel</source>
+        <translation>Shortcut</translation>
+    </message>
+    <message>
+        <source>Alternative</source>
+        <translation>Alternative</translation>
+    </message>
+    <message>
+        <source>–</source>
+        <translation>–</translation>
+    </message>
+    <message>
+        <source>Standardkürzel wiederherstellen</source>
+        <translation>Restore Default Shortcuts</translation>
+    </message>
+    <message>
+        <source>Alle Tastenkürzel zurücksetzen</source>
+        <translation>Reset All Keyboard Shortcuts</translation>
+    </message>
+    <message>
+        <source>Konflikt mit: %1</source>
+        <translation>Conflicts with: %1</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Aktion(en) mit doppelt belegten Tasten – bitte eine davon ändern.</source>
+        <translation>
+            <numerusform>%n action has a key that’s assigned twice — please change one of them.</numerusform>
+            <numerusform>%n actions have keys that are assigned twice — please change one of them.</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Am Ende der Sammlung:</source>
+        <translation>At end of collection:</translation>
+    </message>
+    <message>
+        <source>Anhalten</source>
+        <translation>Stop</translation>
+    </message>
+    <message>
+        <source>Umlaufen</source>
+        <translation>Wrap Around</translation>
+    </message>
+    <message>
+        <source>Zum nächsten Ordner</source>
+        <translation>Continue to Next Folder</translation>
+    </message>
+    <message>
+        <source>Sortierung wie im Finder</source>
+        <translation>Sort as in Finder</translation>
+    </message>
+    <message>
+        <source>Liest die Darstellungsoptionen des Ordners (.DS_Store) und die globalen Finder-Einstellungen.</source>
+        <translation>Reads the folder’s view options (.DS_Store) and the global Finder settings.</translation>
+    </message>
+    <message>
+        <source>Zeigt das vorderste Finder-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen aktuelle Sortierung (auch noch nicht gespeicherte). macOS bittet dafür einmalig um die Erlaubnis, den Finder zu steuern (Automation).</source>
+        <translation>If the frontmost Finder window shows exactly the opened folder, Lumaflip uses its current sorting (including unsaved changes). For this, macOS asks once for permission to control the Finder (Automation).</translation>
+    </message>
+    <message>
+        <source>Manuelle Sortierung:</source>
+        <translation>Manual sorting:</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation>Name</translation>
+    </message>
+    <message>
+        <source>Änderungsdatum</source>
+        <translation>Date Modified</translation>
+    </message>
+    <message>
+        <source>Erstellungsdatum</source>
+        <translation>Date Created</translation>
+    </message>
+    <message>
+        <source>Hinzugefügt am</source>
+        <translation>Date Added</translation>
+    </message>
+    <message>
+        <source>Aufnahmedatum</source>
+        <translation>Date Taken</translation>
+    </message>
+    <message>
+        <source>Größe</source>
+        <translation>Size</translation>
+    </message>
+    <message>
+        <source>Art</source>
+        <translation>Kind</translation>
+    </message>
+    <message>
+        <source>Pixelzahl</source>
+        <translation>Pixel Count</translation>
+    </message>
+    <message>
+        <source>Aufsteigend</source>
+        <translation>Ascending</translation>
+    </message>
+    <message>
+        <source>Gilt, wenn „Sortierung wie im Finder“ aus ist oder keine Finder-Information gefunden wird. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier.</source>
+        <translation>Applies when “Sort as in Finder” is off or no Finder information is found. A choice in the View → Sort By menu is remembered per folder; “Use for All Folders” makes it the default here.</translation>
+    </message>
+    <message>
+        <source>Bewertungen speichern:</source>
+        <translation>Save ratings:</translation>
+    </message>
+    <message>
+        <source>XMP-Zusatzdatei neben dem Bild (Bild.xmp)</source>
+        <translation>XMP sidecar file next to the image (Image.xmp)</translation>
+    </message>
+    <message>
+        <source>Kompatibel mit Lightroom, Capture One und darktable.</source>
+        <translation>Compatible with Lightroom, Capture One, and darktable.</translation>
+    </message>
+    <message>
+        <source>Im Bild selbst (eingebettetes XMP)</source>
+        <translation>In the image itself (embedded XMP)</translation>
+    </message>
+    <message>
+        <source>Nur JPEG, HEIC, TIFF, PNG und DNG; sonst wird die Zusatzdatei benutzt. Die Bildpixel werden nicht neu kodiert.</source>
+        <translation>JPEG, HEIC, TIFF, PNG, and DNG only; otherwise the sidecar file is used. The image pixels aren’t re-encoded.</translation>
+    </message>
+    <message>
+        <source>Finder-Tags</source>
+        <translation>Finder Tags</translation>
+    </message>
+    <message>
+        <source>Im Finder sichtbar und per Spotlight durchsuchbar.</source>
+        <translation>Visible in the Finder and searchable with Spotlight.</translation>
+    </message>
+    <message>
+        <source>Bewertungen und der Aussortiermodus folgen %1.</source>
+        <translation>Ratings and culling mode follow %1.</translation>
+    </message>
+    <message>
+        <source>Unterstützte Formate (ohne Nachinstallation):</source>
+        <translation>Supported formats (no additional installation required):</translation>
+    </message>
+    <message>
+        <source>Gruppe</source>
+        <translation>Group</translation>
+    </message>
+    <message>
+        <source>Standard</source>
+        <translation>Standard</translation>
+    </message>
+    <message>
+        <source>Modern</source>
+        <translation>Modern</translation>
+    </message>
+    <message>
+        <source>RAW</source>
+        <translation>RAW</translation>
+    </message>
+    <message>
+        <source>Pro/HDR</source>
+        <translation>Pro/HDR</translation>
+    </message>
+    <message>
+        <source>Animiert</source>
+        <translation>Animated</translation>
+    </message>
+    <message>
+        <source>GIF, APNG, WebP, AVIF/HEICS, JXL – mit Wiedergabe</source>
+        <translation>GIF, APNG, WebP, AVIF/HEICS, JXL — with playback</translation>
+    </message>
+    <message>
+        <source>Vektor</source>
+        <translation>Vector</translation>
+    </message>
+    <message>
+        <source>Als Standard-App für Bilder festlegen</source>
+        <translation>Set as Default App for Images</translation>
+    </message>
+    <message>
+        <source>RAW: nur eingebettete Vorschau anzeigen (schneller)</source>
+        <translation>RAW: Show embedded preview only (faster)</translation>
+    </message>
+    <message>
+        <source>Aus: Zuerst die eingebettete Vorschau, danach wird die volle Entwicklung nachgeladen.</source>
+        <translation>Off: The embedded preview is shown first, then the full rendering is loaded.</translation>
+    </message>
+    <message>
+        <source>Leistung</source>
+        <translation>Performance</translation>
+    </message>
+    <message>
+        <source> MB</source>
+        <translation> MB</translation>
+    </message>
+    <message>
+        <source>Automatisch (25 % des Arbeitsspeichers, max. 2 GB)</source>
+        <translation>Automatic (25% of memory, max. 2 GB)</translation>
+    </message>
+    <message>
+        <source>Speicherbudget:</source>
+        <translation>Memory budget:</translation>
+    </message>
+    <message>
+        <source>Bilder im Voraus laden:</source>
+        <translation>Preload images:</translation>
+    </message>
+    <message>
+        <source>Bilder zurück behalten:</source>
+        <translation>Keep previous images:</translation>
+    </message>
+    <message>
+        <source>Einstellungen sichern</source>
+        <translation>Back Up Settings</translation>
+    </message>
+    <message>
+        <source>Exportieren …</source>
+        <translation>Export…</translation>
+    </message>
+    <message>
+        <source>Importieren …</source>
+        <translation>Import…</translation>
+    </message>
+    <message>
+        <source>Alle Einstellungen zurücksetzen</source>
+        <translation>Reset All Settings</translation>
+    </message>
+    <message>
+        <source>Lumaflip-Einstellungen (*.json)</source>
+        <translation>Lumaflip Settings (*.json)</translation>
+    </message>
+    <message>
+        <source>Einstellungen exportieren</source>
+        <translation>Export Settings</translation>
+    </message>
+    <message>
+        <source>Einstellungen importieren</source>
+        <translation>Import Settings</translation>
+    </message>
+    <message>
+        <source>Alle Einstellungen zurücksetzen?</source>
+        <translation>Reset all settings?</translation>
+    </message>
+    <message>
+        <source>Alle Einstellungen einschließlich der Tastenkürzel werden auf die Standardwerte zurückgesetzt.</source>
+        <translation>All settings, including keyboard shortcuts, will be reset to their defaults.</translation>
+    </message>
+    <message>
+        <source>Einstellungen exportiert: %1</source>
+        <translation>Settings exported: %1</translation>
+    </message>
+    <message>
+        <source>Export fehlgeschlagen: %1</source>
+        <translation>Export failed: %1</translation>
+    </message>
+    <message>
+        <source>Export fehlgeschlagen</source>
+        <translation>Export Failed</translation>
+    </message>
+    <message>
+        <source>Unbekannter Fehler</source>
+        <translation>Unknown error</translation>
+    </message>
+    <message>
+        <source>Einstellungen importiert: %1</source>
+        <translation>Settings imported: %1</translation>
+    </message>
+    <message>
+        <source>Import fehlgeschlagen: %1</source>
+        <translation>Import failed: %1</translation>
+    </message>
+    <message>
+        <source>Import fehlgeschlagen</source>
+        <translation>Import Failed</translation>
+    </message>
+    <message>
+        <source>Standard-App des Systems für den Bildtyp (nie Lumaflip)</source>
+        <translation>System default app for the image type (never Lumaflip)</translation>
+    </message>
+    <message>
+        <source>Lumaflip kann nicht sein eigener Editor sein. Bitte wähle ein anderes Programm.</source>
+        <translation>Lumaflip can’t be its own editor. Please choose a different app.</translation>
+    </message>
+    <message>
+        <source>Auswählen …</source>
+        <translation>Choose…</translation>
+    </message>
+    <message>
+        <source>Editor wählen</source>
+        <translation>Choose Editor</translation>
+    </message>
+    <message>
+        <source>Programme (*.app)</source>
+        <translation>Apps (*.app)</translation>
+    </message>
+    <message>
+        <source>Sortierung live vom Finder-Fenster übernehmen</source>
+        <translation>Use live sorting from the Finder window</translation>
+    </message>
+    <message>
+        <source>Sortierung vom Finder-Fenster übernehmen</source>
+        <translation>Use sorting from the Finder window</translation>
+    </message>
+    <message>
+        <source>Lumaflip fragt dann beim Öffnen eines Ordners das vorderste Finder-Fenster nach seiner Sortierung – aber nur, wenn es genau diesen Ordner zeigt.</source>
+        <translation>When opening a folder, Lumaflip then asks the frontmost Finder window for its sorting — but only if it shows exactly that folder.</translation>
+    </message>
+    <message>
+        <source>Dafür fragt macOS einmalig, ob Lumaflip den Finder steuern darf („Automation“). Lumaflip liest nur Ordner, Ansicht und Sortierung des Fensters und ändert nichts. Die Erlaubnis lässt sich jederzeit unter Systemeinstellungen → Datenschutz &amp; Sicherheit → Automation widerrufen.</source>
+        <translation>For this, macOS asks once whether Lumaflip may control the Finder (“Automation”). Lumaflip only reads the window’s folder, view, and sorting and doesn’t change anything. You can revoke the permission at any time in System Settings → Privacy &amp; Security → Automation.</translation>
+    </message>
+    <message>
+        <source>Aktivieren</source>
+        <translation>Turn On</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <source>Systemsprache (%1)</source>
+        <extracomment>first entry of the language list; %1 is the language macOS asks for, in that language</extracomment>
+        <translation>System Language (%1)</translation>
+    </message>
+</context>
+<context>
+    <name>lf::QtImageDecoder</name>
+    <message>
+        <source>Die Datei ist leer (0 Byte).</source>
+        <translation>The file is empty (0 bytes).</translation>
+    </message>
+    <message>
+        <source>Unbekanntes oder nicht unterstütztes Dateiformat.</source>
+        <translation>Unknown or unsupported file format.</translation>
+    </message>
+    <message>
+        <source>Seite %1 existiert nicht.</source>
+        <translation>Page %1 doesn’t exist.</translation>
+    </message>
+    <message>
+        <source>Das Bild konnte nicht dekodiert werden: %1</source>
+        <translation>The image couldn’t be decoded: %1</translation>
+    </message>
+    <message>
+        <source>Die SVG-Datei ist ungültig oder beschädigt.</source>
+        <translation>The SVG file is invalid or damaged.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild.</source>
+        <translation>Not enough memory for the image.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::RecentItems</name>
+    <message>
+        <source>Einträge löschen</source>
+        <translation>Clear Menu</translation>
+    </message>
+</context>
+<context>
+    <name>lf::RenameController</name>
+    <message>
+        <source>Bitte gib einen Namen ein.</source>
+        <translation>Please enter a name.</translation>
+    </message>
+    <message>
+        <source>Der Name darf keinen Schrägstrich (/) und keinen Doppelpunkt (:) enthalten.</source>
+        <translation>The name can’t contain a slash (/) or a colon (:).</translation>
+    </message>
+    <message>
+        <source>Namen, die mit einem Punkt beginnen, sind für Systemdateien reserviert.</source>
+        <translation>Names that begin with a dot are reserved for the system.</translation>
+    </message>
+    <message>
+        <source>Der Name enthält ungültige Zeichen.</source>
+        <translation>The name contains invalid characters.</translation>
+    </message>
+    <message>
+        <source>Der Name ist zu lang (höchstens %1 Byte).</source>
+        <translation>The name is too long (maximum %1 bytes).</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert bereits. Bitte wähle einen anderen Namen.</source>
+        <translation>“%1” already exists. Please choose a different name.</translation>
+    </message>
+    <message>
+        <source>Neuer Dateiname</source>
+        <translation>New file name</translation>
+    </message>
+    <message>
+        <source>Soll die Endung „.%1“ entfernt werden?</source>
+        <translation>Are you sure you want to remove the extension “.%1”?</translation>
+    </message>
+    <message>
+        <source>Soll die Endung „.%1“ hinzugefügt werden?</source>
+        <translation>Are you sure you want to add the extension “.%1”?</translation>
+    </message>
+    <message>
+        <source>Soll die Endung „.%1“ in „.%2“ geändert werden?</source>
+        <translation>Are you sure you want to change the extension from “.%1” to “.%2”?</translation>
+    </message>
+    <message>
+        <source>Dateiendung ändern?</source>
+        <translation>Change file extension?</translation>
+    </message>
+    <message>
+        <source>Die Datei wird dadurch nicht umgewandelt. Andere Programme erkennen sie danach eventuell nicht mehr.</source>
+        <translation>This doesn’t convert the file. Other apps may no longer recognize it.</translation>
+    </message>
+    <message>
+        <source>Ohne Endung lassen</source>
+        <translation>Don’t Add</translation>
+    </message>
+    <message>
+        <source>„.%1“ behalten</source>
+        <translation>Keep “.%1”</translation>
+    </message>
+    <message>
+        <source>Endung entfernen</source>
+        <translation>Remove Extension</translation>
+    </message>
+    <message>
+        <source>„.%1“ verwenden</source>
+        <translation>Use “.%1”</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Cancel</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Settings</name>
+    <message>
+        <source>Datei kann nicht geschrieben werden: %1</source>
+        <translation>Can’t write file: %1</translation>
+    </message>
+    <message>
+        <source>Datei kann nicht gelesen werden: %1</source>
+        <translation>Can’t read file: %1</translation>
+    </message>
+    <message>
+        <source>Keine gültige Einstellungsdatei (JSON-Fehler: %1).</source>
+        <translation>Not a valid settings file (JSON error: %1).</translation>
+    </message>
+    <message>
+        <source>Keine Lumaflip-Einstellungsdatei.</source>
+        <translation>Not a Lumaflip settings file.</translation>
+    </message>
+    <message>
+        <source>%1: ungültiger Wert (erwartet: %2)</source>
+        <translation>%1: invalid value (expected: %2)</translation>
+    </message>
+    <message>
+        <source>Import abgebrochen, nichts wurde geändert:
+%1</source>
+        <translation>Import canceled; nothing was changed:
+%1</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Share</name>
+    <message>
+        <source>Teilen …</source>
+        <translation>Share…</translation>
+    </message>
+    <message>
+        <source>Wird geladen …</source>
+        <translation>Loading…</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Shell</name>
+    <message>
+        <source>Auf dieser Plattform wird das Festlegen der Standard-App noch nicht unterstützt.</source>
+        <translation>Setting the default app isn’t supported on this platform yet.</translation>
+    </message>
+    <message>
+        <source>Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, falls eine erscheint.</source>
+        <translation>Lumaflip is still being set as the default app — please confirm the macOS prompt if one appears.</translation>
+    </message>
+    <message>
+        <source>unbekannter Typ</source>
+        <translation>unknown type</translation>
+    </message>
+    <message>
+        <source>Lumaflip läuft nicht als App-Paket und kann nicht als Standard-App festgelegt werden.</source>
+        <translation>Lumaflip isn’t running as an app bundle and can’t be set as the default app.</translation>
+    </message>
+    <message>
+        <source>Zeitüberschreitung bei der Rückmeldung des Systems.</source>
+        <translation>Timed out waiting for a response from the system.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::StartScreenRecent</name>
+    <message>
+        <source>Zuletzt geöffnet</source>
+        <translation>Open Recent</translation>
+    </message>
+</context>
+<context>
+    <name>lf::TagService</name>
+    <message>
+        <source>Tags werden auf diesem System nicht unterstützt.</source>
+        <translation>Tags aren’t supported on this system.</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gelesen werden: %2</source>
+        <translation>Couldn’t read tags of “%1”: %2</translation>
+    </message>
+    <message>
+        <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
+        <translation>Couldn’t set tags of “%1”: %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::TrashService</name>
+    <message>
+        <source>„%1“ konnte nicht in den Papierkorb gelegt werden.</source>
+        <translation>“%1” couldn’t be moved to the Trash.</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert bereits und wird nicht überschrieben.</source>
+        <translation>“%1” already exists and won’t be overwritten.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht wiederhergestellt werden.</source>
+        <translation>“%1” couldn’t be restored.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht in den Papierkorb gelegt werden: %2</source>
+        <translation>“%1” couldn’t be moved to the Trash: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ist nicht mehr im Papierkorb.</source>
+        <translation>“%1” is no longer in the Trash.</translation>
+    </message>
+    <message>
+        <source>„%1“ konnte nicht wiederhergestellt werden: %2</source>
+        <translation>“%1” couldn’t be restored: %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::UndoBackupStore</name>
+    <message>
+        <source>Die Sicherung für „Rückgängig“ ist nicht mehr vorhanden.</source>
+        <translation>The backup for Undo no longer exists.</translation>
+    </message>
+    <message>
+        <source>Nicht genug Platz für die Sicherungskopie (Rückgängig) – nichts gespeichert.</source>
+        <translation>Not enough space for the backup copy (Undo) — nothing was saved.</translation>
+    </message>
+</context>
+<context>
+    <name>lf::Updater</name>
+    <message>
+        <source>Automatisch nach Updates suchen</source>
+        <translation>Automatically check for updates</translation>
+    </message>
+    <message>
+        <source>Updates automatisch installieren</source>
+        <translation>Automatically install updates</translation>
+    </message>
+    <message>
+        <source>Lumaflip fragt dazu einmal am Tag bei GitHub nach einer neuen Version. Das ist die einzige Netzwerkverbindung der App.</source>
+        <translation>To do this, Lumaflip checks GitHub once a day for a new version. This is the app’s only network connection.</translation>
+    </message>
+    <message>
+        <source>Updates:</source>
+        <translation>Updates:</translation>
+    </message>
+</context>
+<context>
+    <name>lf::ViewerWindow</name>
+    <message>
+        <source>Sortierung gilt jetzt für alle Ordner</source>
+        <translation>Sorting now applies to all folders</translation>
+    </message>
+    <message>
+        <source>Zugriff erlauben…</source>
+        <translation>Allow Access…</translation>
+    </message>
+    <message>
+        <source>Ausblenden</source>
+        <translation>Hide</translation>
+    </message>
+    <message>
+        <source>Öffnen…</source>
+        <translation>Open…</translation>
+    </message>
+    <message>
+        <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
+        <translation>The file is damaged or its format isn’t supported.</translation>
+    </message>
+    <message>
+        <source>Im Finder zeigen</source>
+        <translation>Show in Finder</translation>
+    </message>
+    <message>
+        <source>Volle Auflösung nicht verfügbar</source>
+        <translation>Full resolution not available</translation>
+    </message>
+    <message>
+        <source>Lumaflip – lädt …</source>
+        <translation>Lumaflip — loading…</translation>
+    </message>
+    <message>
+        <source>Sortierung wird ermittelt …</source>
+        <translation>Determining sort order…</translation>
+    </message>
+    <message>
+        <source>%1 %</source>
+        <extracomment>zoom factor in the status bar, e.g. &quot;37 %&quot; (use the language&apos;s percent style)</extracomment>
+        <translation>%1%</translation>
+    </message>
+    <message>
+        <source>Vektor</source>
+        <translation>Vector</translation>
+    </message>
+    <message>
+        <source>%1 × %2 (Vektor)</source>
+        <translation>%1 × %2 (vector)</translation>
+    </message>
+    <message>
+        <source>Keine Bilder in „%1“</source>
+        <translation>No images in “%1”</translation>
+    </message>
+    <message>
+        <source>Bild oder Ordner hierher ziehen</source>
+        <translation>Drag an image or folder here</translation>
+    </message>
+    <message>
+        <source>Letztes Bild</source>
+        <translation>Last image</translation>
+    </message>
+    <message>
+        <source>Erstes Bild</source>
+        <translation>First image</translation>
+    </message>
+    <message>
+        <source>Lumaflip darf den Ordner „%1“ nicht lesen und zeigt deshalb nur die geöffnete Datei. Erlaube den Zugriff unter Systemeinstellungen → Datenschutz &amp; Sicherheit → Dateien und Ordner. Festplattenvollzugriff ist dafür nicht nötig.</source>
+        <translation>Lumaflip isn’t allowed to read the folder “%1”, so it only shows the opened file. Allow access in System Settings → Privacy &amp; Security → Files and Folders. Full Disk Access isn’t required for this.</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
+        <translation>You don’t have permission to read the folder “%1”, so Lumaflip only shows the opened file. You can change the permissions in the Finder under File → Get Info → “Sharing &amp; Permissions”.</translation>
+    </message>
+    <message>
+        <source>Kein weiterer Ordner mit Bildern</source>
+        <translation>No next folder with images</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner mit Bildern</source>
+        <translation>No previous folder with images</translation>
+    </message>
+    <message>
+        <source>Zoom fixiert</source>
+        <translation>Zoom locked</translation>
+    </message>
+    <message>
+        <source>Zoom gelöst</source>
+        <translation>Zoom unlocked</translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>Move to Trash</translation>
+    </message>
+    <message>
+        <source>„%1“ in den Papierkorb legen?</source>
+        <translation>Move “%1” to the Trash?</translation>
+    </message>
+    <message>
+        <source>Mit ⌘Z lässt sich das widerrufen.</source>
+        <translation>You can undo this with ⌘Z.</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Cancel</translation>
+    </message>
+    <message>
+        <source>Bild wird kopiert …</source>
+        <translation>Copying image…</translation>
+    </message>
+    <message>
+        <source>Bild kopiert (Bildschirmauflösung)</source>
+        <translation>Image copied (screen resolution)</translation>
+    </message>
+    <message>
+        <source>Bild kopiert</source>
+        <translation>Image copied</translation>
+    </message>
+    <message>
+        <source>Pfad kopiert</source>
+        <translation>Path copied</translation>
+    </message>
+    <message>
+        <source>„%1“ ist nicht mehr vorhanden.</source>
+        <translation>“%1” no longer exists.</translation>
+    </message>
+    <message>
+        <source>Animation angehalten: %1</source>
+        <translation>Animation stopped: %1</translation>
+    </message>
+    <message>
+        <source>Diashow beendet</source>
+        <translation>Slideshow ended</translation>
+    </message>
+    <message>
+        <source>Wiedergabe</source>
+        <translation>Play</translation>
+    </message>
+    <message>
+        <source>Pause</source>
+        <translation>Pause</translation>
+    </message>
+    <message>
+        <source>Diashow angehalten</source>
+        <translation>Slideshow paused</translation>
+    </message>
+    <message>
+        <source>Diashow läuft weiter</source>
+        <translation>Slideshow resumed</translation>
+    </message>
+    <message numerus="yes">
+        <source>Intervall: %n Sekunde(n)</source>
+        <translation>
+            <numerusform>Interval: %n second</numerusform>
+            <numerusform>Interval: %n seconds</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Bild %1/%2</source>
+        <translation>Image %1/%2</translation>
+    </message>
+    <message>
+        <source>Seite %1/%2</source>
+        <translation>Page %1/%2</translation>
+    </message>
+    <message>
+        <source>Geschwindigkeit: %1×</source>
+        <translation>Speed: %1×</translation>
+    </message>
+    <message>
+        <source>Erste Seite</source>
+        <translation>First page</translation>
+    </message>
+    <message>
+        <source>Letzte Seite</source>
+        <translation>Last page</translation>
+    </message>
+    <message>
+        <source>Diashow – Leertaste: Pause · 1–9: Sekunden · Esc: Ende</source>
+        <translation>Slideshow — Space: Pause · 1–9: Seconds · Esc: End</translation>
+    </message>
+    <message>
+        <source>Keine Drehung zu speichern – zuerst mit ⌘L oder ⌘R drehen</source>
+        <translation>No rotation to save — rotate first with ⌘L or ⌘R</translation>
+    </message>
+    <message>
+        <source>Drehung speichern</source>
+        <translation>Save Rotation</translation>
+    </message>
+    <message>
+        <source>Verlustfrei drehen geht nur mit beschnittenem Rand.</source>
+        <translation>Lossless rotation is only possible with a trimmed edge.</translation>
+    </message>
+    <message>
+        <source>Die Drehung kann nur durch Neukodieren gespeichert werden.</source>
+        <translation>The rotation can only be saved by re-encoding.</translation>
+    </message>
+    <message>
+        <source>Rand abschneiden</source>
+        <translation>Trim Edge</translation>
+    </message>
+    <message>
+        <source>Neu kodieren</source>
+        <translation>Re-encode</translation>
+    </message>
+    <message>
+        <source>Nur EXIF-Ausrichtung setzen</source>
+        <translation>Set EXIF Orientation Only</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowPanels</name>
+    <message>
+        <source>Informationen</source>
+        <translation>Info</translation>
+    </message>
+    <message>
+        <source>Filmstreifen</source>
+        <translation>Filmstrip</translation>
+    </message>
+</context>
+</TS>

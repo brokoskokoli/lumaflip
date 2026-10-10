@@ -27,12 +27,17 @@ QString speedId(double s) {
 struct SlideshowOption {
     const char* id;
     const char* key;
-    const char* text;
+    struct {
+        const char* source;
+        const char* comment; // disambiguation ("Wiederholen" is also Redo)
+    } text;
 };
 const SlideshowOption kSlideshowOptions[] = {
-    {"slideshow:repeat", key::SlideshowRepeat, QT_TRANSLATE_NOOP("lf::MainMenu", "Wiederholen")},
-    {"slideshow:shuffle", key::SlideshowShuffle, QT_TRANSLATE_NOOP("lf::MainMenu", "Zufällige Reihenfolge")},
-    {"slideshow:crossfade", key::SlideshowCrossfade, QT_TRANSLATE_NOOP("lf::MainMenu", "Überblenden")},
+    {"slideshow:repeat", key::SlideshowRepeat,
+     QT_TRANSLATE_NOOP3("lf::MainMenu", "Wiederholen", "slideshow option: start again after the last image")},
+    {"slideshow:shuffle", key::SlideshowShuffle,
+     QT_TRANSLATE_NOOP3("lf::MainMenu", "Zufällige Reihenfolge", "")},
+    {"slideshow:crossfade", key::SlideshowCrossfade, QT_TRANSLATE_NOOP3("lf::MainMenu", "Überblenden", "")},
 };
 } // namespace
 
@@ -45,7 +50,8 @@ void MainMenu::buildMedia(QMenu* view, QMenu* nav, QMenu* image) {
     QMenu* options = view->addMenu(tr("Diashow-Optionen"));
     options->setObjectName(QStringLiteral("menu:slideshowOptions"));
     for (const auto& o : kSlideshowOptions) {
-        QAction* act = addCommand(options, QString::fromLatin1(o.id), tr(o.text));
+        QAction* act = addCommand(options, QString::fromLatin1(o.id),
+                                  tr(o.text.source, *o.text.comment ? o.text.comment : nullptr));
         act->setCheckable(true);
         const QString k = QString::fromLatin1(o.key);
         connect(act, &QAction::triggered, this, [k](bool on) { Settings::instance().setValue(k, on); });

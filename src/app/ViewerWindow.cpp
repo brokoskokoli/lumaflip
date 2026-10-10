@@ -901,21 +901,26 @@ void ViewerWindow::updateStatus() {
         // SVG: the decoder renders at a working size; the image's own size is what the
         // info panel shows too (read once per file on a worker).
         m_pixelLabel->setText(vectorSizeText(cur));
-        m_zoomLabel->setText(QStringLiteral("%1 %").arg(qRound(m_view->zoomFactor() * 100)));
+        m_zoomLabel->setText(zoomText(m_view->zoomFactor()));
     } else if (showsCurrent) {
         const QSize full = img->fullSize.isEmpty() ? img->image.size() : img->fullSize;
         m_pixelLabel->setText(QStringLiteral("%1 × %2").arg(full.width()).arg(full.height()));
-        m_zoomLabel->setText(QStringLiteral("%1 %").arg(qRound(m_view->zoomFactor() * 100)));
+        m_zoomLabel->setText(zoomText(m_view->zoomFactor()));
     } else {
         m_pixelLabel->clear();
         m_zoomLabel->clear();
     }
     // Known once the folder is read (no file system access on the GUI thread).
     const qint64 bytes = i >= 0 ? m_collection->at(i).size : -1;
-    m_bytesLabel->setText(bytes >= 0 ? formatByteSize(bytes) : QString()); // German units
+    m_bytesLabel->setText(bytes >= 0 ? formatByteSize(bytes) : QString()); // UI language (F-I18N-04)
     m_sortLabel->setText(sortText());
     for (QLabel* l : {m_nameLabel, m_positionLabel, m_frameLabel, m_pixelLabel, m_bytesLabel, m_zoomLabel})
         l->setVisible(!l->text().isEmpty());
+}
+
+QString ViewerWindow::zoomText(double factor) {
+    //: zoom factor in the status bar, e.g. "37 %" (use the language's percent style)
+    return tr("%1 %").arg(qRound(factor * 100));
 }
 
 bool ViewerWindow::isVectorFile(const QString& path) {
@@ -1049,6 +1054,7 @@ void ViewerWindow::showAccessHint(const QString& folder, bool privacy) {
     // for Full Disk Access. Only a macOS privacy denial (TCC) is solved there; missing
     // POSIX permissions are changed in the Finder.
     m_accessPrivacy = privacy;
+    m_accessFolder = folder;
     if (privacy) {
         m_accessText->setText(
             tr("Lumaflip darf den Ordner „%1“ nicht lesen und zeigt deshalb nur die geöffnete "
@@ -1644,6 +1650,8 @@ void ViewerWindow::changeEvent(QEvent* event) {
         if (!currentPath().isEmpty())
             updatePrefetch(); // minimized windows keep only the current image (F-WIN-09)
         m_app.windowChanged(this);
+    } else if (event->type() == QEvent::LanguageChange) {
+        retranslateUi(); // F-I18N-03
     }
 }
 

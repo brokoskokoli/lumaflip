@@ -91,6 +91,13 @@ if(LF_BUILD_UI)
 endif()
 find_package(Qt6 6.8 REQUIRED COMPONENTS ${LF_QT_COMPONENTS})
 qt_standard_project_setup()
+# Translations (SPEC 4.16, translations/README.md): lupdate/lrelease. Required for the app
+# (Homebrew's qt has them); optional for the core-only build (Linux CI), where the unit
+# tests that read the .qm files skip without them.
+find_package(Qt6 QUIET COMPONENTS LinguistTools)
+if(LF_BUILD_UI AND NOT Qt6LinguistTools_FOUND)
+  message(FATAL_ERROR "Qt LinguistTools (lupdate/lrelease) not found - they are part of Homebrew's qt")
+endif()
 
 # Common warning flags for our own targets only.
 add_library(lf_warnings INTERFACE)

@@ -244,6 +244,7 @@ private:
     QPushButton* m_openButton = nullptr;
     // Vector images (SVG): status bar shows the intrinsic size, not the render size.
     static bool isVectorFile(const QString& path);
+    static QString zoomText(double factor); // "37 %"
     QString vectorSizeText(const QString& path);
     QString m_vectorSizePath;
     QString m_vectorSizeJob;
@@ -251,6 +252,9 @@ private:
     class StartScreenRecent* m_startRecent = nullptr; // F-OPEN-12
     void openRecent(const QString& path);
     WindowPanels* m_panels = nullptr; // M2: info panel + filmstrip (WindowPanels.cpp)
+    // F-I18N-03: texts of the window after a language switch (ViewerWindowI18n.cpp).
+    void retranslateUi();
+    QString m_accessFolder; // folder of the access hint (its text is rebuilt)
 };
 
 } // namespace lf

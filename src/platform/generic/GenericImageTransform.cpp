@@ -30,9 +30,10 @@ namespace lf::platform {
 
 namespace {
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::LosslessTransform", text);
-}
+// tr() for the code in this file outside QObject classes (lupdate takes the context from it).
+struct Tr {
+    Q_DECLARE_TR_FUNCTIONS(lf::LosslessTransform)
+};
 
 void setError(QString* error, const QString& msg) {
     if (error)
@@ -94,7 +95,7 @@ bool isLosslessCodec(const QString& typeId) {
 }
 
 bool writeOrientationLossless(const QString&, const QString&, int, QString* error) {
-    setError(error, tr("Für dieses Format kann die Ausrichtung nicht gespeichert werden."));
+    setError(error, Tr::tr("Für dieses Format kann die Ausrichtung nicht gespeichert werden."));
     return false;
 }
 
@@ -107,7 +108,7 @@ bool reencodeTransformed(const QString& src, const QString& dst, int pixelOp, bo
     const QByteArray format = r.format();
     QImage img = r.read();
     if (img.isNull()) {
-        setError(error, tr("Das Bild konnte nicht dekodiert werden."));
+        setError(error, Tr::tr("Das Bild konnte nicht dekodiert werden."));
         return false;
     }
     static const int m[9][4] = {{1, 0, 0, 1}, {1, 0, 0, 1},  {-1, 0, 0, 1},  {-1, 0, 0, -1}, {1, 0, 0, -1},
@@ -120,7 +121,7 @@ bool reencodeTransformed(const QString& src, const QString& dst, int pixelOp, bo
         const bool swap = t[0] == 0;
         QImage out(swap ? h : w, swap ? w : h, img.format());
         if (out.isNull()) {
-            setError(error, tr("Nicht genug Speicher zum Drehen."));
+            setError(error, Tr::tr("Nicht genug Speicher zum Drehen."));
             return false;
         }
         out.setColorTable(img.colorTable());
@@ -145,7 +146,7 @@ bool reencodeTransformed(const QString& src, const QString& dst, int pixelOp, bo
     if (!requireExact)
         w.setQuality(95);
     if (!w.write(img)) {
-        setError(error, tr("Dieses Format kann nicht geschrieben werden."));
+        setError(error, Tr::tr("Dieses Format kann nicht geschrieben werden."));
         return false;
     }
     if (requireExact) {
@@ -156,7 +157,7 @@ bool reencodeTransformed(const QString& src, const QString& dst, int pixelOp, bo
             QFile::remove(dst);
             if (inexact)
                 *inexact = true;
-            setError(error, tr("Das Bild lässt sich in diesem Format nicht exakt neu speichern."));
+            setError(error, Tr::tr("Das Bild lässt sich in diesem Format nicht exakt neu speichern."));
             return false;
         }
     }
@@ -167,11 +168,11 @@ bool replaceFile(const QString& replacement, const QString& target, bool keepMod
                  QString* error) {
     const QFileInfo orig(target);
     if (!orig.exists()) {
-        setError(error, tr("„%1“ existiert nicht mehr.").arg(orig.fileName()));
+        setError(error, Tr::tr("„%1“ existiert nicht mehr.").arg(orig.fileName()));
         return false;
     }
     if (orig.isSymLink() || !orig.isFile()) {
-        setError(error, tr("„%1“ ist keine normale Datei.").arg(orig.fileName()));
+        setError(error, Tr::tr("„%1“ ist keine normale Datei.").arg(orig.fileName()));
         return false;
     }
     std::error_code ec;
@@ -179,7 +180,7 @@ bool replaceFile(const QString& replacement, const QString& target, bool keepMod
     if (!ec && links > 1) {
         // Hard links: the contents go into the existing file (see LosslessTransform.h).
         if (!syncFile(replacement)) {
-            setError(error, tr("Die neue Datei konnte nicht gesichert werden."));
+            setError(error, Tr::tr("Die neue Datei konnte nicht gesichert werden."));
             return false;
         }
         reportDurabilityStep(DurabilityStep::FullSync, replacement);
@@ -187,7 +188,7 @@ bool replaceFile(const QString& replacement, const QString& target, bool keepMod
             keepModificationDate ? orig.lastModified() : QFileInfo(replacement).lastModified();
         QFile in(replacement), out(target);
         if (!in.open(QIODevice::ReadOnly) || !out.open(QIODevice::ReadWrite)) {
-            setError(error, tr("Die Datei kann nicht geschrieben werden."));
+            setError(error, Tr::tr("Die Datei kann nicht geschrieben werden."));
             return false;
         }
         const QByteArray data = in.readAll();
@@ -195,7 +196,7 @@ bool replaceFile(const QString& replacement, const QString& target, bool keepMod
                         out.setFileTime(mtime, QFileDevice::FileModificationTime);
         out.close();
         if (!ok || !syncFile(target)) {
-            setError(error, tr("Die Datei konnte nicht vollständig geschrieben werden."));
+            setError(error, Tr::tr("Die Datei konnte nicht vollständig geschrieben werden."));
             return false;
         }
         reportDurabilityStep(DurabilityStep::InPlaceCopy, target);
@@ -209,14 +210,14 @@ bool replaceFile(const QString& replacement, const QString& target, bool keepMod
             f.setFileTime(orig.lastModified(), QFileDevice::FileModificationTime);
     }
     if (!syncFile(replacement)) {
-        setError(error, tr("Die neue Datei konnte nicht gesichert werden."));
+        setError(error, Tr::tr("Die neue Datei konnte nicht gesichert werden."));
         return false;
     }
     reportDurabilityStep(DurabilityStep::FullSync, replacement);
     std::filesystem::rename(std::filesystem::path(replacement.toStdU16String()),
                             std::filesystem::path(target.toStdU16String()), ec);
     if (ec) {
-        setError(error, tr("„%1“ konnte nicht ersetzt werden: %2")
+        setError(error, Tr::tr("„%1“ konnte nicht ersetzt werden: %2")
                             .arg(orig.fileName(), QString::fromStdString(ec.message())));
         return false;
     }
@@ -230,7 +231,7 @@ bool copyWithMetadata(const QString& path, const QString& copy, QString* error, 
     if (cloned)
         *cloned = false;
     if (!QFile::copy(path, copy)) {
-        setError(error, tr("Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden."));
+        setError(error, Tr::tr("Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden."));
         return false;
     }
     QFile f(copy);

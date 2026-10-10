@@ -1,0 +1,70 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Allowlist of tools/i18n_check.py (F-I18N-01): string literals that look like text but are
+# never shown to the user, or must not be translated. One entry per line:
+#   path:literal   (literal exactly as in the source, without the quotes)
+#   path:*         (the whole file)
+# Unused entries fail the check, so the list stays current. Prefer wrapping a text in tr()
+# over adding it here.
+
+# Parser diagnostics (logged, never shown) and Finder/AppleScript tokens
+src/core/BinaryPlist.cpp:*
+src/core/DsStore.cpp:*
+src/core/FinderViewSettings.cpp:*
+# Native language names: always shown in their own language (Preferences -> Sprache)
+src/core/Language.cpp:*
+# Portable key names (QKeySequence::PortableText)
+src/core/InputBindings.cpp:Del
+src/core/InputBindings.cpp:Return
+# Debug log only (qCDebug detail of failed decoders)
+src/core/DecoderRegistry.cpp:unknown error
+# Updater diagnostics (log, Updater::unavailableReason())
+src/platform/mac/SparkleUpdater.mm:no updater for this bundle
+
+src/app/Updater.cpp:SUFeedURL missing or invalid
+src/app/Updater.cpp:SUFeedURL must use https
+src/app/Updater.cpp:SUPublicEDKey is not a base64 EdDSA (ed25519) public key
+src/app/Updater.cpp:SUPublicEDKey missing - never ship updates without a key
+src/app/Updater.cpp:built without Sparkle (LF_ENABLE_SPARKLE=OFF)
+src/app/Updater.cpp:no SUFeedURL/SUPublicEDKey in Info.plist (built without LF_SPARKLE_PUBLIC_KEY)
+src/app/Updater.cpp:not running from an app bundle
+# Format lists in the preferences: product and format names
+src/app/PreferencesDialog.cpp:CR2, CR3, CRW, NEF, NRW, ARW, SR2, RAF, ORF, RW2, DNG, PEF, IIQ, 3FR …
+src/app/PreferencesDialog.cpp:HEIC/HEIF, AVIF, JPEG XL
+src/app/PreferencesDialog.cpp:JPEG, PNG, GIF, BMP, TIFF, WebP, ICO/CUR, ICNS
+src/app/PreferencesDialog.cpp:PSD, OpenEXR, Radiance HDR, JPEG 2000, TGA, DDS, KTX
+# Format names (brands, camera RAW types) and file signatures
+src/platform/mac/ImageIODecoder.mm:Adobe DNG
+src/platform/mac/ImageIODecoder.mm:Canon CR2
+src/platform/mac/ImageIODecoder.mm:Canon CR3
+src/platform/mac/ImageIODecoder.mm:Canon CRW
+src/platform/mac/ImageIODecoder.mm:Canon TIF-RAW
+src/platform/mac/ImageIODecoder.mm:DxO RAW
+src/platform/mac/ImageIODecoder.mm:Epson ERF
+src/platform/mac/ImageIODecoder.mm:Fujifilm RAF
+src/platform/mac/ImageIODecoder.mm:Hasselblad 3FR
+src/platform/mac/ImageIODecoder.mm:Hasselblad FFF
+src/platform/mac/ImageIODecoder.mm:JPEG XL
+src/platform/mac/ImageIODecoder.mm:Kodak RAW
+src/platform/mac/ImageIODecoder.mm:Leaf MOS
+src/platform/mac/ImageIODecoder.mm:Leica RAW
+src/platform/mac/ImageIODecoder.mm:Leica RWL
+src/platform/mac/ImageIODecoder.mm:Minolta MRW
+src/platform/mac/ImageIODecoder.mm:Nikon NEF
+src/platform/mac/ImageIODecoder.mm:Nikon NEF (HE)
+src/platform/mac/ImageIODecoder.mm:Nikon NRW
+src/platform/mac/ImageIODecoder.mm:OM System ORF
+src/platform/mac/ImageIODecoder.mm:Olympus ORF
+src/platform/mac/ImageIODecoder.mm:Olympus SR
+src/platform/mac/ImageIODecoder.mm:Panasonic RAW
+src/platform/mac/ImageIODecoder.mm:Panasonic RW2
+src/platform/mac/ImageIODecoder.mm:Pentax PEF
+src/platform/mac/ImageIODecoder.mm:Phase One IIQ
+src/platform/mac/ImageIODecoder.mm:Photoshop (PSD)
+src/platform/mac/ImageIODecoder.mm:Radiance HDR
+src/platform/mac/ImageIODecoder.mm:Samsung SRW
+src/platform/mac/ImageIODecoder.mm:Sony ARW
+src/platform/mac/ImageIODecoder.mm:Sony AXR
+src/platform/mac/ImageIODecoder.mm:Sony SR2
+src/platform/mac/ImageIODecoder.mm:Sony SRF
+src/platform/mac/ImageIODecoder.mm:\xabKTX 11\xbb\r\n\x1a\n
+src/platform/mac/ImageIODecoder.mm:\xabKTX 20\xbb\r\n\x1a\n
