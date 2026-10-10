@@ -250,6 +250,15 @@
         <translation>Vergelijken</translation>
     </message>
     <message>
+        <source>mit %1</source>
+        <extracomment>compare bar, 3–4 images: which image is blended with the first one</extracomment>
+        <translation>met %1</translation>
+    </message>
+    <message>
+        <source>Bild, das mit dem ersten verglichen wird</source>
+        <translation>Afbeelding die met de eerste wordt vergeleken</translation>
+    </message>
+    <message>
         <source>%1×</source>
         <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
         <translation>%1×</translation>
@@ -275,8 +284,8 @@
         <translation>Veeg</translation>
     </message>
     <message>
-        <source>Die ersten beiden Bilder übereinander vergleichen</source>
-        <translation>De eerste twee afbeeldingen over elkaar vergelijken</translation>
+        <source>Das erste Bild mit einem anderen übereinander vergleichen</source>
+        <translation>De eerste afbeelding over een andere leggen om te vergelijken</translation>
     </message>
     <message>
         <source>%1 — %2</source>
@@ -6018,6 +6027,10 @@
     <message>
         <source>Comics: von links nach rechts lesen</source>
         <translation>Strips: van links naar rechts lezen</translation>
+    </message>
+    <message>
+        <source>Live Text wird geladen …</source>
+        <translation>Livetekst wordt geladen…</translation>
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>

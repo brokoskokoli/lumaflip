@@ -248,6 +248,15 @@
         <translation>比較</translation>
     </message>
     <message>
+        <source>mit %1</source>
+        <extracomment>compare bar, 3–4 images: which image is blended with the first one</extracomment>
+        <translation>與 %1</translation>
+    </message>
+    <message>
+        <source>Bild, das mit dem ersten verglichen wird</source>
+        <translation>與第一張影像比較的影像</translation>
+    </message>
+    <message>
         <source>%1×</source>
         <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
         <translation>%1×</translation>
@@ -273,8 +282,8 @@
         <translation>劃接</translation>
     </message>
     <message>
-        <source>Die ersten beiden Bilder übereinander vergleichen</source>
-        <translation>疊加比較前兩張影像</translation>
+        <source>Das erste Bild mit einem anderen übereinander vergleichen</source>
+        <translation>將第一張影像與另一張疊加比較</translation>
     </message>
     <message>
         <source>%1 — %2</source>
@@ -5989,6 +5998,10 @@
     <message>
         <source>Comics: von links nach rechts lesen</source>
         <translation>漫畫：從左向右閱讀</translation>
+    </message>
+    <message>
+        <source>Live Text wird geladen …</source>
+        <translation>正在載入原況文字…</translation>
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>

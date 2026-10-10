@@ -248,6 +248,15 @@
         <translation>比較</translation>
     </message>
     <message>
+        <source>mit %1</source>
+        <extracomment>compare bar, 3–4 images: which image is blended with the first one</extracomment>
+        <translation>%1 と比較</translation>
+    </message>
+    <message>
+        <source>Bild, das mit dem ersten verglichen wird</source>
+        <translation>最初の画像と比較する画像</translation>
+    </message>
+    <message>
         <source>%1×</source>
         <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
         <translation>%1×</translation>
@@ -273,8 +282,8 @@
         <translation>ワイプ</translation>
     </message>
     <message>
-        <source>Die ersten beiden Bilder übereinander vergleichen</source>
-        <translation>最初の 2 枚の画像を重ねて比較</translation>
+        <source>Das erste Bild mit einem anderen übereinander vergleichen</source>
+        <translation>最初の画像を別の画像に重ねて比較</translation>
     </message>
     <message>
         <source>%1 — %2</source>
@@ -5989,6 +5998,10 @@
     <message>
         <source>Comics: von links nach rechts lesen</source>
         <translation>コミック: 左から右に読む</translation>
+    </message>
+    <message>
+        <source>Live Text wird geladen …</source>
+        <translation>テキスト認識表示を読み込み中…</translation>
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>

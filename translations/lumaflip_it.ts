@@ -250,6 +250,15 @@
         <translation>Confronto</translation>
     </message>
     <message>
+        <source>mit %1</source>
+        <extracomment>compare bar, 3–4 images: which image is blended with the first one</extracomment>
+        <translation>con %1</translation>
+    </message>
+    <message>
+        <source>Bild, das mit dem ersten verglichen wird</source>
+        <translation>Immagine confrontata con la prima</translation>
+    </message>
+    <message>
         <source>%1×</source>
         <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
         <translation>%1×</translation>
@@ -275,8 +284,8 @@
         <translation>Tendina</translation>
     </message>
     <message>
-        <source>Die ersten beiden Bilder übereinander vergleichen</source>
-        <translation>Confronta le prime due immagini sovrapposte</translation>
+        <source>Das erste Bild mit einem anderen übereinander vergleichen</source>
+        <translation>Sovrapporre la prima immagine a un’altra per confrontarle</translation>
     </message>
     <message>
         <source>%1 — %2</source>
@@ -6018,6 +6027,10 @@
     <message>
         <source>Comics: von links nach rechts lesen</source>
         <translation>Fumetti: lettura da sinistra a destra</translation>
+    </message>
+    <message>
+        <source>Live Text wird geladen …</source>
+        <translation>Caricamento di Testo attivo…</translation>
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
