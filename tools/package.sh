@@ -11,6 +11,8 @@
 #   --notarize           notarize + staple app and DMG via tools/notarize.sh (needs a
 #                        Developer ID identity and notary credentials, see docs/RELEASING.md)
 #   --notarize-dry-run   run the notarization steps as a dry run (prints the commands)
+#   --keep-work          keep the staging directory (signed app + DMG root) for
+#                        inspection; its path is printed at the end. Default: removed
 #
 # Environment:
 #   LF_SIGN_IDENTITY   codesign identity, e.g. "Developer ID Application: Name (TEAMID)".
@@ -20,18 +22,20 @@
 #   LF_NOTARY_*        passed through to tools/notarize.sh
 #
 # Never deletes anything outside its own fresh temporary directory: staging happens in
-# a new mktemp directory, results are (over)written in dist/.
+# a new mktemp directory (removed on exit unless --keep-work), results are (over)written
+# in dist/.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 ROOT="$PWD"
 
-SKIP_BUILD=0; NOTARIZE=0; NOTARIZE_DRY=0
+SKIP_BUILD=0; NOTARIZE=0; NOTARIZE_DRY=0; KEEP_WORK=0
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --skip-build) SKIP_BUILD=1 ;;
     --notarize) NOTARIZE=1 ;;
     --notarize-dry-run) NOTARIZE=1; NOTARIZE_DRY=1 ;;
-    -h|--help) sed -n '3,24p' "$0"; exit 0 ;;
+    --keep-work) KEEP_WORK=1 ;;
+    -h|--help) sed -n '3,28p' "$0"; exit 0 ;;
     *) echo "package.sh: unknown option $1" >&2; exit 2 ;;
   esac; shift
 done
@@ -49,21 +53,71 @@ die() { printf '\033[1;31mpackage.sh: %s\033[0m\n' "$*" >&2; exit 1; }
 # ---- 1. Release build -------------------------------------------------------------
 if [[ $SKIP_BUILD == 0 ]]; then
   step "Configure + build Release ($BUILD_DIR)"
+  # Explicit: optimized (-O3 -DNDEBUG), no sanitizers, no tests - even if the cache in
+  # build/release was configured differently before.
   cmake -S . -B "$BUILD_DIR" -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$QT_PREFIX" \
-    -DLF_WERROR=ON -DLF_BUILD_TESTS=OFF -DQT_NO_PRIVATE_MODULE_WARNING=ON >/dev/null
+    -DLF_WERROR=ON -DLF_SANITIZE=OFF -DLF_BUILD_TESTS=OFF -DQT_NO_PRIVATE_MODULE_WARNING=ON >/dev/null
   cmake --build "$BUILD_DIR"
 fi
 BUILT_APP="$BUILD_DIR/src/Lumaflip.app"
 [[ -x "$BUILT_APP/Contents/MacOS/Lumaflip" ]] || die "$BUILT_APP missing - build first"
+
+step "Check: optimized Release build"
+# The compile commands of our own sources must carry -O2/-O3 and -DNDEBUG, never -O0 or
+# sanitizer flags (guards --skip-build against a Debug cache in build/release).
+python3 -I - "$BUILD_DIR" "$(pwd -P)/src" <<'PY'
+import json, pathlib, re, sys
+build, src = pathlib.Path(sys.argv[1]), sys.argv[2]
+cache = (build / "CMakeCache.txt").read_text(errors="replace")
+bt = re.search(r"^CMAKE_BUILD_TYPE:\w+=(.*)$", cache, re.M)
+if not bt or bt.group(1).strip() != "Release":
+    sys.exit(f"package.sh: {build} is not a Release build (CMAKE_BUILD_TYPE={bt.group(1) if bt else '?'})")
+cmds = json.loads((build / "compile_commands.json").read_text())
+own = [c for c in cmds if c["file"].startswith(src)]
+bad = []
+for c in own:
+    cmd = c.get("command") or " ".join(c.get("arguments", []))
+    if not re.search(r"(^|\s)-O[23s](\s|$)", cmd) or "-DNDEBUG" not in cmd \
+            or re.search(r"(^|\s)-O0(\s|$)|-fsanitize", cmd):
+        bad.append(c["file"])
+if not own or bad:
+    sys.exit("package.sh: not optimized: " + (", ".join(bad[:5]) or "no compile commands for src/"))
+print(f"Release, {len(own)} sources with -O2/-O3 -DNDEBUG, no sanitizers")
+PY
 VERSION=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "$BUILT_APP/Contents/Info.plist")
 ARCHS=$(lipo -archs "$BUILT_APP/Contents/MacOS/Lumaflip")
 echo "Lumaflip $VERSION ($ARCHS)"
 
 # ---- 2. Stage + deploy Qt ---------------------------------------------------------
-WORK=$(mktemp -d "${TMPDIR:-/tmp}/lumaflip-package.XXXXXX")
+WORK_PARENT="$(cd "${TMPDIR:-/tmp}" && pwd -P)"
+WORK=$(mktemp -d "$WORK_PARENT/lumaflip-package.XXXXXX")
+# Removes the staging directory on exit - only this mktemp directory: the path must be a
+# real directory (no symlink) directly inside $WORK_PARENT named lumaflip-package.*.
+# shellcheck disable=SC2329 # invoked by the EXIT trap
+cleanup_work() {
+  local rc=$?
+  if [[ $KEEP_WORK == 1 ]]; then
+    echo "Staging directory kept (--keep-work): ${WORK:-}"
+  elif [[ -n "${WORK:-}" && -d "$WORK" && ! -L "$WORK" && "$(dirname "$WORK")" == "$WORK_PARENT" \
+          && "$(basename "$WORK")" == lumaflip-package.?????? ]]; then
+    rm -r -- "$WORK" || echo "package.sh: could not remove $WORK" >&2
+  fi
+  return "$rc"
+}
+trap cleanup_work EXIT
 APP="$WORK/Lumaflip.app"
 step "Staging in $WORK"
 ditto "$BUILT_APP" "$APP"
+
+# Qt's CMake finalizer writes its default source language ("en") into the bundle; the
+# app's development language is German (UI texts, CFBundleLocalizations = de). Fixed in
+# src/CMakeLists.txt (QT_I18N_SOURCE_LANGUAGE); enforced here for any older build dir.
+PLIST="$APP/Contents/Info.plist"
+if [[ "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleDevelopmentRegion' "$PLIST" 2>/dev/null)" != de ]]; then
+  /usr/libexec/PlistBuddy -c 'Delete :CFBundleDevelopmentRegion' "$PLIST" 2>/dev/null || true
+  /usr/libexec/PlistBuddy -c 'Add :CFBundleDevelopmentRegion string de' "$PLIST"
+  echo "CFBundleDevelopmentRegion set to de"
+fi
 
 step "Deploy Qt frameworks, plugins, translations, licences"
 python3 tools/macos_deploy.py "$APP" --qt-prefix "$QT_PREFIX"
@@ -149,4 +203,5 @@ done
 
 step "Done"
 du -sh "$APP" "$ZIP" "$DMG" | sed "s|$ROOT/||"
-echo "Signed app (staging): $APP"
+[[ $KEEP_WORK == 1 ]] && echo "Signed app (staging): $APP"
+exit 0

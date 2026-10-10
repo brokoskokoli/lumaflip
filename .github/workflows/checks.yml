@@ -1,0 +1,143 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Mandatory checks (SPEC 15.1) as a reusable workflow: the same steps for CI (ci.yml:
+# push/PR) and for releases (release.yml: the release job needs these jobs), so a
+# release is never built with weaker checks than a merge.
+# On macOS: build, tests, format (all files), SPDX, spec coverage, benchmarks, clang-tidy
+# (changed files, findings fail), ASan/UBSan; the platform-neutral core on Linux
+# (SPEC 9.3); REUSE compliance.
+# Actions are pinned by commit SHA (comment = tag). No secrets are passed to this workflow.
+name: Checks
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+env:
+  HOMEBREW_NO_AUTO_UPDATE: "1"
+  HOMEBREW_NO_INSTALL_CLEANUP: "1"
+  HOMEBREW_NO_ENV_HINTS: "1"
+
+jobs:
+  check:
+    name: macOS checks (M1)
+    runs-on: macos-15
+    timeout-minutes: 90
+    env:
+      # Runners are slower than the reference Mac (SPEC 7): benchmark limits x2.
+      LF_BENCH_TOLERANCE: "2.0"
+      # RAW samples are downloaded below, so the RAW tests must not skip.
+      LF_REQUIRE_RAW: "1"
+      # clang-tidy is installed below: a missing binary fails instead of skipping.
+      LF_REQUIRE_TIDY: "1"
+      # clang-tidy checks the files changed against this ref (tools/check.sh). For a
+      # push it is the previous head; for a tag push GitHub reports no previous head,
+      # check.sh then falls back to main/origin/main.
+      LF_BASE_REF: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || github.event.before }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install dependencies
+        # webp + jpeg-xl: cwebp/cjxl for tests/corpus/make_corpus.sh; llvm: clang-tidy
+        # (keg-only, does not shadow clang-format).
+        run: |
+          brew install cmake ninja qt googletest clang-format webp jpeg-xl llvm
+          echo "LF_CLANG_TIDY=$(brew --prefix llvm)/bin/clang-tidy" >> "$GITHUB_ENV"
+      - name: Cache RAW samples
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: tests/corpus/generated/raw
+          key: raw-samples-${{ hashFiles('tests/corpus/download_raw.sh') }}
+      - name: Download RAW samples (CC0, pinned by SHA-256)
+        run: tests/corpus/download_raw.sh
+      - name: All checks (build, tests, format, SPDX, spec coverage, benchmarks, clang-tidy)
+        run: tools/check.sh --stage M1 --format-all --tidy
+      - name: Upload test logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: test-logs-macos
+          path: |
+            build/check/Testing/Temporary/*.log
+            build/check/bench.log
+          if-no-files-found: warn
+
+  sanitize:
+    name: macOS ASan + UBSan
+    runs-on: macos-15
+    timeout-minutes: 90
+    env:
+      LF_REQUIRE_RAW: "1"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Install dependencies
+        run: brew install cmake ninja qt googletest webp jpeg-xl
+      - name: Cache RAW samples
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        with:
+          path: tests/corpus/generated/raw
+          key: raw-samples-${{ hashFiles('tests/corpus/download_raw.sh') }}
+      - name: Download RAW samples
+        run: tests/corpus/download_raw.sh
+      - name: Build + tests with sanitizers
+        run: tools/check.sh --quick --sanitize
+      - name: Upload test logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: test-logs-sanitize
+          path: build/sanitize/Testing/Temporary/*.log
+          if-no-files-found: warn
+
+  linux-core:
+    # SPEC 9.3: the core is compiled and unit-tested on Linux from M1 on, without
+    # the app (LF_BUILD_UI=OFF, generic platform layer).
+    name: Linux core (generic platform)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: Install build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ninja-build clang libgtest-dev \
+            libgl1-mesa-dev libegl1 libxkbcommon0 libfontconfig1 libglib2.0-0
+      - name: Install Qt
+        uses: jurplel/install-qt-action@a9c63c7c123f3069cff414e7e482d95dfa9d8125 # v4.4.1
+        with:
+          version: "6.11.*"
+          cache: true
+      - name: Configure
+        run: >
+          cmake -S . -B build/linux -G Ninja -DCMAKE_BUILD_TYPE=Debug
+          -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
+          -DLF_BUILD_UI=OFF -DLF_WERROR=ON
+      - name: Build
+        run: cmake --build build/linux
+      - name: Unit tests
+        env:
+          QT_QPA_PLATFORM: offscreen
+        run: ctest --test-dir build/linux --output-on-failure -j "$(nproc)"
+      - name: Upload test logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: test-logs-linux
+          path: build/linux/Testing/Temporary/*.log
+          if-no-files-found: warn
+
+  reuse:
+    name: REUSE compliance
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - name: reuse lint
+        run: pipx run reuse lint

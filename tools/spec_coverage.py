@@ -16,9 +16,15 @@ A test name may carry several IDs (``F_OPEN_07_F_SORT_07_Refresh``). Mentions in
 comments, helper code or other files do NOT count. The manual-check table is also
 validated (well-formed rows, known IDs); malformed tables fail the check.
 
+With ``--build-dir build/check`` (tools/check.sh passes it) a test name only counts if
+that build really registers and runs it: ``lf_unit_tests --gtest_list_tests`` (no
+DISABLED_ tests, TEST_P only when instantiated), the Qt Test binaries known to
+``ctest -N`` and their ``-functions``, and ``lf_bench --list``. Test names found in the
+sources but not registered are listed; IDs covered only by them are uncovered.
+
 Exit code 1 if anything is uncovered or the manual-check table is malformed.
 """
-import argparse, pathlib, re, sys
+import argparse, os, pathlib, re, subprocess, sys
 from collections import defaultdict
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -27,7 +33,7 @@ MANUAL = ROOT / "docs" / "MANUAL_CHECKS.md"
 
 # One requirement ID inside an identifier, delimited by '_' or the identifier's ends.
 ID_IN_NAME = re.compile(r"(?:^|_)(F_[A-Z]+_\d+|P_\d+)(?=_|$)")
-GTEST = re.compile(r"^\s*(?:TEST|TEST_F|TEST_P|TYPED_TEST|TYPED_TEST_P)\s*\(\s*\w+\s*,\s*(\w+)\s*\)", re.M)
+GTEST = re.compile(r"^\s*(?:TEST|TEST_F|TEST_P|TYPED_TEST|TYPED_TEST_P)\s*\(\s*(\w+)\s*,\s*(\w+)\s*\)", re.M)
 QT_SLOT = re.compile(r"^\s*void\s+((?:F_[A-Z]+_\d+|P_\d+)\w*)\s*\(\s*\)", re.M)
 BENCH = re.compile(r"^\s*LF_BENCH\s*\(\s*(\w+)\s*,", re.M)
 ID_TEXT = re.compile(r"^(F-[A-Z]+-\d+|P-\d+)$")
@@ -131,9 +137,88 @@ def manual_rows(known_ids: set[str]) -> tuple[dict[str, list[str]], list[str]]:
     return covered, errors
 
 
-def test_names() -> dict[str, list[str]]:
-    """id -> list of 'file:line name' for every test/benchmark whose name carries the ID."""
+class Registered:
+    """Tests that the build in --build-dir actually registers and runs.
+
+    * GoogleTest: ``lf_unit_tests --gtest_list_tests`` -> (suite, name); parameterized and
+      typed tests are reduced to their source suite/name, DISABLED_ tests do not count.
+    * Qt Test: binaries listed by ``ctest -N`` (tst_*) and their ``-functions``.
+    * Benchmarks: ``lf_bench --list``.
+    """
+
+    def __init__(self, build_dir: pathlib.Path):
+        self.errors: list[str] = []
+        self.gtests = self._gtests(build_dir / "tests" / "lf_unit_tests")
+        ctest_names = self._ctest(build_dir)
+        self.qtests: dict[str, set[str]] = {}
+        for binary in sorted(n for n in ctest_names if n.startswith("tst_")):
+            self.qtests[binary] = self._qt_functions(build_dir / "tests" / binary)
+        self.benches = self._benches(build_dir / "tests" / "lf_bench")
+
+    def _run(self, cmd: list[str], env_extra: dict[str, str] | None = None) -> str | None:
+        env = dict(os.environ, **(env_extra or {}))
+        try:
+            out = subprocess.run(cmd, capture_output=True, text=True, timeout=120, env=env)
+        except (OSError, subprocess.TimeoutExpired) as e:
+            self.errors.append(f"{' '.join(cmd)}: {e}")
+            return None
+        if out.returncode != 0:
+            self.errors.append(f"{' '.join(cmd)}: exit code {out.returncode}")
+            return None
+        return out.stdout
+
+    def _gtests(self, binary: pathlib.Path) -> set[tuple[str, str]]:
+        found: set[tuple[str, str]] = set()
+        if not binary.exists():
+            return found
+        out = self._run([str(binary), "--gtest_list_tests"]) or ""
+        suite = ""
+        for line in out.splitlines():
+            if not line.strip() or line.startswith("Running main()"):
+                continue
+            if not line.startswith(" "):
+                # "Suite.", "Prefix/Suite." (TEST_P), "Suite/0." (TYPED_TEST)
+                parts = [p for p in line.split("#")[0].strip().rstrip(".").split("/") if not p.isdigit()]
+                suite = parts[-1] if parts else ""
+                continue
+            name = line.split("#")[0].strip().split("/")[0]
+            if suite.startswith("DISABLED_") or name.startswith("DISABLED_"):
+                continue
+            found.add((suite, name))
+        return found
+
+    def _ctest(self, build_dir: pathlib.Path) -> set[str]:
+        out = self._run(["ctest", "--test-dir", str(build_dir), "-N"]) or ""
+        return set(re.findall(r"^\s*Test\s+#\d+:\s+(\S+)", out, re.M))
+
+    def _qt_functions(self, binary: pathlib.Path) -> set[str]:
+        if not binary.exists():
+            self.errors.append(f"{binary}: registered in ctest but not built")
+            return set()
+        out = self._run([str(binary), "-functions"], {"QT_QPA_PLATFORM": "offscreen"}) or ""
+        return {m.group(1) for m in re.finditer(r"^(\w+)\(\)\s*$", out, re.M)}
+
+    def _benches(self, binary: pathlib.Path) -> set[str]:
+        if not binary.exists():
+            return set()
+        out = self._run([str(binary), "--list"], {"QT_QPA_PLATFORM": "offscreen"}) or ""
+        return {line.strip() for line in out.splitlines() if line.strip()}
+
+    def has(self, kind: str, f: pathlib.Path, suite: str, name: str) -> bool:
+        if kind == "gtest":
+            return (suite, name) in self.gtests
+        if kind == "qtest":
+            return name in self.qtests.get(f.stem, set())
+        return name in self.benches
+
+
+def test_names(registered: "Registered | None" = None) -> tuple[dict[str, list[str]], list[str]]:
+    """id -> list of 'file:line name' for every test/benchmark whose name carries the ID.
+
+    With `registered`, tests the build does not register/run are left out and returned
+    as the second element ('file:line name (kind)')."""
     covered: dict[str, list[str]] = defaultdict(list)
+    unregistered: list[str] = []
     tests = ROOT / "tests"
     for f in sorted(list(tests.rglob("*.cpp")) + list(tests.rglob("*.mm"))):
         text = f.read_text(errors="ignore")
@@ -143,12 +228,20 @@ def test_names() -> dict[str, list[str]]:
             patterns.append((QT_SLOT, "qtest"))
         for pat, kind in patterns:
             for m in pat.finditer(text):
-                name = m.group(1)
+                name = m.group(m.lastindex)
+                suite = m.group(1) if kind == "gtest" else ""
                 if kind == "qtest" and name.endswith("_data"):
                     continue
-                for rid in ids_in_name(name):
-                    covered[rid].append(f"{rel}:{line_of(text, m.start(1))} {name} ({kind})")
-    return covered
+                ids = ids_in_name(name)
+                if not ids:
+                    continue
+                loc = f"{rel}:{line_of(text, m.start(m.lastindex))} {name} ({kind})"
+                if registered is not None and not registered.has(kind, f, suite, name):
+                    unregistered.append(loc)
+                    continue
+                for rid in ids:
+                    covered[rid].append(loc)
+    return covered, unregistered
 
 
 def main() -> int:
@@ -156,6 +249,9 @@ def main() -> int:
     ap.add_argument("--stage", default="M1", choices=STAGES)
     ap.add_argument("--list", action="store_true", help="list all IDs of the stage")
     ap.add_argument("--verbose", "-v", action="store_true", help="show where each ID is covered")
+    ap.add_argument("--build-dir", type=pathlib.Path,
+                    help="build directory (e.g. build/check): count only tests that this build "
+                         "registers and runs (gtest list, ctest -N + Qt Test -functions, lf_bench --list)")
     args = ap.parse_args()
     spec = (ROOT / "SPEC.md").read_text()
     ids = stage_ids(spec, args.stage)
@@ -163,7 +259,22 @@ def main() -> int:
         print("\n".join(sorted(ids)))
         return 0
     all_ids = stage_ids(spec, STAGES[-1])
-    covered = test_names()
+    registered = None
+    if args.build_dir:
+        build_dir = args.build_dir if args.build_dir.is_absolute() else pathlib.Path.cwd() / args.build_dir
+        if not (build_dir / "CMakeCache.txt").exists():
+            print(f"--build-dir {args.build_dir}: not a CMake build directory")
+            return 1
+        registered = Registered(build_dir)
+        if registered.errors:
+            print("Could not list the registered tests:")
+            print("\n".join("  " + e for e in registered.errors))
+            return 1
+    covered, unregistered = test_names(registered)
+    if unregistered:
+        print(f"{len(unregistered)} test name(s) with requirement IDs are not registered/run by "
+              f"{args.build_dir} and do not count:")
+        print("\n".join("  " + u for u in unregistered))
     manual, errors = manual_rows(all_ids)
     for rid, locs in manual.items():
         covered[rid].extend(locs)

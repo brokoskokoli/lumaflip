@@ -43,6 +43,9 @@ if(LF_SHADERS)
 endif()
 
 # ---- the app bundle ----
+# Development language German (UI texts are German): Qt's finalizer writes
+# QT_I18N_SOURCE_LANGUAGE (default "en") into CFBundleDevelopmentRegion of the bundle.
+set(QT_I18N_SOURCE_LANGUAGE de)
 # App icon (source: packaging/macos/icon/lumaflip.svg, rendered by tools/make_icon.sh).
 set(LF_APP_ICON "${PROJECT_SOURCE_DIR}/packaging/macos/icon/Lumaflip.icns")
 set_source_files_properties(${LF_APP_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)

@@ -65,10 +65,20 @@ fi
 # ---- what to upload ---------------------------------------------------------------
 INPUT="${INPUT%/}"
 UPLOAD="$INPUT"
+# Own temporary directory: upload zip of an .app and the notarytool output. Removed on
+# exit by deleting exactly the files this script created (no recursive delete).
+WORK=$(mktemp -d "${TMPDIR:-/tmp}/lumaflip-notarize.XXXXXX")
+APP_ZIP=""
+cleanup() {
+  [[ -n "${WORK:-}" && -d "$WORK" && "$(basename "$WORK")" == lumaflip-notarize.* ]] || return 0
+  rm -f -- "$WORK/submit.out" "$WORK/log.out" ${APP_ZIP:+"$APP_ZIP"}
+  rmdir -- "$WORK" 2>/dev/null || echo "notarize.sh: left $WORK (not empty)" >&2
+}
+trap cleanup EXIT
 case "$INPUT" in
   *.app)
-    work=$(mktemp -d "${TMPDIR:-/tmp}/lumaflip-notarize.XXXXXX")
-    UPLOAD="$work/$(basename "$INPUT" .app).zip"
+    APP_ZIP="$WORK/$(basename "$INPUT" .app).zip"
+    UPLOAD="$APP_ZIP"
     say "Zipping $INPUT for the upload"
     run ditto -c -k --sequesterRsrc --keepParent "$INPUT" "$UPLOAD"
     STAPLE=("$INPUT" "${STAPLE[@]+"${STAPLE[@]}"}")
@@ -87,19 +97,57 @@ if [[ $DRY == 0 && "$INPUT" == *.app ]]; then
 fi
 
 # ---- submit -----------------------------------------------------------------------
+# Prints "<id>|<status>" from notarytool output: the JSON object (--output-format json),
+# else "id: <uuid>" and "status: <word>" from plain text (timeouts, errors).
+parse_submission() {
+  python3 -I -c '
+import json, re, sys
+text = open(sys.argv[1], errors="replace").read()
+sid = status = ""
+for line in text.splitlines():
+    line = line.strip()
+    if line.startswith("{"):
+        try:
+            obj = json.loads(line)
+        except ValueError:
+            continue
+        sid = obj.get("id", sid) or sid
+        status = obj.get("status", status) or status
+if not sid:
+    m = re.search(r"\bid:\s*([0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12})\b", text)
+    sid = m.group(1) if m else ""
+if not status:
+    m = re.search(r"status:\s*([A-Za-z ]+)", text)
+    status = m.group(1).strip() if m else ""
+print(f"{sid}|{status}")
+' "$1"
+}
+
 say "Submitting $(basename "$UPLOAD") to the Apple notary service (waits for the result)"
 if [[ $DRY == 1 ]]; then
   run xcrun notarytool submit "$UPLOAD" "${AUTH[@]}" --wait --timeout 1h --output-format json
-  SUB_ID="<submission-id>"; STATUS="Accepted"
+  SUB_ID="<submission-id>"; STATUS="Accepted"; RC=0
 else
-  result=$(xcrun notarytool submit "$UPLOAD" "${AUTH[@]}" --wait --timeout 1h --output-format json)
-  echo "$result"
-  SUB_ID=$(python3 -c 'import json,sys; print(json.load(sys.stdin).get("id",""))' <<<"$result")
-  STATUS=$(python3 -c 'import json,sys; print(json.load(sys.stdin).get("status",""))' <<<"$result")
+  # notarytool exits non-zero for Invalid/Rejected, timeouts and upload errors; under
+  # `set -e` a failing $(...) would end the script before the log is shown.
+  RC=0
+  xcrun notarytool submit "$UPLOAD" "${AUTH[@]}" --wait --timeout 1h --output-format json \
+    >"$WORK/submit.out" 2>&1 || RC=$?
+  cat "$WORK/submit.out"
+  IFS="|" read -r SUB_ID STATUS < <(parse_submission "$WORK/submit.out") || true
 fi
-if [[ "$STATUS" != "Accepted" ]]; then
-  echo "notarize.sh: notarization finished with status '$STATUS' (submission $SUB_ID). Log:" >&2
-  [[ -n "$SUB_ID" ]] && xcrun notarytool log "$SUB_ID" "${AUTH[@]}" >&2 || true
+if [[ $RC != 0 || "$STATUS" != "Accepted" ]]; then
+  echo "notarize.sh: notarization failed (exit code $RC, status '${STATUS:-unknown}', submission '${SUB_ID:-none}')" >&2
+  if [[ -n "${SUB_ID:-}" ]]; then
+    echo "notarize.sh: notary log (xcrun notarytool log $SUB_ID):" >&2
+    if ! xcrun notarytool log "$SUB_ID" "${AUTH[@]}" >"$WORK/log.out" 2>&1; then
+      echo "notarize.sh: could not fetch the log (a submission still in progress has none yet;" \
+           "check later with: xcrun notarytool info/log $SUB_ID)" >&2
+    fi
+    cat "$WORK/log.out" >&2
+  else
+    echo "notarize.sh: no submission ID (upload failed?) - see the output above" >&2
+  fi
   exit 1
 fi
 [[ $DRY == 1 ]] && run xcrun notarytool log "$SUB_ID" "${AUTH[@]}"
