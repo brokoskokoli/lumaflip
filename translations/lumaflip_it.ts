@@ -142,10 +142,6 @@
         <translation>Esc</translation>
     </message>
     <message>
-        <source>%1 (in einer späteren Version)</source>
-        <translation>%1 (in una versione futura)</translation>
-    </message>
-    <message>
         <source>Lumaflip wird als Standard-App festgelegt …</source>
         <translation>Impostazione di Lumaflip come app predefinita…</translation>
     </message>
@@ -168,6 +164,14 @@
         <translation>
             <numerusform>Lettura sottocartelle… %1 cartelle, %n immagine</numerusform>
             <numerusform>Lettura sottocartelle… %1 cartelle, %n immagini</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.</source>
+        <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
+        <translation>
+            <numerusform>Sottocartelle: viene mostrata solo %n immagine – apri una cartella più piccola.</numerusform>
+            <numerusform>Sottocartelle: vengono mostrate solo le prime %n immagini – apri una cartella più piccola.</numerusform>
         </translation>
     </message>
     <message>
@@ -370,6 +374,10 @@
     <message>
         <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
         <translation>La decodifica ha richiesto troppo tempo ed è stata interrotta.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess läuft ohne Sandbox und wird aus Sicherheitsgründen nicht verwendet.</source>
+        <translation>Il processo ausiliario di decodifica è in esecuzione senza sandbox e non viene usato per motivi di sicurezza.</translation>
     </message>
     <message>
         <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
@@ -3150,10 +3158,6 @@
 <context>
     <name>lf::PreferencesDialog</name>
     <message>
-        <source>in einer späteren Version</source>
-        <translation>in una versione futura</translation>
-    </message>
-    <message>
         <source>Einstellungen</source>
         <translation>Impostazioni</translation>
     </message>
@@ -3476,10 +3480,6 @@
     <message>
         <source>Maus, Trackpad und Tasten</source>
         <translation>Mouse, trackpad e tasti</translation>
-    </message>
-    <message>
-        <source>%1 (%2)</source>
-        <translation>%1 (%2)</translation>
     </message>
     <message>
         <source>Mausrad-Feinheiten</source>

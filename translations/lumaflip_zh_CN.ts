@@ -142,10 +142,6 @@
         <translation>Esc</translation>
     </message>
     <message>
-        <source>%1 (in einer späteren Version)</source>
-        <translation>%1（将在以后的版本中提供）</translation>
-    </message>
-    <message>
         <source>Lumaflip wird als Standard-App festgelegt …</source>
         <translation>正在将 Lumaflip 设为默认 App…</translation>
     </message>
@@ -167,6 +163,13 @@
         <extracomment>status bar while a folder with subfolders is read (F-OPEN-08)</extracomment>
         <translation>
             <numerusform>正在读取子文件夹… %1 个文件夹，%n 张图像</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.</source>
+        <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
+        <translation>
+            <numerusform>子文件夹：仅显示前 %n 张图像，请打开较小的文件夹。</numerusform>
         </translation>
     </message>
     <message>
@@ -364,6 +367,10 @@
     <message>
         <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
         <translation>解码耗时过长，已取消。</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess läuft ohne Sandbox und wird aus Sicherheitsgründen nicht verwendet.</source>
+        <translation>解码器辅助进程未在沙盒中运行，出于安全原因不予使用。</translation>
     </message>
     <message>
         <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
@@ -3135,10 +3142,6 @@
 <context>
     <name>lf::PreferencesDialog</name>
     <message>
-        <source>in einer späteren Version</source>
-        <translation>将在以后的版本中提供</translation>
-    </message>
-    <message>
         <source>Einstellungen</source>
         <translation>设置</translation>
     </message>
@@ -3461,10 +3464,6 @@
     <message>
         <source>Maus, Trackpad und Tasten</source>
         <translation>鼠标、触控板和按键</translation>
-    </message>
-    <message>
-        <source>%1 (%2)</source>
-        <translation>%1（%2）</translation>
     </message>
     <message>
         <source>Mausrad-Feinheiten</source>
