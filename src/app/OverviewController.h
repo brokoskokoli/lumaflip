@@ -49,7 +49,7 @@ public:
     void closeCompare();    // back to where the compare mode was started (grid or viewer)
     bool canCompareSelection() const;
 
-    GridView* grid() const { return m_grid; }       // null until first shown
+    GridView* grid() const { return m_grid; } // null until first shown
     CompareView* compareView() const { return m_compare; }
     QWidget* gridPanel() const { return m_gridPanel; }
     QString headerText() const; // grid header: count, selection, filters

@@ -50,7 +50,7 @@ public:
     int anchor() const { return m_anchor; }
     bool isSelected(int row) const;
     int selectedCount() const { return int(m_selected.size()); }
-    QList<int> selectedRows() const;    // ascending
+    QList<int> selectedRows() const;   // ascending
     QStringList selectedPaths() const; // collection order
 
     // Mouse (Qt on macOS: ControlModifier = ⌘): plain = only this item, ⌘ = toggle it,

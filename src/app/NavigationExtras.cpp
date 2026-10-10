@@ -102,9 +102,8 @@ bool NavigationExtras::navigate(int delta) {
     const QString cur = c->currentPath();
     const QString to = m_order.step(cur, delta, wrap, &hitEnd);
     if (hitEnd && to == cur) {
-        m_window.showMessage(delta > 0 ? tr("Ende der zufälligen Reihenfolge")
-                                       : tr("Anfang der zufälligen Reihenfolge"),
-                             900);
+        m_window.showMessage(
+            delta > 0 ? tr("Ende der zufälligen Reihenfolge") : tr("Anfang der zufälligen Reihenfolge"), 900);
         return true;
     }
     c->setCurrentPath(to);

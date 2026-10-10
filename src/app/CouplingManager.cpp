@@ -21,7 +21,8 @@
 namespace lf {
 
 CouplingManager& CouplingManager::of(Application& app) {
-    if (auto* m = app.findChild<CouplingManager*>(QStringLiteral("lfCouplingManager"), Qt::FindDirectChildrenOnly))
+    if (auto* m =
+            app.findChild<CouplingManager*>(QStringLiteral("lfCouplingManager"), Qt::FindDirectChildrenOnly))
         return *m;
     return *new CouplingManager(app);
 }

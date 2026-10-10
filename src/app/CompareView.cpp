@@ -88,7 +88,8 @@ void CompareView::setPaths(const QStringList& paths, int focus) {
             setFocusedPane(pane);
             emit paneInput(pane, ev, pos);
         });
-        connect(p.view, &ImageView::needsHigherResolution, this, [this, pane] { request(pane, Quality::Full); });
+        connect(p.view, &ImageView::needsHigherResolution, this,
+                [this, pane] { request(pane, Quality::Full); });
         views << p.view;
         m_panes.append(p);
     }
@@ -221,9 +222,9 @@ bool CompareView::event(QEvent* event) {
     if (event->type() == QEvent::ShortcutOverride) {
         auto* ke = static_cast<QKeyEvent*>(event);
         const Qt::KeyboardModifiers mods = ke->modifiers() & ~Qt::KeypadModifier;
-        const bool own = (ke->key() == Qt::Key_Tab || ke->key() == Qt::Key_Backtab ||
-                          ke->key() == Qt::Key_Escape) &&
-                         (mods == Qt::NoModifier || mods == Qt::ShiftModifier);
+        const bool own =
+            (ke->key() == Qt::Key_Tab || ke->key() == Qt::Key_Backtab || ke->key() == Qt::Key_Escape) &&
+            (mods == Qt::NoModifier || mods == Qt::ShiftModifier);
         if (own || (m_extraKeys && m_extraKeys(ke))) {
             event->accept();
             return true;

@@ -220,7 +220,8 @@ void WindowExtras::updateStatus() {
     m_shuffleLabel->setVisible(m_nav->shuffle());
     const bool coupled = CouplingManager::of(m_app).isCoupled(&m_window);
     m_coupledLabel->setText(tr("Gekoppelt"));
-    m_coupledLabel->setToolTip(tr("Blättern, Zoom und Ausschnitt laufen mit den anderen gekoppelten Fenstern"));
+    m_coupledLabel->setToolTip(
+        tr("Blättern, Zoom und Ausschnitt laufen mit den anderen gekoppelten Fenstern"));
     m_coupledLabel->setVisible(coupled);
 }
 

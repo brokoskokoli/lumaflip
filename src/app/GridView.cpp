@@ -24,7 +24,7 @@ namespace lf {
 namespace {
 
 constexpr int kRetainDelayMs = 60;
-constexpr int kPad = 8;      // around the thumbnail inside a cell
+constexpr int kPad = 8;       // around the thumbnail inside a cell
 constexpr int kTextLine = 18; // file name below the thumbnail
 
 bool isDark(const QPalette& p) {
@@ -53,7 +53,8 @@ QSize GridDelegate::sizeHint(const QStyleOptionViewItem&, const QModelIndex&) co
     return cellSize();
 }
 
-void GridDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const {
+void GridDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
+                         const QModelIndex& index) const {
     painter->save();
     painter->setRenderHint(QPainter::Antialiasing);
     painter->setRenderHint(QPainter::SmoothPixmapTransform);
@@ -119,8 +120,8 @@ void GridDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, 
     if (rating.stars > 0) {
         const QString stars = QString(rating.stars, QChar(0x2605));
         const double bw = fm.horizontalAdvance(stars) + 10;
-        drawBadge(painter, QRectF(target.left() + 4, target.bottom() - bh - 4, bw, bh), QColor(20, 20, 20, 190),
-                  stars);
+        drawBadge(painter, QRectF(target.left() + 4, target.bottom() - bh - 4, bw, bh),
+                  QColor(20, 20, 20, 190), stars);
     }
     if (rating.isPick() || rating.isReject()) {
         const QString mark = rating.isPick() ? QStringLiteral("✓") : QStringLiteral("✕");

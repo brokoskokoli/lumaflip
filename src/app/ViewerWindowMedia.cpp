@@ -4,16 +4,16 @@
 // ViewerWindow.cpp, which only calls the hooks below.
 
 #include "AnimationPlayer.h"
-#include "CullingController.h"
 #include "Application.h"
+#include "CullingController.h"
 #include "ImageView.h"
 #include "SlideshowController.h"
 #include "ViewerWindow.h"
 #include "core/Collection.h"
 #include "core/FileOps.h"
 #include "core/LosslessTransform.h"
-#include "core/SlideshowInput.h"
 #include "core/Settings.h"
+#include "core/SlideshowInput.h"
 #include "core/ThumbnailCache.h"
 #include "core/UndoBackupStore.h"
 

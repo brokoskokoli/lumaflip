@@ -97,11 +97,11 @@ void LoupeWidget::paintEvent(QPaintEvent*) {
         const QSize full = img->fullSize.isEmpty() ? img->image.size() : img->fullSize;
         const double sx = double(img->image.width()) / full.width();
         const double sy = double(img->image.height()) / full.height();
-        const QRect stageRect = QRectF(g.source.x() * sx, g.source.y() * sy, g.source.width() * sx,
-                                       g.source.height() * sy)
-                                    .toAlignedRect()
-                                    .adjusted(-1, -1, 1, 1)
-                                    .intersected(img->image.rect());
+        const QRect stageRect =
+            QRectF(g.source.x() * sx, g.source.y() * sy, g.source.width() * sx, g.source.height() * sy)
+                .toAlignedRect()
+                .adjusted(-1, -1, 1, 1)
+                .intersected(img->image.rect());
         if (!stageRect.isEmpty()) {
             const QImage crop = drawable(img->image, stageRect);
             const QRectF inFull(stageRect.x() / sx, stageRect.y() / sy, stageRect.width() / sx,
@@ -126,8 +126,8 @@ void LoupeWidget::paintEvent(QPaintEvent*) {
     //: magnification shown at the bottom of the loupe, e.g. "200 %"
     const QString label = tr("%1 %").arg(qRound(magnification() * 100));
     const QFontMetricsF fm(f);
-    const QRectF lr(g.target.center().x() - fm.horizontalAdvance(label) / 2 - 6, g.target.bottom() - fm.height() - 10,
-                    fm.horizontalAdvance(label) + 12, fm.height() + 2);
+    const QRectF lr(g.target.center().x() - fm.horizontalAdvance(label) / 2 - 6,
+                    g.target.bottom() - fm.height() - 10, fm.horizontalAdvance(label) + 12, fm.height() + 2);
     QPainterPath pill;
     pill.addRoundedRect(lr, lr.height() / 2, lr.height() / 2);
     p.fillPath(pill, QColor(20, 20, 20, 170));

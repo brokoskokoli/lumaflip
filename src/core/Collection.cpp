@@ -499,8 +499,8 @@ Result runJob(Job job) {
         QVector<FileEntry> shown;
         shown.reserve(entries.size());
         for (FileEntry& e : entries) {
-            const bool ratingOk = !ratingFiltering || job.filter.matches(collection::ratingOf(e)) ||
-                                  e.path == job.keepPath;
+            const bool ratingOk =
+                !ratingFiltering || job.filter.matches(collection::ratingOf(e)) || e.path == job.keepPath;
             if (ratingOk && namefilter::matchesTerms(e.name, job.nameTerms))
                 shown.append(std::move(e));
             else
@@ -571,8 +571,8 @@ struct Collection::Private {
     RatingFilter filter;
     QHash<QString, FileEntry> hidden;
     QString stale;
-    QString nameFilter;    // F-NAV-08: as typed
-    QStringList nameTerms; // folded terms of nameFilter
+    QString nameFilter;          // F-NAV-08: as typed
+    QStringList nameTerms;       // folded terms of nameFilter
     bool revalidateNext = false; // the next load comes from an explicit open
     // replayEditsDuringJob() inserted entries whose image properties are still unknown
     // (needed by the sort key): a resort on a worker reads them (never the GUI thread).
@@ -807,7 +807,8 @@ struct Collection::Private {
     }
 
     bool hiddenByFilter(const FileEntry& e) const {
-        return (ratingReader && filter.isActive() && e.ratingRead && !filter.matches(collection::ratingOf(e))) ||
+        return (ratingReader && filter.isActive() && e.ratingRead &&
+                !filter.matches(collection::ratingOf(e))) ||
                !namefilter::matchesTerms(e.name, nameTerms);
     }
     // F-NAV-08: a changed name filter applied to the entries in memory (no new job).
@@ -1354,7 +1355,8 @@ void Collection::updateRating(const QString& path, const Rating& r) {
         if (it == d->hidden.end())
             return;
         collection::setRating(*it, r);
-        if ((!d->filter.isActive() || d->filter.matches(r)) && namefilter::matchesTerms(it->name, d->nameTerms)) {
+        if ((!d->filter.isActive() || d->filter.matches(r)) &&
+            namefilter::matchesTerms(it->name, d->nameTerms)) {
             FileEntry e = d->hidden.take(key);
             d->insertEntry(std::move(e), false); // matches again: back at its sorted place
         }
@@ -1417,8 +1419,8 @@ void Collection::Private::applyNameFilter() {
     QVector<FileEntry> back;
     for (auto it = hidden.begin(); it != hidden.end();) {
         const FileEntry& e = it.value();
-        const bool ratingOk = !(ratingReader && filter.isActive()) || !e.ratingRead ||
-                              filter.matches(collection::ratingOf(e));
+        const bool ratingOk =
+            !(ratingReader && filter.isActive()) || !e.ratingRead || filter.matches(collection::ratingOf(e));
         if (ratingOk && namefilter::matchesTerms(e.name, nameTerms)) {
             back.append(it.value());
             it = hidden.erase(it);

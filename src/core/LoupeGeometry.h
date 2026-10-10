@@ -17,7 +17,7 @@
 namespace lf::loupe {
 
 // Loupe diameters (logical px) for the setting key::LoupeSize.
-int diameterFor(const QString& sizeId); // "small" 160, "medium" 240 (default), "large" 360
+int diameterFor(const QString& sizeId);         // "small" 160, "medium" 240 (default), "large" 360
 double magnificationFor(const QString& zoomId); // "100" 1.0, "200" 2.0 (default 2.0)
 
 struct Geometry {

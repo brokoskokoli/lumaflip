@@ -67,7 +67,7 @@ public:
     ImageView* view() const { return m_view; }
     WindowPanels* panels() const { return m_panels; } // F-INFO-02, F-GRID-01
     CullingController* culling() const { return m_culling; } // M3: F-CULL-01..06, F-FILE-08
-    WindowExtras* extras() const { return m_extras; } // M3: F-GRID-02/03, F-VIEW-11..13, F-NAV-06/08
+    WindowExtras* extras() const { return m_extras; }        // M3: F-GRID-02/03, F-VIEW-11..13, F-NAV-06/08
     QString currentPath() const;
     QString shownPath() const { return m_shownPath; }
     int displayedImageCount() const { return m_displayCount; } // distinct images shown (benchmarks)
@@ -98,8 +98,8 @@ public:
     void hideMessage();
     // M3: transient messages appear over this widget (image view, grid or compare view).
     void setOverlayHost(QWidget* host);
-    void refreshStatus(); // status line again (filters, shuffle, coupling changed)
-    void focusContent();  // keyboard focus to the image view, grid or compare view
+    void refreshStatus();       // status line again (filters, shuffle, coupling changed)
+    void focusContent();        // keyboard focus to the image view, grid or compare view
     QSize decodeTarget() const; // device pixels for Quality::Screen
 
     // Called by the Application for file operations of any window (F-FILE-01).

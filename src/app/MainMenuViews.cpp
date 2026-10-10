@@ -32,7 +32,7 @@ void MainMenu::buildViews(QMenu* view, QMenu* nav) {
 
     // ---- Navigation: go to, shuffle, name filter ----
     nav->addSeparator();
-    add(nav, Action::GoToImage, tr("Gehe zu Bild …"));                                 // F-NAV-06
+    add(nav, Action::GoToImage, tr("Gehe zu Bild …"));                                // F-NAV-06
     add(nav, Action::ToggleShuffle, tr("Zufällige Reihenfolge"))->setCheckable(true); // F-NAV-06
     add(nav, Action::FilterByName, tr("Nach Dateiname filtern …"));                   // F-NAV-08
     connect(addCommand(nav, QStringLiteral("nameFilter:clear"), tr("Namensfilter aufheben")),

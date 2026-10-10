@@ -17,8 +17,8 @@ void setWindowMinimalChrome(QWidget* window, bool on);
 
 // What the native window looks like (tests, F-VIEW-12/13).
 struct NativeWindowState {
-    bool valid = false;         // a native window exists
-    bool floating = false;      // level above the normal window level
+    bool valid = false;    // a native window exists
+    bool floating = false; // level above the normal window level
     bool fullSizeContent = false;
     bool titlebarTransparent = false;
     bool titleHidden = false;

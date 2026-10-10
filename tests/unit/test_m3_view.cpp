@@ -102,8 +102,8 @@ TEST(GridLogic, F_GRID_02_ClickSelection) {
     EXPECT_EQ(s.selectedRows(), QList<int>({3, 4, 5, 6}));
     s.click(4, false, true); // the anchor stays at 3
     EXPECT_EQ(s.selectedRows(), QList<int>({3, 4}));
-    s.click(0, true, false);  // ⌘ adds 0 and moves the anchor
-    s.click(1, true, true);   // ⌘⇧ adds the range 0..1
+    s.click(0, true, false); // ⌘ adds 0 and moves the anchor
+    s.click(1, true, true);  // ⌘⇧ adds the range 0..1
     EXPECT_EQ(s.selectedRows(), QList<int>({0, 1, 3, 4}));
     EXPECT_EQ(s.selectedPaths(), (QStringList{p.at(0), p.at(1), p.at(3), p.at(4)}));
     s.selectAll();
@@ -315,7 +315,8 @@ TEST(CouplingLogic, F_WIN_07_ByName) {
     EXPECT_EQ(coupling::followerIndex(CoupleBy::Name, 0, "/a/IMG_0002.jpg", follower), 2);
     EXPECT_EQ(coupling::followerIndex(CoupleBy::Name, 0, "/a/IMG_0002.tif", follower), 1);
     EXPECT_EQ(coupling::followerIndex(CoupleBy::Name, 0, "/a/img_0001.PNG", follower), 0);
-    EXPECT_EQ(coupling::followerIndex(CoupleBy::Name, 0, QString::fromUtf8("/a/M\xC3\xBCnchen.jpg"), follower), 3);
+    EXPECT_EQ(
+        coupling::followerIndex(CoupleBy::Name, 0, QString::fromUtf8("/a/M\xC3\xBCnchen.jpg"), follower), 3);
     EXPECT_EQ(coupling::followerIndex(CoupleBy::Name, 3, "/a/other.jpg", follower), -1);
     EXPECT_EQ(coupling::matchKey("/x/Photo.final.JPG"), coupling::matchKey("photo.final.png"));
     EXPECT_EQ(coupling::fromId("index"), CoupleBy::Index);
@@ -336,7 +337,10 @@ TEST(NavOrder, F_NAV_06_GoToParsing) {
     EXPECT_EQ(nav::parseGoTo("0", 5, 100), 0);
     EXPECT_EQ(nav::parseGoTo("+10", 5, 100), 15);
     EXPECT_EQ(nav::parseGoTo("-10", 5, 100), 0);
-    EXPECT_EQ(nav::parseGoTo(QString::fromUtf8("\xE2\x88\x92" "2"), 5, 100), 3); // U+2212 minus
+    EXPECT_EQ(nav::parseGoTo(QString::fromUtf8("\xE2\x88\x92"
+                                               "2"),
+                             5, 100),
+              3); // U+2212 minus
     EXPECT_FALSE(nav::parseGoTo("", 5, 100));
     EXPECT_FALSE(nav::parseGoTo("abc", 5, 100));
     EXPECT_FALSE(nav::parseGoTo("3", 0, 0));
@@ -403,14 +407,16 @@ TEST(NameFilterMatch, F_NAV_08_CaseDiacriticsAndNormalization) {
     const QString nfc = QString::fromUtf8("M\xC3\xBCnchen 2024.jpg");
     for (const QString& name : {nfd, nfc}) {
         SCOPED_TRACE(name.toStdString());
-        EXPECT_TRUE(namefilter::matches(name, QString::fromUtf8("m\xC3\xBCnchen")));        // typed NFC
-        EXPECT_TRUE(namefilter::matches(name, QString::fromUtf8("MU\xCC\x88NCHEN")));       // NFD, upper case
-        EXPECT_TRUE(namefilter::matches(name, QStringLiteral("munchen")));                  // no umlaut
-        EXPECT_TRUE(namefilter::matches(name, QStringLiteral("2024 mun")));                 // all words
+        EXPECT_TRUE(namefilter::matches(name, QString::fromUtf8("m\xC3\xBCnchen")));  // typed NFC
+        EXPECT_TRUE(namefilter::matches(name, QString::fromUtf8("MU\xCC\x88NCHEN"))); // NFD, upper case
+        EXPECT_TRUE(namefilter::matches(name, QStringLiteral("munchen")));            // no umlaut
+        EXPECT_TRUE(namefilter::matches(name, QStringLiteral("2024 mun")));           // all words
         EXPECT_FALSE(namefilter::matches(name, QStringLiteral("2024 berlin")));
-        EXPECT_TRUE(namefilter::matches(name, QStringLiteral("  ")));                       // empty
+        EXPECT_TRUE(namefilter::matches(name, QStringLiteral("  "))); // empty
     }
-    EXPECT_TRUE(namefilter::matches(QString::fromUtf8("Stra\xC3\x9F" "e.png"), QStringLiteral("STRASSE")));
+    EXPECT_TRUE(namefilter::matches(QString::fromUtf8("Stra\xC3\x9F"
+                                                      "e.png"),
+                                    QStringLiteral("STRASSE")));
     EXPECT_TRUE(namefilter::matches(QStringLiteral("Café.heic"), QStringLiteral("CAFE")));
     EXPECT_EQ(namefilter::fold(QString::fromUtf8("\xC3\x84")), QStringLiteral("a"));
     EXPECT_EQ(namefilter::terms(QStringLiteral(" a  B ")), (QStringList{"a", "b"}));
@@ -420,7 +426,8 @@ TEST(NameFilterMatch, F_NAV_08_CollectionFiltersLiveAndCombinesWithRatings) {
     test::ensureQtApp();
     QTemporaryDir dir;
     ASSERT_TRUE(dir.isValid());
-    const QStringList names = {"alpha.jpg", "beta.jpg", QString::fromUtf8("Mu\xCC\x88nchen.jpg"), "gamma.jpg"};
+    const QStringList names = {"alpha.jpg", "beta.jpg", QString::fromUtf8("Mu\xCC\x88nchen.jpg"),
+                               "gamma.jpg"};
     for (const QString& n : names) {
         QFile f(dir.filePath(n));
         ASSERT_TRUE(f.open(QIODevice::WriteOnly));

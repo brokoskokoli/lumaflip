@@ -260,9 +260,11 @@ void OverviewController::rate(const QStringList& paths, Action action) {
             });
     }
     if (paths.size() == 1)
-        m_window.showMessage(tr("%1: %2").arg(QFileInfo(paths.first()).fileName(), actionLabel(action)), 1500);
+        m_window.showMessage(tr("%1: %2").arg(QFileInfo(paths.first()).fileName(), actionLabel(action)),
+                             1500);
     else
-        m_window.showMessage(tr("%1 – %n Bild(er)", nullptr, int(paths.size())).arg(actionLabel(action)), 1500);
+        m_window.showMessage(tr("%1 – %n Bild(er)", nullptr, int(paths.size())).arg(actionLabel(action)),
+                             1500);
 }
 
 void OverviewController::trash(const QStringList& paths) {

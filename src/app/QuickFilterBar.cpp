@@ -57,8 +57,9 @@ QString QuickFilterBar::text() const {
 
 void QuickFilterBar::updateCount() {
     const Collection* c = m_window.collection();
-    m_count->setText(c->nameFilter().isEmpty() ? QString()
-                                               : QStringLiteral("%1 / %2").arg(c->count()).arg(c->totalCount()));
+    m_count->setText(c->nameFilter().isEmpty()
+                         ? QString()
+                         : QStringLiteral("%1 / %2").arg(c->count()).arg(c->totalCount()));
     m_count->setVisible(!m_count->text().isEmpty());
     m_window.refreshStatus();
 }

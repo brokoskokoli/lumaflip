@@ -161,6 +161,64 @@
     </message>
 </context>
 <context>
+    <name>lf::CompareView</name>
+    <message>
+        <source>Vergleich</source>
+        <translation>Comparaison</translation>
+    </message>
+    <message>
+        <source>%1 — %2</source>
+        <extracomment>compare pane caption: file name — rating (stars, Pick/Reject)</extracomment>
+        <translation>%1 — %2</translation>
+    </message>
+</context>
+<context>
+    <name>lf::CouplingManager</name>
+    <message numerus="yes">
+        <source>%n Fenster gekoppelt</source>
+        <translation>
+            <numerusform>%n fenêtre liée</numerusform>
+            <numerusform>%n fenêtres liées</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Kein passendes Bild zu „%1“</source>
+        <translation>Aucune image correspondant à « %1 »</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln</source>
+        <translation>Lier les fenêtres</translation>
+    </message>
+    <message>
+        <source>Gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt. Mit ⌥ lässt sich ein Fenster einzeln verschieben.</source>
+        <translation>Les fenêtres liées défilent ensemble et partagent le zoom et la zone visible. Maintenez ⌥ pour déplacer une seule fenêtre.</translation>
+    </message>
+    <message>
+        <source>Dateiname (ohne Endung)</source>
+        <translation>Nom de fichier (sans extension)</translation>
+    </message>
+    <message>
+        <source>Position in der Sammlung</source>
+        <translation>Position dans la collection</translation>
+    </message>
+    <message>
+        <source>Gemeinsam blättern nach:</source>
+        <translation>Défiler ensemble selon :</translation>
+    </message>
+    <message>
+        <source>Koppeln</source>
+        <translation>Lier</translation>
+    </message>
+    <message>
+        <source>Entkoppeln</source>
+        <translation>Délier les fenêtres</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuler</translation>
+    </message>
+</context>
+<context>
     <name>lf::CullingController</name>
     <message>
         <source>Bewertung wird gelesen …</source>
@@ -697,6 +755,13 @@
     </message>
 </context>
 <context>
+    <name>lf::GridView</name>
+    <message>
+        <source>Raster</source>
+        <translation>Grille</translation>
+    </message>
+</context>
+<context>
     <name>lf::HistogramWidget</name>
     <message>
         <source>Histogramm</source>
@@ -1203,6 +1268,34 @@
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
         <translation>Classement rapide : copier (C, puis 1–9)</translation>
+    </message>
+    <message>
+        <source>Gehe zu Bild …</source>
+        <translation>Aller à l’image…</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge</source>
+        <translation>Ordre aléatoire</translation>
+    </message>
+    <message>
+        <source>Nach Dateiname filtern</source>
+        <translation>Filtrer par nom de fichier</translation>
+    </message>
+    <message>
+        <source>Mit nächstem vergleichen</source>
+        <translation>Comparer avec la suivante</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>Toujours au premier plan</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus</source>
+        <translation>Fenêtre minimale</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln …</source>
+        <translation>Lier les fenêtres…</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -1896,6 +1989,14 @@
     </message>
 </context>
 <context>
+    <name>lf::LoupeWidget</name>
+    <message>
+        <source>%1 %</source>
+        <extracomment>magnification shown at the bottom of the loupe, e.g. &quot;200 %&quot;</extracomment>
+        <translation>%1&#xa0;%</translation>
+    </message>
+</context>
+<context>
     <name>lf::MainMenu</name>
     <message>
         <source>Ablage</source>
@@ -2294,6 +2395,46 @@
         <source>Ziele der Schnellablage festlegen …</source>
         <translation>Définir les cibles du classement …</translation>
     </message>
+    <message>
+        <source>Raster</source>
+        <translation>Grille</translation>
+    </message>
+    <message>
+        <source>Mit nächstem vergleichen</source>
+        <translation>Comparer avec la suivante</translation>
+    </message>
+    <message>
+        <source>Auswahl vergleichen</source>
+        <translation>Comparer la sélection</translation>
+    </message>
+    <message>
+        <source>Gehe zu Bild …</source>
+        <translation>Aller à l’image…</translation>
+    </message>
+    <message>
+        <source>Nach Dateiname filtern …</source>
+        <translation>Filtrer par nom de fichier…</translation>
+    </message>
+    <message>
+        <source>Namensfilter aufheben</source>
+        <translation>Effacer le filtre de nom</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>Toujours au premier plan</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus</source>
+        <translation>Fenêtre minimale</translation>
+    </message>
+    <message>
+        <source>Fenster koppeln …</source>
+        <translation>Lier les fenêtres…</translation>
+    </message>
+    <message>
+        <source>Entkoppeln</source>
+        <translation>Délier les fenêtres</translation>
+    </message>
 </context>
 <context>
     <name>lf::MenuExtras</name>
@@ -2474,6 +2615,45 @@
     </message>
 </context>
 <context>
+    <name>lf::NavigationExtras</name>
+    <message>
+        <source>Gehe zu Bild</source>
+        <translation>Aller à l’image</translation>
+    </message>
+    <message>
+        <source>Bildnummer (1–%1), oder +n / −n vom aktuellen Bild:</source>
+        <translation>Numéro d’image (1–%1), ou +n / −n depuis l’image actuelle :</translation>
+    </message>
+    <message>
+        <source>Gehe zu</source>
+        <translation>Aller</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuler</translation>
+    </message>
+    <message>
+        <source>Bitte eine Bildnummer zwischen 1 und %1 eingeben</source>
+        <translation>Saisissez un numéro d’image entre 1 et %1</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge an</source>
+        <translation>Lecture aléatoire activée</translation>
+    </message>
+    <message>
+        <source>Zufällige Reihenfolge aus</source>
+        <translation>Lecture aléatoire désactivée</translation>
+    </message>
+    <message>
+        <source>Ende der zufälligen Reihenfolge</source>
+        <translation>Fin de l’ordre aléatoire</translation>
+    </message>
+    <message>
+        <source>Anfang der zufälligen Reihenfolge</source>
+        <translation>Début de l’ordre aléatoire</translation>
+    </message>
+</context>
+<context>
     <name>lf::OpenWithService</name>
     <message>
         <source>Kein Programm zum Bearbeiten gefunden. Wähle eines unter Einstellungen → Allgemein → Editor.</source>
@@ -2506,6 +2686,76 @@
     <message>
         <source>Keine passenden Programme</source>
         <translation>Aucune app compatible</translation>
+    </message>
+</context>
+<context>
+    <name>lf::OverviewController</name>
+    <message>
+        <source>Keine Bilder für die Rasteransicht</source>
+        <translation>Aucune image pour la vue en grille</translation>
+    </message>
+    <message>
+        <source>Zum Vergleichen mindestens zwei Bilder wählen</source>
+        <translation>Sélectionnez au moins deux images à comparer</translation>
+    </message>
+    <message>
+        <source>Es werden die ersten %1 Bilder verglichen</source>
+        <translation>Comparaison des %1 premières images</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er)</source>
+        <translation>
+            <numerusform>%n image</numerusform>
+            <numerusform>%n images</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n ausgewählt</source>
+        <translation>
+            <numerusform>%n sélectionnée</numerusform>
+            <numerusform>%n sélectionnées</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Name: „%1“</source>
+        <translation>Nom : « %1 »</translation>
+    </message>
+    <message>
+        <source>%1: %2</source>
+        <translation>%1 : %2</translation>
+    </message>
+    <message numerus="yes">
+        <source>%1 – %n Bild(er)</source>
+        <translation>
+            <numerusform>%1 – %n image</numerusform>
+            <numerusform>%1 – %n images</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>In den Papierkorb legen</source>
+        <translation>Placer dans la corbeille</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb gelegt</source>
+        <translation>
+            <numerusform>%n image placée dans la corbeille</numerusform>
+            <numerusform>%n images placées dans la corbeille</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) in den Papierkorb legen?</source>
+        <translation>
+            <numerusform>Placer %n image dans la corbeille ?</numerusform>
+            <numerusform>Placer %n images dans la corbeille ?</numerusform>
+        </translation>
+    </message>
+    <message>
+        <source>Mit ⌘Z lässt sich das widerrufen.</source>
+        <translation>Vous pouvez annuler cette action avec ⌘Z.</translation>
+    </message>
+    <message>
+        <source>Abbrechen</source>
+        <translation>Annuler</translation>
     </message>
 </context>
 <context>
@@ -2671,6 +2921,22 @@
         <translation>Les nouvelles fenêtres apparaissent alors sous forme d’onglet dans la fenêtre au premier plan&#xa0;; Fenêtre → «&#xa0;Fusionner toutes les fenêtres&#xa0;» regroupe les fenêtres ouvertes.</translation>
     </message>
     <message>
+        <source>Gekoppelte Fenster blättern nach:</source>
+        <translation>Les fenêtres liées défilent selon :</translation>
+    </message>
+    <message>
+        <source>Dateiname (ohne Endung)</source>
+        <translation>Nom de fichier (sans extension)</translation>
+    </message>
+    <message>
+        <source>Position in der Sammlung</source>
+        <translation>Position dans la collection</translation>
+    </message>
+    <message>
+        <source>Fenster → „Fenster koppeln …“: gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt.</source>
+        <translation>Fenêtre → « Lier les fenêtres… » : les fenêtres liées défilent ensemble et partagent le zoom et la zone visible.</translation>
+    </message>
+    <message>
         <source>Dunkel</source>
         <translation>Sombre</translation>
     </message>
@@ -2755,6 +3021,30 @@
         <translation>1 pixel d’image = 1 point</translation>
     </message>
     <message>
+        <source>Lupe (L gedrückt halten):</source>
+        <translation>Loupe (maintenir L) :</translation>
+    </message>
+    <message>
+        <source>200 %</source>
+        <translation>200&#xa0;%</translation>
+    </message>
+    <message>
+        <source>Größe der Lupe:</source>
+        <translation>Taille de la loupe :</translation>
+    </message>
+    <message>
+        <source>Klein</source>
+        <translation>Petite</translation>
+    </message>
+    <message>
+        <source>Mittel</source>
+        <translation>Moyenne</translation>
+    </message>
+    <message>
+        <source>Groß</source>
+        <translation>Grande</translation>
+    </message>
+    <message>
         <source>Diashow (⇧⌘F, S):</source>
         <translation>Diaporama (⇧⌘F, S)&#xa0;:</translation>
     </message>
@@ -2775,8 +3065,8 @@
         <translation>Fondu enchaîné</translation>
     </message>
     <message>
-        <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, Esc beendet.</source>
-        <translation>Pendant le diaporama&#xa0;: Espace met en pause, 1–9 définit l’intervalle en secondes, ←/→ change d’image, Esc arrête.</translation>
+        <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, P/X/U bewerten, Esc beendet.</source>
+        <translation>Pendant le diaporama : Espace met en pause, 1–9 définit l’intervalle en secondes, ←/→ change d’image, P/X/U attribuent une note, Échap arrête.</translation>
     </message>
     <message>
         <source>Profilvorlagen</source>
@@ -3295,6 +3585,17 @@
     </message>
 </context>
 <context>
+    <name>lf::QuickFilterBar</name>
+    <message>
+        <source>Dateiname filtern</source>
+        <translation>Filtrer les noms de fichier</translation>
+    </message>
+    <message>
+        <source>Filter aufheben (Esc)</source>
+        <translation>Effacer le filtre (Échap)</translation>
+    </message>
+</context>
+<context>
     <name>lf::QuickMove</name>
     <message>
         <source>%1  (nicht festgelegt)</source>
@@ -3330,6 +3631,20 @@
     <message>
         <source>Übersprungen – nichts geändert.</source>
         <translation>Ignoré – rien n’a changé.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „%1“ verschoben</source>
+        <translation>
+            <numerusform>%n image déplacée vers « %1 »</numerusform>
+            <numerusform>%n images déplacées vers « %1 »</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>%n Bild(er) nach „%1“ kopiert</source>
+        <translation>
+            <numerusform>%n image copiée vers « %1 »</numerusform>
+            <numerusform>%n images copiées vers « %1 »</numerusform>
+        </translation>
     </message>
     <message>
         <source>Nach „%1“ verschoben</source>
@@ -3923,6 +4238,49 @@
     <message>
         <source>Nur EXIF-Ausrichtung setzen</source>
         <translation>Définir uniquement l’orientation EXIF</translation>
+    </message>
+</context>
+<context>
+    <name>lf::WindowExtras</name>
+    <message>
+        <source>Zum Bewegen des Fensters ziehen</source>
+        <translation>Faites glisser pour déplacer la fenêtre</translation>
+    </message>
+    <message>
+        <source>Name: „%1“</source>
+        <translation>Nom : « %1 »</translation>
+    </message>
+    <message>
+        <source>Zufällig</source>
+        <translation>Aléatoire</translation>
+    </message>
+    <message>
+        <source>Gekoppelt</source>
+        <translation>Liée</translation>
+    </message>
+    <message>
+        <source>Blättern, Zoom und Ausschnitt laufen mit den anderen gekoppelten Fenstern</source>
+        <translation>Le défilement, le zoom et la zone visible suivent les autres fenêtres liées</translation>
+    </message>
+    <message>
+        <source>Kein Dateiname passt zu „%1“ – Esc hebt den Filter auf</source>
+        <translation>Aucun nom de fichier ne correspond à « %1 » – Échap efface le filtre</translation>
+    </message>
+    <message>
+        <source>Immer im Vordergrund</source>
+        <translation>Toujours au premier plan</translation>
+    </message>
+    <message>
+        <source>Nicht mehr im Vordergrund</source>
+        <translation>N’est plus au premier plan</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
+        <translation>Fenêtre minimale – faites glisser en haut pour déplacer la fenêtre</translation>
+    </message>
+    <message>
+        <source>Minimaler Fenstermodus aus</source>
+        <translation>Fenêtre minimale désactivée</translation>
     </message>
 </context>
 <context>

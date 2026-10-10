@@ -11,7 +11,8 @@ QString fold(const QString& text) {
     out.reserve(decomposed.size());
     for (const QChar c : decomposed) {
         const QChar::Category cat = c.category();
-        if (cat == QChar::Mark_NonSpacing || cat == QChar::Mark_SpacingCombining || cat == QChar::Mark_Enclosing)
+        if (cat == QChar::Mark_NonSpacing || cat == QChar::Mark_SpacingCombining ||
+            cat == QChar::Mark_Enclosing)
             continue; // diacritics ("ä" -> "a")
         out.append(c);
     }
