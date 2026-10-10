@@ -393,9 +393,9 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     connect(&st, &Settings::changed, this, &ViewerWindow::applySetting);
     m_panels = new WindowPanels(*this, provider); // M2: created hidden, shown with the window
     setupMedia(); // animation, pages, slideshow, saving the rotation (ViewerWindowMedia.cpp)
-    m_culling = new CullingController(*this, m_app); // M3: ratings, culling, quick move
-    m_extras = new WindowExtras(*this, m_app);       // M3: grid, compare, loupe, window modes …
-    m_hdr = new HdrController(*this);                // M3: HDR toggle, badge, exposure
+    m_culling = new CullingController(*this, m_app);     // M3: ratings, culling, quick move
+    m_extras = new WindowExtras(*this, m_app);           // M3: grid, compare, loupe, window modes …
+    m_hdr = new HdrController(*this);                    // M3: HDR toggle, badge, exposure
     m_integration = new WindowIntegration(*this, m_app); // M4: archives, Live Text, Quick Look …
     connect(this, &ViewerWindow::imageShown, m_integration,
             [this](const QString& path) { m_integration->imageShown(path); });
