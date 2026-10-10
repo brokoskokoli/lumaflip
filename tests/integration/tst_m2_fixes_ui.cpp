@@ -410,7 +410,8 @@ private slots:
                     return d;
             return static_cast<DefaultAppDialog*>(nullptr);
         };
-        QTRY_VERIFY((dlg = find()) != nullptr);
+        QTRY_VERIFY(find() != nullptr);
+        dlg = find();
         QListWidget* list = dlg->list();
         QCOMPARE(list->count(), 3);
         for (int i = 0; i < list->count(); ++i)
@@ -546,6 +547,8 @@ private slots:
     // F-FMT-02: unreadable files - "Kein Histogramm" instead of an empty box, an error mark
     // in the filmstrip.
     void F_FMT_02_brokenFileHistogramAndFilmstripMark() {
+        if (!QFileInfo::exists(corpus(QStringLiteral("orient_1.jpg"))))
+            QSKIP("format corpus missing - run tests/corpus/make_corpus.sh");
         QVERIFY(QFile::copy(corpus(QStringLiteral("garbage.jpg")), path("b_kaputt.jpg")));
         QVERIFY(!makeImage(path("a.png"), Qt::red).isEmpty());
         ViewerWindow* w = openAndWait(path("a.png"));
@@ -656,6 +659,8 @@ private slots:
 
     // F-IN-04: Bild↑/Bild↓ as folder / page / scroll, executed by the window.
     void F_IN_04_pageKeysFolderPageScroll() {
+        if (!QFileInfo::exists(corpus(QStringLiteral("orient_1.jpg"))))
+            QSKIP("format corpus missing - run tests/corpus/make_corpus.sh");
         QDir(dir->path()).mkpath(QStringLiteral("A"));
         QDir(dir->path()).mkpath(QStringLiteral("B"));
         QVERIFY(!makeImage(path("A/a1.png"), Qt::red).isEmpty());

@@ -1361,6 +1361,10 @@
 <context>
     <name>lf::FolderMapPanel</name>
     <message>
+        <source>Auf diesem System ist keine Kartendarstellung verfügbar.</source>
+        <translation>Karttoja ei ole saatavilla tässä järjestelmässä.</translation>
+    </message>
+    <message>
         <source>Keine Bilder in dieser Ansicht.</source>
         <translation>Tässä näkymässä ei ole kuvia.</translation>
     </message>
@@ -3020,7 +3024,7 @@
     </message>
     <message>
         <source>Alle Bildschirme</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Kaikki näytöt</translation>
     </message>
     <message>
         <source>Bildschirm %1</source>
@@ -5392,10 +5396,6 @@
 <context>
     <name>lf::Shell</name>
     <message>
-        <source>Auf dieser Plattform wird das Festlegen der Standard-App noch nicht unterstützt.</source>
-        <translation>Oletussovelluksen asettamista ei vielä tueta tällä alustalla.</translation>
-    </message>
-    <message>
         <source>Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, falls eine erscheint.</source>
         <translation>Lumaflipia asetetaan vielä oletussovellukseksi – vahvista macOS:n kysymys, jos sellainen tulee näkyviin.</translation>
     </message>
@@ -5410,6 +5410,18 @@
     <message>
         <source>Zeitüberschreitung bei der Rückmeldung des Systems.</source>
         <translation>Järjestelmän vastaus aikakatkaistiin.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht geschrieben werden.</source>
+        <translation>”%1” ei voi kirjoittaa.</translation>
+    </message>
+    <message>
+        <source>Lumaflip ist nicht als Anwendung installiert (%1 fehlt).</source>
+        <translation>Lumaflipiä ei ole asennettu sovelluksena (%1 puuttuu).</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gestartet werden.</source>
+        <translation>”%1” ei voi käynnistää.</translation>
     </message>
     <message>
         <source>Batch-Dateien werden aus Sicherheitsgründen nicht gestartet.</source>
@@ -5487,6 +5499,22 @@
     <message>
         <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
         <translation>Kohteen ”%1” tageja ei voitu asettaa: %2</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gelesen werden.</source>
+        <translation>Kohteen ”%1” tunnisteita ei voi lukea.</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert nicht mehr.</source>
+        <translation type="unfinished">Kohdetta ”%1” ei ole enää olemassa.</translation>
+    </message>
+    <message>
+        <source>Dieses Dateisystem unterstützt keine Tags.</source>
+        <translation>Tämä tiedostojärjestelmä ei tue tunnisteita.</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gespeichert werden: %2</source>
+        <translation>Kohteen ”%1” tunnisteita ei voi tallentaa: %2</translation>
     </message>
 </context>
 <context>
@@ -5799,6 +5827,22 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ist nicht installiert.</source>
+        <translation>”%1” ei ole asennettu.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist fehlgeschlagen.</source>
+        <translation>”%1” epäonnistui.</translation>
+    </message>
+    <message>
+        <source>Alle Bildschirme</source>
+        <translation>Kaikki näytöt</translation>
+    </message>
+    <message>
+        <source>Diese Arbeitsumgebung wird nicht unterstützt.</source>
+        <translation>Tätä työpöytäympäristöä ei tueta.</translation>
     </message>
 </context>
 <context>

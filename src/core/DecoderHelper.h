@@ -36,7 +36,7 @@ public:
         int decodeTimeoutMs = 30000;  // a single decode (huge SVG, damaged file loops)
         int infoTimeoutMs = 10000;    // info/metadata/ping
         QStringList extraEnvironment; // "NAME=value" added to the app's environment
-#if defined(Q_OS_MACOS) || defined(Q_OS_WIN)
+#if defined(Q_OS_MACOS) || defined(Q_OS_LINUX) || defined(Q_OS_WIN)
         bool requireSandbox = true; // refuse a helper whose Ping says sandboxed = false
 #else
         bool requireSandbox = false;
@@ -129,6 +129,8 @@ int runDecoderHelper(int inFd, int outFd, const QList<std::shared_ptr<Decoder>>&
 // macOS: restricts the calling process with a deny-by-default Seatbelt profile
 // (decoderSandboxProfile()): reading files and a few system services only; no network, no
 // file writes, no new processes, no shared memory except opening the app's "/lfd." objects.
+// Linux: seccomp-bpf (no sockets, no new processes) + Landlock where the kernel has it (no
+// file writes except the app's "/lfd." objects), src/platform/linux/LinuxSandbox.h.
 // Returns false (and why) if the sandbox could not be applied.
 bool applyDecoderSandbox(QString* error);
 const char* decoderSandboxProfile();

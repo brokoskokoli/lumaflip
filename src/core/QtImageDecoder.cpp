@@ -224,6 +224,16 @@ std::optional<DecodedImage> QtImageDecoder::decode(const QString& path, const De
     out.image = normalize(std::move(img));
     out.isPreview = out.image.width() < out.fullSize.width() || out.image.height() < out.fullSize.height();
     out.frameDurationMs = animated ? std::max(0, r.nextImageDelay()) : 0;
+    // F-FMT-03/04: what the file holds besides this image (the window starts the animation
+    // player or the page navigation from these; ImageIO reports them as well).
+    const int count = std::max(1, r.imageCount());
+    if (animated) {
+        out.frameCount = count;
+        out.frame = index;
+    } else {
+        out.pageCount = count;
+        out.page = index;
+    }
     return out;
 }
 

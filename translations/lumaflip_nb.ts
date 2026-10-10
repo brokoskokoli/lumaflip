@@ -1361,6 +1361,10 @@
 <context>
     <name>lf::FolderMapPanel</name>
     <message>
+        <source>Auf diesem System ist keine Kartendarstellung verfügbar.</source>
+        <translation>Kart er ikke tilgjengelig på dette systemet.</translation>
+    </message>
+    <message>
         <source>Keine Bilder in dieser Ansicht.</source>
         <translation>Ingen bilder i denne visningen.</translation>
     </message>
@@ -3020,7 +3024,7 @@
     </message>
     <message>
         <source>Alle Bildschirme</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Alle skjermer</translation>
     </message>
     <message>
         <source>Bildschirm %1</source>
@@ -5392,10 +5396,6 @@
 <context>
     <name>lf::Shell</name>
     <message>
-        <source>Auf dieser Plattform wird das Festlegen der Standard-App noch nicht unterstützt.</source>
-        <translation>Angivelse av standardapp støttes ikke ennå på denne plattformen.</translation>
-    </message>
-    <message>
         <source>Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, falls eine erscheint.</source>
         <translation>Lumaflip angis fortsatt som standardapp – bekreft spørsmålet fra macOS hvis det vises.</translation>
     </message>
@@ -5410,6 +5410,18 @@
     <message>
         <source>Zeitüberschreitung bei der Rückmeldung des Systems.</source>
         <translation>Tidsavbrudd ved venting på svar fra systemet.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht geschrieben werden.</source>
+        <translation>«%1» kan ikke skrives.</translation>
+    </message>
+    <message>
+        <source>Lumaflip ist nicht als Anwendung installiert (%1 fehlt).</source>
+        <translation>Lumaflip er ikke installert som program (%1 mangler).</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gestartet werden.</source>
+        <translation>«%1» kan ikke startes.</translation>
     </message>
     <message>
         <source>Batch-Dateien werden aus Sicherheitsgründen nicht gestartet.</source>
@@ -5487,6 +5499,22 @@
     <message>
         <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
         <translation>Kunne ikke angi merkene til «%1»: %2</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gelesen werden.</source>
+        <translation>Etikettene for «%1» kan ikke leses.</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert nicht mehr.</source>
+        <translation type="unfinished">«%1» finnes ikke lenger.</translation>
+    </message>
+    <message>
+        <source>Dieses Dateisystem unterstützt keine Tags.</source>
+        <translation>Dette filsystemet støtter ikke etiketter.</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gespeichert werden: %2</source>
+        <translation>Etikettene for «%1» kan ikke lagres: %2</translation>
     </message>
 </context>
 <context>
@@ -5799,6 +5827,22 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ist nicht installiert.</source>
+        <translation>«%1» er ikke installert.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist fehlgeschlagen.</source>
+        <translation>«%1» mislyktes.</translation>
+    </message>
+    <message>
+        <source>Alle Bildschirme</source>
+        <translation>Alle skjermer</translation>
+    </message>
+    <message>
+        <source>Diese Arbeitsumgebung wird nicht unterstützt.</source>
+        <translation>Dette skrivebordsmiljøet støttes ikke.</translation>
     </message>
 </context>
 <context>

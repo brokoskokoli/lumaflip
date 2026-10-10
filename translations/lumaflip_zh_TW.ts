@@ -1351,6 +1351,10 @@
 <context>
     <name>lf::FolderMapPanel</name>
     <message>
+        <source>Auf diesem System ist keine Kartendarstellung verfügbar.</source>
+        <translation>此系統無法顯示地圖。</translation>
+    </message>
+    <message>
         <source>Keine Bilder in dieser Ansicht.</source>
         <translation>此檢視中沒有影像。</translation>
     </message>
@@ -3008,7 +3012,7 @@
     </message>
     <message>
         <source>Alle Bildschirme</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">所有螢幕</translation>
     </message>
     <message>
         <source>Bildschirm %1</source>
@@ -5369,10 +5373,6 @@
 <context>
     <name>lf::Shell</name>
     <message>
-        <source>Auf dieser Plattform wird das Festlegen der Standard-App noch nicht unterstützt.</source>
-        <translation>此平台尚不支援設定預設 App。</translation>
-    </message>
-    <message>
         <source>Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, falls eine erscheint.</source>
         <translation>仍在將 Lumaflip 設為預設 App，若 macOS 顯示確認詢問，請予以確認。</translation>
     </message>
@@ -5387,6 +5387,18 @@
     <message>
         <source>Zeitüberschreitung bei der Rückmeldung des Systems.</source>
         <translation>等候系統回應逾時。</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht geschrieben werden.</source>
+        <translation>無法寫入「%1」。</translation>
+    </message>
+    <message>
+        <source>Lumaflip ist nicht als Anwendung installiert (%1 fehlt).</source>
+        <translation>Lumaflip 未安裝為應用程式（缺少 %1）。</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gestartet werden.</source>
+        <translation>無法啟動「%1」。</translation>
     </message>
     <message>
         <source>Batch-Dateien werden aus Sicherheitsgründen nicht gestartet.</source>
@@ -5464,6 +5476,22 @@
     <message>
         <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
         <translation>無法設定「%1」的標籤：%2</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gelesen werden.</source>
+        <translation>無法讀取「%1」的標籤。</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert nicht mehr.</source>
+        <translation type="unfinished">「%1」已不存在。</translation>
+    </message>
+    <message>
+        <source>Dieses Dateisystem unterstützt keine Tags.</source>
+        <translation>此檔案系統不支援標籤。</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gespeichert werden: %2</source>
+        <translation>無法儲存「%1」的標籤：%2</translation>
     </message>
 </context>
 <context>
@@ -5774,6 +5802,22 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ist nicht installiert.</source>
+        <translation>未安裝「%1」。</translation>
+    </message>
+    <message>
+        <source>„%1“ ist fehlgeschlagen.</source>
+        <translation>「%1」失敗。</translation>
+    </message>
+    <message>
+        <source>Alle Bildschirme</source>
+        <translation>所有螢幕</translation>
+    </message>
+    <message>
+        <source>Diese Arbeitsumgebung wird nicht unterstützt.</source>
+        <translation>不支援此桌面環境。</translation>
     </message>
 </context>
 <context>

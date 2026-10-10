@@ -53,6 +53,14 @@ Voraussetzung: macOS 15 (Sequoia) oder neuer, Apple-Silicon-Mac.
 - **Homebrew** *(geplant)*: `brew install --cask brokoskokoli/tap/lumaflip`, nach Aufnahme in
   `homebrew/cask` auch `brew install --cask lumaflip`.
 
+### Linux (Vorschau)
+
+Für x86_64-Linux (glibc 2.39+, z. B. Ubuntu 24.04 oder neuer) baut die CI ein **AppImage**
+(Artefakt `Lumaflip-linux-x86_64-AppImage` des Jobs „Linux app“): `chmod +x
+Lumaflip-<version>-x86_64.AppImage`, dann starten. *Ablage → Als Standard-App festlegen …* macht
+es zum Bildbetrachter. HEIC braucht einen separat installierten HEVC-Decoder; Live Text, Quick
+Look, Karten und HDR (EDR) gibt es nur auf dem Mac. Details, Bauen und Sandbox:
+[docs/LINUX.md](docs/LINUX.md) (Englisch).
 ### Windows (Vorschau)
 
 Windows 10 (1809) oder 11, x64. Vorschau-Builds aus der CI (Job „Windows app“, Artefakt
@@ -71,6 +79,8 @@ tools/run.sh [bild]                    # nur die App bauen und starten
 tools/check.sh --quick --no-gui        # Build + Unit-Tests ohne Fenster
 ```
 
+Linux: `cmake -S . -B build/linux -G Ninja && cmake --build build/linux`, AppImage mit
+`tools/linux_appimage.sh build/linux dist` (Abhängigkeiten in [docs/LINUX.md](docs/LINUX.md)).
 Windows (MSVC, Qt msvc2022_64, vcpkg): `cmake --preset windows-release`, siehe
 [docs/WINDOWS.md](docs/WINDOWS.md).
 

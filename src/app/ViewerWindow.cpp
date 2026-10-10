@@ -458,6 +458,8 @@ void ViewerWindow::setVisible(bool visible) {
     if (visible && !isVisible())
         configureViewerWindow(this, Settings::instance().value(key::AllowTabs).toBool());
     QMainWindow::setVisible(visible);
+    if (visible)
+        trace::once("ViewerWindow: native window shown");
     mediaVisibilityChanged(); // F-FMT-03: no playback in hidden windows
     if (visible && m_extras)
         m_extras->windowStateChanged(); // F-VIEW-12/13 on the native window
@@ -467,6 +469,7 @@ void ViewerWindow::setVisible(bool visible) {
         createStatusBar();
         m_panels->restore(); // M2 panels remembered in the settings
         updateEmptyState();
+        trace::once("ViewerWindow: panels restored");
     }
 }
 

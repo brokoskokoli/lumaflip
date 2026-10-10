@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Windows: no native menu bar with key equivalents (Qt draws the menus itself); the tests
-// that need native events skip (nativeEventsAvailable() == false).
-#include "support/NativeEvents.h"
+// NativeEvents.h without AppKit: no native event injection (the tests that need it skip).
 
-#include <QString>
+#include "NativeEvents.h"
 
 namespace lf::test {
 

@@ -384,10 +384,16 @@ private slots:
         QVERIFY(defaults <= 1);
         if (defaults == 1)
             QVERIFY(apps.first().isDefault);
+#ifndef LF_GENERIC_PLATFORM
         QVERIFY(std::any_of(apps.cbegin(), apps.cend(), [](const AppEntry& a) {
             return a.bundleId == QLatin1String("com.apple.Preview");
         }));
         QVERIFY(std::any_of(apps.cbegin(), apps.cend(), [](const AppEntry& a) { return !a.icon.isNull(); }));
+#else
+        // Desktop entries (XdgDesktop.h): each app is its .desktop file.
+        for (const AppEntry& a : apps)
+            QVERIFY2(a.path.endsWith(QLatin1String(".desktop")), qPrintable(a.path));
+#endif
     }
 
     void F_FILE_05_openWithMenuFromWorkerQuery() {
@@ -404,7 +410,7 @@ private slots:
         QVERIFY(w);
         QMenu* menu = app->menu()->extras()->openWithMenu();
         QVERIFY(menu);
-        QVERIFY(command("openWith")->isEnabled());
+        QTRY_VERIFY(command("openWith")->isEnabled()); // the menu state follows within 250 ms
         emit menu->aboutToShow();
         QVERIFY(menu->findChild<QAction*>(QStringLiteral("openWith:pending")));
         QTRY_VERIFY(menu->findChild<QAction*>(QStringLiteral("openWith:/Applications/Vorschau.app")));
@@ -441,7 +447,8 @@ private slots:
 
         // "E" opens the file with the chosen editor (via the shell, never really).
         makeFolder();
-        OpenWithService::instance().setQueryForTesting([apps](const QString&) { return apps; });
+        OpenWithService::instance().setQueryForTesting(
+            [apps](const QString&) { return QList<AppEntry>(apps); });
         ViewerWindow* w = openAndWait(path("IMG_1.png"));
         QVERIFY(w);
         QVERIFY(InputBindings::isActionAvailable(Action::OpenInEditor));
@@ -464,6 +471,9 @@ private slots:
     // ---- F-FILE-06 share ----
 
     void F_FILE_06_shareItemsAndMenu() {
+#ifdef LF_GENERIC_PLATFORM
+        QSKIP("no share sheet outside macOS (docs/LINUX.md)");
+#endif
         makeFolder();
         QCOMPARE(shareItems({path("IMG_2.jpg")}), QList<QUrl>{QUrl::fromLocalFile(path("IMG_2.jpg"))});
         QVERIFY(shareItems({QString()}).isEmpty());
@@ -671,7 +681,9 @@ private slots:
         ViewerWindow* a = app->newWindow();
         ViewerWindow* b = app->newWindow();
         QVERIFY(QTest::qWaitForWindowExposed(a) && QTest::qWaitForWindowExposed(b));
+#ifndef LF_GENERIC_PLATFORM
         QVERIFY(supportsSystemTiling(a)); // macOS 15 tiling (system commands)
+#endif
         app->windowActivated(b);
         app->menu()->refreshState();
         QAction* side = command("arrange:sideBySide");
@@ -695,6 +707,9 @@ private slots:
     // ---- F-WIN-05 tabs ----
 
     void F_WIN_05_tabbingModeFollowsSetting() {
+#ifdef LF_GENERIC_PLATFORM
+        QSKIP("native window tabs are macOS only (docs/LINUX.md)");
+#endif
         ViewerWindow* a = app->newWindow();
         QVERIFY(QTest::qWaitForWindowExposed(a));
         QCOMPARE(nativeTabbingMode(a), NativeTabbingMode::Disallowed); // default: no tabs
@@ -814,6 +829,9 @@ private slots:
     // ---- F-COL-02 output profile per screen ----
 
     void F_COL_02_screenChangeUpdatesOutputProfile() {
+#ifdef LF_GENERIC_PLATFORM
+        QSKIP("no per-window screen profiles outside macOS (docs/LINUX.md)");
+#endif
         QColorSpace current = QColorSpace(QColorSpace::DisplayP3);
         ImageView::setColorSpaceResolverForTesting([&current](const QWidget*) { return current; });
         QWidget top;

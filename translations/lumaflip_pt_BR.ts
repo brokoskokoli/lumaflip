@@ -1361,6 +1361,10 @@
 <context>
     <name>lf::FolderMapPanel</name>
     <message>
+        <source>Auf diesem System ist keine Kartendarstellung verfügbar.</source>
+        <translation>Mapas não estão disponíveis neste sistema.</translation>
+    </message>
+    <message>
         <source>Keine Bilder in dieser Ansicht.</source>
         <translation>Nenhuma imagem nesta visualização.</translation>
     </message>
@@ -3020,7 +3024,7 @@
     </message>
     <message>
         <source>Alle Bildschirme</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Todas as telas</translation>
     </message>
     <message>
         <source>Bildschirm %1</source>
@@ -5392,10 +5396,6 @@
 <context>
     <name>lf::Shell</name>
     <message>
-        <source>Auf dieser Plattform wird das Festlegen der Standard-App noch nicht unterstützt.</source>
-        <translation>Ainda não é possível definir o app padrão nesta plataforma.</translation>
-    </message>
-    <message>
         <source>Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, falls eine erscheint.</source>
         <translation>O Lumaflip ainda está sendo definido como app padrão – confirme a solicitação do macOS, caso apareça.</translation>
     </message>
@@ -5410,6 +5410,18 @@
     <message>
         <source>Zeitüberschreitung bei der Rückmeldung des Systems.</source>
         <translation>Tempo esgotado aguardando a resposta do sistema.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht geschrieben werden.</source>
+        <translation>Não é possível gravar “%1”.</translation>
+    </message>
+    <message>
+        <source>Lumaflip ist nicht als Anwendung installiert (%1 fehlt).</source>
+        <translation>O Lumaflip não está instalado como aplicativo (falta %1).</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gestartet werden.</source>
+        <translation>Não é possível iniciar “%1”.</translation>
     </message>
     <message>
         <source>Batch-Dateien werden aus Sicherheitsgründen nicht gestartet.</source>
@@ -5487,6 +5499,22 @@
     <message>
         <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
         <translation>Não foi possível definir as etiquetas de “%1”: %2</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gelesen werden.</source>
+        <translation>Não é possível ler as etiquetas de “%1”.</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert nicht mehr.</source>
+        <translation type="unfinished">“%1” não existe mais.</translation>
+    </message>
+    <message>
+        <source>Dieses Dateisystem unterstützt keine Tags.</source>
+        <translation>Este sistema de arquivos não oferece suporte a etiquetas.</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gespeichert werden: %2</source>
+        <translation>Não é possível salvar as etiquetas de “%1”: %2</translation>
     </message>
 </context>
 <context>
@@ -5799,6 +5827,22 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ist nicht installiert.</source>
+        <translation>“%1” não está instalado.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist fehlgeschlagen.</source>
+        <translation>“%1” falhou.</translation>
+    </message>
+    <message>
+        <source>Alle Bildschirme</source>
+        <translation>Todas as telas</translation>
+    </message>
+    <message>
+        <source>Diese Arbeitsumgebung wird nicht unterstützt.</source>
+        <translation>Este ambiente de área de trabalho não é compatível.</translation>
     </message>
 </context>
 <context>

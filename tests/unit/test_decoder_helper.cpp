@@ -39,6 +39,9 @@
 #if defined(Q_OS_WIN) && LF_WINDOWS_PLATFORM
 #include "platform/windows/WinDecoderSandbox.h"
 #endif
+#ifdef Q_OS_LINUX
+#include <sys/syscall.h>
+#endif
 #ifdef Q_OS_DARWIN
 #include <crt_externs.h>
 #include <mach/mach.h>
@@ -391,7 +394,7 @@ TEST(DecoderHelper, PingAndSandbox) {
     EXPECT_TRUE(pong->ok);
     EXPECT_GT(pong->pid, 0);
     EXPECT_NE(pong->pid, ownPid());
-#if defined(Q_OS_MACOS) || defined(Q_OS_WIN)
+#if defined(Q_OS_MACOS) || defined(Q_OS_LINUX) || defined(Q_OS_WIN)
     EXPECT_TRUE(pong->sandboxed);
     // No file writes from inside the sandbox.
     QTemporaryDir dir;
@@ -481,7 +484,7 @@ TEST(DecoderHelper, HelperDeliversIntoAppOwnedSharedMemory) {
         [&] { exitCode = runDecoderHelper(toHelper[0], fromHelper[1], backends, false, false); });
     ipc::Request r = op(ipc::Op::Decode, corpusFile(QStringLiteral("rgba8.png")));
     r.backend = QStringLiteral("Qt");
-    auto roundTrip = [&](ipc::Request req) {
+    auto roundTrip = [&](const ipc::Request& req) {
         EXPECT_EQ(ipc::writeFrame(toHelper[1], ipc::encode(req)), ipc::IoStatus::Ok);
         QByteArray payload;
         EXPECT_EQ(ipc::readFrame(fromHelper[0], &payload, 10000), ipc::IoStatus::Ok);
@@ -561,6 +564,7 @@ TEST(DecoderHelper, NoSegmentLeftWhenAppGoesAwayMidDecode) {
         envStore.emplace_back(*e);
     envStore.emplace_back("QT_QPA_PLATFORM=offscreen");
     std::vector<char*> envp;
+    envp.reserve(envStore.size() + 1);
     for (QByteArray& e : envStore)
         envp.push_back(e.data());
     envp.push_back(nullptr);
@@ -666,6 +670,7 @@ TEST(DecoderHelper, ConcurrentCallsShareThePool) {
     RemoteDecoder remote(std::make_shared<QtImageDecoder>(), pool);
     std::atomic<int> ok{0};
     std::vector<std::thread> threads;
+    threads.reserve(6);
     for (int t = 0; t < 6; ++t) {
         threads.emplace_back([&] {
             for (int i = 0; i < 5; ++i) {
@@ -741,7 +746,57 @@ TEST(DecoderHelper, SandboxDeniesEverythingButReading) {
 
 #endif
 
-#if defined(Q_OS_MACOS) || defined(Q_OS_WIN)
+#ifdef Q_OS_LINUX
+
+// SPEC 8.5 on Linux (seccomp-bpf + Landlock, platform/linux/LinuxSandbox.h): the helper can
+// neither open sockets, write or create files, start programs nor create shared memory -
+// while the same operations work outside the sandbox (in this test).
+TEST(DecoderHelper, SandboxDeniesEverythingButReading) {
+    DecoderHelperPool pool(helperOptions());
+    auto probe = [&](ipc::Op o, const QString& arg) {
+        const auto r = pool.call(op(o, arg), 10000);
+        EXPECT_TRUE(r.has_value());
+        return r && r->ok;
+    };
+    const int listener = socket(AF_INET, SOCK_STREAM, 0);
+    ASSERT_GE(listener, 0);
+    sockaddr_in addr{};
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+    ASSERT_EQ(bind(listener, reinterpret_cast<sockaddr*>(&addr), sizeof addr), 0);
+    ASSERT_EQ(listen(listener, 4), 0);
+    socklen_t len = sizeof addr;
+    ASSERT_EQ(getsockname(listener, reinterpret_cast<sockaddr*>(&addr), &len), 0);
+    const QString port = QString::number(ntohs(addr.sin_port));
+    {
+        const int c = socket(AF_INET, SOCK_STREAM, 0);
+        EXPECT_EQ(::connect(c, reinterpret_cast<sockaddr*>(&addr), sizeof addr), 0) << "control";
+        close(c);
+    }
+    EXPECT_FALSE(probe(ipc::Op::TestSocket, port));
+    close(listener);
+    EXPECT_FALSE(probe(ipc::Op::TestExec, QStringLiteral("/bin/true")));
+    // File writes and creating shared memory need Landlock (kernel >= 5.13).
+    QTemporaryDir dir;
+    const QString target = dir.filePath(QStringLiteral("written-by-helper.txt"));
+    const QString shm = QString::fromLatin1(ipc::shmName(getpid(), 999999));
+#ifdef SYS_landlock_create_ruleset
+    // landlock_create_ruleset(NULL, 0, LANDLOCK_CREATE_RULESET_VERSION) = the ABI version.
+    const bool landlock = syscall(SYS_landlock_create_ruleset, nullptr, 0, 1u) > 0;
+#else
+    const bool landlock = false;
+#endif
+    if (!landlock)
+        GTEST_SKIP() << "kernel without Landlock: file writes are not restricted";
+    EXPECT_FALSE(probe(ipc::Op::TestWriteFile, target));
+    EXPECT_FALSE(QFile::exists(target));
+    EXPECT_FALSE(probe(ipc::Op::TestCreateShm, shm));
+    EXPECT_FALSE(ipc::sharedExists(shm.toLatin1()));
+}
+
+#endif
+
+#if defined(Q_OS_MACOS) || defined(Q_OS_LINUX) || defined(Q_OS_WIN)
 
 // The app refuses a helper that reports running without sandbox (error card text).
 TEST(DecoderHelper, RefusesHelperWithoutSandbox) {

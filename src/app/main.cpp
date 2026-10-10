@@ -12,6 +12,7 @@
 #include "core/StartupTrace.h"
 
 #include <QApplication>
+#include <QIcon>
 #include <QPointer>
 #include <QTimer>
 
@@ -93,6 +94,7 @@ int main(int argc, char* argv[]) {
     }
     lf::trace::mark("prestart queued");
     QApplication app(argc, argv);
+    lf::trace::mark("QApplication constructor returned");
     lf::trace::mark("QApplication created");
     lf::startup::warmUpAfterApplication();
     TraceEvents traceEvents;
@@ -100,6 +102,10 @@ int main(int argc, char* argv[]) {
         app.installEventFilter(&traceEvents);
     lf::Settings::configureApplication(); // SPEC 8.6: settings/app data locations
     QApplication::setApplicationVersion(QStringLiteral(LF_APP_VERSION));
+#ifndef Q_OS_MACOS
+    // The installed hicolor icon (packaging/linux); macOS takes it from the bundle.
+    QApplication::setWindowIcon(QIcon::fromTheme(QStringLiteral("io.github.brokoskokoli.lumaflip")));
+#endif
     lf::installQtTranslations(); // UI language (F-I18N-03), before the menu bar exists
     lf::trace::mark("translations installed");
     if (!exitAfterFirstFrame)

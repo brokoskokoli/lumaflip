@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Portable trash (F-FILE-01) via QFile::moveToTrash (freedesktop trash / Windows recycle bin).
 
+#include "XdgDesktop.h"
 #include "core/Platform.h"
 
 #include <QCoreApplication>
@@ -16,6 +17,28 @@ namespace {
 struct Tr {
     Q_DECLARE_TR_FUNCTIONS(lf::TrashService)
 };
+
+// rename(), or - across file systems (a home trash for a file on another volume) - a copy
+// that keeps the modification time, then removing the trashed file.
+bool moveBack(const QString& from, const QString& to) {
+    QDir().mkpath(QFileInfo(to).absolutePath());
+    if (QFile::rename(from, to))
+        return true;
+    const QFileInfo src(from);
+    if (!src.isFile() || src.isSymLink())
+        return false;
+    if (!QFile::copy(from, to))
+        return false;
+    QFile f(to);
+    if (f.open(QIODevice::ReadWrite))
+        f.setFileTime(src.lastModified(), QFileDevice::FileModificationTime);
+    f.close();
+    if (!QFile::remove(from)) {
+        QFile::remove(to);
+        return false;
+    }
+    return true;
+}
 
 class GenericTrashService final : public TrashService {
 public:
@@ -37,15 +60,15 @@ public:
                 *error = Tr::tr("„%1“ existiert bereits und wird nicht überschrieben.").arg(orig.fileName());
             return false;
         }
-        if (trashedPath.isEmpty() || !QFile::rename(trashedPath, originalPath)) {
+        if (trashedPath.isEmpty() || !QFileInfo::exists(trashedPath) ||
+            !moveBack(trashedPath, originalPath)) {
             if (error)
                 *error = Tr::tr("„%1“ konnte nicht wiederhergestellt werden.").arg(orig.fileName());
             return false;
         }
-        // freedesktop: drop the matching .trashinfo file if present.
-        const QFileInfo trashed(trashedPath);
-        const QString info =
-            trashed.dir().absoluteFilePath(QStringLiteral("../info/%1.trashinfo").arg(trashed.fileName()));
+        // freedesktop trash: drop the matching .trashinfo file (else file managers list a
+        // ghost entry).
+        const QString info = xdg::trashInfoPath(trashedPath);
         if (QFileInfo::exists(info))
             QFile::remove(info);
         return true;

@@ -452,6 +452,9 @@ std::shared_ptr<DecoderHelperPool> DecoderHelperPool::shared() {
         o.executable = defaultExecutable();
         if (o.executable.isEmpty())
             return nullptr;
+        // Linux: an explicit opt-out for systems without seccomp (docs/LINUX.md).
+        if (qEnvironmentVariableIntValue("LF_DECODER_ALLOW_UNSANDBOXED") == 1)
+            o.requireSandbox = false;
         return std::make_shared<DecoderHelperPool>(o);
     }();
     return pool;
@@ -883,6 +886,11 @@ const char* decoderSandboxProfile() {
            "  (ipc-posix-name-prefix \"/lfd.\"))\n";
 }
 
+#ifdef Q_OS_LINUX
+// src/platform/linux/LinuxSandbox.cpp.
+bool applyPlatformDecoderSandbox(QString* error, QString* details);
+#endif
+
 bool applyDecoderSandbox(QString* error) {
 #ifdef Q_OS_DARWIN
     char* err = nullptr;
@@ -902,6 +910,12 @@ bool applyDecoderSandbox(QString* error) {
     // Windows: the app starts the helper inside its sandbox (low integrity, job object,
     // mitigations - WinDecoderSandbox.h); the helper checks that it really runs in it.
     return win::verifyDecoderSandbox(error);
+#elif defined(Q_OS_LINUX)
+    // seccomp-bpf + Landlock, src/platform/linux/LinuxSandbox.h.
+    QString details;
+    const bool ok = applyPlatformDecoderSandbox(error, &details);
+    qInfo("lumaflip-decoder: sandbox: %s", qPrintable(details));
+    return ok;
 #else
     if (error)
         *error = QStringLiteral("not supported on this platform");

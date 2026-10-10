@@ -1371,6 +1371,10 @@
 <context>
     <name>lf::FolderMapPanel</name>
     <message>
+        <source>Auf diesem System ist keine Kartendarstellung verfügbar.</source>
+        <translation>Mapy nie są dostępne w tym systemie.</translation>
+    </message>
+    <message>
         <source>Keine Bilder in dieser Ansicht.</source>
         <translation>Brak obrazów w tym widoku.</translation>
     </message>
@@ -3032,7 +3036,7 @@
     </message>
     <message>
         <source>Alle Bildschirme</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Wszystkie ekrany</translation>
     </message>
     <message>
         <source>Bildschirm %1</source>
@@ -5415,10 +5419,6 @@
 <context>
     <name>lf::Shell</name>
     <message>
-        <source>Auf dieser Plattform wird das Festlegen der Standard-App noch nicht unterstützt.</source>
-        <translation>Ustawianie domyślnej aplikacji nie jest jeszcze obsługiwane na tej platformie.</translation>
-    </message>
-    <message>
         <source>Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, falls eine erscheint.</source>
         <translation>Trwa ustawianie Lumaflip jako domyślnej aplikacji – potwierdź zapytanie macOS, jeśli się pojawi.</translation>
     </message>
@@ -5433,6 +5433,18 @@
     <message>
         <source>Zeitüberschreitung bei der Rückmeldung des Systems.</source>
         <translation>Przekroczono czas oczekiwania na odpowiedź systemu.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht geschrieben werden.</source>
+        <translation>Nie można zapisać „%1”.</translation>
+    </message>
+    <message>
+        <source>Lumaflip ist nicht als Anwendung installiert (%1 fehlt).</source>
+        <translation>Lumaflip nie jest zainstalowany jako aplikacja (brak %1).</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gestartet werden.</source>
+        <translation>Nie można uruchomić „%1”.</translation>
     </message>
     <message>
         <source>Batch-Dateien werden aus Sicherheitsgründen nicht gestartet.</source>
@@ -5510,6 +5522,22 @@
     <message>
         <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
         <translation>Nie można ustawić tagów „%1”: %2</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gelesen werden.</source>
+        <translation>Nie można odczytać tagów „%1”.</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert nicht mehr.</source>
+        <translation type="unfinished">„%1” już nie istnieje.</translation>
+    </message>
+    <message>
+        <source>Dieses Dateisystem unterstützt keine Tags.</source>
+        <translation>Ten system plików nie obsługuje tagów.</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gespeichert werden: %2</source>
+        <translation>Nie można zapisać tagów „%1”: %2</translation>
     </message>
 </context>
 <context>
@@ -5824,6 +5852,22 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ist nicht installiert.</source>
+        <translation>„%1” nie jest zainstalowany.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist fehlgeschlagen.</source>
+        <translation>„%1” nie powiodło się.</translation>
+    </message>
+    <message>
+        <source>Alle Bildschirme</source>
+        <translation>Wszystkie ekrany</translation>
+    </message>
+    <message>
+        <source>Diese Arbeitsumgebung wird nicht unterstützt.</source>
+        <translation>To środowisko pulpitu nie jest obsługiwane.</translation>
     </message>
 </context>
 <context>

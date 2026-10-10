@@ -6,6 +6,7 @@
 // down this process. Not meant to be started by hand.
 
 #include "core/DecoderHelper.h"
+#include "core/LibraryDecoders.h"
 #include "core/PdfDocument.h"
 #include "core/PsbDecoder.h"
 #include "core/QtImageDecoder.h"
@@ -63,6 +64,7 @@ int main(int argc, char** argv) {
     // Load the plugins before the sandbox closes in (it allows reading, but keep the
     // start-up independent of the profile).
     (void)QImageReader::supportedImageFormats();
+    lf::prepareLibraryDecoders();
 
     const bool testOps = qEnvironmentVariableIntValue("LF_DECODER_HELPER_TEST_OPS") == 1;
     QString sandboxError = QStringLiteral("disabled for a test");
@@ -80,5 +82,6 @@ int main(int argc, char** argv) {
     backends << std::make_shared<lf::pdf::PdfPageDecoder>(); // M4: PDF pages (F-OPEN-10)
     if (auto resvg = lf::createResvgDecoder()) // M3: SVG 1.1 via resvg (fonts load on first text)
         backends << resvg;
+    backends << lf::libraryDecoders(); // M4 (Linux): libheif, libjxl, LibRaw, OpenEXR if built in
     return lf::runDecoderHelper(protocolIn, protocolOut, backends, sandboxed, testOps);
 }
