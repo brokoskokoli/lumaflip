@@ -1339,6 +1339,10 @@
 <context>
     <name>lf::FolderMapPanel</name>
     <message>
+        <source>Auf diesem System ist keine Kartendarstellung verfügbar.</source>
+        <translation>이 시스템에서는 지도를 사용할 수 없습니다.</translation>
+    </message>
+    <message>
         <source>Keine Bilder in dieser Ansicht.</source>
         <translation>이 보기에 이미지가 없습니다.</translation>
     </message>
@@ -5334,10 +5338,6 @@
 <context>
     <name>lf::Shell</name>
     <message>
-        <source>Auf dieser Plattform wird das Festlegen der Standard-App noch nicht unterstützt.</source>
-        <translation>이 플랫폼에서는 아직 기본 앱 설정을 지원하지 않습니다.</translation>
-    </message>
-    <message>
         <source>Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, falls eine erscheint.</source>
         <translation>Lumaflip을 기본 앱으로 설정하는 중입니다. macOS 확인 메시지가 나타나면 승인하세요.</translation>
     </message>
@@ -5352,6 +5352,18 @@
     <message>
         <source>Zeitüberschreitung bei der Rückmeldung des Systems.</source>
         <translation>시스템 응답 시간이 초과되었습니다.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht geschrieben werden.</source>
+        <translation>‘%1’에 쓸 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Lumaflip ist nicht als Anwendung installiert (%1 fehlt).</source>
+        <translation>Lumaflip이 응용 프로그램으로 설치되어 있지 않습니다(%1 없음).</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gestartet werden.</source>
+        <translation>‘%1’을(를) 시작할 수 없습니다.</translation>
     </message>
 </context>
 <context>
@@ -5417,6 +5429,22 @@
     <message>
         <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
         <translation>‘%1’의 태그를 설정할 수 없습니다: %2</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gelesen werden.</source>
+        <translation>‘%1’의 태그를 읽을 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert nicht mehr.</source>
+        <translation type="unfinished">‘%1’이(가) 더 이상 존재하지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Dieses Dateisystem unterstützt keine Tags.</source>
+        <translation>이 파일 시스템은 태그를 지원하지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gespeichert werden: %2</source>
+        <translation>‘%1’의 태그를 저장할 수 없습니다: %2</translation>
     </message>
 </context>
 <context>
@@ -5727,6 +5755,22 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ist nicht installiert.</source>
+        <translation>‘%1’이(가) 설치되어 있지 않습니다.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist fehlgeschlagen.</source>
+        <translation>‘%1’이(가) 실패했습니다.</translation>
+    </message>
+    <message>
+        <source>Alle Bildschirme</source>
+        <translation>모든 화면</translation>
+    </message>
+    <message>
+        <source>Diese Arbeitsumgebung wird nicht unterstützt.</source>
+        <translation>이 데스크톱 환경은 지원되지 않습니다.</translation>
     </message>
 </context>
 <context>

@@ -1,0 +1,63 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Flatpak manifest (not published; docs/LINUX.md). Build locally:
+#   flatpak-builder --user --install --force-clean build/flatpak packaging/linux/io.github.brokoskokoli.lumaflip.yml
+# The KDE runtime provides Qt 6 (incl. Svg, ImageFormats, ShaderTools), libjxl, OpenEXR and
+# libarchive; LibRaw and libheif are built here. libheif is built without libde265 (HEVC
+# patents, SPEC 11): AVIF works through dav1d from the runtime, HEIC does not. Library
+# decoders the runtime lacks are switched off automatically (LF_ENABLE_* = AUTO).
+id: io.github.brokoskokoli.lumaflip
+runtime: org.kde.Platform
+runtime-version: "6.10"
+sdk: org.kde.Sdk
+command: lumaflip
+finish-args:
+  - --share=ipc
+  - --socket=fallback-x11
+  - --socket=wayland
+  - --device=dri
+  # An image viewer opens whole folders (and moves files to the trash, renames them).
+  - --filesystem=host
+  # Reveal in the file manager (org.freedesktop.FileManager1).
+  - --talk-name=org.freedesktop.FileManager1
+cleanup:
+  - /include
+  - /lib/pkgconfig
+  - /lib/cmake
+  - /share/doc
+  - "*.a"
+modules:
+  - name: libraw
+    buildsystem: autotools
+    config-opts:
+      - --disable-examples
+      - --disable-static
+    sources:
+      - type: archive
+        url: https://www.libraw.org/data/LibRaw-0.22.2.tar.gz
+        sha256: de86b035655accff8d4010f1a221fdf50d353cb7b1422ba26f14a0db92612cfa
+  - name: libheif
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DWITH_EXAMPLES=OFF
+      - -DWITH_LIBDE265=OFF
+      - -DWITH_X265=OFF
+      - -DWITH_DAV1D=ON
+      - -DWITH_AOM_DECODER=OFF
+      - -DWITH_AOM_ENCODER=OFF
+      - -DWITH_GDK_PIXBUF=OFF
+      - -DBUILD_TESTING=OFF
+    sources:
+      - type: archive
+        url: https://github.com/strukturag/libheif/releases/download/v1.23.6/libheif-1.23.6.tar.gz
+        sha256: 4484346dc5995319dbc11e3a1c35d0a2ec46511ce370900869337fd2c7033125
+  - name: lumaflip
+    buildsystem: cmake-ninja
+    builddir: true
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DLF_BUILD_TESTS=OFF
+      - -DLF_WERROR=OFF
+    sources:
+      - type: dir
+        path: ../..

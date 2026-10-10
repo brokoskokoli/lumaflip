@@ -310,6 +310,11 @@ void Settings::configureApplication() {
     QCoreApplication::setOrganizationDomain(QString::fromLatin1(kOrgDomain));
     QCoreApplication::setApplicationName(QString::fromLatin1(kAppName));
     QGuiApplication::setApplicationDisplayName(QString::fromLatin1(kAppName));
+#ifndef Q_OS_MACOS
+    // Wayland app id / X11 window class: matches the installed desktop entry
+    // (packaging/linux), so the shell shows the right name and icon.
+    QGuiApplication::setDesktopFileName(QStringLiteral("io.github.brokoskokoli.lumaflip"));
+#endif
 }
 
 QString Settings::nativeSettingsPath() {
@@ -427,7 +432,7 @@ QVariant Settings::value(const QString& key) const {
     const KeyInfo* info = findKey(key);
     if (!info)
         return raw; // keys owned by other modules (e.g. window geometry)
-    const QVariant v = normalize(*info, raw);
+    QVariant v = normalize(*info, raw);
     if (v.isValid())
         return v;
     return info->dynamicDefault ? info->dynamicDefault() : info->def;

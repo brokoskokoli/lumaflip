@@ -265,6 +265,9 @@ struct ImageCanvas::Private {
     std::unique_ptr<QRhiShaderResourceBindings> layoutSrb;
     std::unique_ptr<QRhiBuffer> vbuf;
     std::unique_ptr<QRhiSampler> sampler[2];
+    // Textures without mip levels (LUTs, the overlay) need samplers without a mipmap mode:
+    // OpenGL treats such a texture as incomplete and samples black (Metal does not care).
+    std::unique_ptr<QRhiSampler> lutSampler, overlaySampler;
     std::unique_ptr<QRhiTexture> dummyLut;
     std::unique_ptr<QRhiTexture> dstLut;
     std::unique_ptr<QRhiBuffer> layoutUbo;
@@ -523,9 +526,9 @@ struct ImageCanvas::Private {
                  QRhiShaderResourceBinding::sampledTexture(1, QRhiShaderResourceBinding::FragmentStage,
                                                            t.tex.get(), sampler[idx].get()),
                  QRhiShaderResourceBinding::sampledTexture(2, QRhiShaderResourceBinding::FragmentStage, src,
-                                                           sampler[0].get()),
+                                                           lutSampler.get()),
                  QRhiShaderResourceBinding::sampledTexture(3, QRhiShaderResourceBinding::FragmentStage,
-                                                           dstLut.get(), sampler[0].get())});
+                                                           dstLut.get(), lutSampler.get())});
             srb->create();
         }
         return srb.get();
@@ -679,6 +682,8 @@ struct ImageCanvas::Private {
         vbuf.reset();
         sampler[0].reset();
         sampler[1].reset();
+        lutSampler.reset();
+        overlaySampler.reset();
         dummyLut.reset();
         dstLut.reset();
         staticUploaded = false;
@@ -729,6 +734,12 @@ struct ImageCanvas::Private {
                                              QRhiSampler::ClampToEdge, QRhiSampler::ClampToEdge));
             sampler[i]->create();
         }
+        lutSampler.reset(rhi->newSampler(QRhiSampler::Linear, QRhiSampler::Linear, QRhiSampler::None,
+                                         QRhiSampler::ClampToEdge, QRhiSampler::ClampToEdge));
+        lutSampler->create();
+        overlaySampler.reset(rhi->newSampler(QRhiSampler::Nearest, QRhiSampler::Linear, QRhiSampler::None,
+                                             QRhiSampler::ClampToEdge, QRhiSampler::ClampToEdge));
+        overlaySampler->create();
         dummyLut.reset(rhi->newTexture(QRhiTexture::RGBA16F, QSize(ColorPipeline::kLutSize, 1)));
         dummyLut->create();
         dstLut.reset(rhi->newTexture(QRhiTexture::RGBA16F, QSize(ColorPipeline::kLutSize, 1)));
@@ -742,11 +753,11 @@ struct ImageCanvas::Private {
                  0, QRhiShaderResourceBinding::VertexStage | QRhiShaderResourceBinding::FragmentStage,
                  layoutUbo.get()),
              QRhiShaderResourceBinding::sampledTexture(1, QRhiShaderResourceBinding::FragmentStage,
-                                                       dummyLut.get(), sampler[0].get()),
+                                                       dummyLut.get(), lutSampler.get()),
              QRhiShaderResourceBinding::sampledTexture(2, QRhiShaderResourceBinding::FragmentStage,
-                                                       dummyLut.get(), sampler[0].get()),
+                                                       dummyLut.get(), lutSampler.get()),
              QRhiShaderResourceBinding::sampledTexture(3, QRhiShaderResourceBinding::FragmentStage,
-                                                       dstLut.get(), sampler[0].get())});
+                                                       dstLut.get(), lutSampler.get())});
         layoutSrb->create();
     }
 
@@ -904,12 +915,12 @@ struct ImageCanvas::Private {
                      0, QRhiShaderResourceBinding::VertexStage | QRhiShaderResourceBinding::FragmentStage,
                      overlayUbo.get()),
                  QRhiShaderResourceBinding::sampledTexture(1, QRhiShaderResourceBinding::FragmentStage,
-                                                           overlayTex.get(), sampler[1].get()),
+                                                           overlayTex.get(), overlaySampler.get()),
                  QRhiShaderResourceBinding::sampledTexture(2, QRhiShaderResourceBinding::FragmentStage,
                                                            overlayLut ? overlayLut.get() : dummyLut.get(),
-                                                           sampler[0].get()),
+                                                           lutSampler.get()),
                  QRhiShaderResourceBinding::sampledTexture(3, QRhiShaderResourceBinding::FragmentStage,
-                                                           dstLut.get(), sampler[0].get())});
+                                                           dstLut.get(), lutSampler.get())});
             overlaySrb->create();
         }
         const QRect dirty = overlayDirty.intersected(overlayImage.rect());

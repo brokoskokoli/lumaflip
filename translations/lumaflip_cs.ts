@@ -1359,6 +1359,10 @@
 <context>
     <name>lf::FolderMapPanel</name>
     <message>
+        <source>Auf diesem System ist keine Kartendarstellung verfügbar.</source>
+        <translation>Mapy nejsou v tomto systému k dispozici.</translation>
+    </message>
+    <message>
         <source>Keine Bilder in dieser Ansicht.</source>
         <translation>V tomto zobrazení nejsou žádné obrázky.</translation>
     </message>
@@ -5380,10 +5384,6 @@
 <context>
     <name>lf::Shell</name>
     <message>
-        <source>Auf dieser Plattform wird das Festlegen der Standard-App noch nicht unterstützt.</source>
-        <translation>Na této platformě zatím není nastavení výchozí aplikace podporováno.</translation>
-    </message>
-    <message>
         <source>Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, falls eine erscheint.</source>
         <translation>Lumaflip se stále nastavuje jako výchozí aplikace – pokud se zobrazí dotaz macOS, potvrďte jej prosím.</translation>
     </message>
@@ -5398,6 +5398,18 @@
     <message>
         <source>Zeitüberschreitung bei der Rückmeldung des Systems.</source>
         <translation>Vypršel časový limit pro odpověď systému.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht geschrieben werden.</source>
+        <translation>„%1“ nelze zapsat.</translation>
+    </message>
+    <message>
+        <source>Lumaflip ist nicht als Anwendung installiert (%1 fehlt).</source>
+        <translation>Lumaflip není nainstalován jako aplikace (chybí %1).</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gestartet werden.</source>
+        <translation>„%1“ nelze spustit.</translation>
     </message>
 </context>
 <context>
@@ -5463,6 +5475,22 @@
     <message>
         <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
         <translation>Štítky souboru „%1“ nelze nastavit: %2</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gelesen werden.</source>
+        <translation>Štítky souboru „%1“ nelze přečíst.</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert nicht mehr.</source>
+        <translation type="unfinished">„%1“ již neexistuje.</translation>
+    </message>
+    <message>
+        <source>Dieses Dateisystem unterstützt keine Tags.</source>
+        <translation>Tento souborový systém nepodporuje štítky.</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gespeichert werden: %2</source>
+        <translation>Štítky souboru „%1“ nelze uložit: %2</translation>
     </message>
 </context>
 <context>
@@ -5777,6 +5805,22 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ist nicht installiert.</source>
+        <translation>„%1“ není nainstalován.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist fehlgeschlagen.</source>
+        <translation>„%1“ selhal.</translation>
+    </message>
+    <message>
+        <source>Alle Bildschirme</source>
+        <translation>Všechny obrazovky</translation>
+    </message>
+    <message>
+        <source>Diese Arbeitsumgebung wird nicht unterstützt.</source>
+        <translation>Toto desktopové prostředí není podporováno.</translation>
     </message>
 </context>
 <context>

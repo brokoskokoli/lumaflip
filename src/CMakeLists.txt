@@ -8,6 +8,17 @@ if(NOT LF_GENERIC_PLATFORM)
   list(FILTER LF_PLATFORM_SOURCES EXCLUDE REGEX ".*/SparkleUpdater\\.(mm|h)$")
 else()
   file(GLOB LF_PLATFORM_SOURCES CONFIGURE_DEPENDS platform/generic/*.cpp platform/generic/*.h)
+  if(LF_LINUX)
+    # Linux: inotify, statx, seccomp/Landlock (src/platform/linux) replace the portable
+    # variants of the same name (GenericFolderWatcher.cpp -> LinuxFolderWatcher.cpp …).
+    file(GLOB LF_LINUX_SOURCES CONFIGURE_DEPENDS platform/linux/*.cpp platform/linux/*.h)
+    foreach(_src IN LISTS LF_LINUX_SOURCES)
+      get_filename_component(_name "${_src}" NAME)
+      string(REGEX REPLACE "^Linux" "Generic" _generic "${_name}")
+      list(FILTER LF_PLATFORM_SOURCES EXCLUDE REGEX ".*/${_generic}$")
+    endforeach()
+    list(APPEND LF_PLATFORM_SOURCES ${LF_LINUX_SOURCES})
+  endif()
 endif()
 # Portable implementations that the mac build may reuse (e.g. DsStore parser) live in core/.
 
@@ -99,11 +110,84 @@ else()
   message(STATUS "libarchive not found: RAR/CBR and 7z/CB7 archives are not supported")
   target_compile_definitions(lf_core PRIVATE LF_HAVE_LIBARCHIVE=0)
 endif()
+# ---- library decoders for platforms without ImageIO (SPEC 8.3, core/LibraryDecoders.h) ----
+# AUTO: on when found, and only with the generic platform layer (macOS decodes all of these
+# with ImageIO). ON: required. The sources are in src/codecs.
+find_package(PkgConfig QUIET)
+if(LF_GENERIC_PLATFORM)
+  set(_lf_codec_default AUTO)
+else()
+  set(_lf_codec_default OFF)
+endif()
+set(LF_ENABLE_HEIF "${_lf_codec_default}" CACHE STRING "HEIF/HEIC/AVIF via libheif: AUTO, ON or OFF")
+set(LF_ENABLE_JXL "${_lf_codec_default}" CACHE STRING "JPEG XL via libjxl: AUTO, ON or OFF")
+set(LF_ENABLE_RAW "${_lf_codec_default}" CACHE STRING "Camera RAW via LibRaw: AUTO, ON or OFF")
+set(LF_ENABLE_EXR "${_lf_codec_default}" CACHE STRING "OpenEXR: AUTO, ON or OFF")
+foreach(_opt HEIF JXL RAW EXR)
+  set_property(CACHE LF_ENABLE_${_opt} PROPERTY STRINGS AUTO ON OFF)
+endforeach()
+# lf_codec(<option> <define> <source> <pkg-config modules…>)
+function(lf_codec opt define source)
+  set(_found OFF)
+  if(NOT LF_ENABLE_${opt} STREQUAL "OFF" AND PKG_CONFIG_FOUND)
+    pkg_check_modules(LF_PC_${opt} QUIET IMPORTED_TARGET GLOBAL ${ARGN})
+    if(LF_PC_${opt}_FOUND)
+      set(_found ON)
+    endif()
+  endif()
+  if(LF_ENABLE_${opt} STREQUAL "ON" AND NOT _found)
+    message(FATAL_ERROR "LF_ENABLE_${opt}=ON, but ${ARGN} was not found (pkg-config)")
+  endif()
+  if(_found)
+    message(STATUS "Decoder ${opt}: ${ARGN} ${LF_PC_${opt}_VERSION}")
+    target_sources(lf_core PRIVATE codecs/${source})
+    target_link_libraries(lf_core PRIVATE PkgConfig::LF_PC_${opt})
+    target_compile_definitions(lf_core PRIVATE ${define}=1)
+  else()
+    message(STATUS "Decoder ${opt}: off")
+    target_compile_definitions(lf_core PRIVATE ${define}=0)
+  endif()
+  set(LF_CODEC_${opt} ${_found} PARENT_SCOPE)
+endfunction()
+lf_codec(HEIF LF_HAVE_LIBHEIF LibHeifDecoder.cpp libheif)
+lf_codec(JXL LF_HAVE_LIBJXL LibJxlDecoder.cpp libjxl)
+# libraw_r: the thread-safe build (decoders run on several worker threads).
+lf_codec(RAW LF_HAVE_LIBRAW LibRawDecoder.cpp libraw_r)
+lf_codec(EXR LF_HAVE_OPENEXR OpenExrDecoder.cpp OpenEXR)
+if(LF_CODEC_JXL)
+  pkg_check_modules(LF_PC_JXL_THREADS QUIET IMPORTED_TARGET libjxl_threads)
+  if(LF_PC_JXL_THREADS_FOUND)
+    target_link_libraries(lf_core PRIVATE PkgConfig::LF_PC_JXL_THREADS)
+    target_compile_definitions(lf_core PRIVATE LF_HAVE_LIBJXL_THREADS=1)
+  endif()
+endif()
+if(LF_CODEC_EXR)
+  # OpenEXR throws: its decoder catches everything at the backend boundary.
+  set_source_files_properties(codecs/OpenExrDecoder.cpp PROPERTIES COMPILE_OPTIONS "-fexceptions")
+endif()
+
 list(JOIN LF_STATIC_COMPONENTS ",\n  " _lf_static_json)
 file(CONFIGURE OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/static-components.json"
      CONTENT "[\n  ${_lf_static_json}\n]\n" @ONLY)
 if(LF_GENERIC_PLATFORM)
   target_compile_definitions(lf_core PUBLIC LF_GENERIC_PLATFORM=1)
+  # XdgShell (platform/generic/GenericShell.cpp): org.freedesktop.FileManager1 over D-Bus.
+  if(TARGET Qt6::DBus)
+    target_link_libraries(lf_core PRIVATE Qt6::DBus)
+    target_compile_definitions(lf_core PRIVATE LF_HAVE_QTDBUS=1)
+  else()
+    target_compile_definitions(lf_core PRIVATE LF_HAVE_QTDBUS=0)
+  endif()
+  # F-OPEN-10: PDF pages with QtPdf (PDFium) where Qt has the module (GenericPdf.cpp).
+  find_package(Qt6 QUIET COMPONENTS Pdf)
+  if(TARGET Qt6::Pdf)
+    message(STATUS "PDF pages: QtPdf")
+    target_link_libraries(lf_core PRIVATE Qt6::Pdf)
+    target_compile_definitions(lf_core PRIVATE LF_HAVE_QTPDF=1)
+  else()
+    message(STATUS "QtPdf not found: no PDF pages (F-OPEN-10)")
+    target_compile_definitions(lf_core PRIVATE LF_HAVE_QTPDF=0)
+  endif()
 elseif(APPLE)
   target_link_libraries(lf_core PUBLIC
     "-framework Foundation" "-framework AppKit" "-framework ImageIO"
@@ -115,7 +199,7 @@ endif()
 # ---- lumaflip-decoder: decoder helper process (SPEC 8.5, core/DecoderHelper.h) ----
 # Runs the library decoders (Qt image plugins, QtSvg) outside the app; bundled next to the
 # app binary (Contents/MacOS) and signed by tools/package.sh.
-if(APPLE AND NOT LF_GENERIC_PLATFORM)
+if(APPLE OR LF_LINUX)
   add_executable(lumaflip-decoder helper/main.cpp)
   target_link_libraries(lumaflip-decoder PRIVATE lf_core lf_warnings)
   set(LF_DECODER_HELPER_TARGET lumaflip-decoder CACHE INTERNAL "decoder helper target")
@@ -165,13 +249,21 @@ endif()
 # ---- lf_ui: widgets (static library so integration tests can link it) ----
 file(GLOB LF_UI_SOURCES CONFIGURE_DEPENDS app/*.cpp app/*.h app/*.mm)
 list(FILTER LF_UI_SOURCES EXCLUDE REGEX ".*/main\\.cpp$")
+if(LF_GENERIC_PLATFORM)
+  # Without AppKit: the *_mac.mm parts are replaced by src/app/generic (no-ops where macOS
+  # has a service and Linux has none; XDG implementations otherwise, docs/LINUX.md).
+  list(FILTER LF_UI_SOURCES EXCLUDE REGEX ".*_mac\\.(mm|h)$")
+  list(FILTER LF_UI_SOURCES EXCLUDE REGEX ".*/MacImage\\.h$")
+  file(GLOB LF_UI_GENERIC_SOURCES CONFIGURE_DEPENDS app/generic/*.cpp app/generic/*.h)
+  list(APPEND LF_UI_SOURCES ${LF_UI_GENERIC_SOURCES})
+endif()
 add_library(lf_ui STATIC ${LF_UI_SOURCES})
 target_link_libraries(lf_ui PUBLIC lf_core Qt6::Widgets Qt6::GuiPrivate PRIVATE lf_warnings)
 target_compile_definitions(lf_ui PRIVATE LF_APP_VERSION="${PROJECT_VERSION}") # AboutDialog
 # Unbundled binaries (integration tests) find lumaflip_<lang>.qm in the build tree.
 target_compile_definitions(lf_ui PRIVATE LF_TRANSLATIONS_BUILD_DIR="${LF_QM_DIR}")
 add_dependencies(lf_ui lf_lrelease)
-if(APPLE)
+if(APPLE AND NOT LF_GENERIC_PLATFORM)
   target_compile_options(lf_ui PRIVATE $<$<COMPILE_LANGUAGE:OBJCXX>:-fobjc-arc>)
   # F-INFO-04: mini map in the info panel (MKMapSnapshotter, only after a click).
   target_link_libraries(lf_ui PUBLIC "-framework MapKit" "-framework CoreLocation")
@@ -251,6 +343,57 @@ endif()
 file(GLOB LF_SHADERS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/app/shaders/*.vert ${CMAKE_CURRENT_SOURCE_DIR}/app/shaders/*.frag)
 if(LF_SHADERS)
   qt_add_shaders(lf_ui "lf_shaders" PREFIX "/shaders" BASE app/shaders FILES ${LF_SHADERS})
+endif()
+
+# ---- Linux (and other non-macOS) app: plain executable + XDG install layout ----
+# bin/lumaflip, bin/lumaflip-decoder, share/applications, share/metainfo, share/icons,
+# share/lumaflip/translations (app/Translations.cpp). packaging/linux/ has the sources;
+# tools/linux_appimage.sh turns `cmake --install` into an AppImage.
+if(LF_GENERIC_PLATFORM)
+  include(GNUInstallDirs)
+  qt_add_executable(Lumaflip app/main.cpp)
+  add_dependencies(Lumaflip lf_lrelease)
+  target_link_libraries(Lumaflip PRIVATE lf_ui lf_warnings)
+  target_compile_definitions(Lumaflip PRIVATE LF_APP_VERSION="${PROJECT_VERSION}")
+  set_target_properties(Lumaflip PROPERTIES OUTPUT_NAME lumaflip)
+  if(LF_DECODER_HELPER_TARGET)
+    # Built into the same directory as the app (DecoderHelperPool::defaultExecutable()).
+    add_dependencies(Lumaflip ${LF_DECODER_HELPER_TARGET})
+  endif()
+  install(TARGETS Lumaflip RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+  if(LF_DECODER_HELPER_TARGET)
+    install(TARGETS ${LF_DECODER_HELPER_TARGET} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+  endif()
+  install(FILES ${LF_QM_FILES} DESTINATION ${CMAKE_INSTALL_DATADIR}/lumaflip/translations)
+  set(_lf_pkg "${PROJECT_SOURCE_DIR}/packaging/linux")
+  configure_file("${_lf_pkg}/${LF_BUNDLE_ID}.metainfo.xml.in"
+                 "${CMAKE_CURRENT_BINARY_DIR}/${LF_BUNDLE_ID}.metainfo.xml" @ONLY)
+  install(FILES "${_lf_pkg}/${LF_BUNDLE_ID}.desktop" DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
+  install(FILES "${CMAKE_CURRENT_BINARY_DIR}/${LF_BUNDLE_ID}.metainfo.xml"
+          DESTINATION ${CMAKE_INSTALL_DATADIR}/metainfo)
+  install(FILES "${PROJECT_SOURCE_DIR}/packaging/macos/icon/lumaflip.svg"
+          DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps RENAME "${LF_BUNDLE_ID}.svg")
+  install(FILES "${PROJECT_SOURCE_DIR}/LICENSE" DESTINATION ${CMAKE_INSTALL_DATADIR}/licenses/lumaflip)
+  # hicolor PNG sizes rendered from the SVG (rsvg-convert, librsvg2-bin) when available.
+  find_program(LF_RSVG_CONVERT rsvg-convert)
+  if(LF_RSVG_CONVERT)
+    set(_lf_icon_pngs "")
+    foreach(_size 16 24 32 48 64 128 256 512)
+      set(_png "${CMAKE_CURRENT_BINARY_DIR}/icons/${_size}/${LF_BUNDLE_ID}.png")
+      add_custom_command(OUTPUT "${_png}"
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/icons/${_size}"
+        COMMAND "${LF_RSVG_CONVERT}" -w ${_size} -h ${_size} -o "${_png}"
+                "${PROJECT_SOURCE_DIR}/packaging/macos/icon/lumaflip.svg"
+        DEPENDS "${PROJECT_SOURCE_DIR}/packaging/macos/icon/lumaflip.svg"
+        VERBATIM)
+      list(APPEND _lf_icon_pngs "${_png}")
+      install(FILES "${_png}" DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/${_size}x${_size}/apps)
+    endforeach()
+    add_custom_target(lf_icons ALL DEPENDS ${_lf_icon_pngs})
+  else()
+    message(STATUS "rsvg-convert not found: only the scalable app icon is installed")
+  endif()
+  return()
 endif()
 
 # ---- the app bundle ----

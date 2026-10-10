@@ -1339,6 +1339,10 @@
 <context>
     <name>lf::FolderMapPanel</name>
     <message>
+        <source>Auf diesem System ist keine Kartendarstellung verfügbar.</source>
+        <translation>このシステムでは地図を表示できません。</translation>
+    </message>
+    <message>
         <source>Keine Bilder in dieser Ansicht.</source>
         <translation>この表示には画像がありません。</translation>
     </message>
@@ -5334,10 +5338,6 @@
 <context>
     <name>lf::Shell</name>
     <message>
-        <source>Auf dieser Plattform wird das Festlegen der Standard-App noch nicht unterstützt.</source>
-        <translation>このプラットフォームでは、デフォルトのアプリの設定はまだサポートされていません。</translation>
-    </message>
-    <message>
         <source>Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, falls eine erscheint.</source>
         <translation>Lumaflipをデフォルトのアプリに設定しています。macOSの確認が表示された場合は承認してください。</translation>
     </message>
@@ -5352,6 +5352,18 @@
     <message>
         <source>Zeitüberschreitung bei der Rückmeldung des Systems.</source>
         <translation>システムからの応答がタイムアウトしました。</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht geschrieben werden.</source>
+        <translation>「%1」に書き込めません。</translation>
+    </message>
+    <message>
+        <source>Lumaflip ist nicht als Anwendung installiert (%1 fehlt).</source>
+        <translation>Lumaflip はアプリケーションとしてインストールされていません（%1 がありません）。</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gestartet werden.</source>
+        <translation>「%1」を起動できません。</translation>
     </message>
 </context>
 <context>
@@ -5417,6 +5429,22 @@
     <message>
         <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
         <translation>「%1」のタグを設定できませんでした: %2</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gelesen werden.</source>
+        <translation>「%1」のタグを読み取れません。</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert nicht mehr.</source>
+        <translation type="unfinished">「%1」はもう存在しません。</translation>
+    </message>
+    <message>
+        <source>Dieses Dateisystem unterstützt keine Tags.</source>
+        <translation>このファイルシステムはタグに対応していません。</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gespeichert werden: %2</source>
+        <translation>「%1」のタグを保存できません：%2</translation>
     </message>
 </context>
 <context>
@@ -5727,6 +5755,22 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ist nicht installiert.</source>
+        <translation>「%1」はインストールされていません。</translation>
+    </message>
+    <message>
+        <source>„%1“ ist fehlgeschlagen.</source>
+        <translation>「%1」が失敗しました。</translation>
+    </message>
+    <message>
+        <source>Alle Bildschirme</source>
+        <translation>すべての画面</translation>
+    </message>
+    <message>
+        <source>Diese Arbeitsumgebung wird nicht unterstützt.</source>
+        <translation>このデスクトップ環境には対応していません。</translation>
     </message>
 </context>
 <context>

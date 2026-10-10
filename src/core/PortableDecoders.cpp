@@ -2,6 +2,7 @@
 // registerPortableDecoders() (declared in QtImageDecoder.h). Separate translation unit so
 // that using the decoders alone does not pull in the DecoderRegistry implementation.
 #include "DecoderHelper.h"
+#include "LibraryDecoders.h"
 #include "PdfDocument.h"
 #include "PsbDecoder.h"
 #include "QtImageDecoder.h"
@@ -31,6 +32,10 @@ void registerPortableDecoders(DecoderRegistry& registry) {
     // F-OPEN-10 (M4): PDF pages browsed like a folder (member paths only; "pdf" files in a
     // folder stay excluded, ImageFormats.cpp). Rendered in the helper as well.
     registry.add(isolatedDecoder(std::make_shared<pdf::PdfPageDecoder>()));
+    // Platforms without ImageIO (Linux, M4): libheif, libjxl, LibRaw, OpenEXR when built in.
+    for (const std::shared_ptr<Decoder>& d : libraryDecoders())
+        registry.add(isolatedDecoder(d));
+    registry.addSupportedExtensions(libraryDecoderSuffixes());
 }
 
 } // namespace lf

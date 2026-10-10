@@ -1349,6 +1349,10 @@
 <context>
     <name>lf::FolderMapPanel</name>
     <message>
+        <source>Auf diesem System ist keine Kartendarstellung verfügbar.</source>
+        <translation>Les cartes ne sont pas disponibles sur ce système.</translation>
+    </message>
+    <message>
         <source>Keine Bilder in dieser Ansicht.</source>
         <translation>Aucune image dans cette vue.</translation>
     </message>
@@ -5357,10 +5361,6 @@
 <context>
     <name>lf::Shell</name>
     <message>
-        <source>Auf dieser Plattform wird das Festlegen der Standard-App noch nicht unterstützt.</source>
-        <translation>La définition de l’app par défaut n’est pas encore prise en charge sur cette plateforme.</translation>
-    </message>
-    <message>
         <source>Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, falls eine erscheint.</source>
         <translation>Lumaflip est en cours de définition comme app par défaut. Veuillez confirmer la demande de macOS si elle apparaît.</translation>
     </message>
@@ -5375,6 +5375,18 @@
     <message>
         <source>Zeitüberschreitung bei der Rückmeldung des Systems.</source>
         <translation>Le système n’a pas répondu à temps.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht geschrieben werden.</source>
+        <translation>« %1 » ne peut pas être écrit.</translation>
+    </message>
+    <message>
+        <source>Lumaflip ist nicht als Anwendung installiert (%1 fehlt).</source>
+        <translation>Lumaflip n’est pas installé en tant qu’application (%1 manquant).</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gestartet werden.</source>
+        <translation>« %1 » ne peut pas être lancé.</translation>
     </message>
 </context>
 <context>
@@ -5440,6 +5452,22 @@
     <message>
         <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
         <translation>Impossible de définir les tags de «&#xa0;%1&#xa0;»&#xa0;: %2</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gelesen werden.</source>
+        <translation>Impossible de lire les étiquettes de « %1 ».</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert nicht mehr.</source>
+        <translation type="unfinished">«&#xa0;%1&#xa0;» n’existe plus.</translation>
+    </message>
+    <message>
+        <source>Dieses Dateisystem unterstützt keine Tags.</source>
+        <translation>Ce système de fichiers ne prend pas en charge les étiquettes.</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gespeichert werden: %2</source>
+        <translation>Impossible d’enregistrer les étiquettes de « %1 » : %2</translation>
     </message>
 </context>
 <context>
@@ -5752,6 +5780,22 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ist nicht installiert.</source>
+        <translation>« %1 » n’est pas installé.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist fehlgeschlagen.</source>
+        <translation>« %1 » a échoué.</translation>
+    </message>
+    <message>
+        <source>Alle Bildschirme</source>
+        <translation>Tous les écrans</translation>
+    </message>
+    <message>
+        <source>Diese Arbeitsumgebung wird nicht unterstützt.</source>
+        <translation>Cet environnement de bureau n’est pas pris en charge.</translation>
     </message>
 </context>
 <context>

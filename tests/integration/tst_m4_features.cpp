@@ -20,6 +20,7 @@
 #include "core/FileOps.h"
 #include "core/LibArchive.h"
 #include "core/LiveText.h"
+#include "core/PdfDocument.h"
 #include "core/Platform.h"
 #include "core/Settings.h"
 #include "core/VirtualPath.h"
@@ -234,6 +235,8 @@ private slots:
 
     // Covers: F-OPEN-10 (PDF pages like images)
     void F_OPEN_10_pdfPagesInAWindow() {
+        if (!pdf::available())
+            QSKIP("no PDF renderer in this build (QtPdf missing)");
         const QString pdf = path(QStringLiteral("Plan.pdf"));
         {
             QPdfWriter writer(pdf);
@@ -285,6 +288,9 @@ private slots:
 
     // Covers: F-MAC-07 (Quick Look with ⌘Y; refused inside archives)
     void F_MAC_07_quickLook() {
+#ifdef LF_GENERIC_PLATFORM
+        QSKIP("Quick Look is macOS only (docs/LINUX.md)");
+#endif
         {
             QFile f(path(QStringLiteral("a.png")));
             QVERIFY(f.open(QIODevice::WriteOnly));

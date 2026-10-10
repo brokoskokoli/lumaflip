@@ -44,6 +44,9 @@ void MenuExtras::addShare(QMenu* file) {
     m_share = file->addMenu(tr("Teilen"));
     m_share->setObjectName(QStringLiteral("menu:share"));
     m_register(QStringLiteral("share"), m_share->menuAction());
+#ifdef LF_GENERIC_PLATFORM
+    m_share->menuAction()->setVisible(false); // no share sheet outside macOS (docs/LINUX.md)
+#endif
     auto fill = [this] {
         const QString p = frontPath();
         populateShareMenu(m_share, p.isEmpty() ? QStringList() : QStringList{p},
@@ -107,6 +110,9 @@ void MenuExtras::addWindowCommands(QMenu* window) {
         act->setObjectName(QStringLiteral("command:") + cid);
         m_register(cid, act);
         m_tabActions << act;
+#ifdef LF_GENERIC_PLATFORM
+        act->setVisible(false); // native window tabs are a macOS feature (docs/LINUX.md)
+#endif
         const TabCommand c = command;
         connect(act, &QAction::triggered, this, [this, c] {
             if (ViewerWindow* w = m_app.frontWindow())

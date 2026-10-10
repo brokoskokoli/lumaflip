@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+<!-- AppStream metadata (https://www.freedesktop.org/software/appstream/docs/). Configured by
+     src/CMakeLists.txt (@PROJECT_VERSION@); check with `appstreamcli validate`. -->
+<component type="desktop-application">
+  <id>io.github.brokoskokoli.lumaflip</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>Lumaflip</name>
+  <summary>Flip through a whole folder of photos without waiting</summary>
+  <summary xml:lang="de">Einen ganzen Bilderordner ohne Wartezeit durchblättern</summary>
+  <developer id="io.github.brokoskokoli">
+    <name>The Lumaflip contributors</name>
+  </developer>
+  <description>
+    <p>
+      Lumaflip is a fast, free image viewer. Opening one image opens its whole folder; the
+      neighbouring images are preloaded, so the arrow keys flip through the folder immediately.
+    </p>
+    <p>
+      It reads JPEG, PNG, GIF, WebP, TIFF, HEIC/AVIF, JPEG XL, camera RAW, OpenEXR, SVG, PSD/PSB,
+      XCF and more, shows metadata and a histogram, rates and culls photos (XMP), compares images
+      side by side and never uploads anything. Decoders run in a separate, sandboxed process.
+    </p>
+    <p xml:lang="de">
+      Lumaflip ist ein schneller, freier Bildbetrachter. Ein geöffnetes Bild öffnet den ganzen
+      Ordner; die Nachbarbilder werden vorab geladen, sodass die Pfeiltasten sofort weiterblättern.
+    </p>
+  </description>
+  <launchable type="desktop-id">io.github.brokoskokoli.lumaflip.desktop</launchable>
+  <url type="homepage">https://github.com/brokoskokoli/lumaflip</url>
+  <url type="bugtracker">https://github.com/brokoskokoli/lumaflip/issues</url>
+  <url type="vcs-browser">https://github.com/brokoskokoli/lumaflip</url>
+  <categories>
+    <category>Graphics</category>
+    <category>Viewer</category>
+  </categories>
+  <keywords>
+    <keyword>image</keyword>
+    <keyword>photo</keyword>
+    <keyword>viewer</keyword>
+    <keyword>raw</keyword>
+  </keywords>
+  <provides>
+    <binary>lumaflip</binary>
+    <mediatype>image/jpeg</mediatype>
+    <mediatype>image/png</mediatype>
+    <mediatype>image/webp</mediatype>
+    <mediatype>image/heic</mediatype>
+    <mediatype>image/avif</mediatype>
+    <mediatype>image/jxl</mediatype>
+  </provides>
+  <content_rating type="oars-1.1"/>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </supports>
+  <releases>
+    <release version="@PROJECT_VERSION@" date="2026-10-10"/>
+  </releases>
+</component>

@@ -1349,6 +1349,10 @@
 <context>
     <name>lf::FolderMapPanel</name>
     <message>
+        <source>Auf diesem System ist keine Kartendarstellung verfügbar.</source>
+        <translation>Kaarten zijn op dit systeem niet beschikbaar.</translation>
+    </message>
+    <message>
         <source>Keine Bilder in dieser Ansicht.</source>
         <translation>Geen afbeeldingen in deze weergave.</translation>
     </message>
@@ -5357,10 +5361,6 @@
 <context>
     <name>lf::Shell</name>
     <message>
-        <source>Auf dieser Plattform wird das Festlegen der Standard-App noch nicht unterstützt.</source>
-        <translation>Het instellen van de standaardapp wordt op dit platform nog niet ondersteund.</translation>
-    </message>
-    <message>
         <source>Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, falls eine erscheint.</source>
         <translation>Lumaflip wordt nog ingesteld als standaardapp – bevestig de vraag van macOS als die verschijnt.</translation>
     </message>
@@ -5375,6 +5375,18 @@
     <message>
         <source>Zeitüberschreitung bei der Rückmeldung des Systems.</source>
         <translation>Time-out bij het wachten op een reactie van het systeem.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht geschrieben werden.</source>
+        <translation>‘%1’ kan niet worden geschreven.</translation>
+    </message>
+    <message>
+        <source>Lumaflip ist nicht als Anwendung installiert (%1 fehlt).</source>
+        <translation>Lumaflip is niet als toepassing geïnstalleerd (%1 ontbreekt).</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gestartet werden.</source>
+        <translation>‘%1’ kan niet worden gestart.</translation>
     </message>
 </context>
 <context>
@@ -5440,6 +5452,22 @@
     <message>
         <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
         <translation>Tags van ‘%1’ kunnen niet worden ingesteld: %2</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gelesen werden.</source>
+        <translation>De labels van ‘%1’ kunnen niet worden gelezen.</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert nicht mehr.</source>
+        <translation type="unfinished">‘%1’ bestaat niet meer.</translation>
+    </message>
+    <message>
+        <source>Dieses Dateisystem unterstützt keine Tags.</source>
+        <translation>Dit bestandssysteem ondersteunt geen labels.</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gespeichert werden: %2</source>
+        <translation>De labels van ‘%1’ kunnen niet worden bewaard: %2</translation>
     </message>
 </context>
 <context>
@@ -5752,6 +5780,22 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ist nicht installiert.</source>
+        <translation>‘%1’ is niet geïnstalleerd.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist fehlgeschlagen.</source>
+        <translation>‘%1’ is mislukt.</translation>
+    </message>
+    <message>
+        <source>Alle Bildschirme</source>
+        <translation>Alle schermen</translation>
+    </message>
+    <message>
+        <source>Diese Arbeitsumgebung wird nicht unterstützt.</source>
+        <translation>Deze bureaubladomgeving wordt niet ondersteund.</translation>
     </message>
 </context>
 <context>

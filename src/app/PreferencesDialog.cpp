@@ -120,6 +120,10 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent) {
     }
 
     updateSectionIcons();
+    // F-I18N-06: every section title visible. With wider fonts (Linux: DejaVu Sans) or long
+    // translations the toolbar can outgrow the default width.
+    if (toolbar->sizeHint().width() > width())
+        resize(toolbar->sizeHint().width(), height());
 
     m_messageLabel = new QLabel(this);
     m_messageLabel->setObjectName(QStringLiteral("messageLabel"));

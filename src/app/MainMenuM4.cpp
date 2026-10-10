@@ -20,7 +20,12 @@ namespace lf {
 
 void MainMenu::buildM4(QMenu* file, QMenu* view) {
     if (file) {
-        add(file, Action::QuickLook, tr("Quick Look"));                                 // F-MAC-07
+        QAction* quickLook = add(file, Action::QuickLook, tr("Quick Look")); // F-MAC-07
+#ifdef LF_GENERIC_PLATFORM
+        quickLook->setVisible(false); // macOS only (docs/LINUX.md)
+#else
+        Q_UNUSED(quickLook);
+#endif
         add(file, Action::SetWallpaper, tr("Als Schreibtischhintergrund festlegen …")); // F-FILE-09
         m_customMenu = file->addMenu(tr("Eigene Aktionen"));                            // F-FILE-10
         m_customMenu->setObjectName(QStringLiteral("menu:customActions"));
@@ -30,7 +35,11 @@ void MainMenu::buildM4(QMenu* file, QMenu* view) {
     }
     if (view) {
         view->addSeparator();
-        add(view, Action::ToggleLiveText, tr("Live Text"))->setCheckable(true); // F-MAC-06
+        QAction* liveText = add(view, Action::ToggleLiveText, tr("Live Text")); // F-MAC-06
+        liveText->setCheckable(true);
+#ifdef LF_GENERIC_PLATFORM
+        liveText->setVisible(false); // VisionKit, macOS only (docs/LINUX.md)
+#endif
         add(view, Action::ToggleRightToLeft, tr("Comics von rechts nach links lesen"))
             ->setCheckable(true); // F-OPEN-10
     }

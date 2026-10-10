@@ -1349,6 +1349,10 @@
 <context>
     <name>lf::FolderMapPanel</name>
     <message>
+        <source>Auf diesem System ist keine Kartendarstellung verfügbar.</source>
+        <translation>Kort er ikke tilgængelige på dette system.</translation>
+    </message>
+    <message>
         <source>Keine Bilder in dieser Ansicht.</source>
         <translation>Ingen billeder i denne visning.</translation>
     </message>
@@ -5357,10 +5361,6 @@
 <context>
     <name>lf::Shell</name>
     <message>
-        <source>Auf dieser Plattform wird das Festlegen der Standard-App noch nicht unterstützt.</source>
-        <translation>Det understøttes endnu ikke at indstille standardapp på denne platform.</translation>
-    </message>
-    <message>
         <source>Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, falls eine erscheint.</source>
         <translation>Lumaflip er ved at blive indstillet som standardapp – bekræft forespørgslen fra macOS, hvis den vises.</translation>
     </message>
@@ -5375,6 +5375,18 @@
     <message>
         <source>Zeitüberschreitung bei der Rückmeldung des Systems.</source>
         <translation>Tiden udløb, mens der blev ventet på svar fra systemet.</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht geschrieben werden.</source>
+        <translation>”%1” kan ikke skrives.</translation>
+    </message>
+    <message>
+        <source>Lumaflip ist nicht als Anwendung installiert (%1 fehlt).</source>
+        <translation>Lumaflip er ikke installeret som program (%1 mangler).</translation>
+    </message>
+    <message>
+        <source>„%1“ kann nicht gestartet werden.</source>
+        <translation>”%1” kan ikke startes.</translation>
     </message>
 </context>
 <context>
@@ -5440,6 +5452,22 @@
     <message>
         <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
         <translation>Mærker for ”%1” kunne ikke indstilles: %2</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gelesen werden.</source>
+        <translation>Mærkerne for ”%1” kan ikke læses.</translation>
+    </message>
+    <message>
+        <source>„%1“ existiert nicht mehr.</source>
+        <translation type="unfinished">”%1” findes ikke længere.</translation>
+    </message>
+    <message>
+        <source>Dieses Dateisystem unterstützt keine Tags.</source>
+        <translation>Dette filsystem understøtter ikke mærker.</translation>
+    </message>
+    <message>
+        <source>Die Tags von „%1“ können nicht gespeichert werden: %2</source>
+        <translation>Mærkerne for ”%1” kan ikke gemmes: %2</translation>
     </message>
 </context>
 <context>
@@ -5752,6 +5780,22 @@
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
         <translation>%1: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ ist nicht installiert.</source>
+        <translation>”%1” er ikke installeret.</translation>
+    </message>
+    <message>
+        <source>„%1“ ist fehlgeschlagen.</source>
+        <translation>”%1” mislykkedes.</translation>
+    </message>
+    <message>
+        <source>Alle Bildschirme</source>
+        <translation>Alle skærme</translation>
+    </message>
+    <message>
+        <source>Diese Arbeitsumgebung wird nicht unterstützt.</source>
+        <translation>Dette skrivebordsmiljø understøttes ikke.</translation>
     </message>
 </context>
 <context>

@@ -324,6 +324,9 @@ private slots:
     // Covers: F-FILE-06 (the services are looked up on a worker, once per file type; the
     // menu shows a placeholder until they arrive and never blocks)
     void F_FILE_06_shareMenuFilledAsynchronously() {
+#ifdef LF_GENERIC_PLATFORM
+        QSKIP("no share sheet outside macOS (docs/LINUX.md)");
+#endif
         QSemaphore gate;
         std::atomic<int> queries{0};
         std::atomic<bool> onGuiThread{false};
