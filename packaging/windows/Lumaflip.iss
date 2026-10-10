@@ -29,6 +29,11 @@
 #dim Exts[30] {"jpg", "jpeg", "jpe", "jfif", "png", "gif", "bmp", "dib", "tif", "tiff", "webp", "heic", "heif", \
   "avif", "jxl", "svg", "svgz", "ico", "jxr", "wdp", "dds", "psd", "exr", "dng", "cr2", "cr3", "nef", "arw", \
   "raf", "orf"}
+; Archives (browsed like folders, F-OPEN-10): only offered in "Open with", never registered
+; as a default-app capability (the archive tool stays the default). No PDF: the Windows build
+; has no PDF renderer (docs/WINDOWS.md).
+#define ContainerProgId "Lumaflip.Container"
+#dim ContainerExts[6] {"zip", "cbz", "rar", "cbr", "7z", "cb7"}
 
 [Setup]
 AppId={{6E0D5D8A-6A43-4C6B-9C6F-4C1A5B7E1F2D}
@@ -98,6 +103,17 @@ Root: HKA; Subkey: "Software\{#AppName}\Capabilities\FileAssociations"; ValueTyp
 #endsub
 #define i
 #for {i = 0; i < DimOf(Exts); i++} AddExtension
+; ProgID and "Open with" entries for archives (no FileAssociations capability).
+Root: HKA; Subkey: "Software\Classes\{#ContainerProgId}"; ValueType: string; ValueName: ""; ValueData: "Archiv (Lumaflip)"; Flags: uninsdeletekey
+Root: HKA; Subkey: "Software\Classes\{#ContainerProgId}"; ValueType: string; ValueName: "FriendlyTypeName"; ValueData: "Archiv (Lumaflip)"
+Root: HKA; Subkey: "Software\Classes\{#ContainerProgId}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: """{app}\{#AppExe}"",0"
+Root: HKA; Subkey: "Software\Classes\{#ContainerProgId}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#AppExe}"" ""%1"""
+#sub AddContainerExtension
+Root: HKA; Subkey: "Software\Classes\.{#ContainerExts[j]}\OpenWithProgids"; ValueType: string; ValueName: "{#ContainerProgId}"; ValueData: ""; Flags: uninsdeletevalue
+Root: HKA; Subkey: "Software\Classes\Applications\{#AppExe}\SupportedTypes"; ValueType: string; ValueName: ".{#ContainerExts[j]}"; ValueData: ""
+#endsub
+#define j
+#for {j = 0; j < DimOf(ContainerExts); j++} AddContainerExtension
 
 [Run]
 Filename: "{app}\{#AppExe}"; Description: "{cm:LaunchProgram,{#AppName}}"; Flags: nowait postinstall skipifsilent
