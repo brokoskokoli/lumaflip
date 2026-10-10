@@ -33,7 +33,6 @@ namespace lf::platform {
 
 namespace {
 
-
 void setError(QString* error, const QString& msg) {
     if (error)
         *error = msg;
@@ -443,7 +442,7 @@ QString imageTypeIdentifier(const QString& path) {
         if (!src)
             return {};
         CFStringRef t = CGImageSourceGetType(src);
-        const QString type = t ? QString::fromNSString((__bridge NSString*)t) : QString();
+        QString type = t ? QString::fromNSString((__bridge NSString*)t) : QString();
         CFRelease(src);
         return type;
     }

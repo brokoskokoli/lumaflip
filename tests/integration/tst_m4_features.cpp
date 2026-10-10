@@ -90,7 +90,18 @@ class TstM4Features : public QObject {
     QString path(const QString& name) const { return QDir::cleanPath(dir->path()) + QLatin1Char('/') + name; }
     ViewerWindow* openAndWait(const QString& p) {
         app->openPaths({p});
-        if (!QTest::qWaitFor([this] { return app->frontWindow() != nullptr; }, 5000))
+        // An archive or PDF opens after a check on a worker thread; until then the front
+        // window may still be the one opened before: wait for the window showing `p`.
+        const QString wanted = QDir::cleanPath(p);
+        auto shows = [this, wanted] {
+            ViewerWindow* f = app->frontWindow();
+            if (!f)
+                return false;
+            const QString cur = f->currentPath();
+            return cur == wanted || vpath::containerOf(cur) == wanted ||
+                   f->collection()->containerPath() == wanted;
+        };
+        if (!QTest::qWaitFor(shows, 10000))
             return nullptr;
         ViewerWindow* w = app->frontWindow();
         if (!QTest::qWaitForWindowExposed(w, 5000))
@@ -345,7 +356,13 @@ private slots:
         QCOMPARE(QString::fromUtf8(out.readAll()), path(QStringLiteral("it's \"here\".png")));
         QCOMPARE(asked, 1);
         QTRY_VERIFY(customactions::load().first().confirmed);
-        entry->trigger(); // confirmed: no question
+        // Saving the confirmation rebuilds the menu entries (the old QAction is gone):
+        // let the rebuild run and fetch the entry again.
+        QTest::qWait(200);
+        QAction* again = app->menu()->command(QStringLiteral("customAction:copyname"));
+        if (!again)
+            QFAIL("menu entry missing after the rebuild");
+        again->trigger(); // confirmed: no question
         QTRY_VERIFY(!CustomActionsManager::instance().isRunning());
         QCOMPARE(asked, 1);
         QVERIFY(w->perform(Action::ShowActionLog));

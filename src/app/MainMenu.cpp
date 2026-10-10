@@ -291,7 +291,7 @@ void MainMenu::build() {
             w->applySortToAllFolders();
         refreshState();
     });
-    buildHdr(view); // M3: F-COL-04/05
+    buildHdr(view);         // M3: F-COL-04/05
     buildM4(nullptr, view); // M4: Live Text, right-to-left comics
     connect(view, &QMenu::aboutToShow, this, &MainMenu::refreshState);
     connect(sort, &QMenu::aboutToShow, this, &MainMenu::refreshState);

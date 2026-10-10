@@ -26,7 +26,13 @@ Checks: >
   modernize-make-shared,
   modernize-loop-convert,
   modernize-redundant-void-arg,
-  modernize-deprecated-headers
+  modernize-deprecated-headers,
+  -bugprone-signed-bitwise,
+  -performance-use-std-move,
+  -clang-analyzer-optin.performance.*
+# New in LLVM 23 and off here: bugprone-signed-bitwise (Qt flags, qRgb and byte packing
+# use int on purpose), performance-use-std-move (copies of small Qt values, implicitly
+# shared). optin.performance (struct padding, GCD wait with timeout) are opt-in hints.
 # Qt parent/child ownership (new QWidget(parent)) looks like a leak to the analyzer:
 # cplusplus.NewDeleteLeaks is off for that reason.
 WarningsAsErrors: ''

@@ -675,7 +675,7 @@ TEST(SimpleDecoders, F_FMT_02_TinyFilesClaimingHugeImagesFailFast) {
     cases.append({"pbm ascii", QByteArray("P1 16384 16384\n0101"), &simplefmt::decodePnm});
     cases.append({"pam", QByteArray("P7\nWIDTH 16384\nHEIGHT 16384\nDEPTH 4\nMAXVAL 255\nENDHDR\nxx"),
                   &simplefmt::decodePnm});
-    cases.append({"pfm", QByteArray("PF\n16384 16384\n-1.0\n\x00\x00\x80\x3F", 26), &simplefmt::decodePnm});
+    cases.append({"pfm", QByteArray("PF\n16384 16384\n-1.0\n\x00\x00\x80\x3F", 24), &simplefmt::decodePnm});
     for (const Case& c : cases) {
         SCOPED_TRACE(c.name);
 #ifdef Q_OS_DARWIN

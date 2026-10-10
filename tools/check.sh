@@ -201,10 +201,22 @@ if [[ $TIDY == 1 ]]; then
     echo "clang-tidy not found - skipped (it is part of LLVM: brew install llvm)"
   else
     "$TIDY_BIN" --version | head -n 2
+    # Homebrew's clang-tidy does not know the macOS SDK on its own (TargetConditionals.h,
+    # libc++ headers): without it every Qt include fails to parse.
+    if [[ "$(uname)" == Darwin && -z "${SDKROOT:-}" ]]; then
+      SDKROOT="$(xcrun --show-sdk-path 2>/dev/null || true)"
+      export SDKROOT
+    fi
     if [[ $TIDY_ALL == 1 ]]; then
       tidy_files=$(git ls-files 'src/*.cpp' 'src/*.mm' 'tests/*.cpp' 'tests/*.mm')
     else
       tidy_files=$(changed_sources "$BASE" | grep -E '\.(cpp|mm)$' || true)
+    fi
+    # Only files this build compiles (e.g. src/platform/generic/ is not built on macOS).
+    if [[ -n "$tidy_files" && -f "$BUILD_DIR/compile_commands.json" ]]; then
+      tidy_files=$(for f in $tidy_files; do
+        grep -qF "/$f\"" "$BUILD_DIR/compile_commands.json" && echo "$f"
+      done || true)
     fi
     if [[ -z "$tidy_files" ]]; then
       echo "no changed .cpp/.mm files"

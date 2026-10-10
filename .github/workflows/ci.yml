@@ -1,19 +1,50 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Mandatory checks (SPEC 15.1) for every push to main and every pull request. The jobs
 # themselves live in checks.yml, which release.yml reuses unchanged.
+# Changes that touch only documentation (Markdown, docs/) run just the REUSE check;
+# everything else runs the full set. workflow_dispatch always runs everything.
 name: CI
 on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
 
+# One run per branch/PR: a newer push cancels the older run, except on main, where
+# every commit is checked to the end.
 concurrency:
   group: ci-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
+  changes:
+    name: Changed paths
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: read # paths-filter lists the files of a pull request via the API
+    outputs:
+      code: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.code == 'true' }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
+        id: filter
+        with:
+          # "code" = anything that is not documentation.
+          predicate-quantifier: every
+          filters: |
+            code:
+              - '**'
+              - '!**/*.md'
+              - '!docs/**'
+
   checks:
+    needs: changes
     uses: ./.github/workflows/checks.yml
+    with:
+      code: ${{ needs.changes.outputs.code == 'true' }}

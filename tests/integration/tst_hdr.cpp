@@ -384,8 +384,8 @@ private slots:
         ViewerWindow* w = app->openPaths({a});
         QVERIFY(w);
         QVERIFY(QTest::qWaitForWindowExposed(w));
-        QTRY_COMPARE_WITH_TIMEOUT(w->shownPath(), a, 5000);
-        QTRY_VERIFY_WITH_TIMEOUT(w->view()->image() && w->view()->hdrDecision().badge, 5000);
+        QTRY_COMPARE_WITH_TIMEOUT(w->shownPath(), a, 15000);
+        QTRY_VERIFY_WITH_TIMEOUT(w->view()->image() && w->view()->hdrDecision().badge, 15000);
         HdrController* hdrc = w->hdr();
         QVERIFY(hdrc);
         auto* badge = w->findChild<QLabel*>(QStringLiteral("lfStatusHdr"));

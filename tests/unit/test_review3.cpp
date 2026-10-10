@@ -355,7 +355,7 @@ TEST(Review3Input, F_IN_18_PresetSkipsUnavailableChoices) {
     QTemporaryDir dir;
     Settings::useTestingBackend(dir.filePath("p.ini"));
     EXPECT_TRUE(InputBindings::isChoiceAvailable("middleClick", "magnifier")); // M3 (F-VIEW-11)
-    EXPECT_TRUE(InputBindings::isChoiceAvailable("ratingKeys", "always")); // M3
+    EXPECT_TRUE(InputBindings::isChoiceAvailable("ratingKeys", "always"));     // M3
     EXPECT_TRUE(InputBindings::isChoiceAvailable("ratingKeys", "cullingOnly"));
     InputBindings::applyPreset("photographer");
     InputBindings b;

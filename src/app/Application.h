@@ -82,7 +82,7 @@ public:
     // Looks at `paths` on a worker thread; `done` runs on the GUI thread (skipped if
     // `context` is destroyed).
     static void classifyPaths(const QStringList& paths, QObject* context,
-                              std::function<void(const ClassifiedPaths&)> done);
+                              const std::function<void(const ClassifiedPaths&)>& done);
 
     ViewerWindow* newWindow();                           // ⌘N, empty window
     ViewerWindow* duplicateWindow(ViewerWindow* source); // ⌥⌘N

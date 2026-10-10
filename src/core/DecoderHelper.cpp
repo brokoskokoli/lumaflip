@@ -39,6 +39,11 @@
 #include <sandbox.h>
 #include <servers/bootstrap.h>
 #endif
+#if defined(Q_OS_UNIX) && !defined(Q_OS_DARWIN)
+// POSIX: the process environment. Declared at global scope - inside a namespace it
+// would name a different (undefined) variable.
+extern char** environ; // NOLINT(readability-redundant-declaration)
+#endif
 
 Q_LOGGING_CATEGORY(lcHelper, "lf.decode.helper")
 
@@ -54,8 +59,7 @@ char** currentEnvironment() {
 #ifdef Q_OS_DARWIN
     return *_NSGetEnviron();
 #elif defined(Q_OS_UNIX)
-    extern char** environ;
-    return environ;
+    return ::environ;
 #else
     return nullptr;
 #endif
@@ -146,6 +150,7 @@ struct HelperProcess {
         for (const QString& extra : o.extraEnvironment)
             envStore.push_back(extra.toLocal8Bit());
         std::vector<char*> envp;
+        envp.reserve(envStore.size() + 1);
         for (QByteArray& e : envStore)
             envp.push_back(e.data());
         envp.push_back(nullptr);

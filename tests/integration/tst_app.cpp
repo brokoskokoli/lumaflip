@@ -35,6 +35,7 @@
 #include <QMenuBar>
 #include <QMimeData>
 #include <QPushButton>
+#include <QScreen>
 #include <QSignalSpy>
 #include <QStatusBar>
 #include <QTemporaryDir>
@@ -577,13 +578,18 @@ private slots:
         QVERIFY(w->chromeVisible());
         (void)QTest::qWaitFor([w] { return !(w->windowHandle()->windowStates() & Qt::WindowFullScreen); },
                               3000);
-        QTest::qWait(800);
+        // The exit transition must be over before entering again: macOS drops a request
+        // made during it and the window falls back to normal (slow machines, CI).
+        QTest::qWait(2500);
         // Double click toggles too (default of F-IN-10).
         QTest::mouseDClick(canvas, Qt::LeftButton, {}, QPoint(20, 20));
         QVERIFY(w->isFullScreen());
-        QTest::qWait(800);
+        // Let the native transition finish first (slow machines, CI): while it runs, the
+        // window state is not final yet and a toggle can go the wrong way. The state flag is
+        // set at once, so only time tells (the earlier steps wait for the chrome as well).
+        QTest::qWait(2500);
         w->toggleFullScreen();
-        QVERIFY(!w->isFullScreen());
+        QTRY_VERIFY_WITH_TIMEOUT(!w->isFullScreen(), 5000);
         (void)QTest::qWaitFor([w] { return !(w->windowHandle()->windowStates() & Qt::WindowFullScreen); },
                               3000);
         QTest::qWait(800);
@@ -743,6 +749,8 @@ private slots:
         const bool loaded = w && waitLoaded(w);
         const bool shown = w && waitShown(w, locked + "/b.png");
         ::chmod(QFile::encodeName(locked).constData(), 0755);
+        if (!w) // not QVERIFY: the static analyzer does not see that it returns
+            QFAIL("no window");
         QVERIFY(loaded);
         QVERIFY(shown); // no error state: the opened file is shown
         QCOMPARE(w->collection()->count(), 1);
@@ -810,7 +818,8 @@ private slots:
         QCOMPARE(c->collection()->count(), b->collection()->count());
         QCOMPARE(c->view()->zoomMode(), ZoomMode::Actual);
         QVERIFY(!c->collection()->isLoading()); // no second enumeration (F-WIN-09)
-        QVERIFY(c->pos() != a->pos() && c->pos() != b->pos());
+        // macOS may still move a new window into the screen right after showing it.
+        QTRY_VERIFY(c->pos() != a->pos() && c->pos() != b->pos());
 
         // ⌘N: empty window, cascaded as well.
         menuShortcut(Action::NewWindow, QKeySequence(Qt::ControlModifier | Qt::Key_N));
@@ -818,10 +827,14 @@ private slots:
         ViewerWindow* d = app->frontWindow();
         QVERIFY(d->isEmpty());
         QVERIFY(waitWindowShown(d));
-        QSet<QPoint> positions;
-        for (ViewerWindow* x : app->windows())
-            positions.insert(x->pos());
-        QCOMPARE(positions.size(), 4);
+        // As above: macOS may still move the new window right after showing it.
+        auto distinctPositions = [&] {
+            QSet<QPoint> positions;
+            for (ViewerWindow* x : app->windows())
+                positions.insert(x->pos());
+            return positions.size();
+        };
+        QTRY_COMPARE(distinctPositions(), 4);
 
         // ⌘W closes the front window, ⌥⌘W all.
         menuShortcut(Action::CloseWindow, QKeySequence(Qt::ControlModifier | Qt::Key_W));
@@ -871,10 +884,18 @@ private slots:
 
     // Covers: F-WIN-08 (option "Fenstergröße an Bild anpassen")
     void F_WIN_08_fitWindowToImageOption() {
-        QVERIFY(!makeImage(path("wide.png"), Qt::darkGreen, QSize(1200, 800)).isEmpty());
+        // 600 x 400 points: fits at 100 % even on small screens (CI runners: 1024 x 768),
+        // where fitWindowToImage() would otherwise cap the window at 90 % of the screen.
+        QScreen* primary = QGuiApplication::primaryScreen();
+        QVERIFY(primary);
+        const QSize pixels = (QSizeF(600, 400) * primary->devicePixelRatio()).toSize();
+        QVERIFY(!makeImage(path("wide.png"), Qt::darkGreen, pixels).isEmpty());
         ViewerWindow* plain = app->openPaths({path("wide.png")});
         QVERIFY(waitWindowShown(plain));
         QVERIFY(waitShown(plain, path("wide.png")));
+        // The new window cascades with this size; on small screens (CI: 1024 x 768) the
+        // default size fills the screen and macOS treats the window as zoomed.
+        plain->resize(500, 350);
         const QSize normal = plain->size();
         Settings::instance().setValue(key::FitWindowToImage, true);
         ViewerWindow* w = app->openPaths({path("wide.png")});
@@ -882,7 +903,7 @@ private slots:
         QVERIFY(waitWindowShown(w));
         QVERIFY(waitShown(w, path("wide.png")));
         const qreal dpr = w->screen()->devicePixelRatio();
-        const QSize expected = (QSizeF(1200, 800) / dpr).toSize();
+        const QSize expected = (QSizeF(pixels) / dpr).toSize();
         QTRY_VERIFY2(qAbs(w->view()->width() - expected.width()) <= 2 &&
                          qAbs(w->view()->height() - expected.height()) <= 2,
                      qPrintable(QStringLiteral("%1x%2 vs %3x%4 (normal %5x%6)")

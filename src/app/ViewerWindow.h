@@ -35,8 +35,8 @@ class CullingController; // M3: rating, culling mode, filter, quick move
 class HdrController;     // M3: HDR toggle, badge, exposure (F-COL-04/05)
 class ImageView;
 class SlideshowController;
-class WindowPanels; // M2 panels (info panel, filmstrip)
-class WindowExtras; // M3 grid, compare, loupe, window modes, go to, shuffle, name filter
+class WindowPanels;      // M2 panels (info panel, filmstrip)
+class WindowExtras;      // M3 grid, compare, loupe, window modes, go to, shuffle, name filter
 class WindowIntegration; // M4 archives, Live Text, Quick Look, Services, wallpaper
 class WindowEditing;     // M4 crop, export, photo overlays
 
@@ -71,7 +71,7 @@ public:
     bool isEmpty() const; // nothing opened (start screen)
     Collection* collection() const { return m_collection; }
     ImageView* view() const { return m_view; }
-    WindowPanels* panels() const { return m_panels; } // F-INFO-02, F-GRID-01
+    WindowPanels* panels() const { return m_panels; }        // F-INFO-02, F-GRID-01
     CullingController* culling() const { return m_culling; } // M3: F-CULL-01..06, F-FILE-08
     WindowExtras* extras() const { return m_extras; }        // M3: F-GRID-02/03, F-VIEW-11..13, F-NAV-06/08
     HdrController* hdr() const { return m_hdr; }             // M3: F-COL-04/05
@@ -240,11 +240,12 @@ private:
     QString m_shownPath; // file the view currently shows (or failed for)
     Quality m_shownQuality = Quality::Preview;
     bool m_shownFailed = false;
-    bool m_shownStale = false; // the provider invalidated the shown file (replace on the next stage)
-    QStringList m_wanted;      // prefetch window, current first
+    bool m_redecodeQueued = false; // F-I18N-03: error card decoded again after a switch
+    bool m_shownStale = false;     // the provider invalidated the shown file (replace on the next stage)
+    QStringList m_wanted;          // prefetch window, current first
     QString m_watchedFolder;
     bool m_watchedTree = false; // F-OPEN-08: m_watchedFolder is watched with its subfolders
-    int m_direction = 1; // last flip direction (prefetch, SPEC 7.1)
+    int m_direction = 1;        // last flip direction (prefetch, SPEC 7.1)
     int m_displayCount = 0;
     bool m_flipH = false;
     bool m_flipV = false;
@@ -269,10 +270,10 @@ private:
     QSize m_vectorSize;
     class StartScreenRecent* m_startRecent = nullptr; // F-OPEN-12
     void openRecent(const QString& path);
-    WindowPanels* m_panels = nullptr; // M2: info panel + filmstrip (WindowPanels.cpp)
-    CullingController* m_culling = nullptr; // M3 (CullingController.cpp)
-    WindowExtras* m_extras = nullptr;       // M3 (WindowExtras.cpp)
-    HdrController* m_hdr = nullptr;         // M3 (HdrController.cpp)
+    WindowPanels* m_panels = nullptr;           // M2: info panel + filmstrip (WindowPanels.cpp)
+    CullingController* m_culling = nullptr;     // M3 (CullingController.cpp)
+    WindowExtras* m_extras = nullptr;           // M3 (WindowExtras.cpp)
+    HdrController* m_hdr = nullptr;             // M3 (HdrController.cpp)
     WindowIntegration* m_integration = nullptr; // M4 (WindowIntegration.cpp)
     WindowEditing* m_editing = nullptr;         // M4 (WindowEditing.cpp)
     // F-I18N-03: texts of the window after a language switch (ViewerWindowI18n.cpp).

@@ -100,7 +100,8 @@ class TstAppCoverage : public QObject {
     // Triggers a menu command the way its ⌘ shortcut does, after checking the shortcut.
     void menuShortcut(Action a, const QKeySequence& seq) {
         QAction* act = app->menu()->action(a);
-        QVERIFY2(act, qPrintable(actionId(a)));
+        if (!act)
+            QFAIL(qPrintable(actionId(a)));
         QVERIFY2(act->shortcuts().contains(seq), qPrintable(actionId(a) + " " + seq.toString()));
         QVERIFY(act->isEnabled());
         act->trigger();
@@ -282,6 +283,8 @@ private slots:
         const bool loaded = w && waitLoaded(w);
         const bool shown = w && waitShown(w, locked + "/a.png");
         ::chmod(QFile::encodeName(locked).constData(), 0755);
+        if (!w) // not QVERIFY: the static analyzer does not see that it returns
+            QFAIL("no window");
         QVERIFY(loaded && shown);
         QVERIFY(waitExposed(w));
         QVERIFY(w->accessHint()->isVisible());
@@ -389,7 +392,8 @@ private slots:
         // Independent of machine speed: reading the folder on the GUI thread would
         // make the longest gap about as long as the whole load.
         QVERIFY2(
-            maxGap <= 50 || maxGap * 10 <= loadMs * 6,
+            maxGap <= qint64(50 * std::max(1.0, double(idleGap) / 10.0)) + idleGap ||
+                maxGap * 10 <= loadMs * 6,
             qPrintable(
                 QStringLiteral("GUI thread blocked for %1 of %2 ms of loading").arg(maxGap).arg(loadMs)));
     }

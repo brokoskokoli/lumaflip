@@ -93,6 +93,7 @@ int main(int argc, char* argv[]) {
     }
     lf::trace::mark("prestart queued");
     QApplication app(argc, argv);
+    lf::trace::mark("QApplication constructor returned");
     lf::trace::mark("QApplication created");
     lf::startup::warmUpAfterApplication();
     TraceEvents traceEvents;

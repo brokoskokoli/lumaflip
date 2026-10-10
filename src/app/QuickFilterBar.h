@@ -29,7 +29,7 @@ public:
     // Opens the field (with `initialText` typed into it) and gives it the focus.
     void open(const QString& initialText = {});
     // Keeps the filter, returns the focus to the images.
-    void close();
+    void closeField();
     // Clears the filter and closes the field.
     void clearAndClose();
     bool isOpen() const { return isVisible(); }

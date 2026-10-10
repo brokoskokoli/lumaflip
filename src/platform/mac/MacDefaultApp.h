@@ -23,7 +23,7 @@ using SetDefaultApp =
 // than `pendingAfterMs` (macOS may be waiting for the user to confirm a system dialog),
 // `pending` runs first with a note; it is not a failure.
 void registerDefaultApp(const QStringList& types, const std::function<bool(const QString&)>& isKnownType,
-                        SetDefaultApp setter, int pendingAfterMs, QObject* context,
+                        const SetDefaultApp& setter, int pendingAfterMs, QObject* context,
                         Shell::DefaultViewerDone done, Shell::DefaultViewerPending pending);
 
 // Text of the "still running" note.

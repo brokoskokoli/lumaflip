@@ -5,11 +5,15 @@
 #if defined(__APPLE__)
 
 #include "CorpusTestUtil.h"
+#include "QtTestApp.h"
+#include "core/Decoder.h"
 #include "core/HdrMapping.h"
 #include "core/ImageProvider.h"
 #include "platform/mac/ImageIODecoder.h"
 
 #include <gtest/gtest.h>
+
+#include <memory>
 
 using namespace lf;
 using namespace lf::test;
@@ -81,6 +85,35 @@ TEST(HdrDecode, F_COL_05_FloatSourcesKeepRangeWithoutEdr) {
     e.setEv(-2.0);
     EXPECT_LE(peak * e.multiplier(), 1.05f);
     EXPECT_FALSE(hdr::makeToneCurve(peak * e.multiplier() - 0.05f, 1.0f).active);
+}
+
+// A small float file is complete at the preview stage, and that entry then also answers the
+// Screen and Full requests (ImageProvider): it must keep its range as well, or the HDR badge
+// (F-COL-04) and the exposure control (F-COL-05) never see it - seen on 1x displays, where
+// the Screen request comes after the preview has been decoded.
+TEST(HdrDecode, F_COL_05_SmallFloatFileKeepsRangeWhenPreviewIsComplete) {
+    LF_REQUIRE_CORPUS();
+    const QString path = corpusFile(QStringLiteral("hdr.exr"));
+    if (!QFileInfo::exists(path))
+        GTEST_SKIP() << "hdr.exr not in the corpus";
+    test::ensureQtApp();
+    DecoderRegistry registry;
+    registry.add(std::make_shared<ImageIODecoder>());
+    ImageProvider provider(registry);
+    DecodedImagePtr preview;
+    QObject::connect(&provider, &ImageProvider::imageReady,
+                     [&](const QString&, Quality q, const DecodedImagePtr& i) {
+                         if (q == Quality::Preview)
+                             preview = i;
+                     });
+    int client = 0;
+    provider.request(path, Quality::Preview, QSize(1000, 800), &client);
+    ASSERT_TRUE(test::waitUntil([&] { return preview != nullptr; }, 10000));
+    EXPECT_EQ(preview->image.format(), QImage::Format_RGBA16FPx4_Premultiplied);
+    const DecodedImagePtr screen = provider.request(path, Quality::Screen, QSize(1000, 800), &client);
+    ASSERT_TRUE(screen);
+    EXPECT_EQ(screen->image.format(), QImage::Format_RGBA16FPx4_Premultiplied);
+    EXPECT_GT(hdr::measuredPeak(screen->image), 3.0f);
 }
 
 #endif

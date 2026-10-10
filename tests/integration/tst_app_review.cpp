@@ -59,7 +59,7 @@ public:
     RecordingTrash() { QDir().mkpath(m_dir.path()); }
     std::optional<QString> moveToTrash(const QString& path, QString* error) override {
         QThread::msleep(ulong(delayMs.load()));
-        const QString target =
+        QString target =
             m_dir.filePath(QStringLiteral("%1-%2").arg(++m_counter).arg(QFileInfo(path).fileName()));
         if (!QFileInfo::exists(path) || !QFile::rename(path, target)) {
             if (error)
@@ -661,10 +661,10 @@ private slots:
             return model && i >= 0 ? model->item(i)->isEnabled() : true;
         };
         QVERIFY(choiceEnabled("middleClick", "magnifier")); // M3: loupe (F-VIEW-11)
-        QVERIFY(choiceEnabled("drag", "dragOut"));      // F-FILE-07 (M2)
-        QVERIFY(choiceEnabled("space", "slideshow"));   // M2: slideshow (F-SLIDE-01)
-        QVERIFY(choiceEnabled("pageUpDown", "page"));   // M2: pages (F-FMT-04)
-        QVERIFY(choiceEnabled("pageUpDown", "folder")); // implemented
+        QVERIFY(choiceEnabled("drag", "dragOut"));          // F-FILE-07 (M2)
+        QVERIFY(choiceEnabled("space", "slideshow"));       // M2: slideshow (F-SLIDE-01)
+        QVERIFY(choiceEnabled("pageUpDown", "page"));       // M2: pages (F-FMT-04)
+        QVERIFY(choiceEnabled("pageUpDown", "folder"));     // implemented
         QVERIFY(choiceEnabled("middleClick", "fitActual"));
         auto* wrap = prefs->findChild<QComboBox*>(QStringLiteral("setting:") + QLatin1String(key::WrapMode));
         QVERIFY(wrap && wrap->findData(QStringLiteral("nextFolder")) >= 0);

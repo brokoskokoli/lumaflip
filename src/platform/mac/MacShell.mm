@@ -19,7 +19,6 @@ namespace {
 constexpr int64_t kDefaultAppTimeoutSec = 10; // blocking variant only
 constexpr int kDefaultAppPendingMs = 3000;    // "still running" note (async)
 
-
 class MacShell final : public Shell {
 public:
     void revealInFileManager(const QString& path) override {
@@ -96,8 +95,14 @@ public:
             }
             auto known = [](const QString& t) { return [UTType typeWithIdentifier:t.toNSString()] != nil; };
             mac::SetDefaultApp setter = [bundle](const QString& t,
+                                                 // By value: the async completion block keeps it.
+                                                 // NOLINTNEXTLINE(performance-unnecessary-value-param)
                                                  std::function<void(const QString&)> completion) {
                 UTType* type = [UTType typeWithIdentifier:t.toNSString()];
+                if (!type) { // not reached: `known` filters unknown types first
+                    completion(t);
+                    return;
+                }
                 [[NSWorkspace sharedWorkspace]
                     setDefaultApplicationAtURL:bundle
                              toOpenContentType:type

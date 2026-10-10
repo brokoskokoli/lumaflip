@@ -75,12 +75,25 @@ private slots:
         QVERIFY(!dlg.isModal());
 
         // every setting of Settings.h has an editor (input/ keys via slot combos/tuning/shortcuts)
+        // Remembered state, edited where it is used (not a setting of the dialog).
+        const QStringList rememberedState = {
+            key::GridThumbSize,       // grid size, ⌘+/⌘− or pinch in the grid (F-GRID-02)
+            key::CustomActions,       // own table, "Eigene Aktionen" (F-FILE-10)
+            key::WallpaperAllScreens, // checkbox of the wallpaper question (F-FILE-09)
+            key::CropAspect,          // crop bar (F-EDIT-03)
+            key::CropPortrait,        key::CropGrid,
+            key::ExportFormat, // export dialog (F-EDIT-04)
+            key::ExportQuality,       key::ExportMaxEdge,   key::ExportMetadata, key::ExportColor,
+            key::ExportHdr,           key::ExportPattern,   key::ExportFolder,
+            key::OverlayClipping, // overlay toggles of the View menu (F-INFO-07)
+            key::OverlayPeaking,      key::OverlayAfPoints,
+        };
         QStringList missing;
         for (const QString& k : Settings::knownKeys()) {
             if (k.startsWith(key::ShortcutPrefix))
                 continue;
-            if (k == key::GridThumbSize)
-                continue; // remembered size of the grid, set there with ⌘+/⌘− or pinch (F-GRID-02)
+            if (rememberedState.contains(k))
+                continue;
             if (k.startsWith(key::InputPrefix) && !k.contains("Tuning") && k != key::JumpSize) {
                 if (!dlg.findChild<QComboBox*>("slot:" + k.mid(int(qstrlen(key::InputPrefix)))))
                     missing << k;

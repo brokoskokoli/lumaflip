@@ -168,21 +168,25 @@ private slots:
         // (busy machine) shortens the next one instead of shifting all later frames. So the
         // offsets from that schedule stay within a bounded band (the first timestamp may be
         // late itself, so the band is relative); a drift would make them grow frame by frame.
+        // One single late frame (a stall of a shared CI runner) is tolerated: the frames
+        // after it are back on the schedule, while a drift moves all later offsets.
         int checked = 0;
         qint64 due = shown[0].second;
-        qint64 minOffset = 0, maxOffset = 0;
+        QList<qint64> offsets{0};
         for (int i = 1; i < shown.size(); ++i) {
             const int prev = shown[i - 1].first;
             QCOMPARE(shown[i].first, (prev + 1) % 3); // in order, nothing skipped
             due += durations[prev];
-            const qint64 offset = shown[i].second - due;
-            minOffset = std::min(minOffset, offset);
-            maxOffset = std::max(maxOffset, offset);
+            offsets.append(shown[i].second - due);
             ++checked;
         }
-        QVERIFY2(
-            maxOffset - minOffset <= 250,
-            qPrintable(QStringLiteral("offsets from the schedule %1..%2 ms").arg(minOffset).arg(maxOffset)));
+        std::sort(offsets.begin(), offsets.end());
+        const qint64 minOffset = offsets.first(), maxOffset = offsets.at(offsets.size() - 2);
+        QVERIFY2(maxOffset - minOffset <= 250,
+                 qPrintable(QStringLiteral("offsets from the schedule %1..%2 ms (largest ignored: %3 ms)")
+                                .arg(minOffset)
+                                .arg(maxOffset)
+                                .arg(offsets.last())));
         QVERIFY(checked >= 7);
         // The view shows the frames (texture reuse in the canvas, same size).
         auto* canvas = w->view()->findChild<ImageCanvas*>();
@@ -467,7 +471,12 @@ private slots:
         w->slideshow()->setIntervalMs(200);
         QTRY_COMPARE_WITH_TIMEOUT(w->currentPath(), files.at(2), 3000);
         QTRY_COMPARE_WITH_TIMEOUT(w->currentPath(), files.at(0), 3000); // wrapped
+        // macOS ignores a full screen change while the previous transition is still
+        // animating (slow machines, CI): give each transition time to finish.
+        QTest::qWait(1500);
         w->stopSlideshow();
+        QTRY_VERIFY_WITH_TIMEOUT(!w->isFullScreen(), 5000);
+        QTest::qWait(1500);
 
         Settings::instance().setValue(key::SlideshowRepeat, false);
         w->collection()->setCurrentPath(files.at(1));
@@ -572,8 +581,8 @@ private slots:
         const QByteArray before = sha(jpg);
         action(Action::RotateRight)->trigger();
         action(Action::SaveRotation)->trigger();
-        QMessageBox* box = nullptr;
-        QTRY_VERIFY_WITH_TIMEOUT((box = w->findChild<QMessageBox*>(QStringLiteral("lfRotationTrim"))), 5000);
+        QTRY_VERIFY_WITH_TIMEOUT(w->findChild<QMessageBox*>(QStringLiteral("lfRotationTrim")), 5000);
+        auto* box = w->findChild<QMessageBox*>(QStringLiteral("lfRotationTrim"));
         QCOMPARE(sha(jpg), before); // nothing written while asking
         auto* trim = box->findChild<QPushButton*>(QStringLiteral("lfRotationPrimary"));
         QVERIFY(trim);

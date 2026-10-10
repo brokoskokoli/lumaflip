@@ -41,7 +41,10 @@ void MainMenu::rebuildCustomActions() {
         return;
     for (QAction* a : std::as_const(m_customEntries)) {
         m_commands.remove(a->objectName().mid(int(qstrlen("command:"))));
-        delete a;
+        // deleteLater: the rebuild can run inside this action's own triggered() (the first
+        // run saves the confirmation, F-FILE-10); deleting it there is a use after free.
+        m_customMenu->removeAction(a);
+        a->deleteLater();
     }
     m_customEntries.clear();
     m_customMenu->clear();

@@ -9,6 +9,11 @@
 name: Checks
 on:
   workflow_call:
+    inputs:
+      code:
+        description: "Run the build/test jobs (false: documentation-only change, REUSE only)"
+        type: boolean
+        default: true
 
 permissions:
   contents: read
@@ -24,7 +29,11 @@ env:
 jobs:
   check:
     name: macOS checks
-    runs-on: macos-15
+    if: inputs.code
+    # Newest stable macOS image: the tests expect current ImageIO behaviour (formats such
+    # as DICOM, recent RAW cameras, ISO gain map HDR decoding). release.yml builds on
+    # macos-15 (deployment target 15.0).
+    runs-on: macos-26
     timeout-minutes: 90
     env:
       # Runners are slower than the reference Mac (SPEC 7): benchmark limits x2.
@@ -40,23 +49,32 @@ jobs:
       # check.sh then falls back to main/origin/main.
       LF_BASE_REF: ${{ github.event_name == 'pull_request' && format('origin/{0}', github.base_ref) || github.event.before }}
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
       - name: Install dependencies
-        # webp + jpeg-xl: cwebp/cjxl for tests/corpus/make_corpus.sh; llvm: clang-tidy; resvg: SVG backend
-        # (keg-only, does not shadow clang-format).
+        # webp + jpeg-xl: cwebp/cjxl for tests/corpus/make_corpus.sh; llvm: clang-tidy (keg-only,
+        # does not shadow clang-format); resvg: SVG backend; jpeg-turbo: lossless JPEG rotation.
         run: |
-          brew install cmake ninja qt googletest clang-format webp jpeg-xl llvm resvg
+          brew install cmake ninja qt googletest clang-format webp jpeg-xl llvm resvg jpeg-turbo
           echo "LF_CLANG_TIDY=$(brew --prefix llvm)/bin/clang-tidy" >> "$GITHUB_ENV"
-      - name: Cache RAW samples
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      - name: Restore RAW samples
+        id: raw-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: tests/corpus/generated/raw
           key: raw-samples-${{ hashFiles('tests/corpus/download_raw.sh') }}
       - name: Download RAW samples (CC0, pinned by SHA-256)
         run: tests/corpus/download_raw.sh
+      - name: Save RAW samples
+        # Saved right after the download, so a failing test step does not lose the cache.
+        if: steps.raw-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: tests/corpus/generated/raw
+          key: raw-samples-${{ hashFiles('tests/corpus/download_raw.sh') }}
+        continue-on-error: true # the other macOS job may have saved the same key first
       - name: Download Sparkle (F-MAC-08, pinned by SHA-256)
         run: tools/fetch_sparkle.sh
       - name: Require Finder fixtures once they exist (F-SORT-08)
@@ -71,9 +89,27 @@ jobs:
           fi
       - name: All checks (build, tests, format, SPDX, spec coverage, benchmarks, clang-tidy)
         run: tools/check.sh --stage "$LF_STAGE" --format-all --tidy
+      - name: Startup trace (P-01 diagnostics)
+        # The breakdown behind P_01_ProcessLaunchToFirstFrame24MP: six launches with the
+        # benchmark's first-frame hook and the startup trace (LF_TRACE lines on stderr).
+        if: always()
+        run: |
+          app=build/check/src/Lumaflip.app/Contents/MacOS/Lumaflip
+          img="$PWD/tests/corpus/generated/big_24mp.jpg"
+          if [[ ! -x "$app" || ! -f "$img" ]]; then echo "app or $img missing - skipped"; exit 0; fi
+          otool -L "$app"
+          launches() {
+            for i in 1 2 3 4 5 6; do
+              echo "--- launch $i ($1)"
+              env -u QT_QPA_PLATFORM LF_EXIT_AFTER_FIRST_FRAME=1 LF_TRACE_STARTUP=1 \
+                perl -e 'alarm 20; exec @ARGV' "$1" "$img" 2>&1 \
+                | grep -E 'LF_(TRACE|MAIN_MS|FIRST_FRAME_MS)' || true
+            done
+          }
+          launches "$app"
       - name: Upload test logs
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: test-logs-macos
           path: |
@@ -83,24 +119,36 @@ jobs:
 
   sanitize:
     name: macOS ASan + UBSan
-    runs-on: macos-15
+    if: inputs.code
+    runs-on: macos-26
     timeout-minutes: 90
     env:
       LF_REQUIRE_RAW: "1"
       LF_REQUIRE_SPARKLE: "1"
+      # ASan/UBSan on a shared runner: timing limits of the unit tests x4.
+      LF_TIMING_FACTOR: "4"
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Install dependencies
-        run: brew install cmake ninja qt googletest webp jpeg-xl resvg
-      - name: Cache RAW samples
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        run: brew install cmake ninja qt googletest webp jpeg-xl resvg jpeg-turbo
+      - name: Restore RAW samples
+        id: raw-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: tests/corpus/generated/raw
           key: raw-samples-${{ hashFiles('tests/corpus/download_raw.sh') }}
       - name: Download RAW samples
         run: tests/corpus/download_raw.sh
+      - name: Save RAW samples
+        # Saved right after the download, so a failing test step does not lose the cache.
+        if: steps.raw-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: tests/corpus/generated/raw
+          key: raw-samples-${{ hashFiles('tests/corpus/download_raw.sh') }}
+        continue-on-error: true # the other macOS job may have saved the same key first
       - name: Download Sparkle (F-MAC-08, pinned by SHA-256)
         run: tools/fetch_sparkle.sh
       - name: Require Finder fixtures once they exist (F-SORT-08)
@@ -110,7 +158,7 @@ jobs:
         run: tools/check.sh --quick --sanitize
       - name: Upload test logs
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: test-logs-sanitize
           path: build/sanitize/Testing/Temporary/*.log
@@ -120,21 +168,27 @@ jobs:
     # SPEC 9.3: the core is compiled and unit-tested on Linux from M1 on, without
     # the app (LF_BUILD_UI=OFF, generic platform layer).
     name: Linux core (generic platform)
+    if: inputs.code
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: Install build tools
         run: |
           sudo apt-get update
+          # libarchive-dev: archives (F-OPEN-10). Optional backends stay off here: Ubuntu
+          # 24.04 ships TurboJPEG 2.1 (the core needs the 3.x API) and no resvg package
+          # (building it with cargo is slow).
           sudo apt-get install -y --no-install-recommends ninja-build clang libgtest-dev \
-            libgl1-mesa-dev libegl1 libxkbcommon0 libfontconfig1 libglib2.0-0
+            libarchive-dev libgl1-mesa-dev libegl1 libxkbcommon0 libfontconfig1 libglib2.0-0
       - name: Install Qt
         uses: jurplel/install-qt-action@a9c63c7c123f3069cff414e7e482d95dfa9d8125 # v4.4.1
         with:
           version: "6.11.*"
+          # TIFF etc. for the tests that write images (the macOS build has them via Homebrew).
+          modules: qtimageformats
           cache: true
       - name: Configure
         run: >
@@ -142,14 +196,17 @@ jobs:
           -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++
           -DLF_BUILD_UI=OFF -DLF_WERROR=ON
       - name: Build
-        run: cmake --build build/linux
+        # -k 0: report every compile error, not only the first one.
+        run: cmake --build build/linux -- -k 0
       - name: Unit tests
         env:
           QT_QPA_PLATFORM: offscreen
+          # Shared runners: timing limits of the unit tests x2.
+          LF_TIMING_FACTOR: "2"
         run: ctest --test-dir build/linux --output-on-failure -j "$(nproc)"
       - name: Upload test logs
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: test-logs-linux
           path: build/linux/Testing/Temporary/*.log
@@ -159,7 +216,7 @@ jobs:
     name: REUSE compliance
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - name: reuse lint

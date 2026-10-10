@@ -393,9 +393,9 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     connect(&st, &Settings::changed, this, &ViewerWindow::applySetting);
     m_panels = new WindowPanels(*this, provider); // M2: created hidden, shown with the window
     setupMedia(); // animation, pages, slideshow, saving the rotation (ViewerWindowMedia.cpp)
-    m_culling = new CullingController(*this, m_app); // M3: ratings, culling, quick move
-    m_extras = new WindowExtras(*this, m_app);       // M3: grid, compare, loupe, window modes …
-    m_hdr = new HdrController(*this);                // M3: HDR toggle, badge, exposure
+    m_culling = new CullingController(*this, m_app);     // M3: ratings, culling, quick move
+    m_extras = new WindowExtras(*this, m_app);           // M3: grid, compare, loupe, window modes …
+    m_hdr = new HdrController(*this);                    // M3: HDR toggle, badge, exposure
     m_integration = new WindowIntegration(*this, m_app); // M4: archives, Live Text, Quick Look …
     connect(this, &ViewerWindow::imageShown, m_integration,
             [this](const QString& path) { m_integration->imageShown(path); });
@@ -458,6 +458,8 @@ void ViewerWindow::setVisible(bool visible) {
     if (visible && !isVisible())
         configureViewerWindow(this, Settings::instance().value(key::AllowTabs).toBool());
     QMainWindow::setVisible(visible);
+    if (visible)
+        trace::once("ViewerWindow: native window shown");
     mediaVisibilityChanged(); // F-FMT-03: no playback in hidden windows
     if (visible && m_extras)
         m_extras->windowStateChanged(); // F-VIEW-12/13 on the native window
@@ -467,6 +469,7 @@ void ViewerWindow::setVisible(bool visible) {
         createStatusBar();
         m_panels->restore(); // M2 panels remembered in the settings
         updateEmptyState();
+        trace::once("ViewerWindow: panels restored");
     }
 }
 

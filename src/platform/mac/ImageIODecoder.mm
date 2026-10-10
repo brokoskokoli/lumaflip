@@ -252,8 +252,7 @@ bool isHdrImage(CGImageSourceRef src, size_t index, NSDictionary* props) {
 }
 
 QString colorModelName(NSDictionary* props) {
-    const QString m = toQString(value(props, kCGImagePropertyColorModel));
-    return m;
+    return toQString(value(props, kCGImagePropertyColorModel));
 }
 
 // Fills everything except frame/page counts.
@@ -535,7 +534,12 @@ std::optional<DecodedImage> decodeAt(CGImageSourceRef src, const Layout& l, size
     const int ph = [value(props, kCGImagePropertyPixelHeight) intValue];
     const QSize fullSize = o >= 5 ? QSize(ph, pw) : QSize(pw, ph);
     const bool floatSource = [value(props, kCGImagePropertyIsFloat) boolValue];
-    const bool hdr = (req.hdr || (req.hdrFloat && floatSource)) && isHdrImage(src, index, props);
+    // A preview that holds the whole image is the final stage (ImageProvider answers Screen
+    // and Full requests with it): a float source then keeps its range as those would. Only
+    // small files, so previews of large files stay fast 8-bit decodes (P-04).
+    const bool wholeImage = req.maxPixelSize > 0 && pw > 0 && ph > 0 && std::max(pw, ph) <= req.maxPixelSize;
+    const bool hdr =
+        (req.hdr || ((req.hdrFloat || wholeImage) && floatSource)) && isHdrImage(src, index, props);
 
     NSMutableDictionary* opts = [NSMutableDictionary dictionary];
     if (hdr)
@@ -695,7 +699,8 @@ bool ImageIODecoder::canDecode(const QString& path, const QByteArray& header) co
         if (!type || !readableTypes().contains(QString::fromNSString(type.identifier)))
             return false;
         UTType* raw = [UTType typeWithIdentifier:@"public.camera-raw-image"];
-        return [type conformsToType:raw] || [type.identifier isEqualToString:@"com.truevision.tga-image"];
+        return (raw && [type conformsToType:raw]) ||
+               [type.identifier isEqualToString:@"com.truevision.tga-image"];
     }
 }
 

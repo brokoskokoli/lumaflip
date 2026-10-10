@@ -470,7 +470,10 @@ func le16(_ v: Int) -> [UInt8] { [UInt8(v & 255), UInt8((v >> 8) & 255)] }
 
 do { // QOI: RGBA ops and runs
     let px = quadBytes(W, H)
-    var out: [UInt8] = Array("qoif".utf8) + be32(W) + be32(H) + [4, 0]
+    var out: [UInt8] = Array("qoif".utf8)
+    out += be32(W)
+    out += be32(H)
+    out += [4, 0] as [UInt8]
     var prev: [UInt8] = [0, 0, 0, 255]
     var run = 0
     for p in px {
@@ -537,7 +540,14 @@ do { // SGI: RLE, 8 bit, RGBA (literal packets)
     let px = quadBytes(W, H)
     let z = 4
     var header = [UInt8](repeating: 0, count: 512)
-    header.replaceSubrange(0..<12, with: be16(474) + [1, 1] + be16(3) + be16(W) + be16(H) + be16(z))
+    // Typed step by step: long "+" chains with literals overload the type checker (CI).
+    var head: [UInt8] = be16(474)
+    head += [1, 1] as [UInt8]
+    head += be16(3)
+    head += be16(W)
+    head += be16(H)
+    head += be16(z)
+    header.replaceSubrange(0..<12, with: head)
     header.replaceSubrange(16..<20, with: be32(255))
     var rows: [[UInt8]] = []
     for c in 0..<z {
@@ -664,12 +674,13 @@ func makeXcf(version: Int, precision: Int, compression: UInt8, bytesPerComp: Int
     func ptr(_ v: Int) -> [UInt8] { wide ? be64(v) : be32(v) }
     func prop(_ t: Int, _ p: [UInt8]) -> [UInt8] { be32(t) + be32(p.count) + p }
     func comp(_ v: UInt8) -> [UInt8] { bytesPerComp == 2 ? be16(Int(v) * 257) : [v] }
-    var out = Array("gimp xcf v\(String(format: "%03d", version))".utf8) + [0]
+    var out: [UInt8] = Array("gimp xcf v\(String(format: "%03d", version))".utf8)
+    out.append(0)
     out += be32(W) + be32(H) + be32(0)
     if version >= 4 { out += be32(precision) }
     out += prop(17, [compression]) + be32(0) + be32(0)
     let table = out.count
-    out += ptr(0) + ptr(0) + ptr(0) + ptr(0) // two layers, end, no channels
+    for _ in 0..<4 { out += ptr(0) } // two layers, end, no channels
     func patch(_ at: Int, _ v: Int) {
         let bytes = ptr(v)
         for i in 0..<bytes.count { out[at + i] = bytes[i] }
@@ -680,8 +691,19 @@ func makeXcf(version: Int, precision: Int, compression: UInt8, bytesPerComp: Int
     ]
     for (index, (w, h, visible, px)) in layers.enumerated() {
         patch(table + index * (wide ? 8 : 4), out.count)
-        out += be32(w) + be32(h) + be32(1) + be32(6) + Array("layer".utf8) + [0]
-        out += prop(6, be32(255)) + prop(8, be32(visible ? 1 : 0)) + prop(7, be32(28)) + prop(15, be32(0) + be32(0))
+        // Typed step by step: long "+" chains with literals overload the type checker (CI).
+        out += be32(w)
+        out += be32(h)
+        out += be32(1)
+        out += be32(6)
+        let name: [UInt8] = Array("layer".utf8)
+        out += name
+        out += [0] as [UInt8]
+        let offsets: [UInt8] = be32(0) + be32(0)
+        out += prop(6, be32(255))
+        out += prop(8, be32(visible ? 1 : 0))
+        out += prop(7, be32(28))
+        out += prop(15, offsets)
         out += be32(0) + be32(0)
         let hierarchySlot = out.count
         out += ptr(0) + ptr(0) // hierarchy, no mask
@@ -726,8 +748,14 @@ func packBits(_ row: [UInt8]) -> [UInt8] {
 
 /// PSB (version 2): planar channels (each H rows of rowBytes), raw or RLE with 4-byte counts.
 func makePsb(mode: Int, depth: Int, channels: [[UInt8]], rle: Bool) -> [UInt8] {
-    var out = Array("8BPS".utf8) + be16(2) + [UInt8](repeating: 0, count: 6)
-    out += be16(channels.count) + be32(H) + be32(W) + be16(depth) + be16(mode)
+    var out: [UInt8] = Array("8BPS".utf8)
+    out += be16(2)
+    out += [UInt8](repeating: 0, count: 6)
+    out += be16(channels.count)
+    out += be32(H)
+    out += be32(W)
+    out += be16(depth)
+    out += be16(mode)
     out += be32(0) + be32(0) + be64(0) // colour mode data, image resources, layers
     out += be16(rle ? 1 : 0)
     let rowBytes = W * depth / 8

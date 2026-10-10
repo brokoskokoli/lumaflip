@@ -78,10 +78,12 @@ inline std::array<Rgba, 4> quadrantColors(const QJsonValue& v) {
     }
     const QJsonObject o = v.toObject();
     const char* keys[] = {"tl", "tr", "bl", "br"};
-    for (size_t i = 0; i < 4; ++i) {
-        const QJsonArray a = o.value(QLatin1StringView(keys[i])).toArray();
+    size_t i = 0;
+    for (const char* key : keys) {
+        const QJsonArray a = o.value(QLatin1StringView(key)).toArray();
         for (qsizetype c = 0; c < 4 && c < a.size(); ++c)
             out[i][size_t(c)] = a[c].toInt();
+        ++i;
     }
     return out;
 }

@@ -13,8 +13,12 @@
 
 #import <AppKit/AppKit.h>
 
+#include <dlfcn.h>
+
 #if LF_HAVE_LIVETEXT
-// Interface of the @objc class in LiveTextBridge.swift.
+// Interface of the @objc class in LiveTextBridge.swift. The class lives in
+// libLumaflipLiveText.dylib, loaded on first use (bridgeClass()): never referenced by name,
+// so the app links neither the Swift runtime nor VisionKit (P-01 startup time).
 @interface LFLiveTextBridge : NSObject
 @property(nonatomic, readonly) NSView* view;
 @property(nonatomic, readonly) BOOL hasActiveTextSelection;
@@ -30,6 +34,33 @@ namespace lf {
 namespace {
 // Live Text needs no more than this; larger images are scaled down for the analysis.
 constexpr int kMaxAnalysisSide = 4096;
+
+#if LF_HAVE_LIVETEXT
+// The bridge class from libLumaflipLiveText.dylib: Contents/Frameworks in the app bundle,
+// the build tree for unbundled binaries (tests). Nil if the library cannot be loaded.
+Class bridgeClass() {
+    static Class cls = [] {
+        Class found = nil;
+        @autoreleasepool {
+            NSMutableArray<NSString*>* candidates = [NSMutableArray array];
+            if (NSString* fw = NSBundle.mainBundle.privateFrameworksPath)
+                [candidates addObject:[fw stringByAppendingPathComponent:@"libLumaflipLiveText.dylib"]];
+            [candidates addObject:@LF_LIVETEXT_BUILD_DYLIB];
+            for (NSString* path in candidates) {
+                if (![NSFileManager.defaultManager fileExistsAtPath:path])
+                    continue;
+                if (dlopen(path.fileSystemRepresentation, RTLD_LAZY | RTLD_LOCAL)) {
+                    found = NSClassFromString(@"LFLiveTextBridge");
+                    break;
+                }
+                NSLog(@"Live Text: %s", dlerror());
+            }
+        }
+        return found;
+    }();
+    return cls;
+}
+#endif
 } // namespace
 
 struct LiveTextOverlay::Native {
@@ -54,7 +85,8 @@ LiveTextOverlay::~LiveTextOverlay() {
 
 bool LiveTextOverlay::isAvailable() {
 #if LF_HAVE_LIVETEXT
-    return [LFLiveTextBridge isSupported];
+    Class cls = bridgeClass();
+    return cls && [cls isSupported];
 #else
     return false;
 #endif
@@ -67,8 +99,21 @@ bool LiveTextOverlay::isSupported() const {
 void LiveTextOverlay::analyze(quint64 token, const QImage& image) {
 #if LF_HAVE_LIVETEXT
     @autoreleasepool {
-        if (!m_native->bridge)
-            m_native->bridge = [[LFLiveTextBridge alloc] init];
+        if (!m_native->bridge) {
+            Class cls = bridgeClass();
+            if (!cls) {
+                QPointer<LiveTextOverlay> self(this);
+                QMetaObject::invokeMethod(
+                    this,
+                    [self, token] {
+                        if (self && self->m_session)
+                            self->m_session->analysisFinished(token, false, QStringLiteral("VisionKit"));
+                    },
+                    Qt::QueuedConnection);
+                return;
+            }
+            m_native->bridge = [[cls alloc] init];
+        }
         QImage src = image;
         if (std::max(src.width(), src.height()) > kMaxAnalysisSide)
             src =

@@ -226,9 +226,9 @@ struct ImageCanvas::Private {
     ColorPipeline dstTransfer; // only the destination TRC part is used
     bool dstLutDirty = true;
     overlays::Params photoOverlays; // F-INFO-07 (off by default)
-    float exposure = 1.0f;    // F-COL-05 (linear multiplier)
-    float edrHeadroom = 1.0f; // F-COL-03: target of renderExtended()
-    bool extended = false;    // extended range presentation active (EdrSurface)
+    float exposure = 1.0f;          // F-COL-05 (linear multiplier)
+    float edrHeadroom = 1.0f;       // F-COL-03: target of renderExtended()
+    bool extended = false;          // extended range presentation active (EdrSurface)
     std::function<void()> requestExtended;
     int extFrames = 0;
     int extFramesAtSwitch = 0; // extFrames when the extended presentation was switched on
