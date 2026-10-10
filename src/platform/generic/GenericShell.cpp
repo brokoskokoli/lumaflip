@@ -51,4 +51,8 @@ bool systemRestoresWindows() {
     return false; // like the macOS default
 }
 
+QStringList appLanguagePreference() {
+    return {}; // no per-app language setting outside macOS
+}
+
 } // namespace lf

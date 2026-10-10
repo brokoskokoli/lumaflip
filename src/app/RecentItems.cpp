@@ -20,9 +20,10 @@ namespace {
 const char* const kRecentKey = "recent/paths"; // folders end with '/'
 std::optional<bool> g_systemOverride;
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::RecentItems", text);
-}
+// tr() for the code in this file outside QObject classes (lupdate takes the context from it).
+struct Tr {
+    Q_DECLARE_TR_FUNCTIONS(lf::RecentItems)
+};
 
 QString clean(const QString& path) {
     return QDir::cleanPath(QFileInfo(path).absoluteFilePath());
@@ -144,7 +145,7 @@ void RecentItems::populateMenu(QMenu* menu, const std::function<void(const QStri
     }
     if (!list.isEmpty())
         menu->addSeparator();
-    QAction* clear = menu->addAction(tr("Einträge löschen"));
+    QAction* clear = menu->addAction(Tr::tr("Einträge löschen"));
     clear->setObjectName(QStringLiteral("recent:clear"));
     clear->setEnabled(!list.isEmpty());
     QObject::connect(clear, &QAction::triggered, menu, [clearAll] { clearAll(); });

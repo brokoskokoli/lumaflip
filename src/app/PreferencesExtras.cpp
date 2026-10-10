@@ -18,9 +18,10 @@ namespace lf::prefs {
 
 namespace {
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::PreferencesDialog", text);
-}
+// tr() for the code in this file outside QObject classes (lupdate takes the context from it).
+struct Tr {
+    Q_DECLARE_TR_FUNCTIONS(lf::PreferencesDialog)
+};
 
 Settings& st() {
     return Settings::instance();
@@ -30,7 +31,7 @@ Settings& st() {
 
 QString editorDisplayName(const QString& appPath) {
     if (appPath.isEmpty())
-        return tr("Standard-App des Systems für den Bildtyp (nie Lumaflip)");
+        return Tr::tr("Standard-App des Systems für den Bildtyp (nie Lumaflip)");
     QString name = QFileInfo(appPath).fileName();
     if (name.endsWith(QLatin1String(".app"), Qt::CaseInsensitive))
         name.chop(4);
@@ -44,7 +45,7 @@ bool setEditorApp(const QString& appPath, QString* error) {
         if (isOwnApplication(app)) {
             if (error)
                 *error =
-                    tr("Lumaflip kann nicht sein eigener Editor sein. Bitte wähle ein anderes Programm.");
+                    Tr::tr("Lumaflip kann nicht sein eigener Editor sein. Bitte wähle ein anderes Programm.");
             return false;
         }
     }
@@ -59,10 +60,10 @@ QWidget* createEditorChooser(QWidget* parent) {
     layout->setContentsMargins(0, 0, 0, 0);
     auto* label = new QLabel(row);
     label->setObjectName(QStringLiteral("editorName"));
-    auto* choose = new QPushButton(tr("Auswählen …"), row);
+    auto* choose = new QPushButton(Tr::tr("Auswählen …"), row);
     choose->setObjectName(QStringLiteral("chooseEditor"));
     choose->setAutoDefault(false);
-    auto* reset = new QPushButton(tr("Standard"), row);
+    auto* reset = new QPushButton(Tr::tr("Standard"), row);
     reset->setObjectName(QStringLiteral("defaultEditor"));
     reset->setAutoDefault(false);
     layout->addWidget(label, 1);
@@ -80,20 +81,21 @@ QWidget* createEditorChooser(QWidget* parent) {
             refresh();
     });
     QObject::connect(choose, &QPushButton::clicked, row, [row] {
-        const QString app = QFileDialog::getOpenFileName(
-            row->window(), tr("Editor wählen"), QStringLiteral("/Applications"), tr("Programme (*.app)"));
+        const QString app =
+            QFileDialog::getOpenFileName(row->window(), Tr::tr("Editor wählen"),
+                                         QStringLiteral("/Applications"), Tr::tr("Programme (*.app)"));
         if (app.isEmpty())
             return;
         QString error;
         if (!setEditorApp(app, &error))
-            QMessageBox::information(row->window(), tr("Editor wählen"), error);
+            QMessageBox::information(row->window(), Tr::tr("Editor wählen"), error);
     });
     QObject::connect(reset, &QPushButton::clicked, row, [] { setEditorApp({}); });
     return row;
 }
 
 QCheckBox* createLiveQueryCheck(QWidget* parent) {
-    auto* cb = new QCheckBox(tr("Sortierung live vom Finder-Fenster übernehmen"), parent);
+    auto* cb = new QCheckBox(Tr::tr("Sortierung live vom Finder-Fenster übernehmen"), parent);
     cb->setObjectName(QStringLiteral("setting:") + key::FinderLiveQuery);
     auto refresh = [cb] {
         const QSignalBlocker block(cb);
@@ -117,18 +119,18 @@ QCheckBox* createLiveQueryCheck(QWidget* parent) {
         if (cb->window()->findChild<QMessageBox*>(QStringLiteral("lfLiveQueryExplanation")))
             return;
         auto* box = new QMessageBox(
-            QMessageBox::Information, tr("Sortierung vom Finder-Fenster übernehmen"),
-            tr("Lumaflip fragt dann beim Öffnen eines Ordners das vorderste Finder-Fenster nach seiner "
-               "Sortierung – aber nur, wenn es genau diesen Ordner zeigt."),
+            QMessageBox::Information, Tr::tr("Sortierung vom Finder-Fenster übernehmen"),
+            Tr::tr("Lumaflip fragt dann beim Öffnen eines Ordners das vorderste Finder-Fenster nach seiner "
+                   "Sortierung – aber nur, wenn es genau diesen Ordner zeigt."),
             QMessageBox::NoButton, cb->window());
         box->setObjectName(QStringLiteral("lfLiveQueryExplanation"));
-        box->setInformativeText(tr(
+        box->setInformativeText(Tr::tr(
             "Dafür fragt macOS einmalig, ob Lumaflip den Finder steuern darf („Automation“). Lumaflip liest "
             "nur Ordner, Ansicht und Sortierung des Fensters und ändert nichts. Die Erlaubnis lässt sich "
             "jederzeit unter Systemeinstellungen → Datenschutz & Sicherheit → Automation widerrufen."));
-        QPushButton* enable = box->addButton(tr("Aktivieren"), QMessageBox::AcceptRole);
+        QPushButton* enable = box->addButton(Tr::tr("Aktivieren"), QMessageBox::AcceptRole);
         enable->setObjectName(QStringLiteral("lfLiveQueryEnable"));
-        box->addButton(tr("Abbrechen"), QMessageBox::RejectRole);
+        box->addButton(Tr::tr("Abbrechen"), QMessageBox::RejectRole);
         box->setDefaultButton(enable);
         box->setAttribute(Qt::WA_DeleteOnClose);
         box->setWindowModality(cb->window()->isVisible() ? Qt::WindowModal : Qt::NonModal); // sheet

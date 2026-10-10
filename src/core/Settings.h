@@ -16,6 +16,8 @@ class QSettings;
 namespace lf {
 
 namespace key {
+// General: UI language (F-I18N-03), "system" or a code of uiLanguageCodes() (Language.h)
+inline constexpr auto Language = "general/language";
 // General / windows (4.15)
 inline constexpr auto OpenBehavior = "window/openBehavior"; // "newWindow" | "replaceFront" | "newUnlessOpen"
 inline constexpr auto FitWindowToImage = "window/fitToImage";     // bool, default false

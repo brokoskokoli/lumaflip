@@ -37,6 +37,9 @@ public:
     // Single instance: creates the dialog on first use, then raises it.
     static PreferencesDialog* showPreferences(QWidget* parent = nullptr);
     static PreferencesDialog* existingInstance();
+    // Language switch (F-I18N-03): replaces the open instance with one built in the new
+    // language (same section, geometry, status); null if none is open.
+    static PreferencesDialog* recreateForLanguageChange();
 
     int sectionCount() const { return SectionCount; }
     QString sectionTitle(int section) const;

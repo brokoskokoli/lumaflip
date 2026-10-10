@@ -162,6 +162,8 @@ signals:
     // The registration takes long (macOS may wait for the user); the result still follows.
     void defaultViewerPending(const QString& message);
     void sessionRestored();
+    // The UI language changed and the menu bar, preferences etc. were rebuilt (F-I18N-03).
+    void languageChanged();
 
 protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
@@ -178,6 +180,7 @@ private:
     void applyRestore();   // creates the windows
     void cancelPendingRestore();
     void updateBusy(bool busy);
+    void retranslate(); // F-I18N-03: after QEvent::LanguageChange
     QString busyText() const;
 
     struct Private;

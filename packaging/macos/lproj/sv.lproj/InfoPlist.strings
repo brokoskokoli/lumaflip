@@ -1,0 +1,12 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/* Localized Info.plist texts (sv); generated from translations/ - see translations/README.md */
+"NSAppleEventsUsageDescription" = "Lumaflip kan på din begäran fråga det främsta Finder-fönstret om dess sortering, så att bilderna visas i samma ordning.";
+"NSDesktopFolderUsageDescription" = "Lumaflip läser mappen för den öppnade bilden så att du kan bläddra med piltangenterna.";
+"NSDocumentsFolderUsageDescription" = "Lumaflip läser mappen för den öppnade bilden så att du kan bläddra med piltangenterna.";
+"NSDownloadsFolderUsageDescription" = "Lumaflip läser mappen för den öppnade bilden så att du kan bläddra med piltangenterna.";
+"NSRemovableVolumesUsageDescription" = "Lumaflip läser mappen för den öppnade bilden så att du kan bläddra med piltangenterna.";
+"NSNetworkVolumesUsageDescription" = "Lumaflip läser mappen för den öppnade bilden så att du kan bläddra med piltangenterna.";
+"Bild" = "Bild";
+"Bild (sonstige)" = "Bild (övrig)";
+"Ordner" = "Mapp";
+"NSHumanReadableCopyright" = "© 2026 brokoskokoli och bidragsgivare. Licens: GPL-3.0-or-later.";

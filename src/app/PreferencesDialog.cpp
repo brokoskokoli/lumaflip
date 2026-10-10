@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "PreferencesDialog.h"
 
+#include "LanguageChooser.h"
 #include "PreferencesExtras.h"
 #include "SystemSymbols.h"
 #include "Updater.h"
@@ -162,6 +163,30 @@ PreferencesDialog* PreferencesDialog::existingInstance() {
     return g_instance;
 }
 
+PreferencesDialog* PreferencesDialog::recreateForLanguageChange() {
+    // F-I18N-03: a new window in the new language at the same place and section (all
+    // texts are set while building); the old one goes away once control returns.
+    PreferencesDialog* old = g_instance;
+    if (!old)
+        return nullptr;
+    const bool visible = old->isVisible();
+    const QRect geometry = old->geometry();
+    const int section = old->currentSection();
+    const QString status = old->statusText();
+    g_instance = new PreferencesDialog(old->parentWidget());
+    g_instance->setGeometry(geometry);
+    g_instance->showSection(section);
+    g_instance->showStatus(status);
+    old->hide();
+    old->deleteLater();
+    if (visible) {
+        g_instance->show();
+        g_instance->raise();
+        g_instance->activateWindow();
+    }
+    return g_instance;
+}
+
 QString PreferencesDialog::sectionTitle(int section) const {
     switch (section) {
     case General:
@@ -201,8 +226,8 @@ void PreferencesDialog::showSection(int section) {
 QStringList PreferencesDialog::sectionKeys(int section) const {
     switch (section) {
     case General:
-        return {key::OpenBehavior, key::RestoreWindows,       key::ConfirmTrash,
-                key::EditorApp,    key::RotationSaveStrategy, key::KeepModificationDate};
+        return {key::Language,  key::OpenBehavior,         key::RestoreWindows,      key::ConfirmTrash,
+                key::EditorApp, key::RotationSaveStrategy, key::KeepModificationDate};
     case Window:
         return {key::FitWindowToImage, key::TitleShowFolder, key::ShowStatusBar,
                 key::ShowInfoPanel,    key::ShowFilmstrip,   key::AllowTabs};
@@ -329,6 +354,12 @@ QWidget* PreferencesDialog::buildGeneral() {
     LF_BINDER;
     auto* w = new QWidget;
     auto* form = new QFormLayout(w);
+    // F-I18N-03: UI language (LanguageChooser.cpp), switched at once
+    form->addRow(tr("Sprache:"), prefs::createLanguageChooser(w));
+    form->addRow(QString(),
+                 helpLabel(tr("Wirkt sofort. Systemfenster wie „Öffnen“ folgen der Sprache, die macOS für "
+                              "Lumaflip verwendet (Systemeinstellungen → Allgemein → Sprache & Region)."),
+                           w));
     form->addRow(tr("Öffnen aus dem Finder:"),
                  bind.combo(key::OpenBehavior, {"newWindow", "replaceFront", "newUnlessOpen"},
                             {tr("Immer in neuem Fenster"), tr("Im vordersten Fenster ersetzen"),

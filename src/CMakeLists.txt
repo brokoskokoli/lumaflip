@@ -56,6 +56,41 @@ elseif(APPLE)
   target_compile_options(lf_core PRIVATE $<$<COMPILE_LANGUAGE:OBJCXX>:-fobjc-arc>)
 endif()
 
+# ---- translations (SPEC 4.16, translations/README.md) ----
+# German is the source language; lumaflip_de.ts holds only its plural forms. Keep the list
+# in sync with src/core/Language.cpp and tools/macos_deploy.py (UI_LANGUAGES).
+set(LF_UI_LANGUAGES de en fr es it pt_BR pt_PT nl pl sv da nb fi cs ja zh_CN zh_TW ko
+    CACHE INTERNAL "UI languages (F-I18N-02)")
+set(LF_TRANSLATIONS_SOURCE_DIR "${PROJECT_SOURCE_DIR}/translations" CACHE INTERNAL "")
+set(LF_QM_DIR "${PROJECT_BINARY_DIR}/translations" CACHE INTERNAL "Built lumaflip_<lang>.qm files")
+set(LF_QM_FILES "")
+if(Qt6LinguistTools_FOUND)
+  set(_lf_ts_files "")
+  foreach(_lang IN LISTS LF_UI_LANGUAGES)
+    if(NOT _lang STREQUAL "de")
+      list(APPEND _lf_ts_files "${LF_TRANSLATIONS_SOURCE_DIR}/lumaflip_${_lang}.ts")
+    endif()
+  endforeach()
+  # Every source under src/ (also the other platform's): one catalogue for all builds.
+  file(GLOB_RECURSE LF_I18N_SOURCES CONFIGURE_DEPENDS
+       ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp ${CMAKE_CURRENT_SOURCE_DIR}/*.h ${CMAKE_CURRENT_SOURCE_DIR}/*.mm)
+  # Updates the .ts files from the sources (never part of a normal build):
+  #   cmake --build build/check --target lf_lupdate
+  qt_add_lupdate(TS_FILES ${_lf_ts_files}
+    PLURALS_TS_FILE "${LF_TRANSLATIONS_SOURCE_DIR}/lumaflip_de.ts"
+    SOURCES ${LF_I18N_SOURCES}
+    LUPDATE_TARGET lf_lupdate
+    NO_GLOBAL_TARGET
+    OPTIONS -source-language de -locations none -no-obsolete -silent)
+  # The .qm files (part of every build): bundle (below) and tests (LF_QM_DIR).
+  qt_add_lrelease(TS_FILES ${_lf_ts_files} "${LF_TRANSLATIONS_SOURCE_DIR}/lumaflip_de.ts"
+    LRELEASE_TARGET lf_lrelease
+    NO_GLOBAL_TARGET
+    QM_OUTPUT_DIRECTORY "${LF_QM_DIR}"
+    QM_FILES_OUTPUT_VARIABLE LF_QM_FILES
+    OPTIONS -silent)
+endif()
+
 if(NOT LF_BUILD_UI)
   return() # core only (Linux CI, LF_FORCE_GENERIC_PLATFORM)
 endif()
@@ -66,6 +101,9 @@ list(FILTER LF_UI_SOURCES EXCLUDE REGEX ".*/main\\.cpp$")
 add_library(lf_ui STATIC ${LF_UI_SOURCES})
 target_link_libraries(lf_ui PUBLIC lf_core Qt6::Widgets Qt6::GuiPrivate PRIVATE lf_warnings)
 target_compile_definitions(lf_ui PRIVATE LF_APP_VERSION="${PROJECT_VERSION}") # AboutDialog
+# Unbundled binaries (integration tests) find lumaflip_<lang>.qm in the build tree.
+target_compile_definitions(lf_ui PRIVATE LF_TRANSLATIONS_BUILD_DIR="${LF_QM_DIR}")
+add_dependencies(lf_ui lf_lrelease)
 if(APPLE)
   target_compile_options(lf_ui PRIVATE $<$<COMPILE_LANGUAGE:OBJCXX>:-fobjc-arc>)
 endif()
@@ -93,7 +131,21 @@ set(LF_APP_ICON "${PROJECT_SOURCE_DIR}/packaging/macos/icon/Lumaflip.icns")
 set_source_files_properties(${LF_APP_ICON} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
 set(LF_STATIC_MANIFEST "${CMAKE_CURRENT_BINARY_DIR}/static-components.json")
 set_source_files_properties(${LF_STATIC_MANIFEST} PROPERTIES MACOSX_PACKAGE_LOCATION Resources)
-qt_add_executable(Lumaflip MACOSX_BUNDLE app/main.cpp ${LF_APP_ICON} ${LF_STATIC_MANIFEST})
+# Translations into Contents/Resources/translations (Qt's own catalogues are added by
+# tools/macos_deploy.py); <lang>.lproj folders with localized Info.plist texts (TCC
+# prompts, document type names), so macOS offers the app's languages (per-app language in
+# System Settings, CFBundleLocalizations in Info.plist.in) and native panels follow.
+set_source_files_properties(${LF_QM_FILES} PROPERTIES MACOSX_PACKAGE_LOCATION Resources/translations
+                                                      GENERATED TRUE)
+file(GLOB LF_LPROJ_STRINGS CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/packaging/macos/lproj/*.lproj/InfoPlist.strings")
+foreach(_strings IN LISTS LF_LPROJ_STRINGS)
+  get_filename_component(_lproj "${_strings}" DIRECTORY)
+  get_filename_component(_lproj "${_lproj}" NAME)
+  set_source_files_properties(${_strings} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources/${_lproj}")
+endforeach()
+qt_add_executable(Lumaflip MACOSX_BUNDLE app/main.cpp ${LF_APP_ICON} ${LF_STATIC_MANIFEST} ${LF_QM_FILES}
+                  ${LF_LPROJ_STRINGS})
+add_dependencies(Lumaflip lf_lrelease)
 target_link_libraries(Lumaflip PRIVATE lf_ui lf_warnings)
 target_compile_definitions(Lumaflip PRIVATE LF_APP_VERSION="${PROJECT_VERSION}")
 set_target_properties(Lumaflip PROPERTIES

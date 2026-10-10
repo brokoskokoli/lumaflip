@@ -23,6 +23,16 @@ target_compile_definitions(lf_unit_tests PRIVATE LF_TEST_DATA_DIR="${CMAKE_CURRE
 if(APPLE)
   target_compile_options(lf_unit_tests PRIVATE $<$<COMPILE_LANGUAGE:OBJCXX>:-fobjc-arc>)
 endif()
+# Translation tests (F-I18N-02/05/06): the built .qm files and the .ts sources.
+list(JOIN LF_UI_LANGUAGES "," _lf_ui_languages)
+target_compile_definitions(lf_unit_tests PRIVATE LF_QM_DIR="${LF_QM_DIR}"
+                                                  LF_TS_DIR="${LF_TRANSLATIONS_SOURCE_DIR}"
+                                                  LF_SRC_DIR="${PROJECT_SOURCE_DIR}"
+                                                  LF_UI_LANGUAGES="${_lf_ui_languages}")
+if(TARGET lf_lrelease)
+  add_dependencies(lf_unit_tests lf_lrelease)
+  target_compile_definitions(lf_unit_tests PRIVATE LF_HAVE_TRANSLATIONS=1)
+endif()
 gtest_discover_tests(lf_unit_tests DISCOVERY_MODE PRE_TEST PROPERTIES LABELS unit)
 
 if(NOT LF_BUILD_UI)

@@ -132,6 +132,11 @@ private:
 // Beenden schließen" off, i.e. NSQuitAlwaysKeepsWindows; macOS default: false).
 bool systemRestoresWindows();
 
+// F-I18N-03: the languages chosen for this app only (macOS: System Settings → General →
+// Language & Region → Applications, i.e. AppleLanguages in the app's own defaults domain),
+// most preferred first; empty if none (then the system's preferred languages apply).
+QStringList appLanguagePreference();
+
 // ---- factories (implemented per platform) ----
 std::unique_ptr<NameCollator> createNameCollator();
 std::unique_ptr<FolderOrderProvider> createFolderOrderProvider();

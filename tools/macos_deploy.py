@@ -9,7 +9,8 @@ plugin, Qt PDF, ...). This script deploys exactly:
   * the Qt plugins listed in PLUGINS,
   * the transitive closure of non-system libraries of the executable and those plugins
     (Qt frameworks stay frameworks and stay dynamically linked - LGPL, SPEC 11),
-  * Qt's German translations (Contents/Resources/translations),
+  * Qt's translations for every shipped UI language (Contents/Resources/translations,
+    next to Lumaflip's own lumaflip_<lang>.qm that the build put there - checked here),
   * qt.conf, so Qt never looks at the Homebrew prefix,
   * the licence texts of every bundled component (Contents/Resources/licenses) plus
     index.json, which the About dialog reads - including the third-party libraries
@@ -55,8 +56,28 @@ PLUGINS = [
     "imageformats/libqwebp.dylib",
 ]
 
-# German Qt translations (qt_de.qm is a meta catalogue that loads qtbase_de.qm).
-TRANSLATIONS = ["qt_de.qm", "qtbase_de.qm"]
+# UI languages (SPEC 4.16, F-I18N-02; src/core/Language.cpp, translations/CMakeLists.txt).
+# German is the source language (lumaflip_de.qm holds its plural forms only).
+UI_LANGUAGES = ["de", "en", "fr", "es", "it", "pt_BR", "pt_PT", "nl", "pl", "sv", "da", "nb", "fi",
+                "cs", "ja", "zh_CN", "zh_TW", "ko"]
+# Qt's catalogue per UI language: the first existing one is shipped (Qt has no pt_PT and
+# no nb catalogue; app/Translations.cpp falls back the same way: pt_PT -> pt_BR, nb -> nn).
+QT_CATALOG_CANDIDATES = {"pt_PT": ["pt_PT", "pt", "pt_BR"], "nb": ["nb", "no", "nn"]}
+
+
+def qt_catalogs(qt_translations: pathlib.Path) -> list[str]:
+    """qtbase_<lang>.qm files to ship, one per UI language (deduplicated)."""
+    out = []
+    for lang in UI_LANGUAGES:
+        for cand in QT_CATALOG_CANDIDATES.get(lang, [lang]):
+            name = f"qtbase_{cand}.qm"
+            if (qt_translations / name).exists():
+                if name not in out:
+                    out.append(name)
+                break
+        else:
+            raise SystemExit(f"error: no Qt translation for UI language {lang} in {qt_translations}")
+    return out
 
 SYSTEM_PREFIXES = ("/System/", "/usr/lib/")
 
@@ -279,12 +300,14 @@ class Deployer:
 
         tr_dir = res / "translations"
         tr_dir.mkdir(exist_ok=True)
-        for qm in TRANSLATIONS:
-            src = self.qt / "share" / "qt" / "translations" / qm
-            if not src.exists():
-                raise SystemExit(f"error: Qt translation {src} missing")
-            shutil.copy2(src.resolve(), tr_dir / qm)
+        qt_tr = self.qt / "share" / "qt" / "translations"
+        for qm in qt_catalogs(qt_tr):
+            shutil.copy2((qt_tr / qm).resolve(), tr_dir / qm)
             os.chmod(tr_dir / qm, 0o644)
+        # Lumaflip's own catalogues come from the build (src/CMakeLists.txt).
+        missing = [lang for lang in UI_LANGUAGES if not (tr_dir / f"lumaflip_{lang}.qm").exists()]
+        if missing:
+            raise SystemExit(f"error: {tr_dir} lacks lumaflip_<lang>.qm for {', '.join(missing)}")
 
     def collect_with_origin(self, binary: pathlib.Path, original: pathlib.Path) -> None:
         _, deps, _ = load_commands(binary)

@@ -1,12 +1,15 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "InputBindings.h"
 
+#include "Language.h"
+
 #include <QSet>
 
 #include "Settings.h"
 
 #include <QCoreApplication>
 #include <QKeyCombination>
+#include <QMutex>
 
 #include <algorithm>
 
@@ -14,9 +17,10 @@ namespace lf {
 
 namespace {
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::InputBindings", text);
-}
+// tr() for the code in this file outside QObject classes (lupdate takes the context from it).
+struct Tr {
+    Q_DECLARE_TR_FUNCTIONS(lf::InputBindings)
+};
 
 struct ActionInfo {
     Action action;
@@ -26,75 +30,85 @@ struct ActionInfo {
 
 // Order = order in the shortcut editor.
 const ActionInfo kActions[] = {
-    {Action::NextImage, "nextImage", "Nächstes Bild"},
-    {Action::PreviousImage, "previousImage", "Vorheriges Bild"},
-    {Action::FirstImage, "firstImage", "Erstes Bild"},
-    {Action::LastImage, "lastImage", "Letztes Bild"},
-    {Action::JumpForward, "jumpForward", "Mehrere Bilder vor"},
-    {Action::JumpBackward, "jumpBackward", "Mehrere Bilder zurück"},
-    {Action::NextFolder, "nextFolder", "Nächster Ordner"},
-    {Action::PreviousFolder, "previousFolder", "Vorheriger Ordner"},
-    {Action::NextPage, "nextPage", "Nächste Seite"},
-    {Action::PreviousPage, "previousPage", "Vorherige Seite"},
-    {Action::ZoomIn, "zoomIn", "Vergrößern"},
-    {Action::ZoomOut, "zoomOut", "Verkleinern"},
-    {Action::ZoomActual, "zoomActual", "100 %"},
-    {Action::ZoomFit, "zoomFit", "Einpassen"},
-    {Action::ZoomFillWidth, "zoomFillWidth", "Breite füllen"},
-    {Action::ToggleFitActualAtCursor, "toggleFitActual", "Einpassen ↔ 100 % am Cursor"},
-    {Action::ToggleZoomLock, "toggleZoomLock", "Zoom fixieren"},
-    {Action::ScrollUp, "scrollUp", "Ausschnitt nach oben"},
-    {Action::ScrollDown, "scrollDown", "Ausschnitt nach unten"},
-    {Action::ScrollLeft, "scrollLeft", "Ausschnitt nach links"},
-    {Action::ScrollRight, "scrollRight", "Ausschnitt nach rechts"},
-    {Action::ScrollPageUp, "scrollPageUp", "Ausschnitt eine Seite nach oben"},
-    {Action::ScrollPageDown, "scrollPageDown", "Ausschnitt eine Seite nach unten"},
-    {Action::ScrollHome, "scrollHome", "Zum Bildanfang scrollen"},
-    {Action::ScrollEnd, "scrollEnd", "Zum Bildende scrollen"},
-    {Action::ToggleFullScreen, "toggleFullScreen", "Vollbild"},
-    {Action::ExitModeOrNothing, "exitMode", "Vollbild bzw. Modus verlassen"},
-    {Action::ExitModeOrCloseWindow, "exitModeOrClose", "Modus verlassen, sonst Fenster schließen"},
-    {Action::CloseWindow, "closeWindow", "Fenster schließen"},
-    {Action::CloseAllWindows, "closeAllWindows", "Alle Fenster schließen"},
-    {Action::ToggleAnimation, "toggleAnimation", "Animation abspielen/pausieren"},
-    {Action::NextFrame, "nextFrame", "Nächstes Einzelbild"},
-    {Action::PreviousFrame, "previousFrame", "Vorheriges Einzelbild"},
-    {Action::ToggleSlideshow, "toggleSlideshow", "Diashow"},
-    {Action::RotateLeft, "rotateLeft", "Links drehen"},
-    {Action::RotateRight, "rotateRight", "Rechts drehen"},
-    {Action::FlipHorizontal, "flipHorizontal", "Horizontal spiegeln"},
-    {Action::FlipVertical, "flipVertical", "Vertikal spiegeln"},
-    {Action::SaveRotation, "saveRotation", "Drehung speichern"},
-    {Action::Trash, "trash", "In den Papierkorb legen"},
-    {Action::Undo, "undo", "Rückgängig"},
-    {Action::Redo, "redo", "Wiederholen"},
-    {Action::Rename, "rename", "Umbenennen"},
-    {Action::RevealInFinder, "revealInFinder", "Im Finder zeigen"},
-    {Action::CopyImage, "copyImage", "Bild kopieren"},
-    {Action::CopyPath, "copyPath", "Pfad kopieren"},
-    {Action::OpenInEditor, "openInEditor", "Im Editor öffnen"},
-    {Action::ToggleInfoPanel, "toggleInfoPanel", "Infopanel"},
-    {Action::ToggleFilmstrip, "toggleFilmstrip", "Filmstreifen"},
-    {Action::ToggleGrid, "toggleGrid", "Raster"},
-    {Action::ShowShortcuts, "showShortcuts", "Tastenkürzel-Übersicht"},
-    {Action::OpenPreferences, "openPreferences", "Einstellungen"},
-    {Action::NewWindow, "newWindow", "Neues Fenster"},
-    {Action::DuplicateWindow, "duplicateWindow", "Fenster duplizieren"},
-    {Action::Magnifier, "magnifier", "Lupe (gedrückt halten)"},
-    {Action::DragOut, "dragOut", "Datei herausziehen"},
-    {Action::StartPan, "startPan", "Ausschnitt verschieben"},
-    {Action::Rate0, "rate0", "Bewertung entfernen (0 Sterne)"},
-    {Action::Rate1, "rate1", "1 Stern"},
-    {Action::Rate2, "rate2", "2 Sterne"},
-    {Action::Rate3, "rate3", "3 Sterne"},
-    {Action::Rate4, "rate4", "4 Sterne"},
-    {Action::Rate5, "rate5", "5 Sterne"},
-    {Action::RatePick, "ratePick", "Behalten (Pick)"},
-    {Action::RateReject, "rateReject", "Verwerfen (Reject)"},
-    {Action::RateClear, "rateClear", "Markierung zurücksetzen"},
-    {Action::ToggleCullingMode, "toggleCullingMode", "Aussortiermodus"},
-    {Action::QuickMove, "quickMove", "Schnellablage: verschieben (M, dann 1–9)"},
-    {Action::QuickCopy, "quickCopy", "Schnellablage: kopieren (C, dann 1–9)"},
+    {Action::NextImage, "nextImage", QT_TRANSLATE_NOOP("lf::InputBindings", "Nächstes Bild")},
+    {Action::PreviousImage, "previousImage", QT_TRANSLATE_NOOP("lf::InputBindings", "Vorheriges Bild")},
+    {Action::FirstImage, "firstImage", QT_TRANSLATE_NOOP("lf::InputBindings", "Erstes Bild")},
+    {Action::LastImage, "lastImage", QT_TRANSLATE_NOOP("lf::InputBindings", "Letztes Bild")},
+    {Action::JumpForward, "jumpForward", QT_TRANSLATE_NOOP("lf::InputBindings", "Mehrere Bilder vor")},
+    {Action::JumpBackward, "jumpBackward", QT_TRANSLATE_NOOP("lf::InputBindings", "Mehrere Bilder zurück")},
+    {Action::NextFolder, "nextFolder", QT_TRANSLATE_NOOP("lf::InputBindings", "Nächster Ordner")},
+    {Action::PreviousFolder, "previousFolder", QT_TRANSLATE_NOOP("lf::InputBindings", "Vorheriger Ordner")},
+    {Action::NextPage, "nextPage", QT_TRANSLATE_NOOP("lf::InputBindings", "Nächste Seite")},
+    {Action::PreviousPage, "previousPage", QT_TRANSLATE_NOOP("lf::InputBindings", "Vorherige Seite")},
+    {Action::ZoomIn, "zoomIn", QT_TRANSLATE_NOOP("lf::InputBindings", "Vergrößern")},
+    {Action::ZoomOut, "zoomOut", QT_TRANSLATE_NOOP("lf::InputBindings", "Verkleinern")},
+    {Action::ZoomActual, "zoomActual", QT_TRANSLATE_NOOP("lf::InputBindings", "100 %")},
+    {Action::ZoomFit, "zoomFit", QT_TRANSLATE_NOOP("lf::InputBindings", "Einpassen")},
+    {Action::ZoomFillWidth, "zoomFillWidth", QT_TRANSLATE_NOOP("lf::InputBindings", "Breite füllen")},
+    {Action::ToggleFitActualAtCursor, "toggleFitActual",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Einpassen ↔ 100 % am Cursor")},
+    {Action::ToggleZoomLock, "toggleZoomLock", QT_TRANSLATE_NOOP("lf::InputBindings", "Zoom fixieren")},
+    {Action::ScrollUp, "scrollUp", QT_TRANSLATE_NOOP("lf::InputBindings", "Ausschnitt nach oben")},
+    {Action::ScrollDown, "scrollDown", QT_TRANSLATE_NOOP("lf::InputBindings", "Ausschnitt nach unten")},
+    {Action::ScrollLeft, "scrollLeft", QT_TRANSLATE_NOOP("lf::InputBindings", "Ausschnitt nach links")},
+    {Action::ScrollRight, "scrollRight", QT_TRANSLATE_NOOP("lf::InputBindings", "Ausschnitt nach rechts")},
+    {Action::ScrollPageUp, "scrollPageUp",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Ausschnitt eine Seite nach oben")},
+    {Action::ScrollPageDown, "scrollPageDown",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Ausschnitt eine Seite nach unten")},
+    {Action::ScrollHome, "scrollHome", QT_TRANSLATE_NOOP("lf::InputBindings", "Zum Bildanfang scrollen")},
+    {Action::ScrollEnd, "scrollEnd", QT_TRANSLATE_NOOP("lf::InputBindings", "Zum Bildende scrollen")},
+    {Action::ToggleFullScreen, "toggleFullScreen", QT_TRANSLATE_NOOP("lf::InputBindings", "Vollbild")},
+    {Action::ExitModeOrNothing, "exitMode",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Vollbild bzw. Modus verlassen")},
+    {Action::ExitModeOrCloseWindow, "exitModeOrClose",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Modus verlassen, sonst Fenster schließen")},
+    {Action::CloseWindow, "closeWindow", QT_TRANSLATE_NOOP("lf::InputBindings", "Fenster schließen")},
+    {Action::CloseAllWindows, "closeAllWindows",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Alle Fenster schließen")},
+    {Action::ToggleAnimation, "toggleAnimation",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Animation abspielen/pausieren")},
+    {Action::NextFrame, "nextFrame", QT_TRANSLATE_NOOP("lf::InputBindings", "Nächstes Einzelbild")},
+    {Action::PreviousFrame, "previousFrame", QT_TRANSLATE_NOOP("lf::InputBindings", "Vorheriges Einzelbild")},
+    {Action::ToggleSlideshow, "toggleSlideshow", QT_TRANSLATE_NOOP("lf::InputBindings", "Diashow")},
+    {Action::RotateLeft, "rotateLeft", QT_TRANSLATE_NOOP("lf::InputBindings", "Links drehen")},
+    {Action::RotateRight, "rotateRight", QT_TRANSLATE_NOOP("lf::InputBindings", "Rechts drehen")},
+    {Action::FlipHorizontal, "flipHorizontal", QT_TRANSLATE_NOOP("lf::InputBindings", "Horizontal spiegeln")},
+    {Action::FlipVertical, "flipVertical", QT_TRANSLATE_NOOP("lf::InputBindings", "Vertikal spiegeln")},
+    {Action::SaveRotation, "saveRotation", QT_TRANSLATE_NOOP("lf::InputBindings", "Drehung speichern")},
+    {Action::Trash, "trash", QT_TRANSLATE_NOOP("lf::InputBindings", "In den Papierkorb legen")},
+    {Action::Undo, "undo", QT_TRANSLATE_NOOP("lf::InputBindings", "Rückgängig")},
+    {Action::Redo, "redo", QT_TRANSLATE_NOOP("lf::InputBindings", "Wiederholen")},
+    {Action::Rename, "rename", QT_TRANSLATE_NOOP("lf::InputBindings", "Umbenennen")},
+    {Action::RevealInFinder, "revealInFinder", QT_TRANSLATE_NOOP("lf::InputBindings", "Im Finder zeigen")},
+    {Action::CopyImage, "copyImage", QT_TRANSLATE_NOOP("lf::InputBindings", "Bild kopieren")},
+    {Action::CopyPath, "copyPath", QT_TRANSLATE_NOOP("lf::InputBindings", "Pfad kopieren")},
+    {Action::OpenInEditor, "openInEditor", QT_TRANSLATE_NOOP("lf::InputBindings", "Im Editor öffnen")},
+    {Action::ToggleInfoPanel, "toggleInfoPanel", QT_TRANSLATE_NOOP("lf::InputBindings", "Infopanel")},
+    {Action::ToggleFilmstrip, "toggleFilmstrip", QT_TRANSLATE_NOOP("lf::InputBindings", "Filmstreifen")},
+    {Action::ToggleGrid, "toggleGrid", QT_TRANSLATE_NOOP("lf::InputBindings", "Raster")},
+    {Action::ShowShortcuts, "showShortcuts",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Tastenkürzel-Übersicht")},
+    {Action::OpenPreferences, "openPreferences", QT_TRANSLATE_NOOP("lf::InputBindings", "Einstellungen")},
+    {Action::NewWindow, "newWindow", QT_TRANSLATE_NOOP("lf::InputBindings", "Neues Fenster")},
+    {Action::DuplicateWindow, "duplicateWindow",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Fenster duplizieren")},
+    {Action::Magnifier, "magnifier", QT_TRANSLATE_NOOP("lf::InputBindings", "Lupe (gedrückt halten)")},
+    {Action::DragOut, "dragOut", QT_TRANSLATE_NOOP("lf::InputBindings", "Datei herausziehen")},
+    {Action::StartPan, "startPan", QT_TRANSLATE_NOOP("lf::InputBindings", "Ausschnitt verschieben")},
+    {Action::Rate0, "rate0", QT_TRANSLATE_NOOP("lf::InputBindings", "Bewertung entfernen (0 Sterne)")},
+    {Action::Rate1, "rate1", QT_TRANSLATE_NOOP("lf::InputBindings", "1 Stern")},
+    {Action::Rate2, "rate2", QT_TRANSLATE_NOOP("lf::InputBindings", "2 Sterne")},
+    {Action::Rate3, "rate3", QT_TRANSLATE_NOOP("lf::InputBindings", "3 Sterne")},
+    {Action::Rate4, "rate4", QT_TRANSLATE_NOOP("lf::InputBindings", "4 Sterne")},
+    {Action::Rate5, "rate5", QT_TRANSLATE_NOOP("lf::InputBindings", "5 Sterne")},
+    {Action::RatePick, "ratePick", QT_TRANSLATE_NOOP("lf::InputBindings", "Behalten (Pick)")},
+    {Action::RateReject, "rateReject", QT_TRANSLATE_NOOP("lf::InputBindings", "Verwerfen (Reject)")},
+    {Action::RateClear, "rateClear", QT_TRANSLATE_NOOP("lf::InputBindings", "Markierung zurücksetzen")},
+    {Action::ToggleCullingMode, "toggleCullingMode", QT_TRANSLATE_NOOP("lf::InputBindings", "Aussortiermodus")},
+    {Action::QuickMove, "quickMove",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Schnellablage: verschieben (M, dann 1–9)")},
+    {Action::QuickCopy, "quickCopy", QT_TRANSLATE_NOOP("lf::InputBindings", "Schnellablage: kopieren (C, dann 1–9)")},
 };
 
 const ActionInfo* info(Action a) {
@@ -278,152 +292,236 @@ Action actionFromId(const QString& id) {
 
 QString actionLabel(Action a) {
     const ActionInfo* i = info(a);
-    return i ? tr(i->label) : tr("Nichts");
+    if (!i)
+        return Tr::tr("Nichts");
+    return Tr::tr(i->label);
 }
 
 // ---- slots (SPEC 4.14) ----
 
 const QVector<InputSlot>& InputBindings::inputSlots() {
-    static const QVector<InputSlot> slotTable = [] {
+    // Rebuilt when the UI language changed (labels are translated, F-I18N-03).
+    static QMutex mutex;
+    static QVector<InputSlot> slotTable;
+    static int builtFor = -1;
+    QMutexLocker lock(&mutex);
+    if (builtFor == languageGeneration())
+        return slotTable;
+    builtFor = languageGeneration();
+    slotTable = [] {
         QVector<InputSlot> v;
         auto add = [&v](const char* id, const char* label,
                         std::initializer_list<std::tuple<const char*, const char*, const char*>> choices,
                         const char* def) {
             InputSlot s;
             s.id = QString::fromLatin1(id);
-            s.label = tr(label);
+            s.label = Tr::tr(label);
             for (const auto& [cid, clabel, chelp] : choices) {
                 s.choices << QString::fromLatin1(cid);
-                s.choiceLabels << tr(clabel);
-                s.choiceHelp << tr(chelp);
+                s.choiceLabels << Tr::tr(clabel);
+                s.choiceHelp << Tr::tr(chelp);
             }
             s.defaultChoice = QString::fromLatin1(def);
             v.append(s);
         };
         // F-IN-01
-        add("wheel", "Mausrad",
-            {{"image", "Bild wechseln", "Nach unten drehen zeigt das nächste, nach oben das vorherige Bild."},
-             {"zoom", "Zoomen (am Cursor)",
-              "Nach oben drehen vergrößert, nach unten verkleinert – am Mauszeiger."},
-             {"scrollOrImage", "Ausschnitt scrollen (sonst Bild wechseln)",
-              "Gezoomt wird der Ausschnitt verschoben, sonst wird das Bild gewechselt."}},
+        add("wheel", QT_TRANSLATE_NOOP("lf::InputBindings", "Mausrad"),
+            {{"image", QT_TRANSLATE_NOOP("lf::InputBindings", "Bild wechseln"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Nach unten drehen zeigt das nächste, nach oben das vorherige Bild.")},
+             {"zoom", QT_TRANSLATE_NOOP("lf::InputBindings", "Zoomen (am Cursor)"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Nach oben drehen vergrößert, nach unten verkleinert – am Mauszeiger.")},
+             {"scrollOrImage",
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Ausschnitt scrollen (sonst Bild wechseln)"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Gezoomt wird der Ausschnitt verschoben, sonst wird das Bild gewechselt.")}},
             "image");
         // F-IN-02
         const auto wheelMod = {
             std::tuple<const char*, const char*, const char*>{
-                "image", "Bild wechseln", "Bild wechseln, solange die Taste gehalten wird."},
-            {"zoom", "Zoomen (am Cursor)", "Zoomen am Mauszeiger, solange die Taste gehalten wird."},
-            {"scrollOrImage", "Ausschnitt scrollen (sonst Bild wechseln)",
-             "Gezoomt wird der Ausschnitt verschoben, sonst wird das Bild gewechselt."},
-            {"scrollHorizontal", "Horizontal scrollen", "Der Ausschnitt wird waagerecht verschoben."}};
-        add("wheel.cmd", "Mausrad mit ⌘", wheelMod, "zoom");
-        add("wheel.alt", "Mausrad mit ⌥", wheelMod, "scrollOrImage");
-        add("wheel.shift", "Mausrad mit ⇧", wheelMod, "scrollHorizontal");
+                "image", QT_TRANSLATE_NOOP("lf::InputBindings", "Bild wechseln"),
+                QT_TRANSLATE_NOOP("lf::InputBindings", "Bild wechseln, solange die Taste gehalten wird.")},
+            {"zoom", QT_TRANSLATE_NOOP("lf::InputBindings", "Zoomen (am Cursor)"),
+             QT_TRANSLATE_NOOP("lf::InputBindings",
+                               "Zoomen am Mauszeiger, solange die Taste gehalten wird.")},
+            {"scrollOrImage",
+             QT_TRANSLATE_NOOP("lf::InputBindings", "Ausschnitt scrollen (sonst Bild wechseln)"),
+             QT_TRANSLATE_NOOP("lf::InputBindings",
+                               "Gezoomt wird der Ausschnitt verschoben, sonst wird das Bild gewechselt.")},
+            {"scrollHorizontal", QT_TRANSLATE_NOOP("lf::InputBindings", "Horizontal scrollen"),
+             QT_TRANSLATE_NOOP("lf::InputBindings", "Der Ausschnitt wird waagerecht verschoben.")}};
+        add("wheel.cmd", QT_TRANSLATE_NOOP("lf::InputBindings", "Mausrad mit ⌘"), wheelMod, "zoom");
+        add("wheel.alt", QT_TRANSLATE_NOOP("lf::InputBindings", "Mausrad mit ⌥"), wheelMod, "scrollOrImage");
+        add("wheel.shift", QT_TRANSLATE_NOOP("lf::InputBindings", "Mausrad mit ⇧"), wheelMod,
+            "scrollHorizontal");
         // F-IN-04
-        add("pageUpDown", "Bild↑ / Bild↓",
-            {{"image", "Vorheriges/nächstes Bild", "Wechselt ein Bild zurück bzw. vor."},
-             {"jump", "Mehrere Bilder zurück/vor", "Springt um die eingestellte Sprungweite (Standard 10)."},
-             {"folder", "Vorheriger/nächster Ordner", "Wechselt in den benachbarten Ordner."},
-             {"page", "Seite zurück/vor (sonst Bild)",
-              "Bei mehrseitigen Dateien wird geblättert, sonst das Bild gewechselt."},
-             {"scroll", "Ausschnitt seitenweise scrollen (sonst Bild)",
-              "Gezoomt um eine Bildschirmhöhe scrollen, sonst Bild wechseln."}},
+        add("pageUpDown", QT_TRANSLATE_NOOP("lf::InputBindings", "Bild↑ / Bild↓"),
+            {{"image", QT_TRANSLATE_NOOP("lf::InputBindings", "Vorheriges/nächstes Bild"),
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Wechselt ein Bild zurück bzw. vor.")},
+             {"jump", QT_TRANSLATE_NOOP("lf::InputBindings", "Mehrere Bilder zurück/vor"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Springt um die eingestellte Sprungweite (Standard 10).")},
+             {"folder", QT_TRANSLATE_NOOP("lf::InputBindings", "Vorheriger/nächster Ordner"),
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Wechselt in den benachbarten Ordner.")},
+             {"page", QT_TRANSLATE_NOOP("lf::InputBindings", "Seite zurück/vor (sonst Bild)"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Bei mehrseitigen Dateien wird geblättert, sonst das Bild gewechselt.")},
+             {"scroll",
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Ausschnitt seitenweise scrollen (sonst Bild)"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Gezoomt um eine Bildschirmhöhe scrollen, sonst Bild wechseln.")}},
             "image");
         // F-IN-05
-        add("homeEnd", "Pos1 / Ende",
-            {{"image", "Erstes/letztes Bild", "Springt zum ersten bzw. letzten Bild der Sammlung."},
-             {"scroll", "Bildanfang/-ende (sonst erstes/letztes Bild)",
-              "Gezoomt an den Anfang bzw. das Ende des Bildes scrollen, sonst erstes/letztes Bild."}},
+        add("homeEnd", QT_TRANSLATE_NOOP("lf::InputBindings", "Pos1 / Ende"),
+            {{"image", QT_TRANSLATE_NOOP("lf::InputBindings", "Erstes/letztes Bild"),
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Springt zum ersten bzw. letzten Bild der Sammlung.")},
+             {"scroll",
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Bildanfang/-ende (sonst erstes/letztes Bild)"),
+              QT_TRANSLATE_NOOP(
+                  "lf::InputBindings",
+                  "Gezoomt an den Anfang bzw. das Ende des Bildes scrollen, sonst erstes/letztes Bild.")}},
             "image");
         // F-IN-06
-        add("space", "Leertaste / ⇧Leertaste",
-            {{"image", "Nächstes/vorheriges Bild", "Leertaste: nächstes Bild, mit ⇧: vorheriges Bild."},
-             {"animationOrImage", "Animation abspielen/pausieren, sonst Bild",
-              "Bei animierten Bildern Wiedergabe umschalten, sonst Bild wechseln."},
-             {"fitActual", "Einpassen ↔ 100 %", "Schaltet zwischen Einpassen und 100 % um."},
-             {"slideshow", "Diashow starten/pausieren", "Startet bzw. pausiert die Diashow."}},
+        add("space", QT_TRANSLATE_NOOP("lf::InputBindings", "Leertaste / ⇧Leertaste"),
+            {{"image", QT_TRANSLATE_NOOP("lf::InputBindings", "Nächstes/vorheriges Bild"),
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Leertaste: nächstes Bild, mit ⇧: vorheriges Bild.")},
+             {"animationOrImage",
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Animation abspielen/pausieren, sonst Bild"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Bei animierten Bildern Wiedergabe umschalten, sonst Bild wechseln.")},
+             {"fitActual", QT_TRANSLATE_NOOP("lf::InputBindings", "Einpassen ↔ 100 %"),
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Schaltet zwischen Einpassen und 100 % um.")},
+             {"slideshow", QT_TRANSLATE_NOOP("lf::InputBindings", "Diashow starten/pausieren"),
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Startet bzw. pausiert die Diashow.")}},
             "animationOrImage");
         // F-IN-07
-        add("arrowsZoomed", "← / →, wenn gezoomt",
-            {{"image", "Immer Bild wechseln",
-              "Pfeiltasten wechseln das Bild; mit ⌥ wird der Ausschnitt verschoben."},
-             {"scrollThenImage", "Erst bis zum Rand scrollen, dann Bild wechseln",
-              "Der Ausschnitt wird verschoben; am Bildrand wechselt das Bild."},
-             {"scroll", "Ausschnitt scrollen (Bild mit ⌥←/⌥→)",
-              "Pfeiltasten verschieben den Ausschnitt; Bildwechsel mit ⌥←/⌥→."}},
+        add("arrowsZoomed", QT_TRANSLATE_NOOP("lf::InputBindings", "← / →, wenn gezoomt"),
+            {{"image", QT_TRANSLATE_NOOP("lf::InputBindings", "Immer Bild wechseln"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Pfeiltasten wechseln das Bild; mit ⌥ wird der Ausschnitt verschoben.")},
+             {"scrollThenImage",
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Erst bis zum Rand scrollen, dann Bild wechseln"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Der Ausschnitt wird verschoben; am Bildrand wechselt das Bild.")},
+             {"scroll", QT_TRANSLATE_NOOP("lf::InputBindings", "Ausschnitt scrollen (Bild mit ⌥←/⌥→)"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Pfeiltasten verschieben den Ausschnitt; Bildwechsel mit ⌥←/⌥→.")}},
             "image");
         // F-IN-08
-        add("upDown", "↑ / ↓",
-            {{"scrollOrImage", "Ausschnitt scrollen, sonst vorheriges/nächstes Bild",
-              "Gezoomt wird der Ausschnitt verschoben, sonst das Bild gewechselt."},
-             {"scrollOrNothing", "Ausschnitt scrollen (wenn gezoomt), sonst nichts",
-              "Gezoomt wird der Ausschnitt verschoben, sonst passiert nichts."},
-             {"image", "Vorheriges/nächstes Bild", "↑ zeigt das vorherige, ↓ das nächste Bild."},
-             {"zoom", "Zoomen", "↑ vergrößert, ↓ verkleinert."}},
+        add("upDown", QT_TRANSLATE_NOOP("lf::InputBindings", "↑ / ↓"),
+            {{"scrollOrImage",
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Ausschnitt scrollen, sonst vorheriges/nächstes Bild"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Gezoomt wird der Ausschnitt verschoben, sonst das Bild gewechselt.")},
+             {"scrollOrNothing",
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Ausschnitt scrollen (wenn gezoomt), sonst nichts"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Gezoomt wird der Ausschnitt verschoben, sonst passiert nichts.")},
+             {"image", QT_TRANSLATE_NOOP("lf::InputBindings", "Vorheriges/nächstes Bild"),
+              QT_TRANSLATE_NOOP("lf::InputBindings", "↑ zeigt das vorherige, ↓ das nächste Bild.")},
+             {"zoom", QT_TRANSLATE_NOOP("lf::InputBindings", "Zoomen"),
+              QT_TRANSLATE_NOOP("lf::InputBindings", "↑ vergrößert, ↓ verkleinert.")}},
             "scrollOrImage");
         // F-IN-09
-        add("click", "Einfacher Klick ins Bild",
-            {{"none", "Nichts", "Ein Klick hat keine Wirkung (Ziehen verschiebt weiterhin)."},
-             {"fitActual", "Einpassen ↔ 100 % am Cursor",
-              "Ein Klick zoomt auf 100 % an der Klickstelle und zurück."},
-             {"image", "Nächstes Bild (linke Hälfte: vorheriges)",
-              "Klick in die rechte Hälfte: nächstes Bild, linke Hälfte: vorheriges."}},
+        add("click", QT_TRANSLATE_NOOP("lf::InputBindings", "Einfacher Klick ins Bild"),
+            {{"none", QT_TRANSLATE_NOOP("lf::InputBindings", "Nichts"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Ein Klick hat keine Wirkung (Ziehen verschiebt weiterhin).")},
+             {"fitActual", QT_TRANSLATE_NOOP("lf::InputBindings", "Einpassen ↔ 100 % am Cursor"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Ein Klick zoomt auf 100 % an der Klickstelle und zurück.")},
+             {"image", QT_TRANSLATE_NOOP("lf::InputBindings", "Nächstes Bild (linke Hälfte: vorheriges)"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Klick in die rechte Hälfte: nächstes Bild, linke Hälfte: vorheriges.")}},
             "none");
         // F-IN-10
-        add("doubleClick", "Doppelklick ins Bild",
-            {{"fullscreen", "Vollbild umschalten", "Doppelklick wechselt in das Vollbild und zurück."},
-             {"fitActual", "Einpassen ↔ 100 %", "Doppelklick schaltet zwischen Einpassen und 100 % um."},
-             {"close", "Fenster schließen", "Doppelklick schließt das Fenster."}},
+        add("doubleClick", QT_TRANSLATE_NOOP("lf::InputBindings", "Doppelklick ins Bild"),
+            {{"fullscreen", QT_TRANSLATE_NOOP("lf::InputBindings", "Vollbild umschalten"),
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Doppelklick wechselt in das Vollbild und zurück.")},
+             {"fitActual", QT_TRANSLATE_NOOP("lf::InputBindings", "Einpassen ↔ 100 %"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Doppelklick schaltet zwischen Einpassen und 100 % um.")},
+             {"close", QT_TRANSLATE_NOOP("lf::InputBindings", "Fenster schließen"),
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Doppelklick schließt das Fenster.")}},
             "fullscreen");
         // F-IN-11
-        add("middleClick", "Mittlere Maustaste",
-            {{"none", "Nichts", "Die mittlere Maustaste hat keine Wirkung."},
-             {"fullscreen", "Vollbild", "Schaltet das Vollbild um."},
-             {"close", "Fenster schließen", "Schließt das Fenster."},
-             {"fitActual", "Einpassen ↔ 100 %",
-              "Schaltet zwischen Einpassen und 100 % an der Klickstelle um."},
-             {"magnifier", "Lupe (gedrückt halten)", "Zeigt eine Lupe, solange die Taste gedrückt ist."}},
+        add("middleClick", QT_TRANSLATE_NOOP("lf::InputBindings", "Mittlere Maustaste"),
+            {{"none", QT_TRANSLATE_NOOP("lf::InputBindings", "Nichts"),
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Die mittlere Maustaste hat keine Wirkung.")},
+             {"fullscreen", QT_TRANSLATE_NOOP("lf::InputBindings", "Vollbild"),
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Schaltet das Vollbild um.")},
+             {"close", QT_TRANSLATE_NOOP("lf::InputBindings", "Fenster schließen"),
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Schließt das Fenster.")},
+             {"fitActual", QT_TRANSLATE_NOOP("lf::InputBindings", "Einpassen ↔ 100 %"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Schaltet zwischen Einpassen und 100 % an der Klickstelle um.")},
+             {"magnifier", QT_TRANSLATE_NOOP("lf::InputBindings", "Lupe (gedrückt halten)"),
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Zeigt eine Lupe, solange die Taste gedrückt ist.")}},
             "fitActual");
         // F-IN-12
-        add("backForward", "Maustasten 4/5 (Zurück/Vor)",
-            {{"image", "Vorheriges/nächstes Bild",
-              "Zurück-Taste: vorheriges Bild, Vor-Taste: nächstes Bild."},
-             {"none", "Nichts", "Die Tasten haben keine Wirkung."}},
+        add("backForward", QT_TRANSLATE_NOOP("lf::InputBindings", "Maustasten 4/5 (Zurück/Vor)"),
+            {{"image", QT_TRANSLATE_NOOP("lf::InputBindings", "Vorheriges/nächstes Bild"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Zurück-Taste: vorheriges Bild, Vor-Taste: nächstes Bild.")},
+             {"none", QT_TRANSLATE_NOOP("lf::InputBindings", "Nichts"),
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Die Tasten haben keine Wirkung.")}},
             "image");
         // F-IN-13
-        add("swipe", "Trackpad-Wischen (zwei Finger, horizontal)",
-            {{"image", "Bild wechseln (gezoomt: scrollen)",
-              "Wischen wechselt das Bild; im gezoomten Zustand wird der Ausschnitt verschoben."},
-             {"scroll", "Ausschnitt scrollen", "Wischen verschiebt immer nur den Ausschnitt."},
-             {"off", "Aus", "Wischen wird ignoriert."}},
+        add("swipe", QT_TRANSLATE_NOOP("lf::InputBindings", "Trackpad-Wischen (zwei Finger, horizontal)"),
+            {{"image", QT_TRANSLATE_NOOP("lf::InputBindings", "Bild wechseln (gezoomt: scrollen)"),
+              QT_TRANSLATE_NOOP(
+                  "lf::InputBindings",
+                  "Wischen wechselt das Bild; im gezoomten Zustand wird der Ausschnitt verschoben.")},
+             {"scroll", QT_TRANSLATE_NOOP("lf::InputBindings", "Ausschnitt scrollen"),
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Wischen verschiebt immer nur den Ausschnitt.")},
+             {"off", QT_TRANSLATE_NOOP("lf::InputBindings", "Aus"),
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Wischen wird ignoriert.")}},
             "image");
         // F-IN-14
-        add("drag", "Ziehen mit linker Maustaste",
-            {{"pan", "Ausschnitt verschieben (⌥: Datei herausziehen)",
-              "Ziehen verschiebt den Ausschnitt; mit ⌥ wird die Datei in andere Apps gezogen."},
-             {"dragOut", "Datei herausziehen (⌥: Ausschnitt verschieben)",
-              "Ziehen zieht die Datei in andere Apps; mit ⌥ wird der Ausschnitt verschoben."}},
+        add("drag", QT_TRANSLATE_NOOP("lf::InputBindings", "Ziehen mit linker Maustaste"),
+            {{"pan", QT_TRANSLATE_NOOP("lf::InputBindings", "Ausschnitt verschieben (⌥: Datei herausziehen)"),
+              QT_TRANSLATE_NOOP(
+                  "lf::InputBindings",
+                  "Ziehen verschiebt den Ausschnitt; mit ⌥ wird die Datei in andere Apps gezogen.")},
+             {"dragOut",
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Datei herausziehen (⌥: Ausschnitt verschieben)"),
+              QT_TRANSLATE_NOOP(
+                  "lf::InputBindings",
+                  "Ziehen zieht die Datei in andere Apps; mit ⌥ wird der Ausschnitt verschoben.")}},
             "pan");
         // F-IN-15
-        add("esc", "Esc",
-            {{"exitMode", "Vollbild bzw. Modus verlassen, sonst nichts",
-              "Esc beendet Vollbild, Diashow oder andere Modi und tut sonst nichts."},
-             {"exitModeOrClose", "Vollbild bzw. Modus verlassen, sonst Fenster schließen",
-              "Esc beendet Modi; ist keiner aktiv, wird das Fenster geschlossen."}},
+        add("esc", QT_TRANSLATE_NOOP("lf::InputBindings", "Esc"),
+            {{"exitMode",
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Vollbild bzw. Modus verlassen, sonst nichts"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Esc beendet Vollbild, Diashow oder andere Modi und tut sonst nichts.")},
+             {"exitModeOrClose",
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Vollbild bzw. Modus verlassen, sonst Fenster schließen"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Esc beendet Modi; ist keiner aktiv, wird das Fenster geschlossen.")}},
             "exitMode");
         // F-IN-16 (mirrors key::WrapMode / F-NAV-03)
-        add("endOfCollection", "Ende der Sammlung",
-            {{"stop", "Anhalten", "Am Ende bleibt das letzte Bild stehen (mit kurzem Hinweis)."},
-             {"wrap", "Umlaufen", "Nach dem letzten Bild folgt wieder das erste."},
-             {"nextFolder", "Zum nächsten Ordner",
-              "Nach dem letzten Bild geht es im nächsten Ordner weiter."}},
+        add("endOfCollection", QT_TRANSLATE_NOOP("lf::InputBindings", "Ende der Sammlung"),
+            {{"stop", QT_TRANSLATE_NOOP("lf::InputBindings", "Anhalten"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Am Ende bleibt das letzte Bild stehen (mit kurzem Hinweis).")},
+             {"wrap", QT_TRANSLATE_NOOP("lf::InputBindings", "Umlaufen"),
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Nach dem letzten Bild folgt wieder das erste.")},
+             {"nextFolder", QT_TRANSLATE_NOOP("lf::InputBindings", "Zum nächsten Ordner"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Nach dem letzten Bild geht es im nächsten Ordner weiter.")}},
             "stop");
-        // Not in the 4.14 table, needed for the F-IN-18 preset "Fotograf:in" and the 5.2
-        // conflict rule: digits/P/X/U rate only in culling mode unless enabled here.
-        add("ratingKeys", "Bewertungstasten (0–5, P/X/U)",
-            {{"cullingOnly", "Nur im Aussortiermodus", "Ziffern wählen sonst den Zoommodus (1/2/3)."},
-             {"always", "Immer aktiv",
-              "Ziffern vergeben immer Sterne; P/X/U markieren. Zoom-Ziffern sind aus."}},
+        // Not in the 4.14 table, needed for the F-IN-18 preset QT_TRANSLATE_NOOP("lf::InputBindings",
+        // "Fotograf:in") and the 5.2 conflict rule: digits/P/X/U rate only in culling mode unless enabled
+        // here.
+        add("ratingKeys", QT_TRANSLATE_NOOP("lf::InputBindings", "Bewertungstasten (0–5, P/X/U)"),
+            {{"cullingOnly", QT_TRANSLATE_NOOP("lf::InputBindings", "Nur im Aussortiermodus"),
+              QT_TRANSLATE_NOOP("lf::InputBindings", "Ziffern wählen sonst den Zoommodus (1/2/3).")},
+             {"always", QT_TRANSLATE_NOOP("lf::InputBindings", "Immer aktiv"),
+              QT_TRANSLATE_NOOP("lf::InputBindings",
+                                "Ziffern vergeben immer Sterne; P/X/U markieren. Zoom-Ziffern sind aus.")}},
             "cullingOnly");
         return v;
     }();
@@ -496,7 +594,6 @@ void InputBindings::applyPreset(const QString& presetId) {
         fullScreen.append(QKeySequence(Qt::Key_Enter));
         rename = {QKeySequence(Qt::Key_F2)};
     } else if (presetId == QLatin1String("photographer")) {
-        // Lightroom-like
         // Lightroom-like: digits = stars, P/X/U flag (F-IN-18, M3)
         p = {{"wheel", "zoom"}, {"wheel.cmd", "image"}, {"click", "fitActual"}, {"ratingKeys", "always"}};
     } else if (presetId != QLatin1String("mac")) {

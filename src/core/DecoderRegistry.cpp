@@ -20,9 +20,10 @@ Q_LOGGING_CATEGORY(lcDecode, "lf.decode")
 
 constexpr qint64 kHeaderBytes = 64;
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::DecoderRegistry", text);
-}
+// tr() for the code in this file outside QObject classes (lupdate takes the context from it).
+struct Tr {
+    Q_DECLARE_TR_FUNCTIONS(lf::DecoderRegistry)
+};
 
 enum class FileState { Readable, Missing, Unreadable };
 
@@ -115,22 +116,22 @@ std::optional<T> tryBackends(const DecoderRegistry& reg, const QString& path, QS
 } // namespace
 
 QString DecoderRegistry::messageMissing() {
-    return tr("Die Datei existiert nicht.");
+    return Tr::tr("Die Datei existiert nicht.");
 }
 QString DecoderRegistry::messageEmpty() {
-    return tr("Die Datei ist leer.");
+    return Tr::tr("Die Datei ist leer.");
 }
 QString DecoderRegistry::messageUnreadable() {
-    return tr("Die Datei kann nicht gelesen werden.");
+    return Tr::tr("Die Datei kann nicht gelesen werden.");
 }
 QString DecoderRegistry::messageDamaged() {
-    return tr("Die Datei ist beschädigt oder unvollständig.");
+    return Tr::tr("Die Datei ist beschädigt oder unvollständig.");
 }
 QString DecoderRegistry::messageUnsupported() {
-    return tr("Das Dateiformat wird nicht unterstützt.");
+    return Tr::tr("Das Dateiformat wird nicht unterstützt.");
 }
 QString DecoderRegistry::messageTooLarge() {
-    return tr("Das Bild ist zu groß, um es vollständig zu laden.");
+    return Tr::tr("Das Bild ist zu groß, um es vollständig zu laden.");
 }
 
 void DecoderRegistry::add(std::shared_ptr<Decoder> decoder) {
@@ -190,7 +191,7 @@ std::optional<DecodedImage> DecoderRegistry::decode(const QString& path, const D
                                          auto r = d.decode(path, req, err);
                                          if (r && r->image.isNull()) { // empty image counts as failure
                                              if (err)
-                                                 *err = QStringLiteral("empty image");
+                                                 *err = Tr::tr("Das Bild ist leer.");
                                              return std::nullopt;
                                          }
                                          return r;

@@ -1,0 +1,12 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/* Localized Info.plist texts (ja); generated from translations/ - see translations/README.md */
+"NSAppleEventsUsageDescription" = "Lumaflipは、画像を同じ順序で表示するために、必要に応じて最前面のFinderウインドウに並べ替えの設定を問い合わせます。";
+"NSDesktopFolderUsageDescription" = "Lumaflipは、矢印キーで画像を切り替えられるように、開いた画像のフォルダを読み込みます。";
+"NSDocumentsFolderUsageDescription" = "Lumaflipは、矢印キーで画像を切り替えられるように、開いた画像のフォルダを読み込みます。";
+"NSDownloadsFolderUsageDescription" = "Lumaflipは、矢印キーで画像を切り替えられるように、開いた画像のフォルダを読み込みます。";
+"NSRemovableVolumesUsageDescription" = "Lumaflipは、矢印キーで画像を切り替えられるように、開いた画像のフォルダを読み込みます。";
+"NSNetworkVolumesUsageDescription" = "Lumaflipは、矢印キーで画像を切り替えられるように、開いた画像のフォルダを読み込みます。";
+"Bild" = "イメージ";
+"Bild (sonstige)" = "イメージ（その他）";
+"Ordner" = "フォルダ";
+"NSHumanReadableCopyright" = "© 2026 brokoskokoli および貢献者。ライセンス: GPL-3.0-or-later。";

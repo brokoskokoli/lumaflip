@@ -8,6 +8,7 @@
 #include "MenuKeyEquivalents.h"
 #include "PreferencesDialog.h"
 #include "RecentItems.h"
+#include "Translations.h"
 #include "ViewerWindow.h"
 #include "core/Collection.h"
 #include "core/FileOps.h"
@@ -111,6 +112,7 @@ struct Application::Private {
     QVariantList restoreList;        // the saved windows
     ClassifiedPaths restoreExisting; // what of them still exists
     bool startWindowElapsed = false;
+    bool retranslatePending = false; // F-I18N-03
 };
 
 Application::Application(AppServices services, QObject* parent)
@@ -214,6 +216,8 @@ Application::Application(AppServices services, QObject* parent)
                 provider().setMemoryBudget(qint64(mb) << 20);
         } else if (k == QLatin1String(key::RawEmbeddedOnly)) {
             provider().setRawEmbeddedOnly(Settings::instance().value(key::RawEmbeddedOnly).toBool());
+        } else if (k == QLatin1String(key::Language)) {
+            installTranslations(resolvedUiLanguage()); // F-I18N-03: LanguageChange follows
         }
         d->menu->refreshState();
     });
@@ -1097,6 +1101,30 @@ void Application::setDefaultViewer(const QStringList& selected) {
     shell().makeDefaultViewerAsync(types, this, done, pending); // unselected types stay untouched
 }
 
+void Application::retranslate() {
+    // F-I18N-03 live switch. Windows retranslate themselves (changeEvent); what is built
+    // once with its texts is built again: the menu bar (with the Dock menu), the
+    // preferences and the shortcut overview.
+    d->retranslatePending = false;
+    delete d->menu;
+    d->menu = new MainMenu(*this);
+    if (PreferencesDialog* prefs = PreferencesDialog::recreateForLanguageChange())
+        connect(prefs, &PreferencesDialog::makeDefaultRequested, this, &Application::makeDefaultViewer,
+                Qt::UniqueConnection);
+    if (d->shortcuts) {
+        const bool visible = d->shortcuts->isVisible();
+        const QRect geometry = d->shortcuts->geometry();
+        delete d->shortcuts.data();
+        if (visible) {
+            showShortcuts();
+            d->shortcuts->setGeometry(geometry);
+        }
+    }
+    for (ViewerWindow* w : windows())
+        windowChanged(w);
+    emit languageChanged();
+}
+
 bool Application::openUrl(const QUrl& url) {
     return d->services.openUrl(url);
 }
@@ -1134,6 +1162,13 @@ bool Application::eventFilter(QObject* watched, QEvent* event) {
             queueOpen(path);
         return true;
     }
+    case QEvent::LanguageChange:
+        // F-I18N-03: one rebuild for the several events of a switch (Qt's and our catalogue).
+        if (watched == qApp && !d->retranslatePending) {
+            d->retranslatePending = true;
+            QTimer::singleShot(0, this, &Application::retranslate);
+        }
+        break;
     case QEvent::Quit:
         if (watched != qApp)
             break;

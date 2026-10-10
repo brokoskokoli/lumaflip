@@ -22,9 +22,10 @@ namespace lf {
 
 namespace {
 
-QString tr(const char* text) {
-    return QCoreApplication::translate("lf::UndoBackupStore", text);
-}
+// tr() for the code in this file outside QObject classes (lupdate takes the context from it).
+struct Tr {
+    Q_DECLARE_TR_FUNCTIONS(lf::UndoBackupStore)
+};
 
 const QString kLockName = QStringLiteral(".lock");
 
@@ -150,7 +151,7 @@ bool UndoBackupStore::addCopy(quint64 id, const QString& source, const QString& 
         std::lock_guard g(m_mutex);
         auto it = m_entries.find(id);
         if (it == m_entries.end() || it->dropped || m_session.isEmpty())
-            return fail(tr("Die Sicherung für „Rückgängig“ ist nicht mehr vorhanden."));
+            return fail(Tr::tr("Die Sicherung für „Rückgängig“ ist nicht mehr vorhanden."));
         // The previous copy of that name goes first.
         if (it->files.contains(name)) {
             toDelete << it->files.take(name);
@@ -159,7 +160,8 @@ bool UndoBackupStore::addCopy(quint64 id, const QString& source, const QString& 
         const qint64 budget = budgetLocked();
         if (size > budget) {
             deleteLater(toDelete);
-            return fail(tr("Nicht genug Platz für die Sicherungskopie (Rückgängig) – nichts gespeichert."));
+            return fail(
+                Tr::tr("Nicht genug Platz für die Sicherungskopie (Rückgängig) – nichts gespeichert."));
         }
         // Room for the full size (a clone may cost nothing, which is only known afterwards).
         for (qsizetype i = 0; i < m_order.size() && m_used + size > budget;) {
@@ -174,7 +176,8 @@ bool UndoBackupStore::addCopy(quint64 id, const QString& source, const QString& 
         }
         if (m_used + size > budget) {
             deleteLater(toDelete);
-            return fail(tr("Nicht genug Platz für die Sicherungskopie (Rückgängig) – nichts gespeichert."));
+            return fail(
+                Tr::tr("Nicht genug Platz für die Sicherungskopie (Rückgängig) – nichts gespeichert."));
         }
         it = m_entries.find(id); // removing other entries may have moved this one
         path = QDir(m_session).filePath(QStringLiteral("%1-%2").arg(id).arg(name));
@@ -198,7 +201,7 @@ bool UndoBackupStore::addCopy(quint64 id, const QString& source, const QString& 
             m_used -= it->costs.take(name);
         }
         QFile::remove(path);
-        return fail(ok ? tr("Die Sicherung für „Rückgängig“ ist nicht mehr vorhanden.") : copyError);
+        return fail(ok ? Tr::tr("Die Sicherung für „Rückgängig“ ist nicht mehr vorhanden.") : copyError);
     }
     if (cloned && !costsFullSize) {
         m_used -= it->costs.value(name);

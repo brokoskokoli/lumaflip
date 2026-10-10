@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "Settings.h"
 
+#include "Language.h"
+
 #include "InputBindings.h"
 #include "Platform.h"
 
@@ -68,6 +70,8 @@ const Registry& registry() {
             r.insert(QString::fromLatin1(k), {Type::String, QString::fromLatin1(d), allowed, color, 0, 0});
         };
         s(key::OpenBehavior, "newWindow", {"newWindow", "replaceFront", "newUnlessOpen"});
+        s(key::Language, kSystemLanguage,
+          QStringList{QString::fromLatin1(kSystemLanguage)} + uiLanguageCodes());
         b(key::FitWindowToImage, false);
         b(key::RestoreWindows, false);
         r[QString::fromLatin1(key::RestoreWindows)].dynamicDefault = &restoreWindowsDefault;
