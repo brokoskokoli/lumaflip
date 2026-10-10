@@ -50,6 +50,13 @@ void MenuExtras::addShare(QMenu* file) {
                           [this] { showSharePickerForFrontWindow(); });
     };
     connect(m_share, &QMenu::aboutToShow, this, fill);
+    // The services come from a worker (cached per type, never on the GUI thread); asking
+    // when the File menu opens makes them ready by the time the submenu is shown.
+    connect(file, &QMenu::aboutToShow, this, [this] {
+        const QString p = frontPath();
+        if (!p.isEmpty())
+            ShareServiceCache::instance().request(p);
+    });
     // An entry from the start so the native menu shows the submenu arrow; the services are
     // looked up when it opens.
     populateShareMenu(m_share, {}, [this] { showSharePickerForFrontWindow(); });

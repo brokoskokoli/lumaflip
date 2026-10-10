@@ -124,6 +124,8 @@ signals:
     // An image (or a better stage of it) was handed to the view.
     void imageShown(const QString& path, lf::Quality quality);
     void titleChanged();
+    // showMessage() was called (tests: a later message may replace the toast at once).
+    void messageShown(const QString& text);
 
 protected:
     void closeEvent(QCloseEvent* event) override;

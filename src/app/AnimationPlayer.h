@@ -6,9 +6,15 @@
 // GUI-thread object. Frames are decoded ahead of time on a worker (one FrameReader kept
 // open per animation, frames decoded in order), at the size of the first frame the window
 // shows, so a frame replaces the previous one 1:1 (texture reuse in ImageCanvas).
-// Memory: animations whose frames together fit kCacheAllBytes are kept completely (looping
-// and stepping back cost nothing); longer ones keep a ring of frames ahead of the current
-// one, bounded by kRingBytes.
+// Memory (P-09): animations whose frames together fit the cache-all bound (kCacheAllBytes,
+// at most a quarter of the image cache budget) are kept completely (looping and stepping
+// back cost nothing); longer ones keep a ring of frames ahead of the current one, hard
+// capped by the ring bound (kRingBytes, at most a quarter of the budget) - but always the
+// current and the next frame. Frames are decoded like the first one: same size, HDR
+// format and per-image byte cap (P-08).
+// Threads: decode tasks hold only a shared state object; results are posted to the player
+// under a lock that its destructor also takes, so destroying a window while a frame
+// decodes is safe.
 // Timing: a precise single-shot timer aims at absolute due times (QElapsedTimer), so the
 // error does not add up over frames; a frame that is not decoded in time delays playback
 // (no frames are skipped). Durations of 0 (unknown, common for AVIF/JXL) count as 100 ms.
@@ -37,6 +43,14 @@ public:
 
     explicit AnimationPlayer(QObject* parent = nullptr);
     ~AnimationPlayer() override;
+
+    // P-09 image cache budget (ImageProvider::memoryBudget()); 0 = only the fixed bounds.
+    // P-08 per-frame byte cap (ImageProvider::maxDecodeBytes()); 0 = none. Both take
+    // effect with the next open().
+    void setMemoryBudget(qint64 bytes);
+    void setMaxDecodeBytes(qint64 bytes);
+    qint64 ringBytes() const;     // bound of the frame ring
+    qint64 cacheAllBytes() const; // animations up to this size are kept completely
 
     // Takes over `path` with `frameCount` frames; `first` is frame 0 as currently shown.
     // Starts playing if `autoplay`.
@@ -83,6 +97,7 @@ private:
     void armTimer();
     int wrap(int index) const;
     int framesAhead() const;
+    int maxFrames() const; // hard cap of held frames
 
     std::shared_ptr<Shared> m_shared;
     QString m_path;
@@ -94,6 +109,8 @@ private:
     bool m_busy = false;    // a decode task runs
     bool m_cacheAll = false;
     double m_speed = 1.0;
+    qint64 m_budget = 0;
+    qint64 m_maxDecodeBytes = 0;
     qint64 m_frameBytes = 0;
     qint64 m_dueNs = 0; // absolute due time of the next frame (m_clock)
     int m_shownCount = 0;

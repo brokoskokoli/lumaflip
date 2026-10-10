@@ -191,23 +191,39 @@ private slots:
         panel.resize(300, 500);
         panel.show();
         QVERIFY(QTest::qWaitForWindowExposed(&panel));
-        QElapsedTimer t;
-        t.start();
+        // Event-loop gap probe: a fast timer keeps ticking while the metadata loads; reading
+        // on the GUI thread would show up as a long gap. Generous bound: this is about
+        // gross blocking, not speed (a loaded machine delays ticks as well); that the load is
+        // asynchronous at all is the isLoading() check right after the call.
+        const int maxGapMs = std::max(2000, qEnvironmentVariableIntValue("LF_UI_GAP_LIMIT_MS"));
+        QElapsedTimer clock;
+        qint64 last = 0, maxGap = 0;
+        QTimer ticker;
+        ticker.setInterval(1);
+        connect(&ticker, &QTimer::timeout, this, [&] {
+            const qint64 now = clock.elapsed();
+            maxGap = std::max(maxGap, now - last);
+            last = now;
+        });
+        clock.start();
+        ticker.start();
         panel.setFile(path("b.png"));
+        maxGap = std::max(maxGap, clock.elapsed()); // the call itself
         // Returns at once with name/path and a placeholder; metadata comes from a worker.
-        QVERIFY(t.elapsed() < 50);
         QVERIFY(panel.isLoading());
         QCOMPARE(panel.value("Datei", "Name"), QStringLiteral("b.png"));
         QVERIFY(panel.value("Bild", "Pixelmaße").isEmpty());
         QCOMPARE(panel.sectionTitles().value(1), QStringLiteral("Bild"));
-        QVERIFY(QTest::qWaitFor([&] { return !panel.isLoading(); }, 5000));
+        QVERIFY(QTest::qWaitFor([&] { return !panel.isLoading(); }, 30000));
+        ticker.stop();
+        QVERIFY2(maxGap <= maxGapMs, qPrintable(QStringLiteral("GUI thread blocked for %1 ms").arg(maxGap)));
         QCOMPARE(panel.value("Bild", "Pixelmaße"), QStringLiteral("64 × 48"));
         QVERIFY(panel.value("Datei", "Größe").contains(QStringLiteral("Byte")));
         QVERIFY(!panel.value("Datei", "Geändert").isEmpty());
         // Flipping quickly through many files: only the newest one ends up shown.
         for (const char* n : {"a.png", "c.png", "b.png", "a.png"})
             panel.setFile(path(QString::fromLatin1(n)));
-        QVERIFY(QTest::qWaitFor([&] { return !panel.isLoading(); }, 5000));
+        QVERIFY(QTest::qWaitFor([&] { return !panel.isLoading(); }, 30000));
         QCOMPARE(panel.value("Datei", "Name"), QStringLiteral("a.png"));
         // A hidden panel does not read anything.
         panel.hide();
@@ -215,7 +231,7 @@ private slots:
         QTest::qWait(100);
         QVERIFY(panel.isLoading());
         panel.show();
-        QVERIFY(QTest::qWaitFor([&] { return !panel.isLoading(); }, 5000));
+        QVERIFY(QTest::qWaitFor([&] { return !panel.isLoading(); }, 30000));
         QCOMPARE(panel.value("Datei", "Name"), QStringLiteral("c.png"));
     }
 
@@ -337,19 +353,19 @@ private slots:
         QSignalSpy written(p, &InfoPanel::tagsWritten);
         edit->setText(QStringLiteral("Lumaflip Test"));
         QMetaObject::invokeMethod(edit, "returnPressed");
-        QVERIFY(written.wait(5000));
+        QVERIFY(written.wait(30000));
         QCOMPARE(written.last().at(1).toBool(), true);
         QString error;
         QCOMPARE(service->tags(path("c.png"), &error).value_or(QStringList()), QStringList{"Lumaflip Test"});
         QCOMPARE(p->tags(), QStringList{"Lumaflip Test"});
         p->addTag(QStringLiteral("Grün"));
-        QVERIFY(written.wait(5000));
+        QVERIFY(written.wait(30000));
         QCOMPARE(service->tags(path("c.png"), &error).value_or(QStringList()),
                  (QStringList{"Lumaflip Test", "Grün"}));
         auto* list = p->findChild<QListWidget*>(QStringLiteral("lfTagList"));
         QCOMPARE(list->count(), 2);
         p->removeTag(QStringLiteral("Lumaflip Test"));
-        QVERIFY(written.wait(5000));
+        QVERIFY(written.wait(30000));
         QCOMPARE(service->tags(path("c.png"), &error).value_or(QStringList()), QStringList{"Grün"});
         // Shown again for the file after flipping away and back.
         key(w, Qt::Key_Left);

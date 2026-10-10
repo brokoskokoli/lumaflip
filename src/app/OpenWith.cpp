@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "OpenWith.h"
 
+#include "core/AppScoped.h"
 #include "core/Platform.h"
 #include "core/Settings.h"
 
@@ -80,8 +81,9 @@ struct OpenWithService::Private {
 OpenWithService::OpenWithService(QObject* parent) : QObject(parent), d(new Private) {}
 
 OpenWithService& OpenWithService::instance() {
-    static OpenWithService* s = new OpenWithService(QCoreApplication::instance());
-    return *s;
+    // Owned by the application object; created again for a new one (AppScoped).
+    static AppScoped<OpenWithService> s([](QObject* parent) { return new OpenWithService(parent); });
+    return s.get();
 }
 
 QString OpenWithService::typeKey(const QString& filePath) {

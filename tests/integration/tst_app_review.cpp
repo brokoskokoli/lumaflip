@@ -325,10 +325,25 @@ private slots:
     void F_FILE_01_failedTrashLeavesNoUndoEntry() {
         makeStandardFolder();
         ViewerWindow* w = app->openPaths({path("IMG_2.jpg")});
+        QVERIFY(waitWindowShown(w));
         QVERIFY(waitLoaded(w));
+        // Fully shown first: a decode still running would fail on the removed file and
+        // could put its own message on top.
+        QVERIFY(waitShown(w, path("IMG_2.jpg"), 10000));
+        QSignalSpy messages(w, &ViewerWindow::messageShown);
+        QSignalSpy busy(&app->fileOps(), &FileOps::busyChanged);
         QVERIFY(QFile::remove(path("IMG_2.jpg"))); // gone before the trash runs
         w->perform(Action::Trash);
-        QTRY_VERIFY2(w->toastText().contains(QStringLiteral("existiert nicht")), qPrintable(w->toastText()));
+        // The operation completes (busy -> idle) and its error was shown - whatever other
+        // message (watcher, decoder) may have replaced the toast since.
+        QTRY_VERIFY_WITH_TIMEOUT(!busy.isEmpty() && !busy.last().first().toBool(), 10000);
+        auto shownError = [&] {
+            for (const QList<QVariant>& m : std::as_const(messages))
+                if (m.first().toString().contains(QStringLiteral("existiert nicht")))
+                    return true;
+            return false;
+        };
+        QTRY_VERIFY_WITH_TIMEOUT(shownError(), 10000);
         QCOMPARE(app->fileOps().undoStack()->count(), 0);
         QCOMPARE(trash->locations.size(), 0);
     }

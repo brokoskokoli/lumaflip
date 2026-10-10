@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <atomic>
 #include <functional>
+#include <limits>
 #include <memory>
 #include <numeric>
 
@@ -364,6 +365,8 @@ struct Result {
     bool privacyDenied = false;
     QVector<FileEntry> entries;
     SortSpec spec;
+    // Folder loads: FolderSnapshot::changeSeq of the snapshot used (max: not from a snapshot).
+    quint64 changeSeq = std::numeric_limits<quint64>::max();
 };
 
 // Fallback collator if no platform collator is available (should not happen).
@@ -401,6 +404,7 @@ Result runJob(Job job) {
         const FolderSnapshotPtr snap =
             FolderCache::instance().get(job.folder, job.attributes, job.revalidate);
         entries = snap->entries;
+        r.changeSeq = snap->changeSeq;
         r.accessDenied = snap->accessDenied;
         r.privacyDenied = snap->privacyDenied;
         if (!job.mustInclude.isEmpty()) {
@@ -498,6 +502,14 @@ struct Collection::Private {
     // insertPath(): path -> token of the outstanding attribute read (latest wins).
     QHash<QString, quint64> pendingInserts;
     quint64 insertToken = 0;
+    // FolderCache::noteLocalChange() of this collection's last own edit (removePath,
+    // insertPath, renamePath): a folder snapshot enumerated before it is outdated.
+    quint64 lastLocalChange = 0;
+
+    void noteLocalChange() {
+        if ((mode == Mode::File || mode == Mode::Folder) && !folder.isEmpty())
+            lastLocalChange = FolderCache::instance().noteLocalChange(folder);
+    }
 
     SortSpec spec{SortKey::Name, true, SortSource::Fallback};
     SortSpec manualSpec{SortKey::Name, true, SortSource::Manual};
@@ -618,6 +630,16 @@ struct Collection::Private {
     void apply(const Result& r) {
         if (r.generation != generation || r.cancelled)
             return;
+        if (r.changeSeq < lastLocalChange) {
+            // The snapshot was enumerated before a file operation of this app changed the
+            // folder (e.g. a watcher reload that shared an older enumeration): it may bring
+            // back a just-trashed file. Read again (a new enumeration always carries a
+            // newer changeSeq, so this happens at most once per edit).
+            if (!folder.isEmpty())
+                FolderCache::instance().invalidate(folder);
+            start(JobKind::Load);
+            return;
+        }
         const QString oldPath = current >= 0 && current < entries.size() ? entries[current].path : QString();
         const int oldIndex = current;
         const QVector<FileEntry> old = std::move(entries);
@@ -711,6 +733,7 @@ struct Collection::Private {
         pendingInserts.clear();
         resortForProperties = false;
         revalidateNext = false;
+        lastLocalChange = 0; // edits of the previous contents do not concern the new ones
     }
 
     // Inserts a stat'ed entry at its sorted position (GUI thread).
@@ -721,6 +744,7 @@ struct Collection::Private {
                 setCurrent(indexByPath.value(path));
             return;
         }
+        noteLocalChange();
         if (watcher) {
             removedDuringJob.remove(path);
             insertedDuringJob.insert(path, e);
@@ -863,6 +887,7 @@ void Collection::copyFrom(const Collection& other) {
     const bool specChanged = !(d->spec == o.spec);
     d->spec = o.spec;
     d->entries = o.entries;
+    d->lastLocalChange = o.lastLocalChange; // the copied entries contain those edits
     d->rebuildIndex();
     d->current = o.current;
     d->selectFirstOnLoad = o.selectFirstOnLoad;
@@ -1021,6 +1046,7 @@ void Collection::reload() {
 }
 
 void Collection::removePath(const QString& path) {
+    d->noteLocalChange();
     d->pendingInserts.remove(normalizedPath(path)); // a pending insertPath() must not bring it back
     const int i = indexOf(path);
     if (d->watcher) {
@@ -1098,6 +1124,7 @@ bool Collection::hasPendingInserts() const {
 }
 
 void Collection::renamePath(const QString& fromPath, const QString& toPath) {
+    d->noteLocalChange();
     const int i = indexOf(fromPath);
     const QString to = normalizedPath(toPath);
     if (i < 0) {

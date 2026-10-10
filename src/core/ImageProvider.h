@@ -16,11 +16,7 @@ namespace lf {
 
 class DecoderRegistry;
 
-enum class Quality {
-    Preview, // embedded preview / small thumbnail, fast (stage 1)
-    Screen,  // downsampled to the target size (stage 2)
-    Full,    // full resolution (stage 3, when zooming beyond fit)
-};
+// Quality (the pipeline stages) is declared in Decoder.h.
 
 using DecodedImagePtr = std::shared_ptr<const DecodedImage>;
 
@@ -67,6 +63,7 @@ public:
     void invalidate(const QString& path);
 
     void setMemoryBudget(qint64 bytes);  // P-09
+    qint64 memoryBudget() const;
     static qint64 defaultMemoryBudget(); // 25 % of the RAM, at most 2 GB
     // P-08: no decoded image is larger than this (half the budget, at most 1 GB, at
     // least 16 MB); bigger images are downsampled while decoding.
@@ -85,10 +82,16 @@ public:
     int bookkeepingEntries() const;
 
 signals:
+    // `quality`: the stage the image is cached as; `image->quality` is the same, or Full
+    // if the image holds the full resolution anyway (small files).
     void imageReady(const QString& path, lf::Quality quality, lf::DecodedImagePtr image);
-    // Nothing of `path` can be shown (every stage failed and none is cached).
+    // Nothing of page 0 of `path` can be shown (every stage failed and none is cached).
+    // Follows pageFailed(path, 0, error).
     void imageFailed(const QString& path, const QString& error);
-    // One stage failed while another stage of `path` is (or may still become) available,
+    // F-FMT-04: nothing of `page` of `path` can be shown. Other pages are not affected.
+    void pageFailed(const QString& path, int page, const QString& error);
+    // One stage failed while another stage of the same page of `path` is (or may still
+    // become) available,
     // e.g. the full-resolution decode of a huge image while the screen stage is shown.
     // The failed stage is not retried until invalidate(path).
     void stageFailed(const QString& path, lf::Quality quality, const QString& error);

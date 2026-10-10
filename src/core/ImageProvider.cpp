@@ -18,14 +18,17 @@
 //   invalidate(path).
 // - Results are emitted in quality order: a stage that arrives after an equal or
 //   better cached one is dropped, so clients never see Full followed by Screen.
-// - Failures are tracked per stage. A path counts as failed (imageFailed) only when
-//   no stage of it is cached or still in flight; otherwise stageFailed is emitted and
-//   the stage is not retried until invalidate().
+// - Failures are tracked per stage. A page of a file counts as failed (pageFailed, and
+//   imageFailed for page 0) only when no stage of that page is cached or still in
+//   flight; otherwise stageFailed is emitted and the stage is not retried until
+//   invalidate(). Other pages of the file are not affected (F-FMT-04).
+// - Every delivered image carries the stage it was cached as (DecodedImage::quality).
 // - Per-path bookkeeping (info cache, failures, generations) is pruned so it stays
 //   bounded while browsing through many folders.
 
 #include "ImageProvider.h"
 
+#include "AppScoped.h"
 #include "ImageFormats.h"
 #include "Platform.h"
 #include "StartupTrace.h"
@@ -80,6 +83,17 @@ struct Key {
 
 size_t qHash(const Key& k, size_t seed = 0) {
     return qHashMulti(seed, k.path, int(k.quality), k.px, k.page);
+}
+
+// F-FMT-04: failures of a whole page are tracked per (file, page).
+struct PageKey {
+    QString path;
+    int page = 0;
+    bool operator==(const PageKey& o) const = default;
+};
+
+size_t qHash(const PageKey& k, size_t seed = 0) {
+    return qHashMulti(seed, k.path, k.page);
 }
 
 int longEdge(QSize s) {
@@ -189,7 +203,7 @@ struct ImageProvider::Private {
     quint64 tick = 0;
     QHash<const void*, ClientState> clients;
     QSet<QString> pinned;             // paths currently wanted by any client
-    QHash<QString, QString> failed;   // path -> error (nothing of the path can be shown)
+    QHash<PageKey, QString> failed;   // (path, page) -> error (nothing of that page can be shown)
     QHash<Key, QString> failedStages; // stage -> error (not retried until invalidate)
     QHash<QString, quint64> generation;
 
@@ -227,7 +241,7 @@ struct ImageProvider::Private {
         const Key key = keyFor(path, Quality::Screen, st->px);
         if (st->done) {
             if (st->image && !findCached(path, Quality::Screen, st->px))
-                insert(key, st->image);
+                insert(key, withQuality(st->image, Quality::Screen));
             return;
         }
         Job job;
@@ -250,12 +264,28 @@ struct ImageProvider::Private {
         };
     }
 
+    // DecodedImage::quality of a result of stage `stage`: Full if it holds the full
+    // resolution anyway (e.g. the preview stage of a small file), else the stage.
+    static Quality effectiveQuality(const DecodedImage& im, Quality stage) {
+        const int full = longEdge(im.fullSize);
+        return full > 0 && longEdge(im.image.size()) >= full ? Quality::Full : stage;
+    }
+
+    // `img` marked for stage `stage` (a copy only if it is marked otherwise; QImage data is shared).
+    static DecodedImagePtr withQuality(const DecodedImagePtr& img, Quality stage) {
+        if (!img || img->quality == effectiveQuality(*img, stage))
+            return img;
+        auto copy = std::make_shared<DecodedImage>(*img);
+        copy->quality = effectiveQuality(*img, stage);
+        return copy;
+    }
+
     // GUI thread: the adopted prestart decode is done. A failure is not reported: the
     // regular decode (with every backend) runs instead and reports.
     void prestartFinished(const Job& job, const DecodedImagePtr& img) {
         adopted.reset();
         if (img) {
-            finished(job, img, {});
+            finished(job, withQuality(img, job.key.quality), {});
             return;
         }
         {
@@ -405,14 +435,14 @@ struct ImageProvider::Private {
             for (int rank = 0; rank < order.size(); ++rank) {
                 const QString& path = order[rank];
                 pinned.insert(path);
-                if (failed.contains(path))
+                const int page = rank == 0 && path == cs.current ? cs.page : 0;
+                if (failed.contains({path, page}))
                     continue;
                 const bool hasAny = cacheKeysByPath.contains(path);
                 if (rank == 0) {
                     const qint64 base = (cs.active ? kTierActiveCurrent : kTierInactiveCurrent) +
                                         qint64(std::clamp(cs.priority, -1000, 1000)) * 1'000'000;
                     QList<Stage> stages;
-                    const int page = path == cs.current ? cs.page : 0;
                     if (path == cs.current)
                         stages = cs.stages;
                     if (cs.wanted.contains(path) || stages.isEmpty())
@@ -482,19 +512,27 @@ struct ImageProvider::Private {
         auto keep = [&](const QString& path) {
             return pinned.contains(path) || cacheKeysByPath.contains(path) || busy.contains(path);
         };
-        failed.removeIf([&](const auto& it) { return !keep(it.key()); });
+        failed.removeIf([&](const auto& it) { return !keep(it.key().path); });
         failedStages.removeIf([&](const auto& it) { return !keep(it.key().path); });
         // A generation is only compared against jobs of the same path, so it can go once
         // no job of that path exists any more.
         generation.removeIf([&](const auto& it) { return !busy.contains(it.key()); });
     }
 
-    bool hasJobsFor(const QString& path) {
+    bool hasJobsFor(const QString& path, int page) {
         QMutexLocker lock(&mutex);
         for (auto it = jobs.cbegin(); it != jobs.cend(); ++it)
-            if (it.key().path == path)
+            if (it.key().path == path && it.key().page == page)
                 return true;
         return false;
+    }
+
+    // Nothing of `page` of `path` can be shown: pageFailed, and imageFailed for page 0 (what
+    // clients without pages, e.g. the info panel, ask for).
+    void emitPageFailed(const QString& path, int page, const QString& error) {
+        emit q->pageFailed(path, page, error);
+        if (page == 0)
+            emit q->imageFailed(path, error);
     }
 
     // Worker thread: take the best pending job and decode it.
@@ -528,6 +566,7 @@ struct ImageProvider::Private {
                                                              : "decode start (Full)");
         if (auto img = registry().decode(job.key.path, req, &error)) {
             img->page = job.key.page; // F-FMT-04: which page this result is cached as
+            img->quality = effectiveQuality(*img, job.key.quality); // not the decoder's isPreview
             result = std::make_shared<const DecodedImage>(std::move(*img));
         }
 
@@ -546,22 +585,23 @@ struct ImageProvider::Private {
             jobs.remove(job.key);
         }
         const QString& path = job.key.path;
+        const int page = job.key.page;
         if (job.generation != generation.value(path)) {
             reschedule(); // stale (invalidated meanwhile)
             return;
         }
         if (!img) {
-            if (failed.contains(path))
+            if (failed.contains({path, page}))
                 return; // already reported as a whole
             failedStages.insert(job.key, error);
             reschedule(); // never re-queues the failed stage
-            if (cacheKeysByPath.contains(path) || hasJobsFor(path)) {
-                // Something else of this file is shown or may still arrive.
+            if (hasAnyOfPage(path, page) || hasJobsFor(path, page)) {
+                // Something else of this page is shown or may still arrive.
                 emit q->stageFailed(path, job.key.quality, error);
                 return;
             }
-            failed.insert(path, error);
-            emit q->imageFailed(path, error);
+            failed.insert({path, page}, error);
+            emitPageFailed(path, page, error);
             return;
         }
         // Keep stages monotonic: a result arriving after an equal or better cached stage
@@ -654,9 +694,10 @@ ImageProvider::~ImageProvider() {
 }
 
 ImageProvider& ImageProvider::instance() {
-    // Parented to the application so worker threads are joined before Qt shuts down.
-    static ImageProvider* provider = new ImageProvider(QCoreApplication::instance());
-    return *provider;
+    // Owned by the application so worker threads are joined before Qt shuts down; created
+    // again for a new application object (AppScoped).
+    static AppScoped<ImageProvider> provider([](QObject* parent) { return new ImageProvider(parent); });
+    return provider.get();
 }
 
 DecodedImagePtr ImageProvider::request(const QString& path, Quality quality, QSize target, const void* client,
@@ -680,10 +721,10 @@ DecodedImagePtr ImageProvider::request(const QString& path, Quality quality, QSi
     DecodedImagePtr hit;
     if (const Key* k = d->findCached(path, quality, px, page)) {
         hit = d->touch(*k);
-    } else if (auto f = d->failed.constFind(path); f != d->failed.cend()) {
+    } else if (auto f = d->failed.constFind({path, page}); f != d->failed.cend()) {
         const QString err = f.value();
         QMetaObject::invokeMethod(
-            this, [this, path, err] { emit imageFailed(path, err); }, Qt::QueuedConnection);
+            this, [this, path, page, err] { d->emitPageFailed(path, page, err); }, Qt::QueuedConnection);
         d->reschedule();
         return nullptr;
     } else if (const Key* lower = d->findCached(path, Quality::Preview, 0, page)) {
@@ -739,7 +780,7 @@ DecodedImagePtr ImageProvider::cached(const QString& path, Quality minQuality, Q
 void ImageProvider::invalidate(const QString& path) {
     ++d->generation[path];
     d->removePath(path);
-    d->failed.remove(path);
+    d->failed.removeIf([&](const auto& it) { return it.key().path == path; });
     d->failedStages.removeIf([&](const auto& it) { return it.key().path == path; });
     {
         QMutexLocker lock(&d->infoMutex);
@@ -795,6 +836,10 @@ void ImageProvider::setRawEmbeddedOnly(bool embeddedOnly) {
 
 bool ImageProvider::rawEmbeddedOnly() const {
     return d->rawEmbeddedOnly.load();
+}
+
+qint64 ImageProvider::memoryBudget() const {
+    return d->budget;
 }
 
 qint64 ImageProvider::memoryUsage() const {

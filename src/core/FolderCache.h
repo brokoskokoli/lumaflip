@@ -29,6 +29,7 @@ struct FolderSnapshot {
     bool privacyDenied = false; // ... because of macOS privacy protection (TCC, EPERM)
     quint64 generation = 0;
     qint64 folderStamp = -1; // modification time of the folder (ns) before enumerating
+    quint64 changeSeq = 0;   // FolderCache::localChangeSeq() when the enumeration started
 };
 using FolderSnapshotPtr = std::shared_ptr<const FolderSnapshot>;
 
@@ -53,6 +54,12 @@ public:
     bool isStale(const QString& folderPath) const;
     // The folder changed: the next get() enumerates again.
     void invalidate(const QString& folderPath);
+    // A file operation of this app changed `folderPath` (trash, undo, rename): like
+    // invalidate(), and returns a new, larger localChangeSeq(). Snapshots enumerated
+    // before carry a smaller FolderSnapshot::changeSeq, so a collection can tell that a
+    // result predates its own edit (a folder watcher reload racing with the operation).
+    quint64 noteLocalChange(const QString& folderPath);
+    static quint64 localChangeSeq(); // any thread
 
     // Instrumentation for tests and benchmarks: number of enumerations so far.
     int enumerationCount(const QString& folderPath) const;

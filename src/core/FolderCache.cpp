@@ -13,6 +13,8 @@
 #include <QTimeZone>
 #include <QWaitCondition>
 
+#include <atomic>
+
 #ifdef Q_OS_UNIX
 #include <sys/stat.h>
 #endif
@@ -21,6 +23,7 @@ namespace lf {
 
 namespace {
 constexpr int kMaxCountEntries = 4096; // bound of the instrumentation table
+std::atomic<quint64> g_localChangeSeq{0};
 } // namespace
 
 struct FolderCache::Private {
@@ -77,6 +80,18 @@ void FolderCache::invalidate(const QString& folderPath) {
     auto it = d->entries.find(folderPath);
     if (it != d->entries.end())
         ++it->wanted;
+}
+
+quint64 FolderCache::noteLocalChange(const QString& folderPath) {
+    // Bumped before the invalidation: an enumeration that starts after it reads a sequence
+    // number at least as large.
+    const quint64 seq = g_localChangeSeq.fetch_add(1, std::memory_order_acq_rel) + 1;
+    invalidate(folderPath);
+    return seq;
+}
+
+quint64 FolderCache::localChangeSeq() {
+    return g_localChangeSeq.load(std::memory_order_acquire);
 }
 
 qint64 FolderCache::folderStamp(const QString& folderPath) {
@@ -145,6 +160,7 @@ FolderSnapshotPtr FolderCache::get(const QString& folderPath, FileAttributeProvi
 
         auto snap = std::make_shared<FolderSnapshot>();
         snap->generation = generation;
+        snap->changeSeq = localChangeSeq();          // before listing: an edit while listing counts as newer
         snap->folderStamp = folderStamp(folderPath); // before: a change while enumerating is seen next time
         snap->entries = collection::enumerateFolder(folderPath, &snap->accessDenied, &snap->privacyDenied);
         if (attributes) {

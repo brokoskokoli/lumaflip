@@ -86,9 +86,8 @@ protected:
     QString diskFile(const ThumbnailCache& cache, const QString& path, int size) const {
         const QFileInfo fi(path);
         return cache.directory() + QLatin1Char('/') +
-               QString::fromLatin1(ThumbnailCache::cacheKey(
-                   path, fi.size(), fi.lastModified(QTimeZone::UTC).toMSecsSinceEpoch(), size)) +
-               QStringLiteral(".thumb");
+               ThumbnailCache::diskFileName(path, fi.size(),
+                                            fi.lastModified(QTimeZone::UTC).toMSecsSinceEpoch(), size);
     }
 
     QTemporaryDir files;

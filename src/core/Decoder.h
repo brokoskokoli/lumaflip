@@ -34,6 +34,14 @@ struct ImageInfo {
     QString formatName;  // "JPEG", "HEIC", "Canon CR3", ...
 };
 
+// Stage of the image pipeline (SPEC 7.1). Declared here (not in ImageProvider.h, which
+// re-exports it) so DecodedImage can say which stage it was delivered as.
+enum class Quality {
+    Preview, // embedded preview / small thumbnail, fast (stage 1)
+    Screen,  // downsampled to the target size (stage 2)
+    Full,    // full resolution (stage 3, when zooming beyond fit)
+};
+
 struct DecodeRequest {
     int page = 0;
     int frame = 0;
@@ -54,7 +62,10 @@ struct DecodeRequest {
 struct DecodedImage {
     QImage image;
     QSize fullSize;          // oriented full-resolution size of the source
-    bool isPreview = false;  // true if this is a reduced/embedded preview
+    // Decoder view: the image is smaller than the source (embedded preview or decode-time
+    // downsampling - so also true for the Screen stage of a large file). Not a quality
+    // gate: whether an image is good enough for a purpose is `quality` below.
+    bool isPreview = false;
     float headroom = 1.0f;   // HDR peak relative to SDR white
     int frameDurationMs = 0; // for animations
     // F-FMT-03/04 (additive): what the file holds besides this image. Backends that do not
@@ -63,6 +74,12 @@ struct DecodedImage {
     int frame = 0;      // animation frame (DecodeRequest::frame)
     int pageCount = 1;  // pages of the file (multi-page TIFF, ICO, HEIF collections)
     int frameCount = 1; // animation frames of the file (> 1: animated)
+    // Pipeline stage this image is good for. Set by ImageProvider (and the animation
+    // player); decoders leave the default. Use it - not isPreview - to decide whether an
+    // image is good enough (histogram, animation start): a downscaled Screen stage is
+    // Quality::Screen, an embedded/small preview Quality::Preview, and any image that
+    // holds the full resolution (also the preview stage of a small file) Quality::Full.
+    Quality quality = Quality::Full;
 };
 
 // F-FMT-03: sequential access to the frames of an animation. Keeps the file open, so

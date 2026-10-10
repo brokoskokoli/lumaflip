@@ -110,6 +110,15 @@ public:
     void quit();
     bool isQuitPending() const; // quit() waits for file operations
 
+    // Tests (deterministic timing): the grouping interval of OS open requests (default
+    // kOpenGroupingMs), whether a burst is being collected, and ending it at once (as if
+    // the interval elapsed); the delay of the busy hint for file operations (default
+    // 300 ms).
+    void setOpenGroupingIntervalForTesting(int ms);
+    bool isOpenBurstPending() const;
+    void flushOpenBurstForTesting();
+    void setBusyHintDelayForTesting(int ms);
+
     // F-WIN-06: windows with folder/files, current image, zoom mode and geometry.
     void saveSession();
     bool hasSession() const;

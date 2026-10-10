@@ -111,8 +111,12 @@ void ViewerWindow::mediaDisplayed(const QString& path, const DecodedImagePtr& im
         m_flipH = m_flipV = false;
         m_view->setFlip(false, false);
     }
-    if (image->frameCount > 1 && !image->isPreview && (!m_anim->isActive() || m_anim->path() != path)) {
+    if (image->frameCount > 1 && image->quality != Quality::Preview &&
+        (!m_anim->isActive() || m_anim->path() != path)) {
         const bool visible = isVisible() && !isMinimized();
+        // P-08/P-09: frames within the provider's per-image cap and a share of its budget.
+        m_anim->setMemoryBudget(m_app.provider().memoryBudget());
+        m_anim->setMaxDecodeBytes(m_app.provider().maxDecodeBytes());
         m_anim->open(path, image, image->frameCount, visible);
         m_animResume = !visible;
     }
@@ -266,7 +270,7 @@ bool ViewerWindow::goToPage(int page) {
     if (auto img = provider.request(cur, Quality::Screen, decodeTarget(), this, 0, m_page))
         display(cur, Quality::Screen, img);
     else if (auto lower = provider.cached(cur, Quality::Preview, {}, m_page))
-        display(cur, lower->isPreview ? Quality::Preview : Quality::Screen, lower);
+        display(cur, lower->quality, lower);
     updateStatus();
     return true;
 }

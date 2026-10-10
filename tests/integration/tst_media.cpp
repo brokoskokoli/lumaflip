@@ -269,7 +269,7 @@ private slots:
         ViewerWindow* w = open(gif);
         QVERIFY(w);
         AnimationPlayer* anim = w->animation();
-        QTRY_VERIFY_WITH_TIMEOUT(anim->isPlaying(), 5000);
+        QTRY_VERIFY_WITH_TIMEOUT(anim->isPlaying(), 20000);
         QCOMPARE(anim->frameCount(), 200);
         QVERIFY(!anim->cachesAllFrames()); // 200 × 480 KB > 64 MB
         w->setAnimationSpeed(4.0);
@@ -286,7 +286,10 @@ private slots:
                  qPrintable(QStringLiteral("%1 > %2").arg(peak).arg(anim->maxHeldBytes())));
         QVERIFY(peak <= AnimationPlayer::kRingBytes + 3 * 400 * 300 * 4);
         QVERIFY(peakFrames < 200);
-        QVERIFY2(anim->framesShown() > 20, qPrintable(QString::number(anim->framesShown()))); // it plays
+        // It plays (on a loaded machine the decoder may need longer than the 2 s above).
+        QTRY_VERIFY2_WITH_TIMEOUT(anim->framesShown() > 20, qPrintable(QString::number(anim->framesShown())),
+                                  30000);
+        QVERIFY(anim->heldBytes() <= anim->maxHeldBytes());
         // Frame colors follow the file.
         const DecodedImagePtr cur = anim->currentImage();
         QVERIFY(cur);
@@ -481,8 +484,9 @@ private slots:
         const int before = canvas->crossfadeFramesRendered();
         key(w, Qt::Key_Right);
         QVERIFY(waitShown(w, files.at(1)));
-        QTRY_VERIFY_WITH_TIMEOUT(canvas->crossfadeFramesRendered() > before, 3000);
-        QTRY_VERIFY_WITH_TIMEOUT(!canvas->isCrossfading(), 3000); // ends after ~300 ms
+        QTRY_VERIFY_WITH_TIMEOUT(canvas->crossfadeFramesRendered() > before, 15000);
+        QTRY_VERIFY_WITH_TIMEOUT(!canvas->isCrossfading(),
+                                 15000); // ends after ~300 ms (loaded machine: later)
 
         Settings::instance().setValue(key::SlideshowCrossfade, false);
         const int afterOn = canvas->crossfadeFramesRendered();

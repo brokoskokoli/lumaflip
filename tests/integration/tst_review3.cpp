@@ -25,6 +25,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QPointer>
+#include <QSemaphore>
 #include <QSignalSpy>
 #include <QTableWidget>
 #include <QTemporaryDir>
@@ -49,6 +50,8 @@ public:
     RecordingTrash() { QDir().mkpath(m_dir.path()); }
     std::optional<QString> moveToTrash(const QString& path, QString* error) override {
         QThread::msleep(ulong(delayMs.load()));
+        if (QSemaphore* g = gate.load()) // deterministic: blocks until the test releases it
+            g->acquire();
         const QString target =
             m_dir.filePath(QStringLiteral("%1-%2").arg(++m_counter).arg(QFileInfo(path).fileName()));
         if (!QFileInfo::exists(path) || !QFile::rename(path, target)) {
@@ -70,6 +73,7 @@ public:
         return true;
     }
     std::atomic<int> delayMs{0};
+    std::atomic<QSemaphore*> gate{nullptr};
 
 private:
     QTemporaryDir m_dir;
@@ -417,11 +421,18 @@ private slots:
         ViewerWindow* b = app->openPaths({path("B/b.png")});
         QVERIFY(waitLoaded(b) && a != b);
         app->windowActivated(a);
-        trash->delayMs = 700;
+        // The operation runs until the test lets it finish (no timing assumptions), and the
+        // busy hint comes at once instead of after its delay.
+        QSemaphore gate;
+        trash->gate = &gate;
+        app->setBusyHintDelayForTesting(0);
         ops->moveToTrashAsync(path("IMG_2.jpg"));
-        QTRY_VERIFY(a->toastText().contains(QStringLiteral("Dateivorgang")));
+        QTRY_VERIFY_WITH_TIMEOUT(a->toastText().contains(QStringLiteral("Dateivorgang")), 10000);
+        QVERIFY(ops->isBusy());
         app->windowActivated(b); // another window comes to the front meanwhile
-        QTRY_VERIFY(!ops->isBusy());
+        gate.release();
+        QTRY_VERIFY_WITH_TIMEOUT(!ops->isBusy(), 10000);
+        trash->gate = nullptr;
         QVERIFY(a->toastText().isEmpty());
     }
 

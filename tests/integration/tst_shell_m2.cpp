@@ -479,9 +479,10 @@ private slots:
         QVERIFY(menu);
         QVERIFY(command("share")->isEnabled());
         emit menu->aboutToShow();
+        // The services arrive from a worker (placeholder until then, never blocking).
+        QTRY_VERIFY(menu->findChild<QAction*>(QStringLiteral("share:") + services.first().title));
         QAction* picker = menu->findChild<QAction*>(QStringLiteral("share:picker"));
         QVERIFY(picker && picker->isEnabled());
-        QVERIFY(menu->findChild<QAction*>(QStringLiteral("share:") + services.first().title));
         // Without an image there is nothing to share.
         ViewerWindow* empty = app->newWindow();
         QVERIFY(QTest::qWaitForWindowExposed(empty));
