@@ -232,17 +232,10 @@ QStringList PreferencesDialog::sectionKeys(int section) const {
         return {key::FitWindowToImage, key::TitleShowFolder, key::ShowStatusBar, key::ShowInfoPanel,
                 key::ShowFilmstrip,    key::AllowTabs,       key::CoupleBy};
     case Display:
-        return {key::Background,
-                key::ZoomMode,
-                key::UpscaleFilter,
-                key::ActualSizeUnit,
-                key::HdrEnabled,
-                key::SlideshowIntervalSec,
-                key::SlideshowRepeat,
-                key::SlideshowShuffle,
-                key::SlideshowCrossfade,
-                key::LoupeSize,
-                key::LoupeZoom};
+        return {key::Background,      key::ZoomMode,         key::UpscaleFilter,
+                key::ActualSizeUnit,  key::HdrEnabled,       key::SlideshowIntervalSec,
+                key::SlideshowRepeat, key::SlideshowShuffle, key::SlideshowCrossfade,
+                key::LoupeSize,       key::LoupeZoom};
     case Input:
         return {key::InputPrefix, key::WrapMode};
     case Navigation:
@@ -497,7 +490,8 @@ QWidget* PreferencesDialog::buildDisplay() {
                             {tr("1 Bildpixel = 1 Gerätepixel (Retina-korrekt)"), tr("1 Bildpixel = 1 Punkt")},
                             w));
     // F-COL-04: same setting as Darstellung > HDR > HDR anzeigen (⇧⌘H)
-    form->addRow(QString(), bind.check(key::HdrEnabled, tr("HDR-Bilder mit erweitertem Dynamikumfang anzeigen"), w));
+    form->addRow(QString(),
+                 bind.check(key::HdrEnabled, tr("HDR-Bilder mit erweitertem Dynamikumfang anzeigen"), w));
     // F-VIEW-11
     form->addRow(tr("Lupe (L gedrückt halten):"),
                  bind.combo(key::LoupeZoom, {"100", "200"}, {tr("100 %"), tr("200 %")}, w));
