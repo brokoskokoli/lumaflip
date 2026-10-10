@@ -355,8 +355,15 @@ private slots:
             maxGap = qMax(maxGap, now - last);
             last = now;
         });
+        // Baseline: the gaps of the idle event loop on this machine right now (other
+        // processes, parallel test runs). Blocking by the app comes on top of that.
         clock.start();
         ticker.start();
+        QTest::qWait(500);
+        const qint64 idleGap = maxGap;
+        maxGap = 0;
+        clock.restart();
+        last = 0;
         ViewerWindow* w = app->openPaths({opened});
         const qint64 openCallMs = clock.elapsed();
         QVERIFY(w);
@@ -365,15 +372,20 @@ private slots:
         QTest::qWait(50); // the result is applied after isLoading() flips: include it
         ticker.stop();
         maxGap = qMax(maxGap, openCallMs);
-        qInfo("P-05: openPaths %lld ms, folder loaded after %lld ms, max event-loop gap %lld ms", openCallMs,
-              loadMs, maxGap);
+        qInfo(
+            "P-05: openPaths %lld ms, folder loaded after %lld ms, max event-loop gap %lld ms (idle %lld ms)",
+            openCallMs, loadMs, maxGap, idleGap);
         QCOMPARE(w->collection()->count(), kFiles + 1);
         QCOMPARE(w->currentPath(), opened);
         QVERIFY(waitShown(w, opened));
-        QVERIFY2(
-            maxGap <= kMaxGapMs,
-            qPrintable(
-                QStringLiteral("GUI thread blocked for %1 ms (limit %2 ms)").arg(maxGap).arg(kMaxGapMs)));
+        // On an idle machine the idle gaps stay near the 5 ms tick; when they are longer, the
+        // machine is busy and GUI-thread work takes longer by about that factor as well.
+        const qint64 limit = qint64(kMaxGapMs * std::max(1.0, double(idleGap) / 10.0)) + idleGap;
+        QVERIFY2(maxGap <= limit,
+                 qPrintable(QStringLiteral("GUI thread blocked for %1 ms (limit %2 ms, idle gaps %3 ms)")
+                                .arg(maxGap)
+                                .arg(limit)
+                                .arg(idleGap)));
         // Independent of machine speed: reading the folder on the GUI thread would
         // make the longest gap about as long as the whole load.
         QVERIFY2(

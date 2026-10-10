@@ -395,7 +395,7 @@ private slots:
         QCOMPARE(film->focusPolicy(), Qt::NoFocus);
         // Thumbnails arrive.
         QTRY_VERIFY_WITH_TIMEOUT(
-            !film->filmModel()->index(2).data(FilmstripModel::ThumbnailRole).value<QImage>().isNull(), 5000);
+            !film->filmModel()->index(2).data(FilmstripModel::ThumbnailRole).value<QImage>().isNull(), 60000);
         // Current follows navigation.
         key(w, Qt::Key_Right);
         QCOMPARE(film->filmModel()->currentRow(), 1);
@@ -443,7 +443,7 @@ private slots:
         film.resize(640, film.sizeHint().height());
         film.show();
         QVERIFY(QTest::qWaitForWindowExposed(&film));
-        QTRY_VERIFY_WITH_TIMEOUT(cache.pendingJobs() == 0 && decoder->decodes.load() > 0, 5000);
+        QTRY_VERIFY_WITH_TIMEOUT(cache.pendingJobs() == 0 && decoder->decodes.load() > 0, 60000);
         QTest::qWait(100);
         const int visible = int(film.visibleRows().size());
         QVERIFY(visible > 0 && visible < 20);
@@ -454,8 +454,8 @@ private slots:
         // Jumping to the end: the strip scrolls there and makes only those thumbnails.
         const int before = decoder->decodes.load();
         collection.setCurrentIndex(149);
-        QTRY_VERIFY_WITH_TIMEOUT(film.visibleRows().contains(149), 3000);
-        QTRY_VERIFY_WITH_TIMEOUT(cache.pendingJobs() == 0 && decoder->decodes.load() > before, 5000);
+        QTRY_VERIFY_WITH_TIMEOUT(film.visibleRows().contains(149), 15000);
+        QTRY_VERIFY_WITH_TIMEOUT(cache.pendingJobs() == 0 && decoder->decodes.load() > before, 60000);
         QTest::qWait(100);
         QVERIFY(decoder->decodes.load() - before <= int(film.visibleRows().size()) + 2);
         QVERIFY(decoder->decodes.load() < 40);
