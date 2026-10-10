@@ -12,4 +12,8 @@ void registerPlatformDecoders(DecoderRegistry& registry) {
     registry.addSupportedExtensions(ImageIODecoder::supportedExtensions());
 }
 
+std::unique_ptr<Decoder> createPrimaryDecoder() {
+    return std::make_unique<ImageIODecoder>();
+}
+
 } // namespace lf

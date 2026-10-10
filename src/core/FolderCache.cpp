@@ -4,10 +4,18 @@
 #include "Collection.h"
 #include "Platform.h"
 
+#include <QDateTime>
+#include <QFile>
+#include <QFileInfo>
 #include <QHash>
 #include <QMutex>
 #include <QMutexLocker>
+#include <QTimeZone>
 #include <QWaitCondition>
+
+#ifdef Q_OS_UNIX
+#include <sys/stat.h>
+#endif
 
 namespace lf {
 
@@ -71,13 +79,59 @@ void FolderCache::invalidate(const QString& folderPath) {
         ++it->wanted;
 }
 
-FolderSnapshotPtr FolderCache::get(const QString& folderPath, FileAttributeProvider* attributes) {
+qint64 FolderCache::folderStamp(const QString& folderPath) {
+#ifdef Q_OS_UNIX
+    struct stat st;
+    if (::stat(QFile::encodeName(folderPath).constData(), &st) != 0)
+        return -1;
+#ifdef Q_OS_DARWIN
+    return qint64(st.st_mtimespec.tv_sec) * 1'000'000'000 + st.st_mtimespec.tv_nsec;
+#else
+    return qint64(st.st_mtim.tv_sec) * 1'000'000'000 + st.st_mtim.tv_nsec;
+#endif
+#else
+    const QDateTime t = QFileInfo(folderPath).lastModified(QTimeZone::UTC);
+    return t.isValid() ? t.toMSecsSinceEpoch() * 1'000'000 : -1;
+#endif
+}
+
+bool FolderCache::isStale(const QString& folderPath) const {
+    FolderSnapshotPtr snap;
+    {
+        QMutexLocker lock(&d->mutex);
+        auto it = d->entries.constFind(folderPath);
+        if (it == d->entries.cend() || !it->snapshot || it->snapshot->generation < it->wanted)
+            return false; // nothing current to compare (the next get() enumerates anyway)
+        snap = it->snapshot;
+    }
+    const qint64 stamp = folderStamp(folderPath);
+    return stamp < 0 || stamp != snap->folderStamp;
+}
+
+FolderSnapshotPtr FolderCache::get(const QString& folderPath, FileAttributeProvider* attributes,
+                                   bool revalidate) {
     QMutexLocker lock(&d->mutex);
     ++d->entries[folderPath].waiters;
     FolderSnapshotPtr result;
+    bool checked = !revalidate;
     for (;;) {
         Private::Entry& e = d->entries[folderPath]; // re-looked up: the table may rehash while waiting
         if (e.snapshot && e.snapshot->generation >= e.wanted) {
+            if (!checked) {
+                // B12: compare the folder's modification time (outside the lock: a stat
+                // on a network volume may take a moment).
+                checked = true;
+                const FolderSnapshotPtr snap = e.snapshot;
+                lock.unlock();
+                const qint64 stamp = folderStamp(folderPath);
+                lock.relock();
+                Private::Entry& again = d->entries[folderPath];
+                if (again.snapshot == snap && (stamp < 0 || stamp != snap->folderStamp)) {
+                    ++again.wanted; // changed without a watcher event: enumerate again
+                    continue;
+                }
+                continue; // re-evaluate (another thread may have replaced the snapshot)
+            }
             result = e.snapshot;
             break;
         }
@@ -91,6 +145,7 @@ FolderSnapshotPtr FolderCache::get(const QString& folderPath, FileAttributeProvi
 
         auto snap = std::make_shared<FolderSnapshot>();
         snap->generation = generation;
+        snap->folderStamp = folderStamp(folderPath); // before: a change while enumerating is seen next time
         snap->entries = collection::enumerateFolder(folderPath, &snap->accessDenied, &snap->privacyDenied);
         if (attributes) {
             for (FileEntry& entry : snap->entries)

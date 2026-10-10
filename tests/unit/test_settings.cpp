@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "core/InputBindings.h"
+#include "core/Platform.h"
 #include "core/Settings.h"
 
 #include <QCoreApplication>
@@ -75,7 +76,7 @@ TEST_F(SettingsTest, F_SET_04_SensibleDefaults) {
     EXPECT_EQ(s().value(key::PrefetchAhead).toInt(), 3);
     EXPECT_EQ(s().value(key::PrefetchBehind).toInt(), 1);
     EXPECT_EQ(s().value(key::MemoryBudgetMB).toInt(), 0);
-    EXPECT_TRUE(s().value(key::RestoreWindows).toBool());
+    EXPECT_EQ(s().value(key::RestoreWindows).toBool(), systemRestoresWindows()); // F-WIN-06
     EXPECT_FALSE(s().value(key::FitWindowToImage).toBool());
     EXPECT_FALSE(s().value(key::ConfirmTrash).toBool());    // F-FILE-01: undo instead of asking
     EXPECT_FALSE(s().value(key::TitleShowFolder).toBool()); // F-WIN-10

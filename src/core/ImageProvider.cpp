@@ -27,8 +27,11 @@
 #include "ImageProvider.h"
 
 #include "ImageFormats.h"
+#include "Platform.h"
+#include "StartupTrace.h"
 
 #include <QCoreApplication>
+#include <QFile>
 #include <QFileInfo>
 #include <QHash>
 #include <QMutex>
@@ -58,6 +61,9 @@ constexpr int kDefaultScreenPx = 2560;
 constexpr qint64 kMaxDefaultBudget = qint64(2) << 30; // 2 GB (P-09)
 constexpr int kMaxInfoEntries = 2048;                 // info() cache (FIFO)
 constexpr int kMaxPathBookkeeping = 512;              // failed / failedStages / generation before pruning
+constexpr qint64 kMaxDecodeBytes = qint64(1) << 30;   // P-08: a decoded image never exceeds 1 GB
+constexpr qint64 kMinDecodeBytes = qint64(16) << 20;  // ... nor is capped below 16 MB (tiny budgets)
+constexpr qint64 kPrestartHeaderBytes = 64;           // like DecoderRegistry
 
 // Score tiers (higher runs first).
 constexpr qint64 kTierActiveCurrent = 4'000'000'000'000LL;
@@ -144,12 +150,34 @@ struct ClientState {
     bool active = true;
 };
 
+// P-08: byte cap of one decoded image for a given cache budget (P-09).
+qint64 decodeByteCapFor(qint64 budget) {
+    return std::clamp<qint64>(budget / 2, kMinDecodeBytes, kMaxDecodeBytes);
+}
+
+// ImageProvider::prestart(): one decode started before the provider exists (P-01).
+struct Prestart {
+    QMutex mutex;
+    QString path;
+    int px = 0;
+    bool done = false;
+    DecodedImagePtr image;
+    // Set by the provider that adopted the running decode; called (under `mutex`) with
+    // the result on the decoding thread. Cleared when that provider goes away.
+    std::function<void(const DecodedImagePtr&)> adopter;
+};
+
+QMutex g_prestartMutex;
+std::shared_ptr<Prestart> g_prestart; // guarded by g_prestartMutex
+std::atomic<bool> g_prestartPending{false};
+
 } // namespace
 
 struct ImageProvider::Private {
     ImageProvider* q;
-    DecoderRegistry& registry;
+    DecoderRegistry* registryPtr; // null: DecoderRegistry::instance(), resolved on first use
     QThreadPool pool;
+    std::shared_ptr<Prestart> adopted; // prestart decode this provider took over
 
     // ---- GUI thread only ----
     QHash<Key, CacheEntry> cache;
@@ -165,6 +193,7 @@ struct ImageProvider::Private {
 
     // ---- shared with workers ----
     std::atomic<bool> rawEmbeddedOnly{false};
+    std::atomic<qint64> decodeByteCap{kMaxDecodeBytes};
     QMutex mutex;
     QHash<Key, Job> jobs; // pending + running
 
@@ -172,7 +201,80 @@ struct ImageProvider::Private {
     QHash<QString, ImageInfo> infoCache;
     QList<QString> infoOrder; // insertion order, for the FIFO bound
 
-    Private(ImageProvider* q_, DecoderRegistry& r) : q(q_), registry(r) {}
+    Private(ImageProvider* q_, DecoderRegistry* r) : q(q_), registryPtr(r) {}
+
+    // Any thread. The process-wide registry is built lazily: loading its Qt image plugins
+    // takes a while and is not needed for the first image (P-01).
+    DecoderRegistry& registry() const { return registryPtr ? *registryPtr : DecoderRegistry::instance(); }
+
+    // GUI thread: takes over a prestart() decode of `path`. A finished one goes into the
+    // cache, a running one becomes a running job of this provider.
+    void adoptPrestart(const QString& path) {
+        if (!g_prestartPending.load(std::memory_order_acquire))
+            return;
+        std::shared_ptr<Prestart> st;
+        {
+            QMutexLocker lock(&g_prestartMutex);
+            if (!g_prestart || g_prestart->path != path)
+                return;
+            st = std::move(g_prestart);
+            g_prestart.reset();
+            g_prestartPending.store(false, std::memory_order_release);
+        }
+        QMutexLocker lock(&st->mutex);
+        const Key key = keyFor(path, Quality::Screen, st->px);
+        if (st->done) {
+            if (st->image && !findCached(path, Quality::Screen, st->px))
+                insert(key, st->image);
+            return;
+        }
+        Job job;
+        job.key = key;
+        job.generation = generation.value(path);
+        job.score = kTierActiveCurrent;
+        job.running = true;
+        {
+            QMutexLocker jobsLock(&mutex);
+            if (jobs.contains(key))
+                return; // the same stage is being decoded already
+            jobs.insert(key, job);
+        }
+        adopted = st;
+        ImageProvider* self = q;
+        st->adopter = [self, job](const DecodedImagePtr& img) {
+            // Posted to the provider; Qt drops the call if the provider is gone by then.
+            QMetaObject::invokeMethod(
+                self, [self, job, img] { self->d->prestartFinished(job, img); }, Qt::QueuedConnection);
+        };
+    }
+
+    // GUI thread: the adopted prestart decode is done. A failure is not reported: the
+    // regular decode (with every backend) runs instead and reports.
+    void prestartFinished(const Job& job, const DecodedImagePtr& img) {
+        adopted.reset();
+        if (img) {
+            finished(job, img, {});
+            return;
+        }
+        {
+            QMutexLocker lock(&mutex);
+            jobs.remove(job.key);
+        }
+        reschedule();
+    }
+
+    // Caller holds `mutex`. A running decode of the same file delivers at least stage `k`.
+    bool coveredByRunningJob(const Key& k) const {
+        if (k.quality != Quality::Screen)
+            return false;
+        for (auto it = jobs.cbegin(); it != jobs.cend(); ++it) {
+            const Key& o = it.key();
+            if (it->running && o.path == k.path &&
+                (o.quality == Quality::Full || (o.quality == Quality::Screen && o.px >= k.px)))
+                return true;
+        }
+        return false;
+    }
 
     // -- cache --
     static bool satisfies(const Key& k, const DecodedImage& im, Quality q, int px) {
@@ -339,6 +441,8 @@ struct ImageProvider::Private {
                     j->score = it.value();
                     continue;
                 }
+                if (coveredByRunningJob(it.key()))
+                    continue; // e.g. a larger screen stage of the file is being decoded
                 Job job;
                 job.key = it.key();
                 job.generation = generation.value(it.key().path);
@@ -399,14 +503,23 @@ struct ImageProvider::Private {
 
         DecodeRequest req;
         req.maxPixelSize = job.key.px;
+        req.maxBytes = decodeByteCap.load(std::memory_order_relaxed); // P-08
         req.preferEmbeddedPreview =
             job.key.quality == Quality::Preview || (rawEmbeddedOnly.load(std::memory_order_relaxed) &&
                                                     isRawSuffix(QFileInfo(job.key.path).suffix().toLower()));
         QString error;
         DecodedImagePtr result;
-        if (auto img = registry.decode(job.key.path, req, &error))
+        if (trace::enabled())
+            trace::once(job.key.quality == Quality::Preview  ? "decode start (Preview)"
+                        : job.key.quality == Quality::Screen ? "decode start (Screen)"
+                                                             : "decode start (Full)");
+        if (auto img = registry().decode(job.key.path, req, &error))
             result = std::make_shared<const DecodedImage>(std::move(*img));
 
+        if (trace::enabled())
+            trace::once(job.key.quality == Quality::Preview  ? "decode done (Preview)"
+                        : job.key.quality == Quality::Screen ? "decode done (Screen)"
+                                                             : "decode done (Full)");
         QMetaObject::invokeMethod(
             q, [this, job, result, error] { finished(job, result, error); }, Qt::QueuedConnection);
     }
@@ -450,14 +563,72 @@ struct ImageProvider::Private {
 };
 
 ImageProvider::ImageProvider(DecoderRegistry& registry, QObject* parent)
-    : QObject(parent), d(new Private(this, registry)) {
+    : QObject(parent), d(new Private(this, &registry)) {
+    init();
+}
+
+ImageProvider::ImageProvider(QObject* parent) : QObject(parent), d(new Private(this, nullptr)) {
+    init();
+}
+
+void ImageProvider::init() {
     qRegisterMetaType<lf::DecodedImagePtr>("lf::DecodedImagePtr");
     qRegisterMetaType<lf::Quality>("lf::Quality");
     d->pool.setMaxThreadCount(std::max(2, QThread::idealThreadCount() - 2));
-    d->budget = std::min(physicalMemory() / 4, kMaxDefaultBudget);
+    d->budget = defaultMemoryBudget();
+    d->decodeByteCap = decodeByteCapFor(d->budget);
+}
+
+qint64 ImageProvider::defaultMemoryBudget() {
+    return std::min(physicalMemory() / 4, kMaxDefaultBudget);
+}
+
+qint64 ImageProvider::maxDecodeBytes() const {
+    return d->decodeByteCap.load();
+}
+
+void ImageProvider::prestart(const QString& path, QSize target) {
+    std::shared_ptr<Decoder> decoder(createPrimaryDecoder());
+    if (!decoder || path.isEmpty())
+        return;
+    auto st = std::make_shared<Prestart>();
+    st->path = path;
+    st->px = bucketFor(target);
+    {
+        QMutexLocker lock(&g_prestartMutex);
+        g_prestart = st;
+        g_prestartPending.store(true, std::memory_order_release);
+    }
+    // The global pool is joined when the application object is destroyed.
+    QThreadPool::globalInstance()->start([st, decoder] {
+        trace::mark("prestart: decode begins");
+        DecodedImagePtr result;
+        QFile f(st->path);
+        const QByteArray header = f.open(QIODevice::ReadOnly) ? f.read(kPrestartHeaderBytes) : QByteArray();
+        f.close();
+        if (!header.isEmpty() && decoder->canDecode(st->path, header)) {
+            DecodeRequest req;
+            req.maxPixelSize = st->px;
+            req.maxBytes = decodeByteCapFor(defaultMemoryBudget());
+            QString error;
+            if (auto img = decoder->decode(st->path, req, &error); img && !img->image.isNull())
+                result = std::make_shared<const DecodedImage>(std::move(*img));
+        }
+        trace::mark("prestart: decode done");
+        QMutexLocker lock(&st->mutex);
+        st->done = true;
+        st->image = result;
+        if (st->adopter)
+            st->adopter(result);
+        st->adopter = nullptr;
+    });
 }
 
 ImageProvider::~ImageProvider() {
+    if (d->adopted) {
+        QMutexLocker lock(&d->adopted->mutex);
+        d->adopted->adopter = nullptr; // the decode may still run; its result is not wanted
+    }
     {
         QMutexLocker lock(&d->mutex);
         d->jobs.clear(); // pending runnables find nothing to do
@@ -469,13 +640,13 @@ ImageProvider::~ImageProvider() {
 
 ImageProvider& ImageProvider::instance() {
     // Parented to the application so worker threads are joined before Qt shuts down.
-    static ImageProvider* provider =
-        new ImageProvider(DecoderRegistry::instance(), QCoreApplication::instance());
+    static ImageProvider* provider = new ImageProvider(QCoreApplication::instance());
     return *provider;
 }
 
 DecodedImagePtr ImageProvider::request(const QString& path, Quality quality, QSize target, const void* client,
                                        int priority) {
+    d->adoptPrestart(path);
     const int px = quality == Quality::Preview ? kPreviewPx : bucketFor(target);
     ClientState& cs = d->clients[client];
     if (cs.current != path) {
@@ -516,6 +687,8 @@ DecodedImagePtr ImageProvider::request(const QString& path, Quality quality, QSi
 
 void ImageProvider::setWanted(const void* client, const QStringList& ordered, QSize target,
                               bool clientActive) {
+    if (!ordered.isEmpty())
+        d->adoptPrestart(ordered.first());
     ClientState& cs = d->clients[client];
     cs.wanted = ordered;
     cs.screenPx = bucketFor(target);
@@ -535,6 +708,7 @@ void ImageProvider::removeClient(const void* client) {
 }
 
 DecodedImagePtr ImageProvider::cached(const QString& path, Quality minQuality, QSize target) {
+    d->adoptPrestart(path);
     const int px = minQuality == Quality::Preview ? kPreviewPx : bucketFor(target);
     const Key* k = d->findCached(path, minQuality, px);
     return k ? d->touch(*k) : nullptr;
@@ -556,25 +730,43 @@ void ImageProvider::invalidate(const QString& path) {
             if (!it->running && it.key().path == path)
                 it = d->jobs.erase(it);
             else
-                ++it;
+                ++it; // running: its result is dropped (older generation)
         }
     }
+    // Clients that still show or want the file get it decoded again.
     d->reschedule();
+    emit invalidated(path);
 }
 
 void ImageProvider::setMemoryBudget(qint64 bytes) {
     d->budget = std::max<qint64>(0, bytes);
+    d->decodeByteCap = decodeByteCapFor(d->budget);
     d->evict();
 }
 
 void ImageProvider::setRawEmbeddedOnly(bool embeddedOnly) {
     if (d->rawEmbeddedOnly.exchange(embeddedOnly) == embeddedOnly)
         return;
-    // Cached stages of RAW files were made with the other setting.
-    QStringList raws;
+    // Everything of RAW files made with the other setting is outdated: cached stages,
+    // decodes in flight (their results are dropped) and what windows show (they are
+    // told via invalidated() and get the new stages; their wanted files are re-decoded).
+    QSet<QString> raws;
+    auto consider = [&raws](const QString& p) {
+        if (!p.isEmpty() && isRawSuffix(QFileInfo(p).suffix().toLower()))
+            raws.insert(p);
+    };
     for (auto it = d->cacheKeysByPath.cbegin(); it != d->cacheKeysByPath.cend(); ++it)
-        if (isRawSuffix(QFileInfo(it.key()).suffix().toLower()))
-            raws << it.key();
+        consider(it.key());
+    {
+        QMutexLocker lock(&d->mutex);
+        for (auto it = d->jobs.cbegin(); it != d->jobs.cend(); ++it)
+            consider(it.key().path);
+    }
+    for (const ClientState& cs : std::as_const(d->clients)) {
+        consider(cs.current);
+        for (const QString& p : cs.wanted)
+            consider(p);
+    }
     for (const QString& p : std::as_const(raws))
         invalidate(p);
 }
@@ -595,7 +787,7 @@ std::optional<ImageInfo> ImageProvider::info(const QString& path) {
             return *it;
     }
     QString error;
-    auto result = d->registry.info(path, &error);
+    auto result = d->registry().info(path, &error);
     if (result) {
         QMutexLocker lock(&d->infoMutex);
         if (!d->infoCache.contains(path))

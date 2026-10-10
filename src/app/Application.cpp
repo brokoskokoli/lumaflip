@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "Application.h"
 
+#include "DockReopen.h"
 #include "ImageView.h"
 #include "MainMenu.h"
 #include "PreferencesDialog.h"
@@ -12,6 +13,7 @@
 #include "core/ImageProvider.h"
 #include "core/Platform.h"
 #include "core/Settings.h"
+#include "core/StartupTrace.h"
 
 #include <QApplication>
 #include <QDesktopServices>
@@ -90,14 +92,24 @@ struct Application::Private {
     QStringList burstPaths;
     QPointer<ViewerWindow> burstWindow;
     bool burstWindowOwned = false; // created (or the empty start window) for this burst
+    bool burstFirstShown = false;  // the first path of the burst was opened right away
     QTimer menuTimer;
     QTimer busyTimer;
     bool busyCursor = false;
+    QPointer<ViewerWindow> busyWindow; // shows the "file operation running" message
     QPointer<QDialog> shortcuts;
     bool started = false;      // start() ran (Dock reopen handling)
     bool startPending = false; // start() still waits for an open event / the session
     bool quitting = false;
+    bool quitWhenIdle = false; // quit requested while file operations were pending
     bool sessionEnabled = true;
+    // F-WIN-06: the session is restored only for a plain launch, i.e. if no open request
+    // arrives during the startup window (kEmptyStartDelayMs).
+    enum class Restore { None, Classifying, Ready, Cancelled };
+    Restore restore = Restore::None;
+    QVariantList restoreList;        // the saved windows
+    ClassifiedPaths restoreExisting; // what of them still exists
+    bool startWindowElapsed = false;
 };
 
 Application::Application(AppServices services, QObject* parent)
@@ -116,7 +128,11 @@ Application::Application(AppServices services, QObject* parent)
         d->services.openUrl = [](const QUrl& url) { return QDesktopServices::openUrl(url); };
     if (!d->services.activeWindow)
         d->services.activeWindow = [] { return QApplication::activeWindow(); };
+    if (!d->services.quitApp)
+        d->services.quitApp = [] { QCoreApplication::quit(); };
+    trace::mark("Application: default services");
     d->bindings = std::make_unique<InputBindings>();
+    trace::mark("Application: bindings");
 
     QGuiApplication::setQuitOnLastWindowClosed(false); // macOS: the app stays, menu bar works
     qApp->installEventFilter(this);
@@ -125,15 +141,13 @@ Application::Application(AppServices services, QObject* parent)
     if (const int mb = st.value(key::MemoryBudgetMB).toInt(); mb > 0)
         provider().setMemoryBudget(qint64(mb) << 20);
     provider().setRawEmbeddedOnly(st.value(key::RawEmbeddedOnly).toBool());
+    trace::mark("Application: settings read");
 
     // One folder watcher for all windows; every folder is watched once (F-WIN-09, F-OPEN-07).
     // One change = one enumeration (FolderCache), then every window re-sorts its copy.
     d->watcher = createFolderWatcher(this);
-    connect(d->watcher.get(), &FolderWatcher::folderChanged, this, [this](const QString& folder) {
-        FolderCache::instance().invalidate(folder);
-        for (ViewerWindow* w : windows())
-            w->folderChanged(folder);
-    });
+    trace::mark("Application: folder watcher");
+    connect(d->watcher.get(), &FolderWatcher::folderChanged, this, &Application::folderChangedOnDisk);
 
     // File operations of any window update every window (F-FILE-01). The shared folder
     // snapshot is outdated as well; the windows themselves are updated in place.
@@ -179,10 +193,13 @@ Application::Application(AppServices services, QObject* parent)
     d->busyTimer.setInterval(kBusyHintMs);
     connect(&d->busyTimer, &QTimer::timeout, this, [this] { updateBusy(true); });
     connect(&ops, &FileOps::busyChanged, this, [this](bool busy) {
-        if (busy)
+        if (busy) {
             d->busyTimer.start();
-        else
-            updateBusy(false);
+            return;
+        }
+        updateBusy(false);
+        if (d->quitWhenIdle) // ⌘Q waited for the file operations (never dropped)
+            QTimer::singleShot(0, this, &Application::quit);
     });
 
     connect(&st, &Settings::changed, this, [this](const QString& k) {
@@ -199,11 +216,13 @@ Application::Application(AppServices services, QObject* parent)
         d->menu->refreshState();
     });
 
-    // Dock icon clicked (applicationShouldHandleReopen arrives as a forced "active" state
-    // change): without any window, open an empty one like other document apps.
-    connect(qApp, &QGuiApplication::applicationStateChanged, this, [this](Qt::ApplicationState state) {
-        if (state == Qt::ApplicationActive)
-            handleReopen();
+    // Dock icon clicked (applicationShouldHandleReopen:hasVisibleWindows:, not every
+    // activation such as ⌘-Tab): without any window, open an empty one like other
+    // document apps.
+    QPointer<Application> self(this);
+    installDockReopenHandler([self] {
+        if (self)
+            self->handleDockReopen();
     });
 
     d->burstTimer.setSingleShot(true);
@@ -216,12 +235,18 @@ Application::Application(AppServices services, QObject* parent)
         d->menu->refreshState();
     });
 
+    trace::mark("Application: services ready");
     d->menu = new MainMenu(*this);
+    trace::mark("Application: menu created");
 }
 
 Application::~Application() {
     qApp->removeEventFilter(this);
+    if (s_instance == this)
+        installDockReopenHandler({});
     updateBusy(false);
+    // Worker threads of the shell (default makeDefaultViewerAsync) use it.
+    shell().waitForPendingCalls();
     const QList<QPointer<ViewerWindow>> list = d->allWindows;
     for (const auto& w : list)
         delete w.data(); // windows reference the services owned/used here
@@ -260,15 +285,24 @@ void Application::updateBusy(bool busy) {
     if (busy == d->busyCursor)
         return;
     d->busyCursor = busy;
+    const QString text = busyText();
     if (busy) {
         QGuiApplication::setOverrideCursor(Qt::BusyCursor);
-        if (auto* w = frontWindow())
-            w->showMessage(tr("Dateivorgang läuft …"), 60000);
+        d->busyWindow = frontWindow();
+        if (d->busyWindow)
+            d->busyWindow->showMessage(text, 60000);
     } else {
         QGuiApplication::restoreOverrideCursor();
-        if (auto* w = frontWindow(); w && w->toastText() == tr("Dateivorgang läuft …"))
+        // Hidden where it was shown, even if another window came to the front meanwhile.
+        if (ViewerWindow* w = d->busyWindow; w && w->toastText() == text)
             w->hideMessage();
+        d->busyWindow = nullptr;
     }
+}
+
+QString Application::busyText() const {
+    return d->quitWhenIdle ? tr("Dateivorgänge werden abgeschlossen, dann wird Lumaflip beendet …")
+                           : tr("Dateivorgang läuft …");
 }
 
 // ---------------------------------------------------------------------------------------
@@ -312,24 +346,44 @@ void Application::start(const QStringList& arguments) {
         paths << a;
     }
     if (!paths.isEmpty()) {
-        openPaths(paths); // F-OPEN-01 command line: one request (missing ones are reported)
-        return;
-    }
-    if (d->sessionEnabled && Settings::instance().value(key::RestoreWindows).toBool() && hasSession()) {
-        restoreSession(); // F-WIN-06
+        openPaths(paths); // F-OPEN-01 command line: one request (missing ones are reported), no restore
         return;
     }
     // Launched by Finder/Dock the open request arrives as QFileOpenEvent right after
-    // start; only if nothing comes the start window appears (F-OPEN-12, simple).
+    // start. F-WIN-06: the last session comes back only for a plain launch, i.e. if no
+    // open request arrives within the startup window; the opened image has priority
+    // (P-01). Without a session the start window appears (F-OPEN-12, simple).
     d->startPending = true;
+    d->startWindowElapsed = false;
+    if (d->sessionEnabled && Settings::instance().value(key::RestoreWindows).toBool() && hasSession())
+        restoreSession(); // looks at the files now, applies them after the startup window
     QTimer::singleShot(kEmptyStartDelayMs, this, [this] {
+        d->startWindowElapsed = true;
+        if (d->restore == Private::Restore::Classifying)
+            return; // the restore finishes (and ends the start phase) when the files are checked
+        if (d->restore == Private::Restore::Ready) {
+            applyRestore();
+            return;
+        }
         d->startPending = false;
         if (windows().isEmpty() && !d->burstTimer.isActive())
             newWindow();
     });
 }
 
-void Application::handleReopen() {
+void Application::cancelPendingRestore() {
+    if (d->restore != Private::Restore::Classifying && d->restore != Private::Restore::Ready)
+        return;
+    d->restore = Private::Restore::Cancelled; // the saved session stays until the next save
+    d->restoreList.clear();
+    d->startPending = false;
+}
+
+bool Application::isRestorePending() const {
+    return d->restore == Private::Restore::Classifying || d->restore == Private::Restore::Ready;
+}
+
+void Application::handleDockReopen() {
     if (!d->started || d->startPending || d->quitting || d->burstTimer.isActive() || !windows().isEmpty())
         return;
     for (QWidget* w : QApplication::topLevelWidgets())
@@ -339,12 +393,16 @@ void Application::handleReopen() {
 }
 
 void Application::queueOpen(const QString& path) {
+    cancelPendingRestore(); // F-WIN-06: launched by an open request
     if (!d->burstTimer.isActive()) {
-        // First request of a burst: show it immediately (P-01).
+        // First request of a burst: an image is shown immediately (P-01); anything else
+        // is looked at together with the rest of the burst (one request, F-OPEN-04).
         d->burstPaths = {path};
         d->burstWindow = nullptr;
         d->burstWindowOwned = false;
+        d->burstFirstShown = false;
         if (hasImageSuffix(QFileInfo(path).fileName())) {
+            d->burstFirstShown = true;
             bool owned = false;
             d->burstWindow = openInWindow({absPath(path)}, false, &owned);
             d->burstWindowOwned = owned;
@@ -359,8 +417,6 @@ void Application::queueOpen(const QString& path) {
                 if (c.missing.isEmpty())
                     addRecent({abs});
             });
-        } else {
-            openPaths({path});
         }
         d->burstTimer.start();
         return;
@@ -369,9 +425,29 @@ void Application::queueOpen(const QString& path) {
     d->burstTimer.start(); // keep grouping while requests keep coming
 }
 
+void Application::openClassified(const ClassifiedPaths& c, ViewerWindow* preferred) {
+    // One request: the files in one window (one file = its folder, several = exactly
+    // those, F-OPEN-04), every folder in a window of its own (F-WIN-02).
+    if (!c.files.isEmpty())
+        openInWindow(c.files, false);
+    for (const QString& f : std::as_const(c.folders))
+        openInWindow({f}, true);
+    if (!c.missing.isEmpty())
+        showNotFound(c.missing, preferred);
+    addRecent(c.files + c.folders);
+}
+
 void Application::flushOpenBurst() {
     const QStringList all = d->burstPaths;
     d->burstPaths.clear();
+    if (all.isEmpty())
+        return;
+    if (!d->burstFirstShown) {
+        // Nothing was opened yet (the first path has no image suffix): the whole burst is
+        // classified and opened as one request, each path exactly once.
+        classifyPaths(all, this, [this](const ClassifiedPaths& c) { openClassified(c); });
+        return;
+    }
     if (all.size() <= 1)
         return;
     const QPointer<ViewerWindow> w = d->burstWindow;
@@ -403,6 +479,7 @@ void Application::flushOpenBurst() {
 }
 
 ViewerWindow* Application::openPaths(const QStringList& paths) {
+    cancelPendingRestore(); // F-WIN-06: an open request wins over the last session
     // P-01: image files are opened right away, without touching the file system here.
     QStringList images;
     for (const QString& p : paths)
@@ -476,6 +553,7 @@ ViewerWindow* Application::openInWindow(const QStringList& paths, bool isFolder,
     const bool fresh = target == nullptr;
     if (fresh)
         target = createWindow();
+    trace::once("openInWindow: window ready");
     if (reusedOrCreated)
         *reusedOrCreated = fresh || reused;
     // Decoding starts before the window is shown (P-01).
@@ -485,8 +563,10 @@ ViewerWindow* Application::openInWindow(const QStringList& paths, bool isFolder,
         target->openFile(paths.first());
     else
         target->openFiles(paths);
+    trace::once("openInWindow: open started");
     if (fresh || !target->isVisible())
         target->show();
+    trace::once("openInWindow: shown");
     target->raise();
     target->activateWindow();
     windowActivated(target);
@@ -642,6 +722,27 @@ void Application::windowChanged(ViewerWindow*) {
     d->menuTimer.start();
 }
 
+void Application::revalidateFolder(const QString& folder) {
+    if (folder.isEmpty())
+        return;
+    // A stat on a worker; only a changed folder costs anything (B12, F-WIN-09).
+    auto* w = new QFutureWatcher<bool>(this);
+    connect(w, &QFutureWatcher<bool>::finished, this, [this, w, folder] {
+        const bool stale = w->result();
+        w->deleteLater();
+        if (stale)
+            folderChangedOnDisk(folder);
+    });
+    w->setFuture(QtConcurrent::run([folder] { return FolderCache::instance().isStale(folder); }));
+}
+
+void Application::folderChangedOnDisk(const QString& folder) {
+    // One change = one enumeration (FolderCache), then every window re-sorts its copy.
+    FolderCache::instance().invalidate(folder);
+    for (ViewerWindow* w : windows())
+        w->folderChanged(folder);
+}
+
 void Application::setWindowFolder(ViewerWindow*, const QString& oldFolder, const QString& newFolder) {
     if (!oldFolder.isEmpty()) {
         auto it = d->watchCount.find(oldFolder);
@@ -666,6 +767,8 @@ void Application::setSessionEnabled(bool enabled) {
 void Application::saveSession() {
     if (!d->sessionEnabled)
         return;
+    if (isRestorePending())
+        return; // ⌘Q before the last session came back: keep it as it was saved
     QVariantList list;
     if (Settings::instance().value(key::RestoreWindows).toBool()) {
         for (ViewerWindow* w : windows()) {
@@ -694,32 +797,78 @@ void Application::restoreSession() {
     }
     paths.removeAll(QString());
     d->startPending = true;
+    d->restore = Private::Restore::Classifying;
+    d->restoreList = list;
     // Only what still exists comes back (volumes may be gone); checked on a worker.
-    classifyPaths(paths, this, [this, list](const ClassifiedPaths& c) {
-        d->startPending = false;
-        const QStringList existing = c.files + c.folders;
-        for (const QVariant& v : list) {
-            ViewerWindow* w = createWindow();
-            if (!w->restoreSessionState(v.toMap(), existing)) {
-                w->close();
-                continue;
-            }
-            w->show();
-            windowActivated(w);
-        }
-        if (windows().isEmpty() && !d->burstTimer.isActive())
-            newWindow();
-        emit sessionRestored();
+    classifyPaths(paths, this, [this](const ClassifiedPaths& c) {
+        if (d->restore != Private::Restore::Classifying)
+            return; // an open request came first
+        d->restoreExisting = c;
+        d->restore = Private::Restore::Ready;
+        if (d->startWindowElapsed)
+            applyRestore();
     });
 }
 
+void Application::applyRestore() {
+    if (d->restore != Private::Restore::Ready)
+        return;
+    const QVariantList list = d->restoreList;
+    const QStringList existing = d->restoreExisting.files + d->restoreExisting.folders;
+    d->restore = Private::Restore::None;
+    d->restoreList.clear();
+    d->startPending = false;
+    // Windows the user opened meanwhile (e.g. ⌘N) stay in front.
+    const bool othersOpen = !windows().isEmpty();
+    ViewerWindow* last = nullptr;
+    for (const QVariant& v : list) {
+        ViewerWindow* w = createWindow();
+        if (!w->restoreSessionState(v.toMap(), existing)) {
+            w->close();
+            continue;
+        }
+        w->show();
+        last = w;
+    }
+    if (last && !othersOpen) {
+        last->raise();
+        last->activateWindow();
+        windowActivated(last);
+    }
+    if (windows().isEmpty() && !d->burstTimer.isActive())
+        newWindow();
+    emit sessionRestored();
+}
+
 void Application::quit() {
+    if (fileOps().isBusy()) {
+        // Queued file operations (e.g. trash on a slow network volume) are never dropped:
+        // wait for them with a busy cursor and a message, then quit (busyChanged).
+        const bool first = !d->quitWhenIdle;
+        d->quitWhenIdle = true;
+        if (first) {
+            if (!d->busyCursor) {
+                updateBusy(true);
+            } else if (d->busyWindow) {
+                d->busyWindow->showMessage(busyText(), 60000);
+            } else if (ViewerWindow* w = frontWindow()) {
+                d->busyWindow = w;
+                w->showMessage(busyText(), 60000);
+            }
+        }
+        return;
+    }
+    d->quitWhenIdle = false;
     if (!d->quitting) {
         saveSession();
         d->quitting = true;
     }
     closeAllWindows();
-    QCoreApplication::quit();
+    d->services.quitApp();
+}
+
+bool Application::isQuitPending() const {
+    return d->quitWhenIdle;
 }
 
 // ---------------------------------------------------------------------------------------
@@ -847,6 +996,9 @@ void Application::showShortcuts() {
         {tr("Erstes / letztes Bild"), tr("Pos1 / Ende")},
         {tr("Vollbild / Modus verlassen"), tr("Esc")},
     };
+    // Planned actions (slideshow, info panel, rating, rename …) have keys already but do
+    // nothing yet: listed last, grayed out and marked, never as usable.
+    QList<QPair<QString, QString>> later;
     for (Action a : InputBindings::allActions()) {
         const QList<QKeySequence> seqs = bindings().shortcuts(a);
         if (seqs.isEmpty())
@@ -854,12 +1006,24 @@ void Application::showShortcuts() {
         QStringList keys;
         for (const QKeySequence& s : seqs)
             keys << s.toString(QKeySequence::NativeText);
-        rows.append({actionLabel(a), keys.join(QStringLiteral(", "))});
+        if (InputBindings::isActionAvailable(a))
+            rows.append({actionLabel(a), keys.join(QStringLiteral(", "))});
+        else
+            later.append({tr("%1 (ab Version 1.0)").arg(actionLabel(a)), keys.join(QStringLiteral(", "))});
     }
+    const int available = int(rows.size());
+    rows += later;
+    table->setObjectName(QStringLiteral("lfShortcutsTable"));
     table->setRowCount(int(rows.size()));
     for (int r = 0; r < rows.size(); ++r) {
-        table->setItem(r, 0, new QTableWidgetItem(rows[r].first));
-        table->setItem(r, 1, new QTableWidgetItem(rows[r].second));
+        auto* name = new QTableWidgetItem(rows[r].first);
+        auto* keys = new QTableWidgetItem(rows[r].second);
+        if (r >= available) {
+            name->setFlags(name->flags() & ~Qt::ItemIsEnabled);
+            keys->setFlags(keys->flags() & ~Qt::ItemIsEnabled);
+        }
+        table->setItem(r, 0, name);
+        table->setItem(r, 1, keys);
     }
     table->resizeColumnsToContents();
     table->horizontalHeader()->setStretchLastSection(true);
@@ -891,7 +1055,7 @@ void Application::makeDefaultViewer() {
 void Application::setDefaultViewer() {
     if (auto* prefs = PreferencesDialog::existingInstance())
         prefs->showStatus(tr("Lumaflip wird als Standard-App festgelegt …"));
-    shell().makeDefaultViewerAsync(shell().imageDocumentTypes(), this, [this](bool ok, const QString& error) {
+    auto done = [this](bool ok, const QString& error) {
         const QString message =
             ok ? tr("Lumaflip ist jetzt die Standard-App für Bilder.")
                : tr("Lumaflip konnte nicht als Standard-App festgelegt werden:\n%1").arg(error);
@@ -903,7 +1067,16 @@ void Application::setDefaultViewer() {
         box->setAttribute(Qt::WA_DeleteOnClose);
         box->open();
         emit defaultViewerFinished(ok, message);
-    });
+    };
+    // Slow answer (macOS may ask the user): a note, not a failure; the result follows.
+    auto pending = [this](const QString& message) {
+        if (auto* prefs = PreferencesDialog::existingInstance())
+            prefs->showStatus(message);
+        else if (ViewerWindow* w = frontWindow())
+            w->showMessage(message, 5000);
+        emit defaultViewerPending(message);
+    };
+    shell().makeDefaultViewerAsync(shell().imageDocumentTypes(), this, done, pending);
 }
 
 bool Application::openUrl(const QUrl& url) {
@@ -953,8 +1126,18 @@ bool Application::eventFilter(QObject* watched, QEvent* event) {
         return true;
     }
     case QEvent::Quit:
+        if (watched != qApp)
+            break;
+        if (fileOps().isBusy()) {
+            // Quit from the Dock or at logout while file operations are pending: refused
+            // for now (macOS cancels the termination), the app quits by itself once they
+            // are done (never dropped silently).
+            quit();
+            event->ignore();
+            return true;
+        }
         // Quit from the Dock or at logout: windows are still open here (F-WIN-06).
-        if (watched == qApp && !d->quitting) {
+        if (!d->quitting) {
             saveSession();
             d->quitting = true;
         }

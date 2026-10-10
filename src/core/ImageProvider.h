@@ -28,9 +28,18 @@ class ImageProvider : public QObject {
     Q_OBJECT
 public:
     explicit ImageProvider(DecoderRegistry& registry, QObject* parent = nullptr);
+    // Uses DecoderRegistry::instance(), built on the first decode (not when constructed).
+    explicit ImageProvider(QObject* parent = nullptr);
     ~ImageProvider() override;
 
     static ImageProvider& instance();  // shared by all windows
+
+    // P-01: starts decoding `path` (normalized absolute path, as collections use it) at
+    // Screen quality for a view of `target` device pixels on a background thread, with
+    // the platform's primary decoder only. May be called before the application object
+    // exists. The provider that first requests `path` adopts the result (or the running
+    // decode) instead of decoding again; a failure is ignored (the regular decode reports).
+    static void prestart(const QString& path, QSize target);
 
     // Returns a cached image of at least the requested quality immediately if
     // available (may be nullptr), and schedules loading otherwise; `imageReady`
@@ -55,6 +64,10 @@ public:
     void invalidate(const QString& path);
 
     void setMemoryBudget(qint64 bytes);  // P-09
+    static qint64 defaultMemoryBudget(); // 25 % of the RAM, at most 2 GB
+    // P-08: no decoded image is larger than this (half the budget, at most 1 GB, at
+    // least 16 MB); bigger images are downsampled while decoding.
+    qint64 maxDecodeBytes() const;
     // Setting "RAW: nur eingebettete Vorschau" (F-FMT-05): every stage of a camera RAW
     // file is taken from its embedded preview instead of a full development.
     void setRawEmbeddedOnly(bool embeddedOnly);
@@ -76,8 +89,12 @@ signals:
     // e.g. the full-resolution decode of a huge image while the screen stage is shown.
     // The failed stage is not retried until invalidate(path).
     void stageFailed(const QString& path, lf::Quality quality, const QString& error);
+    // Everything cached of `path` was dropped (file changed, RAW setting changed). What a
+    // window shows of it is outdated; the stages it wants are decoded again.
+    void invalidated(const QString& path);
 
 private:
+    void init();
     struct Private;
     Private* d;
 };

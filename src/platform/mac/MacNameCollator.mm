@@ -56,6 +56,17 @@ class MacNameCollator final : public NameCollator {
             kCFAllocatorDefault, reinterpret_cast<const UniChar*>(a.utf16()), a.size(), kCFAllocatorNull);
         CFStringRef sb = CFStringCreateWithCharactersNoCopy(
             kCFAllocatorDefault, reinterpret_cast<const UniChar*>(b.utf16()), b.size(), kCFAllocatorNull);
+        const int result = compareStrings(sa, sb, locale, a, b);
+        if (sa)
+            CFRelease(sa);
+        if (sb)
+            CFRelease(sb);
+        return result;
+    }
+
+    // The comparison (F-SORT-01): localizedStandardCompare: semantics.
+    static int compareStrings(CFStringRef sa, CFStringRef sb, CFLocaleRef locale, const QString& a,
+                              const QString& b) {
         int result = 0;
         if (sa && sb) {
             const CFStringCompareFlags flags = kCFCompareCaseInsensitive | kCFCompareNumerically |
@@ -66,14 +77,14 @@ class MacNameCollator final : public NameCollator {
         } else {
             result = a.compare(b);
         }
-        if (sa)
-            CFRelease(sa);
-        if (sb)
-            CFRelease(sb);
         return result < 0 ? -1 : (result > 0 ? 1 : 0);
     }
 
-  private:
+    // P-05: one CFString per name for the whole sort instead of two per comparison. The
+    // comparison itself is the same call as compare(), so the order is identical.
+    std::unique_ptr<PreparedNames> prepare(QVector<QString> names) const override;
+
+private:
     // Cached locale, refreshed when the generation changed. Superseded locales are kept
     // until destruction because another thread may still compare with them (locale
     // changes are rare, so this is a few objects at most).
@@ -97,6 +108,45 @@ class MacNameCollator final : public NameCollator {
     mutable std::atomic<quint64> generation_{0};
     mutable std::vector<CFLocaleRef> retired_;
 };
+
+// Names of one sort with their CFStrings (no-copy views of the QString buffers, which
+// this object owns) and the locale of that moment.
+class MacPreparedNames final : public PreparedNames {
+public:
+    MacPreparedNames(QVector<QString> names, CFLocaleRef locale)
+        : m_names(std::move(names)), m_locale(locale) {
+        if (m_locale)
+            CFRetain(m_locale);
+        m_strings.reserve(size_t(m_names.size()));
+        for (const QString& s : std::as_const(m_names))
+            m_strings.push_back(CFStringCreateWithCharactersNoCopy(
+                kCFAllocatorDefault, reinterpret_cast<const UniChar*>(s.utf16()), s.size(),
+                kCFAllocatorNull));
+    }
+    ~MacPreparedNames() override {
+        for (CFStringRef s : m_strings)
+            if (s)
+                CFRelease(s);
+        if (m_locale)
+            CFRelease(m_locale);
+    }
+    MacPreparedNames(const MacPreparedNames&) = delete;
+    MacPreparedNames& operator=(const MacPreparedNames&) = delete;
+
+    int compare(qsizetype i, qsizetype j) const override {
+        return MacNameCollator::compareStrings(m_strings[size_t(i)], m_strings[size_t(j)], m_locale,
+                                               m_names[i], m_names[j]);
+    }
+
+private:
+    QVector<QString> m_names; // must not be modified: the CFStrings point into its buffers
+    CFLocaleRef m_locale;
+    std::vector<CFStringRef> m_strings;
+};
+
+std::unique_ptr<PreparedNames> MacNameCollator::prepare(QVector<QString> names) const {
+    return std::make_unique<MacPreparedNames>(std::move(names), currentLocale());
+}
 
 } // namespace
 

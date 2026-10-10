@@ -683,7 +683,7 @@ private slots:
     // Covers: F-WIN-06 (windows come back with folder, image, zoom and position)
     void F_WIN_06_restoreWindows() {
         makeStandardFolder();
-        QVERIFY(Settings::instance().value(key::RestoreWindows).toBool());
+        Settings::instance().setValue(key::RestoreWindows, true); // default: off like macOS (F-WIN-06)
         ViewerWindow* a = app->openPaths({path("IMG_2.jpg")});
         QVERIFY(waitLoaded(a));
         a->setZoomMode(ZoomMode::Actual);
@@ -752,13 +752,11 @@ private slots:
         QTRY_COMPARE(app->windows().size(), 1);
         app->closeAllWindows();
         QCOMPARE(app->windows().size(), 0);
-        QWindowSystemInterface::handleApplicationStateChanged<QWindowSystemInterface::SynchronousDelivery>(
-            Qt::ApplicationActive, true);
+        app->handleDockReopen(); // applicationShouldHandleReopen (see tst_review3 for the hook)
         QTRY_COMPARE(app->windows().size(), 1);
         QVERIFY(app->windows().first()->isEmpty());
         // With a window open nothing more happens.
-        QWindowSystemInterface::handleApplicationStateChanged<QWindowSystemInterface::SynchronousDelivery>(
-            Qt::ApplicationActive, true);
+        app->handleDockReopen();
         QTest::qWait(50);
         QCOMPARE(app->windows().size(), 1);
     }

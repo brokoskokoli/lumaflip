@@ -190,9 +190,23 @@ std::optional<DecodedImage> QtImageDecoder::decode(const QString& path, const De
     const QSize stored = r.size();
     const int orientation = orientationFromTransform(r.transformation());
     QSize fullSize = orientation >= 5 ? stored.transposed() : stored;
-    if (req.maxPixelSize > 0 && stored.isValid() &&
-        std::max(stored.width(), stored.height()) > req.maxPixelSize)
-        r.setScaledSize(fitLongEdge(stored, req.maxPixelSize));
+    int maxEdge = req.maxPixelSize;
+    if (req.maxBytes > 0 && stored.isValid() && !stored.isEmpty()) {
+        // P-08: byte limit of the decoded buffer (deep formats: 8 bytes per pixel).
+        const qint64 bpp = isDeep(r.imageFormat()) ? 8 : 4;
+        const double pixels = double(stored.width()) * double(stored.height());
+        const double maxPixels = double(std::max<qint64>(1, req.maxBytes / bpp));
+        if (pixels > maxPixels) {
+            const int longE = std::max(stored.width(), stored.height());
+            const int shortE = std::min(stored.width(), stored.height());
+            int edge = std::max(1, int(std::floor(longE * std::sqrt(maxPixels / pixels))));
+            while (edge > 1 && double(edge) * std::ceil(double(edge) * shortE / longE) > maxPixels)
+                --edge; // the short edge is rounded up when scaling
+            maxEdge = maxEdge > 0 ? std::min(maxEdge, edge) : edge;
+        }
+    }
+    if (maxEdge > 0 && stored.isValid() && std::max(stored.width(), stored.height()) > maxEdge)
+        r.setScaledSize(fitLongEdge(stored, maxEdge));
     QImage img = r.read();
     if (img.isNull()) {
         setError(error, tr("Das Bild konnte nicht dekodiert werden: %1").arg(r.errorString()));

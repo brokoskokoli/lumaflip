@@ -384,11 +384,10 @@ TEST_F(InputBindingsTest, F_IN_18_Presets) {
     {
         InputBindings b;
         EXPECT_EQ(b.resolve(wheelEv(-1)), Action::ZoomIn);       // wheel = zoom
-        EXPECT_EQ(b.resolve(keyEv(Qt::Key_3)), Action::Rate3);   // digits = stars
-        EXPECT_EQ(b.resolve(keyEv(Qt::Key_0)), Action::Rate0);
-        EXPECT_EQ(b.resolve(keyEv(Qt::Key_P)), Action::RatePick);
-        EXPECT_EQ(b.resolve(keyEv(Qt::Key_X)), Action::RateReject);
-        EXPECT_EQ(b.resolve(keyEv(Qt::Key_U)), Action::RateClear);
+        // Rating keys "always" are not available before 1.0: the preset leaves the
+        // culling-only default (digits keep zooming outside the culling mode).
+        EXPECT_EQ(b.choice("ratingKeys"), "cullingOnly");
+        EXPECT_EQ(b.resolve(keyEv(Qt::Key_3)), Action::ZoomActual);
         EXPECT_EQ(b.resolve(keyEv(Qt::Key_0, Cmd)), Action::ZoomActual);  // ⌘0 still zooms
     }
     InputBindings::applyPreset("windows");

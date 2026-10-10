@@ -2,6 +2,7 @@
 // macOS shell integration: reveal in Finder (F-FILE-02), open with (F-FILE-05),
 // default viewer registration (F-MAC-04).
 
+#include "MacDefaultApp.h"
 #include "core/Platform.h"
 
 #include <QCoreApplication>
@@ -15,7 +16,8 @@ namespace lf {
 
 namespace {
 
-constexpr int64_t kDefaultAppTimeoutSec = 10;
+constexpr int64_t kDefaultAppTimeoutSec = 10; // blocking variant only
+constexpr int kDefaultAppPendingMs = 3000;    // "still running" note (async)
 
 QString tr(const char* text) {
     return QCoreApplication::translate("lf::Shell", text);
@@ -73,69 +75,39 @@ public:
                 "public.svg-image"};
     }
 
-    // Non-blocking: the completion handlers are collected with a dispatch group; the
-    // result (or a timeout) is delivered on the main queue, i.e. the GUI thread.
-    void makeDefaultViewerAsync(const QStringList& types, QObject* context, DefaultViewerDone done) override {
-        QPointer<QObject> guard(context);
-        auto deliver = [guard, done](bool ok, const QString& error) {
-            if (guard && done)
-                done(ok, error);
-        };
+    // Non-blocking (F-MAC-04): the per-type completion handlers are collected thread-safely
+    // (MacDefaultApp); the final result is delivered whenever the system answers. After a
+    // while without an answer the user gets a "still running" note instead of a failure:
+    // macOS may be waiting for a confirmation dialog.
+    void makeDefaultViewerAsync(const QStringList& types, QObject* context, DefaultViewerDone done,
+                                DefaultViewerPending pending) override {
         @autoreleasepool {
             NSURL* bundle = [[NSBundle mainBundle] bundleURL];
             if (![bundle.pathExtension isEqualToString:@"app"]) {
                 const QString error = tr("Lumaflip läuft nicht als App-Paket und kann nicht als Standard-App "
                                          "festgelegt werden.");
+                QPointer<QObject> guard(context);
                 QMetaObject::invokeMethod(
-                    context, [deliver, error] { deliver(false, error); }, Qt::QueuedConnection);
+                    context,
+                    [guard, done, error] {
+                        if (guard && done)
+                            done(false, error);
+                    },
+                    Qt::QueuedConnection);
                 return;
             }
-            NSMutableArray<NSString*>* errors = [NSMutableArray array];
-            dispatch_group_t group = dispatch_group_create();
-            __block BOOL delivered = NO;
-            for (const QString& t : types) {
+            auto known = [](const QString& t) { return [UTType typeWithIdentifier:t.toNSString()] != nil; };
+            mac::SetDefaultApp setter = [bundle](const QString& t,
+                                                 std::function<void(const QString&)> completion) {
                 UTType* type = [UTType typeWithIdentifier:t.toNSString()];
-                if (!type) {
-                    [errors addObject:[NSString stringWithFormat:@"%@: %@", t.toNSString(),
-                                                                 tr("unbekannter Typ").toNSString()]];
-                    continue;
-                }
-                NSString* ident = t.toNSString();
-                dispatch_group_enter(group);
                 [[NSWorkspace sharedWorkspace]
                     setDefaultApplicationAtURL:bundle
                              toOpenContentType:type
                              completionHandler:^(NSError* err) {
-                               if (err) {
-                                   @synchronized(errors) {
-                                       [errors
-                                           addObject:[NSString stringWithFormat:@"%@: %@", ident,
-                                                                                err.localizedDescription]];
-                                   }
-                               }
-                               dispatch_group_leave(group);
+                               completion(err ? QString::fromNSString(err.localizedDescription) : QString());
                              }];
-            }
-            auto finish = ^(BOOL timedOut) {
-              if (delivered)
-                  return;
-              delivered = YES;
-              QStringList messages;
-              @synchronized(errors) {
-                  for (NSString* e in errors)
-                      messages << QString::fromNSString(e);
-              }
-              if (timedOut)
-                  messages << tr("Zeitüberschreitung bei der Rückmeldung des Systems.");
-              deliver(messages.isEmpty(), messages.join(QLatin1Char('\n')));
             };
-            dispatch_group_notify(group, dispatch_get_main_queue(), ^{
-              finish(NO);
-            });
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kDefaultAppTimeoutSec * int64_t(NSEC_PER_SEC)),
-                           dispatch_get_main_queue(), ^{
-                             finish(YES);
-                           });
+            mac::registerDefaultApp(types, known, setter, kDefaultAppPendingMs, context, done, pending);
         }
     }
 

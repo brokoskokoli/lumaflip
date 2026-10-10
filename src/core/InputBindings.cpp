@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "InputBindings.h"
 
+#include <QSet>
+
 #include "Settings.h"
 
 #include <QCoreApplication>
@@ -423,10 +425,52 @@ void InputBindings::applyPreset(const QString& presetId) {
     for (const auto& s : inputSlots()) {
         if (s.id == QLatin1String("endOfCollection"))
             continue;  // navigation setting, not part of the input profile
-        b.setChoice(s.id, p.value(s.id, s.defaultChoice));
+        const QString wanted = p.value(s.id, s.defaultChoice);
+        b.setChoice(s.id, isChoiceAvailable(s.id, wanted) ? wanted : s.defaultChoice);
     }
     b.setShortcuts(Action::ToggleFullScreen, fullScreen);
     b.setShortcuts(Action::Rename, rename);
+}
+
+bool InputBindings::isChoiceAvailable(const QString& slotId, const QString& choiceId) {
+    static const QSet<QString> later = {
+        QStringLiteral("middleClick:magnifier"), // F-IN-11 Lupe
+        QStringLiteral("drag:dragOut"),          // F-IN-14 Datei herausziehen (F-FILE-07)
+        QStringLiteral("space:slideshow"),       // Diashow
+        QStringLiteral("pageUpDown:page"),       // mehrseitige Dateien
+        QStringLiteral("ratingKeys:always"),     // Bewertungen (F-CULL-01)
+    };
+    return !later.contains(slotId + QLatin1Char(':') + choiceId);
+}
+
+bool InputBindings::isActionAvailable(Action a) {
+    switch (a) {
+    case Action::NextPage:
+    case Action::PreviousPage:
+    case Action::ToggleAnimation:
+    case Action::NextFrame:
+    case Action::PreviousFrame:
+    case Action::ToggleSlideshow:
+    case Action::Rename:
+    case Action::OpenInEditor:
+    case Action::ToggleInfoPanel:
+    case Action::ToggleFilmstrip:
+    case Action::ToggleGrid:
+    case Action::Magnifier:
+    case Action::DragOut:
+    case Action::Rate0:
+    case Action::Rate1:
+    case Action::Rate2:
+    case Action::Rate3:
+    case Action::Rate4:
+    case Action::Rate5:
+    case Action::RatePick:
+    case Action::RateReject:
+    case Action::RateClear:
+        return false;
+    default:
+        return a != Action::None;
+    }
 }
 
 // ---- shortcuts ----

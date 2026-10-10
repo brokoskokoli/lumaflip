@@ -209,14 +209,22 @@ bool jpegLooksTruncated(const QString& path) {
     return !tail.contains(QByteArrayLiteral("\xFF\xD9"));
 }
 
-// Long edge for a full-resolution decode of a w x h image, honouring the caps.
-int cappedLongEdge(int w, int h) {
+// Long edge for a full-resolution decode of a w x h image, honouring the caps: the fixed
+// edge/pixel limits and `maxPixels` (from DecodeRequest::maxBytes, 0 = none).
+int cappedLongEdge(int w, int h, qint64 maxPixels = 0) {
     const qint64 edge = std::max(w, h);
     qint64 cap = std::min<qint64>(edge, ImageIODecoder::kMaxFullEdge);
+    qint64 pixelCap = ImageIODecoder::kMaxFullPixels;
+    if (maxPixels > 0)
+        pixelCap = std::min(pixelCap, maxPixels);
     const double pixels = double(w) * double(h);
-    if (pixels > double(ImageIODecoder::kMaxFullPixels)) {
-        const double scale = std::sqrt(double(ImageIODecoder::kMaxFullPixels) / pixels);
+    if (pixels > double(pixelCap)) {
+        const double scale = std::sqrt(double(pixelCap) / pixels);
         cap = std::min<qint64>(cap, qint64(std::floor(double(edge) * scale)));
+        // The short edge is rounded up by the scaler: stay below the cap with it.
+        const double shortEdge = std::min(w, h);
+        while (cap > 1 && double(cap) * std::ceil(double(cap) * shortEdge / double(edge)) > double(pixelCap))
+            --cap;
     }
     return int(std::max<qint64>(1, cap));
 }
@@ -646,14 +654,19 @@ std::optional<DecodedImage> ImageIODecoder::decode(const QString& path, const De
             opts[(__bridge NSString*)kCGImageSourceDecodeRequest] =
                 (__bridge NSString*)kCGImageSourceDecodeToHDR;
 
-        // Full decodes beyond the cap are downsampled to the cap (see header).
+        // Full decodes beyond the cap are downsampled to the cap (see header). P-08: the
+        // byte limit counts the output format (16-bit and float sources: 8 bytes/pixel).
+        const bool deepSource = hdr || [value(props, kCGImagePropertyIsFloat) boolValue] ||
+                                [value(props, kCGImagePropertyDepth) intValue] > 8;
+        const qint64 maxPixels =
+            req.maxBytes > 0 ? std::max<qint64>(1, req.maxBytes / (deepSource ? 8 : 4)) : 0;
         int maxPixelSize = req.maxPixelSize;
         bool capped = false;
-        if (maxPixelSize <= 0 && !req.preferEmbeddedPreview && pw > 0 && ph > 0) {
-            const int cap = cappedLongEdge(pw, ph);
-            if (cap < std::max(pw, ph)) {
+        if (pw > 0 && ph > 0) {
+            const int cap = cappedLongEdge(pw, ph, maxPixels);
+            if (maxPixelSize <= 0 ? cap < std::max(pw, ph) : maxPixelSize > cap) {
                 maxPixelSize = cap;
-                capped = true;
+                capped = !req.preferEmbeddedPreview;
             }
         }
 

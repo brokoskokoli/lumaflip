@@ -2,6 +2,7 @@
 #include "Settings.h"
 
 #include "InputBindings.h"
+#include "Platform.h"
 
 #include <QCoreApplication>
 #include <QCryptographicHash>
@@ -22,6 +23,7 @@
 #include <QStandardPaths>
 #include <QThread>
 
+#include <atomic>
 #include <memory>
 
 #ifdef Q_OS_UNIX
@@ -40,7 +42,16 @@ struct KeyInfo {
     QStringList allowed;  // String: allowed values (empty = any)
     bool colorAllowed = false;
     int min = 0, max = 0;  // Int
+    QVariant (*dynamicDefault)() = nullptr; // default that follows a system setting
 };
+
+// F-WIN-06: the default of "restore windows" follows the system setting "Fenster beim
+// Beenden schließen" (NSQuitAlwaysKeepsWindows); tests can pin it.
+std::atomic<int> g_restoreDefaultOverride{-1}; // -1: system
+QVariant restoreWindowsDefault() {
+    const int o = g_restoreDefaultOverride.load();
+    return o >= 0 ? o == 1 : systemRestoresWindows();
+}
 
 using Registry = QMap<QString, KeyInfo>;  // sorted
 
@@ -56,7 +67,8 @@ const Registry& registry() {
         };
         s(key::OpenBehavior, "newWindow", {"newWindow", "replaceFront", "newUnlessOpen"});
         b(key::FitWindowToImage, false);
-        b(key::RestoreWindows, true);
+        b(key::RestoreWindows, false);
+        r[QString::fromLatin1(key::RestoreWindows)].dynamicDefault = &restoreWindowsDefault;
         b(key::TitleShowFolder, false);
         b(key::ConfirmTrash, false);
         s(key::Background, "dark", {"dark", "light", "system", "checker"}, true);
@@ -270,6 +282,13 @@ bool Settings::migrateFile(const QString& oldPath, const QString& newPath) {
 int Settings::migrateLegacyLocations() {
     int copied = 0;
     {
+        // Every launch after the first: nothing to read from the old locations (P-01).
+        Settings& s = instance();
+        QMutexLocker lock(&s.d->mutex);
+        if (s.d->settings().value(QString::fromLatin1(kMigratedKey)).toBool())
+            return 0;
+    }
+    {
         QSettings legacy(QSettings::NativeFormat, QSettings::UserScope, QString::fromLatin1(kOrgDomain),
                          QString::fromLatin1(kLegacySettingsApp));
         Settings& s = instance();
@@ -322,7 +341,13 @@ QStringList Settings::knownKeys() { return registry().keys(); }
 
 QVariant Settings::defaultValue(const QString& key) const {
     const KeyInfo* info = findKey(key);
+    if (info && info->dynamicDefault)
+        return info->dynamicDefault();
     return info ? info->def : QVariant();
+}
+
+void Settings::setSystemRestoreWindowsForTesting(int value) {
+    g_restoreDefaultOverride = value < 0 ? -1 : (value ? 1 : 0);
 }
 
 QVariant Settings::value(const QString& key) const {
@@ -335,7 +360,9 @@ QVariant Settings::value(const QString& key) const {
     if (!info)
         return raw;  // keys owned by other modules (e.g. window geometry)
     const QVariant v = normalize(*info, raw);
-    return v.isValid() ? v : info->def;
+    if (v.isValid())
+        return v;
+    return info->dynamicDefault ? info->dynamicDefault() : info->def;
 }
 
 void Settings::setValue(const QString& key, const QVariant& value) {

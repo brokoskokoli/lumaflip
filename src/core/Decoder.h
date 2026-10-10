@@ -40,6 +40,10 @@ struct DecodeRequest {
     // Max size of the longer edge after orientation; 0 = full resolution.
     // Backends should use decode-time downsampling (e.g. ImageIO thumbnails).
     int maxPixelSize = 0;
+    // P-08: upper bound of the decoded pixel buffer in bytes (image.sizeInBytes()), taking
+    // the output format into account (16-bit/float = 8 bytes per pixel); larger images are
+    // downsampled while decoding. 0 = no limit beyond the backend's own caps.
+    qint64 maxBytes = 0;
     bool preferEmbeddedPreview = false;  // fast path for RAW/JPEG (F-FMT-05)
     bool hdr = false;                    // decode to extended range float if possible (F-COL-03)
 };

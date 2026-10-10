@@ -28,6 +28,7 @@ struct FolderSnapshot {
     bool accessDenied = false;  // folder exists but cannot be listed (F-PRIV-01)
     bool privacyDenied = false; // ... because of macOS privacy protection (TCC, EPERM)
     quint64 generation = 0;
+    qint64 folderStamp = -1; // modification time of the folder (ns) before enumerating
 };
 using FolderSnapshotPtr = std::shared_ptr<const FolderSnapshot>;
 
@@ -40,7 +41,16 @@ public:
 
     // Current snapshot of `folderPath` (worker threads; blocks while another thread
     // enumerates the same folder). `attributes` (may be null) fills the entries.
-    FolderSnapshotPtr get(const QString& folderPath, FileAttributeProvider* attributes);
+    // `revalidate` (an explicit open): a cached snapshot is only taken if the folder's
+    // modification time is unchanged - cheap, and correct also on volumes without change
+    // notifications (network shares), where invalidate() never comes.
+    FolderSnapshotPtr get(const QString& folderPath, FileAttributeProvider* attributes,
+                          bool revalidate = false);
+    // Modification time of a folder in ns (-1 if it cannot be read).
+    static qint64 folderStamp(const QString& folderPath);
+    // Worker threads: the current snapshot of `folderPath` no longer matches the folder's
+    // modification time (false if there is no current snapshot).
+    bool isStale(const QString& folderPath) const;
     // The folder changed: the next get() enumerates again.
     void invalidate(const QString& folderPath);
 

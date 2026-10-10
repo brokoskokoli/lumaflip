@@ -47,4 +47,8 @@ std::unique_ptr<Shell> createShell() {
     return std::make_unique<GenericShell>();
 }
 
+bool systemRestoresWindows() {
+    return false; // like the macOS default
+}
+
 } // namespace lf

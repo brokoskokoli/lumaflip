@@ -35,6 +35,8 @@ struct AppServices {
     std::function<bool(const QUrl&)> openUrl;
     // The key window menu commands go to; default QApplication::activeWindow().
     std::function<QWidget*()> activeWindow;
+    // Ends the event loop after quit(); default QCoreApplication::quit (tests record it).
+    std::function<void()> quitApp;
 };
 
 // Paths of an open request after looking at the file system (on a worker thread).
@@ -57,10 +59,11 @@ public:
     // Without any open request, the start window appears after this delay.
     static constexpr int kEmptyStartDelayMs = 350;
 
-    // main(): opens the paths given on the command line (one request), otherwise
-    // restores the last session (F-WIN-06) or shows an empty window unless an open
-    // event arrives first.
+    // main(): opens the paths given on the command line (one request). Otherwise, if no
+    // open request arrives within kEmptyStartDelayMs (plain launch), the last session is
+    // restored (F-WIN-06) or an empty window appears; an open request cancels both.
     void start(const QStringList& arguments);
+    bool isRestorePending() const; // the last session is about to come back
 
     // Opens paths as one request according to the open behavior (F-WIN-02).
     // Files go to one window (one file = its folder, several = exactly those),
@@ -93,6 +96,8 @@ public:
     void showPreferences();
     void showAbout();
     void showShortcuts();
+    // Dock icon clicked (applicationShouldHandleReopen): an empty window if none is open.
+    void handleDockReopen();
     // F-MAC-04: asks first (non-blocking), then setDefaultViewer().
     void makeDefaultViewer();
     // Registers the app for the image types without blocking; the result is shown as a
@@ -100,7 +105,10 @@ public:
     void setDefaultViewer();
     bool openUrl(const QUrl& url);    // via Services::openUrl
     static QUrl privacySettingsUrl(); // Datenschutz & Sicherheit -> Dateien und Ordner
-    void quit();                      // ⌘Q: remembers the windows (F-WIN-06), then quits
+    // ⌘Q: remembers the windows (F-WIN-06), then quits. Pending file operations are
+    // finished first (busy cursor and message); the app quits when they are done.
+    void quit();
+    bool isQuitPending() const; // quit() waits for file operations
 
     // F-WIN-06: windows with folder/files, current image, zoom mode and geometry.
     void saveSession();
@@ -122,6 +130,12 @@ public:
     void windowActivated(ViewerWindow* window);
     void windowChanged(ViewerWindow* window); // title/state changed (menus)
     void setWindowFolder(ViewerWindow* window, const QString& oldFolder, const QString& newFolder);
+    // A folder is opened from another window's copy (F-WIN-09): checks in the background
+    // whether it changed without a watcher event (B12: network volumes) and reloads it in
+    // every window if so.
+    void revalidateFolder(const QString& folder);
+    // The folder changed (watcher, revalidation): one new enumeration for all windows.
+    void folderChangedOnDisk(const QString& folder);
     // Places a new window: last size, cascaded, never (nearly) on top of another (F-WIN-08).
     void placeWindow(ViewerWindow* window);
     // "Nicht gefunden: …" in `preferred`, the front window or a new window (F-OPEN-01).
@@ -130,6 +144,8 @@ public:
 signals:
     void windowsChanged();
     void defaultViewerFinished(bool ok, const QString& message);
+    // The registration takes long (macOS may wait for the user); the result still follows.
+    void defaultViewerPending(const QString& message);
     void sessionRestored();
 
 protected:
@@ -142,9 +158,12 @@ private:
     ViewerWindow* openInWindow(const QStringList& paths, bool isFolder, bool* reusedOrCreated = nullptr);
     void addRecent(const QStringList& paths);
     void flushOpenBurst();
-    void handleReopen(); // Dock icon clicked
-    void restoreSession();
+    void openClassified(const ClassifiedPaths& c, ViewerWindow* preferred = nullptr);
+    void restoreSession(); // checks the saved windows' files (worker)
+    void applyRestore();   // creates the windows
+    void cancelPendingRestore();
     void updateBusy(bool busy);
+    QString busyText() const;
 
     struct Private;
     std::unique_ptr<Private> d;
