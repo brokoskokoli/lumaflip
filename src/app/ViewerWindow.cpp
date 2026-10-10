@@ -63,6 +63,13 @@
 namespace lf {
 
 namespace {
+// F-VIEW-10: a native full screen animation starts within this after the request (else
+// AppKit dropped it) and ends within kFsAnimationMs (it takes about 0.7 s).
+constexpr int kFsStartMs = 800;
+constexpr int kFsAnimationMs = 3000;
+} // namespace
+
+namespace {
 
 constexpr int kChromeHideMs = 1500; // SPEC 5.1: hide after 1.5 s idle in fullscreen
 constexpr int kChromeEdgePx = 48;   // mouse this close to the bottom/top edge reveals it
@@ -313,14 +320,11 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     });
     m_fsGuard = new QTimer(this);
     m_fsGuard->setSingleShot(true);
-    m_fsGuard->setInterval(3000); // the animation takes about 0.7 s
     connect(m_fsGuard, &QTimer::timeout, this, [this] {
+        // No start (AppKit dropped the request, e.g. while another window's space animation
+        // runs) or no end reported: go on from what the native window is.
         m_fsTransition = false;
-        settleFullScreen();
-        // Qt never caught up with the native window: give the request up (no stuck state).
-        const NativeWindowState native = nativeWindowState(this);
-        if (!m_fsTransition && m_fsTarget && native.valid && native.fullScreen != isFullScreen())
-            m_fsTarget.reset();
+        settleFullScreen(true);
     });
     m_resizeTimer = new QTimer(this);
     m_resizeTimer->setSingleShot(true);
@@ -1584,7 +1588,7 @@ void ViewerWindow::applyFullScreen() {
             onFullScreenTransition(entering, finished);
         })) {
         m_fsTransition = true;
-        m_fsGuard->start();
+        m_fsGuard->start(kFsStartMs); // the animation must start soon, else it was dropped
     }
     if (on) {
         showFullScreen();
@@ -1601,7 +1605,7 @@ void ViewerWindow::applyFullScreen() {
 void ViewerWindow::onFullScreenTransition(bool, bool finished) {
     if (!finished) {
         m_fsTransition = true; // also one the user started (green button, gesture)
-        m_fsGuard->start();
+        m_fsGuard->start(kFsAnimationMs);
         return;
     }
     m_fsTransition = false;
@@ -1614,13 +1618,24 @@ void ViewerWindow::onFullScreenTransition(bool, bool finished) {
     });
 }
 
-void ViewerWindow::settleFullScreen() {
+void ViewerWindow::settleFullScreen(bool force) {
     if (m_fsTransition || !m_fsTarget)
         return;
     const NativeWindowState native = nativeWindowState(this);
     const bool actual = native.valid ? native.fullScreen : isFullScreen();
-    if (isFullScreen() != actual)
-        return; // Qt has not caught up with the native window yet: WindowStateChange follows
+    if (isFullScreen() != actual) {
+        if (!force) {
+            // Qt has not caught up with the native window yet: its WindowStateChange
+            // follows; if it never comes, the guard forces it.
+            m_fsGuard->start(kFsStartMs);
+            return;
+        }
+        // Qt's state says what was asked, the native window never got there (request
+        // dropped): Qt's state back to the native one - no native change, it is there
+        // already - so that the request below really reaches AppKit.
+        setWindowState(actual ? (windowState() | Qt::WindowFullScreen)
+                              : (windowState() & ~Qt::WindowFullScreen));
+    }
     if (actual != *m_fsTarget) {
         applyFullScreen(); // requested during the animation (or dropped by AppKit): now
         return;

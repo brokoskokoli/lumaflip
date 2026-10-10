@@ -247,7 +247,7 @@ private:
     std::optional<bool> m_fsTarget;
     QTimer* m_fsGuard = nullptr; // a transition that never reports its end
     void applyFullScreen();
-    void settleFullScreen();
+    void settleFullScreen(bool force = false);
     void onFullScreenTransition(bool entering, bool finished);
     bool m_reloadResetsView = false;    // the file was rewritten (saved rotation): reset the view rotation
     bool m_rotationSaving = false;
