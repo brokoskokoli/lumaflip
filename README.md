@@ -126,6 +126,14 @@ Requirements: **macOS 15 Sequoia or later** on an **Apple Silicon** Mac.
   `brew install --cask brokoskokoli/tap/lumaflip`. Once it is accepted into
   `homebrew/cask`, the command will be `brew install --cask lumaflip`.
 
+### Linux (preview)
+
+An **AppImage** for x86_64 Linux (glibc 2.39+, e.g. Ubuntu 24.04 or newer) is built by CI
+(artifact `Lumaflip-linux-x86_64-AppImage` of the "Linux app" job):
+`chmod +x Lumaflip-<version>-x86_64.AppImage` and run it. *File → Set as Default App…* registers it
+as your image viewer. HEIC needs a separately installed HEVC decoder; Live Text, Quick Look, maps
+and HDR (EDR) are macOS-only. Details, building from source and the sandbox: [docs/LINUX.md](docs/LINUX.md).
+
 The first time you open an image from Desktop, Documents, Downloads, a removable drive or a network
 volume, macOS asks once for access. Lumaflip needs to read the image's folder so you can flip
 through it.
@@ -183,6 +191,10 @@ tools/run.sh [image]                   # build only the app and start it
 tools/check.sh --quick --no-gui        # build + unit tests (no windows opened)
 tools/package.sh                       # self-contained app + DMG/ZIP in dist/ (ad-hoc signed)
 ```
+
+On Linux: `cmake -S . -B build/linux -G Ninja && cmake --build build/linux`, then
+`tools/linux_appimage.sh build/linux dist` for an AppImage; dependencies are listed in
+[docs/LINUX.md](docs/LINUX.md).
 
 Qt 6.11 from Homebrew. resvg is optional; without it, SVG falls back to Qt SVG. More detail is in
 [CONTRIBUTING.md](CONTRIBUTING.md), and signing, notarization and releases are covered in

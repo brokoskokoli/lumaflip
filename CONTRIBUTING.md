@@ -26,8 +26,28 @@ tools/check.sh --quick --no-gui        # build + unit tests, opens no windows
 - `tools/fetch_sparkle.sh` (optional) downloads Sparkle 2 into `third_party/` for the auto-updater;
   without it the app builds with the updater disabled.
 - Build directories live under `build/`. Don't delete them; use `cmake --fresh` if a cache is stale.
-- The core also builds without the macOS layer:
-  `cmake -B build/generic -DLF_FORCE_GENERIC_PLATFORM=ON …` (similar to the Linux CI job, which builds only the core).
+- The app also builds without the macOS layer:
+  `cmake -B build/generic -DLF_FORCE_GENERIC_PLATFORM=ON …` uses `src/platform/generic` and
+  `src/app/generic` like Linux (and the library decoders libheif/libjxl/LibRaw/OpenEXR if Homebrew
+  has them); handy for compiling and unit-testing the portable parts on a Mac.
+
+### Linux
+
+```sh
+sudo apt install cmake ninja-build clang pkg-config libgtest-dev libarchive-dev \
+  libheif-dev libheif-plugin-dav1d libjxl-dev libraw-dev libopenexr-dev librsvg2-bin
+# Qt 6.11 with qtimageformats + qtshadertools (aqtinstall or the Qt installer)
+cmake -S . -B build/linux -G Ninja -DCMAKE_PREFIX_PATH=<Qt>/6.11.x/gcc_64
+cmake --build build/linux
+ctest --test-dir build/linux -L unit
+xvfb-run -a ctest --test-dir build/linux -L integration
+tools/linux_appimage.sh build/linux dist   # AppImage
+```
+
+Linux-only code lives in `src/platform/linux` (inotify, `user.xdg.tags`, seccomp/Landlock) and
+replaces the file of the same name in `src/platform/generic`; tests that need it include a
+`platform/linux/` header and are only built on Linux. Platform differences and the CI job are
+described in [docs/LINUX.md](docs/LINUX.md).
 
 ### Checks
 

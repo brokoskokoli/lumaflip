@@ -215,12 +215,12 @@ jobs:
       - name: Install build dependencies
         # Decoders: libheif (+ AV1/HEVC plugins: the tests encode HEIC/AVIF), libjxl, LibRaw,
         # OpenEXR; libarchive (archives); xcb/xkb/Mesa/Xvfb for the GUI tests; librsvg2-bin
-        # (icons); desktop-file-utils + appstream (validation).
+        # (icons); desktop-file-utils + appstream (validation); libomp-dev: LibRaw links OpenMP (clang).
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends ninja-build clang pkg-config libgtest-dev \
             libarchive-dev libheif-dev libheif-plugin-libde265 libheif-plugin-dav1d \
-            libheif-plugin-x265 libheif-plugin-aomenc libjxl-dev libraw-dev libopenexr-dev \
+            libheif-plugin-x265 libheif-plugin-aomenc libjxl-dev libraw-dev libomp-dev libopenexr-dev \
             libgl1-mesa-dev libegl1-mesa-dev libgl1-mesa-dri libglx-mesa0 mesa-utils libvulkan1 \
             libxkbcommon0 libxkbcommon-x11-0 libxcb-cursor0 libxcb-icccm4 libxcb-image0 \
             libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxcb-xinerama0 \

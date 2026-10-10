@@ -48,7 +48,7 @@ std::shared_ptr<Decoder> requireBackend(std::shared_ptr<Decoder> d, const char* 
         GTEST_SKIP() << name << " not built in";
 
 // 64×48 test pattern: gradients in R/G, a constant B, alpha ramp optional.
-QImage pattern(bool alpha) {
+[[maybe_unused]] QImage pattern(bool alpha) {
     QImage img(64, 48, QImage::Format_RGBA8888);
     for (int y = 0; y < img.height(); ++y)
         for (int x = 0; x < img.width(); ++x)
@@ -56,7 +56,7 @@ QImage pattern(bool alpha) {
     return img;
 }
 
-int maxDiff(const QImage& a, const QImage& b) {
+[[maybe_unused]] int maxDiff(const QImage& a, const QImage& b) {
     if (a.size() != b.size())
         return 1000;
     const QImage x = a.convertToFormat(QImage::Format_RGBA8888),
@@ -74,8 +74,8 @@ QByteArray header(const QString& path) {
 
 // Decodes `path` with `d` directly and - if the helper binary is there - in the sandboxed
 // decoder helper process; both must agree.
-std::optional<DecodedImage> decodeBoth(const std::shared_ptr<Decoder>& d, const QString& path,
-                                       const DecodeRequest& req = {}) {
+[[maybe_unused]] std::optional<DecodedImage> decodeBoth(const std::shared_ptr<Decoder>& d,
+                                                        const QString& path, const DecodeRequest& req = {}) {
     QString error;
     EXPECT_TRUE(d->canDecode(path, header(path))) << path.toStdString();
     auto local = d->decode(path, req, &error);

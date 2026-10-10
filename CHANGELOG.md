@@ -21,6 +21,12 @@ refer to [SPEC.md](SPEC.md).
 - **Photo overlays**: clipping warning (J), focus peaking (⇧J), AF points from the maker notes
   (⇧A; Canon, Nikon live view, Sony, Fujifilm, EXIF subject area). [F-INFO-07]
 - **Compare**: difference, blend and wipe of two images. [F-GRID-04]
+- **Linux** (preview, M4): the full app on Linux with an AppImage. Freedesktop integration (open
+  with / default app via desktop entries and `mimeapps.list`, reveal in the file manager over
+  D-Bus, trash with undo, inotify folder watching incl. subfolders, tags in `user.xdg.tags`),
+  decoders for HEIF/AVIF (libheif), JPEG XL (libjxl), camera RAW (LibRaw) and OpenEXR, and a
+  seccomp-bpf + Landlock sandbox for the decoder helper. Desktop entry, AppStream metadata,
+  icons, Flatpak manifest. See [docs/LINUX.md](docs/LINUX.md). [SPEC 9.3, 13]
 
 ## [1.1.0] - Unreleased
 
