@@ -84,7 +84,7 @@ qint64 AnimationPlayer::cacheAllBytes() const {
 }
 
 int AnimationPlayer::durationMs(const DecodedImage& frame) {
-    return frame.frameDurationMs > 0 ? frame.frameDurationMs : kDefaultDurationMs;
+    return frame.frameDurationMs >= kMinDurationMs ? frame.frameDurationMs : kDefaultDurationMs;
 }
 
 void AnimationPlayer::open(const QString& path, const DecodedImagePtr& first, int frameCount, bool autoplay) {
@@ -95,6 +95,9 @@ void AnimationPlayer::open(const QString& path, const DecodedImagePtr& first, in
     m_count = frameCount;
     m_current = 0;
     m_shownCount = 0;
+    m_loopCount = first ? std::max(0, first->loopCount) : 0;
+    m_playsDone = 0;
+    m_finished = false;
     m_shared = std::make_shared<Shared>();
     m_shared->path = path;
     m_shared->owner = this;
@@ -131,6 +134,8 @@ void AnimationPlayer::stop() {
     m_playing = m_waiting = m_busy = false;
     m_frameBytes = 0;
     m_cacheAll = false;
+    m_finished = false;
+    m_loopCount = m_playsDone = 0;
     if (was)
         emit stateChanged();
 }
@@ -140,6 +145,10 @@ void AnimationPlayer::play() {
         return;
     m_playing = true;
     m_pendingStep = -1;
+    if (m_finished) { // loop count used up: play the sequence again from the start
+        m_finished = false;
+        m_playsDone = 0;
+    }
     const DecodedImagePtr cur = m_frames.value(m_current);
     const qint64 d = qint64(std::llround((cur ? durationMs(*cur) : kDefaultDurationMs) * 1e6 / m_speed));
     m_dueNs = m_clock.nsecsElapsed() + d;
@@ -244,6 +253,14 @@ void AnimationPlayer::tick() {
         return;
     }
     const int next = wrap(m_current + 1);
+    if (next == 0 && m_loopCount > 0 && ++m_playsDone >= m_loopCount) {
+        // The file's loop count is used up: stay on the last frame.
+        m_playing = false;
+        m_waiting = false;
+        m_finished = true;
+        emit stateChanged();
+        return;
+    }
     const DecodedImagePtr img = m_frames.value(next);
     if (!img) {
         m_waiting = true; // shown as soon as it is decoded

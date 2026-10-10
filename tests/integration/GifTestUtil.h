@@ -18,7 +18,8 @@ inline QColor gifPaletteColor(int index) {
     return QColor::fromHsv((index * 47) % 360, 200 + (index % 3) * 20, 120 + (index * 13) % 130);
 }
 
-inline QByteArray makeAnimatedGif(QSize size, int frames, int delayCentiseconds) {
+// `loops`: NETSCAPE2.0 loop count (0 = endlessly), -1 = no loop extension.
+inline QByteArray makeAnimatedGif(QSize size, int frames, int delayCentiseconds, int loops = 0) {
     QByteArray out("GIF89a");
     auto u16 = [&](int v) { out.append(char(v & 0xFF)).append(char((v >> 8) & 0xFF)); };
     u16(size.width());
@@ -29,8 +30,11 @@ inline QByteArray makeAnimatedGif(QSize size, int frames, int delayCentiseconds)
         const QColor c = gifPaletteColor(i);
         out.append(char(c.red())).append(char(c.green())).append(char(c.blue()));
     }
-    // Loop forever (NETSCAPE2.0).
-    out.append("\x21\xFF\x0BNETSCAPE2.0\x03\x01\x00\x00\x00", 19);
+    if (loops >= 0) { // NETSCAPE2.0 application extension
+        out.append("\x21\xFF\x0BNETSCAPE2.0\x03\x01", 16);
+        u16(loops);
+        out.append(char(0));
+    }
     const int pixels = size.width() * size.height();
     for (int f = 0; f < frames; ++f) {
         out.append("\x21\xF9\x04\x00", 4); // graphic control: no disposal, no transparency
@@ -80,9 +84,10 @@ inline QByteArray makeAnimatedGif(QSize size, int frames, int delayCentiseconds)
     return out;
 }
 
-inline bool writeAnimatedGif(const QString& path, QSize size, int frames, int delayCentiseconds) {
+inline bool writeAnimatedGif(const QString& path, QSize size, int frames, int delayCentiseconds,
+                             int loops = 0) {
     QFile f(path);
-    const QByteArray data = makeAnimatedGif(size, frames, delayCentiseconds);
+    const QByteArray data = makeAnimatedGif(size, frames, delayCentiseconds, loops);
     return f.open(QIODevice::WriteOnly) && f.write(data) == data.size();
 }
 

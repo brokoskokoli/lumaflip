@@ -313,6 +313,30 @@ int frameDurationMs(NSDictionary* props) {
     return 0;
 }
 
+// F-FMT-03: how often an animation plays (the file's loop count; 0 = endlessly), from the
+// container properties. ImageIO reports the total number of plays: a GIF with NETSCAPE loop
+// count n plays n + 1 times, one without the extension once (as in web browsers). HEICS is
+// left out: ImageIO reads 1 even for sequences written with loop count 0 (endlessly).
+int loopCountOf(CGImageSourceRef src) {
+    NSDictionary* props = CFBridgingRelease(CGImageSourceCopyProperties(src, nullptr));
+    struct Keys {
+        CFStringRef dict, loop;
+    };
+    const Keys keys[] = {
+        {kCGImagePropertyGIFDictionary, kCGImagePropertyGIFLoopCount},
+        {kCGImagePropertyPNGDictionary, kCGImagePropertyAPNGLoopCount},
+        {kCGImagePropertyWebPDictionary, kCGImagePropertyWebPLoopCount},
+    };
+    for (const auto& k : keys) {
+        NSDictionary* d = dictValue(props, k.dict);
+        if (!d)
+            continue;
+        const auto n = toDouble(value(d, k.loop));
+        return n && *n > 0 && *n < 1e6 ? int(*n) : 0;
+    }
+    return 0;
+}
+
 // Transform that draws a stored image (w x h) upright into the display-oriented
 // context for EXIF orientation o. CG user space has its origin bottom-left.
 CGAffineTransform orientationTransform(int o, CGFloat w, CGFloat h) {
@@ -611,6 +635,7 @@ std::optional<DecodedImage> decodeAt(CGImageSourceRef src, const Layout& l, size
     out.image = std::move(r->image);
     // F-FMT-03/04: which image of the file this is.
     out.frameCount = l.animated ? int(l.count) : 1;
+    out.loopCount = l.animated ? loopCountOf(src) : 0;
     out.pageCount = l.animated ? 1 : int(std::max<size_t>(1, l.count));
     out.frame = l.animated ? int(index) : 0;
     out.page = l.animated ? 0 : req.page;

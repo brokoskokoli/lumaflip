@@ -17,7 +17,10 @@
 // decodes is safe.
 // Timing: a precise single-shot timer aims at absolute due times (QElapsedTimer), so the
 // error does not add up over frames; a frame that is not decoded in time delays playback
-// (no frames are skipped). Durations of 0 (unknown, common for AVIF/JXL) count as 100 ms.
+// (no frames are skipped). Durations of 10 ms or less (0 = unknown, common for AVIF/JXL; 1 cs
+// in old GIFs) count as 100 ms, like in web browsers.
+// Loops: the file's loop count (DecodedImage::loopCount) - playback stops on the last frame
+// after that many plays; play() starts over. 0 plays endlessly.
 
 #include "core/ImageProvider.h"
 
@@ -38,6 +41,7 @@ public:
     static constexpr qint64 kCacheAllBytes = qint64(64) << 20;
     static constexpr qint64 kRingBytes = qint64(48) << 20;
     static constexpr int kDefaultDurationMs = 100;
+    static constexpr int kMinDurationMs = 11; // shorter durations play as kDefaultDurationMs
     static constexpr double kMinSpeed = 0.25;
     static constexpr double kMaxSpeed = 4.0;
 
@@ -53,7 +57,7 @@ public:
     qint64 cacheAllBytes() const; // animations up to this size are kept completely
 
     // Takes over `path` with `frameCount` frames; `first` is frame 0 as currently shown.
-    // Starts playing if `autoplay`.
+    // Starts playing if `autoplay`. The loop count comes from `first`.
     void open(const QString& path, const DecodedImagePtr& first, int frameCount, bool autoplay = true);
     void stop(); // forgets the animation (another image is shown)
     bool isActive() const { return !m_path.isEmpty(); }
@@ -63,6 +67,9 @@ public:
     void pause();
     void togglePlay();
     bool isPlaying() const { return m_playing; }
+    // The file's loop count is used up: stopped on the last frame (play() starts over).
+    bool isFinished() const { return m_finished; }
+    int loopCount() const { return m_loopCount; } // 0 = endlessly
     // Pauses and shows the next (+1) or previous (-1) frame (`,` / `.`).
     void step(int delta);
     void setSpeed(double factor); // clamped to kMinSpeed..kMaxSpeed
@@ -71,7 +78,7 @@ public:
     int currentFrame() const { return m_current; }
     int frameCount() const { return m_count; }
     DecodedImagePtr currentImage() const { return m_frames.value(m_current); }
-    // Duration of a frame for playback (0 -> kDefaultDurationMs).
+    // Duration of a frame for playback (below kMinDurationMs -> kDefaultDurationMs).
     static int durationMs(const DecodedImage& frame);
 
     // Memory bookkeeping (tests, P-09): decoded frames held, their bytes, and the bound.
@@ -108,6 +115,9 @@ private:
     bool m_waiting = false; // due, but the next frame is not decoded yet
     bool m_busy = false;    // a decode task runs
     bool m_cacheAll = false;
+    bool m_finished = false; // loop count used up
+    int m_loopCount = 0;     // 0 = endlessly
+    int m_playsDone = 0;     // completed plays of the whole sequence
     double m_speed = 1.0;
     qint64 m_budget = 0;
     qint64 m_maxDecodeBytes = 0;

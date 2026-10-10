@@ -230,6 +230,9 @@ std::optional<DecodedImage> QtImageDecoder::decode(const QString& path, const De
     if (animated) {
         out.frameCount = count;
         out.frame = index;
+        // Qt counts the repetitions after the first play (-1 = endlessly).
+        const int loops = r.loopCount();
+        out.loopCount = loops < 0 ? 0 : loops + 1;
     } else {
         out.pageCount = count;
         out.page = index;
