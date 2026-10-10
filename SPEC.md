@@ -149,9 +149,9 @@ Ziel: **So viele Formate wie möglich, ohne Nachinstallation.** Die Formate werd
 | RAW | CR2, CR3, CRW, NEF, NRW, ARW, SR2, RAF, ORF, RW2, DNG, PEF, IIQ, 3FR, … | ImageIO (Apple RAW Engine) | M1 |
 | Pro/HDR | PSD (Kompositbild), OpenEXR, Radiance HDR, JPEG 2000, TGA, DDS, KTX | ImageIO | M2 |
 | Animiert | GIF, APNG, animiertes WebP, animiertes AVIF/HEICS, animiertes JXL | ImageIO + eigene Wiedergabe | M2 |
-| Vektor | SVG | Qt SVG (SVG Tiny 1.2, ohne vollständiges CSS/Filter), im Decoder-Hilfsprozess (8.5); vollständiges SVG 1.1 über resvg in M4 (14.2) | M2 |
+| Vektor | SVG | v1.0: Qt SVG (SVG Tiny 1.2); ab M3: resvg (vollständiges SVG 1.1 mit CSS/Filtern, Homebrew-Bibliothek `libresvg`), Qt SVG als Rückfall; beides im Decoder-Hilfsprozess (8.5) | M2/M3 |
 | Rest | QOI, PCX, PNM/PAM/PFM, SGI, ORA, KRA | eigene Decoder im Hilfsprozess | M3 |
-| Rest (Bibliothek) | XCF, PSB | KImageFormats (14.2) | M4 |
+| Rest | XCF (GIMP, Ebenen zusammengeführt, gängige Ebenenmodi), PSB (Photoshop Large Document, eingebettetes Gesamtbild) | eigene Decoder im Hilfsprozess (KImageFormats ist in Homebrew nicht verfügbar) | M3 |
 | Exotisch | JPEG XR, DICOM, EPS | später prüfen | M4 |
 
 - F-FMT-01 (M1): Die Formaterkennung erfolgt per Dateisignatur, mit Dateiendung bzw. UTType als Hinweis.
@@ -184,6 +184,7 @@ Ziel: **So viele Formate wie möglich, ohne Nachinstallation.** Die Formate werd
 | F-INFO-05 | Vollständige Rohmetadaten (EXIF/IPTC/XMP-Baum) mit Kopierfunktion. | M3 |
 | F-INFO-06 | Finder-Tags anzeigen und setzen. | M2 |
 | F-INFO-07 | Erweiterte Fototechnik-Overlays: Fokuspunkte (soweit in den MakerNotes vorhanden), Überbelichtungs- und Unterbelichtungswarnung, Focus Peaking. | M4 |
+| F-INFO-08 | **Ordnerkarte:** Ansicht „Karte“ (Menü Darstellung, Taste/Knopf im Infopanel) zeigt alle Bilder der aktuellen Sammlung mit GPS-Daten als Markierungen auf einer Karte (MapKit, zusammengefasst bei vielen nahen Punkten, Vorschaubild beim Überfahren). Das aktuelle Bild ist hervorgehoben und folgt beim Blättern mit ←/→; Klick auf eine Markierung springt zum Bild. Bilder ohne GPS werden gezählt („312 von 412 Bildern mit Ort“). Die GPS-Daten werden auf einem Worker aus den Metadaten gelesen (ohne Pixel zu dekodieren). Datenschutz (10.3): Kartendaten werden erst geladen, wenn der Nutzer die Karte öffnet. | M3 |
 
 ### 4.7 Dateioperationen
 
@@ -606,7 +607,7 @@ public:
 
 ### 10.3 Datenschutz
 
-- Keine Telemetrie, kein Netzwerkverkehr außer der Update-Prüfung (abschaltbar) und Kartenausschnitten für F-INFO-04. Karten werden erst nach einem Klick auf „Karte anzeigen“ geladen; dabei gehen die Koordinaten an Apple (MapKit). Der Klick gilt für dieses Fenster, bis es geschlossen wird: weitere Bilder mit GPS-Daten laden ihre Karte dort automatisch, „Karte ausblenden“ nimmt die Zustimmung zurück. Die Zustimmung wird nicht gespeichert; neue Fenster und jeder Neustart fragen erneut.
+- Keine Telemetrie, kein Netzwerkverkehr außer der Update-Prüfung (abschaltbar) und Kartenausschnitten für F-INFO-04. Karten (Infopanel-Ausschnitt F-INFO-04 und Ordnerkarte F-INFO-08) werden erst geladen, wenn der Nutzer sie öffnet bzw. auf „Karte anzeigen“ klickt; dabei gehen die Koordinaten an Apple (MapKit). Der Klick gilt für dieses Fenster, bis es geschlossen wird: weitere Bilder mit GPS-Daten laden ihre Karte dort automatisch, „Karte ausblenden“ nimmt die Zustimmung zurück. Die Zustimmung wird nicht gespeichert; neue Fenster und jeder Neustart fragen erneut.
 
 ### 10.4 Dateiverknüpfung
 
@@ -626,7 +627,7 @@ public:
 | Qt 6 | LGPLv3 | Dynamisch linken (Frameworks im App-Bundle); Lizenztexte beilegen; Nutzer dürfen Qt austauschen. |
 | KImageFormats | LGPL-2.1 | dynamisch als Qt-Plugin |
 | Little CMS 2 | MIT | ok; **kein** fast_float-Plugin (GPL) |
-| resvg (M4, falls entschieden) | Apache-2.0/MIT | ok |
+| resvg (ab M3, dynamisch gelinkt, Lizenztext im Bundle) | Apache-2.0/MIT | ok |
 | LibRaw (später) | CDDL-1.0 gewählt | statisch erlaubt, Namensnennung |
 | libheif / libde265 (später, Win/Linux) | LGPL-3.0 | dynamisch; **HEVC-Patentrisiko** außerhalb von macOS → optional bzw. Systemcodec bevorzugen |
 | libavif/dav1d, libjxl, libjpeg-turbo, libpng, libwebp, libtiff, OpenEXR | BSD/zlib-artig | ok |
@@ -676,7 +677,7 @@ Weitere Pflichten:
 | **M0 – Spike** (vorab) | Qt-6-Gerüst mit QRhiWidget auf Metal, ImageIO-Decoder in Objective-C++, ein Bild farbrichtig anzeigen, ←/→ im Ordner, .DS_Store-Leser als Prototyp. **Ziel: Technikentscheidung absichern** (HDR-Swapchain, Leistung, Farbe). |
 | **M1 – MVP** | F-OPEN-01…06, F-NAV-01…03/07, F-VIEW-01…02/04/06…10, Formatgruppen Standard/Modern/RAW, F-COL-01, F-INFO-01, F-FILE-01…03, F-EDIT-01, F-SORT-01/02/03/05/08, F-MAC-01/02/05, F-SET-01/04, F-PRIV-01/02, F-WIN-01/02/03/08/09/10, F-IN-01 (Mausrad-Einstellung), Signierung und Notarisierung |
 | **M2 – v1.0** | Ordnerüberwachung, Infopanel, Histogramm, Filmstreifen, Diashow, Animation, mehrseitige Formate, SVG, Pro-Formate, verlustfreies Drehen, Umbenennen, Teilen, Drag-out, Tastatur-Editor, alle Eingabe-Einstellungen (4.14) inkl. Profilvorlagen, Fenster anordnen, Tabs, Fensterwiederherstellung, Standard-App-Button, Live-Finder-Abfrage (Opt-in), Sparkle |
-| **M3 – v1.x** | Mehrsprachigkeit (4.16), Aussortiermodus und Bewertungen (XMP-Zusatzdatei, im Bild, Finder-Tags), Fenster koppeln, Schnellablage, Raster und Vergleich, HDR/EDR vollständig, Lupe, rekursive Ordner, Hilfsprozess für Decoder, Restformate (ohne XCF/PSB; SVG weiter über Qt SVG) |
+| **M3 – v1.x** | Mehrsprachigkeit (4.16), Aussortiermodus und Bewertungen (XMP-Zusatzdatei, im Bild, Finder-Tags), Fenster koppeln, Schnellablage, Raster und Vergleich, HDR/EDR vollständig, Lupe, rekursive Ordner, Hilfsprozess für Decoder, Restformate inkl. XCF/PSB, SVG über resvg, Ordnerkarte (F-INFO-08) |
 | **M4 – später** | Archive und PDF, Live Text, Zuschneiden und Export, eigene Aktionen, Overlays für Fototechnik, **Windows- und Linux-Builds**, eventuell eine App-Store-Edition |
 
 ---
