@@ -91,6 +91,9 @@ TEST(Export, F_EDIT_04_FormatListFollowsEncoders) {
 }
 
 TEST(Export, F_EDIT_04_NamePatternAndPlanning) {
+#ifdef Q_OS_WIN
+    GTEST_SKIP() << "POSIX absolute paths in the test data (\"/p/a.jpg\" is \"<drive>:/p/a.jpg\" on Windows)";
+#endif
     exporting::Options o;
     o.formatId = QStringLiteral("png");
     EXPECT_EQ(exporting::targetFileName("/a/IMG_1.jpg", o, 0, 1), QStringLiteral("IMG_1-export.png"));

@@ -8,6 +8,8 @@
 
 #include <gtest/gtest.h>
 
+#include <filesystem>
+
 #include <QDir>
 #include <QFile>
 #include <QSemaphore>
@@ -99,8 +101,20 @@ TEST_F(CollectionTest, F_OPEN_06_EnumerateFiltersHiddenPackagesAndNonImages) {
     ASSERT_TRUE(QDir().mkpath(path("folder.jpg")));
     ASSERT_TRUE(QDir().mkpath(path("Package.app/Contents")));
     ASSERT_TRUE(QDir().mkpath(path("Library.photoslibrary")));
+#ifdef Q_OS_WIN
+    // QFile::link writes Explorer shortcuts (.lnk files) on Windows; real symbolic links
+    // need the "create symbolic links" right (developer mode or an elevated process).
+    std::error_code ec;
+    std::filesystem::create_symlink(path("a.jpg").toStdWString(), path("link.jpg").toStdWString(), ec);
+    const bool links = !ec;
+    if (links)
+        std::filesystem::create_symlink(path("missing.jpg").toStdWString(),
+                                        path("dangling.jpg").toStdWString(), ec);
+#else
+    const bool links = true;
     ASSERT_TRUE(QFile::link(path("a.jpg"), path("link.jpg")));
     ASSERT_TRUE(QFile::link(path("missing.jpg"), path("dangling.jpg")));
+#endif
 #ifdef Q_OS_MACOS
     touch(path("flagged.jpg"));
     ASSERT_EQ(::chflags(QFile::encodeName(path("flagged.jpg")).constData(), UF_HIDDEN), 0);
@@ -109,7 +123,8 @@ TEST_F(CollectionTest, F_OPEN_06_EnumerateFiltersHiddenPackagesAndNonImages) {
     auto entries = collection::enumerateFolder(dir.path(), &denied);
     EXPECT_FALSE(denied);
     collection::sortEntries(entries, SortSpec{}, *collator);
-    EXPECT_EQ(names(entries), (QStringList{"a.jpg", "B.PNG", "c.heic", "link.jpg"}));
+    EXPECT_EQ(names(entries), links ? (QStringList{"a.jpg", "B.PNG", "c.heic", "link.jpg"})
+                                    : (QStringList{"a.jpg", "B.PNG", "c.heic"}));
     for (const auto& e : entries) {
         EXPECT_EQ(e.path, path(e.name));
         EXPECT_EQ(e.size, 1);

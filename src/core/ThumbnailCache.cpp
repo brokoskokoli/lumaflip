@@ -193,8 +193,15 @@ struct ThumbnailCache::Private {
             if (f.open(QIODevice::ReadOnly)) {
                 const QByteArray bytes = f.readAll();
                 // Last use = modification time of the cache file (LRU eviction order).
+#ifdef Q_OS_WIN
+                // Windows only sets file times through a handle with write access.
+                f.close();
+                if (QFile touch(file); touch.open(QIODevice::Append))
+                    touch.setFileTime(QDateTime::currentDateTimeUtc(), QFileDevice::FileModificationTime);
+#else
                 f.setFileTime(QDateTime::currentDateTimeUtc(), QFileDevice::FileModificationTime);
                 f.close();
+#endif
                 QImage img = QImage::fromData(bytes);
                 if (!img.isNull()) {
                     img.setColorSpace(QColorSpace::SRgb);

@@ -70,6 +70,14 @@ HANDLE lowIntegrityToken(QString* why) {
     return restricted;
 }
 
+// Diagnostics: LF_DECODER_HELPER_SANDBOX_OFF=token,job,ui,mitigations,childpolicy switches parts
+// of the sandbox off (the helper then reports sandboxed = false where that matters).
+bool sandboxPartOff(const char* part) {
+    return qEnvironmentVariable("LF_DECODER_HELPER_SANDBOX_OFF")
+        .split(u',', Qt::SkipEmptyParts)
+        .contains(QLatin1String(part));
+}
+
 HANDLE helperJob() {
     HANDLE job = CreateJobObjectW(nullptr, nullptr);
     if (!job)
@@ -85,7 +93,8 @@ HANDLE helperJob() {
                              JOB_OBJECT_UILIMIT_HANDLES | JOB_OBJECT_UILIMIT_READCLIPBOARD |
                              JOB_OBJECT_UILIMIT_SYSTEMPARAMETERS | JOB_OBJECT_UILIMIT_WRITECLIPBOARD;
     if (!SetInformationJobObject(job, JobObjectExtendedLimitInformation, &limits, sizeof limits) ||
-        !SetInformationJobObject(job, JobObjectBasicUIRestrictions, &ui, sizeof ui)) {
+        (!sandboxPartOff("ui") &&
+         !SetInformationJobObject(job, JobObjectBasicUIRestrictions, &ui, sizeof ui))) {
         CloseHandle(job);
         return nullptr;
     }
@@ -162,9 +171,7 @@ bool startDecoderHelper(const QString& exe, const QStringList& args, const QStri
         return fail(QStringLiteral("job: ") + why);
     }
     QString tokenProblem;
-    HANDLE token = qEnvironmentVariableIntValue("LF_DECODER_HELPER_TEST_NO_LOW_INTEGRITY") == 1
-                       ? nullptr
-                       : lowIntegrityToken(&tokenProblem);
+    HANDLE token = sandboxPartOff("token") ? nullptr : lowIntegrityToken(&tokenProblem);
     if (!token && !tokenProblem.isEmpty())
         qWarning("lumaflip: decoder helper without low integrity token: %s", qPrintable(tokenProblem));
 
@@ -178,19 +185,23 @@ bool startDecoderHelper(const QString& exe, const QStringList& args, const QStri
                           PROCESS_CREATION_MITIGATION_POLICY_STRICT_HANDLE_CHECKS_ALWAYS_ON |
                           PROCESS_CREATION_MITIGATION_POLICY_HEAP_TERMINATE_ALWAYS_ON;
     DWORD childPolicy = PROCESS_CREATION_CHILD_PROCESS_RESTRICTED;
+    const bool useJob = !sandboxPartOff("job");
+    const bool useMitigations = !sandboxPartOff("mitigations");
+    const bool useChildPolicy = !sandboxPartOff("childpolicy");
     SIZE_T attrSize = 0;
     InitializeProcThreadAttributeList(nullptr, 4, 0, &attrSize);
     std::vector<char> attrBuffer(attrSize);
     auto* attrs = reinterpret_cast<LPPROC_THREAD_ATTRIBUTE_LIST>(attrBuffer.data());
-    bool attrsOk = InitializeProcThreadAttributeList(attrs, 4, 0, &attrSize) &&
-                   UpdateProcThreadAttribute(attrs, 0, PROC_THREAD_ATTRIBUTE_HANDLE_LIST, inherit,
-                                             inheritCount * sizeof(HANDLE), nullptr, nullptr) &&
-                   UpdateProcThreadAttribute(attrs, 0, PROC_THREAD_ATTRIBUTE_JOB_LIST, jobs, sizeof jobs,
-                                             nullptr, nullptr) &&
-                   UpdateProcThreadAttribute(attrs, 0, PROC_THREAD_ATTRIBUTE_MITIGATION_POLICY, &mitigations,
-                                             sizeof mitigations, nullptr, nullptr) &&
-                   UpdateProcThreadAttribute(attrs, 0, PROC_THREAD_ATTRIBUTE_CHILD_PROCESS_POLICY,
-                                             &childPolicy, sizeof childPolicy, nullptr, nullptr);
+    bool attrsOk =
+        InitializeProcThreadAttributeList(attrs, 4, 0, &attrSize) &&
+        UpdateProcThreadAttribute(attrs, 0, PROC_THREAD_ATTRIBUTE_HANDLE_LIST, inherit,
+                                  inheritCount * sizeof(HANDLE), nullptr, nullptr) &&
+        (!useJob || UpdateProcThreadAttribute(attrs, 0, PROC_THREAD_ATTRIBUTE_JOB_LIST, jobs, sizeof jobs,
+                                              nullptr, nullptr)) &&
+        (!useMitigations || UpdateProcThreadAttribute(attrs, 0, PROC_THREAD_ATTRIBUTE_MITIGATION_POLICY,
+                                                      &mitigations, sizeof mitigations, nullptr, nullptr)) &&
+        (!useChildPolicy || UpdateProcThreadAttribute(attrs, 0, PROC_THREAD_ATTRIBUTE_CHILD_PROCESS_POLICY,
+                                                      &childPolicy, sizeof childPolicy, nullptr, nullptr));
     if (!attrsOk) {
         const QString why = lastError();
         if (token)
@@ -249,6 +260,11 @@ bool startDecoderHelper(const QString& exe, const QStringList& args, const QStri
 void killDecoderHelper(HelperProcess* p) {
     ipc::closeHandle(p->toChild);
     ipc::closeHandle(p->fromChild);
+    DWORD code = 0;
+    if (p->process && WaitForSingleObject(p->process, 0) == WAIT_OBJECT_0 &&
+        GetExitCodeProcess(p->process, &code))
+        qWarning("lumaflip: decoder helper %lld had exited with 0x%08lx", p->pid,
+                 static_cast<unsigned long>(code));
     if (p->process) {
         TerminateProcess(p->process, 1);
         WaitForSingleObject(p->process, 5000);

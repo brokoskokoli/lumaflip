@@ -168,7 +168,22 @@ void setError(QString* error, HRESULT hr) {
 
 // ---- reading -----------------------------------------------------------------------------
 
+// The open file: shared for reading, writing and deleting, so a shown image can still be
+// renamed, trashed or rewritten by other programs (WIC's own CreateDecoderFromFilename only
+// shares reading). Declared first in Source: closed after the decoder is released.
+struct FileHandle {
+    HANDLE h = INVALID_HANDLE_VALUE;
+    FileHandle() = default;
+    FileHandle(const FileHandle&) = delete;
+    FileHandle& operator=(const FileHandle&) = delete;
+    ~FileHandle() {
+        if (h != INVALID_HANDLE_VALUE)
+            CloseHandle(h);
+    }
+};
+
 struct Source {
+    FileHandle file;
     ComPtr<IWICImagingFactory> factory;
     ComPtr<IWICBitmapDecoder> decoder;
     GUID container{};
@@ -180,8 +195,13 @@ HRESULT open(const QString& path, Source* s) {
     if (!s->factory)
         return REGDB_E_CLASSNOTREG;
     const QString native = QDir::toNativeSeparators(path);
-    HRESULT hr = s->factory->CreateDecoderFromFilename(win::wstr(native), nullptr, GENERIC_READ,
-                                                       WICDecodeMetadataCacheOnDemand, &s->decoder);
+    s->file.h =
+        CreateFileW(win::wstr(native), GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE,
+                    nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+    if (s->file.h == INVALID_HANDLE_VALUE)
+        return HRESULT_FROM_WIN32(GetLastError());
+    HRESULT hr = s->factory->CreateDecoderFromFileHandle(reinterpret_cast<ULONG_PTR>(s->file.h), nullptr,
+                                                         WICDecodeMetadataCacheOnDemand, &s->decoder);
     if (FAILED(hr))
         return hr;
     s->decoder->GetContainerFormat(&s->container);

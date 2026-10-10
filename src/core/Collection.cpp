@@ -238,6 +238,15 @@ QVector<FileEntry> enumerateFolder(const QString& folderPath, bool* accessDenied
         e.size = qint64((quint64(fd.nFileSizeHigh) << 32) | fd.nFileSizeLow);
         e.modified = toUtc(fd.ftLastWriteTime);
         e.created = toUtc(fd.ftCreationTime);
+        if (fd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
+            // A symbolic link: the target's data (dangling links and links to folders are skipped).
+            const QFileInfo target(e.path);
+            if (!target.exists() || !target.isFile())
+                continue;
+            e.size = target.size();
+            e.modified = target.lastModified(QTimeZone::UTC);
+            e.created = target.birthTime(QTimeZone::UTC);
+        }
         out.append(std::move(e));
     } while (FindNextFileW(find, &fd));
     FindClose(find);

@@ -352,10 +352,12 @@ TEST(WindowsPlatform, F_FMT_01_WicDecodesLikeQt) {
     for (const char* format : {"png", "bmp", "tiff", "jpg"}) {
         SCOPED_TRACE(format);
         const QString path = dir.filePath(QStringLiteral("muster.") + QString::fromLatin1(format));
-        QImageWriter w(path, format);
-        if (!w.canWrite())
-            continue;
-        ASSERT_TRUE(w.write(pattern)) << w.errorString().toStdString();
+        {
+            QImageWriter w(path, format); // closes the file when it goes
+            if (!w.canWrite())
+                continue;
+            ASSERT_TRUE(w.write(pattern)) << w.errorString().toStdString();
+        }
         QFile f(path);
         ASSERT_TRUE(f.open(QIODevice::ReadOnly));
         const QByteArray header = f.read(512);
@@ -425,6 +427,28 @@ TEST(WindowsPlatform, F_VIEW_02_WicAppliesExifOrientation) {
 // ---- SPEC 8.5: the decoder helper's sandbox on Windows ------------------------------------------
 
 #ifdef LF_DECODER_HELPER_BINARY
+// Which part of the sandbox a helper start depends on (printed, for diagnosing runners).
+TEST(WindowsPlatform, HelperSandboxPartsDiagnostics) {
+    for (const char* off :
+         {"", "mitigations", "childpolicy", "ui", "token", "job", "token,job,ui,mitigations,childpolicy"}) {
+        qputenv("LF_DECODER_HELPER_SANDBOX_OFF", off);
+        DecoderHelperPool::Options o;
+        o.executable = QStringLiteral(LF_DECODER_HELPER_BINARY);
+        o.maxProcesses = 1;
+        o.requireSandbox = false;
+        o.extraEnvironment = {QStringLiteral("QT_QPA_PLATFORM=offscreen")};
+        DecoderHelperPool pool(o);
+        ipc::Request ping;
+        ping.op = ipc::Op::Ping;
+        QString error;
+        const auto pong = pool.call(ping, 15000, nullptr, &error);
+        std::printf("sandbox off [%s]: %s\n", off,
+                    pong ? (pong->sandboxed ? "ping ok, sandboxed" : "ping ok, not sandboxed")
+                         : qPrintable(QStringLiteral("failed: ") + error));
+    }
+    qunsetenv("LF_DECODER_HELPER_SANDBOX_OFF");
+}
+
 TEST(WindowsPlatform, F_FMT_02_HelperSandboxOnWindows) {
     DecoderHelperPool::Options o;
     o.executable = QStringLiteral(LF_DECODER_HELPER_BINARY);
