@@ -37,6 +37,7 @@ public:
 
     static FileOps& instance();
     QUndoStack* undoStack() const;
+    TrashService& trashService() const; // for batches built on runAsync() (FileBatch)
 
     // Synchronous (blocking) operations.
     bool moveToTrash(const QString& path, QString* error);
@@ -57,6 +58,13 @@ public:
     using FileWork = std::function<QString()>;
     void modifyAsync(const QString& path, const QString& undoText, FileWork apply, FileWork revert,
                      Completion done = {}, std::function<void()> cleanup = {});
+    // General form of modifyAsync() (F-CULL-02 ratings, F-CULL-05/F-FILE-08/11 batches):
+    // `notify(forward)` runs on the GUI thread after every successful step (do and redo:
+    // true, undo: false) instead of emitting fileChanged(path). It may emit this object's
+    // signals (fileRemoved, fileAdded …) for what the step changed.
+    using StepNotifier = std::function<void(bool forward)>;
+    void runAsync(const QString& undoText, FileWork apply, FileWork revert, StepNotifier notify,
+                  Completion done = {}, std::function<void()> cleanup = {});
     // Undo/redo the next command with its file system work on a worker thread. (The
     // stack's own undo()/redo() still work and run synchronously.)
     void undo();
@@ -83,5 +91,11 @@ private:
     struct Private;
     Private* d;
 };
+
+namespace fileops {
+// Moves/renames `from` to `to` without ever replacing an existing `to` (the check is part of
+// the rename; across volumes copy + remove). Empty string on success, else a German error.
+QString moveNoReplace(const QString& from, const QString& to);
+} // namespace fileops
 
 } // namespace lf

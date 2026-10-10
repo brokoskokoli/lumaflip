@@ -96,6 +96,21 @@ const Registry& registry() {
         b(key::RatingStoreSidecar, true);
         b(key::RatingStoreEmbedded, false);
         b(key::RatingStoreFinderTags, false);
+        // Culling and quick move (M3)
+        r.insert(QString::fromLatin1(key::RatingTagStarSymbol),
+                 {Type::String, QString(QChar(0x2605)), {}, false, 0, 0}); // "★"
+        s(key::RatingTagPick, "Pick", {});
+        s(key::RatingTagReject, "Reject", {});
+        i(key::RatingTagStarColor, 0, 0, 7);
+        i(key::RatingTagPickColor, 2, 0, 7);
+        i(key::RatingTagRejectColor, 6, 0, 7);
+        b(key::RatingKeepModDate, true);
+        b(key::CullAutoAdvance, false);
+        b(key::CullLockZoom, true);
+        b(key::CullShowHelp, true);
+        for (int n = 1; n <= 9; ++n)
+            r.insert(QString::fromLatin1(key::QuickTargetPrefix) + QString::number(n),
+                     {Type::String, QString(), {}, false, 0, 0});
         // Slideshow (F-SLIDE-01/02) and saving the rotation (F-EDIT-02)
         i(key::SlideshowIntervalSec, 3, 1, 60);
         b(key::SlideshowRepeat, true);

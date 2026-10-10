@@ -394,9 +394,9 @@ private:
 class ModifyCommand : public FileCommand {
 public:
     ModifyCommand(FileOps* ops, const QString& text, QString path, FileOps::FileWork apply,
-                  FileOps::FileWork revert, std::function<void()> cleanup)
+                  FileOps::FileWork revert, std::function<void()> cleanup, FileOps::StepNotifier notify = {})
         : FileCommand(ops, text), m_path(std::move(path)), m_apply(std::move(apply)),
-          m_revert(std::move(revert)), m_cleanup(std::move(cleanup)) {}
+          m_revert(std::move(revert)), m_cleanup(std::move(cleanup)), m_notify(std::move(notify)) {}
     ~ModifyCommand() override {
         if (m_cleanup)
             m_cleanup();
@@ -409,11 +409,16 @@ public:
             return e.isEmpty() ? success() : failure(e);
         };
     }
-    std::function<void(const Outcome&)> notifierFor(bool) const override {
+    std::function<void(const Outcome&)> notifierFor(bool forward) const override {
         const QPointer<FileOps> ops(m_ops);
         const QString path = m_path;
-        return [ops, path](const Outcome&) {
-            if (ops)
+        const FileOps::StepNotifier notify = m_notify;
+        return [ops, path, notify, forward](const Outcome&) {
+            if (!ops)
+                return;
+            if (notify)
+                notify(forward);
+            else
                 emit ops->fileChanged(path);
         };
     }
@@ -422,6 +427,7 @@ private:
     QString m_path;
     FileOps::FileWork m_apply, m_revert;
     std::function<void()> m_cleanup;
+    FileOps::StepNotifier m_notify;
 };
 
 // ---- whole operations: work + what to do afterwards ----
@@ -671,6 +677,31 @@ void FileOps::modifyAsync(const QString& path, const QString& undoText, FileWork
     });
 }
 
+QString fileops::moveNoReplace(const QString& from, const QString& to) {
+    return movePath(from, to);
+}
+
+void FileOps::runAsync(const QString& undoText, FileWork apply, FileWork revert, StepNotifier notify,
+                       Completion done, std::function<void()> cleanup) {
+    auto pendingCleanup = std::make_shared<std::function<void()>>(std::move(cleanup));
+    Operation op{[apply] {
+                     const QString e = apply ? apply() : QString();
+                     return e.isEmpty() ? success() : failure(e);
+                 },
+                 [this, undoText, apply, revert, notify, pendingCleanup](const Outcome&) {
+                     if (notify)
+                         notify(true);
+                     d->stack->push(new ModifyCommand(this, undoText, QString(), apply, revert,
+                                                      std::exchange(*pendingCleanup, {}), notify));
+                 }};
+    d->startAsync(op, [pendingCleanup, done](bool ok, const QString& error) {
+        if (!ok && *pendingCleanup)
+            std::exchange(*pendingCleanup, {})();
+        if (done)
+            done(ok, error);
+    });
+}
+
 FileOps::FileOps(TrashService& trash, QObject* parent)
     : QObject(parent), d(new Private{this, trash, new QUndoStack(this), {}, false, {}}) {}
 
@@ -699,6 +730,10 @@ FileOps& FileOps::instance() {
 
 QUndoStack* FileOps::undoStack() const {
     return d->stack;
+}
+
+TrashService& FileOps::trashService() const {
+    return d->trash;
 }
 
 bool FileOps::moveToTrash(const QString& path, QString* error) {
