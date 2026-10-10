@@ -245,7 +245,7 @@ private slots:
                 c.command ? QStringList{QString::fromLatin1(c.command)} : QStringList();
             // Menu actions are queued: wait for the first one, then for a possible second.
             if (!want.isEmpty() || !wantCommands.isEmpty())
-                QTest::qWaitFor([&] { return !performed.isEmpty() || !commands.isEmpty(); }, 2000);
+                (void)QTest::qWaitFor([&] { return !performed.isEmpty() || !commands.isEmpty(); }, 2000);
             QTest::qWait(want.isEmpty() && wantCommands.isEmpty() ? 200 : 60);
             if (performed != want || commands != wantCommands) {
                 QStringList got;
