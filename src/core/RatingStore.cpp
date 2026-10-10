@@ -9,6 +9,7 @@
 #include "Xmp.h"
 
 #include <QCoreApplication>
+#include <QDateTime>
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
@@ -255,6 +256,12 @@ QString ratingio::writeEmbedded(const QString& path, const Rating& r, bool keepM
     if (!platform::replaceFile(tmp, target, keepModificationDate, &error)) {
         QFile::remove(tmp);
         return error.isEmpty() ? tr("Die Datei konnte nicht ersetzt werden.") : error;
+    }
+    if (!keepModificationDate) {
+        // The metadata copy carries the original's dates over: the file changed now.
+        QFile f(target);
+        if (f.open(QIODevice::ReadWrite))
+            f.setFileTime(QDateTime::currentDateTimeUtc(), QFileDevice::FileModificationTime);
     }
     return {};
 }

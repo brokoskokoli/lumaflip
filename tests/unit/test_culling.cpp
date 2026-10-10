@@ -346,6 +346,44 @@ TEST_F(CullingTest, F_CULL_02_EmbeddedJpegKeepsScanDataByteIdentical) {
 #endif
 }
 
+// Same safety as saving the rotation: symbolic links stay links, the modification date is
+// kept on request, files with a gain map are never damaged (written unchanged or refused).
+TEST_F(CullingTest, F_CULL_02_EmbeddedWriteSafety) {
+#ifdef LF_GENERIC_PLATFORM
+    GTEST_SKIP() << "embedded writes need the platform's lossless metadata copy";
+#else
+    const QString jpg = makeJpeg(QStringLiteral("real.jpg"));
+    ASSERT_FALSE(jpg.isEmpty());
+    const QDateTime old = QDateTime::currentDateTimeUtc().addDays(-3);
+    {
+        QFile f(jpg);
+        ASSERT_TRUE(f.open(QIODevice::ReadWrite));
+        ASSERT_TRUE(f.setFileTime(old, QFileDevice::FileModificationTime));
+    }
+    const QString link = path("link.jpg");
+    ASSERT_TRUE(QFile::link(jpg, link));
+    ASSERT_TRUE(ratingio::writeEmbedded(link, stars(2), true).isEmpty());
+    EXPECT_TRUE(QFileInfo(link).isSymLink());
+    EXPECT_EQ(ratingio::readEmbedded(jpg), stars(2));
+    EXPECT_EQ(QFileInfo(jpg).lastModified().toSecsSinceEpoch(), old.toSecsSinceEpoch());
+    ASSERT_TRUE(ratingio::writeEmbedded(jpg, stars(3), false).isEmpty());
+    EXPECT_GT(QFileInfo(jpg).lastModified().toSecsSinceEpoch(), old.toSecsSinceEpoch());
+
+    if (QFileInfo::exists(corpusFile(QStringLiteral("gainmap.jpg")))) {
+        const QString gm = path("gainmap.jpg");
+        ASSERT_TRUE(QFile::copy(corpusFile(QStringLiteral("gainmap.jpg")), gm));
+        QFile(gm).setPermissions(QFileDevice::ReadOwner | QFileDevice::WriteOwner);
+        const QByteArray before = readFile(gm);
+        bool refused = false;
+        const QString e = ratingio::writeEmbedded(gm, stars(4), false, &refused);
+        if (e.isEmpty()) // everything behind the primary image's SOS (the gain map) unchanged
+            EXPECT_EQ(jpeg::scanData(readFile(gm)), jpeg::scanData(before));
+        else
+            EXPECT_EQ(readFile(gm), before) << e.toStdString();
+    }
+#endif
+}
+
 TEST_F(CullingTest, F_CULL_02_EmbeddedHeicPngTiff) {
 #ifdef LF_GENERIC_PLATFORM
     GTEST_SKIP() << "embedded writes need the platform's lossless metadata copy";

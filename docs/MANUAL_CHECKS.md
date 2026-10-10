@@ -70,3 +70,20 @@ Automatisch prüfen `tst_panels`, `test_histogram`, `test_thumbnail_cache`, `tes
 | F-INFO-06 | Im Infopanel einen Tag „Rot“ und einen eigenen Tag hinzufügen, einen entfernen: der Finder zeigt die Änderung (Farbpunkt, Informationen-Fenster), ein im Finder gesetzter Tag erscheint nach erneutem Anzeigen des Bildes in Lumaflip | Zusammenspiel mit dem echten Finder; Lesen/Schreiben auf Temp-Dateien prüfen `test_finder_tags` und `tst_panels` |
 | F-GRID-01 | Ordner mit 500+ Fotos (auch RAW) öffnen, `T` drücken: Vorschaubilder erscheinen zügig von links nach rechts, aktuelles Bild markiert und mittig, Klick springt, Mausrad/Trackpad scrollt den Streifen, Blättern bleibt flüssig, während Vorschauen erzeugt werden; nach Neustart erscheinen die Vorschauen sofort (`~/Library/Caches/Lumaflip/thumbs/`) | Gefühl beim Scrollen und Blättern mit echten Fotos; Virtualisierung, Disk-Cache und LRU prüft `tst_panels`/`test_thumbnail_cache`, Tempo `P_04_FilmstripFirstThumbs` |
 | F-VIEW-10 | Mit offenem Infopanel und Filmstreifen ⌃⌘F: im Vollbild nur das Bild; Maus an den rechten Rand zeigt Infopanel, an den unteren Rand Filmstreifen und Statuszeile, nach 1,5 s ohne Bewegung verschwinden sie wieder (nicht, solange die Maus darauf steht) | Echte Mausbewegung und Vollbild-Animation; den Ablauf mit synthetischen Ereignissen prüft `tst_panels` |
+
+## M3: Bewertung, Aussortieren, Schnellablage (SPEC 4.9, F-FILE-08/11)
+
+Automatisch prüfen `test_culling` (Bewertungsmodell, XMP-Zusatzdateien, eingebettetes XMP mit
+unveränderten JPEG-Scandaten, RAW-Rückfall, Finder-Tags, Konfliktregel, Sammelaktionen,
+Schnellablage, Namenskonflikte), `test_culling_collection` (Filter, Sortierung) und `tst_culling`.
+
+Speicherformat: Sterne in `xmp:Rating` (0–5), „Verwerfen“ als `xmp:Rating="-1"` (Bridge/darktable);
+„Pick“ gibt es in XMP nicht standardisiert und steht in `lumaflip:Pick="1"`
+(Namensraum `http://ns.lumaflip.app/xmp/1.0/`); Sterne eines verworfenen Bildes bleiben in
+`lumaflip:Stars`. Zusatzdatei nach Adobe-Schema `IMG_1.xmp`, gelesen wird auch `IMG_1.CR3.xmp`.
+
+| ID | Prüfung | Warum manuell |
+|---|---|---|
+| F-CULL-02 | Ordner mit RAW-Dateien in Lumaflip bewerten (3 Sterne, X), dann in Lightroom Classic „Metadaten aus Datei lesen“ bzw. in darktable und Capture One importieren: Sterne erscheinen, X als „abgelehnt“ (Lightroom: −1 wird als 0 gezeigt). Umgekehrt in Lightroom bewerten und speichern: Lumaflip zeigt die Sterne; Entwicklungseinstellungen der Zusatzdatei bleiben erhalten | Fremdprogramme sind im Test nicht verfügbar; das Erhalten fremder XMP-Inhalte prüft `test_culling` automatisch |
+| F-CULL-02 | Speicherort „Finder-Tags“ einschalten, bewerten: Im Finder erscheinen „★★★“, „Pick“ (grün) bzw. „Reject“ (rot), Spotlight findet `tag:Pick` | Darstellung im Finder und Spotlight-Index sind nicht automatisierbar; das Schreiben der Tags (mit Farbe) prüft `test_culling` |
+| F-CULL-06 | Aussortiermodus (⌘K) auf hellem und dunklem Hintergrund und im Vollbild: Bewertungsanzeige und Tastenhilfe gut lesbar, Pick grün, Reject rot hinterlegt; Zoom bleibt beim Blättern | Optischer Eindruck |
