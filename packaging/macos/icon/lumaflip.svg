@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- SPDX-License-Identifier: GPL-3.0-or-later -->
 <!-- Lumaflip app icon (source). Rendered to Lumaflip.icns by tools/make_icon.sh. -->
+<!-- Motif: flipping through a folder like a slideshow - the current photo in front,
+     its neighbours left and right behind it, page dots below. -->
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
   <defs>
     <!-- macOS 11+ icon grid: 824 x 824 body centred on the 1024 canvas, ~185 px corner radius -->
@@ -8,8 +10,8 @@
       <stop offset="0" stop-color="#3B4CCA"/>
       <stop offset="1" stop-color="#1B1F5E"/>
     </linearGradient>
-    <radialGradient id="glow" cx="0.72" cy="0.22" r="0.75">
-      <stop offset="0" stop-color="#7FD3FF" stop-opacity="0.55"/>
+    <radialGradient id="glow" cx="0.5" cy="0.3" r="0.7">
+      <stop offset="0" stop-color="#7FD3FF" stop-opacity="0.45"/>
       <stop offset="1" stop-color="#7FD3FF" stop-opacity="0"/>
     </radialGradient>
     <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
@@ -24,23 +26,29 @@
       <stop offset="0" stop-color="#2E8C6E"/>
       <stop offset="1" stop-color="#1D5E4D"/>
     </linearGradient>
-    <linearGradient id="backCard" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#E9ECFF"/>
-      <stop offset="1" stop-color="#B9C0F2"/>
+    <linearGradient id="skyDusk" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#B9A8FF"/>
+      <stop offset="1" stop-color="#FFB8A0"/>
     </linearGradient>
-    <linearGradient id="arrow" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0" stop-color="#FFD166"/>
-      <stop offset="1" stop-color="#FF9F43"/>
+    <linearGradient id="skySea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9FE6FF"/>
+      <stop offset="0.62" stop-color="#D8F6FF"/>
+      <stop offset="0.62" stop-color="#3C9BD6"/>
+      <stop offset="1" stop-color="#1E6FA8"/>
     </linearGradient>
-    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#0B0E33" flood-opacity="0.45"/>
+    <linearGradient id="sideFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1B1F5E" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#1B1F5E" stop-opacity="0.45"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#0B0E33" flood-opacity="0.50"/>
     </filter>
     <filter id="iconShadow" x="-10%" y="-10%" width="120%" height="125%">
       <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000000" flood-opacity="0.30"/>
     </filter>
-    <clipPath id="photo">
-      <rect x="292" y="300" width="440" height="340" rx="18"/>
-    </clipPath>
+    <clipPath id="photoMain"><rect x="314" y="306" width="396" height="300" rx="14"/></clipPath>
+    <clipPath id="photoLeft"><rect x="170" y="358" width="270" height="206" rx="10"/></clipPath>
+    <clipPath id="photoRight"><rect x="584" y="358" width="270" height="206" rx="10"/></clipPath>
   </defs>
 
   <!-- body -->
@@ -51,30 +59,49 @@
           stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="3"/>
   </g>
 
-  <!-- card behind: tilted, the "next" image -->
-  <g transform="rotate(-9 512 520)" filter="url(#shadow)">
-    <rect x="268" y="262" width="488" height="388" rx="30" fill="url(#backCard)"/>
+  <g transform="translate(0 28)">
+  <!-- previous photo (left, behind) -->
+  <g filter="url(#shadow)">
+    <rect x="152" y="340" width="306" height="242" rx="22" fill="#E9ECFF"/>
+    <g clip-path="url(#photoLeft)">
+      <rect x="170" y="358" width="270" height="206" fill="url(#skyDusk)"/>
+      <circle cx="248" cy="430" r="30" fill="#FFE9C7"/>
+      <path d="M170 520 L 250 455 L 310 505 L 360 470 L 440 530 L 440 564 L 170 564 Z" fill="#5A4E9E"/>
+    </g>
+    <rect x="152" y="340" width="306" height="242" rx="22" fill="url(#sideFade)"/>
   </g>
 
-  <!-- front photo -->
-  <g transform="rotate(4 512 500)" filter="url(#shadow)">
-    <rect x="268" y="276" width="488" height="388" rx="30" fill="#FFFFFF"/>
-    <g clip-path="url(#photo)">
-      <rect x="292" y="300" width="440" height="340" fill="url(#sky)"/>
-      <circle cx="628" cy="390" r="44" fill="#FFF4D6"/>
-      <circle cx="628" cy="390" r="44" fill="#FFC857" fill-opacity="0.55"/>
-      <path d="M292 560 C 380 470, 450 470, 540 540 S 690 520, 732 500 L 732 640 L 292 640 Z"
+  <!-- next photo (right, behind) -->
+  <g filter="url(#shadow)">
+    <rect x="566" y="340" width="306" height="242" rx="22" fill="#E9ECFF"/>
+    <g clip-path="url(#photoRight)">
+      <rect x="584" y="358" width="270" height="206" fill="url(#skySea)"/>
+      <circle cx="790" cy="410" r="26" fill="#FFF4D6"/>
+      <path d="M584 496 Q 630 486 676 496 T 768 496 T 854 496" fill="none" stroke="#FFFFFF"
+            stroke-opacity="0.7" stroke-width="6"/>
+    </g>
+    <rect x="566" y="340" width="306" height="242" rx="22" fill="url(#sideFade)"/>
+  </g>
+
+  <!-- current photo (front, upright) -->
+  <g filter="url(#shadow)">
+    <rect x="292" y="284" width="440" height="344" rx="30" fill="#FFFFFF"/>
+    <g clip-path="url(#photoMain)">
+      <rect x="314" y="306" width="396" height="300" fill="url(#sky)"/>
+      <circle cx="618" cy="384" r="40" fill="#FFF4D6"/>
+      <circle cx="618" cy="384" r="40" fill="#FFC857" fill-opacity="0.55"/>
+      <path d="M314 540 C 394 460, 458 460, 540 522 S 676 504, 710 488 L 710 606 L 314 606 Z"
             fill="url(#hillBack)"/>
-      <path d="M292 600 C 390 540, 470 560, 560 600 S 690 590, 732 570 L 732 640 L 292 640 Z"
+      <path d="M314 574 C 402 520, 474 538, 556 574 S 676 566, 710 548 L 710 606 L 314 606 Z"
             fill="url(#hillFront)"/>
     </g>
   </g>
 
-  <!-- flip motif: a light arc sweeping from the front photo towards the next one -->
-  <g filter="url(#shadow)">
-    <path d="M 300 760 C 420 846, 630 846, 744 742" fill="none" stroke="url(#arrow)"
-          stroke-width="34" stroke-linecap="round"/>
-    <path d="M 790 700 L 760 806 L 676 760 Z" fill="#FF9F43" stroke="#FF9F43"
-          stroke-width="16" stroke-linejoin="round"/>
+  <!-- page dots: position in the folder -->
+  <g>
+    <circle cx="452" cy="728" r="16" fill="#FFFFFF" fill-opacity="0.35"/>
+    <circle cx="512" cy="728" r="20" fill="#FFD166"/>
+    <circle cx="572" cy="728" r="16" fill="#FFFFFF" fill-opacity="0.35"/>
+  </g>
   </g>
 </svg>

@@ -299,6 +299,19 @@ Für die wichtigsten Eingaben gibt es in *Einstellungen → Maus & Tastatur* ein
 
 ---
 
+### 4.16 Mehrsprachigkeit
+
+| ID | Anforderung | Stufe |
+|---|---|---|
+| F-I18N-01 | Die Oberfläche ist vollständig übersetzbar: alle sichtbaren Texte (Menüs, Dialoge, Einstellungen, Fehlerkarten, Statuszeile, Infopanel-Bezeichnungen, Tastenkürzel-Übersicht, Hilfetexte) laufen über `tr()`; Qt-eigene Texte über die mitgelieferten Qt-Übersetzungen. Ausgangssprache der Quelltexte bleibt Deutsch. | M3 |
+| F-I18N-02 | Mitgelieferte Sprachen: Deutsch, Englisch, Französisch, Spanisch, Italienisch, Portugiesisch (Brasilien und Portugal), Niederländisch, Polnisch, Schwedisch, Dänisch, Norwegisch, Finnisch, Tschechisch, Japanisch, Chinesisch (vereinfacht und traditionell), Koreanisch. | M3 |
+| F-I18N-03 | Standard: Sprache folgt der Systemsprache (bevorzugte Sprachen von macOS, in Reihenfolge; Fallback Englisch). In den Einstellungen („Allgemein → Sprache“) lässt sich eine Sprache fest wählen; Wechsel ohne Neustart, falls technisch sauber möglich, sonst mit Hinweis „wirksam nach Neustart“. Die macOS-Funktion „Sprache pro App“ (Systemeinstellungen) wird ebenfalls respektiert. | M3 |
+| F-I18N-04 | Zahlen, Datums- und Größenangaben (z. B. „2,8 MB“ / „2.8 MB“), Belichtungswerte und GPS-Koordinaten werden nach dem Gebietsschema formatiert. Die Finder-Namenssortierung folgt unabhängig von der UI-Sprache dem System-Gebietsschema (wie der Finder). | M3 |
+| F-I18N-05 | Übersetzungsablauf: `.ts`-Dateien pro Sprache im Repo (`translations/`), Erzeugung mit `lupdate`/`lrelease` im Build; `CFBundleLocalizations` listet alle Sprachen. Eine Prüfung im CI meldet fehlende oder veraltete Übersetzungen und Texte ohne `tr()`. Erstübersetzungen dürfen maschinell entstehen, sind als „ungeprüft“ markiert und werden vor einem Release von Muttersprachlern gegengelesen (Beiträge über GitHub). | M3 |
+| F-I18N-06 | Layout verträgt längere Texte (z. B. Deutsch/Finnisch) und CJK-Schriften: keine abgeschnittenen Beschriftungen in Menüs, Einstellungen und Panels; automatischer Test, der jede Sprache lädt und Dialoge auf abgeschnittene Texte prüft. | M3 |
+
+---
+
 ## 5. Bedienkonzept
 
 ### 5.1 Fensteraufbau
@@ -660,7 +673,7 @@ Weitere Pflichten:
 | **M0 – Spike** (vorab) | Qt-6-Gerüst mit QRhiWidget auf Metal, ImageIO-Decoder in Objective-C++, ein Bild farbrichtig anzeigen, ←/→ im Ordner, .DS_Store-Leser als Prototyp. **Ziel: Technikentscheidung absichern** (HDR-Swapchain, Leistung, Farbe). |
 | **M1 – MVP** | F-OPEN-01…06, F-NAV-01…03/07, F-VIEW-01…02/04/06…10, Formatgruppen Standard/Modern/RAW, F-COL-01, F-INFO-01, F-FILE-01…03, F-EDIT-01, F-SORT-01/02/03/05/08, F-MAC-01/02/05, F-SET-01/04, F-PRIV-01/02, F-WIN-01/02/03/08/09/10, F-IN-01 (Mausrad-Einstellung), Signierung und Notarisierung |
 | **M2 – v1.0** | Ordnerüberwachung, Infopanel, Histogramm, Filmstreifen, Diashow, Animation, mehrseitige Formate, SVG, Pro-Formate, verlustfreies Drehen, Umbenennen, Teilen, Drag-out, Tastatur-Editor, alle Eingabe-Einstellungen (4.14) inkl. Profilvorlagen, Fenster anordnen, Tabs, Fensterwiederherstellung, Standard-App-Button, Live-Finder-Abfrage (Opt-in), Sparkle |
-| **M3 – v1.x** | Aussortiermodus und Bewertungen (XMP-Zusatzdatei, im Bild, Finder-Tags), Fenster koppeln, Schnellablage, Raster und Vergleich, HDR/EDR vollständig, Lupe, rekursive Ordner, Hilfsprozess für Decoder, Restformate |
+| **M3 – v1.x** | Mehrsprachigkeit (4.16), Aussortiermodus und Bewertungen (XMP-Zusatzdatei, im Bild, Finder-Tags), Fenster koppeln, Schnellablage, Raster und Vergleich, HDR/EDR vollständig, Lupe, rekursive Ordner, Hilfsprozess für Decoder, Restformate |
 | **M4 – später** | Archive und PDF, Live Text, Zuschneiden und Export, eigene Aktionen, Overlays für Fototechnik, **Windows- und Linux-Builds**, eventuell eine App-Store-Edition |
 
 ---

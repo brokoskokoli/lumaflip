@@ -5,6 +5,17 @@ Bildbetrachter für macOS (später Windows/Linux). Die verbindliche Spezifikatio
 
 ## Bauen und prüfen
 
+**Wichtig: Der Rechner ist der Arbeitslaptop des Nutzers.** Integrationstests (`tst_*`), Benchmarks (`lf_bench`),
+Sanitizer-Läufe und Lasttests öffnen echte Fenster bzw. belasten die Maschine – **nur nach ausdrücklicher Rückfrage**
+ausführen. Ohne Rückfrage erlaubt: Bauen und `tools/check.sh --quick --no-gui` (nur Unit-Tests).
+
+```sh
+tools/run.sh [bild]             # nur die App bauen und starten (keine Tests) – zum Ausprobieren
+tools/check.sh --quick --no-gui # Build + Unit-Tests ohne Fenster
+```
+
+Vollständige Prüfungen (nach Rückfrage):
+
 ```sh
 tools/check.sh --quick          # Build + alle Tests (schnell, vor jedem Commit)
 tools/check.sh --stage M2       # alle Pflichtprüfungen inkl. Format, SPDX, Spec-Abdeckung, Benchmarks
@@ -61,7 +72,7 @@ Neue Quelldateien werden per Glob automatisch gebaut (CMake `CONFIGURE_DEPENDS`)
 
 - Namespace `lf`. C++20. Qt-Typen bevorzugen (QString, QVector …). Keine Exceptions über Modulgrenzen.
 - Jede Datei beginnt mit `// SPDX-License-Identifier: GPL-3.0-or-later`.
-- UI-Texte auf Deutsch (später übersetzbar: `tr()` verwenden).
+- UI-Texte auf Deutsch als Ausgangssprache, immer über `tr()` (Mehrsprachigkeit, SPEC 4.16).
 - **Rückverfolgbarkeit:** Tests nennen die Anforderungs-ID im Namen, z. B.
   `TEST(SortEngine, F_SORT_01_FinderNameOrder)`, `void F_NAV_01_arrowKeys();` oder
   `LF_BENCH(P_05_…)`. Nur Testnamen zählen, keine Kommentare.

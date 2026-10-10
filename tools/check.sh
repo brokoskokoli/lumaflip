@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Runs all mandatory checks (SPEC 15.1).
-# Usage: tools/check.sh [--quick] [--sanitize] [--stage M1] [--format-all] [--tidy|--tidy-all]
+# Usage: tools/check.sh [--quick] [--no-gui] [--sanitize] [--stage M1] [--format-all] [--tidy|--tidy-all]
 #   --quick       build + tests only
+#   --no-gui      only tests that open no windows (unit tests, offscreen); no integration
+#                 tests, no benchmarks. Use this on a laptop someone is working on.
 #   --sanitize    ASan/UBSan build (build/sanitize)
 #   --stage Mn    stage for the spec coverage check (default M2 = current milestone, or $LF_STAGE)
 #   --format-all  clang-format check of every source file; default: only the lines
@@ -20,10 +22,11 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-QUICK=0; SANITIZE=0; FORMAT_ALL=0; TIDY=0; TIDY_ALL=0; STAGE="${LF_STAGE:-M2}"
+QUICK=0; NO_GUI=0; SANITIZE=0; FORMAT_ALL=0; TIDY=0; TIDY_ALL=0; STAGE="${LF_STAGE:-M2}"
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --quick) QUICK=1 ;;
+    --no-gui) NO_GUI=1 ;;
     --sanitize) SANITIZE=1 ;;
     --stage) STAGE="$2"; shift ;;
     --format-all) FORMAT_ALL=1 ;;
@@ -101,7 +104,12 @@ tests/corpus/make_corpus.sh
 
 step "Tests"
 export QT_QPA_PLATFORM="${QT_QPA_PLATFORM:-offscreen}"
-ctest --test-dir "$BUILD_DIR" --output-on-failure -j "$NCPU"
+if [[ $NO_GUI == 1 ]]; then
+  echo "--no-gui: unit tests only (integration tests and benchmarks open windows)"
+  ctest --test-dir "$BUILD_DIR" --output-on-failure -j "$NCPU" -L unit
+else
+  ctest --test-dir "$BUILD_DIR" --output-on-failure -j "$NCPU"
+fi
 
 BASE="$(merge_base)"
 
@@ -148,7 +156,7 @@ if [[ $QUICK == 0 ]]; then
   # Throw-away keys from OpenSSL 3 in a temp dir (never a keychain); skips without OpenSSL 3.
   tools/sparkle_key_check.sh --self-test
 
-  if [[ -x "$BUILD_DIR/tests/lf_bench" ]]; then
+  if [[ $NO_GUI == 0 && -x "$BUILD_DIR/tests/lf_bench" ]]; then
     step "Benchmarks (tolerance ${LF_BENCH_TOLERANCE:-1.2})"
     wait_for_low_load
     # The view benchmark (P-03) needs Metal: the offscreen platform has no QRhi.
