@@ -49,6 +49,8 @@ const SortItem kSortItems[] = {
     {SortKey::DateCaptured, "dateCaptured"},
     {SortKey::Size, "size"},
     {SortKey::Kind, "kind"},
+    {SortKey::PixelCount, "pixelCount"},
+    {SortKey::Rating, "rating"},
 };
 
 } // namespace
@@ -141,10 +143,7 @@ void MainMenu::build() {
     QAction* quit =
         addCommand(file, QStringLiteral("quit"), tr("Lumaflip beenden"), QKeySequence(QKeySequence::Quit));
     quit->setMenuRole(QAction::QuitRole);
-    connect(quit, &QAction::triggered, this, [this] {
-        m_app.closeAllWindows();
-        QCoreApplication::quit();
-    });
+    connect(quit, &QAction::triggered, &m_app, &Application::quit);
 
     // ---- Bearbeiten ----
     QMenu* edit = m_bar->addMenu(tr("Bearbeiten"));

@@ -14,6 +14,7 @@
 #include <QPointF>
 #include <QString>
 #include <QStringList>
+#include <functional>
 #include <memory>
 #include <optional>
 
@@ -79,7 +80,12 @@ public:
     virtual void revealInFileManager(const QString& path) = 0;
     virtual void openWith(const QString& path, const QString& appPath) = 0;  // empty = default app
     virtual QStringList imageDocumentTypes() const = 0;  // UTTypes we register for
-    virtual bool makeDefaultViewer(const QStringList& types, QString* error) = 0;  // F-MAC-04
+    virtual bool makeDefaultViewer(const QStringList& types, QString* error) = 0;  // F-MAC-04 (blocking)
+    // Non-blocking variant for the UI: `done` runs on the thread of `context` (not at all
+    // if `context` is gone). The default implementation runs makeDefaultViewer() on a
+    // worker thread.
+    using DefaultViewerDone = std::function<void(bool ok, const QString& error)>;
+    virtual void makeDefaultViewerAsync(const QStringList& types, QObject* context, DefaultViewerDone done);
 };
 
 // ---- factories (implemented per platform) ----

@@ -7,13 +7,15 @@
 #include <QCoreApplication>
 #include <QFile>
 #include <QFileInfo>
+#include <QLoggingCategory>
 #include <QtDebug>
 #include <algorithm>
 
 namespace lf {
 
-
 namespace {
+
+Q_LOGGING_CATEGORY(lcDecode, "lf.decode")
 
 constexpr qint64 kHeaderBytes = 64;
 
@@ -21,44 +23,113 @@ QString tr(const char* text) {
     return QCoreApplication::translate("lf::DecoderRegistry", text);
 }
 
-QByteArray readHeader(const QString& path) {
+enum class FileState { Readable, Missing, Unreadable };
+
+QByteArray readHeader(const QString& path, FileState* state = nullptr) {
     QFile f(path);
-    if (!f.open(QIODevice::ReadOnly))
+    if (!f.open(QIODevice::ReadOnly)) {
+        if (state)
+            *state = QFileInfo::exists(path) ? FileState::Unreadable : FileState::Missing;
         return {};
+    }
+    if (state)
+        *state = FileState::Readable;
     return f.read(kHeaderBytes);
 }
 
+// Problems that are known before any backend is asked (F-FMT-02): the file is empty or
+// cannot be read. A missing file is left to the backends (tests use virtual paths).
+QString precheckError(FileState state, const QByteArray& header) {
+    if (state == FileState::Unreadable)
+        return DecoderRegistry::messageUnreadable();
+    if (state == FileState::Readable && header.isEmpty())
+        return DecoderRegistry::messageEmpty();
+    return {};
+}
+
 // Error for "no backend can decode this file" - distinguishes unreadable files.
-QString unsupportedError(const QString& path) {
+QString unsupportedError(FileState state) {
+    switch (state) {
+    case FileState::Missing:
+        return DecoderRegistry::messageMissing();
+    case FileState::Unreadable:
+        return DecoderRegistry::messageUnreadable();
+    case FileState::Readable:
+        break;
+    }
+    return DecoderRegistry::messageUnsupported();
+}
+
+// German, user-facing reason after every backend failed; the backend details go to the log.
+QString failedError(const QString& path, const QStringList& backendErrors) {
     const QFileInfo fi(path);
     if (!fi.exists())
-        return tr("Die Datei existiert nicht.");
-    if (!fi.isReadable())
-        return tr("Die Datei kann nicht gelesen werden.");
-    return tr("Das Dateiformat wird nicht unterstützt.");
+        return DecoderRegistry::messageMissing();
+    // Out of memory is not a defect of the file (both backends say "Speicher").
+    for (const QString& e : backendErrors)
+        if (e.contains(QStringLiteral("Speicher")))
+            return DecoderRegistry::messageTooLarge();
+    return DecoderRegistry::messageDamaged();
 }
 
 template <typename T, typename Fn>
-std::optional<T> tryBackends(const QList<std::shared_ptr<Decoder>>& backends, const QString& path,
-                             QString* error, Fn&& fn) {
+std::optional<T> tryBackends(const DecoderRegistry& reg, const QString& path, QString* error, QString* detail,
+                             Fn&& fn) {
+    FileState state = FileState::Readable;
+    const QByteArray header = readHeader(path, &state);
+    if (const QString pre = precheckError(state, header); !pre.isEmpty()) {
+        if (error)
+            *error = pre;
+        if (detail)
+            *detail = pre;
+        return std::nullopt;
+    }
+    const QList<std::shared_ptr<Decoder>> backends = reg.candidates(path, header);
     if (backends.isEmpty()) {
         if (error)
-            *error = unsupportedError(path);
+            *error = unsupportedError(state);
+        if (detail)
+            *detail = error ? *error : unsupportedError(state);
         return std::nullopt;
     }
     QStringList errors;
+    QStringList details;
     for (const auto& d : backends) {
         QString err;
         if (auto r = fn(*d, &err))
             return r;
-        errors << QStringLiteral("%1: %2").arg(d->name(), err.isEmpty() ? tr("unbekannter Fehler") : err);
+        errors << err;
+        details << QStringLiteral("%1: %2").arg(d->name(), err.isEmpty() ? QStringLiteral("unknown error") : err);
     }
+    const QString joined = details.join(QLatin1Char('\n'));
+    qCDebug(lcDecode).noquote() << path << joined;
     if (error)
-        *error = errors.join(QLatin1Char('\n'));
+        *error = failedError(path, errors);
+    if (detail)
+        *detail = joined;
     return std::nullopt;
 }
 
 } // namespace
+
+QString DecoderRegistry::messageMissing() {
+    return tr("Die Datei existiert nicht.");
+}
+QString DecoderRegistry::messageEmpty() {
+    return tr("Die Datei ist leer.");
+}
+QString DecoderRegistry::messageUnreadable() {
+    return tr("Die Datei kann nicht gelesen werden.");
+}
+QString DecoderRegistry::messageDamaged() {
+    return tr("Die Datei ist beschädigt oder unvollständig.");
+}
+QString DecoderRegistry::messageUnsupported() {
+    return tr("Das Dateiformat wird nicht unterstützt.");
+}
+QString DecoderRegistry::messageTooLarge() {
+    return tr("Das Bild ist zu groß, um es vollständig zu laden.");
+}
 
 void DecoderRegistry::add(std::shared_ptr<Decoder> decoder) {
     if (!decoder)
@@ -71,10 +142,13 @@ void DecoderRegistry::add(std::shared_ptr<Decoder> decoder) {
 }
 
 QList<std::shared_ptr<Decoder>> DecoderRegistry::candidates(const QString& path) const {
-    QList<std::shared_ptr<Decoder>> result;
     if (m_decoders.isEmpty())
-        return result;
-    const QByteArray header = readHeader(path);
+        return {};
+    return candidates(path, readHeader(path));
+}
+
+QList<std::shared_ptr<Decoder>> DecoderRegistry::candidates(const QString& path, const QByteArray& header) const {
+    QList<std::shared_ptr<Decoder>> result;
     for (const auto& d : m_decoders) {
         if (d->canDecode(path, header))
             result.append(d);
@@ -101,19 +175,19 @@ QStringList DecoderRegistry::supportedExtensions() const {
     return l;
 }
 
-std::optional<ImageInfo> DecoderRegistry::info(const QString& path, QString* error) const {
-    return tryBackends<ImageInfo>(candidates(path), path, error,
+std::optional<ImageInfo> DecoderRegistry::info(const QString& path, QString* error, QString* detail) const {
+    return tryBackends<ImageInfo>(*this, path, error, detail,
                                   [&](Decoder& d, QString* err) { return d.info(path, err); });
 }
 
-std::optional<DecodedImage> DecoderRegistry::decode(const QString& path, const DecodeRequest& req,
-                                                    QString* error) const {
-    return tryBackends<DecodedImage>(candidates(path), path, error,
+std::optional<DecodedImage> DecoderRegistry::decode(const QString& path, const DecodeRequest& req, QString* error,
+                                                    QString* detail) const {
+    return tryBackends<DecodedImage>(*this, path, error, detail,
                                      [&](Decoder& d, QString* err) -> std::optional<DecodedImage> {
                                          auto r = d.decode(path, req, err);
                                          if (r && r->image.isNull()) { // empty image counts as failure
                                              if (err)
-                                                 *err = tr("Leeres Bild");
+                                                 *err = QStringLiteral("empty image");
                                              return std::nullopt;
                                          }
                                          return r;

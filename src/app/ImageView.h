@@ -52,6 +52,10 @@ public:
     bool zoomLocked() const;
 
     void panBy(QPointF deltaInWidget);
+    // Image point in the middle of the view, relative to the full image (0..1 in both
+    // directions); (-1, -1) without image. setViewCenter() pans there (clamped).
+    QPointF viewCenter() const;
+    void setViewCenter(QPointF relative);
     void scrollToTop();
     void scrollToBottom();
     bool isZoomed() const;               // image larger than viewport
@@ -62,6 +66,7 @@ public:
     void setFlip(bool horizontal, bool vertical);
 
     void setBackground(const QString& setting);    // see Settings key::Background
+    QColor backgroundColor() const;                // effective base color ("system" resolved)
     void setUpscaleNearest(bool nearest);
     void setActualSizeInDevicePixels(bool devicePixels);
     // Output color space override (F-COL-01). Invalid (default) = the color space

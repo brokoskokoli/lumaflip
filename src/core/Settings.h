@@ -9,13 +9,18 @@
 #include <QStringList>
 #include <QVariant>
 
+class QSettings;
+
 namespace lf {
 
 namespace key {
 // General / windows (4.15)
 inline constexpr auto OpenBehavior = "window/openBehavior";        // "newWindow" | "replaceFront" | "newUnlessOpen"
 inline constexpr auto FitWindowToImage = "window/fitToImage";      // bool, default false
-inline constexpr auto RestoreWindows = "window/restore";           // bool
+inline constexpr auto RestoreWindows = "window/restore";           // bool (F-WIN-06)
+inline constexpr auto TitleShowFolder = "window/titleShowFolder";  // bool, default false (F-WIN-10)
+// Files
+inline constexpr auto ConfirmTrash = "files/confirmTrash";         // bool, default false (F-FILE-01)
 // Display
 inline constexpr auto Background = "view/background";              // "dark" | "light" | "system" | "checker" | "#rrggbb"
 inline constexpr auto ZoomMode = "view/zoomMode";                  // "fit" | "fitUpscale" | "actual" | "fillWidth" | "fillHeight" | "fill"
@@ -72,6 +77,21 @@ public:
 
     // For tests: use an isolated settings file.
     static void useTestingBackend(const QString& iniPath);
+
+    // SPEC 8.6: settings in ~/Library/Preferences/io.github.brokoskokoli.lumaflip.plist,
+    // app data in ~/Library/Application Support/Lumaflip/. main() calls
+    // configureApplication() before anything reads settings; it sets the application
+    // identity (display name stays "Lumaflip").
+    static void configureApplication();
+    static QString nativeSettingsPath(); // file of the native (default) backend
+    static QString appDataPath();        // folder for per-folder data etc.
+    // Copies values of older locations once (settings of 0.1: "…Lumaflip.plist", app
+    // data "Application Support/Lumaflip/Lumaflip"). Returns the number of copied values.
+    static int migrateLegacyLocations();
+    // Building blocks of the migration (testable with INI files): copies keys missing in
+    // `to`, marks `to` as migrated; does nothing if `to` was migrated before.
+    static int migrateValues(QSettings& from, QSettings& to);
+    static bool migrateFile(const QString& oldPath, const QString& newPath);
 
 signals:
     void changed(const QString& key);

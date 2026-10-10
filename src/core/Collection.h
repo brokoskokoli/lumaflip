@@ -33,8 +33,9 @@ public:
     void openFile(const QString& filePath);
     // F-OPEN-04: exactly these files, sorted with the current spec.
     void openFiles(const QStringList& filePaths);
-    // F-OPEN-05: folder contents, current = first.
-    void openFolder(const QString& folderPath);
+    // F-OPEN-05: folder contents, current = first (or the last image with `selectLast`,
+    // used when flipping backwards into the previous folder, F-NAV-03 "nextFolder").
+    void openFolder(const QString& folderPath, bool selectLast = false);
     // F-WIN-09 / F-WIN-03: take over the state of `other` (input, entries, sort mode,
     // current file) without enumerating the folder again. If `other` is still
     // loading, the same load is started for this collection.
@@ -68,11 +69,24 @@ public:
     bool followsFinder() const;
 
     // F-OPEN-07: re-enumerate the folder, keep current file (or move to the
-    // neighbour if it vanished). Called by the window when the watcher fires.
+    // neighbour if it vanished). Invalidates the shared folder snapshot (FolderCache).
     void refresh();
+    // Like refresh(), but takes the shared snapshot as it is: after one folder change the
+    // app invalidates the FolderCache once and every window showing the folder reloads,
+    // so the folder is enumerated only once (F-WIN-09).
+    void reload();
     // Remove/insert an entry without re-enumeration (after trash/undo/move).
     void removePath(const QString& path);
-    void insertPath(const QString& path);
+    // The file's attributes are read on a worker thread; the entry appears (and becomes
+    // current with `makeCurrent`) when they are known. A multi-file collection (F-OPEN-04)
+    // only takes back files it contained, unless `addToFileSet`; a folder collection takes
+    // files of its folder.
+    void insertPath(const QString& path, bool addToFileSet = false, bool makeCurrent = false);
+    // F-FILE-04: the entry keeps its attributes and its "current" state, only name and
+    // position change. Files not in this collection are handled like insertPath(to).
+    void renamePath(const QString& from, const QString& to);
+    // True while insertPath() results are outstanding (tests).
+    bool hasPendingInserts() const;
 
     // Injection for tests; defaults are created via Platform.h factories.
     void setProviders(NameCollator* collator, FolderOrderProvider* order,
@@ -83,7 +97,9 @@ signals:
     void entriesChanged();                 // list or order changed
     void currentChanged(int index, const QString& path);
     void sortSpecChanged(const lf::SortSpec& spec);
-    void accessDenied(const QString& folderPath);  // F-PRIV-01
+    // F-PRIV-01: the folder cannot be listed. `privacyProtected`: macOS privacy protection
+    // (TCC, EPERM) rather than plain POSIX permissions (EACCES).
+    void accessDenied(const QString& folderPath, bool privacyProtected);
 
 private:
     struct Private;
@@ -93,8 +109,14 @@ private:
 // Pure, synchronous helpers (unit-testable, used by Collection internally).
 namespace collection {
 // Lists supported image files of a folder (no hidden files, no AppleDouble, no packages).
-QVector<FileEntry> enumerateFolder(const QString& folderPath, bool* accessDenied = nullptr);
+// `privacyDenied`: the denial is EPERM (macOS privacy protection), not EACCES.
+QVector<FileEntry> enumerateFolder(const QString& folderPath, bool* accessDenied = nullptr,
+                                   bool* privacyDenied = nullptr);
 void sortEntries(QVector<FileEntry>& entries, const SortSpec& spec, const NameCollator& collator);
+// F-NAV-03 "Zum nächsten Ordner": the next (`direction` > 0) or previous sibling folder
+// of `folderPath` in Finder name order that contains images; empty if there is none.
+// Blocking (lists folders): call on a worker thread.
+QString siblingImageFolder(const QString& folderPath, int direction, const NameCollator* collator);
 } // namespace collection
 
 } // namespace lf
