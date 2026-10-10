@@ -130,9 +130,11 @@ public:
 
     // ---- name filter (F-NAV-08, M3) ----
     // Shows only images whose file name contains every word of `query` (case and
-    // diacritics ignored, NameFilter.h); combines with the rating filter. Applied at once
-    // (no re-enumeration); an image that no longer matches is hidden even if it is current
-    // (the first match becomes current). Empty = off.
+    // diacritics ignored, NameFilter.h); combines with the rating filter. No re-enumeration
+    // and no re-sorting (entries keep the place of their last sort): applied at once for up
+    // to a few thousand images, larger collections are filtered on a worker (entriesChanged
+    // follows). A running load is not restarted. An image that no longer matches is hidden
+    // even if it is current (the first match becomes current). Empty = off.
     void setNameFilter(const QString& query);
     QString nameFilter() const;
 
@@ -148,9 +150,24 @@ public:
     // Folders the collection reads: the folder, recursive also every subfolder of the last
     // load (root first). Empty for multi-file collections. Watch these (F-OPEN-07).
     QStringList folders() const;
-    // A change in `folderPath` concerns this collection (its folder or, recursive, any
-    // non-hidden subfolder - also one that is new).
+    // A change in `folderPath` concerns this collection: its folder or, recursive, a folder
+    // of the tree - also a new one, but like the tree reader not a hidden folder, a package
+    // or another volume (checked once per unknown folder).
     bool coversFolder(const QString& folderPath) const;
+    // A folder watcher reported a change in `folderPath` (F-OPEN-07/08). Changes are
+    // coalesced (300 ms); a recursive collection then reads only the changed folders (and
+    // new subfolders) again and keeps the rest of the tree, otherwise it reloads.
+    void folderContentsChanged(const QString& folderPath);
+    // An XMP sidecar changed (F-CULL-02): the image list stays; with an active rating filter
+    // the ratings of the images it belongs to are read again (worker) and filtered.
+    void sidecarChanged(const QString& sidecarPath);
+    bool hasPendingChanges() const; // changes waiting or being applied (tests)
+    // F-OPEN-08: a recursive collection stops reading after this many images (default
+    // 200 000) and emits treeLimitReached().
+    void setMaxTreeImages(int maxImages);
+    // Tests/benchmarks: shows exactly `entries` (a file set, in this order) without reading
+    // anything.
+    void showEntriesForTesting(const QVector<FileEntry>& entries);
     // Subfolder of `path` relative to folderPath() ("2024/Urlaub"); empty for the folder
     // itself and for non-recursive collections.
     QString relativeFolder(const QString& path) const;
@@ -185,6 +202,8 @@ signals:
     void foldersChanged();
     // F-OPEN-08: while a recursive load runs (about every 250 ms).
     void loadProgress(int foldersRead, int imagesFound);
+    // F-OPEN-08: the recursive load stopped at the image limit (setMaxTreeImages()).
+    void treeLimitReached(int images);
 
 private:
     struct Private;

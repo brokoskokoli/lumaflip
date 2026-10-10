@@ -13,6 +13,7 @@
 #include <QImageReader>
 #include <QLoggingCategory>
 
+#include <csignal>
 #include <cstdio>
 
 #ifdef Q_OS_UNIX
@@ -21,6 +22,8 @@
 
 int main(int argc, char** argv) {
 #ifdef Q_OS_UNIX
+    // The app may vanish at any time: a write to its pipe must fail, not kill the helper.
+    std::signal(SIGPIPE, SIG_IGN);
     // The protocol owns the original stdout; anything a library prints goes to stderr.
     const int protocolOut = dup(STDOUT_FILENO);
     dup2(STDERR_FILENO, STDOUT_FILENO);
@@ -40,14 +43,17 @@ int main(int argc, char** argv) {
     // start-up independent of the profile).
     (void)QImageReader::supportedImageFormats();
 
-    QString sandboxError;
-    const bool sandboxed = lf::applyDecoderSandbox(&sandboxError);
+    const bool testOps = qEnvironmentVariableIntValue("LF_DECODER_HELPER_TEST_OPS") == 1;
+    QString sandboxError = QStringLiteral("disabled for a test");
+    // The app refuses a helper without sandbox (DecoderHelperPool, Ping); tests check that.
+    const bool sandboxed = testOps && qEnvironmentVariableIntValue("LF_DECODER_HELPER_TEST_NO_SANDBOX") == 1
+                               ? false
+                               : lf::applyDecoderSandbox(&sandboxError);
     if (!sandboxed)
         qWarning("lumaflip-decoder: running without sandbox: %s", qPrintable(sandboxError));
 
     QList<std::shared_ptr<lf::Decoder>> backends = {std::make_shared<lf::QtImageDecoder>(),
                                                     std::make_shared<lf::SvgDecoder>()};
     backends << lf::simpleDecoders(); // M3 "Rest" formats (QOI, PCX, PNM/PFM, SGI, ORA, KRA)
-    const bool testOps = qEnvironmentVariableIntValue("LF_DECODER_HELPER_TEST_OPS") == 1;
     return lf::runDecoderHelper(STDIN_FILENO, protocolOut, backends, sandboxed, testOps);
 }

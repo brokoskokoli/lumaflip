@@ -142,10 +142,6 @@
         <translation>Esc</translation>
     </message>
     <message>
-        <source>%1 (in einer späteren Version)</source>
-        <translation>%1(이후 버전에서 제공)</translation>
-    </message>
-    <message>
         <source>Lumaflip wird als Standard-App festgelegt …</source>
         <translation>Lumaflip을 기본 앱으로 설정하는 중…</translation>
     </message>
@@ -167,6 +163,13 @@
         <extracomment>status bar while a folder with subfolders is read (F-OPEN-08)</extracomment>
         <translation>
             <numerusform>하위 폴더 읽는 중… 폴더 %1개, 이미지 %n개</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.</source>
+        <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
+        <translation>
+            <numerusform>하위 폴더: 처음 %n개의 이미지만 표시됩니다. 더 작은 폴더를 여세요.</numerusform>
         </translation>
     </message>
     <message>
@@ -364,6 +367,10 @@
     <message>
         <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
         <translation>디코딩 시간이 너무 오래 걸려 중단되었습니다.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess läuft ohne Sandbox und wird aus Sicherheitsgründen nicht verwendet.</source>
+        <translation>디코더 보조 프로세스가 샌드박스 없이 실행되고 있어 보안상의 이유로 사용하지 않습니다.</translation>
     </message>
     <message>
         <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
@@ -3143,10 +3150,6 @@
 <context>
     <name>lf::PreferencesDialog</name>
     <message>
-        <source>in einer späteren Version</source>
-        <translation>이후 버전에서 제공</translation>
-    </message>
-    <message>
         <source>Einstellungen</source>
         <translation>설정</translation>
     </message>
@@ -3473,10 +3476,6 @@
     <message>
         <source>Maus, Trackpad und Tasten</source>
         <translation>마우스, 트랙패드 및 키</translation>
-    </message>
-    <message>
-        <source>%1 (%2)</source>
-        <translation>%1(%2)</translation>
     </message>
     <message>
         <source>Mausrad-Feinheiten</source>

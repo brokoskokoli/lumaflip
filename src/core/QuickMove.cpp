@@ -49,7 +49,8 @@ QuickChord::Result QuickChord::feed(int key, Qt::KeyboardModifiers modifiers) {
     if (mods == Qt::NoModifier && key >= Qt::Key_1 && key <= Qt::Key_9) {
         r.kind = Kind::Execute;
         r.slot = key - Qt::Key_0;
-        setLastSlot(r.slot);
+        // Not remembered here (code review M3 #22): the window calls setLastSlot() once the
+        // target exists and the operation started, so `M M` never repeats a failed target.
         return r;
     }
     const int prefixKey = m_op == QuickOp::Move ? Qt::Key_M : Qt::Key_C;

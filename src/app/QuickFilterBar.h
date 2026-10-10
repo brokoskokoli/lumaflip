@@ -14,6 +14,7 @@
 class QKeyEvent;
 class QLabel;
 class QLineEdit;
+class QTimer;
 
 namespace lf {
 
@@ -34,6 +35,9 @@ public:
     bool isOpen() const { return isVisible(); }
     QLineEdit* field() const { return m_edit; }
     QString text() const;
+    // Applies the typed text now (otherwise kDebounceMs after the last keystroke).
+    void applyFilter();
+    static constexpr int kDebounceMs = 120;
     // A key typed into the window: opens the field with its text if the key means nothing
     // else (no shortcut, no command key, printable). True: consumed.
     bool maybeStart(const QKeyEvent* event, bool ratingKeysActive);
@@ -49,6 +53,7 @@ private:
     Application& m_app;
     QLineEdit* m_edit = nullptr;
     QLabel* m_count = nullptr;
+    QTimer* m_debounce = nullptr;
 };
 
 } // namespace lf

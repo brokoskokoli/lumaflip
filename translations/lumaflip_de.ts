@@ -11,6 +11,14 @@
             <numerusform>Unterordner werden gelesen … %1 Ordner, %n Bilder</numerusform>
         </translation>
     </message>
+    <message numerus="yes">
+        <source>Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.</source>
+        <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
+        <translation>
+            <numerusform>Unterordner: Nur das erste %n Bild wird gezeigt – bitte einen kleineren Ordner öffnen.</numerusform>
+            <numerusform>Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.</numerusform>
+        </translation>
+    </message>
 </context>
 <context>
     <name>lf::CouplingManager</name>

@@ -147,6 +147,10 @@ const ActionInfo* info(Action a) {
 // "Meta" is the Control key (⌃).
 QStringList defaultShortcutStrings(Action a) {
     switch (a) {
+    case Action::NextFolder: // F-OPEN-09: ⌥→ / ⌥← (only while not zoomed, see resolve())
+        return {"Alt+Right"};
+    case Action::PreviousFolder:
+        return {"Alt+Left"};
     case Action::NewWindow:
         return {"Ctrl+N"};
     case Action::DuplicateWindow:
@@ -856,7 +860,13 @@ Action InputBindings::resolve(const InputEvent& ev) const {
             return a;
     }
     // 2. Free shortcuts (user overrides win over the fixed slot keys).
-    if (Action a = matchShortcut(false); a != Action::None) {
+    Action free = matchShortcut(false);
+    // F-OPEN-09: the folder shortcuts on ⌥←/⌥→ apply while not zoomed; zoomed, the arrow
+    // slot decides (F-IN-07: pan or flip, F-VIEW-04).
+    if ((free == Action::NextFolder || free == Action::PreviousFolder) && ev.zoomed &&
+        (ev.key == Qt::Key_Left || ev.key == Qt::Key_Right))
+        free = Action::None;
+    if (Action a = free; a != Action::None) {
         if (ratingActive && (a == Action::ZoomActual || a == Action::ZoomFit || a == Action::ZoomFillWidth) &&
             mods == Qt::NoModifier && ev.key >= Qt::Key_0 && ev.key <= Qt::Key_9)
             return Action::None; // digits belong to ratings while rating keys are active
@@ -874,7 +884,7 @@ Action InputBindings::resolve(const InputEvent& ev) const {
         const Action img = pick(fwd, Action::NextImage, Action::PreviousImage);
         const Action scroll = pick(fwd, Action::ScrollRight, Action::ScrollLeft);
         if (!ev.zoomed)
-            return alt ? pick(fwd, Action::NextFolder, Action::PreviousFolder) : img;
+            return alt ? Action::None : img; // ⌥←/⌥→: the (configurable) folder shortcuts above
         const QString c = choice(QStringLiteral("arrowsZoomed"));
         if (c == QLatin1String("scrollThenImage"))
             return alt ? img : (ev.atScrollEdge ? img : scroll);

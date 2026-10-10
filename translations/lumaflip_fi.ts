@@ -142,10 +142,6 @@
         <translation>Esc</translation>
     </message>
     <message>
-        <source>%1 (in einer späteren Version)</source>
-        <translation>%1 (tulevassa versiossa)</translation>
-    </message>
-    <message>
         <source>Lumaflip wird als Standard-App festgelegt …</source>
         <translation>Lumaflipia asetetaan oletussovellukseksi…</translation>
     </message>
@@ -168,6 +164,14 @@
         <translation>
             <numerusform>Luetaan alikansioita… %1 kansiota, %n kuva</numerusform>
             <numerusform>Luetaan alikansioita… %1 kansiota, %n kuvaa</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.</source>
+        <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
+        <translation>
+            <numerusform>Alikansiot: vain %n kuva näytetään – avaa pienempi kansio.</numerusform>
+            <numerusform>Alikansiot: vain ensimmäiset %n kuvaa näytetään – avaa pienempi kansio.</numerusform>
         </translation>
     </message>
     <message>
@@ -370,6 +374,10 @@
     <message>
         <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
         <translation>Purkaminen kesti liian kauan ja keskeytettiin.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess läuft ohne Sandbox und wird aus Sicherheitsgründen nicht verwendet.</source>
+        <translation>Purkajan apuprosessi toimii ilman hiekkalaatikkoa, eikä sitä käytetä turvallisuussyistä.</translation>
     </message>
     <message>
         <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
@@ -3158,10 +3166,6 @@
 <context>
     <name>lf::PreferencesDialog</name>
     <message>
-        <source>in einer späteren Version</source>
-        <translation>tulevassa versiossa</translation>
-    </message>
-    <message>
         <source>Einstellungen</source>
         <translation>Asetukset</translation>
     </message>
@@ -3488,10 +3492,6 @@
     <message>
         <source>Maus, Trackpad und Tasten</source>
         <translation>Hiiri, ohjauslevy ja näppäimet</translation>
-    </message>
-    <message>
-        <source>%1 (%2)</source>
-        <translation>%1 (%2)</translation>
     </message>
     <message>
         <source>Mausrad-Feinheiten</source>

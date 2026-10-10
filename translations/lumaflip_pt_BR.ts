@@ -142,10 +142,6 @@
         <translation>Esc</translation>
     </message>
     <message>
-        <source>%1 (in einer späteren Version)</source>
-        <translation>%1 (em uma versão futura)</translation>
-    </message>
-    <message>
         <source>Lumaflip wird als Standard-App festgelegt …</source>
         <translation>Definindo o Lumaflip como app padrão…</translation>
     </message>
@@ -168,6 +164,14 @@
         <translation>
             <numerusform>Lendo subpastas… %1 pastas, %n imagem</numerusform>
             <numerusform>Lendo subpastas… %1 pastas, %n imagens</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.</source>
+        <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
+        <translation>
+            <numerusform>Subpastas: apenas %n imagem é mostrada – abra uma pasta menor.</numerusform>
+            <numerusform>Subpastas: apenas as primeiras %n imagens são mostradas – abra uma pasta menor.</numerusform>
         </translation>
     </message>
     <message>
@@ -370,6 +374,10 @@
     <message>
         <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
         <translation>A decodificação demorou demais e foi cancelada.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess läuft ohne Sandbox und wird aus Sicherheitsgründen nicht verwendet.</source>
+        <translation>O processo auxiliar de decodificação está sendo executado sem sandbox e não é usado por motivos de segurança.</translation>
     </message>
     <message>
         <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
@@ -3158,10 +3166,6 @@
 <context>
     <name>lf::PreferencesDialog</name>
     <message>
-        <source>in einer späteren Version</source>
-        <translation>em uma versão futura</translation>
-    </message>
-    <message>
         <source>Einstellungen</source>
         <translation>Ajustes</translation>
     </message>
@@ -3488,10 +3492,6 @@
     <message>
         <source>Maus, Trackpad und Tasten</source>
         <translation>Mouse, trackpad e teclas</translation>
-    </message>
-    <message>
-        <source>%1 (%2)</source>
-        <translation>%1 (%2)</translation>
     </message>
     <message>
         <source>Mausrad-Feinheiten</source>

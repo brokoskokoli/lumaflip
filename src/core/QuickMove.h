@@ -40,7 +40,8 @@ public:
     QuickOp pendingOp() const { return m_op; }
     void cancel() { m_pending = false; }
 
-    // The last target used (shared by all windows; 0 = none yet).
+    // The last target used successfully (shared by all windows; 0 = none yet). Set by the
+    // caller after the operation into that target started, not by feed().
     static int lastSlot();
     static void setLastSlot(int slot);
 

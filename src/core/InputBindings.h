@@ -143,8 +143,8 @@ public:
     // Presets (F-IN-18): "mac", "windows", "photographer". Choices that are not available
     // yet (isChoiceAvailable) are skipped: the slot gets its default instead.
     static void applyPreset(const QString& presetId);
-    // Choices of input slots that are implemented (later ones are shown disabled with
-    // "in einer späteren Version" and never set by a preset).
+    // Choices of input slots that are implemented (since M3 all of them; a choice of a later
+    // stage would be shown disabled and never set by a preset).
     static bool isChoiceAvailable(const QString& slotId, const QString& choiceId);
     // Actions the app can carry out (the others are planned: slideshow, info panel,
     // rating, rename …); the shortcut overview marks them.

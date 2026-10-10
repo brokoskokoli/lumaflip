@@ -30,6 +30,12 @@ struct FileEntry {
     // F-FMT-06 (M3): the other file of a RAW+JPEG pair this entry stands for (the RAW while
     // the JPEG is shown, or the JPEG while the RAW is shown); empty if not paired.
     QString pairedPath;
+    // F-NAV-08 (M3): namefilter::fold(name), computed once when a name filter first needs it
+    // (Collection); empty = not computed yet.
+    QString foldedName;
+    // Position in the collection's last full sort (shown and filtered-out entries alike), so
+    // the name filter can show and hide entries without sorting again; -1 = unknown.
+    int sortRank = -1;
 };
 
 } // namespace lf

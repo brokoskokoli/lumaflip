@@ -142,10 +142,6 @@
         <translation>Esc</translation>
     </message>
     <message>
-        <source>%1 (in einer späteren Version)</source>
-        <translation>%1 (v některé příští verzi)</translation>
-    </message>
-    <message>
         <source>Lumaflip wird als Standard-App festgelegt …</source>
         <translation>Lumaflip se nastavuje jako výchozí aplikace…</translation>
     </message>
@@ -169,6 +165,15 @@
             <numerusform>Načítání podsložek… %1 složek, %n obrázek</numerusform>
             <numerusform>Načítání podsložek… %1 složek, %n obrázky</numerusform>
             <numerusform>Načítání podsložek… %1 složek, %n obrázků</numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
+        <source>Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.</source>
+        <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
+        <translation>
+            <numerusform>Podsložky: zobrazuje se jen první %n obrázek – otevřete menší složku.</numerusform>
+            <numerusform>Podsložky: zobrazují se jen první %n obrázky – otevřete menší složku.</numerusform>
+            <numerusform>Podsložky: zobrazuje se jen prvních %n obrázků – otevřete menší složku.</numerusform>
         </translation>
     </message>
     <message>
@@ -376,6 +381,10 @@
     <message>
         <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
         <translation>Dekódování trvalo příliš dlouho a bylo přerušeno.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess läuft ohne Sandbox und wird aus Sicherheitsgründen nicht verwendet.</source>
+        <translation>Pomocný proces dekodéru běží bez sandboxu a z bezpečnostních důvodů se nepoužívá.</translation>
     </message>
     <message>
         <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
@@ -3173,10 +3182,6 @@
 <context>
     <name>lf::PreferencesDialog</name>
     <message>
-        <source>in einer späteren Version</source>
-        <translation>v některé příští verzi</translation>
-    </message>
-    <message>
         <source>Einstellungen</source>
         <translation>Nastavení</translation>
     </message>
@@ -3503,10 +3508,6 @@
     <message>
         <source>Maus, Trackpad und Tasten</source>
         <translation>Myš, trackpad a klávesy</translation>
-    </message>
-    <message>
-        <source>%1 (%2)</source>
-        <translation>%1 (%2)</translation>
     </message>
     <message>
         <source>Mausrad-Feinheiten</source>

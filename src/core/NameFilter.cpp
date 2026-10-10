@@ -35,14 +35,15 @@ QStringList terms(const QString& query) {
     return out;
 }
 
-bool matchesTerms(const QString& fileName, const QStringList& foldedTerms) {
-    if (foldedTerms.isEmpty())
-        return true;
-    const QString name = fold(fileName);
+bool matchesFolded(const QString& foldedName, const QStringList& foldedTerms) {
     for (const QString& t : foldedTerms)
-        if (!name.contains(t))
+        if (!foldedName.contains(t))
             return false;
     return true;
+}
+
+bool matchesTerms(const QString& fileName, const QStringList& foldedTerms) {
+    return foldedTerms.isEmpty() || matchesFolded(fold(fileName), foldedTerms);
 }
 
 bool matches(const QString& fileName, const QString& query) {
