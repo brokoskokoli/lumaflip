@@ -8,6 +8,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QGuiApplication>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -22,6 +23,10 @@
 #include <QThread>
 
 #include <memory>
+
+#ifdef Q_OS_UNIX
+#include <unistd.h>
+#endif
 
 namespace lf {
 
@@ -52,6 +57,8 @@ const Registry& registry() {
         s(key::OpenBehavior, "newWindow", {"newWindow", "replaceFront", "newUnlessOpen"});
         b(key::FitWindowToImage, false);
         b(key::RestoreWindows, true);
+        b(key::TitleShowFolder, false);
+        b(key::ConfirmTrash, false);
         s(key::Background, "dark", {"dark", "light", "system", "checker"}, true);
         s(key::ZoomMode, "fit", {"fit", "fitUpscale", "actual", "fillWidth", "fillHeight", "fill"});
         s(key::UpscaleFilter, "smooth", {"smooth", "nearest"});
@@ -181,6 +188,15 @@ QString typeName(Type t) {
 
 } // namespace
 
+namespace {
+// io.github.brokoskokoli.lumaflip (QSettings on macOS reverses the domain).
+constexpr auto kOrgDomain = "brokoskokoli.github.io";
+constexpr auto kSettingsApp = "lumaflip";
+constexpr auto kLegacySettingsApp = "Lumaflip"; // 0.1: QSettings() with app name "Lumaflip"
+constexpr auto kAppName = "Lumaflip";
+constexpr auto kMigratedKey = "meta/migratedFrom01";
+} // namespace
+
 struct Settings::Private {
     mutable QMutex mutex;
     std::unique_ptr<QSettings> qs;
@@ -192,17 +208,93 @@ struct Settings::Private {
     // application names set in main(). Caller holds `mutex`.
     QSettings& settings() {
         if (!qs)
-            qs = std::make_unique<QSettings>();
+            qs = makeNativeSettings();
         return *qs;
+    }
+    static std::unique_ptr<QSettings> makeNativeSettings() {
+        // Explicit identity, independent of QCoreApplication's names (SPEC 8.6).
+        return std::make_unique<QSettings>(QSettings::NativeFormat, QSettings::UserScope,
+                                           QString::fromLatin1(kOrgDomain),
+                                           QString::fromLatin1(kSettingsApp));
     }
 };
 
 namespace {
 QString defaultFolderFile() {
-    const QString dir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    return dir + QStringLiteral("/folders.json");
+    return Settings::appDataPath() + QStringLiteral("/folders.json");
 }
 } // namespace
+
+void Settings::configureApplication() {
+    // No organization name: AppDataLocation is "Application Support/<app name>" (SPEC 8.6).
+    QCoreApplication::setOrganizationName(QString());
+    QCoreApplication::setOrganizationDomain(QString::fromLatin1(kOrgDomain));
+    QCoreApplication::setApplicationName(QString::fromLatin1(kAppName));
+    QGuiApplication::setApplicationDisplayName(QString::fromLatin1(kAppName));
+}
+
+QString Settings::nativeSettingsPath() {
+    return Private::makeNativeSettings()->fileName();
+}
+
+QString Settings::appDataPath() {
+    return QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+}
+
+int Settings::migrateValues(QSettings& from, QSettings& to) {
+    if (to.value(QString::fromLatin1(kMigratedKey)).toBool())
+        return 0;
+    int copied = 0;
+    if (from.fileName() != to.fileName()) {
+        const QStringList keys = from.allKeys();
+        for (const QString& k : keys) {
+            if (to.contains(k))
+                continue;
+            to.setValue(k, from.value(k));
+            ++copied;
+        }
+    }
+    // The old file is left alone: on case-insensitive volumes it may be the same file.
+    to.setValue(QString::fromLatin1(kMigratedKey), true);
+    to.sync();
+    return copied;
+}
+
+bool Settings::migrateFile(const QString& oldPath, const QString& newPath) {
+    if (oldPath == newPath || QFileInfo::exists(newPath) || !QFileInfo::exists(oldPath))
+        return false;
+    QDir().mkpath(QFileInfo(newPath).absolutePath());
+    return QFile::copy(oldPath, newPath);
+}
+
+int Settings::migrateLegacyLocations() {
+    int copied = 0;
+    {
+        QSettings legacy(QSettings::NativeFormat, QSettings::UserScope, QString::fromLatin1(kOrgDomain),
+                         QString::fromLatin1(kLegacySettingsApp));
+        Settings& s = instance();
+        QMutexLocker lock(&s.d->mutex);
+        QSettings& current = s.d->settings();
+        bool sameFile = legacy.fileName() == current.fileName();
+#ifdef _PC_CASE_SENSITIVE
+        // Default macOS volumes are case-insensitive: "…Lumaflip.plist" and
+        // "…lumaflip.plist" are one file, there is nothing to copy (and writing through two
+        // preference domains into one file must be avoided).
+        if (!sameFile && legacy.fileName().compare(current.fileName(), Qt::CaseInsensitive) == 0) {
+            const QByteArray dir = QFile::encodeName(QFileInfo(current.fileName()).absolutePath());
+            sameFile = ::pathconf(dir.constData(), _PC_CASE_SENSITIVE) != 1;
+        }
+#endif
+        if (!sameFile)
+            copied = migrateValues(legacy, current);
+    }
+    const QString base = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
+    const QString legacyDir =
+        base + QLatin1Char('/') + QLatin1String(kAppName) + QLatin1Char('/') + QLatin1String(kAppName);
+    if (migrateFile(legacyDir + QStringLiteral("/folders.json"), defaultFolderFile()))
+        ++copied;
+    return copied;
+}
 
 Settings::Settings(QObject* parent) : QObject(parent), d(new Private) {
 }

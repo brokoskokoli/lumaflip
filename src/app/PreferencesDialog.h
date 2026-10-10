@@ -47,6 +47,11 @@ public:
     void resetSection(int section);
 
     QTableWidget* shortcutTable() const { return m_shortcutTable; }
+    // Message line at the bottom (e.g. the result of "Als Standard-App festlegen").
+    void showStatus(const QString& text);
+    QString statusText() const;
+    // Choices of input slots (4.14) that are not implemented yet: shown disabled.
+    static bool isChoiceAvailable(const QString& slotId, const QString& choiceId);
     int conflictCount() const { return m_conflicts; }
 
 public slots:

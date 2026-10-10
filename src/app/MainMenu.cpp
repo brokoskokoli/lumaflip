@@ -50,6 +50,8 @@ const SortItem kSortItems[] = {
     {SortKey::DateCaptured, "dateCaptured"},
     {SortKey::Size, "size"},
     {SortKey::Kind, "kind"},
+    {SortKey::PixelCount, "pixelCount"},
+    {SortKey::Rating, "rating"},
 };
 
 } // namespace
@@ -142,10 +144,7 @@ void MainMenu::build() {
     QAction* quit =
         addCommand(file, QStringLiteral("quit"), tr("Lumaflip beenden"), QKeySequence(QKeySequence::Quit));
     quit->setMenuRole(QAction::QuitRole);
-    connect(quit, &QAction::triggered, this, [this] {
-        m_app.closeAllWindows();
-        QCoreApplication::quit();
-    });
+    connect(quit, &QAction::triggered, &m_app, &Application::quit);
 
     // ---- Bearbeiten ----
     QMenu* edit = m_bar->addMenu(tr("Bearbeiten"));
@@ -153,14 +152,19 @@ void MainMenu::build() {
     QUndoStack* stack = m_app.fileOps().undoStack();
     m_undo = add(edit, Action::Undo, tr("Widerrufen"));
     m_redo = add(edit, Action::Redo, tr("Wiederholen"));
-    auto updateUndo = [this, stack] {
-        m_undo->setEnabled(stack->canUndo());
+    FileOps* ops = &m_app.fileOps();
+    auto updateUndo = [this, stack, ops] {
+        // While a file operation runs, ⌘Z/⇧⌘Z stay available: they are queued behind it
+        // and then apply to it (e.g. ⌘Z right after ⌘⌫ on a slow volume).
+        const bool busy = ops->isBusy();
+        m_undo->setEnabled(stack->canUndo() || busy);
         m_undo->setText(stack->canUndo() ? tr("„%1“ widerrufen").arg(stack->undoText()) : tr("Widerrufen"));
-        m_redo->setEnabled(stack->canRedo());
+        m_redo->setEnabled(stack->canRedo() || busy);
         m_redo->setText(stack->canRedo() ? tr("„%1“ wiederholen").arg(stack->redoText()) : tr("Wiederholen"));
     };
     connect(stack, &QUndoStack::indexChanged, this, updateUndo);
     connect(stack, &QUndoStack::cleanChanged, this, updateUndo);
+    connect(ops, &FileOps::busyChanged, this, updateUndo);
     updateUndo();
     edit->addSeparator();
     add(edit, Action::CopyImage, tr("Kopieren"));

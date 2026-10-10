@@ -17,6 +17,7 @@
 #include <QPointF>
 #include <QPointer>
 #include <QStringList>
+#include <QVariantMap>
 
 class QLabel;
 class QPushButton;
@@ -42,9 +43,15 @@ public:
     void openPaths(const QStringList& paths);
     void openFile(const QString& path);
     void openFiles(const QStringList& paths);
-    void openFolder(const QString& folderPath);
+    void openFolder(const QString& folderPath, bool selectLast = false);
     // F-WIN-03 ⌥⌘N: same collection (no re-enumeration), image, zoom and view rotation.
     void copyStateFrom(const ViewerWindow& other);
+    // ⌥⌘N, after the window is shown: same zoom factor, rotation and visible part.
+    void copyViewFrom(const ViewerWindow& other);
+    // F-WIN-06: what is needed to restore this window at the next start.
+    QVariantMap sessionState() const;
+    // Restores a sessionState(); paths not in `existing` are skipped. False: nothing left.
+    bool restoreSessionState(const QVariantMap& state, const QStringList& existing);
 
     bool isEmpty() const; // nothing opened (start screen)
     Collection* collection() const { return m_collection; }
@@ -70,13 +77,16 @@ public:
     QString statusText() const;                          // all status fields joined with " · " (F-INFO-01)
     QString sortText() const;                            // F-SORT-05
     QWidget* accessHint() const { return m_accessHint; } // F-PRIV-01
+    bool accessHintIsPrivacy() const { return m_accessPrivacy; } // TCC (vs. POSIX permissions)
     QString toastText() const; // visible transient message (edge hint, errors), else empty
     void showMessage(const QString& text, int ms = 1500);
+    void hideMessage();
     QSize decodeTarget() const; // device pixels for Quality::Screen
 
     // Called by the Application for file operations of any window (F-FILE-01).
     void fileRemoved(const QString& path);
     void fileAdded(const QString& path, bool makeCurrent);
+    void fileRenamed(const QString& from, const QString& to);
     void folderChanged(const QString& folderPath);
     void applySetting(const QString& key);
     void refreshActivity(); // front/active state changed: re-prioritise prefetch (F-WIN-09)
@@ -111,7 +121,7 @@ private:
     void updateFolderWatch();
     void navigate(int delta);
     void showEdgeHint(bool atEnd);
-    void showAccessHint(const QString& folder);
+    void showAccessHint(const QString& folder, bool privacy);
     void hideAccessHint();
     void fitWindowToImage(QSize imagePixels);
     void scheduleGeometrySave();
@@ -121,6 +131,11 @@ private:
     void copyImage();
     void copyPath();
     void trashCurrent();
+    void trashNow(const QString& path);
+    void switchFolder(int direction); // F-NAV-03 "nextFolder", Action::NextFolder/PreviousFolder
+    void applyStatusBarVisibility();
+    void updateEmptyStyle(); // start screen readable on any background
+    void onStageFailed(const QString& path, Quality quality, const QString& error);
     WrapMode wrapMode() const;
 
     Application& m_app;
@@ -156,6 +171,12 @@ private:
     bool m_opened = false;
     bool m_closed = false;
     bool m_fitToImagePending = false;
+    bool m_accessPrivacy = false;
+    bool m_chromeShown = true; // false: hidden in fullscreen until the mouse reaches an edge
+    quint64 m_copyToken = 0;   // latest ⌘C request
+    quint64 m_folderSwitchToken = 0;
+    bool m_folderSwitchPending = false;
+    QPushButton* m_openButton = nullptr;
 };
 
 } // namespace lf

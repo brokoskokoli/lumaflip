@@ -5,6 +5,7 @@
 #include "core/Platform.h"
 
 #include <QCoreApplication>
+#include <QPointer>
 #include <QStringList>
 
 #import <AppKit/AppKit.h>
@@ -70,6 +71,72 @@ public:
                 "com.microsoft.ico",
                 "com.apple.icns",
                 "public.svg-image"};
+    }
+
+    // Non-blocking: the completion handlers are collected with a dispatch group; the
+    // result (or a timeout) is delivered on the main queue, i.e. the GUI thread.
+    void makeDefaultViewerAsync(const QStringList& types, QObject* context, DefaultViewerDone done) override {
+        QPointer<QObject> guard(context);
+        auto deliver = [guard, done](bool ok, const QString& error) {
+            if (guard && done)
+                done(ok, error);
+        };
+        @autoreleasepool {
+            NSURL* bundle = [[NSBundle mainBundle] bundleURL];
+            if (![bundle.pathExtension isEqualToString:@"app"]) {
+                const QString error = tr("Lumaflip läuft nicht als App-Paket und kann nicht als Standard-App "
+                                         "festgelegt werden.");
+                QMetaObject::invokeMethod(
+                    context, [deliver, error] { deliver(false, error); }, Qt::QueuedConnection);
+                return;
+            }
+            NSMutableArray<NSString*>* errors = [NSMutableArray array];
+            dispatch_group_t group = dispatch_group_create();
+            __block BOOL delivered = NO;
+            for (const QString& t : types) {
+                UTType* type = [UTType typeWithIdentifier:t.toNSString()];
+                if (!type) {
+                    [errors addObject:[NSString stringWithFormat:@"%@: %@", t.toNSString(),
+                                                                 tr("unbekannter Typ").toNSString()]];
+                    continue;
+                }
+                NSString* ident = t.toNSString();
+                dispatch_group_enter(group);
+                [[NSWorkspace sharedWorkspace]
+                    setDefaultApplicationAtURL:bundle
+                             toOpenContentType:type
+                             completionHandler:^(NSError* err) {
+                               if (err) {
+                                   @synchronized(errors) {
+                                       [errors
+                                           addObject:[NSString stringWithFormat:@"%@: %@", ident,
+                                                                                err.localizedDescription]];
+                                   }
+                               }
+                               dispatch_group_leave(group);
+                             }];
+            }
+            auto finish = ^(BOOL timedOut) {
+              if (delivered)
+                  return;
+              delivered = YES;
+              QStringList messages;
+              @synchronized(errors) {
+                  for (NSString* e in errors)
+                      messages << QString::fromNSString(e);
+              }
+              if (timedOut)
+                  messages << tr("Zeitüberschreitung bei der Rückmeldung des Systems.");
+              deliver(messages.isEmpty(), messages.join(QLatin1Char('\n')));
+            };
+            dispatch_group_notify(group, dispatch_get_main_queue(), ^{
+              finish(NO);
+            });
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, kDefaultAppTimeoutSec * int64_t(NSEC_PER_SEC)),
+                           dispatch_get_main_queue(), ^{
+                             finish(YES);
+                           });
+        }
     }
 
     bool makeDefaultViewer(const QStringList& types, QString* error) override {

@@ -26,7 +26,10 @@
 
 #include "ImageProvider.h"
 
+#include "ImageFormats.h"
+
 #include <QCoreApplication>
+#include <QFileInfo>
 #include <QHash>
 #include <QMutex>
 #include <QSet>
@@ -34,6 +37,7 @@
 #include <QThreadPool>
 #include <QtDebug>
 #include <algorithm>
+#include <atomic>
 #include <limits>
 
 #if defined(Q_OS_DARWIN)
@@ -160,6 +164,7 @@ struct ImageProvider::Private {
     QHash<QString, quint64> generation;
 
     // ---- shared with workers ----
+    std::atomic<bool> rawEmbeddedOnly{false};
     QMutex mutex;
     QHash<Key, Job> jobs; // pending + running
 
@@ -394,7 +399,9 @@ struct ImageProvider::Private {
 
         DecodeRequest req;
         req.maxPixelSize = job.key.px;
-        req.preferEmbeddedPreview = job.key.quality == Quality::Preview;
+        req.preferEmbeddedPreview =
+            job.key.quality == Quality::Preview || (rawEmbeddedOnly.load(std::memory_order_relaxed) &&
+                                                    isRawSuffix(QFileInfo(job.key.path).suffix().toLower()));
         QString error;
         DecodedImagePtr result;
         if (auto img = registry.decode(job.key.path, req, &error))
@@ -558,6 +565,22 @@ void ImageProvider::invalidate(const QString& path) {
 void ImageProvider::setMemoryBudget(qint64 bytes) {
     d->budget = std::max<qint64>(0, bytes);
     d->evict();
+}
+
+void ImageProvider::setRawEmbeddedOnly(bool embeddedOnly) {
+    if (d->rawEmbeddedOnly.exchange(embeddedOnly) == embeddedOnly)
+        return;
+    // Cached stages of RAW files were made with the other setting.
+    QStringList raws;
+    for (auto it = d->cacheKeysByPath.cbegin(); it != d->cacheKeysByPath.cend(); ++it)
+        if (isRawSuffix(QFileInfo(it.key()).suffix().toLower()))
+            raws << it.key();
+    for (const QString& p : std::as_const(raws))
+        invalidate(p);
+}
+
+bool ImageProvider::rawEmbeddedOnly() const {
+    return d->rawEmbeddedOnly.load();
 }
 
 qint64 ImageProvider::memoryUsage() const {

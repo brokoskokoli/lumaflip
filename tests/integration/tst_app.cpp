@@ -288,7 +288,8 @@ private slots:
         makeStandardFolder();
         QFileOpenEvent ev(dir->path()); // folder dropped on the Dock icon
         QCoreApplication::sendEvent(qApp, &ev);
-        QCOMPARE(app->windows().size(), 1);
+        // Folders are classified on a worker thread first (no file system access on the GUI thread).
+        QTRY_COMPARE_WITH_TIMEOUT(app->windows().size(), 1, 3000);
         ViewerWindow* w = app->windows().first();
         QVERIFY(waitLoaded(w));
         QCOMPARE(w->collection()->count(), 3);
@@ -622,9 +623,10 @@ private slots:
         QSignalSpy inputs(w1->view(), &ImageView::userInput);
         key(w1, Qt::Key_Delete); // "Entf"
         QCOMPARE(inputs.size(), 1);
-        QVERIFY2(!QFileInfo::exists(path("IMG_2.jpg")), qPrintable(w1->toastText()));
+        // The trash runs on a worker thread (network volumes must not block the GUI).
+        QTRY_VERIFY2(!QFileInfo::exists(path("IMG_2.jpg")), qPrintable(w1->toastText()));
+        QTRY_COMPARE(w1->collection()->count(), 2);
         QCOMPARE(trash->locations.size(), 1);
-        QCOMPARE(w1->collection()->count(), 2);
         QCOMPARE(w2->collection()->count(), 2);
         QCOMPARE(w1->currentPath(), path("IMG_10.jpg")); // next image
         QCOMPARE(w2->currentPath(), path("IMG_1.png"));
@@ -633,23 +635,23 @@ private slots:
         // Undo (⌘Z) restores the file and shows it again in the window that trashed it.
         app->windowActivated(w1);
         menuShortcut(Action::Undo, QKeySequence(Qt::ControlModifier | Qt::Key_Z));
-        QVERIFY(QFileInfo::exists(path("IMG_2.jpg")));
-        QCOMPARE(w1->collection()->count(), 3);
-        QCOMPARE(w2->collection()->count(), 3);
-        QCOMPARE(w1->currentPath(), path("IMG_2.jpg"));
+        QTRY_VERIFY(QFileInfo::exists(path("IMG_2.jpg")));
+        QTRY_COMPARE(w1->collection()->count(), 3);
+        QTRY_COMPARE(w2->collection()->count(), 3);
+        QTRY_COMPARE(w1->currentPath(), path("IMG_2.jpg"));
         QCOMPARE(w2->currentPath(), path("IMG_1.png"));
         QVERIFY(waitShown(w1, path("IMG_2.jpg")));
 
         // ⌘⌫ is the menu shortcut; redo trashes again, undo restores.
         menuShortcut(Action::Trash, QKeySequence(Qt::ControlModifier | Qt::Key_Backspace));
-        QVERIFY(!QFileInfo::exists(path("IMG_2.jpg")));
+        QTRY_VERIFY(!QFileInfo::exists(path("IMG_2.jpg")));
         menuShortcut(Action::Undo, QKeySequence(Qt::ControlModifier | Qt::Key_Z));
-        QVERIFY(QFileInfo::exists(path("IMG_2.jpg")));
+        QTRY_VERIFY(QFileInfo::exists(path("IMG_2.jpg")));
         // The folder watcher may refresh as well; the state must stay consistent.
         QTest::qWait(300);
         QVERIFY(waitLoaded(w1));
-        QCOMPARE(w1->collection()->count(), 3);
-        QCOMPARE(w2->collection()->count(), 3);
+        QTRY_COMPARE(w1->collection()->count(), 3);
+        QTRY_COMPARE(w2->collection()->count(), 3);
     }
 
     // Covers: F-FILE-02
@@ -671,6 +673,8 @@ private slots:
         QVERIFY(waitWindowShown(w));
         QVERIFY(waitShown(w, path("IMG_2.jpg")));
         menuShortcut(Action::CopyImage, QKeySequence(Qt::ControlModifier | Qt::Key_C));
+        // Read and decoded on a worker thread; the clipboard follows.
+        QTRY_VERIFY(w->toastText() == QStringLiteral("Bild kopiert"));
         const QMimeData* md = cb->mimeData();
         QVERIFY(md);
         QVERIFY(md->hasUrls());
@@ -735,10 +739,19 @@ private slots:
         auto* text = w->accessHint()->findChild<QLabel*>(QStringLiteral("lfAccessText"));
         QVERIFY(text);
         QVERIFY(text->text().contains(QStringLiteral("locked")));
-        QVERIFY(text->text().contains(
-            QStringLiteral("Festplattenvollzugriff ist dafür nicht nötig"))); // F-PRIV-02
         auto* allow = w->accessHint()->findChild<QPushButton*>(QStringLiteral("lfAllowAccess"));
         QVERIFY(allow);
+        // chmod = POSIX permissions (EACCES): System Settings cannot help, no button.
+        QVERIFY(!w->accessHintIsPrivacy());
+        QVERIFY(!allow->isVisible());
+        QVERIFY2(text->text().contains(QStringLiteral("Zugriffsrechte")), qPrintable(text->text()));
+        QVERIFY(!text->text().contains(QStringLiteral("Datenschutz")));
+        // macOS privacy protection (TCC answers EPERM): hint with the settings button.
+        emit w->collection()->accessDenied(locked, true);
+        QVERIFY(w->accessHintIsPrivacy());
+        QVERIFY(allow->isVisible());
+        QVERIFY(text->text().contains(
+            QStringLiteral("Festplattenvollzugriff ist dafür nicht nötig"))); // F-PRIV-02
         QCOMPARE(allow->text(), QStringLiteral("Zugriff erlauben…"));
         allow->click();
         QCOMPARE(openedUrls.size(), 1);

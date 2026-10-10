@@ -9,6 +9,7 @@
 #include <QColor>
 #include <QColorDialog>
 #include <QComboBox>
+#include <QCoreApplication>
 #include <QFileDialog>
 #include <QFormLayout>
 #include <QGridLayout>
@@ -22,8 +23,10 @@
 #include <QPointer>
 #include <QPushButton>
 #include <QScrollArea>
+#include <QSet>
 #include <QSpinBox>
 #include <QStackedWidget>
+#include <QStandardItemModel>
 #include <QStandardPaths>
 #include <QStyle>
 #include <QTableWidget>
@@ -42,6 +45,11 @@ Settings& st() { return Settings::instance(); }
 QString slotSettingsKey(const QString& slotId) {
     return slotId == QLatin1String("endOfCollection") ? QString::fromLatin1(key::WrapMode)
                                                        : QString::fromLatin1(key::InputPrefix) + slotId;
+}
+
+// Not implemented before version 1.0: shown, but disabled with this note.
+QString laterNote() {
+    return QCoreApplication::translate("lf::PreferencesDialog", "ab Version 1.0");
 }
 
 QLabel* helpLabel(const QString& text, QWidget* parent) {
@@ -119,6 +127,26 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) : QDialog(parent) {
 
 PreferencesDialog::~PreferencesDialog() = default;
 
+void PreferencesDialog::showStatus(const QString& text) {
+    m_messageLabel->setText(text);
+    m_messageLabel->setVisible(!text.isEmpty());
+}
+
+QString PreferencesDialog::statusText() const {
+    return m_messageLabel->isHidden() ? QString() : m_messageLabel->text();
+}
+
+bool PreferencesDialog::isChoiceAvailable(const QString& slotId, const QString& choiceId) {
+    static const QSet<QString> later = {
+        QStringLiteral("middleClick:magnifier"), // F-IN-11 Lupe
+        QStringLiteral("drag:dragOut"),          // F-IN-14 Datei herausziehen
+        QStringLiteral("space:slideshow"),       // Diashow
+        QStringLiteral("pageUpDown:page"),       // mehrseitige Dateien
+        QStringLiteral("ratingKeys:always"),     // Bewertungen
+    };
+    return !later.contains(slotId + QLatin1Char(':') + choiceId);
+}
+
 PreferencesDialog* PreferencesDialog::showPreferences(QWidget* parent) {
     if (!g_instance)
         g_instance = new PreferencesDialog(parent);
@@ -157,8 +185,11 @@ void PreferencesDialog::showSection(int section) {
 
 QStringList PreferencesDialog::sectionKeys(int section) const {
     switch (section) {
-    case General: return {key::OpenBehavior, key::RestoreWindows};
-    case Window: return {key::FitWindowToImage, key::ShowStatusBar, key::ShowInfoPanel, key::ShowFilmstrip};
+    case General:
+        return {key::OpenBehavior, key::RestoreWindows, key::ConfirmTrash};
+    case Window:
+        return {key::FitWindowToImage, key::TitleShowFolder, key::ShowStatusBar, key::ShowInfoPanel,
+                key::ShowFilmstrip};
     case Display: return {key::Background, key::ZoomMode, key::UpscaleFilter, key::ActualSizeUnit};
     case Input: return {key::InputPrefix, key::WrapMode};
     case Navigation:
@@ -279,6 +310,13 @@ QWidget* PreferencesDialog::buildGeneral() {
                                          "Dock-Symbol."),
                                       w));
     form->addRow(QString(), bind.check(key::RestoreWindows, tr("Fenster beim nächsten Start wiederherstellen"), w));
+    form->addRow(QString(),
+                 helpLabel(tr("Ordner, Bild, Zoom und Position aller Fenster, die beim Beenden offen "
+                              "waren."),
+                           w));
+    form->addRow(QString(), bind.check(key::ConfirmTrash, tr("Vor dem Löschen nachfragen"), w));
+    form->addRow(QString(),
+                 helpLabel(tr("Aus: ⌘⌫ legt das Bild sofort in den Papierkorb, ⌘Z holt es zurück."), w));
     return w;
 }
 
@@ -288,9 +326,15 @@ QWidget* PreferencesDialog::buildWindow() {
     auto* form = new QFormLayout(w);
     form->addRow(QString(), bind.check(key::FitWindowToImage, tr("Fenstergröße an Bild anpassen"), w));
     form->addRow(QString(), helpLabel(tr("Aus: Neue Fenster übernehmen die zuletzt benutzte Größe."), w));
+    form->addRow(QString(), bind.check(key::TitleShowFolder, tr("Ordnername in der Titelleiste"), w));
+    form->addRow(QString(), helpLabel(tr("Zum Beispiel „IMG_1234.jpg — 23 / 412 — Urlaub“."), w));
     form->addRow(tr("Neue Fenster zeigen:"), bind.check(key::ShowStatusBar, tr("Statuszeile"), w));
-    form->addRow(QString(), bind.check(key::ShowInfoPanel, tr("Infopanel"), w));
-    form->addRow(QString(), bind.check(key::ShowFilmstrip, tr("Filmstreifen"), w));
+    QCheckBox* info = bind.check(key::ShowInfoPanel, tr("Infopanel (%1)").arg(laterNote()), w);
+    QCheckBox* film = bind.check(key::ShowFilmstrip, tr("Filmstreifen (%1)").arg(laterNote()), w);
+    info->setEnabled(false);
+    film->setEnabled(false);
+    form->addRow(QString(), info);
+    form->addRow(QString(), film);
     return w;
 }
 
@@ -394,8 +438,16 @@ QWidget* PreferencesDialog::buildInput() {
         auto* label = new QLabel(s.label + QLatin1Char(':'), slotBox);
         auto* combo = new QComboBox(slotBox);
         combo->setObjectName(QStringLiteral("slot:") + s.id);
-        for (int i = 0; i < s.choices.size(); ++i)
-            combo->addItem(s.choiceLabels.value(i), s.choices[i]);
+        for (int i = 0; i < s.choices.size(); ++i) {
+            const bool available = isChoiceAvailable(s.id, s.choices[i]);
+            combo->addItem(available ? s.choiceLabels.value(i)
+                                     : tr("%1 (%2)").arg(s.choiceLabels.value(i), laterNote()),
+                           s.choices[i]);
+            if (!available) {
+                if (auto* model = qobject_cast<QStandardItemModel*>(combo->model()))
+                    model->item(i)->setEnabled(false);
+            }
+        }
         auto* help = helpLabel(QString(), slotBox);
         help->setObjectName(QStringLiteral("help:") + s.id);
         label->setBuddy(combo);
@@ -607,6 +659,11 @@ QWidget* PreferencesDialog::buildRating() {
                                       w));
     form->addRow(QString(), bind.check(key::RatingStoreFinderTags, tr("Finder-Tags"), w));
     form->addRow(QString(), helpLabel(tr("Im Finder sichtbar und per Spotlight durchsuchbar."), w));
+    // Rating (F-CULL-01/02) is not implemented yet: the choices are visible but disabled.
+    for (QCheckBox* cb : w->findChildren<QCheckBox*>())
+        cb->setEnabled(false);
+    form->insertRow(0, QString(),
+                    helpLabel(tr("Bewertungen und der Aussortiermodus folgen %1.").arg(laterNote()), w));
     return w;
 }
 

@@ -16,6 +16,8 @@
 #include <functional>
 #include <memory>
 
+class QWidget;
+
 namespace lf {
 
 class FileOps;
@@ -31,6 +33,15 @@ struct AppServices {
     Shell* shell = nullptr;            // default createShell() (owned)
     // Opens System Settings URLs (F-PRIV-01); default QDesktopServices::openUrl.
     std::function<bool(const QUrl&)> openUrl;
+    // The key window menu commands go to; default QApplication::activeWindow().
+    std::function<QWidget*()> activeWindow;
+};
+
+// Paths of an open request after looking at the file system (on a worker thread).
+struct ClassifiedPaths {
+    QStringList files;   // absolute
+    QStringList folders; // absolute
+    QStringList missing; // absolute
 };
 
 class Application : public QObject {
@@ -47,17 +58,25 @@ public:
     static constexpr int kEmptyStartDelayMs = 350;
 
     // main(): opens the paths given on the command line (one request), otherwise
-    // shows an empty window unless an open event arrives first.
+    // restores the last session (F-WIN-06) or shows an empty window unless an open
+    // event arrives first.
     void start(const QStringList& arguments);
 
     // Opens paths as one request according to the open behavior (F-WIN-02).
     // Files go to one window (one file = its folder, several = exactly those),
-    // every folder gets its own window. Returns the (last) window used.
+    // every folder gets its own window. Paths with an image suffix are opened at once
+    // (P-01); everything else is classified on a worker thread first (no file system
+    // access on the GUI thread) and opened when that is done. Returns the window that
+    // got the image files, or nullptr if everything opens asynchronously.
     ViewerWindow* openPaths(const QStringList& paths);
     // One OS open request (QFileOpenEvent, Dock, Finder). The first path of a burst
     // is shown immediately (P-01); further paths within kOpenGroupingMs are merged
     // into the same window (F-OPEN-04).
     void queueOpen(const QString& path);
+    // Looks at `paths` on a worker thread; `done` runs on the GUI thread (skipped if
+    // `context` is destroyed).
+    static void classifyPaths(const QStringList& paths, QObject* context,
+                              std::function<void(const ClassifiedPaths&)> done);
 
     ViewerWindow* newWindow();                           // ⌘N, empty window
     ViewerWindow* duplicateWindow(ViewerWindow* source); // ⌥⌘N
@@ -65,16 +84,28 @@ public:
     QList<ViewerWindow*> windows() const;                // creation order
     ViewerWindow* frontWindow() const;                   // most recently active
 
-    // Menu dispatch: window actions go to the front window.
+    // Menu dispatch: window actions go to the front window. If another window
+    // (preferences, a dialog) is the key window, ⌘W closes that one and image/window
+    // commands are ignored.
     void perform(Action action);
     void showOpenDialog();
     void showOpenFolderDialog();
     void showPreferences();
     void showAbout();
     void showShortcuts();
+    // F-MAC-04: asks first (non-blocking), then setDefaultViewer().
     void makeDefaultViewer();
+    // Registers the app for the image types without blocking; the result is shown as a
+    // message (and in the preferences window) and emitted as defaultViewerFinished().
+    void setDefaultViewer();
     bool openUrl(const QUrl& url);    // via Services::openUrl
     static QUrl privacySettingsUrl(); // Datenschutz & Sicherheit -> Dateien und Ordner
+    void quit();                      // ⌘Q: remembers the windows (F-WIN-06), then quits
+
+    // F-WIN-06: windows with folder/files, current image, zoom mode and geometry.
+    void saveSession();
+    bool hasSession() const;
+    void setSessionEnabled(bool enabled); // false: neither restored nor saved (benchmarks)
 
     QStringList recentPaths() const; // F-OPEN-11 (simple)
     void clearRecentPaths();
@@ -91,21 +122,29 @@ public:
     void windowActivated(ViewerWindow* window);
     void windowChanged(ViewerWindow* window); // title/state changed (menus)
     void setWindowFolder(ViewerWindow* window, const QString& oldFolder, const QString& newFolder);
-    void noteTrashedBy(const QString& path, ViewerWindow* window);
-    // Places a new window: last size, cascaded, never exactly on top of another (F-WIN-08).
+    // Places a new window: last size, cascaded, never (nearly) on top of another (F-WIN-08).
     void placeWindow(ViewerWindow* window);
+    // "Nicht gefunden: …" in `preferred`, the front window or a new window (F-OPEN-01).
+    void showNotFound(const QStringList& missing, ViewerWindow* preferred = nullptr);
 
 signals:
     void windowsChanged();
+    void defaultViewerFinished(bool ok, const QString& message);
+    void sessionRestored();
 
 protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:
     ViewerWindow* createWindow();
-    ViewerWindow* openInWindow(const QStringList& paths);
+    // `isFolder`: paths is one folder. `reusedOrCreated` tells whether the window was
+    // created (or the empty start window was reused) for this request.
+    ViewerWindow* openInWindow(const QStringList& paths, bool isFolder, bool* reusedOrCreated = nullptr);
     void addRecent(const QStringList& paths);
     void flushOpenBurst();
+    void handleReopen(); // Dock icon clicked
+    void restoreSession();
+    void updateBusy(bool busy);
 
     struct Private;
     std::unique_ptr<Private> d;

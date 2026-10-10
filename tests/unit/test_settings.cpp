@@ -77,6 +77,8 @@ TEST_F(SettingsTest, F_SET_04_SensibleDefaults) {
     EXPECT_EQ(s().value(key::MemoryBudgetMB).toInt(), 0);
     EXPECT_TRUE(s().value(key::RestoreWindows).toBool());
     EXPECT_FALSE(s().value(key::FitWindowToImage).toBool());
+    EXPECT_FALSE(s().value(key::ConfirmTrash).toBool());    // F-FILE-01: undo instead of asking
+    EXPECT_FALSE(s().value(key::TitleShowFolder).toBool()); // F-WIN-10
     EXPECT_TRUE(s().value(key::ShowStatusBar).toBool());
     EXPECT_FALSE(s().value(key::ShowInfoPanel).toBool());
     EXPECT_FALSE(s().value(key::ShowFilmstrip).toBool());

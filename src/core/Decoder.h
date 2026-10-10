@@ -84,6 +84,7 @@ public:
     void add(std::shared_ptr<Decoder> decoder);
     // Backends able to decode the file, best first.
     QList<std::shared_ptr<Decoder>> candidates(const QString& path) const;
+    QList<std::shared_ptr<Decoder>> candidates(const QString& path, const QByteArray& header) const;
     bool isSupported(const QString& path) const;
     // Fast check by extension only (used while enumerating folders).
     bool isSupportedExtension(const QString& suffixLower) const;
@@ -91,9 +92,19 @@ public:
     // All registered extensions (lower case, sorted).
     QStringList supportedExtensions() const;
 
-    std::optional<ImageInfo> info(const QString& path, QString* error) const;
-    std::optional<DecodedImage> decode(const QString& path, const DecodeRequest& req,
-                                       QString* error) const;
+    // `error` is user facing (German, no backend names, F-FMT-02): one of the message*()
+    // texts below. `detail` (optional) gets the backend errors for logs/diagnostics; they
+    // are also logged to the "lf.decode" category.
+    std::optional<ImageInfo> info(const QString& path, QString* error, QString* detail = nullptr) const;
+    std::optional<DecodedImage> decode(const QString& path, const DecodeRequest& req, QString* error,
+                                       QString* detail = nullptr) const;
+
+    static QString messageMissing();     // "Die Datei existiert nicht."
+    static QString messageEmpty();       // "Die Datei ist leer."
+    static QString messageUnreadable();  // "Die Datei kann nicht gelesen werden."
+    static QString messageDamaged();     // "Die Datei ist beschädigt oder unvollständig."
+    static QString messageUnsupported(); // "Das Dateiformat wird nicht unterstützt."
+    static QString messageTooLarge();    // out of memory while decoding
     Metadata metadata(const QString& path) const;
 
     // Process-wide instance with platform + portable backends registered.

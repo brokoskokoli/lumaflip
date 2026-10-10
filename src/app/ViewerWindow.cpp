@@ -5,6 +5,7 @@
 #include "ImageView.h"
 #include "core/Collection.h"
 #include "core/FileOps.h"
+#include "core/ImageFormats.h"
 #include "core/Platform.h"
 #include "core/Settings.h"
 
@@ -16,21 +17,25 @@
 #include <QDropEvent>
 #include <QFile>
 #include <QFileInfo>
+#include <QFutureWatcher>
 #include <QHBoxLayout>
 #include <QKeyEvent>
 #include <QLabel>
 #include <QLocale>
+#include <QMessageBox>
 #include <QMimeData>
 #include <QMimeDatabase>
 #include <QMouseEvent>
 #include <QPushButton>
 #include <QScreen>
 #include <QStatusBar>
+#include <QStyleHints>
 #include <QTimer>
 #include <QUndoStack>
 #include <QUrl>
 #include <QVBoxLayout>
 #include <QWindow>
+#include <QtConcurrent/QtConcurrentRun>
 
 #include <algorithm>
 #include <cmath>
@@ -162,10 +167,11 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     m_emptyText = new QLabel(m_emptyState);
     m_emptyText->setObjectName(QStringLiteral("lfEmptyText"));
     m_emptyText->setAlignment(Qt::AlignCenter);
-    m_emptyText->setStyleSheet(QStringLiteral("color: rgba(160, 160, 160, 230); font-size: 18px;"));
     auto* open = new QPushButton(tr("Öffnen…"), m_emptyState);
     open->setObjectName(QStringLiteral("lfOpenButton"));
     open->setFocusPolicy(Qt::NoFocus);
+    open->setCursor(Qt::PointingHandCursor);
+    m_openButton = open;
     el->addWidget(m_emptyText);
     el->addSpacing(12);
     el->addWidget(open, 0, Qt::AlignHCenter);
@@ -244,6 +250,9 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     m_view->setUpscaleNearest(st.value(key::UpscaleFilter).toString() == QLatin1String("nearest"));
     m_view->setActualSizeInDevicePixels(st.value(key::ActualSizeUnit).toString() != QLatin1String("points"));
     m_view->setZoomMode(zoomModeFromId(st.value(key::ZoomMode).toString()));
+    updateEmptyStyle();
+    connect(QGuiApplication::styleHints(), &QStyleHints::colorSchemeChanged, this,
+            &ViewerWindow::updateEmptyStyle);
 
     // ---- wiring ----
     connect(m_collection, &Collection::currentChanged, this, &ViewerWindow::onCurrentChanged);
@@ -262,6 +271,7 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     ImageProvider& provider = m_app.provider();
     connect(&provider, &ImageProvider::imageReady, this, &ViewerWindow::onImageReady);
     connect(&provider, &ImageProvider::imageFailed, this, &ViewerWindow::onImageFailed);
+    connect(&provider, &ImageProvider::stageFailed, this, &ViewerWindow::onStageFailed);
     connect(m_view, &ImageView::userInput, this, &ViewerWindow::handleInput);
     connect(m_view, &ImageView::zoomChanged, this, [this] { updateStatus(); });
     connect(m_view, &ImageView::needsHigherResolution, this, [this] {
@@ -292,23 +302,31 @@ ViewerWindow::~ViewerWindow() {
 // ---------------------------------------------------------------------------------------
 
 void ViewerWindow::openPaths(const QStringList& paths) {
-    QStringList files;
-    QString folder;
-    for (const QString& p : paths) {
-        const QFileInfo fi(p);
-        if (fi.isDir()) {
-            if (folder.isEmpty())
-                folder = fi.absoluteFilePath();
-        } else if (fi.exists()) {
-            files << fi.absoluteFilePath();
-        }
+    // Image files open at once; anything else is looked at on a worker thread first.
+    QStringList images;
+    for (const QString& p : paths)
+        if (hasImageSuffix(QFileInfo(p).fileName()))
+            images << QDir::cleanPath(QFileInfo(p).absoluteFilePath());
+    if (!images.isEmpty() && images.size() == paths.size()) {
+        if (images.size() == 1)
+            openFile(images.first());
+        else
+            openFiles(images);
+        return;
     }
-    if (files.size() == 1)
-        openFile(files.first());
-    else if (files.size() > 1)
-        openFiles(files);
-    else if (!folder.isEmpty())
-        openFolder(folder);
+    QPointer<ViewerWindow> self(this);
+    Application::classifyPaths(paths, this, [self](const ClassifiedPaths& c) {
+        if (!self)
+            return;
+        if (c.files.size() == 1)
+            self->openFile(c.files.first());
+        else if (c.files.size() > 1)
+            self->openFiles(c.files);
+        else if (!c.folders.isEmpty())
+            self->openFolder(c.folders.first());
+        if (!c.missing.isEmpty())
+            self->m_app.showNotFound(c.missing, self);
+    });
 }
 
 void ViewerWindow::openFile(const QString& path) {
@@ -325,7 +343,7 @@ void ViewerWindow::openFile(const QString& path) {
         m_collection->copyFrom(*oc);
         m_collection->setCurrentPath(path);
         if (other->accessHint()->isVisibleTo(other))
-            showAccessHint(oc->folderPath());
+            showAccessHint(oc->folderPath(), other->accessHintIsPrivacy());
         onEntriesChanged();
         onCurrentChanged(m_collection->currentIndex(), m_collection->currentPath());
         return;
@@ -340,11 +358,11 @@ void ViewerWindow::openFiles(const QStringList& paths) {
     m_collection->openFiles(paths);
 }
 
-void ViewerWindow::openFolder(const QString& folderPath) {
+void ViewerWindow::openFolder(const QString& folderPath, bool selectLast) {
     hideAccessHint();
     m_opened = true;
     m_fitToImagePending = Settings::instance().value(key::FitWindowToImage).toBool();
-    m_collection->openFolder(folderPath);
+    m_collection->openFolder(folderPath, selectLast);
 }
 
 void ViewerWindow::copyStateFrom(const ViewerWindow& other) {
@@ -355,15 +373,75 @@ void ViewerWindow::copyStateFrom(const ViewerWindow& other) {
         const QSignalBlocker block(m_collection);
         m_collection->copyFrom(*other.m_collection);
     }
-    if (other.m_accessHint->isVisibleTo(&other)) {
-        m_accessText->setText(other.m_accessText->text());
-        m_accessHint->show();
-    }
+    if (other.m_accessHint->isVisibleTo(&other))
+        showAccessHint(other.m_collection->folderPath(), other.m_accessPrivacy);
     onEntriesChanged();
     onCurrentChanged(m_collection->currentIndex(), m_collection->currentPath());
     if (other.m_view->zoomMode() == ZoomMode::Custom && m_shownPath == other.m_shownPath)
         m_view->setZoomFactor(other.m_view->zoomFactor(),
                               QPointF(m_view->width() / 2.0, m_view->height() / 2.0));
+}
+
+void ViewerWindow::copyViewFrom(const ViewerWindow& other) {
+    if (m_shownPath != other.m_shownPath || !m_view->image() || !other.m_view->image())
+        return;
+    m_view->setRotation(other.m_view->rotation());
+    m_flipH = other.m_flipH;
+    m_flipV = other.m_flipV;
+    m_view->setFlip(m_flipH, m_flipV);
+    if (other.m_view->zoomMode() == ZoomMode::Custom)
+        m_view->setZoomFactor(other.m_view->zoomFactor(),
+                              QPointF(m_view->width() / 2.0, m_view->height() / 2.0));
+    else
+        m_view->setZoomMode(other.m_view->zoomMode());
+    m_view->setViewCenter(other.m_view->viewCenter());
+}
+
+QVariantMap ViewerWindow::sessionState() const {
+    QVariantMap m;
+    const Collection* c = m_collection;
+    if (c->isFolderCollection()) {
+        m.insert(QStringLiteral("folder"), c->folderPath());
+    } else {
+        QStringList files;
+        for (const FileEntry& e : c->entries())
+            files << e.path;
+        m.insert(QStringLiteral("files"), files);
+    }
+    m.insert(QStringLiteral("current"), currentPath());
+    const ZoomMode mode = m_view->zoomMode() == ZoomMode::Custom ? ZoomMode::Fit : m_view->zoomMode();
+    m.insert(QStringLiteral("zoom"), zoomModeId(mode));
+    m.insert(QStringLiteral("geometry"), saveGeometry());
+    return m;
+}
+
+bool ViewerWindow::restoreSessionState(const QVariantMap& state, const QStringList& existing) {
+    const QByteArray geometry = state.value(QStringLiteral("geometry")).toByteArray();
+    if (!geometry.isEmpty())
+        restoreGeometry(geometry);
+    m_view->setZoomMode(zoomModeFromId(state.value(QStringLiteral("zoom")).toString()));
+    const QString current = state.value(QStringLiteral("current")).toString();
+    const QString folder = state.value(QStringLiteral("folder")).toString();
+    QStringList files;
+    for (const QString& f : state.value(QStringLiteral("files")).toStringList())
+        if (existing.contains(f))
+            files << f;
+    if (!folder.isEmpty()) {
+        if (existing.contains(current))
+            openFile(current); // the folder, with this image current
+        else if (existing.contains(folder))
+            openFolder(folder);
+        else
+            return false;
+    } else if (files.size() == 1) {
+        openFiles(files);
+    } else if (!files.isEmpty()) {
+        openFiles(files);
+        m_collection->setCurrentPath(current);
+    } else {
+        return false;
+    }
+    return true;
 }
 
 bool ViewerWindow::isEmpty() const {
@@ -503,7 +581,7 @@ void ViewerWindow::onImageFailed(const QString& path, const QString& error) {
         return;
     if (path == m_shownPath && !m_shownFailed && m_view->image()) {
         // Only a higher stage failed; keep what is shown.
-        showMessage(tr("Volle Auflösung nicht verfügbar: %1").arg(error), 3000);
+        onStageFailed(path, Quality::Full, error);
         return;
     }
     m_shownPath = path;
@@ -513,6 +591,19 @@ void ViewerWindow::onImageFailed(const QString& path, const QString& error) {
         error.isEmpty() ? tr("Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.") : error;
     m_view->showError(fileName(path), detail, tr("Im Finder zeigen"));
     updateStatus();
+}
+
+void ViewerWindow::onStageFailed(const QString& path, Quality quality, const QString& error) {
+    // A better stage (e.g. full resolution of a huge image) failed while a lower one is
+    // shown: a note in the status bar, never an error card over a visible image.
+    if (path != currentPath() || quality == Quality::Preview)
+        return;
+    qDebug("lf: stage %d of %s failed: %s", int(quality), qPrintable(path), qPrintable(error));
+    const QString text = tr("Volle Auflösung nicht verfügbar");
+    if (!statusBar()->isHidden())
+        statusBar()->showMessage(text, 5000);
+    else
+        showMessage(text, 3000);
 }
 
 void ViewerWindow::updatePrefetch() {
@@ -575,6 +666,11 @@ QSize ViewerWindow::decodeTarget() const {
 void ViewerWindow::updateTitle() {
     const QString cur = currentPath();
     QString title;
+    // F-WIN-10 option: "IMG_1234.jpg — 23 / 412 — Ordner".
+    const QString folderSuffix =
+        !cur.isEmpty() && Settings::instance().value(key::TitleShowFolder).toBool()
+            ? QStringLiteral(" — ") + QFileInfo(QFileInfo(cur).absolutePath()).fileName()
+            : QString();
     if (cur.isEmpty()) {
         title = QStringLiteral("Lumaflip");
         if (m_collection->isLoading())
@@ -590,6 +686,7 @@ void ViewerWindow::updateTitle() {
                         .arg(fileName(cur))
                         .arg(m_collection->currentIndex() + 1)
                         .arg(n);
+        title += folderSuffix;
     }
     setWindowFilePath(cur); // proxy icon in the title bar
     if (title != windowTitle()) {
@@ -653,6 +750,35 @@ void ViewerWindow::updateEmptyState() {
     m_emptyState->setVisible(empty);
     if (empty)
         layoutOverlays();
+    applyStatusBarVisibility();
+}
+
+void ViewerWindow::updateEmptyStyle() {
+    // The start screen lies on the image background (dark by default): text and the
+    // "Öffnen…" button get colors with enough contrast to it.
+    const bool dark = m_view->backgroundColor().lightnessF() < 0.5;
+    m_emptyText->setStyleSheet(dark ? QStringLiteral("color: rgb(200, 200, 200); font-size: 18px;")
+                                    : QStringLiteral("color: rgb(70, 70, 70); font-size: 18px;"));
+    const QString text = dark ? QStringLiteral("#f2f2f2") : QStringLiteral("#1c1c1c");
+    const QString fill =
+        dark ? QStringLiteral("rgba(255, 255, 255, 36)") : QStringLiteral("rgba(0, 0, 0, 20)");
+    const QString hover =
+        dark ? QStringLiteral("rgba(255, 255, 255, 64)") : QStringLiteral("rgba(0, 0, 0, 40)");
+    const QString border =
+        dark ? QStringLiteral("rgba(255, 255, 255, 120)") : QStringLiteral("rgba(0, 0, 0, 90)");
+    m_openButton->setStyleSheet(QStringLiteral("QPushButton#lfOpenButton { color: %1; background-color: %2; "
+                                               "border: 1px solid %4; border-radius: 6px; padding: 6px 20px; "
+                                               "font-size: 14px; }"
+                                               "QPushButton#lfOpenButton:hover { background-color: %3; }"
+                                               "QPushButton#lfOpenButton:pressed { background-color: %4; }")
+                                    .arg(text, fill, hover, border));
+}
+
+void ViewerWindow::applyStatusBarVisibility() {
+    // No status bar under the empty start screen (it would only be an empty strip).
+    const bool hasContent = m_collection->count() > 0 || m_collection->isLoading();
+    statusBar()->setVisible(m_chromeShown && hasContent &&
+                            Settings::instance().value(key::ShowStatusBar).toBool());
 }
 
 void ViewerWindow::layoutOverlays() {
@@ -662,6 +788,11 @@ void ViewerWindow::layoutOverlays() {
         const QSize s = m_toast->size();
         m_toast->move((m_view->width() - s.width()) / 2, std::max(8, m_view->height() - s.height() - 32));
     }
+}
+
+void ViewerWindow::hideMessage() {
+    m_toastTimer->stop();
+    m_toast->hide();
 }
 
 void ViewerWindow::showMessage(const QString& text, int ms) {
@@ -681,14 +812,26 @@ void ViewerWindow::showEdgeHint(bool atEnd) {
     showMessage(atEnd ? tr("Letztes Bild") : tr("Erstes Bild"), 900);
 }
 
-void ViewerWindow::showAccessHint(const QString& folder) {
+void ViewerWindow::showAccessHint(const QString& folder, bool privacy) {
     // F-PRIV-01 / F-PRIV-02: explain, offer the right System Settings pane, never ask
-    // for Full Disk Access.
-    m_accessText->setText(
-        tr("Lumaflip darf den Ordner „%1“ nicht lesen und zeigt deshalb nur die geöffnete "
-           "Datei. Erlaube den Zugriff unter Systemeinstellungen → Datenschutz & Sicherheit → "
-           "Dateien und Ordner. Festplattenvollzugriff ist dafür nicht nötig.")
-            .arg(QDir(folder).dirName()));
+    // for Full Disk Access. Only a macOS privacy denial (TCC) is solved there; missing
+    // POSIX permissions are changed in the Finder.
+    m_accessPrivacy = privacy;
+    if (privacy) {
+        m_accessText->setText(
+            tr("Lumaflip darf den Ordner „%1“ nicht lesen und zeigt deshalb nur die geöffnete "
+               "Datei. Erlaube den Zugriff unter Systemeinstellungen → Datenschutz & Sicherheit → "
+               "Dateien und Ordner. Festplattenvollzugriff ist dafür nicht nötig.")
+                .arg(QDir(folder).dirName()));
+    } else {
+        m_accessText->setText(
+            tr("Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die "
+               "geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → "
+               "Informationen → „Teilen & Zugriffsrechte“ ändern.")
+                .arg(QDir(folder).dirName()));
+    }
+    if (auto* allow = m_accessHint->findChild<QPushButton*>(QStringLiteral("lfAllowAccess")))
+        allow->setVisible(privacy);
     m_accessHint->show();
 }
 
@@ -718,8 +861,43 @@ void ViewerWindow::navigate(int delta) {
     if (m_collection->count() == 0)
         return;
     m_direction = delta > 0 ? 1 : -1;
-    if (!m_collection->jump(delta, wrapMode()))
+    if (m_collection->jump(delta, wrapMode()))
+        return;
+    if (Settings::instance().value(key::WrapMode).toString() == QLatin1String("nextFolder") &&
+        m_collection->isFolderCollection())
+        switchFolder(m_direction); // F-NAV-03 / F-IN-16 "Zum nächsten Ordner"
+    else
         showEdgeHint(delta > 0);
+}
+
+void ViewerWindow::switchFolder(int direction) {
+    if (!m_collection->isFolderCollection() || m_collection->folderPath().isEmpty() || m_folderSwitchPending)
+        return;
+    // Sibling folders are listed and checked for images on a worker thread.
+    m_folderSwitchPending = true;
+    const quint64 token = ++m_folderSwitchToken;
+    const QString folder = m_collection->folderPath();
+    auto* w = new QFutureWatcher<QString>(this);
+    connect(w, &QFutureWatcher<QString>::finished, this, [this, w, token, direction] {
+        const QString next = w->result();
+        w->deleteLater();
+        m_folderSwitchPending = false;
+        if (token != m_folderSwitchToken)
+            return;
+        if (next.isEmpty()) {
+            showMessage(direction > 0 ? tr("Kein weiterer Ordner mit Bildern")
+                                      : tr("Kein vorheriger Ordner mit Bildern"),
+                        1200);
+            return;
+        }
+        m_direction = direction;
+        openFolder(next, direction < 0); // backwards: continue with the last image
+        showMessage(QDir(next).dirName(), 1200);
+    });
+    w->setFuture(QtConcurrent::run([folder, direction] {
+        auto collator = createNameCollator();
+        return collection::siblingImageFolder(folder, direction, collator.get());
+    }));
 }
 
 void ViewerWindow::handleInput(InputEvent ev, QPointF pos) {
@@ -780,6 +958,12 @@ bool ViewerWindow::perform(Action a, QPointF pos) {
         return true;
     case Action::JumpBackward:
         navigate(-m_app.bindings().jumpSize());
+        return true;
+    case Action::NextFolder:
+        switchFolder(1);
+        return true;
+    case Action::PreviousFolder:
+        switchFolder(-1);
         return true;
     case Action::FirstImage:
         m_direction = 1;
@@ -887,10 +1071,10 @@ bool ViewerWindow::perform(Action a, QPointF pos) {
         copyPath();
         return true;
     case Action::Undo:
-        m_app.fileOps().undoStack()->undo();
+        m_app.fileOps().undo();
         return true;
     case Action::Redo:
-        m_app.fileOps().undoStack()->redo();
+        m_app.fileOps().redo();
         return true;
     case Action::NewWindow:
         m_app.newWindow();
@@ -944,7 +1128,8 @@ void ViewerWindow::toggleFullScreen() {
 }
 
 void ViewerWindow::setChromeVisible(bool visible) {
-    statusBar()->setVisible(visible && Settings::instance().value(key::ShowStatusBar).toBool());
+    m_chromeShown = visible;
+    applyStatusBarVisibility();
 }
 
 bool ViewerWindow::chromeVisible() const {
@@ -955,37 +1140,101 @@ void ViewerWindow::trashCurrent() {
     const QString path = currentPath();
     if (path.isEmpty())
         return;
-    QString error;
-    m_app.noteTrashedBy(path, this);
-    // F-FILE-01: no confirmation (undo is possible); FileOps notifies every window.
-    if (!m_app.fileOps().moveToTrash(path, &error))
-        showMessage(tr("„%1“ konnte nicht in den Papierkorb gelegt werden: %2").arg(fileName(path), error),
-                    4000);
+    // F-FILE-01: by default no confirmation (undo is possible); optional question.
+    if (!Settings::instance().value(key::ConfirmTrash).toBool()) {
+        trashNow(path);
+        return;
+    }
+    if (findChild<QMessageBox*>(QStringLiteral("lfConfirmTrash")))
+        return; // already asking
+    auto* box =
+        new QMessageBox(QMessageBox::Question, tr("In den Papierkorb legen"),
+                        tr("„%1“ in den Papierkorb legen?").arg(fileName(path)), QMessageBox::NoButton, this);
+    box->setObjectName(QStringLiteral("lfConfirmTrash"));
+    box->setInformativeText(tr("Mit ⌘Z lässt sich das widerrufen."));
+    QPushButton* yes = box->addButton(tr("In den Papierkorb legen"), QMessageBox::AcceptRole);
+    box->addButton(tr("Abbrechen"), QMessageBox::RejectRole);
+    box->setDefaultButton(yes);
+    box->setAttribute(Qt::WA_DeleteOnClose);
+    box->setWindowModality(Qt::WindowModal);
+    connect(box, &QMessageBox::buttonClicked, this, [this, yes, path](QAbstractButton* b) {
+        if (b == yes)
+            trashNow(path);
+    });
+    box->open();
 }
+
+void ViewerWindow::trashNow(const QString& path) {
+    // The file system work runs on a worker thread (network volumes); every window is
+    // updated when it is done. This window is remembered with the undo command.
+    QPointer<ViewerWindow> self(this);
+    m_app.fileOps().moveToTrashAsync(path, this, [self](bool ok, const QString& error) {
+        if (!ok && self)
+            self->showMessage(error, 4000);
+    });
+}
+
+namespace {
+struct ClipboardData {
+    QImage image;     // best available full image
+    QString mimeType; // of the original file
+    QByteArray bytes; // original file (image/* only, up to kMaxClipboardFileBytes)
+};
+} // namespace
 
 void ViewerWindow::copyImage() {
     const QString path = currentPath();
     if (path.isEmpty())
         return;
-    // F-FILE-03: image data + file URL (+ the original file bytes for apps that take them).
-    auto* mime = new QMimeData;
-    mime->setUrls({QUrl::fromLocalFile(path)});
-    QImage image;
-    if (auto full = m_app.provider().cached(path, Quality::Full))
-        image = full->image;
-    else if (m_view->image() && path == m_shownPath)
-        image = m_view->image()->image;
-    if (!image.isNull())
-        mime->setImageData(image);
-    const QFileInfo fi(path);
-    if (fi.size() > 0 && fi.size() <= kMaxClipboardFileBytes) {
-        const QString type = QMimeDatabase().mimeTypeForFile(fi).name();
-        QFile f(path);
-        if (type.startsWith(QLatin1String("image/")) && f.open(QIODevice::ReadOnly))
-            mime->setData(type, f.readAll());
-    }
-    QGuiApplication::clipboard()->setMimeData(mime);
-    showMessage(tr("Bild kopiert"));
+    // F-FILE-03: file URL, the original bytes and the full resolution image. Reading and
+    // decoding happen on a worker thread; the clipboard is filled when that is done.
+    const DecodedImagePtr full = m_app.provider().cached(path, Quality::Full);
+    const QImage shown = m_view->image() && path == m_shownPath ? m_view->image()->image : QImage();
+    const quint64 token = ++m_copyToken;
+    showMessage(tr("Bild wird kopiert …"), 10000);
+    auto* w = new QFutureWatcher<ClipboardData>(this);
+    connect(w, &QFutureWatcher<ClipboardData>::finished, this, [this, w, token, path, shown] {
+        ClipboardData r = w->result();
+        w->deleteLater();
+        if (token != m_copyToken)
+            return; // a newer ⌘C
+        auto* mime = new QMimeData;
+        mime->setUrls({QUrl::fromLocalFile(path)});
+        const bool screenOnly = r.image.isNull() && !shown.isNull();
+        const QImage image = r.image.isNull() ? shown : r.image;
+        if (!image.isNull())
+            mime->setImageData(image);
+        if (!r.bytes.isEmpty())
+            mime->setData(r.mimeType, r.bytes);
+        QGuiApplication::clipboard()->setMimeData(mime);
+        showMessage(screenOnly ? tr("Bild kopiert (Bildschirmauflösung)") : tr("Bild kopiert"));
+    });
+    w->setFuture(QtConcurrent::run([path, full] {
+        ClipboardData r;
+        const QFileInfo fi(path);
+        if (fi.size() > 0 && fi.size() <= kMaxClipboardFileBytes) {
+            const QString type = QMimeDatabase().mimeTypeForFile(fi).name();
+            QFile f(path);
+            if (type.startsWith(QLatin1String("image/")) && f.open(QIODevice::ReadOnly)) {
+                r.mimeType = type;
+                r.bytes = f.readAll();
+            }
+        }
+        if (full) {
+            r.image = full->image;
+        } else {
+            QString error;
+            if (auto d = DecoderRegistry::instance().decode(path, DecodeRequest{}, &error))
+                r.image = d->image;
+        }
+        // Float (HDR) buffers are converted for other apps.
+        if (!r.image.isNull() && (r.image.format() == QImage::Format_RGBA16FPx4 ||
+                                  r.image.format() == QImage::Format_RGBA16FPx4_Premultiplied ||
+                                  r.image.format() == QImage::Format_RGBA32FPx4 ||
+                                  r.image.format() == QImage::Format_RGBA32FPx4_Premultiplied))
+            r.image = r.image.convertedToColorSpace(QColorSpace::SRgb, QImage::Format_ARGB32);
+        return r;
+    }));
 }
 
 void ViewerWindow::copyPath() {
@@ -1009,14 +1258,20 @@ void ViewerWindow::fileRemoved(const QString& path) {
 }
 
 void ViewerWindow::fileAdded(const QString& path, bool makeCurrent) {
-    m_collection->insertPath(path);
-    if (makeCurrent)
-        m_collection->setCurrentPath(path);
+    // A multi-file window only takes back files it contained (F-OPEN-04); the window
+    // that trashed a file shows it again after undo (`makeCurrent`).
+    m_collection->insertPath(path, false, makeCurrent);
+}
+
+void ViewerWindow::fileRenamed(const QString& from, const QString& to) {
+    m_collection->renamePath(from, to);
 }
 
 void ViewerWindow::folderChanged(const QString& folderPath) {
+    // F-OPEN-07: the app invalidated the shared snapshot once; every window showing the
+    // folder re-sorts the one new enumeration (F-WIN-09).
     if (m_collection->isFolderCollection() && m_collection->folderPath() == folderPath)
-        m_collection->refresh(); // F-OPEN-07
+        m_collection->reload();
 }
 
 void ViewerWindow::refreshActivity() {
@@ -1028,6 +1283,7 @@ void ViewerWindow::applySetting(const QString& k) {
     Settings& st = Settings::instance();
     if (k == QLatin1String(key::Background)) {
         m_view->setBackground(st.value(key::Background).toString());
+        updateEmptyStyle();
     } else if (k == QLatin1String(key::UpscaleFilter)) {
         m_view->setUpscaleNearest(st.value(key::UpscaleFilter).toString() == QLatin1String("nearest"));
     } else if (k == QLatin1String(key::ActualSizeUnit)) {
@@ -1036,6 +1292,8 @@ void ViewerWindow::applySetting(const QString& k) {
     } else if (k == QLatin1String(key::ShowStatusBar)) {
         if (!isFullScreen())
             setChromeVisible(true);
+    } else if (k == QLatin1String(key::TitleShowFolder)) {
+        updateTitle();
     } else if (k == QLatin1String(key::PrefetchAhead) || k == QLatin1String(key::PrefetchBehind) ||
                k == QLatin1String(key::WrapMode)) {
         updatePrefetch();

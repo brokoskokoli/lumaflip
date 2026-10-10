@@ -163,23 +163,30 @@ struct ImageView::Private {
             canvas->unsetCursor();
     }
 
-    void applyBackground() {
+    // Base color of the background setting; `checker` = checkerboard pattern.
+    QColor resolveBackground(bool* checker) const {
         QString v = background.trimmed().toLower();
         if (v == QLatin1String("system")) {
             v = QGuiApplication::styleHints()->colorScheme() == Qt::ColorScheme::Light ? QStringLiteral("light")
                                                                                        : QStringLiteral("dark");
         }
         QColor base = kDark;
-        bool checker = false;
+        *checker = false;
         if (v == QLatin1String("light")) {
             base = kLight;
         } else if (v == QLatin1String("checker")) {
-            checker = true;
+            *checker = true;
         } else if (v.startsWith(QLatin1Char('#'))) {
             const QColor c = QColor::fromString(v);
             if (c.isValid())
                 base = c;
         }
+        return base;
+    }
+
+    void applyBackground() {
+        bool checker = false;
+        const QColor base = resolveBackground(&checker);
         canvas->setBackground(base, checker, kChecker1, kChecker2, kCheckerCellPt * dpr());
     }
 
@@ -469,6 +476,25 @@ void ImageView::panBy(QPointF deltaInWidget) {
     d->sync();
 }
 
+QPointF ImageView::viewCenter() const {
+    const QSize img = d->model.imageSize();
+    if (!d->image || img.isEmpty())
+        return QPointF(-1, -1);
+    const QPointF p = d->model.viewportToImage(d->centerDevice());
+    return QPointF(p.x() / img.width(), p.y() / img.height());
+}
+
+void ImageView::setViewCenter(QPointF relative) {
+    const QSize img = d->model.imageSize();
+    if (!d->image || img.isEmpty() || relative.x() < 0 || relative.y() < 0)
+        return;
+    d->syncGeometry();
+    const QPointF target(relative.x() * img.width(), relative.y() * img.height());
+    const QPointF now = d->model.imageToViewport().map(target);
+    d->model.setOffset(d->model.offset() + (d->centerDevice() - now));
+    d->sync();
+}
+
 void ImageView::scrollToTop() {
     d->model.scrollToTop();
     d->sync();
@@ -498,6 +524,12 @@ void ImageView::setFlip(bool horizontal, bool vertical) {
 void ImageView::setBackground(const QString& setting) {
     d->background = setting;
     d->applyBackground();
+}
+
+QColor ImageView::backgroundColor() const {
+    bool checker = false;
+    const QColor base = d->resolveBackground(&checker);
+    return checker ? kChecker1 : base;
 }
 
 void ImageView::setUpscaleNearest(bool nearest) { d->canvas->setUpscaleNearest(nearest); }

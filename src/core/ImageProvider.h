@@ -55,6 +55,10 @@ public:
     void invalidate(const QString& path);
 
     void setMemoryBudget(qint64 bytes);  // P-09
+    // Setting "RAW: nur eingebettete Vorschau" (F-FMT-05): every stage of a camera RAW
+    // file is taken from its embedded preview instead of a full development.
+    void setRawEmbeddedOnly(bool embeddedOnly);
+    bool rawEmbeddedOnly() const;
     qint64 memoryUsage() const;
 
     // Synchronous metadata/info (cached), for overlays and the info panel.
