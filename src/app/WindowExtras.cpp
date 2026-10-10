@@ -309,7 +309,11 @@ void WindowExtras::placeHandle() {
 }
 
 void WindowExtras::windowStateChanged() {
-    // Qt sets the level and style again in some transitions (full screen): re-apply.
+    // Qt sets the level and style again in some transitions (full screen): re-apply - not
+    // while the native full screen animation runs (a style change there breaks it); the
+    // window calls this again when the animation ended (F-VIEW-10).
+    if (m_window.fullScreenAnimating())
+        return;
     if (m_onTop)
         setWindowAlwaysOnTop(&m_window, true);
     if (m_minimal && !m_window.isFullScreen())

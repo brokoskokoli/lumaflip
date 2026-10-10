@@ -110,7 +110,12 @@ NativeWindowState nativeWindowState(QWidget* window) {
     // Frameless: the content fills the window and there is no (transparent or visible) title.
     const bool frameless = window->windowFlags().testFlag(Qt::FramelessWindowHint);
     s.fullSizeContent = s.titlebarTransparent = s.titleHidden = frameless;
+    s.fullScreen = window->window()->isFullScreen();
     return s;
+}
+
+bool watchFullScreenTransitions(QWidget*, std::function<void(bool, bool)>) {
+    return false; // not animated here: Qt's state is the window's state
 }
 
 // ---- WindowTabbing.h ----
