@@ -447,7 +447,8 @@ private slots:
 
         // "E" opens the file with the chosen editor (via the shell, never really).
         makeFolder();
-        OpenWithService::instance().setQueryForTesting([apps](const QString&) { return apps; });
+        OpenWithService::instance().setQueryForTesting(
+            [apps](const QString&) { return QList<AppEntry>(apps); });
         ViewerWindow* w = openAndWait(path("IMG_1.png"));
         QVERIFY(w);
         QVERIFY(InputBindings::isActionAvailable(Action::OpenInEditor));

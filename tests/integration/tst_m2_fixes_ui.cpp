@@ -410,7 +410,8 @@ private slots:
                     return d;
             return static_cast<DefaultAppDialog*>(nullptr);
         };
-        QTRY_VERIFY((dlg = find()) != nullptr);
+        QTRY_VERIFY(find() != nullptr);
+        dlg = find();
         QListWidget* list = dlg->list();
         QCOMPARE(list->count(), 3);
         for (int i = 0; i < list->count(); ++i)

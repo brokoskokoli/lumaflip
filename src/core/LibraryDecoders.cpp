@@ -44,7 +44,7 @@ void prepareLibraryDecoders() {
 
 QList<std::shared_ptr<Decoder>> libraryDecoders() {
     QList<std::shared_ptr<Decoder>> out;
-    for (auto d :
+    for (const auto& d :
          {createLibHeifDecoder(), createLibJxlDecoder(), createLibRawDecoder(), createOpenExrDecoder()})
         if (d)
             out << d;
