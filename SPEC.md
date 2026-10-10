@@ -4,7 +4,7 @@
 |---|---|
 | **Name** | **Lumaflip** (luma = Helligkeit/Bildsignal, flip = durchblättern) |
 | **Bundle-ID** | `io.github.brokoskokoli.lumaflip` |
-| **Status** | v0.3 – Umsetzung M1 läuft; Klarstellungen aus den Spezifikations-Prüfungen eingearbeitet |
+| **Status** | v0.4 – M1 umgesetzt, M2 (v1.0) in Abnahme; Klarstellungen aus den Spezifikations-Prüfungen eingearbeitet |
 | **Stand** | 2026-10-10 |
 | **Lizenz** | Open Source, GPL-3.0-or-later; veröffentlicht auf GitHub |
 | **Vertrieb** | GitHub Releases, signiert (Developer ID) und notarisiert; zusätzlich Homebrew Cask |
@@ -105,7 +105,7 @@ Jede Anforderung hat eine ID und eine Ausbaustufe:
 | F-OPEN-09 | Zum nächsten/vorherigen Geschwisterordner springen (⌥→ / ⌥←, konfigurierbar). | M3 |
 | F-OPEN-10 | Archive (ZIP/CBZ, RAR/CBR, 7z) und PDF wie Ordner durchblättern. | M4 |
 | F-OPEN-11 | „Zuletzt geöffnet“-Menü (Dateien und Ordner). | M2 |
-| F-OPEN-12 | Startbildschirm ohne Bild: Drop-Fläche, „Öffnen…“, zuletzt geöffnete Elemente. | M2 |
+| F-OPEN-12 | Startbildschirm ohne Bild: Drop-Fläche, „Öffnen…“, zuletzt geöffnete Elemente (bis zu 8, Dateien und Ordner gemischt in der Reihenfolge der letzten Nutzung, anklickbar). | M2 |
 
 ### 4.2 Navigation
 
@@ -149,7 +149,7 @@ Ziel: **So viele Formate wie möglich, ohne Nachinstallation.** Die Formate werd
 | RAW | CR2, CR3, CRW, NEF, NRW, ARW, SR2, RAF, ORF, RW2, DNG, PEF, IIQ, 3FR, … | ImageIO (Apple RAW Engine) | M1 |
 | Pro/HDR | PSD (Kompositbild), OpenEXR, Radiance HDR, JPEG 2000, TGA, DDS, KTX | ImageIO | M2 |
 | Animiert | GIF, APNG, animiertes WebP, animiertes AVIF/HEICS, animiertes JXL | ImageIO + eigene Wiedergabe | M2 |
-| Vektor | SVG | resvg (zusätzliche Bibliothek) | M2 |
+| Vektor | SVG | Qt SVG (SVG Tiny 1.2, ohne vollständiges CSS/Filter) in v1.0; vollständiges SVG 1.1 über resvg ab M3 | M2 |
 | Rest | QOI, PCX, PSB, XCF, KRA, ORA, PNM/PFM, SGI | KImageFormats bzw. eigene kleine Decoder | M3 |
 | Exotisch | JPEG XR, DICOM, EPS | später prüfen | M4 |
 
@@ -243,7 +243,7 @@ Ziel: **So viele Formate wie möglich, ohne Nachinstallation.** Die Formate werd
 | F-MAC-01 | Natives Menü mit allen Befehlen, Tastenkürzeln, Fenster-Menü und Hilfe-Suche. | M1 |
 | F-MAC-02 | Hell- und Dunkelmodus nach Systemvorgabe. | M1 |
 | F-MAC-03 | **Mehrere Fenster, beliebig viele** – siehe 4.15. | M1/M2/M3 |
-| F-MAC-04 | „Als Standard-App für Bilder festlegen“: Button in den Einstellungen, pro UTType über `NSWorkspace.setDefaultApplication`. Die Liste der Typen ist abwählbar. | M2 |
+| F-MAC-04 | „Als Standard-App für Bilder festlegen“: Button in den Einstellungen, pro UTType über `NSWorkspace.setDefaultApplication`. Die Liste der Typen ist abwählbar (Checkliste, alle vorausgewählt; die Auswahl wird gemerkt). Abgewählte Typen werden nicht angefasst und bleiben beim bisherigen Programm. | M2 |
 | F-MAC-05 | Fensterposition, Fenstergröße und letzter Zoommodus werden gemerkt. | M1 |
 | F-MAC-06 | Live Text (Text im Bild markieren und kopieren) und Motiv freistellen über VisionKit; abschaltbar. | M4 |
 | F-MAC-07 | Quick-Look-Leiste und Services-Menü. | M4 |
@@ -280,7 +280,7 @@ Für die wichtigsten Eingaben gibt es in *Einstellungen → Maus & Tastatur* ein
 | F-IN-16 | **Ende der Sammlung** (Wiederholung von F-NAV-03). Nächster Ordner = nächster Geschwisterordner in Finder-Namensreihenfolge, der Bilder enthält; Ordner ohne Bilder werden übersprungen; rückwärts landet man auf dem letzten Bild des vorherigen Ordners. | anhalten · umlaufen · zum nächsten Ordner weitergehen | anhalten |
 
 - F-IN-17 (M2): Neben jeder Option erklärt eine kurze Hilfe die Auswirkung. „Auf Standard zurücksetzen“ gibt es pro Bereich.
-- F-IN-18 (M2): Profilvorlagen mit einem Klick: **„Mac-Standard“** (Vorgabe), **„Windows-Viewer-Gewohnheiten“** (Mausrad = Bild wechseln, Bild↑/↓ = Bild, Enter = Vollbild, wie IrfanView/FastStone), **„Fotograf:in / Lightroom“** (Mausrad = Zoom, Ziffern = Sterne, P/X/U aktiv).
+- F-IN-18 (M2): Profilvorlagen mit einem Klick: **„Mac-Standard“** (Vorgabe), **„Windows-Viewer-Gewohnheiten“** (Mausrad = Bild wechseln, Bild↑/↓ = Bild, Enter = Vollbild, wie IrfanView/FastStone), **„Fotograf:in / Lightroom“** (Mausrad = Zoom, Ziffern = Sterne, P/X/U aktiv – Ziffern/P/X/U erst ab M3, wenn die Bewertung umgesetzt ist; in M2 setzt die Vorlage nur Mausrad und Klick).
 
 ### 4.15 Mehrere Fenster
 
@@ -399,7 +399,7 @@ Bild geöffnet
 | F-SORT-03 | Modus „Wie Finder“ (Standard) mit Stufe 1 (.DS_Store), Stufe 2 (globale Einstellungen) und Stufe 4 (Fallback). | M1 |
 | F-SORT-04 | Stufe 3 (AppleScript-Abfrage des vordersten Finder-Fensters) als **Opt-in** in den Einstellungen. Die Automatisierungs-Berechtigung wird vorher erklärt. Abfrage nur, wenn `target of front window` dem Ordner entspricht. Zeitlimit 300 ms. | M2 |
 | F-SORT-05 | Die UI zeigt die erkannte Sortierung an („Wie Finder: Hinzugefügt am ↓“ bzw. „Name ↑ (Finder-Info nicht gefunden)“). | M1 |
-| F-SORT-06 | Manuelle Wahl wird pro Ordner gemerkt (in den App-Einstellungen, nicht im Ordner). Es gibt eine Option „Für alle Ordner verwenden“. | M2 |
+| F-SORT-06 | Manuelle Wahl wird pro Ordner gemerkt (in den App-Einstellungen, nicht im Ordner). Es gibt eine Option „Für alle Ordner verwenden“: Sie macht die Wahl zur globalen Vorgabe für Ordner ohne eigene Wahl; bereits gemerkte Ordner-Einstellungen bleiben erhalten. | M2 |
 | F-SORT-07 | Nach Dateisystemänderungen (F-OPEN-07) wird neu sortiert, und das aktuelle Bild bleibt erhalten. | M2 |
 | F-SORT-08 | Der .DS_Store-Leser ist robust gegen unbekannte oder defekte Daten: Er wirft keine Fehler, sondern fällt auf die nächste Stufe zurück. Er wird mit echten .DS_Store-Testdateien abgesichert: Diese erzeugt der Finder selbst in künstlichen Testordnern per Skript (`tools/make_finder_fixtures.sh`, AppleScript), je macOS-Hauptversion, ohne Nutzerdaten. Zusätzlich manueller Abgleich in eigenen Ordnern (`docs/TESTING-M<n>.md`). | M1 |
 
@@ -610,7 +610,7 @@ public:
 | Qt 6 | LGPLv3 | Dynamisch linken (Frameworks im App-Bundle); Lizenztexte beilegen; Nutzer dürfen Qt austauschen. |
 | KImageFormats | LGPL-2.1 | dynamisch als Qt-Plugin |
 | Little CMS 2 | MIT | ok; **kein** fast_float-Plugin (GPL) |
-| resvg | Apache-2.0/MIT | ok |
+| resvg (ab M3) | Apache-2.0/MIT | ok |
 | LibRaw (später) | CDDL-1.0 gewählt | statisch erlaubt, Namensnennung |
 | libheif / libde265 (später, Win/Linux) | LGPL-3.0 | dynamisch; **HEVC-Patentrisiko** außerhalb von macOS → optional bzw. Systemcodec bevorzugen |
 | libavif/dav1d, libjxl, libjpeg-turbo, libpng, libwebp, libtiff, OpenEXR | BSD/zlib-artig | ok |
@@ -698,7 +698,7 @@ Die Entwicklung erfolgt in Stufen (Abschnitt 13). Jede Anforderungs-ID aus Absch
 | Unit-Tests | GoogleTest (Core), Qt Test (UI-Logik) | SortEngine, .DS_Store-Leser, Collection, Prefetch-Planer, Einstellungen, Eingabe-Belegung, FileOps/Undo, XMP |
 | Integrationstests | Qt Test, Offscreen-Plattform bzw. echtes Fenster auf dem macOS-Runner | Datei öffnen → Sammlung → Navigation; mehrere Fenster; Papierkorb + Undo; Formatkorpus dekodieren |
 | Formatkorpus-Test | eigener Testlauf | jede Datei in `tests/corpus/` wird dekodiert; Maße, Orientierung und Pixelstichproben werden mit `expected.json` verglichen |
-| Leistungstests | Benchmark-Ziel `pv_bench` | P-01, P-03, P-05 mit Toleranz; Regression > 20 % schlägt fehl |
+| Leistungstests | Benchmark-Ziel `lf_bench` | alle P-IDs mit Toleranz; Regression > 20 % schlägt fehl. Benchmarks gelten nur bei geringer Systemlast (CI: eigener Runner, Toleranz 2,0) |
 | Sanitizer | ASan + UBSan im Debug-Build | ganze Testsuite ohne Befund |
 | Statische Analyse | clang-tidy (Profil im Repo), clang-format-Prüfung | keine neuen Warnungen |
 | Lizenzprüfung | REUSE-Tool | SPDX-Kopfzeilen vollständig |
