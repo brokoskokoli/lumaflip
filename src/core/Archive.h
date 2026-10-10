@@ -95,7 +95,7 @@ void sortMemberEntries(QVector<FileEntry>& entries, const NameCollator& collator
 QString messageUnsupportedArchive(); // no libarchive / unknown format
 QString messageMemberTooLarge();
 QString messageDamagedArchive();
-QString messageNoImages(); // the archive holds no images
+QString messageNoImages();         // the archive holds no images
 QString messageEncryptedArchive(); // password protected
 QString messageArchiveTooLarge();  // the member lies beyond kMaxScanBytes
 

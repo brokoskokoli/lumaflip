@@ -54,10 +54,10 @@ namespace lf {
 
 namespace {
 
-constexpr int kCascadePx = 26;         // F-WIN-08
-constexpr int kTakenPx = 10;           // windows closer than this count as "on top of each other"
-constexpr int kBusyHintMs = 300;       // file operation running longer: busy cursor + message
-constexpr int kServicesDelayMs = 2000; // F-MAC-07 Services at the latest (P-01: after the first image)
+constexpr int kCascadePx = 26;              // F-WIN-08
+constexpr int kTakenPx = 10;                // windows closer than this count as "on top of each other"
+constexpr int kBusyHintMs = 300;            // file operation running longer: busy cursor + message
+constexpr int kServicesDelayMs = 2000;      // F-MAC-07 Services at the latest (P-01: after the first image)
 constexpr int kArchiveSweepDelayMs = 15000; // F-OPEN-10 stale archive caches (worker)
 const char* const kGeometryKey = "window/geometry";
 const char* const kSessionKey = "session/windows"; // F-WIN-06

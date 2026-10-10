@@ -1207,10 +1207,10 @@ struct Collection::Private {
     QString folder;
     QString openedFile;
     QStringList files;
-    QSet<QString> fileSet; // Mode::Files: every file the collection was opened with (F-OPEN-04)
-    QString container;     // Mode::Container: the archive or PDF (F-OPEN-10)
+    QSet<QString> fileSet;  // Mode::Files: every file the collection was opened with (F-OPEN-04)
+    QString container;      // Mode::Container: the archive or PDF (F-OPEN-10)
     QString containerStamp; // Mode::Container: size/date of the last listing (watching)
-    QSet<QString> leased;  // folders leased in the FolderCache (the folder; recursive: the tree)
+    QSet<QString> leased;   // folders leased in the FolderCache (the folder; recursive: the tree)
     QVector<FileEntry> entries;
     QHash<QString, int> indexByPath;
     int current = -1;

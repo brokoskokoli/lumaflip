@@ -84,7 +84,7 @@ public:
     static void classifyPaths(const QStringList& paths, QObject* context,
                               const std::function<void(const ClassifiedPaths&)>& done);
 
-    ViewerWindow* newWindow();                           // ⌘N, empty window
+    ViewerWindow* newWindow(); // ⌘N, empty window
     // F-OPEN-10: archives/PDFs opened together with other files: each in a window of its own
     // (like folders, F-WIN-02), never in the window asking.
     void openContainersInOwnWindows(const QStringList& containers);

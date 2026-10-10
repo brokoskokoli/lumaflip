@@ -109,11 +109,10 @@ Root: HKA; Subkey: "Software\Classes\{#ContainerProgId}"; ValueType: string; Val
 Root: HKA; Subkey: "Software\Classes\{#ContainerProgId}\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: """{app}\{#AppExe}"",0"
 Root: HKA; Subkey: "Software\Classes\{#ContainerProgId}\shell\open\command"; ValueType: string; ValueName: ""; ValueData: """{app}\{#AppExe}"" ""%1"""
 #sub AddContainerExtension
-Root: HKA; Subkey: "Software\Classes\.{#ContainerExts[j]}\OpenWithProgids"; ValueType: string; ValueName: "{#ContainerProgId}"; ValueData: ""; Flags: uninsdeletevalue
-Root: HKA; Subkey: "Software\Classes\Applications\{#AppExe}\SupportedTypes"; ValueType: string; ValueName: ".{#ContainerExts[j]}"; ValueData: ""
+Root: HKA; Subkey: "Software\Classes\.{#ContainerExts[i]}\OpenWithProgids"; ValueType: string; ValueName: "{#ContainerProgId}"; ValueData: ""; Flags: uninsdeletevalue
+Root: HKA; Subkey: "Software\Classes\Applications\{#AppExe}\SupportedTypes"; ValueType: string; ValueName: ".{#ContainerExts[i]}"; ValueData: ""
 #endsub
-#define j
-#for {j = 0; j < DimOf(ContainerExts); j++} AddContainerExtension
+#for {i = 0; i < DimOf(ContainerExts); i++} AddContainerExtension
 
 [Run]
 Filename: "{app}\{#AppExe}"; Description: "{cm:LaunchProgram,{#AppName}}"; Flags: nowait postinstall skipifsilent
