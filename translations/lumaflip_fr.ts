@@ -248,6 +248,57 @@
     </message>
 </context>
 <context>
+    <name>lf::DecoderHelper</name>
+    <message>
+        <source>Das Bild hat den Decoder zum Absturz gebracht – die Datei ist vermutlich beschädigt.</source>
+        <translation>L’image a fait planter le décodeur – le fichier est probablement endommagé.</translation>
+    </message>
+    <message>
+        <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
+        <translation>Le décodage a pris trop de temps et a été interrompu.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
+        <translation>Le processus auxiliaire de décodage n’a pas pu être lancé (%1).</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess wird auf diesem System nicht unterstützt.</source>
+        <translation>Le processus auxiliaire de décodage n’est pas pris en charge sur ce système.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden.</source>
+        <translation>Le processus auxiliaire de décodage n’a pas pu être lancé.</translation>
+    </message>
+    <message>
+        <source>Unbekannter Decoder „%1“.</source>
+        <translation>Décodeur inconnu « %1 ».</translation>
+    </message>
+    <message>
+        <source>Das Bild ist leer.</source>
+        <translation>L’image est vide.</translation>
+    </message>
+    <message>
+        <source>Unbekannte Anfrage.</source>
+        <translation>Requête inconnue.</translation>
+    </message>
+    <message>
+        <source>Gemeinsamer Speicher ist nicht verfügbar (%1).</source>
+        <translation>La mémoire partagée n’est pas disponible (%1).</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>Mémoire insuffisante pour l’image (%1 × %2 pixels).</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders fehlen.</source>
+        <translation>Les données d’image du décodeur sont manquantes.</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders sind ungültig.</source>
+        <translation>Les données d’image du décodeur ne sont pas valides.</translation>
+    </message>
+</context>
+<context>
     <name>lf::DecoderRegistry</name>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -694,6 +745,70 @@
         <source>%1 m</source>
         <extracomment>altitude in metres</extracomment>
         <translation>%1 m</translation>
+    </message>
+</context>
+<context>
+    <name>lf::HdrController</name>
+    <message>
+        <source>HDR an</source>
+        <translation>HDR activé</translation>
+    </message>
+    <message>
+        <source>HDR aus – SDR-Vorschau</source>
+        <translation>HDR désactivé – aperçu SDR</translation>
+    </message>
+    <message>
+        <source>Die Belichtung lässt sich nur bei HDR-Bildern einstellen.</source>
+        <translation>L’exposition ne peut être réglée que pour les images HDR.</translation>
+    </message>
+    <message>
+        <source>Belichtung %1</source>
+        <translation>Exposition %1</translation>
+    </message>
+    <message>
+        <source>Der Belichtungsregler erscheint bei HDR-Bildern.</source>
+        <translation>Le curseur d’exposition apparaît pour les images HDR.</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR (SDR-Vorschau)</source>
+        <extracomment>status bar badge: HDR image shown tone-mapped to SDR</extracomment>
+        <translation>HDR (aperçu SDR)</translation>
+    </message>
+    <message>
+        <source>%1 · %2</source>
+        <translation>%1 · %2</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, mit erweitertem Dynamikumfang angezeigt (⇧⌘H: SDR-Vorschau)</source>
+        <translation>Image HDR, affichée avec une plage dynamique étendue (⇧⌘H : aperçu SDR)</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – HDR ist ausgeschaltet (⇧⌘H)</source>
+        <translation>Image HDR, affichée en aperçu SDR – le HDR est désactivé (⇧⌘H)</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – dieser Bildschirm kann kein HDR darstellen</source>
+        <translation>Image HDR, affichée en aperçu SDR – cet écran ne peut pas afficher le HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung</source>
+        <translation>Exposition</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Réinitialiser l’exposition</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>Conserver</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>Conserver l’exposition en changeant d’image</translation>
     </message>
 </context>
 <context>
@@ -1203,6 +1318,26 @@
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
         <translation>Classement rapide : copier (C, puis 1–9)</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>Afficher en HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>Augmenter l’exposition</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>Diminuer l’exposition</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Réinitialiser l’exposition</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>Afficher le curseur d’exposition</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2293,6 +2428,34 @@
     <message>
         <source>Ziele der Schnellablage festlegen …</source>
         <translation>Définir les cibles du classement …</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>Afficher en HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>Augmenter l’exposition</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>Diminuer l’exposition</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Réinitialiser l’exposition</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>Conserver l’exposition en changeant d’image</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>Afficher le curseur d’exposition</translation>
     </message>
 </context>
 <context>

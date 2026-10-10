@@ -4,6 +4,7 @@
 // is computed anew. The info panel retranslates itself (InfoPanel::changeEvent).
 
 #include "Filmstrip.h"
+#include "HdrController.h"
 #include "HistogramWidget.h"
 #include "StartScreenRecent.h"
 #include "ViewerWindow.h"
@@ -35,6 +36,8 @@ void ViewerWindow::retranslateUi() {
         histogram->setAccessibleName(HistogramWidget::tr("Histogramm"));
     if (auto* title = findChild<QLabel*>(QStringLiteral("lfStartRecentTitle")))
         title->setText(StartScreenRecent::tr("Zuletzt geöffnet"));
+    if (m_hdr)
+        m_hdr->retranslate();
     updateTitle();
     updateEmptyState();
     updateStatus();

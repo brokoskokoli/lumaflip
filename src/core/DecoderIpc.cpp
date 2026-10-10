@@ -46,12 +46,12 @@ template <typename T> void getOptional(QDataStream& s, std::optional<T>& v) {
 
 void put(QDataStream& s, const DecodeRequest& r) {
     s << qint32(r.page) << qint32(r.frame) << qint32(r.maxPixelSize) << qint64(r.maxBytes)
-      << r.preferEmbeddedPreview << r.hdr;
+      << r.preferEmbeddedPreview << r.hdr << r.hdrFloat;
 }
 void get(QDataStream& s, DecodeRequest& r) {
     qint32 page = 0, frame = 0, px = 0;
     qint64 bytes = 0;
-    s >> page >> frame >> px >> bytes >> r.preferEmbeddedPreview >> r.hdr;
+    s >> page >> frame >> px >> bytes >> r.preferEmbeddedPreview >> r.hdr >> r.hdrFloat;
     r.page = page;
     r.frame = frame;
     r.maxPixelSize = px;

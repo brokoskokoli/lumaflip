@@ -87,6 +87,11 @@ enum class Action {
     ToggleCullingMode, // F-CULL-06
     QuickMove,         // F-FILE-08: M + 1..9 (prefix key)
     QuickCopy,         // F-FILE-08: C + 1..9 (prefix key)
+    ToggleHdr,         // F-COL-04: HDR <-> SDR preview
+    ExposureIncrease,  // F-COL-05: +1/3 EV (display only)
+    ExposureDecrease,  // F-COL-05: -1/3 EV
+    ExposureReset,     // F-COL-05: 0 EV
+    ToggleExposureHud, // F-COL-05: exposure slider over the image
 };
 
 QString actionId(Action a); // stable string id for settings ("nextImage")

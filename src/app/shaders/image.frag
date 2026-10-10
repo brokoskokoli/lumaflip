@@ -2,8 +2,11 @@
 #version 440
 
 // Image tile: high quality sampling (F-VIEW-06), color conversion into the output
-// color space (F-COL-01, see ColorPipeline.h) and compositing over the background
-// or the transparency checkerboard (F-VIEW-09). Output is opaque.
+// color space (F-COL-01, see ColorPipeline.h), exposure and HDR tone mapping (F-COL-03/05,
+// core/HdrMapping.h - toneMapRgb() there is the reference of the code below) and
+// compositing over the background or the transparency checkerboard (F-VIEW-09). Output is
+// opaque. Overlay mode (texInfo.w): the tile is a UI overlay drawn over the image with its
+// own alpha (extended range presentation, EdrSurface.h).
 
 layout(location = 0) in vec2 v_uv;
 layout(location = 0) out vec4 fragColor;
@@ -12,12 +15,14 @@ layout(std140, binding = 0) uniform buf {
     mat4 mvp;
     mat4 colorMatrix;   // upper 3x3: linear source -> linear output
     vec4 uvRect;
-    vec4 texInfo;       // xy: texture size in texels, z: 1 = supersampled minification
+    vec4 texInfo;       // xy: texture size in texels, z: 1 = supersampled minification, w: 1 = overlay
     vec4 transfer;      // x: source kind, y: source gamma, z: output kind, w: output gamma
     vec4 flags;         // x: premultiplied, y: identity color, z: checker, w: checker cell (px)
     vec4 bgColor;       // background (and first checker color), output encoded
     vec4 checkerColor;  // second checker color
-    vec4 range;         // x: exposure multiplier (linear), y: max linear value (1 = SDR), z: opacity
+    vec4 range;         // x: exposure multiplier (linear), y: max linear value (1 = SDR), z: opacity,
+                        // w: 1 = tone curve active
+    vec4 tone;          // BT.2390 curve (HdrMapping.h ToneCurve): x knee, y srcPq, z kneePq, w maxLumPq
 } ubuf;
 
 layout(binding = 1) uniform sampler2D tex;
@@ -72,6 +77,47 @@ vec3 encodeTransfer(vec3 c)
                 texture(dstLut, vec2(x.b, 0.5)).b);
 }
 
+// SMPTE ST 2084 (PQ), as hdr::pqEncode/pqDecode.
+const float PQ_M1 = 2610.0 / 16384.0;
+const float PQ_M2 = 2523.0 / 4096.0 * 128.0;
+const float PQ_C1 = 3424.0 / 4096.0;
+const float PQ_C2 = 2413.0 / 4096.0 * 32.0;
+const float PQ_C3 = 2392.0 / 4096.0 * 32.0;
+const float REFERENCE_WHITE = 203.0;
+
+float pqEncode(float nits)
+{
+    float p = pow(clamp(nits / 10000.0, 0.0, 1.0), PQ_M1);
+    return pow((PQ_C1 + PQ_C2 * p) / (1.0 + PQ_C3 * p), PQ_M2);
+}
+
+float pqDecode(float signal)
+{
+    float e = pow(clamp(signal, 0.0, 1.0), 1.0 / PQ_M2);
+    return 10000.0 * pow(max(e - PQ_C1, 0.0) / (PQ_C2 - PQ_C3 * e), 1.0 / PQ_M1);
+}
+
+// hdr::toneMapRgb: BT.2390 EETF on the largest component; identity below the knee.
+vec3 toneMapRgb(vec3 rgb)
+{
+    float m = max(rgb.r, max(rgb.g, rgb.b));
+    if (ubuf.range.w < 0.5 || m <= ubuf.tone.x)
+        return rgb;
+    float target = ubuf.range.y;
+    float e1 = pqEncode(m * REFERENCE_WHITE) / ubuf.tone.y;
+    float mapped = target;
+    if (e1 < 1.0) {
+        float ks = ubuf.tone.z;
+        float t = (e1 - ks) / (1.0 - ks);
+        float t2 = t * t;
+        float t3 = t2 * t;
+        float p = (2.0 * t3 - 3.0 * t2 + 1.0) * ks + (t3 - 2.0 * t2 + t) * (1.0 - ks)
+                + (-2.0 * t3 + 3.0 * t2) * ubuf.tone.w;
+        mapped = clamp(pqDecode(p * ubuf.tone.y) / REFERENCE_WHITE, ubuf.tone.x, target);
+    }
+    return rgb * (mapped / m);
+}
+
 void main()
 {
     // Derivatives in uniform control flow.
@@ -103,8 +149,15 @@ void main()
         rgb = decodeTransfer(rgb);
         rgb = (ubuf.colorMatrix * vec4(rgb, 0.0)).rgb;
         rgb *= ubuf.range.x;
+        rgb = toneMapRgb(rgb);
         rgb = clamp(rgb, 0.0, ubuf.range.y);
         rgb = encodeTransfer(rgb);
+    }
+
+    if (ubuf.texInfo.w > 0.5) {
+        // UI overlay: straight alpha, blended over the image (SrcAlpha, OneMinusSrcAlpha).
+        fragColor = vec4(rgb, a);
+        return;
     }
 
     vec3 bg = ubuf.bgColor.rgb;

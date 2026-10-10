@@ -86,6 +86,7 @@ const Registry& registry() {
         b(key::ShowStatusBar, true);
         b(key::ShowInfoPanel, false);
         b(key::ShowFilmstrip, false);
+        b(key::HdrEnabled, true); // F-COL-04
         s(key::WrapMode, "stop", {"stop", "wrap", "nextFolder"});
         b(key::FollowFinder, true);
         b(key::FinderLiveQuery, false);

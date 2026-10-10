@@ -244,6 +244,57 @@
     </message>
 </context>
 <context>
+    <name>lf::DecoderHelper</name>
+    <message>
+        <source>Das Bild hat den Decoder zum Absturz gebracht – die Datei ist vermutlich beschädigt.</source>
+        <translation>画像によりデコーダがクラッシュしました。ファイルが破損している可能性があります。</translation>
+    </message>
+    <message>
+        <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
+        <translation>デコードに時間がかかりすぎたため中止しました。</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
+        <translation>デコーダ補助プロセスを起動できませんでした（%1）。</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess wird auf diesem System nicht unterstützt.</source>
+        <translation>このシステムではデコーダ補助プロセスはサポートされていません。</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden.</source>
+        <translation>デコーダ補助プロセスを起動できませんでした。</translation>
+    </message>
+    <message>
+        <source>Unbekannter Decoder „%1“.</source>
+        <translation>不明なデコーダ「%1」です。</translation>
+    </message>
+    <message>
+        <source>Das Bild ist leer.</source>
+        <translation>画像が空です。</translation>
+    </message>
+    <message>
+        <source>Unbekannte Anfrage.</source>
+        <translation>不明な要求です。</translation>
+    </message>
+    <message>
+        <source>Gemeinsamer Speicher ist nicht verfügbar (%1).</source>
+        <translation>共有メモリを使用できません（%1）。</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>画像用のメモリが足りません（%1 × %2 ピクセル）。</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders fehlen.</source>
+        <translation>デコーダの画像データがありません。</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders sind ungültig.</source>
+        <translation>デコーダの画像データが無効です。</translation>
+    </message>
+</context>
+<context>
     <name>lf::DecoderRegistry</name>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -688,6 +739,70 @@
         <source>%1 m</source>
         <extracomment>altitude in metres</extracomment>
         <translation>%1 m</translation>
+    </message>
+</context>
+<context>
+    <name>lf::HdrController</name>
+    <message>
+        <source>HDR an</source>
+        <translation>HDR オン</translation>
+    </message>
+    <message>
+        <source>HDR aus – SDR-Vorschau</source>
+        <translation>HDR オフ – SDR プレビュー</translation>
+    </message>
+    <message>
+        <source>Die Belichtung lässt sich nur bei HDR-Bildern einstellen.</source>
+        <translation>露出は HDR 画像でのみ調整できます。</translation>
+    </message>
+    <message>
+        <source>Belichtung %1</source>
+        <translation>露出 %1</translation>
+    </message>
+    <message>
+        <source>Der Belichtungsregler erscheint bei HDR-Bildern.</source>
+        <translation>露出スライダは HDR 画像で表示されます。</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR (SDR-Vorschau)</source>
+        <extracomment>status bar badge: HDR image shown tone-mapped to SDR</extracomment>
+        <translation>HDR（SDR プレビュー）</translation>
+    </message>
+    <message>
+        <source>%1 · %2</source>
+        <translation>%1 · %2</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, mit erweitertem Dynamikumfang angezeigt (⇧⌘H: SDR-Vorschau)</source>
+        <translation>HDR 画像（拡張ダイナミックレンジで表示中。⇧⌘H：SDR プレビュー）</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – HDR ist ausgeschaltet (⇧⌘H)</source>
+        <translation>HDR 画像（SDR プレビューで表示中。HDR はオフです（⇧⌘H））</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – dieser Bildschirm kann kein HDR darstellen</source>
+        <translation>HDR 画像（SDR プレビューで表示中。このディスプレイは HDR を表示できません）</translation>
+    </message>
+    <message>
+        <source>Belichtung</source>
+        <translation>露出</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>露出をリセット</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>保持</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>画像を切り替えても露出を保持</translation>
     </message>
 </context>
 <context>
@@ -1197,6 +1312,26 @@
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
         <translation>クイック移動：コピー（C、続けて 1–9）</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>HDR で表示</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>露出を上げる</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>露出を下げる</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>露出をリセット</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>露出スライダを表示</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2287,6 +2422,34 @@
     <message>
         <source>Ziele der Schnellablage festlegen …</source>
         <translation>クイック移動の移動先を設定 …</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>HDR で表示</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>露出を上げる</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>露出を下げる</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>露出をリセット</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>画像を切り替えても露出を保持</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>露出スライダを表示</translation>
     </message>
 </context>
 <context>

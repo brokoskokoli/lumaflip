@@ -56,6 +56,8 @@ private:
     // M3 menu "Aussortieren" (MainMenuCulling.cpp): culling mode, rating, filter, rejects,
     // quick move/copy (F-CULL-01..06, F-FILE-08).
     void buildCulling();
+    void buildHdr(QMenu* view); // M3: "Darstellung → HDR" (MainMenuHdr.cpp)
+    void refreshHdrState();
     void refreshCullingState();
 
     Application& m_app;

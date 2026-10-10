@@ -252,6 +252,57 @@
     </message>
 </context>
 <context>
+    <name>lf::DecoderHelper</name>
+    <message>
+        <source>Das Bild hat den Decoder zum Absturz gebracht – die Datei ist vermutlich beschädigt.</source>
+        <translation>Obraz spowodował awarię dekodera – plik jest prawdopodobnie uszkodzony.</translation>
+    </message>
+    <message>
+        <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
+        <translation>Dekodowanie trwało zbyt długo i zostało przerwane.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
+        <translation>Nie można uruchomić procesu pomocniczego dekodera (%1).</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess wird auf diesem System nicht unterstützt.</source>
+        <translation>Proces pomocniczy dekodera nie jest obsługiwany w tym systemie.</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden.</source>
+        <translation>Nie można uruchomić procesu pomocniczego dekodera.</translation>
+    </message>
+    <message>
+        <source>Unbekannter Decoder „%1“.</source>
+        <translation>Nieznany dekoder „%1”.</translation>
+    </message>
+    <message>
+        <source>Das Bild ist leer.</source>
+        <translation>Obraz jest pusty.</translation>
+    </message>
+    <message>
+        <source>Unbekannte Anfrage.</source>
+        <translation>Nieznane żądanie.</translation>
+    </message>
+    <message>
+        <source>Gemeinsamer Speicher ist nicht verfügbar (%1).</source>
+        <translation>Pamięć współdzielona jest niedostępna (%1).</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>Za mało pamięci dla obrazu (%1 × %2 pikseli).</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders fehlen.</source>
+        <translation>Brak danych obrazu z dekodera.</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders sind ungültig.</source>
+        <translation>Dane obrazu z dekodera są nieprawidłowe.</translation>
+    </message>
+</context>
+<context>
     <name>lf::DecoderRegistry</name>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -700,6 +751,70 @@
         <source>%1 m</source>
         <extracomment>altitude in metres</extracomment>
         <translation>%1 m</translation>
+    </message>
+</context>
+<context>
+    <name>lf::HdrController</name>
+    <message>
+        <source>HDR an</source>
+        <translation>HDR włączone</translation>
+    </message>
+    <message>
+        <source>HDR aus – SDR-Vorschau</source>
+        <translation>HDR wyłączone – podgląd SDR</translation>
+    </message>
+    <message>
+        <source>Die Belichtung lässt sich nur bei HDR-Bildern einstellen.</source>
+        <translation>Ekspozycję można regulować tylko w obrazach HDR.</translation>
+    </message>
+    <message>
+        <source>Belichtung %1</source>
+        <translation>Ekspozycja %1</translation>
+    </message>
+    <message>
+        <source>Der Belichtungsregler erscheint bei HDR-Bildern.</source>
+        <translation>Suwak ekspozycji pojawia się przy obrazach HDR.</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR (SDR-Vorschau)</source>
+        <extracomment>status bar badge: HDR image shown tone-mapped to SDR</extracomment>
+        <translation>HDR (podgląd SDR)</translation>
+    </message>
+    <message>
+        <source>%1 · %2</source>
+        <translation>%1 · %2</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, mit erweitertem Dynamikumfang angezeigt (⇧⌘H: SDR-Vorschau)</source>
+        <translation>Obraz HDR wyświetlany z rozszerzonym zakresem dynamiki (⇧⌘H: podgląd SDR)</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – HDR ist ausgeschaltet (⇧⌘H)</source>
+        <translation>Obraz HDR wyświetlany jako podgląd SDR – HDR jest wyłączone (⇧⌘H)</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – dieser Bildschirm kann kein HDR darstellen</source>
+        <translation>Obraz HDR wyświetlany jako podgląd SDR – ten ekran nie obsługuje HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung</source>
+        <translation>Ekspozycja</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Resetuj ekspozycję</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>Zachowaj</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>Zachowaj ekspozycję przy zmianie obrazu</translation>
     </message>
 </context>
 <context>
@@ -1209,6 +1324,26 @@
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
         <translation>Szybkie odkładanie: kopiuj (C, potem 1–9)</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>Pokaż HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>Zwiększ ekspozycję</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>Zmniejsz ekspozycję</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Resetuj ekspozycję</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>Pokaż suwak ekspozycji</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2299,6 +2434,34 @@
     <message>
         <source>Ziele der Schnellablage festlegen …</source>
         <translation>Ustaw cele odkładania …</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>Pokaż HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>Zwiększ ekspozycję</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>Zmniejsz ekspozycję</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>Resetuj ekspozycję</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>Zachowaj ekspozycję przy zmianie obrazu</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>Pokaż suwak ekspozycji</translation>
     </message>
 </context>
 <context>

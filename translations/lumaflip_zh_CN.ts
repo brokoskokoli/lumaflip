@@ -244,6 +244,57 @@
     </message>
 </context>
 <context>
+    <name>lf::DecoderHelper</name>
+    <message>
+        <source>Das Bild hat den Decoder zum Absturz gebracht – die Datei ist vermutlich beschädigt.</source>
+        <translation>该图像导致解码器崩溃——文件可能已损坏。</translation>
+    </message>
+    <message>
+        <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
+        <translation>解码耗时过长，已取消。</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
+        <translation>无法启动解码器辅助进程（%1）。</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess wird auf diesem System nicht unterstützt.</source>
+        <translation>此系统不支持解码器辅助进程。</translation>
+    </message>
+    <message>
+        <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden.</source>
+        <translation>无法启动解码器辅助进程。</translation>
+    </message>
+    <message>
+        <source>Unbekannter Decoder „%1“.</source>
+        <translation>未知的解码器“%1”。</translation>
+    </message>
+    <message>
+        <source>Das Bild ist leer.</source>
+        <translation>图像为空。</translation>
+    </message>
+    <message>
+        <source>Unbekannte Anfrage.</source>
+        <translation>未知请求。</translation>
+    </message>
+    <message>
+        <source>Gemeinsamer Speicher ist nicht verfügbar (%1).</source>
+        <translation>共享内存不可用（%1）。</translation>
+    </message>
+    <message>
+        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <translation>内存不足，无法载入图像（%1 × %2 像素）。</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders fehlen.</source>
+        <translation>缺少解码器的图像数据。</translation>
+    </message>
+    <message>
+        <source>Die Bilddaten des Decoders sind ungültig.</source>
+        <translation>解码器的图像数据无效。</translation>
+    </message>
+</context>
+<context>
     <name>lf::DecoderRegistry</name>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -688,6 +739,70 @@
         <source>%1 m</source>
         <extracomment>altitude in metres</extracomment>
         <translation>%1 米</translation>
+    </message>
+</context>
+<context>
+    <name>lf::HdrController</name>
+    <message>
+        <source>HDR an</source>
+        <translation>HDR 已开启</translation>
+    </message>
+    <message>
+        <source>HDR aus – SDR-Vorschau</source>
+        <translation>HDR 已关闭——SDR 预览</translation>
+    </message>
+    <message>
+        <source>Die Belichtung lässt sich nur bei HDR-Bildern einstellen.</source>
+        <translation>只能为 HDR 图像调整曝光。</translation>
+    </message>
+    <message>
+        <source>Belichtung %1</source>
+        <translation>曝光 %1</translation>
+    </message>
+    <message>
+        <source>Der Belichtungsregler erscheint bei HDR-Bildern.</source>
+        <translation>曝光滑块会在 HDR 图像上显示。</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR (SDR-Vorschau)</source>
+        <extracomment>status bar badge: HDR image shown tone-mapped to SDR</extracomment>
+        <translation>HDR（SDR 预览）</translation>
+    </message>
+    <message>
+        <source>%1 · %2</source>
+        <translation>%1 · %2</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, mit erweitertem Dynamikumfang angezeigt (⇧⌘H: SDR-Vorschau)</source>
+        <translation>HDR 图像，以扩展动态范围显示（⇧⌘H：SDR 预览）</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – HDR ist ausgeschaltet (⇧⌘H)</source>
+        <translation>HDR 图像，以 SDR 预览显示——HDR 已关闭（⇧⌘H）</translation>
+    </message>
+    <message>
+        <source>HDR-Bild, als SDR-Vorschau angezeigt – dieser Bildschirm kann kein HDR darstellen</source>
+        <translation>HDR 图像，以 SDR 预览显示——此显示器无法显示 HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung</source>
+        <translation>曝光</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>重置曝光</translation>
+    </message>
+    <message>
+        <source>Beibehalten</source>
+        <translation>保持</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>切换图像时保持曝光</translation>
     </message>
 </context>
 <context>
@@ -1197,6 +1312,26 @@
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
         <translation>快速归档：拷贝（C，然后 1–9）</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>显示 HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>增加曝光</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>降低曝光</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>重置曝光</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>显示曝光滑块</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2287,6 +2422,34 @@
     <message>
         <source>Ziele der Schnellablage festlegen …</source>
         <translation>设置快速归档目标 …</translation>
+    </message>
+    <message>
+        <source>HDR</source>
+        <translation>HDR</translation>
+    </message>
+    <message>
+        <source>HDR anzeigen</source>
+        <translation>显示 HDR</translation>
+    </message>
+    <message>
+        <source>Belichtung erhöhen</source>
+        <translation>增加曝光</translation>
+    </message>
+    <message>
+        <source>Belichtung verringern</source>
+        <translation>降低曝光</translation>
+    </message>
+    <message>
+        <source>Belichtung zurücksetzen</source>
+        <translation>重置曝光</translation>
+    </message>
+    <message>
+        <source>Belichtung beim Bildwechsel beibehalten</source>
+        <translation>切换图像时保持曝光</translation>
+    </message>
+    <message>
+        <source>Belichtungsregler einblenden</source>
+        <translation>显示曝光滑块</translation>
     </message>
 </context>
 <context>

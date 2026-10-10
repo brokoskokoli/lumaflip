@@ -39,6 +39,7 @@ inline constexpr auto ActualSizeUnit = "view/actualSizeUnit"; // "devicePixels" 
 inline constexpr auto ShowStatusBar = "view/statusBar";
 inline constexpr auto ShowInfoPanel = "view/infoPanel";
 inline constexpr auto ShowFilmstrip = "view/filmstrip";
+inline constexpr auto HdrEnabled = "view/hdr"; // bool, default true (F-COL-04 HDR toggle)
 // Navigation & sorting
 inline constexpr auto WrapMode = "nav/wrap";               // "stop" | "wrap" | "nextFolder"
 inline constexpr auto FollowFinder = "sort/followFinder";  // bool, default true

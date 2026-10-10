@@ -7,7 +7,8 @@
 // all are RGBA byte/component order, premultiplied alpha, opaque images have A = max):
 //   - 8-bit sources            -> QImage::Format_RGBA8888_Premultiplied  (RGBA8 texture)
 //   - >8-bit / float SDR       -> QImage::Format_RGBA64_Premultiplied    (RGBA16 texture)
-//   - HDR (req.hdr && isHdr)   -> QImage::Format_RGBA16FPx4_Premultiplied (RGBA16F texture)
+//   - HDR (req.hdr && isHdr, or req.hdrFloat && float source)
+//                              -> QImage::Format_RGBA16FPx4_Premultiplied (RGBA16F texture)
 //                                 in extended linear Display P3, DecodedImage::headroom > 1
 //
 // Color (F-COL-01, F-COL-06): RGB images keep their source color space (pixels are not
