@@ -260,7 +260,7 @@ void WindowEditing::updateAfPoints() {
 void WindowEditing::startCrop() {
     OverviewController* overview = m_window.extras() ? m_window.extras()->overview() : nullptr;
     if (overview && overview->mode() != OverviewController::Mode::Viewer) {
-        m_window.showMessage(tr("Zuschneiden geht in der Einzelbildansicht."), 2500);
+        m_window.showMessage(tr("Zuschneiden ist nur in der Einzelbildansicht möglich."), 2500);
         return;
     }
     const QString path = m_window.currentPath();
@@ -281,7 +281,7 @@ void WindowEditing::startCrop() {
     connect(m_crop, &CropOverlay::saveRequested, this, &WindowEditing::saveCrop);
     connect(m_crop, &CropOverlay::cancelRequested, this, &WindowEditing::cancelCrop);
     qApp->installEventFilter(this);
-    m_window.showMessage(tr("Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab"), 3500);
+    m_window.showMessage(tr("Zuschneiden: Rahmen ziehen – Enter sichert, Esc bricht ab"), 3500);
     m_app.windowChanged(&m_window);
 }
 
@@ -353,7 +353,7 @@ void WindowEditing::saveCrop(bool saveAs) {
     if (!m_crop || m_saving)
         return;
     if (m_committing) {
-        m_window.showMessage(tr("Der vorige Zuschnitt wird noch gespeichert."), 2000);
+        m_window.showMessage(tr("Der vorherige Zuschnitt wird noch gesichert."), 2000);
         return;
     }
     CropRequest r;
@@ -372,7 +372,7 @@ void WindowEditing::saveCrop(bool saveAs) {
     //: default file name of a cropped copy: "<name>-zugeschnitten.<suffix>"
     const QString suggested =
         fi.dir().filePath(tr("%1-zugeschnitten.%2").arg(fi.completeBaseName(), fi.suffix()));
-    auto* dlg = new QFileDialog(&m_window, tr("Zugeschnittenes Bild speichern unter"), suggested);
+    auto* dlg = new QFileDialog(&m_window, tr("Zugeschnittenes Bild sichern unter"), suggested);
     dlg->setObjectName(QStringLiteral("lfCropSaveAsDialog"));
     dlg->setAcceptMode(QFileDialog::AcceptSave);
     // The format of the original first; the export formats write a cropped export instead.
@@ -427,9 +427,10 @@ void WindowEditing::saveCropAs(const QString& chosen) {
         planAndSave(r);
         return;
     }
-    auto* box = new QMessageBox(QMessageBox::Warning, tr("Zuschneiden"),
-                                tr("„%1“ gibt es schon. Ersetzen?").arg(target.fileName()),
-                                QMessageBox::NoButton, &m_window);
+    auto* box =
+        new QMessageBox(QMessageBox::Warning, tr("Zuschneiden"),
+                        tr("„%1“ existiert bereits. Möchtest du die Datei ersetzen?").arg(target.fileName()),
+                        QMessageBox::NoButton, &m_window);
     box->setObjectName(QStringLiteral("lfCropReplaceExisting"));
     box->setInformativeText(
         tr("Das zugeschnittene Bild bekommt die Endung des Originals (.%1).").arg(srcSuffix));
@@ -470,9 +471,8 @@ void WindowEditing::exportCroppedAs(const QString& target, const exporting::Form
         if (token == self->m_cropToken)
             self->m_saving = false;
         if (r.written == 0) {
-            self->m_window.showMessage(r.errors.isEmpty()
-                                           ? tr("Der Zuschnitt konnte nicht gespeichert werden.")
-                                           : r.errors.join(QLatin1Char('\n')),
+            self->m_window.showMessage(r.errors.isEmpty() ? tr("Der Zuschnitt konnte nicht gesichert werden.")
+                                                          : r.errors.join(QLatin1Char('\n')),
                                        5000);
             return;
         }
@@ -532,7 +532,7 @@ void WindowEditing::planAndSave(const CropRequest& request) {
         }
         // Never silently lossy (SPEC 4.8): ask first (window-modal, non-blocking).
         auto* box = new QMessageBox(QMessageBox::Question, tr("Zuschneiden"),
-                                    tr("Der Zuschnitt kann nur durch Neukodieren gespeichert werden."),
+                                    tr("Der Zuschnitt kann nur durch Neukodieren gesichert werden."),
                                     QMessageBox::NoButton, &self->m_window);
         box->setObjectName(QStringLiteral("lfCropReencode"));
         box->setInformativeText(plan.message);
@@ -598,8 +598,7 @@ void WindowEditing::commitCrop(const CropRequest& request, const CropPlan& plan,
         }
         if (token == self->m_cropToken)
             self->cancelCrop();
-        const QString text =
-            tr("Zugeschnitten gespeichert als „%1“").arg(QFileInfo(request.saveAs).fileName());
+        const QString text = tr("Zugeschnitten gesichert als „%1“").arg(QFileInfo(request.saveAs).fileName());
         self->m_window.showMessage(notice.isEmpty() ? text : text + QStringLiteral(" – ") + notice,
                                    notice.isEmpty() ? 2500 : 6000);
     });

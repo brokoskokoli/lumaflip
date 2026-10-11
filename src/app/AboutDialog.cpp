@@ -206,12 +206,11 @@ LicensesDialog::LicensesDialog(const QVector<ThirdPartyComponent>& components, c
     resize(820, 560);
 
     auto* layout = new QVBoxLayout(this);
-    auto* intro =
-        new QLabel(fromBundle ? tr("Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch "
-                                   "im Programmpaket unter Contents/Resources/licenses.")
-                              : tr("Entwickler-Build: Die Lizenztexte werden erst beim Paketieren "
-                                   "(tools/package.sh) in das Programmpaket gelegt."),
-                   this);
+    auto* intro = new QLabel(fromBundle ? tr("Lumaflip enthält die folgenden Komponenten. Die Lizenztexte "
+                                             "liegen auch im App-Paket unter Contents/Resources/licenses.")
+                                        : tr("Entwickler-Build: Die Lizenztexte werden erst beim Paketieren "
+                                             "(tools/package.sh) in das App-Paket gelegt."),
+                             this);
     intro->setWordWrap(true);
     layout->addWidget(intro);
 

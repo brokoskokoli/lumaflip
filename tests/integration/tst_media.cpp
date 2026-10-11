@@ -541,7 +541,7 @@ private slots:
         // The file is reloaded upright, the view rotation is gone (no double rotation).
         QTRY_COMPARE_WITH_TIMEOUT(w->view()->image()->fullSize, QSize(48, 64), 5000);
         QCOMPARE(w->view()->rotation(), 0);
-        QTRY_VERIFY(w->toastText().contains(QStringLiteral("Drehung gespeichert")));
+        QTRY_VERIFY(w->toastText().contains(QStringLiteral("Drehung gesichert")));
         const QByteArray savedSha = sha(jpg);
 
         ops->undo();

@@ -44,9 +44,9 @@ void MainMenu::buildEdit(QMenu* file, QMenu* view, QMenu* image) {
     }
     if (view) {
         view->addSeparator();
-        QMenu* overlays = view->addMenu(tr("Overlays")); // F-INFO-07
+        QMenu* overlays = view->addMenu(tr("Einblendungen")); // F-INFO-07
         overlays->setObjectName(QStringLiteral("menu:overlays"));
-        add(overlays, Action::ToggleClipping, tr("Über-/Unterbelichtung"))->setCheckable(true);
+        add(overlays, Action::ToggleClipping, tr("Über-/Unterbelichtungswarnung"))->setCheckable(true);
         add(overlays, Action::ToggleFocusPeaking, tr("Focus Peaking"))->setCheckable(true);
         add(overlays, Action::ToggleAfPoints, tr("Fokuspunkte"))->setCheckable(true);
         connect(overlays, &QMenu::aboutToShow, this, &MainMenu::refreshState);

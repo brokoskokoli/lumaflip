@@ -179,7 +179,7 @@ public:
     QString revert();
     QString target() const { return m_target; }
 
-    static QString messageChangedUndo(); // "Datei wurde inzwischen verändert – Rückgängig nicht möglich"
+    static QString messageChangedUndo(); // "Die Datei wurde inzwischen verändert – Widerrufen nicht möglich"
     static QString messageChangedRedo();
     static QString messageBackupDropped();
 

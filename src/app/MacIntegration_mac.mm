@@ -351,8 +351,8 @@ public:
                 return false;
             }
             if (error)
-                *error =
-                    QCoreApplication::translate("lf::MacIntegration", "Der Bildschirm ist nicht mehr da.");
+                *error = QCoreApplication::translate("lf::MacIntegration",
+                                                     "Der Bildschirm ist nicht mehr angeschlossen.");
             return false;
         }
     }

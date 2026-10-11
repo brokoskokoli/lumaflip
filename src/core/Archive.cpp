@@ -136,7 +136,7 @@ QString messageNoImages() {
     return Tr::tr("Das Archiv enthält keine Bilder.");
 }
 QString messageEncryptedArchive() {
-    return Tr::tr("Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.");
+    return Tr::tr("Das Archiv ist passwortgeschützt – verschlüsselte Archive werden nicht unterstützt.");
 }
 QString messageArchiveTooLarge() {
     return Tr::tr("Das Archiv ist zu groß, um dieses Bild daraus zu lesen.");

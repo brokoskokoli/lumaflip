@@ -1158,7 +1158,7 @@ void Application::showShortcuts() {
     QList<QPair<QString, QString>> rows = {
         {tr("Nächstes / vorheriges Bild"), tr("→ / ←, Leertaste / ⇧Leertaste, Bild↓ / Bild↑, Mausrad")},
         {tr("Erstes / letztes Bild"), tr("Pos1 / Ende")},
-        {tr("Vollbild / Modus verlassen"), tr("Esc")},
+        {tr("Vollbild oder Modus beenden"), tr("Esc")},
     };
     for (Action a : InputBindings::allActions()) {
         const QList<QKeySequence> seqs = bindings().shortcuts(a);

@@ -44,15 +44,15 @@
         <translation>图标位置</translation>
     </message>
     <message>
-        <source>Wie Finder (live): %1</source>
+        <source>Wie im Finder (live): %1</source>
         <translation>与访达相同（实时）：%1</translation>
     </message>
     <message>
-        <source>Wie Finder: %1</source>
+        <source>Wie im Finder: %1</source>
         <translation>与访达相同：%1</translation>
     </message>
     <message>
-        <source>%1 (Finder-Info nicht gefunden)</source>
+        <source>%1 (Finder-Informationen nicht gefunden)</source>
         <translation>%1（未找到访达信息）</translation>
     </message>
 </context>
@@ -134,7 +134,7 @@
         <translation>Home / End</translation>
     </message>
     <message>
-        <source>Vollbild / Modus verlassen</source>
+        <source>Vollbild oder Modus beenden</source>
         <translation>全屏幕 / 退出模式</translation>
     </message>
     <message>
@@ -179,7 +179,7 @@
         <translation>归档中没有图像。</translation>
     </message>
     <message>
-        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <source>Das Archiv ist passwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
         <translation>归档受密码保护 – 不支持加密归档。</translation>
     </message>
     <message>
@@ -197,7 +197,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <source>Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.</source>
+        <source>Unterordner: Nur die ersten %n Bilder werden angezeigt – öffne einen kleineren Ordner.</source>
         <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
         <translation>
             <numerusform>子文件夹：仅显示前 %n 张图像，请打开较小的文件夹。</numerusform>
@@ -307,7 +307,7 @@
 <context>
     <name>lf::ContainerPolicy</name>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten sind hier nicht möglich.</source>
         <translation>归档和 PDF 文稿中的图像仅供查看——此处不能移到废纸篓、重命名、移动或评分。</translation>
     </message>
 </context>
@@ -379,19 +379,19 @@
         <translation>显示三分法网格</translation>
     </message>
     <message>
-        <source>Speichern</source>
+        <source>Sichern</source>
         <translation>存储</translation>
     </message>
     <message>
-        <source>Zuschnitt in der Datei speichern (Enter, widerrufbar)</source>
+        <source>Zuschnitt in der Datei sichern (Enter, widerrufbar)</source>
         <translation>将裁剪存储到文件中（Enter，可撤销）</translation>
     </message>
     <message>
-        <source>Speichern unter …</source>
+        <source>Sichern unter …</source>
         <translation>存储为…</translation>
     </message>
     <message>
-        <source>Zuschnitt als neue Datei speichern – das Original bleibt unverändert</source>
+        <source>Zuschnitt als neue Datei sichern – das Original bleibt unverändert</source>
         <translation>将裁剪存储为新文件——原件保持不变</translation>
     </message>
     <message>
@@ -411,11 +411,11 @@
 <context>
     <name>lf::CropSave</name>
     <message>
-        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.</source>
+        <source>Die Datei wurde inzwischen verändert – nichts gesichert. Schneide das Bild erneut zu.</source>
         <translation>文件已在此期间被更改——未存储任何内容。请重新裁剪。</translation>
     </message>
     <message>
-        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
+        <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden ist nur durch Neukodieren möglich – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
         <translation>该文件包含其他图像（如 HDR 增益图或第二张立体图像），无损裁剪后将不再匹配。只能通过重新编码来裁剪——这会损失少许画质以及这些附加图像。</translation>
     </message>
     <message>
@@ -435,7 +435,7 @@
         <translation>无法无损裁剪 JPEG 数据（%1）。</translation>
     </message>
     <message>
-        <source>Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.</source>
+        <source>Der Zuschnitt liegt nicht auf dem JPEG-Blockraster.</source>
         <translation>所选区域未对齐 JPEG 块网格。</translation>
     </message>
     <message>
@@ -447,19 +447,19 @@
         <translation>文件已不存在。</translation>
     </message>
     <message>
-        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <source>Das Dateiformat wird zum Sichern nicht erkannt.</source>
         <translation>无法识别要存储的文件格式。</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
         <translation>归档和 PDF 文稿中的图像不会被更改。可将所选区域导出为新文件。</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <source>RAW-Dateien werden nie verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
         <translation>RAW 文件永远不会被更改。可将所选区域导出为新文件。</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gesichert werden. Der Zuschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
         <translation>动画或多页文件无法裁剪后存储。可将第一张图像的所选区域导出为新文件。</translation>
     </message>
     <message>
@@ -467,7 +467,7 @@
         <translation>“%1”为只读。</translation>
     </message>
     <message>
-        <source>„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.</source>
+        <source>„Sichern unter“ überschreibt nie das Original – wähle einen anderen Namen.</source>
         <translation>“存储为”绝不会覆盖原件——请选择其他名称。</translation>
     </message>
     <message>
@@ -475,7 +475,7 @@
         <translation>无法写入“%1”。</translation>
     </message>
     <message>
-        <source>„%1“ gibt es schon.</source>
+        <source>„%1“ existiert bereits.</source>
         <translation>“%1”已存在。</translation>
     </message>
     <message>
@@ -487,11 +487,11 @@
         <translation>未选择区域。</translation>
     </message>
     <message>
-        <source>Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.</source>
+        <source>Der Zuschnitt umfasst das ganze Bild – es gibt nichts zuzuschneiden.</source>
         <translation>所选区域为整个图像——无需裁剪。</translation>
     </message>
     <message>
-        <source>Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
+        <source>Für den verlustfreien Zuschnitt wurde der Zuschnittbereich an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
         <translation>为进行无损裁剪，所选区域已对齐 JPEG 块网格（%1 × %2 像素），现在为 %3 × %4 像素。</translation>
     </message>
     <message>
@@ -499,7 +499,7 @@
         <translation>此 JPEG 文件无法无损裁剪。重新编码会损失少许画质。</translation>
     </message>
     <message>
-        <source>Der Zuschnitt kann nicht gespeichert werden.</source>
+        <source>Der Zuschnitt kann nicht gesichert werden.</source>
         <translation>无法存储裁剪。</translation>
     </message>
     <message>
@@ -507,11 +507,11 @@
         <translation>重新编码后图像将无法完全保持一致（颜色模型、位深度、调色板或透明度会改变）。</translation>
     </message>
     <message>
-        <source>Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.</source>
+        <source>Dieses Format kann hier nicht geschrieben werden. Der Zuschnitt kann in einem anderen Format exportiert werden.</source>
         <translation>此处无法写入此格式。可将所选区域导出为其他格式。</translation>
     </message>
     <message>
-        <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <source>Dieses Format komprimiert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
         <translation>此格式为有损格式。只能通过重新编码图像来存储裁剪——这会损失少许画质。</translation>
     </message>
     <message>
@@ -527,7 +527,7 @@
         <translation>无法对此图像进行无损裁剪。</translation>
     </message>
     <message>
-        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <source>Der Zuschnitt konnte nicht gesichert werden.</source>
         <translation>无法存储裁剪。</translation>
     </message>
     <message>
@@ -566,15 +566,15 @@
         <translation>筛选</translation>
     </message>
     <message>
-        <source>0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg</source>
+        <source>0–5  Sterne     P  Markieren     X  Ablehnen     U  Markierung aufheben</source>
         <translation>0–5  星级     P  保留     X  舍弃     U  清除标记</translation>
     </message>
     <message>
-        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden</source>
+        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Widerrufen     Esc  Beenden</source>
         <translation>← →  浏览     M/C + 1–9  移动/拷贝     ⌘Z  撤销     Esc  退出</translation>
     </message>
     <message>
-        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U markieren</source>
+        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U setzen Markierungen</source>
         <translation>筛选模式：数字设置星级，P/X/U 设置标记</translation>
     </message>
     <message>
@@ -590,27 +590,27 @@
         <translation>过滤：%1 — %2 / %3</translation>
     </message>
     <message>
-        <source>Keine verworfenen Bilder</source>
+        <source>Keine abgelehnten Bilder</source>
         <translation>没有舍弃的图像</translation>
     </message>
     <message numerus="yes">
-        <source>%n verworfene(s) Bild(er) in den Papierkorb legen?</source>
+        <source>%n abgelehnte(s) Bild(er) in den Papierkorb legen?</source>
         <translation>
             <numerusform>将 %n 张舍弃的图像移到废纸篓？</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <source>%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
+        <source>%n abgelehnte(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
         <translation>
             <numerusform>将 %n 张舍弃的图像移到文件夹“_Rejected”？</numerusform>
         </translation>
     </message>
     <message>
-        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren werden mitbewegt. ⌘Z widerruft den ganzen Schritt.</source>
         <translation>仅限显示的图像（当前过滤条件）。XMP 附属文件和 RAW+JPEG 配对中的另一个文件会一起移动。⌘Z 可撤销整个步骤。</translation>
     </message>
     <message>
-        <source>In den Papierkorb</source>
+        <source>In den Papierkorb legen</source>
         <translation>移到废纸篓</translation>
     </message>
     <message>
@@ -618,11 +618,11 @@
         <translation>移动</translation>
     </message>
     <message>
-        <source>Verworfene in den Papierkorb</source>
+        <source>Abgelehnte in den Papierkorb legen</source>
         <translation>舍弃的图像移到废纸篓</translation>
     </message>
     <message>
-        <source>Verworfene nach _Rejected</source>
+        <source>Abgelehnte nach „_Rejected“ verschieben</source>
         <translation>舍弃的图像移到 _Rejected</translation>
     </message>
     <message numerus="yes">
@@ -888,7 +888,7 @@
         <translation>共享内存不可用（%1）。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
         <translation>内存不足，无法载入图像（%1 × %2 像素）。</translation>
     </message>
     <message>
@@ -942,7 +942,7 @@
         <translation>设为默认 App</translation>
     </message>
     <message>
-        <source>Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht ausgewählte Formate bleiben beim bisherigen Programm.</source>
+        <source>Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht ausgewählte Formate bleiben bei der bisherigen App.</source>
         <translation>Lumaflip 将成为所选图像格式的默认 App。未选择的格式仍使用原来的 App。</translation>
     </message>
     <message>
@@ -1164,7 +1164,7 @@
         <translation>裁剪后导出</translation>
     </message>
     <message>
-        <source>Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <source>Den Zuschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
         <translation>将“%1”的所选区域导出为新文件。原件保持不变。</translation>
     </message>
     <message>
@@ -1223,7 +1223,7 @@
         <translation>全部保留</translation>
     </message>
     <message>
-        <source>Ohne Ortsdaten (GPS)</source>
+        <source>Ohne Aufnahmeort (GPS)</source>
         <translation>不含位置（GPS）</translation>
     </message>
     <message>
@@ -1251,7 +1251,7 @@
         <translation>作为 SDR（色调映射）</translation>
     </message>
     <message>
-        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung</source>
+        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Endung</source>
         <translation>占位符：{name} = 原件名称，{n} = 序号，{format} = 扩展名</translation>
     </message>
     <message>
@@ -1278,7 +1278,7 @@
         <translation>导出</translation>
     </message>
     <message>
-        <source>Exportiere …</source>
+        <source>Wird exportiert …</source>
         <translation>正在导出…</translation>
     </message>
     <message>
@@ -1286,7 +1286,7 @@
         <translation>取消</translation>
     </message>
     <message>
-        <source>Exportiere %1 von %2: %3</source>
+        <source>Bild %1 von %2 wird exportiert: %3</source>
         <translation>正在导出第 %1 张，共 %2 张：%3</translation>
     </message>
 </context>
@@ -1389,13 +1389,13 @@
         <translation>没有图像</translation>
     </message>
     <message>
-        <source>Orte werden gelesen … %1 von %2</source>
+        <source>Aufnahmeorte werden gelesen … %1 von %2</source>
         <extracomment>folder map (F-INFO-08) while the GPS positions are read: done / all images</extracomment>
         <translation>正在读取位置… %1 / %2</translation>
     </message>
     <message numerus="yes">
-        <source>%1 von %n Bildern mit Ort</source>
-        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Ort&quot; (%1 images with a position, %n all)</extracomment>
+        <source>%1 von %n Bildern mit Aufnahmeort</source>
+        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Aufnahmeort&quot; (%1 images with a position, %n all)</extracomment>
         <translation>
             <numerusform>%n 张图像中有 %1 张带位置</numerusform>
         </translation>
@@ -1404,7 +1404,7 @@
 <context>
     <name>lf::FolderMapPanel</name>
     <message>
-        <source>Auf diesem System ist keine Kartendarstellung verfügbar.</source>
+        <source>Karten sind auf diesem System nicht verfügbar.</source>
         <translation>此系统上无法显示地图。</translation>
     </message>
     <message>
@@ -1416,14 +1416,14 @@
         <translation>没有图像包含拍摄位置（GPS）。</translation>
     </message>
     <message>
-        <source>Karte schließen</source>
+        <source>Ordnerkarte schließen</source>
         <translation>关闭地图</translation>
     </message>
 </context>
 <context>
     <name>lf::FolderMapView</name>
     <message>
-        <source>Karten sind unter Windows nicht verfügbar. Fotos mit Ortsangabe in diesem Ordner: %1</source>
+        <source>Karten sind unter Windows nicht verfügbar. Bilder mit Aufnahmeort in diesem Ordner: %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1494,7 +1494,7 @@
         <translation>%1 毫米</translation>
     </message>
     <message>
-        <source> (KB: %1 mm)</source>
+        <source> (Kleinbild: %1 mm)</source>
         <extracomment>appended to the focal length: the 35 mm equivalent (&quot;KB&quot; = Kleinbild), e.g. &quot; (35-mm-equiv.: 52 mm)&quot;</extracomment>
         <translation> (35 毫米等效焦距：%1 毫米)</translation>
     </message>
@@ -1631,7 +1631,7 @@
 <context>
     <name>lf::ImageExport</name>
     <message>
-        <source>„%1“ gibt es schon.</source>
+        <source>„%1“ existiert bereits.</source>
         <translation>“%1”已存在。</translation>
     </message>
     <message>
@@ -1671,7 +1671,7 @@
         <translation>未知的目标格式。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher zum Exportieren.</source>
+        <source>Nicht genug Arbeitsspeicher zum Exportieren.</source>
         <translation>内存不足，无法导出。</translation>
     </message>
     <message>
@@ -1694,11 +1694,11 @@
         <translation>图像不包含像素。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
         <translation>内存不足，无法载入图像（%1 × %2 像素）。</translation>
     </message>
     <message>
-        <source>Bildpuffer konnte nicht angelegt werden.</source>
+        <source>Der Bildpuffer konnte nicht angelegt werden.</source>
         <translation>无法创建图像缓冲区。</translation>
     </message>
     <message>
@@ -1781,7 +1781,7 @@
         <translation>正在载入地图…</translation>
     </message>
     <message>
-        <source>Karte anzeigen</source>
+        <source>Karte einblenden</source>
         <translation>显示地图</translation>
     </message>
     <message>
@@ -1793,7 +1793,7 @@
         <translation>隐藏地图</translation>
     </message>
     <message>
-        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)</source>
+        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte einblenden“)</source>
         <translation>不再加载地图片段（直到再次点击“显示地图”）</translation>
     </message>
     <message>
@@ -2028,7 +2028,7 @@
         <translation>填充宽度</translation>
     </message>
     <message>
-        <source>Einpassen ↔ 100 % am Cursor</source>
+        <source>Einpassen ↔ 100 % am Mauszeiger</source>
         <translation>缩放以适合 ↔ 在指针处 100%</translation>
     </message>
     <message>
@@ -2076,11 +2076,11 @@
         <translation>全屏幕</translation>
     </message>
     <message>
-        <source>Vollbild bzw. Modus verlassen</source>
+        <source>Vollbild oder Modus beenden</source>
         <translation>全屏幕或退出模式</translation>
     </message>
     <message>
-        <source>Modus verlassen, sonst Fenster schließen</source>
+        <source>Modus beenden, sonst Fenster schließen</source>
         <translation>退出模式，否则关闭窗口</translation>
     </message>
     <message>
@@ -2124,7 +2124,7 @@
         <translation>垂直翻转</translation>
     </message>
     <message>
-        <source>Drehung speichern</source>
+        <source>Drehung sichern</source>
         <translation>存储旋转</translation>
     </message>
     <message>
@@ -2132,7 +2132,7 @@
         <translation>移到废纸篓</translation>
     </message>
     <message>
-        <source>Rückgängig</source>
+        <source>Widerrufen</source>
         <translation>撤销</translation>
     </message>
     <message>
@@ -2224,15 +2224,15 @@
         <translation>5 星</translation>
     </message>
     <message>
-        <source>Behalten (Pick)</source>
+        <source>Markieren</source>
         <translation>保留 (Pick)</translation>
     </message>
     <message>
-        <source>Verwerfen (Reject)</source>
+        <source>Ablehnen</source>
         <translation>舍弃 (Reject)</translation>
     </message>
     <message>
-        <source>Markierung zurücksetzen</source>
+        <source>Markierung aufheben</source>
         <translation>重置标记</translation>
     </message>
     <message>
@@ -2256,7 +2256,7 @@
         <translation>随机顺序</translation>
     </message>
     <message>
-        <source>Nach Dateiname filtern</source>
+        <source>Nach Dateinamen filtern</source>
         <translation>按文件名过滤</translation>
     </message>
     <message>
@@ -2300,7 +2300,7 @@
         <translation>包含子文件夹</translation>
     </message>
     <message>
-        <source>RAW/JPEG des Paares zeigen</source>
+        <source>RAW/JPEG des Paares anzeigen</source>
         <translation>显示配对的 RAW/JPEG</translation>
     </message>
     <message>
@@ -2364,7 +2364,7 @@
         <translation>向下滚动显示下一张图像，向上滚动显示上一张图像。</translation>
     </message>
     <message>
-        <source>Zoomen (am Cursor)</source>
+        <source>Zoomen (am Mauszeiger)</source>
         <translation>缩放（在指针处）</translation>
     </message>
     <message>
@@ -2372,7 +2372,7 @@
         <translation>向上滚动放大，向下滚动缩小，以鼠标指针为中心。</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen (sonst Bild wechseln)</source>
+        <source>Ausschnitt verschieben (sonst Bild wechseln)</source>
         <translation>滚动可见区域（否则切换图像）</translation>
     </message>
     <message>
@@ -2444,7 +2444,7 @@
         <translation>对于多页文件翻页，否则切换图像。</translation>
     </message>
     <message>
-        <source>Ausschnitt seitenweise scrollen (sonst Bild)</source>
+        <source>Ausschnitt seitenweise verschieben (sonst Bild)</source>
         <translation>按页滚动可见区域（否则切换图像）</translation>
     </message>
     <message>
@@ -2520,7 +2520,7 @@
         <translation>箭头键切换图像；按住 ⌥ 时平移可见区域。</translation>
     </message>
     <message>
-        <source>Erst bis zum Rand scrollen, dann Bild wechseln</source>
+        <source>Erst bis zum Rand verschieben, dann Bild wechseln</source>
         <translation>先滚动到边缘，再切换图像</translation>
     </message>
     <message>
@@ -2528,7 +2528,7 @@
         <translation>平移可见区域；到达图像边缘时切换图像。</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen (Bild mit ⌥←/⌥→)</source>
+        <source>Ausschnitt verschieben (Bild mit ⌥←/⌥→)</source>
         <translation>滚动可见区域（⌥←/⌥→ 切换图像）</translation>
     </message>
     <message>
@@ -2540,7 +2540,7 @@
         <translation>↑ / ↓</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen, sonst vorheriges/nächstes Bild</source>
+        <source>Ausschnitt verschieben, sonst vorheriges/nächstes Bild</source>
         <translation>滚动可见区域，否则上一张/下一张图像</translation>
     </message>
     <message>
@@ -2548,7 +2548,7 @@
         <translation>放大时平移可见区域，否则切换图像。</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen (wenn gezoomt), sonst nichts</source>
+        <source>Ausschnitt verschieben (wenn gezoomt), sonst nichts</source>
         <translation>滚动可见区域（放大时），否则无操作</translation>
     </message>
     <message>
@@ -2648,7 +2648,7 @@
         <translation>触控板轻扫（双指，水平）</translation>
     </message>
     <message>
-        <source>Bild wechseln (gezoomt: scrollen)</source>
+        <source>Bild wechseln (gezoomt: Ausschnitt verschieben)</source>
         <translation>切换图像（放大时：滚动）</translation>
     </message>
     <message>
@@ -2656,7 +2656,7 @@
         <translation>轻扫切换图像；放大时平移可见区域。</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen</source>
+        <source>Nur Ausschnitt verschieben</source>
         <translation>滚动可见区域</translation>
     </message>
     <message>
@@ -2696,7 +2696,7 @@
         <translation>Esc</translation>
     </message>
     <message>
-        <source>Vollbild bzw. Modus verlassen, sonst nichts</source>
+        <source>Vollbild oder Modus beenden, sonst nichts</source>
         <translation>退出全屏幕或模式，否则无操作</translation>
     </message>
     <message>
@@ -2704,7 +2704,7 @@
         <translation>Esc 退出全屏幕、幻灯片放映或其他模式，否则不执行任何操作。</translation>
     </message>
     <message>
-        <source>Vollbild bzw. Modus verlassen, sonst Fenster schließen</source>
+        <source>Vollbild oder Modus beenden, sonst Fenster schließen</source>
         <translation>退出全屏幕或模式，否则关闭窗口</translation>
     </message>
     <message>
@@ -2756,7 +2756,7 @@
         <translation>始终启用</translation>
     </message>
     <message>
-        <source>Ziffern vergeben immer Sterne; P/X/U markieren. Zoom-Ziffern sind aus.</source>
+        <source>Ziffern vergeben immer Sterne, P/X/U setzen Markierungen. Die Zoom-Ziffern sind dann aus.</source>
         <translation>数字键始终用于评星；P/X/U 用于标记。缩放数字键停用。</translation>
     </message>
 </context>
@@ -2767,11 +2767,11 @@
         <translation>第三方许可</translation>
     </message>
     <message>
-        <source>Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im Programmpaket unter Contents/Resources/licenses.</source>
+        <source>Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im App-Paket unter Contents/Resources/licenses.</source>
         <translation>Lumaflip 包含以下组件。许可文本也位于 App 包中的 Contents/Resources/licenses。</translation>
     </message>
     <message>
-        <source>Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das Programmpaket gelegt.</source>
+        <source>Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das App-Paket gelegt.</source>
         <translation>开发者构建版本：许可文本仅在打包时（tools/package.sh）放入 App 包中。</translation>
     </message>
     <message>
@@ -2841,11 +2841,11 @@
         <translation>无法写入文件（文件夹为只读？）。</translation>
     </message>
     <message>
-        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte die Drehung erneut speichern.</source>
+        <source>Die Datei wurde inzwischen verändert – nichts gesichert. Sichere die Drehung erneut.</source>
         <translation>文件已在此期间被更改，未存储任何内容。请重新存储旋转。</translation>
     </message>
     <message>
-        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
+        <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
         <translation>文件包含其他图像（例如 HDR 增益图或第二张立体图像），在无损重排 JPEG 数据时会丢失。</translation>
     </message>
     <message>
@@ -2853,15 +2853,15 @@
         <translation>文件已不存在。</translation>
     </message>
     <message>
-        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <source>Das Dateiformat wird zum Sichern nicht erkannt.</source>
         <translation>无法识别要存储的文件格式。</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; zum dauerhaften Drehen bitte den RAW-Entwickler benutzen.</source>
+        <source>RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; verwende zum dauerhaften Drehen deinen RAW-Konverter.</source>
         <translation>RAW 文件永远不会被更改。旋转仅作用于显示；如需永久旋转，请使用 RAW 处理软件。</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht gedreht gespeichert werden.</source>
+        <source>Animierte oder mehrseitige Dateien können nicht gedreht gesichert werden.</source>
         <translation>动画文件或多页文件无法以旋转后的状态存储。</translation>
     </message>
     <message>
@@ -2873,11 +2873,11 @@
         <translation>因此仅设定了 EXIF 方向。</translation>
     </message>
     <message>
-        <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfrei drehen geht nur, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
+        <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfreies Drehen ist nur möglich, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
         <translation>图像的宽度或高度不是 JPEG 块大小的整数倍。只有裁掉一条窄边（最多 15 像素）才能无损旋转。也可以仅设定 EXIF 方向。</translation>
     </message>
     <message>
-        <source>Die Drehung kann nicht gespeichert werden.</source>
+        <source>Die Drehung kann nicht gesichert werden.</source>
         <translation>无法存储旋转。</translation>
     </message>
     <message>
@@ -2897,11 +2897,11 @@
         <translation>此图像无法进行无损旋转。</translation>
     </message>
     <message>
-        <source>Die Ausrichtung ließ sich nicht ohne Neukodieren speichern.</source>
+        <source>Die Ausrichtung ließ sich nicht ohne Neukodieren sichern.</source>
         <translation>无法在不重新编码的情况下存储方向。</translation>
     </message>
     <message>
-        <source>Die Drehung konnte nicht gespeichert werden.</source>
+        <source>Die Drehung konnte nicht gesichert werden.</source>
         <translation>无法存储旋转。</translation>
     </message>
     <message>
@@ -2909,47 +2909,47 @@
         <translation>无法替换文件。</translation>
     </message>
     <message>
-        <source>Datei wurde inzwischen verändert – Rückgängig nicht möglich</source>
+        <source>Die Datei wurde inzwischen verändert – Widerrufen nicht möglich</source>
         <translation>文件已在此期间被更改，无法撤销</translation>
     </message>
     <message>
-        <source>Datei wurde inzwischen verändert – Wiederholen nicht möglich</source>
+        <source>Die Datei wurde inzwischen verändert – Wiederholen nicht möglich</source>
         <translation>文件已在此期间被更改，无法重做</translation>
     </message>
     <message>
-        <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Rückgängig/Wiederholen ist dafür nicht mehr möglich.</source>
+        <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Widerrufen/Wiederholen ist dafür nicht mehr möglich.</source>
         <translation>为节省空间，此步骤的备份副本已被删除，因此无法再撤销/重做此步骤。</translation>
     </message>
     <message>
-        <source>Es gibt nichts rückgängig zu machen.</source>
+        <source>Es gibt nichts zu widerrufen.</source>
         <translation>没有可撤销的操作。</translation>
     </message>
     <message>
-        <source>Kein Platz für die Sicherungskopie – nichts gespeichert.</source>
+        <source>Kein Speicherplatz für die Sicherungskopie – nichts gesichert.</source>
         <translation>没有足够空间存储备份副本，未存储任何内容。</translation>
     </message>
     <message>
-        <source>Keine Drehung zu speichern</source>
+        <source>Keine Drehung zu sichern</source>
         <translation>没有要存储的旋转</translation>
     </message>
     <message>
-        <source>Drehung gespeichert (EXIF-Ausrichtung)</source>
+        <source>Drehung gesichert (EXIF-Ausrichtung)</source>
         <translation>已存储旋转（EXIF 方向）</translation>
     </message>
     <message>
-        <source>Drehung verlustfrei gespeichert</source>
+        <source>Drehung verlustfrei gesichert</source>
         <translation>已无损存储旋转</translation>
     </message>
     <message>
-        <source>Drehung verlustfrei gespeichert (Rand beschnitten)</source>
+        <source>Drehung verlustfrei gesichert (Rand beschnitten)</source>
         <translation>已无损存储旋转（已裁切边缘）</translation>
     </message>
     <message>
-        <source>Drehung gespeichert (verlustfrei neu kodiert)</source>
+        <source>Drehung gesichert (verlustfrei neu kodiert)</source>
         <translation>已存储旋转（无损重新编码）</translation>
     </message>
     <message>
-        <source>Drehung gespeichert (neu kodiert)</source>
+        <source>Drehung gesichert (neu kodiert)</source>
         <translation>已存储旋转（重新编码）</translation>
     </message>
     <message>
@@ -2961,7 +2961,7 @@
         <translation>无法解码图像。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher zum Drehen.</source>
+        <source>Nicht genug Arbeitsspeicher zum Drehen.</source>
         <translation>内存不足，无法旋转。</translation>
     </message>
     <message>
@@ -2969,7 +2969,7 @@
         <translation>无法写入此格式。</translation>
     </message>
     <message>
-        <source>Das Bild lässt sich in diesem Format nicht exakt neu speichern.</source>
+        <source>Das Bild lässt sich in diesem Format nicht exakt neu sichern.</source>
         <translation>无法以此格式精确地重新存储图像。</translation>
     </message>
     <message>
@@ -2997,7 +2997,7 @@
         <translation>无法替换“%1”：%2</translation>
     </message>
     <message>
-        <source>Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.</source>
+        <source>Die Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.</source>
         <translation>无法创建用于“撤销”的备份副本。</translation>
     </message>
     <message>
@@ -3017,7 +3017,7 @@
         <translation>分割遮罩</translation>
     </message>
     <message>
-        <source>Die Datei enthält Zusatzbilder (%1), die beim Speichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gespeichert und gilt weiter nur in der Anzeige.</source>
+        <source>Die Datei enthält Zusatzbilder (%1), die beim Sichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gesichert und gilt weiter nur in der Anzeige.</source>
         <translation>文件包含附加图像（%1），存储方向时会丢失。因此未存储旋转，旋转仍仅作用于显示。</translation>
     </message>
     <message>
@@ -3045,7 +3045,7 @@
         <translation>无法无损写入方向（%1）。</translation>
     </message>
     <message>
-        <source>Das Bild lässt sich nicht exakt neu speichern.</source>
+        <source>Das Bild lässt sich nicht exakt neu sichern.</source>
         <translation>无法精确地重新存储图像。</translation>
     </message>
     <message>
@@ -3053,7 +3053,7 @@
         <translation>新文件缺失。</translation>
     </message>
     <message>
-        <source>Nicht genug Platz, um „%1“ sicher zu überschreiben.</source>
+        <source>Nicht genug Speicherplatz, um „%1“ sicher zu überschreiben.</source>
         <translation>没有足够空间安全覆盖“%1”。</translation>
     </message>
     <message>
@@ -3080,7 +3080,7 @@
         <translation>未传入任何文件。</translation>
     </message>
     <message>
-        <source>Der Bildschirm ist nicht mehr da.</source>
+        <source>Der Bildschirm ist nicht mehr angeschlossen.</source>
         <translation>显示器已断开。</translation>
     </message>
     <message>
@@ -3092,7 +3092,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Windows hat das Bild nicht als Hintergrund übernommen.</source>
+        <source>Windows hat das Bild nicht als Desktophintergrund übernommen.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3119,7 +3119,7 @@
         <translation>打开文件夹…</translation>
     </message>
     <message>
-        <source>Zuletzt geöffnet</source>
+        <source>Benutzte Dokumente</source>
         <translation>打开最近使用</translation>
     </message>
     <message>
@@ -3139,7 +3139,7 @@
         <translation>重新命名…</translation>
     </message>
     <message>
-        <source>In Standard-Editor öffnen</source>
+        <source>Im Editor öffnen</source>
         <translation>在默认编辑器中打开</translation>
     </message>
     <message>
@@ -3203,7 +3203,7 @@
         <translation>缩放以适合</translation>
     </message>
     <message>
-        <source>Einpassen inkl. Vergrößern</source>
+        <source>Einpassen (auch vergrößern)</source>
         <translation>缩放以适合（允许放大）</translation>
     </message>
     <message>
@@ -3291,7 +3291,7 @@
         <translation>排序方式</translation>
     </message>
     <message>
-        <source>Wie Finder</source>
+        <source>Wie im Finder</source>
         <translation>与访达相同</translation>
     </message>
     <message>
@@ -3400,11 +3400,11 @@
         <translation>裁剪…</translation>
     </message>
     <message>
-        <source>Overlays</source>
+        <source>Einblendungen</source>
         <translation>叠加层</translation>
     </message>
     <message>
-        <source>Über-/Unterbelichtung</source>
+        <source>Über-/Unterbelichtungswarnung</source>
         <translation>过曝/欠曝</translation>
     </message>
     <message>
@@ -3452,7 +3452,7 @@
         <translation>上一页</translation>
     </message>
     <message>
-        <source>Drehung speichern</source>
+        <source>Drehung sichern</source>
         <translation>存储旋转</translation>
     </message>
     <message>
@@ -3480,7 +3480,7 @@
         <translation>全部图像</translation>
     </message>
     <message>
-        <source>Nur Picks</source>
+        <source>Nur markierte</source>
         <translation>仅保留的</translation>
     </message>
     <message>
@@ -3488,7 +3488,7 @@
         <translation>仅未评分的</translation>
     </message>
     <message>
-        <source>Nur verworfene</source>
+        <source>Nur abgelehnte</source>
         <translation>仅舍弃的</translation>
     </message>
     <message>
@@ -3516,11 +3516,11 @@
         <translation>过滤</translation>
     </message>
     <message>
-        <source>Alle verworfenen in den Papierkorb …</source>
+        <source>Alle abgelehnten in den Papierkorb legen …</source>
         <translation>将所有舍弃的移到废纸篓…</translation>
     </message>
     <message>
-        <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
+        <source>Alle abgelehnten nach „_Rejected“ verschieben …</source>
         <translation>将所有舍弃的移到“_Rejected”…</translation>
     </message>
     <message>
@@ -3560,7 +3560,7 @@
         <translation>包含子文件夹</translation>
     </message>
     <message>
-        <source>Karte</source>
+        <source>Ordnerkarte</source>
         <translation>地图</translation>
     </message>
     <message>
@@ -3576,7 +3576,7 @@
         <translation>前往图像…</translation>
     </message>
     <message>
-        <source>Nach Dateiname filtern …</source>
+        <source>Nach Dateinamen filtern …</source>
         <translation>按文件名过滤…</translation>
     </message>
     <message>
@@ -3596,7 +3596,7 @@
         <translation>链接窗口…</translation>
     </message>
     <message>
-        <source>Entkoppeln</source>
+        <source>Fenster entkoppeln</source>
         <translation>取消链接窗口</translation>
     </message>
     <message>
@@ -3685,11 +3685,11 @@
 <context>
     <name>lf::MenuExtras</name>
     <message>
-        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <source>Einzelne PDF-Seiten können nicht an andere Apps übergeben werden.</source>
         <translation>单独的 PDF 页面无法传递给其他应用。</translation>
     </message>
     <message>
-        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <source>Das Bild wird aus dem Archiv entpackt – versuche es gleich noch einmal.</source>
         <translation>正在从归档中解压图像 – 请稍后再试。</translation>
     </message>
     <message>
@@ -3721,15 +3721,15 @@
         <translation>层叠</translation>
     </message>
     <message>
-        <source>Vorherigen Tab zeigen</source>
+        <source>Vorherigen Tab anzeigen</source>
         <translation>显示上一个标签页</translation>
     </message>
     <message>
-        <source>Nächsten Tab zeigen</source>
+        <source>Nächsten Tab anzeigen</source>
         <translation>显示下一个标签页</translation>
     </message>
     <message>
-        <source>Tab in neues Fenster bewegen</source>
+        <source>Tab in ein neues Fenster bewegen</source>
         <translation>将标签页移到新窗口</translation>
     </message>
     <message>
@@ -3853,12 +3853,12 @@
         <translation>拍摄日期</translation>
     </message>
     <message>
-        <source>Breite</source>
+        <source>Breitengrad</source>
         <extracomment>GPS latitude</extracomment>
         <translation>纬度</translation>
     </message>
     <message>
-        <source>Länge</source>
+        <source>Längengrad</source>
         <extracomment>GPS longitude</extracomment>
         <translation>经度</translation>
     </message>
@@ -3964,7 +3964,7 @@
         <translation>取消</translation>
     </message>
     <message>
-        <source>Bitte eine Bildnummer zwischen 1 und %1 eingeben</source>
+        <source>Gib eine Bildnummer zwischen 1 und %1 ein.</source>
         <translation>请输入 1 到 %1 之间的图像编号</translation>
     </message>
     <message>
@@ -3987,7 +3987,7 @@
 <context>
     <name>lf::OpenWithService</name>
     <message>
-        <source>Kein Programm zum Bearbeiten gefunden. Wähle eines unter Einstellungen → Allgemein → Editor.</source>
+        <source>Keine App zum Bearbeiten gefunden. Wähle eine unter Einstellungen → Allgemein → Editor.</source>
         <translation>未找到用于编辑的 App。请在“设置”→“通用”→“编辑器”中选择一个。</translation>
     </message>
     <message>
@@ -3995,11 +3995,11 @@
         <translation>程序 (*.exe)</translation>
     </message>
     <message>
-        <source>Programme (*.desktop);;Alle Dateien (*)</source>
+        <source>Apps (*.desktop);;Alle Dateien (*)</source>
         <translation>程序 (*.desktop);;所有文件 (*)</translation>
     </message>
     <message>
-        <source>„%1“ ist kein Programm.</source>
+        <source>„%1“ ist keine App.</source>
         <translation>“%1”不是程序。</translation>
     </message>
     <message>
@@ -4011,15 +4011,15 @@
         <translation>其他…</translation>
     </message>
     <message>
-        <source>Programm wählen</source>
+        <source>App wählen</source>
         <translation>选择 App</translation>
     </message>
     <message>
-        <source>Programme (*.app)</source>
+        <source>Apps (*.app)</source>
         <translation>App (*.app)</translation>
     </message>
     <message>
-        <source>Programme werden gesucht …</source>
+        <source>Apps werden gesucht …</source>
         <translation>正在搜索 App…</translation>
     </message>
     <message>
@@ -4027,7 +4027,7 @@
         <translation>%1（默认）</translation>
     </message>
     <message>
-        <source>Keine passenden Programme</source>
+        <source>Keine passenden Apps</source>
         <translation>没有合适的 App</translation>
     </message>
 </context>
@@ -4038,7 +4038,7 @@
         <translation>没有可在网格视图中显示的图像</translation>
     </message>
     <message>
-        <source>Zum Vergleichen mindestens zwei Bilder wählen</source>
+        <source>Wähle zum Vergleichen mindestens zwei Bilder aus</source>
         <translation>请至少选择两张图像进行比较</translation>
     </message>
     <message>
@@ -4115,7 +4115,7 @@
         <translation>文件不存在。</translation>
     </message>
     <message>
-        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <source>Das PDF-Dokument ist passwortgeschützt.</source>
         <translation>PDF 文稿受密码保护。</translation>
     </message>
     <message>
@@ -4123,7 +4123,7 @@
         <translation>此页为空。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für die Seite.</source>
+        <source>Nicht genug Arbeitsspeicher für die Seite.</source>
         <translation>内存不足，无法显示此页。</translation>
     </message>
 </context>
@@ -4174,7 +4174,7 @@
         <translation>语言：</translation>
     </message>
     <message>
-        <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbild aktivieren“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
+        <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbildmodus“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
         <translation>立即生效。macOS 的菜单和窗口（“进入全屏幕”、“服务”、“打开”、权限请求）在重新启动后跟随更改。</translation>
     </message>
     <message>
@@ -4206,7 +4206,7 @@
         <translation>退出时所有已打开窗口的文件夹、图像、缩放和位置。</translation>
     </message>
     <message>
-        <source>Vor dem Löschen nachfragen</source>
+        <source>Vor dem Bewegen in den Papierkorb nachfragen</source>
         <translation>删除前询问</translation>
     </message>
     <message>
@@ -4218,11 +4218,11 @@
         <translation>编辑器：</translation>
     </message>
     <message>
-        <source>Für „In Standard-Editor öffnen“ (Taste E).</source>
+        <source>Für „Im Editor öffnen“ (Taste E).</source>
         <translation>用于“在默认编辑器中打开”（E 键）。</translation>
     </message>
     <message>
-        <source>Drehung speichern:</source>
+        <source>Drehung sichern:</source>
         <translation>存储旋转：</translation>
     </message>
     <message>
@@ -4234,7 +4234,7 @@
         <translation>无损旋转 JPEG (DCT)</translation>
     </message>
     <message>
-        <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Programme ohne EXIF-Unterstützung das Bild richtig zeigen. RAW-Dateien werden nie verändert; ⌘Z macht das Speichern rückgängig.</source>
+        <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Apps ohne EXIF-Unterstützung das Bild richtig anzeigen. RAW-Dateien werden nie verändert; ⌘Z widerruft das Sichern.</source>
         <translation>两种方式都不会更改图像像素。“EXIF 方向”只更改一个标记（JPEG、HEIC、TIFF、PNG）；“无损旋转”会重新排列 JPEG 块，使不支持 EXIF 的 App 也能正确显示图像。RAW 文件永远不会被更改；⌘Z 可撤销存储。</translation>
     </message>
     <message>
@@ -4258,7 +4258,7 @@
         <translation>移动鼠标时显示</translation>
     </message>
     <message>
-        <source>Immer zeigen</source>
+        <source>Immer einblenden</source>
         <translation>始终显示</translation>
     </message>
     <message>
@@ -4278,7 +4278,7 @@
         <translation>新窗口显示：</translation>
     </message>
     <message>
-        <source>Statuszeile</source>
+        <source>Statusleiste</source>
         <translation>状态栏</translation>
     </message>
     <message>
@@ -4326,7 +4326,7 @@
         <translation>浅色</translation>
     </message>
     <message>
-        <source>Wie Systemdarstellung</source>
+        <source>Wie System</source>
         <translation>跟随系统外观</translation>
     </message>
     <message>
@@ -4358,7 +4358,7 @@
         <translation>缩放以适合（不放大）</translation>
     </message>
     <message>
-        <source>Einpassen inkl. Vergrößern</source>
+        <source>Einpassen (auch vergrößern)</source>
         <translation>缩放以适合（允许放大）</translation>
     </message>
     <message>
@@ -4390,7 +4390,7 @@
         <translation>平滑</translation>
     </message>
     <message>
-        <source>Pixel scharf</source>
+        <source>Scharfe Pixel</source>
         <translation>像素清晰</translation>
     </message>
     <message>
@@ -4498,11 +4498,11 @@
         <translation>Mac 标准</translation>
     </message>
     <message>
-        <source>Windows-Viewer-Gewohnheiten</source>
+        <source>Wie Windows-Bildbetrachter</source>
         <translation>Windows 看图软件习惯</translation>
     </message>
     <message>
-        <source>Fotograf:in / Lightroom</source>
+        <source>Fotografie / Lightroom</source>
         <translation>摄影师 / Lightroom</translation>
     </message>
     <message>
@@ -4510,7 +4510,7 @@
         <translation>鼠标、触控板和按键</translation>
     </message>
     <message>
-        <source>Mausrad-Feinheiten</source>
+        <source>Mausrad-Feineinstellungen</source>
         <translation>鼠标滚轮细节</translation>
     </message>
     <message>
@@ -4554,7 +4554,7 @@
         <translation>键盘快捷键</translation>
     </message>
     <message>
-        <source>Feld anklicken und neue Taste drücken. Bis zu drei Kürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
+        <source>Klicke auf ein Feld und drücke die neue Taste. Bis zu drei Tastenkürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
         <translation>点按栏位，然后按下新的按键。每个操作最多三个快捷键。用于评分的数字键和 P/X/U 仅在筛选模式下有效。</translation>
     </message>
     <message>
@@ -4574,7 +4574,7 @@
         <translation>–</translation>
     </message>
     <message>
-        <source>Standardkürzel wiederherstellen</source>
+        <source>Standard-Tastenkürzel wiederherstellen</source>
         <translation>恢复默认快捷键</translation>
     </message>
     <message>
@@ -4586,7 +4586,7 @@
         <translation>冲突：%1</translation>
     </message>
     <message numerus="yes">
-        <source>%n Aktion(en) mit doppelt belegten Tasten – bitte eine davon ändern.</source>
+        <source>%n Aktion(en) mit doppelt belegten Tasten – ändere eine davon.</source>
         <translation>
             <numerusform>%n 个操作的按键被重复分配，请更改其中一个。</numerusform>
         </translation>
@@ -4712,7 +4712,7 @@
         <translation>快速归档目标 %1</translation>
     </message>
     <message>
-        <source>Bewertungen speichern</source>
+        <source>Speicherort für Bewertungen</source>
         <translation>评分保存位置</translation>
     </message>
     <message>
@@ -4720,7 +4720,7 @@
         <translation>图像旁的 XMP 附属文件（图像.xmp）</translation>
     </message>
     <message>
-        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
+        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Abgelehnt“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
         <translation>与 Lightroom、Capture One 和 darktable 兼容：星级存于 xmp:Rating，“舍弃”记为 -1。文件的现有内容会保留。</translation>
     </message>
     <message>
@@ -4740,11 +4740,11 @@
         <translation>星形符号：</translation>
     </message>
     <message>
-        <source>Tag für Pick:</source>
+        <source>Tag für „Markiert“:</source>
         <translation>保留的标签：</translation>
     </message>
     <message>
-        <source>Tag für Verworfen:</source>
+        <source>Tag für „Abgelehnt“:</source>
         <translation>舍弃的标签：</translation>
     </message>
     <message>
@@ -4764,7 +4764,7 @@
         <translation>在筛选模式下锁定缩放</translation>
     </message>
     <message>
-        <source>Tastenhilfe im Aussortiermodus zeigen</source>
+        <source>Tastenhilfe im Aussortiermodus einblenden</source>
         <translation>在筛选模式下显示按键帮助</translation>
     </message>
     <message>
@@ -4776,7 +4776,7 @@
         <translation>快速归档</translation>
     </message>
     <message>
-        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z macht es rückgängig.</source>
+        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z widerruft es.</source>
         <translation>M 后按 1–9 将图像移到目标文件夹，C 后按 1–9 则拷贝。M M 或 C C 重复上一个目标。⌘Z 可撤销。</translation>
     </message>
     <message>
@@ -4880,7 +4880,7 @@
         <translation>预载图像：</translation>
     </message>
     <message>
-        <source>Bilder zurück behalten:</source>
+        <source>Vorherige Bilder behalten:</source>
         <translation>保留之前的图像：</translation>
     </message>
     <message>
@@ -4892,7 +4892,7 @@
         <translation>允许实况文本和提取主体（⇧⌘L）</translation>
     </message>
     <message>
-        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Internetverbindung.</source>
         <translation>仅当你为窗口打开实况文本时才会分析图像——在此 Mac 上，不联网。</translation>
     </message>
     <message>
@@ -4900,7 +4900,7 @@
         <translation>自定操作</translation>
     </message>
     <message>
-        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Kurzbefehle-App) erhält das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
         <translation>Shell 命令或快捷指令会收到当前图像作为参数。菜单：文件 → 自定操作。</translation>
     </message>
     <message>
@@ -4912,7 +4912,7 @@
         <translation> s</translation>
     </message>
     <message>
-        <source>Einstellungen sichern</source>
+        <source>Backup der Einstellungen</source>
         <translation>备份设置</translation>
     </message>
     <message>
@@ -4980,12 +4980,8 @@
         <translation>系统中该图像类型的默认 App（不会是 Lumaflip）</translation>
     </message>
     <message>
-        <source>Lumaflip kann nicht sein eigener Editor sein. Bitte wähle ein anderes Programm.</source>
+        <source>Lumaflip kann nicht sein eigener Editor sein. Wähle eine andere App.</source>
         <translation>Lumaflip 不能作为自己的编辑器。请选择其他 App。</translation>
-    </message>
-    <message>
-        <source>Auswählen …</source>
-        <translation>选择…</translation>
     </message>
     <message>
         <source>Editor wählen</source>
@@ -5036,7 +5032,7 @@
         <translation>图像尺寸 %1 × %2 无效或过大。</translation>
     </message>
     <message>
-        <source>Die Farbtiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
+        <source>Die Bittiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
         <translation>不支持此 PSB 文件的颜色深度或颜色模式。</translation>
     </message>
     <message>
@@ -5044,7 +5040,7 @@
         <translation>不支持此 PSB 文件的压缩方式。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>内存不足，无法载入图像。</translation>
     </message>
     <message>
@@ -5087,7 +5083,7 @@
         <translation>SVG 文件无效或已损坏。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>内存不足，无法载入图像。</translation>
     </message>
 </context>
@@ -5120,7 +5116,7 @@
         <translation>拷贝到…（1–9，C = 同上次）</translation>
     </message>
     <message>
-        <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
+        <source>Noch kein Ziel verwendet – wähle zuerst eine Ziffer 1–9.</source>
         <translation>尚未使用过目标，请先选择数字 1–9。</translation>
     </message>
     <message>
@@ -5164,11 +5160,11 @@
         <translation>名称冲突</translation>
     </message>
     <message>
-        <source>„%1“ gibt es in „%2“ schon.</source>
+        <source>„%1“ existiert bereits in „%2“.</source>
         <translation>“%2”中已存在“%1”。</translation>
     </message>
     <message>
-        <source>Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.</source>
+        <source>„Ersetzen“ legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z widerruft alles.</source>
         <translation>“替换”会将现有文件移到废纸篓，“保留两者”会为新文件命名为类似“%1”的名称。⌘Z 可撤销全部操作。</translation>
     </message>
     <message>
@@ -5195,7 +5191,7 @@
         <translation>全部</translation>
     </message>
     <message>
-        <source>nur Picks</source>
+        <source>nur markierte</source>
         <translation>仅保留的</translation>
     </message>
     <message>
@@ -5207,15 +5203,15 @@
         <translation>仅未评分的</translation>
     </message>
     <message>
-        <source>nur verworfene</source>
+        <source>nur abgelehnte</source>
         <translation>仅舍弃的</translation>
     </message>
     <message>
-        <source>Pick</source>
+        <source>Markiert</source>
         <translation>保留</translation>
     </message>
     <message>
-        <source>Verworfen</source>
+        <source>Abgelehnt</source>
         <translation>已舍弃</translation>
     </message>
 </context>
@@ -5270,7 +5266,7 @@
         <translation>无法在不重新编码的情况下将评分写入图像。</translation>
     </message>
     <message>
-        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.</source>
+        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gesichert.</source>
         <translation>“%1”在此期间已被更改，评分未保存。</translation>
     </message>
     <message>
@@ -5360,31 +5356,31 @@
         <translation>新文件名</translation>
     </message>
     <message>
-        <source>Soll die Endung „.%1“ entfernt werden?</source>
+        <source>Möchtest du die Endung „.%1“ wirklich entfernen?</source>
         <translation>要移除扩展名“.%1”吗？</translation>
     </message>
     <message>
-        <source>Soll die Endung „.%1“ hinzugefügt werden?</source>
+        <source>Möchtest du die Endung „.%1“ wirklich hinzufügen?</source>
         <translation>要添加扩展名“.%1”吗？</translation>
     </message>
     <message>
-        <source>Soll die Endung „.%1“ in „.%2“ geändert werden?</source>
+        <source>Möchtest du die Endung wirklich von „.%1“ in „.%2“ ändern?</source>
         <translation>要将扩展名“.%1”更改为“.%2”吗？</translation>
     </message>
     <message>
-        <source>Dateiendung ändern?</source>
+        <source>Endung ändern?</source>
         <translation>要更改文件扩展名吗？</translation>
     </message>
     <message>
-        <source>Die Datei wird dadurch nicht umgewandelt. Andere Programme erkennen sie danach eventuell nicht mehr.</source>
+        <source>Die Datei wird dadurch nicht umgewandelt. Andere Apps erkennen sie danach eventuell nicht mehr.</source>
         <translation>这不会转换文件。之后其他 App 可能无法再识别该文件。</translation>
     </message>
     <message>
-        <source>Ohne Endung lassen</source>
+        <source>Nicht hinzufügen</source>
         <translation>不添加扩展名</translation>
     </message>
     <message>
-        <source>„.%1“ behalten</source>
+        <source>„.%1“ beibehalten</source>
         <translation>保留“.%1”</translation>
     </message>
     <message>
@@ -5427,7 +5423,7 @@
         <translation>SVG 文件没有有效的尺寸。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>内存不足，无法载入图像。</translation>
     </message>
     <message>
@@ -5506,7 +5502,7 @@
         <translation>无法写入“%1”。</translation>
     </message>
     <message>
-        <source>Lumaflip ist nicht als Anwendung installiert (%1 fehlt).</source>
+        <source>Lumaflip ist nicht als App installiert (%1 fehlt).</source>
         <translation>Lumaflip 未作为应用程序安装（缺少 %1）。</translation>
     </message>
     <message>
@@ -5522,11 +5518,11 @@
         <translation>“%1”会将文件名当作命令读取，出于安全原因不会启动。</translation>
     </message>
     <message>
-        <source>Das Programm wurde nicht gefunden.</source>
+        <source>Die App wurde nicht gefunden.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Windows erlaubt Programmen nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
+        <source>Windows erlaubt Apps nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5565,11 +5561,11 @@
         <translation>第 %1 页不存在。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>内存不足，无法载入图像。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
         <translation>内存不足，无法载入图像（%1 × %2 像素）。</translation>
     </message>
 </context>
@@ -5645,11 +5641,11 @@
 <context>
     <name>lf::UndoBackupStore</name>
     <message>
-        <source>Die Sicherung für „Rückgängig“ ist nicht mehr vorhanden.</source>
+        <source>Die Sicherungskopie für „Widerrufen“ existiert nicht mehr.</source>
         <translation>用于“撤销”的备份已不存在。</translation>
     </message>
     <message>
-        <source>Nicht genug Platz für die Sicherungskopie (Rückgängig) – nichts gespeichert.</source>
+        <source>Nicht genug Speicherplatz für die Sicherungskopie (Widerrufen) – nichts gesichert.</source>
         <translation>没有足够空间存储备份副本（撤销），未存储任何内容。</translation>
     </message>
 </context>
@@ -5707,7 +5703,7 @@
         <translation>无法使用完整分辨率</translation>
     </message>
     <message>
-        <source>Lumaflip – lädt …</source>
+        <source>Lumaflip – wird geladen …</source>
         <translation>Lumaflip – 正在载入…</translation>
     </message>
     <message>
@@ -5814,7 +5810,7 @@
         <translation>已拷贝路径</translation>
     </message>
     <message>
-        <source>„%1“ ist nicht mehr vorhanden.</source>
+        <source>„%1“ existiert nicht mehr.</source>
         <translation>“%1”已不存在。</translation>
     </message>
     <message>
@@ -5872,19 +5868,19 @@
         <translation>幻灯片放映 – 空格键：暂停 · 1–9：秒数 · Esc：结束</translation>
     </message>
     <message>
-        <source>Keine Drehung zu speichern – zuerst mit ⌘L oder ⌘R drehen</source>
+        <source>Keine Drehung zu sichern – drehe das Bild zuerst mit ⌘L oder ⌘R</source>
         <translation>没有要存储的旋转，请先使用 ⌘L 或 ⌘R 旋转</translation>
     </message>
     <message>
-        <source>Drehung speichern</source>
+        <source>Drehung sichern</source>
         <translation>存储旋转</translation>
     </message>
     <message>
-        <source>Verlustfrei drehen geht nur mit beschnittenem Rand.</source>
+        <source>Verlustfreies Drehen ist nur mit beschnittenem Rand möglich.</source>
         <translation>只有裁切边缘才能无损旋转。</translation>
     </message>
     <message>
-        <source>Die Drehung kann nur durch Neukodieren gespeichert werden.</source>
+        <source>Die Drehung kann nur durch Neukodieren gesichert werden.</source>
         <translation>只能通过重新编码来存储旋转。</translation>
     </message>
     <message>
@@ -5920,7 +5916,7 @@
         <translation>未打开图像。</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <source>Bilder in Archiven und PDF-Seiten können nicht als Schreibtischhintergrund festgelegt werden.</source>
         <translation>归档中的图像和 PDF 页面不能设为桌面图片。</translation>
     </message>
     <message>
@@ -5945,7 +5941,7 @@
         <translation>所有屏幕</translation>
     </message>
     <message>
-        <source>Diese Arbeitsumgebung wird nicht unterstützt.</source>
+        <source>Diese Desktopumgebung wird nicht unterstützt.</source>
         <translation>不支持此桌面环境。</translation>
     </message>
 </context>
@@ -5985,7 +5981,7 @@
         <translation>元数据中没有对焦点</translation>
     </message>
     <message>
-        <source>Zuschneiden geht in der Einzelbildansicht.</source>
+        <source>Zuschneiden ist nur in der Einzelbildansicht möglich.</source>
         <translation>裁剪仅在单图视图中可用。</translation>
     </message>
     <message>
@@ -5993,11 +5989,11 @@
         <translation>没有可裁剪的图像。</translation>
     </message>
     <message>
-        <source>Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab</source>
+        <source>Zuschneiden: Rahmen ziehen – Enter sichert, Esc bricht ab</source>
         <translation>裁剪：拖移出边框——Enter 存储，Esc 取消</translation>
     </message>
     <message>
-        <source>Der vorige Zuschnitt wird noch gespeichert.</source>
+        <source>Der vorherige Zuschnitt wird noch gesichert.</source>
         <translation>上一次裁剪仍在存储中。</translation>
     </message>
     <message>
@@ -6010,7 +6006,7 @@
         <translation>%1-cropped.%2</translation>
     </message>
     <message>
-        <source>Zugeschnittenes Bild speichern unter</source>
+        <source>Zugeschnittenes Bild sichern unter</source>
         <translation>将裁剪后的图像存储为</translation>
     </message>
     <message>
@@ -6022,7 +6018,7 @@
         <translation>裁剪</translation>
     </message>
     <message>
-        <source>„%1“ gibt es schon. Ersetzen?</source>
+        <source>„%1“ existiert bereits. Möchtest du die Datei ersetzen?</source>
         <translation>“%1”已存在。要替换吗？</translation>
     </message>
     <message>
@@ -6034,7 +6030,7 @@
         <translation>替换</translation>
     </message>
     <message>
-        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <source>Der Zuschnitt konnte nicht gesichert werden.</source>
         <translation>无法存储裁剪。</translation>
     </message>
     <message>
@@ -6046,7 +6042,7 @@
         <translation>裁剪后导出…</translation>
     </message>
     <message>
-        <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
+        <source>Der Zuschnitt kann nur durch Neukodieren gesichert werden.</source>
         <translation>只能通过重新编码来存储裁剪。</translation>
     </message>
     <message>
@@ -6058,7 +6054,7 @@
         <translation>取消</translation>
     </message>
     <message>
-        <source>Zugeschnitten gespeichert als „%1“</source>
+        <source>Zugeschnitten gesichert als „%1“</source>
         <translation>裁剪已存储为“%1”</translation>
     </message>
     <message>
@@ -6097,7 +6093,7 @@
 <context>
     <name>lf::WindowExtras</name>
     <message>
-        <source>Karte</source>
+        <source>Ordnerkarte</source>
         <translation>地图</translation>
     </message>
     <message>
@@ -6168,7 +6164,7 @@
         <translation>实况文本已关闭</translation>
     </message>
     <message>
-        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – schalte mit ⇧⌘H auf SDR um.</source>
         <translation>HDR 显示时不可使用实况文本——按 ⇧⌘H 切换到 SDR。</translation>
     </message>
     <message>
@@ -6234,11 +6230,11 @@
         <translation>图像尺寸 %1 × %2 无效或过大。</translation>
     </message>
     <message>
-        <source>Die Farbtiefe der XCF-Datei wird nicht unterstützt.</source>
+        <source>Die Bittiefe der XCF-Datei wird nicht unterstützt.</source>
         <translation>不支持此 XCF 文件的颜色深度。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>内存不足，无法载入图像。</translation>
     </message>
     <message>
@@ -6285,7 +6281,7 @@
         <translation>“%1”过大。</translation>
     </message>
     <message>
-        <source>Die Kompressionsart von „%1“ wird nicht unterstützt.</source>
+        <source>Die Komprimierungsart von „%1“ wird nicht unterstützt.</source>
         <translation>不支持“%1”的压缩方式。</translation>
     </message>
 </context>

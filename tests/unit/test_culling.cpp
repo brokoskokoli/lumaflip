@@ -55,7 +55,7 @@ class FolderTrash : public TrashService {
 public:
     FolderTrash() { dir.setAutoRemove(true); }
     std::optional<QString> moveToTrash(const QString& path, QString* error) override {
-        const QString target =
+        QString target =
             QDir(dir.path())
                 .filePath(QUuid::createUuid().toString(QUuid::Id128) + "-" + QFileInfo(path).fileName());
         if (!QFile::rename(path, target)) {
@@ -153,7 +153,7 @@ TEST(CullingModel, F_CULL_01_ActionsSetStarsAndFlags) {
 TEST(CullingModel, F_CULL_01_DescribeAndSortValue) {
     EXPECT_EQ(rating::describe(Rating()), QStringLiteral("–"));
     EXPECT_TRUE(rating::describe(stars(3)).startsWith(QStringLiteral("★★★☆☆")));
-    EXPECT_TRUE(rating::describe(stars(0, PickFlag::Pick)).contains(QStringLiteral("Pick")));
+    EXPECT_TRUE(rating::describe(stars(0, PickFlag::Pick)).contains(QStringLiteral("Markiert")));
     EXPECT_LT(rating::sortValue(stars(5, PickFlag::Reject)), rating::sortValue(Rating()));
     EXPECT_LT(rating::sortValue(stars(2)), rating::sortValue(stars(2, PickFlag::Pick)));
     EXPECT_LT(rating::sortValue(stars(2, PickFlag::Pick)), rating::sortValue(stars(3)));
@@ -590,10 +590,11 @@ TEST_F(CullingTest, F_CULL_05_RejectsToTrashAsOneUndoStep) {
     QStringList removed;
     QObject::connect(&ops, &FileOps::fileRemoved, [&](const QString& p) { removed << p; });
     bool done = false;
-    runBatchAsync(ops, QStringLiteral("Verworfene in den Papierkorb"), batch, [&](bool ok, const QString& e) {
-        EXPECT_TRUE(ok) << e.toStdString();
-        done = true;
-    });
+    runBatchAsync(ops, QStringLiteral("Abgelehnte in den Papierkorb legen"), batch,
+                  [&](bool ok, const QString& e) {
+                      EXPECT_TRUE(ok) << e.toStdString();
+                      done = true;
+                  });
     ASSERT_TRUE(lf::test::waitUntil([&] { return done; }));
     for (const QString& p : rejects)
         EXPECT_FALSE(QFileInfo::exists(p));
@@ -622,7 +623,7 @@ TEST_F(CullingTest, F_CULL_05_RejectsToRejectedFolderAndUndo) {
                                 {path("r2.CR3"), rejected, ConflictChoice::KeepBoth}};
     auto batch = std::make_shared<FileBatch>(trash, TransferKind::Move, items);
     bool done = false;
-    runBatchAsync(ops, QStringLiteral("Verworfene verschieben"), batch, [&](bool ok, const QString&) {
+    runBatchAsync(ops, QStringLiteral("Abgelehnte verschieben"), batch, [&](bool ok, const QString&) {
         EXPECT_TRUE(ok);
         done = true;
     });

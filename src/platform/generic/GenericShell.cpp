@@ -216,7 +216,7 @@ public:
             return false;
         if (!xdg::findApplication(QLatin1String(kDesktopId))) {
             if (error)
-                *error = Tr::tr("Lumaflip ist nicht als Anwendung installiert (%1 fehlt).")
+                *error = Tr::tr("Lumaflip ist nicht als App installiert (%1 fehlt).")
                              .arg(QLatin1String(kDesktopId));
             return false;
         }

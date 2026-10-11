@@ -481,8 +481,8 @@ std::optional<Rendered> render(CGImageRef img, int o, bool hdr, QString* error) 
 
     QImage out(dw, dh, fmt);
     if (out.isNull()) {
-        setError(error, QCoreApplication::translate("lf::ImageIODecoder",
-                                                    "Nicht genug Speicher für das Bild (%1 × %2 Pixel).")
+        setError(error, QCoreApplication::translate(
+                            "lf::ImageIODecoder", "Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).")
                             .arg(dw)
                             .arg(dh));
         return std::nullopt;
@@ -491,7 +491,7 @@ std::optional<Rendered> render(CGImageRef img, int o, bool hdr, QString* error) 
         out.bits(), size_t(dw), size_t(dh), bpc, size_t(out.bytesPerLine()), target.space.get(), bitmapInfo));
     if (!ctx) {
         setError(error, QCoreApplication::translate("lf::ImageIODecoder",
-                                                    "Bildpuffer konnte nicht angelegt werden."));
+                                                    "Der Bildpuffer konnte nicht angelegt werden."));
         return std::nullopt;
     }
     float headroom = 1.0f;

@@ -235,7 +235,7 @@ private slots:
         QCOMPARE(w->currentPath(), path("IMG_2.jpg"));
         QVERIFY(w->collection()->isFolderCollection());
         const SortSpec spec = w->collection()->sortSpec();
-        QVERIFY(spec.source != SortSource::Manual);      // "Wie Finder" is the default (F-SORT-03)
+        QVERIFY(spec.source != SortSource::Manual);      // "Wie im Finder" is the default (F-SORT-03)
         if (spec.key == SortKey::Name && spec.ascending) // no Finder info for temp folders: name order
             QCOMPARE(names(w->collection()), (QStringList{"IMG_1.png", "IMG_2.jpg", "IMG_10.jpg"}));
     }
@@ -477,7 +477,7 @@ private slots:
         // F-SORT-05: detected order is shown
         const QString sort = w->sortText();
         QCOMPARE(sort, describe(w->collection()->sortSpec()));
-        QVERIFY2(sort.startsWith(QStringLiteral("Wie Finder: ")) ||
+        QVERIFY2(sort.startsWith(QStringLiteral("Wie im Finder: ")) ||
                      sort.contains(QStringLiteral("Finder-Info")),
                  qPrintable(sort));
         QVERIFY(status.contains(sort));

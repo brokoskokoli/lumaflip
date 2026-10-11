@@ -135,11 +135,11 @@ void InfoGpsBox::updateState() {
 }
 
 void InfoGpsBox::retranslateUi() {
-    m_showMap->setText(tr("Karte anzeigen"));
+    m_showMap->setText(tr("Karte einblenden"));
     m_showMap->setToolTip(tr("Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)"));
     m_hideMap->setText(tr("Karte ausblenden"));
     m_hideMap->setToolTip(
-        tr("Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)"));
+        tr("Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte einblenden“)"));
     m_openMaps->setText(tr("In Karten öffnen"));
     m_folderMap->setText(tr("Ordnerkarte"));
     m_folderMap->setToolTip(tr("Alle Bilder dieser Ansicht mit Aufnahmeort auf einer Karte zeigen (lädt "

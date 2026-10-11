@@ -86,11 +86,12 @@ protected:
             return;
         // Large key help, bottom center.
         const QStringList lines = {
-            QCoreApplication::translate("lf::CullingController",
-                                        "0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg"),
             QCoreApplication::translate(
                 "lf::CullingController",
-                "← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden"),
+                "0–5  Sterne     P  Markieren     X  Ablehnen     U  Markierung aufheben"),
+            QCoreApplication::translate(
+                "lf::CullingController",
+                "← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Widerrufen     Esc  Beenden"),
         };
         QFont hf = font();
         hf.setPointSizeF(hf.pointSizeF() * 1.25);
@@ -178,7 +179,7 @@ void CullingController::setActive(bool on) {
     if (on)
         onCurrentChanged();
     updateOverlay();
-    m_window.showMessage(on ? tr("Aussortiermodus: Ziffern vergeben Sterne, P/X/U markieren")
+    m_window.showMessage(on ? tr("Aussortiermodus: Ziffern vergeben Sterne, P/X/U setzen Markierungen")
                             : tr("Aussortiermodus beendet"),
                          1800);
     emit activeChanged(on);
@@ -290,29 +291,29 @@ void CullingController::bulkRejects(bool toTrash) {
             return;
         ViewerWindow& win = self->m_window;
         if (plan.images == 0) {
-            win.showMessage(tr("Keine verworfenen Bilder"), 2500);
+            win.showMessage(tr("Keine abgelehnten Bilder"), 2500);
             return;
         }
         auto* box = new QMessageBox(&win);
         box->setObjectName(QStringLiteral("lfBulkRejectsDialog"));
         box->setAttribute(Qt::WA_DeleteOnClose);
         box->setIcon(QMessageBox::Question);
-        box->setText(toTrash ? tr("%n verworfene(s) Bild(er) in den Papierkorb legen?", nullptr, plan.images)
-                             : tr("%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?", nullptr,
+        box->setText(toTrash ? tr("%n abgelehnte(s) Bild(er) in den Papierkorb legen?", nullptr, plan.images)
+                             : tr("%n abgelehnte(s) Bild(er) in den Ordner „_Rejected“ verschieben?", nullptr,
                                   plan.images));
-        box->setInformativeText(tr("Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und "
-                                   "die zweite Datei von RAW+JPEG-Paaren gehen mit. ⌘Z macht den ganzen "
-                                   "Schritt rückgängig."));
-        QPushButton* go =
-            box->addButton(toTrash ? tr("In den Papierkorb") : tr("Verschieben"), QMessageBox::AcceptRole);
+        box->setInformativeText(
+            tr("Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von "
+               "RAW+JPEG-Paaren werden mitbewegt. ⌘Z widerruft den ganzen Schritt."));
+        QPushButton* go = box->addButton(toTrash ? tr("In den Papierkorb legen") : tr("Verschieben"),
+                                         QMessageBox::AcceptRole);
         go->setObjectName(QStringLiteral("lfBulkRejectsConfirm"));
         box->addButton(QMessageBox::Cancel);
         box->setDefaultButton(go);
         connect(box, &QMessageBox::finished, self, [self, box, go, plan, toTrash](int) {
             if (!self || box->clickedButton() != go)
                 return;
-            const QString undo =
-                toTrash ? tr("Verworfene in den Papierkorb") : tr("Verworfene nach _Rejected");
+            const QString undo = toTrash ? tr("Abgelehnte in den Papierkorb legen")
+                                         : tr("Abgelehnte nach „_Rejected“ verschieben");
             self->m_quick->transfer(
                 toTrash ? TransferKind::Trash : TransferKind::Move, plan.items, undo, [toTrash](int n) {
                     return toTrash ? tr("%n Bild(er) in den Papierkorb gelegt", nullptr, n)

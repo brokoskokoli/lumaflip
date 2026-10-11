@@ -209,7 +209,7 @@ void WindowIntegration::updateLiveTextBlocking() {
     QString reason;
     if (m_window.view()->isExtendedPresentationActive())
         reason =
-            tr("Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.");
+            tr("Live Text ist während der HDR-Darstellung nicht verfügbar – schalte mit ⇧⌘H auf SDR um.");
     m_session->setBlocked(reason);
 }
 

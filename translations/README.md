@@ -42,7 +42,7 @@ Muttersprachler:innen sind sehr willkommen.
   `tools/i18n_check.py` meldet fehlende und veraltete Einträge.
 - Eine fest gewählte Sprache (*Allgemein → Sprache*) schreibt Lumaflip zusätzlich als
   `AppleLanguages` in die eigenen Einstellungen, damit auch die Texte, die macOS selbst
-  baut („Vollbild aktivieren“, „Dienste“, Öffnen-Dialog, Berechtigungsabfragen), nach einem
+  baut („Vollbildmodus“, „Dienste“, Öffnen-Dialog, Berechtigungsabfragen), nach einem
   Neustart folgen; „Systemsprache“ entfernt den Eintrag wieder.
 
 ## Texte aktualisieren (Entwickler:innen)
@@ -70,6 +70,11 @@ Diffs). Neue Texte sind danach in allen Sprachen „unfinished“ und erscheinen
 Die Unit-Tests `I18n.F_I18N_*` prüfen außerdem Platzhalter (`%1`, `%n`), Pluralformen,
 HTML, Tastenkürzel-Symbole und Leerzeichen in jeder Übersetzung.
 
+Begriffe und Stil der deutschen Texte (Anrede „du“, „…“, „Sichern“, „Widerrufen“,
+„Markieren/Ablehnen“ …) legt [GLOSSARY.md](GLOSSARY.md) fest. Wird ein deutscher Text nur
+umformuliert (gleiche Bedeutung), benennt `tools/i18n_rename_source.py` ihn in allen
+`.ts`-Dateien um, damit die Übersetzungen erhalten bleiben (Ablauf siehe Glossar).
+
 ## Eine Sprache prüfen oder verbessern (Übersetzer:innen)
 
 1. Datei mit **Qt Linguist** öffnen (`brew install qt`, dann `open -a Linguist
@@ -78,6 +83,7 @@ HTML, Tastenkürzel-Symbole und Leerzeichen in jeder Übersetzung.
    Entwicklerkommentare. Platzhalter `%1`, `%2`, `%n` müssen erhalten bleiben,
    Tastensymbole (⌘ ⌥ ⇧) ebenso. Die Begriffe der macOS-Oberfläche in der jeweiligen Sprache
    verwenden (Menünamen, „Papierkorb“, „Systemeinstellungen“ …). „Lumaflip“ wird nicht übersetzt.
+   Ein deutscher Begriff aus [GLOSSARY.md](GLOSSARY.md) wird überall gleich übersetzt.
 3. Übersetzungen nicht als „unfinished“ markieren – Qt lädt solche Einträge nicht.
 4. Bauen und `tools/check.sh --quick --no-gui` laufen lassen; ein Bildschirmfoto der
    Einstellungen in der Sprache hilft beim Review (*Allgemein → Sprache*).

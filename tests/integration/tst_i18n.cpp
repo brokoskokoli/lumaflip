@@ -390,8 +390,8 @@ private slots:
             hf.setPointSizeF(hf.pointSizeF() * 1.25);
             const QFontMetrics fh(hf);
             for (const char* line :
-                 {"0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg",
-                  "← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden"}) {
+                 {"0–5  Sterne     P  Markieren     X  Ablehnen     U  Markierung aufheben",
+                  "← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Widerrufen     Esc  Beenden"}) {
                 const QString text = QCoreApplication::translate("lf::CullingController", line);
                 if (fh.horizontalAdvance(text) + 2 * 10 + 8 > overlay->width() - 32)
                     problems << QStringLiteral("culling help \"%1\" (%2 > %3 px)")

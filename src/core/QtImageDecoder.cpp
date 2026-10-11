@@ -301,7 +301,7 @@ std::optional<DecodedImage> SvgDecoder::decode(const QString& path, const Decode
     const QSize size = req.maxPixelSize > 0 ? fitLongEdge(intrinsic, req.maxPixelSize) : full;
     QImage img(size, QImage::Format_RGBA8888_Premultiplied);
     if (img.isNull()) {
-        setError(error, Tr::tr("Nicht genug Speicher für das Bild."));
+        setError(error, Tr::tr("Nicht genug Arbeitsspeicher für das Bild."));
         return std::nullopt;
     }
     img.fill(Qt::transparent);

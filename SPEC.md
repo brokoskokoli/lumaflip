@@ -59,7 +59,7 @@ Die vorhandenen Alternativen haben typische Schwächen:
 | **Backend** | Konkrete Decoder-Implementierung, z. B. Apple ImageIO, libjxl, LibRaw. |
 | **Vorladen (Prefetch)** | Hintergrund-Dekodierung der Nachbarbilder des aktuellen Bildes. |
 | **EDR** | Extended Dynamic Range: Apples HDR-Darstellung über dem SDR-Weiß. |
-| **Aussortieren (Culling)** | Schnelles Bewerten, Markieren und Verwerfen vieler Bilder. |
+| **Aussortieren (Culling)** | Schnelles Bewerten, Markieren und Ablehnen vieler Bilder. |
 
 ---
 
@@ -72,7 +72,7 @@ Die vorhandenen Alternativen haben typische Schwächen:
 2. **Fotos aussortieren:** Nach einem Fotoshooting liegen 800 RAW-Dateien in einem Ordner.
    - Im Vollbild blättern, mit `P` behalten, mit `X` verwerfen, mit `1`–`5` Sterne vergeben.
    - Mit `Z` auf 100 % prüfen, ob das Bild scharf ist.
-   - Am Ende alle verworfenen Bilder in den Papierkorb legen.
+   - Am Ende alle abgelehnten Bilder in den Papierkorb legen.
 3. **Vergleichen:** Aus einer Serienaufnahme 3 Bilder nebeneinander zeigen. Zoom und Ausschnitt sind synchron, damit man die Schärfe vergleichen kann.
 4. **Einsortieren:** Screenshots durchblättern und mit `M` und einer Ziffer `1`–`9` in vorkonfigurierte Zielordner verschieben.
 5. **Exotisches Format:** Eine `.jxl`-, `.psd`-, `.exr`- oder `.cr3`-Datei per Doppelklick öffnen. Sie funktioniert, ohne dass etwas nachinstalliert werden muss.
@@ -104,7 +104,7 @@ Jede Anforderung hat eine ID und eine Ausbaustufe:
 | F-OPEN-08 | Option „Unterordner einbeziehen“ (rekursiv), umschaltbar pro Sitzung. Reihenfolge: ordnerweise, die Ordner pfadweise in Finder-Namensreihenfolge (ein Ordner vor seinen Unterordnern, wie eine aufgeklappte Listendarstellung); innerhalb eines Ordners gilt die Sortierung des Fensters. Versteckte Ordner und Pakete werden übersprungen, symbolische Links nicht verfolgt. | M3 |
 | F-OPEN-09 | Zum nächsten/vorherigen Geschwisterordner springen (⌥→ / ⌥←, wenn nicht gezoomt; gezoomt gilt F-IN-07 bzw. F-VIEW-04; zusätzlich über Menü und frei belegbares Kürzel). | M3 |
 | F-OPEN-10 | Archive (ZIP/CBZ, RAR/CBR, 7z) und PDF wie Ordner durchblättern. | M4 |
-| F-OPEN-11 | „Zuletzt geöffnet“-Menü (Dateien und Ordner). | M2 |
+| F-OPEN-11 | Menü „Benutzte Dokumente“ (Dateien und Ordner). | M2 |
 | F-OPEN-12 | Startbildschirm ohne Bild: Drop-Fläche, „Öffnen…“, zuletzt geöffnete Elemente (bis zu 8, Dateien und Ordner gemischt in der Reihenfolge der letzten Nutzung, anklickbar). | M2 |
 
 ### 4.2 Navigation
@@ -117,19 +117,19 @@ Jede Anforderung hat eine ID und eine Ausbaustufe:
 | F-NAV-04 | Trackpad: Zweifinger-Wischen wechselt das Bild, Pinch zoomt. Im gezoomten Zustand verschiebt das Wischen den Ausschnitt. | M2 |
 | F-NAV-05 | Mausrad, Bild↑/Bild↓, Leertaste, Klick, Doppelklick, mittlere Maustaste und weitere Eingaben sind in den Einstellungen belegbar (siehe 4.14). M1 enthält die Standardbelegung und die Mausrad-Einstellung, M2 alle Optionen aus 4.14. | M1/M2 |
 | F-NAV-06 | Zu Bild Nr. *n* springen (⌘G). Zufällige Reihenfolge an/aus. | M3 |
-| F-NAV-07 | Position anzeigen („23 / 412“) in Titelleiste und Statuszeile. | M1 |
+| F-NAV-07 | Position anzeigen („23 / 412“) in Titelleiste und Statusleiste. | M1 |
 | F-NAV-08 | Dateinamen filtern (Schnellfilter, ⌘F; Tippen eines Zeichens ohne andere Belegung öffnet das Feld ebenfalls). | M3 |
 
 ### 4.3 Anzeige und Zoom
 
 | ID | Anforderung | Stufe |
 |---|---|---|
-| F-VIEW-01 | Zoom-Modi: **Einpassen** (Standard; kleine Bilder werden nicht vergrößert), **Einpassen inkl. Vergrößern**, **100 % / 1:1 Pixel**, **Breite füllen**, **Höhe füllen**, **Fenster füllen**. | M1 |
+| F-VIEW-01 | Zoom-Modi: **Einpassen** (Standard; kleine Bilder werden nicht vergrößert), **Einpassen (auch vergrößern)**, **100 % / 1:1 Pixel**, **Breite füllen**, **Höhe füllen**, **Fenster füllen**. | M1 |
 | F-VIEW-02 | Tastenkürzel: ⌘0 = 100 %, ⌘9 = Einpassen, ⌘+ / ⌘− = Zoom. Zusätzlich die Einzeltasten `1`/`2`/`3` für die Modi, sofern nicht im Aussortiermodus. | M1 |
 | F-VIEW-03 | `Z` bzw. – falls in F-IN-09 gewählt – Klick schaltet zwischen Einpassen und 100 % **an der Cursorposition** um. | M2 |
 | F-VIEW-04 | Ausschnitt verschieben per Ziehen, Pfeiltasten (wenn gezoomt, mit ⌥) und Trackpad. Trägheitsscrollen wie bei macOS üblich. | M1 |
 | F-VIEW-05 | „Zoom fixieren“: Zoomstufe und Ausschnitt bleiben beim Blättern erhalten (wichtig für Serienaufnahmen). | M2 |
-| F-VIEW-06 | Hochwertiges Skalieren: Beim Verkleinern Mipmaps bzw. Lanczos-ähnliche Filterung, beim Vergrößern über 100 % wahlweise „Pixel scharf“ (nearest) oder glatt. | M1 |
+| F-VIEW-06 | Hochwertiges Skalieren: Beim Verkleinern Mipmaps bzw. Lanczos-ähnliche Filterung, beim Vergrößern über 100 % wahlweise „Scharfe Pixel“ (nearest) oder glatt. | M1 |
 | F-VIEW-07 | **Retina-korrekt:** 100 % bedeutet 1 Bildpixel = 1 Gerätepixel (einstellbar: Gerätepixel oder Punkte). | M1 |
 | F-VIEW-08 | EXIF-Orientierung wird automatisch angewendet. | M1 |
 | F-VIEW-09 | Hintergrund wählbar: dunkel, hell, Systemdarstellung, Schachbrett (für Transparenz), eigene Farbe. | M1 |
@@ -179,14 +179,14 @@ Ziel: **So viele Formate wie möglich, ohne Nachinstallation.** Die Formate werd
 
 | ID | Anforderung | Stufe |
 |---|---|---|
-| F-INFO-01 | Statuszeile bzw. Overlay (abschaltbar): Dateiname, Position, Pixelmaße, Dateigröße, Zoomstufe. | M1 |
+| F-INFO-01 | Statusleiste bzw. Overlay (abschaltbar): Dateiname, Position, Pixelmaße, Dateigröße, Zoomstufe. | M1 |
 | F-INFO-02 | Infopanel (⌘I bzw. `I`) als Seitenleiste, die **beim Blättern offen bleibt**. Inhalt: Datei (Pfad, Größe, Datumsangaben, Typ), Bild (Maße, Farbraum, Profil, Bittiefe, HDR ja/nein), Kamera (Modell, Objektiv, Brennweite, Blende, Zeit, ISO, Belichtungskorrektur, Blitz), Aufnahmedatum, GPS. | M2 |
 | F-INFO-03 | Histogramm (RGB und Luminanz) im Infopanel. | M2 |
 | F-INFO-04 | GPS: Mini-Karte bzw. „In Karten öffnen“. | M3 |
 | F-INFO-05 | Vollständige Rohmetadaten (EXIF/IPTC/XMP-Baum) mit Kopierfunktion. | M3 |
 | F-INFO-06 | Finder-Tags anzeigen und setzen. | M2 |
 | F-INFO-07 | Erweiterte Fototechnik-Overlays: Fokuspunkte (soweit in den MakerNotes vorhanden), Überbelichtungs- und Unterbelichtungswarnung, Focus Peaking. | M4 |
-| F-INFO-08 | **Ordnerkarte:** Ansicht „Karte“ (Menü Darstellung, Taste/Knopf im Infopanel) zeigt alle Bilder der aktuellen Sammlung mit GPS-Daten als Markierungen auf einer Karte (MapKit, zusammengefasst bei vielen nahen Punkten, Vorschaubild beim Überfahren). Das aktuelle Bild ist hervorgehoben und folgt beim Blättern mit ←/→; Klick auf eine Markierung springt zum Bild. Bilder ohne GPS werden gezählt („312 von 412 Bildern mit Ort“). Die GPS-Daten werden auf einem Worker aus den Metadaten gelesen (ohne Pixel zu dekodieren). Datenschutz (10.3): Kartendaten werden erst geladen, wenn der Nutzer die Karte öffnet. | M3 |
+| F-INFO-08 | **Ordnerkarte:** Ansicht „Ordnerkarte“ (Menü Darstellung, Taste/Knopf im Infopanel) zeigt alle Bilder der aktuellen Sammlung mit GPS-Daten als Markierungen auf einer Karte (MapKit, zusammengefasst bei vielen nahen Punkten, Vorschaubild beim Überfahren). Das aktuelle Bild ist hervorgehoben und folgt beim Blättern mit ←/→; Klick auf eine Markierung springt zum Bild. Bilder ohne GPS werden gezählt („312 von 412 Bildern mit Aufnahmeort“). Die GPS-Daten werden auf einem Worker aus den Metadaten gelesen (ohne Pixel zu dekodieren). Datenschutz (10.3): Kartendaten werden erst geladen, wenn der Nutzer die Karte öffnet. | M3 |
 
 ### 4.7 Dateioperationen
 
@@ -196,7 +196,7 @@ Ziel: **So viele Formate wie möglich, ohne Nachinstallation.** Die Formate werd
 | F-FILE-02 | Im Finder zeigen (⌘⇧R bzw. Menü). | M1 |
 | F-FILE-03 | Bild in die Zwischenablage kopieren (⌘C: Bilddaten und Datei-URL), Pfad kopieren (⌥⌘C). | M1 |
 | F-FILE-04 | Umbenennen (Enter oder F2): Inline-Feld, die Dateiendung ist geschützt. | M2 |
-| F-FILE-05 | „Öffnen mit…“ und „In Standard-Editor öffnen“ (`E`, Editor konfigurierbar). | M2 |
+| F-FILE-05 | „Öffnen mit“ und „Im Editor öffnen“ (`E`, Editor konfigurierbar). | M2 |
 | F-FILE-06 | Teilen-Menü (macOS Share Sheet). | M2 |
 | F-FILE-07 | Bild aus dem Fenster per Drag & Drop in andere Apps ziehen (als Datei). | M2 |
 | F-FILE-08 | **Schnellablage:** `M` + `1`–`9` verschiebt, `C` + `1`–`9` kopiert in konfigurierte Zielordner. `M M` wiederholt das letzte Ziel. Alles ist rückgängig machbar. | M3 |
@@ -209,19 +209,19 @@ Ziel: **So viele Formate wie möglich, ohne Nachinstallation.** Die Formate werd
 | ID | Anforderung | Stufe |
 |---|---|---|
 | F-EDIT-01 | Drehen um 90° (⌘L / ⌘R) und Spiegeln, zunächst **nur in der Anzeige**. | M1 |
-| F-EDIT-02 | Drehung speichern: JPEG **verlustfrei** (Transformation der DCT-Blöcke bzw. EXIF-Orientierung setzen – Strategie einstellbar), andere Formate über das EXIF-Orientation-Tag, wo möglich. Nie still verlustbehaftet neu kodieren; falls das nötig wäre, vorher nachfragen. | M2 |
-| F-EDIT-03 | Zuschneiden (einfach, JPEG wenn möglich verlustfrei an MCU-Grenzen), „Speichern unter“ (eine vorhandene Datei nur nach Rückfrage ersetzen). Was nicht an Ort und Stelle zugeschnitten werden kann (RAW, Animationen, Bilder in Archiven/PDFs, Formate ohne Encoder), wird als „Zugeschnitten exportieren“ angeboten. | M4 |
+| F-EDIT-02 | Drehung sichern: JPEG **verlustfrei** (Transformation der DCT-Blöcke bzw. EXIF-Orientierung setzen – Strategie einstellbar), andere Formate über das EXIF-Orientation-Tag, wo möglich. Nie still verlustbehaftet neu kodieren; falls das nötig wäre, vorher nachfragen. | M2 |
+| F-EDIT-03 | Zuschneiden (einfach, JPEG wenn möglich verlustfrei an MCU-Grenzen), „Sichern unter“ (eine vorhandene Datei nur nach Rückfrage ersetzen). Was nicht an Ort und Stelle zugeschnitten werden kann (RAW, Animationen, Bilder in Archiven/PDFs, Formate ohne Encoder), wird als „Zugeschnitten exportieren“ angeboten. | M4 |
 | F-EDIT-04 | Exportieren / Konvertieren eines Bildes (JPEG/PNG/HEIC/AVIF/TIFF und JXL, sofern ein Encoder verfügbar ist; Qualität, maximale Größe, Metadaten entfernen). Angeboten werden nur Formate, die die Plattform schreiben kann – macOS-ImageIO kann JXL nur lesen, deshalb fehlt JXL dort. | M4 |
 
 ### 4.9 Aussortieren (Culling) und Bewertung
 
 | ID | Anforderung | Stufe |
 |---|---|---|
-| F-CULL-01 | Bewertung `0`–`5` Sterne, `P` = behalten (Pick), `X` = verwerfen (Reject), `U` = zurücksetzen. | M3 |
+| F-CULL-01 | Bewertung `0`–`5` Sterne, `P` = markieren (Pick), `X` = ablehnen (Reject), `U` = Markierung aufheben. | M3 |
 | F-CULL-02 | **Speicherort der Bewertung wählbar** (Einstellungen → Bewertung), Mehrfachauswahl möglich: **(a) XMP-Zusatzdatei** neben dem Bild (`Bild.xmp`, kompatibel zu Lightroom, Capture One, darktable; Standard), **(b) im Bild selbst** als eingebettetes XMP (JPEG, HEIC, TIFF, PNG, DNG; für Formate ohne sicheres Schreiben, z. B. proprietäre RAW-Dateien, fällt die App automatisch auf die Zusatzdatei zurück und zeigt das an), **(c) Finder-Tags** (z. B. Tags „★★★“, „Pick“, „Reject“ und Farbetiketten; Tag-Namen und Farben einstellbar; im Finder sichtbar und durchsuchbar). Beim Lesen werden alle aktivierten Quellen berücksichtigt; bei Widerspruch gilt die feste Reihenfolge XMP-Zusatzdatei → im Bild → Finder-Tags (die erste aktivierte Quelle mit Wert gewinnt). Schreiben ins Bild ändert nur den Metadatenblock (keine Neukodierung der Pixel), behält das Änderungsdatum auf Wunsch bei und erfolgt atomar (temporäre Datei + Austausch). | M3 |
 | F-CULL-03 | Option „Nach Bewertung automatisch weiter“. | M3 |
-| F-CULL-04 | Filter: nur Picks / nur ≥ n Sterne / nur unbewertete / nur Rejects. | M3 |
-| F-CULL-05 | Sammelaktion: „Alle verworfenen in den Papierkorb“ bzw. „… nach `_Rejected/` verschieben“. | M3 |
+| F-CULL-04 | Filter: nur markierte / nur ≥ n Sterne / nur unbewertete / nur abgelehnte. | M3 |
+| F-CULL-05 | Sammelaktion: „Alle abgelehnten in den Papierkorb legen“ bzw. „… nach `_Rejected/` verschieben“. | M3 |
 | F-CULL-06 | Aussortiermodus als eigener Modus: Overlay mit Bewertung, gesperrte Zoomstufe, große Tastatur-Hilfe. | M3 |
 
 ### 4.10 Übersicht und Vergleich
@@ -268,25 +268,25 @@ Für die wichtigsten Eingaben gibt es in *Einstellungen → Maus & Tastatur* ein
 
 | ID | Eingabe | Wählbare Optionen | Standard |
 |---|---|---|---|
-| F-IN-01 | **Mausrad** (ohne Modifier) | Bild wechseln · Zoomen (am Cursor) · Ausschnitt scrollen (wenn gezoomt, sonst Bild wechseln) | Bild wechseln |
-| F-IN-02 | Mausrad **mit ⌘** / **mit ⌥** / **mit ⇧** | jeweils dieselben Optionen wie F-IN-01, zusätzlich „horizontal scrollen“ | ⌘ = Zoomen, ⌥ = Ausschnitt scrollen, ⇧ = horizontal scrollen |
-| F-IN-03 | Mausrad-Feinheiten | Richtung umkehren · Raststufen pro Bildwechsel (1–5) · Mindestabstand zwischen Bildwechseln (0–300 ms, gegen Überspringen bei Rädern ohne Rasterung) · Zoomschritt pro Raste (5–50 %) | normal · 1 · 120 ms · 15 % |
+| F-IN-01 | **Mausrad** (ohne Modifier) | Bild wechseln · Zoomen (am Mauszeiger) · Ausschnitt verschieben (wenn gezoomt, sonst Bild wechseln) | Bild wechseln |
+| F-IN-02 | Mausrad **mit ⌘** / **mit ⌥** / **mit ⇧** | jeweils dieselben Optionen wie F-IN-01, zusätzlich „horizontal scrollen“ | ⌘ = Zoomen, ⌥ = Ausschnitt verschieben, ⇧ = horizontal scrollen |
+| F-IN-03 | Mausrad-Feineinstellungen | Richtung umkehren · Raststufen pro Bildwechsel (1–5) · Mindestabstand zwischen Bildwechseln (0–300 ms, gegen Überspringen bei Rädern ohne Rasterung) · Zoomschritt pro Raste (5–50 %) | normal · 1 · 120 ms · 15 % |
 | F-IN-04 | **Bild↑ / Bild↓** | vorheriges/nächstes Bild · 10 Bilder zurück/vor (Sprungweite einstellbar) · vorheriger/nächster Ordner · Seite zurück/vor bei mehrseitigen Dateien, sonst Bild · Ausschnitt um eine Bildschirmhöhe scrollen (wenn gezoomt, sonst Bild) | vorheriges/nächstes Bild |
 | F-IN-05 | **Pos1 / Ende** | erstes/letztes Bild · Anfang/Ende des Bildes scrollen (wenn gezoomt, sonst erstes/letztes) | erstes/letztes Bild |
 | F-IN-06 | **Leertaste / ⇧Leertaste** | nächstes/vorheriges Bild · Animation abspielen/pausieren, sonst Bild · Einpassen ↔ 100 % · Diashow starten/pausieren | Animation, sonst nächstes/vorheriges Bild |
-| F-IN-07 | **← / →, wenn gezoomt** | immer Bild wechseln · erst Ausschnitt bis zum Rand scrollen, dann Bild wechseln · Ausschnitt scrollen (Bildwechsel dann nur mit ⌥←/⌥→) | immer Bild wechseln |
-| F-IN-08 | **↑ / ↓** | Ausschnitt scrollen (wenn gezoomt), sonst nichts · vorheriges/nächstes Bild · zoomen | Ausschnitt scrollen, sonst vorheriges/nächstes Bild |
-| F-IN-09 | **Einfacher Klick** ins Bild | nichts · Einpassen ↔ 100 % am Cursor · nächstes Bild (linke Hälfte: vorheriges) | nichts |
+| F-IN-07 | **← / →, wenn gezoomt** | immer Bild wechseln · erst Ausschnitt bis zum Rand verschieben, dann Bild wechseln · Ausschnitt verschieben (Bildwechsel dann nur mit ⌥←/⌥→) | immer Bild wechseln |
+| F-IN-08 | **↑ / ↓** | Ausschnitt verschieben (wenn gezoomt), sonst nichts · vorheriges/nächstes Bild · zoomen | Ausschnitt verschieben, sonst vorheriges/nächstes Bild |
+| F-IN-09 | **Einfacher Klick** ins Bild | nichts · Einpassen ↔ 100 % am Mauszeiger · nächstes Bild (linke Hälfte: vorheriges) | nichts |
 | F-IN-10 | **Doppelklick** ins Bild | Vollbild umschalten · Einpassen ↔ 100 % · Fenster schließen | Vollbild umschalten |
 | F-IN-11 | **Mittlere Maustaste** | nichts · Vollbild · Fenster schließen · Einpassen ↔ 100 % · Lupe (gedrückt halten) | Einpassen ↔ 100 % |
 | F-IN-12 | **Maustasten 4/5** (Zurück/Vor) | vorheriges/nächstes Bild · nichts | vorheriges/nächstes Bild |
-| F-IN-13 | **Trackpad-Wischen** (zwei Finger, horizontal) | Bild wechseln · Ausschnitt scrollen · aus | Bild wechseln (gezoomt: scrollen) |
+| F-IN-13 | **Trackpad-Wischen** (zwei Finger, horizontal) | Bild wechseln · nur Ausschnitt verschieben · aus | Bild wechseln (gezoomt: Ausschnitt verschieben) |
 | F-IN-14 | **Ziehen mit linker Maustaste** | Ausschnitt verschieben · Datei herausziehen (Drag-out) · ⌥-Ziehen für die jeweils andere Aktion | Ausschnitt verschieben; ⌥ = Drag-out |
-| F-IN-15 | **Esc** | Vollbild bzw. Modus verlassen, sonst nichts · …, sonst Fenster schließen | Vollbild bzw. Modus verlassen, sonst nichts |
+| F-IN-15 | **Esc** | Vollbild oder Modus beenden, sonst nichts · …, sonst Fenster schließen | Vollbild oder Modus beenden, sonst nichts |
 | F-IN-16 | **Ende der Sammlung** (Wiederholung von F-NAV-03). Nächster Ordner = nächster Geschwisterordner in Finder-Namensreihenfolge, der Bilder enthält; Ordner ohne Bilder werden übersprungen; rückwärts landet man auf dem letzten Bild des vorherigen Ordners. | anhalten · umlaufen · zum nächsten Ordner weitergehen | anhalten |
 
 - F-IN-17 (M2): Neben jeder Option erklärt eine kurze Hilfe die Auswirkung. „Auf Standard zurücksetzen“ gibt es pro Bereich.
-- F-IN-18 (M2): Profilvorlagen mit einem Klick: **„Mac-Standard“** (Vorgabe), **„Windows-Viewer-Gewohnheiten“** (Mausrad = Bild wechseln, Bild↑/↓ = Bild, Enter = Vollbild, wie IrfanView/FastStone), **„Fotograf:in / Lightroom“** (Mausrad = Zoom, Ziffern = Sterne, P/X/U aktiv).
+- F-IN-18 (M2): Profilvorlagen mit einem Klick: **„Mac-Standard“** (Vorgabe), **„Wie Windows-Bildbetrachter“** (Mausrad = Bild wechseln, Bild↑/↓ = Bild, Enter = Vollbild, wie IrfanView/FastStone), **„Fotografie / Lightroom“** (Mausrad = Zoom, Ziffern = Sterne, P/X/U aktiv).
 
 ### 4.15 Mehrere Fenster
 
@@ -309,7 +309,7 @@ Für die wichtigsten Eingaben gibt es in *Einstellungen → Maus & Tastatur* ein
 
 | ID | Anforderung | Stufe |
 |---|---|---|
-| F-I18N-01 | Die Oberfläche ist vollständig übersetzbar: alle sichtbaren Texte (Menüs, Dialoge, Einstellungen, Fehlerkarten, Statuszeile, Infopanel-Bezeichnungen, Tastenkürzel-Übersicht, Hilfetexte) laufen über `tr()`; Qt-eigene Texte über die mitgelieferten Qt-Übersetzungen. Ausgangssprache der Quelltexte bleibt Deutsch. | M3 |
+| F-I18N-01 | Die Oberfläche ist vollständig übersetzbar: alle sichtbaren Texte (Menüs, Dialoge, Einstellungen, Fehlerkarten, Statusleiste, Infopanel-Bezeichnungen, Tastenkürzel-Übersicht, Hilfetexte) laufen über `tr()`; Qt-eigene Texte über die mitgelieferten Qt-Übersetzungen. Ausgangssprache der Quelltexte bleibt Deutsch. | M3 |
 | F-I18N-02 | Mitgelieferte Sprachen: Deutsch, Englisch, Französisch, Spanisch, Italienisch, Portugiesisch (Brasilien und Portugal), Niederländisch, Polnisch, Schwedisch, Dänisch, Norwegisch, Finnisch, Tschechisch, Japanisch, Chinesisch (vereinfacht und traditionell), Koreanisch. | M3 |
 | F-I18N-03 | Standard: Sprache folgt der Systemsprache (bevorzugte Sprachen von macOS, in Reihenfolge; Fallback Englisch). In den Einstellungen („Allgemein → Sprache“) lässt sich eine Sprache fest wählen; Wechsel ohne Neustart, falls technisch sauber möglich, sonst mit Hinweis „wirksam nach Neustart“. Die macOS-Funktion „Sprache pro App“ (Systemeinstellungen) wird ebenfalls respektiert. | M3 |
 | F-I18N-04 | Zahlen, Datums- und Größenangaben (z. B. „2,8 MB“ / „2.8 MB“), Belichtungswerte und GPS-Koordinaten werden nach dem Gebietsschema formatiert. Die Finder-Namenssortierung folgt unabhängig von der UI-Sprache dem System-Gebietsschema (wie der Finder). | M3 |
@@ -334,7 +334,7 @@ Für die wichtigsten Eingaben gibt es in *Einstellungen → Maus & Tastatur* ein
 ├──────────────────────────────────────────────┴───────────┤
 │ ▢▢▢▢▣▢▢▢▢  Filmstreifen (optional)                       │
 ├──────────────────────────────────────────────────────────┤
-│ 4032×3024 · 2,1 MB · 37 % · Sortiert wie Finder: Hinzugefügt ↓ │  Statuszeile (optional)
+│ 4032×3024 · 2,1 MB · 37 % · Sortiert wie Finder: Hinzugefügt ↓ │  Statusleiste (optional)
 └──────────────────────────────────────────────────────────┘
 ```
 
@@ -358,14 +358,14 @@ Sie folgt den macOS-Konventionen und ergänzt Einzeltasten für Fortgeschrittene
 | Zoom fixieren | ⇧`Z` |
 | Standard-Zoom wiederherstellen | Enter (nur solange der Zoom des Bildes geändert ist, sonst Umbenennen; F-VIEW-14) |
 | Vollbild | ⌃⌘F, `F`, Doppelklick |
-| Vollbild verlassen / Modus verlassen | Esc |
+| Vollbild oder Modus beenden | Esc |
 | Diashow | ⇧⌘F, `S` |
 | Drehen links / rechts | ⌘L / ⌘R |
 | Spiegeln horizontal / vertikal | `H` / ⇧`H` |
 | Infopanel | ⌘I, `I` |
 | Filmstreifen / Raster | `T` / `G` |
-| In den Papierkorb | ⌘⌫, Entf |
-| Rückgängig / Wiederholen | ⌘Z / ⇧⌘Z |
+| In den Papierkorb legen | ⌘⌫, Entf |
+| Widerrufen / Wiederholen | ⌘Z / ⇧⌘Z |
 | Umbenennen | Enter, F2 |
 | Im Finder zeigen | ⇧⌘R |
 | Kopieren | ⌘C (Bild), ⌥⌘C (Pfad) |
@@ -416,9 +416,9 @@ Bild geöffnet
 |---|---|---|
 | F-SORT-01 | Namenssortierung **identisch zum Finder**: `localizedStandardCompare` bzw. `CFStringCompareWithOptionsAndLocale` mit den Flags caseInsensitive, numeric, widthInsensitive, forcedOrdering und localized, Locale = `autoupdatingCurrent`. Verglichen wird der vollständige Dateiname inklusive Endung. Die Sortierschlüssel werden für große Ordner vorab berechnet. | M1 |
 | F-SORT-02 | Manuelle Sortierung: Name, Änderungsdatum, Erstellungsdatum, Hinzugefügt am, Aufnahmedatum (EXIF), Größe, Art, Pixelzahl, Bewertung; jeweils auf- oder absteigend. Bei Gleichstand entscheidet der Name. | M1 |
-| F-SORT-03 | Modus „Wie Finder“ (Standard) mit Stufe 1 (.DS_Store), Stufe 2 (globale Einstellungen) und Stufe 4 (Fallback). | M1 |
+| F-SORT-03 | Modus „Wie im Finder“ (Standard) mit Stufe 1 (.DS_Store), Stufe 2 (globale Einstellungen) und Stufe 4 (Fallback). | M1 |
 | F-SORT-04 | Stufe 3 (AppleScript-Abfrage des vordersten Finder-Fensters) als **Opt-in** in den Einstellungen. Die Automatisierungs-Berechtigung wird vorher erklärt. Abfrage nur, wenn `target of front window` dem Ordner entspricht. Zeitlimit 300 ms. | M2 |
-| F-SORT-05 | Die UI zeigt die erkannte Sortierung an („Wie Finder: Hinzugefügt am ↓“ bzw. „Name ↑ (Finder-Info nicht gefunden)“). | M1 |
+| F-SORT-05 | Die UI zeigt die erkannte Sortierung an („Wie im Finder: Hinzugefügt am ↓“ bzw. „Name ↑ (Finder-Informationen nicht gefunden)“). | M1 |
 | F-SORT-06 | Manuelle Wahl wird pro Ordner gemerkt (in den App-Einstellungen, nicht im Ordner). Es gibt eine Option „Für alle Ordner verwenden“: Sie macht die Wahl zur globalen Vorgabe für Ordner ohne eigene Wahl; bereits gemerkte Ordner-Einstellungen bleiben erhalten. | M2 |
 | F-SORT-07 | Nach Dateisystemänderungen (F-OPEN-07) wird neu sortiert, und das aktuelle Bild bleibt erhalten. | M2 |
 | F-SORT-08 | Der .DS_Store-Leser ist robust gegen unbekannte oder defekte Daten: Er wirft keine Fehler, sondern fällt auf die nächste Stufe zurück. Er wird mit echten .DS_Store-Testdateien abgesichert: Diese erzeugt der Finder selbst in künstlichen Testordnern per Skript (`tools/make_finder_fixtures.sh`, AppleScript), je macOS-Hauptversion, ohne Nutzerdaten. Zusätzlich manueller Abgleich in eigenen Ordnern (`docs/TESTING-M<n>.md`). | M1 |
@@ -611,7 +611,7 @@ public:
 
 ### 10.3 Datenschutz
 
-- Keine Telemetrie, kein Netzwerkverkehr außer der Update-Prüfung (abschaltbar) und Kartenausschnitten für F-INFO-04. Karten (Infopanel-Ausschnitt F-INFO-04 und Ordnerkarte F-INFO-08) werden erst geladen, wenn der Nutzer sie öffnet bzw. auf „Karte anzeigen“ klickt; dabei gehen die Koordinaten an Apple (MapKit). Der Klick gilt für dieses Fenster, bis es geschlossen wird: weitere Bilder mit GPS-Daten laden ihre Karte dort automatisch, „Karte ausblenden“ nimmt die Zustimmung zurück. Die Zustimmung wird nicht gespeichert; neue Fenster und jeder Neustart fragen erneut.
+- Keine Telemetrie, kein Netzwerkverkehr außer der Update-Prüfung (abschaltbar) und Kartenausschnitten für F-INFO-04. Karten (Infopanel-Ausschnitt F-INFO-04 und Ordnerkarte F-INFO-08) werden erst geladen, wenn der Nutzer sie öffnet bzw. auf „Karte einblenden“ klickt; dabei gehen die Koordinaten an Apple (MapKit). Der Klick gilt für dieses Fenster, bis es geschlossen wird: weitere Bilder mit GPS-Daten laden ihre Karte dort automatisch, „Karte ausblenden“ nimmt die Zustimmung zurück. Die Zustimmung wird nicht gespeichert; neue Fenster und jeder Neustart fragen erneut.
 
 ### 10.4 Dateiverknüpfung
 

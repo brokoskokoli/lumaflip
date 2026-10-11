@@ -61,7 +61,7 @@ tools/check.sh --quick --sanitize      # ASan/UBSan
 ## 2. Mehrsprachigkeit (F-I18N-01 … 06)
 
 - [ ] Einstellungen → Allgemein → Sprache: Englisch wählen. Menüs (auch das native Programmmenü
-      „Lumaflip“ mit Dienste/Ausblenden/Beenden), offene Fenster, Statuszeile, Infopanel und das
+      „Lumaflip“ mit Dienste/Ausblenden/Beenden), offene Fenster, Statusleiste, Infopanel und das
       Einstellungsfenster wechseln **ohne Neustart**. (F-I18N-03)
 - [ ] Nacheinander Französisch, Japanisch, Chinesisch (vereinfacht) und Finnisch: keine
       abgeschnittenen Beschriftungen in Einstellungen (jede Seite), Infopanel, Konfliktdialog (§4),
@@ -87,8 +87,8 @@ Ordner `Viele/`, Einstellungen → Bewertung: Speicherort „XMP-Zusatzdatei“.
       Markierung, die Sterne bleiben. Esc verlässt den Modus. (F-CULL-01, F-CULL-06)
 - [ ] „Nach Bewertung automatisch weiter“ an: nach jeder Bewertung das nächste Bild. (F-CULL-03)
 - [ ] ⌘Z nimmt die letzte Bewertung zurück (Overlay und Datei). (F-CULL-01)
-- [ ] Aussortieren → Filter „≥ 3 ★“: Statuszeile „Filter: ≥ 3 ★ — n / m“, nur passende Bilder;
-      „Nur Picks“, „Nur unbewertete“, „Nur Rejects“ ebenso. (F-CULL-04)
+- [ ] Aussortieren → Filter „≥ 3 ★“: Statusleiste „Filter: ≥ 3 ★ — n / m“, nur passende Bilder;
+      „Nur markierte“, „Nur unbewertete“, „Nur abgelehnte“ ebenso. (F-CULL-04)
 - [ ] Speicherorte (F-CULL-02):
   - [ ] Zusatzdatei: `IMG.xmp` neben dem Bild; Lightroom „Metadaten aus Datei lesen“ zeigt die
         Sterne, X als abgelehnt; Entwicklungseinstellungen einer vorhandenen Datei bleiben.
@@ -99,17 +99,17 @@ Ordner `Viele/`, Einstellungen → Bewertung: Speicherort „XMP-Zusatzdatei“.
   - [ ] Widerspruch: Zusatzdatei 4 ★, im Bild 2 ★, beide Speicherorte an → Lumaflip zeigt 4 ★
         (feste Reihenfolge Zusatzdatei → im Bild → Finder-Tags).
 - [ ] Sammelaktion (F-CULL-05), Ordner `Baum/` mit „Unterordner einbeziehen“, einige Bilder
-      verworfen, eines davon schon in einem Unterordner `_Rejected`:
-  - [ ] Schnellfilter (⌘F) auf einen Teil der Namen setzen, Aussortieren → „Alle verworfenen nach
-        „_Rejected“ verschieben …“: der Dialog nennt nur die **angezeigten** verworfenen Bilder
+      abgelehnt, eines davon schon in einem Unterordner `_Rejected`:
+  - [ ] Schnellfilter (⌘F) auf einen Teil der Namen setzen, Aussortieren → „Alle abgelehnten nach
+        „_Rejected“ verschieben …“: der Dialog nennt nur die **angezeigten** abgelehnten Bilder
         (Anzahl prüfen), die Bilder in `_Rejected` sind nicht dabei; es entsteht nie
-        `_Rejected/_Rejected`. ⌘Z macht den ganzen Schritt rückgängig.
-  - [ ] „Alle verworfenen in den Papierkorb …“: ein Schritt, ⌘Z holt alle samt Zusatzdateien zurück.
+        `_Rejected/_Rejected`. ⌘Z widerruft den ganzen Schritt.
+  - [ ] „Alle abgelehnten in den Papierkorb legen …“: ein Schritt, ⌘Z holt alle samt Zusatzdateien zurück.
 
 ## 4. Schnellablage und Konflikte (F-FILE-08, F-FILE-11)
 
 - [ ] Aussortieren → „Ziele der Schnellablage festlegen …“: Ziele 1–3 auf Testordner setzen.
-- [ ] `M` `1`: Bild samt Zusatzdatei nach Ziel 1, Statuszeile „Nach „…“ verschoben“; `M` `M`
+- [ ] `M` `1`: Bild samt Zusatzdatei nach Ziel 1, Statusleiste „Nach „…“ verschoben“; `M` `M`
       wiederholt; `C` `2` kopiert; ⌘Z nimmt jeden Schritt zurück. (F-FILE-08)
 - [ ] Ziel enthält schon eine Datei gleichen Namens: Dialog „Ersetzen / Beide behalten /
       Überspringen / Abbrechen“; „Beide behalten“ ergibt „name 2.jpg“; „Ersetzen“ legt die alte
@@ -124,9 +124,9 @@ Ordner `Viele/`, Einstellungen → Bewertung: Speicherort „XMP-Zusatzdatei“.
 ## 5. Raster, Vergleich, Lupe (F-GRID-02, F-GRID-03, F-VIEW-11)
 
 - [ ] `G` in `Viele/`: Vorschauen erscheinen zügig, Scrollen flüssig, Pinch und ⌘+/⌘− ändern
-      die Größe, Sterne/Pick/Reject sichtbar; Enter bzw. ⌘↓ öffnet das Bild. (F-GRID-02)
+      die Größe, Sterne und Markiert/Abgelehnt sichtbar; Enter bzw. ⌘↓ öffnet das Bild. (F-GRID-02)
 - [ ] Mehrfachauswahl (⌘-Klick, ⇧-Klick), Bewerten (`3`) bewertet alle markierten Bilder in
-      **einem** Rückgängig-Schritt.
+      **einem** Widerrufen-Schritt.
 - [ ] 2–4 Bilder markieren, Darstellung → „Auswahl vergleichen“: Zoom und Ausschnitt synchron,
       mit ⌥-Ziehen nur eines; Tab wechselt den Fokus. (F-GRID-03)
 - [ ] `L` gedrückt halten: Lupe am Cursor (100 %/200 %), scharf auf Retina und externem Monitor,
@@ -138,18 +138,18 @@ Ordner `Viele/`, Einstellungen → Bewertung: Speicherort „XMP-Zusatzdatei“.
 - [ ] Fenster → „Minimaler Fenstermodus“: schaltet zwischen randlosem Fenster (Titelleiste blendet
       beim Bewegen der Maus ein, oben ziehen bewegt das Fenster) und Titelleiste um. (F-VIEW-13/15)
 - [ ] Zwei Fenster (JPEG- und RAW-Variante derselben Aufnahmen), Fenster → „Fenster koppeln …“
-      nach Dateiname: Blättern, Zoom und Ausschnitt laufen mit, Statuszeile „Gekoppelt“;
-      „Entkoppeln“ löst. (F-WIN-07)
+      nach Dateiname: Blättern, Zoom und Ausschnitt laufen mit, Statusleiste „Gekoppelt“;
+      „Fenster entkoppeln“ löst. (F-WIN-07)
 - [ ] Neue Fenster (⌘N mehrfach) liegen nie exakt übereinander. (F-WIN-08)
 
 ## 7. Navigation (F-NAV-06, F-NAV-08, F-OPEN-08, F-OPEN-09)
 
 - [ ] ⌘G „Gehe zu Bild …“: `23` springt zu Bild 23, `+5`/`-3` relativ; ungültige Eingabe: Meldung. (F-NAV-06)
-- [ ] Navigation → „Zufällige Reihenfolge“: Statuszeile „Zufällig“, jedes Bild genau einmal;
+- [ ] Navigation → „Zufällige Reihenfolge“: Statusleiste „Zufällig“, jedes Bild genau einmal;
       aus und wieder an: dieselbe Reihenfolge in dieser Sitzung. (F-NAV-06)
 - [ ] ⌘F (oder einfach einen Buchstaben tippen): Schnellfilter; „urlaub“ findet „Urlaub_01.jpg“
       und „URLAUB.JPG“, Umlaute/NFD egal; Esc bzw. „Namensfilter aufheben“ zeigt wieder alle. (F-NAV-08)
-- [ ] `Baum/`, Darstellung → „Unterordner einbeziehen“: Fortschritt in der Statuszeile, Reihenfolge
+- [ ] `Baum/`, Darstellung → „Unterordner einbeziehen“: Fortschritt in der Statusleiste, Reihenfolge
       ordnerweise wie im Finder, versteckte Ordner fehlen; ein im Finder neu angelegtes Bild in einem
       Unterordner erscheint ohne Neuladen. (F-OPEN-08)
 - [ ] ⌥→ / ⌥← (nicht gezoomt) bzw. Navigation → „Nächster Ordner“ / „Vorheriger Ordner“: springt
@@ -158,7 +158,7 @@ Ordner `Viele/`, Einstellungen → Bewertung: Speicherort „XMP-Zusatzdatei“.
 ## 8. HDR/EDR (F-COL-03, F-COL-04, F-COL-05)
 
 - [ ] Auf dem EDR-Display: iPhone-HEIC, Ultra-HDR-JPEG, PQ-AVIF und EXR neben Vorschau.app: Spitzlichter
-      heller als UI-Weiß, gleicher Eindruck; Statuszeile „HDR“. Displayhelligkeit ändern →
+      heller als UI-Weiß, gleicher Eindruck; Statusleiste „HDR“. Displayhelligkeit ändern →
       Spitzlichter folgen. SDR-Bilder unverändert. (F-COL-03)
 - [ ] Fenster auf den SDR-Monitor ziehen: SDR-Vorschau (weich abgerollte Spitzlichter), zurück: HDR. (F-COL-03)
 - [ ] ⇧⌘H „HDR anzeigen“ aus/an: Wechsel HDR ↔ „HDR (SDR-Vorschau)“. (F-COL-04)
@@ -169,7 +169,7 @@ Ordner `Viele/`, Einstellungen → Bewertung: Speicherort „XMP-Zusatzdatei“.
 
 ## 9. RAW+JPEG, Restformate, SVG-Hilfsprozess (F-FMT-06, F-FMT-01, SPEC 8.5)
 
-- [ ] `RAW+JPEG/` mit „Paare als ein Bild“: ein Eintrag je Paar, Statuszeile „RAW+JPEG“;
+- [ ] `RAW+JPEG/` mit „Paare als ein Bild“: ein Eintrag je Paar, Statusleiste „RAW+JPEG“;
       Bild → „RAW anzeigen“ wechselt zur RAW-Datei. (F-FMT-06)
 - [ ] Bewerten (`3`) eines Paares: `IMG_0001.JPG.xmp` und `IMG_0001.xmp` entstehen, **ein** ⌘Z
       nimmt beide zurück. Ein in Lightroom mit 5 ★ bewertetes RAW behält 5 ★, wenn nur das JPEG
@@ -186,7 +186,7 @@ Ordner `Viele/`, Einstellungen → Bewertung: Speicherort „XMP-Zusatzdatei“.
       gestartet. (F-FMT-02, SPEC 8.5)
 
 - [ ] SVG mit CSS, Filtern und Text (z. B. aus Wikipedia) neben Safari: gleiche Darstellung (resvg);
-      Statuszeile zeigt die Eigengröße. (F-FMT-01)
+      Statusleiste zeigt die Eigengröße. (F-FMT-01)
 - [ ] GIMP-Datei (`.xcf`, mit Ebenengruppen, Masken und Modi) und Photoshop-Large-Document (`.psb`)
       neben GIMP/Photoshop: gleiche Darstellung. (F-FMT-01)
 
@@ -196,19 +196,19 @@ Netzwerkmonitor läuft, Update-Prüfung aus.
 
 - [ ] `GPS/`, Infopanel (`I`): Koordinaten in Grad/Minuten/Sekunden, **kein** Netzwerkzugriff.
       Rechtsklick → „Koordinaten kopieren“. (F-INFO-04)
-- [ ] „Karte anzeigen“: genau jetzt Verbindungen zu Apple; Mini-Karte mit Markierung. Weiterblättern:
+- [ ] „Karte einblenden“: genau jetzt Verbindungen zu Apple; Mini-Karte mit Markierung. Weiterblättern:
       Karten der weiteren GPS-Bilder laden ohne Klick (nur die tatsächlich angezeigten). (F-INFO-04)
 - [ ] Infopanel schließen und weiterblättern: **keine** Kartenanfragen; Panel öffnen: nur die Karte
       des angezeigten Bildes. (SPEC 10.3)
-- [ ] „Karte ausblenden“: Karte verschwindet, das nächste GPS-Bild fragt wieder („Karte anzeigen“),
+- [ ] „Karte ausblenden“: Karte verschwindet, das nächste GPS-Bild fragt wieder („Karte einblenden“),
       keine Anfragen. Neues Fenster bzw. Neustart fragen ebenfalls wieder. (SPEC 10.3)
 - [ ] „In Karten öffnen“ öffnet Apple Karten an der Stelle; offline: verständliche Meldung statt Karte.
 - [ ] „Alle Metadaten …“ (RAW, iPhone-HEIC, JPEG mit IPTC): Gruppen aufklappbar, Suche „ISO“,
       Kopieren/„Alles kopieren“ liefert lesbaren Text; das Fenster folgt beim Blättern. (F-INFO-05)
-- [ ] `GPS/` öffnen und blättern: **keine** Kartenanfragen. Darstellung → „Karte“ (⇧⌘M): erst jetzt
-      Verbindungen zu Apple; „N von M Bildern mit Ort“, zusammengefasste Markierungen, Vorschaubild
+- [ ] `GPS/` öffnen und blättern: **keine** Kartenanfragen. Darstellung → „Ordnerkarte“ (⇧⌘M): erst jetzt
+      Verbindungen zu Apple; „N von M Bildern mit Aufnahmeort“, zusammengefasste Markierungen, Vorschaubild
       beim Überfahren, das aktuelle Bild (rot) folgt ←/→, Klick auf eine Markierung zeigt das Bild.
-      Karte schließen: keine weiteren Anfragen. (F-INFO-08, SPEC 10.3)
+      Ordnerkarte schließen: keine weiteren Anfragen. (F-INFO-08, SPEC 10.3)
 
 ## 11. Regression M1/M2 (Stichproben)
 

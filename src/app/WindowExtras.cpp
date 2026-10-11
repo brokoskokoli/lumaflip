@@ -106,7 +106,7 @@ void WindowExtras::setFolderMapShown(bool on) {
         if (!on)
             return;
         // F-INFO-08: a fixed part of the window like the info panel (SPEC 5.1), on the right.
-        m_mapDock = new QDockWidget(tr("Karte"), &m_window);
+        m_mapDock = new QDockWidget(tr("Ordnerkarte"), &m_window);
         m_mapDock->setObjectName(QStringLiteral("lfFolderMapDock"));
         m_mapDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
         m_mapDock->setTitleBarWidget(new QWidget(m_mapDock));

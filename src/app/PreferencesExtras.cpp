@@ -44,8 +44,7 @@ bool setEditorApp(const QString& appPath, QString* error) {
         app.path = appPath;
         if (isOwnApplication(app)) {
             if (error)
-                *error =
-                    Tr::tr("Lumaflip kann nicht sein eigener Editor sein. Bitte wähle ein anderes Programm.");
+                *error = Tr::tr("Lumaflip kann nicht sein eigener Editor sein. Wähle eine andere App.");
             return false;
         }
     }
@@ -60,7 +59,7 @@ QWidget* createEditorChooser(QWidget* parent) {
     layout->setContentsMargins(0, 0, 0, 0);
     auto* label = new QLabel(row);
     label->setObjectName(QStringLiteral("editorName"));
-    auto* choose = new QPushButton(Tr::tr("Auswählen …"), row);
+    auto* choose = new QPushButton(Tr::tr("Wählen …"), row);
     choose->setObjectName(QStringLiteral("chooseEditor"));
     choose->setAutoDefault(false);
     auto* reset = new QPushButton(Tr::tr("Standard"), row);

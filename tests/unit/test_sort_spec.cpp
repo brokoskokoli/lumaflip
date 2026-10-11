@@ -26,24 +26,24 @@ struct RealFormatList {
 
 TEST(SortSpec, F_SORT_05_DescribeFinderSources) {
     EXPECT_EQ(describe({SortKey::DateAdded, false, SortSource::FinderDsStore}),
-              QString::fromUtf8("Wie Finder: Hinzugefügt am ↓"));
+              QString::fromUtf8("Wie im Finder: Hinzugefügt am ↓"));
     EXPECT_EQ(describe({SortKey::Name, true, SortSource::FinderGlobal}),
-              QString::fromUtf8("Wie Finder: Name ↑"));
+              QString::fromUtf8("Wie im Finder: Name ↑"));
     EXPECT_EQ(describe({SortKey::FinderIconPosition, true, SortSource::FinderDsStore}),
-              QString::fromUtf8("Wie Finder: Symbolposition"));
+              QString::fromUtf8("Wie im Finder: Symbolposition"));
 }
 
 // F-SORT-04: the order came from the front Finder window (opt-in live query).
 TEST(SortSpec, F_SORT_04_DescribeLiveSource) {
     EXPECT_EQ(describe({SortKey::Size, false, SortSource::FinderLive}),
-              QString::fromUtf8("Wie Finder (live): Größe ↓"));
+              QString::fromUtf8("Wie im Finder (live): Größe ↓"));
     EXPECT_EQ(describe({SortKey::FinderIconPosition, true, SortSource::FinderLive}),
-              QString::fromUtf8("Wie Finder (live): Symbolposition"));
+              QString::fromUtf8("Wie im Finder (live): Symbolposition"));
 }
 
 TEST(SortSpec, F_SORT_05_DescribeFallbackAndManual) {
     EXPECT_EQ(describe({SortKey::Name, true, SortSource::Fallback}),
-              QString::fromUtf8("Name ↑ (Finder-Info nicht gefunden)"));
+              QString::fromUtf8("Name ↑ (Finder-Informationen nicht gefunden)"));
     EXPECT_EQ(describe({SortKey::DateModified, false, SortSource::Manual}),
               QString::fromUtf8("Änderungsdatum ↓"));
 }

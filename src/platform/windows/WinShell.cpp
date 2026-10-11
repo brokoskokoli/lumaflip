@@ -197,7 +197,7 @@ bool openWithHandler(const QString& filePath, const QString& id, QString* error)
     if (id.endsWith(QLatin1String(".exe"), Qt::CaseInsensitive) && QFileInfo(id).isFile())
         return startProcess(id, {native}, error);
     if (error)
-        *error = QCoreApplication::translate("lf::Shell", "Das Programm wurde nicht gefunden.");
+        *error = QCoreApplication::translate("lf::Shell", "Die App wurde nicht gefunden.");
     return false;
 }
 
@@ -343,9 +343,9 @@ public:
     bool makeDefaultViewer(const QStringList&, QString* error) override {
         openDefaultAppsSettings();
         if (error)
-            *error = Tr::tr("Windows erlaubt Programmen nicht, sich selbst als Standard-App festzulegen. "
-                            "Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die "
-                            "gewünschten Dateitypen.");
+            *error = Tr::tr(
+                "Windows erlaubt Apps nicht, sich selbst als Standard-App festzulegen. Die Einstellungen "
+                "„Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.");
         return false;
     }
 

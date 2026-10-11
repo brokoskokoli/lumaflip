@@ -2,8 +2,8 @@
 #pragma once
 
 // M4 editing and photo tools of one viewer window:
-// - F-EDIT-03 crop (⇧C): CropOverlay over the image view; Enter / "Speichern" saves into
-//   the file (FileOps, undoable, core/CropSave.h), "Speichern unter …" writes a new file
+// - F-EDIT-03 crop (⇧C): CropOverlay over the image view; Enter / "Sichern" saves into
+//   the file (FileOps, undoable, core/CropSave.h), "Sichern unter …" writes a new file
 //   (another export format: a cropped export; an existing file only after asking), Esc
 //   cancels - also while the save is still being planned. Lossy saving and JPEG block
 //   snapping are asked / told first; what cannot be cropped in place (RAW, animations,
