@@ -18,7 +18,9 @@ int main(int argc, char* argv[]) {
     }
     QApplication app(argc, argv);
     const char* tolEnv = std::getenv("LF_BENCH_TOLERANCE");
-    const double tolerance = tolEnv ? std::atof(tolEnv) : 1.2;
+    char* tolEnd = nullptr;
+    const double parsed = tolEnv ? std::strtod(tolEnv, &tolEnd) : 0.0;
+    const double tolerance = tolEnv && tolEnd != tolEnv && parsed > 0.0 ? parsed : 1.2;
     // LF_BENCH_ONLY=name1,name2: run only these (tools/check.sh re-runs failed benchmarks).
     std::set<std::string> only;
     if (const char* onlyEnv = std::getenv("LF_BENCH_ONLY")) {
