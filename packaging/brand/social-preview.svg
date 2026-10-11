@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+<!-- Template of the link preview image website/images/social-preview.png (1280 x 640, Open Graph /
+     Twitter card). Rendered by tools/make_website_images.sh with resvg, which embeds the app icon
+     (../macos/icon/lumaflip.svg) and uses the system's Helvetica Neue. Palette: the icon's teal body
+     and its sun. -->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="1280" height="640" viewBox="0 0 1280 640">
+  <defs>
+    <linearGradient id="spBackground" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0B3647"/>
+      <stop offset="0.55" stop-color="#08223A"/>
+      <stop offset="1" stop-color="#05121B"/>
+    </linearGradient>
+    <radialGradient id="spGlow" cx="240" cy="320" r="460" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2FB7B4" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#2FB7B4" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="spWarmth" cx="1040" cy="120" r="520" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFD36B" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#FFD36B" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="spTagline" x1="462" y1="0" x2="1050" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5FDCD4"/>
+      <stop offset="1" stop-color="#FFD36B"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="640" fill="url(#spBackground)"/>
+  <rect width="1280" height="640" fill="url(#spGlow)"/>
+  <rect width="1280" height="640" fill="url(#spWarmth)"/>
+
+  <!-- app icon: body 824/1024 of the image, i.e. 276 px at x 102..378, y 182..458 -->
+  <image x="68" y="148" width="343" height="343" xlink:href="../macos/icon/lumaflip.svg"/>
+
+  <g font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+    <text x="458" y="252" font-size="100" font-weight="700" fill="#FFFFFF"
+          letter-spacing="-1">Lumaflip</text>
+    <text x="462" y="331" font-size="41" font-weight="700" fill="#FFFFFF">Double-click a photo.</text>
+    <text x="462" y="385" font-size="41" font-weight="700" fill="url(#spTagline)">Flip through the whole folder.</text>
+    <text x="462" y="455" font-size="25" fill="#B7D3D6">Free, open-source image viewer for macOS</text>
+    <text x="462" y="494" font-size="25" fill="#B7D3D6">Finder order · RAW · HEIC · JPEG XL · PSD · EXR · HDR</text>
+  </g>
+</svg>

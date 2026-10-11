@@ -19,7 +19,8 @@ Runtime, **notarisiert** und „gestapelt“, ohne Sandbox (SPEC 10.1). Jedes Re
 | `.github/workflows/checks.yml` | Wiederverwendbarer Workflow mit allen Pflichtprüfungen (SPEC 15.1); `ci.yml` (Push/PR) und `release.yml` rufen ihn unverändert auf |
 | `packaging/macos/Lumaflip.entitlements` | Einzige Berechtigung: `com.apple.security.automation.apple-events` (Opt-in F-SORT-04). Keine Sandbox |
 | `packaging/macos/Info.plist.in` | Dateitypen, TCC-Texte, Symbol, Copyright |
-| `packaging/macos/icon/` | `lumaflip.svg` (Quelle) und `Lumaflip.icns` (erzeugt mit `tools/make_icon.sh`, braucht `rsvg-convert`) |
+| `packaging/macos/icon/` | `lumaflip.svg` (Quelle des App-Symbols „Sun Chevron“ für alle Plattformen) und `Lumaflip.icns` (erzeugt mit `tools/make_icon.sh`, braucht `rsvg-convert`). Windows rendert die `.ico` beim Bauen daraus (`lf_make_ico`), Linux die hicolor-PNGs (`rsvg-convert`) |
+| `packaging/brand/` | `lumaflip-mono.svg` (einfarbige Glyphe des Symbols) und `social-preview.svg` (Vorlage für das Linkvorschaubild). `tools/make_website_images.sh` (braucht `resvg`) erzeugt daraus und aus dem Symbol `website/favicon.png`, `website/apple-touch-icon.png`, `website/images/icon.png` und `website/images/social-preview.png` – nach jeder Änderung am Symbol zusammen mit `tools/make_icon.sh` ausführen |
 | `packaging/licenses/` | Lizenztexte, die Homebrew nicht mitliefert (LGPL-3.0 und Hinweis für Qt, LGPL-2.1 für libintl) |
 | `packaging/homebrew/lumaflip.rb` | Vorlage für den Homebrew Cask |
 
