@@ -1,11 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // macOS shell integration: reveal in Finder (F-FILE-02), open with (F-FILE-05),
-// default viewer registration (F-MAC-04).
+// default viewer registration (F-MAC-04), default app query (F-MAC-09).
 
 #include "MacDefaultApp.h"
+#include "core/DefaultAppOffer.h"
 #include "core/Platform.h"
 
 #include <QCoreApplication>
+#include <QDir>
+#include <QFileInfo>
 #include <QPointer>
 #include <QStringList>
 
@@ -111,6 +114,69 @@ public:
                              }];
             };
             mac::registerDefaultApp(types, known, setter, kDefaultAppPendingMs, context, done, pending);
+        }
+    }
+
+    // F-MAC-09: the content type of the file (only types the app declares in Info.plist,
+    // i.e. conforming to imageDocumentTypes()) and whether LaunchServices opens it with this
+    // app. Called on a worker thread: LaunchServices may take a while.
+    DefaultViewerStatus defaultViewerStatus(const QString& filePath) override {
+        @autoreleasepool {
+            DefaultViewerStatus status;
+            NSString* own = [[NSBundle mainBundle] bundleIdentifier];
+            if (own.length == 0)
+                return status; // no bundle: nothing to compare with
+            NSURL* url = [NSURL fileURLWithPath:filePath.toNSString()];
+            UTType* type = nil;
+            [url getResourceValue:&type forKey:NSURLContentTypeKey error:nil];
+            if (!type) {
+                const QString suffix = QFileInfo(filePath).suffix();
+                if (!suffix.isEmpty())
+                    type = [UTType typeWithFilenameExtension:suffix.toNSString()];
+            }
+            if (!type)
+                return status;
+            bool ours = false;
+            for (const QString& t : imageDocumentTypes()) {
+                UTType* declared = [UTType typeWithIdentifier:t.toNSString()];
+                if (declared && [type conformsToType:declared]) {
+                    ours = true;
+                    break;
+                }
+            }
+            if (!ours)
+                return status;
+            status.type = QString::fromNSString(type.identifier);
+            status.typeName =
+                type.localizedDescription ? QString::fromNSString(type.localizedDescription) : status.type;
+            NSURL* app = [[NSWorkspace sharedWorkspace] URLForApplicationToOpenContentType:type];
+            if (!app) { // no app at all opens the type
+                status.state = DefaultViewerStatus::State::NotDefault;
+                return status;
+            }
+            NSString* appId = [[NSBundle bundleWithURL:app] bundleIdentifier];
+            if (appId.length == 0)
+                return status; // cannot tell
+            status.state = [appId isEqualToString:own] ? DefaultViewerStatus::State::IsDefault
+                                                       : DefaultViewerStatus::State::NotDefault;
+            return status;
+        }
+    }
+
+    // F-MAC-09: an app bundle in /Applications or ~/Applications on a writable volume (not
+    // the build tree, not a mounted disk image, not App Translocation).
+    bool isInstalledApp() override {
+        @autoreleasepool {
+            NSURL* bundle = [[[NSBundle mainBundle] bundleURL] URLByResolvingSymlinksInPath];
+            if (![bundle.pathExtension isEqualToString:@"app"])
+                return false;
+            NSNumber* readOnly = nil;
+            if (![bundle getResourceValue:&readOnly forKey:NSURLVolumeIsReadOnlyKey error:nil] || !readOnly ||
+                readOnly.boolValue)
+                return false;
+            return defaultapp::isInsideAny(
+                QString::fromNSString(bundle.path),
+                {QStringLiteral("/Applications"), QDir::homePath() + QStringLiteral("/Applications")});
         }
     }
 

@@ -30,6 +30,8 @@ inline constexpr auto TitleBar = "window/titleBar";
 // QSize (device px) the last window decoded for; read at launch to start decoding the
 // opened image before the window exists (P-01). Not a user setting.
 inline constexpr auto DecodeTargetHint = "window/decodeTarget";
+// F-MAC-09: offer to become the default app when an image of another app's type is opened
+inline constexpr auto OfferDefaultApp = "general/offerDefaultApp"; // bool, default true
 // Files
 inline constexpr auto ConfirmTrash = "files/confirmTrash"; // bool, default false (F-FILE-01)
 inline constexpr auto EditorApp = "files/editor"; // app bundle path, "" = system default app (F-FILE-05)

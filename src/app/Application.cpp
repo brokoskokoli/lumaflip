@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "Application.h"
 
+#include "DefaultAppBar.h"
 #include "DefaultAppDialog.h"
 #include "DockReopen.h"
 #include "EdrDisplay.h"
@@ -14,6 +15,7 @@
 #include "ViewerWindow.h"
 #include "core/ArchiveCache.h"
 #include "core/Collection.h"
+#include "core/DefaultAppOffer.h"
 #include "core/FileOps.h"
 #include "core/FolderCache.h"
 #include "core/ImageFormats.h"
@@ -94,6 +96,7 @@ struct Application::Private {
     std::unique_ptr<InputBindings> bindings;
     std::unique_ptr<FolderWatcher> watcher;
     MainMenu* menu = nullptr;
+    QPointer<DefaultAppOfferController> defaultAppOffer; // F-MAC-09 (main() turns it on)
     QHash<QString, int> watchCount;           // folder -> number of windows showing it
     QList<QPointer<ViewerWindow>> windows;    // open windows
     QList<QPointer<ViewerWindow>> allWindows; // incl. closed ones awaiting deferred deletion
@@ -319,6 +322,7 @@ Application::~Application() {
     if (s_instance == this)
         installDockReopenHandler({});
     updateBusy(false);
+    delete d->defaultAppOffer.data(); // waits for its query, which uses the shell
     // Worker threads of the shell (default makeDefaultViewerAsync) use it.
     shell().waitForPendingCalls();
     const QList<QPointer<ViewerWindow>> list = d->allWindows;
@@ -1189,6 +1193,18 @@ void Application::makeDefaultViewer() {
     connect(dlg, &DefaultAppDialog::confirmed, this,
             [this](const QStringList& types) { setDefaultViewer(types); });
     dlg->open();
+}
+
+void Application::enableDefaultAppOffer(int startDelayMs, int settleMs) {
+    if (d->defaultAppOffer)
+        return;
+    d->defaultAppOffer =
+        new DefaultAppOfferController(*this, startDelayMs < 0 ? defaultapp::kStartDelayMs : startDelayMs,
+                                      settleMs < 0 ? defaultapp::kSettleMs : settleMs);
+}
+
+DefaultAppOfferController* Application::defaultAppOffer() const {
+    return d->defaultAppOffer.data();
 }
 
 void Application::setDefaultViewer(const QStringList& selected) {

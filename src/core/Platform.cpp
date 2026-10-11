@@ -62,6 +62,14 @@ void Shell::waitForPendingCalls() {
     }
 }
 
+DefaultViewerStatus Shell::defaultViewerStatus(const QString& /*filePath*/) {
+    return {};
+}
+
+bool Shell::isInstalledApp() {
+    return false;
+}
+
 void Shell::makeDefaultViewerAsync(const QStringList& types, QObject* context, DefaultViewerDone done,
                                    DefaultViewerPending /*pending*/) {
     // The blocking call waits for LaunchServices; keep it off the GUI thread. The future is

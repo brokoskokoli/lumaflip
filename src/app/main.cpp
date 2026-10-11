@@ -121,6 +121,8 @@ int main(int argc, char* argv[]) {
     if (exitAfterFirstFrame) {
         shell.setSessionEnabled(false);
         installFirstFrameHook(shell);
+    } else {
+        shell.enableDefaultAppOffer(); // F-MAC-09: after the first frame, only when installed
     }
     if (lf::trace::enabled())
         QTimer::singleShot(0, [] { lf::trace::mark("event loop running"); });

@@ -9,6 +9,7 @@
 
 #include <QDir>
 #include <QFile>
+#include <QMimeDatabase>
 #include <QProcess>
 #include <QTemporaryDir>
 #include <QTextStream>
@@ -221,6 +222,35 @@ TEST(XdgDesktop, F_MAC_04_SetDefaultWritesMimeappsListKeepingOtherEntries) {
     QFile::remove(env.path("sysdata/applications/io.github.brokoskokoli.lumaflip.desktop"));
     EXPECT_FALSE(shell->makeDefaultViewer({"image/webp"}, &error));
     EXPECT_FALSE(error.isEmpty());
+}
+
+// F-MAC-09: the default app of the file's MIME type (mimeapps.list) against the app's own
+// desktop file id; types the app does not register are Unknown (never offered).
+TEST(XdgDesktop, F_MAC_09_DefaultViewerStatusFromMimeappsList) {
+    // The MIME database is loaded before the XDG variables point elsewhere.
+    if (!QMimeDatabase().mimeTypeForName(QStringLiteral("image/png")).isValid())
+        GTEST_SKIP() << "no MIME database";
+    XdgEnv env;
+    env.addApp("io.github.brokoskokoli.lumaflip.desktop",
+               "Name=Lumaflip\nExec=lumaflip %F\nMimeType=image/png;image/jpeg;\n");
+    env.addApp("eog.desktop", "Name=Eye of GNOME\nExec=eog %U\nMimeType=image/png;\n");
+    const QString png = env.path("pics/a.png");
+    writeFile(png, QByteArray::fromHex("89504e470d0a1a0a0000000d49484452000000010000000108060000001f15c489"));
+    const QString text = env.path("pics/a.txt");
+    writeFile(text, "hello");
+    writeFile(env.path("config/mimeapps.list"), "[Default Applications]\nimage/png=eog.desktop;\n");
+    auto shell = createShell();
+    DefaultViewerStatus status = shell->defaultViewerStatus(png);
+    EXPECT_EQ(status.state, DefaultViewerStatus::State::NotDefault);
+    EXPECT_EQ(status.type, QStringLiteral("image/png"));
+    EXPECT_FALSE(status.typeName.isEmpty());
+    EXPECT_EQ(shell->defaultViewerStatus(text).state, DefaultViewerStatus::State::Unknown);
+
+    ASSERT_TRUE(xdg::setDefaultApplication("io.github.brokoskokoli.lumaflip.desktop", {"image/png"}));
+    status = shell->defaultViewerStatus(png);
+    EXPECT_EQ(status.state, DefaultViewerStatus::State::IsDefault);
+    // The unit test binary runs from the build tree: not the installed app.
+    EXPECT_FALSE(shell->isInstalledApp());
 }
 
 TEST(XdgDesktop, F_FILE_01_TrashInfoOriginalPath) {

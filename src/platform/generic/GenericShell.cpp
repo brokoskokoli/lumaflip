@@ -7,8 +7,11 @@
 //     `xdg-mime default`. An AppImage first installs a desktop entry for itself into
 //     $XDG_DATA_HOME/applications (pointing at $APPIMAGE), so there is something to
 //     associate.
+//   - default app query (F-MAC-09): the file's MIME type (QMimeDatabase) and its default
+//     application from mimeapps.list compared with the app's desktop file id.
 
 #include "XdgDesktop.h"
+#include "core/DefaultAppOffer.h"
 #include "core/Platform.h"
 
 #include <QCoreApplication>
@@ -16,6 +19,7 @@
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QMimeDatabase>
 #include <QProcess>
 #include <QSaveFile>
 #include <QUrl>
@@ -172,6 +176,40 @@ public:
     }
 
     QStringList imageDocumentTypes() const override { return imageMimeTypes(); }
+
+    // F-MAC-09 (worker thread): only the types the desktop entry lists (or their subtypes,
+    // e.g. image/x-canon-cr2 below image/x-dcraw).
+    DefaultViewerStatus defaultViewerStatus(const QString& filePath) override {
+        DefaultViewerStatus status;
+        const QMimeType mime = QMimeDatabase().mimeTypeForFile(filePath);
+        if (!mime.isValid() || mime.isDefault())
+            return status;
+        bool ours = false;
+        for (const QString& t : imageMimeTypes()) {
+            if (mime.inherits(t)) {
+                ours = true;
+                break;
+            }
+        }
+        if (!ours)
+            return status;
+        status.type = mime.name();
+        status.typeName = mime.comment().isEmpty() ? mime.name() : mime.comment();
+        status.state = xdg::defaultApplication(mime.name()) == QLatin1String(kDesktopId)
+                           ? DefaultViewerStatus::State::IsDefault
+                           : DefaultViewerStatus::State::NotDefault;
+        return status;
+    }
+
+    // F-MAC-09: not from a build tree; an AppImage or an installed desktop entry.
+    bool isInstalledApp() override {
+        if (defaultapp::isInBuildTree(QCoreApplication::applicationDirPath()))
+            return false;
+        const QString appImage = qEnvironmentVariable("APPIMAGE");
+        if (!appImage.isEmpty() && QFileInfo(appImage).isFile())
+            return true;
+        return xdg::findApplication(QLatin1String(kDesktopId)).has_value();
+    }
 
     bool makeDefaultViewer(const QStringList& types, QString* error) override {
         if (!ensureAppImageDesktopEntry(error))

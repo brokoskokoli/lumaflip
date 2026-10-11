@@ -114,6 +114,8 @@ public:
     QString statusText() const;                          // all status fields joined with " · " (F-INFO-01)
     QString sortText() const;                            // F-SORT-05
     QWidget* accessHint() const { return m_accessHint; } // F-PRIV-01
+    // A bar at the top of the window, below the access hint and above the image (F-MAC-09).
+    void insertTopBar(QWidget* bar);
     bool accessHintIsPrivacy() const { return m_accessPrivacy; } // TCC (vs. POSIX permissions)
     QString toastText() const; // visible transient message (edge hint, errors), else empty
     void showMessage(const QString& text, int ms = 1500);

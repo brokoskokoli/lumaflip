@@ -16,6 +16,10 @@ refer to [SPEC.md](SPEC.md).
   and restarts Lumaflip. [F-MAC-08]
 - **Windows: signed releases** — installer, ZIP, `Lumaflip.exe`, the decoder helper and
   `WinSparkle.dll` are code-signed (Azure Artifact Signing) and timestamped.
+- **Offer to become the default app**: opening an image of a type another app opens by default
+  shows an info bar at the top of the window ("Set", "All Image Formats…", "Don't Ask Again",
+  close) – once per type, only in the installed app, never in full screen or a slideshow; can be
+  turned off in Settings → General. [F-MAC-09]
 
 ### Changed
 

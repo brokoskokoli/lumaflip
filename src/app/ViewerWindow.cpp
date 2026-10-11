@@ -1241,6 +1241,16 @@ void ViewerWindow::showAccessHint(const QString& folder, bool privacy) {
     m_accessHint->show();
 }
 
+void ViewerWindow::insertTopBar(QWidget* bar) {
+    auto* layout = qobject_cast<QVBoxLayout*>(centralWidget()->layout());
+    const int below = layout ? layout->indexOf(m_accessHint) : -1;
+    bar->hide();
+    if (layout)
+        layout->insertWidget(below + 1, bar);
+    else
+        bar->setParent(centralWidget());
+}
+
 void ViewerWindow::hideAccessHint() {
     m_accessHint->hide();
 }
