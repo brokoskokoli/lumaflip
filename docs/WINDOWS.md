@@ -162,7 +162,7 @@ Pixels travel through a named file mapping labelled low integrity, created by th
 Same behaviour as Sparkle on macOS (F-MAC-08, SPEC 10.3), with
 [WinSparkle](https://winsparkle.org) (MIT, `tools/fetch_winsparkle.py`, pinned by SHA-256):
 
-- *File → Nach Updates suchen …* checks at once; *Settings → General → "Automatisch nach Updates
+- *Ablage → Nach Updates suchen …* (File menu) checks at once; *Einstellungen → Allgemein → "Automatisch nach Updates
   suchen"* switches the daily check on or off. Nothing happens on the first start; on the second
   start WinSparkle asks whether to check automatically. The check is the app's only network traffic.
 - *"Updates automatisch installieren"* is shown but disabled on Windows: WinSparkle can only
