@@ -342,6 +342,14 @@ TitleStripController::TitleStripController(ViewerWindow& window, QWidget* host)
     });
     window.installEventFilter(this);
     host->installEventFilter(this);
+    // The image goes under the title strip: Qt (6.9+) would otherwise keep the layout out of
+    // the window's safe area, i.e. below the transparent title bar.
+    window.setAttribute(Qt::WA_ContentsMarginsRespectsSafeArea, false);
+    // Borderless from the start (before the window is placed and its saved geometry is
+    // restored): Qt's frame margins are then those of the borderless window, and cascading
+    // and "fit window to image" compute with the right frame (F-WIN-08).
+    if (m_borderless)
+        setWindowMinimalChrome(&window, true);
 }
 
 bool TitleStripController::holdsMenuBar() const {

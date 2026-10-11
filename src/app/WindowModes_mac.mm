@@ -147,9 +147,11 @@ const void* kButtonsObserverKey = &kButtonsObserverKey;
 } // namespace lf
 
 // Shows the window buttons again when the window enters full screen (its title bar appears
-// with the menu bar there); lives as an associated object of the NSWindow.
+// with the menu bar there) and remembers the last requested state; lives as an associated
+// object of the NSWindow.
 @interface LFWindowButtonsObserver : NSObject
 @property(nonatomic, strong) id token;
+@property(nonatomic) BOOL buttonsVisible;
 @end
 
 @implementation LFWindowButtonsObserver
@@ -166,14 +168,17 @@ void setWindowButtonsVisible(QWidget* window, bool visible, int fadeMs) {
         NSWindow* w = nativeWindow(window, false);
         if (!w)
             return;
-        if (!objc_getAssociatedObject(w, kButtonsObserverKey)) {
-            LFWindowButtonsObserver* observer = [[LFWindowButtonsObserver alloc] init];
+        LFWindowButtonsObserver* observer = objc_getAssociatedObject(w, kButtonsObserverKey);
+        if (!observer) {
+            observer = [[LFWindowButtonsObserver alloc] init];
             __weak NSWindow* weakWindow = w;
+            __weak LFWindowButtonsObserver* weakObserver = observer;
             observer.token = [[NSNotificationCenter defaultCenter]
                 addObserverForName:NSWindowWillEnterFullScreenNotification
                             object:w
                              queue:nil
                         usingBlock:^(NSNotification*) {
+                          weakObserver.buttonsVisible = YES;
                           if (NSWindow* strong = weakWindow)
                               showButtonsAtOnce(strong);
                         }];
@@ -181,6 +186,7 @@ void setWindowButtonsVisible(QWidget* window, bool visible, int fadeMs) {
         }
         if ((w.styleMask & NSWindowStyleMaskFullScreen) != 0)
             visible = true;
+        observer.buttonsVisible = visible;
         for (NSWindowButton b : kWindowButtons) {
             NSButton* button = [w standardWindowButton:b];
             if (!button)
@@ -199,8 +205,8 @@ void setWindowButtonsVisible(QWidget* window, bool visible, int fadeMs) {
                   button.animator.alphaValue = target;
                 }
                 completionHandler:^{
-                  // A later fade-in set the value back to 1 meanwhile: stays.
-                  if (button.alphaValue < 0.01)
+                  // Hidden buttons take no clicks - unless a fade-in followed meanwhile.
+                  if (!observer.buttonsVisible)
                       button.hidden = YES;
                 }];
         }
