@@ -11,7 +11,7 @@ using namespace lf;
 namespace {
 
 // 32 bytes, base64: a syntactically valid ed25519 public key (never used to verify).
-const QString kKey = QStringLiteral("dGVzdC1rZXktbHVtYWZsaXAtdXBkYXRlci10ZXN0cyE=");
+constexpr char kKeyText[] = "dGVzdC1rZXktbHVtYWZsaXAtdXBkYXRlci10ZXN0cyE=";
 
 } // namespace
 
@@ -21,22 +21,27 @@ TEST(UpdateConfig, F_MAC_08_SeparateFeedsForMacAndWindows) {
     EXPECT_EQ(mac, QStringLiteral("https://brokoskokoli.github.io/lumaflip/appcast.xml"));
     EXPECT_EQ(win, QStringLiteral("https://brokoskokoli.github.io/lumaflip/appcast-windows.xml"));
     EXPECT_NE(mac, win);
-    EXPECT_TRUE(update::configurationProblem(mac, kKey).isEmpty());
-    EXPECT_TRUE(update::configurationProblem(win, kKey).isEmpty());
+    EXPECT_TRUE(update::configurationProblem(mac, QLatin1String(kKeyText)).isEmpty());
+    EXPECT_TRUE(update::configurationProblem(win, QLatin1String(kKeyText)).isEmpty());
 }
 
 TEST(UpdateConfig, F_MAC_08_NeverWithoutKeyOrHttps) {
     const QString https = QLatin1String(update::kWindowsFeedUrl);
-    EXPECT_TRUE(update::configurationProblem(QStringLiteral("file:///tmp/appcast.xml"), kKey).isEmpty());
+    EXPECT_TRUE(
+        update::configurationProblem(QStringLiteral("file:///tmp/appcast.xml"), QLatin1String(kKeyText))
+            .isEmpty());
     EXPECT_FALSE(update::configurationProblem(https, QString()).isEmpty());
     EXPECT_FALSE(update::configurationProblem(https, QStringLiteral("not base64!")).isEmpty());
     EXPECT_FALSE(update::configurationProblem(https, QStringLiteral("c2hvcnQ=")).isEmpty()); // 5 bytes
+    EXPECT_FALSE(update::configurationProblem(QStringLiteral("http://example.org/appcast.xml"),
+                                              QLatin1String(kKeyText))
+                     .isEmpty());
     EXPECT_FALSE(
-        update::configurationProblem(QStringLiteral("http://example.org/appcast.xml"), kKey).isEmpty());
-    EXPECT_FALSE(
-        update::configurationProblem(QStringLiteral("ftp://example.org/appcast.xml"), kKey).isEmpty());
-    EXPECT_FALSE(update::configurationProblem(QStringLiteral("https:///appcast.xml"), kKey).isEmpty());
-    EXPECT_FALSE(update::configurationProblem(QString(), kKey).isEmpty());
+        update::configurationProblem(QStringLiteral("ftp://example.org/appcast.xml"), QLatin1String(kKeyText))
+            .isEmpty());
+    EXPECT_FALSE(update::configurationProblem(QStringLiteral("https:///appcast.xml"), QLatin1String(kKeyText))
+                     .isEmpty());
+    EXPECT_FALSE(update::configurationProblem(QString(), QLatin1String(kKeyText)).isEmpty());
 }
 
 TEST(UpdateConfig, F_MAC_08_WinSparkleLanguageTags) {

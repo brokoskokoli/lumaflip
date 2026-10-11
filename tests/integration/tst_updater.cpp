@@ -72,7 +72,7 @@ class TestUpdater : public QObject {
         const QString id = QStringLiteral("io.github.brokoskokoli.lumaflip.tests.updater.%1.%2")
                                .arg(QCoreApplication::applicationPid())
                                .arg(++m_counter);
-        const QString app = m_dir.filePath(QStringLiteral("Test%1.app").arg(m_counter));
+        QString app = m_dir.filePath(QStringLiteral("Test%1.app").arg(m_counter));
         QDir().mkpath(app + QStringLiteral("/Contents/MacOS"));
         QString plist = QStringLiteral("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                                        "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" "
