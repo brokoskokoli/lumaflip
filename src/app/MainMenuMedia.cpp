@@ -66,7 +66,7 @@ void MainMenu::buildMedia(QMenu* view, QMenu* nav, QMenu* image) {
 
     // ---- Bild: save rotation, animation ----
     image->addSeparator();
-    add(image, Action::SaveRotation, tr("Drehung speichern"));
+    add(image, Action::SaveRotation, tr("Drehung sichern"));
     image->addSeparator();
     QMenu* anim = image->addMenu(tr("Animation"));
     anim->setObjectName(QStringLiteral("menu:animation"));

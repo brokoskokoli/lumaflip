@@ -127,7 +127,7 @@ bool reencodeTransformed(const QString& src, const QString& dst, int pixelOp, bo
         const bool swap = t[0] == 0;
         QImage out(swap ? h : w, swap ? w : h, img.format());
         if (out.isNull()) {
-            setError(error, Tr::tr("Nicht genug Speicher zum Drehen."));
+            setError(error, Tr::tr("Nicht genug Arbeitsspeicher zum Drehen."));
             return false;
         }
         out.setColorTable(img.colorTable());
@@ -163,7 +163,7 @@ bool reencodeTransformed(const QString& src, const QString& dst, int pixelOp, bo
             QFile::remove(dst);
             if (inexact)
                 *inexact = true;
-            setError(error, Tr::tr("Das Bild lässt sich in diesem Format nicht exakt neu speichern."));
+            setError(error, Tr::tr("Das Bild lässt sich in diesem Format nicht exakt neu sichern."));
             return false;
         }
     }
@@ -197,7 +197,7 @@ bool reencodeCropped(const QString& src, const QString& dst, const QRect& stored
             QFile::remove(dst);
             if (inexact)
                 *inexact = true;
-            setError(error, Tr::tr("Das Bild lässt sich in diesem Format nicht exakt neu speichern."));
+            setError(error, Tr::tr("Das Bild lässt sich in diesem Format nicht exakt neu sichern."));
             return false;
         }
     }
@@ -306,7 +306,7 @@ bool copyWithMetadata(const QString& path, const QString& copy, QString* error, 
     if (cloned)
         *cloned = false;
     if (!QFile::copy(path, copy)) {
-        setError(error, Tr::tr("Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden."));
+        setError(error, Tr::tr("Die Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden."));
         return false;
     }
     QFile f(copy);

@@ -110,8 +110,8 @@ public:
                 return true;
         }
         if (error)
-            *error = QCoreApplication::translate("lf::MacIntegration",
-                                                 "Windows hat das Bild nicht als Hintergrund übernommen.");
+            *error = QCoreApplication::translate(
+                "lf::MacIntegration", "Windows hat das Bild nicht als Desktophintergrund übernommen.");
         return false;
     }
 

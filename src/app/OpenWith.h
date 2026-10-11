@@ -2,7 +2,7 @@
 #pragma once
 
 // F-FILE-05: "Öffnen mit" (apps that can open the file, with icons; "Andere …") and
-// "In Standard-Editor öffnen" (E) with a configurable editor (Settings key::EditorApp;
+// "Im Editor öffnen" (E) with a configurable editor (Settings key::EditorApp;
 // default: the system default app for the type - never Lumaflip itself).
 //
 // Asking LaunchServices which apps open a type can take a while (first query after

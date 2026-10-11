@@ -47,18 +47,19 @@ public:
     // Runs `items` as one undo step, asking about name conflicts first (`undoText`;
     // `doneMessage(count)` for the toast). Also used by the culling bulk move (F-CULL-05).
     void transfer(TransferKind kind, QVector<TransferItem> items, const QString& undoText,
-                  std::function<QString(int done)> doneMessage);
+                  const std::function<QString(int done)>& doneMessage);
 
     // F-FILE-11 dialog (non-blocking) for one unit (`fileNames`: one file, or both files of
     // a RAW+JPEG pair - one choice for both). `count` > 1 shows "Für alle anwenden". `done`
     // gets the choice (nullopt: cancelled) and whether it applies to all remaining conflicts.
-    static void askConflict(QWidget* parent, const QStringList& fileNames, const QString& folder, int count,
-                            std::function<void(std::optional<ConflictChoice> choice, bool forAll)> done);
+    static void
+    askConflict(QWidget* parent, const QStringList& fileNames, const QString& folder, int count,
+                const std::function<void(std::optional<ConflictChoice> choice, bool forAll)>& done);
 
 private:
     void runWithChoices(TransferKind kind, QVector<TransferItem> items, QStringList conflicts, int next,
                         bool forAll, ConflictChoice allChoice, const QString& undoText,
-                        std::function<QString(int)> doneMessage);
+                        const std::function<QString(int)>& doneMessage);
 
     ViewerWindow& m_window;
     Application& m_app;

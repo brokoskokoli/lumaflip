@@ -150,8 +150,8 @@ void OpenWithService::openInEditor(const QString& filePath, Shell& shell, QObjec
         const QString app = chooseEditor(apps, configured);
         if (app.isEmpty()) {
             if (report)
-                report(tr("Kein Programm zum Bearbeiten gefunden. Wähle eines unter Einstellungen → "
-                          "Allgemein → Editor."));
+                report(tr("Keine App zum Bearbeiten gefunden. Wähle eine unter Einstellungen → Allgemein → "
+                          "Editor."));
             return;
         }
         sh->openWith(filePath, app);
@@ -161,13 +161,13 @@ void OpenWithService::openInEditor(const QString& filePath, Shell& shell, QObjec
 QString chooseProgram(QWidget* parent, const QString& title) {
 #ifdef Q_OS_MACOS
     const QString dir = QStringLiteral("/Applications");
-    const QString filter = OpenWithService::tr("Programme (*.app)");
+    const QString filter = OpenWithService::tr("Apps (*.app)");
 #elif defined(Q_OS_WIN)
     const QString dir = qEnvironmentVariable("ProgramFiles", QStringLiteral("C:/Program Files"));
     const QString filter = OpenWithService::tr("Programme (*.exe)");
 #else
     const QString dir = QStringLiteral("/usr/share/applications");
-    const QString filter = OpenWithService::tr("Programme (*.desktop);;Alle Dateien (*)");
+    const QString filter = OpenWithService::tr("Apps (*.desktop);;Alle Dateien (*)");
 #endif
     QString app = QFileDialog::getOpenFileName(parent, title, dir, filter);
     if (app.isEmpty())
@@ -181,7 +181,7 @@ QString chooseProgram(QWidget* parent, const QString& title) {
 #endif
     if (!program) {
         QMessageBox::information(parent, title,
-                                 OpenWithService::tr("„%1“ ist kein Programm.").arg(fi.fileName()));
+                                 OpenWithService::tr("„%1“ ist keine App.").arg(fi.fileName()));
         return {};
     }
 #endif
@@ -202,14 +202,14 @@ void OpenWithService::populateMenu(QMenu* menu, const QString& filePath, Shell& 
         QAction* other = menu->addAction(tr("Andere …"));
         other->setObjectName(QStringLiteral("openWith:other"));
         QObject::connect(other, &QAction::triggered, menu, [sh, filePath, parent] {
-            const QString app = chooseProgram(parent, tr("Programm wählen"));
+            const QString app = chooseProgram(parent, tr("App wählen"));
             if (!app.isEmpty())
                 sh->openWith(filePath, app);
         });
     };
     const std::optional<QList<AppEntry>> apps = cached(filePath);
     if (!apps) {
-        QAction* wait = menu->addAction(tr("Programme werden gesucht …"));
+        QAction* wait = menu->addAction(tr("Apps werden gesucht …"));
         wait->setObjectName(QStringLiteral("openWith:pending"));
         wait->setEnabled(false);
         addOther();
@@ -240,7 +240,7 @@ void OpenWithService::populateMenu(QMenu* menu, const QString& filePath, Shell& 
         defaultDone = app.isDefault;
     }
     if (!any)
-        menu->addAction(tr("Keine passenden Programme"))->setEnabled(false);
+        menu->addAction(tr("Keine passenden Apps"))->setEnabled(false);
     addOther();
 }
 

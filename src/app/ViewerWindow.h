@@ -93,7 +93,7 @@ public:
     void handleInput(InputEvent event, QPointF pos);
 
     void setZoomMode(ZoomMode mode); // remembered for new windows (F-MAC-05)
-    void setSortFollowFinder();      // "Wie Finder" (F-SORT-03)
+    void setSortFollowFinder();      // "Wie im Finder" (F-SORT-03)
     void setSortKey(SortKey key);    // manual (F-SORT-02)
     void setSortAscending(bool ascending);
     // The three above are remembered for the shown folder (F-SORT-06); this makes the

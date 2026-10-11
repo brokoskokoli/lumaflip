@@ -166,7 +166,7 @@ TEST(MacFolderOrder, F_SORT_03_ReadsSyntheticDsStoreOfParent) {
     EXPECT_EQ(s.key, SortKey::DateAdded);
     EXPECT_FALSE(s.ascending);
     EXPECT_EQ(s.source, SortSource::FinderDsStore);
-    EXPECT_EQ(describe(s), QString::fromUtf8("Wie Finder: Hinzugefügt am ↓"));
+    EXPECT_EQ(describe(s), QString::fromUtf8("Wie im Finder: Hinzugefügt am ↓"));
 }
 
 TEST(MacFolderOrder, F_SORT_03_NoDsStoreGivesGlobalOrFallback) {

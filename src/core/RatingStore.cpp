@@ -233,7 +233,7 @@ QString ratingio::writeEmbedded(const QString& path, const Rating& r, bool keepM
     }
     if (fileStamp(target) != stamp) {
         QFile::remove(tmp);
-        return Tr::tr("„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.")
+        return Tr::tr("„%1“ wurde inzwischen verändert – Bewertung nicht gesichert.")
             .arg(QFileInfo(path).fileName());
     }
     if (!platform::replaceFile(tmp, target, keepModificationDate, &error)) {

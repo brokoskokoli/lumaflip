@@ -983,7 +983,7 @@ void ViewerWindow::updateTitle() {
     if (cur.isEmpty()) {
         title = QStringLiteral("Lumaflip");
         if (m_collection->isLoading())
-            title = tr("Lumaflip – lädt …");
+            title = tr("Lumaflip – wird geladen …");
         else if (m_opened && !m_collection->folderPath().isEmpty())
             title = QDir(m_collection->folderPath()).dirName();
     } else {
@@ -1876,7 +1876,7 @@ void ViewerWindow::openRecent(const QString& path) {
             return;
         if (!c.missing.isEmpty()) {
             RecentItems::remove(path);
-            self->showMessage(tr("„%1“ ist nicht mehr vorhanden.").arg(QFileInfo(path).fileName()), 5000);
+            self->showMessage(tr("„%1“ existiert nicht mehr.").arg(QFileInfo(path).fileName()), 5000);
             return;
         }
         self->m_app.openPaths({path});

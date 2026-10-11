@@ -80,13 +80,13 @@ QString RatingFilter::describe() const {
     case Kind::All:
         return Tr::tr("alle");
     case Kind::Picks:
-        return Tr::tr("nur Picks");
+        return Tr::tr("nur markierte");
     case Kind::MinStars:
         return Tr::tr("≥ %1 ★").arg(std::clamp(minStars, 1, 5));
     case Kind::Unrated:
         return Tr::tr("nur unbewertete");
     case Kind::Rejects:
-        return Tr::tr("nur verworfene");
+        return Tr::tr("nur abgelehnte");
     }
     return {};
 }
@@ -100,9 +100,9 @@ QString describe(const Rating& r) {
     if (r.stars > 0)
         s = QString(r.stars, QChar(0x2605)) + QString(5 - r.stars, QChar(0x2606));
     if (r.isPick())
-        s += (s.isEmpty() ? QString() : QStringLiteral(" · ")) + Tr::tr("Pick");
+        s += (s.isEmpty() ? QString() : QStringLiteral(" · ")) + Tr::tr("Markiert");
     else if (r.isReject())
-        s += (s.isEmpty() ? QString() : QStringLiteral(" · ")) + Tr::tr("Verworfen");
+        s += (s.isEmpty() ? QString() : QStringLiteral(" · ")) + Tr::tr("Abgelehnt");
     return s;
 }
 

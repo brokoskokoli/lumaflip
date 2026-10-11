@@ -200,19 +200,18 @@ void RenameController::commit() {
     // F-FILE-04: the extension is protected - changing it needs a confirmation.
     QString text;
     if (newExt.isEmpty())
-        text = tr("Soll die Endung „.%1“ entfernt werden?").arg(oldExt);
+        text = tr("Möchtest du die Endung „.%1“ wirklich entfernen?").arg(oldExt);
     else if (oldExt.isEmpty())
-        text = tr("Soll die Endung „.%1“ hinzugefügt werden?").arg(newExt);
+        text = tr("Möchtest du die Endung „.%1“ wirklich hinzufügen?").arg(newExt);
     else
-        text = tr("Soll die Endung „.%1“ in „.%2“ geändert werden?").arg(oldExt, newExt);
-    auto* box = new QMessageBox(QMessageBox::Question, tr("Dateiendung ändern?"), text, QMessageBox::NoButton,
-                                &m_window);
+        text = tr("Möchtest du die Endung wirklich von „.%1“ in „.%2“ ändern?").arg(oldExt, newExt);
+    auto* box =
+        new QMessageBox(QMessageBox::Question, tr("Endung ändern?"), text, QMessageBox::NoButton, &m_window);
     box->setObjectName(QStringLiteral("lfRenameExtension"));
-    box->setInformativeText(
-        tr("Die Datei wird dadurch nicht umgewandelt. Andere Programme erkennen sie danach "
-           "eventuell nicht mehr."));
+    box->setInformativeText(tr(
+        "Die Datei wird dadurch nicht umgewandelt. Andere Apps erkennen sie danach eventuell nicht mehr."));
     QPushButton* keep =
-        box->addButton(oldExt.isEmpty() ? tr("Ohne Endung lassen") : tr("„.%1“ behalten").arg(oldExt),
+        box->addButton(oldExt.isEmpty() ? tr("Nicht hinzufügen") : tr("„.%1“ beibehalten").arg(oldExt),
                        QMessageBox::AcceptRole);
     keep->setObjectName(QStringLiteral("lfKeepExtension"));
     QPushButton* use =

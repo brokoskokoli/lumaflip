@@ -30,7 +30,7 @@ CollectionExtras::CollectionExtras(ViewerWindow& window, Application& app)
     connect(c, &Collection::treeLimitReached, this, [this](int images) {
         //: status bar: a folder with subfolders has more images than are read (F-OPEN-08)
         m_window.showMessage(
-            tr("Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.",
+            tr("Unterordner: Nur die ersten %n Bilder werden angezeigt – öffne einen kleineren Ordner.",
                nullptr, images),
             8000);
     });

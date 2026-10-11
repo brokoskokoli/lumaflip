@@ -9,7 +9,6 @@ QString sortKeyLabel(SortKey key) {
     const char* text = QT_TRANSLATE_NOOP("SortSpec", "Name");
     switch (key) {
     case SortKey::Name:
-        text = QT_TRANSLATE_NOOP("SortSpec", "Name");
         break;
     case SortKey::DateModified:
         text = QT_TRANSLATE_NOOP("SortSpec", "Änderungsdatum");
@@ -49,12 +48,13 @@ QString describe(const SortSpec& spec) {
         keyPart += spec.ascending ? QStringLiteral(" ↑") : QStringLiteral(" ↓");
     switch (spec.source) {
     case SortSource::FinderLive: // F-SORT-04: asked the front Finder window
-        return QCoreApplication::translate("SortSpec", "Wie Finder (live): %1").arg(keyPart);
+        return QCoreApplication::translate("SortSpec", "Wie im Finder (live): %1").arg(keyPart);
     case SortSource::FinderDsStore:
     case SortSource::FinderGlobal:
-        return QCoreApplication::translate("SortSpec", "Wie Finder: %1").arg(keyPart);
+        return QCoreApplication::translate("SortSpec", "Wie im Finder: %1").arg(keyPart);
     case SortSource::Fallback:
-        return QCoreApplication::translate("SortSpec", "%1 (Finder-Info nicht gefunden)").arg(keyPart);
+        return QCoreApplication::translate("SortSpec", "%1 (Finder-Informationen nicht gefunden)")
+            .arg(keyPart);
     case SortSource::Manual:
         break;
     }

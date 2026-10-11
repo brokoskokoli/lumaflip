@@ -222,7 +222,7 @@ QVector<int> conflicts(const QVector<Item>& items, const std::function<bool(cons
 
 QString exportOne(const QString& source, const QString& target, const Options& options, QString* notice) {
     if (QFileInfo::exists(target))
-        return Tr::tr("„%1“ gibt es schon.").arg(QFileInfo(target).fileName());
+        return Tr::tr("„%1“ existiert bereits.").arg(QFileInfo(target).fileName());
     const QString tmp = filesafety::siblingTempPath(target);
     QString error;
     bool ok = false;

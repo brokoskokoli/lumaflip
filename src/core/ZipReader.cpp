@@ -167,7 +167,7 @@ std::optional<QByteArray> ZipReader::read(const QString& name, qint64 maxBytes) 
         return out;
     }
     if (m->method != 8) {
-        fail(Tr::tr("Die Kompressionsart von „%1“ wird nicht unterstützt.").arg(name));
+        fail(Tr::tr("Die Komprimierungsart von „%1“ wird nicht unterstützt.").arg(name));
         return std::nullopt;
     }
     // Only the compressed bytes that can produce `want` are read (stored deflate blocks add

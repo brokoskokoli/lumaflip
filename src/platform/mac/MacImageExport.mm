@@ -237,8 +237,8 @@ bool exportCGImage(CGImageRef source, int orientation, CGImageMetadataRef meta, 
     const float sourceHeadroom = hdr ? CGImageGetContentHeadroom(source) : 1.0f;
     CGImageRef img = croppedSource(source, orientation, o);
     if (!img) {
-        setError(error,
-                 QCoreApplication::translate("lf::ImageExport", "Nicht genug Speicher zum Exportieren."));
+        setError(error, QCoreApplication::translate("lf::ImageExport",
+                                                    "Nicht genug Arbeitsspeicher zum Exportieren."));
         return false;
     }
     struct Release {
@@ -261,8 +261,8 @@ bool exportCGImage(CGImageRef source, int orientation, CGImageMetadataRef meta, 
     const bool white = hasAlpha(img) && !t.alpha; // JPEG: transparency on white
     CGImageRef out = render(img, orientation, w, h, t, white);
     if (!out) {
-        setError(error,
-                 QCoreApplication::translate("lf::ImageExport", "Nicht genug Speicher zum Exportieren."));
+        setError(error, QCoreApplication::translate("lf::ImageExport",
+                                                    "Nicht genug Arbeitsspeicher zum Exportieren."));
         return false;
     }
     if (hdr) {
@@ -392,8 +392,8 @@ bool exportDecoded(const QImage& image, const QString& dst, const Options& o, QS
         CGColorSpaceRelease(cs);
         CGDataProviderRelease(provider);
         if (!img) {
-            setError(error,
-                     QCoreApplication::translate("lf::ImageExport", "Nicht genug Speicher zum Exportieren."));
+            setError(error, QCoreApplication::translate("lf::ImageExport",
+                                                        "Nicht genug Arbeitsspeicher zum Exportieren."));
             return false;
         }
         const bool ok = exportCGImage(img, 1, nullptr, false, dst, o, error);

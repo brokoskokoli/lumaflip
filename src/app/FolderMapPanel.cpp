@@ -124,7 +124,7 @@ void FolderMapPanel::updateStatus() {
         // No map engine on this platform (MapKit is macOS only): the panel still counts the
         // located images, but cannot draw them.
         m_empty->setVisible(true);
-        m_empty->setText(tr("Auf diesem System ist keine Kartendarstellung verfügbar."));
+        m_empty->setText(tr("Karten sind auf diesem System nicht verfügbar."));
         return;
     }
     const bool none = m_model->isOpen() && !m_model->isScanning() && m_model->locatedCount() == 0;
@@ -145,8 +145,8 @@ void FolderMapPanel::requestThumbnail(const QString& path) {
 }
 
 void FolderMapPanel::retranslateUi() {
-    m_close->setToolTip(tr("Karte schließen"));
-    m_close->setAccessibleName(tr("Karte schließen"));
+    m_close->setToolTip(tr("Ordnerkarte schließen"));
+    m_close->setAccessibleName(tr("Ordnerkarte schließen"));
     updateStatus();
 }
 

@@ -3,7 +3,7 @@
 
 // F-INFO-04: the map renderer of the info panel (macOS: MapKit's MKMapSnapshotter, which
 // loads map tiles from Apple's servers). Only MapPreviewController calls it, and only after
-// the user clicked "Karte anzeigen" (SPEC 10.3).
+// the user clicked "Karte einblenden" (SPEC 10.3).
 
 #include "core/GeoLocation.h"
 

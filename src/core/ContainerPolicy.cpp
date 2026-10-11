@@ -41,8 +41,8 @@ bool isBlocked(Action action) {
 }
 
 QString blockedMessage() {
-    return Tr::tr("Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – "
-                  "Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.");
+    return Tr::tr("Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, "
+                  "Umbenennen, Verschieben und Bewerten sind hier nicht möglich.");
 }
 
 Action readingDirection(Action action, const InputEvent& event, bool rightToLeft) {

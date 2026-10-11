@@ -3,7 +3,7 @@
 
 // GPS position of an image (F-INFO-04): display texts, the "In Karten öffnen" link and the
 // mini map. SPEC 10.3: map tiles are network traffic and are only loaded after the user
-// asked for them (click on "Karte anzeigen"), only while the info panel is visible and only
+// asked for them (click on "Karte einblenden"), only while the info panel is visible and only
 // for the image it shows; "Karte ausblenden" takes the consent back. MapPreviewController
 // enforces that: it never asks its MapSnapshotProvider before showMap(), after hideMap() or
 // while it is inactive (setActive(false): the panel is hidden).
@@ -71,7 +71,7 @@ public:
     // The shown image changed. Without consent (see showMap) nothing is requested.
     void setLocation(const std::optional<GeoPoint>& p);
     std::optional<GeoPoint> location() const { return m_location; }
-    // The user clicked "Karte anzeigen": loads the map. The consent holds for this
+    // The user clicked "Karte einblenden": loads the map. The consent holds for this
     // controller (one window) from now on, so the next images with a position load their
     // map without another click; it is not stored.
     void showMap();

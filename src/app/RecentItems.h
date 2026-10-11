@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #pragma once
 
-// F-OPEN-11: "Zuletzt geöffnet" - files and folders, newest first, at most kMaxItems,
+// F-OPEN-11: "Benutzte Dokumente" - files and folders, newest first, at most kMaxItems,
 // stored in the settings. Every addition is also registered with the system recent
 // documents (macOS: NSDocumentController, shown in the Dock menu and in Finder), but only
 // when running as an app bundle (tests never touch the user's list).

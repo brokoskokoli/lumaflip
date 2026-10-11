@@ -51,9 +51,9 @@ constexpr Label kRows[] = {
     {"shot.exposureBias", QT_TRANSLATE_NOOP("lf::Metadata", "Belichtungskorrektur")},
     {"shot.flash", QT_TRANSLATE_NOOP("lf::Metadata", "Blitz")},
     //: GPS latitude
-    {"gps.latitude", QT_TRANSLATE_NOOP("lf::Metadata", "Breite")},
+    {"gps.latitude", QT_TRANSLATE_NOOP("lf::Metadata", "Breitengrad")},
     //: GPS longitude
-    {"gps.longitude", QT_TRANSLATE_NOOP("lf::Metadata", "Länge")},
+    {"gps.longitude", QT_TRANSLATE_NOOP("lf::Metadata", "Längengrad")},
     //: GPS altitude
     {"gps.altitude", QT_TRANSLATE_NOOP("lf::Metadata", "Höhe")},
 };

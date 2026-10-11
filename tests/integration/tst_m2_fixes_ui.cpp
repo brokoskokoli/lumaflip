@@ -382,7 +382,7 @@ private slots:
         QCOMPARE(buttons.first()->toolTip(), gone);
         // Missing: a note, no error card, the entry is removed, the window stays empty.
         buttons.first()->click();
-        QTRY_VERIFY(w->toastText().contains(QStringLiteral("nicht mehr vorhanden")));
+        QTRY_VERIFY(w->toastText().contains(QStringLiteral("existiert nicht mehr")));
         QVERIFY(w->isEmpty());
         QTRY_COMPARE(recent->shownPaths(), expected.mid(1, 8));
         // A folder entry opens the folder in this (start) window.

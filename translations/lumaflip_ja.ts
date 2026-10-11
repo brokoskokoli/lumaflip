@@ -44,15 +44,15 @@
         <translation>アイコンの位置</translation>
     </message>
     <message>
-        <source>Wie Finder (live): %1</source>
+        <source>Wie im Finder (live): %1</source>
         <translation>Finderと同じ（ライブ）: %1</translation>
     </message>
     <message>
-        <source>Wie Finder: %1</source>
+        <source>Wie im Finder: %1</source>
         <translation>Finderと同じ: %1</translation>
     </message>
     <message>
-        <source>%1 (Finder-Info nicht gefunden)</source>
+        <source>%1 (Finder-Informationen nicht gefunden)</source>
         <translation>%1（Finderの情報が見つかりません）</translation>
     </message>
 </context>
@@ -134,7 +134,7 @@
         <translation>Home / End</translation>
     </message>
     <message>
-        <source>Vollbild / Modus verlassen</source>
+        <source>Vollbild oder Modus beenden</source>
         <translation>フルスクリーン／モードを終了</translation>
     </message>
     <message>
@@ -179,7 +179,7 @@
         <translation>アーカイブにイメージがありません。</translation>
     </message>
     <message>
-        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <source>Das Archiv ist passwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
         <translation>アーカイブはパスワードで保護されています – 暗号化されたアーカイブには対応していません。</translation>
     </message>
     <message>
@@ -197,7 +197,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <source>Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.</source>
+        <source>Unterordner: Nur die ersten %n Bilder werden angezeigt – öffne einen kleineren Ordner.</source>
         <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
         <translation>
             <numerusform>サブフォルダ：最初の %n 枚の画像だけを表示しています。もっと小さいフォルダを開いてください。</numerusform>
@@ -307,7 +307,7 @@
 <context>
     <name>lf::ContainerPolicy</name>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten sind hier nicht möglich.</source>
         <translation>アーカイブやPDF書類内のイメージは表示専用です。ゴミ箱、名前変更、移動、評価は使えません。</translation>
     </message>
 </context>
@@ -379,19 +379,19 @@
         <translation>三分割法のグリッドを表示</translation>
     </message>
     <message>
-        <source>Speichern</source>
+        <source>Sichern</source>
         <translation>保存</translation>
     </message>
     <message>
-        <source>Zuschnitt in der Datei speichern (Enter, widerrufbar)</source>
+        <source>Zuschnitt in der Datei sichern (Enter, widerrufbar)</source>
         <translation>切り取りをファイルに保存（Enter、取り消し可能）</translation>
     </message>
     <message>
-        <source>Speichern unter …</source>
+        <source>Sichern unter …</source>
         <translation>別名で保存…</translation>
     </message>
     <message>
-        <source>Zuschnitt als neue Datei speichern – das Original bleibt unverändert</source>
+        <source>Zuschnitt als neue Datei sichern – das Original bleibt unverändert</source>
         <translation>切り取りを新しいファイルとして保存 – オリジナルは変更されません</translation>
     </message>
     <message>
@@ -411,11 +411,11 @@
 <context>
     <name>lf::CropSave</name>
     <message>
-        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.</source>
+        <source>Die Datei wurde inzwischen verändert – nichts gesichert. Schneide das Bild erneut zu.</source>
         <translation>ファイルがその間に変更されました。何も保存されていません。もう一度切り取ってください。</translation>
     </message>
     <message>
-        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
+        <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden ist nur durch Neukodieren möglich – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
         <translation>このファイルには、ロスレスで切り取ると合わなくなる別の画像（HDR ゲインマップや 2 枚目のステレオ画像など）が含まれています。切り取りは再エンコードでのみ可能で、画質が少し低下し、これらの追加画像は失われます。</translation>
     </message>
     <message>
@@ -435,7 +435,7 @@
         <translation>JPEG データをロスレスで切り取れませんでした（%1）。</translation>
     </message>
     <message>
-        <source>Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.</source>
+        <source>Der Zuschnitt liegt nicht auf dem JPEG-Blockraster.</source>
         <translation>選択範囲が JPEG ブロックの格子に揃っていません。</translation>
     </message>
     <message>
@@ -447,19 +447,19 @@
         <translation>ファイルはもう存在しません。</translation>
     </message>
     <message>
-        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <source>Das Dateiformat wird zum Sichern nicht erkannt.</source>
         <translation>保存用のファイルフォーマットを認識できません。</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
         <translation>アーカイブや PDF 書類内の画像は変更されません。選択範囲は新しいファイルとして書き出せます。</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <source>RAW-Dateien werden nie verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
         <translation>RAW ファイルは変更されません。選択範囲は新しいファイルとして書き出せます。</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gesichert werden. Der Zuschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
         <translation>アニメーションや複数ページのファイルは切り取って保存できません。最初の画像の選択範囲は新しいファイルとして書き出せます。</translation>
     </message>
     <message>
@@ -467,7 +467,7 @@
         <translation>「%1」は書き込み禁止です。</translation>
     </message>
     <message>
-        <source>„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.</source>
+        <source>„Sichern unter“ überschreibt nie das Original – wähle einen anderen Namen.</source>
         <translation>「別名で保存」はオリジナルを上書きしません。別の名前を選んでください。</translation>
     </message>
     <message>
@@ -475,7 +475,7 @@
         <translation>「%1」に書き込めません。</translation>
     </message>
     <message>
-        <source>„%1“ gibt es schon.</source>
+        <source>„%1“ existiert bereits.</source>
         <translation>「%1」はすでに存在します。</translation>
     </message>
     <message>
@@ -487,11 +487,11 @@
         <translation>範囲が選択されていません。</translation>
     </message>
     <message>
-        <source>Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.</source>
+        <source>Der Zuschnitt umfasst das ganze Bild – es gibt nichts zuzuschneiden.</source>
         <translation>選択範囲が画像全体です。切り取るものはありません。</translation>
     </message>
     <message>
-        <source>Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
+        <source>Für den verlustfreien Zuschnitt wurde der Zuschnittbereich an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
         <translation>ロスレスで切り取るため、選択範囲を JPEG ブロックの格子（%1 × %2 ピクセル）に合わせました。現在のサイズは %3 × %4 ピクセルです。</translation>
     </message>
     <message>
@@ -499,7 +499,7 @@
         <translation>この JPEG ファイルはロスレスで切り取れません。再エンコードすると画質が少し低下します。</translation>
     </message>
     <message>
-        <source>Der Zuschnitt kann nicht gespeichert werden.</source>
+        <source>Der Zuschnitt kann nicht gesichert werden.</source>
         <translation>切り取りを保存できません。</translation>
     </message>
     <message>
@@ -507,11 +507,11 @@
         <translation>再エンコードすると画像が完全には同じになりません（カラーモデル、ビット深度、パレット、透明度が変わります）。</translation>
     </message>
     <message>
-        <source>Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.</source>
+        <source>Dieses Format kann hier nicht geschrieben werden. Der Zuschnitt kann in einem anderen Format exportiert werden.</source>
         <translation>このフォーマットはここでは書き込めません。選択範囲は別のフォーマットで書き出せます。</translation>
     </message>
     <message>
-        <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <source>Dieses Format komprimiert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
         <translation>このフォーマットは非可逆です。切り取りは画像を再エンコードしないと保存できず、画質が少し低下します。</translation>
     </message>
     <message>
@@ -527,7 +527,7 @@
         <translation>この画像はロスレスで切り取れません。</translation>
     </message>
     <message>
-        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <source>Der Zuschnitt konnte nicht gesichert werden.</source>
         <translation>切り取りを保存できませんでした。</translation>
     </message>
     <message>
@@ -566,15 +566,15 @@
         <translation>選別</translation>
     </message>
     <message>
-        <source>0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg</source>
+        <source>0–5  Sterne     P  Markieren     X  Ablehnen     U  Markierung aufheben</source>
         <translation>0–5  星     P  採用     X  不採用     U  フラグ解除</translation>
     </message>
     <message>
-        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden</source>
+        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Widerrufen     Esc  Beenden</source>
         <translation>← →  ブラウズ     M/C + 1–9  移動/コピー     ⌘Z  取り消す     Esc  終了</translation>
     </message>
     <message>
-        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U markieren</source>
+        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U setzen Markierungen</source>
         <translation>選別モード：数字で星を付け、P/X/U でフラグ</translation>
     </message>
     <message>
@@ -590,27 +590,27 @@
         <translation>フィルタ：%1 — %2 / %3</translation>
     </message>
     <message>
-        <source>Keine verworfenen Bilder</source>
+        <source>Keine abgelehnten Bilder</source>
         <translation>不採用の画像はありません</translation>
     </message>
     <message numerus="yes">
-        <source>%n verworfene(s) Bild(er) in den Papierkorb legen?</source>
+        <source>%n abgelehnte(s) Bild(er) in den Papierkorb legen?</source>
         <translation>
             <numerusform>不採用の画像 %n 枚をゴミ箱に入れますか？</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <source>%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
+        <source>%n abgelehnte(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
         <translation>
             <numerusform>不採用の画像 %n 枚をフォルダ「_Rejected」に移動しますか？</numerusform>
         </translation>
     </message>
     <message>
-        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren werden mitbewegt. ⌘Z widerruft den ganzen Schritt.</source>
         <translation>表示中の画像のみ（現在のフィルタ）。XMP サイドカーファイルと RAW+JPEG ペアのもう一方のファイルも一緒に移動します。⌘Z で手順全体を取り消せます。</translation>
     </message>
     <message>
-        <source>In den Papierkorb</source>
+        <source>In den Papierkorb legen</source>
         <translation>ゴミ箱に入れる</translation>
     </message>
     <message>
@@ -618,11 +618,11 @@
         <translation>移動</translation>
     </message>
     <message>
-        <source>Verworfene in den Papierkorb</source>
+        <source>Abgelehnte in den Papierkorb legen</source>
         <translation>不採用をゴミ箱へ</translation>
     </message>
     <message>
-        <source>Verworfene nach _Rejected</source>
+        <source>Abgelehnte nach „_Rejected“ verschieben</source>
         <translation>不採用を _Rejected へ</translation>
     </message>
     <message numerus="yes">
@@ -888,7 +888,7 @@
         <translation>共有メモリを使用できません（%1）。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
         <translation>画像用のメモリが足りません（%1 × %2 ピクセル）。</translation>
     </message>
     <message>
@@ -942,7 +942,7 @@
         <translation>デフォルトのアプリに設定</translation>
     </message>
     <message>
-        <source>Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht ausgewählte Formate bleiben beim bisherigen Programm.</source>
+        <source>Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht ausgewählte Formate bleiben bei der bisherigen App.</source>
         <translation>選択した画像フォーマットのデフォルトのアプリがLumaflipになります。選択していないフォーマットは現在のアプリのままです。</translation>
     </message>
     <message>
@@ -1164,7 +1164,7 @@
         <translation>切り取って書き出す</translation>
     </message>
     <message>
-        <source>Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <source>Den Zuschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
         <translation>「%1」の選択範囲を新しいファイルとして書き出します。オリジナルは変更されません。</translation>
     </message>
     <message>
@@ -1223,7 +1223,7 @@
         <translation>すべて保持</translation>
     </message>
     <message>
-        <source>Ohne Ortsdaten (GPS)</source>
+        <source>Ohne Aufnahmeort (GPS)</source>
         <translation>位置情報（GPS）なし</translation>
     </message>
     <message>
@@ -1251,7 +1251,7 @@
         <translation>SDR として（トーンマッピング）</translation>
     </message>
     <message>
-        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung</source>
+        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Endung</source>
         <translation>プレースホルダ: {name} = オリジナルの名前、{n} = 連番、{format} = 拡張子</translation>
     </message>
     <message>
@@ -1278,7 +1278,7 @@
         <translation>書き出す</translation>
     </message>
     <message>
-        <source>Exportiere …</source>
+        <source>Wird exportiert …</source>
         <translation>書き出し中…</translation>
     </message>
     <message>
@@ -1286,7 +1286,7 @@
         <translation>キャンセル</translation>
     </message>
     <message>
-        <source>Exportiere %1 von %2: %3</source>
+        <source>Bild %1 von %2 wird exportiert: %3</source>
         <translation>書き出し中 %1/%2: %3</translation>
     </message>
 </context>
@@ -1389,13 +1389,13 @@
         <translation>画像なし</translation>
     </message>
     <message>
-        <source>Orte werden gelesen … %1 von %2</source>
+        <source>Aufnahmeorte werden gelesen … %1 von %2</source>
         <extracomment>folder map (F-INFO-08) while the GPS positions are read: done / all images</extracomment>
         <translation>位置情報を読み込み中… %1 / %2</translation>
     </message>
     <message numerus="yes">
-        <source>%1 von %n Bildern mit Ort</source>
-        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Ort&quot; (%1 images with a position, %n all)</extracomment>
+        <source>%1 von %n Bildern mit Aufnahmeort</source>
+        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Aufnahmeort&quot; (%1 images with a position, %n all)</extracomment>
         <translation>
             <numerusform>%n 枚中 %1 枚に位置情報あり</numerusform>
         </translation>
@@ -1404,7 +1404,7 @@
 <context>
     <name>lf::FolderMapPanel</name>
     <message>
-        <source>Auf diesem System ist keine Kartendarstellung verfügbar.</source>
+        <source>Karten sind auf diesem System nicht verfügbar.</source>
         <translation>このシステムでは地図を表示できません。</translation>
     </message>
     <message>
@@ -1416,14 +1416,14 @@
         <translation>撮影場所（GPS）を含む画像はありません。</translation>
     </message>
     <message>
-        <source>Karte schließen</source>
+        <source>Ordnerkarte schließen</source>
         <translation>マップを閉じる</translation>
     </message>
 </context>
 <context>
     <name>lf::FolderMapView</name>
     <message>
-        <source>Karten sind unter Windows nicht verfügbar. Fotos mit Ortsangabe in diesem Ordner: %1</source>
+        <source>Karten sind unter Windows nicht verfügbar. Bilder mit Aufnahmeort in diesem Ordner: %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1494,7 +1494,7 @@
         <translation>%1 mm</translation>
     </message>
     <message>
-        <source> (KB: %1 mm)</source>
+        <source> (Kleinbild: %1 mm)</source>
         <extracomment>appended to the focal length: the 35 mm equivalent (&quot;KB&quot; = Kleinbild), e.g. &quot; (35-mm-equiv.: 52 mm)&quot;</extracomment>
         <translation> （35mm判換算: %1 mm）</translation>
     </message>
@@ -1631,7 +1631,7 @@
 <context>
     <name>lf::ImageExport</name>
     <message>
-        <source>„%1“ gibt es schon.</source>
+        <source>„%1“ existiert bereits.</source>
         <translation>「%1」はすでに存在します。</translation>
     </message>
     <message>
@@ -1671,7 +1671,7 @@
         <translation>不明な書き出しフォーマットです。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher zum Exportieren.</source>
+        <source>Nicht genug Arbeitsspeicher zum Exportieren.</source>
         <translation>書き出すためのメモリが足りません。</translation>
     </message>
     <message>
@@ -1694,11 +1694,11 @@
         <translation>画像にピクセルがありません。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
         <translation>画像用のメモリが足りません（%1 × %2 ピクセル）。</translation>
     </message>
     <message>
-        <source>Bildpuffer konnte nicht angelegt werden.</source>
+        <source>Der Bildpuffer konnte nicht angelegt werden.</source>
         <translation>画像バッファを作成できませんでした。</translation>
     </message>
     <message>
@@ -1781,7 +1781,7 @@
         <translation>マップを読み込み中…</translation>
     </message>
     <message>
-        <source>Karte anzeigen</source>
+        <source>Karte einblenden</source>
         <translation>マップを表示</translation>
     </message>
     <message>
@@ -1793,7 +1793,7 @@
         <translation>マップを隠す</translation>
     </message>
     <message>
-        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)</source>
+        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte einblenden“)</source>
         <translation>マップの読み込みを停止します（次に「マップを表示」をクリックするまで）</translation>
     </message>
     <message>
@@ -2028,7 +2028,7 @@
         <translation>幅に合わせる</translation>
     </message>
     <message>
-        <source>Einpassen ↔ 100 % am Cursor</source>
+        <source>Einpassen ↔ 100 % am Mauszeiger</source>
         <translation>ウインドウに合わせる ↔ カーソル位置で100%</translation>
     </message>
     <message>
@@ -2076,11 +2076,11 @@
         <translation>フルスクリーン</translation>
     </message>
     <message>
-        <source>Vollbild bzw. Modus verlassen</source>
+        <source>Vollbild oder Modus beenden</source>
         <translation>フルスクリーン／モードを終了</translation>
     </message>
     <message>
-        <source>Modus verlassen, sonst Fenster schließen</source>
+        <source>Modus beenden, sonst Fenster schließen</source>
         <translation>モードを終了、またはウインドウを閉じる</translation>
     </message>
     <message>
@@ -2124,7 +2124,7 @@
         <translation>上下反転</translation>
     </message>
     <message>
-        <source>Drehung speichern</source>
+        <source>Drehung sichern</source>
         <translation>回転を保存</translation>
     </message>
     <message>
@@ -2132,7 +2132,7 @@
         <translation>ゴミ箱に入れる</translation>
     </message>
     <message>
-        <source>Rückgängig</source>
+        <source>Widerrufen</source>
         <translation>取り消す</translation>
     </message>
     <message>
@@ -2224,15 +2224,15 @@
         <translation>星5個</translation>
     </message>
     <message>
-        <source>Behalten (Pick)</source>
+        <source>Markieren</source>
         <translation>採用（Pick）</translation>
     </message>
     <message>
-        <source>Verwerfen (Reject)</source>
+        <source>Ablehnen</source>
         <translation>不採用（Reject）</translation>
     </message>
     <message>
-        <source>Markierung zurücksetzen</source>
+        <source>Markierung aufheben</source>
         <translation>フラグをリセット</translation>
     </message>
     <message>
@@ -2256,7 +2256,7 @@
         <translation>シャッフル</translation>
     </message>
     <message>
-        <source>Nach Dateiname filtern</source>
+        <source>Nach Dateinamen filtern</source>
         <translation>ファイル名で絞り込む</translation>
     </message>
     <message>
@@ -2300,7 +2300,7 @@
         <translation>サブフォルダを含める</translation>
     </message>
     <message>
-        <source>RAW/JPEG des Paares zeigen</source>
+        <source>RAW/JPEG des Paares anzeigen</source>
         <translation>ペアのRAW/JPEGを表示</translation>
     </message>
     <message>
@@ -2364,7 +2364,7 @@
         <translation>下に回すと次の画像、上に回すと前の画像を表示します。</translation>
     </message>
     <message>
-        <source>Zoomen (am Cursor)</source>
+        <source>Zoomen (am Mauszeiger)</source>
         <translation>ズーム（カーソル位置）</translation>
     </message>
     <message>
@@ -2372,7 +2372,7 @@
         <translation>上に回すと拡大、下に回すと縮小します（マウスポインタの位置を中心に）。</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen (sonst Bild wechseln)</source>
+        <source>Ausschnitt verschieben (sonst Bild wechseln)</source>
         <translation>表示範囲をスクロール（それ以外は画像を切り替え）</translation>
     </message>
     <message>
@@ -2444,7 +2444,7 @@
         <translation>複数ページのファイルではページをめくり、それ以外は画像を切り替えます。</translation>
     </message>
     <message>
-        <source>Ausschnitt seitenweise scrollen (sonst Bild)</source>
+        <source>Ausschnitt seitenweise verschieben (sonst Bild)</source>
         <translation>表示範囲をページ単位でスクロール（それ以外は画像）</translation>
     </message>
     <message>
@@ -2520,7 +2520,7 @@
         <translation>矢印キーで画像を切り替えます。⌥を押しながらだと表示範囲を移動します。</translation>
     </message>
     <message>
-        <source>Erst bis zum Rand scrollen, dann Bild wechseln</source>
+        <source>Erst bis zum Rand verschieben, dann Bild wechseln</source>
         <translation>端までスクロールしてから画像を切り替え</translation>
     </message>
     <message>
@@ -2528,7 +2528,7 @@
         <translation>表示範囲を移動し、画像の端に達すると画像を切り替えます。</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen (Bild mit ⌥←/⌥→)</source>
+        <source>Ausschnitt verschieben (Bild mit ⌥←/⌥→)</source>
         <translation>表示範囲をスクロール（画像の切り替えは⌥←/⌥→）</translation>
     </message>
     <message>
@@ -2540,7 +2540,7 @@
         <translation>↑ / ↓</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen, sonst vorheriges/nächstes Bild</source>
+        <source>Ausschnitt verschieben, sonst vorheriges/nächstes Bild</source>
         <translation>表示範囲をスクロール（それ以外は前の画像／次の画像）</translation>
     </message>
     <message>
@@ -2548,7 +2548,7 @@
         <translation>ズーム中は表示範囲を移動し、それ以外は画像を切り替えます。</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen (wenn gezoomt), sonst nichts</source>
+        <source>Ausschnitt verschieben (wenn gezoomt), sonst nichts</source>
         <translation>表示範囲をスクロール（ズーム中のみ）</translation>
     </message>
     <message>
@@ -2648,7 +2648,7 @@
         <translation>トラックパッドのスワイプ（2本指、横方向）</translation>
     </message>
     <message>
-        <source>Bild wechseln (gezoomt: scrollen)</source>
+        <source>Bild wechseln (gezoomt: Ausschnitt verschieben)</source>
         <translation>画像を切り替え（ズーム中: スクロール）</translation>
     </message>
     <message>
@@ -2656,7 +2656,7 @@
         <translation>スワイプで画像を切り替えます。ズーム中は表示範囲を移動します。</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen</source>
+        <source>Nur Ausschnitt verschieben</source>
         <translation>表示範囲をスクロール</translation>
     </message>
     <message>
@@ -2696,7 +2696,7 @@
         <translation>Esc</translation>
     </message>
     <message>
-        <source>Vollbild bzw. Modus verlassen, sonst nichts</source>
+        <source>Vollbild oder Modus beenden, sonst nichts</source>
         <translation>フルスクリーン／モードを終了（それ以外は何もしない）</translation>
     </message>
     <message>
@@ -2704,7 +2704,7 @@
         <translation>Escでフルスクリーン、スライドショー、その他のモードを終了します。それ以外は何もしません。</translation>
     </message>
     <message>
-        <source>Vollbild bzw. Modus verlassen, sonst Fenster schließen</source>
+        <source>Vollbild oder Modus beenden, sonst Fenster schließen</source>
         <translation>フルスクリーン／モードを終了（それ以外はウインドウを閉じる）</translation>
     </message>
     <message>
@@ -2756,7 +2756,7 @@
         <translation>常に有効</translation>
     </message>
     <message>
-        <source>Ziffern vergeben immer Sterne; P/X/U markieren. Zoom-Ziffern sind aus.</source>
+        <source>Ziffern vergeben immer Sterne, P/X/U setzen Markierungen. Die Zoom-Ziffern sind dann aus.</source>
         <translation>数字キーで常に星を付け、P/X/Uでフラグを付けます。ズーム用の数字キーは無効になります。</translation>
     </message>
 </context>
@@ -2767,11 +2767,11 @@
         <translation>サードパーティのライセンス</translation>
     </message>
     <message>
-        <source>Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im Programmpaket unter Contents/Resources/licenses.</source>
+        <source>Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im App-Paket unter Contents/Resources/licenses.</source>
         <translation>Lumaflipには以下のコンポーネントが含まれています。ライセンス文はアプリケーションパッケージ内のContents/Resources/licensesにもあります。</translation>
     </message>
     <message>
-        <source>Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das Programmpaket gelegt.</source>
+        <source>Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das App-Paket gelegt.</source>
         <translation>開発用ビルド: ライセンス文はパッケージ作成時（tools/package.sh）にアプリケーションパッケージに追加されます。</translation>
     </message>
     <message>
@@ -2841,11 +2841,11 @@
         <translation>ファイルを書き込めませんでした（フォルダが書き込み禁止になっている可能性があります）。</translation>
     </message>
     <message>
-        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte die Drehung erneut speichern.</source>
+        <source>Die Datei wurde inzwischen verändert – nichts gesichert. Sichere die Drehung erneut.</source>
         <translation>ファイルがその間に変更されたため、何も保存されませんでした。もう一度回転を保存してください。</translation>
     </message>
     <message>
-        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
+        <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
         <translation>ファイルにはほかの画像（HDRゲインマップや2枚目のステレオ画像など）が含まれており、JPEGデータを無劣化で並べ替えると失われてしまいます。</translation>
     </message>
     <message>
@@ -2853,15 +2853,15 @@
         <translation>ファイルはもう存在しません。</translation>
     </message>
     <message>
-        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <source>Das Dateiformat wird zum Sichern nicht erkannt.</source>
         <translation>保存用のファイルフォーマットを認識できません。</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; zum dauerhaften Drehen bitte den RAW-Entwickler benutzen.</source>
+        <source>RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; verwende zum dauerhaften Drehen deinen RAW-Konverter.</source>
         <translation>RAWファイルは変更されません。回転は表示にのみ適用されます。永続的に回転するには、RAW現像ソフトを使用してください。</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht gedreht gespeichert werden.</source>
+        <source>Animierte oder mehrseitige Dateien können nicht gedreht gesichert werden.</source>
         <translation>アニメーションまたは複数ページのファイルは、回転して保存できません。</translation>
     </message>
     <message>
@@ -2873,11 +2873,11 @@
         <translation>そのため、EXIFの方向のみを設定しました。</translation>
     </message>
     <message>
-        <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfrei drehen geht nur, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
+        <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfreies Drehen ist nur möglich, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
         <translation>画像の幅または高さがJPEGのブロックサイズの倍数ではありません。無劣化で回転するには、細い端（最大15ピクセル）を切り落とす必要があります。または、EXIFの方向のみを設定します。</translation>
     </message>
     <message>
-        <source>Die Drehung kann nicht gespeichert werden.</source>
+        <source>Die Drehung kann nicht gesichert werden.</source>
         <translation>回転を保存できません。</translation>
     </message>
     <message>
@@ -2897,11 +2897,11 @@
         <translation>この画像は無劣化で回転できません。</translation>
     </message>
     <message>
-        <source>Die Ausrichtung ließ sich nicht ohne Neukodieren speichern.</source>
+        <source>Die Ausrichtung ließ sich nicht ohne Neukodieren sichern.</source>
         <translation>再エンコードせずに方向を保存できませんでした。</translation>
     </message>
     <message>
-        <source>Die Drehung konnte nicht gespeichert werden.</source>
+        <source>Die Drehung konnte nicht gesichert werden.</source>
         <translation>回転を保存できませんでした。</translation>
     </message>
     <message>
@@ -2909,47 +2909,47 @@
         <translation>ファイルを置き換えられませんでした。</translation>
     </message>
     <message>
-        <source>Datei wurde inzwischen verändert – Rückgängig nicht möglich</source>
+        <source>Die Datei wurde inzwischen verändert – Widerrufen nicht möglich</source>
         <translation>ファイルがその間に変更されたため、取り消せません</translation>
     </message>
     <message>
-        <source>Datei wurde inzwischen verändert – Wiederholen nicht möglich</source>
+        <source>Die Datei wurde inzwischen verändert – Wiederholen nicht möglich</source>
         <translation>ファイルがその間に変更されたため、やり直せません</translation>
     </message>
     <message>
-        <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Rückgängig/Wiederholen ist dafür nicht mehr möglich.</source>
+        <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Widerrufen/Wiederholen ist dafür nicht mehr möglich.</source>
         <translation>ディスク容量を節約するため、この操作のバックアップコピーは削除されました。この操作は取り消し／やり直しできなくなりました。</translation>
     </message>
     <message>
-        <source>Es gibt nichts rückgängig zu machen.</source>
+        <source>Es gibt nichts zu widerrufen.</source>
         <translation>取り消す操作はありません。</translation>
     </message>
     <message>
-        <source>Kein Platz für die Sicherungskopie – nichts gespeichert.</source>
+        <source>Kein Speicherplatz für die Sicherungskopie – nichts gesichert.</source>
         <translation>バックアップコピー用の空き容量がないため、何も保存されませんでした。</translation>
     </message>
     <message>
-        <source>Keine Drehung zu speichern</source>
+        <source>Keine Drehung zu sichern</source>
         <translation>保存する回転はありません</translation>
     </message>
     <message>
-        <source>Drehung gespeichert (EXIF-Ausrichtung)</source>
+        <source>Drehung gesichert (EXIF-Ausrichtung)</source>
         <translation>回転を保存しました（EXIFの方向）</translation>
     </message>
     <message>
-        <source>Drehung verlustfrei gespeichert</source>
+        <source>Drehung verlustfrei gesichert</source>
         <translation>回転を無劣化で保存しました</translation>
     </message>
     <message>
-        <source>Drehung verlustfrei gespeichert (Rand beschnitten)</source>
+        <source>Drehung verlustfrei gesichert (Rand beschnitten)</source>
         <translation>回転を無劣化で保存しました（端を切り落とし）</translation>
     </message>
     <message>
-        <source>Drehung gespeichert (verlustfrei neu kodiert)</source>
+        <source>Drehung gesichert (verlustfrei neu kodiert)</source>
         <translation>回転を保存しました（無劣化で再エンコード）</translation>
     </message>
     <message>
-        <source>Drehung gespeichert (neu kodiert)</source>
+        <source>Drehung gesichert (neu kodiert)</source>
         <translation>回転を保存しました（再エンコード）</translation>
     </message>
     <message>
@@ -2961,7 +2961,7 @@
         <translation>画像をデコードできませんでした。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher zum Drehen.</source>
+        <source>Nicht genug Arbeitsspeicher zum Drehen.</source>
         <translation>回転するためのメモリが足りません。</translation>
     </message>
     <message>
@@ -2969,7 +2969,7 @@
         <translation>このフォーマットには書き込めません。</translation>
     </message>
     <message>
-        <source>Das Bild lässt sich in diesem Format nicht exakt neu speichern.</source>
+        <source>Das Bild lässt sich in diesem Format nicht exakt neu sichern.</source>
         <translation>このフォーマットでは画像をまったく同じ状態で保存し直すことができません。</translation>
     </message>
     <message>
@@ -2997,7 +2997,7 @@
         <translation>「%1」を置き換えられませんでした: %2</translation>
     </message>
     <message>
-        <source>Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.</source>
+        <source>Die Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.</source>
         <translation>「取り消す」用のバックアップコピーを作成できませんでした。</translation>
     </message>
     <message>
@@ -3017,7 +3017,7 @@
         <translation>セグメンテーションマスク</translation>
     </message>
     <message>
-        <source>Die Datei enthält Zusatzbilder (%1), die beim Speichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gespeichert und gilt weiter nur in der Anzeige.</source>
+        <source>Die Datei enthält Zusatzbilder (%1), die beim Sichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gesichert und gilt weiter nur in der Anzeige.</source>
         <translation>ファイルには追加の画像（%1）が含まれており、方向を保存すると失われてしまいます。そのため回転は保存されず、引き続き表示にのみ適用されます。</translation>
     </message>
     <message>
@@ -3045,7 +3045,7 @@
         <translation>方向を無劣化で書き込めませんでした（%1）。</translation>
     </message>
     <message>
-        <source>Das Bild lässt sich nicht exakt neu speichern.</source>
+        <source>Das Bild lässt sich nicht exakt neu sichern.</source>
         <translation>画像をまったく同じ状態で保存し直すことができません。</translation>
     </message>
     <message>
@@ -3053,7 +3053,7 @@
         <translation>新しいファイルが見つかりません。</translation>
     </message>
     <message>
-        <source>Nicht genug Platz, um „%1“ sicher zu überschreiben.</source>
+        <source>Nicht genug Speicherplatz, um „%1“ sicher zu überschreiben.</source>
         <translation>「%1」を安全に上書きするための空き容量が足りません。</translation>
     </message>
     <message>
@@ -3080,7 +3080,7 @@
         <translation>ファイルが渡されませんでした。</translation>
     </message>
     <message>
-        <source>Der Bildschirm ist nicht mehr da.</source>
+        <source>Der Bildschirm ist nicht mehr angeschlossen.</source>
         <translation>ディスプレイが接続されていません。</translation>
     </message>
     <message>
@@ -3092,7 +3092,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Windows hat das Bild nicht als Hintergrund übernommen.</source>
+        <source>Windows hat das Bild nicht als Desktophintergrund übernommen.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3119,7 +3119,7 @@
         <translation>フォルダを開く…</translation>
     </message>
     <message>
-        <source>Zuletzt geöffnet</source>
+        <source>Benutzte Dokumente</source>
         <translation>最近使った項目を開く</translation>
     </message>
     <message>
@@ -3139,7 +3139,7 @@
         <translation>名称変更…</translation>
     </message>
     <message>
-        <source>In Standard-Editor öffnen</source>
+        <source>Im Editor öffnen</source>
         <translation>デフォルトのエディタで開く</translation>
     </message>
     <message>
@@ -3203,7 +3203,7 @@
         <translation>ウインドウに合わせる</translation>
     </message>
     <message>
-        <source>Einpassen inkl. Vergrößern</source>
+        <source>Einpassen (auch vergrößern)</source>
         <translation>ウインドウに合わせる（拡大を含む）</translation>
     </message>
     <message>
@@ -3291,7 +3291,7 @@
         <translation>並べ替え</translation>
     </message>
     <message>
-        <source>Wie Finder</source>
+        <source>Wie im Finder</source>
         <translation>Finderと同じ</translation>
     </message>
     <message>
@@ -3400,11 +3400,11 @@
         <translation>切り取り…</translation>
     </message>
     <message>
-        <source>Overlays</source>
+        <source>Einblendungen</source>
         <translation>オーバーレイ</translation>
     </message>
     <message>
-        <source>Über-/Unterbelichtung</source>
+        <source>Über-/Unterbelichtungswarnung</source>
         <translation>露出オーバー／アンダー</translation>
     </message>
     <message>
@@ -3452,7 +3452,7 @@
         <translation>前のページ</translation>
     </message>
     <message>
-        <source>Drehung speichern</source>
+        <source>Drehung sichern</source>
         <translation>回転を保存</translation>
     </message>
     <message>
@@ -3480,7 +3480,7 @@
         <translation>すべての画像</translation>
     </message>
     <message>
-        <source>Nur Picks</source>
+        <source>Nur markierte</source>
         <translation>採用のみ</translation>
     </message>
     <message>
@@ -3488,7 +3488,7 @@
         <translation>未評価のみ</translation>
     </message>
     <message>
-        <source>Nur verworfene</source>
+        <source>Nur abgelehnte</source>
         <translation>不採用のみ</translation>
     </message>
     <message>
@@ -3516,11 +3516,11 @@
         <translation>フィルタ</translation>
     </message>
     <message>
-        <source>Alle verworfenen in den Papierkorb …</source>
+        <source>Alle abgelehnten in den Papierkorb legen …</source>
         <translation>不採用をすべてゴミ箱へ…</translation>
     </message>
     <message>
-        <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
+        <source>Alle abgelehnten nach „_Rejected“ verschieben …</source>
         <translation>不採用をすべて「_Rejected」へ…</translation>
     </message>
     <message>
@@ -3560,7 +3560,7 @@
         <translation>サブフォルダを含める</translation>
     </message>
     <message>
-        <source>Karte</source>
+        <source>Ordnerkarte</source>
         <translation>マップ</translation>
     </message>
     <message>
@@ -3576,7 +3576,7 @@
         <translation>画像に移動…</translation>
     </message>
     <message>
-        <source>Nach Dateiname filtern …</source>
+        <source>Nach Dateinamen filtern …</source>
         <translation>ファイル名で絞り込む…</translation>
     </message>
     <message>
@@ -3596,7 +3596,7 @@
         <translation>ウインドウをリンク…</translation>
     </message>
     <message>
-        <source>Entkoppeln</source>
+        <source>Fenster entkoppeln</source>
         <translation>ウインドウのリンクを解除</translation>
     </message>
     <message>
@@ -3685,11 +3685,11 @@
 <context>
     <name>lf::MenuExtras</name>
     <message>
-        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <source>Einzelne PDF-Seiten können nicht an andere Apps übergeben werden.</source>
         <translation>PDFの個々のページはほかのアプリに渡せません。</translation>
     </message>
     <message>
-        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <source>Das Bild wird aus dem Archiv entpackt – versuche es gleich noch einmal.</source>
         <translation>画像をアーカイブから展開しています – 少し待ってからもう一度お試しください。</translation>
     </message>
     <message>
@@ -3721,15 +3721,15 @@
         <translation>重ねて表示</translation>
     </message>
     <message>
-        <source>Vorherigen Tab zeigen</source>
+        <source>Vorherigen Tab anzeigen</source>
         <translation>前のタブを表示</translation>
     </message>
     <message>
-        <source>Nächsten Tab zeigen</source>
+        <source>Nächsten Tab anzeigen</source>
         <translation>次のタブを表示</translation>
     </message>
     <message>
-        <source>Tab in neues Fenster bewegen</source>
+        <source>Tab in ein neues Fenster bewegen</source>
         <translation>タブを新規ウインドウに移動</translation>
     </message>
     <message>
@@ -3853,12 +3853,12 @@
         <translation>撮影日</translation>
     </message>
     <message>
-        <source>Breite</source>
+        <source>Breitengrad</source>
         <extracomment>GPS latitude</extracomment>
         <translation>緯度</translation>
     </message>
     <message>
-        <source>Länge</source>
+        <source>Längengrad</source>
         <extracomment>GPS longitude</extracomment>
         <translation>経度</translation>
     </message>
@@ -3964,7 +3964,7 @@
         <translation>キャンセル</translation>
     </message>
     <message>
-        <source>Bitte eine Bildnummer zwischen 1 und %1 eingeben</source>
+        <source>Gib eine Bildnummer zwischen 1 und %1 ein.</source>
         <translation>1〜%1 の画像番号を入力してください</translation>
     </message>
     <message>
@@ -3987,7 +3987,7 @@
 <context>
     <name>lf::OpenWithService</name>
     <message>
-        <source>Kein Programm zum Bearbeiten gefunden. Wähle eines unter Einstellungen → Allgemein → Editor.</source>
+        <source>Keine App zum Bearbeiten gefunden. Wähle eine unter Einstellungen → Allgemein → Editor.</source>
         <translation>編集用のアプリが見つかりません。「設定」→「一般」→「エディタ」で選択してください。</translation>
     </message>
     <message>
@@ -3995,11 +3995,11 @@
         <translation>プログラム (*.exe)</translation>
     </message>
     <message>
-        <source>Programme (*.desktop);;Alle Dateien (*)</source>
+        <source>Apps (*.desktop);;Alle Dateien (*)</source>
         <translation>プログラム (*.desktop);;すべてのファイル (*)</translation>
     </message>
     <message>
-        <source>„%1“ ist kein Programm.</source>
+        <source>„%1“ ist keine App.</source>
         <translation>「%1」はプログラムではありません。</translation>
     </message>
     <message>
@@ -4011,15 +4011,15 @@
         <translation>その他…</translation>
     </message>
     <message>
-        <source>Programm wählen</source>
+        <source>App wählen</source>
         <translation>アプリを選択</translation>
     </message>
     <message>
-        <source>Programme (*.app)</source>
+        <source>Apps (*.app)</source>
         <translation>アプリケーション (*.app)</translation>
     </message>
     <message>
-        <source>Programme werden gesucht …</source>
+        <source>Apps werden gesucht …</source>
         <translation>アプリを検索中…</translation>
     </message>
     <message>
@@ -4027,7 +4027,7 @@
         <translation>%1（デフォルト）</translation>
     </message>
     <message>
-        <source>Keine passenden Programme</source>
+        <source>Keine passenden Apps</source>
         <translation>対応するアプリがありません</translation>
     </message>
 </context>
@@ -4038,7 +4038,7 @@
         <translation>グリッド表示する画像がありません</translation>
     </message>
     <message>
-        <source>Zum Vergleichen mindestens zwei Bilder wählen</source>
+        <source>Wähle zum Vergleichen mindestens zwei Bilder aus</source>
         <translation>比較するには画像を2枚以上選択してください</translation>
     </message>
     <message>
@@ -4115,7 +4115,7 @@
         <translation>ファイルが存在しません。</translation>
     </message>
     <message>
-        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <source>Das PDF-Dokument ist passwortgeschützt.</source>
         <translation>PDF書類はパスワードで保護されています。</translation>
     </message>
     <message>
@@ -4123,7 +4123,7 @@
         <translation>ページが空です。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für die Seite.</source>
+        <source>Nicht genug Arbeitsspeicher für die Seite.</source>
         <translation>ページに必要なメモリが足りません。</translation>
     </message>
 </context>
@@ -4174,7 +4174,7 @@
         <translation>言語:</translation>
     </message>
     <message>
-        <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbild aktivieren“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
+        <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbildmodus“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
         <translation>すぐに反映されます。macOSのメニューとウインドウ（「フルスクリーンにする」、「サービス」、「開く」、アクセス許可の確認）は再起動後に切り替わります。</translation>
     </message>
     <message>
@@ -4206,7 +4206,7 @@
         <translation>終了時に開いていたすべてのウインドウのフォルダ、画像、ズーム、位置。</translation>
     </message>
     <message>
-        <source>Vor dem Löschen nachfragen</source>
+        <source>Vor dem Bewegen in den Papierkorb nachfragen</source>
         <translation>削除する前に確認</translation>
     </message>
     <message>
@@ -4218,11 +4218,11 @@
         <translation>エディタ:</translation>
     </message>
     <message>
-        <source>Für „In Standard-Editor öffnen“ (Taste E).</source>
+        <source>Für „Im Editor öffnen“ (Taste E).</source>
         <translation>「デフォルトのエディタで開く」（Eキー）に使用します。</translation>
     </message>
     <message>
-        <source>Drehung speichern:</source>
+        <source>Drehung sichern:</source>
         <translation>回転の保存:</translation>
     </message>
     <message>
@@ -4234,7 +4234,7 @@
         <translation>JPEGを無劣化で回転（DCT）</translation>
     </message>
     <message>
-        <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Programme ohne EXIF-Unterstützung das Bild richtig zeigen. RAW-Dateien werden nie verändert; ⌘Z macht das Speichern rückgängig.</source>
+        <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Apps ohne EXIF-Unterstützung das Bild richtig anzeigen. RAW-Dateien werden nie verändert; ⌘Z widerruft das Sichern.</source>
         <translation>どちらも画像のピクセルは変更されません。「EXIFの方向」はフラグだけを変更します（JPEG、HEIC、TIFF、PNG）。「無劣化で回転」はJPEGのブロックを並べ替えるため、EXIFに対応していないアプリでも画像が正しく表示されます。RAWファイルは変更されません。⌘Zで保存を取り消せます。</translation>
     </message>
     <message>
@@ -4258,7 +4258,7 @@
         <translation>マウスを動かしたときに表示</translation>
     </message>
     <message>
-        <source>Immer zeigen</source>
+        <source>Immer einblenden</source>
         <translation>常に表示</translation>
     </message>
     <message>
@@ -4278,7 +4278,7 @@
         <translation>新規ウインドウに表示:</translation>
     </message>
     <message>
-        <source>Statuszeile</source>
+        <source>Statusleiste</source>
         <translation>ステータスバー</translation>
     </message>
     <message>
@@ -4326,7 +4326,7 @@
         <translation>ライト</translation>
     </message>
     <message>
-        <source>Wie Systemdarstellung</source>
+        <source>Wie System</source>
         <translation>システムの外観と同じ</translation>
     </message>
     <message>
@@ -4358,7 +4358,7 @@
         <translation>ウインドウに合わせる（拡大しない）</translation>
     </message>
     <message>
-        <source>Einpassen inkl. Vergrößern</source>
+        <source>Einpassen (auch vergrößern)</source>
         <translation>ウインドウに合わせる（拡大を含む）</translation>
     </message>
     <message>
@@ -4390,7 +4390,7 @@
         <translation>スムーズ</translation>
     </message>
     <message>
-        <source>Pixel scharf</source>
+        <source>Scharfe Pixel</source>
         <translation>ピクセルをシャープに</translation>
     </message>
     <message>
@@ -4498,11 +4498,11 @@
         <translation>Macの標準</translation>
     </message>
     <message>
-        <source>Windows-Viewer-Gewohnheiten</source>
+        <source>Wie Windows-Bildbetrachter</source>
         <translation>Windowsビューアの操作感</translation>
     </message>
     <message>
-        <source>Fotograf:in / Lightroom</source>
+        <source>Fotografie / Lightroom</source>
         <translation>写真家／Lightroom</translation>
     </message>
     <message>
@@ -4510,7 +4510,7 @@
         <translation>マウス、トラックパッド、キー</translation>
     </message>
     <message>
-        <source>Mausrad-Feinheiten</source>
+        <source>Mausrad-Feineinstellungen</source>
         <translation>マウスホイールの詳細設定</translation>
     </message>
     <message>
@@ -4554,7 +4554,7 @@
         <translation>キーボードショートカット</translation>
     </message>
     <message>
-        <source>Feld anklicken und neue Taste drücken. Bis zu drei Kürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
+        <source>Klicke auf ein Feld und drücke die neue Taste. Bis zu drei Tastenkürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
         <translation>フィールドをクリックしてから新しいキーを押します。1つの操作に最大3つのショートカットを設定できます。評価用の数字キーとP/X/Uは選別モードでのみ有効です。</translation>
     </message>
     <message>
@@ -4574,7 +4574,7 @@
         <translation>–</translation>
     </message>
     <message>
-        <source>Standardkürzel wiederherstellen</source>
+        <source>Standard-Tastenkürzel wiederherstellen</source>
         <translation>デフォルトのショートカットに戻す</translation>
     </message>
     <message>
@@ -4586,7 +4586,7 @@
         <translation>競合: %1</translation>
     </message>
     <message numerus="yes">
-        <source>%n Aktion(en) mit doppelt belegten Tasten – bitte eine davon ändern.</source>
+        <source>%n Aktion(en) mit doppelt belegten Tasten – ändere eine davon.</source>
         <translation>
             <numerusform>%n 個の操作で同じキーが割り当てられています。どれか1つを変更してください。</numerusform>
         </translation>
@@ -4712,7 +4712,7 @@
         <translation>クイック移動の移動先 %1</translation>
     </message>
     <message>
-        <source>Bewertungen speichern</source>
+        <source>Speicherort für Bewertungen</source>
         <translation>評価の保存先</translation>
     </message>
     <message>
@@ -4720,7 +4720,7 @@
         <translation>画像の横のXMPサイドカーファイル（画像.xmp）</translation>
     </message>
     <message>
-        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
+        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Abgelehnt“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
         <translation>Lightroom、Capture One、darktable と互換：星は xmp:Rating に、「不採用」は -1 として保存。ファイルの既存の内容は保持されます。</translation>
     </message>
     <message>
@@ -4740,11 +4740,11 @@
         <translation>星の記号：</translation>
     </message>
     <message>
-        <source>Tag für Pick:</source>
+        <source>Tag für „Markiert“:</source>
         <translation>採用のタグ：</translation>
     </message>
     <message>
-        <source>Tag für Verworfen:</source>
+        <source>Tag für „Abgelehnt“:</source>
         <translation>不採用のタグ：</translation>
     </message>
     <message>
@@ -4764,7 +4764,7 @@
         <translation>選別モードでズームを固定</translation>
     </message>
     <message>
-        <source>Tastenhilfe im Aussortiermodus zeigen</source>
+        <source>Tastenhilfe im Aussortiermodus einblenden</source>
         <translation>選別モードでキーのヘルプを表示</translation>
     </message>
     <message>
@@ -4776,7 +4776,7 @@
         <translation>クイック移動</translation>
     </message>
     <message>
-        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z macht es rückgängig.</source>
+        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z widerruft es.</source>
         <translation>M に続けて 1–9 で画像を移動先フォルダへ移動、C に続けて 1–9 でコピーします。M M または C C で前回の移動先を繰り返します。⌘Z で取り消せます。</translation>
     </message>
     <message>
@@ -4880,7 +4880,7 @@
         <translation>先読みする画像:</translation>
     </message>
     <message>
-        <source>Bilder zurück behalten:</source>
+        <source>Vorherige Bilder behalten:</source>
         <translation>保持する前の画像:</translation>
     </message>
     <message>
@@ -4892,7 +4892,7 @@
         <translation>テキスト認識表示と被写体の切り抜きを許可（⇧⌘L）</translation>
     </message>
     <message>
-        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Internetverbindung.</source>
         <translation>イメージは、ウインドウでテキスト認識表示をオンにしたときだけ、このMac上でネットワークを使わずに解析されます。</translation>
     </message>
     <message>
@@ -4900,7 +4900,7 @@
         <translation>カスタムアクション</translation>
     </message>
     <message>
-        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Kurzbefehle-App) erhält das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
         <translation>シェルコマンドまたはショートカット（ショートカットApp）は現在のイメージを引数として受け取ります。メニュー: ファイル → カスタムアクション。</translation>
     </message>
     <message>
@@ -4912,7 +4912,7 @@
         <translation> s</translation>
     </message>
     <message>
-        <source>Einstellungen sichern</source>
+        <source>Backup der Einstellungen</source>
         <translation>設定のバックアップ</translation>
     </message>
     <message>
@@ -4980,12 +4980,8 @@
         <translation>この画像タイプのシステムのデフォルトのアプリ（Lumaflip以外）</translation>
     </message>
     <message>
-        <source>Lumaflip kann nicht sein eigener Editor sein. Bitte wähle ein anderes Programm.</source>
+        <source>Lumaflip kann nicht sein eigener Editor sein. Wähle eine andere App.</source>
         <translation>Lumaflip自身をエディタにすることはできません。別のアプリを選択してください。</translation>
-    </message>
-    <message>
-        <source>Auswählen …</source>
-        <translation>選択…</translation>
     </message>
     <message>
         <source>Editor wählen</source>
@@ -5036,7 +5032,7 @@
         <translation>画像サイズ %1 × %2 が無効か、大きすぎます。</translation>
     </message>
     <message>
-        <source>Die Farbtiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
+        <source>Die Bittiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
         <translation>このPSBファイルの色深度またはカラーモードはサポートされていません。</translation>
     </message>
     <message>
@@ -5044,7 +5040,7 @@
         <translation>このPSBファイルの圧縮形式はサポートされていません。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>画像用のメモリが足りません。</translation>
     </message>
     <message>
@@ -5087,7 +5083,7 @@
         <translation>SVGファイルが無効か、破損しています。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>画像用のメモリが足りません。</translation>
     </message>
 </context>
@@ -5120,7 +5116,7 @@
         <translation>コピー先…（1–9、C = 前回と同じ）</translation>
     </message>
     <message>
-        <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
+        <source>Noch kein Ziel verwendet – wähle zuerst eine Ziffer 1–9.</source>
         <translation>まだ移動先を使っていません。先に数字 1–9 を選んでください。</translation>
     </message>
     <message>
@@ -5164,11 +5160,11 @@
         <translation>名前の競合</translation>
     </message>
     <message>
-        <source>„%1“ gibt es in „%2“ schon.</source>
+        <source>„%1“ existiert bereits in „%2“.</source>
         <translation>「%1」は「%2」にすでに存在します。</translation>
     </message>
     <message>
-        <source>Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.</source>
+        <source>„Ersetzen“ legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z widerruft alles.</source>
         <translation>「置き換える」は既存のファイルをゴミ箱に入れ、「両方を残す」は新しいファイルに「%1」のような名前を付けます。⌘Z ですべて取り消せます。</translation>
     </message>
     <message>
@@ -5195,7 +5191,7 @@
         <translation>すべて</translation>
     </message>
     <message>
-        <source>nur Picks</source>
+        <source>nur markierte</source>
         <translation>採用のみ</translation>
     </message>
     <message>
@@ -5207,15 +5203,15 @@
         <translation>未評価のみ</translation>
     </message>
     <message>
-        <source>nur verworfene</source>
+        <source>nur abgelehnte</source>
         <translation>不採用のみ</translation>
     </message>
     <message>
-        <source>Pick</source>
+        <source>Markiert</source>
         <translation>採用</translation>
     </message>
     <message>
-        <source>Verworfen</source>
+        <source>Abgelehnt</source>
         <translation>不採用</translation>
     </message>
 </context>
@@ -5270,7 +5266,7 @@
         <translation>再エンコードせずに評価を画像に書き込めませんでした。</translation>
     </message>
     <message>
-        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.</source>
+        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gesichert.</source>
         <translation>「%1」はその間に変更されました。評価は保存されていません。</translation>
     </message>
     <message>
@@ -5360,31 +5356,31 @@
         <translation>新しいファイル名</translation>
     </message>
     <message>
-        <source>Soll die Endung „.%1“ entfernt werden?</source>
+        <source>Möchtest du die Endung „.%1“ wirklich entfernen?</source>
         <translation>拡張子「.%1」を取り除きますか?</translation>
     </message>
     <message>
-        <source>Soll die Endung „.%1“ hinzugefügt werden?</source>
+        <source>Möchtest du die Endung „.%1“ wirklich hinzufügen?</source>
         <translation>拡張子「.%1」を追加しますか?</translation>
     </message>
     <message>
-        <source>Soll die Endung „.%1“ in „.%2“ geändert werden?</source>
+        <source>Möchtest du die Endung wirklich von „.%1“ in „.%2“ ändern?</source>
         <translation>拡張子を「.%1」から「.%2」に変更しますか?</translation>
     </message>
     <message>
-        <source>Dateiendung ändern?</source>
+        <source>Endung ändern?</source>
         <translation>ファイルの拡張子を変更しますか?</translation>
     </message>
     <message>
-        <source>Die Datei wird dadurch nicht umgewandelt. Andere Programme erkennen sie danach eventuell nicht mehr.</source>
+        <source>Die Datei wird dadurch nicht umgewandelt. Andere Apps erkennen sie danach eventuell nicht mehr.</source>
         <translation>ファイルが変換されるわけではありません。変更後、ほかのアプリでファイルが認識されなくなる可能性があります。</translation>
     </message>
     <message>
-        <source>Ohne Endung lassen</source>
+        <source>Nicht hinzufügen</source>
         <translation>拡張子なしのままにする</translation>
     </message>
     <message>
-        <source>„.%1“ behalten</source>
+        <source>„.%1“ beibehalten</source>
         <translation>「.%1」のままにする</translation>
     </message>
     <message>
@@ -5427,7 +5423,7 @@
         <translation>SVGファイルのサイズが無効です。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>画像用のメモリが足りません。</translation>
     </message>
     <message>
@@ -5506,7 +5502,7 @@
         <translation>「%1」に書き込めません。</translation>
     </message>
     <message>
-        <source>Lumaflip ist nicht als Anwendung installiert (%1 fehlt).</source>
+        <source>Lumaflip ist nicht als App installiert (%1 fehlt).</source>
         <translation>Lumaflip はアプリケーションとしてインストールされていません（%1 がありません）。</translation>
     </message>
     <message>
@@ -5522,11 +5518,11 @@
         <translation>「%1」はファイル名をコマンドとして読み取るため、セキュリティ上の理由で起動されません。</translation>
     </message>
     <message>
-        <source>Das Programm wurde nicht gefunden.</source>
+        <source>Die App wurde nicht gefunden.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Windows erlaubt Programmen nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
+        <source>Windows erlaubt Apps nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5565,11 +5561,11 @@
         <translation>ページ %1 は存在しません。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>画像用のメモリが足りません。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
         <translation>画像用のメモリが足りません（%1 × %2 ピクセル）。</translation>
     </message>
 </context>
@@ -5645,11 +5641,11 @@
 <context>
     <name>lf::UndoBackupStore</name>
     <message>
-        <source>Die Sicherung für „Rückgängig“ ist nicht mehr vorhanden.</source>
+        <source>Die Sicherungskopie für „Widerrufen“ existiert nicht mehr.</source>
         <translation>「取り消す」用のバックアップがもうありません。</translation>
     </message>
     <message>
-        <source>Nicht genug Platz für die Sicherungskopie (Rückgängig) – nichts gespeichert.</source>
+        <source>Nicht genug Speicherplatz für die Sicherungskopie (Widerrufen) – nichts gesichert.</source>
         <translation>バックアップコピー（取り消し用）の空き容量が足りないため、何も保存されませんでした。</translation>
     </message>
 </context>
@@ -5707,7 +5703,7 @@
         <translation>フル解像度は利用できません</translation>
     </message>
     <message>
-        <source>Lumaflip – lädt …</source>
+        <source>Lumaflip – wird geladen …</source>
         <translation>Lumaflip – 読み込み中…</translation>
     </message>
     <message>
@@ -5814,7 +5810,7 @@
         <translation>パスをコピーしました</translation>
     </message>
     <message>
-        <source>„%1“ ist nicht mehr vorhanden.</source>
+        <source>„%1“ existiert nicht mehr.</source>
         <translation>「%1」はもう存在しません。</translation>
     </message>
     <message>
@@ -5872,19 +5868,19 @@
         <translation>スライドショー – スペースバー: 一時停止 · 1–9: 秒数 · Esc: 終了</translation>
     </message>
     <message>
-        <source>Keine Drehung zu speichern – zuerst mit ⌘L oder ⌘R drehen</source>
+        <source>Keine Drehung zu sichern – drehe das Bild zuerst mit ⌘L oder ⌘R</source>
         <translation>保存する回転はありません – まず⌘Lまたは⌘Rで回転してください</translation>
     </message>
     <message>
-        <source>Drehung speichern</source>
+        <source>Drehung sichern</source>
         <translation>回転を保存</translation>
     </message>
     <message>
-        <source>Verlustfrei drehen geht nur mit beschnittenem Rand.</source>
+        <source>Verlustfreies Drehen ist nur mit beschnittenem Rand möglich.</source>
         <translation>無劣化で回転するには端を切り落とす必要があります。</translation>
     </message>
     <message>
-        <source>Die Drehung kann nur durch Neukodieren gespeichert werden.</source>
+        <source>Die Drehung kann nur durch Neukodieren gesichert werden.</source>
         <translation>回転を保存するには再エンコードが必要です。</translation>
     </message>
     <message>
@@ -5920,7 +5916,7 @@
         <translation>イメージが開かれていません。</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <source>Bilder in Archiven und PDF-Seiten können nicht als Schreibtischhintergrund festgelegt werden.</source>
         <translation>アーカイブ内のイメージやPDFページはデスクトップピクチャにできません。</translation>
     </message>
     <message>
@@ -5945,7 +5941,7 @@
         <translation>すべての画面</translation>
     </message>
     <message>
-        <source>Diese Arbeitsumgebung wird nicht unterstützt.</source>
+        <source>Diese Desktopumgebung wird nicht unterstützt.</source>
         <translation>このデスクトップ環境には対応していません。</translation>
     </message>
 </context>
@@ -5985,7 +5981,7 @@
         <translation>メタデータに AF ポイントがありません</translation>
     </message>
     <message>
-        <source>Zuschneiden geht in der Einzelbildansicht.</source>
+        <source>Zuschneiden ist nur in der Einzelbildansicht möglich.</source>
         <translation>切り取りは 1 枚表示で使用できます。</translation>
     </message>
     <message>
@@ -5993,11 +5989,11 @@
         <translation>切り取る画像がありません。</translation>
     </message>
     <message>
-        <source>Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab</source>
+        <source>Zuschneiden: Rahmen ziehen – Enter sichert, Esc bricht ab</source>
         <translation>切り取り: 枠をドラッグ – Enter で保存、Esc で中止</translation>
     </message>
     <message>
-        <source>Der vorige Zuschnitt wird noch gespeichert.</source>
+        <source>Der vorherige Zuschnitt wird noch gesichert.</source>
         <translation>前回の切り取りをまだ保存中です。</translation>
     </message>
     <message>
@@ -6010,7 +6006,7 @@
         <translation>%1-cropped.%2</translation>
     </message>
     <message>
-        <source>Zugeschnittenes Bild speichern unter</source>
+        <source>Zugeschnittenes Bild sichern unter</source>
         <translation>切り取った画像を別名で保存</translation>
     </message>
     <message>
@@ -6022,7 +6018,7 @@
         <translation>切り取り</translation>
     </message>
     <message>
-        <source>„%1“ gibt es schon. Ersetzen?</source>
+        <source>„%1“ existiert bereits. Möchtest du die Datei ersetzen?</source>
         <translation>「%1」はすでに存在します。置き換えますか？</translation>
     </message>
     <message>
@@ -6034,7 +6030,7 @@
         <translation>置き換える</translation>
     </message>
     <message>
-        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <source>Der Zuschnitt konnte nicht gesichert werden.</source>
         <translation>切り取りを保存できませんでした。</translation>
     </message>
     <message>
@@ -6046,7 +6042,7 @@
         <translation>切り取って書き出す…</translation>
     </message>
     <message>
-        <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
+        <source>Der Zuschnitt kann nur durch Neukodieren gesichert werden.</source>
         <translation>切り取りは再エンコードしないと保存できません。</translation>
     </message>
     <message>
@@ -6058,7 +6054,7 @@
         <translation>キャンセル</translation>
     </message>
     <message>
-        <source>Zugeschnitten gespeichert als „%1“</source>
+        <source>Zugeschnitten gesichert als „%1“</source>
         <translation>切り取った画像を「%1」として保存しました</translation>
     </message>
     <message>
@@ -6097,7 +6093,7 @@
 <context>
     <name>lf::WindowExtras</name>
     <message>
-        <source>Karte</source>
+        <source>Ordnerkarte</source>
         <translation>マップ</translation>
     </message>
     <message>
@@ -6168,7 +6164,7 @@
         <translation>テキスト認識表示オフ</translation>
     </message>
     <message>
-        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – schalte mit ⇧⌘H auf SDR um.</source>
         <translation>HDR表示中はテキスト認識表示を使用できません。⇧⌘HでSDRに切り替えてください。</translation>
     </message>
     <message>
@@ -6234,11 +6230,11 @@
         <translation>画像サイズ %1 × %2 が無効か、大きすぎます。</translation>
     </message>
     <message>
-        <source>Die Farbtiefe der XCF-Datei wird nicht unterstützt.</source>
+        <source>Die Bittiefe der XCF-Datei wird nicht unterstützt.</source>
         <translation>このXCFファイルの色深度はサポートされていません。</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>画像用のメモリが足りません。</translation>
     </message>
     <message>
@@ -6285,7 +6281,7 @@
         <translation>「%1」が大きすぎます。</translation>
     </message>
     <message>
-        <source>Die Kompressionsart von „%1“ wird nicht unterstützt.</source>
+        <source>Die Komprimierungsart von „%1“ wird nicht unterstützt.</source>
         <translation>「%1」の圧縮方式には対応していません。</translation>
     </message>
 </context>

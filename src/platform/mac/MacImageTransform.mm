@@ -120,8 +120,8 @@ QString auxNames(const QStringList& pairs) {
 QString auxLostMessage(const QStringList& pairs) {
     return QCoreApplication::translate(
                "lf::LosslessTransform",
-               "Die Datei enthält Zusatzbilder (%1), die beim Speichern der Ausrichtung verloren gingen. "
-               "Die Drehung wurde deshalb nicht gespeichert und gilt weiter nur in der Anzeige.")
+               "Die Datei enthält Zusatzbilder (%1), die beim Sichern der Ausrichtung verloren gingen. Die "
+               "Drehung wurde deshalb nicht gesichert und gilt weiter nur in der Anzeige.")
         .arg(auxNames(pairs));
 }
 
@@ -583,11 +583,11 @@ bool reencodeImpl(const QString& srcPath, const QString& dstPath, int pixelOp, b
             CFRelease(src);
             if (requireExact && inexact)
                 *inexact = true;
-            setError(error, requireExact ? QCoreApplication::translate(
-                                               "lf::LosslessTransform",
-                                               "Das Bild lässt sich nicht exakt neu speichern.")
-                                         : QCoreApplication::translate("lf::LosslessTransform",
-                                                                       "Nicht genug Speicher zum Drehen."));
+            setError(error, requireExact
+                                ? QCoreApplication::translate("lf::LosslessTransform",
+                                                              "Das Bild lässt sich nicht exakt neu sichern.")
+                                : QCoreApplication::translate("lf::LosslessTransform",
+                                                              "Nicht genug Arbeitsspeicher zum Drehen."));
             return false;
         }
 
@@ -636,7 +636,7 @@ bool reencodeImpl(const QString& srcPath, const QString& dstPath, int pixelOp, b
                     *inexact = true;
                 setError(error, QCoreApplication::translate(
                                     "lf::LosslessTransform",
-                                    "Das Bild lässt sich in diesem Format nicht exakt neu speichern."));
+                                    "Das Bild lässt sich in diesem Format nicht exakt neu sichern."));
                 return false;
             }
         }
@@ -684,7 +684,7 @@ bool reencodeCroppedImpl(const QString& srcPath, const QString& dstPath, const Q
             if (requireExact && inexact)
                 *inexact = true;
             setError(error, QCoreApplication::translate("lf::LosslessTransform",
-                                                        "Das Bild lässt sich nicht exakt neu speichern."));
+                                                        "Das Bild lässt sich nicht exakt neu sichern."));
             return false;
         }
         // Metadata (EXIF, XMP, IPTC) as it is, with the new pixel dimensions.
@@ -744,7 +744,7 @@ bool reencodeCroppedImpl(const QString& srcPath, const QString& dstPath, const Q
                     *inexact = true;
                 setError(error, QCoreApplication::translate(
                                     "lf::LosslessTransform",
-                                    "Das Bild lässt sich in diesem Format nicht exakt neu speichern."));
+                                    "Das Bild lässt sich in diesem Format nicht exakt neu sichern."));
                 return false;
             }
         }
@@ -866,8 +866,9 @@ bool replaceFile(const QString& replacement, const QString& target, bool keepMod
             copyfile(to.constData(), old.constData(), nullptr, COPYFILE_DATA | COPYFILE_EXCL) == 0;
         if (!haveOld) {
             unlink(old.constData());
-            setError(error, QCoreApplication::translate("lf::LosslessTransform",
-                                                        "Nicht genug Platz, um „%1“ sicher zu überschreiben.")
+            setError(error, QCoreApplication::translate(
+                                "lf::LosslessTransform",
+                                "Nicht genug Speicherplatz, um „%1“ sicher zu überschreiben.")
                                 .arg(QFileInfo(target).fileName()));
             return false;
         }
@@ -963,7 +964,7 @@ bool copyWithMetadata(const QString& path, const QString& copy, QString* error, 
             unlink(to.constData()); // partial copy (never a file that was there before)
         setError(error, QCoreApplication::translate(
                             "lf::LosslessTransform",
-                            "Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden."));
+                            "Die Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden."));
         return false;
     }
     return true;

@@ -4,7 +4,7 @@
 // Coupled windows (F-WIN-07, like nomacs' synchronization): one group of viewer windows
 // that flip together - by position or by file name (Settings key::CoupleBy, also in the
 // dialog) - and share zoom and visible part (ViewSyncBinding; ⌥ moves one window on its
-// own). "Fenster koppeln …" (Fenster menu) opens a dialog to pick the windows; "Entkoppeln"
+// own). "Fenster koppeln …" (Fenster menu) opens a dialog to pick the windows; "Fenster entkoppeln"
 // ends it. Coupled windows show "Gekoppelt" in the status line. Logic of the flip mapping:
 // core/WindowCoupling.h.
 

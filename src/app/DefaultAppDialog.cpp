@@ -26,8 +26,8 @@ DefaultAppDialog::DefaultAppDialog(const QStringList& types, QWidget* parent)
     setObjectName(QStringLiteral("lfMakeDefaultDialog"));
     setWindowTitle(tr("Als Standard-App festlegen"));
     auto* layout = new QVBoxLayout(this);
-    auto* text = new QLabel(tr("Lumaflip wird die Standard-App für die ausgewählten Bildformate. "
-                               "Nicht ausgewählte Formate bleiben beim bisherigen Programm."),
+    auto* text = new QLabel(tr("Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht "
+                               "ausgewählte Formate bleiben bei der bisherigen App."),
                             this);
     text->setWordWrap(true);
     layout->addWidget(text);
