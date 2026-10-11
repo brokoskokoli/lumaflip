@@ -944,6 +944,37 @@
     </message>
 </context>
 <context>
+    <name>lf::DefaultAppBar</name>
+    <message>
+        <source>Lumaflip ist nicht die Standard-App für den Dateityp „%1“.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Festlegen</source>
+        <translation type="unfinished">Indstil</translation>
+    </message>
+    <message>
+        <source>Lumaflip öffnet Dateien dieses Typs künftig per Doppelklick.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Alle Bildformate …</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wähle die Bildformate, die Lumaflip öffnen soll.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nicht mehr fragen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Schließen</source>
+        <translation type="unfinished">Luk</translation>
+    </message>
+</context>
+<context>
     <name>lf::DefaultAppDialog</name>
     <message>
         <source>Als Standard-App festlegen</source>
@@ -968,6 +999,21 @@
     <message>
         <source>Abbrechen</source>
         <translation>Annuller</translation>
+    </message>
+</context>
+<context>
+    <name>lf::DefaultAppOfferController</name>
+    <message>
+        <source>Lumaflip fragt nicht mehr nach der Standard-App – wieder einschalten unter Einstellungen → Allgemein</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lumaflip ist jetzt die Standard-App für „%1“</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lumaflip konnte nicht als Standard-App festgelegt werden: %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4232,6 +4278,14 @@
     <message>
         <source>Aus: ⌘⌫ legt das Bild sofort in den Papierkorb, ⌘Z holt es zurück.</source>
         <translation>Fra: ⌘⌫ flytter straks billedet til papirkurven, ⌘Z henter det tilbage.</translation>
+    </message>
+    <message>
+        <source>Fragen, ob Lumaflip Standard-App werden soll</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Öffnest du ein Bild, dessen Dateityp eine andere App öffnet, erscheint einmal je Dateityp ein Hinweis oben im Fenster.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Editor:</source>
