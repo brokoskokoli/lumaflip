@@ -11,8 +11,13 @@
 # Ablauf:
 #   1. Repository und GitHub-Environment "release" (wird bei Bedarf angelegt; Schutzregeln
 #      richtet tools/setup_release_secrets.sh ein).
-#   2. Azure: Abonnement wählen, Signaturkonto und Zertifikatprofil aus der Liste wählen
-#      (az-Erweiterung "artifact-signing", ersatzweise das ältere "trustedsigning").
+#   2. Azure (nach `az login`): Abonnement wählen (bei mehreren), Signaturkonten des
+#      Abonnements suchen (az resource list --resource-type
+#      Microsoft.CodeSigning/codeSigningAccounts; Name, Ressourcengruppe, Region - der
+#      Endpunkt folgt aus der Region, z. B. westeurope → https://weu.codesigning.azure.net/),
+#      dann die Zertifikatprofile des Kontos (Name, Typ, Status, Identität; az-Erweiterung
+#      "artifact-signing", ersatzweise das ältere "trustedsigning") - Public Trust zuerst,
+#      das vorhandene Profil ist die Vorgabe.
 #   3. Entra-App-Registrierung "lumaflip-github-release" anlegen oder wiederverwenden, samt
 #      Dienstprinzipal und föderierter Anmeldeinformation für GitHub Actions:
 #        Aussteller  https://token.actions.githubusercontent.com
@@ -94,13 +99,12 @@ choose() {
 
 # --- Schritte ------------------------------------------------------------------
 step_tools() {
-    command -v az >/dev/null || die "az (Azure CLI) fehlt: brew install azure-cli"
-    command -v gh >/dev/null || die "gh (GitHub CLI) fehlt: brew install gh"
+    command -v az >/dev/null \
+        || die "az (Azure CLI) fehlt. Installieren mit: brew install azure-cli - danach: az login"
+    command -v gh >/dev/null || die "gh (GitHub CLI) fehlt: brew install gh - danach: gh auth login"
     gh auth status >/dev/null 2>&1 || die "gh ist nicht angemeldet: gh auth login"
-    if ! az account show >/dev/null 2>&1; then
-        say "Azure CLI ist nicht angemeldet - starte az login (Browser) ..."
-        az login >/dev/null || die "az login fehlgeschlagen."
-    fi
+    az account show >/dev/null 2>&1 \
+        || die "Azure CLI ist nicht angemeldet: az login (mit dem Konto, dem das Signaturkonto gehört)"
 }
 
 step_repo() {
@@ -119,8 +123,10 @@ step_repo() {
 step_subscription() {
     say ""
     say "== Azure-Abonnement mit dem Signaturkonto"
-    az account list --query "[].[name, id, isDefault && 'aktuell' || '', tenantId]" -o tsv > "$WORK/subs"
-    choose "Abonnement" "$WORK/subs" || die "Keine Azure-Abonnements sichtbar (az login mit dem richtigen Konto?)."
+    # Spalten: Name, ID, Anzeige, Tenant - angezeigt werden nur Name und "aktuell".
+    az account list --query "[?state=='Enabled'].[name, id, isDefault && 'aktuell' || '', tenantId]" \
+        -o tsv > "$WORK/subs"
+    choose "Abonnement" "$WORK/subs" || die "Keine aktiven Azure-Abonnements sichtbar (az login mit dem richtigen Konto?)."
     SUB_NAME=$(printf '%s' "$REPLY" | cut -f1)
     SUB_ID=$(printf '%s' "$REPLY" | cut -f2)
     TENANT_ID=$(printf '%s' "$REPLY" | cut -f4)
@@ -128,55 +134,91 @@ step_subscription() {
     say "  Abonnement: $SUB_NAME"
 }
 
+# Die az-Erweiterung für die Zertifikatprofile: "artifact-signing" (aktuell) oder das ältere
+# "trustedsigning". Fehlt sie, wird nach der Installation gefragt, sonst klar abgebrochen.
 step_extension() {
     local e
     for e in artifact-signing trustedsigning; do
         if az extension show --name "$e" >/dev/null 2>&1; then EXT=$e; return 0; fi
     done
-    say "  Installiere die az-Erweiterung \"artifact-signing\" ..."
-    if az extension add --name artifact-signing --upgrade --yes >/dev/null 2>&1; then
-        EXT=artifact-signing
-    elif az extension add --name trustedsigning --upgrade --yes >/dev/null 2>&1; then
-        EXT=trustedsigning
-    else
-        die "Weder die az-Erweiterung \"artifact-signing\" noch \"trustedsigning\" ließ sich installieren."
-    fi
+    say "Die az-Erweiterung \"artifact-signing\" fehlt (nötig, um die Zertifikatprofile zu lesen)."
+    confirm "Jetzt installieren (az extension add --name artifact-signing)?" j \
+        || die "Ohne Erweiterung geht es nicht: az extension add --name artifact-signing"
+    az extension add --name artifact-signing --upgrade --yes >/dev/null \
+        || die "Installation fehlgeschlagen. Von Hand: az extension add --name artifact-signing (Azure CLI >= 2.75: az upgrade)"
+    EXT=artifact-signing
+}
+
+# Endpunkt eines Signaturkontos aus seiner Region (Tabelle "Azure regions that support Artifact
+# Signing", learn.microsoft.com/azure/artifact-signing/quickstart). Leer: unbekannte Region.
+region_endpoint() {
+    local code
+    case "$(printf '%s' "$1" | tr '[:upper:]' '[:lower:]' | tr -d ' ')" in
+        brazilsouth) code=brs ;;
+        centralus) code=cus ;;
+        eastus) code=eus ;;
+        japaneast) code=jpe ;;
+        koreacentral) code=krc ;;
+        northcentralus) code=ncus ;;
+        northeurope) code=neu ;;
+        polandcentral) code=plc ;;
+        southcentralus) code=scus ;;
+        switzerlandnorth) code=swn ;;
+        westcentralus) code=wcus ;;
+        westeurope) code=weu ;;
+        westus) code=wus ;;
+        westus2) code=wus2 ;;
+        westus3) code=wus3 ;;
+        *) return 0 ;;
+    esac
+    printf 'https://%s.codesigning.azure.net/' "$code"
 }
 
 step_account() {
     say ""
-    say "== Signaturkonto und Zertifikatprofil"
-    step_extension
-    az "$EXT" list --query "[].[name, id, accountUri || properties.accountUri, location]" -o tsv \
-        > "$WORK/accounts" 2>/dev/null || true
+    say "== Signaturkonto"
+    az resource list --resource-type Microsoft.CodeSigning/codeSigningAccounts \
+        --query "[].[name, id, resourceGroup, location]" -o tsv > "$WORK/accounts.raw" \
+        || die "Konnte die Signaturkonten nicht auflisten (az resource list)."
+    # Anzeige: Name (Ressourcengruppe, Region)
+    awk -F '\t' 'BEGIN { OFS = "\t" } { print $1, $2, $3 ", " $4, $3, $4 }' "$WORK/accounts.raw" > "$WORK/accounts"
     choose "Signaturkonto" "$WORK/accounts" \
-        || die "Kein Artifact-Signing-Konto im Abonnement \"$SUB_NAME\" (anderes Abonnement wählen oder im Portal anlegen)."
+        || die "Kein Artifact-Signing-Konto im Abonnement \"$SUB_NAME\" (anderes Abonnement wählen)."
     ACCOUNT=$(printf '%s' "$REPLY" | cut -f1)
     ACCOUNT_ID=$(printf '%s' "$REPLY" | cut -f2)
-    ENDPOINT=$(printf '%s' "$REPLY" | cut -f3)
-    RG=$(printf '%s' "$ACCOUNT_ID" | sed -nE 's#.*/[rR]esource[gG]roups/([^/]+)/.*#\1#p')
-    [ -n "$RG" ] || die "Ressourcengruppe nicht aus $ACCOUNT_ID ablesbar."
+    RG=$(printf '%s' "$REPLY" | cut -f4)
+    local region
+    region=$(printf '%s' "$REPLY" | cut -f5)
+    ENDPOINT=$(region_endpoint "$region")
     if [ -z "$ENDPOINT" ]; then
+        # Neue Region, noch nicht in der Tabelle: die Konto-URI selbst lesen.
         ENDPOINT=$(az resource show --ids "$ACCOUNT_ID" --query properties.accountUri -o tsv 2>/dev/null || true)
+        case "$ENDPOINT" in */) ;; ?*) ENDPOINT="$ENDPOINT/" ;; esac
     fi
-    case "$ENDPOINT" in
-        https://*.codesigning.azure.net*) ;;
-        *) say "  Endpunkt des Kontos nicht lesbar. Er steht im Portal unter Übersicht → \"Account URI\"."
-           ask "Endpunkt (z. B. https://weu.codesigning.azure.net/)"; ENDPOINT=$REPLY ;;
-    esac
-    case "$ENDPOINT" in */) ;; *) ENDPOINT="$ENDPOINT/" ;; esac
     printf '%s' "$ENDPOINT" | grep -Eq '^https://[a-z0-9-]+\.codesigning\.azure\.net/$' \
-        || die "Ungültiger Endpunkt: $ENDPOINT"
+        || die "Endpunkt für die Region \"$region\" unbekannt - im Portal unter Übersicht → \"Account URI\" nachsehen (docs/RELEASING.md, Einrichten von Hand)."
+    say "  Konto $ACCOUNT ($RG, $region), Endpunkt $ENDPOINT"
+}
 
+step_profile() {
+    say ""
+    say "== Zertifikatprofil (ein vorhandenes Profil eines anderen Projekts kann mitbenutzt werden)"
+    step_extension
     az "$EXT" certificate-profile list --account-name "$ACCOUNT" --resource-group "$RG" \
-        --query "[].[name, id, profileType || properties.profileType, status || properties.status]" -o tsv \
-        > "$WORK/profiles" 2>/dev/null || true
+        --query "[].[name, id, profileType || properties.profileType, status || properties.status, certificates[-1].subjectName || properties.certificates[-1].subjectName]" \
+        -o tsv > "$WORK/profiles.raw" \
+        || die "Konnte die Zertifikatprofile von \"$ACCOUNT\" nicht lesen (az $EXT certificate-profile list)."
+    # Anzeige: Name (Typ, Status, Identität = CN des aktuellen Zertifikats). Public Trust zuerst.
+    awk -F '\t' 'BEGIN { OFS = "\t" } {
+        cn = $5; sub(/^.*CN=/, "", cn); sub(/,.*$/, "", cn); if ($5 == "") cn = "?"
+        print ($3 == "PublicTrust" ? 0 : 1), $1, $2, $3 ", " $4 ", " cn, $3, $4
+    }' "$WORK/profiles.raw" | sort -t "$(printf '\t')" -k1,1 -s | cut -f2- > "$WORK/profiles"
     choose "Zertifikatprofil" "$WORK/profiles" || die "Das Konto \"$ACCOUNT\" hat kein Zertifikatprofil."
     PROFILE=$(printf '%s' "$REPLY" | cut -f1)
     PROFILE_ID=$(printf '%s' "$REPLY" | cut -f2)
     local type status
-    type=$(printf '%s' "$REPLY" | cut -f3)
-    status=$(printf '%s' "$REPLY" | cut -f4)
+    type=$(printf '%s' "$REPLY" | cut -f4)
+    status=$(printf '%s' "$REPLY" | cut -f5)
     if [ "$type" != "PublicTrust" ]; then
         say "warning: Profiltyp \"$type\": Für die Verteilung an Nutzer braucht es \"PublicTrust\""
         say "         (sonst warnt Windows bei jedem Start)."
@@ -185,7 +227,7 @@ step_account() {
     if [ -n "$status" ] && [ "$status" != "Active" ]; then
         say "warning: Profilstatus \"$status\" (erwartet: Active)."
     fi
-    say "  Konto $ACCOUNT ($RG), Profil $PROFILE, Endpunkt $ENDPOINT"
+    say "  Profil $PROFILE ($type)"
 }
 
 step_app() {
@@ -284,7 +326,7 @@ step_github() {
 main() {
     case "${1:-}" in
         "") ;;
-        -h|--help) sed -n '3,36p' "$0" | sed 's/^# \{0,1\}//'; return 0 ;;
+        -h|--help) sed -n '3,40p' "$0" | sed 's/^# \{0,1\}//'; return 0 ;;
         *) die "Unbekannte Option: $1" ;;
     esac
     [ -t 0 ] || die "Interaktives Skript: bitte im Terminal starten."
@@ -298,6 +340,7 @@ main() {
     step_repo
     step_subscription
     step_account
+    step_profile
     step_app
     step_role
     step_github
