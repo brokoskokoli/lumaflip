@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lumaflip – Schneller, freier Bildbetrachter für macOS</title>
+<meta name="description" content="Lumaflip ist ein freier Open-Source-Bildbetrachter für macOS. Doppelklick auf ein Foto, dann mit den Pfeiltasten durch den ganzen Ordner in Finder-Reihenfolge blättern. RAW, HEIC, AVIF, JPEG XL, PSD, EXR, GIMP, SVG und Comics, HDR auf XDR-Displays und Aussortieren mit Lightroom-kompatiblen Bewertungen.">
+<meta name="keywords" content="Bildbetrachter, Fotobetrachter, Bildanzeige, macOS, Mac, Alternative zu Vorschau, Ordner durchblättern, Pfeiltasten, Finder-Reihenfolge, RAW-Betrachter, HEIC, AVIF, JPEG XL, PSD, OpenEXR, XCF, SVG, CBZ, Comic-Reader, HDR, EDR, Aussortieren, XMP, Lightroom, Open Source">
+<link rel="canonical" href="https://brokoskokoli.github.io/lumaflip/de/">
+<link rel="alternate" hreflang="en" href="https://brokoskokoli.github.io/lumaflip/">
+<link rel="alternate" hreflang="de" href="https://brokoskokoli.github.io/lumaflip/de/">
+<link rel="alternate" hreflang="x-default" href="https://brokoskokoli.github.io/lumaflip/">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f4f5fb" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#11132a" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Lumaflip">
+<meta property="og:locale" content="de_DE">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:title" content="Lumaflip – Schneller, freier Bildbetrachter für macOS">
+<meta property="og:description" content="Doppelklick auf ein Foto, dann durch den ganzen Ordner in Finder-Reihenfolge blättern. RAW, HEIC, JPEG XL, PSD, EXR, GIMP, SVG, Comics, HDR und Aussortieren. Frei und quelloffen.">
+<meta property="og:url" content="https://brokoskokoli.github.io/lumaflip/de/">
+<meta property="og:image" content="https://brokoskokoli.github.io/lumaflip/images/social-preview.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:image:alt" content="App-Symbol und Name von Lumaflip mit dem englischen Slogan „Double-click a photo. Flip through the whole folder.“">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Lumaflip – Schneller, freier Bildbetrachter für macOS">
+<meta name="twitter:description" content="Doppelklick auf ein Foto, dann durch den ganzen Ordner in Finder-Reihenfolge blättern. Frei und quelloffen.">
+<meta name="twitter:image" content="https://brokoskokoli.github.io/lumaflip/images/social-preview.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Lumaflip",
+  "inLanguage": "de",
+  "operatingSystem": "macOS 15 oder neuer",
+  "applicationCategory": "MultimediaApplication",
+  "description": "Freier Open-Source-Bildbetrachter für macOS: Doppelklick auf ein Foto, dann durch den ganzen Ordner in Finder-Reihenfolge blättern.",
+  "url": "https://brokoskokoli.github.io/lumaflip/de/",
+  "downloadUrl": "https://github.com/brokoskokoli/lumaflip/releases",
+  "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+
+<style>
+  :root {
+    --bg: #f4f5fb;
+    --bg-alt: #ffffff;
+    --text: #181a33;
+    --muted: #5b6078;
+    --border: #e0e2ef;
+    --accent: #3b4cca;
+    --accent-2: #2a8cd8;
+    --accent-text: #ffffff;
+    --yes: #1f9d6b;
+    --no: #a3a8bd;
+    --key-bg: #ffffff;
+    --key-border: #cfd3e4;
+    --shadow: 0 24px 60px rgba(27, 31, 94, .18);
+    --window: #ffffff;
+    --window-bar: #eceef6;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #11132a;
+      --bg-alt: #191c38;
+      --text: #eef0fa;
+      --muted: #a4a9c6;
+      --border: #2a2e52;
+      --accent: #7f8cff;
+      --accent-2: #5ec2ff;
+      --accent-text: #0e1026;
+      --yes: #4fd39f;
+      --no: #5d6283;
+      --key-bg: #22264a;
+      --key-border: #363b6a;
+      --shadow: 0 24px 60px rgba(0, 0, 0, .55);
+      --window: #1c1f3c;
+      --window-bar: #24284b;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 17px/1.6 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
+
+  header.top { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; color: var(--text); }
+  .brand img { width: 32px; height: 32px; }
+  nav a { margin-left: 20px; color: var(--muted); font-size: 15px; }
+
+  .hero { text-align: center; padding: 40px 0 16px; }
+  .hero img.icon { width: 112px; height: 112px; }
+  h1 { font-size: clamp(36px, 6vw, 56px); line-height: 1.1; margin: 14px 0 12px; letter-spacing: -.02em; }
+  .tagline {
+    font-size: clamp(22px, 3.4vw, 30px); font-weight: 650; line-height: 1.25; margin: 0 auto 14px; max-width: 760px;
+    letter-spacing: -.01em;
+  }
+  .tagline span { background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .subtitle { font-size: clamp(17px, 2.2vw, 20px); color: var(--muted); max-width: 720px; margin: 0 auto 28px; }
+  .buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 12px 22px; border-radius: 12px; font-weight: 600;
+    border: 1px solid var(--border); color: var(--text); background: var(--bg-alt);
+  }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); }
+  .btn:hover { text-decoration: none; filter: brightness(1.06); }
+  .meta { color: var(--muted); font-size: 14px; margin-top: 12px; }
+
+  /* ---- Illustration of the viewer: a window flipping through photos ---- */
+  .demo { margin: 44px auto 0; max-width: 900px; }
+  .window {
+    background: var(--window); border: 1px solid var(--border); border-radius: 14px;
+    box-shadow: var(--shadow); overflow: hidden; text-align: left;
+  }
+  .stage { position: relative; aspect-ratio: 16 / 9.4; overflow: hidden; background: #0d0f1f; }
+  .photo { position: absolute; inset: 0; opacity: 0; animation: flip 16s infinite; }
+  .photo:nth-child(1) { animation-delay: 0s; }
+  .photo:nth-child(2) { animation-delay: 4s; }
+  .photo:nth-child(3) { animation-delay: 8s; }
+  .photo:nth-child(4) { animation-delay: 12s; }
+  @keyframes flip {
+    0% { opacity: 0; transform: translateX(6%); }
+    3%, 25% { opacity: 1; transform: none; }
+    28%, 100% { opacity: 0; transform: translateX(-6%); }
+  }
+  .p1 { background:
+      radial-gradient(circle at 72% 30%, #fff6c9 0 5%, transparent 5.5%),
+      radial-gradient(ellipse 70% 40% at 25% 100%, #2f7a66 0 60%, transparent 61%),
+      radial-gradient(ellipse 80% 45% at 85% 105%, #1d5e4d 0 60%, transparent 61%),
+      linear-gradient(#8fd8ff, #ffe3a8 75%); }
+  .p2 { background:
+      radial-gradient(circle at 50% 62%, #ffd27a 0 7%, transparent 7.5%),
+      linear-gradient(transparent 62%, #1e6fa8 62% 100%),
+      linear-gradient(#b9a8ff, #ffb8a0 62%); }
+  .p3 { background:
+      linear-gradient(115deg, transparent 0 40%, #3f4a75 40% 58%, transparent 58%),
+      linear-gradient(65deg, transparent 0 46%, #5a6aa8 46% 70%, transparent 70%),
+      radial-gradient(circle at 20% 22%, #ffffff 0 1px, transparent 2px),
+      linear-gradient(#141a3d, #39306b 60%, #e98a6b); }
+  .p4 { background:
+      radial-gradient(ellipse 60% 35% at 50% 100%, #c7884f 0 60%, transparent 61%),
+      radial-gradient(circle at 30% 35%, #fff 0 4%, transparent 4.5%),
+      radial-gradient(circle at 36% 33%, #fff 0 5%, transparent 5.5%),
+      linear-gradient(#5ec2ff, #c8ecff 80%); }
+  .titlestrip {
+    position: absolute; top: 0; left: 0; right: 0; height: 34px; display: flex; align-items: center; gap: 8px;
+    padding: 0 12px; background: rgba(0, 0, 0, .45); color: #fff; font-size: 13px;
+    animation: strip 8s infinite;
+  }
+  @keyframes strip { 0%, 8% { opacity: 0; } 14%, 40% { opacity: 1; } 48%, 100% { opacity: 0; } }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot.r { background: #ff5f57; } .dot.y { background: #febc2e; } .dot.g { background: #28c840; }
+  .titlestrip .name { flex: 1; text-align: center; margin-right: 52px; opacity: .95; }
+  .keyhint {
+    position: absolute; right: 14px; bottom: 14px; display: flex; gap: 6px;
+  }
+  .keyhint kbd { background: rgba(255,255,255,.9); color: #181a33; border-color: rgba(0,0,0,.15); }
+  .statusbar {
+    display: flex; justify-content: space-between; gap: 12px; padding: 8px 14px; font-size: 13px;
+    color: var(--muted); background: var(--window-bar); border-top: 1px solid var(--border);
+  }
+  .filmstrip { display: flex; gap: 6px; padding: 8px 10px; background: var(--window-bar); overflow: hidden; }
+  .thumb { flex: 0 0 64px; height: 42px; border-radius: 5px; opacity: .75; }
+  .thumb.on { outline: 2px solid var(--accent); outline-offset: 1px; opacity: 1; }
+  .caption { color: var(--muted); font-size: 14px; text-align: center; margin-top: 12px; }
+  @media (prefers-reduced-motion: reduce) {
+    .photo, .titlestrip { animation: none; }
+    .photo:nth-child(1) { opacity: 1; }
+  }
+
+  section { padding: 64px 0 8px; }
+  h2 { font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -.01em; margin: 0 0 12px; text-align: center; }
+  .lead { text-align: center; color: var(--muted); max-width: 720px; margin: 0 auto 28px; }
+
+  /* ---- The problem ---- */
+  .compare { width: 100%; border-collapse: separate; border-spacing: 0; background: var(--bg-alt);
+    border: 1px solid var(--border); border-radius: 14px; overflow: hidden; font-size: 16px; }
+  .compare th, .compare td { padding: 12px 16px; border-bottom: 1px solid var(--border); text-align: left; }
+  .compare tr:last-child td { border-bottom: 0; }
+  .compare th { font-size: 14px; color: var(--muted); font-weight: 600; background: var(--window-bar); }
+  .compare td.c, .compare th.c { text-align: center; width: 130px; }
+  .yes { color: var(--yes); font-weight: 700; }
+  .no { color: var(--no); }
+  .note { color: var(--muted); font-size: 14px; margin-top: 10px; }
+
+  /* ---- Feature cards ---- */
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+  .card { background: var(--bg-alt); border: 1px solid var(--border); border-radius: 14px; padding: 20px; }
+  .card .ico { font-size: 26px; line-height: 1; margin-bottom: 10px; }
+  .card h3 { margin: 0 0 6px; font-size: 18px; }
+  .card p { margin: 0; color: var(--muted); font-size: 15px; }
+
+  /* ---- Formats ---- */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 900px; margin: 0 auto; }
+  .chip { padding: 6px 12px; border-radius: 999px; background: var(--bg-alt); border: 1px solid var(--border); font-size: 14px; }
+  .chip.hl { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+
+  /* ---- Keyboard ---- */
+  kbd {
+    display: inline-block; min-width: 30px; padding: 3px 8px; border-radius: 7px; text-align: center;
+    font: 600 14px/1.4 -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+    background: var(--key-bg); border: 1px solid var(--key-border); border-bottom-width: 3px; color: var(--text);
+  }
+  .keys { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px 24px; max-width: 900px; margin: 0 auto; }
+  .keys div { display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    padding: 10px 14px; background: var(--bg-alt); border: 1px solid var(--border); border-radius: 12px; }
+  .keys span { color: var(--muted); font-size: 15px; }
+
+  .install ol { padding-left: 22px; }
+  .install li { margin: 6px 0; }
+  .platforms { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-top: 20px; }
+  code { font: 14px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--bg-alt); border: 1px solid var(--border); border-radius: 6px; padding: 1px 6px; }
+  footer { color: var(--muted); font-size: 14px; text-align: center; padding: 64px 0 40px; }
+  @media (max-width: 760px) {
+    nav a:not(.gh):not(.lang) { display: none; }
+    .compare td.c, .compare th.c { width: 84px; padding: 10px 6px; }
+    .compare th, .compare td { padding: 10px; font-size: 15px; }
+    .filmstrip .thumb:nth-child(n+7) { display: none; }
+    .titlestrip .name { margin-right: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="./"><img src="../favicon.png" alt="" width="32" height="32">Lumaflip</a>
+    <nav>
+      <a href="#why">Warum</a>
+      <a href="#features">Funktionen</a>
+      <a href="#formats">Formate</a>
+      <a href="#install">Installation</a>
+      <a class="gh" href="https://github.com/brokoskokoli/lumaflip">GitHub</a>
+      <a class="lang" href="../" hreflang="en" lang="en">English</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <img class="icon" src="../images/icon.png" alt="App-Symbol von Lumaflip" width="112" height="112">
+      <h1>Lumaflip</h1>
+      <p class="tagline">Doppelklick auf ein Foto. <span>Durch den ganzen Ordner blättern.</span></p>
+      <p class="subtitle">Der schnelle, freie Bildbetrachter, der dem Mac fehlt. Lumaflip öffnet das Bild sofort, lädt alle anderen Bilder des Ordners in der Reihenfolge, in der der Finder sie zeigt, und hält das nächste schon bereit, bevor → gedrückt wird.</p>
+      <div class="buttons">
+        <a class="btn primary" href="https://github.com/brokoskokoli/lumaflip/releases">Für macOS laden</a>
+        <a class="btn" href="https://github.com/brokoskokoli/lumaflip">Auf GitHub ansehen</a>
+      </div>
+      <p class="meta">macOS 15 oder neuer · Apple Silicon · Frei und quelloffen (GPL-3.0) · 18 Sprachen · Vorschauversionen für Windows und Linux</p>
+
+      <div class="demo" aria-hidden="true">
+        <div class="window">
+          <div class="stage">
+            <div class="photo p1"></div>
+            <div class="photo p2"></div>
+            <div class="photo p3"></div>
+            <div class="photo p4"></div>
+            <div class="titlestrip"><i class="dot r"></i><i class="dot y"></i><i class="dot g"></i><span class="name">IMG_0423.HEIC</span></div>
+            <div class="keyhint"><kbd>←</kbd><kbd>→</kbd></div>
+          </div>
+          <div class="filmstrip">
+            <div class="thumb p3"></div><div class="thumb p4"></div><div class="thumb p1 on"></div><div class="thumb p2"></div>
+            <div class="thumb p3"></div><div class="thumb p1"></div><div class="thumb p4"></div><div class="thumb p2"></div>
+            <div class="thumb p1"></div><div class="thumb p3"></div><div class="thumb p2"></div><div class="thumb p4"></div>
+          </div>
+          <div class="statusbar"><span>23 / 412</span><span>Wie Finder: Hinzugefügt am ↓</span><span>4032 × 3024 · HDR</span></div>
+        </div>
+      </div>
+      <p class="caption">Randloses Fenster: Die Titelleiste blendet sich ein, sobald sich die Maus bewegt, und verschwindet wieder, wenn das Foto im Mittelpunkt steht.</p>
+    </div>
+
+    <section id="why">
+      <h2>Warum noch ein Bildbetrachter?</h2>
+      <p class="lead">In Vorschau öffnet ein Doppelklick auf ein Foto nur genau dieses Foto. Mit den Pfeiltasten geht es nicht zum nächsten Bild des Ordners, außer man hat vorher im Finder alle Dateien ausgewählt. Lumaflip behebt genau das und ergänzt, was Fotografen, Designer und Comic-Leser auf dem Mac vermissen.</p>
+      <table class="compare">
+        <thead><tr><th></th><th class="c">Vorschau</th><th class="c">Lumaflip</th></tr></thead>
+        <tbody>
+          <tr><td>Doppelklick auf ein Foto, dann durch den ganzen Ordner blättern</td><td class="c no">–</td><td class="c yes">✓</td></tr>
+          <tr><td>Dieselbe Reihenfolge wie im Finder-Fenster (Name, Hinzugefügt am, Größe, Symbolpositionen …)</td><td class="c no">–</td><td class="c yes">✓</td></tr>
+          <tr><td>Nächstes Bild ist schon geladen, wenn → gedrückt wird</td><td class="c no">–</td><td class="c yes">✓</td></tr>
+          <tr><td>GIMP, Krita, OpenRaster, PSB, QOI, SVG, Comics (CBZ / CBR / CB7)</td><td class="c no">–</td><td class="c yes">✓</td></tr>
+          <tr><td>Sternebewertungen, Pick / Verworfen, Lightroom-kompatibles XMP</td><td class="c no">–</td><td class="c yes">✓</td></tr>
+          <tr><td>Raster, Vergleich von 2–4 Bildern, Lupe, Focus Peaking, Über-/Unterbelichtungswarnung</td><td class="c no">–</td><td class="c yes">✓</td></tr>
+          <tr><td>Jede Taste, jeder Klick und jede Geste lässt sich neu belegen</td><td class="c no">–</td><td class="c yes">✓</td></tr>
+          <tr><td>Quelloffen</td><td class="c no">–</td><td class="c yes">✓</td></tr>
+        </tbody>
+      </table>
+      <p class="note">Vorschau ist großartig für PDFs und schnelle Bearbeitungen; Lumaflip ist dafür gebaut, viele Bilder schnell anzusehen.</p>
+    </section>
+
+    <section id="features">
+      <h2>Gemacht für viele Fotos</h2>
+      <p class="lead">Alles passiert im Hintergrund: Ordner werden geladen, Nachbarbilder dekodiert und Miniaturen erscheinen, während das aktuelle Foto auf dem Bildschirm bleibt.</p>
+      <div class="grid">
+        <div class="card"><div class="ico">⚡️</div><h3>Sofort da</h3><p>Das erste Bild erscheint in deutlich unter einer halben Sekunde. Nachbarbilder werden vorab dekodiert, sodass sich das Blättern durch 24-Megapixel-Fotos wie Umblättern anfühlt. RAW-Dateien zeigen zuerst ihre eingebettete Vorschau.</p></div>
+        <div class="card"><div class="ico">📂</div><h3>Finder-Reihenfolge, live</h3><p>Lumaflip liest die Finder-Darstellungsoptionen des Ordners: Sortierspalte, Richtung, sogar Symbolpositionen. Neue, gelöschte und umbenannte Dateien erscheinen schon beim Blättern. Mit ⌥→ geht es zum nächsten Ordner.</p></div>
+        <div class="card"><div class="ico">✨</div><h3>Echtes HDR</h3><p>HDR-Fotos vom iPhone, Ultra-HDR-JPEG, HDR-AVIF und OpenEXR leuchten mit echter Spitzlicht-Helligkeit auf XDR- und anderen EDR-Displays, mit SDR-Vorschau und Belichtungsregler.</p></div>
+        <div class="card"><div class="ico">⭐️</div><h3>Aussortieren, das andere Apps verstehen</h3><p>Bewerten mit 0–5, als Pick markieren mit P, verwerfen mit X. Bewertungen landen in XMP-Zusatzdateien, die Lightroom, Capture One und darktable lesen, in der Datei selbst oder in Finder-Tags. Alle verworfenen Bilder in einem Schritt in den Papierkorb legen.</p></div>
+        <div class="card"><div class="ico">🔍</div><h3>Schärfe und Belichtung prüfen</h3><p>L gedrückt halten für eine 100-%-Lupe, den Zoom über eine Serie hinweg fixieren, bis zu vier Bilder nebeneinander oder als Differenz vergleichen und Focus Peaking, Über-/Unterbelichtungswarnung und die Fokuspunkte der Kamera einblenden.</p></div>
+        <div class="card"><div class="ico">🧠</div><h3>Merkt sich den Zoom</h3><p>In ein Detail zoomen, weiterblättern, zurückkommen: Das Bild ist noch genau dort vergrößert, wo es verlassen wurde. Mit der Eingabetaste geht es zurück zu „Einpassen“.</p></div>
+        <div class="card"><div class="ico">📚</div><h3>Comics und PDFs</h3><p>Ein CBZ-, CBR- oder CB7-Archiv oder ein PDF öffnen und wie einen Ordner durchblättern, mit einem Rechts-nach-links-Modus für Manga. Nichts wird dauerhaft auf die Festplatte entpackt.</p></div>
+        <div class="card"><div class="ico">🗺️</div><h3>Ordnerkarte</h3><p>Alle Fotos des Ordners mit Ortsangabe auf einer Karte. Das aktuelle Foto ist hervorgehoben und wandert beim Blättern mit. Kartendaten werden erst geladen, wenn man sie ausdrücklich anfordert.</p></div>
+        <div class="card"><div class="ico">✂️</div><h3>Leichte Bearbeitung, verlustfrei</h3><p>JPEGs ohne Neukodierung drehen und zuschneiden, als JPEG, HEIC, AVIF, PNG oder TIFF exportieren – mit oder ohne Ortsdaten –, umbenennen und eigene Shell-Befehle oder Kurzbefehle per Taste ausführen.</p></div>
+        <div class="card"><div class="ico">⌨️</div><h3>Eigene Tasten, eigene Maus</h3><p>Jedes Tastenkürzel, jedes Scrollen und jeder Klick ist einstellbar, mit Konflikterkennung und Vorlagen für Mac-Nutzer, Umsteiger von Windows und Lightroom-Fotografen.</p></div>
+        <div class="card"><div class="ico">🔒</div><h3>Privat und abgeschottet</h3><p>Keine Telemetrie, kein Konto, keine Cloud. Ungewöhnliche Formate werden in einem abgeschotteten Hilfsprozess ohne Netzwerk- und Schreibzugriff dekodiert, sodass eine defekte Datei die App nicht zum Absturz bringen kann.</p></div>
+        <div class="card"><div class="ico">🌍</div><h3>Mehrsprachig</h3><p>18 Sprachen, darunter Deutsch, Français, Español, Italiano, 日本語, 简体中文 und 한국어. Folgt der Systemsprache oder wechselt jederzeit ohne Neustart.</p></div>
+      </div>
+    </section>
+
+    <section id="formats">
+      <h2>Öffnet fast alles</h2>
+      <p class="lead">Eingebaut, ohne Nachinstallation. Animationen werden abgespielt, mehrseitige Dateien lassen sich durchblättern, Farbprofile und Display P3 werden berücksichtigt.</p>
+      <div class="chips">
+        <span class="chip hl">JPEG</span><span class="chip hl">HEIC / HEIF</span><span class="chip hl">AVIF</span><span class="chip hl">JPEG XL</span>
+        <span class="chip hl">RAW (CR3, NEF, ARW, DNG, RAF, …)</span><span class="chip">PNG</span><span class="chip">GIF</span><span class="chip">WebP</span><span class="chip">APNG</span>
+        <span class="chip">TIFF</span><span class="chip">BMP</span><span class="chip">ICO / ICNS</span><span class="chip hl">PSD / PSB</span><span class="chip hl">GIMP XCF</span>
+        <span class="chip">Krita</span><span class="chip">OpenRaster</span><span class="chip hl">OpenEXR</span><span class="chip">Radiance HDR</span><span class="chip">JPEG 2000</span>
+        <span class="chip hl">SVG</span><span class="chip">TGA</span><span class="chip">DDS</span><span class="chip">KTX</span><span class="chip">QOI</span><span class="chip">PCX</span>
+        <span class="chip">PBM / PGM / PPM / PFM</span><span class="chip">SGI</span><span class="chip hl">CBZ / CBR / CB7</span><span class="chip">ZIP / RAR / 7z</span><span class="chip">PDF</span>
+      </div>
+    </section>
+
+    <section id="keys">
+      <h2>Für die Tastatur gebaut</h2>
+      <p class="lead">Eine Handvoll Tasten genügt. <kbd>?</kbd> in der App zeigt alle weiteren.</p>
+      <div class="keys">
+        <div><span>Nächstes / vorheriges Bild</span><span><kbd>←</kbd> <kbd>→</kbd></span></div>
+        <div><span>Nächster Ordner</span><span><kbd>⌥</kbd> <kbd>→</kbd></span></div>
+        <div><span>Einpassen ↔ 100 % am Mauszeiger</span><kbd>Z</kbd></div>
+        <div><span>Lupe (gedrückt halten)</span><kbd>L</kbd></div>
+        <div><span>Raster / Filmstreifen</span><span><kbd>G</kbd> <kbd>T</kbd></span></div>
+        <div><span>Infopanel</span><kbd>I</kbd></div>
+        <div><span>Bewerten / Pick / Verwerfen</span><span><kbd>1</kbd>–<kbd>5</kbd> <kbd>P</kbd> <kbd>X</kbd></span></div>
+        <div><span>Vollbild</span><kbd>F</kbd></div>
+        <div><span>In den Papierkorb legen, mit Widerrufen</span><span><kbd>⌘</kbd> <kbd>⌫</kbd></span></div>
+      </div>
+    </section>
+
+    <section id="install" class="install">
+      <h2>Installation</h2>
+      <ol>
+        <li>Das DMG von der <a href="https://github.com/brokoskokoli/lumaflip/releases">Release-Seite</a> laden.</li>
+        <li><b>Lumaflip</b> in den Ordner <b>Programme</b> ziehen und starten. Releases sind von Apple signiert und notarisiert und aktualisieren sich selbst (lässt sich abschalten).</li>
+        <li>Optional: <b>Ablage → Als Standard-App festlegen …</b> wählen, damit ein Doppelklick im Finder Lumaflip öffnet. Für welche Dateitypen, lässt sich selbst bestimmen.</li>
+      </ol>
+      <p>Voraussetzung: macOS 15 Sequoia oder neuer auf Apple Silicon. Ein Homebrew-Cask ist geplant. Lieber selbst bauen? Die <a href="https://github.com/brokoskokoli/lumaflip#build-from-source">README</a> erklärt, wie es geht (auf Englisch).</p>
+      <div class="platforms">
+        <div class="card"><h3>Windows (Vorschau)</h3><p>Windows 10 und 11, x64: Installer oder portable ZIP-Datei. Nutzt die Windows-eigenen Codecs für HEIC, AVIF, WebP, JPEG XL und RAW. <a href="https://github.com/brokoskokoli/lumaflip/blob/main/docs/WINDOWS.md">Details</a></p></div>
+        <div class="card"><h3>Linux (Vorschau)</h3><p>Ein AppImage für x86_64 (Ubuntu 24.04 oder neuer) mit eingebautem AVIF, JPEG XL, RAW und OpenEXR; HEIC mit dem HEVC-Codec der eigenen Distribution. <a href="https://github.com/brokoskokoli/lumaflip/blob/main/docs/LINUX.md">Details</a></p></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Lumaflip ist freie Software unter der <a href="https://github.com/brokoskokoli/lumaflip/blob/main/LICENSE">GNU General Public License v3.0 oder neuer</a>.
+    © 2026 brokoskokoli und Mitwirkende ·
+    <a href="https://github.com/brokoskokoli/lumaflip">Quellcode</a> ·
+    <a href="https://github.com/brokoskokoli/lumaflip/blob/main/docs/FAQ.md">FAQ</a> ·
+    <a href="privacy.html">Datenschutz</a> ·
+    <a href="https://github.com/brokoskokoli/lumaflip/issues">Problem melden</a>
+  </footer>
+</div>
+</body>
+</html>

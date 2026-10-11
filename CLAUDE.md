@@ -49,7 +49,9 @@ Bauverzeichnisse liegen unter `build/` – nicht löschen, `cmake --fresh` verwe
   (`tools/make_finder_fixtures.sh`, docs/TESTING-M1.md §4).
 - **Release-Werkzeuge:** `tools/package.sh` (verlangt das statische `libturbojpeg.a`,
   `brew install jpeg-turbo`; Sparkle lokal optional), `tools/sparkle_key_check.sh --self-test`
-  (läuft in `check.sh`), `tools/appcast_verify.py` – Details in `docs/RELEASING.md`.
+  (läuft in `check.sh`), `tools/appcast_verify.py`, `tools/setup_release_secrets.sh` (Secrets für
+  `release.yml` einrichten, interaktiv) – Details in `docs/RELEASING.md`. Homepage: `website/`, wird per
+  `.github/workflows/pages.yml` auf `gh-pages` veröffentlicht (neben dem Update-Feed `appcast.xml`).
 - **Manuelle Abnahme:** `docs/TESTING-M3.md` (v1.1), `docs/TESTING-M2.md` (v1.0), `docs/TESTING-M1.md`, `docs/MANUAL_CHECKS.md`.
 
 ## Aufbau

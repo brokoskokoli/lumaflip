@@ -94,7 +94,19 @@ Sein Temp-Verzeichnis (ZIP der App) räumt es immer auf. Testen ohne Netz: `--dr
 
 ### Benötigte Secrets
 
-Unter Settings → Secrets and variables → Actions (oder als Secrets der Umgebung `release`):
+**Am einfachsten:** `tools/setup_release_secrets.sh` (interaktiv, im Terminal auf dem eigenen Mac). Das
+Skript exportiert das Developer-ID-Zertifikat aus dem Schlüsselbund (reduziert auf genau diese Identität,
+neues Passwort), fragt den App-Store-Connect-API-Key ab und prüft ihn bei Apple, erzeugt bzw. liest das
+Sparkle-Schlüsselpaar (Schlüsselbund-Konto `lumaflip`), setzt alle Secrets in der Umgebung `release`
+(auf Wunsch mit Pflicht-Freigabe und Tag-/Branch-Regeln) und die Variable `SPARKLE_PUBLIC_ED_KEY` und
+schaltet GitHub Pages (Branch `gh-pages`) ein. Nichts davon landet im Repo oder in der Shell-History.
+
+**Probelauf:** Actions → Release → *Run workflow* (Branch `main`) bzw.
+`gh workflow run release.yml --ref main` baut, signiert, notarisiert und heftet die Tickets an wie ein
+Release (Artefakt `release-dist`), legt aber kein GitHub-Release an und ändert den Update-Feed nicht. So
+lassen sich die Secrets vor dem ersten Tag prüfen.
+
+Von Hand: unter Settings → Secrets and variables → Actions (oder als Secrets der Umgebung `release`):
 
 | Secret | Inhalt | Woher |
 |---|---|---|
@@ -194,7 +206,9 @@ tools/sparkle_key_check.sh sparkle_private.key "<öffentlicher Schlüssel>"   # 
    (Passwortmanager): Geht der Schlüssel verloren, ist ein Wechsel nur über die Developer-ID-Signatur möglich
    (siehe unten).
 3. **GitHub Pages** einschalten: Settings → Pages → Source „Deploy from a branch“, Branch `gh-pages`,
-   Ordner `/ (root)`. Den Branch legt der erste Release-Lauf an.
+   Ordner `/ (root)`. Den Branch legt der erste Lauf des Workflows `pages.yml` (Homepage aus `website/`)
+   oder der erste Release-Lauf an. Auf `gh-pages` liegen nebeneinander die Homepage (`pages.yml`, ersetzt
+   alles außer `appcast.xml` und `notes/`) und der Update-Feed (`release.yml`).
 
 ### Was der Release-Workflow macht
 

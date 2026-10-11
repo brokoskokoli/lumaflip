@@ -2,7 +2,8 @@
 # Release pipeline (SPEC 10.1): tag v* -> the same checks as CI (checks.yml) -> build ->
 # sign -> notarize -> staple -> GitHub Release (draft) with DMG, ZIP and SHA-256 files ->
 # Sparkle appcast (EdDSA-signed) on GitHub Pages (branch gh-pages) -> release published.
-# Required secrets and variables: docs/RELEASING.md.
+# Required secrets and variables: docs/RELEASING.md; set them up with
+# tools/setup_release_secrets.sh. Without a tag: Run workflow = dry run (see `on:`).
 #
 # Jobs and their secrets (each job only gets what it needs):
 #   version       tag == CMakeLists.txt version                     no secrets
@@ -25,6 +26,10 @@ name: Release
 on:
   push:
     tags: ['v*']
+  # Dry run (Actions -> Release -> Run workflow, on main): checks, Sparkle key check, build,
+  # sign, notarize and staple exactly like a release, artifact "release-dist" - but no
+  # GitHub Release and no appcast. Tests the secrets before the first tag.
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -41,7 +46,7 @@ env:
 jobs:
   version:
     name: Tag matches project version
-    if: github.repository == 'brokoskokoli/lumaflip' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    if: github.repository == 'brokoskokoli/lumaflip' && (github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v'))
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -50,6 +55,10 @@ jobs:
       - name: Compare tag and CMakeLists.txt
         run: |
           version=$(sed -nE 's/^project\(Lumaflip VERSION ([0-9.]+).*/\1/p' CMakeLists.txt)
+          if [[ "$GITHUB_EVENT_NAME" == workflow_dispatch ]]; then
+            echo "Dry run of version $version from $GITHUB_REF_NAME - nothing will be published"
+            exit 0
+          fi
           if [[ "v$version" != "$GITHUB_REF_NAME" ]]; then
             echo "::error::Tag $GITHUB_REF_NAME does not match CMakeLists.txt version $version"
             exit 1
@@ -94,7 +103,7 @@ jobs:
     # Only tag builds in the main repository - never for forks or pull requests
     # (secrets are not available there anyway, but the job must not even start).
     name: Build, sign, notarize
-    if: github.repository == 'brokoskokoli/lumaflip' && github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    if: github.repository == 'brokoskokoli/lumaflip' && (github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v'))
     needs: [version, checks, sparkle-keys]
     runs-on: macos-15
     environment: release
@@ -211,6 +220,7 @@ jobs:
     # draft (re-run). A release that is already public is never touched.
     name: GitHub Release (draft)
     needs: build
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-24.04
     permissions:
       contents: write   # gh release create/upload
@@ -251,6 +261,7 @@ jobs:
     # a third release tagged while one runs and one waits cancels the waiting one (re-run it).
     name: Sparkle appcast + publish release
     needs: [version, build, draft]
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     runs-on: macos-15
     environment: release
     permissions:

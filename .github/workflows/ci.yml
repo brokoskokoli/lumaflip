@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Mandatory checks (SPEC 15.1) for every push to main and every pull request. The jobs
 # themselves live in checks.yml, which release.yml reuses unchanged.
-# Changes that touch only documentation (Markdown, docs/) run just the REUSE check;
+# Changes that touch only documentation (Markdown, docs/, website/) run just the REUSE check;
 # everything else runs the full set. workflow_dispatch always runs everything.
 name: CI
 on:
@@ -42,6 +42,7 @@ jobs:
               - '**'
               - '!**/*.md'
               - '!docs/**'
+              - '!website/**'
 
   checks:
     needs: changes

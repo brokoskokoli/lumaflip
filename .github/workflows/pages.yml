@@ -1,0 +1,69 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Project homepage: copies website/ to the root of the gh-pages branch, which GitHub Pages
+# serves at https://brokoskokoli.github.io/lumaflip/. The same branch holds the Sparkle
+# feed (appcast.xml) and release notes (notes/), written by release.yml - those are never
+# touched here. Pages setting: Settings -> Pages -> "Deploy from a branch", gh-pages, / (root).
+name: Website
+on:
+  push:
+    branches: [main]
+    paths: ['website/**', '.github/workflows/pages.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Website deploys one at a time; a newer one replaces a queued one. Appcast pushes have
+# their own group in release.yml; both sides rebase on a concurrent push.
+concurrency:
+  group: website
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Publish website to gh-pages
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write   # push to gh-pages
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Copy website/ to gh-pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          repo_url="https://github.com/$GITHUB_REPOSITORY.git"
+          work=$(mktemp -d "$RUNNER_TEMP/pages.XXXXXX")
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          gh auth setup-git
+
+          if git ls-remote --exit-code --heads "$repo_url" gh-pages >/dev/null; then
+            git clone --quiet --branch gh-pages --single-branch "$repo_url" "$work/pages"
+          else
+            git init --quiet --initial-branch gh-pages "$work/pages"
+            git -C "$work/pages" remote add origin "$repo_url"
+          fi
+
+          # Mirror website/ into the branch root; keep the feed, the release notes and .git.
+          rsync -a --delete --exclude .git --exclude appcast.xml --exclude notes/ \
+            website/ "$work/pages/"
+          touch "$work/pages/.nojekyll"
+          git -C "$work/pages" add -A
+          if git -C "$work/pages" diff --cached --quiet; then
+            echo "Website unchanged - nothing to publish"; exit 0
+          fi
+          git -C "$work/pages" commit --quiet -m "Website: ${GITHUB_SHA::7}"
+
+          # A concurrent appcast push only touches appcast.xml and notes/: rebase onto it.
+          for attempt in 1 2 3 4 5; do
+            if git -C "$work/pages" push --quiet origin HEAD:gh-pages; then exit 0; fi
+            echo "::warning::Push to gh-pages failed (attempt $attempt) - fetching and rebasing"
+            sleep $((attempt * 5))
+            git -C "$work/pages" fetch --quiet origin gh-pages
+            git -C "$work/pages" rebase --quiet FETCH_HEAD
+          done
+          echo "::error::Could not push the website to gh-pages"; exit 1
