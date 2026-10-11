@@ -4250,6 +4250,22 @@
         <translation>Off: New windows use the most recently used size.</translation>
     </message>
     <message>
+        <source>Titelleiste:</source>
+        <translation>Title bar:</translation>
+    </message>
+    <message>
+        <source>Beim Bewegen der Maus einblenden</source>
+        <translation>Show when the mouse moves</translation>
+    </message>
+    <message>
+        <source>Immer zeigen</source>
+        <translation>Always show</translation>
+    </message>
+    <message>
+        <source>Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um.</source>
+        <translation>Without a title bar the image reaches the top edge. Window → “Minimal Window” switches a single window.</translation>
+    </message>
+    <message>
         <source>Ordnername in der Titelleiste</source>
         <translation>Folder name in title bar</translation>
     </message>
@@ -6086,10 +6102,6 @@
 <context>
     <name>lf::WindowExtras</name>
     <message>
-        <source>Zum Bewegen des Fensters ziehen</source>
-        <translation>Drag to move the window</translation>
-    </message>
-    <message>
         <source>Karte</source>
         <translation>Map</translation>
     </message>
@@ -6122,8 +6134,8 @@
         <translation>No longer on top</translation>
     </message>
     <message>
-        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
-        <translation>Minimal window – drag at the top to move the window</translation>
+        <source>Minimaler Fenstermodus – die Titelleiste erscheint, wenn sich die Maus bewegt</source>
+        <translation>Minimal window – the title bar appears when the mouse moves</translation>
     </message>
     <message>
         <source>Minimaler Fenstermodus aus</source>

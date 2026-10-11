@@ -16,6 +16,7 @@
 
 #include <dlfcn.h>
 
+#include <algorithm>
 #include <atomic>
 
 #if LF_HAVE_LIVETEXT
@@ -212,8 +213,17 @@ void LiveTextOverlay::updateGeometry() {
             [overlay removeFromSuperview];
             [content addSubview:overlay positioned:NSWindowAbove relativeTo:nil];
         }
-        // The image view's area in the window (logical px, origin top left).
-        const QRect r(m_view->mapTo(top, QPoint(0, 0)), m_view->size());
+        // The image view's area in the window (logical px, origin top left). Below the
+        // title bar of a borderless window (F-VIEW-15): the window buttons and the title
+        // strip stay above the text selection.
+        const QRect viewRect(m_view->mapTo(top, QPoint(0, 0)), m_view->size());
+        QRect r = viewRect;
+        if (NSWindow* nw = content.window; nw && (nw.styleMask & NSWindowStyleMaskFullSizeContentView) &&
+                                           !(nw.styleMask & NSWindowStyleMaskFullScreen)) {
+            const int titleBar = int(NSHeight(nw.frame) - NSHeight(nw.contentLayoutRect));
+            if (titleBar > 0 && r.top() < titleBar)
+                r.setTop(std::min(titleBar, r.bottom()));
+        }
         const CGFloat h = content.bounds.size.height;
         overlay.frame = content.isFlipped ? NSMakeRect(r.x(), r.y(), r.width(), r.height())
                                           : NSMakeRect(r.x(), h - r.y() - r.height(), r.width(), r.height());
@@ -222,7 +232,9 @@ void LiveTextOverlay::updateGeometry() {
         if (!img || r.width() <= 0 || r.height() <= 0)
             return;
         const QSize full = img->fullSize.isEmpty() ? img->image.size() : img->fullSize;
-        const QRectF shown = m_view->imageToWidget().mapRect(QRectF(QPointF(0, 0), QSizeF(full)));
+        const QRectF shown = m_view->imageToWidget()
+                                 .mapRect(QRectF(QPointF(0, 0), QSizeF(full)))
+                                 .translated(0, viewRect.top() - r.top());
         [m_native->bridge setContentsRect:CGRectMake(shown.x() / r.width(), shown.y() / r.height(),
                                                      shown.width() / r.width(), shown.height() / r.height())];
     }

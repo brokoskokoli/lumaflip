@@ -80,6 +80,8 @@ const Registry& registry() {
         b(key::ConfirmTrash, false);
         s(key::EditorApp, "", {}); // F-FILE-05
         b(key::AllowTabs, false);  // F-WIN-05
+        // F-VIEW-15
+        s(key::TitleBar, "autoHide", {"autoHide", "always"});
         s(key::Background, "dark", {"dark", "light", "system", "checker"}, true);
         s(key::ZoomMode, "fit", {"fit", "fitUpscale", "actual", "fillWidth", "fillHeight", "fill"});
         s(key::UpscaleFilter, "smooth", {"smooth", "nearest"});

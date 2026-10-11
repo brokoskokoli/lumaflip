@@ -4250,6 +4250,22 @@
         <translation>Désactivé&#xa0;: les nouvelles fenêtres reprennent la dernière taille utilisée.</translation>
     </message>
     <message>
+        <source>Titelleiste:</source>
+        <translation>Barre de titre&#xa0;:</translation>
+    </message>
+    <message>
+        <source>Beim Bewegen der Maus einblenden</source>
+        <translation>Afficher quand la souris bouge</translation>
+    </message>
+    <message>
+        <source>Immer zeigen</source>
+        <translation>Toujours afficher</translation>
+    </message>
+    <message>
+        <source>Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um.</source>
+        <translation>Sans barre de titre, l’image s’étend jusqu’au bord supérieur. Fenêtre → «&#xa0;Fenêtre minimale&#xa0;» bascule une seule fenêtre.</translation>
+    </message>
+    <message>
         <source>Ordnername in der Titelleiste</source>
         <translation>Nom du dossier dans la barre de titre</translation>
     </message>
@@ -6086,10 +6102,6 @@
 <context>
     <name>lf::WindowExtras</name>
     <message>
-        <source>Zum Bewegen des Fensters ziehen</source>
-        <translation>Faites glisser pour déplacer la fenêtre</translation>
-    </message>
-    <message>
         <source>Karte</source>
         <translation>Carte</translation>
     </message>
@@ -6122,8 +6134,8 @@
         <translation>N’est plus au premier plan</translation>
     </message>
     <message>
-        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
-        <translation>Fenêtre minimale – faites glisser en haut pour déplacer la fenêtre</translation>
+        <source>Minimaler Fenstermodus – die Titelleiste erscheint, wenn sich die Maus bewegt</source>
+        <translation>Fenêtre minimale – la barre de titre apparaît quand la souris bouge</translation>
     </message>
     <message>
         <source>Minimaler Fenstermodus aus</source>

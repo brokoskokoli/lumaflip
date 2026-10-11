@@ -136,8 +136,9 @@ Jede Anforderung hat eine ID und eine Ausbaustufe:
 | F-VIEW-10 | Vollbild (⌃⌘F, `F`, Doppelklick). Im Vollbild werden Bedienelemente ausgeblendet und erscheinen, wenn die Maus an den Rand fährt. | M1 |
 | F-VIEW-11 | Lupe: Taste gedrückt halten (Standard `L`, wahlweise mittlere Maustaste, F-IN-11) zeigt eine 100-%- bzw. 200-%-Lupe am Cursor. | M3 |
 | F-VIEW-12 | „Immer im Vordergrund“ für das Fenster. | M3 |
-| F-VIEW-13 | Rahmenloser bzw. minimaler Fenstermodus. | M3 |
+| F-VIEW-13 | Rahmenloser bzw. minimaler Fenstermodus, pro Fenster umschaltbar (Fenster → „Minimaler Fenstermodus“). Seit M4 ist das das randlose Fenster aus F-VIEW-15. | M3 |
 | F-VIEW-14 | **Zoom je Bild merken (Sitzung):** Wer ein Bild zoomt oder den Ausschnitt verschiebt, weiterblättert und zurückkommt, findet dieselbe Zoomstufe und denselben Ausschnitt wieder (je Fenster, nur im Arbeitsspeicher, höchstens 500 Bilder, das am längsten nicht gezeigte fällt heraus). Gespeichert werden Zoommodus bzw. Faktor und die Bildmitte relativ zum Bild, unabhängig von Fenstergröße, Vollbild und Vorschaustufe. Umbenannte Dateien behalten ihren Zoom, gelöschte oder neu geschriebene verlieren ihn. „Standard-Zoom wiederherstellen“ (Menü „Darstellung“, frei belegbar, Standard Enter bzw. Ziffernblock-Enter) setzt das Bild auf den Standard-Zoommodus zurück und vergisst seinen Zoom; Enter wirkt so nur, solange der Zoom des Bildes geändert ist, sonst gilt weiter Umbenennen (F-FILE-04) bzw. Vollbild (F-IN-18). Im Zuschneiden (F-EDIT-03), in Eingabefeldern und Dialogen behält Enter seine Bedeutung. Ein gewählter Zoommodus (F-VIEW-01/02) wird zum Standard. Bei aktivem „Zoom fixieren“ (F-VIEW-05) hat dieses Vorrang. Abschaltbar in den Einstellungen („Zoom je Bild für die Sitzung merken“, Standard an). | M4 |
+| F-VIEW-15 | **Randloses Fenster mit einblendender Titelleiste** (Standard für neue Fenster): Das Bild reicht bis an den oberen Rand, ohne sichtbare Titelleiste. Bewegt man die Maus über dem Fenster oder wird das Fenster aktiv (Tastaturbedienung), blendet oben ein halbtransparent schwarzer Streifen ein: Fenstertitel in Weiß (Schrift des Systems für Fenstertitel) und die Fensterknöpfe – macOS links (die Systemknöpfe, die mit dem Streifen ein- und ausblenden), Windows rechts (Minimieren/Maximieren/Schließen, links ein Knopf mit den Menüs des Fensters), Linux auf der Seite der Desktop-Einstellung (GNOME `button-layout`, KDE `kwinrc`, sonst rechts). Nach 1,5 s ohne Mausbewegung blendet er wieder aus, solange die Maus nicht über ihm steht. Ziehen am Streifen bewegt das Fenster (Windows: Aero Snap, Snap-Layouts über dem Maximieren-Knopf), Doppelklick zoomt bzw. maximiert (macOS nach der Systemeinstellung „Doppelklick auf Titelleiste“), die Ränder bleiben zum Ändern der Größe; Dateien lassen sich weiter auf das Fenster ziehen. Einstellung *Fenster → Titelleiste*: „beim Bewegen der Maus einblenden“ (Standard) oder „immer zeigen“ (Titelleiste des Systems); Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um (F-VIEW-13). Im Vollbild gilt F-VIEW-10; ein Fenster mit macOS-Tabs (F-WIN-05) zeigt die Titelleiste des Systems. | M4 |
 
 ### 4.4 Formate
 
@@ -336,7 +337,7 @@ Für die wichtigsten Eingaben gibt es in *Einstellungen → Maus & Tastatur* ein
 └──────────────────────────────────────────────────────────┘
 ```
 
-- **Standardansicht minimal:** nur das Bild und eine schlanke Titelleiste. Alles andere lässt sich einblenden; der Zustand wird gemerkt.
+- **Standardansicht minimal:** nur das Bild und eine schlanke Titelleiste. Alles andere lässt sich einblenden; der Zustand wird gemerkt. Seit M4 ist auch die Titelleiste ausgeblendet und erscheint als Streifen über dem Bild, wenn sich die Maus bewegt (F-VIEW-15).
 - **Vollbild:** reines Bild. Bedienelemente erscheinen, wenn die Maus an den Rand fährt, und blenden sich nach 1,5 s Inaktivität wieder aus.
 
 ### 5.2 Standard-Tastenbelegung

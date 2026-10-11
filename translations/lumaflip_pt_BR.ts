@@ -4250,6 +4250,22 @@
         <translation>Desativado: novas janelas usam o último tamanho utilizado.</translation>
     </message>
     <message>
+        <source>Titelleiste:</source>
+        <translation>Barra de título:</translation>
+    </message>
+    <message>
+        <source>Beim Bewegen der Maus einblenden</source>
+        <translation>Mostrar ao mover o mouse</translation>
+    </message>
+    <message>
+        <source>Immer zeigen</source>
+        <translation>Mostrar sempre</translation>
+    </message>
+    <message>
+        <source>Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um.</source>
+        <translation>Sem barra de título, a imagem vai até a borda superior. Janela → “Janela Mínima” alterna uma única janela.</translation>
+    </message>
+    <message>
         <source>Ordnername in der Titelleiste</source>
         <translation>Nome da pasta na barra de título</translation>
     </message>
@@ -6086,10 +6102,6 @@
 <context>
     <name>lf::WindowExtras</name>
     <message>
-        <source>Zum Bewegen des Fensters ziehen</source>
-        <translation>Arraste para mover a janela</translation>
-    </message>
-    <message>
         <source>Karte</source>
         <translation>Mapa</translation>
     </message>
@@ -6122,8 +6134,8 @@
         <translation>Não está mais na frente</translation>
     </message>
     <message>
-        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
-        <translation>Janela mínima – arraste pela parte superior para mover a janela</translation>
+        <source>Minimaler Fenstermodus – die Titelleiste erscheint, wenn sich die Maus bewegt</source>
+        <translation>Janela mínima – a barra de título aparece quando o mouse se move</translation>
     </message>
     <message>
         <source>Minimaler Fenstermodus aus</source>

@@ -229,8 +229,8 @@ QStringList PreferencesDialog::sectionKeys(int section) const {
         return {key::Language,  key::OpenBehavior,         key::RestoreWindows,      key::ConfirmTrash,
                 key::EditorApp, key::RotationSaveStrategy, key::KeepModificationDate};
     case Window:
-        return {key::FitWindowToImage, key::TitleShowFolder, key::ShowStatusBar, key::ShowInfoPanel,
-                key::ShowFilmstrip,    key::AllowTabs,       key::CoupleBy};
+        return {key::FitWindowToImage, key::TitleBar,      key::TitleShowFolder, key::ShowStatusBar,
+                key::ShowInfoPanel,    key::ShowFilmstrip, key::AllowTabs,       key::CoupleBy};
     case Display:
         return {key::Background,
                 key::ZoomMode,
@@ -419,6 +419,14 @@ QWidget* PreferencesDialog::buildWindow() {
     auto* form = new QFormLayout(w);
     form->addRow(QString(), bind.check(key::FitWindowToImage, tr("Fenstergröße an Bild anpassen"), w));
     form->addRow(QString(), helpLabel(tr("Aus: Neue Fenster übernehmen die zuletzt benutzte Größe."), w));
+    // F-VIEW-15
+    form->addRow(tr("Titelleiste:"),
+                 bind.combo(key::TitleBar, {"autoHide", "always"},
+                            {tr("Beim Bewegen der Maus einblenden"), tr("Immer zeigen")}, w));
+    form->addRow(QString(),
+                 helpLabel(tr("Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler "
+                              "Fenstermodus“ schaltet ein einzelnes Fenster um."),
+                           w));
     form->addRow(QString(), bind.check(key::TitleShowFolder, tr("Ordnername in der Titelleiste"), w));
     form->addRow(QString(), helpLabel(tr("Zum Beispiel „IMG_1234.jpg — 23 / 412 — Urlaub“."), w));
     form->addRow(tr("Neue Fenster zeigen:"), bind.check(key::ShowStatusBar, tr("Statuszeile"), w));

@@ -14,6 +14,7 @@
 #include "OverviewController.h"
 #include "QuickFilterBar.h"
 #include "QuickMoveController.h"
+#include "TitleStrip.h"
 #include "ViewerWindow.h"
 #include "WindowModes.h"
 #include "core/Collection.h"
@@ -23,44 +24,9 @@
 #include <QKeyEvent>
 #include <QLabel>
 #include <QLineEdit>
-#include <QMouseEvent>
 #include <QStatusBar>
-#include <QWindow>
 
 namespace lf {
-
-namespace {
-
-// F-VIEW-13: in the minimal window mode the title bar is gone; this strip at the top of
-// the window moves it (dragging the image pans, ⌥-drag is the file drag-out, F-IN-14).
-class MoveHandle : public QWidget {
-public:
-    explicit MoveHandle(QWidget* parent) : QWidget(parent) {
-        setObjectName(QStringLiteral("lfMoveHandle"));
-        setAttribute(Qt::WA_NoSystemBackground);
-        setAttribute(Qt::WA_TranslucentBackground);
-        setCursor(Qt::OpenHandCursor);
-        setToolTip(QCoreApplication::translate("lf::WindowExtras", "Zum Bewegen des Fensters ziehen"));
-        hide();
-    }
-
-protected:
-    void mousePressEvent(QMouseEvent* event) override {
-        if (event->button() == Qt::LeftButton && window()->windowHandle())
-            window()->windowHandle()->startSystemMove();
-        event->accept();
-    }
-    void mouseDoubleClickEvent(QMouseEvent* event) override {
-        // Like a double click on a title bar: zoom the window.
-        QWidget* w = window();
-        w->isMaximized() ? w->showNormal() : w->showMaximized();
-        event->accept();
-    }
-};
-
-constexpr int kHandleHeight = 28; // about the height of a title bar
-
-} // namespace
 
 WindowExtras::WindowExtras(ViewerWindow& window, Application& app)
     : QObject(&window), m_window(window), m_app(app) {
@@ -72,7 +38,11 @@ WindowExtras::WindowExtras(ViewerWindow& window, Application& app)
     QWidget* central = window.centralWidget();
     m_central = central;
     m_filter = new QuickFilterBar(window, app, central);
-    m_handle = new MoveHandle(central);
+    m_titleStrip = new TitleStripController(window, central); // F-VIEW-13/15
+    connect(m_titleStrip, &TitleStripController::raised, this, [this] {
+        if (m_filter->isOpen())
+            m_filter->raise(); // the name filter stays usable above the strip
+    });
     central->installEventFilter(this);
     watchKeys(window.view());
     connect(m_overview, &OverviewController::modeChanged, this, [this] {
@@ -83,8 +53,8 @@ WindowExtras::WindowExtras(ViewerWindow& window, Application& app)
             watchKeys(m_overview->compareView());
         if (m_filter->isOpen())
             m_filter->raise();
-        if (m_minimal)
-            m_handle->raise();
+        if (m_titleStrip->strip()->isVisible())
+            m_titleStrip->strip()->raise();
     });
     if (CullingController* culling = window.culling()) {
         // M/C + 1–9 in the grid move/copy the selection (F-GRID-02, F-FILE-08).
@@ -177,7 +147,7 @@ bool WindowExtras::perform(Action a, QPointF pos) {
         setAlwaysOnTop(!m_onTop);
         return true;
     case Action::ToggleMinimalWindow:
-        setMinimalWindow(!m_minimal);
+        setMinimalWindow(!minimalWindow());
         return true;
     case Action::CoupleWindows:
         CouplingManager::of(m_app).showDialog(&m_window);
@@ -288,24 +258,21 @@ void WindowExtras::setAlwaysOnTop(bool on) {
     m_app.windowChanged(&m_window);
 }
 
-void WindowExtras::setMinimalWindow(bool on) {
-    m_minimal = on;
-    setWindowMinimalChrome(&m_window, on);
-    m_handle->setVisible(on);
-    placeHandle();
-    m_window.showMessage(on ? tr("Minimaler Fenstermodus – oben ziehen bewegt das Fenster")
-                            : tr("Minimaler Fenstermodus aus"),
-                         1800);
-    m_app.windowChanged(&m_window);
+bool WindowExtras::minimalWindow() const {
+    return m_titleStrip->borderless();
 }
 
-void WindowExtras::placeHandle() {
-    QWidget* central = m_central.data();
-    if (!central)
-        return;
-    m_handle->setGeometry(0, 0, central->width(), kHandleHeight);
-    if (m_handle->isVisible())
-        m_handle->raise();
+bool WindowExtras::menuInTitleStrip() const {
+    return m_titleStrip && m_titleStrip->holdsMenuBar();
+}
+
+void WindowExtras::setMinimalWindow(bool on) {
+    m_titleStrip->setBorderless(on);
+    m_window.showMessage(
+        on ? tr("Minimaler Fenstermodus – die Titelleiste erscheint, wenn sich die Maus bewegt")
+           : tr("Minimaler Fenstermodus aus"),
+        1800);
+    m_app.windowChanged(&m_window);
 }
 
 void WindowExtras::windowStateChanged() {
@@ -316,15 +283,11 @@ void WindowExtras::windowStateChanged() {
         return;
     if (m_onTop)
         setWindowAlwaysOnTop(&m_window, true);
-    if (m_minimal && !m_window.isFullScreen())
-        setWindowMinimalChrome(&m_window, true);
-    m_handle->setVisible(m_minimal && !m_window.isFullScreen());
-    placeHandle();
+    m_titleStrip->windowStateChanged(); // F-VIEW-13/15
 }
 
 bool WindowExtras::eventFilter(QObject* watched, QEvent* event) {
     if (event->type() == QEvent::Resize && m_central && watched == m_central.data()) {
-        placeHandle();
         if (m_filter->isOpen())
             m_filter->place();
     }

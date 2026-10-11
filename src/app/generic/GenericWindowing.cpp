@@ -15,12 +15,57 @@
 #include "app/WindowTabbing.h"
 
 #include <QColorSpace>
+#include <QCoreApplication>
 #include <QIcon>
 #include <QImage>
+#include <QList>
+#include <QPointer>
+#include <QProcess>
+#include <QSettings>
+#include <QStandardPaths>
+#include <QThreadPool>
 #include <QWidget>
 #include <QWindow>
 
+#include <optional>
+#include <utility>
+
 namespace lf {
+
+namespace {
+
+// F-VIEW-15: the side of the window buttons in the desktop's own title bars. Runs on a
+// worker thread.
+TitleButtonSide readDesktopButtonSide() {
+    constexpr TitleButtonSide fallback = TitleButtonSide::Right;
+    const QString desktop = qEnvironmentVariable("XDG_CURRENT_DESKTOP");
+    if (desktop.contains(QLatin1String("KDE"), Qt::CaseInsensitive)) {
+        const QString path =
+            QStandardPaths::locate(QStandardPaths::GenericConfigLocation, QStringLiteral("kwinrc"));
+        if (path.isEmpty())
+            return fallback;
+        QSettings ini(path, QSettings::IniFormat);
+        ini.beginGroup(QStringLiteral("org.kde.kdecoration2"));
+        return buttonSideFromKdeButtons(
+            ini.value(QStringLiteral("ButtonsOnLeft"), QStringLiteral("MS")).toString(),
+            ini.value(QStringLiteral("ButtonsOnRight"), QStringLiteral("HIAX")).toString(), fallback);
+    }
+    // GNOME and the desktops that share its setting (Cinnamon, Budgie, Pantheon …).
+    QProcess p;
+    p.start(QStringLiteral("gsettings"),
+            {QStringLiteral("get"), QStringLiteral("org.gnome.desktop.wm.preferences"),
+             QStringLiteral("button-layout")});
+    if (!p.waitForFinished(1500)) {
+        p.kill();
+        p.waitForFinished(500);
+        return fallback;
+    }
+    if (p.exitStatus() != QProcess::NormalExit || p.exitCode() != 0)
+        return fallback;
+    return buttonSideFromGnomeLayout(QString::fromUtf8(p.readAllStandardOutput()), fallback);
+}
+
+} // namespace
 
 // ---- DisplayColorSpace.h ----
 // No portable API for the monitor profile (colord would need D-Bus and a configured
@@ -91,15 +136,73 @@ void setWindowAlwaysOnTop(QWidget* window, bool on) {
 }
 
 void setWindowMinimalChrome(QWidget* window, bool on) {
-    // F-VIEW-13: no title bar - a frameless window; the move handle (WindowExtras) moves it
-    // with QWindow::startSystemMove() (X11 and Wayland).
-    if (!window || window->windowFlags().testFlag(Qt::FramelessWindowHint) == on)
+    // F-VIEW-13/15: no title bar - a frameless window; the title strip (TitleStrip) moves it
+    // with QWindow::startSystemMove() and resizes it at the edges with startSystemResize()
+    // (X11 and Wayland).
+    QWidget* top = window ? window->window() : nullptr;
+    if (!top || top->windowFlags().testFlag(Qt::FramelessWindowHint) == on)
         return;
-    const bool visible = window->isVisible();
-    window->setWindowFlag(Qt::FramelessWindowHint, on);
-    if (visible)
-        window->show();
+    Qt::WindowFlags flags = top->windowFlags();
+    flags.setFlag(Qt::FramelessWindowHint, on);
+    if (QWindow* handle = top->windowHandle()) {
+        // The native window stays (QWidget::setWindowFlags() would re-create it, and with
+        // it the GPU surface): only the decoration hints change.
+        top->overrideWindowFlags(flags);
+        handle->setFlags(flags);
+    } else {
+        top->setWindowFlags(flags); // not created yet
+    }
 }
+
+void setWindowButtonsVisible(QWidget*, bool, int) {}
+
+bool titleStripUsesSystemButtons() {
+    return false;
+}
+
+int titleStripHeight(QWidget*) {
+    return 32;
+}
+
+int titleStripReservedLeft(QWidget*) {
+    return 0;
+}
+
+void titleStripDoubleClick(QWidget* window) {
+    QWidget* top = window ? window->window() : nullptr;
+    if (top)
+        top->isMaximized() ? top->showNormal() : top->showMaximized();
+}
+
+void detectTitleButtonSide(QObject* receiver, const std::function<void(TitleButtonSide)>& done) {
+    // Read once per process on a worker thread (a file and possibly a gsettings process).
+    static std::optional<TitleButtonSide> known;
+    static QList<std::pair<QPointer<QObject>, std::function<void(TitleButtonSide)>>> waiting;
+    static bool running = false;
+    if (!done)
+        return;
+    if (known) {
+        done(*known);
+        return;
+    }
+    waiting.append({QPointer<QObject>(receiver), done});
+    if (running)
+        return;
+    running = true;
+    QThreadPool::globalInstance()->start([] {
+        const TitleButtonSide side = readDesktopButtonSide();
+        QMetaObject::invokeMethod(QCoreApplication::instance(), [side] {
+            known = side;
+            running = false;
+            const auto list = std::exchange(waiting, decltype(waiting)());
+            for (const auto& [object, callback] : list)
+                if (object)
+                    callback(side);
+        });
+    });
+}
+
+void setTitleStripHitTest(QWidget*, const std::function<TitleStripHit(QPoint)>&) {}
 
 NativeWindowState nativeWindowState(QWidget* window) {
     NativeWindowState s;

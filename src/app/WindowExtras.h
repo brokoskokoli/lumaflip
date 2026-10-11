@@ -4,8 +4,9 @@
 // M3 view features of a viewer window, kept out of ViewerWindow.cpp (which only calls the
 // hooks below): grid and compare (OverviewController, F-GRID-02/03), magnifier
 // (LoupeController, F-VIEW-11), "Immer im Vordergrund" (F-VIEW-12), minimal window mode
-// (F-VIEW-13), go to / shuffle (NavigationExtras, F-NAV-06), type-to-filter
-// (QuickFilterBar, F-NAV-08) and the status of coupled windows (CouplingManager, F-WIN-07).
+// with the fading title strip (TitleStripController, F-VIEW-13/15), go to / shuffle
+// (NavigationExtras, F-NAV-06), type-to-filter (QuickFilterBar, F-NAV-08) and the status
+// of coupled windows (CouplingManager, F-WIN-07).
 
 #include "core/InputBindings.h"
 
@@ -28,6 +29,7 @@ class LoupeController;
 class NavigationExtras;
 class OverviewController;
 class QuickFilterBar;
+class TitleStripController;
 class ViewerWindow;
 
 class WindowExtras : public QObject {
@@ -59,19 +61,22 @@ public:
     QWidget* contentWidget() const;  // image view, grid or compare view
     void focusContent();
 
-    // ---- F-VIEW-12 / F-VIEW-13 (per window) ----
+    // ---- F-VIEW-12 / F-VIEW-13/15 (per window) ----
     bool alwaysOnTop() const { return m_onTop; }
     void setAlwaysOnTop(bool on);
-    bool minimalWindow() const { return m_minimal; }
+    // F-VIEW-13 "Minimaler Fenstermodus" = the borderless window with the title strip that
+    // fades in (F-VIEW-15); new windows follow the setting key::TitleBar.
+    bool minimalWindow() const;
     void setMinimalWindow(bool on);
-    QWidget* moveHandle() const { return m_handle; }
+    TitleStripController* titleStrip() const { return m_titleStrip; }
+    // Windows: the menu bar is collapsed into the title strip (ViewerWindow keeps it so).
+    bool menuInTitleStrip() const;
 
 protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:
     void watchKeys(QWidget* widget);
-    void placeHandle();
 
     ViewerWindow& m_window;
     Application& m_app;
@@ -80,7 +85,7 @@ private:
     NavigationExtras* m_nav = nullptr;
     QuickFilterBar* m_filter = nullptr;
     CollectionExtras* m_collection = nullptr;
-    QWidget* m_handle = nullptr;
+    TitleStripController* m_titleStrip = nullptr;
     FolderMapPanel* m_map = nullptr;
     QDockWidget* m_mapDock = nullptr;
     // Remembered once: the window's own centralWidget() must not be queried from the
@@ -90,7 +95,6 @@ private:
     QLabel* m_coupledLabel = nullptr;
     QLabel* m_nameLabel = nullptr;
     bool m_onTop = false;
-    bool m_minimal = false;
 };
 
 } // namespace lf

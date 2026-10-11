@@ -4250,6 +4250,22 @@
         <translation>Disattivato: le nuove finestre usano le ultime dimensioni utilizzate.</translation>
     </message>
     <message>
+        <source>Titelleiste:</source>
+        <translation>Barra del titolo:</translation>
+    </message>
+    <message>
+        <source>Beim Bewegen der Maus einblenden</source>
+        <translation>Mostra quando il mouse si muove</translation>
+    </message>
+    <message>
+        <source>Immer zeigen</source>
+        <translation>Mostra sempre</translation>
+    </message>
+    <message>
+        <source>Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um.</source>
+        <translation>Senza barra del titolo l’immagine arriva fino al bordo superiore. Finestra → “Finestra minimale” cambia una sola finestra.</translation>
+    </message>
+    <message>
         <source>Ordnername in der Titelleiste</source>
         <translation>Nome della cartella nella barra del titolo</translation>
     </message>
@@ -6086,10 +6102,6 @@
 <context>
     <name>lf::WindowExtras</name>
     <message>
-        <source>Zum Bewegen des Fensters ziehen</source>
-        <translation>Trascina per spostare la finestra</translation>
-    </message>
-    <message>
         <source>Karte</source>
         <translation>Mappa</translation>
     </message>
@@ -6122,8 +6134,8 @@
         <translation>Non più in primo piano</translation>
     </message>
     <message>
-        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
-        <translation>Finestra minimale – trascina in alto per spostare la finestra</translation>
+        <source>Minimaler Fenstermodus – die Titelleiste erscheint, wenn sich die Maus bewegt</source>
+        <translation>Finestra minimale – la barra del titolo appare quando il mouse si muove</translation>
     </message>
     <message>
         <source>Minimaler Fenstermodus aus</source>

@@ -4250,6 +4250,22 @@
         <translation>Av: nya fönster får den senast använda storleken.</translation>
     </message>
     <message>
+        <source>Titelleiste:</source>
+        <translation>Namnlist:</translation>
+    </message>
+    <message>
+        <source>Beim Bewegen der Maus einblenden</source>
+        <translation>Visa när musen rör sig</translation>
+    </message>
+    <message>
+        <source>Immer zeigen</source>
+        <translation>Visa alltid</translation>
+    </message>
+    <message>
+        <source>Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um.</source>
+        <translation>Utan namnlist når bilden ända upp till överkanten. Fönster → ”Minimalt fönster” växlar ett enskilt fönster.</translation>
+    </message>
+    <message>
         <source>Ordnername in der Titelleiste</source>
         <translation>Mappnamn i namnlisten</translation>
     </message>
@@ -6086,10 +6102,6 @@
 <context>
     <name>lf::WindowExtras</name>
     <message>
-        <source>Zum Bewegen des Fensters ziehen</source>
-        <translation>Dra för att flytta fönstret</translation>
-    </message>
-    <message>
         <source>Karte</source>
         <translation>Karta</translation>
     </message>
@@ -6122,8 +6134,8 @@
         <translation>Inte längre överst</translation>
     </message>
     <message>
-        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
-        <translation>Minimalt fönster – dra längst upp för att flytta fönstret</translation>
+        <source>Minimaler Fenstermodus – die Titelleiste erscheint, wenn sich die Maus bewegt</source>
+        <translation>Minimalt fönster – namnlisten visas när musen rör sig</translation>
     </message>
     <message>
         <source>Minimaler Fenstermodus aus</source>
