@@ -38,7 +38,7 @@ WindowExtras::WindowExtras(ViewerWindow& window, Application& app)
     QWidget* central = window.centralWidget();
     m_central = central;
     m_filter = new QuickFilterBar(window, app, central);
-    m_titleStrip = new TitleStripController(window, central); // F-VIEW-13/14
+    m_titleStrip = new TitleStripController(window, central); // F-VIEW-13/15
     connect(m_titleStrip, &TitleStripController::raised, this, [this] {
         if (m_filter->isOpen())
             m_filter->raise(); // the name filter stays usable above the strip
@@ -283,7 +283,7 @@ void WindowExtras::windowStateChanged() {
         return;
     if (m_onTop)
         setWindowAlwaysOnTop(&m_window, true);
-    m_titleStrip->windowStateChanged(); // F-VIEW-13/14
+    m_titleStrip->windowStateChanged(); // F-VIEW-13/15
 }
 
 bool WindowExtras::eventFilter(QObject* watched, QEvent* event) {

@@ -214,7 +214,7 @@ void LiveTextOverlay::updateGeometry() {
             [content addSubview:overlay positioned:NSWindowAbove relativeTo:nil];
         }
         // The image view's area in the window (logical px, origin top left). Below the
-        // title bar of a borderless window (F-VIEW-14): the window buttons and the title
+        // title bar of a borderless window (F-VIEW-15): the window buttons and the title
         // strip stay above the text selection.
         const QRect viewRect(m_view->mapTo(top, QPoint(0, 0)), m_view->size());
         QRect r = viewRect;

@@ -4,7 +4,7 @@
 // M3 view features of a viewer window, kept out of ViewerWindow.cpp (which only calls the
 // hooks below): grid and compare (OverviewController, F-GRID-02/03), magnifier
 // (LoupeController, F-VIEW-11), "Immer im Vordergrund" (F-VIEW-12), minimal window mode
-// with the fading title strip (TitleStripController, F-VIEW-13/14), go to / shuffle
+// with the fading title strip (TitleStripController, F-VIEW-13/15), go to / shuffle
 // (NavigationExtras, F-NAV-06), type-to-filter (QuickFilterBar, F-NAV-08) and the status
 // of coupled windows (CouplingManager, F-WIN-07).
 
@@ -61,11 +61,11 @@ public:
     QWidget* contentWidget() const;  // image view, grid or compare view
     void focusContent();
 
-    // ---- F-VIEW-12 / F-VIEW-13/14 (per window) ----
+    // ---- F-VIEW-12 / F-VIEW-13/15 (per window) ----
     bool alwaysOnTop() const { return m_onTop; }
     void setAlwaysOnTop(bool on);
     // F-VIEW-13 "Minimaler Fenstermodus" = the borderless window with the title strip that
-    // fades in (F-VIEW-14); new windows follow the setting key::TitleBar.
+    // fades in (F-VIEW-15); new windows follow the setting key::TitleBar.
     bool minimalWindow() const;
     void setMinimalWindow(bool on);
     TitleStripController* titleStrip() const { return m_titleStrip; }

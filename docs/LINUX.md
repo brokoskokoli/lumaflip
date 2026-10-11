@@ -108,7 +108,7 @@ Hidden or shown as "not available": Live Text (VisionKit), Quick Look, the Servi
 share sheet, maps (folder map and GPS mini map: MapKit), native window tabs, EDR/HDR presentation
 (HDR images are tone-mapped to SDR), the Dock menu, Sparkle updates, per-window screen profiles,
 writing ratings into image files (sidecar XMP works), Finder-specific sort settings. The
-borderless window with the fading title strip (F-VIEW-13/14) is a frameless window there: the
+borderless window with the fading title strip (F-VIEW-13/15) is a frameless window there: the
 strip draws its own buttons (on the side of the GNOME/KDE setting), moves the window with
 `startSystemMove()`, and the edges resize it with `startSystemResize()`.
 Integration tests that depend on these are skipped on Linux.

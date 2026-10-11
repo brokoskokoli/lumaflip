@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// F-VIEW-14: geometry of the title strip, side of the window buttons from the desktop
+// F-VIEW-15: geometry of the title strip, side of the window buttons from the desktop
 // settings and the macOS double-click preference (core/TitleStripLayout).
 #include "core/TitleStripLayout.h"
 
@@ -7,7 +7,7 @@
 
 using namespace lf;
 
-TEST(TitleStripLayout, F_VIEW_14_WindowsButtonsRightMenuLeft) {
+TEST(TitleStripLayout, F_VIEW_15_WindowsButtonsRightMenuLeft) {
     TitleStripSpec spec;
     spec.width = 800;
     spec.height = 32;
@@ -32,7 +32,7 @@ TEST(TitleStripLayout, F_VIEW_14_WindowsButtonsRightMenuLeft) {
     EXPECT_EQ(titleButtonAt(l, QPoint(400, 16)), TitleButton::None); // caption: moves the window
 }
 
-TEST(TitleStripLayout, F_VIEW_14_LinuxButtonsLeft) {
+TEST(TitleStripLayout, F_VIEW_15_LinuxButtonsLeft) {
     TitleStripSpec spec;
     spec.width = 600;
     spec.height = 32;
@@ -49,7 +49,7 @@ TEST(TitleStripLayout, F_VIEW_14_LinuxButtonsLeft) {
     EXPECT_EQ(l.centeredTitle, QRect(128, 0, 600 - 2 * 128, 32));
 }
 
-TEST(TitleStripLayout, F_VIEW_14_MacSystemButtonsKeepTheirPlace) {
+TEST(TitleStripLayout, F_VIEW_15_MacSystemButtonsKeepTheirPlace) {
     TitleStripSpec spec;
     spec.width = 500;
     spec.height = 28;
@@ -62,7 +62,7 @@ TEST(TitleStripLayout, F_VIEW_14_MacSystemButtonsKeepTheirPlace) {
     EXPECT_EQ(titleButtonAt(l, QPoint(10, 10)), TitleButton::None);
 }
 
-TEST(TitleStripLayout, F_VIEW_14_NarrowWindowHasNoCenteredTitle) {
+TEST(TitleStripLayout, F_VIEW_15_NarrowWindowHasNoCenteredTitle) {
     TitleStripSpec spec;
     spec.width = 250;
     spec.height = 32;
@@ -79,7 +79,7 @@ TEST(TitleStripLayout, F_VIEW_14_NarrowWindowHasNoCenteredTitle) {
     EXPECT_EQ(empty.titleArea.width(), 0);
 }
 
-TEST(TitleStripLayout, F_VIEW_14_ButtonSideFromDesktopSettings) {
+TEST(TitleStripLayout, F_VIEW_15_ButtonSideFromDesktopSettings) {
     constexpr auto R = TitleButtonSide::Right;
     constexpr auto L = TitleButtonSide::Left;
     // GNOME (gsettings prints the value quoted).
@@ -95,7 +95,7 @@ TEST(TitleStripLayout, F_VIEW_14_ButtonSideFromDesktopSettings) {
     EXPECT_EQ(buttonSideFromKdeButtons(QString(), QString(), L), L);
 }
 
-TEST(TitleStripLayout, F_VIEW_14_DoubleClickFollowsMacPreference) {
+TEST(TitleStripLayout, F_VIEW_15_DoubleClickFollowsMacPreference) {
     EXPECT_EQ(titleDoubleClickAction(QStringLiteral("Maximize"), std::nullopt), TitleDoubleClick::Zoom);
     EXPECT_EQ(titleDoubleClickAction(QStringLiteral("Fill"), std::nullopt), TitleDoubleClick::Zoom);
     EXPECT_EQ(titleDoubleClickAction(QStringLiteral("Minimize"), std::nullopt), TitleDoubleClick::Minimize);

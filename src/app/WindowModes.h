@@ -4,7 +4,7 @@
 // Native window modes of a viewer window (NSWindow / HWND / X11-Wayland window behind the
 // Qt top-level):
 // - F-VIEW-12 "Immer im Vordergrund": the floating window level (per window);
-// - F-VIEW-13/14 borderless window: no title bar chrome - the content reaches the top edge
+// - F-VIEW-13/15 borderless window: no title bar chrome - the content reaches the top edge
 //   of the window and the title strip (app/TitleStrip) fades in over it when the mouse
 //   moves. macOS: transparent title bar over a full size content view, title hidden, the
 //   system's window buttons fade with the strip. Windows: the caption is removed from the
@@ -29,7 +29,7 @@ void setWindowAlwaysOnTop(QWidget* window, bool on);
 // created borderless; Windows creates it) or on the native window.
 void setWindowMinimalChrome(QWidget* window, bool on);
 
-// F-VIEW-14: the system's window buttons (macOS: close/minimize/zoom) fade in/out with the
+// F-VIEW-15: the system's window buttons (macOS: close/minimize/zoom) fade in/out with the
 // title strip over `fadeMs` (0: at once). Hidden buttons take no clicks. In native full
 // screen they are always shown (the title bar appears with the menu bar there).
 // Elsewhere a no-op: the strip draws its own buttons.
@@ -56,7 +56,7 @@ void detectTitleButtonSide(QObject* receiver, const std::function<void(TitleButt
 enum class TitleStripHit { Client, Caption, Maximize };
 void setTitleStripHitTest(QWidget* window, const std::function<TitleStripHit(QPoint)>& hitTest);
 
-// What the native window looks like (tests, F-VIEW-12/13/14).
+// What the native window looks like (tests, F-VIEW-12/13/15).
 struct NativeWindowState {
     bool valid = false;    // a native window exists
     bool floating = false; // level above the normal window level

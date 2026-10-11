@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #pragma once
 
-// F-VIEW-14: geometry and platform conventions of the title strip that fades in over the
+// F-VIEW-15: geometry and platform conventions of the title strip that fades in over the
 // top of a borderless viewer window (the strip itself is app/TitleStrip). Pure functions,
 // so that the layout, the side of the window buttons and the double-click preference are
 // testable without windows.

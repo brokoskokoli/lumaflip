@@ -338,7 +338,7 @@ private slots:
         QVERIFY(!nativeWindowState(w).floating);
         QVERIFY(!menuShowsChecked(Action::ToggleAlwaysOnTop));
 
-        // F-VIEW-13 = the borderless window of F-VIEW-14, the default for new windows: the
+        // F-VIEW-13 = the borderless window of F-VIEW-15, the default for new windows: the
         // menu entry switches this window to the system's title bar and back.
         QVERIFY(x->minimalWindow());
         QVERIFY(menuShowsChecked(Action::ToggleMinimalWindow));
@@ -365,9 +365,9 @@ private slots:
     // Moves the mouse over the window the way the system does (through its QWindow).
     static void moveMouse(ViewerWindow* w, QPoint pos) { QTest::mouseMove(w->windowHandle(), pos); }
 
-    // Covers: F-VIEW-14 (borderless by default: image up to the top edge, the strip with the
+    // Covers: F-VIEW-15 (borderless by default: image up to the top edge, the strip with the
     // title fades in on a mouse move and out after the idle time, system buttons with it)
-    void F_VIEW_14_titleStripFadesInAndOut() {
+    void F_VIEW_15_titleStripFadesInAndOut() {
         makeFolder();
         ViewerWindow* w = openAndWait(path("alpha.jpg"));
         QVERIFY(w);
@@ -412,8 +412,8 @@ private slots:
             QTRY_VERIFY(nativeWindowState(w).buttonsHidden);
     }
 
-    // Covers: F-VIEW-14 (drag area and buttons of the strip, setting "immer zeigen")
-    void F_VIEW_14_dragAreaButtonsAndAlwaysShowSetting() {
+    // Covers: F-VIEW-15 (drag area and buttons of the strip, setting "immer zeigen")
+    void F_VIEW_15_dragAreaButtonsAndAlwaysShowSetting() {
         makeFolder();
         ViewerWindow* w = openAndWait(path("alpha.jpg"));
         QVERIFY(w);
@@ -479,9 +479,9 @@ private slots:
         }
     }
 
-    // Covers: F-VIEW-14 (no strip in full screen - F-VIEW-10 has its own chrome; the
+    // Covers: F-VIEW-15 (no strip in full screen - F-VIEW-10 has its own chrome; the
     // borderless window comes back after leaving full screen)
-    void F_VIEW_14_noStripInFullScreen() {
+    void F_VIEW_15_noStripInFullScreen() {
         makeFolder();
         ViewerWindow* w = openAndWait(path("alpha.jpg"));
         QVERIFY(w);

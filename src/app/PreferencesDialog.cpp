@@ -418,7 +418,7 @@ QWidget* PreferencesDialog::buildWindow() {
     auto* form = new QFormLayout(w);
     form->addRow(QString(), bind.check(key::FitWindowToImage, tr("Fenstergröße an Bild anpassen"), w));
     form->addRow(QString(), helpLabel(tr("Aus: Neue Fenster übernehmen die zuletzt benutzte Größe."), w));
-    // F-VIEW-14
+    // F-VIEW-15
     form->addRow(tr("Titelleiste:"),
                  bind.combo(key::TitleBar, {"autoHide", "always"},
                             {tr("Beim Bewegen der Maus einblenden"), tr("Immer zeigen")}, w));

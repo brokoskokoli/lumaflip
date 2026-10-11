@@ -25,7 +25,7 @@ refer to [SPEC.md](SPEC.md).
   with the window title and the window buttons fades in when the mouse moves and out after
   1.5 s. Drag it to move the window (Aero Snap and Snap Layouts on Windows), double-click to
   zoom (macOS follows the system setting). *Settings → Window → Title bar*: "show when the mouse
-  moves" or "always show"; *Window → Minimal Window* switches a single window. [F-VIEW-13/14]
+  moves" or "always show"; *Window → Minimal Window* switches a single window. [F-VIEW-13/15]
 - **Linux** (preview, M4): the full app on Linux with an AppImage. Freedesktop integration (open
   with / default app via desktop entries and `mimeapps.list`, reveal in the file manager over
   D-Bus, trash with undo, inotify folder watching incl. subfolders, tags in `user.xdg.tags`),

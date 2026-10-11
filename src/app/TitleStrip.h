@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #pragma once
 
-// F-VIEW-13/14: borderless viewer window with a title strip that fades in.
+// F-VIEW-13/15: borderless viewer window with a title strip that fades in.
 //
 // Without a title bar the image reaches the top edge of the window. When the mouse moves
 // (or the window becomes active, for keyboard users) a semi-transparent black strip fades

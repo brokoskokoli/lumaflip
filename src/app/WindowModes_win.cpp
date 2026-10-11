@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// F-VIEW-12 (always on top) and F-VIEW-13/14 (borderless window with the title strip) on
+// F-VIEW-12 (always on top) and F-VIEW-13/15 (borderless window with the title strip) on
 // the HWND behind a Qt top-level. Nothing here changes Qt's window flags: setWindowFlags()
 // would destroy and re-create the native window, and with it the QRhi swapchain.
 //

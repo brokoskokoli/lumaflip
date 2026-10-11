@@ -34,7 +34,7 @@ namespace lf {
 
 namespace {
 
-// F-VIEW-14: the side of the window buttons in the desktop's own title bars. Runs on a
+// F-VIEW-15: the side of the window buttons in the desktop's own title bars. Runs on a
 // worker thread.
 TitleButtonSide readDesktopButtonSide() {
     constexpr TitleButtonSide fallback = TitleButtonSide::Right;
@@ -136,7 +136,7 @@ void setWindowAlwaysOnTop(QWidget* window, bool on) {
 }
 
 void setWindowMinimalChrome(QWidget* window, bool on) {
-    // F-VIEW-13/14: no title bar - a frameless window; the title strip (TitleStrip) moves it
+    // F-VIEW-13/15: no title bar - a frameless window; the title strip (TitleStrip) moves it
     // with QWindow::startSystemMove() and resizes it at the edges with startSystemResize()
     // (X11 and Wayland).
     QWidget* top = window ? window->window() : nullptr;
