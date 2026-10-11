@@ -345,7 +345,7 @@ void ViewerWindow::saveRotation() {
                      : RotationStrategy::ExifOrientation;
     r.keepModificationDate = st.value(key::KeepModificationDate).toBool();
     if (r.quarterTurnsCW == 0 && !r.flipH && !r.flipV) {
-        showMessage(tr("Keine Drehung zu speichern – zuerst mit ⌘L oder ⌘R drehen"), 2500);
+        showMessage(tr("Keine Drehung zu sichern – drehe das Bild zuerst mit ⌘L oder ⌘R"), 2500);
         return;
     }
     m_rotationSaving = true;
@@ -361,7 +361,7 @@ void ViewerWindow::saveRotation() {
         FileOps::FileWork revert = [edit] { return edit->revert(); };
         const QString notice = plan.notice;
         self->m_app.fileOps().modifyAsync(
-            r.path, tr("Drehung speichern"), apply, revert,
+            r.path, tr("Drehung sichern"), apply, revert,
             [self, method, notice](bool ok, const QString& error) {
                 if (!self)
                     return;
@@ -398,9 +398,9 @@ void ViewerWindow::saveRotation() {
         }
         // Never silently lossy (F-EDIT-02): ask first (non-blocking, window-modal).
         const bool trim = plan.status == RotationPlan::NeedsTrim;
-        auto* box = new QMessageBox(QMessageBox::Question, tr("Drehung speichern"),
-                                    trim ? tr("Verlustfrei drehen geht nur mit beschnittenem Rand.")
-                                         : tr("Die Drehung kann nur durch Neukodieren gespeichert werden."),
+        auto* box = new QMessageBox(QMessageBox::Question, tr("Drehung sichern"),
+                                    trim ? tr("Verlustfreies Drehen ist nur mit beschnittenem Rand möglich.")
+                                         : tr("Die Drehung kann nur durch Neukodieren gesichert werden."),
                                     QMessageBox::NoButton, self);
         box->setObjectName(trim ? QStringLiteral("lfRotationTrim") : QStringLiteral("lfRotationReencode"));
         box->setInformativeText(plan.message);

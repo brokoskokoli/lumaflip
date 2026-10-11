@@ -62,13 +62,13 @@ tools/package.sh                       # dist/Lumaflip-1.0.0.dmg + .zip + .sha25
 - [ ] Mit dem **Release-DMG von GitHub** (notarisiert): Gatekeeper zeigt nur „aus dem Internet
       geladen“ (Abschnitt „Auslieferung“ in MANUAL_CHECKS.md).
 
-## 2. Startbildschirm und „Zuletzt geöffnet“ (F-OPEN-11, F-OPEN-12)
+## 2. Startbildschirm und „Benutzte Dokumente“ (F-OPEN-11, F-OPEN-12)
 
 - [ ] Lumaflip ohne Datei starten: Startbildschirm mit Drop-Fläche („Bild oder Ordner hierher
       ziehen“), „Öffnen …“ und – nach einigen geöffneten Bildern/Ordnern – bis zu **8 zuletzt
       geöffnete Elemente**, Dateien und Ordner gemischt, neueste zuerst. Klick öffnet sie.
       (F-OPEN-12)
-- [ ] Ablage → Zuletzt geöffnet zeigt dieselben Einträge; Rechtsklick aufs Dock-Symbol zeigt
+- [ ] Ablage → Benutzte Dokumente zeigt dieselben Einträge; Rechtsklick aufs Dock-Symbol zeigt
       sie unter „Zuletzt benutzt“. „Einträge löschen“ leert beide Listen. (F-OPEN-11)
 - [ ] Ein Eintrag, dessen Datei inzwischen gelöscht ist: verständliche Meldung, kein Absturz.
 
@@ -128,7 +128,7 @@ SVG (Vektor, Qt SVG):
 
 Mehrseitig (F-FMT-04):
 - [ ] Mehrseitiges TIFF, ICO mit mehreren Größen, HEIF-Sammlung: ⌥↓/⌥↑ blättert die Seiten,
-      Statuszeile „Seite 2/5“, jede Seite eingepasst; → wechselt weiter zum nächsten Bild.
+      Statusleiste „Seite 2/5“, jede Seite eingepasst; → wechselt weiter zum nächsten Bild.
 
 RAW (F-FMT-05):
 - [ ] RAW (CR3/NEF/ARW/DNG): zuerst erscheint sofort die eingebettete Vorschau, kurz danach die
@@ -172,7 +172,7 @@ Nur mit Kopien arbeiten (`/tmp/lf-m2`, Kopie des Fotoordners).
 Umbenennen (F-FILE-04):
 - [ ] Enter bzw. F2: Feld über dem Bild, nur der Name ohne Endung markiert. Neuer Name → Titel
       und Position folgen sofort (Ordner nach Name sortiert), ein zweites Fenster zeigt den
-      neuen Namen, ⌘Z macht es rückgängig.
+      neuen Namen, ⌘Z widerruft es.
 - [ ] Endung ändern bzw. löschen: Rückfrage („Soll die Endung … geändert werden?“). Ungültige
       Namen (`/`, `:`, führender Punkt, schon vorhanden): verständliche Meldung, nichts passiert.
 
@@ -188,29 +188,29 @@ Teilen, Drag-out (F-FILE-06, F-FILE-07):
       Finder, in eine Mail, in Nachrichten: Originaldatei wird kopiert/angehängt, beim Ziehen
       ist ein Vorschaubild sichtbar. (F-IN-14)
 
-Drehung speichern (F-EDIT-02):
-- [ ] Hochformat-JPEG mit ⌘R drehen, **Drehung speichern** (Menü Bild): Finder-Vorschau,
+Drehung sichern (F-EDIT-02):
+- [ ] Hochformat-JPEG mit ⌘R drehen, **Drehung sichern** (Menü Bild): Finder-Vorschau,
       Quick Look, Vorschau.app und Fotos zeigen es gedreht; Finder-Tags und Kommentar bleiben,
       mit „Änderungsdatum beibehalten“ auch das Datum. ⌘Z stellt die Originaldatei wieder her.
 - [ ] Strategie „JPEG verlustfrei drehen (DCT)“: auch ein Browser mit
       `image-orientation: none` zeigt es gedreht; bei Maßen, die nicht durch 8/16 teilbar sind,
-      erscheint die Frage „Verlustfrei drehen geht nur mit beschnittenem Rand.“
+      erscheint die Frage „Verlustfreies Drehen ist nur mit beschnittenem Rand möglich.“
 - [ ] Strategie „EXIF-Ausrichtung setzen“: nur das Kennzeichen ändert sich (Dateigröße fast
       gleich), Bilddaten unverändert.
 - [ ] PNG/HEIC/TIFF: wird über das Orientation-Tag gespeichert; wo das nicht geht, kommt eine
       Rückfrage („… nur durch Neukodieren“) – **nie** stilles Neukodieren. RAW: wird abgelehnt
       mit verständlicher Meldung.
-- [ ] **Symlink:** Drehung über einen symbolischen Link speichern → die **Zieldatei** ist
+- [ ] **Symlink:** Drehung über einen symbolischen Link sichern → die **Zieldatei** ist
       gedreht, der Link bleibt ein Link (im Finder weiterhin Alias-Pfeil). ⌘Z stellt das Ziel
       wieder her.
-- [ ] **Hardlink** (`ln bild.jpg zweitname.jpg`): nach dem Speichern zeigen **beide** Namen das
+- [ ] **Hardlink** (`ln bild.jpg zweitname.jpg`): nach dem Sichern zeigen **beide** Namen das
       gedrehte Bild (gleiche Datei, `ls -i` gleiche Inode) – oder Lumaflip lehnt mit klarer
       Meldung ab; in keinem Fall zeigen die beiden Namen danach unterschiedliche Inhalte, ohne
       dass das angekündigt wurde.
 - [ ] **HDR-JPEG** (iPhone-Foto mit Gain Map bzw. Ultra-HDR-JPEG): nach verlustfreiem Drehen ist
       das Bild in Fotos/Vorschau weiterhin HDR (heller Glanz auf HDR-Display) bzw. Lumaflip
       warnt, dass die Gain Map verloren ginge – kein stiller Verlust.
-- [ ] **Undo nach externer Änderung:** Drehung speichern, dann die Datei in einem anderen
+- [ ] **Undo nach externer Änderung:** Drehung sichern, dann die Datei in einem anderen
       Programm ändern und sichern, danach in Lumaflip ⌘Z: Lumaflip überschreibt die fremde
       Änderung **nicht** still (Rückfrage oder Meldung „Datei wurde geändert“).
 
@@ -230,7 +230,7 @@ Drehung speichern (F-EDIT-02):
 
 Einstellungen (⌘,) → Maus & Tastatur. Jede Option einmal umstellen und ausprobieren:
 
-- [ ] Mausrad ohne/mit ⌘/⌥/⇧: Bild wechseln · Zoomen am Cursor · Ausschnitt scrollen ·
+- [ ] Mausrad ohne/mit ⌘/⌥/⇧: Bild wechseln · Zoomen am Mauszeiger · Ausschnitt verschieben ·
       horizontal scrollen (F-IN-01, F-IN-02). Feinheiten: Richtung umkehren, Raststufen 1–5,
       Mindestabstand 0–300 ms (bei Freilauf-Rädern kein Überspringen), Zoomschritt (F-IN-03).
 - [ ] Bild↑/Bild↓ (inkl. Sprungweite, Seite bei mehrseitigen Dateien), Pos1/Ende, Leertaste/
@@ -239,8 +239,8 @@ Einstellungen (⌘,) → Maus & Tastatur. Jede Option einmal umstellen und auspr
       Ziehen (Ausschnitt ↔ Drag-out, ⌥ jeweils umgekehrt), Esc, Ende der Sammlung (anhalten ·
       umlaufen · zum nächsten Ordner) (F-IN-09 … F-IN-16).
 - [ ] Neben jeder Option eine kurze Hilfe; „Auf Standard zurücksetzen“ pro Bereich. (F-IN-17)
-- [ ] Profilvorlagen: „Mac-Standard“, „Windows-Viewer-Gewohnheiten“ (Mausrad und Bild↑/↓ =
-      Bild, Enter = Vollbild), „Fotograf:in / Lightroom“ (Mausrad = Zoom; Ziffern/P/X/U erst in
+- [ ] Profilvorlagen: „Mac-Standard“, „Wie Windows-Bildbetrachter“ (Mausrad und Bild↑/↓ =
+      Bild, Enter = Vollbild), „Fotografie / Lightroom“ (Mausrad = Zoom; Ziffern/P/X/U erst in
       M3) – ein Klick setzt die Optionen, sichtbar in der Liste. (F-IN-18)
 - [ ] **Tastenkürzel-Editor:** Kürzel einer Aktion ändern → wirkt sofort und erscheint im Menü;
       ein schon belegtes Kürzel zeigt „Konflikt mit: …“; bis zu drei Kürzel pro Aktion; „Alle
@@ -259,7 +259,7 @@ Einstellungen (⌘,) → Maus & Tastatur. Jede Option einmal umstellen und auspr
 - [ ] macOS-Kacheln: grünen Knopf gedrückt halten bzw. Globus+⌃+Pfeil – Lumaflip-Fenster lassen
       sich kacheln und in Vollbild-Kacheln setzen. (F-WIN-04)
 - [ ] Einstellungen → Fenster → „Fenster als Tabs öffnen“: ⌘N öffnet einen Tab; Fenster → „Alle
-      Fenster zusammenführen“, „Tab in neues Fenster bewegen“, Tabs per Maus herausziehen; aus:
+      Fenster zusammenführen“, „Tab in ein neues Fenster bewegen“, Tabs per Maus herausziehen; aus:
       neue Fenster wieder eigenständig. Standard: keine Tabs. (F-WIN-05)
 - [ ] **Wiederherstellung folgt der Systemeinstellung:** Systemeinstellungen → Schreibtisch &
       Dock → „Fenster beim Beenden eines Programms schließen“ **an** (macOS-Standard): zwei
@@ -289,11 +289,11 @@ Einstellungen (⌘,) → Maus & Tastatur. Jede Option einmal umstellen und auspr
       einschalten: vorher erscheint eine Erklärung der Automatisierungs-Berechtigung. (F-SORT-04)
 - [ ] Ordner im Finder in Listenansicht nach Größe ↓ sortieren, Finder-Fenster **vorne und offen
       lassen**, Bild daraus öffnen: macOS fragt einmal nach „Automation“ (Lumaflip → Finder);
-      danach Statuszeile „Wie Finder (live): Größe ↓“ und gleiche Reihenfolge – auch direkt
+      danach Statusleiste „Wie im Finder (live): Größe ↓“ und gleiche Reihenfolge – auch direkt
       nach dem Umsortieren, ohne das Finder-Fenster zu schließen. (F-SORT-04)
 - [ ] Bei „Nicht erlauben“ bzw. Finder zeigt einen anderen Ordner: die `.DS_Store`-Stufe greift
       ohne Fehlermeldung und ohne spürbare Verzögerung (Zeitlimit 300 ms). (F-SORT-04)
-- [ ] Darstellung → Sortieren nach → „Größe“ in Ordner A; Ordner B öffnen (bleibt „Wie Finder“);
+- [ ] Darstellung → Sortieren nach → „Größe“ in Ordner A; Ordner B öffnen (bleibt „Wie im Finder“);
       zurück zu A und nach Neustart: A ist weiter nach Größe sortiert. (F-SORT-06)
 - [ ] „Für alle Ordner verwenden“: Meldung „Sortierung gilt jetzt für alle Ordner“; ein
       neuer Ordner C ohne eigene Wahl übernimmt sie, A behält seine eigene. (F-SORT-06)

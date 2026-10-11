@@ -17,6 +17,13 @@ refer to [SPEC.md](SPEC.md).
 - **Windows: signed releases** — installer, ZIP, `Lumaflip.exe`, the decoder helper and
   `WinSparkle.dll` are code-signed (Azure Artifact Signing) and timestamped.
 
+### Changed
+
+- **German UI texts** follow the macOS German terminology and one term per concept
+  ([translations/GLOSSARY.md](translations/GLOSSARY.md)): "Sichern" for save, "Widerrufen" for undo,
+  "Benutzte Dokumente", "Markieren/Ablehnen" for pick/reject, "App" instead of "Programm",
+  consistent "du". Existing translations were kept (`tools/i18n_rename_source.py`). [F-I18N-01]
+
 ## [1.2.0] - 2026-10-11
 
 Milestone M4 — the first public release: signed and notarized for macOS 15+ on Apple Silicon,

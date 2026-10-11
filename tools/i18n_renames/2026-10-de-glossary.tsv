@@ -1,0 +1,209 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# German source-text renames for translations/GLOSSARY.md (October 2026).
+# Format: context<TAB>old source<TAB>new source[<TAB>plural substitutions for lumaflip_de.ts]
+# context "*" = every context that contains the old source.
+# Plural substitutions: "alt=>neu" pairs separated by " ;; ", applied to each German numerusform.
+# Applied with: python3 tools/i18n_rename_source.py tools/i18n_renames/2026-10-de-glossary.tsv
+SortSpec	Wie Finder (live): %1	Wie im Finder (live): %1
+SortSpec	Wie Finder: %1	Wie im Finder: %1
+SortSpec	%1 (Finder-Info nicht gefunden)	%1 (Finder-Informationen nicht gefunden)
+lf::MainMenu	Wie Finder	Wie im Finder
+lf::Application	Vollbild / Modus verlassen	Vollbild oder Modus beenden
+lf::InputBindings	Vollbild bzw. Modus verlassen	Vollbild oder Modus beenden
+lf::InputBindings	Modus verlassen, sonst Fenster schließen	Modus beenden, sonst Fenster schließen
+lf::InputBindings	Vollbild bzw. Modus verlassen, sonst nichts	Vollbild oder Modus beenden, sonst nichts
+lf::InputBindings	Vollbild bzw. Modus verlassen, sonst Fenster schließen	Vollbild oder Modus beenden, sonst Fenster schließen
+lf::Archive	Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.	Das Archiv ist passwortgeschützt – verschlüsselte Archive werden nicht unterstützt.
+lf::PdfDocument	Das PDF-Dokument ist kennwortgeschützt.	Das PDF-Dokument ist passwortgeschützt.
+lf::CollectionExtras	Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.	Unterordner: Nur die ersten %n Bilder werden angezeigt – öffne einen kleineren Ordner.	wird gezeigt=>wird angezeigt ;; werden gezeigt=>werden angezeigt ;; bitte einen kleineren Ordner öffnen=>öffne einen kleineren Ordner
+lf::ContainerPolicy	Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.	Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten sind hier nicht möglich.
+lf::CropOverlay	Speichern	Sichern
+lf::CropOverlay	Zuschnitt in der Datei speichern (Enter, widerrufbar)	Zuschnitt in der Datei sichern (Enter, widerrufbar)
+lf::CropOverlay	Speichern unter …	Sichern unter …
+lf::CropOverlay	Zuschnitt als neue Datei speichern – das Original bleibt unverändert	Zuschnitt als neue Datei sichern – das Original bleibt unverändert
+lf::CropSave	Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.	Die Datei wurde inzwischen verändert – nichts gesichert. Schneide das Bild erneut zu.
+lf::CropSave	Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.	Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden ist nur durch Neukodieren möglich – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.
+lf::CropSave	Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.	Der Zuschnitt liegt nicht auf dem JPEG-Blockraster.
+*	Das Dateiformat wird zum Speichern nicht erkannt.	Das Dateiformat wird zum Sichern nicht erkannt.
+lf::CropSave	Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.	Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Zuschnitt kann als neue Datei exportiert werden.
+lf::CropSave	RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.	RAW-Dateien werden nie verändert. Der Zuschnitt kann als neue Datei exportiert werden.
+lf::CropSave	Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.	Animierte oder mehrseitige Dateien können nicht zugeschnitten gesichert werden. Der Zuschnitt des ersten Bildes kann als neue Datei exportiert werden.
+lf::CropSave	„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.	„Sichern unter“ überschreibt nie das Original – wähle einen anderen Namen.
+*	„%1“ gibt es schon.	„%1“ existiert bereits.
+lf::CropSave	Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.	Der Zuschnitt umfasst das ganze Bild – es gibt nichts zuzuschneiden.
+lf::CropSave	Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.	Für den verlustfreien Zuschnitt wurde der Zuschnittbereich an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.
+lf::CropSave	Der Zuschnitt kann nicht gespeichert werden.	Der Zuschnitt kann nicht gesichert werden.
+lf::CropSave	Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.	Dieses Format kann hier nicht geschrieben werden. Der Zuschnitt kann in einem anderen Format exportiert werden.
+lf::CropSave	Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.	Dieses Format komprimiert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.
+*	Der Zuschnitt konnte nicht gespeichert werden.	Der Zuschnitt konnte nicht gesichert werden.
+lf::CullingController	0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg	0–5  Sterne     P  Markieren     X  Ablehnen     U  Markierung aufheben
+lf::CullingController	← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden	← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Widerrufen     Esc  Beenden
+lf::CullingController	Aussortiermodus: Ziffern vergeben Sterne, P/X/U markieren	Aussortiermodus: Ziffern vergeben Sterne, P/X/U setzen Markierungen
+lf::CullingController	Keine verworfenen Bilder	Keine abgelehnten Bilder
+lf::CullingController	%n verworfene(s) Bild(er) in den Papierkorb legen?	%n abgelehnte(s) Bild(er) in den Papierkorb legen?	verworfenes=>abgelehntes ;; verworfene=>abgelehnte
+lf::CullingController	%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?	%n abgelehnte(s) Bild(er) in den Ordner „_Rejected“ verschieben?	verworfenes=>abgelehntes ;; verworfene=>abgelehnte
+lf::CullingController	Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren gehen mit. ⌘Z macht den ganzen Schritt rückgängig.	Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren werden mitbewegt. ⌘Z widerruft den ganzen Schritt.
+lf::CullingController	In den Papierkorb	In den Papierkorb legen
+lf::CullingController	Verworfene in den Papierkorb	Abgelehnte in den Papierkorb legen
+lf::CullingController	Verworfene nach _Rejected	Abgelehnte nach „_Rejected“ verschieben
+lf::DefaultAppDialog	Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht ausgewählte Formate bleiben beim bisherigen Programm.	Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht ausgewählte Formate bleiben bei der bisherigen App.
+lf::ExportDialog	Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.	Den Zuschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.
+lf::ExportDialog	Ohne Ortsdaten (GPS)	Ohne Aufnahmeort (GPS)
+lf::ExportDialog	Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung	Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Endung
+lf::ExportRunner	Exportiere …	Wird exportiert …
+lf::ExportRunner	Exportiere %1 von %2: %3	Bild %1 von %2 wird exportiert: %3
+lf::FolderMapModel	Orte werden gelesen … %1 von %2	Aufnahmeorte werden gelesen … %1 von %2
+lf::FolderMapModel	%1 von %n Bildern mit Ort	%1 von %n Bildern mit Aufnahmeort	mit Ort=>mit Aufnahmeort
+lf::FolderMapPanel	Auf diesem System ist keine Kartendarstellung verfügbar.	Karten sind auf diesem System nicht verfügbar.
+lf::FolderMapPanel	Karte schließen	Ordnerkarte schließen
+lf::FolderMapView	Karten sind unter Windows nicht verfügbar. Fotos mit Ortsangabe in diesem Ordner: %1	Karten sind unter Windows nicht verfügbar. Bilder mit Aufnahmeort in diesem Ordner: %1
+lf::Format	 (KB: %1 mm)	 (Kleinbild: %1 mm)
+lf::ImageExport	Nicht genug Speicher zum Exportieren.	Nicht genug Arbeitsspeicher zum Exportieren.
+*	Nicht genug Speicher für das Bild (%1 × %2 Pixel).	Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).
+*	Nicht genug Speicher für das Bild.	Nicht genug Arbeitsspeicher für das Bild.
+lf::PdfDocument	Nicht genug Speicher für die Seite.	Nicht genug Arbeitsspeicher für die Seite.
+lf::LosslessTransform	Nicht genug Speicher zum Drehen.	Nicht genug Arbeitsspeicher zum Drehen.
+lf::ImageIODecoder	Bildpuffer konnte nicht angelegt werden.	Der Bildpuffer konnte nicht angelegt werden.
+lf::InfoGpsBox	Karte anzeigen	Karte einblenden
+lf::InfoGpsBox	Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)	Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte einblenden“)
+lf::InputBindings	Einpassen ↔ 100 % am Cursor	Einpassen ↔ 100 % am Mauszeiger
+*	Drehung speichern	Drehung sichern
+lf::InputBindings	Rückgängig	Widerrufen
+lf::MainMenu	In Standard-Editor öffnen	Im Editor öffnen
+lf::InputBindings	Behalten (Pick)	Markieren
+lf::InputBindings	Verwerfen (Reject)	Ablehnen
+lf::InputBindings	Markierung zurücksetzen	Markierung aufheben
+lf::InputBindings	Nach Dateiname filtern	Nach Dateinamen filtern
+lf::MainMenu	Nach Dateiname filtern …	Nach Dateinamen filtern …
+lf::InputBindings	RAW/JPEG des Paares zeigen	RAW/JPEG des Paares anzeigen
+lf::MainMenu	Über-/Unterbelichtung	Über-/Unterbelichtungswarnung
+lf::InputBindings	Zoomen (am Cursor)	Zoomen (am Mauszeiger)
+lf::InputBindings	Ausschnitt scrollen (sonst Bild wechseln)	Ausschnitt verschieben (sonst Bild wechseln)
+lf::InputBindings	Ausschnitt seitenweise scrollen (sonst Bild)	Ausschnitt seitenweise verschieben (sonst Bild)
+lf::InputBindings	Erst bis zum Rand scrollen, dann Bild wechseln	Erst bis zum Rand verschieben, dann Bild wechseln
+lf::InputBindings	Ausschnitt scrollen (Bild mit ⌥←/⌥→)	Ausschnitt verschieben (Bild mit ⌥←/⌥→)
+lf::InputBindings	Ausschnitt scrollen, sonst vorheriges/nächstes Bild	Ausschnitt verschieben, sonst vorheriges/nächstes Bild
+lf::InputBindings	Ausschnitt scrollen (wenn gezoomt), sonst nichts	Ausschnitt verschieben (wenn gezoomt), sonst nichts
+lf::InputBindings	Bild wechseln (gezoomt: scrollen)	Bild wechseln (gezoomt: Ausschnitt verschieben)
+lf::InputBindings	Ausschnitt scrollen	Nur Ausschnitt verschieben
+lf::InputBindings	Ziffern vergeben immer Sterne; P/X/U markieren. Zoom-Ziffern sind aus.	Ziffern vergeben immer Sterne, P/X/U setzen Markierungen. Die Zoom-Ziffern sind dann aus.
+lf::LicensesDialog	Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im Programmpaket unter Contents/Resources/licenses.	Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im App-Paket unter Contents/Resources/licenses.
+lf::LicensesDialog	Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das Programmpaket gelegt.	Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das App-Paket gelegt.
+lf::LosslessTransform	Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte die Drehung erneut speichern.	Die Datei wurde inzwischen verändert – nichts gesichert. Sichere die Drehung erneut.
+lf::LosslessTransform	Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.	Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.
+lf::LosslessTransform	RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; zum dauerhaften Drehen bitte den RAW-Entwickler benutzen.	RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; verwende zum dauerhaften Drehen deinen RAW-Konverter.
+lf::LosslessTransform	Animierte oder mehrseitige Dateien können nicht gedreht gespeichert werden.	Animierte oder mehrseitige Dateien können nicht gedreht gesichert werden.
+lf::LosslessTransform	Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfrei drehen geht nur, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.	Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfreies Drehen ist nur möglich, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.
+lf::LosslessTransform	Die Drehung kann nicht gespeichert werden.	Die Drehung kann nicht gesichert werden.
+lf::LosslessTransform	Die Ausrichtung ließ sich nicht ohne Neukodieren speichern.	Die Ausrichtung ließ sich nicht ohne Neukodieren sichern.
+lf::LosslessTransform	Die Drehung konnte nicht gespeichert werden.	Die Drehung konnte nicht gesichert werden.
+lf::LosslessTransform	Datei wurde inzwischen verändert – Rückgängig nicht möglich	Die Datei wurde inzwischen verändert – Widerrufen nicht möglich
+lf::LosslessTransform	Datei wurde inzwischen verändert – Wiederholen nicht möglich	Die Datei wurde inzwischen verändert – Wiederholen nicht möglich
+lf::LosslessTransform	Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Rückgängig/Wiederholen ist dafür nicht mehr möglich.	Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Widerrufen/Wiederholen ist dafür nicht mehr möglich.
+lf::LosslessTransform	Es gibt nichts rückgängig zu machen.	Es gibt nichts zu widerrufen.
+lf::LosslessTransform	Kein Platz für die Sicherungskopie – nichts gespeichert.	Kein Speicherplatz für die Sicherungskopie – nichts gesichert.
+lf::LosslessTransform	Keine Drehung zu speichern	Keine Drehung zu sichern
+lf::LosslessTransform	Drehung gespeichert (EXIF-Ausrichtung)	Drehung gesichert (EXIF-Ausrichtung)
+lf::LosslessTransform	Drehung verlustfrei gespeichert	Drehung verlustfrei gesichert
+lf::LosslessTransform	Drehung verlustfrei gespeichert (Rand beschnitten)	Drehung verlustfrei gesichert (Rand beschnitten)
+lf::LosslessTransform	Drehung gespeichert (verlustfrei neu kodiert)	Drehung gesichert (verlustfrei neu kodiert)
+lf::LosslessTransform	Drehung gespeichert (neu kodiert)	Drehung gesichert (neu kodiert)
+lf::LosslessTransform	Das Bild lässt sich in diesem Format nicht exakt neu speichern.	Das Bild lässt sich in diesem Format nicht exakt neu sichern.
+lf::LosslessTransform	Das Bild lässt sich nicht exakt neu speichern.	Das Bild lässt sich nicht exakt neu sichern.
+lf::LosslessTransform	Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.	Die Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.
+lf::LosslessTransform	Die Datei enthält Zusatzbilder (%1), die beim Speichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gespeichert und gilt weiter nur in der Anzeige.	Die Datei enthält Zusatzbilder (%1), die beim Sichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gesichert und gilt weiter nur in der Anzeige.
+lf::LosslessTransform	Nicht genug Platz, um „%1“ sicher zu überschreiben.	Nicht genug Speicherplatz, um „%1“ sicher zu überschreiben.
+lf::MacIntegration	Der Bildschirm ist nicht mehr da.	Der Bildschirm ist nicht mehr angeschlossen.
+lf::MacIntegration	Windows hat das Bild nicht als Hintergrund übernommen.	Windows hat das Bild nicht als Desktophintergrund übernommen.
+lf::MainMenu	Zuletzt geöffnet	Benutzte Dokumente
+lf::MainMenu	Einpassen inkl. Vergrößern	Einpassen (auch vergrößern)
+lf::PreferencesDialog	Einpassen inkl. Vergrößern	Einpassen (auch vergrößern)
+lf::MainMenu	Overlays	Einblendungen
+lf::MainMenu	Nur Picks	Nur markierte
+lf::MainMenu	Nur verworfene	Nur abgelehnte
+lf::MainMenu	Alle verworfenen in den Papierkorb …	Alle abgelehnten in den Papierkorb legen …
+lf::MainMenu	Alle verworfenen nach „_Rejected“ verschieben …	Alle abgelehnten nach „_Rejected“ verschieben …
+lf::MainMenu	Karte	Ordnerkarte
+lf::WindowExtras	Karte	Ordnerkarte
+lf::MainMenu	Entkoppeln	Fenster entkoppeln
+lf::MenuExtras	Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.	Einzelne PDF-Seiten können nicht an andere Apps übergeben werden.
+lf::MenuExtras	Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.	Das Bild wird aus dem Archiv entpackt – versuche es gleich noch einmal.
+lf::MenuExtras	Vorherigen Tab zeigen	Vorherigen Tab anzeigen
+lf::MenuExtras	Nächsten Tab zeigen	Nächsten Tab anzeigen
+lf::MenuExtras	Tab in neues Fenster bewegen	Tab in ein neues Fenster bewegen
+lf::Metadata	Breite	Breitengrad
+lf::Metadata	Länge	Längengrad
+lf::NavigationExtras	Bitte eine Bildnummer zwischen 1 und %1 eingeben	Gib eine Bildnummer zwischen 1 und %1 ein.
+lf::OpenWithService	Kein Programm zum Bearbeiten gefunden. Wähle eines unter Einstellungen → Allgemein → Editor.	Keine App zum Bearbeiten gefunden. Wähle eine unter Einstellungen → Allgemein → Editor.
+lf::OpenWithService	Programme (*.desktop);;Alle Dateien (*)	Apps (*.desktop);;Alle Dateien (*)
+lf::OpenWithService	„%1“ ist kein Programm.	„%1“ ist keine App.
+lf::OpenWithService	Programm wählen	App wählen
+lf::OpenWithService	Programme (*.app)	Apps (*.app)
+lf::OpenWithService	Programme werden gesucht …	Apps werden gesucht …
+lf::OpenWithService	Keine passenden Programme	Keine passenden Apps
+lf::OverviewController	Zum Vergleichen mindestens zwei Bilder wählen	Wähle zum Vergleichen mindestens zwei Bilder aus
+lf::PreferencesDialog	Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbild aktivieren“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.	Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbildmodus“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.
+lf::PreferencesDialog	Vor dem Löschen nachfragen	Vor dem Bewegen in den Papierkorb nachfragen
+lf::PreferencesDialog	Für „In Standard-Editor öffnen“ (Taste E).	Für „Im Editor öffnen“ (Taste E).
+lf::PreferencesDialog	Drehung speichern:	Drehung sichern:
+lf::PreferencesDialog	Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Programme ohne EXIF-Unterstützung das Bild richtig zeigen. RAW-Dateien werden nie verändert; ⌘Z macht das Speichern rückgängig.	Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Apps ohne EXIF-Unterstützung das Bild richtig anzeigen. RAW-Dateien werden nie verändert; ⌘Z widerruft das Sichern.
+lf::PreferencesDialog	Immer zeigen	Immer einblenden
+lf::PreferencesDialog	Statuszeile	Statusleiste
+lf::PreferencesDialog	Wie Systemdarstellung	Wie System
+lf::PreferencesDialog	Pixel scharf	Scharfe Pixel
+lf::PreferencesDialog	Windows-Viewer-Gewohnheiten	Wie Windows-Bildbetrachter
+lf::PreferencesDialog	Fotograf:in / Lightroom	Fotografie / Lightroom
+lf::PreferencesDialog	Mausrad-Feinheiten	Mausrad-Feineinstellungen
+lf::PreferencesDialog	Feld anklicken und neue Taste drücken. Bis zu drei Kürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.	Klicke auf ein Feld und drücke die neue Taste. Bis zu drei Tastenkürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.
+lf::PreferencesDialog	Standardkürzel wiederherstellen	Standard-Tastenkürzel wiederherstellen
+lf::PreferencesDialog	%n Aktion(en) mit doppelt belegten Tasten – bitte eine davon ändern.	%n Aktion(en) mit doppelt belegten Tasten – ändere eine davon.	bitte eine davon ändern=>ändere eine davon
+lf::PreferencesDialog	Bewertungen speichern	Speicherort für Bewertungen
+lf::PreferencesDialog	Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.	Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Abgelehnt“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.
+lf::PreferencesDialog	Tag für Pick:	Tag für „Markiert“:
+lf::PreferencesDialog	Tag für Verworfen:	Tag für „Abgelehnt“:
+lf::PreferencesDialog	Tastenhilfe im Aussortiermodus zeigen	Tastenhilfe im Aussortiermodus einblenden
+lf::PreferencesDialog	M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z macht es rückgängig.	M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z widerruft es.
+lf::PreferencesDialog	Bilder zurück behalten:	Vorherige Bilder behalten:
+lf::PreferencesDialog	Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.	Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Internetverbindung.
+lf::PreferencesDialog	Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.	Ein Shell-Befehl oder ein Kurzbefehl (Kurzbefehle-App) erhält das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.
+lf::PreferencesDialog	Einstellungen sichern	Backup der Einstellungen
+lf::PreferencesDialog	Lumaflip kann nicht sein eigener Editor sein. Bitte wähle ein anderes Programm.	Lumaflip kann nicht sein eigener Editor sein. Wähle eine andere App.
+lf::PreferencesDialog	Auswählen …	Wählen …
+lf::PsbDecoder	Die Farbtiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.	Die Bittiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.
+lf::XcfDecoder	Die Farbtiefe der XCF-Datei wird nicht unterstützt.	Die Bittiefe der XCF-Datei wird nicht unterstützt.
+lf::QuickMoveController	Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.	Noch kein Ziel verwendet – wähle zuerst eine Ziffer 1–9.
+lf::QuickMoveController	„%1“ gibt es in „%2“ schon.	„%1“ existiert bereits in „%2“.
+lf::QuickMoveController	Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.	„Ersetzen“ legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z widerruft alles.
+lf::Rating	nur Picks	nur markierte
+lf::Rating	nur verworfene	nur abgelehnte
+lf::Rating	Pick	Markiert
+lf::Rating	Verworfen	Abgelehnt
+lf::RatingStore	„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.	„%1“ wurde inzwischen verändert – Bewertung nicht gesichert.
+lf::RenameController	Soll die Endung „.%1“ entfernt werden?	Möchtest du die Endung „.%1“ wirklich entfernen?
+lf::RenameController	Soll die Endung „.%1“ hinzugefügt werden?	Möchtest du die Endung „.%1“ wirklich hinzufügen?
+lf::RenameController	Soll die Endung „.%1“ in „.%2“ geändert werden?	Möchtest du die Endung wirklich von „.%1“ in „.%2“ ändern?
+lf::RenameController	Dateiendung ändern?	Endung ändern?
+lf::RenameController	Die Datei wird dadurch nicht umgewandelt. Andere Programme erkennen sie danach eventuell nicht mehr.	Die Datei wird dadurch nicht umgewandelt. Andere Apps erkennen sie danach eventuell nicht mehr.
+lf::RenameController	Ohne Endung lassen	Nicht hinzufügen
+lf::RenameController	„.%1“ behalten	„.%1“ beibehalten
+lf::Shell	Lumaflip ist nicht als Anwendung installiert (%1 fehlt).	Lumaflip ist nicht als App installiert (%1 fehlt).
+lf::Shell	Das Programm wurde nicht gefunden.	Die App wurde nicht gefunden.
+lf::Shell	Windows erlaubt Programmen nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.	Windows erlaubt Apps nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.
+lf::UndoBackupStore	Die Sicherung für „Rückgängig“ ist nicht mehr vorhanden.	Die Sicherungskopie für „Widerrufen“ existiert nicht mehr.
+lf::UndoBackupStore	Nicht genug Platz für die Sicherungskopie (Rückgängig) – nichts gespeichert.	Nicht genug Speicherplatz für die Sicherungskopie (Widerrufen) – nichts gesichert.
+lf::ViewerWindow	Lumaflip – lädt …	Lumaflip – wird geladen …
+lf::ViewerWindow	„%1“ ist nicht mehr vorhanden.	„%1“ existiert nicht mehr.
+lf::ViewerWindow	Keine Drehung zu speichern – zuerst mit ⌘L oder ⌘R drehen	Keine Drehung zu sichern – drehe das Bild zuerst mit ⌘L oder ⌘R
+lf::ViewerWindow	Verlustfrei drehen geht nur mit beschnittenem Rand.	Verlustfreies Drehen ist nur mit beschnittenem Rand möglich.
+lf::ViewerWindow	Die Drehung kann nur durch Neukodieren gespeichert werden.	Die Drehung kann nur durch Neukodieren gesichert werden.
+lf::Wallpaper	Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.	Bilder in Archiven und PDF-Seiten können nicht als Schreibtischhintergrund festgelegt werden.
+lf::Wallpaper	Diese Arbeitsumgebung wird nicht unterstützt.	Diese Desktopumgebung wird nicht unterstützt.
+lf::WindowEditing	Zuschneiden geht in der Einzelbildansicht.	Zuschneiden ist nur in der Einzelbildansicht möglich.
+lf::WindowEditing	Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab	Zuschneiden: Rahmen ziehen – Enter sichert, Esc bricht ab
+lf::WindowEditing	Der vorige Zuschnitt wird noch gespeichert.	Der vorherige Zuschnitt wird noch gesichert.
+lf::WindowEditing	Zugeschnittenes Bild speichern unter	Zugeschnittenes Bild sichern unter
+lf::WindowEditing	„%1“ gibt es schon. Ersetzen?	„%1“ existiert bereits. Möchtest du die Datei ersetzen?
+lf::WindowEditing	Der Zuschnitt kann nur durch Neukodieren gespeichert werden.	Der Zuschnitt kann nur durch Neukodieren gesichert werden.
+lf::WindowEditing	Zugeschnitten gespeichert als „%1“	Zugeschnitten gesichert als „%1“
+lf::WindowIntegration	Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.	Live Text ist während der HDR-Darstellung nicht verfügbar – schalte mit ⇧⌘H auf SDR um.
+lf::ZipReader	Die Kompressionsart von „%1“ wird nicht unterstützt.	Die Komprimierungsart von „%1“ wird nicht unterstützt.

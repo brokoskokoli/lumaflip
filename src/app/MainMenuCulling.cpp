@@ -37,11 +37,11 @@ QString filterText(const QString& id) {
     if (id == QLatin1String("all"))
         return MainMenu::tr("Alle Bilder");
     if (id == QLatin1String("picks"))
-        return MainMenu::tr("Nur Picks");
+        return MainMenu::tr("Nur markierte");
     if (id == QLatin1String("unrated"))
         return MainMenu::tr("Nur unbewertete");
     if (id == QLatin1String("rejects"))
-        return MainMenu::tr("Nur verworfene");
+        return MainMenu::tr("Nur abgelehnte");
     return MainMenu::tr("Mindestens %1 ★").arg(id.mid(3));
 }
 
@@ -96,14 +96,14 @@ void MainMenu::buildCulling() {
 
     // ---- rejects (F-CULL-05) ----
     menu->addSeparator();
-    connect(
-        addCommand(menu, QStringLiteral("culling:trashRejects"), tr("Alle verworfenen in den Papierkorb …")),
-        &QAction::triggered, this, [culling] {
-            if (CullingController* c = culling())
-                c->bulkRejects(true);
-        });
+    connect(addCommand(menu, QStringLiteral("culling:trashRejects"),
+                       tr("Alle abgelehnten in den Papierkorb legen …")),
+            &QAction::triggered, this, [culling] {
+                if (CullingController* c = culling())
+                    c->bulkRejects(true);
+            });
     connect(addCommand(menu, QStringLiteral("culling:moveRejects"),
-                       tr("Alle verworfenen nach „_Rejected“ verschieben …")),
+                       tr("Alle abgelehnten nach „_Rejected“ verschieben …")),
             &QAction::triggered, this, [culling] {
                 if (CullingController* c = culling())
                     c->bulkRejects(false);

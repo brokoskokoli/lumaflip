@@ -78,7 +78,7 @@ TEST(I18nReview5, F_I18N_04_ExposureNumbersWithoutGroupSeparators) {
     EXPECT_EQ(formatExposureTime(1.0 / 250, de), QStringLiteral("1/250 s"));
     EXPECT_EQ(formatExposureTime(1500, de), QStringLiteral("1500 s"));
     EXPECT_EQ(formatFocalLength(1200, 1200, de), QStringLiteral("1200 mm"));
-    EXPECT_EQ(formatFocalLength(800, 1200, en), QStringLiteral("800 mm (KB: 1200 mm)"));
+    EXPECT_EQ(formatFocalLength(800, 1200, en), QStringLiteral("800 mm (Kleinbild: 1200 mm)"));
     EXPECT_EQ(formatAperture(2.8, de), QStringLiteral("f/2,8"));
     // Altitudes keep the locale's grouping (a large number, not a token).
     EXPECT_EQ(formatAltitude(8848, de), QStringLiteral("8.848 m"));

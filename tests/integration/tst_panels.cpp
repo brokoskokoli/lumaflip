@@ -256,8 +256,8 @@ private slots:
         QCOMPARE(p->value("Aufnahme", "Belichtungszeit"), QStringLiteral("1/250 s"));
         QCOMPARE(p->value("Aufnahme", "ISO"), QStringLiteral("400"));
         QVERIFY(p->value("Aufnahme", "Aufnahmedatum").startsWith(QStringLiteral("17.05.2024 14:30:05")));
-        QVERIFY(p->value("GPS", "Breite").endsWith(QStringLiteral("N")));
-        QVERIFY(p->value("GPS", "Länge").endsWith(QStringLiteral("W")));
+        QVERIFY(p->value("GPS", "Breitengrad").endsWith(QStringLiteral("N")));
+        QVERIFY(p->value("GPS", "Längengrad").endsWith(QStringLiteral("W")));
         // Rows keep a meaningful order (not alphabetical).
         const QTreeWidgetItem* shot = p->tree()->topLevelItem(3);
         QCOMPARE(shot->child(0)->text(0), QStringLiteral("Aufnahmedatum"));

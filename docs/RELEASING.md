@@ -435,14 +435,14 @@ Die älteren deutschen Notizen unten sind Entwürfe aus der Abnahme.
 
 **Neu**
 - 18 Sprachen (folgt der Systemsprache, umschaltbar ohne Neustart; Übersetzungen noch ungeprüft).
-- Aussortiermodus (⌘K) mit Sternen, Pick/Reject und automatischem Weiterblättern; Bewertungen als
-  XMP-Zusatzdatei, im Bild oder als Finder-Tags; Filter nach Bewertung; Sammelaktion für verworfene Bilder.
-- Schnellablage (`M`/`C` + `1`–`9`) mit Namenskonflikt-Abfrage und Rückgängig.
+- Aussortiermodus (⌘K) mit Sternen, Markieren/Ablehnen und automatischem Weiterblättern; Bewertungen als
+  XMP-Zusatzdatei, im Bild oder als Finder-Tags; Filter nach Bewertung; Sammelaktion für abgelehnte Bilder.
+- Schnellablage (`M`/`C` + `1`–`9`) mit Namenskonflikt-Abfrage und Widerrufen.
 - Rasteransicht, Vergleich von 2–4 Bildern, Lupe, gekoppelte Fenster.
 - HDR/EDR-Darstellung mit SDR-Vorschau und Belichtungsregler.
 - Unterordner, Nachbarordner (⌥← / ⌥→), „Gehe zu Bild“, zufällige Reihenfolge, Schnellfilter (⌘F).
 - RAW+JPEG-Paare als ein Bild (optional), GPS mit Karte nach Klick, Fenster mit allen Metadaten.
-- Ordnerkarte (Darstellung → Karte, ⇧⌘M): alle Bilder mit Aufnahmeort auf einer Karte, zusammengefasst,
+- Ordnerkarte (Darstellung → Ordnerkarte, ⇧⌘M): alle Bilder mit Aufnahmeort auf einer Karte, zusammengefasst,
   aktuelles Bild folgt beim Blättern, Klick zeigt das Bild.
 - SVG vollständig über resvg (CSS, Filter, Text), Qt SVG als Rückfall.
 - Neue Formate: GIMP (XCF), Photoshop Large Document (PSB), QOI, PCX, PBM/PGM/PPM/PFM, SGI, OpenRaster,
@@ -450,7 +450,7 @@ Die älteren deutschen Notizen unten sind Entwürfe aus der Abnahme.
 
 **Hinweise**
 - Bei RAW+JPEG gehört `IMG_1.xmp` der RAW-Datei (Lightroom); das JPEG nutzt `IMG_1.JPG.xmp`.
-- Kartenausschnitte werden erst nach „Karte anzeigen“ von Apple geladen und nur bei sichtbarem
+- Kartenausschnitte werden erst nach „Karte einblenden“ von Apple geladen und nur bei sichtbarem
   Infopanel; „Karte ausblenden“ nimmt die Zustimmung zurück.
 - Auch die Ordnerkarte lädt Kartendaten erst, wenn sie geöffnet wird; Schließen beendet das Laden.
 - Bekannte Grenzen: XCF-Ebenenmodi ohne Gegenstück (HSV/LCH …) und GIMP-3-Effekte werden vereinfacht

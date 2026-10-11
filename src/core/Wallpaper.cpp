@@ -35,7 +35,8 @@ QString checkImage(const QString& path) {
     if (path.isEmpty())
         return Tr::tr("Es ist kein Bild geöffnet.");
     if (vpath::isMember(path))
-        return Tr::tr("Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.");
+        return Tr::tr(
+            "Bilder in Archiven und PDF-Seiten können nicht als Schreibtischhintergrund festgelegt werden.");
     return {};
 }
 

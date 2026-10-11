@@ -416,9 +416,9 @@ QString FolderMapModel::statusText() const {
         return tr("Keine Bilder");
     if (isScanning())
         //: folder map (F-INFO-08) while the GPS positions are read: done / all images
-        return tr("Orte werden gelesen … %1 von %2").arg(scannedCount()).arg(total);
-    //: folder map (F-INFO-08): "312 von 412 Bildern mit Ort" (%1 images with a position, %n all)
-    return tr("%1 von %n Bildern mit Ort", nullptr, total).arg(locatedCount());
+        return tr("Aufnahmeorte werden gelesen … %1 von %2").arg(scannedCount()).arg(total);
+    //: folder map (F-INFO-08): "312 von 412 Bildern mit Aufnahmeort" (%1 images with a position, %n all)
+    return tr("%1 von %n Bildern mit Aufnahmeort", nullptr, total).arg(locatedCount());
 }
 
 void FolderMapModel::cancelScan() {

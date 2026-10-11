@@ -146,7 +146,7 @@ QString formatFocalLength(double mm, double mm35, const QLocale& locale) {
     if (mm35 > 0 && mm35 != mm)
         //: appended to the focal length: the 35 mm equivalent ("KB" = Kleinbild), e.g. " (35-mm-equiv.: 52
         //: mm)"
-        s += Tr::tr(" (KB: %1 mm)").arg(formatDecimal(mm35, 0, plain));
+        s += Tr::tr(" (Kleinbild: %1 mm)").arg(formatDecimal(mm35, 0, plain));
     return s;
 }
 

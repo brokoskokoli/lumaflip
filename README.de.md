@@ -34,7 +34,7 @@ des Ordners. Lumaflip zeigt das Bild sofort, lädt den ganzen Ordner im Hintergr
   Krita u. v. m.; Animationen und mehrseitige Dateien.
 - **Farbe und HDR/EDR:** ICC-Profile, Display P3, CMYK; HDR-Fotos mit echter Spitzlicht-Helligkeit
   auf XDR-Displays, SDR-Vorschau, Belichtungsregler.
-- **Aussortieren und Bewerten:** Aussortiermodus (⌘K), Sterne, Pick/Reject, Bewertungen als
+- **Aussortieren und Bewerten:** Aussortiermodus (⌘K), Sterne, Markieren/Ablehnen, Bewertungen als
   Lightroom-kompatible XMP-Zusatzdatei, im Bild oder als Finder-Tags; Schnellablage
   `M`/`C` + `1`–`9`.
 - **Raster, Vergleich (2–4 Bilder synchron), Lupe, Ordnerkarte (⇧⌘M), Infopanel mit Histogramm.**

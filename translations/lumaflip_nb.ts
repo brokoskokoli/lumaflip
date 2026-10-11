@@ -44,15 +44,15 @@
         <translation>Symbolplassering</translation>
     </message>
     <message>
-        <source>Wie Finder (live): %1</source>
+        <source>Wie im Finder (live): %1</source>
         <translation>Som Finder (direkte): %1</translation>
     </message>
     <message>
-        <source>Wie Finder: %1</source>
+        <source>Wie im Finder: %1</source>
         <translation>Som Finder: %1</translation>
     </message>
     <message>
-        <source>%1 (Finder-Info nicht gefunden)</source>
+        <source>%1 (Finder-Informationen nicht gefunden)</source>
         <translation>%1 (fant ikke Finder-info)</translation>
     </message>
 </context>
@@ -134,7 +134,7 @@
         <translation>Hjem / Slutt</translation>
     </message>
     <message>
-        <source>Vollbild / Modus verlassen</source>
+        <source>Vollbild oder Modus beenden</source>
         <translation>Avslutt fullskjerm / modus</translation>
     </message>
     <message>
@@ -179,7 +179,7 @@
         <translation>Arkivet inneholder ingen bilder.</translation>
     </message>
     <message>
-        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <source>Das Archiv ist passwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
         <translation>Arkivet er passordbeskyttet – krypterte arkiver støttes ikke.</translation>
     </message>
     <message>
@@ -198,7 +198,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <source>Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.</source>
+        <source>Unterordner: Nur die ersten %n Bilder werden angezeigt – öffne einen kleineren Ordner.</source>
         <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
         <translation>
             <numerusform>Undermapper: bare %n bilde vises – åpne en mindre mappe.</numerusform>
@@ -309,7 +309,7 @@
 <context>
     <name>lf::ContainerPolicy</name>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten sind hier nicht möglich.</source>
         <translation>Bilder i arkiver og PDF-dokumenter er bare åpnet for visning – papirkurv, gi nytt navn, flytte og vurdere virker ikke her.</translation>
     </message>
 </context>
@@ -382,19 +382,19 @@
         <translation>Vis rutenett for tredjedelsregelen</translation>
     </message>
     <message>
-        <source>Speichern</source>
+        <source>Sichern</source>
         <translation>Arkiver</translation>
     </message>
     <message>
-        <source>Zuschnitt in der Datei speichern (Enter, widerrufbar)</source>
+        <source>Zuschnitt in der Datei sichern (Enter, widerrufbar)</source>
         <translation>Arkiver beskjæringen i filen (Retur, kan angres)</translation>
     </message>
     <message>
-        <source>Speichern unter …</source>
+        <source>Sichern unter …</source>
         <translation>Arkiver som…</translation>
     </message>
     <message>
-        <source>Zuschnitt als neue Datei speichern – das Original bleibt unverändert</source>
+        <source>Zuschnitt als neue Datei sichern – das Original bleibt unverändert</source>
         <translation>Arkiver beskjæringen som ny fil – originalen forblir uendret</translation>
     </message>
     <message>
@@ -414,11 +414,11 @@
 <context>
     <name>lf::CropSave</name>
     <message>
-        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.</source>
+        <source>Die Datei wurde inzwischen verändert – nichts gesichert. Schneide das Bild erneut zu.</source>
         <translation>Filen er endret i mellomtiden – ingenting ble lagret. Beskjær på nytt.</translation>
     </message>
     <message>
-        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
+        <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden ist nur durch Neukodieren möglich – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
         <translation>Filen inneholder flere bilder (f.eks. et HDR-gainmap eller et andre stereobilde) som ikke lenger ville passe etter en tapsfri beskjæring. Beskjæring er bare mulig ved omkoding – da går litt bildekvalitet og disse ekstra bildene tapt.</translation>
     </message>
     <message>
@@ -438,7 +438,7 @@
         <translation>JPEG-dataene kunne ikke beskjæres tapsfritt (%1).</translation>
     </message>
     <message>
-        <source>Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.</source>
+        <source>Der Zuschnitt liegt nicht auf dem JPEG-Blockraster.</source>
         <translation>Markeringen ligger ikke på JPEG-blokkrutenettet.</translation>
     </message>
     <message>
@@ -450,19 +450,19 @@
         <translation>Filen finnes ikke lenger.</translation>
     </message>
     <message>
-        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <source>Das Dateiformat wird zum Sichern nicht erkannt.</source>
         <translation>Filformatet gjenkjennes ikke for lagring.</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
         <translation>Bilder i arkiver og PDF-dokumenter endres ikke. Utsnittet kan eksporteres som en ny fil.</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <source>RAW-Dateien werden nie verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
         <translation>RAW-filer endres aldri. Utsnittet kan eksporteres som en ny fil.</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gesichert werden. Der Zuschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
         <translation>Animerte filer eller filer med flere sider kan ikke arkiveres beskåret. Utsnittet av det første bildet kan eksporteres som en ny fil.</translation>
     </message>
     <message>
@@ -470,7 +470,7 @@
         <translation>«%1» er skrivebeskyttet.</translation>
     </message>
     <message>
-        <source>„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.</source>
+        <source>„Sichern unter“ überschreibt nie das Original – wähle einen anderen Namen.</source>
         <translation>«Arkiver som» overskriver aldri originalen – velg et annet navn.</translation>
     </message>
     <message>
@@ -478,7 +478,7 @@
         <translation>Kan ikke skrive til «%1».</translation>
     </message>
     <message>
-        <source>„%1“ gibt es schon.</source>
+        <source>„%1“ existiert bereits.</source>
         <translation>«%1» finnes allerede.</translation>
     </message>
     <message>
@@ -490,11 +490,11 @@
         <translation>Ikke noe område er markert.</translation>
     </message>
     <message>
-        <source>Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.</source>
+        <source>Der Zuschnitt umfasst das ganze Bild – es gibt nichts zuzuschneiden.</source>
         <translation>Markeringen omfatter hele bildet – ingenting å beskjære.</translation>
     </message>
     <message>
-        <source>Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
+        <source>Für den verlustfreien Zuschnitt wurde der Zuschnittbereich an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
         <translation>For tapsfri beskjæring ble markeringen tilpasset JPEG-blokkrutenettet (%1 × %2 piksler) og er nå %3 × %4 piksler.</translation>
     </message>
     <message>
@@ -502,7 +502,7 @@
         <translation>Denne JPEG-filen kan ikke beskjæres tapsfritt. Ved omkoding går litt bildekvalitet tapt.</translation>
     </message>
     <message>
-        <source>Der Zuschnitt kann nicht gespeichert werden.</source>
+        <source>Der Zuschnitt kann nicht gesichert werden.</source>
         <translation>Beskjæringen kan ikke lagres.</translation>
     </message>
     <message>
@@ -510,11 +510,11 @@
         <translation>Ved omkoding ville bildet ikke forbli helt likt (fargemodell, bitdybde, palett eller gjennomsiktighet ville endres).</translation>
     </message>
     <message>
-        <source>Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.</source>
+        <source>Dieses Format kann hier nicht geschrieben werden. Der Zuschnitt kann in einem anderen Format exportiert werden.</source>
         <translation>Dette formatet kan ikke skrives her. Utsnittet kan eksporteres i et annet format.</translation>
     </message>
     <message>
-        <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <source>Dieses Format komprimiert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
         <translation>Dette formatet er med tap. Beskjæringen kan bare lagres ved å omkode bildet – da går litt bildekvalitet tapt.</translation>
     </message>
     <message>
@@ -530,7 +530,7 @@
         <translation>Tapsfri beskjæring er ikke mulig for dette bildet.</translation>
     </message>
     <message>
-        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <source>Der Zuschnitt konnte nicht gesichert werden.</source>
         <translation>Beskjæringen kunne ikke lagres.</translation>
     </message>
     <message>
@@ -569,15 +569,15 @@
         <translation>UTVELGING</translation>
     </message>
     <message>
-        <source>0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg</source>
+        <source>0–5  Sterne     P  Markieren     X  Ablehnen     U  Markierung aufheben</source>
         <translation>0–5  Stjerner     P  Behold     X  Forkast     U  Fjern markering</translation>
     </message>
     <message>
-        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden</source>
+        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Widerrufen     Esc  Beenden</source>
         <translation>← →  Bla     M/C + 1–9  Flytt/Kopier     ⌘Z  Angre     Esc  Avslutt</translation>
     </message>
     <message>
-        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U markieren</source>
+        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U setzen Markierungen</source>
         <translation>Utvelgingsmodus: sifre gir stjerner, P/X/U markerer</translation>
     </message>
     <message>
@@ -593,29 +593,29 @@
         <translation>Filter: %1 — %2 / %3</translation>
     </message>
     <message>
-        <source>Keine verworfenen Bilder</source>
+        <source>Keine abgelehnten Bilder</source>
         <translation>Ingen forkastede bilder</translation>
     </message>
     <message numerus="yes">
-        <source>%n verworfene(s) Bild(er) in den Papierkorb legen?</source>
+        <source>%n abgelehnte(s) Bild(er) in den Papierkorb legen?</source>
         <translation>
             <numerusform>Flytte %n forkastet bilde til papirkurven?</numerusform>
             <numerusform>Flytte %n forkastede bilder til papirkurven?</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <source>%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
+        <source>%n abgelehnte(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
         <translation>
             <numerusform>Flytte %n forkastet bilde til mappen «_Rejected»?</numerusform>
             <numerusform>Flytte %n forkastede bilder til mappen «_Rejected»?</numerusform>
         </translation>
     </message>
     <message>
-        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren werden mitbewegt. ⌘Z widerruft den ganzen Schritt.</source>
         <translation>Bare de viste bildene (gjeldende filtre). XMP-sidefiler og den andre filen i RAW+JPEG-par følger med. ⌘Z angrer hele trinnet.</translation>
     </message>
     <message>
-        <source>In den Papierkorb</source>
+        <source>In den Papierkorb legen</source>
         <translation>Til papirkurven</translation>
     </message>
     <message>
@@ -623,11 +623,11 @@
         <translation>Flytt</translation>
     </message>
     <message>
-        <source>Verworfene in den Papierkorb</source>
+        <source>Abgelehnte in den Papierkorb legen</source>
         <translation>Forkastede til papirkurven</translation>
     </message>
     <message>
-        <source>Verworfene nach _Rejected</source>
+        <source>Abgelehnte nach „_Rejected“ verschieben</source>
         <translation>Forkastede til _Rejected</translation>
     </message>
     <message numerus="yes">
@@ -896,7 +896,7 @@
         <translation>Delt minne er ikke tilgjengelig (%1).</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
         <translation>Ikke nok minne til bildet (%1 × %2 piksler).</translation>
     </message>
     <message>
@@ -950,7 +950,7 @@
         <translation>Angi som standardapp</translation>
     </message>
     <message>
-        <source>Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht ausgewählte Formate bleiben beim bisherigen Programm.</source>
+        <source>Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht ausgewählte Formate bleiben bei der bisherigen App.</source>
         <translation>Lumaflip blir standardappen for de valgte bildeformatene. Formater som ikke er valgt, beholder den nåværende appen.</translation>
     </message>
     <message>
@@ -1172,7 +1172,7 @@
         <translation>Eksporter beskåret</translation>
     </message>
     <message>
-        <source>Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <source>Den Zuschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
         <translation>Eksporter utsnittet av «%1» som en ny fil. Originalen forblir uendret.</translation>
     </message>
     <message>
@@ -1232,7 +1232,7 @@
         <translation>Behold alle</translation>
     </message>
     <message>
-        <source>Ohne Ortsdaten (GPS)</source>
+        <source>Ohne Aufnahmeort (GPS)</source>
         <translation>Uten posisjon (GPS)</translation>
     </message>
     <message>
@@ -1260,7 +1260,7 @@
         <translation>Som SDR (tonemapping)</translation>
     </message>
     <message>
-        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung</source>
+        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Endung</source>
         <translation>Plassholdere: {name} = originalens navn, {n} = løpenummer, {format} = filtype</translation>
     </message>
     <message>
@@ -1287,7 +1287,7 @@
         <translation>Eksporter</translation>
     </message>
     <message>
-        <source>Exportiere …</source>
+        <source>Wird exportiert …</source>
         <translation>Eksporterer…</translation>
     </message>
     <message>
@@ -1295,7 +1295,7 @@
         <translation>Avbryt</translation>
     </message>
     <message>
-        <source>Exportiere %1 von %2: %3</source>
+        <source>Bild %1 von %2 wird exportiert: %3</source>
         <translation>Eksporterer %1 av %2: %3</translation>
     </message>
 </context>
@@ -1398,13 +1398,13 @@
         <translation>Ingen bilder</translation>
     </message>
     <message>
-        <source>Orte werden gelesen … %1 von %2</source>
+        <source>Aufnahmeorte werden gelesen … %1 von %2</source>
         <extracomment>folder map (F-INFO-08) while the GPS positions are read: done / all images</extracomment>
         <translation>Leser steder… %1 av %2</translation>
     </message>
     <message numerus="yes">
-        <source>%1 von %n Bildern mit Ort</source>
-        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Ort&quot; (%1 images with a position, %n all)</extracomment>
+        <source>%1 von %n Bildern mit Aufnahmeort</source>
+        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Aufnahmeort&quot; (%1 images with a position, %n all)</extracomment>
         <translation>
             <numerusform>%1 av %n bilde med sted</numerusform>
             <numerusform>%1 av %n bilder med sted</numerusform>
@@ -1414,7 +1414,7 @@
 <context>
     <name>lf::FolderMapPanel</name>
     <message>
-        <source>Auf diesem System ist keine Kartendarstellung verfügbar.</source>
+        <source>Karten sind auf diesem System nicht verfügbar.</source>
         <translation>Kart er ikke tilgjengelig på dette systemet.</translation>
     </message>
     <message>
@@ -1426,14 +1426,14 @@
         <translation>Ingen av bildene inneholder et opptakssted (GPS).</translation>
     </message>
     <message>
-        <source>Karte schließen</source>
+        <source>Ordnerkarte schließen</source>
         <translation>Lukk kart</translation>
     </message>
 </context>
 <context>
     <name>lf::FolderMapView</name>
     <message>
-        <source>Karten sind unter Windows nicht verfügbar. Fotos mit Ortsangabe in diesem Ordner: %1</source>
+        <source>Karten sind unter Windows nicht verfügbar. Bilder mit Aufnahmeort in diesem Ordner: %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1506,7 +1506,7 @@
         <translation>%1 mm</translation>
     </message>
     <message>
-        <source> (KB: %1 mm)</source>
+        <source> (Kleinbild: %1 mm)</source>
         <extracomment>appended to the focal length: the 35 mm equivalent (&quot;KB&quot; = Kleinbild), e.g. &quot; (35-mm-equiv.: 52 mm)&quot;</extracomment>
         <translation> (35 mm-ekv.: %1 mm)</translation>
     </message>
@@ -1643,7 +1643,7 @@
 <context>
     <name>lf::ImageExport</name>
     <message>
-        <source>„%1“ gibt es schon.</source>
+        <source>„%1“ existiert bereits.</source>
         <translation>«%1» finnes allerede.</translation>
     </message>
     <message>
@@ -1683,7 +1683,7 @@
         <translation>Ukjent målformat.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher zum Exportieren.</source>
+        <source>Nicht genug Arbeitsspeicher zum Exportieren.</source>
         <translation>Ikke nok minne til å eksportere.</translation>
     </message>
     <message>
@@ -1706,11 +1706,11 @@
         <translation>Bildet har ingen piksler.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
         <translation>Ikke nok minne til bildet (%1 × %2 piksler).</translation>
     </message>
     <message>
-        <source>Bildpuffer konnte nicht angelegt werden.</source>
+        <source>Der Bildpuffer konnte nicht angelegt werden.</source>
         <translation>Kunne ikke opprette bildebuffer.</translation>
     </message>
     <message>
@@ -1793,7 +1793,7 @@
         <translation>Laster inn kart…</translation>
     </message>
     <message>
-        <source>Karte anzeigen</source>
+        <source>Karte einblenden</source>
         <translation>Vis kart</translation>
     </message>
     <message>
@@ -1805,7 +1805,7 @@
         <translation>Skjul kart</translation>
     </message>
     <message>
-        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)</source>
+        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte einblenden“)</source>
         <translation>Ikke last inn flere kartutsnitt (til neste klikk på «Vis kart»)</translation>
     </message>
     <message>
@@ -2040,7 +2040,7 @@
         <translation>Fyll bredde</translation>
     </message>
     <message>
-        <source>Einpassen ↔ 100 % am Cursor</source>
+        <source>Einpassen ↔ 100 % am Mauszeiger</source>
         <translation>Tilpass ↔ 100 % ved pekeren</translation>
     </message>
     <message>
@@ -2088,11 +2088,11 @@
         <translation>Fullskjerm</translation>
     </message>
     <message>
-        <source>Vollbild bzw. Modus verlassen</source>
+        <source>Vollbild oder Modus beenden</source>
         <translation>Avslutt fullskjerm eller modus</translation>
     </message>
     <message>
-        <source>Modus verlassen, sonst Fenster schließen</source>
+        <source>Modus beenden, sonst Fenster schließen</source>
         <translation>Avslutt modus, ellers lukk vinduet</translation>
     </message>
     <message>
@@ -2136,7 +2136,7 @@
         <translation>Vend vertikalt</translation>
     </message>
     <message>
-        <source>Drehung speichern</source>
+        <source>Drehung sichern</source>
         <translation>Lagre rotering</translation>
     </message>
     <message>
@@ -2144,7 +2144,7 @@
         <translation>Flytt til papirkurven</translation>
     </message>
     <message>
-        <source>Rückgängig</source>
+        <source>Widerrufen</source>
         <translation>Angre</translation>
     </message>
     <message>
@@ -2236,15 +2236,15 @@
         <translation>5 stjerner</translation>
     </message>
     <message>
-        <source>Behalten (Pick)</source>
+        <source>Markieren</source>
         <translation>Behold (Pick)</translation>
     </message>
     <message>
-        <source>Verwerfen (Reject)</source>
+        <source>Ablehnen</source>
         <translation>Forkast (Reject)</translation>
     </message>
     <message>
-        <source>Markierung zurücksetzen</source>
+        <source>Markierung aufheben</source>
         <translation>Tilbakestill markering</translation>
     </message>
     <message>
@@ -2268,7 +2268,7 @@
         <translation>Tilfeldig rekkefølge</translation>
     </message>
     <message>
-        <source>Nach Dateiname filtern</source>
+        <source>Nach Dateinamen filtern</source>
         <translation>Filtrer etter filnavn</translation>
     </message>
     <message>
@@ -2312,7 +2312,7 @@
         <translation>Inkluder undermapper</translation>
     </message>
     <message>
-        <source>RAW/JPEG des Paares zeigen</source>
+        <source>RAW/JPEG des Paares anzeigen</source>
         <translation>Vis parets RAW/JPEG</translation>
     </message>
     <message>
@@ -2376,7 +2376,7 @@
         <translation>Rull ned for neste bilde, opp for forrige.</translation>
     </message>
     <message>
-        <source>Zoomen (am Cursor)</source>
+        <source>Zoomen (am Mauszeiger)</source>
         <translation>Zoom (ved pekeren)</translation>
     </message>
     <message>
@@ -2384,7 +2384,7 @@
         <translation>Rull opp for å zoome inn, ned for å zoome ut – ved pekeren.</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen (sonst Bild wechseln)</source>
+        <source>Ausschnitt verschieben (sonst Bild wechseln)</source>
         <translation>Rull utsnittet (ellers bytt bilde)</translation>
     </message>
     <message>
@@ -2456,7 +2456,7 @@
         <translation>I flersidige filer blas det mellom sidene, ellers byttes bildet.</translation>
     </message>
     <message>
-        <source>Ausschnitt seitenweise scrollen (sonst Bild)</source>
+        <source>Ausschnitt seitenweise verschieben (sonst Bild)</source>
         <translation>Rull utsnittet sidevis (ellers bilde)</translation>
     </message>
     <message>
@@ -2532,7 +2532,7 @@
         <translation>Piltastene bytter bilde; med ⌥ panoreres utsnittet.</translation>
     </message>
     <message>
-        <source>Erst bis zum Rand scrollen, dann Bild wechseln</source>
+        <source>Erst bis zum Rand verschieben, dann Bild wechseln</source>
         <translation>Rull først til kanten, bytt deretter bilde</translation>
     </message>
     <message>
@@ -2540,7 +2540,7 @@
         <translation>Utsnittet panoreres; ved bildekanten byttes bildet.</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen (Bild mit ⌥←/⌥→)</source>
+        <source>Ausschnitt verschieben (Bild mit ⌥←/⌥→)</source>
         <translation>Rull utsnittet (bilde med ⌥←/⌥→)</translation>
     </message>
     <message>
@@ -2552,7 +2552,7 @@
         <translation>↑ / ↓</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen, sonst vorheriges/nächstes Bild</source>
+        <source>Ausschnitt verschieben, sonst vorheriges/nächstes Bild</source>
         <translation>Rull utsnittet, ellers forrige/neste bilde</translation>
     </message>
     <message>
@@ -2560,7 +2560,7 @@
         <translation>Når zoomet panoreres utsnittet, ellers byttes bildet.</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen (wenn gezoomt), sonst nichts</source>
+        <source>Ausschnitt verschieben (wenn gezoomt), sonst nichts</source>
         <translation>Rull utsnittet (når zoomet), ellers ingenting</translation>
     </message>
     <message>
@@ -2660,7 +2660,7 @@
         <translation>Sveip på styreflaten (to fingre, horisontalt)</translation>
     </message>
     <message>
-        <source>Bild wechseln (gezoomt: scrollen)</source>
+        <source>Bild wechseln (gezoomt: Ausschnitt verschieben)</source>
         <translation>Bytt bilde (zoomet: rull)</translation>
     </message>
     <message>
@@ -2668,7 +2668,7 @@
         <translation>Sveip bytter bilde; når zoomet panoreres utsnittet.</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen</source>
+        <source>Nur Ausschnitt verschieben</source>
         <translation>Rull utsnittet</translation>
     </message>
     <message>
@@ -2708,7 +2708,7 @@
         <translation>Esc</translation>
     </message>
     <message>
-        <source>Vollbild bzw. Modus verlassen, sonst nichts</source>
+        <source>Vollbild oder Modus beenden, sonst nichts</source>
         <translation>Avslutt fullskjerm eller modus, ellers ingenting</translation>
     </message>
     <message>
@@ -2716,7 +2716,7 @@
         <translation>Esc avslutter fullskjerm, lysbildeserie eller andre moduser og gjør ellers ingenting.</translation>
     </message>
     <message>
-        <source>Vollbild bzw. Modus verlassen, sonst Fenster schließen</source>
+        <source>Vollbild oder Modus beenden, sonst Fenster schließen</source>
         <translation>Avslutt fullskjerm eller modus, ellers lukk vinduet</translation>
     </message>
     <message>
@@ -2768,7 +2768,7 @@
         <translation>Alltid aktiv</translation>
     </message>
     <message>
-        <source>Ziffern vergeben immer Sterne; P/X/U markieren. Zoom-Ziffern sind aus.</source>
+        <source>Ziffern vergeben immer Sterne, P/X/U setzen Markierungen. Die Zoom-Ziffern sind dann aus.</source>
         <translation>Sifrene gir alltid stjerner; P/X/U markerer. Zoomsifrene er av.</translation>
     </message>
 </context>
@@ -2779,11 +2779,11 @@
         <translation>Tredjepartslisenser</translation>
     </message>
     <message>
-        <source>Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im Programmpaket unter Contents/Resources/licenses.</source>
+        <source>Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im App-Paket unter Contents/Resources/licenses.</source>
         <translation>Lumaflip inneholder følgende komponenter. Lisenstekstene ligger også i programpakken under Contents/Resources/licenses.</translation>
     </message>
     <message>
-        <source>Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das Programmpaket gelegt.</source>
+        <source>Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das App-Paket gelegt.</source>
         <translation>Utviklerversjon: Lisenstekstene legges i programpakken først ved pakking (tools/package.sh).</translation>
     </message>
     <message>
@@ -2853,11 +2853,11 @@
         <translation>Kunne ikke skrive filen (er mappen skrivebeskyttet?).</translation>
     </message>
     <message>
-        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte die Drehung erneut speichern.</source>
+        <source>Die Datei wurde inzwischen verändert – nichts gesichert. Sichere die Drehung erneut.</source>
         <translation>Filen er endret i mellomtiden – ingenting ble lagret. Lagre roteringen på nytt.</translation>
     </message>
     <message>
-        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
+        <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
         <translation>Filen inneholder flere bilder (f.eks. et HDR-gain-kart eller et andre stereobilde) som ville gått tapt ved tapsfri omorganisering av JPEG-dataene.</translation>
     </message>
     <message>
@@ -2865,15 +2865,15 @@
         <translation>Filen finnes ikke lenger.</translation>
     </message>
     <message>
-        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <source>Das Dateiformat wird zum Sichern nicht erkannt.</source>
         <translation>Filformatet gjenkjennes ikke for lagring.</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; zum dauerhaften Drehen bitte den RAW-Entwickler benutzen.</source>
+        <source>RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; verwende zum dauerhaften Drehen deinen RAW-Konverter.</source>
         <translation>RAW-filer endres aldri. Roteringen gjelder bare visningen; bruk RAW-konvertereren for å rotere permanent.</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht gedreht gespeichert werden.</source>
+        <source>Animierte oder mehrseitige Dateien können nicht gedreht gesichert werden.</source>
         <translation>Animerte eller flersidige filer kan ikke lagres rotert.</translation>
     </message>
     <message>
@@ -2885,11 +2885,11 @@
         <translation>Derfor ble bare EXIF-retningen angitt.</translation>
     </message>
     <message>
-        <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfrei drehen geht nur, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
+        <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfreies Drehen ist nur möglich, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
         <translation>Bildets bredde eller høyde er ikke et multiplum av JPEG-blokkstørrelsen. Tapsfri rotering er bare mulig hvis en smal kant (opptil 15 piksler) beskjæres. Alternativt angis bare EXIF-retningen.</translation>
     </message>
     <message>
-        <source>Die Drehung kann nicht gespeichert werden.</source>
+        <source>Die Drehung kann nicht gesichert werden.</source>
         <translation>Roteringen kan ikke lagres.</translation>
     </message>
     <message>
@@ -2909,11 +2909,11 @@
         <translation>Tapsfri rotering er ikke mulig for dette bildet.</translation>
     </message>
     <message>
-        <source>Die Ausrichtung ließ sich nicht ohne Neukodieren speichern.</source>
+        <source>Die Ausrichtung ließ sich nicht ohne Neukodieren sichern.</source>
         <translation>Retningen kunne ikke lagres uten omkoding.</translation>
     </message>
     <message>
-        <source>Die Drehung konnte nicht gespeichert werden.</source>
+        <source>Die Drehung konnte nicht gesichert werden.</source>
         <translation>Kunne ikke lagre roteringen.</translation>
     </message>
     <message>
@@ -2921,47 +2921,47 @@
         <translation>Kunne ikke erstatte filen.</translation>
     </message>
     <message>
-        <source>Datei wurde inzwischen verändert – Rückgängig nicht möglich</source>
+        <source>Die Datei wurde inzwischen verändert – Widerrufen nicht möglich</source>
         <translation>Filen er endret i mellomtiden – kan ikke angre</translation>
     </message>
     <message>
-        <source>Datei wurde inzwischen verändert – Wiederholen nicht möglich</source>
+        <source>Die Datei wurde inzwischen verändert – Wiederholen nicht möglich</source>
         <translation>Filen er endret i mellomtiden – kan ikke utføre på nytt</translation>
     </message>
     <message>
-        <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Rückgängig/Wiederholen ist dafür nicht mehr möglich.</source>
+        <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Widerrufen/Wiederholen ist dafür nicht mehr möglich.</source>
         <translation>Sikkerhetskopien av dette trinnet ble slettet for å spare plass – angre/utfør på nytt er ikke lenger mulig for det.</translation>
     </message>
     <message>
-        <source>Es gibt nichts rückgängig zu machen.</source>
+        <source>Es gibt nichts zu widerrufen.</source>
         <translation>Det er ingenting å angre.</translation>
     </message>
     <message>
-        <source>Kein Platz für die Sicherungskopie – nichts gespeichert.</source>
+        <source>Kein Speicherplatz für die Sicherungskopie – nichts gesichert.</source>
         <translation>Ikke plass til sikkerhetskopien – ingenting ble lagret.</translation>
     </message>
     <message>
-        <source>Keine Drehung zu speichern</source>
+        <source>Keine Drehung zu sichern</source>
         <translation>Ingen rotering å lagre</translation>
     </message>
     <message>
-        <source>Drehung gespeichert (EXIF-Ausrichtung)</source>
+        <source>Drehung gesichert (EXIF-Ausrichtung)</source>
         <translation>Rotering lagret (EXIF-retning)</translation>
     </message>
     <message>
-        <source>Drehung verlustfrei gespeichert</source>
+        <source>Drehung verlustfrei gesichert</source>
         <translation>Rotering lagret tapsfritt</translation>
     </message>
     <message>
-        <source>Drehung verlustfrei gespeichert (Rand beschnitten)</source>
+        <source>Drehung verlustfrei gesichert (Rand beschnitten)</source>
         <translation>Rotering lagret tapsfritt (kant beskåret)</translation>
     </message>
     <message>
-        <source>Drehung gespeichert (verlustfrei neu kodiert)</source>
+        <source>Drehung gesichert (verlustfrei neu kodiert)</source>
         <translation>Rotering lagret (tapsfritt kodet på nytt)</translation>
     </message>
     <message>
-        <source>Drehung gespeichert (neu kodiert)</source>
+        <source>Drehung gesichert (neu kodiert)</source>
         <translation>Rotering lagret (kodet på nytt)</translation>
     </message>
     <message>
@@ -2973,7 +2973,7 @@
         <translation>Kunne ikke dekode bildet.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher zum Drehen.</source>
+        <source>Nicht genug Arbeitsspeicher zum Drehen.</source>
         <translation>Ikke nok minne til å rotere.</translation>
     </message>
     <message>
@@ -2981,7 +2981,7 @@
         <translation>Dette formatet kan ikke skrives.</translation>
     </message>
     <message>
-        <source>Das Bild lässt sich in diesem Format nicht exakt neu speichern.</source>
+        <source>Das Bild lässt sich in diesem Format nicht exakt neu sichern.</source>
         <translation>Bildet kan ikke lagres nøyaktig på nytt i dette formatet.</translation>
     </message>
     <message>
@@ -3009,7 +3009,7 @@
         <translation>Kunne ikke erstatte «%1»: %2</translation>
     </message>
     <message>
-        <source>Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.</source>
+        <source>Die Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.</source>
         <translation>Kunne ikke opprette sikkerhetskopi for «Angre».</translation>
     </message>
     <message>
@@ -3029,7 +3029,7 @@
         <translation>Segmenteringsmaske</translation>
     </message>
     <message>
-        <source>Die Datei enthält Zusatzbilder (%1), die beim Speichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gespeichert und gilt weiter nur in der Anzeige.</source>
+        <source>Die Datei enthält Zusatzbilder (%1), die beim Sichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gesichert und gilt weiter nur in der Anzeige.</source>
         <translation>Filen inneholder tilleggsbilder (%1) som ville gått tapt ved lagring av retningen. Roteringen ble derfor ikke lagret og gjelder fortsatt bare visningen.</translation>
     </message>
     <message>
@@ -3057,7 +3057,7 @@
         <translation>Kunne ikke skrive retningen tapsfritt (%1).</translation>
     </message>
     <message>
-        <source>Das Bild lässt sich nicht exakt neu speichern.</source>
+        <source>Das Bild lässt sich nicht exakt neu sichern.</source>
         <translation>Bildet kan ikke lagres nøyaktig på nytt.</translation>
     </message>
     <message>
@@ -3065,7 +3065,7 @@
         <translation>Den nye filen mangler.</translation>
     </message>
     <message>
-        <source>Nicht genug Platz, um „%1“ sicher zu überschreiben.</source>
+        <source>Nicht genug Speicherplatz, um „%1“ sicher zu überschreiben.</source>
         <translation>Ikke nok plass til å overskrive «%1» trygt.</translation>
     </message>
     <message>
@@ -3092,7 +3092,7 @@
         <translation>Ingen filer ble overført.</translation>
     </message>
     <message>
-        <source>Der Bildschirm ist nicht mehr da.</source>
+        <source>Der Bildschirm ist nicht mehr angeschlossen.</source>
         <translation>Skjermen er ikke lenger tilkoblet.</translation>
     </message>
     <message>
@@ -3104,7 +3104,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Windows hat das Bild nicht als Hintergrund übernommen.</source>
+        <source>Windows hat das Bild nicht als Desktophintergrund übernommen.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3131,7 +3131,7 @@
         <translation>Åpne mappe…</translation>
     </message>
     <message>
-        <source>Zuletzt geöffnet</source>
+        <source>Benutzte Dokumente</source>
         <translation>Åpne nylig brukte</translation>
     </message>
     <message>
@@ -3151,7 +3151,7 @@
         <translation>Gi nytt navn…</translation>
     </message>
     <message>
-        <source>In Standard-Editor öffnen</source>
+        <source>Im Editor öffnen</source>
         <translation>Åpne i standard redigeringsapp</translation>
     </message>
     <message>
@@ -3215,7 +3215,7 @@
         <translation>Tilpass</translation>
     </message>
     <message>
-        <source>Einpassen inkl. Vergrößern</source>
+        <source>Einpassen (auch vergrößern)</source>
         <translation>Tilpass (også forstørr)</translation>
     </message>
     <message>
@@ -3303,7 +3303,7 @@
         <translation>Sorter etter</translation>
     </message>
     <message>
-        <source>Wie Finder</source>
+        <source>Wie im Finder</source>
         <translation>Som Finder</translation>
     </message>
     <message>
@@ -3412,11 +3412,11 @@
         <translation>Beskjær…</translation>
     </message>
     <message>
-        <source>Overlays</source>
+        <source>Einblendungen</source>
         <translation>Overlegg</translation>
     </message>
     <message>
-        <source>Über-/Unterbelichtung</source>
+        <source>Über-/Unterbelichtungswarnung</source>
         <translation>Over-/undereksponering</translation>
     </message>
     <message>
@@ -3464,7 +3464,7 @@
         <translation>Forrige side</translation>
     </message>
     <message>
-        <source>Drehung speichern</source>
+        <source>Drehung sichern</source>
         <translation>Lagre rotering</translation>
     </message>
     <message>
@@ -3492,7 +3492,7 @@
         <translation>Alle bilder</translation>
     </message>
     <message>
-        <source>Nur Picks</source>
+        <source>Nur markierte</source>
         <translation>Bare beholdte</translation>
     </message>
     <message>
@@ -3500,7 +3500,7 @@
         <translation>Bare uten vurdering</translation>
     </message>
     <message>
-        <source>Nur verworfene</source>
+        <source>Nur abgelehnte</source>
         <translation>Bare forkastede</translation>
     </message>
     <message>
@@ -3528,11 +3528,11 @@
         <translation>Filter</translation>
     </message>
     <message>
-        <source>Alle verworfenen in den Papierkorb …</source>
+        <source>Alle abgelehnten in den Papierkorb legen …</source>
         <translation>Alle forkastede til papirkurven…</translation>
     </message>
     <message>
-        <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
+        <source>Alle abgelehnten nach „_Rejected“ verschieben …</source>
         <translation>Alle forkastede til «_Rejected»…</translation>
     </message>
     <message>
@@ -3572,7 +3572,7 @@
         <translation>Inkluder undermapper</translation>
     </message>
     <message>
-        <source>Karte</source>
+        <source>Ordnerkarte</source>
         <translation>Kart</translation>
     </message>
     <message>
@@ -3588,7 +3588,7 @@
         <translation>Gå til bilde…</translation>
     </message>
     <message>
-        <source>Nach Dateiname filtern …</source>
+        <source>Nach Dateinamen filtern …</source>
         <translation>Filtrer etter filnavn…</translation>
     </message>
     <message>
@@ -3608,7 +3608,7 @@
         <translation>Koble vinduer…</translation>
     </message>
     <message>
-        <source>Entkoppeln</source>
+        <source>Fenster entkoppeln</source>
         <translation>Fjern kobling av vinduer</translation>
     </message>
     <message>
@@ -3697,11 +3697,11 @@
 <context>
     <name>lf::MenuExtras</name>
     <message>
-        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <source>Einzelne PDF-Seiten können nicht an andere Apps übergeben werden.</source>
         <translation>Enkeltsider fra PDF-er kan ikke sendes videre til andre apper.</translation>
     </message>
     <message>
-        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <source>Das Bild wird aus dem Archiv entpackt – versuche es gleich noch einmal.</source>
         <translation>Bildet pakkes ut av arkivet – prøv igjen om et øyeblikk.</translation>
     </message>
     <message>
@@ -3733,15 +3733,15 @@
         <translation>Overlappende</translation>
     </message>
     <message>
-        <source>Vorherigen Tab zeigen</source>
+        <source>Vorherigen Tab anzeigen</source>
         <translation>Vis forrige fane</translation>
     </message>
     <message>
-        <source>Nächsten Tab zeigen</source>
+        <source>Nächsten Tab anzeigen</source>
         <translation>Vis neste fane</translation>
     </message>
     <message>
-        <source>Tab in neues Fenster bewegen</source>
+        <source>Tab in ein neues Fenster bewegen</source>
         <translation>Flytt fane til nytt vindu</translation>
     </message>
     <message>
@@ -3865,12 +3865,12 @@
         <translation>Opptaksdato</translation>
     </message>
     <message>
-        <source>Breite</source>
+        <source>Breitengrad</source>
         <extracomment>GPS latitude</extracomment>
         <translation>Breddegrad</translation>
     </message>
     <message>
-        <source>Länge</source>
+        <source>Längengrad</source>
         <extracomment>GPS longitude</extracomment>
         <translation>Lengdegrad</translation>
     </message>
@@ -3979,7 +3979,7 @@
         <translation>Avbryt</translation>
     </message>
     <message>
-        <source>Bitte eine Bildnummer zwischen 1 und %1 eingeben</source>
+        <source>Gib eine Bildnummer zwischen 1 und %1 ein.</source>
         <translation>Skriv inn et bildenummer mellom 1 og %1</translation>
     </message>
     <message>
@@ -4002,7 +4002,7 @@
 <context>
     <name>lf::OpenWithService</name>
     <message>
-        <source>Kein Programm zum Bearbeiten gefunden. Wähle eines unter Einstellungen → Allgemein → Editor.</source>
+        <source>Keine App zum Bearbeiten gefunden. Wähle eine unter Einstellungen → Allgemein → Editor.</source>
         <translation>Fant ingen app for redigering. Velg en under Innstillinger → Generelt → Redigeringsapp.</translation>
     </message>
     <message>
@@ -4010,11 +4010,11 @@
         <translation>Programmer (*.exe)</translation>
     </message>
     <message>
-        <source>Programme (*.desktop);;Alle Dateien (*)</source>
+        <source>Apps (*.desktop);;Alle Dateien (*)</source>
         <translation>Programmer (*.desktop);;Alle filer (*)</translation>
     </message>
     <message>
-        <source>„%1“ ist kein Programm.</source>
+        <source>„%1“ ist keine App.</source>
         <translation>«%1» er ikke et program.</translation>
     </message>
     <message>
@@ -4026,15 +4026,15 @@
         <translation>Annen…</translation>
     </message>
     <message>
-        <source>Programm wählen</source>
+        <source>App wählen</source>
         <translation>Velg app</translation>
     </message>
     <message>
-        <source>Programme (*.app)</source>
+        <source>Apps (*.app)</source>
         <translation>Apper (*.app)</translation>
     </message>
     <message>
-        <source>Programme werden gesucht …</source>
+        <source>Apps werden gesucht …</source>
         <translation>Søker etter apper…</translation>
     </message>
     <message>
@@ -4042,7 +4042,7 @@
         <translation>%1 (standard)</translation>
     </message>
     <message>
-        <source>Keine passenden Programme</source>
+        <source>Keine passenden Apps</source>
         <translation>Ingen passende apper</translation>
     </message>
 </context>
@@ -4053,7 +4053,7 @@
         <translation>Ingen bilder for rutenettvisningen</translation>
     </message>
     <message>
-        <source>Zum Vergleichen mindestens zwei Bilder wählen</source>
+        <source>Wähle zum Vergleichen mindestens zwei Bilder aus</source>
         <translation>Marker minst to bilder for å sammenligne</translation>
     </message>
     <message>
@@ -4135,7 +4135,7 @@
         <translation>Filen finnes ikke.</translation>
     </message>
     <message>
-        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <source>Das PDF-Dokument ist passwortgeschützt.</source>
         <translation>PDF-dokumentet er passordbeskyttet.</translation>
     </message>
     <message>
@@ -4143,7 +4143,7 @@
         <translation>Siden er tom.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für die Seite.</source>
+        <source>Nicht genug Arbeitsspeicher für die Seite.</source>
         <translation>Ikke nok minne til siden.</translation>
     </message>
 </context>
@@ -4194,7 +4194,7 @@
         <translation>Språk:</translation>
     </message>
     <message>
-        <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbild aktivieren“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
+        <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbildmodus“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
         <translation>Trer i kraft umiddelbart. Menyer og vinduer i macOS («Aktiver fullskjerm», «Tjenester», «Åpne», spørsmål om tillatelse) følger etter en omstart.</translation>
     </message>
     <message>
@@ -4226,7 +4226,7 @@
         <translation>Mappe, bilde, zoom og plassering for alle vinduer som var åpne ved avslutning.</translation>
     </message>
     <message>
-        <source>Vor dem Löschen nachfragen</source>
+        <source>Vor dem Bewegen in den Papierkorb nachfragen</source>
         <translation>Spør før sletting</translation>
     </message>
     <message>
@@ -4238,11 +4238,11 @@
         <translation>Redigeringsapp:</translation>
     </message>
     <message>
-        <source>Für „In Standard-Editor öffnen“ (Taste E).</source>
+        <source>Für „Im Editor öffnen“ (Taste E).</source>
         <translation>For «Åpne i standard redigeringsapp» (tasten E).</translation>
     </message>
     <message>
-        <source>Drehung speichern:</source>
+        <source>Drehung sichern:</source>
         <translation>Lagre rotering:</translation>
     </message>
     <message>
@@ -4254,7 +4254,7 @@
         <translation>Roter JPEG tapsfritt (DCT)</translation>
     </message>
     <message>
-        <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Programme ohne EXIF-Unterstützung das Bild richtig zeigen. RAW-Dateien werden nie verändert; ⌘Z macht das Speichern rückgängig.</source>
+        <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Apps ohne EXIF-Unterstützung das Bild richtig anzeigen. RAW-Dateien werden nie verändert; ⌘Z widerruft das Sichern.</source>
         <translation>Ingen av delene endrer bildepikslene. «EXIF-retning» endrer bare et flagg (JPEG, HEIC, TIFF, PNG); «roter tapsfritt» omorganiserer JPEG-blokkene slik at også apper uten EXIF-støtte viser bildet riktig. RAW-filer endres aldri; ⌘Z angrer lagringen.</translation>
     </message>
     <message>
@@ -4278,7 +4278,7 @@
         <translation>Vis når musen beveger seg</translation>
     </message>
     <message>
-        <source>Immer zeigen</source>
+        <source>Immer einblenden</source>
         <translation>Vis alltid</translation>
     </message>
     <message>
@@ -4298,7 +4298,7 @@
         <translation>Nye vinduer viser:</translation>
     </message>
     <message>
-        <source>Statuszeile</source>
+        <source>Statusleiste</source>
         <translation>Statuslinje</translation>
     </message>
     <message>
@@ -4346,7 +4346,7 @@
         <translation>Lys</translation>
     </message>
     <message>
-        <source>Wie Systemdarstellung</source>
+        <source>Wie System</source>
         <translation>Som systemutseendet</translation>
     </message>
     <message>
@@ -4378,7 +4378,7 @@
         <translation>Tilpass (ikke forstørr)</translation>
     </message>
     <message>
-        <source>Einpassen inkl. Vergrößern</source>
+        <source>Einpassen (auch vergrößern)</source>
         <translation>Tilpass (også forstørr)</translation>
     </message>
     <message>
@@ -4410,7 +4410,7 @@
         <translation>Jevn</translation>
     </message>
     <message>
-        <source>Pixel scharf</source>
+        <source>Scharfe Pixel</source>
         <translation>Skarpe piksler</translation>
     </message>
     <message>
@@ -4518,11 +4518,11 @@
         <translation>Mac-standard</translation>
     </message>
     <message>
-        <source>Windows-Viewer-Gewohnheiten</source>
+        <source>Wie Windows-Bildbetrachter</source>
         <translation>Vaner fra Windows-bildevisere</translation>
     </message>
     <message>
-        <source>Fotograf:in / Lightroom</source>
+        <source>Fotografie / Lightroom</source>
         <translation>Fotograf / Lightroom</translation>
     </message>
     <message>
@@ -4530,7 +4530,7 @@
         <translation>Mus, styreflate og taster</translation>
     </message>
     <message>
-        <source>Mausrad-Feinheiten</source>
+        <source>Mausrad-Feineinstellungen</source>
         <translation>Finjustering av musehjul</translation>
     </message>
     <message>
@@ -4574,7 +4574,7 @@
         <translation>Tastatursnarveier</translation>
     </message>
     <message>
-        <source>Feld anklicken und neue Taste drücken. Bis zu drei Kürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
+        <source>Klicke auf ein Feld und drücke die neue Taste. Bis zu drei Tastenkürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
         <translation>Klikk på feltet og trykk en ny tast. Opptil tre snarveier per handling. Sifre og P/X/U for vurdering gjelder bare i utvelgelsesmodus.</translation>
     </message>
     <message>
@@ -4594,7 +4594,7 @@
         <translation>–</translation>
     </message>
     <message>
-        <source>Standardkürzel wiederherstellen</source>
+        <source>Standard-Tastenkürzel wiederherstellen</source>
         <translation>Gjenopprett standardsnarvei</translation>
     </message>
     <message>
@@ -4606,7 +4606,7 @@
         <translation>Konflikt med: %1</translation>
     </message>
     <message numerus="yes">
-        <source>%n Aktion(en) mit doppelt belegten Tasten – bitte eine davon ändern.</source>
+        <source>%n Aktion(en) mit doppelt belegten Tasten – ändere eine davon.</source>
         <translation>
             <numerusform>%n handling har dobbeltbelagte taster – endre én av dem.</numerusform>
             <numerusform>%n handlinger har dobbeltbelagte taster – endre én av dem.</numerusform>
@@ -4733,7 +4733,7 @@
         <translation>Mål %1 for hurtigarkiv</translation>
     </message>
     <message>
-        <source>Bewertungen speichern</source>
+        <source>Speicherort für Bewertungen</source>
         <translation>Lagre vurderinger</translation>
     </message>
     <message>
@@ -4741,7 +4741,7 @@
         <translation>XMP-sidefil ved siden av bildet (Bilde.xmp)</translation>
     </message>
     <message>
-        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
+        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Abgelehnt“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
         <translation>Kompatibel med Lightroom, Capture One og darktable: stjerner i xmp:Rating, «Forkast» som -1. Filens eksisterende innhold beholdes.</translation>
     </message>
     <message>
@@ -4761,11 +4761,11 @@
         <translation>Stjernesymbol:</translation>
     </message>
     <message>
-        <source>Tag für Pick:</source>
+        <source>Tag für „Markiert“:</source>
         <translation>Tagg for Behold:</translation>
     </message>
     <message>
-        <source>Tag für Verworfen:</source>
+        <source>Tag für „Abgelehnt“:</source>
         <translation>Tagg for Forkast:</translation>
     </message>
     <message>
@@ -4785,7 +4785,7 @@
         <translation>Lås zoom i utvelgingsmodus</translation>
     </message>
     <message>
-        <source>Tastenhilfe im Aussortiermodus zeigen</source>
+        <source>Tastenhilfe im Aussortiermodus einblenden</source>
         <translation>Vis tastehjelp i utvelgingsmodus</translation>
     </message>
     <message>
@@ -4797,7 +4797,7 @@
         <translation>Hurtigarkiv</translation>
     </message>
     <message>
-        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z macht es rückgängig.</source>
+        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z widerruft es.</source>
         <translation>M og deretter 1–9 flytter bildet til målmappen, C og deretter 1–9 kopierer det. M M eller C C gjentar siste mål. ⌘Z angrer.</translation>
     </message>
     <message>
@@ -4901,7 +4901,7 @@
         <translation>Forhåndslast bilder:</translation>
     </message>
     <message>
-        <source>Bilder zurück behalten:</source>
+        <source>Vorherige Bilder behalten:</source>
         <translation>Behold tidligere bilder:</translation>
     </message>
     <message>
@@ -4913,7 +4913,7 @@
         <translation>Tillat Livetekst og løfting av motiv (⇧⌘L)</translation>
     </message>
     <message>
-        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Internetverbindung.</source>
         <translation>Bildet analyseres bare når du slår på Livetekst for et vindu – på denne Macen, uten nettverk.</translation>
     </message>
     <message>
@@ -4921,7 +4921,7 @@
         <translation>Egne handlinger</translation>
     </message>
     <message>
-        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Kurzbefehle-App) erhält das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
         <translation>En skallkommando eller en snarvei (Snarveier) får det gjeldende bildet som argument. Meny: Arkiv → Egne handlinger.</translation>
     </message>
     <message>
@@ -4933,7 +4933,7 @@
         <translation> s</translation>
     </message>
     <message>
-        <source>Einstellungen sichern</source>
+        <source>Backup der Einstellungen</source>
         <translation>Sikkerhetskopier innstillinger</translation>
     </message>
     <message>
@@ -5001,12 +5001,8 @@
         <translation>Systemets standardapp for bildetypen (aldri Lumaflip)</translation>
     </message>
     <message>
-        <source>Lumaflip kann nicht sein eigener Editor sein. Bitte wähle ein anderes Programm.</source>
+        <source>Lumaflip kann nicht sein eigener Editor sein. Wähle eine andere App.</source>
         <translation>Lumaflip kan ikke være sin egen redigeringsapp. Velg en annen app.</translation>
-    </message>
-    <message>
-        <source>Auswählen …</source>
-        <translation>Velg…</translation>
     </message>
     <message>
         <source>Editor wählen</source>
@@ -5057,7 +5053,7 @@
         <translation>Bildestørrelsen %1 × %2 er ugyldig eller for stor.</translation>
     </message>
     <message>
-        <source>Die Farbtiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
+        <source>Die Bittiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
         <translation>Fargedybden eller fargemodusen i PSB-filen støttes ikke.</translation>
     </message>
     <message>
@@ -5065,7 +5061,7 @@
         <translation>Komprimeringen av PSB-filen støttes ikke.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>Ikke nok minne til bildet.</translation>
     </message>
     <message>
@@ -5108,7 +5104,7 @@
         <translation>SVG-filen er ugyldig eller skadet.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>Ikke nok minne til bildet.</translation>
     </message>
 </context>
@@ -5141,7 +5137,7 @@
         <translation>Kopier til… (1–9, C = som sist)</translation>
     </message>
     <message>
-        <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
+        <source>Noch kein Ziel verwendet – wähle zuerst eine Ziffer 1–9.</source>
         <translation>Ingen mål brukt ennå – velg først et siffer 1–9.</translation>
     </message>
     <message>
@@ -5187,11 +5183,11 @@
         <translation>Navnekonflikt</translation>
     </message>
     <message>
-        <source>„%1“ gibt es in „%2“ schon.</source>
+        <source>„%1“ existiert bereits in „%2“.</source>
         <translation>«%1» finnes allerede i «%2».</translation>
     </message>
     <message>
-        <source>Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.</source>
+        <source>„Ersetzen“ legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z widerruft alles.</source>
         <translation>Erstatt flytter den eksisterende filen til papirkurven, «Behold begge» gir den nye et navn som «%1». ⌘Z angrer alt.</translation>
     </message>
     <message>
@@ -5218,7 +5214,7 @@
         <translation>alle</translation>
     </message>
     <message>
-        <source>nur Picks</source>
+        <source>nur markierte</source>
         <translation>bare beholdte</translation>
     </message>
     <message>
@@ -5230,15 +5226,15 @@
         <translation>bare uten vurdering</translation>
     </message>
     <message>
-        <source>nur verworfene</source>
+        <source>nur abgelehnte</source>
         <translation>bare forkastede</translation>
     </message>
     <message>
-        <source>Pick</source>
+        <source>Markiert</source>
         <translation>Beholdt</translation>
     </message>
     <message>
-        <source>Verworfen</source>
+        <source>Abgelehnt</source>
         <translation>Forkastet</translation>
     </message>
 </context>
@@ -5293,7 +5289,7 @@
         <translation>Vurderingen kunne ikke skrives i bildet uten omkoding.</translation>
     </message>
     <message>
-        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.</source>
+        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gesichert.</source>
         <translation>«%1» er endret i mellomtiden – vurderingen ble ikke lagret.</translation>
     </message>
     <message>
@@ -5383,31 +5379,31 @@
         <translation>Nytt filnavn</translation>
     </message>
     <message>
-        <source>Soll die Endung „.%1“ entfernt werden?</source>
+        <source>Möchtest du die Endung „.%1“ wirklich entfernen?</source>
         <translation>Vil du fjerne filtypen «.%1»?</translation>
     </message>
     <message>
-        <source>Soll die Endung „.%1“ hinzugefügt werden?</source>
+        <source>Möchtest du die Endung „.%1“ wirklich hinzufügen?</source>
         <translation>Vil du legge til filtypen «.%1»?</translation>
     </message>
     <message>
-        <source>Soll die Endung „.%1“ in „.%2“ geändert werden?</source>
+        <source>Möchtest du die Endung wirklich von „.%1“ in „.%2“ ändern?</source>
         <translation>Vil du endre filtypen «.%1» til «.%2»?</translation>
     </message>
     <message>
-        <source>Dateiendung ändern?</source>
+        <source>Endung ändern?</source>
         <translation>Vil du endre filtypen?</translation>
     </message>
     <message>
-        <source>Die Datei wird dadurch nicht umgewandelt. Andere Programme erkennen sie danach eventuell nicht mehr.</source>
+        <source>Die Datei wird dadurch nicht umgewandelt. Andere Apps erkennen sie danach eventuell nicht mehr.</source>
         <translation>Filen blir ikke konvertert av dette. Andre apper vil kanskje ikke lenger gjenkjenne den.</translation>
     </message>
     <message>
-        <source>Ohne Endung lassen</source>
+        <source>Nicht hinzufügen</source>
         <translation>Behold uten filtype</translation>
     </message>
     <message>
-        <source>„.%1“ behalten</source>
+        <source>„.%1“ beibehalten</source>
         <translation>Behold «.%1»</translation>
     </message>
     <message>
@@ -5450,7 +5446,7 @@
         <translation>SVG-filen har ingen gyldig størrelse.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>Ikke nok minne til bildet.</translation>
     </message>
     <message>
@@ -5529,7 +5525,7 @@
         <translation>«%1» kan ikke skrives.</translation>
     </message>
     <message>
-        <source>Lumaflip ist nicht als Anwendung installiert (%1 fehlt).</source>
+        <source>Lumaflip ist nicht als App installiert (%1 fehlt).</source>
         <translation>Lumaflip er ikke installert som program (%1 mangler).</translation>
     </message>
     <message>
@@ -5545,11 +5541,11 @@
         <translation>«%1» ville lese filnavnet som en kommando og startes ikke av sikkerhetshensyn.</translation>
     </message>
     <message>
-        <source>Das Programm wurde nicht gefunden.</source>
+        <source>Die App wurde nicht gefunden.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Windows erlaubt Programmen nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
+        <source>Windows erlaubt Apps nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5588,11 +5584,11 @@
         <translation>Side %1 finnes ikke.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>Ikke nok minne til bildet.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
         <translation>Ikke nok minne til bildet (%1 × %2 piksler).</translation>
     </message>
 </context>
@@ -5668,11 +5664,11 @@
 <context>
     <name>lf::UndoBackupStore</name>
     <message>
-        <source>Die Sicherung für „Rückgängig“ ist nicht mehr vorhanden.</source>
+        <source>Die Sicherungskopie für „Widerrufen“ existiert nicht mehr.</source>
         <translation>Sikkerhetskopien for «Angre» finnes ikke lenger.</translation>
     </message>
     <message>
-        <source>Nicht genug Platz für die Sicherungskopie (Rückgängig) – nichts gespeichert.</source>
+        <source>Nicht genug Speicherplatz für die Sicherungskopie (Widerrufen) – nichts gesichert.</source>
         <translation>Ikke nok plass til sikkerhetskopien (Angre) – ingenting ble lagret.</translation>
     </message>
 </context>
@@ -5730,7 +5726,7 @@
         <translation>Full oppløsning er ikke tilgjengelig</translation>
     </message>
     <message>
-        <source>Lumaflip – lädt …</source>
+        <source>Lumaflip – wird geladen …</source>
         <translation>Lumaflip – laster inn…</translation>
     </message>
     <message>
@@ -5838,7 +5834,7 @@
         <translation>Bane kopiert</translation>
     </message>
     <message>
-        <source>„%1“ ist nicht mehr vorhanden.</source>
+        <source>„%1“ existiert nicht mehr.</source>
         <translation>«%1» finnes ikke lenger.</translation>
     </message>
     <message>
@@ -5897,19 +5893,19 @@
         <translation>Lysbildeserie – Mellomrom: pause · 1–9: sekunder · Esc: avslutt</translation>
     </message>
     <message>
-        <source>Keine Drehung zu speichern – zuerst mit ⌘L oder ⌘R drehen</source>
+        <source>Keine Drehung zu sichern – drehe das Bild zuerst mit ⌘L oder ⌘R</source>
         <translation>Ingen rotering å lagre – roter først med ⌘L eller ⌘R</translation>
     </message>
     <message>
-        <source>Drehung speichern</source>
+        <source>Drehung sichern</source>
         <translation>Lagre rotering</translation>
     </message>
     <message>
-        <source>Verlustfrei drehen geht nur mit beschnittenem Rand.</source>
+        <source>Verlustfreies Drehen ist nur mit beschnittenem Rand möglich.</source>
         <translation>Tapsfri rotering er bare mulig med beskåret kant.</translation>
     </message>
     <message>
-        <source>Die Drehung kann nur durch Neukodieren gespeichert werden.</source>
+        <source>Die Drehung kann nur durch Neukodieren gesichert werden.</source>
         <translation>Roteringen kan bare lagres ved å kode bildet på nytt.</translation>
     </message>
     <message>
@@ -5945,7 +5941,7 @@
         <translation>Ingen bilder er åpne.</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <source>Bilder in Archiven und PDF-Seiten können nicht als Schreibtischhintergrund festgelegt werden.</source>
         <translation>Bilder i arkiver og PDF-sider kan ikke bli skrivebordsbilde.</translation>
     </message>
     <message>
@@ -5970,7 +5966,7 @@
         <translation>Alle skjermer</translation>
     </message>
     <message>
-        <source>Diese Arbeitsumgebung wird nicht unterstützt.</source>
+        <source>Diese Desktopumgebung wird nicht unterstützt.</source>
         <translation>Dette skrivebordsmiljøet støttes ikke.</translation>
     </message>
 </context>
@@ -6010,7 +6006,7 @@
         <translation>Ingen AF-punkter i metadataene</translation>
     </message>
     <message>
-        <source>Zuschneiden geht in der Einzelbildansicht.</source>
+        <source>Zuschneiden ist nur in der Einzelbildansicht möglich.</source>
         <translation>Beskjæring fungerer i enkeltbildevisningen.</translation>
     </message>
     <message>
@@ -6018,11 +6014,11 @@
         <translation>Ingen bilder å beskjære.</translation>
     </message>
     <message>
-        <source>Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab</source>
+        <source>Zuschneiden: Rahmen ziehen – Enter sichert, Esc bricht ab</source>
         <translation>Beskjær: dra en ramme – Retur arkiverer, Esc avbryter</translation>
     </message>
     <message>
-        <source>Der vorige Zuschnitt wird noch gespeichert.</source>
+        <source>Der vorherige Zuschnitt wird noch gesichert.</source>
         <translation>Den forrige beskjæringen arkiveres fortsatt.</translation>
     </message>
     <message>
@@ -6035,7 +6031,7 @@
         <translation>%1-beskaaret.%2</translation>
     </message>
     <message>
-        <source>Zugeschnittenes Bild speichern unter</source>
+        <source>Zugeschnittenes Bild sichern unter</source>
         <translation>Arkiver beskåret bilde som</translation>
     </message>
     <message>
@@ -6047,7 +6043,7 @@
         <translation>Beskjær</translation>
     </message>
     <message>
-        <source>„%1“ gibt es schon. Ersetzen?</source>
+        <source>„%1“ existiert bereits. Möchtest du die Datei ersetzen?</source>
         <translation>«%1» finnes allerede. Erstatte?</translation>
     </message>
     <message>
@@ -6059,7 +6055,7 @@
         <translation>Erstatt</translation>
     </message>
     <message>
-        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <source>Der Zuschnitt konnte nicht gesichert werden.</source>
         <translation>Beskjæringen kunne ikke arkiveres.</translation>
     </message>
     <message>
@@ -6071,7 +6067,7 @@
         <translation>Eksporter beskåret…</translation>
     </message>
     <message>
-        <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
+        <source>Der Zuschnitt kann nur durch Neukodieren gesichert werden.</source>
         <translation>Beskjæringen kan bare lagres ved omkoding.</translation>
     </message>
     <message>
@@ -6083,7 +6079,7 @@
         <translation>Avbryt</translation>
     </message>
     <message>
-        <source>Zugeschnitten gespeichert als „%1“</source>
+        <source>Zugeschnitten gesichert als „%1“</source>
         <translation>Beskjæringen ble arkivert som «%1»</translation>
     </message>
     <message>
@@ -6126,7 +6122,7 @@
 <context>
     <name>lf::WindowExtras</name>
     <message>
-        <source>Karte</source>
+        <source>Ordnerkarte</source>
         <translation>Kart</translation>
     </message>
     <message>
@@ -6197,7 +6193,7 @@
         <translation>Livetekst av</translation>
     </message>
     <message>
-        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – schalte mit ⇧⌘H auf SDR um.</source>
         <translation>Livetekst er ikke tilgjengelig ved HDR-visning – bytt til SDR med ⇧⌘H.</translation>
     </message>
     <message>
@@ -6263,11 +6259,11 @@
         <translation>Bildestørrelsen %1 × %2 er ugyldig eller for stor.</translation>
     </message>
     <message>
-        <source>Die Farbtiefe der XCF-Datei wird nicht unterstützt.</source>
+        <source>Die Bittiefe der XCF-Datei wird nicht unterstützt.</source>
         <translation>Fargedybden i XCF-filen støttes ikke.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>Ikke nok minne til bildet.</translation>
     </message>
     <message>
@@ -6314,7 +6310,7 @@
         <translation>«%1» er for stor.</translation>
     </message>
     <message>
-        <source>Die Kompressionsart von „%1“ wird nicht unterstützt.</source>
+        <source>Die Komprimierungsart von „%1“ wird nicht unterstützt.</source>
         <translation>Komprimeringsmetoden for «%1» støttes ikke.</translation>
     </message>
 </context>

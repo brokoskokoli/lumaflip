@@ -29,7 +29,7 @@ bool open(const QString& path, QPdfDocument& doc, QString* error) {
         return true;
     if (error) {
         if (e == QPdfDocument::Error::IncorrectPassword)
-            *error = Tr::tr("Das PDF-Dokument ist kennwortgeschützt.");
+            *error = Tr::tr("Das PDF-Dokument ist passwortgeschützt.");
         else
             *error = QFile::exists(path) ? Tr::tr("Das PDF-Dokument ist beschädigt.")
                                          : Tr::tr("Die Datei existiert nicht.");
@@ -90,7 +90,7 @@ std::optional<DecodedImage> renderPage(const QString& path, int index, const Dec
     QImage image(target, QImage::Format_ARGB32_Premultiplied);
     if (page.isNull() || image.isNull()) {
         if (error)
-            *error = Tr::tr("Nicht genug Speicher für die Seite.");
+            *error = Tr::tr("Nicht genug Arbeitsspeicher für die Seite.");
         return std::nullopt;
     }
     image.fill(Qt::white); // pages are drawn on paper

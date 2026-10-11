@@ -339,7 +339,7 @@ TEST(FileSafety, F_EDIT_02_UndoRefusedAfterOutsideChange) {
     EXPECT_EQ(edit.revert(), RotationEdit::messageChangedUndo());
     EXPECT_EQ(readFile(path), changed); // the outside change is kept
     EXPECT_EQ(RotationEdit::messageChangedUndo(),
-              QStringLiteral("Datei wurde inzwischen verändert – Rückgängig nicht möglich"));
+              QStringLiteral("Die Datei wurde inzwischen verändert – Widerrufen nicht möglich"));
 
     // Redo after an outside change following an undo.
     const QString p2 = dir.filePath("second.jpg");
@@ -371,7 +371,7 @@ TEST(FileSafety, F_EDIT_02_FileOpsDropsUndoAfterOutsideChange) {
                                                makeStore(dir.filePath("undo")));
     bool done = false, ok = false;
     ops.modifyAsync(
-        path, QStringLiteral("Drehung speichern"), [edit] { return edit->apply(); },
+        path, QStringLiteral("Drehung sichern"), [edit] { return edit->apply(); },
         [edit] { return edit->revert(); },
         [&](bool success, const QString&) {
             done = true;

@@ -4,7 +4,7 @@
 // Interactive crop (F-EDIT-03) over an ImageView: the selection with eight handles, the
 // darkened outside, the rule-of-thirds grid and the size in pixels; a bar below with the
 // aspect preset (free, original, 1:1, 4:3, 3:2, 16:9), the portrait toggle, the grid toggle
-// and "Speichern" / "Speichern unter …" / "Abbrechen". The selection lives in full-size
+// and "Sichern" / "Sichern unter …" / "Abbrechen". The selection lives in full-size
 // image pixels (EXIF orientation applied, like DecodedImage::fullSize), so it follows zoom,
 // pan, the view rotation and mirroring (ImageView::imageToWidget()). Dragging inside moves
 // it, outside starts a new one; the wheel and pinch still zoom (forwarded to the canvas).

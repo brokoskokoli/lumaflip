@@ -72,8 +72,8 @@ Unterordner) oder `tests/corpus/generated/`.
       auch wenn Lumaflip vorher nicht lief).
 - [ ] Titelleiste: `Dateiname — 23 / 412`. Die Position erscheint, sobald der Ordner
       gelesen ist (bei großen Ordnern evtl. einen Augenblick später).
-- [ ] Statuszeile unten: Dateiname · Position · Pixelmaße · Dateigröße · Zoom in % ·
-      rechts die Sortierung (z. B. „Wie Finder: Name ↑“).
+- [ ] Statusleiste unten: Dateiname · Position · Pixelmaße · Dateigröße · Zoom in % ·
+      rechts die Sortierung (z. B. „Wie im Finder: Name ↑“).
 - [ ] → zeigt das nächste, ← das vorherige Bild – ohne spürbare Verzögerung (P-03).
 - [ ] Nicht-Bilder (PDF, TXT, Unterordner, versteckte Dateien, `._*`) werden übersprungen.
 - [ ] Am Ende hält das Blättern an und zeigt kurz „Letztes Bild“ (am Anfang „Erstes Bild“).
@@ -104,8 +104,8 @@ Listenansicht (Darstellung → Als Liste):
 
 - [ ] Spalte **Änderungsdatum** anklicken, bis ↓ (neueste oben) gilt. Finder-Fenster
       schließen, Ordner wieder öffnen, Doppelklick auf das **oberste** Bild. In Lumaflip
-      mit → durchblättern: Reihenfolge identisch mit der Finder-Liste; Statuszeile
-      „Wie Finder: Änderungsdatum ↓“.
+      mit → durchblättern: Reihenfolge identisch mit der Finder-Liste; Statusleiste
+      „Wie im Finder: Änderungsdatum ↓“.
 - [ ] Dasselbe für **Name ↑**, **Größe** (beide Richtungen) und **Hinzugefügt am**.
 - [ ] Namen mit Zahlen: `IMG_2.jpg` steht vor `IMG_10.jpg`, `IMG_2 (1).jpg` vor
       `IMG_2.jpg`, Umlaute wie im Finder.
@@ -114,18 +114,18 @@ Symbolansicht (Darstellung → Als Symbole):
 
 - [ ] Darstellung → Sortieren nach → **Name**: gleiche Reihenfolge wie im Finder.
 - [ ] „Sortieren nach: Ohne“ und Symbole von Hand umstellen: Lumaflip folgt den Zeilen von
-      links oben nach rechts unten (Statuszeile „Wie Finder: Symbolposition“).
+      links oben nach rechts unten (Statusleiste „Wie im Finder: Symbolposition“).
 
 Ohne Finder-Information:
 
 - [ ] Neuer Ordner, der noch nie im Finder geöffnet wurde (z. B. im Terminal mit `mkdir`
-      und `cp` angelegt): Statuszeile „Name ↑ (Finder-Info nicht gefunden)“,
+      und `cp` angelegt): Statusleiste „Name ↑ (Finder-Informationen nicht gefunden)“,
       Reihenfolge wie die Finder-Namenssortierung.
 
 Manuelle Sortierung (Darstellung → Sortieren nach):
 
 - [ ] „Größe“ wählen: Reihenfolge ändert sich, das aktuelle Bild bleibt, Position im
-      Titel passt. „Absteigend“ dreht um. „Wie Finder“ stellt zurück.
+      Titel passt. „Absteigend“ dreht um. „Wie im Finder“ stellt zurück.
 
 ### Echte .DS_Store-Testdateien erzeugen (F-SORT-08)
 
@@ -183,7 +183,7 @@ Mit Kopien arbeiten (z. B. `cp -R tests/corpus/generated /tmp/lf-test`).
 
 - [ ] **⌘⌫** legt das aktuelle Bild in den Papierkorb (ohne Rückfrage), das nächste Bild
       erscheint; im Finder-Papierkorb liegt die Datei. Mit Einstellungen → Allgemein →
-      „Vor dem Löschen nachfragen“ erscheint vorher eine Rückfrage („In den Papierkorb
+      „Vor dem Bewegen in den Papierkorb nachfragen“ erscheint vorher eine Rückfrage („In den Papierkorb
       legen“ / „Abbrechen“).
 - [ ] **⌘Z** (Bearbeiten → „… widerrufen“) holt sie zurück, sie wird wieder angezeigt.
       **⇧⌘Z** legt sie erneut in den Papierkorb.
@@ -211,7 +211,7 @@ Mit Kopien arbeiten (z. B. `cp -R tests/corpus/generated /tmp/lf-test`).
 - [ ] Mausrad (Maus anschließen): Bild wechseln; Einstellungen → Maus & Tastatur →
       Mausrad „Zoomen“: zoomt am Mauszeiger; ⌘+Mausrad zoomt immer.
 - [ ] Vollbild mit `F`, ⌃⌘F oder Doppelklick: nur das Bild. Maus an den unteren Rand →
-      Statuszeile erscheint, nach 1,5 s ohne Bewegung verschwindet sie wieder. Esc beendet.
+      Statusleiste erscheint, nach 1,5 s ohne Bewegung verschwindet sie wieder. Esc beendet.
 - [ ] Darstellung → Hintergrund: Dunkel, Hell, Wie System, Schachbrett (bei
       transparenten PNGs sichtbar), Eigene Farbe.
 - [ ] Defekte Datei (`tests/corpus/generated/garbage.jpg`, `empty.jpg`): statt eines

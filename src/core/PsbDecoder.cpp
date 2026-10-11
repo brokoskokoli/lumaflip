@@ -118,7 +118,7 @@ std::optional<Header> parseHeader(const QByteArray& data, bool acceptPsd, QStrin
                         h.mode == Cmyk || h.mode == Multichannel || h.mode == Duotone || h.mode == Lab;
     if (!depthOk || !modeOk || h.channels < 1 || h.channels > 56 || h.channels < colorChannels(h.mode) ||
         (h.mode == Bitmap && h.depth != 1) || (h.mode == Indexed && h.depth != 8)) {
-        setError(error, Tr::tr("Die Farbtiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt."));
+        setError(error, Tr::tr("Die Bittiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt."));
         return std::nullopt;
     }
     return h;
@@ -230,7 +230,8 @@ private:
         while (d < m_rowBytes) {
             if (s >= len)
                 return false;
-            const int n = qint8(src[s++]);
+            const int n = src[s] >= 0x80 ? int(src[s]) - 0x100 : int(src[s]); // signed run length
+            ++s;
             if (n >= 0) {
                 const qint64 count = n + 1;
                 if (s + count > len || d + count > m_rowBytes)
@@ -432,7 +433,7 @@ std::optional<Result> decode(const QByteArray& data, int maxEdge, QString* error
     // Intermediate: straight RGBA (or CMYK ink + alpha) as floats per output pixel.
     QImage out(ow, oh, QImage::Format_RGBA32FPx4);
     if (out.isNull()) {
-        setError(error, Tr::tr("Nicht genug Speicher für das Bild."));
+        setError(error, Tr::tr("Nicht genug Arbeitsspeicher für das Bild."));
         return std::nullopt;
     }
     QVector<QByteArray> rows(used);
@@ -511,7 +512,7 @@ std::optional<Result> decode(const QByteArray& data, int maxEdge, QString* error
         QImage ink(ow, oh, QImage::Format_CMYK8888);
         QImage alphaPlane(alpha ? ow : 0, alpha ? oh : 0, QImage::Format_Alpha8);
         if (ink.isNull() || (alpha && alphaPlane.isNull())) {
-            setError(error, Tr::tr("Nicht genug Speicher für das Bild."));
+            setError(error, Tr::tr("Nicht genug Arbeitsspeicher für das Bild."));
             return std::nullopt;
         }
         // The alpha channel is read once more per row (the float buffer holds K in its place).
@@ -586,7 +587,7 @@ std::optional<Result> decode(const QByteArray& data, int maxEdge, QString* error
                                    : QImage::Format_RGBA8888_Premultiplied);
     }
     if (out.isNull()) {
-        setError(error, Tr::tr("Nicht genug Speicher für das Bild."));
+        setError(error, Tr::tr("Nicht genug Arbeitsspeicher für das Bild."));
         return std::nullopt;
     }
     if (maxEdge > 0 && std::max(out.width(), out.height()) > maxEdge) {

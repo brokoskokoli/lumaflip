@@ -399,7 +399,7 @@ TEST_F(CollectionTest, F_SORT_02_ManualSortKeepsCurrent) {
     EXPECT_EQ(c->currentPath(), path("c.jpg"));
     ASSERT_FALSE(specs.isEmpty());
     EXPECT_EQ(specs.first().key, SortKey::DateModified);
-    // Back to "Wie Finder".
+    // Back to "Wie im Finder".
     c->setFollowFinder(true, false);
     ASSERT_TRUE(waitLoaded(*c, 3));
     EXPECT_EQ(names(*c), (QStringList{"a.jpg", "b.jpg", "c.jpg"}));
@@ -419,7 +419,7 @@ TEST_F(CollectionTest, F_SORT_03_FollowFinderUsesProviderAndAttributes) {
     ASSERT_TRUE(waitLoaded(*c, 1));
     EXPECT_EQ(names(*c), (QStringList{"b.jpg", "c.jpg", "a.jpg"}));
     EXPECT_TRUE(order.lastAllowLive.load());
-    EXPECT_EQ(describe(c->sortSpec()), QString::fromUtf8("Wie Finder: Hinzugefügt am ↓"));
+    EXPECT_EQ(describe(c->sortSpec()), QString::fromUtf8("Wie im Finder: Hinzugefügt am ↓"));
 }
 
 TEST_F(CollectionTest, F_SORT_03_IconPositionsAppliedFromProvider) {

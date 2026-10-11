@@ -12,11 +12,11 @@
         </translation>
     </message>
     <message numerus="yes">
-        <source>Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.</source>
+        <source>Unterordner: Nur die ersten %n Bilder werden angezeigt – öffne einen kleineren Ordner.</source>
         <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
         <translation>
-            <numerusform>Unterordner: Nur das erste %n Bild wird gezeigt – bitte einen kleineren Ordner öffnen.</numerusform>
-            <numerusform>Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.</numerusform>
+            <numerusform>Unterordner: Nur das erste %n Bild wird angezeigt – öffne einen kleineren Ordner.</numerusform>
+            <numerusform>Unterordner: Nur die ersten %n Bilder werden angezeigt – öffne einen kleineren Ordner.</numerusform>
         </translation>
     </message>
 </context>
@@ -33,17 +33,17 @@
 <context>
     <name>lf::CullingController</name>
     <message numerus="yes">
-        <source>%n verworfene(s) Bild(er) in den Papierkorb legen?</source>
+        <source>%n abgelehnte(s) Bild(er) in den Papierkorb legen?</source>
         <translation>
-            <numerusform>%n verworfenes Bild in den Papierkorb legen?</numerusform>
-            <numerusform>%n verworfene Bilder in den Papierkorb legen?</numerusform>
+            <numerusform>%n abgelehntes Bild in den Papierkorb legen?</numerusform>
+            <numerusform>%n abgelehnte Bilder in den Papierkorb legen?</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <source>%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
+        <source>%n abgelehnte(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
         <translation>
-            <numerusform>%n verworfenes Bild in den Ordner „_Rejected“ verschieben?</numerusform>
-            <numerusform>%n verworfene Bilder in den Ordner „_Rejected“ verschieben?</numerusform>
+            <numerusform>%n abgelehntes Bild in den Ordner „_Rejected“ verschieben?</numerusform>
+            <numerusform>%n abgelehnte Bilder in den Ordner „_Rejected“ verschieben?</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -84,11 +84,11 @@
 <context>
     <name>lf::FolderMapModel</name>
     <message numerus="yes">
-        <source>%1 von %n Bildern mit Ort</source>
-        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Ort&quot; (%1 images with a position, %n all)</extracomment>
+        <source>%1 von %n Bildern mit Aufnahmeort</source>
+        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Aufnahmeort&quot; (%1 images with a position, %n all)</extracomment>
         <translation>
-            <numerusform>%1 von %n Bild mit Ort</numerusform>
-            <numerusform>%1 von %n Bildern mit Ort</numerusform>
+            <numerusform>%1 von %n Bild mit Aufnahmeort</numerusform>
+            <numerusform>%1 von %n Bildern mit Aufnahmeort</numerusform>
         </translation>
     </message>
 </context>
@@ -180,10 +180,10 @@
 <context>
     <name>lf::PreferencesDialog</name>
     <message numerus="yes">
-        <source>%n Aktion(en) mit doppelt belegten Tasten – bitte eine davon ändern.</source>
+        <source>%n Aktion(en) mit doppelt belegten Tasten – ändere eine davon.</source>
         <translation>
-            <numerusform>%n Aktion mit doppelt belegten Tasten – bitte eine davon ändern.</numerusform>
-            <numerusform>%n Aktionen mit doppelt belegten Tasten – bitte eine davon ändern.</numerusform>
+            <numerusform>%n Aktion mit doppelt belegten Tasten – ändere eine davon.</numerusform>
+            <numerusform>%n Aktionen mit doppelt belegten Tasten – ändere eine davon.</numerusform>
         </translation>
     </message>
 </context>

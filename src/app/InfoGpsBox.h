@@ -2,7 +2,7 @@
 #pragma once
 
 // F-INFO-04: the GPS part of the info panel - position in degrees/minutes/seconds,
-// "Karte anzeigen" (mini map, loaded only after this click and only while the panel is
+// "Karte einblenden" (mini map, loaded only after this click and only while the panel is
 // visible, SPEC 10.3), "Karte ausblenden" (takes the consent back) and "In Karten öffnen"
 // (Apple Maps). Hidden for images without a position.
 
