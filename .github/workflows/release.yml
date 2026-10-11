@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Release pipeline (SPEC 10.1): tag v* -> the same checks as CI (checks.yml) -> build ->
-# sign -> notarize -> staple -> GitHub Release (draft) with DMG, ZIP and SHA-256 files ->
-# Sparkle appcast (EdDSA-signed) on GitHub Pages (branch gh-pages) -> release published.
+# sign -> notarize -> staple (macOS) and build -> sign (Windows, Azure Artifact Signing) ->
+# GitHub Release (draft) with DMG, ZIPs, installer and SHA-256 files -> Sparkle appcasts
+# (EdDSA-signed; appcast.xml for macOS, appcast-windows.xml for WinSparkle) on GitHub Pages
+# (branch gh-pages) -> release published.
 # Required secrets and variables: docs/RELEASING.md; set them up with
 # tools/setup_release_secrets.sh. Without a tag: Run workflow = dry run (see `on:`).
 #
@@ -10,9 +12,12 @@
 #   checks        checks.yml (= CI)                                 no secrets
 #   sparkle-keys  private Sparkle key matches the public key        SPARKLE_ED_PRIVATE_KEY
 #   build         package.sh --notarize, artifact "release-dist"    .p12 + notary key (no Sparkle key)
+#   build-windows Windows build + Artifact Signing, artifact        AZURE_* ids (OIDC, no client
+#                 "release-windows"                                  secret) + signing variables
 #   draft         GitHub Release as DRAFT, assets (--clobber)       GITHUB_TOKEN only
-#   appcast       generate_appcast from the artifact's DMG, verify, SPARKLE_ED_PRIVATE_KEY
-#                 push gh-pages, THEN publish the release           (no brew, no build tools)
+#   appcast       generate_appcast from the artifact's DMG, Windows  SPARKLE_ED_PRIVATE_KEY
+#                 feed (tools/appcast_windows.py), verify both,       (no brew, no build tools)
+#                 push gh-pages, THEN publish the release
 # The release becomes public only after the appcast push succeeded; every job can be
 # re-run (draft assets are replaced, an unchanged appcast is not committed again).
 #
@@ -27,8 +32,10 @@ on:
   push:
     tags: ['v*']
   # Dry run (Actions -> Release -> Run workflow, on main): checks, Sparkle key check, build,
-  # sign, notarize and staple exactly like a release, artifact "release-dist" - but no
-  # GitHub Release and no appcast. Tests the secrets before the first tag.
+  # sign, notarize and staple exactly like a release, artifacts "release-dist" and
+  # "release-windows" - but no GitHub Release and no appcast. Tests the secrets before the
+  # first tag. Without the Windows signing configuration the dry run builds unsigned (warning);
+  # a tag fails instead.
   workflow_dispatch:
 
 permissions:
@@ -215,11 +222,227 @@ jobs:
             rmdir "$LF_SECRETS_DIR" 2>/dev/null || true
           fi
 
+  build-windows:
+    # The Windows build, built like the CI job "Windows app" (.github/actions/windows-build),
+    # with the EdDSA public key for WinSparkle, then signed with Azure Artifact Signing:
+    # Lumaflip.exe, lumaflip-decoder.exe and every other unsigned .exe/.dll of the folder
+    # (WinSparkle.dll), then ZIP + installer from the signed folder, then the installer.
+    # Authentication: OIDC (azure/login, federated credential for this environment, no client
+    # secret); the signing account/profile are repository variables. On a tag, missing signing
+    # configuration fails the job (never publish unsigned); the dry run only warns and builds
+    # unsigned. Only tag builds and dry runs in the main repository.
+    name: Windows build, sign (Artifact Signing)
+    if: github.repository == 'brokoskokoli/lumaflip' && (github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v'))
+    needs: [version, checks, sparkle-keys]
+    runs-on: windows-2025
+    environment: release
+    permissions:
+      contents: read
+      id-token: write # OIDC token for azure/login
+    timeout-minutes: 120
+    env:
+      QT_FORCE_STDERR_LOGGING: "1"
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Signing configuration
+        id: signing
+        # Only presence is checked here (secrets are never printed). Values: docs/RELEASING.md,
+        # tools/setup_windows_signing.sh.
+        env:
+          ARTIFACT_SIGNING_ENDPOINT: ${{ vars.ARTIFACT_SIGNING_ENDPOINT }}
+          ARTIFACT_SIGNING_ACCOUNT: ${{ vars.ARTIFACT_SIGNING_ACCOUNT }}
+          ARTIFACT_SIGNING_CERT_PROFILE: ${{ vars.ARTIFACT_SIGNING_CERT_PROFILE }}
+          HAVE_AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID != '' }}
+          HAVE_AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID != '' }}
+          HAVE_AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID != '' }}
+          SPARKLE_PUBLIC_ED_KEY: ${{ vars.SPARKLE_PUBLIC_ED_KEY }}
+        run: |
+          $missing = @()
+          foreach ($v in 'ARTIFACT_SIGNING_ENDPOINT', 'ARTIFACT_SIGNING_ACCOUNT', 'ARTIFACT_SIGNING_CERT_PROFILE') {
+            if (-not [Environment]::GetEnvironmentVariable($v)) { $missing += "variable $v" }
+          }
+          foreach ($s in 'AZURE_CLIENT_ID', 'AZURE_TENANT_ID', 'AZURE_SUBSCRIPTION_ID') {
+            if ([Environment]::GetEnvironmentVariable("HAVE_$s") -ne 'true') { $missing += "secret $s (environment release)" }
+          }
+          if ($env:ARTIFACT_SIGNING_ENDPOINT -and $env:ARTIFACT_SIGNING_ENDPOINT -notmatch '^https://[a-z0-9-]+\.codesigning\.azure\.net/?$') {
+            $missing += "variable ARTIFACT_SIGNING_ENDPOINT (no https://<region>.codesigning.azure.net/ URL)"
+          }
+          if (-not $env:SPARKLE_PUBLIC_ED_KEY) {
+            Write-Output "::error::Repository variable SPARKLE_PUBLIC_ED_KEY is missing (WinSparkle needs it, docs/RELEASING.md)"
+            exit 1
+          }
+          if ($missing.Count -gt 0) {
+            $list = $missing -join ', '
+            if ($env:GITHUB_REF -like 'refs/tags/v*') {
+              Write-Output "::error::Windows code signing is not configured ($list) - a release is never published unsigned. Run tools/setup_windows_signing.sh (docs/RELEASING.md)."
+              exit 1
+            }
+            Write-Output "::warning::Dry run without Windows code signing ($list): the installer and the binaries stay UNSIGNED."
+            "enabled=false" >> $env:GITHUB_OUTPUT
+          } else {
+            "enabled=true" >> $env:GITHUB_OUTPUT
+          }
+
+      - name: Build (MSVC, Qt, vcpkg, WinSparkle; same action as CI)
+        uses: ./.github/actions/windows-build
+        with:
+          cmake-args: -DLF_SPARKLE_PUBLIC_KEY=${{ vars.SPARKLE_PUBLIC_ED_KEY }}
+
+      - name: Deploy (windeployqt) + smoke test
+        run: |
+          python tools/windows_deploy.py build/windows-release dist/Lumaflip --require-winsparkle `
+            --vcpkg-installed build/windows-release/vcpkg_installed/$env:VCPKG_DEFAULT_TRIPLET
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python tools/windows_smoke.py dist/Lumaflip
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Files to sign
+        id: tosign
+        # Our executables always; every other .exe/.dll without a valid signature too (the
+        # third-party WinSparkle.dll is unsigned upstream). Qt's and Microsoft's signed DLLs
+        # keep their signatures.
+        run: |
+          $files = Get-ChildItem dist/Lumaflip -Recurse -File -Include *.exe, *.dll | Where-Object {
+            $_.Name -in @('Lumaflip.exe', 'lumaflip-decoder.exe') -or (Get-AuthenticodeSignature $_.FullName).Status -ne 'Valid'
+          } | ForEach-Object { $_.FullName }
+          foreach ($own in 'Lumaflip.exe', 'lumaflip-decoder.exe', 'WinSparkle.dll') {
+            if (-not ($files | Where-Object { (Split-Path $_ -Leaf) -eq $own })) { Write-Output "::error::$own missing"; exit 1 }
+          }
+          $files | ForEach-Object { Write-Output "to sign: $_" }
+          "files=$($files -join ',')" >> $env:GITHUB_OUTPUT
+
+      - name: Azure login (OIDC)
+        if: steps.signing.outputs.enabled == 'true'
+        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Sign the executables and DLLs (Artifact Signing, RFC 3161 timestamp)
+        if: steps.signing.outputs.enabled == 'true'
+        uses: azure/artifact-signing-action@c7ab2a863ab5f9a846ddb8265964877ef296ee82 # v2.0.0
+        with:
+          endpoint: ${{ vars.ARTIFACT_SIGNING_ENDPOINT }}
+          signing-account-name: ${{ vars.ARTIFACT_SIGNING_ACCOUNT }}
+          certificate-profile-name: ${{ vars.ARTIFACT_SIGNING_CERT_PROFILE }}
+          files: ${{ steps.tosign.outputs.files }}
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
+          description: Lumaflip
+          description-url: https://github.com/brokoskokoli/lumaflip
+          # Only the Azure CLI credential of azure/login (OIDC).
+          exclude-environment-credential: true
+          exclude-workload-identity-credential: true
+          exclude-managed-identity-credential: true
+          exclude-shared-token-cache-credential: true
+          exclude-visual-studio-credential: true
+          exclude-visual-studio-code-credential: true
+          exclude-azure-cli-credential: false
+          exclude-azure-powershell-credential: true
+          exclude-azure-developer-cli-credential: true
+          exclude-interactive-browser-credential: true
+
+      - name: Verify the signatures of the folder (signtool verify /pa)
+        if: steps.signing.outputs.enabled == 'true'
+        env:
+          LF_TOSIGN: ${{ steps.tosign.outputs.files }}
+        run: |
+          $signtool = (Get-Command signtool.exe -ErrorAction SilentlyContinue).Source
+          if (-not $signtool) {
+            $signtool = Get-ChildItem "${env:ProgramFiles(x86)}\Windows Kits\10\bin\*\x64\signtool.exe" |
+              Sort-Object FullName -Descending | Select-Object -First 1 -ExpandProperty FullName
+          }
+          "LF_SIGNTOOL=$signtool" >> $env:GITHUB_ENV
+          $bad = 0
+          foreach ($f in Get-ChildItem dist/Lumaflip -Recurse -File -Include *.exe, *.dll) {
+            & $signtool verify /pa /q $f.FullName | Out-Null
+            if ($LASTEXITCODE -ne 0) { Write-Output "::error::not validly signed: $($f.FullName)"; $bad++ }
+          }
+          foreach ($f in $env:LF_TOSIGN -split ',') {
+            $sig = Get-AuthenticodeSignature $f
+            if (-not $sig.TimeStamperCertificate) { Write-Output "::error::no timestamp: $f"; $bad++ }
+            else { Write-Output "$((Split-Path $f -Leaf)): $($sig.SignerCertificate.Subject)" }
+          }
+          if ($bad -gt 0) { exit 1 }
+
+      - name: Inno Setup (pinned)
+        run: choco install innosetup --version 6.7.1 -y --no-progress
+
+      - name: Portable ZIP + installer (from the signed folder)
+        run: |
+          python tools/windows_package.py dist/Lumaflip --version $env:LF_VERSION --out dist --zip --installer `
+            --icon build/windows-release/packaging/Lumaflip.ico
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $setup = (Resolve-Path "dist/Lumaflip-$env:LF_VERSION-windows-x64-setup.exe").Path
+          "LF_SETUP=$setup" >> $env:GITHUB_ENV
+
+      - name: Sign the installer
+        if: steps.signing.outputs.enabled == 'true'
+        uses: azure/artifact-signing-action@c7ab2a863ab5f9a846ddb8265964877ef296ee82 # v2.0.0
+        with:
+          endpoint: ${{ vars.ARTIFACT_SIGNING_ENDPOINT }}
+          signing-account-name: ${{ vars.ARTIFACT_SIGNING_ACCOUNT }}
+          certificate-profile-name: ${{ vars.ARTIFACT_SIGNING_CERT_PROFILE }}
+          files: ${{ env.LF_SETUP }}
+          file-digest: SHA256
+          timestamp-rfc3161: http://timestamp.acs.microsoft.com
+          timestamp-digest: SHA256
+          description: Lumaflip Setup
+          description-url: https://github.com/brokoskokoli/lumaflip
+          exclude-environment-credential: true
+          exclude-workload-identity-credential: true
+          exclude-managed-identity-credential: true
+          exclude-shared-token-cache-credential: true
+          exclude-visual-studio-credential: true
+          exclude-visual-studio-code-credential: true
+          exclude-azure-cli-credential: false
+          exclude-azure-powershell-credential: true
+          exclude-azure-developer-cli-credential: true
+          exclude-interactive-browser-credential: true
+
+      - name: Verify the installer signature
+        if: steps.signing.outputs.enabled == 'true'
+        run: |
+          & $env:LF_SIGNTOOL verify /pa /v $env:LF_SETUP
+          if ($LASTEXITCODE -ne 0) { Write-Output "::error::installer not validly signed"; exit 1 }
+          if (-not (Get-AuthenticodeSignature $env:LF_SETUP).TimeStamperCertificate) {
+            Write-Output "::error::installer signature has no timestamp"; exit 1
+          }
+
+      - name: Install, update as WinSparkle does, uninstall
+        run: |
+          python tools/windows_installer_check.py $env:LF_SETUP --version $env:LF_VERSION --expect-winsparkle --log-dir dist/logs
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: SHA-256
+        run: |
+          python tools/windows_package.py dist/Lumaflip --version $env:LF_VERSION --out dist --sha256
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+      - name: Upload release files
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-windows
+          path: |
+            dist/Lumaflip-*-windows-x64.zip
+            dist/Lumaflip-*-windows-x64-setup.exe
+            dist/Lumaflip-*-windows-x64*.sha256
+          if-no-files-found: error
+          retention-days: 30
+
   draft:
     # Idempotent: creates the release as a draft, or replaces the assets of an existing
     # draft (re-run). A release that is already public is never touched.
     name: GitHub Release (draft)
-    needs: build
+    needs: [build, build-windows]
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-24.04
     permissions:
@@ -235,6 +458,11 @@ jobs:
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: release-dist
+          path: dist
+      - name: Download Windows release files
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release-windows
           path: dist
       - name: Release notes from CHANGELOG.md
         # The section "## [X.Y.Z] ..." up to the next "## [" becomes the release text, which the
@@ -261,7 +489,9 @@ jobs:
           version="${GITHUB_REF_NAME#v}"
           cd dist
           sha256sum -c Lumaflip-*.sha256
-          files=(Lumaflip-"$version".dmg Lumaflip-"$version".zip Lumaflip-"$version".dmg.sha256 Lumaflip-"$version".zip.sha256)
+          win="Lumaflip-$version-windows-x64"
+          files=(Lumaflip-"$version".dmg Lumaflip-"$version".zip Lumaflip-"$version".dmg.sha256 Lumaflip-"$version".zip.sha256
+                 "$win-setup.exe" "$win.zip" "$win-setup.exe.sha256" "$win.zip.sha256")
           if state=$(gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft 2>/dev/null); then
             if [[ "$state" != true ]]; then
               echo "::error::Release $GITHUB_REF_NAME is already published - its files are not replaced. Tag a new version."
@@ -282,8 +512,8 @@ jobs:
     # One appcast update at a time across all tags (global group): two releases never
     # read the same old appcast. Note: GitHub keeps only one *pending* job per group -
     # a third release tagged while one runs and one waits cancels the waiting one (re-run it).
-    name: Sparkle appcast + publish release
-    needs: [version, build, draft]
+    name: Sparkle appcasts (macOS + Windows) + publish release
+    needs: [version, build, build-windows, draft]
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     runs-on: macos-15
     environment: release
@@ -307,26 +537,37 @@ jobs:
           name: release-dist
           path: dist
 
-      - name: Check DMG checksum and Sparkle keys
+      - name: Download Windows release files
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release-windows
+          path: dist
+
+      - name: Check DMG/installer checksums and Sparkle keys
         env:
           SPARKLE_PUBLIC_ED_KEY: ${{ vars.SPARKLE_PUBLIC_ED_KEY }}
           SPARKLE_ED_PRIVATE_KEY: ${{ secrets.SPARKLE_ED_PRIVATE_KEY }}
         run: |
           set -euo pipefail
           umask 077
-          (cd dist && shasum -a 256 -c "Lumaflip-${GITHUB_REF_NAME#v}.dmg.sha256")
+          (cd dist && shasum -a 256 -c "Lumaflip-${GITHUB_REF_NAME#v}.dmg.sha256" \
+                                      "Lumaflip-${GITHUB_REF_NAME#v}-windows-x64-setup.exe.sha256")
           dir=$(mktemp -d "$RUNNER_TEMP/sparkle.XXXXXX")
           trap 'rm -f -- "$dir/sparkle_ed.key"; rmdir -- "$dir"' EXIT
           printf '%s' "$SPARKLE_ED_PRIVATE_KEY" > "$dir/sparkle_ed.key"
           tools/sparkle_key_check.sh "$dir/sparkle_ed.key" "$SPARKLE_PUBLIC_ED_KEY"
 
-      - name: Generate, verify and push the appcast, then publish the release
+      - name: Generate, verify and push the appcasts, then publish the release
         # The update archive is the notarized, Developer ID signed DMG (with
         # SUVerifyUpdateBeforeExtraction Sparkle only allows key rotation for DMGs).
         # generate_appcast keeps all existing items (--maximum-versions 0; their archives
         # stay in the GitHub Releases), adds this version with its EdDSA signature and signs
         # the feed (SURequireSignedFeed). tools/appcast_verify.py compares old and new feed
         # (all old items with unchanged enclosure URLs, exactly one new item) before the push.
+        # Windows: a separate feed appcast-windows.xml (WinSparkle; Sparkle on macOS never sees
+        # it): the signed installer gets an EdDSA signature from sign_update (same key), and
+        # tools/appcast_windows.py adds its item (same release notes) to the old feed;
+        # appcast_verify.py --os windows checks it. appcast.xml itself gets no Windows items.
         env:
           GH_TOKEN: ${{ github.token }}
           SPARKLE_ED_PRIVATE_KEY: ${{ secrets.SPARKLE_ED_PRIVATE_KEY }}
@@ -353,6 +594,11 @@ jobs:
           fi
           touch "$work/pages/.nojekyll"   # plain files, no Jekyll processing
           old="-"
+          old_win="-"
+          if [[ -f "$work/pages/appcast-windows.xml" ]]; then
+            cp "$work/pages/appcast-windows.xml" "$work/old-appcast-windows.xml"
+            old_win="$work/old-appcast-windows.xml"
+          fi
           if [[ -f "$work/pages/appcast.xml" ]]; then
             cp "$work/pages/appcast.xml" "$work/old-appcast.xml"
             cp "$work/pages/appcast.xml" "$work/archives/appcast.xml"
@@ -362,7 +608,8 @@ jobs:
 
           # Release notes: Markdown of the (draft) GitHub release -> HTML (GitHub renders and sanitizes it).
           gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --json body --jq .body > "$work/notes.md"
-          gh api markdown -f mode=gfm -f context="$GITHUB_REPOSITORY" -F text=@"$work/notes.md" \
+          # mode=markdown, not gfm: gfm turns every hard line wrap of CHANGELOG.md into <br>.
+          gh api markdown -f mode=markdown -F text=@"$work/notes.md" \
             > "$work/archives/Lumaflip-$version.html"
 
           # Private key on stdin only (printf is a shell builtin: not in any argument list).
@@ -378,19 +625,33 @@ jobs:
           printf '%s' "$SPARKLE_ED_PRIVATE_KEY" | third_party/Sparkle/bin/sign_update --verify --ed-key-file - \
             "$work/archives/appcast.xml"
 
+          # Windows feed: EdDSA signature of the (Authenticode-signed) installer, verified, then
+          # the new item next to the old ones.
+          setup="dist/Lumaflip-$version-windows-x64-setup.exe"
+          win_sig=$(printf '%s' "$SPARKLE_ED_PRIVATE_KEY" | third_party/Sparkle/bin/sign_update -p --ed-key-file - "$setup")
+          printf '%s' "$SPARKLE_ED_PRIVATE_KEY" | third_party/Sparkle/bin/sign_update --verify --ed-key-file - \
+            "$setup" "$win_sig"
+          python3 -I tools/appcast_windows.py --old "$old_win" --out "$work/appcast-windows.xml" \
+            --version "$version" --url "${url_prefix}Lumaflip-$version-windows-x64-setup.exe" \
+            --length "$(stat -f %z "$setup")" --ed-signature "$win_sig" \
+            --notes "$work/archives/Lumaflip-$version.html"
+          python3 -I tools/appcast_verify.py --os windows --old "$old_win" --new "$work/appcast-windows.xml" \
+            --version "$version" --url "${url_prefix}Lumaflip-$version-windows-x64-setup.exe" --archive "$setup"
+
           mkdir -p "$work/pages/notes"
           cp "$work/archives/appcast.xml" "$work/pages/appcast.xml"
+          cp "$work/appcast-windows.xml" "$work/pages/appcast-windows.xml"
           cp "$work/archives/Lumaflip-$version.html" "$work/pages/notes/$version.html"
-          git -C "$work/pages" add appcast.xml notes .nojekyll
+          git -C "$work/pages" add appcast.xml appcast-windows.xml notes .nojekyll
           if git -C "$work/pages" diff --cached --quiet; then
             echo "Appcast unchanged (re-run) - nothing to commit"
           else
-            git -C "$work/pages" commit --quiet -m "Appcast: Lumaflip $version"
+            git -C "$work/pages" commit --quiet -m "Appcasts: Lumaflip $version (macOS + Windows)"
           fi
 
           # Push with retries. Another push to gh-pages in between (not an appcast update:
-          # those are serialized by the concurrency group) is rebased onto; if appcast.xml
-          # itself changed meanwhile, the feed would have to be regenerated - stop instead.
+          # those are serialized by the concurrency group) is rebased onto; if a feed
+          # itself changed meanwhile, it would have to be regenerated - stop instead.
           pushed=0
           for attempt in 1 2 3 4 5; do
             if [[ -n "$base" ]] && [[ "$(git -C "$work/pages" rev-parse HEAD)" == "$base" ]]; then
@@ -401,11 +662,12 @@ jobs:
             sleep $((attempt * 5))
             git -C "$work/pages" fetch --quiet origin gh-pages
             if [[ -n "$base" ]]; then
-              if ! git -C "$work/pages" diff --quiet "$base" FETCH_HEAD -- appcast.xml; then
-                echo "::error::appcast.xml on gh-pages changed during this run - re-run the appcast job"; exit 1
+              if ! git -C "$work/pages" diff --quiet "$base" FETCH_HEAD -- appcast.xml appcast-windows.xml; then
+                echo "::error::An appcast on gh-pages changed during this run - re-run the appcast job"; exit 1
               fi
-            elif git -C "$work/pages" cat-file -e FETCH_HEAD:appcast.xml 2>/dev/null; then
-              echo "::error::gh-pages got an appcast.xml during this run - re-run the appcast job"; exit 1
+            elif git -C "$work/pages" cat-file -e FETCH_HEAD:appcast.xml 2>/dev/null \
+                 || git -C "$work/pages" cat-file -e FETCH_HEAD:appcast-windows.xml 2>/dev/null; then
+              echo "::error::gh-pages got an appcast during this run - re-run the appcast job"; exit 1
             fi
             git -C "$work/pages" rebase --quiet FETCH_HEAD
             base=$(git -C "$work/pages" rev-parse FETCH_HEAD)
@@ -414,4 +676,5 @@ jobs:
 
           # Only now (appcast is online) the release becomes public.
           gh release edit "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft=false
-          echo "Released $GITHUB_REF_NAME; appcast: https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}/appcast.xml"
+          pages="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}"
+          echo "Released $GITHUB_REF_NAME; appcasts: $pages/appcast.xml, $pages/appcast-windows.xml"

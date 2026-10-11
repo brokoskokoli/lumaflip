@@ -9,6 +9,14 @@ refer to [SPEC.md](SPEC.md).
 
 ## [Unreleased]
 
+### Added
+
+- **Windows: automatic updates** with WinSparkle — "Check for Updates…" and the automatic daily
+  check as on macOS, EdDSA-signed installers from a separate feed; the installer updates in place
+  and restarts Lumaflip. [F-MAC-08]
+- **Windows: signed releases** — installer, ZIP, `Lumaflip.exe`, the decoder helper and
+  `WinSparkle.dll` are code-signed (Azure Artifact Signing) and timestamped.
+
 ## [1.2.0] - 2026-10-11
 
 Milestone M4 — the first public release: signed and notarized for macOS 15+ on Apple Silicon,

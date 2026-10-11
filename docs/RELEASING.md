@@ -3,7 +3,9 @@
 
 Lumaflip wird direkt über GitHub vertrieben: signiert mit **Developer ID**, mit Hardened
 Runtime, **notarisiert** und „gestapelt“, ohne Sandbox (SPEC 10.1). Jedes Release enthält
-`Lumaflip-<version>.dmg`, `Lumaflip-<version>.zip` und je eine `.sha256`-Datei.
+`Lumaflip-<version>.dmg`, `Lumaflip-<version>.zip` und je eine `.sha256`-Datei, dazu für Windows
+`Lumaflip-<version>-windows-x64-setup.exe` und `Lumaflip-<version>-windows-x64.zip` (mit **Azure Artifact
+Signing** signiert, siehe [Windows: Signatur und Updates](#windows-signatur-und-updates)) samt `.sha256`.
 
 ## Überblick
 
@@ -14,8 +16,14 @@ Runtime, **notarisiert** und „gestapelt“, ohne Sandbox (SPEC 10.1). Jedes Re
 | `tools/notarize.sh` | Lädt App oder DMG zum Apple-Notardienst hoch (`notarytool submit --wait`), heftet das Ticket an (`stapler staple`); `--dry-run` zeigt nur die Befehle |
 | `tools/fetch_sparkle.sh` | Lädt Sparkle 2 (MIT) in der festgelegten Version, prüft die SHA-256 und entpackt nach `third_party/Sparkle/` (in `.gitignore`): Framework, `bin/generate_appcast`, `bin/sign_update`, `bin/generate_keys`, `LICENSE` |
 | `tools/sparkle_key_check.sh` | Prüft, ob ein exportierter privater Sparkle-Schlüssel zum öffentlichen Schlüssel der App passt: Der öffentliche Schlüssel wird immer aus dem privaten **abgeleitet** (auch beim alten 96-Byte-Format, dessen gespeichertem Anhang nicht vertraut wird). `--print-public` gibt ihn aus, `--self-test` prüft das Skript mit Wegwerf-Schlüsseln aus OpenSSL (läuft in `tools/check.sh`) |
-| `tools/appcast_verify.py` | Vergleicht neuen und alten Appcast vor dem Veröffentlichen: alle alten Einträge mit unveränderter Download-URL vorhanden, genau ein neuer Eintrag mit EdDSA-Signatur und passender Länge |
-| `.github/workflows/release.yml` | Läuft bei Tag `v*` im Hauptrepo: Versionsabgleich → Prüfungen (`checks.yml`) + Schlüsselprüfung → Paket/Signatur/Notarisierung → Release als Entwurf → Appcast → Release veröffentlichen |
+| `tools/appcast_verify.py` | Vergleicht neuen und alten Appcast vor dem Veröffentlichen: alle alten Einträge mit unveränderter Download-URL vorhanden, genau ein neuer Eintrag mit EdDSA-Signatur und passender Länge; die Feeds bleiben getrennt (`--os windows`: nur Windows-Einträge mit Installer-Argumenten, ohne: kein Windows-Eintrag im macOS-Feed). Unit-Tests: `tests/tools/test_appcast.py` (ctest `tools_appcast`) |
+| `.github/workflows/release.yml` | Läuft bei Tag `v*` im Hauptrepo: Versionsabgleich → Prüfungen (`checks.yml`) + Schlüsselprüfung → Paket/Signatur/Notarisierung (macOS) und Build/Signatur (Windows) → Release als Entwurf → Appcasts → Release veröffentlichen |
+| `.github/actions/windows-build/` | Gemeinsamer Windows-Build (MSVC, Qt, vcpkg, WinSparkle) für den CI-Job „Windows app“ und den Release-Job `build-windows` |
+| `tools/fetch_winsparkle.py` | Lädt WinSparkle (MIT) in der festgelegten Version, prüft die SHA-256, entpackt `x64/WinSparkle.dll`, Header und `COPYING` nach `third_party/WinSparkle/` |
+| `tools/windows_package.py` | ZIP, Inno-Setup-Installer und `.sha256` aus dem bereitgestellten Ordner (`tools/windows_deploy.py`) |
+| `tools/windows_installer_check.py` | Installiert den Installer still, aktualisiert ihn wie WinSparkle (Appcast-Argumente, laufende App, Neustart) und deinstalliert ihn (CI und Release) |
+| `tools/appcast_windows.py` | Schreibt `appcast-windows.xml` (WinSparkle): alte Einträge bleiben, neuer Eintrag mit EdDSA-Signatur, `sparkle:os="windows"`, Installer-Argumenten und Release-Notizen |
+| `tools/setup_windows_signing.sh` | Richtet die Windows-Signatur ein: Entra-App mit föderierter Anmeldeinformation (OIDC), Rolle am Zertifikatprofil, GitHub-Secrets und -Variablen |
 | `.github/workflows/checks.yml` | Wiederverwendbarer Workflow mit allen Pflichtprüfungen (SPEC 15.1); `ci.yml` (Push/PR) und `release.yml` rufen ihn unverändert auf |
 | `packaging/macos/Lumaflip.entitlements` | Einzige Berechtigung: `com.apple.security.automation.apple-events` (Opt-in F-SORT-04). Keine Sandbox |
 | `packaging/macos/Info.plist.in` | Dateitypen, TCC-Texte, Symbol, Copyright |
@@ -225,7 +233,8 @@ tools/sparkle_key_check.sh sparkle_private.key "<öffentlicher Schlüssel>"   # 
    Appcast-Läufe gleichzeitig, auch nicht für verschiedene Tags): Sparkle-Werkzeuge per
    `tools/fetch_sparkle.sh`, DMG aus dem Artefakt (Prüfsumme), Schlüsselprüfung. Dann `gh-pages`
    **vollständig** klonen (bzw. neu anlegen), vorhandene `appcast.xml` und die DMG in ein
-   Arbeitsverzeichnis, Release-Text des Entwurfs als HTML (GitHub-Markdown-API) daneben,
+   Arbeitsverzeichnis, Release-Text des Entwurfs als HTML (GitHub-Markdown-API, `mode=markdown`: harte
+   Zeilenumbrüche aus `CHANGELOG.md` werden kein `<br>`) daneben,
    `generate_appcast --ed-key-file - --maximum-versions 0 --maximum-deltas 0` – der private Schlüssel
    kommt nur über stdin (`printf` ist ein Shell-Builtin, erscheint also in keiner Argumentliste und wird
    nie ausgegeben). Alle vorhandenen Einträge bleiben erhalten, keine Delta-Updates.
@@ -233,10 +242,15 @@ tools/sparkle_key_check.sh sparkle_private.key "<öffentlicher Schlüssel>"   # 
    Eintrag mit gleicher Version und gleicher Download-URL noch da; genau ein Eintrag mehr bzw. gleich
    viele bei einem erneuten Lauf; neuer Eintrag mit erwarteter URL, `sparkle:edSignature` und der Länge
    der DMG), `sign_update --verify` prüft die Feed-Signatur.
-6. `appcast.xml` und `notes/<version>.html` werden als Commit auf `gh-pages` gepusht (`GITHUB_TOKEN` über
+   **Windows:** `sign_update -p` signiert den (Authenticode-signierten) Installer mit demselben
+   EdDSA-Schlüssel, `sign_update --verify` prüft die Signatur, `tools/appcast_windows.py` ergänzt
+   `appcast-windows.xml` um den neuen Eintrag (gleiche Release-Notizen) und
+   `tools/appcast_verify.py --os windows --archive <setup.exe>` prüft ihn. `appcast.xml` bekommt nie
+   Windows-Einträge – Sparkle auf dem Mac sieht den Windows-Installer nicht.
+6. `appcast.xml`, `appcast-windows.xml` und `notes/<version>.html` werden als Commit auf `gh-pages` gepusht (`GITHUB_TOKEN` über
    `gh auth setup-git`, kein Token in einer URL). Schlägt der Push fehl (anderer Push dazwischen), wird bis
-   zu fünfmal geholt, neu aufgesetzt (`rebase`) und erneut gepusht; hat sich dabei `appcast.xml` selbst
-   geändert, bricht der Job ab (Appcast müsste neu erzeugt werden → Job erneut starten). Ein
+   zu fünfmal geholt, neu aufgesetzt (`rebase`) und erneut gepusht; hat sich dabei einer der Appcasts
+   selbst geändert, bricht der Job ab (Appcast müsste neu erzeugt werden → Job erneut starten). Ein
    unveränderter Appcast (erneuter Lauf) wird nicht noch einmal committet.
 7. **Erst danach** wird das Release veröffentlicht (`gh release edit --draft=false`). Bis dahin zeigt der
    Appcast evtl. schon die neue Version, deren Download noch nicht öffentlich ist; GitHub Pages braucht
@@ -274,6 +288,126 @@ X.Y.Z --url <URL der DMG>` prüfen und `appcast.xml` auf `gh-pages` committen.
   Exporte löschen. Ausliefern könnte ein Angreifer ein so signiertes Update nur über die Feed-URL
   (`gh-pages`) – trotzdem nicht warten.
 
+## Windows: Signatur und Updates
+
+Die Windows-Ausgabe bekommt im Release-Job **`build-windows`** (Runner `windows-2025`, Environment
+`release`) eine Authenticode-Signatur von **Azure Artifact Signing** (früher „Trusted Signing“) und
+automatische Updates über **WinSparkle** (Gegenstück zu Sparkle, MIT) mit einem eigenen Feed
+`https://brokoskokoli.github.io/lumaflip/appcast-windows.xml`. Bedienung und Datenschutz wie auf dem Mac
+(siehe [docs/WINDOWS.md](WINDOWS.md#automatic-updates)).
+
+### Ablauf im Release-Job
+
+1. **Signatur-Konfiguration prüfen:** Variablen `ARTIFACT_SIGNING_ENDPOINT`, `ARTIFACT_SIGNING_ACCOUNT`,
+   `ARTIFACT_SIGNING_CERT_PROFILE` und die Secrets `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`,
+   `AZURE_SUBSCRIPTION_ID` (Environment `release`) müssen gesetzt sein, dazu `SPARKLE_PUBLIC_ED_KEY`.
+   **Bei einem Tag bricht der Job sonst ab – ein Release wird nie unsigniert veröffentlicht.** Der
+   Probelauf (*Run workflow*) baut ohne Signatur-Konfiguration weiter, unsigniert und mit Warnung.
+2. **Bauen** mit derselben Composite-Action wie die CI (`.github/actions/windows-build`), zusätzlich
+   `-DLF_SPARKLE_PUBLIC_KEY=<SPARKLE_PUBLIC_ED_KEY>`: derselbe öffentliche EdDSA-Schlüssel wie auf dem
+   Mac wird in `Lumaflip.exe` einkompiliert. `tools/windows_deploy.py --require-winsparkle`, Rauchtest.
+3. **Ordner signieren:** `Lumaflip.exe`, `lumaflip-decoder.exe` und jede weitere `.exe`/`.dll` ohne gültige
+   Signatur (u. a. `WinSparkle.dll`, die upstream unsigniert ist; Qt- und Microsoft-DLLs behalten ihre
+   Signatur). Anmeldung per **OIDC** (`azure/login` mit Client-, Tenant- und Abonnement-ID, **kein
+   Client-Secret**), signiert wird mit `azure/artifact-signing-action` (SHA-256, RFC-3161-Zeitstempel von
+   `http://timestamp.acs.microsoft.com`). Danach `signtool verify /pa` für alle `.exe`/`.dll` und ein
+   Zeitstempel-Check.
+4. **ZIP und Installer** aus dem signierten Ordner (`tools/windows_package.py`), dann den **Installer
+   signieren** und prüfen (`signtool verify /pa /v`).
+5. **Installer testen** wie WinSparkle ihn nutzt (`tools/windows_installer_check.py`: still installieren,
+   bei laufender App mit den Appcast-Argumenten aktualisieren, Neustart, deinstallieren), `.sha256`
+   schreiben, Artefakt `release-windows`.
+6. `draft` hängt Installer, ZIP und `.sha256` an das Release, `appcast` schreibt `appcast-windows.xml`
+   (siehe oben, Schritt 5 von „Was der Release-Workflow macht“).
+
+Nicht signiert wird das in den Installer eingebettete Deinstallationsprogramm (`unins000.exe`): Dafür
+müsste Inno Setup während des Kompilierens selbst signieren (`SignTool=`), was mit der GitHub-Action
+nicht geht. Es wird nicht heruntergeladen (kein „Mark of the Web“), SmartScreen prüft es daher nicht.
+
+### Einrichten mit dem Skript
+
+Voraussetzung: ein Artifact-Signing-Konto mit abgeschlossener Identitätsprüfung und einem
+Zertifikatprofil vom Typ **Public Trust** (ein vorhandenes eines anderen Projekts genügt; der Name im
+Zertifikat ist der geprüfte Name, nicht „Lumaflip“). Dann auf dem eigenen Mac:
+
+```sh
+brew install azure-cli gh
+az login                                  # Konto mit Owner/User Access Administrator am Profil
+tools/setup_windows_signing.sh
+```
+
+Das Skript (interaktiv, bash 3.2, gibt keine Secret-Werte aus):
+
+1. fragt nach dem Repository und legt bei Bedarf das Environment `release` an,
+2. lässt Abonnement, **Signaturkonto** und **Zertifikatprofil** aus Listen wählen (az-Erweiterung
+   `artifact-signing`, ersatzweise das ältere `trustedsigning`; wird bei Bedarf installiert) und liest den
+   Endpunkt (`https://<region>.codesigning.azure.net/`) aus dem Konto,
+3. legt die Entra-App-Registrierung **`lumaflip-github-release`** samt Dienstprinzipal an (oder nutzt die
+   vorhandene) und eine **föderierte Anmeldeinformation**: Aussteller
+   `https://token.actions.githubusercontent.com`, Subjekt `repo:brokoskokoli/lumaflip:environment:release`,
+   Zielgruppe `api://AzureADTokenExchange`,
+4. weist dem Dienstprinzipal die Rolle **„Artifact Signing Certificate Profile Signer“** (in älteren
+   Tenants „Trusted Signing Certificate Profile Signer“) zu – **nur auf das gewählte Profil**,
+5. setzt mit `gh` die Secrets `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID` (Environment
+   `release`) und die Repository-Variablen `ARTIFACT_SIGNING_ENDPOINT`, `ARTIFACT_SIGNING_ACCOUNT`,
+   `ARTIFACT_SIGNING_CERT_PROFILE`.
+
+Ein erneuter Aufruf legt nichts doppelt an. Danach den Probelauf starten
+(`gh workflow run release.yml --ref main`): Im Job „Windows build, sign“ müssen „Azure login“, beide
+Signaturschritte und die `signtool`-Prüfungen grün sein. Rollenzuweisungen brauchen in Azure einige Minuten.
+
+| Name | Art | Inhalt |
+|---|---|---|
+| `ARTIFACT_SIGNING_ENDPOINT` | Variable | Endpunkt der Region des Kontos, z. B. `https://weu.codesigning.azure.net/` |
+| `ARTIFACT_SIGNING_ACCOUNT` | Variable | Name des Artifact-Signing-Kontos |
+| `ARTIFACT_SIGNING_CERT_PROFILE` | Variable | Name des Zertifikatprofils (Public Trust) |
+| `AZURE_CLIENT_ID` | Secret (Environment `release`) | Anwendungs-ID (Client-ID) der App-Registrierung `lumaflip-github-release` |
+| `AZURE_TENANT_ID` | Secret (Environment `release`) | Verzeichnis-ID (Tenant) |
+| `AZURE_SUBSCRIPTION_ID` | Secret (Environment `release`) | Abonnement-ID mit dem Signaturkonto |
+
+Die IDs sind keine Zugangsdaten (ohne die föderierte Anmeldeinformation nützen sie nichts), liegen aber
+trotzdem als Secrets im Environment, damit nur Jobs mit Freigabe sie sehen.
+
+### Einrichten von Hand (Azure-Portal)
+
+1. **Microsoft Entra ID → App-Registrierungen → Neue Registrierung:** Name `lumaflip-github-release`,
+   „Nur Konten in diesem Organisationsverzeichnis“, keine Umleitungs-URI. Auf der Übersicht
+   **Anwendungs-ID (Client)** und **Verzeichnis-ID (Mandant)** notieren.
+2. In der App: **Zertifikate & Geheimnisse → Verbundanmeldeinformationen → Anmeldeinformationen
+   hinzufügen**, Szenario „GitHub Actions, die Azure-Ressourcen bereitstellen“: Organisation
+   `brokoskokoli`, Repository `lumaflip`, Entitätstyp **Umgebung**, Name `release`. Das ergibt das
+   Subjekt `repo:brokoskokoli/lumaflip:environment:release` mit Aussteller
+   `https://token.actions.githubusercontent.com` und Zielgruppe `api://AzureADTokenExchange`.
+   **Kein** Client-Secret anlegen.
+3. **Artifact-Signing-Konto → Zertifikatprofile →** das Public-Trust-Profil öffnen → **Zugriffssteuerung
+   (IAM) → Hinzufügen → Rollenzuweisung:** Rolle „Artifact Signing Certificate Profile Signer“ (bzw.
+   „Trusted Signing …“), Mitglied: Benutzer, Gruppe oder Dienstprinzipal → `lumaflip-github-release`.
+4. Auf der Übersicht des Kontos die **Konto-URI** (Endpunkt) und die Namen von Konto und Profil
+   ablesen, im Abonnement die **Abonnement-ID**.
+5. GitHub → Settings → Environments → `release` → Environment secrets: `AZURE_CLIENT_ID`,
+   `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID`; Settings → Secrets and variables → Actions → Variables:
+   `ARTIFACT_SIGNING_ENDPOINT`, `ARTIFACT_SIGNING_ACCOUNT`, `ARTIFACT_SIGNING_CERT_PROFILE`.
+
+### WinSparkle und der Windows-Feed
+
+- `tools/fetch_winsparkle.py` lädt WinSparkle 0.9.4 (EdDSA ab 0.9), geprüft per SHA-256; die CMake-Option
+  `LF_ENABLE_WINSPARKLE` (`AUTO`/`ON`/`OFF`) kopiert `WinSparkle.dll` neben `Lumaflip.exe`. Gelinkt wird
+  nichts: Lumaflip lädt die DLL zur Laufzeit nur aus dem eigenen Ordner (`LoadLibraryEx`, keine Suche in
+  `PATH`). Ohne DLL oder ohne `LF_SPARKLE_PUBLIC_KEY` ist der Updater aus (Menüpunkt und Einstellungen
+  ausgeblendet, Grund im Log `lumaflip.updater`).
+- Der Schlüssel ist derselbe wie für Sparkle (Variable `SPARKLE_PUBLIC_ED_KEY`, Secret
+  `SPARKLE_ED_PRIVATE_KEY`); eine Schlüsselrotation betrifft beide Plattformen. WinSparkle prüft die
+  EdDSA-Signatur des heruntergeladenen Installers, bevor es ihn startet; Windows prüft zusätzlich die
+  Authenticode-Signatur.
+- Feed-Eintrag (`tools/appcast_windows.py`): `sparkle:version` = Projektversion, `sparkle:os="windows"`,
+  `sparkle:minimumSystemVersion` 10.0.17763, Release-Notizen inline als `<description>`, Installer mit
+  `sparkle:installerArguments="/SILENT /SP- /SUPPRESSMSGBOXES /NORESTART /CLOSEAPPLICATIONS /RELAUNCH=1"`.
+  Der Installer aktualisiert an Ort und Stelle (gleiche `AppId`, vorheriger Ordner und Modus „nur für
+  mich“/„für alle“), schließt laufende Kopien und startet Lumaflip danach neu (`/RELAUNCH=1`).
+- Notfall: Installer aus dem Release, `third_party/Sparkle/bin/sign_update -p <setup.exe>` (Schlüssel aus
+  dem Schlüsselbund), `tools/appcast_windows.py --old <appcast-windows.xml von gh-pages> …`, mit
+  `tools/appcast_verify.py --os windows …` prüfen und auf `gh-pages` committen.
+
 ## Homebrew Cask
 
 Zunächst im eigenen Tap (`brokoskokoli/homebrew-tap`), später Antrag für `homebrew/cask` (SPEC 10.1):
@@ -293,7 +427,7 @@ Lizenzfenster) stehen in [MANUAL_CHECKS.md](MANUAL_CHECKS.md) im Abschnitt „Au
 
 Der Workflow nimmt den Text des Releases aus `CHANGELOG.md`: den Abschnitt `## [X.Y.Z] …` bis zum
 nächsten `## [`. Fehlt der Abschnitt, bricht der Job `draft` ab. Der Text erscheint auf der Release-Seite
-und – als HTML – im Update-Fenster von Sparkle. Vor dem Tag also den Abschnitt `[Unreleased]` in
+und – als HTML – im Update-Fenster von Sparkle bzw. WinSparkle. Vor dem Tag also den Abschnitt `[Unreleased]` in
 `[X.Y.Z] - Datum` umbenennen (mit kurzer Einleitung für Nutzer) und die Links am Ende anpassen.
 Die älteren deutschen Notizen unten sind Entwürfe aus der Abnahme.
 

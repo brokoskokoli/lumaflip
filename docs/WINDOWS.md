@@ -14,10 +14,14 @@ from macOS. The platform code lives in `src/platform/windows/` (core layer) and
   **Settings → Apps → Default apps**. It never takes over a file type by itself.
 - **Portable:** `Lumaflip-<version>-windows-x64.zip`, unpack anywhere and start
   `Lumaflip.exe` (no file type registration).
-- **Unsigned builds:** the CI artifacts are not code-signed yet. Windows SmartScreen shows
-  "Windows protected your PC" on the first start: *More info → Run anyway*. The ZIP may also
-  carry the "downloaded from the Internet" mark: *Properties → Unblock* before unpacking
+- **Signed releases:** the installer, `Lumaflip.exe`, `lumaflip-decoder.exe` and
+  `WinSparkle.dll` of a release are Authenticode-signed with Azure Artifact Signing and
+  timestamped (see [Signing](#signing)). **CI artifacts are unsigned:** Windows SmartScreen shows
+  "Windows protected your PC" on the first start: *More info → Run anyway*. An unsigned ZIP may
+  also carry the "downloaded from the Internet" mark: *Properties → Unblock* before unpacking
   avoids the prompt for every file.
+- **Updates:** installed copies update themselves (see [Automatic updates](#automatic-updates)); the
+  installer of a newer version also upgrades an existing installation in place.
 
 Requirements: Windows 10 1809 or later, or Windows 11; x64. Optional codec extensions from the
 Microsoft Store add formats to the system decoder: *HEIF Image Extensions* (+ *HEVC Video
@@ -49,11 +53,16 @@ and shadowing warnings are off on both compilers). The installer is built with
 [Inno Setup 6](https://jrsoftware.org/isinfo.php): `iscc /DAppVersion=<v>
 /DSourceDir=<deployed folder> /DOutputDir=dist packaging\windows\Lumaflip.iss`.
 
-CI: job **Windows app** in `.github/workflows/checks.yml` (windows-2025): build, unit tests,
+CI: job **Windows app** in `.github/workflows/checks.yml` (windows-2025; the build steps are the
+composite action `.github/actions/windows-build`, shared with the release job): build, unit tests,
 integration tests (real windows, QRhi on D3D11/WARP), deployment, a smoke test of the
-deployed folder, ZIP and installer as artifacts (`lumaflip-windows-x64`). Supply chain: the Qt
-archives must match the SHA-256 committed in `tools/fetch_qt_windows.py` (`--print-hashes`
-prints the entries for a new version), vcpkg is pinned to a commit, Inno Setup to a version.
+deployed folder, ZIP and installer (`tools/windows_package.py`), then
+`tools/windows_installer_check.py` installs the installer silently, updates it the way WinSparkle
+does (appcast arguments, Lumaflip running, relaunch) and uninstalls it; ZIP and installer as
+artifacts (`lumaflip-windows-x64`, unsigned). Supply chain: the Qt archives must match the
+SHA-256 committed in `tools/fetch_qt_windows.py` (`--print-hashes` prints the entries for a new
+version), WinSparkle the one in `tools/fetch_winsparkle.py`, vcpkg is pinned to a commit, Inno
+Setup to a version.
 
 ## Platform layer
 
@@ -148,22 +157,61 @@ Pixels travel through a named file mapping labelled low integrity, created by th
 - Gain map HDR (ISO 21496-1) is decoded by ImageIO on macOS only; on Windows such files show
   their SDR base image.
 
-## Signing (later)
+## Automatic updates
 
-The build is prepared for Authenticode signing but not signed yet:
+Same behaviour as Sparkle on macOS (F-MAC-08, SPEC 10.3), with
+[WinSparkle](https://winsparkle.org) (MIT, `tools/fetch_winsparkle.py`, pinned by SHA-256):
 
-1. Obtain a code signing certificate (OV/EV, or Azure Trusted Signing).
-2. Sign `Lumaflip.exe` and `lumaflip-decoder.exe` before packaging
-   (`signtool sign /fd SHA256 /tr <timestamp URL> /td SHA256 ...`), then the installer
-   (Inno Setup: `SignTool=` in `[Setup]`).
-3. Only in release builds from tags of the main repository, with the certificate as an
-   encrypted secret (like the macOS Developer ID, docs/RELEASING.md).
+- *File → Nach Updates suchen …* checks at once; *Settings → General → "Automatisch nach Updates
+  suchen"* switches the daily check on or off. Nothing happens on the first start; on the second
+  start WinSparkle asks whether to check automatically. The check is the app's only network traffic.
+- *"Updates automatisch installieren"* is shown but disabled on Windows: WinSparkle can only
+  install by quitting the app right away, so it always asks first ("Install update").
+- Feed: `https://brokoskokoli.github.io/lumaflip/appcast-windows.xml`, separate from the macOS
+  `appcast.xml` (Sparkle never sees Windows items). Every installer is EdDSA-signed with the same key
+  as the macOS updates (public key compiled into `Lumaflip.exe` from `LF_SPARKLE_PUBLIC_KEY`);
+  WinSparkle refuses an installer whose signature does not match.
+- Installing: WinSparkle downloads the installer, starts it with
+  `/SILENT /SP- /SUPPRESSMSGBOXES /NORESTART /CLOSEAPPLICATIONS /RELAUNCH=1` and asks Lumaflip to
+  quit (like *Quit*: the session is saved, pending file operations are finished). The installer
+  upgrades in place (same `AppId`, the previous folder and "only me"/"all users" mode; an all-users
+  installation asks for administrator rights), closes copies still running and starts the new
+  version (`/RELAUNCH=1`).
+- WinSparkle's settings (automatic check, last check, skipped version) are kept in
+  `HKEY_CURRENT_USER\Software\Lumaflip\WinSparkle`; its windows follow Lumaflip's language.
+- Builds without `WinSparkle.dll` (`-DLF_ENABLE_WINSPARKLE=OFF`, or the DLL missing) or without the
+  public key (`-DLF_SPARKLE_PUBLIC_KEY=…`, CI builds) have no updater: the menu item and the settings
+  are hidden, the reason is logged (`lumaflip.updater`). The DLL is loaded at run time only from the
+  folder of `Lumaflip.exe` (`LoadLibraryEx`, no `PATH` search).
 
-SmartScreen reputation builds up per certificate; EV certificates start with reputation.
+## Signing
+
+Releases (`.github/workflows/release.yml`, job `build-windows`, tags of the main repository only)
+are signed with **Azure Artifact Signing** (formerly Trusted Signing), certificate profile type
+*Public Trust*:
+
+1. `Lumaflip.exe`, `lumaflip-decoder.exe` and every other `.exe`/`.dll` of the deployed folder
+   without a valid signature (`WinSparkle.dll`) are signed (SHA-256, RFC 3161 timestamp), then ZIP
+   and installer are built from the signed folder and the installer is signed.
+2. GitHub logs in to Azure with OpenID Connect (federated credential for the environment
+   `release`, no client secret); the app registration may only sign with this one certificate
+   profile. Set up with `tools/setup_windows_signing.sh` (docs/RELEASING.md, "Windows: Signatur und
+   Updates").
+3. The job verifies every signature with `signtool verify /pa` and fails a tag build if signing is
+   not configured; a dry run without it builds unsigned with a warning.
+
+Not signed: the uninstaller inside the installer (`unins000.exe`, Inno Setup would have to sign it
+while compiling); it is never downloaded, so SmartScreen does not check it.
+
+**SmartScreen:** reputation builds up per certificate (and per file); an Artifact Signing
+certificate is trusted by Windows from the start, but a new publisher may still see the
+"Windows protected your PC" prompt for the first downloads until SmartScreen has seen enough of
+them. The publisher name shown is the validated identity of the certificate profile.
 
 ## Known gaps
 
-- No automatic updates on Windows (Sparkle is macOS only); the update menu item is hidden.
+- Updates always ask before they install (WinSparkle); "Updates automatisch installieren" is
+  disabled on Windows.
 - No system share sheet yet (Windows `DataTransferManager`), no Live Text, no maps.
 - The Explorer sort order of a folder cannot be read; Lumaflip uses name order.
 - Network access of the decoder helper is not blocked (see above).

@@ -16,9 +16,9 @@
 #include <cstring>
 #include <cwchar>
 
-Q_DECLARE_LOGGING_CATEGORY(lcUpdater)
-
 namespace lf {
+
+Q_DECLARE_LOGGING_CATEGORY(lcUpdater) // Updater.cpp
 
 namespace {
 
