@@ -105,7 +105,7 @@ class TstDefaultAppOffer : public QObject {
 
     QString image(const QString& name, Qt::GlobalColor color = Qt::darkCyan) const {
         const QString p = QDir::cleanPath(dir->path()) + QLatin1Char('/') + name;
-        QImage img(48, 32, QImage::Format_RGB32);
+        QImage img(640, 480, QImage::Format_RGB32);
         img.fill(color);
         const QByteArray format = QFileInfo(name).suffix() == QLatin1String("jpg") ? "JPEG" : "PNG";
         if (!img.save(p, QFileInfo(name).suffix() == QLatin1String("gif") ? "PNG" : format.constData()))
@@ -137,6 +137,15 @@ class TstDefaultAppOffer : public QObject {
     }
 
     DefaultAppBar* bar() const { return app->defaultAppOffer()->visibleBar(); }
+    bool waitForBar(ViewerWindow*) {
+        return QTest::qWaitFor([this] { return bar() != nullptr; }, 10000);
+    }
+    QString diagnostics(ViewerWindow* w) const {
+        return QStringLiteral("no bar: current %1, shown %2, queries %3, offer on %4")
+            .arg(w ? w->currentPath() : QString(), w ? w->shownPath() : QString())
+            .arg(shell->queries.load())
+            .arg(defaultapp::isEnabled());
+    }
 
 private slots:
     void initTestCase() {
@@ -175,7 +184,7 @@ private slots:
         QVERIFY(!a.isEmpty() && !b.isEmpty());
         ViewerWindow* w = open(a);
         QVERIFY(w);
-        QTRY_VERIFY_WITH_TIMEOUT(bar(), 10000);
+        QVERIFY2(waitForBar(w), qPrintable(diagnostics(w)));
         DefaultAppBar* offer = bar();
         QCOMPARE(offer->window(), static_cast<QWidget*>(w));
         QCOMPARE(offer->type(), QStringLiteral("public.jpeg"));
@@ -219,7 +228,7 @@ private slots:
         shell->fail = true;
         ViewerWindow* w = open(image(QStringLiteral("a.png")));
         QVERIFY(w);
-        QTRY_VERIFY_WITH_TIMEOUT(bar(), 10000);
+        QVERIFY2(waitForBar(w), qPrintable(diagnostics(w)));
         bar()->findChild<QPushButton*>(QStringLiteral("lfDefaultAppSet"))->click();
         QTRY_VERIFY(w->toastText().contains(QStringLiteral("Systemfehler 42")));
         QVERIFY(w->toastText().startsWith(
@@ -232,7 +241,7 @@ private slots:
     void F_MAC_09_closeAndNeverAsk() {
         ViewerWindow* w = open(image(QStringLiteral("a.png")));
         QVERIFY(w);
-        QTRY_VERIFY_WITH_TIMEOUT(bar(), 10000);
+        QVERIFY2(waitForBar(w), qPrintable(diagnostics(w)));
         QCOMPARE(bar()->type(), QStringLiteral("public.png"));
         bar()->findChild<QToolButton*>(QStringLiteral("lfDefaultAppClose"))->click();
         QVERIFY(!bar());
@@ -242,7 +251,7 @@ private slots:
         // Another type in the same window: asked.
         const QString jpg = image(QStringLiteral("b.jpg"));
         w->openFile(jpg);
-        QTRY_VERIFY_WITH_TIMEOUT(bar(), 10000);
+        QVERIFY2(waitForBar(w), qPrintable(diagnostics(w)));
         QCOMPARE(bar()->type(), QStringLiteral("public.jpeg"));
         bar()->findChild<QPushButton*>(QStringLiteral("lfDefaultAppNever"))->click();
         QVERIFY(!bar());
@@ -263,7 +272,7 @@ private slots:
     void F_MAC_09_allFormatsOpensTheChecklist() {
         ViewerWindow* w = open(image(QStringLiteral("a.jpg")));
         QVERIFY(w);
-        QTRY_VERIFY_WITH_TIMEOUT(bar(), 10000);
+        QVERIFY2(waitForBar(w), qPrintable(diagnostics(w)));
         bar()->findChild<QPushButton*>(QStringLiteral("lfDefaultAppAll"))->click();
         QVERIFY(!bar());
         DefaultAppDialog* dlg = nullptr;

@@ -142,10 +142,10 @@ void DefaultAppOfferController::watchWindows() {
             continue; // windowsChanged comes often: one connection per window
         w->setProperty("lfDefaultAppHook", true);
         w->installEventFilter(this);
-        connect(w, &ViewerWindow::imageShown, this, [this, w](const QString& path, Quality q) {
-            if (q != Quality::Preview) // after the frame that shows it (P-01)
-                imageShown(w, path);
-        });
+        // Any stage: a small image may only ever come as a complete preview. The query waits
+        // for kStartDelayMs after the first image anyway (P-01).
+        connect(w, &ViewerWindow::imageShown, this,
+                [this, w](const QString& path, Quality) { imageShown(w, path); });
         connect(w, &QObject::destroyed, this, [this, w] { m_bars.remove(w); });
     }
 }
