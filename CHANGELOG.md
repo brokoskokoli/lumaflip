@@ -9,6 +9,11 @@ refer to [SPEC.md](SPEC.md).
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-10-12
+
+A new icon, reviewed translations in all 18 languages and an offer to become the default app.
+Windows builds are now code-signed and update themselves.
+
 ### Added
 
 - **Windows: automatic updates** with WinSparkle — "Check for Updates…" and the automatic daily
@@ -27,6 +32,18 @@ refer to [SPEC.md](SPEC.md).
   ([translations/GLOSSARY.md](translations/GLOSSARY.md)): "Sichern" for save, "Widerrufen" for undo,
   "Benutzte Dokumente", "Markieren/Ablehnen" for pick/reject, "App" instead of "Programm",
   consistent "du". Existing translations were kept (`tools/i18n_rename_source.py`). [F-I18N-01]
+- **All 17 translations reviewed** against the terms macOS, Windows and Lightroom use in each
+  language (menu names, standard commands, punctuation and form of address as on the platform);
+  every language is fully translated. Native-speaker reviews are still welcome
+  ([translations/REVIEW_STATUS.md](translations/REVIEW_STATUS.md)). [F-I18N-01]
+- **New app icon** "Sun Chevron": a forward arrow with the sun in its opening, on teal; the website
+  uses the matching colours.
+
+### Fixed
+
+- A language switch now reaches every window, also one whose native window Qt re-created at
+  that moment (some texts stayed in the old language). [F-I18N-03]
+- Update notes no longer show the line breaks of the changelog source.
 
 ## [1.2.0] - 2026-10-11
 
@@ -195,5 +212,6 @@ Milestone M1 — MVP. Acceptance testing: [docs/TESTING-M1.md](docs/TESTING-M1.m
   settings window. [F-WIN-01/02/03/08/09/10, F-MAC-01/02/05, F-SET-01/04]
 - Graceful handling of macOS privacy prompts; no Full Disk Access required. [F-PRIV-01/02]
 
-[Unreleased]: https://github.com/brokoskokoli/lumaflip/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/brokoskokoli/lumaflip/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/brokoskokoli/lumaflip/releases/tag/v1.2.1
 [1.2.0]: https://github.com/brokoskokoli/lumaflip/releases/tag/v1.2.0

@@ -6,7 +6,7 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "15.0" CACHE STRING "Minimum macOS version")
 if(NOT CMAKE_OSX_DEPLOYMENT_TARGET)  # an older cache may hold an empty value
   set(CMAKE_OSX_DEPLOYMENT_TARGET "15.0" CACHE STRING "Minimum macOS version" FORCE)
 endif()
-project(Lumaflip VERSION 1.2.0 LANGUAGES C CXX)
+project(Lumaflip VERSION 1.2.1 LANGUAGES C CXX)
 if(APPLE)
   enable_language(OBJC OBJCXX)
 endif()
