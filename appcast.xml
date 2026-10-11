@@ -1,0 +1,88 @@
+<?xml version="1.0" standalone="yes"?><!-- sparkle-sign-warning:
+IMPORTANT: This file was signed by Sparkle. Any modifications to this file requires re-signing this file with generate_appcast or sign_update! The signed signature will be embedded at the end of this file.
+--><rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>Lumaflip</title>
+        <item>
+            <title>1.2.0</title>
+            <pubDate>Sun, 11 Oct 2026 18:47:04 +0000</pubDate>
+            <link>https://github.com/brokoskokoli/lumaflip</link>
+            <sparkle:version>1.2.0</sparkle:version>
+            <sparkle:shortVersionString>1.2.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
+            <description><![CDATA[<p dir="auto">Milestone M4 — the first public release: signed and notarized for macOS 15+ on Apple Silicon,<br>
+with automatic updates. Windows and Linux builds are previews.</p>
+<h3 dir="auto">Added</h3>
+<ul dir="auto">
+<li><strong>Comics, archives and PDFs</strong> (CBZ/CBR/CB7, ZIP/RAR/7z, PDF): browse them like a folder, with<br>
+thumbnails, a right-to-left mode for manga, ⌥←/→ to the neighbouring archive and live reload<br>
+when the archive changes; read-only, extracted only to a temporary cache. [F-OPEN-10]</li>
+<li><strong>Live Text</strong> (⇧⌘L): select and copy text in photos, look up subjects (macOS VisionKit,<br>
+on-device, only on request). [F-MAC-06]</li>
+<li><strong>Quick Look</strong> (⌘Y) and <strong>Services</strong> ("Open in Lumaflip" from other apps). [F-MAC-07]</li>
+<li><strong>Set as desktop picture</strong> for the current screen or all screens. [F-FILE-09]</li>
+<li><strong>Custom actions</strong>: run a shell command or a Shortcut on the current image or selection from a<br>
+key or the menu, confirmed once per command, with timeout. [F-FILE-10]</li>
+<li><strong>Crop</strong> (⇧C): handles, aspect presets (free, original, 1:1, 4:3, 3:2, 16:9, portrait), rule of<br>
+thirds, size in pixels; Enter saves into the file (undoable), "Save As…" writes a new file. JPEGs<br>
+are cropped losslessly on the block grid; PNG/TIFF re-encoded exactly; lossy formats only after<br>
+asking. [F-EDIT-03]</li>
+<li><strong>Export / convert</strong> (⇧⌘E) the image or the grid selection to JPEG, HEIC, AVIF, PNG or TIFF with<br>
+quality, maximum size, metadata (all / without GPS / none), color space, HDR gain map or SDR,<br>
+name pattern and target folder; progress with cancel; sources are never changed. [F-EDIT-04]</li>
+<li><strong>Photo overlays</strong>: clipping warning (J), focus peaking (⇧J), AF points from the maker notes<br>
+(⇧A; Canon, Nikon live view, Sony, Fujifilm, EXIF subject area). [F-INFO-07]</li>
+<li><strong>Compare</strong>: difference, blend and wipe of two images. [F-GRID-04]</li>
+<li><strong>Zoom per image for the session</strong>: a zoomed or panned image keeps its zoom and visible part when<br>
+you browse away and come back (per window, in memory only, up to 500 images; independent of the<br>
+window size and full screen). Enter or "View › Reset to Standard Zoom" returns to the standard<br>
+zoom mode; without a changed zoom Enter still renames. "Lock Zoom" takes precedence. Can be<br>
+switched off in Preferences › Display. [F-VIEW-14]</li>
+<li><strong>Borderless windows</strong> (new default): the image reaches the top edge; a semi-transparent strip<br>
+with the window title and the window buttons fades in when the mouse moves and out after<br>
+1.5 s. Drag it to move the window (Aero Snap and Snap Layouts on Windows), double-click to<br>
+zoom (macOS follows the system setting). <em>Settings → Window → Title bar</em>: "show when the mouse<br>
+moves" or "always show"; <em>Window → Minimal Window</em> switches a single window. [F-VIEW-13/15]</li>
+<li><strong>Linux</strong> (preview, M4): the full app on Linux with an AppImage. Freedesktop integration (open<br>
+with / default app via desktop entries and <code class="notranslate">mimeapps.list</code>, reveal in the file manager over<br>
+D-Bus, trash with undo, inotify folder watching incl. subfolders, tags in <code class="notranslate">user.xdg.tags</code>),<br>
+decoders for HEIF/AVIF (libheif), JPEG XL (libjxl), camera RAW (LibRaw) and OpenEXR, and a<br>
+seccomp-bpf + Landlock sandbox for the decoder helper. Desktop entry, AppStream metadata,<br>
+icons, Flatpak manifest. See <a href="docs/LINUX.md">docs/LINUX.md</a>. [SPEC 9.3, 13]</li>
+<li><strong>Windows 10/11 (preview)</strong>: the app built with MSVC and Qt 6.11, with a native platform layer<br>
+— WIC as system decoder (HEIF/AVIF/WebP/JPEG XL/RAW with the Store codec extensions), Explorer<br>
+name order, Recycle Bin with undo, recursive folder watching, Open with, Default apps,<br>
+wallpaper, monitor ICC profile and scRGB HDR output, the decoder helper in a low integrity<br>
+sandbox with a job object. Installer (Inno Setup) and portable ZIP from CI; not code-signed yet<br>
+(SmartScreen warns). See docs/WINDOWS.md. [SPEC 9.3, 13]</li>
+</ul>
+<h3 dir="auto">Security</h3>
+<ul dir="auto">
+<li>Review round for M4 and the ports: decoder helper hardened on Linux (stricter seccomp filter,<br>
+read-only file system even without Landlock, no inherited file descriptors, pixels returned in<br>
+sealed memory) and Windows (own desktop, memory limit); pixel and memory limits for HEIF/AVIF,<br>
+JPEG XL and OpenEXR; bounded archive scans against decompression bombs; imported settings can no<br>
+longer bring pre-confirmed custom actions.</li>
+</ul>
+<h3 dir="auto">Fixed</h3>
+<ul dir="auto">
+<li>Crop "Save As" never replaces an existing file without asking; Esc cancels a save in progress;<br>
+custom actions on plain keys (F5, K …) work; full-screen toggles during the macOS animation are<br>
+no longer lost; difference compare no longer blocks the window and keeps aspect ratios; clipping<br>
+warning judged in the image's own colour space; JPEG XL colours on Linux/Windows.</li>
+<li><strong>Animated GIF, WebP, APNG and AVIF play as the file says</strong>: the file's loop count is honored<br>
+(a GIF without loop extension plays once and stays on its last frame; Space plays it again),<br>
+frame delays of 10 ms or less play at 100 ms like in browsers on every platform, animated AVIF<br>
+uses its frame delays, and a paused animation also resumes when the window is activated again<br>
+(not only on the window state change macOS may report late). Windows: animated WebP plays<br>
+(the WIC codec returned its frames as pages). New tests check playback on the rendered<br>
+canvas, not only in the player. [F-FMT-03, F-IN-06]</li>
+</ul>]]></description>
+            <enclosure url="https://github.com/brokoskokoli/lumaflip/releases/download/v1.2.0/Lumaflip-1.2.0.dmg" length="35158826" type="application/octet-stream" sparkle:edSignature="1D3kjOKJjXQ7Kjq0tyz5jC1Jd/riGPJSFvhJJiTlZAQc6x1bCXELj2QrUypfmhx6gNjClPtM1czCF0gnORN8Cw=="></enclosure>
+        </item>
+    </channel>
+</rss><!-- sparkle-signatures:
+edSignature: b29NYzl/yDaKEqMcQnmEx7DMO31zrgu/SOYZ31YlNK9DoTiF2mC/Py1I1qhPSE8M5vb0Jb5u02uEQGMnlRQFCA==
+length: 7114
+-->
