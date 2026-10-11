@@ -245,7 +245,8 @@ private slots:
         QVERIFY(installTranslations(QStringLiteral("en")));
         // 15 s: the language change is delivered through the event loop, which a loaded CI
         // runner (Xvfb, software OpenGL) can hold up for seconds (flaked once with 5 s on Linux).
-        QTRY_COMPARE_WITH_TIMEOUT(filter->field()->placeholderText(), QStringLiteral("Filter file names"), 15000);
+        QTRY_COMPARE_WITH_TIMEOUT(filter->field()->placeholderText(), QStringLiteral("Filter file names"),
+                                  15000);
         QTRY_COMPARE_WITH_TIMEOUT(compare.accessibleName(), QStringLiteral("Compare"), 15000);
         // The file is decoded again; the new failure brings the English text.
         // 15 s: slow machines (sanitizers on CI); the texts are printed if it fails.
