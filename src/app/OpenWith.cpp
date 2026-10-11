@@ -14,6 +14,7 @@
 #include <QHash>
 #include <QIcon>
 #include <QMenu>
+#include <QMessageBox>
 #include <QPixmap>
 #include <QPointer>
 #include <QSet>
@@ -157,6 +158,36 @@ void OpenWithService::openInEditor(const QString& filePath, Shell& shell, QObjec
     });
 }
 
+QString chooseProgram(QWidget* parent, const QString& title) {
+#ifdef Q_OS_MACOS
+    const QString dir = QStringLiteral("/Applications");
+    const QString filter = OpenWithService::tr("Programme (*.app)");
+#elif defined(Q_OS_WIN)
+    const QString dir = qEnvironmentVariable("ProgramFiles", QStringLiteral("C:/Program Files"));
+    const QString filter = OpenWithService::tr("Programme (*.exe)");
+#else
+    const QString dir = QStringLiteral("/usr/share/applications");
+    const QString filter = OpenWithService::tr("Programme (*.desktop);;Alle Dateien (*)");
+#endif
+    const QString app = QFileDialog::getOpenFileName(parent, title, dir, filter);
+    if (app.isEmpty())
+        return {};
+#ifndef Q_OS_MACOS
+    const QFileInfo fi(app);
+#ifdef Q_OS_WIN
+    const bool program = fi.isFile() && fi.suffix().compare(QLatin1String("exe"), Qt::CaseInsensitive) == 0;
+#else
+    const bool program = fi.isFile() && (fi.suffix() == QLatin1String("desktop") || fi.isExecutable());
+#endif
+    if (!program) {
+        QMessageBox::information(parent, title,
+                                 OpenWithService::tr("„%1“ ist kein Programm.").arg(fi.fileName()));
+        return {};
+    }
+#endif
+    return app;
+}
+
 void OpenWithService::populateMenu(QMenu* menu, const QString& filePath, Shell& shell,
                                    QWidget* dialogParent) {
     menu->clear();
@@ -171,8 +202,7 @@ void OpenWithService::populateMenu(QMenu* menu, const QString& filePath, Shell& 
         QAction* other = menu->addAction(tr("Andere …"));
         other->setObjectName(QStringLiteral("openWith:other"));
         QObject::connect(other, &QAction::triggered, menu, [sh, filePath, parent] {
-            const QString app = QFileDialog::getOpenFileName(
-                parent, tr("Programm wählen"), QStringLiteral("/Applications"), tr("Programme (*.app)"));
+            const QString app = chooseProgram(parent, tr("Programm wählen"));
             if (!app.isEmpty())
                 sh->openWith(filePath, app);
         });

@@ -47,6 +47,11 @@ QList<AppEntry> queryApplicationsForFile(const QString& filePath);
 // Name and icon of an application bundle (blocking).
 AppEntry applicationInfo(const QString& appPath);
 QString ownBundlePath(); // empty if not running as an app bundle
+// The file dialog for choosing a program ("Andere …", Settings → Editor) in the platform's
+// terms: macOS *.app in /Applications, Windows *.exe in Program Files, Linux desktop entries
+// in /usr/share/applications or any executable. A file that is no program is refused with a
+// message. Empty if cancelled.
+QString chooseProgram(QWidget* parent, const QString& title);
 QString ownBundleId();
 
 class OpenWithService : public QObject {
