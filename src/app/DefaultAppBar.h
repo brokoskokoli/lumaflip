@@ -4,8 +4,8 @@
 // F-MAC-09: "Lumaflip ist nicht die Standard-App für den Dateityp „JPEG-Bild“." - an info
 // bar at the top of the viewer window (below the access hint, never over the image), with
 // "Festlegen" (this type, Shell::makeDefaultViewerAsync), "Alle Bildformate …" (the
-// F-MAC-04 checklist), "Nicht mehr fragen" (global off) and a close button ("not now" for
-// this type). At most once per type (core/DefaultAppOffer.h keeps the answers); never in
+// F-MAC-04 checklist), "Nicht mehr fragen" (global off) and a close button on every
+// platform (a quiet "no" for this type: it never comes back for it). At most once per type (core/DefaultAppOffer.h keeps the answers); never in
 // full screen or a slideshow, never for archive members or PDF pages.
 //
 // The controller watches the windows of one Application. Once an image stayed on screen

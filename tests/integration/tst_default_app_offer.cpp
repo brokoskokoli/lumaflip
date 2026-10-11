@@ -235,7 +235,7 @@ private slots:
         QCOMPARE(defaultapp::askedTypes(), QStringList{QStringLiteral("public.png")});
     }
 
-    // Covers: F-MAC-09 (close = "not now" for this type, other types still asked;
+    // Covers: F-MAC-09 (close × = a quiet "no" for this type, other types still asked;
     // "Nicht mehr fragen" turns the offer off for good)
     void F_MAC_09_closeAndNeverAsk() {
         ViewerWindow* w = open(image(QStringLiteral("a.png")));
