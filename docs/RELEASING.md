@@ -340,9 +340,15 @@ tools/setup_windows_signing.sh
 Das Skript (interaktiv, bash 3.2, gibt keine Secret-Werte aus):
 
 1. fragt nach dem Repository und legt bei Bedarf das Environment `release` an,
-2. lässt Abonnement, **Signaturkonto** und **Zertifikatprofil** aus Listen wählen (az-Erweiterung
-   `artifact-signing`, ersatzweise das ältere `trustedsigning`; wird bei Bedarf installiert) und liest den
-   Endpunkt (`https://<region>.codesigning.azure.net/`) aus dem Konto,
+2. findet alles selbst, gefragt wird nur nach der Auswahl: Abonnement (bei mehreren), dann die
+   **Signaturkonten** des Abonnements (`az resource list --resource-type
+   Microsoft.CodeSigning/codeSigningAccounts`; Name, Ressourcengruppe, Region – der Endpunkt folgt aus
+   der Region nach Microsofts Tabelle, z. B. `westeurope` → `https://weu.codesigning.azure.net/`), dann die
+   **Zertifikatprofile** des Kontos mit Typ, Status und Identität (CN des Zertifikats; az-Erweiterung
+   `artifact-signing`, ersatzweise das ältere `trustedsigning` – fehlt sie, fragt das Skript, ob es sie
+   installieren soll). Public-Trust-Profile stehen oben, das erste ist die Vorgabe; das Profil eines
+   anderen Projekts mitzubenutzen ist in Ordnung. Fehlt `az` oder ist es nicht angemeldet, bricht das
+   Skript mit dem Hinweis `brew install azure-cli` bzw. `az login` ab,
 3. legt die Entra-App-Registrierung **`lumaflip-github-release`** samt Dienstprinzipal an (oder nutzt die
    vorhandene) und eine **föderierte Anmeldeinformation**: Aussteller
    `https://token.actions.githubusercontent.com`, Subjekt `repo:brokoskokoli/lumaflip:environment:release`,
