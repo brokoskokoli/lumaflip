@@ -6,7 +6,8 @@
 //   - Cinnamon: org.cinnamon.desktop.background; MATE: org.mate.background;
 //   - KDE Plasma: plasma-apply-wallpaperimage;
 //   - XFCE: xfconf-query is per monitor/workspace and not handled.
-// Elsewhere the menu entry reports that the desktop is not supported.
+// Elsewhere the menu entry reports that the desktop is not supported. The tools run on a
+// worker thread (runsOnWorkerThread(), WindowIntegration::setWallpaper()).
 
 #include "app/MacIntegration.h"
 #include "core/Wallpaper.h"
@@ -46,6 +47,9 @@ bool run(const QString& program, const QStringList& args, QString* error) {
 
 class DesktopWallpaperService final : public WallpaperService {
 public:
+    // gsettings / plasma-apply-wallpaperimage are waited for: never on the GUI thread.
+    bool runsOnWorkerThread() const override { return true; }
+
     QList<WallpaperScreen> screens() const override {
         // The desktop tools set one picture for every screen.
         WallpaperScreen s;

@@ -76,6 +76,9 @@ QList<CustomAction> withConfirmationFrom(QList<CustomAction> imported, const QLi
 // Windows: the command split into program and arguments (CommandLineToArgvW rules; empty if
 // there is no command). Elsewhere the trimmed command as the only element.
 QStringList splitCommand(const QString& command);
+// Windows: the program as CreateProcess will find it - a bare name looked up in PATH with
+// PATHEXT (so "tool" may turn out to be tool.bat); unchanged if not found or elsewhere.
+QString resolvedProgram(const QString& program);
 
 struct ProcessSpec {
     QString program;

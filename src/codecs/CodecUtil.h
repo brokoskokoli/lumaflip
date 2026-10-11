@@ -6,6 +6,11 @@
 // Format_RGBA8888_Premultiplied for 8-bit sources, Format_RGBA64_Premultiplied for deeper
 // ones, float sources as extended linear Display P3 (Format_RGBA16FPx4_Premultiplied, headroom
 // = peak) when the request allows it; downsampling to the request's target edge.
+//
+// Memory (review of the ports): the helper decodes untrusted files, so a header may announce
+// any size. Every backend checks the announced size with fitsLimits() before it allocates a
+// pixel buffer, and finish() downsamples before the expensive conversions. The helper's
+// memory limit (DecoderHelperPool::Options::memoryLimitMb) is the last line behind that.
 
 #include "core/Decoder.h"
 #include "core/OwnDecoderUtil.h"
@@ -22,6 +27,28 @@ namespace lf::codec {
 inline void setError(QString* error, const QString& message) {
     if (error && error->isEmpty())
         *error = message;
+}
+
+// At most 268 MP per image and 2 GiB per full-size pixel buffer, edges up to 2^20.
+inline constexpr qint64 kMaxPixels = qint64(1) << 28;
+inline constexpr qint64 kMaxBufferBytes = qint64(2) << 30;
+inline constexpr qint64 kMaxEdge = qint64(1) << 20;
+
+// Whether a w × h image with `bytesPerPixel` bytes per pixel may be decoded at full size.
+inline bool fitsLimits(qint64 w, qint64 h, int bytesPerPixel) {
+    return w > 0 && h > 0 && w <= kMaxEdge && h <= kMaxEdge && w * h <= kMaxPixels &&
+           w * h * bytesPerPixel <= kMaxBufferBytes;
+}
+
+// Downsamples `img` (in its own format, keeping its color space) when the request wants
+// fewer pixels than it has; `outBytesPerPixel` = bytes per pixel of the result format.
+inline void prescale(QImage& img, const DecodeRequest& req, int outBytesPerPixel) {
+    if (const int edge = decutil::targetEdge(img.size(), outBytesPerPixel, req); edge > 0) {
+        const QColorSpace cs = img.colorSpace();
+        img = img.scaled(decutil::fitLongEdge(img.size(), edge), Qt::IgnoreAspectRatio,
+                         Qt::SmoothTransformation);
+        img.setColorSpace(cs);
+    }
 }
 
 inline QString suffixOf(const QString& path) {
@@ -56,7 +83,14 @@ inline std::optional<DecodedImage> finish(QImage img, QSize full, const DecodeRe
     const bool isFloat = f == QImage::Format_RGBA32FPx4 || f == QImage::Format_RGBA32FPx4_Premultiplied ||
                          f == QImage::Format_RGBA16FPx4 || f == QImage::Format_RGBA16FPx4_Premultiplied ||
                          f == QImage::Format_RGBX32FPx4 || f == QImage::Format_RGBX16FPx4;
+    // Smaller first: the conversions below then never touch more pixels than the result has.
+    prescale(img, req, isFloat || img.depth() > 32 ? 8 : 4);
     if (isFloat) {
+        // 16 bytes per pixel while the peak is measured: refused above 2 GiB.
+        if (!fitsLimits(img.width(), img.height(), 16)) {
+            setError(error, DecoderRegistry::messageTooLarge());
+            return std::nullopt;
+        }
         img.convertTo(QImage::Format_RGBA32FPx4);
         const float peak = peakOf(img);
         if ((req.hdr || req.hdrFloat) && peak > 1.0f) {
@@ -76,13 +110,6 @@ inline std::optional<DecodedImage> finish(QImage img, QSize full, const DecodeRe
     if (img.isNull()) {
         setError(error, DecoderRegistry::messageTooLarge());
         return std::nullopt;
-    }
-    const int bpp = img.depth() / 8;
-    if (const int edge = decutil::targetEdge(img.size(), bpp, req); edge > 0) {
-        const QColorSpace cs = img.colorSpace();
-        img = img.scaled(decutil::fitLongEdge(img.size(), edge), Qt::IgnoreAspectRatio,
-                         Qt::SmoothTransformation);
-        img.setColorSpace(cs);
     }
     out.fullSize = full.isValid() ? full : img.size();
     out.isPreview = isPreview || img.width() < out.fullSize.width() || img.height() < out.fullSize.height();

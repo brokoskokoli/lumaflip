@@ -671,6 +671,14 @@
         <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
         <translation>Batch files (.bat, .cmd) cannot be run directly: cmd.exe would read file names as commands. Run a program or a PowerShell script instead (powershell -File script.ps1).</translation>
     </message>
+    <message>
+        <source>„%1“ kann nicht direkt ausgeführt werden: es würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
+        <translation>“%1” can’t be run directly: it would read file names as commands. Run a program or a PowerShell script instead (powershell -File Script.ps1).</translation>
+    </message>
+    <message>
+        <source>PowerShell nur mit einem Skript: „powershell -File Skript.ps1“. Mit -Command (oder ohne -File) würde PowerShell Dateinamen als Befehle lesen.</source>
+        <translation>PowerShell only with a script: “powershell -File Script.ps1”. With -Command (or without -File) PowerShell would read file names as commands.</translation>
+    </message>
     <message numerus="yes">
         <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
         <translation>
@@ -3998,6 +4006,18 @@
         <translation>No app found for editing. Choose one in Settings → General → Editor.</translation>
     </message>
     <message>
+        <source>Programme (*.exe)</source>
+        <translation>Programs (*.exe)</translation>
+    </message>
+    <message>
+        <source>Programme (*.desktop);;Alle Dateien (*)</source>
+        <translation>Programs (*.desktop);;All Files (*)</translation>
+    </message>
+    <message>
+        <source>„%1“ ist kein Programm.</source>
+        <translation>“%1” is not a program.</translation>
+    </message>
+    <message>
         <source>Kein Bild geöffnet</source>
         <translation>No image open</translation>
     </message>
@@ -4993,10 +5013,6 @@
         <translation>Choose Editor</translation>
     </message>
     <message>
-        <source>Programme (*.app)</source>
-        <translation>Apps (*.app)</translation>
-    </message>
-    <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
         <translation>Use live sorting from the Finder window</translation>
     </message>
@@ -5525,6 +5541,10 @@
         <translation>Batch files are not started, for security reasons.</translation>
     </message>
     <message>
+        <source>„%1“ würde den Dateinamen als Befehl lesen und wird aus Sicherheitsgründen nicht gestartet.</source>
+        <translation>“%1” would read the file name as a command and is not started for security reasons.</translation>
+    </message>
+    <message>
         <source>Das Programm wurde nicht gefunden.</source>
         <translation>The program was not found.</translation>
     </message>
@@ -5639,6 +5659,10 @@
     <message>
         <source>„%1“ konnte nicht wiederhergestellt werden: %2</source>
         <translation>“%1” couldn’t be restored: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ passte nicht in den Papierkorb und wurde endgültig gelöscht.</source>
+        <translation>“%1” didn’t fit in the Trash and was deleted permanently.</translation>
     </message>
 </context>
 <context>

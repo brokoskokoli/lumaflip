@@ -671,6 +671,14 @@
         <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>„%1“ kann nicht direkt ausgeführt werden: es würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
+        <translation>“%1” no se puede ejecutar directamente: leería los nombres de archivo como comandos. Ejecuta en su lugar un programa o un script de PowerShell (powershell -File Script.ps1).</translation>
+    </message>
+    <message>
+        <source>PowerShell nur mit einem Skript: „powershell -File Skript.ps1“. Mit -Command (oder ohne -File) würde PowerShell Dateinamen als Befehle lesen.</source>
+        <translation>PowerShell solo con un script: “powershell -File Script.ps1”. Con -Command (o sin -File), PowerShell leería los nombres de archivo como comandos.</translation>
+    </message>
     <message numerus="yes">
         <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
         <translation>
@@ -3998,6 +4006,18 @@
         <translation>No se ha encontrado ninguna app para editar. Elige una en Ajustes → General → Editor.</translation>
     </message>
     <message>
+        <source>Programme (*.exe)</source>
+        <translation>Programas (*.exe)</translation>
+    </message>
+    <message>
+        <source>Programme (*.desktop);;Alle Dateien (*)</source>
+        <translation>Programas (*.desktop);;Todos los archivos (*)</translation>
+    </message>
+    <message>
+        <source>„%1“ ist kein Programm.</source>
+        <translation>“%1” no es un programa.</translation>
+    </message>
+    <message>
         <source>Kein Bild geöffnet</source>
         <translation>No hay ninguna imagen abierta</translation>
     </message>
@@ -4993,10 +5013,6 @@
         <translation>Seleccionar editor</translation>
     </message>
     <message>
-        <source>Programme (*.app)</source>
-        <translation>Apps (*.app)</translation>
-    </message>
-    <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
         <translation>Adoptar el orden en vivo de la ventana del Finder</translation>
     </message>
@@ -5525,6 +5541,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>„%1“ würde den Dateinamen als Befehl lesen und wird aus Sicherheitsgründen nicht gestartet.</source>
+        <translation>“%1” leería el nombre del archivo como un comando y no se inicia por motivos de seguridad.</translation>
+    </message>
+    <message>
         <source>Das Programm wurde nicht gefunden.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5639,6 +5659,10 @@
     <message>
         <source>„%1“ konnte nicht wiederhergestellt werden: %2</source>
         <translation>No se ha podido recuperar “%1”: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ passte nicht in den Papierkorb und wurde endgültig gelöscht.</source>
+        <translation>“%1” no cabía en la papelera y se ha eliminado definitivamente.</translation>
     </message>
 </context>
 <context>

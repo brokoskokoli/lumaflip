@@ -664,6 +664,14 @@
         <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>„%1“ kann nicht direkt ausgeführt werden: es würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
+        <translation>無法直接執行「%1」：它會將檔案名稱當作指令讀取。請改為執行程式或 PowerShell 指令碼（powershell -File Script.ps1）。</translation>
+    </message>
+    <message>
+        <source>PowerShell nur mit einem Skript: „powershell -File Skript.ps1“. Mit -Command (oder ohne -File) würde PowerShell Dateinamen als Befehle lesen.</source>
+        <translation>PowerShell 只能搭配指令碼使用：「powershell -File Script.ps1」。使用 -Command（或未使用 -File）時，PowerShell 會將檔案名稱當作指令讀取。</translation>
+    </message>
     <message numerus="yes">
         <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
         <translation>
@@ -3983,6 +3991,18 @@
         <translation>找不到可用於編輯的 App。請在「設定」→「一般」→「編輯器」中選擇一個。</translation>
     </message>
     <message>
+        <source>Programme (*.exe)</source>
+        <translation>程式 (*.exe)</translation>
+    </message>
+    <message>
+        <source>Programme (*.desktop);;Alle Dateien (*)</source>
+        <translation>程式 (*.desktop);;所有檔案 (*)</translation>
+    </message>
+    <message>
+        <source>„%1“ ist kein Programm.</source>
+        <translation>「%1」不是程式。</translation>
+    </message>
+    <message>
         <source>Kein Bild geöffnet</source>
         <translation>未打開任何影像</translation>
     </message>
@@ -4972,10 +4992,6 @@
         <translation>選擇編輯器</translation>
     </message>
     <message>
-        <source>Programme (*.app)</source>
-        <translation>App (*.app)</translation>
-    </message>
-    <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
         <translation>即時沿用 Finder 視窗的排序方式</translation>
     </message>
@@ -5502,6 +5518,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>„%1“ würde den Dateinamen als Befehl lesen und wird aus Sicherheitsgründen nicht gestartet.</source>
+        <translation>「%1」會將檔案名稱當作指令讀取，基於安全考量不會啟動。</translation>
+    </message>
+    <message>
         <source>Das Programm wurde nicht gefunden.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5616,6 +5636,10 @@
     <message>
         <source>„%1“ konnte nicht wiederhergestellt werden: %2</source>
         <translation>無法回復「%1」：%2</translation>
+    </message>
+    <message>
+        <source>„%1“ passte nicht in den Papierkorb und wurde endgültig gelöscht.</source>
+        <translation>「%1」無法放入垃圾桶，已永久刪除。</translation>
     </message>
 </context>
 <context>

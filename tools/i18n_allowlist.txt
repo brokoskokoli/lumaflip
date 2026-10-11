@@ -123,6 +123,16 @@ src/platform/linux/LinuxSandbox.cpp:*
 src/app/SystemSymbols_win.cpp:Segoe Fluent Icons
 src/app/SystemSymbols_win.cpp:Segoe MDL2 Assets
 src/core/DecoderHelper.cpp:WSA error %1
+# sandbox probes of the tests (LF_DECODER_HELPER_TEST_OPS) and the sandbox details (log)
+src/core/DecoderHelper.cpp:pidfd_open: %1
+src/core/DecoderHelper.cpp:, pidfd_getfd: %1
+src/core/DecoderHelper.cpp:, pidfd_send_signal: %1
+src/core/DecoderHelper.cpp:open with O_CREAT
+src/core/DecoderHelper.cpp:malloc failed
+src/core/DecoderHelper.cpp:OpenProcess: error %1
+src/core/DecoderHelper.cpp:desktop: %1, input desktop: %2
+src/core/DecoderHelper.cpp:Seatbelt
+src/core/DecoderHelper.cpp:low integrity, job object
 src/platform/windows/WicDecoder.cpp:JPEG XR
 src/platform/windows/WicDecoder.cpp:Gray
 src/platform/windows/WicDecoder.cpp:Adobe RGB (1998)

@@ -41,10 +41,12 @@ struct Tr {
     Q_DECLARE_TR_FUNCTIONS(lf::TrashService)
 };
 
-// Collects the path of the item the Recycle Bin created.
+// Collects the path of the item the Recycle Bin created - or that there is none: the shell
+// deleted the file for good (it did not fit into the Recycle Bin, or the drive has none).
 class DeleteSink final : public IFileOperationProgressSink {
 public:
     QString recycled;
+    bool permanentlyDeleted = false;
     HRESULT result = S_OK;
 
     // IUnknown (stack object: no reference counting)
@@ -62,6 +64,8 @@ public:
     HRESULT STDMETHODCALLTYPE PostDeleteItem(DWORD, IShellItem*, HRESULT hr,
                                              IShellItem* newlyCreated) override {
         result = hr;
+        // "If the item was fully deleted, this value is NULL" (IFileOperationProgressSink).
+        permanentlyDeleted = SUCCEEDED(hr) && !newlyCreated;
         if (SUCCEEDED(hr) && newlyCreated) {
             LPWSTR name = nullptr;
             if (SUCCEEDED(newlyCreated->GetDisplayName(SIGDN_FILESYSPATH, &name)) && name) {
@@ -115,10 +119,13 @@ public:
         QString recycled;
         HRESULT hr = E_FAIL;
         bool removed = false;
+        bool permanentlyDeleted = false;
         win::runInSta([&] {
             ComPtr<IFileOperation> op;
             ComPtr<IShellItem> item;
             hr = CoCreateInstance(CLSID_FileOperation, nullptr, CLSCTX_ALL, IID_PPV_ARGS(&op));
+            // FOF_WANTNUKEWARNING: a file that cannot go to the Recycle Bin is never deleted
+            // without Windows asking first (it overrides FOF_NOCONFIRMATION for that case).
             if (SUCCEEDED(hr))
                 hr = op->SetOperationFlags(FOF_ALLOWUNDO | FOFX_RECYCLEONDELETE | FOF_NOCONFIRMATION |
                                            FOF_SILENT | FOF_NOERRORUI | FOF_WANTNUKEWARNING |
@@ -136,8 +143,17 @@ public:
             if (SUCCEEDED(hr) && FAILED(sink.result))
                 hr = sink.result;
             recycled = sink.recycled;
+            permanentlyDeleted = sink.permanentlyDeleted;
             removed = SUCCEEDED(hr);
         });
+        if (removed && permanentlyDeleted && !QFileInfo::exists(path)) {
+            // The user confirmed Windows' "delete permanently?" question: gone, nothing to undo.
+            // Reported as a failure so that no undo step is offered for it.
+            if (error)
+                *error = Tr::tr("„%1“ passte nicht in den Papierkorb und wurde endgültig gelöscht.")
+                             .arg(QFileInfo(path).fileName());
+            return std::nullopt;
+        }
         if (!removed || QFileInfo::exists(path)) {
             if (error)
                 *error = Tr::tr("„%1“ konnte nicht in den Papierkorb gelegt werden: %2")

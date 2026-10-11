@@ -678,6 +678,14 @@
         <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>„%1“ kann nicht direkt ausgeführt werden: es würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
+        <translation>„%1“ nelze spustit přímo: četl by názvy souborů jako příkazy. Spusťte místo toho program nebo skript PowerShellu (powershell -File Skript.ps1).</translation>
+    </message>
+    <message>
+        <source>PowerShell nur mit einem Skript: „powershell -File Skript.ps1“. Mit -Command (oder ohne -File) würde PowerShell Dateinamen als Befehle lesen.</source>
+        <translation>PowerShell pouze se skriptem: „powershell -File Skript.ps1“. S -Command (nebo bez -File) by PowerShell četl názvy souborů jako příkazy.</translation>
+    </message>
     <message numerus="yes">
         <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
         <translation>
@@ -4013,6 +4021,18 @@
         <translation>Nebyla nalezena žádná aplikace pro úpravy. Vyberte ji v Nastavení → Obecné → Editor.</translation>
     </message>
     <message>
+        <source>Programme (*.exe)</source>
+        <translation>Programy (*.exe)</translation>
+    </message>
+    <message>
+        <source>Programme (*.desktop);;Alle Dateien (*)</source>
+        <translation>Programy (*.desktop);;Všechny soubory (*)</translation>
+    </message>
+    <message>
+        <source>„%1“ ist kein Programm.</source>
+        <translation>„%1“ není program.</translation>
+    </message>
+    <message>
         <source>Kein Bild geöffnet</source>
         <translation>Není otevřen žádný obrázek</translation>
     </message>
@@ -5014,10 +5034,6 @@
         <translation>Vybrat editor</translation>
     </message>
     <message>
-        <source>Programme (*.app)</source>
-        <translation>Aplikace (*.app)</translation>
-    </message>
-    <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
         <translation>Přebírat řazení živě z okna Finderu</translation>
     </message>
@@ -5548,6 +5564,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>„%1“ würde den Dateinamen als Befehl lesen und wird aus Sicherheitsgründen nicht gestartet.</source>
+        <translation>„%1“ by četl název souboru jako příkaz a z bezpečnostních důvodů se nespustí.</translation>
+    </message>
+    <message>
         <source>Das Programm wurde nicht gefunden.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5662,6 +5682,10 @@
     <message>
         <source>„%1“ konnte nicht wiederhergestellt werden: %2</source>
         <translation>„%1“ nelze obnovit: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ passte nicht in den Papierkorb und wurde endgültig gelöscht.</source>
+        <translation>„%1“ se nevešel do koše a byl trvale smazán.</translation>
     </message>
 </context>
 <context>

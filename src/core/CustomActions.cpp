@@ -12,6 +12,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QProcess>
+#include <QStandardPaths>
 #include <QTimer>
 #include <QUuid>
 
@@ -114,11 +115,26 @@ QString validate(const CustomAction& a) {
     const QStringList argv = splitCommand(a.command);
     if (argv.isEmpty())
         return Tr::tr("Die Aktion braucht einen Befehl.");
-    if (cmdline::isBatchFile(argv.first()))
+    // The program as it will be started (PATH and PATHEXT applied: "tool" may be tool.bat).
+    const QString program = resolvedProgram(argv.first());
+    switch (cmdline::reparsesArguments(program, argv.mid(1))) {
+    case cmdline::Reparse::Batch:
         return Tr::tr(
             "Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen "
             "als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript "
             "(powershell -File Skript.ps1).");
+    case cmdline::Reparse::Shell:
+        return Tr::tr(
+                   "„%1“ kann nicht direkt ausgeführt werden: es würde Dateinamen als Befehle lesen. Starte "
+                   "stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).")
+            .arg(QFileInfo(program).fileName());
+    case cmdline::Reparse::PowerShellCommand:
+        return Tr::tr(
+            "PowerShell nur mit einem Skript: „powershell -File Skript.ps1“. Mit -Command (oder ohne "
+            "-File) würde PowerShell Dateinamen als Befehle lesen.");
+    case cmdline::Reparse::None:
+        break;
+    }
 #endif
     return {};
 }
@@ -166,6 +182,17 @@ QList<CustomAction> withConfirmationFrom(QList<CustomAction> imported, const QLi
     return imported;
 }
 
+QString resolvedProgram(const QString& program) {
+#ifdef Q_OS_WIN
+    if (QDir::isAbsolutePath(program) || program.contains(u'/') || program.contains(u'\\'))
+        return program;
+    const QString found = QStandardPaths::findExecutable(program);
+    return found.isEmpty() ? program : QDir::toNativeSeparators(found);
+#else
+    return program;
+#endif
+}
+
 QStringList splitCommand(const QString& command) {
 #ifdef Q_OS_WIN
     // The rules of CommandLineToArgvW, which programs apply to their own command line.
@@ -204,7 +231,7 @@ ProcessSpec processFor(const CustomAction& action, const QStringList& files, con
     // command line, core/CommandLine.h) - no cmd.exe in between.
     const QStringList argv = splitCommand(action.command);
     if (!argv.isEmpty()) {
-        spec.program = argv.first();
+        spec.program = resolvedProgram(argv.first()); // exactly the program validate() checked
         spec.arguments = argv.mid(1);
         for (const QString& f : files)
             spec.arguments << QDir::toNativeSeparators(f);

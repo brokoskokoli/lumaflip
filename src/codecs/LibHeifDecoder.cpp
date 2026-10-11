@@ -266,6 +266,13 @@ public:
         }
         heif_image_handle* src = thumb ? thumb.get() : h;
         const bool deep = heif_image_handle_get_luma_bits_per_pixel(h) > 8;
+        // The size the header announces (for grids: the whole composed image), checked before
+        // libheif allocates anything: RGBA, 8 bytes per pixel for deep images.
+        if (!codec::fitsLimits(heif_image_handle_get_width(src), heif_image_handle_get_height(src),
+                               deep ? 8 : 4)) {
+            codec::setError(error, DecoderRegistry::messageTooLarge());
+            return std::nullopt;
+        }
         const heif_chroma chroma = deep ? heif_chroma_interleaved_RRGGBBAA_LE : heif_chroma_interleaved_RGBA;
         heif_image* raw = nullptr;
         const heif_error err = heif_decode_image(src, &raw, heif_colorspace_RGB, chroma, nullptr);
@@ -307,11 +314,18 @@ public:
             for (int y = 0; y < hgt; ++y)
                 std::memcpy(out.scanLine(y), data + qsizetype(y) * stride, size_t(w) * 4);
         }
+        img.reset(); // libheif's copy is not needed any more
         bool hdrTransfer = false;
         QString profile;
         out.setColorSpace(colorSpaceOf(h, &hdrTransfer, &profile));
         if (hdrTransfer) {
-            // PQ/HLG: to linear float; finish() keeps the extended range when the request asks.
+            // PQ/HLG: to linear float (smaller first); finish() keeps the extended range when
+            // the request asks.
+            codec::prescale(out, req, 8);
+            if (!codec::fitsLimits(out.width(), out.height(), 16)) {
+                codec::setError(error, DecoderRegistry::messageTooLarge());
+                return std::nullopt;
+            }
             out.convertTo(QImage::Format_RGBA32FPx4);
             out.convertToColorSpace(
                 QColorSpace(QColorSpace::Primaries::DciP3D65, QColorSpace::TransferFunction::Linear));

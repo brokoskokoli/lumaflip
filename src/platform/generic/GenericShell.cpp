@@ -22,8 +22,9 @@
 
 #if LF_HAVE_QTDBUS
 #include <QDBusConnection>
-#include <QDBusConnectionInterface>
 #include <QDBusMessage>
+#include <QDBusPendingCall>
+#include <QDBusPendingCallWatcher>
 #endif
 
 namespace lf {
@@ -78,24 +79,31 @@ QStringList containerMimeTypes() {
             QStringLiteral("application/pdf")};
 }
 
+void openContainingFolder(const QString& path) {
+    QDesktopServices::openUrl(QUrl::fromLocalFile(QFileInfo(path).absolutePath()));
+}
+
 #if LF_HAVE_QTDBUS
-bool showItemsOverDbus(const QString& path) {
+// Entirely asynchronous - no blocking D-Bus round trip on the GUI thread (the bus starts an
+// activatable file manager by itself, which may take a moment): an error reply (no file
+// manager service, or it failed) opens the folder instead.
+void showItemsOverDbus(const QString& path) {
     QDBusConnection bus = QDBusConnection::sessionBus();
-    if (!bus.isConnected())
-        return false;
-    const QString service = QStringLiteral("org.freedesktop.FileManager1");
-    // Activatable services are started by the bus; only fail fast without any file manager.
-    QDBusConnectionInterface* iface = bus.interface();
-    if (iface && !iface->isServiceRegistered(service).value()) {
-        const QStringList activatable = iface->activatableServiceNames().value();
-        if (!activatable.contains(service))
-            return false;
+    if (!bus.isConnected()) {
+        openContainingFolder(path);
+        return;
     }
+    const QString service = QStringLiteral("org.freedesktop.FileManager1");
     QDBusMessage call = QDBusMessage::createMethodCall(
         service, QStringLiteral("/org/freedesktop/FileManager1"), service, QStringLiteral("ShowItems"));
     call << QStringList{QUrl::fromLocalFile(path).toString(QUrl::FullyEncoded)} << QString();
-    // Asynchronous: the file manager may take a moment to start; the UI must not wait.
-    return bus.send(call);
+    auto* watcher = new QDBusPendingCallWatcher(bus.asyncCall(call, 15000), QCoreApplication::instance());
+    QObject::connect(watcher, &QDBusPendingCallWatcher::finished, watcher,
+                     [path](QDBusPendingCallWatcher* w) {
+                         if (w->isError())
+                             openContainingFolder(path);
+                         w->deleteLater();
+                     });
 }
 #endif
 
@@ -143,11 +151,10 @@ class XdgShell final : public Shell {
 public:
     void revealInFileManager(const QString& path) override {
 #if LF_HAVE_QTDBUS
-        if (showItemsOverDbus(QFileInfo(path).absoluteFilePath()))
-            return;
+        showItemsOverDbus(QFileInfo(path).absoluteFilePath());
+#else
+        openContainingFolder(path); // no D-Bus: the containing folder
 #endif
-        // No file manager service: open the containing folder.
-        QDesktopServices::openUrl(QUrl::fromLocalFile(QFileInfo(path).absolutePath()));
     }
 
     void openWith(const QString& path, const QString& appPath) override {

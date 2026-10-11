@@ -262,9 +262,32 @@ TEST(WindowsPlatform, F_FILE_10_CustomActionArgumentsStayData) {
                                            QStringLiteral("C:\\Bilder\\x \" y.jpg")}));
     const QStringList argv = commandLineToArgv(cmdline::build(spec.program, spec.arguments));
     EXPECT_EQ(argv.mid(1), spec.arguments);
-    // Batch files would go through cmd.exe: refused.
+    // Batch files would go through cmd.exe: refused (also "run.bat." - Windows drops the dot).
     a.command = QStringLiteral("C:\\x\\run.cmd");
     EXPECT_FALSE(customactions::validate(a).isEmpty());
+    a.command = QStringLiteral("\"C:\\x\\run.bat.\"");
+    EXPECT_FALSE(customactions::validate(a).isEmpty());
+    // Review (ports): programs that read the appended file names as commands are refused,
+    // with a message that says what to do instead.
+    for (const char* c : {"cmd /c echo", "C:\\Windows\\System32\\cmd.exe /k", "powershell -Command Get-Item",
+                          "powershell.exe -NoProfile", "pwsh -c Write-Output", "wsl ls"}) {
+        a.command = QString::fromLatin1(c);
+        const QString problem = customactions::validate(a);
+        EXPECT_FALSE(problem.isEmpty()) << c;
+        EXPECT_TRUE(problem.contains(QLatin1String("-File"))) << problem.toStdString();
+    }
+    a.command = QStringLiteral("powershell.exe -NoProfile -File C:\\s\\x.ps1");
+    EXPECT_TRUE(customactions::validate(a).isEmpty());
+    {
+        // A bare name that PATH/PATHEXT resolve to a batch file.
+        QTemporaryDir bin;
+        ASSERT_TRUE(writeFile(bin.path() + QStringLiteral("/lftool.bat"), "@echo off\r\n"));
+        const QByteArray path = qgetenv("PATH");
+        qputenv("PATH", QFile::encodeName(QDir::toNativeSeparators(bin.path())) + ';' + path);
+        a.command = QStringLiteral("lftool --x");
+        EXPECT_FALSE(customactions::validate(a).isEmpty());
+        qputenv("PATH", path);
+    }
     a.kind = CustomAction::Kind::Shortcut;
     a.command = QStringLiteral("Kurzbefehl");
     EXPECT_FALSE(customactions::validate(a).isEmpty()) << "no Shortcuts app on Windows";
@@ -330,7 +353,12 @@ TEST(WindowsPlatform, F_FILE_10_CustomActionTimeoutEndsTheProgram) {
     CustomAction a;
     a.id = QStringLiteral("s");
     a.name = QStringLiteral("Warten");
-    a.command = QStringLiteral("powershell.exe -NoProfile -NonInteractive -Command Start-Sleep -Seconds 60");
+    QTemporaryDir dir;
+    const QString script = QDir::toNativeSeparators(dir.path() + QStringLiteral("/wait.ps1"));
+    ASSERT_TRUE(writeFile(script, "Start-Sleep -Seconds 60\r\n"));
+    a.command =
+        QStringLiteral("powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File \"%1\"")
+            .arg(script);
     QElapsedTimer t;
     t.start();
     const CustomActionRun::Result r = runAction(a, {}, 3000);

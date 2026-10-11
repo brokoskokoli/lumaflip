@@ -4,7 +4,12 @@
 //
 // - watch(folder): one inotify watch on the folder (reference counted).
 // - watchTree(root): a watch on every folder below `root` (symlinks are not followed);
-//   folders created or moved in later get their watches when the event arrives.
+//   folders created or moved in later get their watches when the event arrives. The tree
+//   is walked (and the watches added) on a worker thread - a large or slow (network) tree
+//   never blocks the GUI; events of folders whose watch arrives meanwhile are kept and
+//   handled once the walk is merged (isSettingUp() is true until then).
+// - Folders deleted or moved out of a tree lose their watches (inotify_rm_watch), so moving
+//   folders around does not use up the per-user watch limit.
 // - Events are classified like on macOS (MacFolderWatcher.mm): "*.xmp" files are reported
 //   as sidecarChanged(path), other hidden files are ignored, everything else counts as a
 //   change of its folder. Changes are coalesced per folder for a few milliseconds.
@@ -19,16 +24,23 @@
 #include <QDirIterator>
 #include <QFile>
 #include <QFileInfo>
+#include <QFutureWatcher>
 #include <QHash>
 #include <QLoggingCategory>
 #include <QSet>
 #include <QSocketNotifier>
 #include <QTimer>
+#include <QtConcurrent>
 
+#include <algorithm>
+#include <atomic>
 #include <cerrno>
 #include <cstring>
+#include <memory>
 #include <utility>
+#include <vector>
 
+#include <fcntl.h>
 #include <sys/inotify.h>
 #include <unistd.h>
 
@@ -50,6 +62,43 @@ bool isBelow(const QString& path, const QString& root) {
     return path == root || path.startsWith(root.endsWith(u'/') ? root : root + u'/');
 }
 
+struct Event {
+    int wd = -1;
+    uint32_t mask = 0;
+    QString name;
+};
+
+struct Walk {
+    std::vector<std::pair<int, QString>> watches; // (wd, folder)
+    bool limitReached = false;
+};
+
+// Worker thread: watches `root` and every non-hidden folder below it on the inotify instance
+// behind `fd` (a duplicate the walk owns and closes). Stops early when `alive` turns false.
+Walk walkTree(int fd, const QString& root, std::shared_ptr<std::atomic<bool>> alive) {
+    Walk w;
+    auto add = [&](const QString& p) {
+        const int wd = inotify_add_watch(fd, QFile::encodeName(p).constData(), kMask);
+        if (wd >= 0)
+            w.watches.emplace_back(wd, p);
+        else if (errno == ENOSPC)
+            w.limitReached = true;
+        return wd >= 0;
+    };
+    if (add(root)) {
+        QDirIterator it(root, QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::NoSymLinks,
+                        QDirIterator::Subdirectories);
+        while (it.hasNext() && *alive && !w.limitReached) {
+            const QString d = clean(it.next());
+            if (QFileInfo(d).fileName().startsWith(u'.'))
+                continue; // hidden folders are not part of the collection either
+            add(d);
+        }
+    }
+    close(fd);
+    return w;
+}
+
 class LinuxFolderWatcher final : public FolderWatcher {
 public:
     explicit LinuxFolderWatcher(QObject* parent) : FolderWatcher(parent) {
@@ -66,9 +115,12 @@ public:
     }
 
     ~LinuxFolderWatcher() override {
+        *m_alive = false; // running walks stop; they own a duplicate of the descriptor
         if (m_fd >= 0)
             close(m_fd);
     }
+
+    bool isSettingUp() const override { return m_pendingWalks > 0; }
 
     void watch(const QString& folderPath) override {
         const QString p = clean(folderPath);
@@ -149,31 +201,71 @@ private:
         const auto it = m_wdByPath.find(p);
         if (it == m_wdByPath.end())
             return;
-        inotify_rm_watch(m_fd, *it);
-        m_pathByWd.remove(*it);
+        const int wd = *it;
         m_wdByPath.erase(it);
+        m_pathByWd.remove(wd);
+        // The same folder can be known under two paths (one inode, one watch descriptor).
+        if (std::find(m_wdByPath.cbegin(), m_wdByPath.cend(), wd) == m_wdByPath.cend())
+            inotify_rm_watch(m_fd, wd);
+        else
+            m_pathByWd.insert(wd, m_wdByPath.key(wd));
     }
 
+    // Watches `root` and the folders below it on a worker thread (merged in mergeWalk()).
     void addTree(const QString& root) {
-        if (!addWatch(root))
+        if (m_fd < 0)
             return;
-        QDirIterator it(root, QDir::Dirs | QDir::NoDotAndDotDot | QDir::Hidden | QDir::NoSymLinks,
-                        QDirIterator::Subdirectories);
-        while (it.hasNext()) {
-            const QString d = clean(it.next());
-            if (QFileInfo(d).fileName().startsWith(u'.'))
-                continue; // hidden folders are not part of the collection either
-            addWatch(d);
+        const int fd = fcntl(m_fd, F_DUPFD_CLOEXEC, 0);
+        if (fd < 0) {
+            qCWarning(lcWatch) << "cannot watch" << root << strerror(errno);
+            return;
         }
+        ++m_pendingWalks;
+        auto* watcher = new QFutureWatcher<Walk>(this);
+        connect(watcher, &QFutureWatcher<Walk>::finished, this, [this, watcher] {
+            watcher->deleteLater();
+            mergeWalk(watcher->result());
+        });
+        watcher->setFuture(QtConcurrent::run(walkTree, fd, root, m_alive));
     }
 
+    void mergeWalk(const Walk& walk) {
+        --m_pendingWalks;
+        if (walk.limitReached && !m_warnedLimit) {
+            m_warnedLimit = true;
+            qCWarning(lcWatch) << "inotify watch limit reached (fs.inotify.max_user_watches): further "
+                                  "folders are not watched";
+        }
+        for (const auto& [wd, path] : walk.watches) {
+            if (coveredByTree(path) || m_plainRefs.contains(path)) {
+                if (const auto old = m_wdByPath.constFind(path); old != m_wdByPath.cend() && *old != wd)
+                    m_pathByWd.remove(*old);
+                m_wdByPath.insert(path, wd);
+                m_pathByWd.insert(wd, path);
+            } else if (!m_pathByWd.contains(wd)) {
+                inotify_rm_watch(m_fd, wd); // the tree was given up while it was walked
+            }
+        }
+        // Events that arrived for folders of this walk before it was merged.
+        std::vector<Event> held = std::exchange(m_held, {});
+        for (Event& e : held)
+            handle(e);
+        if (m_pendingWalks == 0)
+            m_held.clear(); // nothing will claim the rest
+        flushSoon();
+    }
+
+    // A folder deleted or moved away: its watches (and those below it) are removed.
     void forgetBelow(const QString& p) {
         const QStringList watched = m_wdByPath.keys();
         for (const QString& w : watched)
-            if (isBelow(w, p)) {
-                m_pathByWd.remove(m_wdByPath.value(w));
-                m_wdByPath.remove(w);
-            }
+            if (isBelow(w, p))
+                removeWatch(w);
+    }
+
+    void flushSoon() {
+        if (!m_pendingFolders.isEmpty() || !m_pendingSidecars.isEmpty() || !m_pendingRescans.isEmpty())
+            m_flush.start();
     }
 
     void readEvents() {
@@ -184,15 +276,14 @@ private:
                 break;
             for (ssize_t off = 0; off < n;) {
                 const auto* ev = reinterpret_cast<const inotify_event*>(buf + off);
-                handle(*ev);
+                handle(Event{ev->wd, ev->mask, ev->len > 0 ? QFile::decodeName(ev->name) : QString()});
                 off += ssize_t(sizeof(inotify_event) + ev->len);
             }
         }
-        if (!m_pendingFolders.isEmpty() || !m_pendingSidecars.isEmpty() || !m_pendingRescans.isEmpty())
-            m_flush.start();
+        flushSoon();
     }
 
-    void handle(const inotify_event& ev) {
+    void handle(const Event& ev) {
         if (ev.mask & IN_Q_OVERFLOW) {
             for (auto it = m_treeRefs.cbegin(); it != m_treeRefs.cend(); ++it)
                 m_pendingRescans.insert(it.key());
@@ -201,8 +292,12 @@ private:
             return;
         }
         const auto wit = m_pathByWd.constFind(ev.wd);
-        if (wit == m_pathByWd.cend())
+        if (wit == m_pathByWd.cend()) {
+            // Possibly a folder of a walk that is not merged yet (bounded, see mergeWalk()).
+            if (m_pendingWalks > 0 && m_held.size() < 100000)
+                m_held.push_back(ev);
             return;
+        }
         const QString dir = *wit;
         if (ev.mask & IN_IGNORED) {
             m_wdByPath.remove(dir);
@@ -213,7 +308,7 @@ private:
             m_pendingFolders.insert(dir);
             return;
         }
-        const QString name = ev.len > 0 ? QFile::decodeName(ev.name) : QString();
+        const QString& name = ev.name;
         if (name.isEmpty()) {
             m_pendingFolders.insert(dir);
             return;
@@ -260,6 +355,9 @@ private:
     }
 
     int m_fd = -1;
+    std::shared_ptr<std::atomic<bool>> m_alive = std::make_shared<std::atomic<bool>>(true);
+    int m_pendingWalks = 0;
+    std::vector<Event> m_held;
     QSocketNotifier* m_notifier = nullptr;
     QTimer m_flush;
     bool m_warnedLimit = false;

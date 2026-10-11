@@ -32,7 +32,23 @@ QString build(const QString& program, const QStringList& arguments);
 QStringList splitArguments(const QString& commandLine);
 
 // Programs that CreateProcess would run through cmd.exe (batch files): refused for
-// arguments that come from file names (cmd parses them differently, see above).
+// arguments that come from file names (cmd parses them differently, see above). Windows
+// ignores trailing dots and spaces and a "::$DATA" stream suffix: "x.bat." and "x.cmd " are
+// batch files as well.
 bool isBatchFile(const QString& program);
+
+// Programs that would read file names in their arguments as commands:
+//   Batch - a batch file (cmd.exe runs it);
+//   Shell - cmd.exe itself, conhost.exe, and wsl.exe/bash.exe (they hand their command line to
+//           a shell);
+//   PowerShellCommand - powershell/pwsh without "-File <script>" before any other argument
+//           (-Command, -EncodedCommand, -CommandWithArgs or a bare first argument make
+//           PowerShell parse its arguments as script text).
+// `arguments` are the program's own arguments (before the appended file names).
+enum class Reparse { None, Batch, Shell, PowerShellCommand };
+Reparse reparsesArguments(const QString& program, const QStringList& arguments);
+// The file name of `program` as Windows resolves it: lower case, without folders, a stream
+// suffix or trailing dots/spaces ("C:\Tools\Run.BAT. " -> "run.bat").
+QString effectiveFileName(const QString& program);
 
 } // namespace lf::cmdline

@@ -33,7 +33,6 @@ namespace lf {
 namespace {
 
 constexpr qint64 kMaxFileBytes = qint64(2) << 30;
-constexpr qint64 kMaxPixels = qint64(1) << 28;
 
 struct DecoderDeleter {
     void operator()(JxlDecoder* d) const { JxlDecoderDestroy(d); }
@@ -89,6 +88,9 @@ QColorSpace fromEncoding(const JxlColorEncoding& e, bool* hdr) {
 struct Result {
     JxlBasicInfo basic{};
     QImage image;
+    // From JXL_DEC_COLOR_ENCODING, which comes before the pixel buffer exists: applied to the
+    // image once it is allocated (a null QImage keeps no color space).
+    QColorSpace colorSpace;
     QString profileName;
     bool hdrTransfer = false;
 };
@@ -124,9 +126,11 @@ std::optional<Result> run(const QByteArray& data, bool pixels, QString* error) {
                 codec::setError(error, DecoderRegistry::messageDamaged());
                 return std::nullopt;
             }
-            if (r.basic.xsize == 0 || r.basic.ysize == 0 ||
-                qint64(r.basic.xsize) * r.basic.ysize > kMaxPixels) {
-                codec::setError(error, DecoderRegistry::messageTooLarge());
+            // The largest buffer below: 8 bytes per pixel (16-bit or half float RGBA).
+            if (!codec::fitsLimits(r.basic.xsize, r.basic.ysize, 8)) {
+                codec::setError(error, r.basic.xsize == 0 || r.basic.ysize == 0
+                                           ? DecoderRegistry::messageDamaged()
+                                           : DecoderRegistry::messageTooLarge());
                 return std::nullopt;
             }
             if (!pixels)
@@ -137,7 +141,7 @@ std::optional<Result> run(const QByteArray& data, bool pixels, QString* error) {
                     runner.get(), JxlResizableParallelRunnerSuggestThreads(r.basic.xsize, r.basic.ysize));
 #endif
             if (r.basic.exponent_bits_per_sample > 0)
-                format.data_type = JXL_TYPE_FLOAT;
+                format.data_type = JXL_TYPE_FLOAT16; // half the memory of float, enough range
             else if (r.basic.bits_per_sample > 8)
                 format.data_type = JXL_TYPE_UINT16;
             break;
@@ -165,11 +169,11 @@ std::optional<Result> run(const QByteArray& data, bool pixels, QString* error) {
                     }
                 }
             }
-            r.image.setColorSpace(cs.isValid() ? cs : QColorSpace(QColorSpace::SRgb));
+            r.colorSpace = cs.isValid() ? cs : QColorSpace(QColorSpace::SRgb);
             break;
         }
         case JXL_DEC_NEED_IMAGE_OUT_BUFFER: {
-            const QImage::Format qf = format.data_type == JXL_TYPE_FLOAT    ? QImage::Format_RGBA32FPx4
+            const QImage::Format qf = format.data_type == JXL_TYPE_FLOAT16  ? QImage::Format_RGBA16FPx4
                                       : format.data_type == JXL_TYPE_UINT16 ? QImage::Format_RGBA64
                                                                             : QImage::Format_RGBA8888;
             size_t need = 0;
@@ -181,14 +185,13 @@ std::optional<Result> run(const QByteArray& data, bool pixels, QString* error) {
             const bool swap = r.basic.orientation >= JXL_ORIENT_TRANSPOSE;
             const int w = int(swap ? r.basic.ysize : r.basic.xsize),
                       h = int(swap ? r.basic.xsize : r.basic.ysize);
-            const QColorSpace cs = r.image.colorSpace();
             r.image = QImage(w, h, qf);
             if (r.image.isNull() || size_t(r.image.sizeInBytes()) < need ||
                 size_t(r.image.bytesPerLine()) * size_t(h) != need) {
                 codec::setError(error, DecoderRegistry::messageTooLarge());
                 return std::nullopt;
             }
-            r.image.setColorSpace(cs);
+            r.image.setColorSpace(r.colorSpace.isValid() ? r.colorSpace : QColorSpace(QColorSpace::SRgb));
             if (JxlDecoderSetImageOutBuffer(dec.get(), &format, r.image.bits(), need) != JXL_DEC_SUCCESS) {
                 codec::setError(error, DecoderRegistry::messageDamaged());
                 return std::nullopt;
@@ -281,12 +284,19 @@ public:
         if (!r)
             return std::nullopt;
         QImage img = std::move(r->image);
+        r->image = QImage();
+        const QSize full = img.size();
         if (r->hdrTransfer) {
+            // PQ/HLG: to linear float (smaller first, finish() keeps the extended range).
+            codec::prescale(img, req, 8);
+            if (!codec::fitsLimits(img.width(), img.height(), 16)) {
+                codec::setError(error, DecoderRegistry::messageTooLarge());
+                return std::nullopt;
+            }
             img.convertTo(QImage::Format_RGBA32FPx4);
             img.convertToColorSpace(
                 QColorSpace(QColorSpace::Primaries::DciP3D65, QColorSpace::TransferFunction::Linear));
         }
-        const QSize full = img.size();
         return codec::finish(std::move(img), full, req, error);
     }
 

@@ -9,6 +9,7 @@
 
 #include <QDir>
 #include <QFile>
+#include <QProcess>
 #include <QTemporaryDir>
 #include <QTextStream>
 
@@ -116,6 +117,43 @@ TEST(XdgDesktop, F_FILE_05_ExecFieldCodesAndQuoting) {
     EXPECT_EQ(xdg::expandExec(e, {}), (QStringList{"sh", "-c", "echo \"$HOME\""}));
     e.exec = QStringLiteral("app \"unterminated");
     EXPECT_TRUE(xdg::expandExec(e, files).isEmpty());
+}
+
+// Review (ports): field codes inside a quoted argument (against the spec, but common in
+// "sh -c" entries) are inserted shell-quoted, so the shell never runs parts of a file name.
+TEST(XdgDesktop, F_FILE_05_FieldCodesInQuotedArgumentsAreShellQuoted) {
+    xdg::DesktopEntry e;
+    e.name = QStringLiteral("It's");
+    e.path = QStringLiteral("/usr/share/applications/x.desktop");
+    const QString evil = QStringLiteral("/tmp/a'; touch /tmp/pwned; echo '.jpg");
+    e.exec = QStringLiteral("sh -c \"viewer %f\"");
+    const QStringList argv = xdg::expandExec(e, {evil});
+    ASSERT_EQ(argv.size(), 3);
+    EXPECT_EQ(argv[2], QStringLiteral("viewer '/tmp/a'\\''; touch /tmp/pwned; echo '\\''.jpg'"));
+    // %F inside quotes: every file as its own quoted word.
+    e.exec = QStringLiteral("sh -c \"viewer %F\"");
+    EXPECT_EQ(xdg::expandExec(e, {QStringLiteral("/t/a b.jpg"), QStringLiteral("/t/c.jpg")}).last(),
+              QStringLiteral("viewer '/t/a b.jpg' '/t/c.jpg'"));
+    e.exec = QStringLiteral("app \"--title=%c\" %f");
+    EXPECT_EQ(xdg::expandExec(e, {QStringLiteral("/t/x.jpg")}),
+              (QStringList{"app", "--title='It'\\''s'", "/t/x.jpg"}));
+    // Unquoted codes stay plain arguments (no shell involved).
+    e.exec = QStringLiteral("app %f");
+    EXPECT_EQ(xdg::expandExec(e, {evil}), (QStringList{"app", evil}));
+#ifdef Q_OS_LINUX
+    // End to end: /bin/sh gets the quoted word and runs nothing from the name.
+    QTemporaryDir dir;
+    const QString marker = dir.filePath(QStringLiteral("pwned"));
+    const QString name = dir.filePath(QStringLiteral("a'; touch ") + marker + QStringLiteral("; echo '.jpg"));
+    e.exec = QStringLiteral("sh -c \"test -n %f\"");
+    const QStringList run = xdg::expandExec(e, {name});
+    ASSERT_EQ(run.size(), 3);
+    QProcess p;
+    p.start(run[0], run.mid(1));
+    ASSERT_TRUE(p.waitForFinished(10000));
+    EXPECT_EQ(p.exitCode(), 0);
+    EXPECT_FALSE(QFile::exists(marker));
+#endif
 }
 
 TEST(XdgDesktop, F_FILE_05_ApplicationsForMimeTypeDefaultFirst) {

@@ -81,9 +81,7 @@ QWidget* createEditorChooser(QWidget* parent) {
             refresh();
     });
     QObject::connect(choose, &QPushButton::clicked, row, [row] {
-        const QString app =
-            QFileDialog::getOpenFileName(row->window(), Tr::tr("Editor wählen"),
-                                         QStringLiteral("/Applications"), Tr::tr("Programme (*.app)"));
+        const QString app = chooseProgram(row->window(), Tr::tr("Editor wählen"));
         if (app.isEmpty())
             return;
         QString error;

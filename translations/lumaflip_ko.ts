@@ -664,6 +664,14 @@
         <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>„%1“ kann nicht direkt ausgeführt werden: es würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
+        <translation>‘%1’을(를) 직접 실행할 수 없습니다. 파일 이름을 명령으로 읽게 됩니다. 대신 프로그램이나 PowerShell 스크립트(powershell -File Script.ps1)를 실행하십시오.</translation>
+    </message>
+    <message>
+        <source>PowerShell nur mit einem Skript: „powershell -File Skript.ps1“. Mit -Command (oder ohne -File) würde PowerShell Dateinamen als Befehle lesen.</source>
+        <translation>PowerShell은 스크립트와 함께만 사용할 수 있습니다: ‘powershell -File Script.ps1’. -Command를 사용하거나 -File이 없으면 PowerShell이 파일 이름을 명령으로 읽게 됩니다.</translation>
+    </message>
     <message numerus="yes">
         <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
         <translation>
@@ -3983,6 +3991,18 @@
         <translation>편집할 앱을 찾을 수 없습니다. 설정 → 일반 → 편집기에서 앱을 선택하세요.</translation>
     </message>
     <message>
+        <source>Programme (*.exe)</source>
+        <translation>프로그램 (*.exe)</translation>
+    </message>
+    <message>
+        <source>Programme (*.desktop);;Alle Dateien (*)</source>
+        <translation>프로그램 (*.desktop);;모든 파일 (*)</translation>
+    </message>
+    <message>
+        <source>„%1“ ist kein Programm.</source>
+        <translation>‘%1’은(는) 프로그램이 아닙니다.</translation>
+    </message>
+    <message>
         <source>Kein Bild geöffnet</source>
         <translation>열린 이미지 없음</translation>
     </message>
@@ -4972,10 +4992,6 @@
         <translation>편집기 선택</translation>
     </message>
     <message>
-        <source>Programme (*.app)</source>
-        <translation>앱(*.app)</translation>
-    </message>
-    <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
         <translation>Finder 윈도우의 정렬을 실시간으로 사용</translation>
     </message>
@@ -5502,6 +5518,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>„%1“ würde den Dateinamen als Befehl lesen und wird aus Sicherheitsgründen nicht gestartet.</source>
+        <translation>‘%1’은(는) 파일 이름을 명령으로 읽으므로 보안상의 이유로 실행되지 않습니다.</translation>
+    </message>
+    <message>
         <source>Das Programm wurde nicht gefunden.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5616,6 +5636,10 @@
     <message>
         <source>„%1“ konnte nicht wiederhergestellt werden: %2</source>
         <translation>‘%1’을(를) 복원할 수 없습니다: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ passte nicht in den Papierkorb und wurde endgültig gelöscht.</source>
+        <translation>‘%1’이(가) 휴지통에 들어가지 않아 영구적으로 삭제되었습니다.</translation>
     </message>
 </context>
 <context>

@@ -24,6 +24,9 @@ public:
     virtual ~WallpaperService() = default;
     virtual QList<WallpaperScreen> screens() const = 0;
     virtual bool setDesktopImage(const QString& screenId, const QString& imagePath, QString* error) = 0;
+    // True if screens()/setDesktopImage() may run on a worker thread (they start external
+    // tools and wait for them, Linux): the window then applies the picture in the background.
+    virtual bool runsOnWorkerThread() const { return false; }
 };
 
 namespace wallpaper {

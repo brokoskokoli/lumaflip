@@ -24,6 +24,15 @@
 // failure path; neither a helper killed mid-decode nor an app that quits or crashes during
 // a decode leaves a segment behind.
 //
+// Linux: no named object at all (the helper's seccomp filter forbids opening anything for
+// writing, LinuxSandbox.h). Steps 2-4 become:
+//   2. The app sends Deliver without a name.
+//   3. The helper copies the pixels into a memfd of its own, seals it (no writes, no
+//      resizing: F_SEAL_WRITE | F_SEAL_SHRINK | F_SEAL_GROW | F_SEAL_SEAL) and answers with
+//      its descriptor number (Response::pixelFd); it closes it with the next request.
+//   4. The app opens /proc/<helper pid>/fd/<n> read-only (its own child), checks the seals
+//      and the size and maps it privately (mapHelperImage).
+//
 // All functions are thread-safe (no shared state).
 
 #include "Archive.h"
@@ -37,7 +46,8 @@
 
 namespace lf::ipc {
 
-inline constexpr quint32 kProtocolVersion = 5; // 3: archives, 4: ArchiveReadRun (F-OPEN-10), 5: loop count
+// 3: archive operations, 4: ArchiveReadRun (F-OPEN-10), 5: loop count, 6: pixelFd, sandboxDetails
+inline constexpr quint32 kProtocolVersion = 6;
 // Upper bound of one frame (metadata, ICC profiles, error texts - never pixels).
 inline constexpr quint32 kMaxFrameBytes = 64u * 1024 * 1024;
 
@@ -62,6 +72,15 @@ enum class Op : quint8 {
     TestMachLookup = 104, // look up the Mach service named `path`
     TestCreateShm = 105,  // create the shared memory object named `path`
     TestExec = 106,       // start the program `path`
+    TestSignal = 107,     // send signal 0 to the process `path` (a pid): kill() and tgkill()
+    TestPidfd = 108,      // pidfd_open(`path`), pidfd_getfd, pidfd_send_signal (Linux)
+    TestModifyFile = 109, // rename, unlink, chmod, truncate, link, symlink, mkdir at `path`
+    TestTerminal = 110,   // ioctl(TIOCSTI) on stdin (Linux; ok = the filter let it through)
+    TestAllocate = 111,   // allocate and touch `path` MB of memory
+    // Not denied, a report (ok = true): Response::error lists the open descriptors
+    // ("<fd> -> <target>" per line; Linux) or the helper's desktop (Windows).
+    TestListDescriptors = 120,
+    TestDesktop = 121,
 };
 
 struct Request {
@@ -90,12 +109,15 @@ struct Response {
     QString error; // German, user facing (backend text), when !ok
     // Ping
     bool sandboxed = false;
+    QString sandboxDetails; // e.g. "seccomp on, Landlock ABI 4" (logs, tests)
     qint64 pid = 0;
     // Info
     ImageInfo info;
     // Decode (DecodedImage without the QImage)
     DecodedImage decoded;
     PixelHeader pixels;
+    // Deliver (Linux): the helper's descriptor number of the sealed memfd with the pixels
+    qint32 pixelFd = -1;
     // Metadata
     Metadata metadata;
     // ArchiveList / ArchiveRead / ArchiveReadRun (F-OPEN-10); at most archive::kMaxMembers members and
@@ -149,6 +171,15 @@ int createShared(const QByteArray& name, qint64 size, QString* error);
 // App side: maps the object behind `fd` (from createShared, closed here in any case) and
 // wraps it in a QImage that unmaps when released. Validates the header and the size.
 QImage mapSharedImage(int fd, const PixelHeader& header, QString* error);
+#ifdef Q_OS_LINUX
+// Helper side (Linux): a sealed memfd with the image's bytes (F_SEAL_WRITE, _SHRINK, _GROW,
+// _SEAL). Returns the descriptor (the caller closes it) or -1.
+int createSealedImage(const QImage& image, QString* error);
+// App side (Linux): opens descriptor `fd` of the process `pid` (/proc/<pid>/fd/<fd>, read
+// only), requires a sealed memfd at least header.shmSize bytes large and maps it privately
+// (copy on write) into a QImage. Validates the header like mapSharedImage().
+QImage mapHelperImage(qint64 pid, int fd, const PixelHeader& header, QString* error);
+#endif
 // Removes the name if it exists (cleanup after a failed request). True if it existed.
 bool unlinkShared(const QByteArray& name);
 bool sharedExists(const QByteArray& name); // tests

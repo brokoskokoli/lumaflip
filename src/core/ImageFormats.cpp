@@ -5,7 +5,10 @@
 #include "Platform.h"
 
 #include <QSet>
+
 #include <algorithm>
+#include <atomic>
+#include <utility>
 
 namespace lf {
 namespace {
@@ -44,46 +47,46 @@ const StaticTables& staticTables() {
     return t;
 }
 
-#ifdef Q_OS_DARWIN
 // Rendered by some backend (Qt's PDF plugin) but documents, not images to flip through.
 constexpr const char* kExcluded[] = {"pdf", "ps", "eps", "ai"};
 
-void removeExcluded(QSet<QString>& set) {
+// Other names of the same file types: a backend that reads the first one reads them as well
+// (the decoders recognize the files by their content).
+constexpr std::pair<const char*, const char*> kAliases[] = {
+    {"jpg", "jpeg"}, {"jpg", "jpe"},  {"jpg", "jfif"}, {"jpeg", "jpg"},  {"png", "apng"},
+    {"bmp", "dib"},  {"tif", "tiff"}, {"tiff", "tif"}, {"heic", "heif"}, {"heif", "heic"},
+    {"jxr", "wdp"},  {"jxr", "hdp"},  {"wdp", "jxr"},  {"wdp", "hdp"}, // JPEG XR (Windows)
+};
+
+QSet<QString> finished(const QStringList& extensions) {
+    QSet<QString> out;
+    for (const QString& e : extensions)
+        out.insert(e.toLower());
+    for (const auto& [have, alias] : kAliases)
+        if (out.contains(QLatin1String(have)))
+            out.insert(QString::fromLatin1(alias));
     for (const char* s : kExcluded)
-        set.remove(QString::fromLatin1(s));
+        out.remove(QString::fromLatin1(s));
+    return out;
 }
 
-// Suffixes of the platform backend alone (ImageIO, a few ms). Answers the common case
+// Suffixes of the platform backend alone (ImageIO, WIC: a few ms). Answers the common case
 // without building the whole registry, whose Qt image plugins are slow to load (P-01).
 const QSet<QString>& platformSuffixes() {
     static const QSet<QString> set = [] {
         DecoderRegistry platform;
         registerPlatformDecoders(platform);
-        QSet<QString> out;
-        for (const QString& e : platform.supportedExtensions())
-            out.insert(e.toLower());
-        removeExcluded(out);
-        return out;
+        return finished(platform.supportedExtensions());
     }();
     return set;
 }
-#endif
 
-// Everything a registered backend can decode.
+// Everything a registered backend can decode - on every platform derived from the backends
+// that are really there (ImageIO/WIC with their installed codecs, Qt image plugins, the own
+// decoders, libheif/libjxl/LibRaw/OpenEXR when built in), so suffixes nobody can decode
+// (e.g. hdr, jp2 or dcm outside macOS) are not listed and produce no error cards.
 const QSet<QString>& allSuffixes() {
-    static const QSet<QString> set = [] {
-#ifdef Q_OS_DARWIN
-        // Only what a registered backend can decode (the registry's extension set is
-        // built from the backends alone on macOS).
-        QSet<QString> out;
-        for (const QString& e : DecoderRegistry::instance().supportedExtensions())
-            out.insert(e.toLower());
-        removeExcluded(out);
-        return out;
-#else
-        return staticTables().defaults;
-#endif
-    }();
+    static const QSet<QString> set = finished(DecoderRegistry::instance().supportedExtensions());
     return set;
 }
 
@@ -93,13 +96,19 @@ QStringList sorted(const QSet<QString>& set) {
     return l;
 }
 
+std::atomic<bool> g_staticForTesting{false};
+
 } // namespace
 
+void setStaticImageSuffixesForTesting(bool on) {
+    g_staticForTesting = on;
+}
+
 bool isImageSuffix(const QString& lowerSuffix) {
-#ifdef Q_OS_DARWIN
+    if (g_staticForTesting)
+        return staticTables().defaults.contains(lowerSuffix);
     if (platformSuffixes().contains(lowerSuffix))
         return true;
-#endif
     return allSuffixes().contains(lowerSuffix);
 }
 
@@ -117,7 +126,7 @@ bool hasImageSuffix(const QString& fileName) {
 }
 
 QStringList imageSuffixes() {
-    return sorted(allSuffixes());
+    return sorted(g_staticForTesting ? staticTables().defaults : allSuffixes());
 }
 
 QStringList defaultImageSuffixes() {

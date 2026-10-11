@@ -664,6 +664,14 @@
         <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>„%1“ kann nicht direkt ausgeführt werden: es würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
+        <translation>「%1」は直接実行できません。ファイル名をコマンドとして読み取ってしまうためです。代わりにプログラムまたは PowerShell スクリプト（powershell -File Script.ps1）を実行してください。</translation>
+    </message>
+    <message>
+        <source>PowerShell nur mit einem Skript: „powershell -File Skript.ps1“. Mit -Command (oder ohne -File) würde PowerShell Dateinamen als Befehle lesen.</source>
+        <translation>PowerShell はスクリプトでのみ使用できます:「powershell -File Script.ps1」。-Command を使う場合（または -File がない場合）、PowerShell はファイル名をコマンドとして読み取ってしまいます。</translation>
+    </message>
     <message numerus="yes">
         <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
         <translation>
@@ -3983,6 +3991,18 @@
         <translation>編集用のアプリが見つかりません。「設定」→「一般」→「エディタ」で選択してください。</translation>
     </message>
     <message>
+        <source>Programme (*.exe)</source>
+        <translation>プログラム (*.exe)</translation>
+    </message>
+    <message>
+        <source>Programme (*.desktop);;Alle Dateien (*)</source>
+        <translation>プログラム (*.desktop);;すべてのファイル (*)</translation>
+    </message>
+    <message>
+        <source>„%1“ ist kein Programm.</source>
+        <translation>「%1」はプログラムではありません。</translation>
+    </message>
+    <message>
         <source>Kein Bild geöffnet</source>
         <translation>画像が開かれていません</translation>
     </message>
@@ -4972,10 +4992,6 @@
         <translation>エディタを選択</translation>
     </message>
     <message>
-        <source>Programme (*.app)</source>
-        <translation>アプリケーション (*.app)</translation>
-    </message>
-    <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
         <translation>Finderウインドウから並べ替えをライブで取得</translation>
     </message>
@@ -5502,6 +5518,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>„%1“ würde den Dateinamen als Befehl lesen und wird aus Sicherheitsgründen nicht gestartet.</source>
+        <translation>「%1」はファイル名をコマンドとして読み取るため、セキュリティ上の理由で起動されません。</translation>
+    </message>
+    <message>
         <source>Das Programm wurde nicht gefunden.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5616,6 +5636,10 @@
     <message>
         <source>„%1“ konnte nicht wiederhergestellt werden: %2</source>
         <translation>「%1」を元に戻せませんでした: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ passte nicht in den Papierkorb und wurde endgültig gelöscht.</source>
+        <translation>「%1」はゴミ箱に入らなかったため、完全に削除されました。</translation>
     </message>
 </context>
 <context>

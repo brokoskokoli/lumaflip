@@ -30,6 +30,8 @@
 #endif
 
 int main(int argc, char** argv) {
+    // Before anything opens a file: only stdin/stdout/stderr stay open, memory limit (Linux).
+    lf::prepareDecoderHelperProcess();
 #ifdef Q_OS_UNIX
     // The app may vanish at any time: a write to its pipe must fail, not kill the helper.
     std::signal(SIGPIPE, SIG_IGN);

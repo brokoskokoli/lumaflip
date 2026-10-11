@@ -2,7 +2,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Builds Lumaflip-<version>-x86_64.AppImage from a configured and built Linux build tree
 # (docs/LINUX.md). Used by the "Linux app" CI job; runs on any x86_64 Linux with the build
-# dependencies installed. Downloads linuxdeploy + its Qt plugin (pinned by SHA-256).
+# dependencies installed. Downloads linuxdeploy + its Qt plugin and the AppImage runtime
+# (all pinned by SHA-256; without LDAI_RUNTIME_FILE appimagetool would fetch the newest
+# runtime itself).
 #
 #   tools/linux_appimage.sh <build dir> [output dir]
 #
@@ -30,6 +32,8 @@ LINUXDEPLOY_URL="https://github.com/linuxdeploy/linuxdeploy/releases/download/1-
 LINUXDEPLOY_SHA="c20cd71e3a4e3b80c3483cef793cda3f4e990aca14014d23c544ca3ce1270b4d"
 PLUGIN_QT_URL="https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/1-alpha-20250213-1/linuxdeploy-plugin-qt-x86_64.AppImage"
 PLUGIN_QT_SHA="15106be885c1c48a021198e7e1e9a48ce9d02a86dd0a1848f00bdbf3c1c92724"
+RUNTIME_URL="https://github.com/AppImage/type2-runtime/releases/download/20251108/runtime-x86_64"
+RUNTIME_SHA="2fca8b443c92510f1483a883f60061ad09b46b978b2631c807cd873a47ec260d"
 
 fetch() { # url sha dest
   if [[ -f "$3" ]] && echo "$2  $3" | sha256sum -c --status; then return; fi
@@ -41,6 +45,8 @@ fetch() { # url sha dest
 mkdir -p "$TOOLS"
 fetch "$LINUXDEPLOY_URL" "$LINUXDEPLOY_SHA" "$TOOLS/linuxdeploy-x86_64.AppImage"
 fetch "$PLUGIN_QT_URL" "$PLUGIN_QT_SHA" "$TOOLS/linuxdeploy-plugin-qt-x86_64.AppImage"
+fetch "$RUNTIME_URL" "$RUNTIME_SHA" "$TOOLS/runtime-x86_64"
+export LDAI_RUNTIME_FILE="$TOOLS/runtime-x86_64"
 export PATH="$TOOLS:$PATH"
 # No FUSE needed (CI runners and containers).
 export APPIMAGE_EXTRACT_AND_RUN=1

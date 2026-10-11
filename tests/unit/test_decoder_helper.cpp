@@ -40,6 +40,7 @@
 #include "platform/windows/WinDecoderSandbox.h"
 #endif
 #ifdef Q_OS_LINUX
+#include <sys/mman.h>
 #include <sys/syscall.h>
 #endif
 #ifdef Q_OS_DARWIN
@@ -205,6 +206,43 @@ TEST(DecoderIpc, SharedMemoryRoundTripAndCleanup) {
     // Only names with the helper's prefix are opened.
     EXPECT_FALSE(ipc::fillSharedImage("/other.name", img, &error));
 }
+
+#ifdef Q_OS_LINUX
+// Linux pixel transfer (DecoderIpc.h): the helper's sealed memfd is opened by the app through
+// /proc and mapped privately; an unsealed object or one smaller than the header is refused.
+TEST(DecoderIpc, SealedMemfdRoundTrip) {
+    QImage img(21, 13, QImage::Format_RGBA8888_Premultiplied);
+    for (int y = 0; y < img.height(); ++y)
+        for (int x = 0; x < img.width(); ++x)
+            img.setPixelColor(x, y, QColor(x * 11, y * 17, 42, 255));
+    img.setColorSpace(QColorSpace(QColorSpace::DisplayP3));
+    const ipc::PixelHeader h = ipc::describeImage(img);
+    QString error;
+    const int fd = ipc::createSealedImage(img, &error);
+    ASSERT_GE(fd, 0) << error.toStdString();
+    EXPECT_EQ(write(fd, "x", 1), -1) << "sealed against writes";
+    QImage back = ipc::mapHelperImage(getpid(), fd, h, &error);
+    ASSERT_FALSE(back.isNull()) << error.toStdString();
+    EXPECT_EQ(back.colorSpace(), img.colorSpace());
+    for (int y = 0; y < img.height(); ++y)
+        EXPECT_EQ(QByteArray(reinterpret_cast<const char*>(back.constScanLine(y)), img.width() * 4),
+                  QByteArray(reinterpret_cast<const char*>(img.constScanLine(y)), img.width() * 4));
+    back.setPixelColor(0, 0, Qt::black); // private copy: allowed, the memfd stays as it was
+    // A header larger than the object is refused.
+    ipc::PixelHeader bigger = h;
+    bigger.height = 1000;
+    bigger.shmSize = bigger.bytesPerLine * bigger.height;
+    EXPECT_TRUE(ipc::mapHelperImage(getpid(), fd, bigger, &error).isNull());
+    close(fd);
+    // An unsealed memfd (the helper could still change or shrink it) is refused.
+    const int plain = memfd_create("plain", MFD_CLOEXEC);
+    ASSERT_GE(plain, 0);
+    ASSERT_EQ(ftruncate(plain, off_t(h.shmSize)), 0);
+    EXPECT_TRUE(ipc::mapHelperImage(getpid(), plain, h, &error).isNull());
+    close(plain);
+    EXPECT_TRUE(ipc::mapHelperImage(getpid(), -1, h, &error).isNull());
+}
+#endif
 
 // Metadata values cross the process boundary as plain types only: a hostile helper must
 // not make the app construct arbitrary QVariant types (a QImage would be decoded by the
@@ -776,22 +814,176 @@ TEST(DecoderHelper, SandboxDeniesEverythingButReading) {
     EXPECT_FALSE(probe(ipc::Op::TestSocket, port));
     close(listener);
     EXPECT_FALSE(probe(ipc::Op::TestExec, QStringLiteral("/bin/true")));
-    // File writes and creating shared memory need Landlock (kernel >= 5.13).
+    // No file writes, no shared memory objects (seccomp; Landlock as a second layer).
     QTemporaryDir dir;
     const QString target = dir.filePath(QStringLiteral("written-by-helper.txt"));
     const QString shm = QString::fromLatin1(ipc::shmName(getpid(), 999999));
-#ifdef SYS_landlock_create_ruleset
-    // landlock_create_ruleset(NULL, 0, LANDLOCK_CREATE_RULESET_VERSION) = the ABI version.
-    const bool landlock = syscall(SYS_landlock_create_ruleset, nullptr, 0, 1u) > 0;
-#else
-    const bool landlock = false;
-#endif
-    if (!landlock)
-        GTEST_SKIP() << "kernel without Landlock: file writes are not restricted";
     EXPECT_FALSE(probe(ipc::Op::TestWriteFile, target));
     EXPECT_FALSE(QFile::exists(target));
     EXPECT_FALSE(probe(ipc::Op::TestCreateShm, shm));
     EXPECT_FALSE(ipc::sharedExists(shm.toLatin1()));
+}
+
+namespace {
+
+QString writeTestPng(const QTemporaryDir& dir) {
+    QImage img(40, 30, QImage::Format_RGBA8888);
+    img.fill(QColor(10, 200, 30));
+    const QString path = dir.filePath(QStringLiteral("probe.png"));
+    EXPECT_TRUE(img.save(path));
+    return path;
+}
+
+QByteArray fileBytes(const QString& path) {
+    QFile f(path);
+    return f.open(QIODevice::ReadOnly) ? f.readAll() : QByteArray();
+}
+
+} // namespace
+
+// Review (ports): without Landlock (kernels before 5.13, or Landlock disabled) the seccomp
+// filter alone keeps the file system read-only - no write, create, rename, delete, chmod,
+// truncate, link or mkdir - while decoding (pixels in a sealed memfd) still works.
+TEST(DecoderHelper, LinuxSandboxWithoutLandlockStillDeniesFileChanges) {
+    DecoderHelperPool::Options o = helperOptions();
+    o.extraEnvironment << QStringLiteral("LF_DECODER_HELPER_TEST_NO_LANDLOCK=1");
+    DecoderHelperPool pool(o);
+    const auto pong = pool.call(op(ipc::Op::Ping), 10000);
+    ASSERT_TRUE(pong && pong->sandboxed);
+    EXPECT_TRUE(pong->sandboxDetails.contains(QLatin1String("Landlock off")))
+        << pong->sandboxDetails.toStdString();
+    QTemporaryDir dir;
+    const QString victim = dir.filePath(QStringLiteral("victim.txt"));
+    {
+        QFile f(victim);
+        ASSERT_TRUE(f.open(QIODevice::WriteOnly));
+        f.write("original");
+    }
+    const auto modify = pool.call(op(ipc::Op::TestModifyFile, victim), 10000);
+    ASSERT_TRUE(modify.has_value());
+    EXPECT_FALSE(modify->ok) << "possible: " << modify->error.toStdString();
+    EXPECT_EQ(fileBytes(victim), QByteArray("original"));
+    EXPECT_EQ(QDir(dir.path()).entryList(QDir::AllEntries | QDir::NoDotAndDotDot | QDir::Hidden),
+              QStringList{QStringLiteral("victim.txt")});
+    const QString target = dir.filePath(QStringLiteral("written-by-helper.txt"));
+    const auto w = pool.call(op(ipc::Op::TestWriteFile, target), 10000);
+    ASSERT_TRUE(w.has_value());
+    EXPECT_FALSE(w->ok);
+    EXPECT_FALSE(QFile::exists(target));
+    const QString shm = QString::fromLatin1(ipc::shmName(getpid(), 999998));
+    const auto c = pool.call(op(ipc::Op::TestCreateShm, shm), 10000);
+    ASSERT_TRUE(c.has_value());
+    EXPECT_FALSE(c->ok);
+    // Decoding still works: the pixels come back in the helper's sealed memfd.
+    ipc::Request r = op(ipc::Op::Decode, writeTestPng(dir));
+    r.backend = QStringLiteral("Qt");
+    QString error;
+    const auto decoded = pool.call(r, 10000, nullptr, &error);
+    ASSERT_TRUE(decoded && decoded->ok) << error.toStdString();
+    ASSERT_EQ(decoded->image.size(), QSize(40, 30));
+    EXPECT_EQ(decoded->image.pixelColor(5, 5).green(), 200);
+}
+
+// Review (ports): the helper cannot signal the app (or any other process), get a pidfd of it,
+// take its descriptors (pidfd_getfd) or push input into a terminal (TIOCSTI) - but it can
+// still signal itself (abort() of a crashing decoder).
+TEST(DecoderHelper, LinuxHelperCannotSignalOrReachOtherProcesses) {
+    DecoderHelperPool pool(helperOptions());
+    const auto pong = pool.call(op(ipc::Op::Ping), 10000);
+    ASSERT_TRUE(pong && pong->sandboxed);
+    auto probe = [&](ipc::Op o, const QString& arg) {
+        const auto r = pool.call(op(o, arg), 10000);
+        EXPECT_TRUE(r.has_value());
+        if (r && r->ok)
+            ADD_FAILURE() << "possible: op " << int(o) << " " << arg.toStdString() << ": "
+                          << r->error.toStdString();
+    };
+    const QString app = QString::number(ownPid());
+    probe(ipc::Op::TestSignal, app);
+    probe(ipc::Op::TestSignal, QStringLiteral("1"));
+    probe(ipc::Op::TestSignal, QStringLiteral("0"));  // the process group (incl. the app)
+    probe(ipc::Op::TestSignal, QStringLiteral("-1")); // every process of the user
+    probe(ipc::Op::TestPidfd, app);
+    probe(ipc::Op::TestTerminal, {});
+    EXPECT_TRUE(processAlive(ownPid()));
+    // Control: signal 0 to itself is allowed.
+    const auto self = pool.call(op(ipc::Op::TestSignal, QString::number(pong->pid)), 10000);
+    ASSERT_TRUE(self.has_value());
+    EXPECT_TRUE(self->ok) << self->error.toStdString();
+}
+
+// Review (ports): only stdin/stdout/stderr reach the helper - a descriptor the app has open
+// without O_CLOEXEC (here a file) is not inherited; stderr is /dev/null.
+TEST(DecoderHelper, LinuxHelperInheritsNoExtraDescriptors) {
+    QTemporaryDir dir;
+    const QString marker = dir.filePath(QStringLiteral("inherited-marker.txt"));
+    {
+        QFile f(marker);
+        ASSERT_TRUE(f.open(QIODevice::WriteOnly));
+        f.write("x");
+    }
+    const int fd = ::open(QFile::encodeName(marker).constData(), O_RDONLY); // no O_CLOEXEC
+    ASSERT_GE(fd, 0);
+    DecoderHelperPool pool(helperOptions());
+    const auto r = pool.call(op(ipc::Op::TestListDescriptors), 10000);
+    close(fd);
+    ASSERT_TRUE(r && r->ok);
+    const QStringList lines = r->error.split(u'\n', Qt::SkipEmptyParts);
+    EXPECT_FALSE(r->error.contains(QLatin1String("inherited-marker"))) << r->error.toStdString();
+    EXPECT_TRUE(lines.contains(QStringLiteral("2 -> /dev/null"))) << r->error.toStdString();
+    for (const QString& l : lines) {
+        EXPECT_FALSE(l.contains(QLatin1String("/dev/pts")) || l.contains(QLatin1String("/dev/tty")))
+            << "terminal reached the helper: " << l.toStdString();
+        // No connection opened before the sandbox closed in (D-Bus, display server).
+        EXPECT_FALSE(l.contains(QLatin1String("socket:"))) << "socket in the helper: " << l.toStdString();
+    }
+}
+
+#endif
+
+#if defined(Q_OS_LINUX) || defined(Q_OS_WIN)
+
+// Review (ports): a helper cannot take more memory than the limit (Linux RLIMIT_DATA,
+// Windows job memory limit): a huge allocation fails, a small one works.
+TEST(DecoderHelper, MemoryLimitStopsHugeAllocations) {
+    DecoderHelperPool::Options o = helperOptions();
+    o.memoryLimitMb = 768;
+    DecoderHelperPool pool(o);
+    const auto big = pool.call(op(ipc::Op::TestAllocate, QStringLiteral("2048")), 20000);
+    ASSERT_TRUE(big.has_value()) << "the helper must survive a failed allocation";
+    EXPECT_FALSE(big->ok);
+    const auto small = pool.call(op(ipc::Op::TestAllocate, QStringLiteral("32")), 20000);
+    ASSERT_TRUE(small.has_value());
+    EXPECT_TRUE(small->ok) << small->error.toStdString();
+}
+
+#endif
+
+#if defined(Q_OS_MACOS) || defined(Q_OS_WIN)
+
+// Review (ports): the helper cannot signal, terminate or suspend the app (Linux: see
+// LinuxHelperCannotSignalOrReachOtherProcesses).
+TEST(DecoderHelper, HelperCannotSignalTheApp) {
+    DecoderHelperPool pool(helperOptions());
+    const auto r = pool.call(op(ipc::Op::TestSignal, QString::number(ownPid())), 10000);
+    ASSERT_TRUE(r.has_value());
+    EXPECT_FALSE(r->ok);
+    EXPECT_TRUE(processAlive(ownPid()));
+}
+
+#endif
+
+#ifdef Q_OS_WIN
+
+// Review (ports): the helper runs on a desktop of its own, so the screen it can capture is
+// an empty one (whether it could still open the user's input desktop is logged: Windows
+// does not let a low integrity process be denied that, docs/WINDOWS.md).
+TEST(DecoderHelper, WindowsHelperRunsOnItsOwnDesktop) {
+    DecoderHelperPool pool(helperOptions());
+    const auto r = pool.call(op(ipc::Op::TestDesktop), 10000);
+    ASSERT_TRUE(r && r->ok);
+    std::printf("helper: %s\n", qPrintable(r->error));
+    EXPECT_TRUE(r->error.startsWith(QLatin1String("desktop: lumaflip-decoder-"))) << r->error.toStdString();
 }
 
 #endif

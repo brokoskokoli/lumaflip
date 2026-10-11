@@ -671,6 +671,14 @@
         <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>„%1“ kann nicht direkt ausgeführt werden: es würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
+        <translation>“%1” non può essere eseguito direttamente: leggerebbe i nomi dei file come comandi. Esegui invece un programma o uno script PowerShell (powershell -File Script.ps1).</translation>
+    </message>
+    <message>
+        <source>PowerShell nur mit einem Skript: „powershell -File Skript.ps1“. Mit -Command (oder ohne -File) würde PowerShell Dateinamen als Befehle lesen.</source>
+        <translation>PowerShell solo con uno script: “powershell -File Script.ps1”. Con -Command (o senza -File) PowerShell leggerebbe i nomi dei file come comandi.</translation>
+    </message>
     <message numerus="yes">
         <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
         <translation>
@@ -3998,6 +4006,18 @@
         <translation>Nessuna app di modifica trovata. Scegline una in Impostazioni → Generali → Editor.</translation>
     </message>
     <message>
+        <source>Programme (*.exe)</source>
+        <translation>Programmi (*.exe)</translation>
+    </message>
+    <message>
+        <source>Programme (*.desktop);;Alle Dateien (*)</source>
+        <translation>Programmi (*.desktop);;Tutti i file (*)</translation>
+    </message>
+    <message>
+        <source>„%1“ ist kein Programm.</source>
+        <translation>“%1” non è un programma.</translation>
+    </message>
+    <message>
         <source>Kein Bild geöffnet</source>
         <translation>Nessuna immagine aperta</translation>
     </message>
@@ -4993,10 +5013,6 @@
         <translation>Scegli editor</translation>
     </message>
     <message>
-        <source>Programme (*.app)</source>
-        <translation>App (*.app)</translation>
-    </message>
-    <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
         <translation>Adotta l’ordinamento live dalla finestra del Finder</translation>
     </message>
@@ -5525,6 +5541,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>„%1“ würde den Dateinamen als Befehl lesen und wird aus Sicherheitsgründen nicht gestartet.</source>
+        <translation>“%1” leggerebbe il nome del file come un comando e non viene avviato per motivi di sicurezza.</translation>
+    </message>
+    <message>
         <source>Das Programm wurde nicht gefunden.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5639,6 +5659,10 @@
     <message>
         <source>„%1“ konnte nicht wiederhergestellt werden: %2</source>
         <translation>Impossibile ripristinare “%1”: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ passte nicht in den Papierkorb und wurde endgültig gelöscht.</source>
+        <translation>“%1” non entrava nel Cestino ed è stato eliminato definitivamente.</translation>
     </message>
 </context>
 <context>

@@ -290,9 +290,20 @@ bool isShown(const DesktopEntry& e) {
     return true;
 }
 
+namespace {
+// POSIX shell quoting: the text as one word ('...', a ' as '\'').
+QString shellQuote(const QString& s) {
+    QString out = s;
+    out.replace(QLatin1Char('\''), QLatin1String("'\\''"));
+    return QStringLiteral("'") + out + QStringLiteral("'");
+}
+} // namespace
+
 QStringList expandExec(const DesktopEntry& e, const QStringList& files) {
-    // 1. Split into arguments (quoting rules of the Exec key).
+    // 1. Split into arguments (quoting rules of the Exec key). `quoted`: the argument was
+    // (partly) in double quotes.
     QStringList raw;
+    QList<bool> quoted;
     QString cur;
     bool inQuotes = false, have = false;
     const QString& s = e.exec;
@@ -311,8 +322,10 @@ QStringList expandExec(const DesktopEntry& e, const QStringList& files) {
             inQuotes = true;
             have = true;
         } else if (c == QLatin1Char(' ') || c == QLatin1Char('\t')) {
-            if (have || !cur.isEmpty())
+            if (have || !cur.isEmpty()) {
                 raw << cur;
+                quoted << have;
+            }
             cur.clear();
             have = false;
         } else {
@@ -321,15 +334,30 @@ QStringList expandExec(const DesktopEntry& e, const QStringList& files) {
     }
     if (inQuotes)
         return {};
-    if (have || !cur.isEmpty())
+    if (have || !cur.isEmpty()) {
         raw << cur;
+        quoted << have;
+    }
     if (raw.isEmpty())
         return {};
-    // 2. Field codes.
+    // 2. Field codes. The spec forbids them inside quoted arguments; entries that do it anyway
+    // usually build a shell script (Exec=sh -c "viewer %f"): the value is inserted shell-quoted
+    // there, so a file name like "x; rm -rf ~.jpg" stays one word for the shell (like GLib).
     auto url = [](const QString& f) { return QUrl::fromLocalFile(f).toString(QUrl::FullyEncoded); };
     QStringList out;
     bool usedFiles = false;
-    for (const QString& arg : std::as_const(raw)) {
+    for (qsizetype n = 0; n < raw.size(); ++n) {
+        const QString& arg = raw.at(n);
+        const bool inQuotedArg = quoted.at(n);
+        auto value = [inQuotedArg](const QString& v) { return inQuotedArg ? shellQuote(v) : v; };
+        if (inQuotedArg && (arg == QLatin1String("%F") || arg == QLatin1String("%U"))) {
+            QStringList words;
+            for (const QString& f : files)
+                words << shellQuote(arg == QLatin1String("%U") ? url(f) : f);
+            out << words.join(QLatin1Char(' '));
+            usedFiles = true;
+            continue;
+        }
         if (arg == QLatin1String("%F") || arg == QLatin1String("%U")) {
             for (const QString& f : files)
                 out << (arg == QLatin1String("%U") ? url(f) : f);
@@ -358,19 +386,25 @@ QStringList expandExec(const DesktopEntry& e, const QStringList& files) {
             case 'u':
                 usedFiles = true;
                 if (!files.isEmpty())
-                    a += code == QLatin1Char('u') ? url(files.first()) : files.first();
+                    a += value(code == QLatin1Char('u') ? url(files.first()) : files.first());
                 break;
             case 'F':
             case 'U':
                 usedFiles = true;
-                if (!files.isEmpty())
+                if (inQuotedArg) { // inside a shell script: every file as its own quoted word
+                    QStringList words;
+                    for (const QString& f : files)
+                        words << shellQuote(code == QLatin1Char('U') ? url(f) : f);
+                    a += words.join(QLatin1Char(' '));
+                } else if (!files.isEmpty()) {
                     a += code == QLatin1Char('U') ? url(files.first()) : files.first();
+                }
                 break;
             case 'c':
-                a += e.name;
+                a += value(e.name);
                 break;
             case 'k':
-                a += e.path;
+                a += value(e.path);
                 break;
             default: // %d %D %n %N %v %m and unknown codes: removed
                 break;
