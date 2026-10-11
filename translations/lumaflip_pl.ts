@@ -252,6 +252,15 @@
         <translation>Porównanie</translation>
     </message>
     <message>
+        <source>mit %1</source>
+        <extracomment>compare bar, 3–4 images: which image is blended with the first one</extracomment>
+        <translation>z %1</translation>
+    </message>
+    <message>
+        <source>Bild, das mit dem ersten verglichen wird</source>
+        <translation>Obraz porównywany z pierwszym</translation>
+    </message>
+    <message>
         <source>%1×</source>
         <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
         <translation>%1×</translation>
@@ -277,8 +286,8 @@
         <translation>Kurtyna</translation>
     </message>
     <message>
-        <source>Die ersten beiden Bilder übereinander vergleichen</source>
-        <translation>Porównaj nałożone na siebie dwa pierwsze obrazy</translation>
+        <source>Das erste Bild mit einem anderen übereinander vergleichen</source>
+        <translation>Nałóż pierwszy obraz na inny, aby je porównać</translation>
     </message>
     <message>
         <source>%1 — %2</source>
@@ -6047,6 +6056,10 @@
     <message>
         <source>Comics: von links nach rechts lesen</source>
         <translation>Komiksy: czytanie od lewej do prawej</translation>
+    </message>
+    <message>
+        <source>Live Text wird geladen …</source>
+        <translation>Wczytywanie funkcji Tekst na żywo…</translation>
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>

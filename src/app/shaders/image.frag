@@ -122,9 +122,20 @@ vec3 toneMapRgb(vec3 rgb)
 }
 
 // F-INFO-07 photo overlays (core/PhotoOverlays.cpp apply() is the reference).
+// overlays::peakingLuma(): straight (not premultiplied) values; linear sources (float, HDR)
+// are normalised to the display's range and sRGB-encoded first, so the Sobel threshold
+// means the same as for encoded 8-bit images.
 float lumaAt(vec2 uv, vec2 dx, vec2 dy)
 {
-    return dot(textureGrad(tex, uv, dx, dy).rgb, vec3(0.2126, 0.7152, 0.0722));
+    vec4 c = textureGrad(tex, uv, dx, dy);
+    vec3 rgb = c.rgb;
+    if (ubuf.flags.x > 0.5) {
+        float a = clamp(c.a, 0.0, 1.0);
+        rgb = a > 0.0 ? rgb / a : vec3(0.0);
+    }
+    if (ubuf.flags.y < 0.5 && ubuf.transfer.x < 0.5)
+        rgb = linearToSrgb(clamp(rgb * ubuf.range.x / max(ubuf.range.y, 1.0), 0.0, 1.0));
+    return dot(rgb, vec3(0.2126, 0.7152, 0.0722));
 }
 
 vec3 applyOverlays(vec3 shown, vec3 lin, vec2 dx, vec2 dy)
@@ -187,12 +198,14 @@ void main()
     if (ubuf.flags.x > 0.5)
         rgb = a > 0.0 ? rgb / a : vec3(0.0);
 
-    vec3 lin = rgb; // linear light before tone mapping (overlays only)
+    vec3 lin = rgb; // linear light in the source space before tone mapping (overlays only)
     if (ubuf.flags.y < 0.5) {
         rgb = decodeTransfer(rgb);
+        // Clipping is judged in the source's own color space: the gamut conversion would
+        // push saturated in-gamut colors below 0 or above 1 (false warnings).
+        lin = rgb * ubuf.range.x;
         rgb = (ubuf.colorMatrix * vec4(rgb, 0.0)).rgb;
         rgb *= ubuf.range.x;
-        lin = rgb;
         rgb = toneMapRgb(rgb);
         rgb = clamp(rgb, 0.0, ubuf.range.y);
         rgb = encodeTransfer(rgb);

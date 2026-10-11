@@ -250,6 +250,15 @@
         <translation>Comparación</translation>
     </message>
     <message>
+        <source>mit %1</source>
+        <extracomment>compare bar, 3–4 images: which image is blended with the first one</extracomment>
+        <translation>con %1</translation>
+    </message>
+    <message>
+        <source>Bild, das mit dem ersten verglichen wird</source>
+        <translation>Imagen que se compara con la primera</translation>
+    </message>
+    <message>
         <source>%1×</source>
         <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
         <translation>%1×</translation>
@@ -275,8 +284,8 @@
         <translation>Cortinilla</translation>
     </message>
     <message>
-        <source>Die ersten beiden Bilder übereinander vergleichen</source>
-        <translation>Comparar las dos primeras imágenes superpuestas</translation>
+        <source>Das erste Bild mit einem anderen übereinander vergleichen</source>
+        <translation>Superponer la primera imagen con otra para compararlas</translation>
     </message>
     <message>
         <source>%1 — %2</source>
@@ -6018,6 +6027,10 @@
     <message>
         <source>Comics: von links nach rechts lesen</source>
         <translation>Cómics: leer de izquierda a derecha</translation>
+    </message>
+    <message>
+        <source>Live Text wird geladen …</source>
+        <translation>Cargando Texto en vivo…</translation>
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>

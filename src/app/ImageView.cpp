@@ -956,6 +956,14 @@ void ImageView::setFlip(bool horizontal, bool vertical) {
     d->sync();
 }
 
+bool ImageView::flipHorizontal() const {
+    return d->model.flipHorizontal();
+}
+
+bool ImageView::flipVertical() const {
+    return d->model.flipVertical();
+}
+
 void ImageView::setBackground(const QString& setting) {
     d->background = setting;
     d->applyBackground();

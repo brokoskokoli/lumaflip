@@ -259,27 +259,33 @@ Application::Application(AppServices services, QObject* parent)
             self->handleDockReopen();
     });
 
-    // F-MAC-07: Services - the windows' images for other apps, "In Lumaflip öffnen" for files.
-    // Registered once the first image is on screen (AppKit's Services registration costs
-    // P-01 startup time), at the latest after kServicesDelayMs.
+    // F-MAC-07: Services. "In Lumaflip öffnen" for files: the provider is set now (cheap), so
+    // a service request that launched the app is answered. The send types (the windows'
+    // images for other apps) are registered once the first image is on screen (AppKit's
+    // Services registration costs P-01 startup time), at the latest after kServicesDelayMs.
+    macint::setServicesProvider([self](const QStringList& files) {
+        if (self)
+            self->openPaths(files);
+    });
     auto registerServices = [self] {
         if (!self || self->d->servicesRegistered)
             return;
         self->d->servicesRegistered = true;
-        macint::registerServicesProvider([self](const QStringList& files) {
-            if (self)
-                self->openPaths(files);
-        });
+        macint::registerServicesSendTypes();
     };
     QTimer::singleShot(kServicesDelayMs, this, registerServices);
     connect(this, &Application::windowsChanged, this, [self, registerServices] {
         if (!self || self->d->servicesRegistered)
             return;
-        for (ViewerWindow* w : self->windows())
+        for (ViewerWindow* w : self->windows()) {
+            if (w->property("lfServicesHook").toBool())
+                continue; // windowsChanged comes often: one connection per window
+            w->setProperty("lfServicesHook", true);
             connect(w, &ViewerWindow::imageShown, self.data(), [registerServices](const QString&, Quality q) {
                 if (q != Quality::Preview) // after the frame that shows it
                     QTimer::singleShot(0, registerServices);
             });
+        }
     });
 
     d->burstTimer.setSingleShot(true);

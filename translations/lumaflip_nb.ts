@@ -250,6 +250,15 @@
         <translation>Sammenligning</translation>
     </message>
     <message>
+        <source>mit %1</source>
+        <extracomment>compare bar, 3–4 images: which image is blended with the first one</extracomment>
+        <translation>med %1</translation>
+    </message>
+    <message>
+        <source>Bild, das mit dem ersten verglichen wird</source>
+        <translation>Bilde som sammenlignes med det første</translation>
+    </message>
+    <message>
         <source>%1×</source>
         <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
         <translation>%1×</translation>
@@ -275,8 +284,8 @@
         <translation>Gardin</translation>
     </message>
     <message>
-        <source>Die ersten beiden Bilder übereinander vergleichen</source>
-        <translation>Sammenlign de to første bildene oppå hverandre</translation>
+        <source>Das erste Bild mit einem anderen übereinander vergleichen</source>
+        <translation>Legg det første bildet over et annet for å sammenligne</translation>
     </message>
     <message>
         <source>%1 — %2</source>
@@ -6018,6 +6027,10 @@
     <message>
         <source>Comics: von links nach rechts lesen</source>
         <translation>Tegneserier: les fra venstre mot høyre</translation>
+    </message>
+    <message>
+        <source>Live Text wird geladen …</source>
+        <translation>Laster inn Livetekst…</translation>
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>

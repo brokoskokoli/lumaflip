@@ -59,13 +59,16 @@ public:
 
     // Same settings as the window's view.
     void applyViewSettings(const QString& background, bool upscaleNearest, bool devicePixels);
-    // F-GRID-04: difference / blend / wipe of the first two panes over the first pane (Off =
-    // side by side). `value`: blend amount or split position (0..1); the difference is
-    // amplified by up to 16x from the same slider.
+    // F-GRID-04: difference / blend / wipe of the first pane and a partner pane (default the
+    // second; with 3–4 panes chosen in the bar) over the first pane (Off = side by side).
+    // `value`: blend amount or split position (0..1); the difference is amplified by up to
+    // 16x from the same slider.
     void setBlendMode(compare::BlendMode mode);
     compare::BlendMode blendMode() const { return m_blend; }
     void setBlendValue(double value);
     double blendValue() const { return m_blendValue; }
+    void setBlendPartner(int pane); // 1 .. paneCount()-1
+    int blendPartner() const { return m_partner; }
     CompareBlendOverlay* blendOverlay() const { return m_overlay; }
     QWidget* blendBar() const { return m_bar; }
 
@@ -101,6 +104,7 @@ private:
     QSize decodeTarget() const;
     void updateBlend();
     void retranslateBar();
+    void fillPartnerBox();
     double overlayValue() const; // m_blendValue in the overlay's terms (difference: amount)
 
     ImageProvider& m_provider;
@@ -111,11 +115,13 @@ private:
     QWidget* m_paneArea = nullptr;
     QWidget* m_bar = nullptr;
     QComboBox* m_modeBox = nullptr;
+    QComboBox* m_partnerBox = nullptr; // 3–4 panes: which pane is compared with the first
     QSlider* m_slider = nullptr;
     QLabel* m_valueLabel = nullptr;
     CompareBlendOverlay* m_overlay = nullptr;
     compare::BlendMode m_blend = compare::BlendMode::Off;
     double m_blendValue = 0.5;
+    int m_partner = 1;
 };
 
 } // namespace lf

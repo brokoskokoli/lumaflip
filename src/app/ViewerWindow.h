@@ -95,8 +95,17 @@ public:
     // The three above are remembered for the shown folder (F-SORT-06); this makes the
     // window's current sort the default for all folders ("Für alle Ordner verwenden").
     void applySortToAllFolders();
-    void toggleFullScreen();    // F-VIEW-10
-    bool chromeVisible() const; // status bar shown (fullscreen auto-hide)
+    void toggleFullScreen(); // F-VIEW-10
+    // F-VIEW-10: full screen on/off. macOS animates the change and drops requests made while
+    // the animation runs: a request then waits and is applied when it ended, so quick toggles
+    // (double click twice, F then Esc) are never lost.
+    void setFullScreen(bool on);
+    // What the window is going to be (a pending request), else isFullScreen(). Commands that
+    // depend on the mode (Esc, slideshow, menu check mark) use this.
+    bool fullScreenTarget() const { return m_fsTarget.value_or(isFullScreen()); }
+    bool fullScreenTransitionPending() const { return m_fsTransition || m_fsTarget.has_value(); }
+    bool fullScreenAnimating() const { return m_fsTransition; } // native animation runs (macOS)
+    bool chromeVisible() const;                                 // status bar shown (fullscreen auto-hide)
 
     QString statusText() const;                          // all status fields joined with " · " (F-INFO-01)
     QString sortText() const;                            // F-SORT-05
@@ -233,7 +242,14 @@ private:
     int m_pageCount = 1;
     bool m_animResume = false;          // playing when the window was hidden/minimized
     bool m_slideshowFullScreen = false; // the slideshow entered fullscreen (leave it at the end)
-    bool m_reloadResetsView = false;    // the file was rewritten (saved rotation): reset the view rotation
+    // F-VIEW-10: native full screen animation running / requested state not reached yet.
+    bool m_fsTransition = false;
+    std::optional<bool> m_fsTarget;
+    QTimer* m_fsGuard = nullptr; // a transition that never reports its end
+    void applyFullScreen();
+    void settleFullScreen(bool force = false);
+    void onFullScreenTransition(bool entering, bool finished);
+    bool m_reloadResetsView = false; // the file was rewritten (saved rotation): reset the view rotation
     bool m_rotationSaving = false;
     QString m_mediaPath; // file the page/animation state belongs to
 

@@ -15,6 +15,7 @@
 #include "app/MainMenu.h"
 #include "app/PreferencesDialog.h"
 #include "app/ViewerWindow.h"
+#include "app/WindowModes.h"
 #include "core/Collection.h"
 #include "core/FileOps.h"
 #include "core/ImageProvider.h"
@@ -574,7 +575,7 @@ private slots:
         QTRY_VERIFY_WITH_TIMEOUT(!w->chromeVisible(), 3000);
         // Esc leaves fullscreen.
         key(w, Qt::Key_Escape);
-        QVERIFY(!w->isFullScreen());
+        QTRY_VERIFY(!w->isFullScreen());
         QVERIFY(w->chromeVisible());
         (void)QTest::qWaitFor([w] { return !(w->windowHandle()->windowStates() & Qt::WindowFullScreen); },
                               3000);
@@ -592,6 +593,45 @@ private slots:
         QTRY_VERIFY_WITH_TIMEOUT(!w->isFullScreen(), 5000);
         (void)QTest::qWaitFor([w] { return !(w->windowHandle()->windowStates() & Qt::WindowFullScreen); },
                               3000);
+        QTest::qWait(800);
+    }
+
+    void F_VIEW_10_quickDoubleToggleIsNotLost() {
+        // Regression: a toggle during the native full screen animation was dropped by macOS
+        // and the window stayed in full screen. Requests now wait for the animation's end.
+        makeStandardFolder();
+        ViewerWindow* w = app->openPaths({path("IMG_2.jpg")});
+        QVERIFY(waitWindowShown(w));
+        QTRY_VERIFY_WITH_TIMEOUT(!w->fullScreenTransitionPending(), 5000);
+        w->toggleFullScreen();
+        QVERIFY(w->fullScreenTarget());
+        QTest::qWait(50); // the animation has started
+        w->toggleFullScreen();
+        QVERIFY(!w->fullScreenTarget()); // the menu check mark follows the request at once
+        QTRY_VERIFY_WITH_TIMEOUT(!w->fullScreenTransitionPending(), 10000);
+        QVERIFY(!w->isFullScreen());
+        QVERIFY(!nativeWindowState(w).fullScreen);
+        QTest::qWait(1500); // and it stays there
+        QVERIFY(!w->isFullScreen());
+        QVERIFY(!nativeWindowState(w).fullScreen);
+        QVERIFY(w->chromeVisible());
+        // Esc right after entering (animation still running) leaves full screen as well.
+        key(w, Qt::Key_F);
+        QVERIFY(w->fullScreenTarget());
+        key(w, Qt::Key_Escape);
+        QVERIFY(!w->fullScreenTarget());
+        QTRY_VERIFY_WITH_TIMEOUT(!w->fullScreenTransitionPending(), 10000);
+        QVERIFY(!w->isFullScreen());
+        QVERIFY(!nativeWindowState(w).fullScreen);
+        // Three quick toggles end in full screen.
+        for (int i = 0; i < 3; ++i) {
+            w->toggleFullScreen();
+            QTest::qWait(30);
+        }
+        QTRY_VERIFY_WITH_TIMEOUT(!w->fullScreenTransitionPending(), 15000);
+        QVERIFY(w->isFullScreen());
+        w->setFullScreen(false);
+        QTRY_VERIFY_WITH_TIMEOUT(!w->fullScreenTransitionPending() && !w->isFullScreen(), 10000);
         QTest::qWait(800);
     }
 

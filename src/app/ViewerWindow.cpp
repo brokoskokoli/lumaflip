@@ -16,6 +16,7 @@
 #include "WindowEditing.h"
 #include "WindowExtras.h"
 #include "WindowIntegration.h"
+#include "WindowModes.h"
 #include "WindowPanels.h"
 #include "WindowTabbing.h"
 #include "core/Collection.h"
@@ -60,6 +61,13 @@
 #include <cmath>
 
 namespace lf {
+
+namespace {
+// F-VIEW-10: a native full screen animation starts within this after the request (else
+// AppKit dropped it) and ends within kFsAnimationMs (it takes about 0.7 s).
+constexpr int kFsStartMs = 800;
+constexpr int kFsAnimationMs = 3000;
+} // namespace
 
 namespace {
 
@@ -310,6 +318,14 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
         }
         setChromeVisible(false);
     });
+    m_fsGuard = new QTimer(this);
+    m_fsGuard->setSingleShot(true);
+    connect(m_fsGuard, &QTimer::timeout, this, [this] {
+        // No start (AppKit dropped the request, e.g. while another window's space animation
+        // runs) or no end reported: go on from what the native window is.
+        m_fsTransition = false;
+        settleFullScreen(true);
+    });
     m_resizeTimer = new QTimer(this);
     m_resizeTimer->setSingleShot(true);
     m_resizeTimer->setInterval(kResizeRequestMs);
@@ -463,6 +479,9 @@ void ViewerWindow::setVisible(bool visible) {
     mediaVisibilityChanged(); // F-FMT-03: no playback in hidden windows
     if (visible && m_extras)
         m_extras->windowStateChanged(); // F-VIEW-12/13 on the native window
+    if (visible)                        // F-VIEW-10: also transitions the user starts (green button, gesture)
+        watchFullScreenTransitions(
+            this, [this](bool entering, bool finished) { onFullScreenTransition(entering, finished); });
     // After the native window and the GPU surface exist (show), before the event loop
     // presents the first frame: the first frame already has the status bar.
     if (visible) {
@@ -1419,13 +1438,13 @@ bool ViewerWindow::perform(Action a, QPointF pos) {
         toggleFullScreen();
         return true;
     case Action::ExitModeOrNothing:
-        if (!isFullScreen())
+        if (!fullScreenTarget())
             return false;
-        toggleFullScreen();
+        setFullScreen(false);
         return true;
     case Action::ExitModeOrCloseWindow:
-        if (isFullScreen())
-            toggleFullScreen();
+        if (fullScreenTarget())
+            setFullScreen(false);
         else
             close();
         return true;
@@ -1544,13 +1563,85 @@ void ViewerWindow::setSortAscending(bool ascending) {
 }
 
 void ViewerWindow::toggleFullScreen() {
-    if (isFullScreen()) {
-        showNormal();
-        setChromeVisible(true);
-    } else {
+    setFullScreen(!fullScreenTarget());
+}
+
+void ViewerWindow::setFullScreen(bool on) {
+    m_fsTarget = on;
+    if (m_fsTransition) {
+        m_app.windowChanged(this); // menu check mark; applied when the animation ended
+        return;
+    }
+    applyFullScreen();
+}
+
+void ViewerWindow::applyFullScreen() {
+    if (!m_fsTarget)
+        return;
+    const bool on = *m_fsTarget;
+    if (on == isFullScreen()) {
+        settleFullScreen();
+        return;
+    }
+    // macOS: until the native transition reports its end, further requests wait.
+    if (isVisible() && watchFullScreenTransitions(this, [this](bool entering, bool finished) {
+            onFullScreenTransition(entering, finished);
+        })) {
+        m_fsTransition = true;
+        m_fsGuard->start(kFsStartMs); // the animation must start soon, else it was dropped
+    }
+    if (on) {
         showFullScreen();
         setChromeVisible(false); // F-VIEW-10: pure image, chrome appears at the edge
+    } else {
+        showNormal();
+        setChromeVisible(true);
     }
+    if (!m_fsTransition)
+        settleFullScreen();
+    m_app.windowChanged(this);
+}
+
+void ViewerWindow::onFullScreenTransition(bool, bool finished) {
+    if (!finished) {
+        m_fsTransition = true; // also one the user started (green button, gesture)
+        m_fsGuard->start(kFsAnimationMs);
+        return;
+    }
+    m_fsTransition = false;
+    m_fsGuard->stop();
+    // After Qt has handled the same notification (its window state follows the native one).
+    QTimer::singleShot(0, this, [this] {
+        if (m_extras)
+            m_extras->windowStateChanged(); // F-VIEW-12/13: skipped during the animation
+        settleFullScreen();
+    });
+}
+
+void ViewerWindow::settleFullScreen(bool force) {
+    if (m_fsTransition || !m_fsTarget)
+        return;
+    const NativeWindowState native = nativeWindowState(this);
+    const bool actual = native.valid ? native.fullScreen : isFullScreen();
+    if (isFullScreen() != actual) {
+        if (!force) {
+            // Qt has not caught up with the native window yet: its WindowStateChange
+            // follows; if it never comes, the guard forces it.
+            m_fsGuard->start(kFsStartMs);
+            return;
+        }
+        // Qt's state says what was asked, the native window never got there (request
+        // dropped): Qt's state back to the native one - no native change, it is there
+        // already - so that the request below really reaches AppKit.
+        setWindowState(actual ? (windowState() | Qt::WindowFullScreen)
+                              : (windowState() & ~Qt::WindowFullScreen));
+    }
+    if (actual != *m_fsTarget) {
+        applyFullScreen(); // requested during the animation (or dropped by AppKit): now
+        return;
+    }
+    m_fsTarget.reset();
+    setChromeVisible(!actual);
     m_app.windowChanged(this);
 }
 
@@ -1810,9 +1901,11 @@ void ViewerWindow::changeEvent(QEvent* event) {
             updatePrefetch();
     } else if (event->type() == QEvent::WindowStateChange) {
         mediaVisibilityChanged(); // minimized: animation pauses
-        if (m_extras)
+        if (m_extras && !m_fsTransition)
             m_extras->windowStateChanged(); // F-VIEW-12/13 again after full screen
         setChromeVisible(!isFullScreen());
+        if (m_fsTarget && !m_fsTransition)
+            QTimer::singleShot(0, this, [this] { settleFullScreen(); }); // F-VIEW-10
         if (!currentPath().isEmpty())
             updatePrefetch(); // minimized windows keep only the current image (F-WIN-09)
         m_app.windowChanged(this);

@@ -250,6 +250,15 @@
         <translation>Comparaison</translation>
     </message>
     <message>
+        <source>mit %1</source>
+        <extracomment>compare bar, 3–4 images: which image is blended with the first one</extracomment>
+        <translation>avec %1</translation>
+    </message>
+    <message>
+        <source>Bild, das mit dem ersten verglichen wird</source>
+        <translation>Image comparée à la première</translation>
+    </message>
+    <message>
         <source>%1×</source>
         <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
         <translation>%1×</translation>
@@ -275,8 +284,8 @@
         <translation>Volet</translation>
     </message>
     <message>
-        <source>Die ersten beiden Bilder übereinander vergleichen</source>
-        <translation>Comparer les deux premières images superposées</translation>
+        <source>Das erste Bild mit einem anderen übereinander vergleichen</source>
+        <translation>Superposer la première image à une autre pour les comparer</translation>
     </message>
     <message>
         <source>%1 — %2</source>
@@ -6018,6 +6027,10 @@
     <message>
         <source>Comics: von links nach rechts lesen</source>
         <translation>BD : lecture de gauche à droite</translation>
+    </message>
+    <message>
+        <source>Live Text wird geladen …</source>
+        <translation>Chargement de Texte en direct…</translation>
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>

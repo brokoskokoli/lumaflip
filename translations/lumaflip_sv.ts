@@ -250,6 +250,15 @@
         <translation>Jämförelse</translation>
     </message>
     <message>
+        <source>mit %1</source>
+        <extracomment>compare bar, 3–4 images: which image is blended with the first one</extracomment>
+        <translation>med %1</translation>
+    </message>
+    <message>
+        <source>Bild, das mit dem ersten verglichen wird</source>
+        <translation>Bild som jämförs med den första</translation>
+    </message>
+    <message>
         <source>%1×</source>
         <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
         <translation>%1×</translation>
@@ -275,8 +284,8 @@
         <translation>Ridå</translation>
     </message>
     <message>
-        <source>Die ersten beiden Bilder übereinander vergleichen</source>
-        <translation>Jämför de två första bilderna ovanpå varandra</translation>
+        <source>Das erste Bild mit einem anderen übereinander vergleichen</source>
+        <translation>Lägg den första bilden över en annan för att jämföra</translation>
     </message>
     <message>
         <source>%1 — %2</source>
@@ -6018,6 +6027,10 @@
     <message>
         <source>Comics: von links nach rechts lesen</source>
         <translation>Serier: läs från vänster till höger</translation>
+    </message>
+    <message>
+        <source>Live Text wird geladen …</source>
+        <translation>Livetext läses in…</translation>
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>

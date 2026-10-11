@@ -18,6 +18,10 @@ bool LiveTextOverlay::isAvailable() {
     return false;
 }
 
+bool LiveTextOverlay::availabilityKnown() {
+    return true;
+}
+
 bool LiveTextOverlay::isSupported() const {
     return false;
 }

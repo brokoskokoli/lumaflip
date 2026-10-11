@@ -2,11 +2,12 @@
 #include "CompareBlendOverlay.h"
 
 #include "ImageView.h"
+#include "ViewSyncBinding.h"
 
-#include <QColorSpace>
 #include <QCoreApplication>
 #include <QMouseEvent>
 #include <QPainter>
+#include <QtConcurrent/QtConcurrentRun>
 
 namespace lf {
 
@@ -19,10 +20,29 @@ CompareBlendOverlay::CompareBlendOverlay(ImageView* first, ImageView* second)
     first->installEventFilter(this);
     m_timer.setSingleShot(true);
     m_timer.setInterval(0);
-    connect(&m_timer, &QTimer::timeout, this, &CompareBlendOverlay::recompute);
+    connect(&m_timer, &QTimer::timeout, this, &CompareBlendOverlay::start);
+    connect(&m_watcher, &QFutureWatcher<Result>::finished, this, &CompareBlendOverlay::finished);
     connect(first, &ImageView::viewTransformChanged, this, &CompareBlendOverlay::refresh);
     connect(first, &ImageView::zoomChanged, this, &CompareBlendOverlay::refresh);
     hide();
+}
+
+CompareBlendOverlay::~CompareBlendOverlay() {
+    // A running job only holds copies (implicitly shared images); its result is dropped.
+    m_watcher.disconnect(this);
+}
+
+void CompareBlendOverlay::setSync(ViewSyncBinding* sync) {
+    m_sync = sync;
+    refresh();
+}
+
+void CompareBlendOverlay::setPartner(ImageView* second, int member) {
+    if (m_second == second && m_member == member)
+        return;
+    m_second = second;
+    m_member = member;
+    refresh();
 }
 
 void CompareBlendOverlay::setMode(compare::BlendMode mode, double value) {
@@ -31,67 +51,132 @@ void CompareBlendOverlay::setMode(compare::BlendMode mode, double value) {
     setVisible(mode != compare::BlendMode::Off);
     if (isVisible()) {
         raise();
-        refresh();
+        m_timer.start(); // mode/value only: the rendered layers stay valid
     }
 }
 
+void CompareBlendOverlay::invalidateLayers() {
+    ++m_generation;
+    m_layersValid = false;
+    m_layerA = m_layerB = QImage();
+}
+
 void CompareBlendOverlay::refresh() {
+    invalidateLayers(); // view, size or images changed (also while off: layers are stale)
     if (m_mode != compare::BlendMode::Off)
         m_timer.start();
 }
 
-QImage CompareBlendOverlay::displayable(const DecodedImagePtr& img, DecodedImagePtr* key,
-                                        QImage* cache) const {
-    if (!img)
-        return {};
-    if (*key == img)
-        return *cache;
-    QImage out = img->image;
-    // One color space for both images (differences must not come from profiles).
-    if (out.colorSpace().isValid() && out.colorSpace() != QColorSpace(QColorSpace::SRgb))
-        out = out.convertedToColorSpace(QColorSpace(QColorSpace::SRgb), QImage::Format_ARGB32_Premultiplied);
-    else
-        out = out.convertToFormat(QImage::Format_ARGB32_Premultiplied);
-    *key = img;
-    *cache = out;
-    return out;
+CompareBlendOverlay::Job CompareBlendOverlay::makeJob() const {
+    Job j;
+    if (!m_first)
+        return j;
+    j.a = m_first->image();
+    j.b = m_second ? m_second->image() : DecodedImagePtr();
+    j.dpr = devicePixelRatioF();
+    j.px = (QSizeF(size()) * j.dpr).toSize();
+    j.mode = m_mode;
+    j.value = m_value;
+    if (m_layersValid && m_layerA.size() == j.px) {
+        j.layerA = m_layerA;
+        j.layerB = m_layerB;
+        return j;
+    }
+    j.view = m_first->imageToWidget() * QTransform::fromScale(j.dpr, j.dpr);
+    j.background = m_first->backgroundColor();
+    if (m_sync) {
+        // ⌥-drag / ⌥-zoom of a single pane (F-GRID-03): the partner keeps its offset.
+        ViewSync& math = m_sync->math();
+        j.centerDelta = math.offset(m_member) - math.offset(0);
+        const double r0 = math.zoomRatio(0);
+        j.zoomRatio = r0 > 0 ? math.zoomRatio(m_member) / r0 : 1.0;
+    }
+    return j;
 }
 
-void CompareBlendOverlay::recompute() {
-    if (!m_first || !m_second || m_mode == compare::BlendMode::Off)
+CompareBlendOverlay::Result CompareBlendOverlay::run(const Job& j) {
+    Result r;
+    if (!j.a || j.a->image.isNull() || j.px.isEmpty())
+        return r;
+    if (!j.layerA.isNull()) {
+        r.layerA = j.layerA;
+        r.layerB = j.layerB;
+    } else {
+        const QImage& ia = j.a->image;
+        const QSizeF fullA(j.a->fullSize.isEmpty() ? ia.size() : j.a->fullSize);
+        const QTransform ta = QTransform::fromScale(fullA.width() / ia.width(), fullA.height() / ia.height());
+        r.layerA = compare::renderLayer(ia, ta * j.view, j.px, j.background);
+        if (j.b && !j.b->image.isNull()) {
+            const QImage& ib = j.b->image;
+            const QSizeF fullB(j.b->fullSize.isEmpty() ? ib.size() : j.b->fullSize);
+            const QTransform tb =
+                QTransform::fromScale(fullB.width() / ib.width(), fullB.height() / ib.height());
+            const QTransform place = compare::alignPartner(
+                compare::partnerPlacement(fullA, fullB), j.view, fullB,
+                QPointF(j.px.width() / 2.0, j.px.height() / 2.0), j.centerDelta, j.zoomRatio);
+            r.layerB = compare::renderLayer(ib, tb * place, j.px, j.background);
+        } else {
+            r.layerB = compare::renderLayer(QImage(), QTransform(), j.px, j.background);
+        }
+    }
+    r.composed = compare::composite(r.layerA, r.layerB, j.mode, j.value);
+    r.composed.setDevicePixelRatio(j.dpr);
+    return r;
+}
+
+void CompareBlendOverlay::start() {
+    if (m_mode == compare::BlendMode::Off)
         return;
-    const DecodedImagePtr a = m_first->image(), b = m_second->image();
-    const double dpr = devicePixelRatioF();
-    const QSize px = (QSizeF(size()) * dpr).toSize();
-    if (!a || px.isEmpty()) {
+    if (m_running) {
+        m_timer.stop();
+        m_pending = true; // started again when the running job is done
+        return;
+    }
+    m_pending = false;
+    const Job job = makeJob();
+    if (!job.a || job.px.isEmpty()) {
         m_composed = QImage();
         update();
         return;
     }
-    const QSizeF fullA(a->fullSize.isEmpty() ? a->image.size() : a->fullSize);
-    const QTransform view = m_first->imageToWidget() * QTransform::fromScale(dpr, dpr);
-    auto render = [&](const QImage& img, const QTransform& toFullA) {
-        QImage out(px, QImage::Format_ARGB32_Premultiplied);
-        out.fill(m_first->backgroundColor());
-        if (img.isNull())
-            return out;
-        QPainter p(&out);
-        p.setRenderHint(QPainter::SmoothPixmapTransform);
-        p.setTransform(toFullA * view);
-        p.drawImage(0, 0, img);
-        return out;
-    };
-    const QImage ia = displayable(a, &m_keyA, &m_cacheA);
-    const QImage ib = displayable(b, &m_keyB, &m_cacheB);
-    // The second image takes the place of the first (same relative position and size).
-    const QTransform ta = QTransform::fromScale(fullA.width() / ia.width(), fullA.height() / ia.height());
-    const QTransform tb =
-        ib.isNull() ? QTransform()
-                    : QTransform::fromScale(fullA.width() / ib.width(), fullA.height() / ib.height());
-    m_composed = compare::composite(render(ia, ta), render(ib, tb), m_mode, m_value);
-    m_composed.setDevicePixelRatio(dpr);
+    m_running = true;
+    m_jobGeneration = m_generation;
+    m_jobSeq = ++m_seq;
+    m_watcher.setFuture(QtConcurrent::run(&CompareBlendOverlay::run, job));
+}
+
+void CompareBlendOverlay::finished() {
+    m_running = false;
+    const Result r = m_watcher.result();
+    if (m_jobSeq > m_appliedSeq) {
+        m_appliedSeq = m_jobSeq;
+        apply(r, m_jobGeneration);
+    }
+    if (m_pending)
+        start();
+}
+
+void CompareBlendOverlay::recompute() {
+    m_timer.stop();
+    if (m_mode == compare::BlendMode::Off)
+        return;
+    const Job job = makeJob();
+    m_appliedSeq = ++m_seq; // a job still running is older: its result is dropped
+    apply(run(job), m_generation);
+}
+
+void CompareBlendOverlay::apply(const Result& r, int generation) {
+    if (m_mode == compare::BlendMode::Off)
+        return;
+    if (generation == m_generation && !r.layerA.isNull()) {
+        m_layerA = r.layerA;
+        m_layerB = r.layerB;
+        m_layersValid = true;
+    }
+    m_composed = r.composed;
     ++m_recomputes;
     update();
+    emit composedChanged();
 }
 
 void CompareBlendOverlay::paintEvent(QPaintEvent*) {
@@ -125,7 +210,7 @@ void CompareBlendOverlay::mouseMoveEvent(QMouseEvent* e) {
     }
     m_value = std::clamp(e->position().x() / width(), 0.0, 1.0);
     emit valueChanged(m_value);
-    refresh();
+    m_timer.start(); // the split only: the layers stay
 }
 
 bool CompareBlendOverlay::event(QEvent* e) {

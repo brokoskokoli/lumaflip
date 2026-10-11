@@ -3,6 +3,8 @@
 
 #include <QCoreApplication>
 
+#include <algorithm>
+
 namespace lf {
 
 namespace {
@@ -40,9 +42,26 @@ bool LiveTextSession::toggle() {
     return m_active;
 }
 
+namespace {
+// A stage with this much more detail (long side) is analysed again, as long as the old one
+// was below what the analysis uses at most.
+bool worthReanalysing(QSize old, QSize next) {
+    const int before = std::max(old.width(), old.height()), after = std::max(next.width(), next.height());
+    return before < LiveTextSession::kMaxAnalysisSide && after * 4 > before * 5;
+}
+} // namespace
+
 void LiveTextSession::setImage(const QString& path, const QImage& image) {
-    if (path == m_path && image.isNull() == m_image.isNull())
-        return; // a better stage of the same file: the analysis stays
+    if (path == m_path && image.isNull() == m_image.isNull()) {
+        // Another stage of the same file: analysed again only with noticeably more pixels.
+        if (image.isNull() || !worthReanalysing(m_image.size(), image.size()))
+            return;
+        m_image = image;
+        m_reanalyze = m_path == m_analyzedPath;
+        update();
+        return;
+    }
+    m_reanalyze = false;
     m_path = path;
     m_image = image;
     update();
@@ -80,8 +99,9 @@ void LiveTextSession::update() {
         stop(State::Waiting);
         return;
     }
-    if (m_path == m_analyzedPath)
+    if (m_path == m_analyzedPath && !m_reanalyze)
         return; // running or done for this image
+    m_reanalyze = false;
     stop(State::Analyzing);
     m_analyzedPath = m_path;
     m_running = true;

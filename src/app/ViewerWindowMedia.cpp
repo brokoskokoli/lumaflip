@@ -305,9 +305,9 @@ void ViewerWindow::startSlideshow(std::optional<quint32> seed) {
     QStringList paths;
     for (const FileEntry& e : m_collection->entries())
         paths << e.path;
-    m_slideshowFullScreen = !isFullScreen();
+    m_slideshowFullScreen = !fullScreenTarget();
     if (m_slideshowFullScreen)
-        toggleFullScreen();
+        setFullScreen(true);
     m_slideshow->start(paths, currentPath(), o);
     showMessage(tr("Diashow – Leertaste: Pause · 1–9: Sekunden · Esc: Ende"), 2500);
     updatePrefetch();
@@ -318,8 +318,8 @@ void ViewerWindow::stopSlideshow() {
     if (!isSlideshowRunning() && !m_slideshowFullScreen)
         return;
     m_slideshow->stop();
-    if (m_slideshowFullScreen && isFullScreen())
-        toggleFullScreen();
+    if (m_slideshowFullScreen && fullScreenTarget())
+        setFullScreen(false); // also while the entering animation still runs (F-VIEW-10)
     m_slideshowFullScreen = false;
     updatePrefetch();
 }
