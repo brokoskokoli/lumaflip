@@ -44,15 +44,15 @@
         <translation>아이콘 위치</translation>
     </message>
     <message>
-        <source>Wie Finder (live): %1</source>
+        <source>Wie im Finder (live): %1</source>
         <translation>Finder와 동일(실시간): %1</translation>
     </message>
     <message>
-        <source>Wie Finder: %1</source>
+        <source>Wie im Finder: %1</source>
         <translation>Finder와 동일: %1</translation>
     </message>
     <message>
-        <source>%1 (Finder-Info nicht gefunden)</source>
+        <source>%1 (Finder-Informationen nicht gefunden)</source>
         <translation>%1(Finder 정보를 찾을 수 없음)</translation>
     </message>
 </context>
@@ -134,7 +134,7 @@
         <translation>Home / End</translation>
     </message>
     <message>
-        <source>Vollbild / Modus verlassen</source>
+        <source>Vollbild oder Modus beenden</source>
         <translation>전체 화면 / 모드 종료</translation>
     </message>
     <message>
@@ -179,7 +179,7 @@
         <translation>아카이브에 이미지가 없습니다.</translation>
     </message>
     <message>
-        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <source>Das Archiv ist passwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
         <translation>아카이브가 암호로 보호되어 있습니다 – 암호화된 아카이브는 지원되지 않습니다.</translation>
     </message>
     <message>
@@ -197,7 +197,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <source>Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.</source>
+        <source>Unterordner: Nur die ersten %n Bilder werden angezeigt – öffne einen kleineren Ordner.</source>
         <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
         <translation>
             <numerusform>하위 폴더: 처음 %n개의 이미지만 표시됩니다. 더 작은 폴더를 여세요.</numerusform>
@@ -307,7 +307,7 @@
 <context>
     <name>lf::ContainerPolicy</name>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten sind hier nicht möglich.</source>
         <translation>아카이브와 PDF 문서의 이미지는 보기 전용입니다 – 휴지통, 이름 변경, 이동, 평가를 사용할 수 없습니다.</translation>
     </message>
 </context>
@@ -379,19 +379,19 @@
         <translation>삼분할 격자 표시</translation>
     </message>
     <message>
-        <source>Speichern</source>
+        <source>Sichern</source>
         <translation>저장</translation>
     </message>
     <message>
-        <source>Zuschnitt in der Datei speichern (Enter, widerrufbar)</source>
+        <source>Zuschnitt in der Datei sichern (Enter, widerrufbar)</source>
         <translation>자르기를 파일에 저장(Enter, 실행 취소 가능)</translation>
     </message>
     <message>
-        <source>Speichern unter …</source>
+        <source>Sichern unter …</source>
         <translation>다른 이름으로 저장…</translation>
     </message>
     <message>
-        <source>Zuschnitt als neue Datei speichern – das Original bleibt unverändert</source>
+        <source>Zuschnitt als neue Datei sichern – das Original bleibt unverändert</source>
         <translation>자르기를 새 파일로 저장 – 원본은 변경되지 않음</translation>
     </message>
     <message>
@@ -411,11 +411,11 @@
 <context>
     <name>lf::CropSave</name>
     <message>
-        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.</source>
+        <source>Die Datei wurde inzwischen verändert – nichts gesichert. Schneide das Bild erneut zu.</source>
         <translation>그동안 파일이 변경되었습니다. 아무것도 저장되지 않았습니다. 다시 자르십시오.</translation>
     </message>
     <message>
-        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
+        <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden ist nur durch Neukodieren möglich – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
         <translation>이 파일에는 무손실 자르기 후 더 이상 맞지 않는 다른 이미지(예: HDR 게인 맵 또는 두 번째 스테레오 이미지)가 포함되어 있습니다. 다시 인코딩해야만 자를 수 있으며, 이때 화질이 약간 떨어지고 추가 이미지가 손실됩니다.</translation>
     </message>
     <message>
@@ -435,7 +435,7 @@
         <translation>JPEG 데이터를 무손실로 자를 수 없습니다(%1).</translation>
     </message>
     <message>
-        <source>Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.</source>
+        <source>Der Zuschnitt liegt nicht auf dem JPEG-Blockraster.</source>
         <translation>선택 영역이 JPEG 블록 격자에 맞지 않습니다.</translation>
     </message>
     <message>
@@ -447,19 +447,19 @@
         <translation>파일이 더 이상 존재하지 않습니다.</translation>
     </message>
     <message>
-        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <source>Das Dateiformat wird zum Sichern nicht erkannt.</source>
         <translation>저장할 파일 포맷을 인식할 수 없습니다.</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
         <translation>아카이브와 PDF 문서 안의 이미지는 변경되지 않습니다. 선택 영역을 새 파일로 내보낼 수 있습니다.</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <source>RAW-Dateien werden nie verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
         <translation>RAW 파일은 절대 변경되지 않습니다. 선택 영역을 새 파일로 내보낼 수 있습니다.</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gesichert werden. Der Zuschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
         <translation>움직이는 파일이나 여러 페이지 파일은 잘라서 저장할 수 없습니다. 첫 번째 이미지의 선택 영역을 새 파일로 내보낼 수 있습니다.</translation>
     </message>
     <message>
@@ -467,7 +467,7 @@
         <translation>‘%1’은(는) 쓰기 금지되어 있습니다.</translation>
     </message>
     <message>
-        <source>„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.</source>
+        <source>„Sichern unter“ überschreibt nie das Original – wähle einen anderen Namen.</source>
         <translation>‘다른 이름으로 저장’은 원본을 덮어쓰지 않습니다. 다른 이름을 선택하십시오.</translation>
     </message>
     <message>
@@ -475,7 +475,7 @@
         <translation>‘%1’에 쓸 수 없습니다.</translation>
     </message>
     <message>
-        <source>„%1“ gibt es schon.</source>
+        <source>„%1“ existiert bereits.</source>
         <translation>‘%1’이(가) 이미 있습니다.</translation>
     </message>
     <message>
@@ -487,11 +487,11 @@
         <translation>선택된 영역이 없습니다.</translation>
     </message>
     <message>
-        <source>Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.</source>
+        <source>Der Zuschnitt umfasst das ganze Bild – es gibt nichts zuzuschneiden.</source>
         <translation>선택 영역이 이미지 전체입니다. 자를 것이 없습니다.</translation>
     </message>
     <message>
-        <source>Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
+        <source>Für den verlustfreien Zuschnitt wurde der Zuschnittbereich an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
         <translation>무손실 자르기를 위해 선택 영역을 JPEG 블록 격자(%1 × %2픽셀)에 맞췄으며, 현재 크기는 %3 × %4픽셀입니다.</translation>
     </message>
     <message>
@@ -499,7 +499,7 @@
         <translation>이 JPEG 파일은 무손실로 자를 수 없습니다. 다시 인코딩하면 화질이 약간 떨어집니다.</translation>
     </message>
     <message>
-        <source>Der Zuschnitt kann nicht gespeichert werden.</source>
+        <source>Der Zuschnitt kann nicht gesichert werden.</source>
         <translation>자르기를 저장할 수 없습니다.</translation>
     </message>
     <message>
@@ -507,11 +507,11 @@
         <translation>다시 인코딩하면 이미지가 정확히 같게 유지되지 않습니다(색상 모델, 비트 심도, 팔레트 또는 투명도가 바뀜).</translation>
     </message>
     <message>
-        <source>Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.</source>
+        <source>Dieses Format kann hier nicht geschrieben werden. Der Zuschnitt kann in einem anderen Format exportiert werden.</source>
         <translation>이 포맷은 여기에서 쓸 수 없습니다. 선택 영역을 다른 포맷으로 내보낼 수 있습니다.</translation>
     </message>
     <message>
-        <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <source>Dieses Format komprimiert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
         <translation>이 포맷은 손실 압축입니다. 이미지를 다시 인코딩해야만 자르기를 저장할 수 있으며, 화질이 약간 떨어집니다.</translation>
     </message>
     <message>
@@ -527,7 +527,7 @@
         <translation>이 이미지는 무손실로 자를 수 없습니다.</translation>
     </message>
     <message>
-        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <source>Der Zuschnitt konnte nicht gesichert werden.</source>
         <translation>자르기를 저장하지 못했습니다.</translation>
     </message>
     <message>
@@ -566,15 +566,15 @@
         <translation>선별</translation>
     </message>
     <message>
-        <source>0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg</source>
+        <source>0–5  Sterne     P  Markieren     X  Ablehnen     U  Markierung aufheben</source>
         <translation>0–5  별     P  채택     X  거부     U  플래그 지우기</translation>
     </message>
     <message>
-        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden</source>
+        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Widerrufen     Esc  Beenden</source>
         <translation>← →  탐색     M/C + 1–9  이동/복사     ⌘Z  실행 취소     Esc  종료</translation>
     </message>
     <message>
-        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U markieren</source>
+        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U setzen Markierungen</source>
         <translation>선별 모드: 숫자로 별점, P/X/U로 플래그 지정</translation>
     </message>
     <message>
@@ -590,27 +590,27 @@
         <translation>필터: %1 — %2 / %3</translation>
     </message>
     <message>
-        <source>Keine verworfenen Bilder</source>
+        <source>Keine abgelehnten Bilder</source>
         <translation>거부된 이미지 없음</translation>
     </message>
     <message numerus="yes">
-        <source>%n verworfene(s) Bild(er) in den Papierkorb legen?</source>
+        <source>%n abgelehnte(s) Bild(er) in den Papierkorb legen?</source>
         <translation>
             <numerusform>거부된 이미지 %n개를 휴지통으로 이동하겠습니까?</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <source>%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
+        <source>%n abgelehnte(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
         <translation>
             <numerusform>거부된 이미지 %n개를 ‘_Rejected’ 폴더로 이동하겠습니까?</numerusform>
         </translation>
     </message>
     <message>
-        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren werden mitbewegt. ⌘Z widerruft den ganzen Schritt.</source>
         <translation>표시된 이미지만 해당됩니다(현재 필터). XMP 사이드카 파일과 RAW+JPEG 쌍의 다른 파일도 함께 이동합니다. ⌘Z로 전체 단계를 실행 취소할 수 있습니다.</translation>
     </message>
     <message>
-        <source>In den Papierkorb</source>
+        <source>In den Papierkorb legen</source>
         <translation>휴지통으로</translation>
     </message>
     <message>
@@ -618,11 +618,11 @@
         <translation>이동</translation>
     </message>
     <message>
-        <source>Verworfene in den Papierkorb</source>
+        <source>Abgelehnte in den Papierkorb legen</source>
         <translation>거부된 이미지를 휴지통으로</translation>
     </message>
     <message>
-        <source>Verworfene nach _Rejected</source>
+        <source>Abgelehnte nach „_Rejected“ verschieben</source>
         <translation>거부된 이미지를 _Rejected로</translation>
     </message>
     <message numerus="yes">
@@ -888,7 +888,7 @@
         <translation>공유 메모리를 사용할 수 없습니다(%1).</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
         <translation>이미지를 위한 메모리가 부족합니다(%1 × %2픽셀).</translation>
     </message>
     <message>
@@ -942,7 +942,7 @@
         <translation>기본 앱으로 설정</translation>
     </message>
     <message>
-        <source>Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht ausgewählte Formate bleiben beim bisherigen Programm.</source>
+        <source>Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht ausgewählte Formate bleiben bei der bisherigen App.</source>
         <translation>선택한 이미지 포맷의 기본 앱이 Lumaflip으로 설정됩니다. 선택하지 않은 포맷은 기존 앱을 그대로 사용합니다.</translation>
     </message>
     <message>
@@ -1164,7 +1164,7 @@
         <translation>잘라서 내보내기</translation>
     </message>
     <message>
-        <source>Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <source>Den Zuschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
         <translation>‘%1’의 선택 영역을 새 파일로 내보냅니다. 원본은 변경되지 않습니다.</translation>
     </message>
     <message>
@@ -1223,7 +1223,7 @@
         <translation>모두 유지</translation>
     </message>
     <message>
-        <source>Ohne Ortsdaten (GPS)</source>
+        <source>Ohne Aufnahmeort (GPS)</source>
         <translation>위치 정보(GPS) 제외</translation>
     </message>
     <message>
@@ -1251,7 +1251,7 @@
         <translation>SDR로(톤 매핑)</translation>
     </message>
     <message>
-        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung</source>
+        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Endung</source>
         <translation>자리 표시자: {name} = 원본 이름, {n} = 일련번호, {format} = 확장자</translation>
     </message>
     <message>
@@ -1278,7 +1278,7 @@
         <translation>내보내기</translation>
     </message>
     <message>
-        <source>Exportiere …</source>
+        <source>Wird exportiert …</source>
         <translation>내보내는 중…</translation>
     </message>
     <message>
@@ -1286,7 +1286,7 @@
         <translation>취소</translation>
     </message>
     <message>
-        <source>Exportiere %1 von %2: %3</source>
+        <source>Bild %1 von %2 wird exportiert: %3</source>
         <translation>내보내는 중 %1/%2: %3</translation>
     </message>
 </context>
@@ -1389,13 +1389,13 @@
         <translation>이미지 없음</translation>
     </message>
     <message>
-        <source>Orte werden gelesen … %1 von %2</source>
+        <source>Aufnahmeorte werden gelesen … %1 von %2</source>
         <extracomment>folder map (F-INFO-08) while the GPS positions are read: done / all images</extracomment>
         <translation>위치 읽는 중… %1/%2</translation>
     </message>
     <message numerus="yes">
-        <source>%1 von %n Bildern mit Ort</source>
-        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Ort&quot; (%1 images with a position, %n all)</extracomment>
+        <source>%1 von %n Bildern mit Aufnahmeort</source>
+        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Aufnahmeort&quot; (%1 images with a position, %n all)</extracomment>
         <translation>
             <numerusform>이미지 %n개 중 %1개에 위치 정보 있음</numerusform>
         </translation>
@@ -1404,7 +1404,7 @@
 <context>
     <name>lf::FolderMapPanel</name>
     <message>
-        <source>Auf diesem System ist keine Kartendarstellung verfügbar.</source>
+        <source>Karten sind auf diesem System nicht verfügbar.</source>
         <translation>이 시스템에서는 지도를 사용할 수 없습니다.</translation>
     </message>
     <message>
@@ -1416,14 +1416,14 @@
         <translation>촬영 위치(GPS)가 포함된 이미지가 없습니다.</translation>
     </message>
     <message>
-        <source>Karte schließen</source>
+        <source>Ordnerkarte schließen</source>
         <translation>지도 닫기</translation>
     </message>
 </context>
 <context>
     <name>lf::FolderMapView</name>
     <message>
-        <source>Karten sind unter Windows nicht verfügbar. Fotos mit Ortsangabe in diesem Ordner: %1</source>
+        <source>Karten sind unter Windows nicht verfügbar. Bilder mit Aufnahmeort in diesem Ordner: %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1494,7 +1494,7 @@
         <translation>%1mm</translation>
     </message>
     <message>
-        <source> (KB: %1 mm)</source>
+        <source> (Kleinbild: %1 mm)</source>
         <extracomment>appended to the focal length: the 35 mm equivalent (&quot;KB&quot; = Kleinbild), e.g. &quot; (35-mm-equiv.: 52 mm)&quot;</extracomment>
         <translation> (35mm 환산: %1mm)</translation>
     </message>
@@ -1631,7 +1631,7 @@
 <context>
     <name>lf::ImageExport</name>
     <message>
-        <source>„%1“ gibt es schon.</source>
+        <source>„%1“ existiert bereits.</source>
         <translation>‘%1’이(가) 이미 있습니다.</translation>
     </message>
     <message>
@@ -1671,7 +1671,7 @@
         <translation>알 수 없는 대상 포맷입니다.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher zum Exportieren.</source>
+        <source>Nicht genug Arbeitsspeicher zum Exportieren.</source>
         <translation>내보낼 메모리가 부족합니다.</translation>
     </message>
     <message>
@@ -1694,11 +1694,11 @@
         <translation>이미지에 픽셀이 없습니다.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
         <translation>이미지를 위한 메모리가 부족합니다(%1 × %2픽셀).</translation>
     </message>
     <message>
-        <source>Bildpuffer konnte nicht angelegt werden.</source>
+        <source>Der Bildpuffer konnte nicht angelegt werden.</source>
         <translation>이미지 버퍼를 생성할 수 없습니다.</translation>
     </message>
     <message>
@@ -1781,7 +1781,7 @@
         <translation>지도 불러오는 중…</translation>
     </message>
     <message>
-        <source>Karte anzeigen</source>
+        <source>Karte einblenden</source>
         <translation>지도 보기</translation>
     </message>
     <message>
@@ -1793,7 +1793,7 @@
         <translation>지도 가리기</translation>
     </message>
     <message>
-        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)</source>
+        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte einblenden“)</source>
         <translation>지도 조각을 더 이상 불러오지 않습니다(&apos;지도 보기&apos;를 다시 클릭할 때까지)</translation>
     </message>
     <message>
@@ -2028,7 +2028,7 @@
         <translation>너비 채우기</translation>
     </message>
     <message>
-        <source>Einpassen ↔ 100 % am Cursor</source>
+        <source>Einpassen ↔ 100 % am Mauszeiger</source>
         <translation>크기에 맞추기 ↔ 커서 위치에서 100%</translation>
     </message>
     <message>
@@ -2076,11 +2076,11 @@
         <translation>전체 화면</translation>
     </message>
     <message>
-        <source>Vollbild bzw. Modus verlassen</source>
+        <source>Vollbild oder Modus beenden</source>
         <translation>전체 화면 또는 모드 종료</translation>
     </message>
     <message>
-        <source>Modus verlassen, sonst Fenster schließen</source>
+        <source>Modus beenden, sonst Fenster schließen</source>
         <translation>모드 종료, 아니면 윈도우 닫기</translation>
     </message>
     <message>
@@ -2124,7 +2124,7 @@
         <translation>수직으로 뒤집기</translation>
     </message>
     <message>
-        <source>Drehung speichern</source>
+        <source>Drehung sichern</source>
         <translation>회전 저장</translation>
     </message>
     <message>
@@ -2132,7 +2132,7 @@
         <translation>휴지통으로 이동</translation>
     </message>
     <message>
-        <source>Rückgängig</source>
+        <source>Widerrufen</source>
         <translation>실행 취소</translation>
     </message>
     <message>
@@ -2224,15 +2224,15 @@
         <translation>별 5개</translation>
     </message>
     <message>
-        <source>Behalten (Pick)</source>
+        <source>Markieren</source>
         <translation>채택(Pick)</translation>
     </message>
     <message>
-        <source>Verwerfen (Reject)</source>
+        <source>Ablehnen</source>
         <translation>거부(Reject)</translation>
     </message>
     <message>
-        <source>Markierung zurücksetzen</source>
+        <source>Markierung aufheben</source>
         <translation>플래그 지우기</translation>
     </message>
     <message>
@@ -2256,7 +2256,7 @@
         <translation>무작위 순서</translation>
     </message>
     <message>
-        <source>Nach Dateiname filtern</source>
+        <source>Nach Dateinamen filtern</source>
         <translation>파일 이름으로 필터링</translation>
     </message>
     <message>
@@ -2300,7 +2300,7 @@
         <translation>하위 폴더 포함</translation>
     </message>
     <message>
-        <source>RAW/JPEG des Paares zeigen</source>
+        <source>RAW/JPEG des Paares anzeigen</source>
         <translation>쌍의 RAW/JPEG 보기</translation>
     </message>
     <message>
@@ -2364,7 +2364,7 @@
         <translation>아래로 돌리면 다음 이미지, 위로 돌리면 이전 이미지를 표시합니다.</translation>
     </message>
     <message>
-        <source>Zoomen (am Cursor)</source>
+        <source>Zoomen (am Mauszeiger)</source>
         <translation>확대/축소(커서 위치)</translation>
     </message>
     <message>
@@ -2372,7 +2372,7 @@
         <translation>위로 돌리면 확대, 아래로 돌리면 축소합니다(마우스 포인터 위치 기준).</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen (sonst Bild wechseln)</source>
+        <source>Ausschnitt verschieben (sonst Bild wechseln)</source>
         <translation>보기 영역 스크롤(아니면 이미지 넘기기)</translation>
     </message>
     <message>
@@ -2444,7 +2444,7 @@
         <translation>여러 페이지로 된 파일은 페이지를 넘기고, 그렇지 않으면 이미지를 넘깁니다.</translation>
     </message>
     <message>
-        <source>Ausschnitt seitenweise scrollen (sonst Bild)</source>
+        <source>Ausschnitt seitenweise verschieben (sonst Bild)</source>
         <translation>보기 영역 페이지 단위 스크롤(아니면 이미지)</translation>
     </message>
     <message>
@@ -2520,7 +2520,7 @@
         <translation>화살표 키로 이미지를 넘기고, ⌥를 누르면 보기 영역을 이동합니다.</translation>
     </message>
     <message>
-        <source>Erst bis zum Rand scrollen, dann Bild wechseln</source>
+        <source>Erst bis zum Rand verschieben, dann Bild wechseln</source>
         <translation>가장자리까지 스크롤한 후 이미지 넘기기</translation>
     </message>
     <message>
@@ -2528,7 +2528,7 @@
         <translation>보기 영역을 이동하며, 이미지 가장자리에 도달하면 이미지를 넘깁니다.</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen (Bild mit ⌥←/⌥→)</source>
+        <source>Ausschnitt verschieben (Bild mit ⌥←/⌥→)</source>
         <translation>보기 영역 스크롤(⌥←/⌥→로 이미지 넘기기)</translation>
     </message>
     <message>
@@ -2540,7 +2540,7 @@
         <translation>↑ / ↓</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen, sonst vorheriges/nächstes Bild</source>
+        <source>Ausschnitt verschieben, sonst vorheriges/nächstes Bild</source>
         <translation>보기 영역 스크롤, 아니면 이전/다음 이미지</translation>
     </message>
     <message>
@@ -2548,7 +2548,7 @@
         <translation>확대된 상태에서는 보기 영역을 이동하고, 그렇지 않으면 이미지를 넘깁니다.</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen (wenn gezoomt), sonst nichts</source>
+        <source>Ausschnitt verschieben (wenn gezoomt), sonst nichts</source>
         <translation>보기 영역 스크롤(확대된 상태), 아니면 동작 없음</translation>
     </message>
     <message>
@@ -2648,7 +2648,7 @@
         <translation>트랙패드 쓸어넘기기(두 손가락, 수평)</translation>
     </message>
     <message>
-        <source>Bild wechseln (gezoomt: scrollen)</source>
+        <source>Bild wechseln (gezoomt: Ausschnitt verschieben)</source>
         <translation>이미지 넘기기(확대 시: 스크롤)</translation>
     </message>
     <message>
@@ -2656,7 +2656,7 @@
         <translation>쓸어넘기면 이미지를 넘기고, 확대된 상태에서는 보기 영역을 이동합니다.</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen</source>
+        <source>Nur Ausschnitt verschieben</source>
         <translation>보기 영역 스크롤</translation>
     </message>
     <message>
@@ -2696,7 +2696,7 @@
         <translation>Esc</translation>
     </message>
     <message>
-        <source>Vollbild bzw. Modus verlassen, sonst nichts</source>
+        <source>Vollbild oder Modus beenden, sonst nichts</source>
         <translation>전체 화면 또는 모드 종료, 아니면 동작 없음</translation>
     </message>
     <message>
@@ -2704,7 +2704,7 @@
         <translation>Esc는 전체 화면, 슬라이드쇼 또는 기타 모드를 종료하며, 그 외에는 아무 동작도 하지 않습니다.</translation>
     </message>
     <message>
-        <source>Vollbild bzw. Modus verlassen, sonst Fenster schließen</source>
+        <source>Vollbild oder Modus beenden, sonst Fenster schließen</source>
         <translation>전체 화면 또는 모드 종료, 아니면 윈도우 닫기</translation>
     </message>
     <message>
@@ -2756,7 +2756,7 @@
         <translation>항상 활성</translation>
     </message>
     <message>
-        <source>Ziffern vergeben immer Sterne; P/X/U markieren. Zoom-Ziffern sind aus.</source>
+        <source>Ziffern vergeben immer Sterne, P/X/U setzen Markierungen. Die Zoom-Ziffern sind dann aus.</source>
         <translation>숫자 키로 항상 별점을 지정하고, P/X/U로 플래그를 지정합니다. 확대/축소 숫자 키는 꺼집니다.</translation>
     </message>
 </context>
@@ -2767,11 +2767,11 @@
         <translation>타사 라이선스</translation>
     </message>
     <message>
-        <source>Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im Programmpaket unter Contents/Resources/licenses.</source>
+        <source>Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im App-Paket unter Contents/Resources/licenses.</source>
         <translation>Lumaflip에는 다음 구성 요소가 포함되어 있습니다. 라이선스 전문은 앱 번들의 Contents/Resources/licenses에도 있습니다.</translation>
     </message>
     <message>
-        <source>Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das Programmpaket gelegt.</source>
+        <source>Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das App-Paket gelegt.</source>
         <translation>개발자 빌드: 라이선스 전문은 패키징할 때(tools/package.sh) 앱 번들에 추가됩니다.</translation>
     </message>
     <message>
@@ -2841,11 +2841,11 @@
         <translation>파일을 쓸 수 없습니다(폴더가 쓰기 금지 상태일 수 있음).</translation>
     </message>
     <message>
-        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte die Drehung erneut speichern.</source>
+        <source>Die Datei wurde inzwischen verändert – nichts gesichert. Sichere die Drehung erneut.</source>
         <translation>그 사이에 파일이 변경되어 아무것도 저장하지 않았습니다. 회전을 다시 저장하세요.</translation>
     </message>
     <message>
-        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
+        <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
         <translation>파일에 JPEG 데이터를 무손실로 재배열할 때 손실될 추가 이미지(예: HDR 게인 맵 또는 두 번째 입체 이미지)가 포함되어 있습니다.</translation>
     </message>
     <message>
@@ -2853,15 +2853,15 @@
         <translation>파일이 더 이상 존재하지 않습니다.</translation>
     </message>
     <message>
-        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <source>Das Dateiformat wird zum Sichern nicht erkannt.</source>
         <translation>저장할 파일 포맷을 인식할 수 없습니다.</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; zum dauerhaften Drehen bitte den RAW-Entwickler benutzen.</source>
+        <source>RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; verwende zum dauerhaften Drehen deinen RAW-Konverter.</source>
         <translation>RAW 파일은 절대 변경되지 않습니다. 회전은 화면 표시에만 적용됩니다. 영구적으로 회전하려면 RAW 현상 앱을 사용하세요.</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht gedreht gespeichert werden.</source>
+        <source>Animierte oder mehrseitige Dateien können nicht gedreht gesichert werden.</source>
         <translation>애니메이션 또는 여러 페이지로 된 파일은 회전하여 저장할 수 없습니다.</translation>
     </message>
     <message>
@@ -2873,11 +2873,11 @@
         <translation>따라서 EXIF 방향만 설정했습니다.</translation>
     </message>
     <message>
-        <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfrei drehen geht nur, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
+        <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfreies Drehen ist nur möglich, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
         <translation>이미지의 너비 또는 높이가 JPEG 블록 크기의 배수가 아닙니다. 무손실 회전은 좁은 가장자리(최대 15픽셀)를 잘라내는 경우에만 가능합니다. 그렇지 않으면 EXIF 방향만 설정합니다.</translation>
     </message>
     <message>
-        <source>Die Drehung kann nicht gespeichert werden.</source>
+        <source>Die Drehung kann nicht gesichert werden.</source>
         <translation>회전을 저장할 수 없습니다.</translation>
     </message>
     <message>
@@ -2897,11 +2897,11 @@
         <translation>이 이미지는 무손실 회전이 불가능합니다.</translation>
     </message>
     <message>
-        <source>Die Ausrichtung ließ sich nicht ohne Neukodieren speichern.</source>
+        <source>Die Ausrichtung ließ sich nicht ohne Neukodieren sichern.</source>
         <translation>재인코딩하지 않고는 방향을 저장할 수 없습니다.</translation>
     </message>
     <message>
-        <source>Die Drehung konnte nicht gespeichert werden.</source>
+        <source>Die Drehung konnte nicht gesichert werden.</source>
         <translation>회전을 저장할 수 없습니다.</translation>
     </message>
     <message>
@@ -2909,47 +2909,47 @@
         <translation>파일을 대치할 수 없습니다.</translation>
     </message>
     <message>
-        <source>Datei wurde inzwischen verändert – Rückgängig nicht möglich</source>
+        <source>Die Datei wurde inzwischen verändert – Widerrufen nicht möglich</source>
         <translation>그 사이에 파일이 변경됨 – 실행 취소할 수 없음</translation>
     </message>
     <message>
-        <source>Datei wurde inzwischen verändert – Wiederholen nicht möglich</source>
+        <source>Die Datei wurde inzwischen verändert – Wiederholen nicht möglich</source>
         <translation>그 사이에 파일이 변경됨 – 실행 복귀할 수 없음</translation>
     </message>
     <message>
-        <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Rückgängig/Wiederholen ist dafür nicht mehr möglich.</source>
+        <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Widerrufen/Wiederholen ist dafür nicht mehr möglich.</source>
         <translation>저장 공간을 절약하기 위해 이 단계의 백업 사본을 삭제했으므로 더 이상 실행 취소/실행 복귀할 수 없습니다.</translation>
     </message>
     <message>
-        <source>Es gibt nichts rückgängig zu machen.</source>
+        <source>Es gibt nichts zu widerrufen.</source>
         <translation>실행 취소할 항목이 없습니다.</translation>
     </message>
     <message>
-        <source>Kein Platz für die Sicherungskopie – nichts gespeichert.</source>
+        <source>Kein Speicherplatz für die Sicherungskopie – nichts gesichert.</source>
         <translation>백업 사본을 위한 공간이 부족하여 아무것도 저장하지 않았습니다.</translation>
     </message>
     <message>
-        <source>Keine Drehung zu speichern</source>
+        <source>Keine Drehung zu sichern</source>
         <translation>저장할 회전 없음</translation>
     </message>
     <message>
-        <source>Drehung gespeichert (EXIF-Ausrichtung)</source>
+        <source>Drehung gesichert (EXIF-Ausrichtung)</source>
         <translation>회전 저장됨(EXIF 방향)</translation>
     </message>
     <message>
-        <source>Drehung verlustfrei gespeichert</source>
+        <source>Drehung verlustfrei gesichert</source>
         <translation>회전 무손실 저장됨</translation>
     </message>
     <message>
-        <source>Drehung verlustfrei gespeichert (Rand beschnitten)</source>
+        <source>Drehung verlustfrei gesichert (Rand beschnitten)</source>
         <translation>회전 무손실 저장됨(가장자리 잘림)</translation>
     </message>
     <message>
-        <source>Drehung gespeichert (verlustfrei neu kodiert)</source>
+        <source>Drehung gesichert (verlustfrei neu kodiert)</source>
         <translation>회전 저장됨(무손실 재인코딩)</translation>
     </message>
     <message>
-        <source>Drehung gespeichert (neu kodiert)</source>
+        <source>Drehung gesichert (neu kodiert)</source>
         <translation>회전 저장됨(재인코딩)</translation>
     </message>
     <message>
@@ -2961,7 +2961,7 @@
         <translation>이미지를 디코딩할 수 없습니다.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher zum Drehen.</source>
+        <source>Nicht genug Arbeitsspeicher zum Drehen.</source>
         <translation>회전하기 위한 메모리가 부족합니다.</translation>
     </message>
     <message>
@@ -2969,7 +2969,7 @@
         <translation>이 포맷은 쓸 수 없습니다.</translation>
     </message>
     <message>
-        <source>Das Bild lässt sich in diesem Format nicht exakt neu speichern.</source>
+        <source>Das Bild lässt sich in diesem Format nicht exakt neu sichern.</source>
         <translation>이 포맷으로는 이미지를 정확히 동일하게 다시 저장할 수 없습니다.</translation>
     </message>
     <message>
@@ -2997,7 +2997,7 @@
         <translation>‘%1’을(를) 대치할 수 없습니다: %2</translation>
     </message>
     <message>
-        <source>Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.</source>
+        <source>Die Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.</source>
         <translation>‘실행 취소’를 위한 백업 사본을 생성할 수 없습니다.</translation>
     </message>
     <message>
@@ -3017,7 +3017,7 @@
         <translation>세그먼테이션 마스크</translation>
     </message>
     <message>
-        <source>Die Datei enthält Zusatzbilder (%1), die beim Speichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gespeichert und gilt weiter nur in der Anzeige.</source>
+        <source>Die Datei enthält Zusatzbilder (%1), die beim Sichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gesichert und gilt weiter nur in der Anzeige.</source>
         <translation>파일에 방향을 저장할 때 손실될 추가 이미지(%1)가 포함되어 있습니다. 따라서 회전을 저장하지 않았으며, 회전은 계속 화면 표시에만 적용됩니다.</translation>
     </message>
     <message>
@@ -3045,7 +3045,7 @@
         <translation>방향을 무손실로 쓸 수 없습니다(%1).</translation>
     </message>
     <message>
-        <source>Das Bild lässt sich nicht exakt neu speichern.</source>
+        <source>Das Bild lässt sich nicht exakt neu sichern.</source>
         <translation>이미지를 정확히 동일하게 다시 저장할 수 없습니다.</translation>
     </message>
     <message>
@@ -3053,7 +3053,7 @@
         <translation>새 파일이 없습니다.</translation>
     </message>
     <message>
-        <source>Nicht genug Platz, um „%1“ sicher zu überschreiben.</source>
+        <source>Nicht genug Speicherplatz, um „%1“ sicher zu überschreiben.</source>
         <translation>‘%1’을(를) 안전하게 덮어쓰기 위한 공간이 부족합니다.</translation>
     </message>
     <message>
@@ -3080,7 +3080,7 @@
         <translation>전달된 파일이 없습니다.</translation>
     </message>
     <message>
-        <source>Der Bildschirm ist nicht mehr da.</source>
+        <source>Der Bildschirm ist nicht mehr angeschlossen.</source>
         <translation>디스플레이가 더 이상 연결되어 있지 않습니다.</translation>
     </message>
     <message>
@@ -3092,7 +3092,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Windows hat das Bild nicht als Hintergrund übernommen.</source>
+        <source>Windows hat das Bild nicht als Desktophintergrund übernommen.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3119,7 +3119,7 @@
         <translation>폴더 열기…</translation>
     </message>
     <message>
-        <source>Zuletzt geöffnet</source>
+        <source>Benutzte Dokumente</source>
         <translation>최근 사용 항목 열기</translation>
     </message>
     <message>
@@ -3139,7 +3139,7 @@
         <translation>이름 변경…</translation>
     </message>
     <message>
-        <source>In Standard-Editor öffnen</source>
+        <source>Im Editor öffnen</source>
         <translation>기본 편집기에서 열기</translation>
     </message>
     <message>
@@ -3203,7 +3203,7 @@
         <translation>크기에 맞추기</translation>
     </message>
     <message>
-        <source>Einpassen inkl. Vergrößern</source>
+        <source>Einpassen (auch vergrößern)</source>
         <translation>크기에 맞추기(확대 허용)</translation>
     </message>
     <message>
@@ -3291,7 +3291,7 @@
         <translation>정렬 기준</translation>
     </message>
     <message>
-        <source>Wie Finder</source>
+        <source>Wie im Finder</source>
         <translation>Finder와 동일</translation>
     </message>
     <message>
@@ -3400,11 +3400,11 @@
         <translation>자르기…</translation>
     </message>
     <message>
-        <source>Overlays</source>
+        <source>Einblendungen</source>
         <translation>오버레이</translation>
     </message>
     <message>
-        <source>Über-/Unterbelichtung</source>
+        <source>Über-/Unterbelichtungswarnung</source>
         <translation>노출 과다/부족</translation>
     </message>
     <message>
@@ -3452,7 +3452,7 @@
         <translation>이전 페이지</translation>
     </message>
     <message>
-        <source>Drehung speichern</source>
+        <source>Drehung sichern</source>
         <translation>회전 저장</translation>
     </message>
     <message>
@@ -3480,7 +3480,7 @@
         <translation>모든 이미지</translation>
     </message>
     <message>
-        <source>Nur Picks</source>
+        <source>Nur markierte</source>
         <translation>채택만</translation>
     </message>
     <message>
@@ -3488,7 +3488,7 @@
         <translation>별점 없는 것만</translation>
     </message>
     <message>
-        <source>Nur verworfene</source>
+        <source>Nur abgelehnte</source>
         <translation>거부된 것만</translation>
     </message>
     <message>
@@ -3516,11 +3516,11 @@
         <translation>필터</translation>
     </message>
     <message>
-        <source>Alle verworfenen in den Papierkorb …</source>
+        <source>Alle abgelehnten in den Papierkorb legen …</source>
         <translation>거부된 모든 이미지를 휴지통으로…</translation>
     </message>
     <message>
-        <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
+        <source>Alle abgelehnten nach „_Rejected“ verschieben …</source>
         <translation>거부된 모든 이미지를 ‘_Rejected’로…</translation>
     </message>
     <message>
@@ -3560,7 +3560,7 @@
         <translation>하위 폴더 포함</translation>
     </message>
     <message>
-        <source>Karte</source>
+        <source>Ordnerkarte</source>
         <translation>지도</translation>
     </message>
     <message>
@@ -3576,7 +3576,7 @@
         <translation>이미지로 이동…</translation>
     </message>
     <message>
-        <source>Nach Dateiname filtern …</source>
+        <source>Nach Dateinamen filtern …</source>
         <translation>파일 이름으로 필터링…</translation>
     </message>
     <message>
@@ -3596,7 +3596,7 @@
         <translation>윈도우 연결…</translation>
     </message>
     <message>
-        <source>Entkoppeln</source>
+        <source>Fenster entkoppeln</source>
         <translation>윈도우 연결 해제</translation>
     </message>
     <message>
@@ -3685,11 +3685,11 @@
 <context>
     <name>lf::MenuExtras</name>
     <message>
-        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <source>Einzelne PDF-Seiten können nicht an andere Apps übergeben werden.</source>
         <translation>개별 PDF 페이지는 다른 앱으로 전달할 수 없습니다.</translation>
     </message>
     <message>
-        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <source>Das Bild wird aus dem Archiv entpackt – versuche es gleich noch einmal.</source>
         <translation>아카이브에서 이미지를 추출하는 중입니다 – 잠시 후 다시 시도하십시오.</translation>
     </message>
     <message>
@@ -3721,15 +3721,15 @@
         <translation>계단식</translation>
     </message>
     <message>
-        <source>Vorherigen Tab zeigen</source>
+        <source>Vorherigen Tab anzeigen</source>
         <translation>이전 탭 보기</translation>
     </message>
     <message>
-        <source>Nächsten Tab zeigen</source>
+        <source>Nächsten Tab anzeigen</source>
         <translation>다음 탭 보기</translation>
     </message>
     <message>
-        <source>Tab in neues Fenster bewegen</source>
+        <source>Tab in ein neues Fenster bewegen</source>
         <translation>탭을 새로운 윈도우로 이동</translation>
     </message>
     <message>
@@ -3853,12 +3853,12 @@
         <translation>촬영 날짜</translation>
     </message>
     <message>
-        <source>Breite</source>
+        <source>Breitengrad</source>
         <extracomment>GPS latitude</extracomment>
         <translation>위도</translation>
     </message>
     <message>
-        <source>Länge</source>
+        <source>Längengrad</source>
         <extracomment>GPS longitude</extracomment>
         <translation>경도</translation>
     </message>
@@ -3964,7 +3964,7 @@
         <translation>취소</translation>
     </message>
     <message>
-        <source>Bitte eine Bildnummer zwischen 1 und %1 eingeben</source>
+        <source>Gib eine Bildnummer zwischen 1 und %1 ein.</source>
         <translation>1에서 %1 사이의 이미지 번호를 입력하십시오</translation>
     </message>
     <message>
@@ -3987,7 +3987,7 @@
 <context>
     <name>lf::OpenWithService</name>
     <message>
-        <source>Kein Programm zum Bearbeiten gefunden. Wähle eines unter Einstellungen → Allgemein → Editor.</source>
+        <source>Keine App zum Bearbeiten gefunden. Wähle eine unter Einstellungen → Allgemein → Editor.</source>
         <translation>편집할 앱을 찾을 수 없습니다. 설정 → 일반 → 편집기에서 앱을 선택하세요.</translation>
     </message>
     <message>
@@ -3995,11 +3995,11 @@
         <translation>프로그램 (*.exe)</translation>
     </message>
     <message>
-        <source>Programme (*.desktop);;Alle Dateien (*)</source>
+        <source>Apps (*.desktop);;Alle Dateien (*)</source>
         <translation>프로그램 (*.desktop);;모든 파일 (*)</translation>
     </message>
     <message>
-        <source>„%1“ ist kein Programm.</source>
+        <source>„%1“ ist keine App.</source>
         <translation>‘%1’은(는) 프로그램이 아닙니다.</translation>
     </message>
     <message>
@@ -4011,15 +4011,15 @@
         <translation>기타…</translation>
     </message>
     <message>
-        <source>Programm wählen</source>
+        <source>App wählen</source>
         <translation>앱 선택</translation>
     </message>
     <message>
-        <source>Programme (*.app)</source>
+        <source>Apps (*.app)</source>
         <translation>앱(*.app)</translation>
     </message>
     <message>
-        <source>Programme werden gesucht …</source>
+        <source>Apps werden gesucht …</source>
         <translation>앱 검색 중…</translation>
     </message>
     <message>
@@ -4027,7 +4027,7 @@
         <translation>%1(기본)</translation>
     </message>
     <message>
-        <source>Keine passenden Programme</source>
+        <source>Keine passenden Apps</source>
         <translation>일치하는 앱 없음</translation>
     </message>
 </context>
@@ -4038,7 +4038,7 @@
         <translation>격자 보기에 표시할 이미지가 없음</translation>
     </message>
     <message>
-        <source>Zum Vergleichen mindestens zwei Bilder wählen</source>
+        <source>Wähle zum Vergleichen mindestens zwei Bilder aus</source>
         <translation>비교할 이미지를 두 개 이상 선택하십시오</translation>
     </message>
     <message>
@@ -4115,7 +4115,7 @@
         <translation>파일이 없습니다.</translation>
     </message>
     <message>
-        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <source>Das PDF-Dokument ist passwortgeschützt.</source>
         <translation>PDF 문서가 암호로 보호되어 있습니다.</translation>
     </message>
     <message>
@@ -4123,7 +4123,7 @@
         <translation>페이지가 비어 있습니다.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für die Seite.</source>
+        <source>Nicht genug Arbeitsspeicher für die Seite.</source>
         <translation>페이지에 필요한 메모리가 부족합니다.</translation>
     </message>
 </context>
@@ -4174,7 +4174,7 @@
         <translation>언어:</translation>
     </message>
     <message>
-        <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbild aktivieren“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
+        <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbildmodus“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
         <translation>즉시 적용됩니다. macOS 메뉴와 윈도우(‘전체 화면 시작’, ‘서비스’, ‘열기’, 권한 요청)는 다시 시작한 후 바뀝니다.</translation>
     </message>
     <message>
@@ -4206,7 +4206,7 @@
         <translation>종료 시 열려 있던 모든 윈도우의 폴더, 이미지, 확대/축소 및 위치를 복원합니다.</translation>
     </message>
     <message>
-        <source>Vor dem Löschen nachfragen</source>
+        <source>Vor dem Bewegen in den Papierkorb nachfragen</source>
         <translation>삭제하기 전에 확인</translation>
     </message>
     <message>
@@ -4218,11 +4218,11 @@
         <translation>편집기:</translation>
     </message>
     <message>
-        <source>Für „In Standard-Editor öffnen“ (Taste E).</source>
+        <source>Für „Im Editor öffnen“ (Taste E).</source>
         <translation>‘기본 편집기에서 열기’(E 키)에 사용됩니다.</translation>
     </message>
     <message>
-        <source>Drehung speichern:</source>
+        <source>Drehung sichern:</source>
         <translation>회전 저장:</translation>
     </message>
     <message>
@@ -4234,7 +4234,7 @@
         <translation>JPEG 무손실 회전(DCT)</translation>
     </message>
     <message>
-        <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Programme ohne EXIF-Unterstützung das Bild richtig zeigen. RAW-Dateien werden nie verändert; ⌘Z macht das Speichern rückgängig.</source>
+        <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Apps ohne EXIF-Unterstützung das Bild richtig anzeigen. RAW-Dateien werden nie verändert; ⌘Z widerruft das Sichern.</source>
         <translation>두 방법 모두 이미지 픽셀을 변경하지 않습니다. ‘EXIF 방향’은 표시자 하나만 변경하며(JPEG, HEIC, TIFF, PNG), ‘무손실 회전’은 EXIF를 지원하지 않는 앱에서도 이미지가 올바르게 표시되도록 JPEG 블록을 재배열합니다. RAW 파일은 절대 변경되지 않으며, ⌘Z로 저장을 실행 취소할 수 있습니다.</translation>
     </message>
     <message>
@@ -4258,7 +4258,7 @@
         <translation>마우스를 움직이면 표시</translation>
     </message>
     <message>
-        <source>Immer zeigen</source>
+        <source>Immer einblenden</source>
         <translation>항상 표시</translation>
     </message>
     <message>
@@ -4278,7 +4278,7 @@
         <translation>새로운 윈도우에 표시:</translation>
     </message>
     <message>
-        <source>Statuszeile</source>
+        <source>Statusleiste</source>
         <translation>상태 막대</translation>
     </message>
     <message>
@@ -4326,7 +4326,7 @@
         <translation>밝게</translation>
     </message>
     <message>
-        <source>Wie Systemdarstellung</source>
+        <source>Wie System</source>
         <translation>시스템 화면 모드와 동일</translation>
     </message>
     <message>
@@ -4358,7 +4358,7 @@
         <translation>크기에 맞추기(확대 안 함)</translation>
     </message>
     <message>
-        <source>Einpassen inkl. Vergrößern</source>
+        <source>Einpassen (auch vergrößern)</source>
         <translation>크기에 맞추기(확대 허용)</translation>
     </message>
     <message>
@@ -4390,7 +4390,7 @@
         <translation>부드럽게</translation>
     </message>
     <message>
-        <source>Pixel scharf</source>
+        <source>Scharfe Pixel</source>
         <translation>선명한 픽셀</translation>
     </message>
     <message>
@@ -4498,11 +4498,11 @@
         <translation>Mac 기본</translation>
     </message>
     <message>
-        <source>Windows-Viewer-Gewohnheiten</source>
+        <source>Wie Windows-Bildbetrachter</source>
         <translation>Windows 뷰어 방식</translation>
     </message>
     <message>
-        <source>Fotograf:in / Lightroom</source>
+        <source>Fotografie / Lightroom</source>
         <translation>사진가 / Lightroom</translation>
     </message>
     <message>
@@ -4510,7 +4510,7 @@
         <translation>마우스, 트랙패드 및 키</translation>
     </message>
     <message>
-        <source>Mausrad-Feinheiten</source>
+        <source>Mausrad-Feineinstellungen</source>
         <translation>마우스 휠 세부 설정</translation>
     </message>
     <message>
@@ -4554,7 +4554,7 @@
         <translation>키보드 단축키</translation>
     </message>
     <message>
-        <source>Feld anklicken und neue Taste drücken. Bis zu drei Kürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
+        <source>Klicke auf ein Feld und drücke die neue Taste. Bis zu drei Tastenkürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
         <translation>필드를 클릭한 다음 새 키를 누르세요. 동작당 최대 세 개의 단축키를 지정할 수 있습니다. 별점용 숫자 키와 P/X/U는 선별 모드에서만 적용됩니다.</translation>
     </message>
     <message>
@@ -4574,7 +4574,7 @@
         <translation>–</translation>
     </message>
     <message>
-        <source>Standardkürzel wiederherstellen</source>
+        <source>Standard-Tastenkürzel wiederherstellen</source>
         <translation>기본 단축키 복원</translation>
     </message>
     <message>
@@ -4586,7 +4586,7 @@
         <translation>충돌: %1</translation>
     </message>
     <message numerus="yes">
-        <source>%n Aktion(en) mit doppelt belegten Tasten – bitte eine davon ändern.</source>
+        <source>%n Aktion(en) mit doppelt belegten Tasten – ändere eine davon.</source>
         <translation>
             <numerusform>%n개의 동작에 중복 지정된 키가 있습니다. 그중 하나를 변경하세요.</numerusform>
         </translation>
@@ -4712,7 +4712,7 @@
         <translation>빠른 이동 대상 %1</translation>
     </message>
     <message>
-        <source>Bewertungen speichern</source>
+        <source>Speicherort für Bewertungen</source>
         <translation>별점 저장 위치</translation>
     </message>
     <message>
@@ -4720,7 +4720,7 @@
         <translation>이미지 옆 XMP 사이드카 파일(이미지.xmp)</translation>
     </message>
     <message>
-        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
+        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Abgelehnt“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
         <translation>Lightroom, Capture One, darktable과 호환: 별점은 xmp:Rating에, ‘거부’는 -1로 저장됩니다. 파일의 기존 내용은 유지됩니다.</translation>
     </message>
     <message>
@@ -4740,11 +4740,11 @@
         <translation>별 기호:</translation>
     </message>
     <message>
-        <source>Tag für Pick:</source>
+        <source>Tag für „Markiert“:</source>
         <translation>채택 태그:</translation>
     </message>
     <message>
-        <source>Tag für Verworfen:</source>
+        <source>Tag für „Abgelehnt“:</source>
         <translation>거부 태그:</translation>
     </message>
     <message>
@@ -4764,7 +4764,7 @@
         <translation>선별 모드에서 확대/축소 고정</translation>
     </message>
     <message>
-        <source>Tastenhilfe im Aussortiermodus zeigen</source>
+        <source>Tastenhilfe im Aussortiermodus einblenden</source>
         <translation>선별 모드에서 키 도움말 표시</translation>
     </message>
     <message>
@@ -4776,7 +4776,7 @@
         <translation>빠른 이동</translation>
     </message>
     <message>
-        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z macht es rückgängig.</source>
+        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z widerruft es.</source>
         <translation>M 다음 1–9를 누르면 이미지를 대상 폴더로 이동하고, C 다음 1–9를 누르면 복사합니다. M M 또는 C C는 마지막 대상을 반복합니다. ⌘Z로 실행 취소할 수 있습니다.</translation>
     </message>
     <message>
@@ -4880,7 +4880,7 @@
         <translation>미리 불러올 이미지:</translation>
     </message>
     <message>
-        <source>Bilder zurück behalten:</source>
+        <source>Vorherige Bilder behalten:</source>
         <translation>이전 이미지 유지:</translation>
     </message>
     <message>
@@ -4892,7 +4892,7 @@
         <translation>라이브 텍스트 및 피사체 추출 허용(⇧⌘L)</translation>
     </message>
     <message>
-        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Internetverbindung.</source>
         <translation>창에서 라이브 텍스트를 켤 때만 이 Mac에서 네트워크 없이 이미지를 분석합니다.</translation>
     </message>
     <message>
@@ -4900,7 +4900,7 @@
         <translation>사용자 동작</translation>
     </message>
     <message>
-        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Kurzbefehle-App) erhält das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
         <translation>셸 명령 또는 단축어가 현재 이미지를 인수로 받습니다. 메뉴: 파일 → 사용자 동작.</translation>
     </message>
     <message>
@@ -4912,7 +4912,7 @@
         <translation> s</translation>
     </message>
     <message>
-        <source>Einstellungen sichern</source>
+        <source>Backup der Einstellungen</source>
         <translation>설정 백업</translation>
     </message>
     <message>
@@ -4980,12 +4980,8 @@
         <translation>이미지 유형에 대한 시스템 기본 앱(Lumaflip 제외)</translation>
     </message>
     <message>
-        <source>Lumaflip kann nicht sein eigener Editor sein. Bitte wähle ein anderes Programm.</source>
+        <source>Lumaflip kann nicht sein eigener Editor sein. Wähle eine andere App.</source>
         <translation>Lumaflip은 자체 편집기가 될 수 없습니다. 다른 앱을 선택하세요.</translation>
-    </message>
-    <message>
-        <source>Auswählen …</source>
-        <translation>선택…</translation>
     </message>
     <message>
         <source>Editor wählen</source>
@@ -5036,7 +5032,7 @@
         <translation>이미지 크기 %1 × %2이(가) 잘못되었거나 너무 큽니다.</translation>
     </message>
     <message>
-        <source>Die Farbtiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
+        <source>Die Bittiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
         <translation>PSB 파일의 색상 심도 또는 색상 모드는 지원되지 않습니다.</translation>
     </message>
     <message>
@@ -5044,7 +5040,7 @@
         <translation>PSB 파일의 압축 방식은 지원되지 않습니다.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>이미지를 위한 메모리가 부족합니다.</translation>
     </message>
     <message>
@@ -5087,7 +5083,7 @@
         <translation>SVG 파일이 유효하지 않거나 손상되었습니다.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>이미지를 위한 메모리가 부족합니다.</translation>
     </message>
 </context>
@@ -5120,7 +5116,7 @@
         <translation>다음으로 복사… (1–9, C = 지난번과 동일)</translation>
     </message>
     <message>
-        <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
+        <source>Noch kein Ziel verwendet – wähle zuerst eine Ziffer 1–9.</source>
         <translation>아직 사용한 대상이 없습니다. 먼저 숫자 1–9를 선택하십시오.</translation>
     </message>
     <message>
@@ -5164,11 +5160,11 @@
         <translation>이름 충돌</translation>
     </message>
     <message>
-        <source>„%1“ gibt es in „%2“ schon.</source>
+        <source>„%1“ existiert bereits in „%2“.</source>
         <translation>‘%2’에 ‘%1’이(가) 이미 있습니다.</translation>
     </message>
     <message>
-        <source>Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.</source>
+        <source>„Ersetzen“ legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z widerruft alles.</source>
         <translation>‘대치’는 기존 파일을 휴지통으로 이동하고, ‘둘 다 유지’는 새 파일에 ‘%1’과(와) 같은 이름을 붙입니다. ⌘Z로 모두 실행 취소할 수 있습니다.</translation>
     </message>
     <message>
@@ -5195,7 +5191,7 @@
         <translation>모두</translation>
     </message>
     <message>
-        <source>nur Picks</source>
+        <source>nur markierte</source>
         <translation>채택만</translation>
     </message>
     <message>
@@ -5207,15 +5203,15 @@
         <translation>별점 없는 것만</translation>
     </message>
     <message>
-        <source>nur verworfene</source>
+        <source>nur abgelehnte</source>
         <translation>거부된 것만</translation>
     </message>
     <message>
-        <source>Pick</source>
+        <source>Markiert</source>
         <translation>채택</translation>
     </message>
     <message>
-        <source>Verworfen</source>
+        <source>Abgelehnt</source>
         <translation>거부됨</translation>
     </message>
 </context>
@@ -5270,7 +5266,7 @@
         <translation>다시 인코딩하지 않고는 별점을 이미지에 기록할 수 없습니다.</translation>
     </message>
     <message>
-        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.</source>
+        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gesichert.</source>
         <translation>그동안 ‘%1’이(가) 변경되었습니다 – 별점이 저장되지 않았습니다.</translation>
     </message>
     <message>
@@ -5360,31 +5356,31 @@
         <translation>새로운 파일 이름</translation>
     </message>
     <message>
-        <source>Soll die Endung „.%1“ entfernt werden?</source>
+        <source>Möchtest du die Endung „.%1“ wirklich entfernen?</source>
         <translation>확장자 ‘.%1’을(를) 제거하겠습니까?</translation>
     </message>
     <message>
-        <source>Soll die Endung „.%1“ hinzugefügt werden?</source>
+        <source>Möchtest du die Endung „.%1“ wirklich hinzufügen?</source>
         <translation>확장자 ‘.%1’을(를) 추가하겠습니까?</translation>
     </message>
     <message>
-        <source>Soll die Endung „.%1“ in „.%2“ geändert werden?</source>
+        <source>Möchtest du die Endung wirklich von „.%1“ in „.%2“ ändern?</source>
         <translation>확장자 ‘.%1’을(를) ‘.%2’(으)로 변경하겠습니까?</translation>
     </message>
     <message>
-        <source>Dateiendung ändern?</source>
+        <source>Endung ändern?</source>
         <translation>파일 확장자를 변경하겠습니까?</translation>
     </message>
     <message>
-        <source>Die Datei wird dadurch nicht umgewandelt. Andere Programme erkennen sie danach eventuell nicht mehr.</source>
+        <source>Die Datei wird dadurch nicht umgewandelt. Andere Apps erkennen sie danach eventuell nicht mehr.</source>
         <translation>이렇게 해도 파일이 변환되지는 않습니다. 이후 다른 앱에서 파일을 인식하지 못할 수 있습니다.</translation>
     </message>
     <message>
-        <source>Ohne Endung lassen</source>
+        <source>Nicht hinzufügen</source>
         <translation>확장자 없이 유지</translation>
     </message>
     <message>
-        <source>„.%1“ behalten</source>
+        <source>„.%1“ beibehalten</source>
         <translation>‘.%1’ 유지</translation>
     </message>
     <message>
@@ -5427,7 +5423,7 @@
         <translation>SVG 파일의 크기가 올바르지 않습니다.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>이미지를 위한 메모리가 부족합니다.</translation>
     </message>
     <message>
@@ -5506,7 +5502,7 @@
         <translation>‘%1’에 쓸 수 없습니다.</translation>
     </message>
     <message>
-        <source>Lumaflip ist nicht als Anwendung installiert (%1 fehlt).</source>
+        <source>Lumaflip ist nicht als App installiert (%1 fehlt).</source>
         <translation>Lumaflip이 응용 프로그램으로 설치되어 있지 않습니다(%1 없음).</translation>
     </message>
     <message>
@@ -5522,11 +5518,11 @@
         <translation>‘%1’은(는) 파일 이름을 명령으로 읽으므로 보안상의 이유로 실행되지 않습니다.</translation>
     </message>
     <message>
-        <source>Das Programm wurde nicht gefunden.</source>
+        <source>Die App wurde nicht gefunden.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Windows erlaubt Programmen nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
+        <source>Windows erlaubt Apps nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5565,11 +5561,11 @@
         <translation>페이지 %1이(가) 존재하지 않습니다.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>이미지를 위한 메모리가 부족합니다.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
         <translation>이미지를 위한 메모리가 부족합니다(%1 × %2픽셀).</translation>
     </message>
 </context>
@@ -5645,11 +5641,11 @@
 <context>
     <name>lf::UndoBackupStore</name>
     <message>
-        <source>Die Sicherung für „Rückgängig“ ist nicht mehr vorhanden.</source>
+        <source>Die Sicherungskopie für „Widerrufen“ existiert nicht mehr.</source>
         <translation>‘실행 취소’를 위한 백업이 더 이상 존재하지 않습니다.</translation>
     </message>
     <message>
-        <source>Nicht genug Platz für die Sicherungskopie (Rückgängig) – nichts gespeichert.</source>
+        <source>Nicht genug Speicherplatz für die Sicherungskopie (Widerrufen) – nichts gesichert.</source>
         <translation>백업 사본(실행 취소)을 위한 공간이 부족하여 아무것도 저장하지 않았습니다.</translation>
     </message>
 </context>
@@ -5707,7 +5703,7 @@
         <translation>전체 해상도를 사용할 수 없음</translation>
     </message>
     <message>
-        <source>Lumaflip – lädt …</source>
+        <source>Lumaflip – wird geladen …</source>
         <translation>Lumaflip – 로드 중…</translation>
     </message>
     <message>
@@ -5814,7 +5810,7 @@
         <translation>경로 복사됨</translation>
     </message>
     <message>
-        <source>„%1“ ist nicht mehr vorhanden.</source>
+        <source>„%1“ existiert nicht mehr.</source>
         <translation>‘%1’이(가) 더 이상 존재하지 않습니다.</translation>
     </message>
     <message>
@@ -5872,19 +5868,19 @@
         <translation>슬라이드쇼 – 스페이스 바: 일시 정지 · 1–9: 초 · Esc: 종료</translation>
     </message>
     <message>
-        <source>Keine Drehung zu speichern – zuerst mit ⌘L oder ⌘R drehen</source>
+        <source>Keine Drehung zu sichern – drehe das Bild zuerst mit ⌘L oder ⌘R</source>
         <translation>저장할 회전 없음 – 먼저 ⌘L 또는 ⌘R로 회전하세요</translation>
     </message>
     <message>
-        <source>Drehung speichern</source>
+        <source>Drehung sichern</source>
         <translation>회전 저장</translation>
     </message>
     <message>
-        <source>Verlustfrei drehen geht nur mit beschnittenem Rand.</source>
+        <source>Verlustfreies Drehen ist nur mit beschnittenem Rand möglich.</source>
         <translation>무손실 회전은 가장자리를 잘라내야만 가능합니다.</translation>
     </message>
     <message>
-        <source>Die Drehung kann nur durch Neukodieren gespeichert werden.</source>
+        <source>Die Drehung kann nur durch Neukodieren gesichert werden.</source>
         <translation>회전은 재인코딩해야만 저장할 수 있습니다.</translation>
     </message>
     <message>
@@ -5920,7 +5916,7 @@
         <translation>열린 이미지가 없습니다.</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <source>Bilder in Archiven und PDF-Seiten können nicht als Schreibtischhintergrund festgelegt werden.</source>
         <translation>아카이브의 이미지와 PDF 페이지는 데스크탑 사진으로 설정할 수 없습니다.</translation>
     </message>
     <message>
@@ -5945,7 +5941,7 @@
         <translation>모든 화면</translation>
     </message>
     <message>
-        <source>Diese Arbeitsumgebung wird nicht unterstützt.</source>
+        <source>Diese Desktopumgebung wird nicht unterstützt.</source>
         <translation>이 데스크톱 환경은 지원되지 않습니다.</translation>
     </message>
 </context>
@@ -5985,7 +5981,7 @@
         <translation>메타데이터에 AF 포인트가 없음</translation>
     </message>
     <message>
-        <source>Zuschneiden geht in der Einzelbildansicht.</source>
+        <source>Zuschneiden ist nur in der Einzelbildansicht möglich.</source>
         <translation>자르기는 단일 이미지 보기에서 사용할 수 있습니다.</translation>
     </message>
     <message>
@@ -5993,11 +5989,11 @@
         <translation>자를 이미지가 없습니다.</translation>
     </message>
     <message>
-        <source>Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab</source>
+        <source>Zuschneiden: Rahmen ziehen – Enter sichert, Esc bricht ab</source>
         <translation>자르기: 프레임을 드래그 – Enter로 저장, Esc로 취소</translation>
     </message>
     <message>
-        <source>Der vorige Zuschnitt wird noch gespeichert.</source>
+        <source>Der vorherige Zuschnitt wird noch gesichert.</source>
         <translation>이전 자르기를 아직 저장하는 중입니다.</translation>
     </message>
     <message>
@@ -6010,7 +6006,7 @@
         <translation>%1-cropped.%2</translation>
     </message>
     <message>
-        <source>Zugeschnittenes Bild speichern unter</source>
+        <source>Zugeschnittenes Bild sichern unter</source>
         <translation>자른 이미지를 다른 이름으로 저장</translation>
     </message>
     <message>
@@ -6022,7 +6018,7 @@
         <translation>자르기</translation>
     </message>
     <message>
-        <source>„%1“ gibt es schon. Ersetzen?</source>
+        <source>„%1“ existiert bereits. Möchtest du die Datei ersetzen?</source>
         <translation>‘%1’이(가) 이미 있습니다. 대치하겠습니까?</translation>
     </message>
     <message>
@@ -6034,7 +6030,7 @@
         <translation>대치</translation>
     </message>
     <message>
-        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <source>Der Zuschnitt konnte nicht gesichert werden.</source>
         <translation>자르기를 저장할 수 없습니다.</translation>
     </message>
     <message>
@@ -6046,7 +6042,7 @@
         <translation>잘라서 내보내기…</translation>
     </message>
     <message>
-        <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
+        <source>Der Zuschnitt kann nur durch Neukodieren gesichert werden.</source>
         <translation>자르기는 다시 인코딩해야만 저장할 수 있습니다.</translation>
     </message>
     <message>
@@ -6058,7 +6054,7 @@
         <translation>취소</translation>
     </message>
     <message>
-        <source>Zugeschnitten gespeichert als „%1“</source>
+        <source>Zugeschnitten gesichert als „%1“</source>
         <translation>자른 이미지를 ‘%1’(으)로 저장함</translation>
     </message>
     <message>
@@ -6097,7 +6093,7 @@
 <context>
     <name>lf::WindowExtras</name>
     <message>
-        <source>Karte</source>
+        <source>Ordnerkarte</source>
         <translation>지도</translation>
     </message>
     <message>
@@ -6168,7 +6164,7 @@
         <translation>라이브 텍스트 끔</translation>
     </message>
     <message>
-        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – schalte mit ⇧⌘H auf SDR um.</source>
         <translation>HDR 표시 중에는 라이브 텍스트를 사용할 수 없습니다 – ⇧⌘H로 SDR로 전환하세요.</translation>
     </message>
     <message>
@@ -6234,11 +6230,11 @@
         <translation>이미지 크기 %1 × %2이(가) 잘못되었거나 너무 큽니다.</translation>
     </message>
     <message>
-        <source>Die Farbtiefe der XCF-Datei wird nicht unterstützt.</source>
+        <source>Die Bittiefe der XCF-Datei wird nicht unterstützt.</source>
         <translation>XCF 파일의 색상 심도는 지원되지 않습니다.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>이미지를 위한 메모리가 부족합니다.</translation>
     </message>
     <message>
@@ -6285,7 +6281,7 @@
         <translation>‘%1’이(가) 너무 큽니다.</translation>
     </message>
     <message>
-        <source>Die Kompressionsart von „%1“ wird nicht unterstützt.</source>
+        <source>Die Komprimierungsart von „%1“ wird nicht unterstützt.</source>
         <translation>‘%1’의 압축 방식은 지원되지 않습니다.</translation>
     </message>
 </context>

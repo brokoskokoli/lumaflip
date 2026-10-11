@@ -129,7 +129,7 @@ void MainMenu::build() {
     connect(addCommand(file, QStringLiteral("openFolder"), tr("Ordner öffnen …"),
                        QKeySequence(Qt::ShiftModifier | Qt::ControlModifier | Qt::Key_O)),
             &QAction::triggered, &m_app, &Application::showOpenFolderDialog);
-    m_recentMenu = file->addMenu(tr("Zuletzt geöffnet"));
+    m_recentMenu = file->addMenu(tr("Benutzte Dokumente"));
     m_recentMenu->setObjectName(QStringLiteral("menu:recent"));
     connect(m_recentMenu, &QMenu::aboutToShow, this, [this] { rebuildRecent(); });
     rebuildRecent(false); // P-01: no icons at startup
@@ -140,7 +140,7 @@ void MainMenu::build() {
     add(file, Action::RevealInFinder, tr("Im Finder zeigen"));
     add(file, Action::Rename, tr("Umbenennen …")); // F-FILE-04
     m_extras->addOpenWith(file);                   // F-FILE-05
-    add(file, Action::OpenInEditor, tr("In Standard-Editor öffnen"));
+    add(file, Action::OpenInEditor, tr("Im Editor öffnen"));
     m_extras->addShare(file); // F-FILE-06
     add(file, Action::Trash, tr("In den Papierkorb legen"));
     file->addSeparator();
@@ -203,7 +203,7 @@ void MainMenu::build() {
         }
     };
     zoomCommand(ZoomMode::Fit, tr("Einpassen"), Action::ZoomFit);
-    zoomCommand(ZoomMode::FitUpscale, tr("Einpassen inkl. Vergrößern"), Action::None);
+    zoomCommand(ZoomMode::FitUpscale, tr("Einpassen (auch vergrößern)"), Action::None);
     zoomCommand(ZoomMode::Actual, tr("100 % (1:1 Pixel)"), Action::ZoomActual);
     zoomCommand(ZoomMode::FillWidth, tr("Breite füllen"), Action::ZoomFillWidth);
     zoomCommand(ZoomMode::FillHeight, tr("Höhe füllen"), Action::None);
@@ -250,7 +250,7 @@ void MainMenu::build() {
     view->addSeparator();
     QMenu* sort = view->addMenu(tr("Sortieren nach"));
     sort->setObjectName(QStringLiteral("menu:sort"));
-    QAction* finder = addCommand(sort, QStringLiteral("sort:finder"), tr("Wie Finder"));
+    QAction* finder = addCommand(sort, QStringLiteral("sort:finder"), tr("Wie im Finder"));
     finder->setCheckable(true);
     connect(finder, &QAction::triggered, this, [this, front] {
         if (auto* w = front())

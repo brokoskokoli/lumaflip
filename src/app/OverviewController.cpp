@@ -151,7 +151,7 @@ void OverviewController::toggleGrid() {
 
 bool OverviewController::compare(const QStringList& paths, int focus) {
     if (paths.size() < CompareView::kMinPanes) {
-        m_window.showMessage(tr("Zum Vergleichen mindestens zwei Bilder wählen"));
+        m_window.showMessage(tr("Wähle zum Vergleichen mindestens zwei Bilder aus"));
         return false;
     }
     if (paths.size() > CompareView::kMaxPanes)
@@ -193,7 +193,7 @@ void OverviewController::compareWithNext() {
     const QString from = m_mode == Mode::Grid && m_grid ? m_grid->cursorPath() : c->currentPath();
     const int i = c->indexOf(from);
     if (i < 0 || c->count() < 2) {
-        m_window.showMessage(tr("Zum Vergleichen mindestens zwei Bilder wählen"));
+        m_window.showMessage(tr("Wähle zum Vergleichen mindestens zwei Bilder aus"));
         return;
     }
     const int next = i + 1 < c->count() ? i + 1 : i - 1;

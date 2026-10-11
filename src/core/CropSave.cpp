@@ -176,13 +176,13 @@ bool isJpegType(const QString& typeId) {
 }
 
 QString messageChangedSincePlan() {
-    return Tr::tr("Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.");
+    return Tr::tr("Die Datei wurde inzwischen verändert – nichts gesichert. Schneide das Bild erneut zu.");
 }
 
 QString messageAdditionalImages() {
-    return Tr::tr("Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), "
-                  "die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur "
-                  "durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.");
+    return Tr::tr("Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die "
+                  "nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden ist nur durch "
+                  "Neukodieren möglich – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.");
 }
 
 QString tempProbePath(const QString& suffix) {
@@ -468,7 +468,7 @@ jpeg::DctResult jpeg::cropDct(const QByteArray& in, const QRect& stored, QByteAr
         !QRect(0, 0, w, hgt).contains(stored) || stored.isEmpty()) {
         tj3Destroy(h);
         if (error)
-            *error = Tr::tr("Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.");
+            *error = Tr::tr("Der Zuschnitt liegt nicht auf dem JPEG-Blockraster.");
         return DctResult::NotPerfect;
     }
     tjtransform xf{};
@@ -708,7 +708,7 @@ namespace {
 CropPlan planCropSaveImpl(const CropRequest& r) {
     CropPlan plan;
     if (vpath::isMember(r.path)) {
-        plan.message = Tr::tr("Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt "
+        plan.message = Tr::tr("Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Zuschnitt "
                               "kann als neue Datei exportiert werden.");
         plan.exportInstead = true;
         return plan;
@@ -725,20 +725,20 @@ CropPlan planCropSaveImpl(const CropRequest& r) {
     }
     plan.typeId = platform::imageTypeIdentifier(plan.target);
     if (plan.typeId.isEmpty()) {
-        plan.message = Tr::tr("Das Dateiformat wird zum Speichern nicht erkannt.");
+        plan.message = Tr::tr("Das Dateiformat wird zum Sichern nicht erkannt.");
         return plan;
     }
     if (platform::isCameraRawType(plan.typeId) || isRawSuffix(fi.suffix().toLower()) ||
         isRawSuffix(QFileInfo(r.path).suffix().toLower())) {
-        plan.message = Tr::tr("RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei "
-                              "exportiert werden.");
+        plan.message =
+            Tr::tr("RAW-Dateien werden nie verändert. Der Zuschnitt kann als neue Datei exportiert werden.");
         plan.exportInstead = true;
         return plan;
     }
     if (platform::imageCount(plan.target) > 1) {
-        plan.message = Tr::tr("Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert "
-                              "werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert "
-                              "werden.");
+        plan.message =
+            Tr::tr("Animierte oder mehrseitige Dateien können nicht zugeschnitten gesichert werden. Der "
+                   "Zuschnitt des ersten Bildes kann als neue Datei exportiert werden.");
         plan.exportInstead = true;
         return plan;
     }
@@ -752,8 +752,7 @@ CropPlan planCropSaveImpl(const CropRequest& r) {
         plan.destination = resolvedFilePath(r.saveAs);
         if (plan.destination == plan.target) {
             plan.message =
-                Tr::tr("„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen "
-                       "wählen.");
+                Tr::tr("„Sichern unter“ überschreibt nie das Original – wähle einen anderen Namen.");
             return plan;
         }
         const QFileInfo dest(plan.destination);
@@ -762,7 +761,7 @@ CropPlan planCropSaveImpl(const CropRequest& r) {
             return plan;
         }
         if ((dest.exists() || dest.isSymLink()) && !r.replaceExisting) {
-            plan.message = Tr::tr("„%1“ gibt es schon.").arg(dest.fileName());
+            plan.message = Tr::tr("„%1“ existiert bereits.").arg(dest.fileName());
             return plan;
         }
     }
@@ -801,7 +800,7 @@ CropPlan planCropSaveImpl(const CropRequest& r) {
         return plan;
     }
     if (wanted == QRect(QPoint(0, 0), displaySize)) {
-        plan.message = Tr::tr("Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.");
+        plan.message = Tr::tr("Der Zuschnitt umfasst das ganze Bild – es gibt nichts zuzuschneiden.");
         return plan;
     }
     plan.storedRect = crop::displayToStoredRect(wanted, stored, orient);
@@ -827,13 +826,13 @@ CropPlan planCropSaveImpl(const CropRequest& r) {
                 plan.displayRect = crop::storedToDisplayRect(snapped, stored, orient);
                 plan.method = CropMethod::JpegLossless;
                 if (plan.snapped)
-                    plan.notice = Tr::tr("Für den verlustfreien Zuschnitt wurde der Ausschnitt an das "
-                                         "JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 "
-                                         "Pixel groß.")
-                                      .arg(plan.mcu.width())
-                                      .arg(plan.mcu.height())
-                                      .arg(plan.displayRect.width())
-                                      .arg(plan.displayRect.height());
+                    plan.notice =
+                        Tr::tr("Für den verlustfreien Zuschnitt wurde der Zuschnittbereich an das "
+                               "JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.")
+                            .arg(plan.mcu.width())
+                            .arg(plan.mcu.height())
+                            .arg(plan.displayRect.width())
+                            .arg(plan.displayRect.height());
                 return plan;
             }
         }
@@ -856,7 +855,7 @@ CropPlan planCropSaveImpl(const CropRequest& r) {
         }
         if (!inexact) {
             plan.status = CropPlan::Refused;
-            plan.message = err.isEmpty() ? Tr::tr("Der Zuschnitt kann nicht gespeichert werden.") : err;
+            plan.message = err.isEmpty() ? Tr::tr("Der Zuschnitt kann nicht gesichert werden.") : err;
             return plan;
         }
         plan.status = CropPlan::NeedsReencode;
@@ -868,17 +867,15 @@ CropPlan planCropSaveImpl(const CropRequest& r) {
     if (!platform::canEncodeType(plan.typeId)) {
         // Asking "Neu kodieren?" would only end in an error.
         plan.status = CropPlan::Refused;
-        plan.message =
-            Tr::tr("Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem "
-                   "anderen Format exportiert werden.");
+        plan.message = Tr::tr("Dieses Format kann hier nicht geschrieben werden. Der Zuschnitt kann in einem "
+                              "anderen Format exportiert werden.");
         plan.exportInstead = true;
         return plan;
     }
     plan.status = CropPlan::NeedsReencode;
     plan.method = CropMethod::ReencodeLossy;
-    plan.message =
-        Tr::tr("Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem "
-               "das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.");
+    plan.message = Tr::tr("Dieses Format komprimiert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, "
+                          "indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.");
     if (!aux.isEmpty())
         plan.message += QLatin1Char(' ') +
                         Tr::tr("Zusatzbilder (%1) gehen dabei verloren.").arg(aux.join(QStringLiteral(", ")));
@@ -908,7 +905,7 @@ QString executeCropSave(const CropRequest& r, const CropPlan& plan, CropMethod m
     const QString destination = plan.destination.isEmpty() ? target : plan.destination;
     const bool inPlace = destination == target;
     if (!inPlace && resolvedFilePath(destination) == target)
-        return Tr::tr("„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.");
+        return Tr::tr("„Sichern unter“ überschreibt nie das Original – wähle einen anderen Namen.");
     QString error;
     const QString tmp = filesafety::siblingTempPath(destination);
     bool ok = false;
@@ -942,7 +939,7 @@ QString executeCropSave(const CropRequest& r, const CropPlan& plan, CropMethod m
     }
     if (!ok) {
         QFile::remove(tmp);
-        return error.isEmpty() ? Tr::tr("Der Zuschnitt konnte nicht gespeichert werden.") : error;
+        return error.isEmpty() ? Tr::tr("Der Zuschnitt konnte nicht gesichert werden.") : error;
     }
     // The source must still be the file that was planned (and read).
     if (plan.stamp.isValid() && fileStamp(target) != plan.stamp) {

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // M4 part 2 in real windows: the crop flow (F-EDIT-03: overlay, Enter saves undoably,
-// "Speichern unter" keeps the original, Esc cancels), the export dialog and its run
+// "Sichern unter" keeps the original, Esc cancels), the export dialog and its run
 // (F-EDIT-04), the photo overlay toggles reaching the shader and the AF points overlay
 // (F-INFO-07) and the difference/blend compare (F-GRID-04). Images are generated in
 // temporary folders.
@@ -196,7 +196,7 @@ private slots:
         QCOMPARE(readBytes(file), original);
     }
 
-    // "Speichern unter" with a name that gets the original's suffix added: an existing file
+    // "Sichern unter" with a name that gets the original's suffix added: an existing file
     // of that name is only replaced after asking (review M4).
     void F_EDIT_03_saveAsAsksBeforeReplacingAfterTheSuffixIsAdded() {
         const QString file = path(QStringLiteral("orig.png"));

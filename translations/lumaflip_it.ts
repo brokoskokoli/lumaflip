@@ -44,15 +44,15 @@
         <translation>Posizione icona</translation>
     </message>
     <message>
-        <source>Wie Finder (live): %1</source>
+        <source>Wie im Finder (live): %1</source>
         <translation>Come nel Finder (live): %1</translation>
     </message>
     <message>
-        <source>Wie Finder: %1</source>
+        <source>Wie im Finder: %1</source>
         <translation>Come nel Finder: %1</translation>
     </message>
     <message>
-        <source>%1 (Finder-Info nicht gefunden)</source>
+        <source>%1 (Finder-Informationen nicht gefunden)</source>
         <translation>%1 (info del Finder non trovate)</translation>
     </message>
 </context>
@@ -134,7 +134,7 @@
         <translation>Inizio / Fine</translation>
     </message>
     <message>
-        <source>Vollbild / Modus verlassen</source>
+        <source>Vollbild oder Modus beenden</source>
         <translation>Schermo intero / Esci dalla modalità</translation>
     </message>
     <message>
@@ -179,7 +179,7 @@
         <translation>L’archivio non contiene immagini.</translation>
     </message>
     <message>
-        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <source>Das Archiv ist passwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
         <translation>L’archivio è protetto da password: gli archivi cifrati non sono supportati.</translation>
     </message>
     <message>
@@ -198,7 +198,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <source>Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.</source>
+        <source>Unterordner: Nur die ersten %n Bilder werden angezeigt – öffne einen kleineren Ordner.</source>
         <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
         <translation>
             <numerusform>Sottocartelle: viene mostrata solo %n immagine – apri una cartella più piccola.</numerusform>
@@ -309,7 +309,7 @@
 <context>
     <name>lf::ContainerPolicy</name>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten sind hier nicht möglich.</source>
         <translation>Le immagini in archivi e documenti PDF sono aperte solo in visualizzazione – cestino, rinomina, spostamento e valutazione non sono disponibili.</translation>
     </message>
 </context>
@@ -382,19 +382,19 @@
         <translation>Mostra la griglia della regola dei terzi</translation>
     </message>
     <message>
-        <source>Speichern</source>
+        <source>Sichern</source>
         <translation>Salva</translation>
     </message>
     <message>
-        <source>Zuschnitt in der Datei speichern (Enter, widerrufbar)</source>
+        <source>Zuschnitt in der Datei sichern (Enter, widerrufbar)</source>
         <translation>Salva il ritaglio nel file (Invio, annullabile)</translation>
     </message>
     <message>
-        <source>Speichern unter …</source>
+        <source>Sichern unter …</source>
         <translation>Salva con nome…</translation>
     </message>
     <message>
-        <source>Zuschnitt als neue Datei speichern – das Original bleibt unverändert</source>
+        <source>Zuschnitt als neue Datei sichern – das Original bleibt unverändert</source>
         <translation>Salva il ritaglio come nuovo file – l’originale resta invariato</translation>
     </message>
     <message>
@@ -414,11 +414,11 @@
 <context>
     <name>lf::CropSave</name>
     <message>
-        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.</source>
+        <source>Die Datei wurde inzwischen verändert – nichts gesichert. Schneide das Bild erneut zu.</source>
         <translation>Il file è stato modificato nel frattempo: nulla è stato salvato. Ritaglia di nuovo.</translation>
     </message>
     <message>
-        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
+        <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden ist nur durch Neukodieren möglich – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
         <translation>Il file contiene altre immagini (ad es. una gain map HDR o una seconda vista stereo) che dopo un ritaglio senza perdita non corrisponderebbero più. Il ritaglio è possibile solo ricodificando: si perdono un po’ di qualità e queste immagini aggiuntive.</translation>
     </message>
     <message>
@@ -438,7 +438,7 @@
         <translation>Impossibile ritagliare i dati JPEG senza perdita (%1).</translation>
     </message>
     <message>
-        <source>Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.</source>
+        <source>Der Zuschnitt liegt nicht auf dem JPEG-Blockraster.</source>
         <translation>La selezione non è allineata alla griglia dei blocchi JPEG.</translation>
     </message>
     <message>
@@ -450,19 +450,19 @@
         <translation>Il file non esiste più.</translation>
     </message>
     <message>
-        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <source>Das Dateiformat wird zum Sichern nicht erkannt.</source>
         <translation>Il formato del file non è riconosciuto per il salvataggio.</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
         <translation>Le immagini in archivi e documenti PDF non vengono modificate. La selezione può essere esportata come nuovo file.</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <source>RAW-Dateien werden nie verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
         <translation>I file RAW non vengono mai modificati. La selezione può essere esportata come nuovo file.</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gesichert werden. Der Zuschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
         <translation>I file animati o multipagina non possono essere salvati ritagliati. La selezione della prima immagine può essere esportata come nuovo file.</translation>
     </message>
     <message>
@@ -470,7 +470,7 @@
         <translation>“%1” è protetto da scrittura.</translation>
     </message>
     <message>
-        <source>„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.</source>
+        <source>„Sichern unter“ überschreibt nie das Original – wähle einen anderen Namen.</source>
         <translation>“Salva con nome” non sovrascrive mai l’originale: scegli un altro nome.</translation>
     </message>
     <message>
@@ -478,7 +478,7 @@
         <translation>Impossibile scrivere in “%1”.</translation>
     </message>
     <message>
-        <source>„%1“ gibt es schon.</source>
+        <source>„%1“ existiert bereits.</source>
         <translation>“%1” esiste già.</translation>
     </message>
     <message>
@@ -490,11 +490,11 @@
         <translation>Nessuna area selezionata.</translation>
     </message>
     <message>
-        <source>Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.</source>
+        <source>Der Zuschnitt umfasst das ganze Bild – es gibt nichts zuzuschneiden.</source>
         <translation>La selezione comprende l’intera immagine: niente da ritagliare.</translation>
     </message>
     <message>
-        <source>Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
+        <source>Für den verlustfreien Zuschnitt wurde der Zuschnittbereich an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
         <translation>Per il ritaglio senza perdita, la selezione è stata allineata alla griglia dei blocchi JPEG (%1 × %2 pixel) e ora misura %3 × %4 pixel.</translation>
     </message>
     <message>
@@ -502,7 +502,7 @@
         <translation>Questo file JPEG non può essere ritagliato senza perdita. Ricodificando si perde un po’ di qualità.</translation>
     </message>
     <message>
-        <source>Der Zuschnitt kann nicht gespeichert werden.</source>
+        <source>Der Zuschnitt kann nicht gesichert werden.</source>
         <translation>Il ritaglio non può essere salvato.</translation>
     </message>
     <message>
@@ -510,11 +510,11 @@
         <translation>Ricodificando, l’immagine non resterebbe identica (cambierebbero modello colore, profondità di bit, palette o trasparenza).</translation>
     </message>
     <message>
-        <source>Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.</source>
+        <source>Dieses Format kann hier nicht geschrieben werden. Der Zuschnitt kann in einem anderen Format exportiert werden.</source>
         <translation>Questo formato non può essere scritto qui. La selezione può essere esportata in un altro formato.</translation>
     </message>
     <message>
-        <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <source>Dieses Format komprimiert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
         <translation>Questo formato è con perdita. Il ritaglio può essere salvato solo ricodificando l’immagine: si perde un po’ di qualità.</translation>
     </message>
     <message>
@@ -530,7 +530,7 @@
         <translation>Il ritaglio senza perdita non è possibile per questa immagine.</translation>
     </message>
     <message>
-        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <source>Der Zuschnitt konnte nicht gesichert werden.</source>
         <translation>Impossibile salvare il ritaglio.</translation>
     </message>
     <message>
@@ -569,15 +569,15 @@
         <translation>SELEZIONE</translation>
     </message>
     <message>
-        <source>0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg</source>
+        <source>0–5  Sterne     P  Markieren     X  Ablehnen     U  Markierung aufheben</source>
         <translation>0–5  Stelle     P  Mantieni     X  Scarta     U  Rimuovi contrassegno</translation>
     </message>
     <message>
-        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden</source>
+        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Widerrufen     Esc  Beenden</source>
         <translation>← →  Sfoglia     M/C + 1–9  Sposta/Copia     ⌘Z  Annulla     Esc  Esci</translation>
     </message>
     <message>
-        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U markieren</source>
+        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U setzen Markierungen</source>
         <translation>Modalità selezione: le cifre assegnano stelle, P/X/U contrassegnano</translation>
     </message>
     <message>
@@ -593,29 +593,29 @@
         <translation>Filtro: %1 — %2 / %3</translation>
     </message>
     <message>
-        <source>Keine verworfenen Bilder</source>
+        <source>Keine abgelehnten Bilder</source>
         <translation>Nessuna immagine scartata</translation>
     </message>
     <message numerus="yes">
-        <source>%n verworfene(s) Bild(er) in den Papierkorb legen?</source>
+        <source>%n abgelehnte(s) Bild(er) in den Papierkorb legen?</source>
         <translation>
             <numerusform>Spostare %n immagine scartata nel Cestino?</numerusform>
             <numerusform>Spostare %n immagini scartate nel Cestino?</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <source>%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
+        <source>%n abgelehnte(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
         <translation>
             <numerusform>Spostare %n immagine scartata nella cartella “_Rejected”?</numerusform>
             <numerusform>Spostare %n immagini scartate nella cartella “_Rejected”?</numerusform>
         </translation>
     </message>
     <message>
-        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren werden mitbewegt. ⌘Z widerruft den ganzen Schritt.</source>
         <translation>Solo le immagini visualizzate (filtri attuali). I file XMP associati e il secondo file delle coppie RAW+JPEG vengono spostati insieme. ⌘Z annulla l’intero passaggio.</translation>
     </message>
     <message>
-        <source>In den Papierkorb</source>
+        <source>In den Papierkorb legen</source>
         <translation>Nel Cestino</translation>
     </message>
     <message>
@@ -623,11 +623,11 @@
         <translation>Sposta</translation>
     </message>
     <message>
-        <source>Verworfene in den Papierkorb</source>
+        <source>Abgelehnte in den Papierkorb legen</source>
         <translation>Scartate nel Cestino</translation>
     </message>
     <message>
-        <source>Verworfene nach _Rejected</source>
+        <source>Abgelehnte nach „_Rejected“ verschieben</source>
         <translation>Scartate in _Rejected</translation>
     </message>
     <message numerus="yes">
@@ -896,7 +896,7 @@
         <translation>La memoria condivisa non è disponibile (%1).</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
         <translation>Memoria insufficiente per l’immagine (%1 × %2 pixel).</translation>
     </message>
     <message>
@@ -950,7 +950,7 @@
         <translation>Imposta come app predefinita</translation>
     </message>
     <message>
-        <source>Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht ausgewählte Formate bleiben beim bisherigen Programm.</source>
+        <source>Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht ausgewählte Formate bleiben bei der bisherigen App.</source>
         <translation>Lumaflip diventerà l’app predefinita per i formati di immagine selezionati. I formati non selezionati restano associati all’app attuale.</translation>
     </message>
     <message>
@@ -1172,7 +1172,7 @@
         <translation>Esporta ritaglio</translation>
     </message>
     <message>
-        <source>Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <source>Den Zuschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
         <translation>Esporta la selezione di “%1” come nuovo file. L’originale rimane invariato.</translation>
     </message>
     <message>
@@ -1232,7 +1232,7 @@
         <translation>Mantieni tutti</translation>
     </message>
     <message>
-        <source>Ohne Ortsdaten (GPS)</source>
+        <source>Ohne Aufnahmeort (GPS)</source>
         <translation>Senza posizione (GPS)</translation>
     </message>
     <message>
@@ -1260,7 +1260,7 @@
         <translation>Come SDR (tone mapping)</translation>
     </message>
     <message>
-        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung</source>
+        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Endung</source>
         <translation>Segnaposto: {name} = nome dell’originale, {n} = numero progressivo, {format} = estensione</translation>
     </message>
     <message>
@@ -1287,7 +1287,7 @@
         <translation>Esporta</translation>
     </message>
     <message>
-        <source>Exportiere …</source>
+        <source>Wird exportiert …</source>
         <translation>Esportazione…</translation>
     </message>
     <message>
@@ -1295,7 +1295,7 @@
         <translation>Annulla</translation>
     </message>
     <message>
-        <source>Exportiere %1 von %2: %3</source>
+        <source>Bild %1 von %2 wird exportiert: %3</source>
         <translation>Esportazione %1 di %2: %3</translation>
     </message>
 </context>
@@ -1398,13 +1398,13 @@
         <translation>Nessuna immagine</translation>
     </message>
     <message>
-        <source>Orte werden gelesen … %1 von %2</source>
+        <source>Aufnahmeorte werden gelesen … %1 von %2</source>
         <extracomment>folder map (F-INFO-08) while the GPS positions are read: done / all images</extracomment>
         <translation>Lettura delle posizioni… %1 di %2</translation>
     </message>
     <message numerus="yes">
-        <source>%1 von %n Bildern mit Ort</source>
-        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Ort&quot; (%1 images with a position, %n all)</extracomment>
+        <source>%1 von %n Bildern mit Aufnahmeort</source>
+        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Aufnahmeort&quot; (%1 images with a position, %n all)</extracomment>
         <translation>
             <numerusform>%1 di %n immagine con posizione</numerusform>
             <numerusform>%1 di %n immagini con posizione</numerusform>
@@ -1414,7 +1414,7 @@
 <context>
     <name>lf::FolderMapPanel</name>
     <message>
-        <source>Auf diesem System ist keine Kartendarstellung verfügbar.</source>
+        <source>Karten sind auf diesem System nicht verfügbar.</source>
         <translation>Le mappe non sono disponibili su questo sistema.</translation>
     </message>
     <message>
@@ -1426,14 +1426,14 @@
         <translation>Nessuna delle immagini contiene una posizione (GPS).</translation>
     </message>
     <message>
-        <source>Karte schließen</source>
+        <source>Ordnerkarte schließen</source>
         <translation>Chiudi mappa</translation>
     </message>
 </context>
 <context>
     <name>lf::FolderMapView</name>
     <message>
-        <source>Karten sind unter Windows nicht verfügbar. Fotos mit Ortsangabe in diesem Ordner: %1</source>
+        <source>Karten sind unter Windows nicht verfügbar. Bilder mit Aufnahmeort in diesem Ordner: %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1506,7 +1506,7 @@
         <translation>%1 mm</translation>
     </message>
     <message>
-        <source> (KB: %1 mm)</source>
+        <source> (Kleinbild: %1 mm)</source>
         <extracomment>appended to the focal length: the 35 mm equivalent (&quot;KB&quot; = Kleinbild), e.g. &quot; (35-mm-equiv.: 52 mm)&quot;</extracomment>
         <translation> (equiv. 35 mm: %1 mm)</translation>
     </message>
@@ -1643,7 +1643,7 @@
 <context>
     <name>lf::ImageExport</name>
     <message>
-        <source>„%1“ gibt es schon.</source>
+        <source>„%1“ existiert bereits.</source>
         <translation>“%1” esiste già.</translation>
     </message>
     <message>
@@ -1683,7 +1683,7 @@
         <translation>Formato di destinazione sconosciuto.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher zum Exportieren.</source>
+        <source>Nicht genug Arbeitsspeicher zum Exportieren.</source>
         <translation>Memoria insufficiente per l’esportazione.</translation>
     </message>
     <message>
@@ -1706,11 +1706,11 @@
         <translation>L’immagine non contiene pixel.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
         <translation>Memoria insufficiente per l’immagine (%1 × %2 pixel).</translation>
     </message>
     <message>
-        <source>Bildpuffer konnte nicht angelegt werden.</source>
+        <source>Der Bildpuffer konnte nicht angelegt werden.</source>
         <translation>Impossibile creare il buffer dell’immagine.</translation>
     </message>
     <message>
@@ -1793,7 +1793,7 @@
         <translation>Caricamento mappa…</translation>
     </message>
     <message>
-        <source>Karte anzeigen</source>
+        <source>Karte einblenden</source>
         <translation>Mostra mappa</translation>
     </message>
     <message>
@@ -1805,7 +1805,7 @@
         <translation>Nascondi mappa</translation>
     </message>
     <message>
-        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)</source>
+        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte einblenden“)</source>
         <translation>Non caricare più porzioni di mappa (fino al prossimo clic su «Mostra mappa»)</translation>
     </message>
     <message>
@@ -2040,7 +2040,7 @@
         <translation>Riempi larghezza</translation>
     </message>
     <message>
-        <source>Einpassen ↔ 100 % am Cursor</source>
+        <source>Einpassen ↔ 100 % am Mauszeiger</source>
         <translation>Adatta ↔ 100% al cursore</translation>
     </message>
     <message>
@@ -2088,11 +2088,11 @@
         <translation>Schermo intero</translation>
     </message>
     <message>
-        <source>Vollbild bzw. Modus verlassen</source>
+        <source>Vollbild oder Modus beenden</source>
         <translation>Schermo intero o esci dalla modalità</translation>
     </message>
     <message>
-        <source>Modus verlassen, sonst Fenster schließen</source>
+        <source>Modus beenden, sonst Fenster schließen</source>
         <translation>Esci dalla modalità, altrimenti chiudi la finestra</translation>
     </message>
     <message>
@@ -2136,7 +2136,7 @@
         <translation>Rifletti verticalmente</translation>
     </message>
     <message>
-        <source>Drehung speichern</source>
+        <source>Drehung sichern</source>
         <translation>Salva rotazione</translation>
     </message>
     <message>
@@ -2144,7 +2144,7 @@
         <translation>Sposta nel Cestino</translation>
     </message>
     <message>
-        <source>Rückgängig</source>
+        <source>Widerrufen</source>
         <translation>Annulla</translation>
     </message>
     <message>
@@ -2236,15 +2236,15 @@
         <translation>5 stelle</translation>
     </message>
     <message>
-        <source>Behalten (Pick)</source>
+        <source>Markieren</source>
         <translation>Mantieni (Pick)</translation>
     </message>
     <message>
-        <source>Verwerfen (Reject)</source>
+        <source>Ablehnen</source>
         <translation>Scarta (Reject)</translation>
     </message>
     <message>
-        <source>Markierung zurücksetzen</source>
+        <source>Markierung aufheben</source>
         <translation>Rimuovi contrassegno</translation>
     </message>
     <message>
@@ -2268,7 +2268,7 @@
         <translation>Ordine casuale</translation>
     </message>
     <message>
-        <source>Nach Dateiname filtern</source>
+        <source>Nach Dateinamen filtern</source>
         <translation>Filtra per nome file</translation>
     </message>
     <message>
@@ -2312,7 +2312,7 @@
         <translation>Includi sottocartelle</translation>
     </message>
     <message>
-        <source>RAW/JPEG des Paares zeigen</source>
+        <source>RAW/JPEG des Paares anzeigen</source>
         <translation>Mostra RAW/JPEG della coppia</translation>
     </message>
     <message>
@@ -2376,7 +2376,7 @@
         <translation>Ruotando verso il basso mostra l’immagine successiva, verso l’alto quella precedente.</translation>
     </message>
     <message>
-        <source>Zoomen (am Cursor)</source>
+        <source>Zoomen (am Mauszeiger)</source>
         <translation>Zoom (al cursore)</translation>
     </message>
     <message>
@@ -2384,7 +2384,7 @@
         <translation>Ruotando verso l’alto ingrandisce, verso il basso riduce, nella posizione del puntatore.</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen (sonst Bild wechseln)</source>
+        <source>Ausschnitt verschieben (sonst Bild wechseln)</source>
         <translation>Scorri vista (altrimenti cambia immagine)</translation>
     </message>
     <message>
@@ -2456,7 +2456,7 @@
         <translation>Nei file con più pagine sfoglia le pagine, altrimenti cambia immagine.</translation>
     </message>
     <message>
-        <source>Ausschnitt seitenweise scrollen (sonst Bild)</source>
+        <source>Ausschnitt seitenweise verschieben (sonst Bild)</source>
         <translation>Scorri vista di una pagina (altrimenti immagine)</translation>
     </message>
     <message>
@@ -2532,7 +2532,7 @@
         <translation>I tasti freccia cambiano immagine; con ⌥ spostano la vista.</translation>
     </message>
     <message>
-        <source>Erst bis zum Rand scrollen, dann Bild wechseln</source>
+        <source>Erst bis zum Rand verschieben, dann Bild wechseln</source>
         <translation>Scorri fino al bordo, poi cambia immagine</translation>
     </message>
     <message>
@@ -2540,7 +2540,7 @@
         <translation>La vista viene spostata; al bordo dell’immagine passa all’immagine successiva.</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen (Bild mit ⌥←/⌥→)</source>
+        <source>Ausschnitt verschieben (Bild mit ⌥←/⌥→)</source>
         <translation>Scorri vista (immagine con ⌥←/⌥→)</translation>
     </message>
     <message>
@@ -2552,7 +2552,7 @@
         <translation>↑ / ↓</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen, sonst vorheriges/nächstes Bild</source>
+        <source>Ausschnitt verschieben, sonst vorheriges/nächstes Bild</source>
         <translation>Scorri vista, altrimenti immagine precedente/successiva</translation>
     </message>
     <message>
@@ -2560,7 +2560,7 @@
         <translation>Con lo zoom sposta la vista, altrimenti cambia immagine.</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen (wenn gezoomt), sonst nichts</source>
+        <source>Ausschnitt verschieben (wenn gezoomt), sonst nichts</source>
         <translation>Scorri vista (con lo zoom), altrimenti nessuna azione</translation>
     </message>
     <message>
@@ -2660,7 +2660,7 @@
         <translation>Scorrimento trackpad (due dita, orizzontale)</translation>
     </message>
     <message>
-        <source>Bild wechseln (gezoomt: scrollen)</source>
+        <source>Bild wechseln (gezoomt: Ausschnitt verschieben)</source>
         <translation>Cambia immagine (con lo zoom: scorri)</translation>
     </message>
     <message>
@@ -2668,7 +2668,7 @@
         <translation>Lo scorrimento cambia immagine; con lo zoom sposta la vista.</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen</source>
+        <source>Nur Ausschnitt verschieben</source>
         <translation>Scorri vista</translation>
     </message>
     <message>
@@ -2708,7 +2708,7 @@
         <translation>Esc</translation>
     </message>
     <message>
-        <source>Vollbild bzw. Modus verlassen, sonst nichts</source>
+        <source>Vollbild oder Modus beenden, sonst nichts</source>
         <translation>Schermo intero o esci dalla modalità, altrimenti nessuna azione</translation>
     </message>
     <message>
@@ -2716,7 +2716,7 @@
         <translation>Esc esce da schermo intero, presentazione o altre modalità e altrimenti non fa nulla.</translation>
     </message>
     <message>
-        <source>Vollbild bzw. Modus verlassen, sonst Fenster schließen</source>
+        <source>Vollbild oder Modus beenden, sonst Fenster schließen</source>
         <translation>Schermo intero o esci dalla modalità, altrimenti chiudi la finestra</translation>
     </message>
     <message>
@@ -2768,7 +2768,7 @@
         <translation>Sempre attivi</translation>
     </message>
     <message>
-        <source>Ziffern vergeben immer Sterne; P/X/U markieren. Zoom-Ziffern sind aus.</source>
+        <source>Ziffern vergeben immer Sterne, P/X/U setzen Markierungen. Die Zoom-Ziffern sind dann aus.</source>
         <translation>Le cifre assegnano sempre le stelle; P/X/U contrassegnano. Le cifre di zoom sono disattivate.</translation>
     </message>
 </context>
@@ -2779,11 +2779,11 @@
         <translation>Licenze di terze parti</translation>
     </message>
     <message>
-        <source>Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im Programmpaket unter Contents/Resources/licenses.</source>
+        <source>Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im App-Paket unter Contents/Resources/licenses.</source>
         <translation>Lumaflip include i seguenti componenti. I testi delle licenze si trovano anche nel pacchetto dell’app in Contents/Resources/licenses.</translation>
     </message>
     <message>
-        <source>Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das Programmpaket gelegt.</source>
+        <source>Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das App-Paket gelegt.</source>
         <translation>Build di sviluppo: i testi delle licenze vengono inseriti nel pacchetto dell’app solo durante la creazione del pacchetto (tools/package.sh).</translation>
     </message>
     <message>
@@ -2853,11 +2853,11 @@
         <translation>Impossibile scrivere il file (cartella protetta da scrittura?).</translation>
     </message>
     <message>
-        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte die Drehung erneut speichern.</source>
+        <source>Die Datei wurde inzwischen verändert – nichts gesichert. Sichere die Drehung erneut.</source>
         <translation>Nel frattempo il file è stato modificato: non è stato salvato nulla. Salva di nuovo la rotazione.</translation>
     </message>
     <message>
-        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
+        <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
         <translation>Il file contiene altre immagini (ad es. una gain map HDR o una seconda immagine stereo) che andrebbero perse riorganizzando i dati JPEG senza perdita.</translation>
     </message>
     <message>
@@ -2865,15 +2865,15 @@
         <translation>Il file non esiste più.</translation>
     </message>
     <message>
-        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <source>Das Dateiformat wird zum Sichern nicht erkannt.</source>
         <translation>Il formato del file non è riconosciuto per il salvataggio.</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; zum dauerhaften Drehen bitte den RAW-Entwickler benutzen.</source>
+        <source>RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; verwende zum dauerhaften Drehen deinen RAW-Konverter.</source>
         <translation>I file RAW non vengono mai modificati. La rotazione vale solo per la visualizzazione; per ruotarli in modo permanente usa lo sviluppatore RAW.</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht gedreht gespeichert werden.</source>
+        <source>Animierte oder mehrseitige Dateien können nicht gedreht gesichert werden.</source>
         <translation>Non è possibile salvare ruotati i file animati o con più pagine.</translation>
     </message>
     <message>
@@ -2885,11 +2885,11 @@
         <translation>Pertanto è stato impostato solo l’orientamento EXIF.</translation>
     </message>
     <message>
-        <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfrei drehen geht nur, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
+        <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfreies Drehen ist nur möglich, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
         <translation>La larghezza o l’altezza dell’immagine non è un multiplo della dimensione dei blocchi JPEG. La rotazione senza perdita è possibile solo tagliando un bordo sottile (fino a 15 pixel). In alternativa viene impostato solo l’orientamento EXIF.</translation>
     </message>
     <message>
-        <source>Die Drehung kann nicht gespeichert werden.</source>
+        <source>Die Drehung kann nicht gesichert werden.</source>
         <translation>Impossibile salvare la rotazione.</translation>
     </message>
     <message>
@@ -2909,11 +2909,11 @@
         <translation>La rotazione senza perdita non è possibile per questa immagine.</translation>
     </message>
     <message>
-        <source>Die Ausrichtung ließ sich nicht ohne Neukodieren speichern.</source>
+        <source>Die Ausrichtung ließ sich nicht ohne Neukodieren sichern.</source>
         <translation>Impossibile salvare l’orientamento senza ricodificare.</translation>
     </message>
     <message>
-        <source>Die Drehung konnte nicht gespeichert werden.</source>
+        <source>Die Drehung konnte nicht gesichert werden.</source>
         <translation>Impossibile salvare la rotazione.</translation>
     </message>
     <message>
@@ -2921,47 +2921,47 @@
         <translation>Impossibile sostituire il file.</translation>
     </message>
     <message>
-        <source>Datei wurde inzwischen verändert – Rückgängig nicht möglich</source>
+        <source>Die Datei wurde inzwischen verändert – Widerrufen nicht möglich</source>
         <translation>Nel frattempo il file è stato modificato: impossibile annullare</translation>
     </message>
     <message>
-        <source>Datei wurde inzwischen verändert – Wiederholen nicht möglich</source>
+        <source>Die Datei wurde inzwischen verändert – Wiederholen nicht möglich</source>
         <translation>Nel frattempo il file è stato modificato: impossibile ripetere</translation>
     </message>
     <message>
-        <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Rückgängig/Wiederholen ist dafür nicht mehr möglich.</source>
+        <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Widerrufen/Wiederholen ist dafür nicht mehr möglich.</source>
         <translation>La copia di backup di questo passaggio è stata eliminata per risparmiare spazio: non è più possibile annullarlo o ripeterlo.</translation>
     </message>
     <message>
-        <source>Es gibt nichts rückgängig zu machen.</source>
+        <source>Es gibt nichts zu widerrufen.</source>
         <translation>Non c’è nulla da annullare.</translation>
     </message>
     <message>
-        <source>Kein Platz für die Sicherungskopie – nichts gespeichert.</source>
+        <source>Kein Speicherplatz für die Sicherungskopie – nichts gesichert.</source>
         <translation>Spazio insufficiente per la copia di backup: non è stato salvato nulla.</translation>
     </message>
     <message>
-        <source>Keine Drehung zu speichern</source>
+        <source>Keine Drehung zu sichern</source>
         <translation>Nessuna rotazione da salvare</translation>
     </message>
     <message>
-        <source>Drehung gespeichert (EXIF-Ausrichtung)</source>
+        <source>Drehung gesichert (EXIF-Ausrichtung)</source>
         <translation>Rotazione salvata (orientamento EXIF)</translation>
     </message>
     <message>
-        <source>Drehung verlustfrei gespeichert</source>
+        <source>Drehung verlustfrei gesichert</source>
         <translation>Rotazione salvata senza perdita</translation>
     </message>
     <message>
-        <source>Drehung verlustfrei gespeichert (Rand beschnitten)</source>
+        <source>Drehung verlustfrei gesichert (Rand beschnitten)</source>
         <translation>Rotazione salvata senza perdita (bordo tagliato)</translation>
     </message>
     <message>
-        <source>Drehung gespeichert (verlustfrei neu kodiert)</source>
+        <source>Drehung gesichert (verlustfrei neu kodiert)</source>
         <translation>Rotazione salvata (ricodificata senza perdita)</translation>
     </message>
     <message>
-        <source>Drehung gespeichert (neu kodiert)</source>
+        <source>Drehung gesichert (neu kodiert)</source>
         <translation>Rotazione salvata (ricodificata)</translation>
     </message>
     <message>
@@ -2973,7 +2973,7 @@
         <translation>Impossibile decodificare l’immagine.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher zum Drehen.</source>
+        <source>Nicht genug Arbeitsspeicher zum Drehen.</source>
         <translation>Memoria insufficiente per la rotazione.</translation>
     </message>
     <message>
@@ -2981,7 +2981,7 @@
         <translation>Impossibile scrivere in questo formato.</translation>
     </message>
     <message>
-        <source>Das Bild lässt sich in diesem Format nicht exakt neu speichern.</source>
+        <source>Das Bild lässt sich in diesem Format nicht exakt neu sichern.</source>
         <translation>Impossibile salvare di nuovo l’immagine in modo identico in questo formato.</translation>
     </message>
     <message>
@@ -3009,7 +3009,7 @@
         <translation>Impossibile sostituire “%1”: %2</translation>
     </message>
     <message>
-        <source>Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.</source>
+        <source>Die Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.</source>
         <translation>Impossibile creare la copia di backup per “Annulla”.</translation>
     </message>
     <message>
@@ -3029,7 +3029,7 @@
         <translation>Maschera di segmentazione</translation>
     </message>
     <message>
-        <source>Die Datei enthält Zusatzbilder (%1), die beim Speichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gespeichert und gilt weiter nur in der Anzeige.</source>
+        <source>Die Datei enthält Zusatzbilder (%1), die beim Sichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gesichert und gilt weiter nur in der Anzeige.</source>
         <translation>Il file contiene immagini aggiuntive (%1) che andrebbero perse salvando l’orientamento. Pertanto la rotazione non è stata salvata e vale ancora solo per la visualizzazione.</translation>
     </message>
     <message>
@@ -3057,7 +3057,7 @@
         <translation>Impossibile scrivere l’orientamento senza perdita (%1).</translation>
     </message>
     <message>
-        <source>Das Bild lässt sich nicht exakt neu speichern.</source>
+        <source>Das Bild lässt sich nicht exakt neu sichern.</source>
         <translation>Impossibile salvare di nuovo l’immagine in modo identico.</translation>
     </message>
     <message>
@@ -3065,7 +3065,7 @@
         <translation>Il nuovo file è mancante.</translation>
     </message>
     <message>
-        <source>Nicht genug Platz, um „%1“ sicher zu überschreiben.</source>
+        <source>Nicht genug Speicherplatz, um „%1“ sicher zu überschreiben.</source>
         <translation>Spazio insufficiente per sovrascrivere “%1” in modo sicuro.</translation>
     </message>
     <message>
@@ -3092,7 +3092,7 @@
         <translation>Nessun file ricevuto.</translation>
     </message>
     <message>
-        <source>Der Bildschirm ist nicht mehr da.</source>
+        <source>Der Bildschirm ist nicht mehr angeschlossen.</source>
         <translation>Lo schermo non è più collegato.</translation>
     </message>
     <message>
@@ -3104,7 +3104,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Windows hat das Bild nicht als Hintergrund übernommen.</source>
+        <source>Windows hat das Bild nicht als Desktophintergrund übernommen.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3131,7 +3131,7 @@
         <translation>Apri cartella…</translation>
     </message>
     <message>
-        <source>Zuletzt geöffnet</source>
+        <source>Benutzte Dokumente</source>
         <translation>Apri recente</translation>
     </message>
     <message>
@@ -3151,7 +3151,7 @@
         <translation>Rinomina…</translation>
     </message>
     <message>
-        <source>In Standard-Editor öffnen</source>
+        <source>Im Editor öffnen</source>
         <translation>Apri nell’editor predefinito</translation>
     </message>
     <message>
@@ -3215,7 +3215,7 @@
         <translation>Adatta</translation>
     </message>
     <message>
-        <source>Einpassen inkl. Vergrößern</source>
+        <source>Einpassen (auch vergrößern)</source>
         <translation>Adatta (con ingrandimento)</translation>
     </message>
     <message>
@@ -3303,7 +3303,7 @@
         <translation>Ordina per</translation>
     </message>
     <message>
-        <source>Wie Finder</source>
+        <source>Wie im Finder</source>
         <translation>Come nel Finder</translation>
     </message>
     <message>
@@ -3412,11 +3412,11 @@
         <translation>Ritaglia…</translation>
     </message>
     <message>
-        <source>Overlays</source>
+        <source>Einblendungen</source>
         <translation>Sovrapposizioni</translation>
     </message>
     <message>
-        <source>Über-/Unterbelichtung</source>
+        <source>Über-/Unterbelichtungswarnung</source>
         <translation>Sovra-/sottoesposizione</translation>
     </message>
     <message>
@@ -3464,7 +3464,7 @@
         <translation>Pagina precedente</translation>
     </message>
     <message>
-        <source>Drehung speichern</source>
+        <source>Drehung sichern</source>
         <translation>Salva rotazione</translation>
     </message>
     <message>
@@ -3492,7 +3492,7 @@
         <translation>Tutte le immagini</translation>
     </message>
     <message>
-        <source>Nur Picks</source>
+        <source>Nur markierte</source>
         <translation>Solo mantenute</translation>
     </message>
     <message>
@@ -3500,7 +3500,7 @@
         <translation>Solo non valutate</translation>
     </message>
     <message>
-        <source>Nur verworfene</source>
+        <source>Nur abgelehnte</source>
         <translation>Solo scartate</translation>
     </message>
     <message>
@@ -3528,11 +3528,11 @@
         <translation>Filtro</translation>
     </message>
     <message>
-        <source>Alle verworfenen in den Papierkorb …</source>
+        <source>Alle abgelehnten in den Papierkorb legen …</source>
         <translation>Tutte le scartate nel Cestino…</translation>
     </message>
     <message>
-        <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
+        <source>Alle abgelehnten nach „_Rejected“ verschieben …</source>
         <translation>Tutte le scartate in “_Rejected”…</translation>
     </message>
     <message>
@@ -3572,7 +3572,7 @@
         <translation>Includi sottocartelle</translation>
     </message>
     <message>
-        <source>Karte</source>
+        <source>Ordnerkarte</source>
         <translation>Mappa</translation>
     </message>
     <message>
@@ -3588,7 +3588,7 @@
         <translation>Vai all’immagine…</translation>
     </message>
     <message>
-        <source>Nach Dateiname filtern …</source>
+        <source>Nach Dateinamen filtern …</source>
         <translation>Filtra per nome file…</translation>
     </message>
     <message>
@@ -3608,7 +3608,7 @@
         <translation>Collega finestre…</translation>
     </message>
     <message>
-        <source>Entkoppeln</source>
+        <source>Fenster entkoppeln</source>
         <translation>Scollega finestre</translation>
     </message>
     <message>
@@ -3697,11 +3697,11 @@
 <context>
     <name>lf::MenuExtras</name>
     <message>
-        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <source>Einzelne PDF-Seiten können nicht an andere Apps übergeben werden.</source>
         <translation>Le singole pagine PDF non possono essere passate ad altre app.</translation>
     </message>
     <message>
-        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <source>Das Bild wird aus dem Archiv entpackt – versuche es gleich noch einmal.</source>
         <translation>L’immagine viene estratta dall’archivio: riprova tra un momento.</translation>
     </message>
     <message>
@@ -3733,15 +3733,15 @@
         <translation>A cascata</translation>
     </message>
     <message>
-        <source>Vorherigen Tab zeigen</source>
+        <source>Vorherigen Tab anzeigen</source>
         <translation>Mostra pannello precedente</translation>
     </message>
     <message>
-        <source>Nächsten Tab zeigen</source>
+        <source>Nächsten Tab anzeigen</source>
         <translation>Mostra pannello successivo</translation>
     </message>
     <message>
-        <source>Tab in neues Fenster bewegen</source>
+        <source>Tab in ein neues Fenster bewegen</source>
         <translation>Sposta pannello in una nuova finestra</translation>
     </message>
     <message>
@@ -3865,12 +3865,12 @@
         <translation>Data scatto</translation>
     </message>
     <message>
-        <source>Breite</source>
+        <source>Breitengrad</source>
         <extracomment>GPS latitude</extracomment>
         <translation>Latitudine</translation>
     </message>
     <message>
-        <source>Länge</source>
+        <source>Längengrad</source>
         <extracomment>GPS longitude</extracomment>
         <translation>Longitudine</translation>
     </message>
@@ -3979,7 +3979,7 @@
         <translation>Annulla</translation>
     </message>
     <message>
-        <source>Bitte eine Bildnummer zwischen 1 und %1 eingeben</source>
+        <source>Gib eine Bildnummer zwischen 1 und %1 ein.</source>
         <translation>Inserisci un numero di immagine tra 1 e %1</translation>
     </message>
     <message>
@@ -4002,7 +4002,7 @@
 <context>
     <name>lf::OpenWithService</name>
     <message>
-        <source>Kein Programm zum Bearbeiten gefunden. Wähle eines unter Einstellungen → Allgemein → Editor.</source>
+        <source>Keine App zum Bearbeiten gefunden. Wähle eine unter Einstellungen → Allgemein → Editor.</source>
         <translation>Nessuna app di modifica trovata. Scegline una in Impostazioni → Generali → Editor.</translation>
     </message>
     <message>
@@ -4010,11 +4010,11 @@
         <translation>Programmi (*.exe)</translation>
     </message>
     <message>
-        <source>Programme (*.desktop);;Alle Dateien (*)</source>
+        <source>Apps (*.desktop);;Alle Dateien (*)</source>
         <translation>Programmi (*.desktop);;Tutti i file (*)</translation>
     </message>
     <message>
-        <source>„%1“ ist kein Programm.</source>
+        <source>„%1“ ist keine App.</source>
         <translation>“%1” non è un programma.</translation>
     </message>
     <message>
@@ -4026,15 +4026,15 @@
         <translation>Altro…</translation>
     </message>
     <message>
-        <source>Programm wählen</source>
+        <source>App wählen</source>
         <translation>Scegli app</translation>
     </message>
     <message>
-        <source>Programme (*.app)</source>
+        <source>Apps (*.app)</source>
         <translation>App (*.app)</translation>
     </message>
     <message>
-        <source>Programme werden gesucht …</source>
+        <source>Apps werden gesucht …</source>
         <translation>Ricerca delle app…</translation>
     </message>
     <message>
@@ -4042,7 +4042,7 @@
         <translation>%1 (predefinita)</translation>
     </message>
     <message>
-        <source>Keine passenden Programme</source>
+        <source>Keine passenden Apps</source>
         <translation>Nessuna app adatta</translation>
     </message>
 </context>
@@ -4053,7 +4053,7 @@
         <translation>Nessuna immagine per la vista a griglia</translation>
     </message>
     <message>
-        <source>Zum Vergleichen mindestens zwei Bilder wählen</source>
+        <source>Wähle zum Vergleichen mindestens zwei Bilder aus</source>
         <translation>Seleziona almeno due immagini da confrontare</translation>
     </message>
     <message>
@@ -4135,7 +4135,7 @@
         <translation>Il file non esiste.</translation>
     </message>
     <message>
-        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <source>Das PDF-Dokument ist passwortgeschützt.</source>
         <translation>Il documento PDF è protetto da password.</translation>
     </message>
     <message>
@@ -4143,7 +4143,7 @@
         <translation>La pagina è vuota.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für die Seite.</source>
+        <source>Nicht genug Arbeitsspeicher für die Seite.</source>
         <translation>Memoria insufficiente per la pagina.</translation>
     </message>
 </context>
@@ -4194,7 +4194,7 @@
         <translation>Lingua:</translation>
     </message>
     <message>
-        <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbild aktivieren“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
+        <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbildmodus“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
         <translation>Effetto immediato. I menu e le finestre di macOS (“Entra in modalità a tutto schermo”, “Servizi”, “Apri”, richieste di autorizzazione) seguono dopo un riavvio.</translation>
     </message>
     <message>
@@ -4226,7 +4226,7 @@
         <translation>Cartella, immagine, zoom e posizione di tutte le finestre aperte all’uscita.</translation>
     </message>
     <message>
-        <source>Vor dem Löschen nachfragen</source>
+        <source>Vor dem Bewegen in den Papierkorb nachfragen</source>
         <translation>Chiedi prima di eliminare</translation>
     </message>
     <message>
@@ -4238,11 +4238,11 @@
         <translation>Editor:</translation>
     </message>
     <message>
-        <source>Für „In Standard-Editor öffnen“ (Taste E).</source>
+        <source>Für „Im Editor öffnen“ (Taste E).</source>
         <translation>Per “Apri nell’editor predefinito” (tasto E).</translation>
     </message>
     <message>
-        <source>Drehung speichern:</source>
+        <source>Drehung sichern:</source>
         <translation>Salva rotazione:</translation>
     </message>
     <message>
@@ -4254,7 +4254,7 @@
         <translation>Ruota JPEG senza perdita (DCT)</translation>
     </message>
     <message>
-        <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Programme ohne EXIF-Unterstützung das Bild richtig zeigen. RAW-Dateien werden nie verändert; ⌘Z macht das Speichern rückgängig.</source>
+        <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Apps ohne EXIF-Unterstützung das Bild richtig anzeigen. RAW-Dateien werden nie verändert; ⌘Z widerruft das Sichern.</source>
         <translation>Nessuna delle due opzioni modifica i pixel dell’immagine. “Orientamento EXIF” cambia solo un indicatore (JPEG, HEIC, TIFF, PNG); “Ruota senza perdita” riorganizza i blocchi JPEG, in modo che anche le app senza supporto EXIF mostrino correttamente l’immagine. I file RAW non vengono mai modificati; ⌘Z annulla il salvataggio.</translation>
     </message>
     <message>
@@ -4278,7 +4278,7 @@
         <translation>Mostra quando il mouse si muove</translation>
     </message>
     <message>
-        <source>Immer zeigen</source>
+        <source>Immer einblenden</source>
         <translation>Mostra sempre</translation>
     </message>
     <message>
@@ -4298,7 +4298,7 @@
         <translation>Le nuove finestre mostrano:</translation>
     </message>
     <message>
-        <source>Statuszeile</source>
+        <source>Statusleiste</source>
         <translation>Barra di stato</translation>
     </message>
     <message>
@@ -4346,7 +4346,7 @@
         <translation>Chiaro</translation>
     </message>
     <message>
-        <source>Wie Systemdarstellung</source>
+        <source>Wie System</source>
         <translation>Come l’aspetto del sistema</translation>
     </message>
     <message>
@@ -4378,7 +4378,7 @@
         <translation>Adatta (senza ingrandire)</translation>
     </message>
     <message>
-        <source>Einpassen inkl. Vergrößern</source>
+        <source>Einpassen (auch vergrößern)</source>
         <translation>Adatta (con ingrandimento)</translation>
     </message>
     <message>
@@ -4410,7 +4410,7 @@
         <translation>Morbido</translation>
     </message>
     <message>
-        <source>Pixel scharf</source>
+        <source>Scharfe Pixel</source>
         <translation>Pixel nitidi</translation>
     </message>
     <message>
@@ -4518,11 +4518,11 @@
         <translation>Standard Mac</translation>
     </message>
     <message>
-        <source>Windows-Viewer-Gewohnheiten</source>
+        <source>Wie Windows-Bildbetrachter</source>
         <translation>Abitudini dei visualizzatori Windows</translation>
     </message>
     <message>
-        <source>Fotograf:in / Lightroom</source>
+        <source>Fotografie / Lightroom</source>
         <translation>Fotografi / Lightroom</translation>
     </message>
     <message>
@@ -4530,7 +4530,7 @@
         <translation>Mouse, trackpad e tasti</translation>
     </message>
     <message>
-        <source>Mausrad-Feinheiten</source>
+        <source>Mausrad-Feineinstellungen</source>
         <translation>Dettagli della rotellina del mouse</translation>
     </message>
     <message>
@@ -4574,7 +4574,7 @@
         <translation>Abbreviazioni da tastiera</translation>
     </message>
     <message>
-        <source>Feld anklicken und neue Taste drücken. Bis zu drei Kürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
+        <source>Klicke auf ein Feld und drücke die neue Taste. Bis zu drei Tastenkürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
         <translation>Fai clic sul campo e premi il nuovo tasto. Fino a tre abbreviazioni per azione. Le cifre e P/X/U per la valutazione valgono solo in modalità scrematura.</translation>
     </message>
     <message>
@@ -4594,7 +4594,7 @@
         <translation>–</translation>
     </message>
     <message>
-        <source>Standardkürzel wiederherstellen</source>
+        <source>Standard-Tastenkürzel wiederherstellen</source>
         <translation>Ripristina abbreviazione predefinita</translation>
     </message>
     <message>
@@ -4606,7 +4606,7 @@
         <translation>In conflitto con: %1</translation>
     </message>
     <message numerus="yes">
-        <source>%n Aktion(en) mit doppelt belegten Tasten – bitte eine davon ändern.</source>
+        <source>%n Aktion(en) mit doppelt belegten Tasten – ändere eine davon.</source>
         <translation>
             <numerusform>%n azione con tasti assegnati due volte: modificane uno.</numerusform>
             <numerusform>%n azioni con tasti assegnati due volte: modificane una.</numerusform>
@@ -4733,7 +4733,7 @@
         <translation>Destinazione %1 dell’archiviazione rapida</translation>
     </message>
     <message>
-        <source>Bewertungen speichern</source>
+        <source>Speicherort für Bewertungen</source>
         <translation>Salva valutazioni</translation>
     </message>
     <message>
@@ -4741,7 +4741,7 @@
         <translation>File XMP aggiuntivo accanto all’immagine (Immagine.xmp)</translation>
     </message>
     <message>
-        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
+        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Abgelehnt“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
         <translation>Compatibile con Lightroom, Capture One e darktable: stelle in xmp:Rating, “Scarta” come -1. Il contenuto esistente del file viene mantenuto.</translation>
     </message>
     <message>
@@ -4761,11 +4761,11 @@
         <translation>Simbolo stella:</translation>
     </message>
     <message>
-        <source>Tag für Pick:</source>
+        <source>Tag für „Markiert“:</source>
         <translation>Tag per Mantieni:</translation>
     </message>
     <message>
-        <source>Tag für Verworfen:</source>
+        <source>Tag für „Abgelehnt“:</source>
         <translation>Tag per Scarta:</translation>
     </message>
     <message>
@@ -4785,7 +4785,7 @@
         <translation>Blocca lo zoom in modalità selezione</translation>
     </message>
     <message>
-        <source>Tastenhilfe im Aussortiermodus zeigen</source>
+        <source>Tastenhilfe im Aussortiermodus einblenden</source>
         <translation>Mostra l’aiuto dei tasti in modalità selezione</translation>
     </message>
     <message>
@@ -4797,7 +4797,7 @@
         <translation>Archiviazione rapida</translation>
     </message>
     <message>
-        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z macht es rückgängig.</source>
+        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z widerruft es.</source>
         <translation>M e poi 1–9 sposta l’immagine nella cartella di destinazione, C e poi 1–9 la copia. M M o C C ripete l’ultima destinazione. ⌘Z annulla.</translation>
     </message>
     <message>
@@ -4901,7 +4901,7 @@
         <translation>Immagini da precaricare:</translation>
     </message>
     <message>
-        <source>Bilder zurück behalten:</source>
+        <source>Vorherige Bilder behalten:</source>
         <translation>Immagini precedenti da mantenere:</translation>
     </message>
     <message>
@@ -4913,7 +4913,7 @@
         <translation>Consenti Testo attivo e isolamento del soggetto (⇧⌘L)</translation>
     </message>
     <message>
-        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Internetverbindung.</source>
         <translation>L’immagine viene analizzata solo quando attivi Testo attivo per una finestra – su questo Mac, senza rete.</translation>
     </message>
     <message>
@@ -4921,7 +4921,7 @@
         <translation>Azioni personalizzate</translation>
     </message>
     <message>
-        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Kurzbefehle-App) erhält das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
         <translation>Un comando shell o un comando rapido (Comandi Rapidi) riceve l’immagine attuale come argomento. Menu: File → Azioni personalizzate.</translation>
     </message>
     <message>
@@ -4933,7 +4933,7 @@
         <translation> s</translation>
     </message>
     <message>
-        <source>Einstellungen sichern</source>
+        <source>Backup der Einstellungen</source>
         <translation>Backup impostazioni</translation>
     </message>
     <message>
@@ -5001,12 +5001,8 @@
         <translation>App predefinita del sistema per il tipo di immagine (mai Lumaflip)</translation>
     </message>
     <message>
-        <source>Lumaflip kann nicht sein eigener Editor sein. Bitte wähle ein anderes Programm.</source>
+        <source>Lumaflip kann nicht sein eigener Editor sein. Wähle eine andere App.</source>
         <translation>Lumaflip non può essere il proprio editor. Scegli un’altra app.</translation>
-    </message>
-    <message>
-        <source>Auswählen …</source>
-        <translation>Scegli…</translation>
     </message>
     <message>
         <source>Editor wählen</source>
@@ -5057,7 +5053,7 @@
         <translation>La dimensione dell’immagine %1 × %2 non è valida o è troppo grande.</translation>
     </message>
     <message>
-        <source>Die Farbtiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
+        <source>Die Bittiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
         <translation>La profondità o la modalità colore del file PSB non è supportata.</translation>
     </message>
     <message>
@@ -5065,7 +5061,7 @@
         <translation>La compressione del file PSB non è supportata.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>Memoria insufficiente per l’immagine.</translation>
     </message>
     <message>
@@ -5108,7 +5104,7 @@
         <translation>Il file SVG non è valido o è danneggiato.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>Memoria insufficiente per l’immagine.</translation>
     </message>
 </context>
@@ -5141,7 +5137,7 @@
         <translation>Copia in… (1–9, C = come l’ultima volta)</translation>
     </message>
     <message>
-        <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
+        <source>Noch kein Ziel verwendet – wähle zuerst eine Ziffer 1–9.</source>
         <translation>Nessuna destinazione ancora usata: scegli prima una cifra 1–9.</translation>
     </message>
     <message>
@@ -5187,11 +5183,11 @@
         <translation>Conflitto di nomi</translation>
     </message>
     <message>
-        <source>„%1“ gibt es in „%2“ schon.</source>
+        <source>„%1“ existiert bereits in „%2“.</source>
         <translation>“%1” esiste già in “%2”.</translation>
     </message>
     <message>
-        <source>Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.</source>
+        <source>„Ersetzen“ legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z widerruft alles.</source>
         <translation>Sostituisci sposta il file esistente nel Cestino, “Mantieni entrambi” dà al nuovo un nome come “%1”. ⌘Z annulla tutto.</translation>
     </message>
     <message>
@@ -5218,7 +5214,7 @@
         <translation>tutte</translation>
     </message>
     <message>
-        <source>nur Picks</source>
+        <source>nur markierte</source>
         <translation>solo mantenute</translation>
     </message>
     <message>
@@ -5230,15 +5226,15 @@
         <translation>solo non valutate</translation>
     </message>
     <message>
-        <source>nur verworfene</source>
+        <source>nur abgelehnte</source>
         <translation>solo scartate</translation>
     </message>
     <message>
-        <source>Pick</source>
+        <source>Markiert</source>
         <translation>Mantenuta</translation>
     </message>
     <message>
-        <source>Verworfen</source>
+        <source>Abgelehnt</source>
         <translation>Scartata</translation>
     </message>
 </context>
@@ -5293,7 +5289,7 @@
         <translation>Impossibile scrivere la valutazione nell’immagine senza ricodificarla.</translation>
     </message>
     <message>
-        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.</source>
+        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gesichert.</source>
         <translation>“%1” è stato modificato nel frattempo: valutazione non salvata.</translation>
     </message>
     <message>
@@ -5383,31 +5379,31 @@
         <translation>Nuovo nome file</translation>
     </message>
     <message>
-        <source>Soll die Endung „.%1“ entfernt werden?</source>
+        <source>Möchtest du die Endung „.%1“ wirklich entfernen?</source>
         <translation>Vuoi rimuovere l’estensione “.%1”?</translation>
     </message>
     <message>
-        <source>Soll die Endung „.%1“ hinzugefügt werden?</source>
+        <source>Möchtest du die Endung „.%1“ wirklich hinzufügen?</source>
         <translation>Vuoi aggiungere l’estensione “.%1”?</translation>
     </message>
     <message>
-        <source>Soll die Endung „.%1“ in „.%2“ geändert werden?</source>
+        <source>Möchtest du die Endung wirklich von „.%1“ in „.%2“ ändern?</source>
         <translation>Vuoi cambiare l’estensione da “.%1” a “.%2”?</translation>
     </message>
     <message>
-        <source>Dateiendung ändern?</source>
+        <source>Endung ändern?</source>
         <translation>Cambiare l’estensione del file?</translation>
     </message>
     <message>
-        <source>Die Datei wird dadurch nicht umgewandelt. Andere Programme erkennen sie danach eventuell nicht mehr.</source>
+        <source>Die Datei wird dadurch nicht umgewandelt. Andere Apps erkennen sie danach eventuell nicht mehr.</source>
         <translation>Il file non viene convertito. Altre app potrebbero non riconoscerlo più.</translation>
     </message>
     <message>
-        <source>Ohne Endung lassen</source>
+        <source>Nicht hinzufügen</source>
         <translation>Lascia senza estensione</translation>
     </message>
     <message>
-        <source>„.%1“ behalten</source>
+        <source>„.%1“ beibehalten</source>
         <translation>Mantieni “.%1”</translation>
     </message>
     <message>
@@ -5450,7 +5446,7 @@
         <translation>Il file SVG non ha una dimensione valida.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>Memoria insufficiente per l’immagine.</translation>
     </message>
     <message>
@@ -5529,7 +5525,7 @@
         <translation>Impossibile scrivere “%1”.</translation>
     </message>
     <message>
-        <source>Lumaflip ist nicht als Anwendung installiert (%1 fehlt).</source>
+        <source>Lumaflip ist nicht als App installiert (%1 fehlt).</source>
         <translation>Lumaflip non è installato come applicazione (manca %1).</translation>
     </message>
     <message>
@@ -5545,11 +5541,11 @@
         <translation>“%1” leggerebbe il nome del file come un comando e non viene avviato per motivi di sicurezza.</translation>
     </message>
     <message>
-        <source>Das Programm wurde nicht gefunden.</source>
+        <source>Die App wurde nicht gefunden.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Windows erlaubt Programmen nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
+        <source>Windows erlaubt Apps nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5588,11 +5584,11 @@
         <translation>La pagina %1 non esiste.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>Memoria insufficiente per l’immagine.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
         <translation>Memoria insufficiente per l’immagine (%1 × %2 pixel).</translation>
     </message>
 </context>
@@ -5668,11 +5664,11 @@
 <context>
     <name>lf::UndoBackupStore</name>
     <message>
-        <source>Die Sicherung für „Rückgängig“ ist nicht mehr vorhanden.</source>
+        <source>Die Sicherungskopie für „Widerrufen“ existiert nicht mehr.</source>
         <translation>Il backup per “Annulla” non è più disponibile.</translation>
     </message>
     <message>
-        <source>Nicht genug Platz für die Sicherungskopie (Rückgängig) – nichts gespeichert.</source>
+        <source>Nicht genug Speicherplatz für die Sicherungskopie (Widerrufen) – nichts gesichert.</source>
         <translation>Spazio insufficiente per la copia di backup (Annulla): non è stato salvato nulla.</translation>
     </message>
 </context>
@@ -5730,7 +5726,7 @@
         <translation>Risoluzione completa non disponibile</translation>
     </message>
     <message>
-        <source>Lumaflip – lädt …</source>
+        <source>Lumaflip – wird geladen …</source>
         <translation>Lumaflip – caricamento…</translation>
     </message>
     <message>
@@ -5838,7 +5834,7 @@
         <translation>Percorso copiato</translation>
     </message>
     <message>
-        <source>„%1“ ist nicht mehr vorhanden.</source>
+        <source>„%1“ existiert nicht mehr.</source>
         <translation>“%1” non è più disponibile.</translation>
     </message>
     <message>
@@ -5897,19 +5893,19 @@
         <translation>Presentazione – Spazio: pausa · 1–9: secondi · Esc: fine</translation>
     </message>
     <message>
-        <source>Keine Drehung zu speichern – zuerst mit ⌘L oder ⌘R drehen</source>
+        <source>Keine Drehung zu sichern – drehe das Bild zuerst mit ⌘L oder ⌘R</source>
         <translation>Nessuna rotazione da salvare: ruota prima con ⌘L o ⌘R</translation>
     </message>
     <message>
-        <source>Drehung speichern</source>
+        <source>Drehung sichern</source>
         <translation>Salva rotazione</translation>
     </message>
     <message>
-        <source>Verlustfrei drehen geht nur mit beschnittenem Rand.</source>
+        <source>Verlustfreies Drehen ist nur mit beschnittenem Rand möglich.</source>
         <translation>La rotazione senza perdita è possibile solo tagliando il bordo.</translation>
     </message>
     <message>
-        <source>Die Drehung kann nur durch Neukodieren gespeichert werden.</source>
+        <source>Die Drehung kann nur durch Neukodieren gesichert werden.</source>
         <translation>La rotazione può essere salvata solo ricodificando l’immagine.</translation>
     </message>
     <message>
@@ -5945,7 +5941,7 @@
         <translation>Nessuna immagine aperta.</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <source>Bilder in Archiven und PDF-Seiten können nicht als Schreibtischhintergrund festgelegt werden.</source>
         <translation>Le immagini negli archivi e le pagine PDF non possono diventare sfondo scrivania.</translation>
     </message>
     <message>
@@ -5970,7 +5966,7 @@
         <translation>Tutti gli schermi</translation>
     </message>
     <message>
-        <source>Diese Arbeitsumgebung wird nicht unterstützt.</source>
+        <source>Diese Desktopumgebung wird nicht unterstützt.</source>
         <translation>Questo ambiente desktop non è supportato.</translation>
     </message>
 </context>
@@ -6010,7 +6006,7 @@
         <translation>Nessun punto AF nei metadati</translation>
     </message>
     <message>
-        <source>Zuschneiden geht in der Einzelbildansicht.</source>
+        <source>Zuschneiden ist nur in der Einzelbildansicht möglich.</source>
         <translation>Il ritaglio funziona nella vista a immagine singola.</translation>
     </message>
     <message>
@@ -6018,11 +6014,11 @@
         <translation>Nessuna immagine da ritagliare.</translation>
     </message>
     <message>
-        <source>Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab</source>
+        <source>Zuschneiden: Rahmen ziehen – Enter sichert, Esc bricht ab</source>
         <translation>Ritaglia: trascina un riquadro – Invio salva, Esc annulla</translation>
     </message>
     <message>
-        <source>Der vorige Zuschnitt wird noch gespeichert.</source>
+        <source>Der vorherige Zuschnitt wird noch gesichert.</source>
         <translation>Il ritaglio precedente è ancora in fase di salvataggio.</translation>
     </message>
     <message>
@@ -6035,7 +6031,7 @@
         <translation>%1-ritagliata.%2</translation>
     </message>
     <message>
-        <source>Zugeschnittenes Bild speichern unter</source>
+        <source>Zugeschnittenes Bild sichern unter</source>
         <translation>Salva immagine ritagliata con nome</translation>
     </message>
     <message>
@@ -6047,7 +6043,7 @@
         <translation>Ritaglia</translation>
     </message>
     <message>
-        <source>„%1“ gibt es schon. Ersetzen?</source>
+        <source>„%1“ existiert bereits. Möchtest du die Datei ersetzen?</source>
         <translation>“%1” esiste già. Sostituirlo?</translation>
     </message>
     <message>
@@ -6059,7 +6055,7 @@
         <translation>Sostituisci</translation>
     </message>
     <message>
-        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <source>Der Zuschnitt konnte nicht gesichert werden.</source>
         <translation>Impossibile salvare il ritaglio.</translation>
     </message>
     <message>
@@ -6071,7 +6067,7 @@
         <translation>Esporta ritaglio…</translation>
     </message>
     <message>
-        <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
+        <source>Der Zuschnitt kann nur durch Neukodieren gesichert werden.</source>
         <translation>Il ritaglio può essere salvato solo ricodificando.</translation>
     </message>
     <message>
@@ -6083,7 +6079,7 @@
         <translation>Annulla</translation>
     </message>
     <message>
-        <source>Zugeschnitten gespeichert als „%1“</source>
+        <source>Zugeschnitten gesichert als „%1“</source>
         <translation>Ritaglio salvato come “%1”</translation>
     </message>
     <message>
@@ -6126,7 +6122,7 @@
 <context>
     <name>lf::WindowExtras</name>
     <message>
-        <source>Karte</source>
+        <source>Ordnerkarte</source>
         <translation>Mappa</translation>
     </message>
     <message>
@@ -6197,7 +6193,7 @@
         <translation>Testo attivo spento</translation>
     </message>
     <message>
-        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – schalte mit ⇧⌘H auf SDR um.</source>
         <translation>Testo attivo non è disponibile durante la visualizzazione HDR – passa a SDR con ⇧⌘H.</translation>
     </message>
     <message>
@@ -6263,11 +6259,11 @@
         <translation>La dimensione dell’immagine %1 × %2 non è valida o è troppo grande.</translation>
     </message>
     <message>
-        <source>Die Farbtiefe der XCF-Datei wird nicht unterstützt.</source>
+        <source>Die Bittiefe der XCF-Datei wird nicht unterstützt.</source>
         <translation>La profondità di colore del file XCF non è supportata.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>Memoria insufficiente per l’immagine.</translation>
     </message>
     <message>
@@ -6314,7 +6310,7 @@
         <translation>“%1” è troppo grande.</translation>
     </message>
     <message>
-        <source>Die Kompressionsart von „%1“ wird nicht unterstützt.</source>
+        <source>Die Komprimierungsart von „%1“ wird nicht unterstützt.</source>
         <translation>Il metodo di compressione di “%1” non è supportato.</translation>
     </message>
 </context>

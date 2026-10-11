@@ -541,7 +541,7 @@ bool fillSharedImage(const QByteArray& name, const QImage& image, QString* error
     }
     close(fd);
     if (!ok && error)
-        *error = Tr::tr("Nicht genug Speicher für das Bild (%1 × %2 Pixel).")
+        *error = Tr::tr("Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).")
                      .arg(image.width())
                      .arg(image.height());
     return ok;
@@ -637,7 +637,7 @@ int createSealedImage(const QImage& image, QString* error) {
         if (fd >= 0)
             close(fd);
         if (error)
-            *error = Tr::tr("Nicht genug Speicher für das Bild (%1 × %2 Pixel).")
+            *error = Tr::tr("Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).")
                          .arg(image.width())
                          .arg(image.height());
         return -1;
@@ -877,7 +877,7 @@ bool fillSharedImage(const QByteArray& name, const QImage& image, QString* error
         UnmapViewOfFile(mem);
     }
     if (!ok && error)
-        *error = Tr::tr("Nicht genug Speicher für das Bild (%1 × %2 Pixel).")
+        *error = Tr::tr("Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).")
                      .arg(image.width())
                      .arg(image.height());
     return ok;

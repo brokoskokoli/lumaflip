@@ -45,7 +45,7 @@ QImage allocate(qint64 w, qint64 h, QImage::Format f, QString* error) {
     }
     QImage img(int(w), int(h), f);
     if (img.isNull() && error)
-        *error = Tr::tr("Nicht genug Speicher für das Bild (%1 × %2 Pixel).").arg(w).arg(h);
+        *error = Tr::tr("Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).").arg(w).arg(h);
     return img;
 }
 

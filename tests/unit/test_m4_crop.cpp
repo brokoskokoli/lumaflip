@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Cropping (F-EDIT-03): crop geometry (aspect presets, handles, orientation, MCU grid),
 // lossless JPEG crop (pixel exact against the decoded original), metadata and ICC kept,
-// refusal for MPF/gain-map JPEGs, undo/redo, symbolic and hard link safety, "Speichern
+// refusal for MPF/gain-map JPEGs, undo/redo, symbolic and hard link safety, "Sichern
 // unter" never touching the source, exact re-encoding of lossless formats.
 
 #include "ExifTestWriter.h"
@@ -650,7 +650,7 @@ TEST(Crop, F_EDIT_03_OrientedCropShowsTheSelectedPixels) {
     }
 }
 
-// "Speichern unter" replaces an existing file only with the user's consent; a file that
+// "Sichern unter" replaces an existing file only with the user's consent; a file that
 // appears after planning is never replaced.
 TEST(Crop, F_EDIT_03_SaveAsReplacesOnlyWhenAgreed) {
     QTemporaryDir dir;

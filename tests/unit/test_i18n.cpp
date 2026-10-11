@@ -390,7 +390,7 @@ TEST(I18n, F_I18N_04_ExposureAndGpsFollowTheLocale) {
     EXPECT_EQ(formatAperture(8.0, en), QStringLiteral("f/8"));
     EXPECT_EQ(formatExposureBias(0.7, de), QStringLiteral("+0,7 EV"));
     EXPECT_EQ(formatExposureBias(-1.3, en), QStringLiteral("-1.3 EV"));
-    EXPECT_EQ(formatFocalLength(35, 52, de), QStringLiteral("35 mm (KB: 52 mm)"));
+    EXPECT_EQ(formatFocalLength(35, 52, de), QStringLiteral("35 mm (Kleinbild: 52 mm)"));
     EXPECT_EQ(formatFocalLength(50, 50, en), QStringLiteral("50 mm"));
     EXPECT_EQ(formatLatitude(48.137154, de), QStringLiteral("48,137154° N"));
     EXPECT_EQ(formatLatitude(-33.8688, en), QStringLiteral("33.8688° S"));

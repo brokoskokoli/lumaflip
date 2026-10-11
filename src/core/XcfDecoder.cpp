@@ -451,7 +451,7 @@ std::optional<Header> parseHeader(const QByteArray& data, QString* error) {
     }
     const auto p = precisionFor(h.version, code);
     if (!p || (h.baseType == 2 && p->bytes != 1)) {
-        setError(error, Tr::tr("Die Farbtiefe der XCF-Datei wird nicht unterstützt."));
+        setError(error, Tr::tr("Die Bittiefe der XCF-Datei wird nicht unterstützt."));
         return std::nullopt;
     }
     h.precision = *p;
@@ -849,7 +849,7 @@ bool Compositor::loadLayerPixels(const Layer& L, const QRect& rect, QImage& out,
         return fail(error, QStringLiteral("indexed layer with deep precision"));
     out = QImage(rect.size(), QImage::Format_RGBA32FPx4);
     if (out.isNull()) {
-        setError(error, Tr::tr("Nicht genug Speicher für das Bild."));
+        setError(error, Tr::tr("Nicht genug Arbeitsspeicher für das Bild."));
         return false;
     }
     out.fill(Qt::transparent);
@@ -1032,7 +1032,7 @@ bool Compositor::compositeItem(QImage& canvas, int index, int depth, QString* er
             // Children blend onto the backdrop; the group's opacity/mask mix the result in.
             QImage result = canvas.copy();
             if (result.isNull()) {
-                setError(error, Tr::tr("Nicht genug Speicher für das Bild."));
+                setError(error, Tr::tr("Nicht genug Arbeitsspeicher für das Bild."));
                 return false;
             }
             if (!compositeList(result, L.children, depth + 1, error))
@@ -1066,7 +1066,7 @@ bool Compositor::compositeItem(QImage& canvas, int index, int depth, QString* er
         }
         QImage tmp(canvas.size(), QImage::Format_RGBA32FPx4);
         if (tmp.isNull()) {
-            setError(error, Tr::tr("Nicht genug Speicher für das Bild."));
+            setError(error, Tr::tr("Nicht genug Arbeitsspeicher für das Bild."));
             return false;
         }
         tmp.fill(Qt::transparent);
@@ -1131,7 +1131,7 @@ std::optional<xcf::Result> Compositor::run(int maxEdge, QString* error) {
 
     QImage canvas(m_canvasSize, QImage::Format_RGBA32FPx4);
     if (canvas.isNull()) {
-        setError(error, Tr::tr("Nicht genug Speicher für das Bild."));
+        setError(error, Tr::tr("Nicht genug Arbeitsspeicher für das Bild."));
         return std::nullopt;
     }
     canvas.fill(Qt::transparent);
@@ -1144,7 +1144,7 @@ std::optional<xcf::Result> Compositor::run(int maxEdge, QString* error) {
     canvas.setColorSpace(useIcc ? m_iccSpace : QColorSpace(QColorSpace::SRgb));
     canvas.convertTo(deep ? QImage::Format_RGBA64_Premultiplied : QImage::Format_RGBA8888_Premultiplied);
     if (canvas.isNull()) {
-        setError(error, Tr::tr("Nicht genug Speicher für das Bild."));
+        setError(error, Tr::tr("Nicht genug Arbeitsspeicher für das Bild."));
         return std::nullopt;
     }
     if (maxEdge > 0 && std::max(canvas.width(), canvas.height()) > maxEdge) {

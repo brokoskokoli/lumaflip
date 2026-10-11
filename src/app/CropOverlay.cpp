@@ -104,10 +104,10 @@ void CropOverlay::retranslateUi() {
     m_portraitButton->setToolTip(tr("Seitenverhältnis hochkant statt quer"));
     m_gridButton->setText(tr("Drittel"));
     m_gridButton->setToolTip(tr("Raster der Drittel-Regel einblenden"));
-    m_save->setText(tr("Speichern"));
-    m_save->setToolTip(tr("Zuschnitt in der Datei speichern (Enter, widerrufbar)"));
-    m_saveAs->setText(tr("Speichern unter …"));
-    m_saveAs->setToolTip(tr("Zuschnitt als neue Datei speichern – das Original bleibt unverändert"));
+    m_save->setText(tr("Sichern"));
+    m_save->setToolTip(tr("Zuschnitt in der Datei sichern (Enter, widerrufbar)"));
+    m_saveAs->setText(tr("Sichern unter …"));
+    m_saveAs->setToolTip(tr("Zuschnitt als neue Datei sichern – das Original bleibt unverändert"));
     m_cancel->setText(tr("Abbrechen"));
     m_cancel->setToolTip(tr("Zuschneiden beenden (Esc)"));
     updateBar();

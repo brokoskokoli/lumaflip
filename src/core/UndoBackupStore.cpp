@@ -151,7 +151,7 @@ bool UndoBackupStore::addCopy(quint64 id, const QString& source, const QString& 
         std::lock_guard g(m_mutex);
         auto it = m_entries.find(id);
         if (it == m_entries.end() || it->dropped || m_session.isEmpty())
-            return fail(Tr::tr("Die Sicherung für „Rückgängig“ ist nicht mehr vorhanden."));
+            return fail(Tr::tr("Die Sicherungskopie für „Widerrufen“ existiert nicht mehr."));
         // The previous copy of that name goes first.
         if (it->files.contains(name)) {
             toDelete << it->files.take(name);
@@ -161,7 +161,7 @@ bool UndoBackupStore::addCopy(quint64 id, const QString& source, const QString& 
         if (size > budget) {
             deleteLater(toDelete);
             return fail(
-                Tr::tr("Nicht genug Platz für die Sicherungskopie (Rückgängig) – nichts gespeichert."));
+                Tr::tr("Nicht genug Speicherplatz für die Sicherungskopie (Widerrufen) – nichts gesichert."));
         }
         // Room for the full size (a clone may cost nothing, which is only known afterwards).
         for (qsizetype i = 0; i < m_order.size() && m_used + size > budget;) {
@@ -177,7 +177,7 @@ bool UndoBackupStore::addCopy(quint64 id, const QString& source, const QString& 
         if (m_used + size > budget) {
             deleteLater(toDelete);
             return fail(
-                Tr::tr("Nicht genug Platz für die Sicherungskopie (Rückgängig) – nichts gespeichert."));
+                Tr::tr("Nicht genug Speicherplatz für die Sicherungskopie (Widerrufen) – nichts gesichert."));
         }
         it = m_entries.find(id); // removing other entries may have moved this one
         path = QDir(m_session).filePath(QStringLiteral("%1-%2").arg(id).arg(name));
@@ -201,7 +201,7 @@ bool UndoBackupStore::addCopy(quint64 id, const QString& source, const QString& 
             m_used -= it->costs.take(name);
         }
         QFile::remove(path);
-        return fail(ok ? Tr::tr("Die Sicherung für „Rückgängig“ ist nicht mehr vorhanden.") : copyError);
+        return fail(ok ? Tr::tr("Die Sicherungskopie für „Widerrufen“ existiert nicht mehr.") : copyError);
     }
     if (cloned && !costsFullSize) {
         m_used -= it->costs.value(name);

@@ -89,7 +89,7 @@ public:
             return true;
         }
         if (error)
-            *error = Tr::tr("Diese Arbeitsumgebung wird nicht unterstützt.");
+            *error = Tr::tr("Diese Desktopumgebung wird nicht unterstützt.");
         return false;
     }
 };

@@ -2623,7 +2623,7 @@ void Collection::Private::processPendingChanges() {
 void Collection::Private::startDelta(const QStringList& folders) {
     DeltaJob dj;
     dj.base = makeJob(JobKind::Load);
-    dj.base.manualSpec = spec; // the resolved spec of the last load ("Wie Finder" included)
+    dj.base.manualSpec = spec; // the resolved spec of the last load ("Wie im Finder" included)
     dj.base.manualSpec.source = spec.source;
     dj.folders = folders;
     dj.known = treeSet;

@@ -373,8 +373,8 @@ QWidget* PreferencesDialog::buildGeneral() {
     // F-I18N-03: UI language (LanguageChooser.cpp), switched at once
     form->addRow(tr("Sprache:"), prefs::createLanguageChooser(w));
     form->addRow(QString(),
-                 helpLabel(tr("Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbild aktivieren“, "
-                              "„Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart."),
+                 helpLabel(tr("Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbildmodus“, „Dienste“, "
+                              "„Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart."),
                            w));
     form->addRow(tr("Öffnen aus dem Finder:"),
                  bind.combo(key::OpenBehavior, {"newWindow", "replaceFront", "newUnlessOpen"},
@@ -391,24 +391,24 @@ QWidget* PreferencesDialog::buildGeneral() {
                  helpLabel(tr("Ordner, Bild, Zoom und Position aller Fenster, die beim Beenden offen "
                               "waren."),
                            w));
-    form->addRow(QString(), bind.check(key::ConfirmTrash, tr("Vor dem Löschen nachfragen"), w));
+    form->addRow(QString(),
+                 bind.check(key::ConfirmTrash, tr("Vor dem Bewegen in den Papierkorb nachfragen"), w));
     form->addRow(QString(),
                  helpLabel(tr("Aus: ⌘⌫ legt das Bild sofort in den Papierkorb, ⌘Z holt es zurück."), w));
     Updater::addPreferences(form, w); // F-MAC-08 (only if the updater is available)
     // F-FILE-05
     form->addRow(tr("Editor:"), prefs::createEditorChooser(w));
-    form->addRow(QString(), helpLabel(tr("Für „In Standard-Editor öffnen“ (Taste E)."), w));
+    form->addRow(QString(), helpLabel(tr("Für „Im Editor öffnen“ (Taste E)."), w));
     // F-EDIT-02: saving the rotation (Bild → Drehung speichern, ⌘S)
-    form->addRow(tr("Drehung speichern:"),
+    form->addRow(tr("Drehung sichern:"),
                  bind.combo(key::RotationSaveStrategy, {"exif", "lossless"},
                             {tr("EXIF-Ausrichtung setzen"), tr("JPEG verlustfrei drehen (DCT)")}, w));
-    form->addRow(
-        QString(),
-        helpLabel(tr("Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen "
-                     "(JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, "
-                     "damit auch Programme ohne EXIF-Unterstützung das Bild richtig zeigen. RAW-Dateien "
-                     "werden nie verändert; ⌘Z macht das Speichern rückgängig."),
-                  w));
+    form->addRow(QString(),
+                 helpLabel(tr("Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen "
+                              "(JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, "
+                              "damit auch Apps ohne EXIF-Unterstützung das Bild richtig anzeigen. "
+                              "RAW-Dateien werden nie verändert; ⌘Z widerruft das Sichern."),
+                           w));
     form->addRow(QString(), bind.check(key::KeepModificationDate, tr("Änderungsdatum beibehalten"), w));
     return w;
 }
@@ -422,14 +422,14 @@ QWidget* PreferencesDialog::buildWindow() {
     // F-VIEW-15
     form->addRow(tr("Titelleiste:"),
                  bind.combo(key::TitleBar, {"autoHide", "always"},
-                            {tr("Beim Bewegen der Maus einblenden"), tr("Immer zeigen")}, w));
+                            {tr("Beim Bewegen der Maus einblenden"), tr("Immer einblenden")}, w));
     form->addRow(QString(),
                  helpLabel(tr("Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler "
                               "Fenstermodus“ schaltet ein einzelnes Fenster um."),
                            w));
     form->addRow(QString(), bind.check(key::TitleShowFolder, tr("Ordnername in der Titelleiste"), w));
     form->addRow(QString(), helpLabel(tr("Zum Beispiel „IMG_1234.jpg — 23 / 412 — Urlaub“."), w));
-    form->addRow(tr("Neue Fenster zeigen:"), bind.check(key::ShowStatusBar, tr("Statuszeile"), w));
+    form->addRow(tr("Neue Fenster zeigen:"), bind.check(key::ShowStatusBar, tr("Statusleiste"), w));
     form->addRow(QString(), bind.check(key::ShowInfoPanel, tr("Infopanel (⌘I)"), w));   // F-INFO-02
     form->addRow(QString(), bind.check(key::ShowFilmstrip, tr("Filmstreifen (T)"), w)); // F-GRID-01
     // F-WIN-05
@@ -462,8 +462,8 @@ QWidget* PreferencesDialog::buildDisplay() {
     auto* bg = new QComboBox(bgRow);
     bg->setObjectName(QStringLiteral("setting:") + key::Background);
     const QStringList bgValues = {"dark", "light", "system", "checker", "custom"};
-    const QStringList bgLabels = {tr("Dunkel"), tr("Hell"), tr("Wie Systemdarstellung"),
-                                  tr("Schachbrett (Transparenz)"), tr("Eigene Farbe")};
+    const QStringList bgLabels = {tr("Dunkel"), tr("Hell"), tr("Wie System"), tr("Schachbrett (Transparenz)"),
+                                  tr("Eigene Farbe")};
     for (int i = 0; i < bgValues.size(); ++i)
         bg->addItem(bgLabels[i], bgValues[i]);
     auto* colorButton = new QPushButton(tr("Farbe wählen …"), bgRow);
@@ -503,13 +503,13 @@ QWidget* PreferencesDialog::buildDisplay() {
 
     form->addRow(tr("Zoom beim Öffnen:"),
                  bind.combo(key::ZoomMode, {"fit", "fitUpscale", "actual", "fillWidth", "fillHeight", "fill"},
-                            {tr("Einpassen (nicht vergrößern)"), tr("Einpassen inkl. Vergrößern"),
+                            {tr("Einpassen (nicht vergrößern)"), tr("Einpassen (auch vergrößern)"),
                              tr("100 %"), tr("Breite füllen"), tr("Höhe füllen"), tr("Fenster füllen")},
                             w));
     // F-VIEW-14
     form->addRow(QString(), bind.check(key::RememberZoom, tr("Zoom je Bild für die Sitzung merken"), w));
-    form->addRow(tr("Vergrößern über 100 %:"),
-                 bind.combo(key::UpscaleFilter, {"smooth", "nearest"}, {tr("Glatt"), tr("Pixel scharf")}, w));
+    form->addRow(tr("Vergrößern über 100 %:"), bind.combo(key::UpscaleFilter, {"smooth", "nearest"},
+                                                          {tr("Glatt"), tr("Scharfe Pixel")}, w));
     form->addRow(tr("100 % bedeutet:"),
                  bind.combo(key::ActualSizeUnit, {"devicePixels", "points"},
                             {tr("1 Bildpixel = 1 Gerätepixel (Retina-korrekt)"), tr("1 Bildpixel = 1 Punkt")},
@@ -555,8 +555,8 @@ QWidget* PreferencesDialog::buildInput() {
     auto* presetBox = new QGroupBox(tr("Profilvorlagen"), w);
     auto* presetRow = new QHBoxLayout(presetBox);
     const std::pair<const char*, QString> presets[] = {{"mac", tr("Mac-Standard")},
-                                                       {"windows", tr("Windows-Viewer-Gewohnheiten")},
-                                                       {"photographer", tr("Fotograf:in / Lightroom")}};
+                                                       {"windows", tr("Wie Windows-Bildbetrachter")},
+                                                       {"photographer", tr("Fotografie / Lightroom")}};
     for (const auto& [id, label] : presets) {
         auto* b = new QPushButton(label, presetBox);
         b->setObjectName(QStringLiteral("preset:") + QLatin1String(id));
@@ -611,7 +611,7 @@ QWidget* PreferencesDialog::buildInput() {
     v->addWidget(slotBox);
 
     // Wheel tuning (F-IN-03)
-    auto* tuneBox = new QGroupBox(tr("Mausrad-Feinheiten"), w);
+    auto* tuneBox = new QGroupBox(tr("Mausrad-Feineinstellungen"), w);
     auto* form = new QFormLayout(tuneBox);
     form->addRow(QString(), bind.check(key::WheelInverted, tr("Richtung umkehren"), tuneBox));
     form->addRow(tr("Raststufen pro Bildwechsel:"),
@@ -632,8 +632,8 @@ QWidget* PreferencesDialog::buildInput() {
 QWidget* PreferencesDialog::buildShortcutEditor() {
     auto* box = new QGroupBox(tr("Tastenkürzel"));
     auto* v = new QVBoxLayout(box);
-    v->addWidget(helpLabel(tr("Feld anklicken und neue Taste drücken. Bis zu drei Kürzel pro Aktion. "
-                              "Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus."),
+    v->addWidget(helpLabel(tr("Klicke auf ein Feld und drücke die neue Taste. Bis zu drei Tastenkürzel pro "
+                              "Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus."),
                            box));
     m_conflictLabel = new QLabel(box);
     m_conflictLabel->setObjectName(QStringLiteral("conflictLabel"));
@@ -680,7 +680,7 @@ QWidget* PreferencesDialog::buildShortcutEditor() {
         }
         auto* reset = new QToolButton(m_shortcutTable);
         reset->setText(QStringLiteral("↺"));
-        reset->setToolTip(tr("Standardkürzel wiederherstellen"));
+        reset->setToolTip(tr("Standard-Tastenkürzel wiederherstellen"));
         reset->setObjectName(QStringLiteral("resetShortcut:") + actionId(a));
         connect(reset, &QToolButton::clicked, this,
                 [this, a] { m_bindings.setShortcuts(a, InputBindings::defaultShortcuts(a)); });
@@ -754,7 +754,7 @@ void PreferencesDialog::updateConflicts() {
     }
     m_conflictLabel->setText(
         m_conflicts
-            ? tr("%n Aktion(en) mit doppelt belegten Tasten – bitte eine davon ändern.", nullptr, m_conflicts)
+            ? tr("%n Aktion(en) mit doppelt belegten Tasten – ändere eine davon.", nullptr, m_conflicts)
             : QString());
     m_conflictLabel->setVisible(m_conflicts > 0);
 }
@@ -876,7 +876,7 @@ QWidget* PreferencesDialog::buildAdvanced() {
     budget->setSpecialValueText(tr("Automatisch (25 % des Arbeitsspeichers, max. 2 GB)"));
     form->addRow(tr("Speicherbudget:"), budget);
     form->addRow(tr("Bilder im Voraus laden:"), bind.spin(key::PrefetchAhead, 0, 20, QString(), perf));
-    form->addRow(tr("Bilder zurück behalten:"), bind.spin(key::PrefetchBehind, 0, 20, QString(), perf));
+    form->addRow(tr("Vorherige Bilder behalten:"), bind.spin(key::PrefetchBehind, 0, 20, QString(), perf));
     v->addWidget(perf);
 
     // F-MAC-06 (M4): Live Text / Visual Look Up through VisionKit, on demand only.
@@ -884,19 +884,17 @@ QWidget* PreferencesDialog::buildAdvanced() {
     auto* macLayout = new QVBoxLayout(mac);
     macLayout->addWidget(
         bind.check(key::LiveTextEnabled, tr("Live Text und Motiv freistellen erlauben (⇧⌘L)"), mac));
-    macLayout->addWidget(
-        helpLabel(tr("Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – "
-                     "auf diesem Mac, ohne Netz."),
-                  mac));
+    macLayout->addWidget(helpLabel(tr("Das Bild wird nur analysiert, wenn du Live Text für ein Fenster "
+                                      "einschaltest – auf diesem Mac, ohne Internetverbindung."),
+                                   mac));
     v->addWidget(mac);
 
     // F-FILE-10 (M4): custom actions.
     auto* actions = new QGroupBox(tr("Eigene Aktionen"), w);
     auto* actionsLayout = new QVBoxLayout(actions);
-    actionsLayout->addWidget(
-        helpLabel(tr("Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild "
-                     "als Argument. Menü: Ablage → Eigene Aktionen."),
-                  actions));
+    actionsLayout->addWidget(helpLabel(tr("Ein Shell-Befehl oder ein Kurzbefehl (Kurzbefehle-App) erhält das "
+                                          "aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen."),
+                                       actions));
     actionsLayout->addWidget(prefs::createCustomActionsEditor(actions));
     auto* timeoutRow = new QFormLayout;
     timeoutRow->addRow(tr("Abbrechen nach:"),
@@ -904,7 +902,7 @@ QWidget* PreferencesDialog::buildAdvanced() {
     actionsLayout->addLayout(timeoutRow);
     v->addWidget(actions);
 
-    auto* io = new QGroupBox(tr("Einstellungen sichern"), w);
+    auto* io = new QGroupBox(tr("Backup der Einstellungen"), w);
     auto* row = new QHBoxLayout(io);
     auto* exp = new QPushButton(tr("Exportieren …"), io);
     exp->setObjectName(QStringLiteral("exportSettings"));

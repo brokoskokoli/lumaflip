@@ -67,7 +67,7 @@ bool QuickMoveController::interceptKey(const InputEvent& ev) {
     case QuickChord::Kind::Cancelled:
         m_timeout->stop();
         if (r.noLastTarget)
-            m_window.showMessage(tr("Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen."), 3000);
+            m_window.showMessage(tr("Noch kein Ziel verwendet – wähle zuerst eine Ziffer 1–9."), 3000);
         else
             m_window.hideMessage();
         return !r.passThrough;
@@ -188,11 +188,10 @@ void QuickMoveController::askConflict(QWidget* parent, const QStringList& fileNa
         renamed << filebatch::keepBothName(folder, fileName, [&](const QString& p) {
             return QFileInfo(p).fileName() == fileName; // no disk access here
         });
-    box->setText(tr("„%1“ gibt es in „%2“ schon.").arg(shown, QDir(folder).dirName()));
-    box->setInformativeText(
-        tr("Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der "
-           "neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.")
-            .arg(renamed.join(QStringLiteral(" + "))));
+    box->setText(tr("„%1“ existiert bereits in „%2“.").arg(shown, QDir(folder).dirName()));
+    box->setInformativeText(tr("„Ersetzen“ legt die vorhandene Datei in den Papierkorb, „Beide behalten“ "
+                               "gibt der neuen einen Namen wie „%1“. ⌘Z widerruft alles.")
+                                .arg(renamed.join(QStringLiteral(" + "))));
     QPushButton* replace = box->addButton(tr("Ersetzen"), QMessageBox::DestructiveRole);
     replace->setObjectName(QStringLiteral("lfConflictReplace"));
     QPushButton* keepBoth = box->addButton(tr("Beide behalten"), QMessageBox::AcceptRole);

@@ -875,12 +875,12 @@ private slots:
         QVERIFY(waitLoaded(w));
         QVERIFY(order->calls.load() > 0);
         QCOMPARE(order->liveCalls.load(), 0); // never without the opt-in
-        QTRY_COMPARE(w->sortText(), QStringLiteral("Wie Finder: Name ↑"));
+        QTRY_COMPARE(w->sortText(), QStringLiteral("Wie im Finder: Name ↑"));
         Settings::instance().setValue(key::FinderLiveQuery, true);
         QTRY_COMPARE(w->collection()->sortSpec().source, SortSource::FinderLive);
         QVERIFY(order->liveCalls.load() > 0);
-        QTRY_COMPARE(w->sortText(), QStringLiteral("Wie Finder (live): Name ↓"));
-        QVERIFY(w->statusText().contains(QStringLiteral("Wie Finder (live): Name ↓")));
+        QTRY_COMPARE(w->sortText(), QStringLiteral("Wie im Finder (live): Name ↓"));
+        QVERIFY(w->statusText().contains(QStringLiteral("Wie im Finder (live): Name ↓")));
         QCOMPARE(names(w->collection()).first(), QStringLiteral("IMG_10.jpg")); // descending
         Settings::instance().setValue(key::FinderLiveQuery, false);
         QTRY_COMPARE(w->collection()->sortSpec().source, SortSource::FinderDsStore);

@@ -45,7 +45,7 @@ bool open(const QString& path, Document& d, QString* error) {
     }
     if (CGPDFDocumentIsEncrypted(d.doc) && !CGPDFDocumentIsUnlocked(d.doc)) {
         if (error)
-            *error = Tr::tr("Das PDF-Dokument ist kennwortgeschützt.");
+            *error = Tr::tr("Das PDF-Dokument ist passwortgeschützt.");
         return false;
     }
     return true;
@@ -109,7 +109,7 @@ std::optional<DecodedImage> renderPage(const QString& path, int index, const Dec
     QImage image(target, QImage::Format_ARGB32_Premultiplied);
     if (image.isNull()) {
         if (error)
-            *error = Tr::tr("Nicht genug Speicher für die Seite.");
+            *error = Tr::tr("Nicht genug Arbeitsspeicher für die Seite.");
         return std::nullopt;
     }
     image.fill(Qt::white);
@@ -121,7 +121,7 @@ std::optional<DecodedImage> renderPage(const QString& path, int index, const Dec
     CGColorSpaceRelease(cs);
     if (!ctx) {
         if (error)
-            *error = Tr::tr("Nicht genug Speicher für die Seite.");
+            *error = Tr::tr("Nicht genug Arbeitsspeicher für die Seite.");
         return std::nullopt;
     }
     CGContextSetInterpolationQuality(ctx, kCGInterpolationHigh);

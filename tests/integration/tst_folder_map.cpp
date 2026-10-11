@@ -230,7 +230,7 @@ private slots:
         dir.reset();
     }
 
-    // Covers: F-INFO-08 (menu Darstellung → Karte, counts, SPEC 10.3 privacy)
+    // Covers: F-INFO-08 (menu Darstellung → Ordnerkarte, counts, SPEC 10.3 privacy)
     void F_INFO_08_mapOpensFromMenuWithCounts() {
         makeTrip();
         ViewerWindow* w = openAndWait(path("1_berlin.jpg"));

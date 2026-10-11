@@ -344,7 +344,7 @@ std::optional<DecodedImage> SimpleFormatDecoder::decode(const QString& path, con
                                                    : QImage::Format_RGBA8888_Premultiplied);
     }
     if (img.isNull()) {
-        setError(error, Tr::tr("Nicht genug Speicher für das Bild."));
+        setError(error, Tr::tr("Nicht genug Arbeitsspeicher für das Bild."));
         return std::nullopt;
     }
     const int bpp = img.depth() / 8;

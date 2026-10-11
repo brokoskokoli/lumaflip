@@ -130,9 +130,9 @@ void ExportDialog::setCrop(const QRectF& crop) {
 void ExportDialog::retranslateUi() {
     setWindowTitle(m_crop.isEmpty() ? tr("Exportieren") : tr("Zugeschnitten exportieren"));
     if (!m_crop.isEmpty() && m_sources.size() == 1)
-        m_header->setText(tr("Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt "
-                             "unverändert.")
-                              .arg(QFileInfo(m_sources.first()).fileName()));
+        m_header->setText(
+            tr("Den Zuschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.")
+                .arg(QFileInfo(m_sources.first()).fileName()));
     else
         m_header->setText(
             m_sources.size() == 1
@@ -156,15 +156,15 @@ void ExportDialog::retranslateUi() {
         box->setCurrentIndex(std::max(0, box->findData(current)));
     };
     fill(m_metadata, {{QStringLiteral("all"), tr("Alle behalten")},
-                      {QStringLiteral("noGps"), tr("Ohne Ortsdaten (GPS)")},
+                      {QStringLiteral("noGps"), tr("Ohne Aufnahmeort (GPS)")},
                       {QStringLiteral("none"), tr("Alle entfernen")}});
     fill(m_color, {{QStringLiteral("keep"), tr("Beibehalten")},
                    {QStringLiteral("srgb"), tr("In sRGB umwandeln")},
                    {QStringLiteral("p3"), tr("In Display P3 umwandeln")}});
     fill(m_hdr, {{QStringLiteral("keep"), tr("Gain-Map behalten (wo das Format es kann)")},
                  {QStringLiteral("sdr"), tr("Als SDR (Tone Mapping)")}});
-    m_pattern->setToolTip(tr("Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = "
-                             "Dateiendung"));
+    m_pattern->setToolTip(
+        tr("Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Endung"));
     m_nextToSource->setText(tr("Neben dem Original"));
     m_chooseFolder->setText(tr("Wählen …"));
     updateState();
@@ -334,7 +334,7 @@ void ExportRunner::run() {
         m_progress = new QProgressDialog(m_window);
         m_progress->setObjectName(QStringLiteral("lfExportProgress"));
         m_progress->setWindowTitle(tr("Exportieren"));
-        m_progress->setLabelText(tr("Exportiere …"));
+        m_progress->setLabelText(tr("Wird exportiert …"));
         m_progress->setCancelButtonText(tr("Abbrechen"));
         m_progress->setRange(0, total);
         m_progress->setMinimumDuration(400);
@@ -358,7 +358,7 @@ void ExportRunner::run() {
                 progress->setValue(done);
                 if (!current.isEmpty())
                     progress->setLabelText(
-                        QCoreApplication::translate("lf::ExportRunner", "Exportiere %1 von %2: %3")
+                        QCoreApplication::translate("lf::ExportRunner", "Bild %1 von %2 wird exportiert: %3")
                             .arg(done + 1)
                             .arg(all)
                             .arg(QFileInfo(current).fileName()));

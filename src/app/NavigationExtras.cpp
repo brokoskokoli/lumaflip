@@ -65,7 +65,7 @@ bool NavigationExtras::goTo(const QString& text) {
     Collection* c = m_window.collection();
     const std::optional<int> index = nav::parseGoTo(text, c->currentIndex(), c->count());
     if (!index) {
-        m_window.showMessage(tr("Bitte eine Bildnummer zwischen 1 und %1 eingeben").arg(c->count()), 2500);
+        m_window.showMessage(tr("Gib eine Bildnummer zwischen 1 und %1 ein.").arg(c->count()), 2500);
         return false;
     }
     c->setCurrentIndex(*index);

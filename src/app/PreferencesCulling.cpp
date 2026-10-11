@@ -150,11 +150,11 @@ QWidget* createRatingPage(QWidget* parent) {
     v->setContentsMargins(0, 0, 0, 0);
 
     // ---- F-CULL-02: stores ----
-    auto* stores = new QGroupBox(Tr::tr("Bewertungen speichern"), w);
+    auto* stores = new QGroupBox(Tr::tr("Speicherort für Bewertungen"), w);
     auto* form = new QFormLayout(stores);
     form->addRow(check(key::RatingStoreSidecar, Tr::tr("XMP-Zusatzdatei neben dem Bild (Bild.xmp)"), stores));
     form->addRow(help(Tr::tr("Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, "
-                             "„Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten."),
+                             "„Abgelehnt“ als -1. Vorhandene Inhalte der Datei bleiben erhalten."),
                       stores));
     form->addRow(check(key::RatingStoreEmbedded, Tr::tr("Im Bild selbst (eingebettetes XMP)"), stores));
     form->addRow(
@@ -169,8 +169,8 @@ QWidget* createRatingPage(QWidget* parent) {
                     "werden alle beschrieben; beim Lesen gilt die Reihenfolge Zusatzdatei, Bild, Tags."),
              stores));
     form->addRow(Tr::tr("Stern-Symbol:"), tagRow(key::RatingTagStarSymbol, key::RatingTagStarColor, stores));
-    form->addRow(Tr::tr("Tag für Pick:"), tagRow(key::RatingTagPick, key::RatingTagPickColor, stores));
-    form->addRow(Tr::tr("Tag für Verworfen:"),
+    form->addRow(Tr::tr("Tag für „Markiert“:"), tagRow(key::RatingTagPick, key::RatingTagPickColor, stores));
+    form->addRow(Tr::tr("Tag für „Abgelehnt“:"),
                  tagRow(key::RatingTagReject, key::RatingTagRejectColor, stores));
     form->addRow(help(Tr::tr("Drei Sterne werden zum Tag „★★★“ (Symbol dreimal)."), stores));
     v->addWidget(stores);
@@ -180,7 +180,7 @@ QWidget* createRatingPage(QWidget* parent) {
     auto* cf = new QFormLayout(culling);
     cf->addRow(check(key::CullAutoAdvance, Tr::tr("Nach Bewertung automatisch weiter"), culling));
     cf->addRow(check(key::CullLockZoom, Tr::tr("Zoom im Aussortiermodus fixieren"), culling));
-    cf->addRow(check(key::CullShowHelp, Tr::tr("Tastenhilfe im Aussortiermodus zeigen"), culling));
+    cf->addRow(check(key::CullShowHelp, Tr::tr("Tastenhilfe im Aussortiermodus einblenden"), culling));
     cf->addRow(help(Tr::tr("Aussortiermodus: ⌘K oder K. Ziffern vergeben dort Sterne statt Zoomstufen; "
                            "„Bewertungstasten immer aktiv“ gibt es unter Maus & Tastatur."),
                     culling));
@@ -190,7 +190,7 @@ QWidget* createRatingPage(QWidget* parent) {
     auto* quick = new QGroupBox(Tr::tr("Schnellablage"), w);
     auto* qf = new QFormLayout(quick);
     qf->addRow(help(Tr::tr("M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. "
-                           "M M bzw. C C wiederholt das letzte Ziel. ⌘Z macht es rückgängig."),
+                           "M M bzw. C C wiederholt das letzte Ziel. ⌘Z widerruft es."),
                     quick));
     for (int n = 1; n <= quickmove::kSlots; ++n)
         qf->addRow(QStringLiteral("%1").arg(n), targetRow(n, quick));

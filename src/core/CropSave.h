@@ -20,7 +20,7 @@
 //     platform cannot encode are never cropped in place: the plan is refused with
 //     `exportInstead`, and the window offers "Zugeschnitten exportieren …" (the export with
 //     exporting::Options::crop writes a new file; animations/multi-page: the first image).
-// "Speichern" replaces the file (FileEdit: undo backups, symbolic/hard link safety, fsync,
+// "Sichern" replaces the file (FileEdit: undo backups, symbolic/hard link safety, fsync,
 // plan/commit check); "Speichern unter" always writes a new file and never the source, and
 // replaces an existing file only when the user agreed (CropRequest::replaceExisting).
 // All file work is for worker threads.

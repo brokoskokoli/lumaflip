@@ -29,7 +29,7 @@ enum class WrapMode { Stop, Wrap }; // F-NAV-03 (NextFolder: M3, handled by the 
 
 // F-SORT-06: the sort choice remembered for one folder.
 struct FolderSortChoice {
-    bool followFinder = true; // "Wie Finder"
+    bool followFinder = true; // "Wie im Finder"
     SortSpec manual;          // otherwise
     friend bool operator==(const FolderSortChoice&, const FolderSortChoice&) = default;
 };
@@ -92,7 +92,7 @@ public:
     bool last();
     bool jump(int delta, WrapMode wrap);
 
-    // Sorting (F-SORT-*). `followFinder` = mode "Wie Finder".
+    // Sorting (F-SORT-*). `followFinder` = mode "Wie im Finder".
     SortSpec sortSpec() const;
     void setSortSpec(const SortSpec& spec); // manual; re-sorts, keeps current file
     void setFollowFinder(bool follow, bool allowLiveQuery);
@@ -155,7 +155,7 @@ public:
     // hidden folders and packages are skipped, symbolic links are not followed. Order:
     // folder by folder, path-wise in Finder name order (a folder's own images before those
     // of its subfolders, collection::compareFolderPaths()); within a folder the sort spec of
-    // the collection applies ("Wie Finder": the order Finder uses for the opened folder).
+    // the collection applies ("Wie im Finder": the order Finder uses for the opened folder).
     void setIncludeSubfolders(bool on);
     bool includesSubfolders() const;
     // Folders the collection reads: the folder, recursive also every subfolder of the last

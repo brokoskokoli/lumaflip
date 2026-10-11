@@ -44,15 +44,15 @@
         <translation>Symboolpositie</translation>
     </message>
     <message>
-        <source>Wie Finder (live): %1</source>
+        <source>Wie im Finder (live): %1</source>
         <translation>Zoals Finder (live): %1</translation>
     </message>
     <message>
-        <source>Wie Finder: %1</source>
+        <source>Wie im Finder: %1</source>
         <translation>Zoals Finder: %1</translation>
     </message>
     <message>
-        <source>%1 (Finder-Info nicht gefunden)</source>
+        <source>%1 (Finder-Informationen nicht gefunden)</source>
         <translation>%1 (Finder-info niet gevonden)</translation>
     </message>
 </context>
@@ -134,7 +134,7 @@
         <translation>Home / End</translation>
     </message>
     <message>
-        <source>Vollbild / Modus verlassen</source>
+        <source>Vollbild oder Modus beenden</source>
         <translation>Schermvullend / modus verlaten</translation>
     </message>
     <message>
@@ -179,7 +179,7 @@
         <translation>Het archief bevat geen afbeeldingen.</translation>
     </message>
     <message>
-        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <source>Das Archiv ist passwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
         <translation>Het archief is met een wachtwoord beveiligd – versleutelde archieven worden niet ondersteund.</translation>
     </message>
     <message>
@@ -198,7 +198,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <source>Unterordner: Nur die ersten %n Bilder werden gezeigt – bitte einen kleineren Ordner öffnen.</source>
+        <source>Unterordner: Nur die ersten %n Bilder werden angezeigt – öffne einen kleineren Ordner.</source>
         <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
         <translation>
             <numerusform>Submappen: alleen de eerste %n afbeelding wordt getoond – open een kleinere map.</numerusform>
@@ -309,7 +309,7 @@
 <context>
     <name>lf::ContainerPolicy</name>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten gehen hier nicht.</source>
+        <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten sind hier nicht möglich.</source>
         <translation>Afbeeldingen in archieven en PDF-documenten zijn alleen geopend om te bekijken – prullenmand, hernoemen, verplaatsen en beoordelen werken hier niet.</translation>
     </message>
 </context>
@@ -382,19 +382,19 @@
         <translation>Raster van de regel van derden tonen</translation>
     </message>
     <message>
-        <source>Speichern</source>
+        <source>Sichern</source>
         <translation>Bewaar</translation>
     </message>
     <message>
-        <source>Zuschnitt in der Datei speichern (Enter, widerrufbar)</source>
+        <source>Zuschnitt in der Datei sichern (Enter, widerrufbar)</source>
         <translation>Uitsnede in het bestand bewaren (Enter, kan ongedaan worden gemaakt)</translation>
     </message>
     <message>
-        <source>Speichern unter …</source>
+        <source>Sichern unter …</source>
         <translation>Bewaar als…</translation>
     </message>
     <message>
-        <source>Zuschnitt als neue Datei speichern – das Original bleibt unverändert</source>
+        <source>Zuschnitt als neue Datei sichern – das Original bleibt unverändert</source>
         <translation>Uitsnede als nieuw bestand bewaren – het origineel blijft ongewijzigd</translation>
     </message>
     <message>
@@ -414,11 +414,11 @@
 <context>
     <name>lf::CropSave</name>
     <message>
-        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte erneut zuschneiden.</source>
+        <source>Die Datei wurde inzwischen verändert – nichts gesichert. Schneide das Bild erneut zu.</source>
         <translation>Het bestand is intussen gewijzigd – niets bewaard. Snijd opnieuw bij.</translation>
     </message>
     <message>
-        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden geht nur durch Neukodieren – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
+        <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden ist nur durch Neukodieren möglich – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
         <translation>Het bestand bevat nog andere afbeeldingen (bijv. een HDR-gainmap of een tweede stereobeeld) die na verliesloos bijsnijden niet meer zouden passen. Bijsnijden kan alleen door opnieuw te coderen – daarbij gaan wat beeldkwaliteit en deze extra afbeeldingen verloren.</translation>
     </message>
     <message>
@@ -438,7 +438,7 @@
         <translation>De JPEG-gegevens konden niet verliesloos worden bijgesneden (%1).</translation>
     </message>
     <message>
-        <source>Der Ausschnitt liegt nicht auf dem JPEG-Blockraster.</source>
+        <source>Der Zuschnitt liegt nicht auf dem JPEG-Blockraster.</source>
         <translation>De selectie ligt niet op het JPEG-blokraster.</translation>
     </message>
     <message>
@@ -450,19 +450,19 @@
         <translation>Het bestand bestaat niet meer.</translation>
     </message>
     <message>
-        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <source>Das Dateiformat wird zum Sichern nicht erkannt.</source>
         <translation>De bestandsstructuur wordt voor bewaren niet herkend.</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
         <translation>Afbeeldingen in archieven en pdf-documenten worden niet gewijzigd. De uitsnede kan als nieuw bestand worden geëxporteerd.</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <source>RAW-Dateien werden nie verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
         <translation>RAW-bestanden worden nooit gewijzigd. De uitsnede kan als nieuw bestand worden geëxporteerd.</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gesichert werden. Der Zuschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
         <translation>Geanimeerde bestanden of bestanden met meerdere pagina’s kunnen niet bijgesneden worden bewaard. De uitsnede van de eerste afbeelding kan als nieuw bestand worden geëxporteerd.</translation>
     </message>
     <message>
@@ -470,7 +470,7 @@
         <translation>‘%1’ is alleen-lezen.</translation>
     </message>
     <message>
-        <source>„Speichern unter“ überschreibt nie das Original – bitte einen anderen Namen wählen.</source>
+        <source>„Sichern unter“ überschreibt nie das Original – wähle einen anderen Namen.</source>
         <translation>‘Bewaar als’ overschrijft nooit het origineel – kies een andere naam.</translation>
     </message>
     <message>
@@ -478,7 +478,7 @@
         <translation>Kan niet schrijven in ‘%1’.</translation>
     </message>
     <message>
-        <source>„%1“ gibt es schon.</source>
+        <source>„%1“ existiert bereits.</source>
         <translation>‘%1’ bestaat al.</translation>
     </message>
     <message>
@@ -490,11 +490,11 @@
         <translation>Geen gebied geselecteerd.</translation>
     </message>
     <message>
-        <source>Der Ausschnitt umfasst das ganze Bild – nichts zuzuschneiden.</source>
+        <source>Der Zuschnitt umfasst das ganze Bild – es gibt nichts zuzuschneiden.</source>
         <translation>De selectie omvat de hele afbeelding – niets om bij te snijden.</translation>
     </message>
     <message>
-        <source>Für den verlustfreien Zuschnitt wurde der Ausschnitt an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
+        <source>Für den verlustfreien Zuschnitt wurde der Zuschnittbereich an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
         <translation>Voor verliesloos bijsnijden is de selectie op het JPEG-blokraster (%1 × %2 pixels) uitgelijnd en is nu %3 × %4 pixels groot.</translation>
     </message>
     <message>
@@ -502,7 +502,7 @@
         <translation>Dit JPEG-bestand kan niet verliesloos worden bijgesneden. Bij opnieuw coderen gaat wat beeldkwaliteit verloren.</translation>
     </message>
     <message>
-        <source>Der Zuschnitt kann nicht gespeichert werden.</source>
+        <source>Der Zuschnitt kann nicht gesichert werden.</source>
         <translation>De uitsnede kan niet worden bewaard.</translation>
     </message>
     <message>
@@ -510,11 +510,11 @@
         <translation>Bij opnieuw coderen blijft de afbeelding niet exact gelijk (kleurmodel, bitdiepte, palet of transparantie zouden veranderen).</translation>
     </message>
     <message>
-        <source>Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.</source>
+        <source>Dieses Format kann hier nicht geschrieben werden. Der Zuschnitt kann in einem anderen Format exportiert werden.</source>
         <translation>Dit formaat kan hier niet worden geschreven. De uitsnede kan in een ander formaat worden geëxporteerd.</translation>
     </message>
     <message>
-        <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
+        <source>Dieses Format komprimiert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
         <translation>Dit formaat is lossy. De uitsnede kan alleen worden bewaard door de afbeelding opnieuw te coderen – daarbij gaat wat beeldkwaliteit verloren.</translation>
     </message>
     <message>
@@ -530,7 +530,7 @@
         <translation>Verliesloos bijsnijden is voor deze afbeelding niet mogelijk.</translation>
     </message>
     <message>
-        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <source>Der Zuschnitt konnte nicht gesichert werden.</source>
         <translation>De uitsnede kon niet worden bewaard.</translation>
     </message>
     <message>
@@ -569,15 +569,15 @@
         <translation>SELECTEREN</translation>
     </message>
     <message>
-        <source>0–5  Sterne     P  Behalten     X  Verwerfen     U  Markierung weg</source>
+        <source>0–5  Sterne     P  Markieren     X  Ablehnen     U  Markierung aufheben</source>
         <translation>0–5  Sterren     P  Kiezen     X  Afwijzen     U  Markering wissen</translation>
     </message>
     <message>
-        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Rückgängig     Esc  Beenden</source>
+        <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Widerrufen     Esc  Beenden</source>
         <translation>← →  Bladeren     M/C + 1–9  Verplaatsen/Kopiëren     ⌘Z  Herstel     Esc  Stoppen</translation>
     </message>
     <message>
-        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U markieren</source>
+        <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U setzen Markierungen</source>
         <translation>Selectiemodus: cijfers geven sterren, P/X/U markeren</translation>
     </message>
     <message>
@@ -593,29 +593,29 @@
         <translation>Filter: %1 — %2 / %3</translation>
     </message>
     <message>
-        <source>Keine verworfenen Bilder</source>
+        <source>Keine abgelehnten Bilder</source>
         <translation>Geen afgewezen afbeeldingen</translation>
     </message>
     <message numerus="yes">
-        <source>%n verworfene(s) Bild(er) in den Papierkorb legen?</source>
+        <source>%n abgelehnte(s) Bild(er) in den Papierkorb legen?</source>
         <translation>
             <numerusform>%n afgewezen afbeelding naar de prullenmand verplaatsen?</numerusform>
             <numerusform>%n afgewezen afbeeldingen naar de prullenmand verplaatsen?</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <source>%n verworfene(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
+        <source>%n abgelehnte(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
         <translation>
             <numerusform>%n afgewezen afbeelding naar de map ‘_Rejected’ verplaatsen?</numerusform>
             <numerusform>%n afgewezen afbeeldingen naar de map ‘_Rejected’ verplaatsen?</numerusform>
         </translation>
     </message>
     <message>
-        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren gehen mit. ⌘Z macht den ganzen Schritt rückgängig.</source>
+        <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren werden mitbewegt. ⌘Z widerruft den ganzen Schritt.</source>
         <translation>Alleen de getoonde afbeeldingen (huidige filters). XMP-bijbestanden en het tweede bestand van RAW+JPEG-paren gaan mee. ⌘Z maakt de hele stap ongedaan.</translation>
     </message>
     <message>
-        <source>In den Papierkorb</source>
+        <source>In den Papierkorb legen</source>
         <translation>Naar prullenmand</translation>
     </message>
     <message>
@@ -623,11 +623,11 @@
         <translation>Verplaats</translation>
     </message>
     <message>
-        <source>Verworfene in den Papierkorb</source>
+        <source>Abgelehnte in den Papierkorb legen</source>
         <translation>Afgewezen naar prullenmand</translation>
     </message>
     <message>
-        <source>Verworfene nach _Rejected</source>
+        <source>Abgelehnte nach „_Rejected“ verschieben</source>
         <translation>Afgewezen naar _Rejected</translation>
     </message>
     <message numerus="yes">
@@ -896,7 +896,7 @@
         <translation>Gedeeld geheugen is niet beschikbaar (%1).</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
         <translation>Onvoldoende geheugen voor de afbeelding (%1 × %2 pixels).</translation>
     </message>
     <message>
@@ -950,7 +950,7 @@
         <translation>Stel in als standaardapp</translation>
     </message>
     <message>
-        <source>Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht ausgewählte Formate bleiben beim bisherigen Programm.</source>
+        <source>Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht ausgewählte Formate bleiben bei der bisherigen App.</source>
         <translation>Lumaflip wordt de standaardapp voor de geselecteerde afbeeldingsstructuren. Niet-geselecteerde structuren blijven bij de huidige app.</translation>
     </message>
     <message>
@@ -1172,7 +1172,7 @@
         <translation>Exporteer bijgesneden</translation>
     </message>
     <message>
-        <source>Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <source>Den Zuschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
         <translation>Exporteer de uitsnede van ‘%1’ als nieuw bestand. Het origineel blijft ongewijzigd.</translation>
     </message>
     <message>
@@ -1232,7 +1232,7 @@
         <translation>Alles behouden</translation>
     </message>
     <message>
-        <source>Ohne Ortsdaten (GPS)</source>
+        <source>Ohne Aufnahmeort (GPS)</source>
         <translation>Zonder locatie (GPS)</translation>
     </message>
     <message>
@@ -1260,7 +1260,7 @@
         <translation>Als SDR (tone mapping)</translation>
     </message>
     <message>
-        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Dateiendung</source>
+        <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Endung</source>
         <translation>Variabelen: {name} = naam van het origineel, {n} = volgnummer, {format} = extensie</translation>
     </message>
     <message>
@@ -1287,7 +1287,7 @@
         <translation>Exporteer</translation>
     </message>
     <message>
-        <source>Exportiere …</source>
+        <source>Wird exportiert …</source>
         <translation>Exporteren…</translation>
     </message>
     <message>
@@ -1295,7 +1295,7 @@
         <translation>Annuleer</translation>
     </message>
     <message>
-        <source>Exportiere %1 von %2: %3</source>
+        <source>Bild %1 von %2 wird exportiert: %3</source>
         <translation>Exporteren %1 van %2: %3</translation>
     </message>
 </context>
@@ -1398,13 +1398,13 @@
         <translation>Geen afbeeldingen</translation>
     </message>
     <message>
-        <source>Orte werden gelesen … %1 von %2</source>
+        <source>Aufnahmeorte werden gelesen … %1 von %2</source>
         <extracomment>folder map (F-INFO-08) while the GPS positions are read: done / all images</extracomment>
         <translation>Locaties lezen… %1 van %2</translation>
     </message>
     <message numerus="yes">
-        <source>%1 von %n Bildern mit Ort</source>
-        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Ort&quot; (%1 images with a position, %n all)</extracomment>
+        <source>%1 von %n Bildern mit Aufnahmeort</source>
+        <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Aufnahmeort&quot; (%1 images with a position, %n all)</extracomment>
         <translation>
             <numerusform>%1 van %n afbeelding met locatie</numerusform>
             <numerusform>%1 van %n afbeeldingen met locatie</numerusform>
@@ -1414,7 +1414,7 @@
 <context>
     <name>lf::FolderMapPanel</name>
     <message>
-        <source>Auf diesem System ist keine Kartendarstellung verfügbar.</source>
+        <source>Karten sind auf diesem System nicht verfügbar.</source>
         <translation>Kaarten zijn op dit systeem niet beschikbaar.</translation>
     </message>
     <message>
@@ -1426,14 +1426,14 @@
         <translation>Geen van de afbeeldingen bevat een opnamelocatie (GPS).</translation>
     </message>
     <message>
-        <source>Karte schließen</source>
+        <source>Ordnerkarte schließen</source>
         <translation>Sluit kaart</translation>
     </message>
 </context>
 <context>
     <name>lf::FolderMapView</name>
     <message>
-        <source>Karten sind unter Windows nicht verfügbar. Fotos mit Ortsangabe in diesem Ordner: %1</source>
+        <source>Karten sind unter Windows nicht verfügbar. Bilder mit Aufnahmeort in diesem Ordner: %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1506,7 +1506,7 @@
         <translation>%1 mm</translation>
     </message>
     <message>
-        <source> (KB: %1 mm)</source>
+        <source> (Kleinbild: %1 mm)</source>
         <extracomment>appended to the focal length: the 35 mm equivalent (&quot;KB&quot; = Kleinbild), e.g. &quot; (35-mm-equiv.: 52 mm)&quot;</extracomment>
         <translation> (kleinbeeld: %1 mm)</translation>
     </message>
@@ -1643,7 +1643,7 @@
 <context>
     <name>lf::ImageExport</name>
     <message>
-        <source>„%1“ gibt es schon.</source>
+        <source>„%1“ existiert bereits.</source>
         <translation>‘%1’ bestaat al.</translation>
     </message>
     <message>
@@ -1683,7 +1683,7 @@
         <translation>Onbekend doelformaat.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher zum Exportieren.</source>
+        <source>Nicht genug Arbeitsspeicher zum Exportieren.</source>
         <translation>Niet genoeg geheugen om te exporteren.</translation>
     </message>
     <message>
@@ -1706,11 +1706,11 @@
         <translation>De afbeelding heeft geen pixels.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
         <translation>Onvoldoende geheugen voor de afbeelding (%1 × %2 pixels).</translation>
     </message>
     <message>
-        <source>Bildpuffer konnte nicht angelegt werden.</source>
+        <source>Der Bildpuffer konnte nicht angelegt werden.</source>
         <translation>Kan geen afbeeldingsbuffer aanmaken.</translation>
     </message>
     <message>
@@ -1793,7 +1793,7 @@
         <translation>Kaart laden…</translation>
     </message>
     <message>
-        <source>Karte anzeigen</source>
+        <source>Karte einblenden</source>
         <translation>Toon kaart</translation>
     </message>
     <message>
@@ -1805,7 +1805,7 @@
         <translation>Verberg kaart</translation>
     </message>
     <message>
-        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte anzeigen“)</source>
+        <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte einblenden“)</source>
         <translation>Geen kaartuitsneden meer laden (tot de volgende klik op ‘Toon kaart’)</translation>
     </message>
     <message>
@@ -2040,7 +2040,7 @@
         <translation>Vul breedte</translation>
     </message>
     <message>
-        <source>Einpassen ↔ 100 % am Cursor</source>
+        <source>Einpassen ↔ 100 % am Mauszeiger</source>
         <translation>Passend maken ↔ 100% bij aanwijzer</translation>
     </message>
     <message>
@@ -2088,11 +2088,11 @@
         <translation>Schermvullend</translation>
     </message>
     <message>
-        <source>Vollbild bzw. Modus verlassen</source>
+        <source>Vollbild oder Modus beenden</source>
         <translation>Schermvullend of modus verlaten</translation>
     </message>
     <message>
-        <source>Modus verlassen, sonst Fenster schließen</source>
+        <source>Modus beenden, sonst Fenster schließen</source>
         <translation>Modus verlaten, anders venster sluiten</translation>
     </message>
     <message>
@@ -2136,7 +2136,7 @@
         <translation>Spiegel verticaal</translation>
     </message>
     <message>
-        <source>Drehung speichern</source>
+        <source>Drehung sichern</source>
         <translation>Bewaar rotatie</translation>
     </message>
     <message>
@@ -2144,7 +2144,7 @@
         <translation>Verplaats naar prullenmand</translation>
     </message>
     <message>
-        <source>Rückgängig</source>
+        <source>Widerrufen</source>
         <translation>Herstel</translation>
     </message>
     <message>
@@ -2236,15 +2236,15 @@
         <translation>5 sterren</translation>
     </message>
     <message>
-        <source>Behalten (Pick)</source>
+        <source>Markieren</source>
         <translation>Kiezen (Pick)</translation>
     </message>
     <message>
-        <source>Verwerfen (Reject)</source>
+        <source>Ablehnen</source>
         <translation>Afwijzen (Reject)</translation>
     </message>
     <message>
-        <source>Markierung zurücksetzen</source>
+        <source>Markierung aufheben</source>
         <translation>Wis markering</translation>
     </message>
     <message>
@@ -2268,7 +2268,7 @@
         <translation>Willekeurige volgorde</translation>
     </message>
     <message>
-        <source>Nach Dateiname filtern</source>
+        <source>Nach Dateinamen filtern</source>
         <translation>Filter op bestandsnaam</translation>
     </message>
     <message>
@@ -2312,7 +2312,7 @@
         <translation>Submappen opnemen</translation>
     </message>
     <message>
-        <source>RAW/JPEG des Paares zeigen</source>
+        <source>RAW/JPEG des Paares anzeigen</source>
         <translation>Toon RAW/JPEG van paar</translation>
     </message>
     <message>
@@ -2376,7 +2376,7 @@
         <translation>Omlaag draaien toont de volgende, omhoog de vorige afbeelding.</translation>
     </message>
     <message>
-        <source>Zoomen (am Cursor)</source>
+        <source>Zoomen (am Mauszeiger)</source>
         <translation>Zoom (bij aanwijzer)</translation>
     </message>
     <message>
@@ -2384,7 +2384,7 @@
         <translation>Omhoog draaien zoomt in, omlaag zoomt uit – bij de aanwijzer.</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen (sonst Bild wechseln)</source>
+        <source>Ausschnitt verschieben (sonst Bild wechseln)</source>
         <translation>Scroll weergave (anders wissel van afbeelding)</translation>
     </message>
     <message>
@@ -2456,7 +2456,7 @@
         <translation>Bij bestanden met meerdere pagina&apos;s wordt gebladerd, anders van afbeelding gewisseld.</translation>
     </message>
     <message>
-        <source>Ausschnitt seitenweise scrollen (sonst Bild)</source>
+        <source>Ausschnitt seitenweise verschieben (sonst Bild)</source>
         <translation>Scroll weergave per scherm (anders afbeelding)</translation>
     </message>
     <message>
@@ -2532,7 +2532,7 @@
         <translation>Pijltoetsen wisselen van afbeelding; met ⌥ wordt de weergave verschoven.</translation>
     </message>
     <message>
-        <source>Erst bis zum Rand scrollen, dann Bild wechseln</source>
+        <source>Erst bis zum Rand verschieben, dann Bild wechseln</source>
         <translation>Eerst tot de rand scrollen, dan van afbeelding wisselen</translation>
     </message>
     <message>
@@ -2540,7 +2540,7 @@
         <translation>De weergave wordt verschoven; aan de rand van de afbeelding wordt van afbeelding gewisseld.</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen (Bild mit ⌥←/⌥→)</source>
+        <source>Ausschnitt verschieben (Bild mit ⌥←/⌥→)</source>
         <translation>Scroll weergave (afbeelding met ⌥←/⌥→)</translation>
     </message>
     <message>
@@ -2552,7 +2552,7 @@
         <translation>↑ / ↓</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen, sonst vorheriges/nächstes Bild</source>
+        <source>Ausschnitt verschieben, sonst vorheriges/nächstes Bild</source>
         <translation>Scroll weergave, anders vorige/volgende afbeelding</translation>
     </message>
     <message>
@@ -2560,7 +2560,7 @@
         <translation>Ingezoomd wordt de weergave verschoven, anders wordt van afbeelding gewisseld.</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen (wenn gezoomt), sonst nichts</source>
+        <source>Ausschnitt verschieben (wenn gezoomt), sonst nichts</source>
         <translation>Scroll weergave (indien ingezoomd), anders niets</translation>
     </message>
     <message>
@@ -2660,7 +2660,7 @@
         <translation>Trackpadveeg (twee vingers, horizontaal)</translation>
     </message>
     <message>
-        <source>Bild wechseln (gezoomt: scrollen)</source>
+        <source>Bild wechseln (gezoomt: Ausschnitt verschieben)</source>
         <translation>Wissel van afbeelding (ingezoomd: scrollen)</translation>
     </message>
     <message>
@@ -2668,7 +2668,7 @@
         <translation>Vegen wisselt van afbeelding; ingezoomd wordt de weergave verschoven.</translation>
     </message>
     <message>
-        <source>Ausschnitt scrollen</source>
+        <source>Nur Ausschnitt verschieben</source>
         <translation>Scroll weergave</translation>
     </message>
     <message>
@@ -2708,7 +2708,7 @@
         <translation>Esc</translation>
     </message>
     <message>
-        <source>Vollbild bzw. Modus verlassen, sonst nichts</source>
+        <source>Vollbild oder Modus beenden, sonst nichts</source>
         <translation>Schermvullend of modus verlaten, anders niets</translation>
     </message>
     <message>
@@ -2716,7 +2716,7 @@
         <translation>Esc beëindigt schermvullende weergave, diavoorstelling of andere modi en doet verder niets.</translation>
     </message>
     <message>
-        <source>Vollbild bzw. Modus verlassen, sonst Fenster schließen</source>
+        <source>Vollbild oder Modus beenden, sonst Fenster schließen</source>
         <translation>Schermvullend of modus verlaten, anders venster sluiten</translation>
     </message>
     <message>
@@ -2768,7 +2768,7 @@
         <translation>Altijd actief</translation>
     </message>
     <message>
-        <source>Ziffern vergeben immer Sterne; P/X/U markieren. Zoom-Ziffern sind aus.</source>
+        <source>Ziffern vergeben immer Sterne, P/X/U setzen Markierungen. Die Zoom-Ziffern sind dann aus.</source>
         <translation>Cijfers geven altijd sterren; P/X/U markeren. Zoomcijfers zijn uit.</translation>
     </message>
 </context>
@@ -2779,11 +2779,11 @@
         <translation>Licenties van derden</translation>
     </message>
     <message>
-        <source>Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im Programmpaket unter Contents/Resources/licenses.</source>
+        <source>Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im App-Paket unter Contents/Resources/licenses.</source>
         <translation>Lumaflip bevat de volgende componenten. De licentieteksten staan ook in de app-bundel onder Contents/Resources/licenses.</translation>
     </message>
     <message>
-        <source>Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das Programmpaket gelegt.</source>
+        <source>Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das App-Paket gelegt.</source>
         <translation>Ontwikkelaarsbuild: de licentieteksten worden pas bij het verpakken (tools/package.sh) in de app-bundel geplaatst.</translation>
     </message>
     <message>
@@ -2853,11 +2853,11 @@
         <translation>Het bestand kan niet worden geschreven (map alleen-lezen?).</translation>
     </message>
     <message>
-        <source>Die Datei wurde inzwischen verändert – nichts gespeichert. Bitte die Drehung erneut speichern.</source>
+        <source>Die Datei wurde inzwischen verändert – nichts gesichert. Sichere die Drehung erneut.</source>
         <translation>Het bestand is intussen gewijzigd – niets bewaard. Bewaar de rotatie opnieuw.</translation>
     </message>
     <message>
-        <source>Die Datei enthält weitere Bilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
+        <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
         <translation>Het bestand bevat extra afbeeldingen (bijv. een HDR-gainmap of een tweede stereobeeld) die bij het verliesvrij herschikken van de JPEG-gegevens verloren zouden gaan.</translation>
     </message>
     <message>
@@ -2865,15 +2865,15 @@
         <translation>Het bestand bestaat niet meer.</translation>
     </message>
     <message>
-        <source>Das Dateiformat wird zum Speichern nicht erkannt.</source>
+        <source>Das Dateiformat wird zum Sichern nicht erkannt.</source>
         <translation>De bestandsstructuur wordt voor bewaren niet herkend.</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; zum dauerhaften Drehen bitte den RAW-Entwickler benutzen.</source>
+        <source>RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; verwende zum dauerhaften Drehen deinen RAW-Konverter.</source>
         <translation>RAW-bestanden worden nooit gewijzigd. De rotatie geldt alleen in de weergave; gebruik de RAW-ontwikkelaar om permanent te roteren.</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht gedreht gespeichert werden.</source>
+        <source>Animierte oder mehrseitige Dateien können nicht gedreht gesichert werden.</source>
         <translation>Geanimeerde bestanden of bestanden met meerdere pagina&apos;s kunnen niet geroteerd worden bewaard.</translation>
     </message>
     <message>
@@ -2885,11 +2885,11 @@
         <translation>Daarom is alleen de EXIF-oriëntatie ingesteld.</translation>
     </message>
     <message>
-        <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfrei drehen geht nur, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
+        <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfreies Drehen ist nur möglich, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
         <translation>De breedte of hoogte van de afbeelding is geen veelvoud van de JPEG-blokgrootte. Verliesvrij roteren is alleen mogelijk als daarbij een smalle rand (tot 15 pixels) wordt weggesneden. Als alternatief wordt alleen de EXIF-oriëntatie ingesteld.</translation>
     </message>
     <message>
-        <source>Die Drehung kann nicht gespeichert werden.</source>
+        <source>Die Drehung kann nicht gesichert werden.</source>
         <translation>De rotatie kan niet worden bewaard.</translation>
     </message>
     <message>
@@ -2909,11 +2909,11 @@
         <translation>Verliesvrij roteren is voor deze afbeelding niet mogelijk.</translation>
     </message>
     <message>
-        <source>Die Ausrichtung ließ sich nicht ohne Neukodieren speichern.</source>
+        <source>Die Ausrichtung ließ sich nicht ohne Neukodieren sichern.</source>
         <translation>De oriëntatie kan niet zonder opnieuw coderen worden bewaard.</translation>
     </message>
     <message>
-        <source>Die Drehung konnte nicht gespeichert werden.</source>
+        <source>Die Drehung konnte nicht gesichert werden.</source>
         <translation>De rotatie kan niet worden bewaard.</translation>
     </message>
     <message>
@@ -2921,47 +2921,47 @@
         <translation>Het bestand kan niet worden vervangen.</translation>
     </message>
     <message>
-        <source>Datei wurde inzwischen verändert – Rückgängig nicht möglich</source>
+        <source>Die Datei wurde inzwischen verändert – Widerrufen nicht möglich</source>
         <translation>Bestand is intussen gewijzigd – herstellen niet mogelijk</translation>
     </message>
     <message>
-        <source>Datei wurde inzwischen verändert – Wiederholen nicht möglich</source>
+        <source>Die Datei wurde inzwischen verändert – Wiederholen nicht möglich</source>
         <translation>Bestand is intussen gewijzigd – opnieuw uitvoeren niet mogelijk</translation>
     </message>
     <message>
-        <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Rückgängig/Wiederholen ist dafür nicht mehr möglich.</source>
+        <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Widerrufen/Wiederholen ist dafür nicht mehr möglich.</source>
         <translation>De reservekopie van deze stap is verwijderd om ruimte te besparen – herstellen/opnieuw uitvoeren is hiervoor niet meer mogelijk.</translation>
     </message>
     <message>
-        <source>Es gibt nichts rückgängig zu machen.</source>
+        <source>Es gibt nichts zu widerrufen.</source>
         <translation>Er is niets te herstellen.</translation>
     </message>
     <message>
-        <source>Kein Platz für die Sicherungskopie – nichts gespeichert.</source>
+        <source>Kein Speicherplatz für die Sicherungskopie – nichts gesichert.</source>
         <translation>Geen ruimte voor de reservekopie – niets bewaard.</translation>
     </message>
     <message>
-        <source>Keine Drehung zu speichern</source>
+        <source>Keine Drehung zu sichern</source>
         <translation>Geen rotatie om te bewaren</translation>
     </message>
     <message>
-        <source>Drehung gespeichert (EXIF-Ausrichtung)</source>
+        <source>Drehung gesichert (EXIF-Ausrichtung)</source>
         <translation>Rotatie bewaard (EXIF-oriëntatie)</translation>
     </message>
     <message>
-        <source>Drehung verlustfrei gespeichert</source>
+        <source>Drehung verlustfrei gesichert</source>
         <translation>Rotatie verliesvrij bewaard</translation>
     </message>
     <message>
-        <source>Drehung verlustfrei gespeichert (Rand beschnitten)</source>
+        <source>Drehung verlustfrei gesichert (Rand beschnitten)</source>
         <translation>Rotatie verliesvrij bewaard (rand bijgesneden)</translation>
     </message>
     <message>
-        <source>Drehung gespeichert (verlustfrei neu kodiert)</source>
+        <source>Drehung gesichert (verlustfrei neu kodiert)</source>
         <translation>Rotatie bewaard (verliesvrij opnieuw gecodeerd)</translation>
     </message>
     <message>
-        <source>Drehung gespeichert (neu kodiert)</source>
+        <source>Drehung gesichert (neu kodiert)</source>
         <translation>Rotatie bewaard (opnieuw gecodeerd)</translation>
     </message>
     <message>
@@ -2973,7 +2973,7 @@
         <translation>De afbeelding kan niet worden gedecodeerd.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher zum Drehen.</source>
+        <source>Nicht genug Arbeitsspeicher zum Drehen.</source>
         <translation>Onvoldoende geheugen om te roteren.</translation>
     </message>
     <message>
@@ -2981,7 +2981,7 @@
         <translation>Deze structuur kan niet worden geschreven.</translation>
     </message>
     <message>
-        <source>Das Bild lässt sich in diesem Format nicht exakt neu speichern.</source>
+        <source>Das Bild lässt sich in diesem Format nicht exakt neu sichern.</source>
         <translation>De afbeelding kan in deze structuur niet exact opnieuw worden bewaard.</translation>
     </message>
     <message>
@@ -3009,7 +3009,7 @@
         <translation>‘%1’ kan niet worden vervangen: %2</translation>
     </message>
     <message>
-        <source>Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.</source>
+        <source>Die Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.</source>
         <translation>Kan geen reservekopie voor ‘Herstel’ aanmaken.</translation>
     </message>
     <message>
@@ -3029,7 +3029,7 @@
         <translation>Segmentatiemasker</translation>
     </message>
     <message>
-        <source>Die Datei enthält Zusatzbilder (%1), die beim Speichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gespeichert und gilt weiter nur in der Anzeige.</source>
+        <source>Die Datei enthält Zusatzbilder (%1), die beim Sichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gesichert und gilt weiter nur in der Anzeige.</source>
         <translation>Het bestand bevat extra afbeeldingen (%1) die bij het bewaren van de oriëntatie verloren zouden gaan. De rotatie is daarom niet bewaard en geldt nog steeds alleen in de weergave.</translation>
     </message>
     <message>
@@ -3057,7 +3057,7 @@
         <translation>De oriëntatie kan niet verliesvrij worden geschreven (%1).</translation>
     </message>
     <message>
-        <source>Das Bild lässt sich nicht exakt neu speichern.</source>
+        <source>Das Bild lässt sich nicht exakt neu sichern.</source>
         <translation>De afbeelding kan niet exact opnieuw worden bewaard.</translation>
     </message>
     <message>
@@ -3065,7 +3065,7 @@
         <translation>Het nieuwe bestand ontbreekt.</translation>
     </message>
     <message>
-        <source>Nicht genug Platz, um „%1“ sicher zu überschreiben.</source>
+        <source>Nicht genug Speicherplatz, um „%1“ sicher zu überschreiben.</source>
         <translation>Onvoldoende ruimte om ‘%1’ veilig te overschrijven.</translation>
     </message>
     <message>
@@ -3092,7 +3092,7 @@
         <translation>Er zijn geen bestanden doorgegeven.</translation>
     </message>
     <message>
-        <source>Der Bildschirm ist nicht mehr da.</source>
+        <source>Der Bildschirm ist nicht mehr angeschlossen.</source>
         <translation>Het beeldscherm is niet meer aangesloten.</translation>
     </message>
     <message>
@@ -3104,7 +3104,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Windows hat das Bild nicht als Hintergrund übernommen.</source>
+        <source>Windows hat das Bild nicht als Desktophintergrund übernommen.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3131,7 +3131,7 @@
         <translation>Open map…</translation>
     </message>
     <message>
-        <source>Zuletzt geöffnet</source>
+        <source>Benutzte Dokumente</source>
         <translation>Open recent</translation>
     </message>
     <message>
@@ -3151,7 +3151,7 @@
         <translation>Wijzig naam…</translation>
     </message>
     <message>
-        <source>In Standard-Editor öffnen</source>
+        <source>Im Editor öffnen</source>
         <translation>Open in standaardeditor</translation>
     </message>
     <message>
@@ -3215,7 +3215,7 @@
         <translation>Passend maken</translation>
     </message>
     <message>
-        <source>Einpassen inkl. Vergrößern</source>
+        <source>Einpassen (auch vergrößern)</source>
         <translation>Passend maken (ook vergroten)</translation>
     </message>
     <message>
@@ -3303,7 +3303,7 @@
         <translation>Sorteer op</translation>
     </message>
     <message>
-        <source>Wie Finder</source>
+        <source>Wie im Finder</source>
         <translation>Zoals Finder</translation>
     </message>
     <message>
@@ -3412,11 +3412,11 @@
         <translation>Snijd bij…</translation>
     </message>
     <message>
-        <source>Overlays</source>
+        <source>Einblendungen</source>
         <translation>Overlays</translation>
     </message>
     <message>
-        <source>Über-/Unterbelichtung</source>
+        <source>Über-/Unterbelichtungswarnung</source>
         <translation>Over-/onderbelichting</translation>
     </message>
     <message>
@@ -3464,7 +3464,7 @@
         <translation>Vorige pagina</translation>
     </message>
     <message>
-        <source>Drehung speichern</source>
+        <source>Drehung sichern</source>
         <translation>Bewaar rotatie</translation>
     </message>
     <message>
@@ -3492,7 +3492,7 @@
         <translation>Alle afbeeldingen</translation>
     </message>
     <message>
-        <source>Nur Picks</source>
+        <source>Nur markierte</source>
         <translation>Alleen gekozen</translation>
     </message>
     <message>
@@ -3500,7 +3500,7 @@
         <translation>Alleen zonder waardering</translation>
     </message>
     <message>
-        <source>Nur verworfene</source>
+        <source>Nur abgelehnte</source>
         <translation>Alleen afgewezen</translation>
     </message>
     <message>
@@ -3528,11 +3528,11 @@
         <translation>Filter</translation>
     </message>
     <message>
-        <source>Alle verworfenen in den Papierkorb …</source>
+        <source>Alle abgelehnten in den Papierkorb legen …</source>
         <translation>Alle afgewezen naar prullenmand…</translation>
     </message>
     <message>
-        <source>Alle verworfenen nach „_Rejected“ verschieben …</source>
+        <source>Alle abgelehnten nach „_Rejected“ verschieben …</source>
         <translation>Alle afgewezen naar ‘_Rejected’…</translation>
     </message>
     <message>
@@ -3572,7 +3572,7 @@
         <translation>Submappen opnemen</translation>
     </message>
     <message>
-        <source>Karte</source>
+        <source>Ordnerkarte</source>
         <translation>Kaart</translation>
     </message>
     <message>
@@ -3588,7 +3588,7 @@
         <translation>Ga naar afbeelding…</translation>
     </message>
     <message>
-        <source>Nach Dateiname filtern …</source>
+        <source>Nach Dateinamen filtern …</source>
         <translation>Filter op bestandsnaam…</translation>
     </message>
     <message>
@@ -3608,7 +3608,7 @@
         <translation>Koppel vensters…</translation>
     </message>
     <message>
-        <source>Entkoppeln</source>
+        <source>Fenster entkoppeln</source>
         <translation>Ontkoppel vensters</translation>
     </message>
     <message>
@@ -3697,11 +3697,11 @@
 <context>
     <name>lf::MenuExtras</name>
     <message>
-        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <source>Einzelne PDF-Seiten können nicht an andere Apps übergeben werden.</source>
         <translation>Losse pdf-pagina’s kunnen niet aan andere apps worden doorgegeven.</translation>
     </message>
     <message>
-        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <source>Das Bild wird aus dem Archiv entpackt – versuche es gleich noch einmal.</source>
         <translation>De afbeelding wordt uit het archief uitgepakt – probeer het zo opnieuw.</translation>
     </message>
     <message>
@@ -3733,15 +3733,15 @@
         <translation>Trapsgewijs</translation>
     </message>
     <message>
-        <source>Vorherigen Tab zeigen</source>
+        <source>Vorherigen Tab anzeigen</source>
         <translation>Toon vorige tab</translation>
     </message>
     <message>
-        <source>Nächsten Tab zeigen</source>
+        <source>Nächsten Tab anzeigen</source>
         <translation>Toon volgende tab</translation>
     </message>
     <message>
-        <source>Tab in neues Fenster bewegen</source>
+        <source>Tab in ein neues Fenster bewegen</source>
         <translation>Verplaats tab naar nieuw venster</translation>
     </message>
     <message>
@@ -3865,12 +3865,12 @@
         <translation>Opnamedatum</translation>
     </message>
     <message>
-        <source>Breite</source>
+        <source>Breitengrad</source>
         <extracomment>GPS latitude</extracomment>
         <translation>Breedtegraad</translation>
     </message>
     <message>
-        <source>Länge</source>
+        <source>Längengrad</source>
         <extracomment>GPS longitude</extracomment>
         <translation>Lengtegraad</translation>
     </message>
@@ -3979,7 +3979,7 @@
         <translation>Annuleer</translation>
     </message>
     <message>
-        <source>Bitte eine Bildnummer zwischen 1 und %1 eingeben</source>
+        <source>Gib eine Bildnummer zwischen 1 und %1 ein.</source>
         <translation>Voer een afbeeldingsnummer tussen 1 en %1 in</translation>
     </message>
     <message>
@@ -4002,7 +4002,7 @@
 <context>
     <name>lf::OpenWithService</name>
     <message>
-        <source>Kein Programm zum Bearbeiten gefunden. Wähle eines unter Einstellungen → Allgemein → Editor.</source>
+        <source>Keine App zum Bearbeiten gefunden. Wähle eine unter Einstellungen → Allgemein → Editor.</source>
         <translation>Geen app voor bewerken gevonden. Kies er een via Instellingen → Algemeen → Editor.</translation>
     </message>
     <message>
@@ -4010,11 +4010,11 @@
         <translation>Programma’s (*.exe)</translation>
     </message>
     <message>
-        <source>Programme (*.desktop);;Alle Dateien (*)</source>
+        <source>Apps (*.desktop);;Alle Dateien (*)</source>
         <translation>Programma’s (*.desktop);;Alle bestanden (*)</translation>
     </message>
     <message>
-        <source>„%1“ ist kein Programm.</source>
+        <source>„%1“ ist keine App.</source>
         <translation>‘%1’ is geen programma.</translation>
     </message>
     <message>
@@ -4026,15 +4026,15 @@
         <translation>Andere…</translation>
     </message>
     <message>
-        <source>Programm wählen</source>
+        <source>App wählen</source>
         <translation>Kies app</translation>
     </message>
     <message>
-        <source>Programme (*.app)</source>
+        <source>Apps (*.app)</source>
         <translation>Apps (*.app)</translation>
     </message>
     <message>
-        <source>Programme werden gesucht …</source>
+        <source>Apps werden gesucht …</source>
         <translation>Apps zoeken…</translation>
     </message>
     <message>
@@ -4042,7 +4042,7 @@
         <translation>%1 (standaard)</translation>
     </message>
     <message>
-        <source>Keine passenden Programme</source>
+        <source>Keine passenden Apps</source>
         <translation>Geen geschikte apps</translation>
     </message>
 </context>
@@ -4053,7 +4053,7 @@
         <translation>Geen afbeeldingen voor de rasterweergave</translation>
     </message>
     <message>
-        <source>Zum Vergleichen mindestens zwei Bilder wählen</source>
+        <source>Wähle zum Vergleichen mindestens zwei Bilder aus</source>
         <translation>Selecteer minstens twee afbeeldingen om te vergelijken</translation>
     </message>
     <message>
@@ -4135,7 +4135,7 @@
         <translation>Het bestand bestaat niet.</translation>
     </message>
     <message>
-        <source>Das PDF-Dokument ist kennwortgeschützt.</source>
+        <source>Das PDF-Dokument ist passwortgeschützt.</source>
         <translation>Het PDF-document is met een wachtwoord beveiligd.</translation>
     </message>
     <message>
@@ -4143,7 +4143,7 @@
         <translation>De pagina is leeg.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für die Seite.</source>
+        <source>Nicht genug Arbeitsspeicher für die Seite.</source>
         <translation>Niet genoeg geheugen voor de pagina.</translation>
     </message>
 </context>
@@ -4194,7 +4194,7 @@
         <translation>Taal:</translation>
     </message>
     <message>
-        <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbild aktivieren“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
+        <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbildmodus“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
         <translation>Werkt direct. Menu’s en vensters van macOS (‘Activeer schermvullende weergave’, ‘Voorzieningen’, ‘Open’, toestemmingsvragen) volgen na een herstart.</translation>
     </message>
     <message>
@@ -4226,7 +4226,7 @@
         <translation>Map, afbeelding, zoom en positie van alle vensters die bij het stoppen open waren.</translation>
     </message>
     <message>
-        <source>Vor dem Löschen nachfragen</source>
+        <source>Vor dem Bewegen in den Papierkorb nachfragen</source>
         <translation>Vraag om bevestiging vóór verwijderen</translation>
     </message>
     <message>
@@ -4238,11 +4238,11 @@
         <translation>Editor:</translation>
     </message>
     <message>
-        <source>Für „In Standard-Editor öffnen“ (Taste E).</source>
+        <source>Für „Im Editor öffnen“ (Taste E).</source>
         <translation>Voor ‘Open in standaardeditor’ (toets E).</translation>
     </message>
     <message>
-        <source>Drehung speichern:</source>
+        <source>Drehung sichern:</source>
         <translation>Bewaar rotatie:</translation>
     </message>
     <message>
@@ -4254,7 +4254,7 @@
         <translation>Roteer JPEG verliesvrij (DCT)</translation>
     </message>
     <message>
-        <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Programme ohne EXIF-Unterstützung das Bild richtig zeigen. RAW-Dateien werden nie verändert; ⌘Z macht das Speichern rückgängig.</source>
+        <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Apps ohne EXIF-Unterstützung das Bild richtig anzeigen. RAW-Dateien werden nie verändert; ⌘Z widerruft das Sichern.</source>
         <translation>Geen van beide wijzigt de pixels van de afbeelding. ‘EXIF-oriëntatie’ wijzigt alleen een kenmerk (JPEG, HEIC, TIFF, PNG); ‘verliesvrij roteren’ herschikt de JPEG-blokken, zodat ook apps zonder EXIF-ondersteuning de afbeelding juist tonen. RAW-bestanden worden nooit gewijzigd; ⌘Z maakt het bewaren ongedaan.</translation>
     </message>
     <message>
@@ -4278,7 +4278,7 @@
         <translation>Tonen als de muis beweegt</translation>
     </message>
     <message>
-        <source>Immer zeigen</source>
+        <source>Immer einblenden</source>
         <translation>Altijd tonen</translation>
     </message>
     <message>
@@ -4298,7 +4298,7 @@
         <translation>Nieuwe vensters tonen:</translation>
     </message>
     <message>
-        <source>Statuszeile</source>
+        <source>Statusleiste</source>
         <translation>Statusbalk</translation>
     </message>
     <message>
@@ -4346,7 +4346,7 @@
         <translation>Licht</translation>
     </message>
     <message>
-        <source>Wie Systemdarstellung</source>
+        <source>Wie System</source>
         <translation>Zoals systeemweergave</translation>
     </message>
     <message>
@@ -4378,7 +4378,7 @@
         <translation>Passend maken (niet vergroten)</translation>
     </message>
     <message>
-        <source>Einpassen inkl. Vergrößern</source>
+        <source>Einpassen (auch vergrößern)</source>
         <translation>Passend maken (ook vergroten)</translation>
     </message>
     <message>
@@ -4410,7 +4410,7 @@
         <translation>Vloeiend</translation>
     </message>
     <message>
-        <source>Pixel scharf</source>
+        <source>Scharfe Pixel</source>
         <translation>Pixelscherp</translation>
     </message>
     <message>
@@ -4518,11 +4518,11 @@
         <translation>Mac-standaard</translation>
     </message>
     <message>
-        <source>Windows-Viewer-Gewohnheiten</source>
+        <source>Wie Windows-Bildbetrachter</source>
         <translation>Gewoonten van Windows-viewers</translation>
     </message>
     <message>
-        <source>Fotograf:in / Lightroom</source>
+        <source>Fotografie / Lightroom</source>
         <translation>Fotograaf / Lightroom</translation>
     </message>
     <message>
@@ -4530,7 +4530,7 @@
         <translation>Muis, trackpad en toetsen</translation>
     </message>
     <message>
-        <source>Mausrad-Feinheiten</source>
+        <source>Mausrad-Feineinstellungen</source>
         <translation>Details van scrollwiel</translation>
     </message>
     <message>
@@ -4574,7 +4574,7 @@
         <translation>Toetscombinaties</translation>
     </message>
     <message>
-        <source>Feld anklicken und neue Taste drücken. Bis zu drei Kürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
+        <source>Klicke auf ein Feld und drücke die neue Taste. Bis zu drei Tastenkürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
         <translation>Klik op het veld en druk op de nieuwe toets. Tot drie toetscombinaties per actie. Cijfers en P/X/U voor waarderingen werken alleen in de uitzoekmodus.</translation>
     </message>
     <message>
@@ -4594,7 +4594,7 @@
         <translation>–</translation>
     </message>
     <message>
-        <source>Standardkürzel wiederherstellen</source>
+        <source>Standard-Tastenkürzel wiederherstellen</source>
         <translation>Herstel standaardtoetscombinaties</translation>
     </message>
     <message>
@@ -4606,7 +4606,7 @@
         <translation>Conflict met: %1</translation>
     </message>
     <message numerus="yes">
-        <source>%n Aktion(en) mit doppelt belegten Tasten – bitte eine davon ändern.</source>
+        <source>%n Aktion(en) mit doppelt belegten Tasten – ändere eine davon.</source>
         <translation>
             <numerusform>%n actie met dubbel toegewezen toetsen – wijzig er een.</numerusform>
             <numerusform>%n acties met dubbel toegewezen toetsen – wijzig er een.</numerusform>
@@ -4733,7 +4733,7 @@
         <translation>Doel %1 voor snel opbergen</translation>
     </message>
     <message>
-        <source>Bewertungen speichern</source>
+        <source>Speicherort für Bewertungen</source>
         <translation>Waarderingen bewaren</translation>
     </message>
     <message>
@@ -4741,7 +4741,7 @@
         <translation>XMP-bijbestand naast de afbeelding (Afbeelding.xmp)</translation>
     </message>
     <message>
-        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Verwerfen“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
+        <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Abgelehnt“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
         <translation>Compatibel met Lightroom, Capture One en darktable: sterren in xmp:Rating, ‘Afwijzen’ als -1. Bestaande inhoud van het bestand blijft behouden.</translation>
     </message>
     <message>
@@ -4761,11 +4761,11 @@
         <translation>Stersymbool:</translation>
     </message>
     <message>
-        <source>Tag für Pick:</source>
+        <source>Tag für „Markiert“:</source>
         <translation>Tag voor Kiezen:</translation>
     </message>
     <message>
-        <source>Tag für Verworfen:</source>
+        <source>Tag für „Abgelehnt“:</source>
         <translation>Tag voor Afwijzen:</translation>
     </message>
     <message>
@@ -4785,7 +4785,7 @@
         <translation>Zoom vastzetten in selectiemodus</translation>
     </message>
     <message>
-        <source>Tastenhilfe im Aussortiermodus zeigen</source>
+        <source>Tastenhilfe im Aussortiermodus einblenden</source>
         <translation>Toetsenhulp tonen in selectiemodus</translation>
     </message>
     <message>
@@ -4797,7 +4797,7 @@
         <translation>Snel opbergen</translation>
     </message>
     <message>
-        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z macht es rückgängig.</source>
+        <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z widerruft es.</source>
         <translation>M en dan 1–9 verplaatst de afbeelding naar de doelmap, C en dan 1–9 kopieert haar. M M of C C herhaalt het laatste doel. ⌘Z maakt het ongedaan.</translation>
     </message>
     <message>
@@ -4901,7 +4901,7 @@
         <translation>Afbeeldingen vooraf laden:</translation>
     </message>
     <message>
-        <source>Bilder zurück behalten:</source>
+        <source>Vorherige Bilder behalten:</source>
         <translation>Vorige afbeeldingen bewaren:</translation>
     </message>
     <message>
@@ -4913,7 +4913,7 @@
         <translation>Livetekst en onderwerp vrijstaand maken toestaan (⇧⌘L)</translation>
     </message>
     <message>
-        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Netz.</source>
+        <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Internetverbindung.</source>
         <translation>De afbeelding wordt alleen geanalyseerd als je Livetekst voor een venster inschakelt – op deze Mac, zonder netwerk.</translation>
     </message>
     <message>
@@ -4921,7 +4921,7 @@
         <translation>Eigen acties</translation>
     </message>
     <message>
-        <source>Ein Shell-Befehl oder ein Kurzbefehl (Shortcuts) bekommt das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
+        <source>Ein Shell-Befehl oder ein Kurzbefehl (Kurzbefehle-App) erhält das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
         <translation>Een shell-opdracht of een opdracht (Opdrachten) krijgt de huidige afbeelding als argument. Menu: Archief → Eigen acties.</translation>
     </message>
     <message>
@@ -4933,7 +4933,7 @@
         <translation> s</translation>
     </message>
     <message>
-        <source>Einstellungen sichern</source>
+        <source>Backup der Einstellungen</source>
         <translation>Reservekopie van instellingen</translation>
     </message>
     <message>
@@ -5001,12 +5001,8 @@
         <translation>Standaardapp van het systeem voor het afbeeldingstype (nooit Lumaflip)</translation>
     </message>
     <message>
-        <source>Lumaflip kann nicht sein eigener Editor sein. Bitte wähle ein anderes Programm.</source>
+        <source>Lumaflip kann nicht sein eigener Editor sein. Wähle eine andere App.</source>
         <translation>Lumaflip kan niet zijn eigen editor zijn. Kies een andere app.</translation>
-    </message>
-    <message>
-        <source>Auswählen …</source>
-        <translation>Kies…</translation>
     </message>
     <message>
         <source>Editor wählen</source>
@@ -5057,7 +5053,7 @@
         <translation>De afbeeldingsgrootte %1 × %2 is ongeldig of te groot.</translation>
     </message>
     <message>
-        <source>Die Farbtiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
+        <source>Die Bittiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
         <translation>De kleurdiepte of kleurmodus van het PSB-bestand wordt niet ondersteund.</translation>
     </message>
     <message>
@@ -5065,7 +5061,7 @@
         <translation>De compressie van het PSB-bestand wordt niet ondersteund.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>Onvoldoende geheugen voor de afbeelding.</translation>
     </message>
     <message>
@@ -5108,7 +5104,7 @@
         <translation>Het SVG-bestand is ongeldig of beschadigd.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>Onvoldoende geheugen voor de afbeelding.</translation>
     </message>
 </context>
@@ -5141,7 +5137,7 @@
         <translation>Kopieer naar… (1–9, C = als vorige keer)</translation>
     </message>
     <message>
-        <source>Noch kein Ziel benutzt – erst eine Ziffer 1–9 wählen.</source>
+        <source>Noch kein Ziel verwendet – wähle zuerst eine Ziffer 1–9.</source>
         <translation>Nog geen doel gebruikt – kies eerst een cijfer 1–9.</translation>
     </message>
     <message>
@@ -5187,11 +5183,11 @@
         <translation>Naamconflict</translation>
     </message>
     <message>
-        <source>„%1“ gibt es in „%2“ schon.</source>
+        <source>„%1“ existiert bereits in „%2“.</source>
         <translation>‘%1’ bestaat al in ‘%2’.</translation>
     </message>
     <message>
-        <source>Ersetzen legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z macht alles rückgängig.</source>
+        <source>„Ersetzen“ legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z widerruft alles.</source>
         <translation>Vervang verplaatst het bestaande bestand naar de prullenmand, ‘Beide behouden’ geeft het nieuwe een naam als ‘%1’. ⌘Z maakt alles ongedaan.</translation>
     </message>
     <message>
@@ -5218,7 +5214,7 @@
         <translation>alle</translation>
     </message>
     <message>
-        <source>nur Picks</source>
+        <source>nur markierte</source>
         <translation>alleen gekozen</translation>
     </message>
     <message>
@@ -5230,15 +5226,15 @@
         <translation>alleen zonder waardering</translation>
     </message>
     <message>
-        <source>nur verworfene</source>
+        <source>nur abgelehnte</source>
         <translation>alleen afgewezen</translation>
     </message>
     <message>
-        <source>Pick</source>
+        <source>Markiert</source>
         <translation>Gekozen</translation>
     </message>
     <message>
-        <source>Verworfen</source>
+        <source>Abgelehnt</source>
         <translation>Afgewezen</translation>
     </message>
 </context>
@@ -5293,7 +5289,7 @@
         <translation>De waardering kon niet zonder hercodering in de afbeelding worden geschreven.</translation>
     </message>
     <message>
-        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gespeichert.</source>
+        <source>„%1“ wurde inzwischen verändert – Bewertung nicht gesichert.</source>
         <translation>‘%1’ is intussen gewijzigd – waardering niet bewaard.</translation>
     </message>
     <message>
@@ -5383,31 +5379,31 @@
         <translation>Nieuwe bestandsnaam</translation>
     </message>
     <message>
-        <source>Soll die Endung „.%1“ entfernt werden?</source>
+        <source>Möchtest du die Endung „.%1“ wirklich entfernen?</source>
         <translation>Wil je de extensie ‘.%1’ verwijderen?</translation>
     </message>
     <message>
-        <source>Soll die Endung „.%1“ hinzugefügt werden?</source>
+        <source>Möchtest du die Endung „.%1“ wirklich hinzufügen?</source>
         <translation>Wil je de extensie ‘.%1’ toevoegen?</translation>
     </message>
     <message>
-        <source>Soll die Endung „.%1“ in „.%2“ geändert werden?</source>
+        <source>Möchtest du die Endung wirklich von „.%1“ in „.%2“ ändern?</source>
         <translation>Wil je de extensie ‘.%1’ wijzigen in ‘.%2’?</translation>
     </message>
     <message>
-        <source>Dateiendung ändern?</source>
+        <source>Endung ändern?</source>
         <translation>Extensie wijzigen?</translation>
     </message>
     <message>
-        <source>Die Datei wird dadurch nicht umgewandelt. Andere Programme erkennen sie danach eventuell nicht mehr.</source>
+        <source>Die Datei wird dadurch nicht umgewandelt. Andere Apps erkennen sie danach eventuell nicht mehr.</source>
         <translation>Het bestand wordt hierdoor niet geconverteerd. Andere apps herkennen het daarna mogelijk niet meer.</translation>
     </message>
     <message>
-        <source>Ohne Endung lassen</source>
+        <source>Nicht hinzufügen</source>
         <translation>Laat zonder extensie</translation>
     </message>
     <message>
-        <source>„.%1“ behalten</source>
+        <source>„.%1“ beibehalten</source>
         <translation>Behoud ‘.%1’</translation>
     </message>
     <message>
@@ -5450,7 +5446,7 @@
         <translation>Het SVG-bestand heeft geen geldige grootte.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>Onvoldoende geheugen voor de afbeelding.</translation>
     </message>
     <message>
@@ -5529,7 +5525,7 @@
         <translation>‘%1’ kan niet worden geschreven.</translation>
     </message>
     <message>
-        <source>Lumaflip ist nicht als Anwendung installiert (%1 fehlt).</source>
+        <source>Lumaflip ist nicht als App installiert (%1 fehlt).</source>
         <translation>Lumaflip is niet als toepassing geïnstalleerd (%1 ontbreekt).</translation>
     </message>
     <message>
@@ -5545,11 +5541,11 @@
         <translation>‘%1’ zou de bestandsnaam als opdracht lezen en wordt om veiligheidsredenen niet gestart.</translation>
     </message>
     <message>
-        <source>Das Programm wurde nicht gefunden.</source>
+        <source>Die App wurde nicht gefunden.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Windows erlaubt Programmen nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
+        <source>Windows erlaubt Apps nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5588,11 +5584,11 @@
         <translation>Pagina %1 bestaat niet.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>Onvoldoende geheugen voor de afbeelding.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild (%1 × %2 Pixel).</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
         <translation>Onvoldoende geheugen voor de afbeelding (%1 × %2 pixels).</translation>
     </message>
 </context>
@@ -5668,11 +5664,11 @@
 <context>
     <name>lf::UndoBackupStore</name>
     <message>
-        <source>Die Sicherung für „Rückgängig“ ist nicht mehr vorhanden.</source>
+        <source>Die Sicherungskopie für „Widerrufen“ existiert nicht mehr.</source>
         <translation>De reservekopie voor ‘Herstel’ is niet meer aanwezig.</translation>
     </message>
     <message>
-        <source>Nicht genug Platz für die Sicherungskopie (Rückgängig) – nichts gespeichert.</source>
+        <source>Nicht genug Speicherplatz für die Sicherungskopie (Widerrufen) – nichts gesichert.</source>
         <translation>Onvoldoende ruimte voor de reservekopie (Herstel) – niets bewaard.</translation>
     </message>
 </context>
@@ -5730,7 +5726,7 @@
         <translation>Volledige resolutie niet beschikbaar</translation>
     </message>
     <message>
-        <source>Lumaflip – lädt …</source>
+        <source>Lumaflip – wird geladen …</source>
         <translation>Lumaflip – laden…</translation>
     </message>
     <message>
@@ -5838,7 +5834,7 @@
         <translation>Pad gekopieerd</translation>
     </message>
     <message>
-        <source>„%1“ ist nicht mehr vorhanden.</source>
+        <source>„%1“ existiert nicht mehr.</source>
         <translation>‘%1’ is niet meer aanwezig.</translation>
     </message>
     <message>
@@ -5897,19 +5893,19 @@
         <translation>Diavoorstelling – spatiebalk: pauze · 1–9: seconden · Esc: einde</translation>
     </message>
     <message>
-        <source>Keine Drehung zu speichern – zuerst mit ⌘L oder ⌘R drehen</source>
+        <source>Keine Drehung zu sichern – drehe das Bild zuerst mit ⌘L oder ⌘R</source>
         <translation>Geen rotatie om te bewaren – roteer eerst met ⌘L of ⌘R</translation>
     </message>
     <message>
-        <source>Drehung speichern</source>
+        <source>Drehung sichern</source>
         <translation>Bewaar rotatie</translation>
     </message>
     <message>
-        <source>Verlustfrei drehen geht nur mit beschnittenem Rand.</source>
+        <source>Verlustfreies Drehen ist nur mit beschnittenem Rand möglich.</source>
         <translation>Verliesvrij roteren is alleen mogelijk met een bijgesneden rand.</translation>
     </message>
     <message>
-        <source>Die Drehung kann nur durch Neukodieren gespeichert werden.</source>
+        <source>Die Drehung kann nur durch Neukodieren gesichert werden.</source>
         <translation>De rotatie kan alleen worden bewaard door opnieuw te coderen.</translation>
     </message>
     <message>
@@ -5945,7 +5941,7 @@
         <translation>Er is geen afbeelding geopend.</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Seiten können nicht Schreibtischhintergrund werden.</source>
+        <source>Bilder in Archiven und PDF-Seiten können nicht als Schreibtischhintergrund festgelegt werden.</source>
         <translation>Afbeeldingen in archieven en PDF-pagina’s kunnen geen bureaubladachtergrond worden.</translation>
     </message>
     <message>
@@ -5970,7 +5966,7 @@
         <translation>Alle schermen</translation>
     </message>
     <message>
-        <source>Diese Arbeitsumgebung wird nicht unterstützt.</source>
+        <source>Diese Desktopumgebung wird nicht unterstützt.</source>
         <translation>Deze bureaubladomgeving wordt niet ondersteund.</translation>
     </message>
 </context>
@@ -6010,7 +6006,7 @@
         <translation>Geen AF-punten in de metadata</translation>
     </message>
     <message>
-        <source>Zuschneiden geht in der Einzelbildansicht.</source>
+        <source>Zuschneiden ist nur in der Einzelbildansicht möglich.</source>
         <translation>Bijsnijden werkt in de weergave van één afbeelding.</translation>
     </message>
     <message>
@@ -6018,11 +6014,11 @@
         <translation>Geen afbeelding om bij te snijden.</translation>
     </message>
     <message>
-        <source>Zuschneiden: Rahmen ziehen – Enter speichert, Esc bricht ab</source>
+        <source>Zuschneiden: Rahmen ziehen – Enter sichert, Esc bricht ab</source>
         <translation>Bijsnijden: sleep een kader – Enter bewaart, Esc annuleert</translation>
     </message>
     <message>
-        <source>Der vorige Zuschnitt wird noch gespeichert.</source>
+        <source>Der vorherige Zuschnitt wird noch gesichert.</source>
         <translation>De vorige uitsnede wordt nog bewaard.</translation>
     </message>
     <message>
@@ -6035,7 +6031,7 @@
         <translation>%1-bijgesneden.%2</translation>
     </message>
     <message>
-        <source>Zugeschnittenes Bild speichern unter</source>
+        <source>Zugeschnittenes Bild sichern unter</source>
         <translation>Bijgesneden afbeelding bewaren als</translation>
     </message>
     <message>
@@ -6047,7 +6043,7 @@
         <translation>Snijd bij</translation>
     </message>
     <message>
-        <source>„%1“ gibt es schon. Ersetzen?</source>
+        <source>„%1“ existiert bereits. Möchtest du die Datei ersetzen?</source>
         <translation>‘%1’ bestaat al. Vervangen?</translation>
     </message>
     <message>
@@ -6059,7 +6055,7 @@
         <translation>Vervang</translation>
     </message>
     <message>
-        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <source>Der Zuschnitt konnte nicht gesichert werden.</source>
         <translation>De uitsnede kon niet worden bewaard.</translation>
     </message>
     <message>
@@ -6071,7 +6067,7 @@
         <translation>Exporteer bijgesneden…</translation>
     </message>
     <message>
-        <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
+        <source>Der Zuschnitt kann nur durch Neukodieren gesichert werden.</source>
         <translation>De uitsnede kan alleen door opnieuw coderen worden bewaard.</translation>
     </message>
     <message>
@@ -6083,7 +6079,7 @@
         <translation>Annuleer</translation>
     </message>
     <message>
-        <source>Zugeschnitten gespeichert als „%1“</source>
+        <source>Zugeschnitten gesichert als „%1“</source>
         <translation>Uitsnede bewaard als ‘%1’</translation>
     </message>
     <message>
@@ -6126,7 +6122,7 @@
 <context>
     <name>lf::WindowExtras</name>
     <message>
-        <source>Karte</source>
+        <source>Ordnerkarte</source>
         <translation>Kaart</translation>
     </message>
     <message>
@@ -6197,7 +6193,7 @@
         <translation>Livetekst uit</translation>
     </message>
     <message>
-        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – mit ⇧⌘H auf SDR umschalten.</source>
+        <source>Live Text ist während der HDR-Darstellung nicht verfügbar – schalte mit ⇧⌘H auf SDR um.</source>
         <translation>Livetekst is niet beschikbaar tijdens HDR-weergave – schakel met ⇧⌘H naar SDR.</translation>
     </message>
     <message>
@@ -6263,11 +6259,11 @@
         <translation>De afbeeldingsgrootte %1 × %2 is ongeldig of te groot.</translation>
     </message>
     <message>
-        <source>Die Farbtiefe der XCF-Datei wird nicht unterstützt.</source>
+        <source>Die Bittiefe der XCF-Datei wird nicht unterstützt.</source>
         <translation>De kleurdiepte van het XCF-bestand wordt niet ondersteund.</translation>
     </message>
     <message>
-        <source>Nicht genug Speicher für das Bild.</source>
+        <source>Nicht genug Arbeitsspeicher für das Bild.</source>
         <translation>Onvoldoende geheugen voor de afbeelding.</translation>
     </message>
     <message>
@@ -6314,7 +6310,7 @@
         <translation>‘%1’ is te groot.</translation>
     </message>
     <message>
-        <source>Die Kompressionsart von „%1“ wird nicht unterstützt.</source>
+        <source>Die Komprimierungsart von „%1“ wird nicht unterstützt.</source>
         <translation>De compressiemethode van ‘%1’ wordt niet ondersteund.</translation>
     </message>
 </context>

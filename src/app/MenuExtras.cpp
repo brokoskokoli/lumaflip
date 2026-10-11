@@ -34,7 +34,7 @@ QString MenuExtras::frontFile(QString* reason) const {
     // F-OPEN-10: other apps get the extracted copy of an image inside an archive (it carries
     // the member's file name); a PDF page has no file of its own.
     if (vpath::containerKind(vpath::containerOf(p)) == vpath::ContainerKind::Pdf) {
-        *reason = tr("Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.");
+        *reason = tr("Einzelne PDF-Seiten können nicht an andere Apps übergeben werden.");
         return {};
     }
     QString file = ArchiveCache::instance().cachedFile(p);
@@ -45,7 +45,7 @@ QString MenuExtras::frontFile(QString* reason) const {
         QString error;
         ArchiveCache::instance().materialize(p, &error);
     });
-    *reason = tr("Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.");
+    *reason = tr("Das Bild wird aus dem Archiv entpackt – versuche es gleich noch einmal.");
     return {};
 }
 
@@ -148,8 +148,8 @@ void MenuExtras::addWindowCommands(QMenu* window) {
                                                        {"moveToNewWindow", TabCommand::MoveTabToNewWindow},
                                                        {"merge", TabCommand::MergeAllWindows},
                                                        {"tabBar", TabCommand::ToggleTabBar}};
-    const QString tabLabels[] = {tr("Vorherigen Tab zeigen"), tr("Nächsten Tab zeigen"),
-                                 tr("Tab in neues Fenster bewegen"), tr("Alle Fenster zusammenführen"),
+    const QString tabLabels[] = {tr("Vorherigen Tab anzeigen"), tr("Nächsten Tab anzeigen"),
+                                 tr("Tab in ein neues Fenster bewegen"), tr("Alle Fenster zusammenführen"),
                                  tr("Tableiste ein-/ausblenden")};
     i = 0;
     for (const auto& [id, command] : tabs) {

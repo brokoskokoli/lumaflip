@@ -37,7 +37,7 @@ void MainMenu::buildViews(QMenu* view, QMenu* nav) {
 
     // ---- Darstellung: folder map (F-INFO-08) ----
     view->addSeparator();
-    add(view, Action::ToggleFolderMap, tr("Karte"))->setCheckable(true);
+    add(view, Action::ToggleFolderMap, tr("Ordnerkarte"))->setCheckable(true);
 
     // ---- Navigation: sibling folders (F-OPEN-09) ----
     nav->addSeparator();
@@ -48,7 +48,7 @@ void MainMenu::buildViews(QMenu* view, QMenu* nav) {
     nav->addSeparator();
     add(nav, Action::GoToImage, tr("Gehe zu Bild …"));                                // F-NAV-06
     add(nav, Action::ToggleShuffle, tr("Zufällige Reihenfolge"))->setCheckable(true); // F-NAV-06
-    add(nav, Action::FilterByName, tr("Nach Dateiname filtern …"));                   // F-NAV-08
+    add(nav, Action::FilterByName, tr("Nach Dateinamen filtern …"));                  // F-NAV-08
     connect(addCommand(nav, QStringLiteral("nameFilter:clear"), tr("Namensfilter aufheben")),
             &QAction::triggered, this, [front] {
                 if (ViewerWindow* w = front())
@@ -61,8 +61,8 @@ void MainMenu::buildWindowModes(QMenu* window) {
     add(window, Action::ToggleMinimalWindow, tr("Minimaler Fenstermodus"))->setCheckable(true); // F-VIEW-13
     window->addSeparator();
     add(window, Action::CoupleWindows, tr("Fenster koppeln …")); // F-WIN-07
-    connect(addCommand(window, QStringLiteral("uncouple"), tr("Entkoppeln")), &QAction::triggered, this,
-            [this] { CouplingManager::of(m_app).uncouple(); });
+    connect(addCommand(window, QStringLiteral("uncouple"), tr("Fenster entkoppeln")), &QAction::triggered,
+            this, [this] { CouplingManager::of(m_app).uncouple(); });
 }
 
 void MainMenu::refreshViewsState() {
