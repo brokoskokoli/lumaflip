@@ -1988,6 +1988,10 @@
         <translation>Lås zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Gjenopprett standardzoom</translation>
+    </message>
+    <message>
         <source>Ausschnitt nach oben</source>
         <translation>Panorer opp</translation>
     </message>
@@ -3187,6 +3191,10 @@
         <translation>Lås zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Gjenopprett standardzoom</translation>
+    </message>
+    <message>
         <source>Vollbild</source>
         <translation>Fullskjerm</translation>
     </message>
@@ -4292,6 +4300,10 @@
     <message>
         <source>Fenster füllen</source>
         <translation>Fyll vindu</translation>
+    </message>
+    <message>
+        <source>Zoom je Bild für die Sitzung merken</source>
+        <translation>Husk zoom for hvert bilde i økten</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>

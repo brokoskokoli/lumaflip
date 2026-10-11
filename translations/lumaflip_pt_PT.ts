@@ -1988,6 +1988,10 @@
         <translation>Bloquear zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Repor zoom predefinido</translation>
+    </message>
+    <message>
         <source>Ausschnitt nach oben</source>
         <translation>Deslocar área visível para cima</translation>
     </message>
@@ -3187,6 +3191,10 @@
         <translation>Bloquear zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Repor zoom predefinido</translation>
+    </message>
+    <message>
         <source>Vollbild</source>
         <translation>Ecrã completo</translation>
     </message>
@@ -4292,6 +4300,10 @@
     <message>
         <source>Fenster füllen</source>
         <translation>Preencher janela</translation>
+    </message>
+    <message>
+        <source>Zoom je Bild für die Sitzung merken</source>
+        <translation>Memorizar o zoom de cada imagem durante a sessão</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>

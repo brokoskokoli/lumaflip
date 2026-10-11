@@ -2000,6 +2000,10 @@
         <translation>Zamknout zvětšení</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Obnovit výchozí zvětšení</translation>
+    </message>
+    <message>
         <source>Ausschnitt nach oben</source>
         <translation>Posunout výřez nahoru</translation>
     </message>
@@ -3199,6 +3203,10 @@
         <translation>Zamknout zvětšení</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Obnovit výchozí zvětšení</translation>
+    </message>
+    <message>
         <source>Vollbild</source>
         <translation>Celá obrazovka</translation>
     </message>
@@ -4312,6 +4320,10 @@
     <message>
         <source>Fenster füllen</source>
         <translation>Vyplnit okno</translation>
+    </message>
+    <message>
+        <source>Zoom je Bild für die Sitzung merken</source>
+        <translation>Pamatovat si zvětšení každého obrázku během relace</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>

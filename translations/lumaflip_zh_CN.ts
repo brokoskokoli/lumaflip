@@ -1976,6 +1976,10 @@
         <translation>锁定缩放</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>恢复标准缩放</translation>
+    </message>
+    <message>
         <source>Ausschnitt nach oben</source>
         <translation>向上平移</translation>
     </message>
@@ -3175,6 +3179,10 @@
         <translation>锁定缩放</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>恢复标准缩放</translation>
+    </message>
+    <message>
         <source>Vollbild</source>
         <translation>全屏幕</translation>
     </message>
@@ -4272,6 +4280,10 @@
     <message>
         <source>Fenster füllen</source>
         <translation>填满窗口</translation>
+    </message>
+    <message>
+        <source>Zoom je Bild für die Sitzung merken</source>
+        <translation>在本次会话中记住每张图像的缩放</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>

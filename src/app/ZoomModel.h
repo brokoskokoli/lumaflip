@@ -45,6 +45,14 @@ public:
     // ---- zoom ----
     void setMode(ZoomMode mode); // re-centers; also becomes the mode for new images
     ZoomMode mode() const { return m_mode; }
+    // The mode new images get (the last mode chosen with setMode(), "standard zoom").
+    ZoomMode baseMode() const { return m_baseMode; }
+    // F-VIEW-14: back to the standard zoom (baseMode(), placed like a new image).
+    void resetToBaseMode();
+    // F-VIEW-14: shows a remembered view of this image: `mode` (Custom: `factor`, 1.0 = 100 %)
+    // with `imageCenter` (full-size image px) in the middle of the viewport, clamped. The mode
+    // for new images stays as it is.
+    void restoreView(ZoomMode mode, double factor, QPointF imageCenter);
     // Scale in device pixels per image pixel.
     double scale() const { return m_scale; }
     // User visible factor: 1.0 = 100 % (device pixels or points, see setting).

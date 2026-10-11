@@ -1988,6 +1988,10 @@
         <translation>Lås zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Återställ standardzoom</translation>
+    </message>
+    <message>
         <source>Ausschnitt nach oben</source>
         <translation>Panorera uppåt</translation>
     </message>
@@ -3187,6 +3191,10 @@
         <translation>Lås zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Återställ standardzoom</translation>
+    </message>
+    <message>
         <source>Vollbild</source>
         <translation>Helskärm</translation>
     </message>
@@ -4292,6 +4300,10 @@
     <message>
         <source>Fenster füllen</source>
         <translation>Fyll fönster</translation>
+    </message>
+    <message>
+        <source>Zoom je Bild für die Sitzung merken</source>
+        <translation>Kom ihåg zoom per bild under sessionen</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>

@@ -131,6 +131,20 @@ void ZoomModel::setMode(ZoomMode mode) {
     applyMode(false);
 }
 
+void ZoomModel::resetToBaseMode() {
+    m_mode = m_baseMode;
+    applyMode(false);
+}
+
+void ZoomModel::restoreView(ZoomMode mode, double factor, QPointF imageCenter) {
+    if (m_image.isEmpty())
+        return;
+    m_mode = mode;
+    m_scale = mode == ZoomMode::Custom ? std::clamp(scaleForFactor(factor), minScale(), maxScale())
+                                       : scaleForMode(mode);
+    setCenterInDisplay(imageToDisplay(imageCenter));
+}
+
 void ZoomModel::applyMode(bool keepRelativeCenter) {
     if (m_image.isEmpty())
         return;

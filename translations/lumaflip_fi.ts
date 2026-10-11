@@ -1988,6 +1988,10 @@
         <translation>Lukitse zoomaus</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Palauta oletuszoomaus</translation>
+    </message>
+    <message>
         <source>Ausschnitt nach oben</source>
         <translation>Vieritä näkymää ylös</translation>
     </message>
@@ -3187,6 +3191,10 @@
         <translation>Lukitse zoomaus</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Palauta oletuszoomaus</translation>
+    </message>
+    <message>
         <source>Vollbild</source>
         <translation>Koko näyttö</translation>
     </message>
@@ -4292,6 +4300,10 @@
     <message>
         <source>Fenster füllen</source>
         <translation>Täytä ikkuna</translation>
+    </message>
+    <message>
+        <source>Zoom je Bild für die Sitzung merken</source>
+        <translation>Muista kunkin kuvan zoomaus istunnon ajan</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>

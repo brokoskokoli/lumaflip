@@ -643,5 +643,50 @@ TEST_F(InputBindingsTest, ActionIdRoundtrip) {
     EXPECT_EQ(actionId(Action::None), "none");
     EXPECT_EQ(actionId(Action::NextImage), "nextImage");
     // every enum value except None is listed
-    EXPECT_EQ(InputBindings::allActions().size(), int(Action::ToggleAfPoints)); // last enum value
+    EXPECT_EQ(InputBindings::allActions().size(), int(Action::ResetZoom)); // last enum value
+}
+
+// F-VIEW-14: Enter resets a changed zoom; otherwise it keeps renaming (F-FILE-04) or, with the
+// "windows" preset, toggles full screen (F-IN-18). Neither counts as a conflict.
+TEST_F(InputBindingsTest, F_VIEW_14_EnterResetsChangedZoom) {
+    InputBindings b;
+    EXPECT_EQ(b.shortcuts(Action::ResetZoom),
+              (QList<QKeySequence>{QKeySequence(Qt::Key_Return), QKeySequence(Qt::Key_Enter)}));
+    InputEvent changed = keyEv(Qt::Key_Return);
+    changed.zoomChanged = true;
+    EXPECT_EQ(b.resolve(changed), Action::ResetZoom);
+    EXPECT_EQ(b.resolve(keyEv(Qt::Key_Return)), Action::Rename);
+    // Keypad Enter (arrives with the keypad modifier on macOS).
+    InputEvent keypad = keyEv(Qt::Key_Enter, Qt::KeypadModifier);
+    keypad.zoomChanged = true;
+    EXPECT_EQ(b.resolve(keypad), Action::ResetZoom);
+    keypad.zoomChanged = false;
+    EXPECT_EQ(b.resolve(keypad), Action::None);
+    // ⌘Return is not Enter.
+    InputEvent cmdReturn = keyEv(Qt::Key_Return, Cmd);
+    cmdReturn.zoomChanged = true;
+    EXPECT_EQ(b.resolve(cmdReturn), Action::None);
+    // Other keys are not affected by a changed zoom.
+    InputEvent z = keyEv(Qt::Key_Z);
+    z.zoomChanged = true;
+    EXPECT_EQ(b.resolve(z), Action::ToggleFitActualAtCursor);
+    EXPECT_TRUE(b.conflicts().isEmpty());
+    EXPECT_TRUE(b.conflictsWith(Action::ResetZoom).isEmpty());
+
+    InputBindings::applyPreset("windows");
+    InputBindings w;
+    EXPECT_EQ(w.resolve(keyEv(Qt::Key_Return)), Action::ToggleFullScreen);
+    InputEvent wc = keyEv(Qt::Key_Return);
+    wc.zoomChanged = true;
+    EXPECT_EQ(w.resolve(wc), Action::ResetZoom);
+    EXPECT_TRUE(w.conflicts().isEmpty());
+
+    // Freely assignable (F-SET-02): another key resets, Enter only renames again.
+    InputBindings r;
+    r.setShortcut(Action::ResetZoom, QKeySequence(Qt::Key_Backslash));
+    InputEvent bs = keyEv(Qt::Key_Backslash);
+    bs.zoomChanged = true;
+    EXPECT_EQ(r.resolve(bs), Action::ResetZoom);
+    bs.zoomChanged = false;
+    EXPECT_EQ(r.resolve(bs), Action::None);
 }

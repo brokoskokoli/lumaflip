@@ -236,6 +236,7 @@ QStringList PreferencesDialog::sectionKeys(int section) const {
                 key::ZoomMode,
                 key::UpscaleFilter,
                 key::ActualSizeUnit,
+                key::RememberZoom,
                 key::HdrEnabled,
                 key::SlideshowIntervalSec,
                 key::SlideshowRepeat,
@@ -497,6 +498,8 @@ QWidget* PreferencesDialog::buildDisplay() {
                             {tr("Einpassen (nicht vergrößern)"), tr("Einpassen inkl. Vergrößern"),
                              tr("100 %"), tr("Breite füllen"), tr("Höhe füllen"), tr("Fenster füllen")},
                             w));
+    // F-VIEW-14
+    form->addRow(QString(), bind.check(key::RememberZoom, tr("Zoom je Bild für die Sitzung merken"), w));
     form->addRow(tr("Vergrößern über 100 %:"),
                  bind.combo(key::UpscaleFilter, {"smooth", "nearest"}, {tr("Glatt"), tr("Pixel scharf")}, w));
     form->addRow(tr("100 % bedeutet:"),

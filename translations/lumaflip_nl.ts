@@ -1988,6 +1988,10 @@
         <translation>Vergrendel zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Standaardzoom herstellen</translation>
+    </message>
+    <message>
         <source>Ausschnitt nach oben</source>
         <translation>Schuif omhoog</translation>
     </message>
@@ -3187,6 +3191,10 @@
         <translation>Vergrendel zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Standaardzoom herstellen</translation>
+    </message>
+    <message>
         <source>Vollbild</source>
         <translation>Schermvullend</translation>
     </message>
@@ -4292,6 +4300,10 @@
     <message>
         <source>Fenster füllen</source>
         <translation>Vul venster</translation>
+    </message>
+    <message>
+        <source>Zoom je Bild für die Sitzung merken</source>
+        <translation>Zoom per afbeelding onthouden tijdens de sessie</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>
