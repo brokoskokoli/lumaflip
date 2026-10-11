@@ -169,6 +169,8 @@ private slots:
         QVERIFY(v->isZoomed());
         QVERIFY(w->zoomMemory()->zoomChanged());
         const double factor = v->zoomFactor();
+        const ZoomMode mode = v->zoomMode(); // Custom, or Actual when the steps hit 100 %
+        QVERIFY(mode != ZoomMode::Fit);
         const QPointF center = v->viewCenter();
         QVERIFY(!closePt(center, QPointF(0.5, 0.5))); // panned
 
@@ -180,7 +182,7 @@ private slots:
 
         // Back to a: same zoom and visible part, also after better stages arrived.
         QVERIFY(go(w, Action::PreviousImage, a));
-        QCOMPARE(v->zoomMode(), ZoomMode::Custom);
+        QCOMPARE(v->zoomMode(), mode);
         QVERIFY(closeTo(v->zoomFactor(), factor, 1e-9));
         QVERIFY(closePt(v->viewCenter(), center));
         QTest::qWait(300);
@@ -294,5 +296,16 @@ private slots:
     }
 };
 
-QTEST_MAIN(TstZoomMemory)
+int main(int argc, char* argv[]) {
+#ifdef Q_OS_MACOS
+    // The canvas needs Metal; the offscreen platform has no QRhi.
+    if (qgetenv("QT_QPA_PLATFORM") == "offscreen")
+        qputenv("QT_QPA_PLATFORM", "cocoa");
+#endif
+    QApplication app(argc, argv);
+    QApplication::setApplicationName(QStringLiteral("LumaflipTest"));
+    TstZoomMemory tc;
+    QTEST_SET_MAIN_SOURCE_PATH
+    return QTest::qExec(&tc, argc, argv);
+}
 #include "tst_zoom_memory.moc"

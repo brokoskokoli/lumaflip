@@ -1300,7 +1300,8 @@ void ViewerWindow::handleInput(InputEvent ev, QPointF pos) {
         ev.inLeftHalf = pos.x() < m_view->width() / 2.0;
     ev.animated = ev.animated || m_anim->isActive(); // F-IN-06 (animation)
     ev.multiPage = ev.multiPage || m_pageCount > 1;  // F-IN-04 (pages)
-    ev.zoomChanged = ev.zoomChanged || m_zoomMemory->zoomChanged(); // F-VIEW-14 (Enter resets)
+    // F-VIEW-14: Enter resets a changed zoom (else it renames)
+    ev.zoomChanged = ev.zoomChanged || m_zoomMemory->zoomChanged();
     if (m_culling->interceptKey(ev))
         return; // F-FILE-08: target digit of a quick move/copy (M/C + 1–9)
     // 5.2: digits = stars (culling mode; M3: also in the grid and the compare mode)
