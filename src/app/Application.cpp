@@ -97,9 +97,9 @@ struct Application::Private {
     std::unique_ptr<FolderWatcher> watcher;
     MainMenu* menu = nullptr;
     QPointer<DefaultAppOfferController> defaultAppOffer; // F-MAC-09 (main() turns it on)
-    QHash<QString, int> watchCount;           // folder -> number of windows showing it
-    QList<QPointer<ViewerWindow>> windows;    // open windows
-    QList<QPointer<ViewerWindow>> allWindows; // incl. closed ones awaiting deferred deletion
+    QHash<QString, int> watchCount;                      // folder -> number of windows showing it
+    QList<QPointer<ViewerWindow>> windows;               // open windows
+    QList<QPointer<ViewerWindow>> allWindows;            // incl. closed ones awaiting deferred deletion
     QPointer<ViewerWindow> front;
     // Open burst (F-OPEN-04)
     QTimer burstTimer;

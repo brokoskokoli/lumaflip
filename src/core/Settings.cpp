@@ -79,8 +79,8 @@ const Registry& registry() {
         b(key::TitleShowFolder, false);
         b(key::ConfirmTrash, false);
         b(key::OfferDefaultApp, true); // F-MAC-09
-        s(key::EditorApp, "", {}); // F-FILE-05
-        b(key::AllowTabs, false);  // F-WIN-05
+        s(key::EditorApp, "", {});     // F-FILE-05
+        b(key::AllowTabs, false);      // F-WIN-05
         // F-VIEW-15
         s(key::TitleBar, "autoHide", {"autoHide", "always"});
         s(key::Background, "dark", {"dark", "light", "system", "checker"}, true);

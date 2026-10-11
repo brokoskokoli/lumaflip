@@ -118,8 +118,8 @@ public:
     // the defaults: defaultapp::kStartDelayMs after the first frame, kSettleMs later).
     void enableDefaultAppOffer(int startDelayMs = -1, int settleMs = -1);
     DefaultAppOfferController* defaultAppOffer() const; // nullptr while off
-    bool openUrl(const QUrl& url);    // via Services::openUrl
-    static QUrl privacySettingsUrl(); // Datenschutz & Sicherheit -> Dateien und Ordner
+    bool openUrl(const QUrl& url);                      // via Services::openUrl
+    static QUrl privacySettingsUrl();                   // Datenschutz & Sicherheit -> Dateien und Ordner
     // ⌘Q: remembers the windows (F-WIN-06), then quits. Pending file operations are
     // finished first (busy cursor and message); the app quits when they are done.
     void quit();
