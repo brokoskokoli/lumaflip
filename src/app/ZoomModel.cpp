@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
+#include <ranges>
 
 namespace lf {
 
@@ -185,9 +186,9 @@ double ZoomModel::nextLadderFactor(double factor, int direction) {
                 return f;
         return kLadder.back();
     }
-    for (auto it = kLadder.rbegin(); it != kLadder.rend(); ++it)
-        if (*it < factor * (1 - 1e-3))
-            return *it;
+    for (double f : std::views::reverse(kLadder))
+        if (f < factor * (1 - 1e-3))
+            return f;
     return kLadder.front();
 }
 

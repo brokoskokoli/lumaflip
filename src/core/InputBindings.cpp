@@ -887,11 +887,13 @@ Action InputBindings::resolve(const InputEvent& ev) const {
     // ---- keys ----
     if (ev.key == 0 || ev.key == Qt::Key_unknown)
         return Action::None;
-    const QKeySequence seq(QKeyCombination(mods, Qt::Key(ev.key)));
+    // fromCombined(): any key code (not every int is a Qt::Key enumerator).
+    const QKeySequence seq(QKeyCombination::fromCombined(mods.toInt() | ev.key));
     // Printable non-letter keys like "?" or "+" arrive with Shift on many layouts.
     const bool shiftedSymbol = (mods & Qt::ShiftModifier) && ev.key >= 0x20 && ev.key < 0x7f &&
                                !(ev.key >= Qt::Key_A && ev.key <= Qt::Key_Z);
-    const QKeySequence seqNoShift(QKeyCombination(mods & ~Qt::ShiftModifier, Qt::Key(ev.key)));
+    const QKeySequence seqNoShift(
+        QKeyCombination::fromCombined((mods & ~Qt::ShiftModifier).toInt() | ev.key));
     auto matchShortcut = [&](bool culling) {
         for (Action a : allActions()) {
             if (isCullingAction(a) != culling || a == Action::ResetZoom)
