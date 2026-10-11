@@ -211,3 +211,118 @@ Zeichenkettenliterale im Code (auch über mehrere Zeilen verteilte). Jede Ersetz
 ausgegeben: Treffer in Daten (z. B. Tag-Standardwerte) oder in einem anderen Kontext von Hand
 zurücknehmen. Ändert sich die Bedeutung, nicht umbenennen – dann soll lupdate den Text neu
 („unfinished“) anlegen.
+
+## Niederländisch, Schwedisch, Dänisch, Norwegisch (Bokmål), Finnisch (nl, sv, da, nb, fi)
+
+Stand: Oktober 2026, maschinell gegen die Plattform-Lokalisierungen geprüft, **nicht** von
+Muttersprachler:innen gegengelesen. Quellen, in dieser Reihenfolge:
+
+1. **macOS 27** auf diesem Rechner: `AppKit.framework/Resources/MenuCommands.loctable`,
+   `FunctionKeyNames.loctable`, `Preview.app/…/MainMenu.loctable`, Fotos, Finder-nahe
+   Frameworks (Abschnitte `nl`, `sv`, `da`, `no` = Bokmål, `fi`). Werte in der Tabelle sind
+   wörtlich von dort übernommen, wo „(macOS)“ steht.
+2. **Microsoft-Terminologie** (Windows 11) für Texte, die nur unter Windows erscheinen.
+3. **Fotografie:** Lightroom (Classic/Cloud) in der jeweiligen Sprache, soweit bekannt, sonst
+   gebräuchliche Fachsprache. Lightroom Classic ist nach unserem Kenntnisstand nicht auf
+   Dänisch, Norwegisch oder Finnisch lokalisiert und war hier nicht zum Nachsehen verfügbar;
+   die Begriffe fürs Bewerten und Aussortieren sind daher weniger sicher (siehe Anmerkungen).
+
+### Stil je Sprache
+
+| Thema | nl | sv | da | nb | fi |
+|---|---|---|---|---|---|
+| Anrede | *je/jouw* (wie macOS), Imperativ ohne Pronomen: „Kies een andere app.“ | *du*, Imperativ: „Välj en annan app.“ | *du*, Imperativ: „Vælg en anden app.“ | *du*, Imperativ: „Velg en annen app.“ | Imperativ 2. Person Singular („Valitse toinen appi.“), sonst unpersönlich/Passiv wie macOS |
+| Menübefehle, Knöpfe | Imperativ wie macOS („Bewaar“, „Open“, „Toon in Finder“, „Verplaats naar prullenmand“) | Imperativ („Spara“, „Öppna“) | Imperativ („Gem“, „Åbn“) | Imperativ („Lagre“, „Åpne“) | Imperativ („Tallenna“, „Avaa“) |
+| Ein-/Ausblenden | Toon / Verberg | Visa / Göm | Vis / Skjul | Vis / Skjul | Näytä / Kätke |
+| Auslassungspunkte | „…“ (U+2026) **ohne** Leerzeichen: „Open…“, „Bezig met laden…“ | „Öppna…“ | „Åbn…“ | „Åpne…“ | „Avaa…“ |
+| Anführungszeichen | '…' (wie macOS: „Wijzig naam van '%1'“) | ”…” (U+201D beidseitig) | “…” | «…» | ”…” (U+201D beidseitig) |
+| Prozent | „100%“ ohne Leerzeichen | „100 %“ | „100 %“ | „100 %“ | „100 %“ |
+| Groß-/Kleinschreibung | nur erstes Wort groß (kein Title Case) | wie nl | wie nl | wie nl | wie nl |
+| App | app, „de Opdrachten-app“ | app, „appen Genvägar“ | app, „appen Genveje“ | app, „Snarveier-appen“ | **appi** (wie macOS: „Avaa apilla“, „oletusappi“), nicht „sovellus“ |
+| Tasten | Spatiebalk, Esc, Return, ← → ↑ ↓ | Mellanslag, Esc, Retur | Mellemrum, Esc, Retur | Mellomrom, Esc, Retur | Välilyönti, Esc, Return |
+
+### Begriffe
+
+| Begriff | Deutsch | nl | sv | da | nb | fi | Quelle / Anmerkung |
+|---|---|---|---|---|---|---|---|
+| Menü File | Ablage | Archief | Arkiv | Arkiv | Fil | Tiedosto | macOS (AppKit). fi: einige Apple-Apps sagen „Arkisto“, AppKit „Tiedosto“ |
+| Menü Edit | Bearbeiten | Wijzig | Redigera | Rediger | Rediger | Muokkaa | macOS |
+| Menü View | Darstellung | Weergave | Innehåll | Oversigt | Vis | Näytä | macOS (sv/da wörtlich so, nicht „Visa“/„Vis“) |
+| Menü Window | Fenster | Venster | Fönster | Vindue | Vindu | Ikkuna | macOS |
+| Menü Help | Hilfe | Help | Hjälp | Hjælp | Hjelp | Ohje | macOS |
+| Settings… | Einstellungen … | Instellingen… | Inställningar… | Indstillinger… | Innstillinger… | Asetukset… | macOS |
+| About / Quit | Über Lumaflip / Lumaflip beenden | Over Lumaflip / Stop Lumaflip | Om Lumaflip / Avsluta Lumaflip | Om Lumaflip / Slut Lumaflip | Om Lumaflip / Avslutt Lumaflip | Tietoja: Lumaflip / Lopeta Lumaflip | macOS |
+| Open… / Open With | Öffnen … / Öffnen mit | Open… / Open met | Öppna… / Öppna med | Åbn… / Åbn med | Åpne… / Åpne med | Avaa… / Avaa apilla | macOS |
+| Open Recent / Clear Menu | Benutzte Dokumente / Einträge löschen | Open recente bestanden / Wis menu | Öppna senaste / Rensa menyn | Åbn seneste / Ryd menu | Åpne sist brukte / Tøm meny | Avaa äskeinen / Tyhjennä valikko | macOS |
+| Close / Close All | Schließen / Alle schließen | Sluit / Sluit alles | Stäng / Stäng alla | Luk / Luk alt | Lukk / Lukk alle | Sulje / Sulje kaikki | macOS |
+| Save / Save As… | Sichern / Sichern unter … | Bewaar / Bewaar als… | Spara / Spara som… | Gem / Gem som… | Lagre / Lagre som… | Tallenna / Tallenna nimellä… | macOS |
+| Undo / Redo | Widerrufen / Wiederholen | Herstel / Opnieuw | Ångra / Gör om | Fortryd / Gentag | Angre / Utfør likevel | Peru / Tee sittenkin | macOS. fi: „Kumoa“ ist in macOS *Abbrechen* – nie für Undo |
+| Repeat (Diashow) | Wiederholen | Herhaal | Upprepa | Gentag | Gjenta | Toista uudelleen | macOS (Musik, Kurzbefehle) |
+| Copy | Kopieren | Kopieer | Kopiera | Kopier | Kopier | Kopioi | macOS |
+| Move to Trash | In den Papierkorb legen | Verplaats naar prullenmand | Flytta till papperskorgen | Flyt til papirkurv | Flytt til papirkurv | Siirrä roskakoriin | macOS (Vorschau) |
+| Trash | Papierkorb | prullenmand | papperskorgen | papirkurv | papirkurv | roskakori | macOS |
+| Show in Finder | Im Finder zeigen | Toon in Finder | Visa i Finder | Vis i Finder | Vis i Finder | Näytä Finderissa | macOS |
+| Get Info / Info | Informationen | Toon info / Info | Visa info / Info | Vis info / Info | Vis info / Info | Näytä tiedot / Tiedot | macOS (Fotos) |
+| Share | Teilen | Deel | Dela | Del | Del | Jaa | macOS |
+| Rename… | Umbenennen … | Wijzig naam… | Byt namn… | Omdøb… | Endre navn… | Nimeä uudelleen… | macOS |
+| Minimize / Zoom | Minimieren / Zoomen | Minimaliseer / Zoom | Minimera / Zooma | Minimer / Zoom | Minimer / Zoom | Pienennä / Zoomaa | macOS |
+| Bring All to Front | Alle nach vorne bringen | Alles op voorgrond | Lägg alla överst | Anbring alle forrest | Legg alle øverst | Tuo kaikki eteen | macOS |
+| Full Screen | Vollbild | Schermvullend (Zustand: schermvullende weergave) | Helskärm (Modus: helskärmsläge) | Fuld skærm | Fullskjerm (Modus: fullskjermmodus) | Koko näyttö (Modus: koko näytön tila) | macOS |
+| Tab / Tab bar | Tab / Tableiste | tabblad / tabbladbalk | flik / flikfältet | fane / fanelinje | fane / fanelinje | välilehti / välilehtipalkki | macOS |
+| Choose… | Wählen … | Kies… | Välj… | Vælg… | Velg… | Valitse… | macOS |
+| Cancel / OK | Abbrechen / OK | Annuleer / OK | Avbryt / OK | Annuller / OK | Avbryt / OK | Kumoa / OK | macOS |
+| Replace / Keep Both / Skip | Ersetzen / Beide behalten / Überspringen | Vervang / Behoud beide / Sla over | Ersätt / Behåll båda / Hoppa över | Erstat / Bevar begge / Spring over | Erstatt / Behold begge / Hopp over | Korvaa / Pidä molemmat / Ohita | macOS |
+| Set as Desktop Picture | Als Schreibtischhintergrund festlegen | Gebruik als bureaubladafbeelding | Använd som skrivbordsbild | Brug som skrivebordsbillede | Bruk som skrivebordsbilde | Käytä työpöydän taustakuvana | macOS („Use Image as Desktop Picture“) |
+| Desktop background (Windows) | Desktophintergrund | bureaubladachtergrond | skrivbordsbakgrund | skrivebordsbaggrund | skrivebordsbakgrunn | työpöydän tausta | Microsoft |
+| Check for Updates… | Nach Updates suchen … | Zoek naar updates… | Sök efter uppdateringar… | Søg efter opdateringer… | Se etter oppdateringer… | Tarkista päivitykset… | Sparkle/übliche Form |
+| System Settings | Systemeinstellungen | Systeeminstellingen | Systeminställningar | Systemindstillinger | Systeminnstillinger | Järjestelmäasetukset | macOS |
+| Default app | Standard-App | standaardapp | förvald app (macOS) / standardapp (Windows) | standardapp | standardapp | oletusappi (macOS) / oletussovellus (Windows) | macOS, Microsoft („Standardapps“, „Standardappar“, „Oletussovellukset“) |
+| Keyboard shortcut | Tastenkürzel | toetscombinatie | kortkommando | tastaturgenvej | tastatursnarvei | näppäinoikotie | macOS |
+| Apple Shortcuts | Kurzbefehl, Kurzbefehle-App | opdracht, Opdrachten-app | genväg, appen Genvägar | genvej, appen Genveje | snarvei, Snarveier-appen | pikakomento, Pikakomennot-appi | macOS |
+| Apple Maps | Apple Karten | Apple Kaarten | Kartor | Apple Kort | Kart | Applen Kartat | macOS |
+| Quick Look | Quick Look | Snelle weergave | Överblick | Quick Look | Hurtigvisning | Pikakatselu | macOS-Namen; **da** bleibt „Quick Look“, weil Apples dänischer Name „Vis“ als Menüpunkt nicht von „Vis“ (zeigen) zu unterscheiden ist (unsicher) |
+| Live Text | Live Text | Livetekst | Livetext | Livetekst | Tekst i objektivet | Liveteksti | macOS |
+| Status bar | Statusleiste | statusbalk | statusfält | statuslinje | statuslinje | tilapalkki | macOS |
+| Toolbar / Sidebar | Symbolleiste / Seitenleiste | knoppenbalk / navigatiekolom | verktygsfält / sidofält | værktøjslinje / indholdsoversigt | verktøylinje / sidepanel | työkalupalkki / sivupalkki | macOS |
+| Folder | Ordner | map | mapp | mappe | mappe | kansio | macOS |
+| File extension | Endung | extensie | filnamnstillägg (kurz: tillägg) | endelse | filendelse | tarkenne | Finder-Umbenennen-Dialoge („Vil du ændre endelsen …“, „endre filendelsen …“, „Muutetaanko tarkenne …“) |
+| File (Datei) | Datei | bestand | fil | fil | fil | tiedosto | da: macOS sagt oft „arkiv“ – hier „fil“, weil Lumaflip auch ZIP/RAR-Archive („arkiv“) öffnet; zitierte macOS-Pfade bleiben wörtlich („Arkiv → Vis info“) |
+| File format | Format | structuur (Einstellungsbereich „Structuren“) | format | format | format | muoto | nl: wie macOS nl („Structuur:“), für viele ungewohnt – prüfen |
+| Tags (Finder) | Tags | tags | taggar | mærker | etiketter | tunnisteet | Finder |
+| Password | Passwort | wachtwoord | lösenord | adgangskode | passord | salasana | macOS |
+| Memory (RAM) | Arbeitsspeicher | werkgeheugen | arbetsminne | hukommelse (RAM) | minne | muisti | |
+| Disk space | Speicherplatz | opslagruimte | lagringsutrymme | lagerplads | lagringsplass | tallennustila | macOS |
+| Pointer | Mauszeiger | aanwijzer | pekare | markør | peker | osoitin | macOS |
+| Display | Bildschirm | beeldscherm | skärm | skærm | skjerm | näyttö | macOS |
+| Collection | Sammlung | verzameling | samling | samling | samling | kokoelma | |
+| Custom action | Eigene Aktion | eigen actie | egen åtgärd | egen handling | egen handling | oma toiminto | |
+| Image | Bild | afbeelding | bild | billede | bilde | kuva | macOS |
+| Visible area / Pan | Ausschnitt / Ausschnitt verschieben | weergave / Verschuif weergave | utsnitt / Flytta utsnitt | udsnit / Flyt udsnit | utsnitt / Flytt utsnitt | näkymä / Siirrä näkymää | |
+| Zoom to fit | Einpassen | Passend | Anpassa | Tilpas | Tilpass | Sovita ikkunaan | nl macOS (Vorschau); sonst kurze Form von „Anpassa till fönstret“, „Zoom til vindusstørrelse“ |
+| Zoom in / out | Vergrößern / Verkleinern | Zoom in / Zoom uit | Zooma in / Zooma ut | Zoom ind / Zoom ud | Zoom inn / Zoom ut | Lähennä / Loitonna | macOS |
+| Lock zoom | Zoom fixieren | Zet zoom vast | Lås zoom | Lås zoom | Lås zoom | Lukitse zoomaus | |
+| Filmstrip | Filmstreifen | filmstrip | filmremsa | filmstrimmel | filmremse | filminauha | macOS |
+| Grid | Raster | raster | rutnät | gitter | rutenett | ruudukko | macOS; da: Fotos sagt „Net“, hier „gitter“ (eindeutiger, gängig) – unsicher |
+| Loupe | Lupe | loep | lupp | lup | lupe | luuppi | macOS |
+| Slideshow | Diashow | diavoorstelling | bildspel | lysbilledshow | lysbildeserie | kuvaesitys | macOS |
+| Thumbnails | Miniaturen | miniaturen | miniatyrer | miniaturer | miniatyrbilder | miniatyyrit | macOS (Vorschau) |
+| Overlays | Einblendungen | overlays | överlägg | overlejringer | overlegg | peittokuvat | macOS-nahe (Überlagerungsleiste) |
+| Crop | Zuschneiden / Zuschnitt | Snij bij / bijsnijding | Beskär / beskärning | Beskær / beskæring | Beskjær / beskjæring | Rajaa / rajaus | macOS |
+| Rotate left/right | Links/Rechts drehen | Roteer linksom/rechtsom | Rotera åt vänster/höger | Roter til venstre/højre | Roter mot venstre/høyre | Pyöritä vasemmalle/oikealle | macOS (Vorschau) |
+| Flip | Horizontal/Vertikal spiegeln | Spiegel horizontaal/verticaal | Vänd horisontellt/vertikalt | Spejlvend vandret/lodret | Vend horisontalt/vertikalt | Käännä vaakasuunnassa/pystysuunnassa | macOS (Vorschau, Fotos) |
+| Export | Exportieren … | Exporteer… | Exportera… | Eksporter… | Eksporter… | Vie… | macOS |
+| Metadata | Metadaten | metadata | metadata | metadata | metadata | metatiedot | macOS (Fotos) |
+| Location (GPS) | Aufnahmeort | locatie | plats | lokalitet | sted | sijainti | macOS (Fotos/Karten) |
+| Exposure | Belichtung | belichting | exponering | eksponering | eksponering | valotus | macOS (Fotos) |
+| Lossless | verlustfrei | verliesvrij | förlustfri | tabsfri | tapsfri | häviötön | |
+| Quick move | Schnellablage | Snel verplaatsen | Snabbflytt | Hurtigflytning | Hurtigflytting | Pikasiirto | eigene Funktion. Nicht „arkiv“ (= Menü Ablage in sv/da) |
+| Rating | Bewertung | waardering | betyg | vurdering | vurdering | arvio | Lightroom nl/sv, macOS |
+| Culling | Aussortieren / Aussortiermodus | Schiften / schiftmodus | Gallring / gallringsläge | Frasortering / frasorteringstilstand | Utsortering / utsorteringsmodus | Karsinta / karsintatila | unsicher; nl nicht „selecteren“ (= Auswahl), da/nb nicht „udvælgelse/utvelging“ |
+| Pick (Befehl / Zustand) | Markieren / Markiert | Markeren / Gemarkeerd | Flagga / Flaggad | Marker / Markeret | Flagg / Flagget | Merkitse / Merkitty | sv/nb: „Markera/Marker“ heißt in macOS *Auswählen* („Markera allt“, „Marker alt“) – daher „Flagga/Flagg“ |
+| Reject (Befehl / Zustand) | Ablehnen / Abgelehnt | Afwijzen / Afgewezen | Avvisa / Avvisad | Afvis / Afvist | Avvis / Avvist | Hylkää / Hylätty | Lightroom, macOS-nahe |
+| Unflag | Markierung aufheben | Markering verwijderen | Ta bort flagga | Fjern markering | Fjern flagg | Poista merkintä | |
+| Flag (allgemein) | Markierung | markering | flagga | markering | flagg | merkintä | |
+| Unrated | unbewertet | zonder waardering | utan betyg | uden vurdering | uten vurdering | arvioimaton | |
+
+Finder-Tag-Standardwerte („Pick“, „Reject“, „★★★“) und der Ordnername „_Rejected“ sind Daten
+und bleiben unübersetzt – wie im Deutschen.

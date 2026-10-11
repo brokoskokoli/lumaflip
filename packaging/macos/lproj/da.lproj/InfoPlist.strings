@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 /* Localized Info.plist texts (da); maintained by hand here (not generated from the .ts catalogues) - see translations/README.md */
-"NSAppleEventsUsageDescription" = "Lumaflip spørger efter behov det forreste Finder-vindue om dets sortering, så billederne vises i samme rækkefølge.";
+"NSAppleEventsUsageDescription" = "Hvis du ønsker det, spørger Lumaflip det forreste Finder-vindue om dets sortering, så billederne vises i samme rækkefølge.";
 "NSDesktopFolderUsageDescription" = "Lumaflip læser mappen med det åbnede billede, så du kan blade med piletasterne.";
 "NSDocumentsFolderUsageDescription" = "Lumaflip læser mappen med det åbnede billede, så du kan blade med piletasterne.";
 "NSDownloadsFolderUsageDescription" = "Lumaflip læser mappen med det åbnede billede, så du kan blade med piletasterne.";
@@ -11,7 +11,7 @@
 "Ordner" = "Mappe";
 "WBMP-Bild" = "WBMP-billede";
 "Comic-Archiv" = "Tegneseriearkiv";
-"Archiv" = "Arkiv";
+"Archiv" = "Komprimeret arkiv";
 "PDF-Dokument" = "PDF-dokument";
 "RAR-Archiv" = "RAR-arkiv";
 "7-Zip-Archiv" = "7-Zip-arkiv";

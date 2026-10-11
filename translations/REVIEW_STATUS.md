@@ -13,12 +13,12 @@ Status: **maschinell, ungeprüft** → **geprüft** (Name/Handle, Datum).
 | Italienisch | `it` | maschinell, ungeprüft | | Tabs = „pannelli“ prüfen |
 | Portugiesisch (Brasilien) | `pt_BR` | maschinell, ungeprüft | | |
 | Portugiesisch (Portugal) | `pt_PT` | maschinell, ungeprüft | | Qt-eigene Texte kommen aus `qtbase_pt_BR` (Qt liefert kein pt_PT) |
-| Niederländisch | `nl` | maschinell, ungeprüft | | „Format“ = „Structuur“ prüfen |
+| Niederländisch | `nl` | maschinell geprüft gegen Plattform-Glossar (macOS/Windows/Lightroom), nicht muttersprachlich geprüft | Claude, 2026-10-11 | 456 Texte überarbeitet; Begriffe: GLOSSARY.md (Abschnitt nl/sv/da/nb/fi); prüfen: Aussortieren = „Schiften“, Format = „Structuur“ (wie macOS nl), Markeren/Afwijzen als Infinitiv |
 | Polnisch | `pl` | maschinell, ungeprüft | | |
-| Schwedisch | `sv` | maschinell, ungeprüft | | Einheit „kB“ prüfen |
-| Dänisch | `da` | maschinell, ungeprüft | | |
-| Norwegisch (Bokmål) | `nb` | maschinell, ungeprüft | | Qt-eigene Texte kommen aus `qtbase_nn` (Qt liefert kein nb) |
-| Finnisch | `fi` | maschinell, ungeprüft | | |
+| Schwedisch | `sv` | maschinell geprüft gegen Plattform-Glossar (macOS/Windows/Lightroom), nicht muttersprachlich geprüft | Claude, 2026-10-11 | 292 Texte überarbeitet; Begriffe: GLOSSARY.md; Markieren = „Flagga“ (macOS „Markera“ = auswählen); prüfen: „redigerare“ (Editor), Einheit „kB“ |
+| Dänisch | `da` | maschinell geprüft gegen Plattform-Glossar (macOS/Windows), nicht muttersprachlich geprüft | Claude, 2026-10-11 | 421 Texte überarbeitet; Begriffe: GLOSSARY.md; Datei = „fil“ (nicht macOS-„arkiv“, wegen ZIP-/RAR-Archiven); prüfen: Quick Look (unübersetzt), Raster = „gitter“, Aussortieren = „frasortering“ |
+| Norwegisch (Bokmål) | `nb` | maschinell geprüft gegen Plattform-Glossar (macOS/Windows), nicht muttersprachlich geprüft | Claude, 2026-10-11 | 319 Texte überarbeitet; Begriffe: GLOSSARY.md; prüfen: Apple Karten = „Kart“ im Satz, „Utsortering“; Qt-eigene Texte kommen aus `qtbase_nn` (Qt liefert kein nb) |
+| Finnisch | `fi` | maschinell geprüft gegen Plattform-Glossar (macOS/Windows), nicht muttersprachlich geprüft | Claude, 2026-10-11 | 378 Texte überarbeitet; Begriffe: GLOSSARY.md; macOS-Texte mit „appi“, Windows-Texte mit „sovellus“; prüfen: Kasusendungen an Platzhaltern, Focus Peaking = „Tarkennuksen korostus“ |
 | Tschechisch | `cs` | maschinell, ungeprüft | | |
 | Japanisch | `ja` | maschinell, ungeprüft | | GPS als „北緯 48.1°“ |
 | Chinesisch (vereinfacht) | `zh_CN` | maschinell, ungeprüft | | Finder = „访达“ |
