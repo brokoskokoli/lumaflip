@@ -186,7 +186,8 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@a9c63c7c123f3069cff414e7e482d95dfa9d8125 # v4.4.1
         with:
-          version: "6.11.*"
+          # An exact version (supply chain: the same Qt as the Windows job, no silent update).
+          version: "6.11.2"
           # TIFF etc. for the tests that write images (the macOS build has them via Homebrew).
           modules: qtimageformats
           cache: true
@@ -274,7 +275,8 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@a9c63c7c123f3069cff414e7e482d95dfa9d8125 # v4.4.1
         with:
-          version: "6.11.*"
+          # Exact version: the AppImage ships this Qt (no silent update between builds).
+          version: "6.11.2"
           modules: qtimageformats qtshadertools qtpdf
           cache: true
       - name: Restore RAW samples
@@ -328,6 +330,8 @@ jobs:
           APPIMAGE_EXTRACT_AND_RUN: "1"
           LIBGL_ALWAYS_SOFTWARE: "1"
           LF_EXIT_AFTER_FIRST_FRAME: "1"
+          # The decoder helper's stderr (its sandbox line) in the log.
+          LF_DECODER_HELPER_STDERR: "1"
         run: |
           rsvg-convert -w 1600 -h 1200 -b white -o /tmp/smoke.png packaging/macos/icon/lumaflip.svg
           out="$(timeout 120 xvfb-run -a -s "-screen 0 1920x1080x24" dist/Lumaflip-*-x86_64.AppImage /tmp/smoke.png 2>&1 || true)"
@@ -386,7 +390,8 @@ jobs:
           key: qt-win-6.11.2-msvc2022_64-${{ hashFiles('tools/fetch_qt_windows.py') }}
       - name: Install Qt 6.11.2 (msvc2022_64)
         # install-qt-action/aqtinstall do not read the per-architecture repository layout of
-        # Qt 6.11 for Windows yet: tools/fetch_qt_windows.py (official repository, SHA-1 checked).
+        # Qt 6.11 for Windows yet: tools/fetch_qt_windows.py (official repository; every archive
+        # checked against the SHA-256 committed in the script).
         run: |
           $qtdir = Join-Path $env:RUNNER_TEMP "Qt"
           if (-not (Test-Path "$qtdir\6.11.2\msvc2022_64\bin\Qt6Core.dll")) {
@@ -465,7 +470,8 @@ jobs:
       - name: Installer (Inno Setup)
         if: ${{ !cancelled() && steps.build.outcome == 'success' }}
         run: |
-          choco install innosetup -y --no-progress
+          # Pinned version (the Chocolatey package checks the installer's checksum).
+          choco install innosetup --version 6.7.1 -y --no-progress
           $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
           & $iscc /Qp "/DAppVersion=$env:LF_VERSION" "/DSourceDir=$PWD\dist\Lumaflip" "/DOutputDir=$PWD\dist" `
             "/DIconFile=$PWD\build\windows-release\packaging\Lumaflip.ico" packaging\windows\Lumaflip.iss
