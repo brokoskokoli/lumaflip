@@ -24,8 +24,6 @@ namespace lf {
 
 namespace {
 
-constexpr qint64 kMaxPixels = qint64(1) << 28;
-
 QColorSpace colorSpaceOf(const Imf::Header& h) {
     if (!Imf::hasChromaticities(h))
         return QColorSpace(QColorSpace::SRgbLinear);
@@ -79,23 +77,23 @@ public:
             Imf::RgbaInputFile file(QFile::encodeName(path).constData());
             const auto dw = file.dataWindow();
             const int w = dw.max.x - dw.min.x + 1, h = dw.max.y - dw.min.y + 1;
-            if (w <= 0 || h <= 0 || qint64(w) * h > kMaxPixels) {
+            if (w <= 0 || h <= 0 || !codec::fitsLimits(w, h, 8)) {
                 codec::setError(error, w <= 0 || h <= 0 ? DecoderRegistry::messageDamaged()
                                                         : DecoderRegistry::messageTooLarge());
                 return std::nullopt;
             }
-            Imf::Array2D<Imf::Rgba> pixels(h, w);
-            file.setFrameBuffer(&pixels[0][0] - dw.min.x - qsizetype(dw.min.y) * w, 1, size_t(w));
-            file.readPixels(dw.min.y, dw.max.y);
-            // Imf::Rgba is four IEEE halves (r, g, b, a) = Format_RGBA16FPx4 (qfloat16).
+            // Imf::Rgba is four IEEE halves (r, g, b, a) = Format_RGBA16FPx4 (qfloat16): read
+            // straight into the image (one full-size buffer, not two).
             static_assert(sizeof(Imf::Rgba) == 8);
             QImage img(w, h, QImage::Format_RGBA16FPx4);
-            if (img.isNull()) {
+            if (img.isNull() || img.bytesPerLine() % qsizetype(sizeof(Imf::Rgba)) != 0) {
                 codec::setError(error, DecoderRegistry::messageTooLarge());
                 return std::nullopt;
             }
-            for (int y = 0; y < h; ++y)
-                std::memcpy(img.scanLine(y), &pixels[y][0], size_t(w) * sizeof(Imf::Rgba));
+            const size_t stride = size_t(img.bytesPerLine()) / sizeof(Imf::Rgba);
+            auto* base = reinterpret_cast<Imf::Rgba*>(img.bits());
+            file.setFrameBuffer(base - dw.min.x - qptrdiff(dw.min.y) * qptrdiff(stride), 1, stride);
+            file.readPixels(dw.min.y, dw.max.y);
             img.setColorSpace(colorSpaceOf(file.header()));
             return codec::finish(std::move(img), QSize(w, h), req, error);
         } catch (const std::exception&) {

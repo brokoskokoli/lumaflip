@@ -18,7 +18,11 @@
 
 #include <gtest/gtest.h>
 
+#include <QFileInfo>
+
 #include <cmath>
+#include <cstring>
+#include <vector>
 
 #if LF_TEST_HAVE_OPENEXR
 #include <ImfArray.h>
@@ -232,6 +236,129 @@ TEST(LibraryDecoders, F_FMT_01_JpegXlLosslessRoundTrip) {
 }
 #endif
 
+#if LF_TEST_HAVE_LIBJXL
+namespace {
+// Lossless JPEG XL with the given color encoding: `pixels` are RGBA samples (8 or 16 bits).
+QByteArray encodeJxl(int w, int h, const void* pixels, size_t bytes, JxlDataType type,
+                     const JxlColorEncoding& ce, float intensityTarget = 0.f) {
+    JxlEncoder* enc = JxlEncoderCreate(nullptr);
+    JxlBasicInfo bi;
+    JxlEncoderInitBasicInfo(&bi);
+    bi.xsize = uint32_t(w);
+    bi.ysize = uint32_t(h);
+    bi.bits_per_sample = type == JXL_TYPE_UINT16 ? 16 : 8;
+    bi.num_color_channels = 3;
+    bi.alpha_bits = bi.bits_per_sample;
+    bi.num_extra_channels = 1;
+    bi.uses_original_profile = JXL_TRUE;
+    if (intensityTarget > 0.f)
+        bi.intensity_target = intensityTarget;
+    QByteArray out;
+    if (JxlEncoderSetBasicInfo(enc, &bi) == JXL_ENC_SUCCESS &&
+        JxlEncoderSetColorEncoding(enc, &ce) == JXL_ENC_SUCCESS) {
+        JxlEncoderFrameSettings* fs = JxlEncoderFrameSettingsCreate(enc, nullptr);
+        JxlEncoderSetFrameLossless(fs, JXL_TRUE);
+        const JxlPixelFormat fmt{4, type, JXL_NATIVE_ENDIAN, 0};
+        if (JxlEncoderAddImageFrame(fs, &fmt, pixels, bytes) == JXL_ENC_SUCCESS) {
+            JxlEncoderCloseInput(enc);
+            out.resize(1 << 16);
+            uint8_t* next = reinterpret_cast<uint8_t*>(out.data());
+            size_t avail = size_t(out.size());
+            JxlEncoderStatus st;
+            while ((st = JxlEncoderProcessOutput(enc, &next, &avail)) == JXL_ENC_NEED_MORE_OUTPUT) {
+                const qsizetype used = qsizetype(next - reinterpret_cast<uint8_t*>(out.data()));
+                out.resize(out.size() * 2);
+                next = reinterpret_cast<uint8_t*>(out.data()) + used;
+                avail = size_t(out.size() - used);
+            }
+            out.truncate(st == JXL_ENC_SUCCESS ? qsizetype(next - reinterpret_cast<uint8_t*>(out.data()))
+                                               : 0);
+        }
+    }
+    JxlEncoderDestroy(enc);
+    return out;
+}
+
+void writeFile(const QString& path, const QByteArray& data) {
+    QFile f(path);
+    ASSERT_TRUE(f.open(QIODevice::WriteOnly));
+    f.write(data);
+}
+} // namespace
+
+// Review (ports): the color space of a JPEG XL (from its color encoding) reaches the image:
+// Display P3 stays P3 (it was applied to a not yet allocated image and lost).
+TEST(LibraryDecoders, F_COL_01_JpegXlKeepsItsDisplayP3ColorSpace) {
+    auto jxl = requireBackend(createLibJxlDecoder(), "libjxl");
+    if (!jxl)
+        GTEST_SKIP() << "libjxl not built in";
+    QTemporaryDir dir;
+    const QImage src = pattern(false);
+    JxlColorEncoding ce;
+    JxlColorEncodingSetToSRGB(&ce, JXL_FALSE);
+    ce.primaries = JXL_PRIMARIES_P3;
+    const QString path = dir.filePath("p3.jxl");
+    const QByteArray data =
+        encodeJxl(src.width(), src.height(), src.constBits(), size_t(src.sizeInBytes()), JXL_TYPE_UINT8, ce);
+    ASSERT_FALSE(data.isEmpty());
+    writeFile(path, data);
+    const auto d = decodeBoth(jxl, path);
+    ASSERT_TRUE(d.has_value());
+    EXPECT_EQ(d->image.colorSpace().primaries(), QColorSpace::Primaries::DciP3D65);
+    EXPECT_EQ(d->image.colorSpace().transferFunction(), QColorSpace::TransferFunction::SRgb);
+    EXPECT_LE(maxDiff(d->image.convertToFormat(QImage::Format_RGBA8888), src), 1); // values untouched
+}
+
+// Review (ports): a PQ (BT.2100) JPEG XL is linearized from PQ - with the color space lost it
+// stayed PQ-encoded and showed neither its brightness nor HDR headroom.
+TEST(LibraryDecoders, F_COL_03_JpegXlPqIsDecodedAsHdr) {
+    auto jxl = requireBackend(createLibJxlDecoder(), "libjxl");
+    if (!jxl)
+        GTEST_SKIP() << "libjxl not built in";
+    QTemporaryDir dir;
+    const int w = 16, h = 8;
+    std::vector<quint16> px(size_t(w) * h * 4);
+    for (size_t i = 0; i < px.size(); i += 4) {
+        px[i] = 0xFFFF;     // PQ 1.0 = 10000 nits
+        px[i + 1] = 0xC000; // PQ 0.75 ~ 1000 nits
+        px[i + 2] = 0x8000; // PQ 0.5 ~ 92 nits
+        px[i + 3] = 0xFFFF;
+    }
+    JxlColorEncoding ce;
+    JxlColorEncodingSetToSRGB(&ce, JXL_FALSE);
+    ce.primaries = JXL_PRIMARIES_2100;
+    ce.transfer_function = JXL_TRANSFER_FUNCTION_PQ;
+    const QString path = dir.filePath("pq.jxl");
+    const QByteArray data =
+        encodeJxl(w, h, px.data(), px.size() * sizeof(quint16), JXL_TYPE_UINT16, ce, 10000.f);
+    ASSERT_FALSE(data.isEmpty());
+    writeFile(path, data);
+    // Expected: the same samples converted by Qt from BT.2100 PQ to linear Display P3.
+    QImage ref(w, h, QImage::Format_RGBA64);
+    std::memcpy(ref.bits(), px.data(), px.size() * sizeof(quint16));
+    ref.setColorSpace(QColorSpace(QColorSpace::Primaries::Bt2020, QColorSpace::TransferFunction::St2084));
+    ref.convertTo(QImage::Format_RGBA32FPx4);
+    ref.convertToColorSpace(
+        QColorSpace(QColorSpace::Primaries::DciP3D65, QColorSpace::TransferFunction::Linear));
+    float expectedPeak = 0.f;
+    for (int y = 0; y < h; ++y) {
+        const auto* p = reinterpret_cast<const float*>(ref.constScanLine(y));
+        for (int x = 0; x < w * 4; x += 4)
+            for (int c = 0; c < 3; ++c)
+                expectedPeak = std::max(expectedPeak, p[x + c]);
+    }
+    ASSERT_GT(expectedPeak, 1.0f) << "Qt maps PQ 1.0 below SDR white?";
+    DecodeRequest req;
+    req.hdrFloat = true;
+    const auto d = decodeBoth(jxl, path, req);
+    ASSERT_TRUE(d.has_value());
+    EXPECT_EQ(d->image.format(), QImage::Format_RGBA16FPx4_Premultiplied);
+    EXPECT_EQ(d->image.colorSpace(),
+              QColorSpace(QColorSpace::Primaries::DciP3D65, QColorSpace::TransferFunction::Linear));
+    EXPECT_NEAR(d->headroom, expectedPeak, expectedPeak * 0.02f);
+}
+#endif
+
 #if LF_TEST_HAVE_LIBHEIF
 namespace {
 // Encodes `img` with libheif (HEVC or AV1); false if this libheif has no such encoder.
@@ -295,6 +422,104 @@ TEST(LibraryDecoders, F_FMT_01_HeifAndAvifRoundTrip) {
         GTEST_SKIP() << "libheif has neither HEVC nor AV1 encoders/decoders here";
 }
 #endif
+
+// Review (ports): a file whose header announces a huge image is refused before any pixel
+// buffer is allocated (the helper would otherwise try to allocate gigabytes). The files are
+// small: only the header claims the size.
+TEST(LibraryDecoders, F_FMT_02_HugeImagesAreRefusedFromTheHeader) {
+    ensureQtApp();
+    QTemporaryDir dir;
+    int tested = 0;
+#if LF_TEST_HAVE_OPENEXR
+    if (auto exr = requireBackend(createOpenExrDecoder(), "OpenEXR")) {
+        // 20000 x 20000 (400 MP) with no pixel data: the header and an empty offset table.
+        const QString path = dir.filePath("huge.exr");
+        {
+            Imf::RgbaOutputFile out(QFile::encodeName(path).constData(), 20000, 20000, Imf::WRITE_RGBA);
+        }
+        EXPECT_LT(QFileInfo(path).size(), 1 << 20);
+        QString error;
+        EXPECT_FALSE(exr->decode(path, {}, &error).has_value());
+        EXPECT_EQ(error, DecoderRegistry::messageTooLarge());
+        ++tested;
+    }
+#endif
+#if LF_TEST_HAVE_LIBJXL
+    if (auto jxl = requireBackend(createLibJxlDecoder(), "libjxl")) {
+        // A bare codestream: signature, SizeHeader 30000 x 30000 (U32 selector 3 = 30 bits),
+        // ImageMetadata all_default; bits are read LSB first.
+        QByteArray bits;
+        quint64 acc = 0;
+        int n = 0;
+        auto put = [&](quint64 v, int count) {
+            for (int i = 0; i < count; ++i) {
+                acc |= ((v >> i) & 1u) << n;
+                if (++n == 8) {
+                    bits.append(char(acc));
+                    acc = 0;
+                    n = 0;
+                }
+            }
+        };
+        put(0, 1); // small = false
+        put(3, 2); // ysize: BitsOffset(30, 1)
+        put(30000 - 1, 30);
+        put(0, 3); // ratio = 0: explicit xsize
+        put(3, 2);
+        put(30000 - 1, 30);
+        put(1, 1); // ImageMetadata: all_default
+        put(0, 8 - n);
+        const QString path = dir.filePath("huge.jxl");
+        writeFile(path, QByteArray("\xFF\x0A", 2) + bits + QByteArray(64, '\0'));
+        QString error;
+        EXPECT_FALSE(jxl->decode(path, {}, &error).has_value());
+        EXPECT_EQ(error, DecoderRegistry::messageTooLarge());
+        ++tested;
+    }
+#endif
+#if LF_TEST_HAVE_LIBHEIF
+    if (auto heif = requireBackend(createLibHeifDecoder(), "libheif")) {
+        // A real small HEIF/AVIF whose 'ispe' (image spatial extents) claims 20000 x 20000.
+        const QString path = dir.filePath("huge.avif");
+        bool encoded = false;
+        for (heif_compression_format f : {heif_compression_AV1, heif_compression_HEVC})
+            if (!encoded && encodeHeif(pattern(false), f, path))
+                encoded = true;
+        if (encoded) {
+            QFile f(path);
+            ASSERT_TRUE(f.open(QIODevice::ReadWrite));
+            QByteArray data = f.readAll();
+            int patched = 0;
+            for (qsizetype at = data.indexOf("ispe"); at >= 0; at = data.indexOf("ispe", at + 4)) {
+                // box type, version/flags (4), width (4), height (4), big endian
+                for (int k = 0; k < 2; ++k) {
+                    const qsizetype v = at + 8 + 4 * k;
+                    if (v + 4 > data.size())
+                        break;
+                    data[v] = 0;
+                    data[v + 1] = 0;
+                    data[v + 2] = char(0x4E); // 20000 = 0x4E20
+                    data[v + 3] = char(0x20);
+                }
+                ++patched;
+            }
+            ASSERT_GT(patched, 0);
+            f.seek(0);
+            f.write(data);
+            f.close();
+            QString error;
+            EXPECT_FALSE(heif->decode(path, {}, &error).has_value());
+            // libheif may refuse such a file itself ("damaged"); it must never be decoded.
+            EXPECT_TRUE(error == DecoderRegistry::messageTooLarge() ||
+                        error == DecoderRegistry::messageDamaged())
+                << error.toStdString();
+            ++tested;
+        }
+    }
+#endif
+    if (tested == 0)
+        GTEST_SKIP() << "no library decoder built in";
+}
 
 // The generated corpus (macOS: tests/corpus/make_corpus.sh), when present.
 TEST(LibraryDecoders, F_FMT_01_GeneratedCorpusFiles) {
