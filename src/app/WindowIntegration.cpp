@@ -19,6 +19,7 @@
 #include <QAbstractButton>
 #include <QCheckBox>
 #include <QEvent>
+#include <QFutureWatcher>
 #include <QMessageBox>
 #include <QPushButton>
 #include <QTimer>
@@ -306,15 +307,28 @@ void WindowIntegration::askWallpaper() {
 
 void WindowIntegration::setWallpaper(bool allScreens) {
     const QString cur = m_window.currentPath();
-    auto service = macint::createWallpaperService(&m_window);
-    const wallpaper::Result r = wallpaper::apply(
-        *service, cur, allScreens ? wallpaper::Target::AllScreens : wallpaper::Target::WindowScreen);
-    if (r.ok())
-        m_window.showMessage(tr("Als Schreibtischhintergrund festgelegt"));
-    else
-        m_window.showMessage(tr("Der Schreibtischhintergrund konnte nicht geändert werden: %1")
-                                 .arg(r.errors.join(QStringLiteral("; "))),
-                             5000);
+    std::shared_ptr<WallpaperService> service = macint::createWallpaperService(&m_window);
+    const auto target = allScreens ? wallpaper::Target::AllScreens : wallpaper::Target::WindowScreen;
+    auto report = [this](const wallpaper::Result& r) {
+        if (r.ok())
+            m_window.showMessage(tr("Als Schreibtischhintergrund festgelegt"));
+        else
+            m_window.showMessage(tr("Der Schreibtischhintergrund konnte nicht geändert werden: %1")
+                                     .arg(r.errors.join(QStringLiteral("; "))),
+                                 5000);
+    };
+    if (!service->runsOnWorkerThread()) {
+        report(wallpaper::apply(*service, cur, target));
+        return;
+    }
+    // Linux: the desktop's tools may take seconds (D-Bus activation): in the background.
+    auto* watcher = new QFutureWatcher<wallpaper::Result>(this);
+    connect(watcher, &QFutureWatcher<wallpaper::Result>::finished, this, [watcher, report] {
+        watcher->deleteLater();
+        report(watcher->result());
+    });
+    watcher->setFuture(
+        QtConcurrent::run([service, cur, target] { return wallpaper::apply(*service, cur, target); }));
 }
 
 bool WindowIntegration::eventFilter(QObject* watched, QEvent* event) {
