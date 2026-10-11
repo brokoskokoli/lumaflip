@@ -7,6 +7,7 @@
 #include "LiveTextOverlay.h"
 #include "MacIntegration.h"
 #include "ViewerWindow.h"
+#include "WindowEditing.h"
 #include "core/Collection.h"
 #include "core/ContainerPolicy.h"
 #include "core/LiveText.h"
@@ -20,8 +21,10 @@
 #include <QEvent>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QTimer>
 #include <QTransform>
 #include <QWindow>
+#include <QtConcurrent/QtConcurrentRun>
 
 namespace lf {
 
@@ -45,7 +48,7 @@ WindowIntegration::WindowIntegration(ViewerWindow& window, Application& app)
             m_session->setAllowed(Settings::instance().value(key::LiveTextEnabled).toBool());
     });
     connect(m_session, &LiveTextSession::stateChanged, this, [this] {
-        m_overlay->setVisible(m_session->overlayVisible());
+        updateLiveTextOverlay();
         m_window.refreshStatus();
     });
     ImageView* view = window.view();
@@ -125,7 +128,7 @@ bool WindowIntegration::perform(Action action) {
     }
 }
 
-void WindowIntegration::currentChanged(const QString& path) {
+void WindowIntegration::installServices() {
     if (!m_servicesInstalled && m_window.windowHandle() && m_window.windowHandle()->handle()) {
         // F-MAC-07: the current image for other apps' services.
         QPointer<ViewerWindow> w(&m_window);
@@ -147,6 +150,10 @@ void WindowIntegration::currentChanged(const QString& path) {
             });
         m_servicesInstalled = true;
     }
+}
+
+void WindowIntegration::currentChanged(const QString& path) {
+    installServices();
     if (macint::quickLookVisible() && !path.isEmpty() && !isMember(path))
         macint::quickLookFollow(&m_window, path);
     updateLiveTextImage();
@@ -154,6 +161,9 @@ void WindowIntegration::currentChanged(const QString& path) {
 
 void WindowIntegration::imageShown(const QString& path) {
     Q_UNUSED(path);
+    // A window opened with several files gets its current file before its native window
+    // exists: the responder is installed once something is on screen.
+    installServices();
     updateLiveTextImage();
     m_overlay->updateGeometry();
 }
@@ -161,6 +171,22 @@ void WindowIntegration::imageShown(const QString& path) {
 // ---- Live Text ----
 
 void WindowIntegration::toggleLiveText() {
+    if (!m_session->isActive() && !LiveTextOverlay::availabilityKnown()) {
+        // The first use loads the bridge library and the Swift runtime: on a worker, the
+        // toggle continues when it is there.
+        if (m_liveTextLoading)
+            return;
+        m_liveTextLoading = true;
+        m_window.showMessage(tr("Live Text wird geladen …"), 1500);
+        QPointer<WindowIntegration> self(this);
+        QtConcurrent::run([] { return LiveTextOverlay::isAvailable(); }).then(this, [self](bool) {
+            if (!self)
+                return;
+            self->m_liveTextLoading = false;
+            self->toggleLiveText();
+        });
+        return;
+    }
     // Switching off always works (also after Live Text was disabled in the settings while
     // it was on); the checks below only apply to switching on.
     if (!m_session->isActive() && !liveTextAvailable()) {
@@ -196,12 +222,34 @@ void WindowIntegration::updateLiveTextImage() {
         return;
     }
     // What the view shows: its rotation and mirroring apply to the analysed image, so the
-    // overlay's text boxes sit on the text (the key includes them: a turn analyses again).
+    // overlay's text boxes sit on the text (the key includes them: a turn or a flip analyses
+    // again). The view rotates first and mirrors the rotated image (ZoomModel).
     QImage shown = img->image;
-    const int turns = m_window.view()->rotation();
+    ImageView* view = m_window.view();
+    const int turns = view->rotation();
     if (turns % 4 != 0)
         shown = shown.transformed(QTransform().rotate(90.0 * turns));
-    m_session->setImage(cur + QStringLiteral("|r%1").arg(turns), shown);
+    Qt::Orientations flips;
+    if (view->flipHorizontal())
+        flips |= Qt::Horizontal;
+    if (view->flipVertical())
+        flips |= Qt::Vertical;
+    if (flips)
+        shown = shown.flipped(flips);
+    m_session->setImage(cur + QStringLiteral("|r%1|h%2|v%3")
+                                  .arg(turns)
+                                  .arg(int(view->flipHorizontal()))
+                                  .arg(int(view->flipVertical())),
+                        shown);
+}
+
+void WindowIntegration::updateLiveTextOverlay() {
+    // The native view sits above everything Qt draws: only while the image view itself is
+    // visible (not under the grid or the compare view) and no crop frame takes the mouse.
+    ImageView* view = m_window.view();
+    const WindowEditing* editing = WindowEditing::of(&m_window);
+    const bool cropping = editing && editing->cropActive();
+    m_overlay->setVisible(m_session->overlayVisible() && view->isVisible() && !cropping);
 }
 
 // ---- Quick Look ----
@@ -270,8 +318,25 @@ void WindowIntegration::setWallpaper(bool allScreens) {
 }
 
 bool WindowIntegration::eventFilter(QObject* watched, QEvent* event) {
-    if (watched == m_window.view() && (event->type() == QEvent::Resize || event->type() == QEvent::Move))
-        m_overlay->updateGeometry();
+    if (watched == m_window.view()) {
+        switch (event->type()) {
+        case QEvent::Resize:
+        case QEvent::Move:
+            m_overlay->updateGeometry();
+            break;
+        case QEvent::Show:
+        case QEvent::Hide:
+            updateLiveTextOverlay(); // grid / compare cover the image view
+            break;
+        case QEvent::ChildAdded:
+        case QEvent::ChildRemoved:
+            // A crop frame (a child of the view) came or went; decided once it is set up.
+            QTimer::singleShot(0, this, &WindowIntegration::updateLiveTextOverlay);
+            break;
+        default:
+            break;
+        }
+    }
     return QObject::eventFilter(watched, event);
 }
 

@@ -296,8 +296,13 @@ private slots:
     void F_GRID_04_differenceAndBlendInCompare() {
         const QString a = path(QStringLiteral("a.png")), b = path(QStringLiteral("b.png"));
         QVERIFY(pattern(QSize(320, 240)).save(a, "PNG"));
+        // A changed block in the yellow quadrant (large enough to survive the fit scaling).
+        const QRect block(40, 30, 40, 30);
         QImage changed = pattern(QSize(320, 240));
-        changed.setPixel(10, 10, qRgb(255, 0, 255));
+        {
+            QPainter p(&changed);
+            p.fillRect(block, QColor(255, 0, 255));
+        }
         QVERIFY(changed.save(b, "PNG"));
         ViewerWindow* w = openAndWait(a);
         QVERIFY(w);
@@ -311,13 +316,39 @@ private slots:
         CompareBlendOverlay* overlay = cmp->blendOverlay();
         QVERIFY(overlay && overlay->isVisible());
         QTRY_VERIFY(overlay->recomputeCount() > 0);
-        // Identical regions are black in the difference image.
-        const QImage d = overlay->composed();
-        QCOMPARE(qRed(d.pixel(d.width() / 2, d.height() / 2)), 0);
+        QTRY_VERIFY(!overlay->isBusy());
+        // Where the composed image shows an image point (output pixels).
+        auto at = [&](QPointF imagePoint) {
+            const ImageView* v = cmp->paneView(0);
+            const QSizeF full(v->image()->fullSize.isEmpty() ? v->image()->image.size()
+                                                             : v->image()->fullSize);
+            const QPointF rel(imagePoint.x() / 320.0 * full.width(), imagePoint.y() / 240.0 * full.height());
+            const QPointF p = v->imageToWidget().map(rel) * overlay->composed().devicePixelRatio();
+            return overlay->composed().pixel(p.toPoint());
+        };
+        const QPointF same(240, 60), diff(QPointF(block.center()) + QPointF(0.5, 0.5));
+        // Identical regions are black, the changed block is not: yellow vs. magenta differ
+        // in green and blue.
+        QCOMPARE(qRed(at(same)), 0);
+        QCOMPARE(qGreen(at(same)), 0);
+        QVERIFY2(qGreen(at(diff)) > 150 && qBlue(at(diff)) > 150, qPrintable(QString::number(at(diff), 16)));
+        QCOMPARE(qRed(at(diff)), 0);
         app->menu()->refreshState();
         QVERIFY(app->menu()->command(QStringLiteral("compare:difference"))->isChecked());
-        // Blend and wipe follow the slider; zooming the first pane recomputes.
+        // Blend: halfway between yellow and magenta in the block, the plain yellow outside.
+        cmp->setBlendMode(compare::BlendMode::Blend);
+        cmp->setBlendValue(0.5);
+        QTRY_VERIFY(!overlay->isBusy() && overlay->mode() == compare::BlendMode::Blend);
+        QTRY_VERIFY(qAbs(qGreen(at(diff)) - 128) < 20);
+        QVERIFY(qAbs(qBlue(at(diff)) - 128) < 20);
+        QCOMPARE(at(QPointF(20, 20)), qRgb(255, 255, 0));
+        // Wipe: all first image at 100 %, all second image at 0 %.
         cmp->setBlendMode(compare::BlendMode::Wipe);
+        cmp->setBlendValue(1.0);
+        QTRY_VERIFY(!overlay->isBusy() && at(diff) == qRgb(255, 255, 0));
+        cmp->setBlendValue(0.0);
+        QTRY_VERIFY(!overlay->isBusy() && at(diff) == qRgb(255, 0, 255));
+        // Zooming the first pane recomputes (on the worker; the GUI only gets the result).
         cmp->setBlendValue(0.25);
         const int n = overlay->recomputeCount();
         cmp->paneView(0)->zoomBy(1.4);
@@ -325,6 +356,52 @@ private slots:
         cmp->setBlendMode(compare::BlendMode::Off);
         QVERIFY(!overlay->isVisible());
         QVERIFY(cmp->paneView(1)->isVisible());
+    }
+
+    void F_GRID_04_partnerAspectAndChoice() {
+        // A square second image is not stretched over a 4:3 first one; with three images the
+        // partner of the first is chosen in the bar.
+        const QString a = path(QStringLiteral("wide.png")), b = path(QStringLiteral("square.png")),
+                      c = path(QStringLiteral("third.png"));
+        Settings::instance().setValue(key::Background, QStringLiteral("#000000"));
+        QImage wide(400, 300, QImage::Format_RGB32);
+        wide.fill(Qt::white);
+        QVERIFY(wide.save(a, "PNG"));
+        QImage square(300, 300, QImage::Format_RGB32);
+        square.fill(Qt::white);
+        QVERIFY(square.save(b, "PNG"));
+        QImage third(400, 300, QImage::Format_RGB32);
+        third.fill(Qt::black);
+        QVERIFY(third.save(c, "PNG"));
+        ViewerWindow* w = openAndWait(a);
+        QVERIFY(w);
+        OverviewController* overview = w->extras()->overview();
+        QVERIFY(overview->compare({a, b, c}));
+        CompareView* cmp = overview->compareView();
+        QTRY_VERIFY(cmp->paneView(0)->image() && cmp->paneView(1)->image() && cmp->paneView(2)->image());
+        auto* partner = cmp->findChild<QComboBox*>(QStringLiteral("lfCompareBlendPartner"));
+        QVERIFY(partner);
+        QCOMPARE(partner->count(), 2);
+        cmp->setBlendMode(compare::BlendMode::Difference);
+        CompareBlendOverlay* overlay = cmp->blendOverlay();
+        QTRY_VERIFY(overlay->recomputeCount() > 0 && !overlay->isBusy());
+        // The square sits in the middle: the side strips (12.5 % each) differ from white.
+        const ImageView* v = cmp->paneView(0);
+        const double dpr = overlay->composed().devicePixelRatio();
+        auto at = [&](QPointF imagePoint) {
+            const QSizeF full(v->image()->fullSize.isEmpty() ? v->image()->image.size()
+                                                             : v->image()->fullSize);
+            const QPointF rel(imagePoint.x() / 400.0 * full.width(), imagePoint.y() / 300.0 * full.height());
+            return overlay->composed().pixel((v->imageToWidget().map(rel) * dpr).toPoint());
+        };
+        QCOMPARE(at(QPointF(200, 150)), qRgb(0, 0, 0)); // white on white
+        QVERIFY(qRed(at(QPointF(15, 150))) > 200);      // white over black: stretched would be 0
+        // The third image as partner: white against black everywhere.
+        cmp->setBlendPartner(2);
+        QCOMPARE(cmp->blendPartner(), 2);
+        QCOMPARE(overlay->partner(), cmp->paneView(2));
+        QTRY_VERIFY(!overlay->isBusy() && at(QPointF(200, 150)) == qRgb(255, 255, 255));
+        QVERIFY(cmp->paneCaption(0).contains(QStringLiteral("third.png")));
     }
 };
 

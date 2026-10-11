@@ -109,8 +109,11 @@ bool ZipReader::parseDirectory() {
         const QByteArray rawName = cd.mid(pos + kCentralSize, nameLen);
         m.name = (flags & 0x800) ? QString::fromUtf8(rawName) : QString::fromLatin1(rawName);
         pos = next;
-        if (flags & 0x1)
+        if (flags & 0x1) {
+            if (m_encrypted.size() < kMaxMembers)
+                m_encrypted.insert(m.name);
             continue; // encrypted: never readable
+        }
         if (!m_members.contains(m.name))
             m_order << m.name;
         m_members.insert(m.name, m);
@@ -167,8 +170,14 @@ std::optional<QByteArray> ZipReader::read(const QString& name, qint64 maxBytes) 
         fail(Tr::tr("Die Kompressionsart von „%1“ wird nicht unterstützt.").arg(name));
         return std::nullopt;
     }
+    // Only the compressed bytes that can produce `want` are read (stored deflate blocks add
+    // 5 bytes per 64 KiB at most): a directory claiming gigabytes of compressed data does not
+    // make us read them into memory.
+    qint64 needed = std::min<qint64>(qint64(m->compressedSize), want + want / 1024 + 4096);
+    if (needed < qint64(m->compressedSize))
+        needed = std::min(needed, m_size - dataOffset); // a claimed size past the end: what is there
     QByteArray in;
-    if (!readAt(dataOffset, m->compressedSize, &in)) {
+    if (!readAt(dataOffset, needed, &in)) {
         fail(damaged);
         return std::nullopt;
     }

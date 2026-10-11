@@ -94,8 +94,8 @@
         <translation>找不到：%1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>影像 (%1);;所有檔案 (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>影像、封存檔和 PDF 文件 (%1);;影像 (%2);;封存檔和 PDF 文件 (%3);;所有檔案 (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -178,6 +178,14 @@
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>封存檔中沒有影像。</translation>
     </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>封存檔受密碼保護 – 不支援加密的封存檔。</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>封存檔過大，無法從中讀取此影像。</translation>
+    </message>
 </context>
 <context>
     <name>lf::CollectionExtras</name>
@@ -248,6 +256,15 @@
         <translation>比較</translation>
     </message>
     <message>
+        <source>mit %1</source>
+        <extracomment>compare bar, 3–4 images: which image is blended with the first one</extracomment>
+        <translation>與 %1</translation>
+    </message>
+    <message>
+        <source>Bild, das mit dem ersten verglichen wird</source>
+        <translation>與第一張影像比較的影像</translation>
+    </message>
+    <message>
         <source>%1×</source>
         <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
         <translation>%1×</translation>
@@ -273,8 +290,8 @@
         <translation>劃接</translation>
     </message>
     <message>
-        <source>Die ersten beiden Bilder übereinander vergleichen</source>
-        <translation>疊加比較前兩張影像</translation>
+        <source>Das erste Bild mit einem anderen übereinander vergleichen</source>
+        <translation>將第一張影像與另一張疊加比較</translation>
     </message>
     <message>
         <source>%1 — %2</source>
@@ -3608,6 +3625,14 @@
 <context>
     <name>lf::MenuExtras</name>
     <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>單獨的 PDF 頁面無法傳遞給其他 App。</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>正在從封存檔解壓縮影像 – 請稍後再試一次。</translation>
+    </message>
+    <message>
         <source>Öffnen mit</source>
         <translation>打開檔案的應用程式</translation>
     </message>
@@ -5631,6 +5656,14 @@
         <translation>你沒有檔案夾「%1」的讀取權限，因此 Lumaflip 只會顯示所打開的檔案。你可以在 Finder 的「檔案」→「取得資訊」→「共享與權限」中更改權限。</translation>
     </message>
     <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>沒有下一個檔案夾或封存檔</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>沒有上一個檔案夾或封存檔</translation>
+    </message>
+    <message>
         <source>Kein weiterer Ordner mit Bildern</source>
         <translation>沒有下一個含影像的檔案夾</translation>
     </message>
@@ -5989,6 +6022,10 @@
     <message>
         <source>Comics: von links nach rechts lesen</source>
         <translation>漫畫：從左向右閱讀</translation>
+    </message>
+    <message>
+        <source>Live Text wird geladen …</source>
+        <translation>正在載入原況文字…</translation>
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>

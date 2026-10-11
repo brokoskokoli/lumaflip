@@ -104,6 +104,10 @@ private:
     AfPointsOverlay* m_af = nullptr;
     quint64 m_afToken = 0;
     QString m_afStatus;
+    // The file the shown AF points belong to and its stamp (modification time, size): a
+    // rewritten file is read again, a better stage of the same file is not.
+    QString m_afPath;
+    QString m_afStamp;
 };
 
 } // namespace lf

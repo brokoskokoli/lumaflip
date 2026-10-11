@@ -16,6 +16,7 @@
 #include "WindowEditing.h"
 #include "WindowExtras.h"
 #include "WindowIntegration.h"
+#include "WindowModes.h"
 #include "WindowPanels.h"
 #include "WindowTabbing.h"
 #include "core/Collection.h"
@@ -60,6 +61,13 @@
 #include <cmath>
 
 namespace lf {
+
+namespace {
+// F-VIEW-10: a native full screen animation starts within this after the request (else
+// AppKit dropped it) and ends within kFsAnimationMs (it takes about 0.7 s).
+constexpr int kFsStartMs = 800;
+constexpr int kFsAnimationMs = 3000;
+} // namespace
 
 namespace {
 
@@ -310,6 +318,14 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
         }
         setChromeVisible(false);
     });
+    m_fsGuard = new QTimer(this);
+    m_fsGuard->setSingleShot(true);
+    connect(m_fsGuard, &QTimer::timeout, this, [this] {
+        // No start (AppKit dropped the request, e.g. while another window's space animation
+        // runs) or no end reported: go on from what the native window is.
+        m_fsTransition = false;
+        settleFullScreen(true);
+    });
     m_resizeTimer = new QTimer(this);
     m_resizeTimer->setSingleShot(true);
     m_resizeTimer->setInterval(kResizeRequestMs);
@@ -411,6 +427,12 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
                 m_shownFailed = true;
                 updateTitle();
             });
+    // F-OPEN-10: the archive/PDF was rewritten: what was decoded from the old one goes.
+    connect(m_collection, &Collection::containerContentChanged, this, [this] {
+        const QVector<FileEntry> entries = m_collection->entries();
+        for (const FileEntry& e : entries)
+            onFileContentChanged(e.path);
+    });
 
     m_app.registerWindow(this);
     updateTitle();
@@ -463,6 +485,9 @@ void ViewerWindow::setVisible(bool visible) {
     mediaVisibilityChanged(); // F-FMT-03: no playback in hidden windows
     if (visible && m_extras)
         m_extras->windowStateChanged(); // F-VIEW-12/13 on the native window
+    if (visible)                        // F-VIEW-10: also transitions the user starts (green button, gesture)
+        watchFullScreenTransitions(
+            this, [this](bool entering, bool finished) { onFullScreenTransition(entering, finished); });
     // After the native window and the GPU surface exist (show), before the event loop
     // presents the first frame: the first frame already has the status bar.
     if (visible) {
@@ -564,19 +589,22 @@ void ViewerWindow::openContainer(const QString& containerPath, const QString& me
 }
 
 void ViewerWindow::openFiles(const QStringList& paths, bool keepAsFileSet) {
-    // F-OPEN-10: archives/PDFs cannot be part of a file set; a single one opens like a folder,
-    // next to images only the images open.
+    // F-OPEN-10: archives/PDFs cannot be part of a file set. Without other files the first
+    // opens here like a folder; every other one gets a window of its own (never dropped).
     QStringList files;
     QStringList containers;
     for (const QString& p : paths)
         (vpath::isContainerPath(p) ? containers : files) << p;
     if (files.isEmpty() && !containers.isEmpty()) {
-        openFile(containers.first());
+        openFile(containers.takeFirst());
+        m_app.openContainersInOwnWindows(containers);
         return;
     }
     beginOpen();
     prepareOpen();
     m_collection->openFiles(files, keepAsFileSet);
+    if (!containers.isEmpty())
+        m_app.openContainersInOwnWindows(containers);
 }
 
 void ViewerWindow::openFolder(const QString& folderPath, bool selectLast) {
@@ -1209,8 +1237,12 @@ void ViewerWindow::hideAccessHint() {
 }
 
 void ViewerWindow::updateFolderWatch() {
-    const QString folder =
-        m_collection->isFolderCollection() && !m_closed ? m_collection->folderPath() : QString();
+    // F-OPEN-10: an archive/PDF is watched through its folder (Collection::folderContentsChanged).
+    const QString container = m_collection->containerPath();
+    const QString folder = m_closed                             ? QString()
+                           : !container.isEmpty()               ? QFileInfo(container).absolutePath()
+                           : m_collection->isFolderCollection() ? m_collection->folderPath()
+                                                                : QString();
     const bool tree = !folder.isEmpty() && m_collection->includesSubfolders(); // F-OPEN-08
     if (folder == m_watchedFolder && tree == m_watchedTree)
         return;
@@ -1235,39 +1267,53 @@ void ViewerWindow::navigate(int delta) {
     if (m_collection->jump(delta, wrapMode()))
         return;
     if (Settings::instance().value(key::WrapMode).toString() == QLatin1String("nextFolder") &&
-        m_collection->isFolderCollection())
+        (m_collection->isFolderCollection() || !m_collection->containerPath().isEmpty()))
         switchFolder(m_direction); // F-NAV-03 / F-IN-16 "Zum nächsten Ordner"
     else
         showEdgeHint(delta > 0);
 }
 
 void ViewerWindow::switchFolder(int direction) {
-    if (!m_collection->isFolderCollection() || m_collection->folderPath().isEmpty() || m_folderSwitchPending)
+    // F-OPEN-10: inside an archive or PDF the siblings are folders with images and other
+    // archives/PDFs next to it.
+    const QString container = m_collection->containerPath();
+    const bool inContainer = !container.isEmpty();
+    if (m_folderSwitchPending ||
+        (!inContainer && (!m_collection->isFolderCollection() || m_collection->folderPath().isEmpty())))
         return;
     // Sibling folders are listed and checked for images on a worker thread.
     m_folderSwitchPending = true;
     const quint64 token = ++m_folderSwitchToken;
-    const QString folder = m_collection->folderPath();
+    const QString from = inContainer ? container : m_collection->folderPath();
     auto* w = new QFutureWatcher<QString>(this);
-    connect(w, &QFutureWatcher<QString>::finished, this, [this, w, token, direction] {
+    connect(w, &QFutureWatcher<QString>::finished, this, [this, w, token, direction, inContainer] {
         const QString next = w->result();
         w->deleteLater();
         m_folderSwitchPending = false;
         if (token != m_folderSwitchToken)
             return;
         if (next.isEmpty()) {
-            showMessage(direction > 0 ? tr("Kein weiterer Ordner mit Bildern")
-                                      : tr("Kein vorheriger Ordner mit Bildern"),
-                        1200);
+            if (inContainer)
+                showMessage(direction > 0 ? tr("Kein weiterer Ordner und kein weiteres Archiv")
+                                          : tr("Kein vorheriger Ordner und kein vorheriges Archiv"),
+                            1200);
+            else
+                showMessage(direction > 0 ? tr("Kein weiterer Ordner mit Bildern")
+                                          : tr("Kein vorheriger Ordner mit Bildern"),
+                            1200);
             return;
         }
         m_direction = direction;
-        openFolder(next, direction < 0); // backwards: continue with the last image
-        showMessage(QDir(next).dirName(), 1200);
+        if (vpath::isContainerPath(next))
+            openContainer(next, {});
+        else
+            openFolder(next, direction < 0); // backwards: continue with the last image
+        showMessage(QFileInfo(next).fileName(), 1200);
     });
-    w->setFuture(QtConcurrent::run([folder, direction] {
+    w->setFuture(QtConcurrent::run([from, direction, inContainer] {
         auto collator = createNameCollator();
-        return collection::siblingImageFolder(folder, direction, collator.get());
+        return inContainer ? collection::siblingFolderOrContainer(from, direction, collator.get())
+                           : collection::siblingImageFolder(from, direction, collator.get());
     }));
 }
 
@@ -1419,13 +1465,13 @@ bool ViewerWindow::perform(Action a, QPointF pos) {
         toggleFullScreen();
         return true;
     case Action::ExitModeOrNothing:
-        if (!isFullScreen())
+        if (!fullScreenTarget())
             return false;
-        toggleFullScreen();
+        setFullScreen(false);
         return true;
     case Action::ExitModeOrCloseWindow:
-        if (isFullScreen())
-            toggleFullScreen();
+        if (fullScreenTarget())
+            setFullScreen(false);
         else
             close();
         return true;
@@ -1544,13 +1590,85 @@ void ViewerWindow::setSortAscending(bool ascending) {
 }
 
 void ViewerWindow::toggleFullScreen() {
-    if (isFullScreen()) {
-        showNormal();
-        setChromeVisible(true);
-    } else {
+    setFullScreen(!fullScreenTarget());
+}
+
+void ViewerWindow::setFullScreen(bool on) {
+    m_fsTarget = on;
+    if (m_fsTransition) {
+        m_app.windowChanged(this); // menu check mark; applied when the animation ended
+        return;
+    }
+    applyFullScreen();
+}
+
+void ViewerWindow::applyFullScreen() {
+    if (!m_fsTarget)
+        return;
+    const bool on = *m_fsTarget;
+    if (on == isFullScreen()) {
+        settleFullScreen();
+        return;
+    }
+    // macOS: until the native transition reports its end, further requests wait.
+    if (isVisible() && watchFullScreenTransitions(this, [this](bool entering, bool finished) {
+            onFullScreenTransition(entering, finished);
+        })) {
+        m_fsTransition = true;
+        m_fsGuard->start(kFsStartMs); // the animation must start soon, else it was dropped
+    }
+    if (on) {
         showFullScreen();
         setChromeVisible(false); // F-VIEW-10: pure image, chrome appears at the edge
+    } else {
+        showNormal();
+        setChromeVisible(true);
     }
+    if (!m_fsTransition)
+        settleFullScreen();
+    m_app.windowChanged(this);
+}
+
+void ViewerWindow::onFullScreenTransition(bool, bool finished) {
+    if (!finished) {
+        m_fsTransition = true; // also one the user started (green button, gesture)
+        m_fsGuard->start(kFsAnimationMs);
+        return;
+    }
+    m_fsTransition = false;
+    m_fsGuard->stop();
+    // After Qt has handled the same notification (its window state follows the native one).
+    QTimer::singleShot(0, this, [this] {
+        if (m_extras)
+            m_extras->windowStateChanged(); // F-VIEW-12/13: skipped during the animation
+        settleFullScreen();
+    });
+}
+
+void ViewerWindow::settleFullScreen(bool force) {
+    if (m_fsTransition || !m_fsTarget)
+        return;
+    const NativeWindowState native = nativeWindowState(this);
+    const bool actual = native.valid ? native.fullScreen : isFullScreen();
+    if (isFullScreen() != actual) {
+        if (!force) {
+            // Qt has not caught up with the native window yet: its WindowStateChange
+            // follows; if it never comes, the guard forces it.
+            m_fsGuard->start(kFsStartMs);
+            return;
+        }
+        // Qt's state says what was asked, the native window never got there (request
+        // dropped): Qt's state back to the native one - no native change, it is there
+        // already - so that the request below really reaches AppKit.
+        setWindowState(actual ? (windowState() | Qt::WindowFullScreen)
+                              : (windowState() & ~Qt::WindowFullScreen));
+    }
+    if (actual != *m_fsTarget) {
+        applyFullScreen(); // requested during the animation (or dropped by AppKit): now
+        return;
+    }
+    m_fsTarget.reset();
+    setChromeVisible(!actual);
     m_app.windowChanged(this);
 }
 
@@ -1813,9 +1931,11 @@ void ViewerWindow::changeEvent(QEvent* event) {
             updatePrefetch();
     } else if (event->type() == QEvent::WindowStateChange) {
         mediaVisibilityChanged(); // minimized: animation pauses
-        if (m_extras)
+        if (m_extras && !m_fsTransition)
             m_extras->windowStateChanged(); // F-VIEW-12/13 again after full screen
         setChromeVisible(!isFullScreen());
+        if (m_fsTarget && !m_fsTransition)
+            QTimer::singleShot(0, this, [this] { settleFullScreen(); }); // F-VIEW-10
         if (!currentPath().isEmpty())
             updatePrefetch(); // minimized windows keep only the current image (F-WIN-09)
         m_app.windowChanged(this);

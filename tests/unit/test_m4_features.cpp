@@ -117,9 +117,38 @@ TEST(LiveText, F_MAC_06_AnalysisOnlyOnDemand) {
     s.analysisFinished(fake.started.last(), true, QString());
     EXPECT_EQ(s.state(), LiveTextSession::State::Ready);
     EXPECT_TRUE(s.overlayVisible());
-    // A better stage of the same file does not start another analysis.
-    s.setImage(QStringLiteral("/a.jpg"), image(80, 60));
+    // Another stage of the same file without more detail does not start another analysis.
+    s.setImage(QStringLiteral("/a.jpg"), image(44, 33));
     EXPECT_EQ(fake.started.size(), 1);
+    EXPECT_TRUE(s.overlayVisible());
+}
+
+TEST(LiveText, F_MAC_06_BetterStageIsAnalysedAgain) {
+    FakeAnalyzer fake;
+    LiveTextSession s(&fake);
+    s.setActive(true);
+    s.setImage(QStringLiteral("/a.jpg"), image()); // the small preview stage
+    ASSERT_EQ(fake.started.size(), 1);
+    const quint64 preview = fake.started.last();
+    // The screen stage arrives while the preview is analysed: cancelled, analysed again.
+    s.setImage(QStringLiteral("/a.jpg"), image(80, 60));
+    ASSERT_EQ(fake.started.size(), 2);
+    EXPECT_GE(fake.cancels, 1);
+    EXPECT_EQ(fake.lastSize, QSize(80, 60));
+    s.analysisFinished(preview, true, QString()); // late: ignored
+    EXPECT_EQ(s.state(), LiveTextSession::State::Analyzing);
+    s.analysisFinished(fake.started.last(), true, QString());
+    EXPECT_EQ(s.state(), LiveTextSession::State::Ready);
+    // After a finished analysis too.
+    s.setImage(QStringLiteral("/a.jpg"), image(400, 300));
+    EXPECT_EQ(fake.started.size(), 3);
+    // Beyond what the analysis uses: no further run.
+    FakeAnalyzer big;
+    LiveTextSession t(&big);
+    t.setActive(true);
+    t.setImage(QStringLiteral("/b.jpg"), image(LiveTextSession::kMaxAnalysisSide, 100));
+    t.setImage(QStringLiteral("/b.jpg"), image(2 * LiveTextSession::kMaxAnalysisSide, 200));
+    EXPECT_EQ(big.started.size(), 1);
 }
 
 TEST(LiveText, F_MAC_06_FlippingCancelsAndIgnoresLateResults) {

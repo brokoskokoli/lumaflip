@@ -5,6 +5,7 @@
 
 #include "ImageView.h"
 #include "NativeView_mac.h"
+#include "core/LiveText.h"
 
 #include <QImage>
 #include <QPointer>
@@ -14,6 +15,8 @@
 #import <AppKit/AppKit.h>
 
 #include <dlfcn.h>
+
+#include <atomic>
 
 #if LF_HAVE_LIVETEXT
 // Interface of the @objc class in LiveTextBridge.swift. The class lives in
@@ -33,28 +36,39 @@ namespace lf {
 
 namespace {
 // Live Text needs no more than this; larger images are scaled down for the analysis.
-constexpr int kMaxAnalysisSide = 4096;
+constexpr int kMaxAnalysisSide = LiveTextSession::kMaxAnalysisSide;
+
+std::atomic<bool> g_availabilityKnown{false};
 
 #if LF_HAVE_LIVETEXT
-// The bridge class from libLumaflipLiveText.dylib: Contents/Frameworks in the app bundle,
-// the build tree for unbundled binaries (tests). Nil if the library cannot be loaded.
+// The bridge class from libLumaflipLiveText.dylib: Contents/Frameworks in the app bundle.
+// Only an unbundled binary (tests, a plain build) falls back to the build tree: a release
+// app never loads code from an absolute path outside of itself. Nil if the library cannot be
+// loaded. Thread-safe (static initialization).
 Class bridgeClass() {
     static Class cls = [] {
         Class found = nil;
         @autoreleasepool {
             NSMutableArray<NSString*>* candidates = [NSMutableArray array];
-            if (NSString* fw = NSBundle.mainBundle.privateFrameworksPath)
+            const bool bundled = [NSBundle.mainBundle.bundlePath.pathExtension isEqualToString:@"app"];
+            NSString* fw = NSBundle.mainBundle.privateFrameworksPath;
+            if (bundled && fw)
                 [candidates addObject:[fw stringByAppendingPathComponent:@"libLumaflipLiveText.dylib"]];
-            [candidates addObject:@LF_LIVETEXT_BUILD_DYLIB];
+            if (!bundled)
+                [candidates addObject:@LF_LIVETEXT_BUILD_DYLIB];
             for (NSString* path in candidates) {
                 if (![NSFileManager.defaultManager fileExistsAtPath:path])
                     continue;
                 if (dlopen(path.fileSystemRepresentation, RTLD_LAZY | RTLD_LOCAL)) {
                     found = NSClassFromString(@"LFLiveTextBridge");
+                    if (!found)
+                        NSLog(@"Live Text: %@ loaded, but LFLiveTextBridge is missing", path);
                     break;
                 }
                 NSLog(@"Live Text: %s", dlerror());
             }
+            if (!found)
+                NSLog(@"Live Text: bridge library not available");
         }
         return found;
     }();
@@ -86,9 +100,19 @@ LiveTextOverlay::~LiveTextOverlay() {
 bool LiveTextOverlay::isAvailable() {
 #if LF_HAVE_LIVETEXT
     Class cls = bridgeClass();
-    return cls && [cls isSupported];
+    const bool ok = cls && [cls isSupported];
 #else
-    return false;
+    const bool ok = false;
+#endif
+    g_availabilityKnown = true;
+    return ok;
+}
+
+bool LiveTextOverlay::availabilityKnown() {
+#if LF_HAVE_LIVETEXT
+    return g_availabilityKnown;
+#else
+    return true;
 #endif
 }
 

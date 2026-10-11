@@ -94,8 +94,8 @@
         <translation>Nie znaleziono: %1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>Obrazy (%1);;Wszystkie pliki (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>Obrazy, archiwa i dokumenty PDF (%1);;Obrazy (%2);;Archiwa i dokumenty PDF (%3);;Wszystkie pliki (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -178,6 +178,14 @@
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>Archiwum nie zawiera obrazów.</translation>
     </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>Archiwum jest chronione hasłem – zaszyfrowane archiwa nie są obsługiwane.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>Archiwum jest zbyt duże, aby odczytać z niego ten obraz.</translation>
+    </message>
 </context>
 <context>
     <name>lf::CollectionExtras</name>
@@ -252,6 +260,15 @@
         <translation>Porównanie</translation>
     </message>
     <message>
+        <source>mit %1</source>
+        <extracomment>compare bar, 3–4 images: which image is blended with the first one</extracomment>
+        <translation>z %1</translation>
+    </message>
+    <message>
+        <source>Bild, das mit dem ersten verglichen wird</source>
+        <translation>Obraz porównywany z pierwszym</translation>
+    </message>
+    <message>
         <source>%1×</source>
         <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
         <translation>%1×</translation>
@@ -277,8 +294,8 @@
         <translation>Kurtyna</translation>
     </message>
     <message>
-        <source>Die ersten beiden Bilder übereinander vergleichen</source>
-        <translation>Porównaj nałożone na siebie dwa pierwsze obrazy</translation>
+        <source>Das erste Bild mit einem anderen übereinander vergleichen</source>
+        <translation>Nałóż pierwszy obraz na inny, aby je porównać</translation>
     </message>
     <message>
         <source>%1 — %2</source>
@@ -3632,6 +3649,14 @@
 <context>
     <name>lf::MenuExtras</name>
     <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>Pojedynczych stron PDF nie można przekazać do innych aplikacji.</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>Obraz jest wypakowywany z archiwum – spróbuj ponownie za chwilę.</translation>
+    </message>
+    <message>
         <source>Öffnen mit</source>
         <translation>Otwórz za pomocą</translation>
     </message>
@@ -5677,6 +5702,14 @@
         <translation>Nie masz uprawnień do odczytu folderu „%1”, dlatego Lumaflip pokazuje tylko otwarty plik. Uprawnienia można zmienić w Finderze: Plik → Pokaż informacje → „Udostępnianie i uprawnienia”.</translation>
     </message>
     <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>Brak następnego folderu lub archiwum</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>Brak poprzedniego folderu lub archiwum</translation>
+    </message>
+    <message>
         <source>Kein weiterer Ordner mit Bildern</source>
         <translation>Brak kolejnego folderu z obrazami</translation>
     </message>
@@ -6047,6 +6080,10 @@
     <message>
         <source>Comics: von links nach rechts lesen</source>
         <translation>Komiksy: czytanie od lewej do prawej</translation>
+    </message>
+    <message>
+        <source>Live Text wird geladen …</source>
+        <translation>Wczytywanie funkcji Tekst na żywo…</translation>
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>

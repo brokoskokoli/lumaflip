@@ -94,8 +94,8 @@
         <translation>見つかりません: %1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>画像 (%1);;すべてのファイル (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>画像、アーカイブ、PDF書類 (%1);;画像 (%2);;アーカイブとPDF書類 (%3);;すべてのファイル (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -178,6 +178,14 @@
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>アーカイブにイメージがありません。</translation>
     </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>アーカイブはパスワードで保護されています – 暗号化されたアーカイブには対応していません。</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>アーカイブが大きすぎるため、この画像を読み込めません。</translation>
+    </message>
 </context>
 <context>
     <name>lf::CollectionExtras</name>
@@ -248,6 +256,15 @@
         <translation>比較</translation>
     </message>
     <message>
+        <source>mit %1</source>
+        <extracomment>compare bar, 3–4 images: which image is blended with the first one</extracomment>
+        <translation>%1 と比較</translation>
+    </message>
+    <message>
+        <source>Bild, das mit dem ersten verglichen wird</source>
+        <translation>最初の画像と比較する画像</translation>
+    </message>
+    <message>
         <source>%1×</source>
         <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
         <translation>%1×</translation>
@@ -273,8 +290,8 @@
         <translation>ワイプ</translation>
     </message>
     <message>
-        <source>Die ersten beiden Bilder übereinander vergleichen</source>
-        <translation>最初の 2 枚の画像を重ねて比較</translation>
+        <source>Das erste Bild mit einem anderen übereinander vergleichen</source>
+        <translation>最初の画像を別の画像に重ねて比較</translation>
     </message>
     <message>
         <source>%1 — %2</source>
@@ -3608,6 +3625,14 @@
 <context>
     <name>lf::MenuExtras</name>
     <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>PDFの個々のページはほかのアプリに渡せません。</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>画像をアーカイブから展開しています – 少し待ってからもう一度お試しください。</translation>
+    </message>
+    <message>
         <source>Öffnen mit</source>
         <translation>このアプリケーションで開く</translation>
     </message>
@@ -5631,6 +5656,14 @@
         <translation>フォルダ「%1」の読み出し権限がないため、Lumaflipは開いたファイルのみを表示しています。アクセス権はFinderの「ファイル」→「情報を見る」→「共有とアクセス権」で変更できます。</translation>
     </message>
     <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>次のフォルダまたはアーカイブはありません</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>前のフォルダまたはアーカイブはありません</translation>
+    </message>
+    <message>
         <source>Kein weiterer Ordner mit Bildern</source>
         <translation>画像のある次のフォルダはありません</translation>
     </message>
@@ -5989,6 +6022,10 @@
     <message>
         <source>Comics: von links nach rechts lesen</source>
         <translation>コミック: 左から右に読む</translation>
+    </message>
+    <message>
+        <source>Live Text wird geladen …</source>
+        <translation>テキスト認識表示を読み込み中…</translation>
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>

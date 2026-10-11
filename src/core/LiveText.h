@@ -5,7 +5,9 @@
 // lifting via VisionKit - the request logic, independent of VisionKit (tests use a fake).
 //
 // Analysis runs only on demand: while the user has Live Text switched on for a window, for
-// the image shown (once per file, not per pipeline stage), never for prefetched images.
+// the image shown, never for prefetched images. Once per file - again only when a better
+// stage of it brings noticeably more pixels (the first stage is often a small preview, too
+// coarse for small text), up to kMaxAnalysisSide.
 // Flipping to another image, switching it off, the setting key::LiveTextEnabled going off or
 // a blocking state (setBlocked(), e.g. the EDR surface, see app/LiveTextOverlay.h) cancel
 // the running analysis; a late result of a cancelled analysis is ignored (token).
@@ -38,6 +40,9 @@ public:
         NoResults, // nothing found in the image
         Failed,
     };
+
+    // Live Text needs no more than this (long side); larger images are scaled down.
+    static constexpr int kMaxAnalysisSide = 4096;
 
     explicit LiveTextSession(ImageAnalysisBackend* backend, QObject* parent = nullptr); // non-owning
     void setAllowed(bool allowed);          // key::LiveTextEnabled
@@ -75,6 +80,7 @@ private:
     QString m_analyzedPath; // path of the running/finished analysis
     quint64 m_token = 0;
     bool m_running = false;
+    bool m_reanalyze = false; // a better stage of the analysed file arrived
     State m_state = State::Off;
     QString m_error;
 };

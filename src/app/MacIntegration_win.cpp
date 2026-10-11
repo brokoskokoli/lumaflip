@@ -37,7 +37,9 @@ void quickLookClose() {}
 
 void installServiceResponder(QWidget*, ServiceContext, ServiceImage) {}
 
-void registerServicesProvider(std::function<void(const QStringList& files)>) {}
+void setServicesProvider(std::function<void(const QStringList& files)>) {}
+
+void registerServicesSendTypes() {}
 
 namespace {
 

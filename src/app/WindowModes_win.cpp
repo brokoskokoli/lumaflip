@@ -63,7 +63,12 @@ NativeWindowState nativeWindowState(QWidget* window) {
     s.fullSizeContent = captionless;
     s.titlebarTransparent = captionless;
     s.titleHidden = captionless;
+    s.fullScreen = window->window()->isFullScreen();
     return s;
+}
+
+bool watchFullScreenTransitions(QWidget*, std::function<void(bool, bool)>) {
+    return false; // not animated: Qt's state is the window's state
 }
 
 } // namespace lf

@@ -422,7 +422,7 @@ void MainMenu::refreshState() {
         if (QAction* z = command("zoom:" + zoomModeId(w->view()->zoomMode())))
             z->setChecked(w->view()->zoomMode() != ZoomMode::Custom);
         action(Action::ToggleZoomLock)->setChecked(w->view()->zoomLocked());
-        action(Action::ToggleFullScreen)->setChecked(w->isFullScreen());
+        action(Action::ToggleFullScreen)->setChecked(w->fullScreenTarget()); // F-VIEW-10
         const Collection* c = w->collection();
         const SortSpec spec = c->sortSpec();
         // What the window shows: a folder's remembered choice may differ from the window's mode.

@@ -94,8 +94,8 @@
         <translation>Non trovato: %1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>Immagini (%1);;Tutti i file (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>Immagini, archivi e documenti PDF (%1);;Immagini (%2);;Archivi e documenti PDF (%3);;Tutti i file (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -178,6 +178,14 @@
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>L’archivio non contiene immagini.</translation>
     </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>L’archivio è protetto da password: gli archivi cifrati non sono supportati.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>L’archivio è troppo grande per leggerne questa immagine.</translation>
+    </message>
 </context>
 <context>
     <name>lf::CollectionExtras</name>
@@ -250,6 +258,15 @@
         <translation>Confronto</translation>
     </message>
     <message>
+        <source>mit %1</source>
+        <extracomment>compare bar, 3–4 images: which image is blended with the first one</extracomment>
+        <translation>con %1</translation>
+    </message>
+    <message>
+        <source>Bild, das mit dem ersten verglichen wird</source>
+        <translation>Immagine confrontata con la prima</translation>
+    </message>
+    <message>
         <source>%1×</source>
         <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
         <translation>%1×</translation>
@@ -275,8 +292,8 @@
         <translation>Tendina</translation>
     </message>
     <message>
-        <source>Die ersten beiden Bilder übereinander vergleichen</source>
-        <translation>Confronta le prime due immagini sovrapposte</translation>
+        <source>Das erste Bild mit einem anderen übereinander vergleichen</source>
+        <translation>Sovrapporre la prima immagine a un’altra per confrontarle</translation>
     </message>
     <message>
         <source>%1 — %2</source>
@@ -3620,6 +3637,14 @@
 <context>
     <name>lf::MenuExtras</name>
     <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>Le singole pagine PDF non possono essere passate ad altre app.</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>L’immagine viene estratta dall’archivio: riprova tra un momento.</translation>
+    </message>
+    <message>
         <source>Öffnen mit</source>
         <translation>Apri con</translation>
     </message>
@@ -5654,6 +5679,14 @@
         <translation>Non disponi dei permessi di lettura per la cartella “%1”, quindi Lumaflip mostra solo il file aperto. Puoi modificare i permessi nel Finder in Archivio → Ottieni informazioni → “Condivisione e permessi”.</translation>
     </message>
     <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>Nessuna cartella o archivio successivo</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>Nessuna cartella o archivio precedente</translation>
+    </message>
+    <message>
         <source>Kein weiterer Ordner mit Bildern</source>
         <translation>Nessun’altra cartella con immagini</translation>
     </message>
@@ -6018,6 +6051,10 @@
     <message>
         <source>Comics: von links nach rechts lesen</source>
         <translation>Fumetti: lettura da sinistra a destra</translation>
+    </message>
+    <message>
+        <source>Live Text wird geladen …</source>
+        <translation>Caricamento di Testo attivo…</translation>
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>

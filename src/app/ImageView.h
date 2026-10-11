@@ -74,6 +74,8 @@ public:
     void setRotation(int quarterTurnsClockwise); // view-only rotation (F-EDIT-01)
     int rotation() const;
     void setFlip(bool horizontal, bool vertical);
+    bool flipHorizontal() const; // applied after the rotation (display space)
+    bool flipVertical() const;
 
     void setBackground(const QString& setting); // see Settings key::Background
     QColor backgroundColor() const;             // effective base color ("system" resolved)

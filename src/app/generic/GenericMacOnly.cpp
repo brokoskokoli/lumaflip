@@ -27,6 +27,10 @@ bool LiveTextOverlay::isAvailable() {
     return false;
 }
 
+bool LiveTextOverlay::availabilityKnown() {
+    return true;
+}
+
 bool LiveTextOverlay::isSupported() const {
     return false;
 }
@@ -84,7 +88,9 @@ void quickLookClose() {}
 
 void installServiceResponder(QWidget*, ServiceContext, ServiceImage) {}
 
-void registerServicesProvider(std::function<void(const QStringList&)>) {}
+void setServicesProvider(std::function<void(const QStringList&)>) {}
+
+void registerServicesSendTypes() {}
 
 } // namespace macint
 

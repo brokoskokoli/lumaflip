@@ -94,8 +94,8 @@
         <translation>Ei löytynyt: %1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>Kuvat (%1);;Kaikki tiedostot (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>Kuvat, arkistot ja PDF-dokumentit (%1);;Kuvat (%2);;Arkistot ja PDF-dokumentit (%3);;Kaikki tiedostot (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -178,6 +178,14 @@
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>Arkistossa ei ole kuvia.</translation>
     </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>Arkisto on suojattu salasanalla – salattuja arkistoja ei tueta.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>Arkisto on liian suuri, jotta tämän kuvan voisi lukea siitä.</translation>
+    </message>
 </context>
 <context>
     <name>lf::CollectionExtras</name>
@@ -250,6 +258,15 @@
         <translation>Vertailu</translation>
     </message>
     <message>
+        <source>mit %1</source>
+        <extracomment>compare bar, 3–4 images: which image is blended with the first one</extracomment>
+        <translation>kanssa: %1</translation>
+    </message>
+    <message>
+        <source>Bild, das mit dem ersten verglichen wird</source>
+        <translation>Kuva, jota verrataan ensimmäiseen</translation>
+    </message>
+    <message>
         <source>%1×</source>
         <extracomment>amplification of the difference image, e.g. &quot;4×&quot;</extracomment>
         <translation>%1×</translation>
@@ -275,8 +292,8 @@
         <translation>Pyyhkäisy</translation>
     </message>
     <message>
-        <source>Die ersten beiden Bilder übereinander vergleichen</source>
-        <translation>Vertaa kahta ensimmäistä kuvaa päällekkäin</translation>
+        <source>Das erste Bild mit einem anderen übereinander vergleichen</source>
+        <translation>Vertaa ensimmäistä kuvaa toiseen päällekkäin</translation>
     </message>
     <message>
         <source>%1 — %2</source>
@@ -3620,6 +3637,14 @@
 <context>
     <name>lf::MenuExtras</name>
     <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>Yksittäisiä PDF-sivuja ei voi välittää muille apeille.</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>Kuvaa puretaan arkistosta – yritä hetken kuluttua uudelleen.</translation>
+    </message>
+    <message>
         <source>Öffnen mit</source>
         <translation>Avaa sovelluksella</translation>
     </message>
@@ -5654,6 +5679,14 @@
         <translation>Sinulla ei ole lukuoikeutta kansioon ”%1”, joten Lumaflip näyttää vain avatun tiedoston. Käyttöoikeuksia voi muuttaa Finderissa kohdassa Arkisto → Näytä tiedot → ”Jakaminen ja oikeudet”.</translation>
     </message>
     <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>Ei seuraavaa kansiota tai arkistoa</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>Ei edellistä kansiota tai arkistoa</translation>
+    </message>
+    <message>
         <source>Kein weiterer Ordner mit Bildern</source>
         <translation>Ei seuraavaa kansiota, jossa on kuvia</translation>
     </message>
@@ -6018,6 +6051,10 @@
     <message>
         <source>Comics: von links nach rechts lesen</source>
         <translation>Sarjakuvat: luetaan vasemmalta oikealle</translation>
+    </message>
+    <message>
+        <source>Live Text wird geladen …</source>
+        <translation>Ladataan Live Textiä…</translation>
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
