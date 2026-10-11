@@ -68,7 +68,7 @@
     </message>
     <message>
         <source>&lt;p&gt;Schneller Bildbetrachter für macOS: Doppelklick öffnet den ganzen Ordner – in derselben Reihenfolge wie im Finder.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli und Mitwirkende&lt;/p&gt;&lt;p&gt;Lumaflip ist freie Software: Du kannst sie unter den Bedingungen der &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; Version 3 oder (nach deiner Wahl) jeder späteren Version weitergeben und verändern. Lumaflip wird ohne jede Gewährleistung bereitgestellt.&lt;/p&gt;&lt;p&gt;Quellcode: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Verwendet Qt %3 (LGPLv3).&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Fast image viewer for macOS: a double-click opens the whole folder — in the same order as in the Finder.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli and contributors&lt;/p&gt;&lt;p&gt;Lumaflip is free software: you can redistribute and modify it under the terms of the &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; version 3 or (at your option) any later version. Lumaflip is provided without any warranty.&lt;/p&gt;&lt;p&gt;Source code: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Uses Qt %3 (LGPLv3).&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Fast image viewer for macOS: a double-click opens the whole folder—in the same order as in the Finder.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli and contributors&lt;/p&gt;&lt;p&gt;Lumaflip is free software: you can redistribute and modify it under the terms of the &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; version 3 or (at your option) any later version. Lumaflip is provided without any warranty.&lt;/p&gt;&lt;p&gt;Source code: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Uses Qt %3 (LGPLv3).&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Lizenzen von Drittanbietern …</source>
@@ -83,7 +83,7 @@
     </message>
     <message>
         <source>Dateivorgänge werden abgeschlossen, dann wird Lumaflip beendet …</source>
-        <translation>Finishing file operations, then Lumaflip will quit…</translation>
+        <translation>Finishing file operations before Lumaflip quits…</translation>
     </message>
     <message>
         <source>Dateivorgang läuft …</source>
@@ -135,7 +135,7 @@
     </message>
     <message>
         <source>Vollbild oder Modus beenden</source>
-        <translation>Exit full screen / mode</translation>
+        <translation>Exit full screen or mode</translation>
     </message>
     <message>
         <source>Esc</source>
@@ -164,7 +164,7 @@
     </message>
     <message>
         <source>Dieses Archivformat wird nicht unterstützt.</source>
-        <translation>This archive format is not supported.</translation>
+        <translation>This archive format isn’t supported.</translation>
     </message>
     <message>
         <source>Das Bild im Archiv ist zu groß.</source>
@@ -180,11 +180,11 @@
     </message>
     <message>
         <source>Das Archiv ist passwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
-        <translation>The archive is password-protected – encrypted archives are not supported.</translation>
+        <translation>The archive is password-protected—encrypted archives aren’t supported.</translation>
     </message>
     <message>
         <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
-        <translation>The archive is too large to read this image from it.</translation>
+        <translation>The archive is too large to read this image.</translation>
     </message>
 </context>
 <context>
@@ -201,8 +201,8 @@
         <source>Unterordner: Nur die ersten %n Bilder werden angezeigt – öffne einen kleineren Ordner.</source>
         <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
         <translation>
-            <numerusform>Subfolders: only the first %n image is shown – please open a smaller folder.</numerusform>
-            <numerusform>Subfolders: only the first %n images are shown – please open a smaller folder.</numerusform>
+            <numerusform>Subfolders: only the first %n image is shown—open a smaller folder.</numerusform>
+            <numerusform>Subfolders: only the first %n images are shown—open a smaller folder.</numerusform>
         </translation>
     </message>
     <message>
@@ -219,7 +219,7 @@
     </message>
     <message>
         <source>Dieses Bild ist kein RAW+JPEG-Paar</source>
-        <translation>This image is not a RAW+JPEG pair</translation>
+        <translation>This image isn’t a RAW+JPEG pair</translation>
     </message>
     <message>
         <source>RAW+JPEG-Paare sind ausgeschaltet (Einstellungen → Formate)</source>
@@ -248,7 +248,7 @@
     </message>
     <message>
         <source>Zweite Datei: %1 – „RAW anzeigen“ wechselt</source>
-        <translation>Second file: %1 – “Show RAW” switches</translation>
+        <translation>Second file: %1 — “Show RAW” switches to it</translation>
     </message>
 </context>
 <context>
@@ -293,7 +293,7 @@
     </message>
     <message>
         <source>Das erste Bild mit einem anderen übereinander vergleichen</source>
-        <translation>Overlay the first image with another one to compare</translation>
+        <translation>Compare the first image with another one by overlaying them</translation>
     </message>
     <message>
         <source>%1 — %2</source>
@@ -310,7 +310,7 @@
     <name>lf::ContainerPolicy</name>
     <message>
         <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten sind hier nicht möglich.</source>
-        <translation>Images in archives and PDF documents are open for viewing only – trash, rename, move and rating are not available here.</translation>
+        <translation>Images in archives and PDF documents are open for viewing only—moving to the Trash, renaming, moving, and rating aren’t possible here.</translation>
     </message>
 </context>
 <context>
@@ -332,7 +332,7 @@
     </message>
     <message>
         <source>Gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt. Mit ⌥ lässt sich ein Fenster einzeln verschieben.</source>
-        <translation>Linked windows browse together and share zoom and visible area. Hold ⌥ to move one window on its own.</translation>
+        <translation>Linked windows browse together and share zoom and visible area. Hold ⌥ to move a single window on its own.</translation>
     </message>
     <message>
         <source>Dateiname (ohne Endung)</source>
@@ -387,7 +387,7 @@
     </message>
     <message>
         <source>Zuschnitt in der Datei sichern (Enter, widerrufbar)</source>
-        <translation>Save the crop into the file (Enter, can be undone)</translation>
+        <translation>Save the crop to the file (Enter, can be undone)</translation>
     </message>
     <message>
         <source>Sichern unter …</source>
@@ -395,7 +395,7 @@
     </message>
     <message>
         <source>Zuschnitt als neue Datei sichern – das Original bleibt unverändert</source>
-        <translation>Save the crop as a new file – the original stays unchanged</translation>
+        <translation>Save the crop as a new file—the original stays unchanged</translation>
     </message>
     <message>
         <source>Abbrechen</source>
@@ -415,11 +415,11 @@
     <name>lf::CropSave</name>
     <message>
         <source>Die Datei wurde inzwischen verändert – nichts gesichert. Schneide das Bild erneut zu.</source>
-        <translation>The file has been changed in the meantime – nothing saved. Please crop again.</translation>
+        <translation>The file was changed in the meantime, so nothing was saved. Crop the image again.</translation>
     </message>
     <message>
         <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden ist nur durch Neukodieren möglich – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
-        <translation>The file contains further images (e.g. an HDR gain map or a second stereo image) that would no longer match after a lossless crop. Cropping is only possible by re-encoding – some image quality and these additional images are lost.</translation>
+        <translation>The file contains auxiliary images (such as an HDR gain map or a second stereo image) that would no longer match after a lossless crop. Cropping is only possible by re-encoding, which loses some image quality and these auxiliary images.</translation>
     </message>
     <message>
         <source>Frei</source>
@@ -435,15 +435,15 @@
     </message>
     <message>
         <source>Die JPEG-Daten konnten nicht verlustfrei zugeschnitten werden (%1).</source>
-        <translation>The JPEG data could not be cropped losslessly (%1).</translation>
+        <translation>The JPEG data couldn’t be cropped losslessly (%1).</translation>
     </message>
     <message>
         <source>Der Zuschnitt liegt nicht auf dem JPEG-Blockraster.</source>
-        <translation>The selection is not on the JPEG block grid.</translation>
+        <translation>The crop isn’t aligned to the JPEG block grid.</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden von JPEG-Dateien ist in dieser Version nicht verfügbar.</source>
-        <translation>Lossless cropping of JPEG files is not available in this version.</translation>
+        <translation>Lossless cropping of JPEG files isn’t available in this version.</translation>
     </message>
     <message>
         <source>Die Datei existiert nicht mehr.</source>
@@ -455,15 +455,15 @@
     </message>
     <message>
         <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
-        <translation>Images in archives and PDF documents are not changed. The selection can be exported as a new file.</translation>
+        <translation>Images in archives and PDF documents aren’t changed. The crop can be exported as a new file.</translation>
     </message>
     <message>
         <source>RAW-Dateien werden nie verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
-        <translation>RAW files are never changed. The selection can be exported as a new file.</translation>
+        <translation>RAW files are never changed. The crop can be exported as a new file.</translation>
     </message>
     <message>
         <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gesichert werden. Der Zuschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
-        <translation>Animated or multi-page files cannot be saved cropped. The selection of the first image can be exported as a new file.</translation>
+        <translation>Animated or multipage files can’t be saved cropped. The crop of the first image can be exported as a new file.</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
@@ -471,11 +471,11 @@
     </message>
     <message>
         <source>„Sichern unter“ überschreibt nie das Original – wähle einen anderen Namen.</source>
-        <translation>“Save As” never overwrites the original – please choose another name.</translation>
+        <translation>“Save As” never overwrites the original. Choose a different name.</translation>
     </message>
     <message>
         <source>In „%1“ kann nicht geschrieben werden.</source>
-        <translation>Cannot write to “%1”.</translation>
+        <translation>Can’t write to “%1”.</translation>
     </message>
     <message>
         <source>„%1“ existiert bereits.</source>
@@ -491,47 +491,47 @@
     </message>
     <message>
         <source>Der Zuschnitt umfasst das ganze Bild – es gibt nichts zuzuschneiden.</source>
-        <translation>The selection covers the whole image – nothing to crop.</translation>
+        <translation>The crop covers the whole image, so there’s nothing to crop.</translation>
     </message>
     <message>
         <source>Für den verlustfreien Zuschnitt wurde der Zuschnittbereich an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
-        <translation>For the lossless crop the selection was aligned to the JPEG block grid (%1 × %2 pixels) and is now %3 × %4 pixels.</translation>
+        <translation>For a lossless crop, the crop area was aligned to the JPEG block grid (%1 × %2 pixels) and is now %3 × %4 pixels.</translation>
     </message>
     <message>
         <source>Diese JPEG-Datei lässt sich nicht verlustfrei zuschneiden. Beim Neukodieren geht etwas Bildqualität verloren.</source>
-        <translation>This JPEG file cannot be cropped losslessly. Re-encoding loses some image quality.</translation>
+        <translation>This JPEG file can’t be cropped losslessly. Re-encoding loses some image quality.</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nicht gesichert werden.</source>
-        <translation>The crop cannot be saved.</translation>
+        <translation>The crop can’t be saved.</translation>
     </message>
     <message>
         <source>Beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
-        <translation>Re-encoding would not keep the image exactly the same (color model, bit depth, palette or transparency would change).</translation>
+        <translation>Re-encoding wouldn’t keep the image exactly the same (the color model, bit depth, palette, or transparency would change).</translation>
     </message>
     <message>
         <source>Dieses Format kann hier nicht geschrieben werden. Der Zuschnitt kann in einem anderen Format exportiert werden.</source>
-        <translation>This format cannot be written here. The selection can be exported in another format.</translation>
+        <translation>This format can’t be written here. The crop can be exported in a different format.</translation>
     </message>
     <message>
         <source>Dieses Format komprimiert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
-        <translation>This format is lossy. The crop can only be saved by re-encoding the image – some image quality is lost.</translation>
+        <translation>This format uses lossy compression. The crop can only be saved by re-encoding the image, which loses some image quality.</translation>
     </message>
     <message>
         <source>Zusatzbilder (%1) gehen dabei verloren.</source>
-        <translation>Additional images (%1) are lost.</translation>
+        <translation>Auxiliary images (%1) will be lost.</translation>
     </message>
     <message>
         <source>Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.</source>
-        <translation>Metadata (EXIF, XMP, IPTC) is lost when re-encoding.</translation>
+        <translation>Metadata (EXIF, XMP, IPTC) will be lost when re-encoding.</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
-        <translation>Lossless cropping is not possible for this image.</translation>
+        <translation>Lossless cropping isn’t possible for this image.</translation>
     </message>
     <message>
         <source>Der Zuschnitt konnte nicht gesichert werden.</source>
-        <translation>The crop could not be saved.</translation>
+        <translation>The crop couldn’t be saved.</translation>
     </message>
     <message>
         <source>Die Datei konnte nicht ersetzt werden.</source>
@@ -578,7 +578,7 @@
     </message>
     <message>
         <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U setzen Markierungen</source>
-        <translation>Culling mode: digits set stars, P/X/U flag</translation>
+        <translation>Culling mode: number keys set stars, P/X/U set flags</translation>
     </message>
     <message>
         <source>Aussortiermodus beendet</source>
@@ -606,13 +606,13 @@
     <message numerus="yes">
         <source>%n abgelehnte(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
         <translation>
-            <numerusform>Move %n rejected image to the folder “_Rejected”?</numerusform>
-            <numerusform>Move %n rejected images to the folder “_Rejected”?</numerusform>
+            <numerusform>Move %n rejected image to the “_Rejected” folder?</numerusform>
+            <numerusform>Move %n rejected images to the “_Rejected” folder?</numerusform>
         </translation>
     </message>
     <message>
         <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren werden mitbewegt. ⌘Z widerruft den ganzen Schritt.</source>
-        <translation>Only the images shown (current filters). XMP sidecar files and the second file of RAW+JPEG pairs go along. ⌘Z undoes the whole step.</translation>
+        <translation>Only the images shown (current filters). XMP sidecar files and the second file of RAW+JPEG pairs are moved too. ⌘Z undoes the whole step.</translation>
     </message>
     <message>
         <source>In den Papierkorb legen</source>
@@ -624,11 +624,11 @@
     </message>
     <message>
         <source>Abgelehnte in den Papierkorb legen</source>
-        <translation>Rejected to Trash</translation>
+        <translation>Move Rejected to Trash</translation>
     </message>
     <message>
         <source>Abgelehnte nach „_Rejected“ verschieben</source>
-        <translation>Rejected to _Rejected</translation>
+        <translation>Move Rejected to “_Rejected”</translation>
     </message>
     <message numerus="yes">
         <source>%n Bild(er) in den Papierkorb gelegt</source>
@@ -665,19 +665,19 @@
     </message>
     <message>
         <source>Kurzbefehle gibt es nur unter macOS.</source>
-        <translation>Shortcuts actions are only available on macOS.</translation>
+        <translation>Shortcuts are only available on macOS.</translation>
     </message>
     <message>
         <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
-        <translation>Batch files (.bat, .cmd) cannot be run directly: cmd.exe would read file names as commands. Run a program or a PowerShell script instead (powershell -File script.ps1).</translation>
+        <translation>Batch files (.bat, .cmd) can’t be run directly: cmd.exe would read file names as commands. Run a program or a PowerShell script instead (powershell -File script.ps1).</translation>
     </message>
     <message>
         <source>„%1“ kann nicht direkt ausgeführt werden: es würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
-        <translation>“%1” can’t be run directly: it would read file names as commands. Run a program or a PowerShell script instead (powershell -File Script.ps1).</translation>
+        <translation>“%1” can’t be run directly: it would read file names as commands. Run a program or a PowerShell script instead (powershell -File script.ps1).</translation>
     </message>
     <message>
         <source>PowerShell nur mit einem Skript: „powershell -File Skript.ps1“. Mit -Command (oder ohne -File) würde PowerShell Dateinamen als Befehle lesen.</source>
-        <translation>PowerShell only with a script: “powershell -File Script.ps1”. With -Command (or without -File) PowerShell would read file names as commands.</translation>
+        <translation>PowerShell only with a script: “powershell -File script.ps1”. With -Command (or without -File), PowerShell would read file names as commands.</translation>
     </message>
     <message numerus="yes">
         <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
@@ -696,11 +696,11 @@
     </message>
     <message>
         <source>Die Kurzbefehle-App konnte nicht gestartet werden.</source>
-        <translation>The Shortcuts app could not be started.</translation>
+        <translation>The Shortcuts app couldn’t be started.</translation>
     </message>
     <message>
         <source>Der Befehl konnte nicht gestartet werden.</source>
-        <translation>The command could not be started.</translation>
+        <translation>The command couldn’t be started.</translation>
     </message>
 </context>
 <context>
@@ -719,11 +719,11 @@
     </message>
     <message>
         <source>Programm mit Argumenten, z. B. &quot;C:\Tools\tool.exe&quot; --flag; die Datei wird als eigenes Argument angehängt und nie über cmd.exe gestartet. Batch-Dateien (.bat, .cmd) sind nicht erlaubt.</source>
-        <translation>Program with arguments, e.g. &quot;C:\Tools\tool.exe&quot; --flag; the file is appended as a separate argument and never started through cmd.exe. Batch files (.bat, .cmd) are not allowed.</translation>
+        <translation>Program with arguments, for example &quot;C:\Tools\tool.exe&quot; --flag. The file is appended as a separate argument and is never started through cmd.exe. Batch files (.bat, .cmd) aren’t allowed.</translation>
     </message>
     <message>
         <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
-        <translation>Runs with /bin/sh; the file is in &quot;$1&quot; (all files: &quot;$@&quot;), e.g. open -a Preview &quot;$1&quot;. The path is never inserted into the command.</translation>
+        <translation>Runs with /bin/sh; the file is in &quot;$1&quot; (all files: &quot;$@&quot;), for example open -a Preview &quot;$1&quot;. The path is never inserted into the command.</translation>
     </message>
     <message>
         <source>Name:</source>
@@ -834,7 +834,7 @@
     </message>
     <message>
         <source>„%1“ ausgeführt</source>
-        <translation>“%1” done</translation>
+        <translation>“%1” finished</translation>
     </message>
     <message>
         <source>„%1“: %2</source>
@@ -857,27 +857,27 @@
     <name>lf::DecoderHelper</name>
     <message>
         <source>Das Bild hat den Decoder zum Absturz gebracht – die Datei ist vermutlich beschädigt.</source>
-        <translation>The image crashed the decoder – the file is probably damaged.</translation>
+        <translation>The image crashed the decoder—the file is probably damaged.</translation>
     </message>
     <message>
         <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
-        <translation>Decoding took too long and was cancelled.</translation>
+        <translation>Decoding took too long and was canceled.</translation>
     </message>
     <message>
         <source>Der Decoder-Hilfsprozess läuft ohne Sandbox und wird aus Sicherheitsgründen nicht verwendet.</source>
-        <translation>The decoder helper process runs without a sandbox and is not used for security reasons.</translation>
+        <translation>The decoder helper process runs without a sandbox and isn’t used for security reasons.</translation>
     </message>
     <message>
         <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
-        <translation>The decoder helper process could not be started (%1).</translation>
+        <translation>The decoder helper process couldn’t be started (%1).</translation>
     </message>
     <message>
         <source>Der Decoder-Hilfsprozess wird auf diesem System nicht unterstützt.</source>
-        <translation>The decoder helper process is not supported on this system.</translation>
+        <translation>The decoder helper process isn’t supported on this system.</translation>
     </message>
     <message>
         <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden.</source>
-        <translation>The decoder helper process could not be started.</translation>
+        <translation>The decoder helper process couldn’t be started.</translation>
     </message>
     <message>
         <source>Unbekannter Decoder „%1“.</source>
@@ -893,7 +893,7 @@
     </message>
     <message>
         <source>Gemeinsamer Speicher ist nicht verfügbar (%1).</source>
-        <translation>Shared memory is not available (%1).</translation>
+        <translation>Shared memory isn’t available (%1).</translation>
     </message>
     <message>
         <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
@@ -947,31 +947,31 @@
     <name>lf::DefaultAppBar</name>
     <message>
         <source>Lumaflip ist nicht die Standard-App für den Dateityp „%1“.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip isn’t the default app for the “%1” file type.</translation>
     </message>
     <message>
         <source>Festlegen</source>
-        <translation type="unfinished">Set</translation>
+        <translation>Set as Default</translation>
     </message>
     <message>
         <source>Lumaflip öffnet Dateien dieses Typs künftig per Doppelklick.</source>
-        <translation type="unfinished"></translation>
+        <translation>From now on, double-clicking files of this type opens them in Lumaflip.</translation>
     </message>
     <message>
         <source>Alle Bildformate …</source>
-        <translation type="unfinished"></translation>
+        <translation>All Image Formats…</translation>
     </message>
     <message>
         <source>Wähle die Bildformate, die Lumaflip öffnen soll.</source>
-        <translation type="unfinished"></translation>
+        <translation>Choose the image formats Lumaflip should open.</translation>
     </message>
     <message>
         <source>Nicht mehr fragen</source>
-        <translation type="unfinished"></translation>
+        <translation>Don’t Ask Again</translation>
     </message>
     <message>
         <source>Schließen</source>
-        <translation type="unfinished">Close</translation>
+        <translation>Close</translation>
     </message>
 </context>
 <context>
@@ -994,7 +994,7 @@
     </message>
     <message>
         <source>Festlegen</source>
-        <translation>Set</translation>
+        <translation>Set as Default</translation>
     </message>
     <message>
         <source>Abbrechen</source>
@@ -1005,15 +1005,15 @@
     <name>lf::DefaultAppOfferController</name>
     <message>
         <source>Lumaflip fragt nicht mehr nach der Standard-App – wieder einschalten unter Einstellungen → Allgemein</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip won’t ask about the default app again—turn this back on in Settings → General</translation>
     </message>
     <message>
         <source>Lumaflip ist jetzt die Standard-App für „%1“</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip is now the default app for “%1”</translation>
     </message>
     <message>
         <source>Lumaflip konnte nicht als Standard-App festgelegt werden: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip couldn’t be set as the default app: %1</translation>
     </message>
 </context>
 <context>
@@ -1219,7 +1219,7 @@
     </message>
     <message>
         <source>Den Zuschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
-        <translation>Export the selection of “%1” as a new file. The original stays unchanged.</translation>
+        <translation>Export the crop of “%1” as a new file. The original stays unchanged.</translation>
     </message>
     <message>
         <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
@@ -1279,7 +1279,7 @@
     </message>
     <message>
         <source>Ohne Aufnahmeort (GPS)</source>
-        <translation>Without location (GPS)</translation>
+        <translation>All except location (GPS)</translation>
     </message>
     <message>
         <source>Alle entfernen</source>
@@ -1342,7 +1342,7 @@
     </message>
     <message>
         <source>Bild %1 von %2 wird exportiert: %3</source>
-        <translation>Exporting %1 of %2: %3</translation>
+        <translation>Exporting image %1 of %2: %3</translation>
     </message>
 </context>
 <context>
@@ -1353,15 +1353,15 @@
     </message>
     <message>
         <source>„%1“ konnte nicht kopiert werden.</source>
-        <translation>“%1” could not be copied.</translation>
+        <translation>“%1” couldn’t be copied.</translation>
     </message>
     <message>
         <source>Der Ordner „%1“ konnte nicht angelegt werden.</source>
-        <translation>The folder “%1” could not be created.</translation>
+        <translation>The folder “%1” couldn’t be created.</translation>
     </message>
     <message>
         <source>Die Kopie „%1“ konnte nicht entfernt werden.</source>
-        <translation>The copy “%1” could not be removed.</translation>
+        <translation>The copy “%1” couldn’t be removed.</translation>
     </message>
 </context>
 <context>
@@ -1416,7 +1416,7 @@
     </message>
     <message>
         <source>Ein anderer Dateivorgang läuft noch. Bitte warte, bis er abgeschlossen ist.</source>
-        <translation>Another file operation is still in progress. Please wait until it finishes.</translation>
+        <translation>Another file operation is in progress. Wait until it finishes.</translation>
     </message>
     <message>
         <source>Der Verlauf zum Widerrufen wurde zurückgesetzt, weil er sich während des Vorgangs geändert hat.</source>
@@ -1461,7 +1461,7 @@
     <name>lf::FolderMapPanel</name>
     <message>
         <source>Karten sind auf diesem System nicht verfügbar.</source>
-        <translation>Maps are not available on this system.</translation>
+        <translation>Maps aren’t available on this system.</translation>
     </message>
     <message>
         <source>Keine Bilder in dieser Ansicht.</source>
@@ -1469,18 +1469,18 @@
     </message>
     <message>
         <source>Keines der Bilder enthält einen Aufnahmeort (GPS).</source>
-        <translation>None of the images contains a location (GPS).</translation>
+        <translation>None of the images has a location (GPS).</translation>
     </message>
     <message>
         <source>Ordnerkarte schließen</source>
-        <translation>Close Map</translation>
+        <translation>Close Folder Map</translation>
     </message>
 </context>
 <context>
     <name>lf::FolderMapView</name>
     <message>
         <source>Karten sind unter Windows nicht verfügbar. Bilder mit Aufnahmeort in diesem Ordner: %1</source>
-        <translation>Maps are not available on Windows. Photos with a location in this folder: %1</translation>
+        <translation>Maps aren’t available on Windows. Images with a location in this folder: %1</translation>
     </message>
 </context>
 <context>
@@ -1619,7 +1619,7 @@
     </message>
     <message>
         <source>HDR aus – SDR-Vorschau</source>
-        <translation>HDR off – SDR preview</translation>
+        <translation>HDR off—SDR preview</translation>
     </message>
     <message>
         <source>Die Belichtung lässt sich nur bei HDR-Bildern einstellen.</source>
@@ -1652,11 +1652,11 @@
     </message>
     <message>
         <source>HDR-Bild, als SDR-Vorschau angezeigt – HDR ist ausgeschaltet (⇧⌘H)</source>
-        <translation>HDR image, shown as SDR preview – HDR is turned off (⇧⌘H)</translation>
+        <translation>HDR image, shown as SDR preview—HDR is turned off (⇧⌘H)</translation>
     </message>
     <message>
         <source>HDR-Bild, als SDR-Vorschau angezeigt – dieser Bildschirm kann kein HDR darstellen</source>
-        <translation>HDR image, shown as SDR preview – this display cannot show HDR</translation>
+        <translation>HDR image, shown as SDR preview—this display can’t show HDR</translation>
     </message>
     <message>
         <source>Belichtung</source>
@@ -1672,7 +1672,7 @@
     </message>
     <message>
         <source>Belichtung beim Bildwechsel beibehalten</source>
-        <translation>Keep Exposure When Changing Images</translation>
+        <translation>Keep exposure when switching images</translation>
     </message>
 </context>
 <context>
@@ -1694,23 +1694,23 @@
     </message>
     <message>
         <source>Das Bild konnte nicht exportiert werden.</source>
-        <translation>The image could not be exported.</translation>
+        <translation>The image couldn’t be exported.</translation>
     </message>
     <message>
         <source>%1: Der Zielordner kann nicht angelegt werden.</source>
-        <translation>%1: The destination folder cannot be created.</translation>
+        <translation>%1: The destination folder can’t be created.</translation>
     </message>
     <message>
         <source>Die vorhandene Datei konnte nicht in den Papierkorb gelegt werden.</source>
-        <translation>The existing file could not be moved to the Trash.</translation>
+        <translation>The existing file couldn’t be moved to the Trash.</translation>
     </message>
     <message>
         <source>Die vorhandene Datei liegt im Papierkorb, die neue konnte nicht an ihre Stelle gelegt werden: %1</source>
-        <translation>The existing file is in the Trash, but the new one could not be put in its place: %1</translation>
+        <translation>The existing file is in the Trash, but the new one couldn’t be put in its place: %1</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht geschrieben werden.</source>
-        <translation>The image could not be written.</translation>
+        <translation>The image couldn’t be written.</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden.</source>
@@ -1718,11 +1718,11 @@
     </message>
     <message>
         <source>Metadaten (EXIF, XMP, IPTC) werden hier nicht übernommen.</source>
-        <translation>Metadata (EXIF, XMP, IPTC) is not carried over here.</translation>
+        <translation>Metadata (EXIF, XMP, IPTC) isn’t carried over here.</translation>
     </message>
     <message>
         <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
-        <translation>This format cannot be written on this Mac.</translation>
+        <translation>This format can’t be written on this Mac.</translation>
     </message>
     <message>
         <source>Unbekanntes Zielformat.</source>
@@ -1738,11 +1738,11 @@
     </message>
     <message>
         <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
-        <translation>%1 cannot store an HDR gain map – the image was exported as SDR.</translation>
+        <translation>%1 can’t store an HDR gain map—the image was exported as SDR.</translation>
     </message>
     <message>
         <source>Bilder aus Archiven und PDF-Dokumenten werden als 8-Bit-sRGB exportiert – HDR und erweiterter Farbraum gehen verloren.</source>
-        <translation>Images from archives and PDF documents are exported as 8-bit sRGB – HDR and wide gamut are lost.</translation>
+        <translation>Images from archives and PDF documents are exported as 8-bit sRGB—HDR and wide color gamut are lost.</translation>
     </message>
 </context>
 <context>
@@ -1789,7 +1789,7 @@
     </message>
     <message>
         <source>Nicht ausgelöst</source>
-        <translation>Did not fire</translation>
+        <translation>Didn’t fire</translation>
     </message>
     <message>
         <source>Die Bildinformationen sind beschädigt.</source>
@@ -1844,7 +1844,7 @@
     </message>
     <message>
         <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
-        <translation>Loads a map section from Apple Maps (internet connection)</translation>
+        <translation>Loads a map preview from Apple Maps (requires an internet connection)</translation>
     </message>
     <message>
         <source>Karte ausblenden</source>
@@ -1852,7 +1852,7 @@
     </message>
     <message>
         <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte einblenden“)</source>
-        <translation>Stop loading map snippets (until you click “Show Map” again)</translation>
+        <translation>Stop loading map previews (until you click “Show Map” again)</translation>
     </message>
     <message>
         <source>In Karten öffnen</source>
@@ -1864,7 +1864,7 @@
     </message>
     <message>
         <source>Alle Bilder dieser Ansicht mit Aufnahmeort auf einer Karte zeigen (lädt Kartendaten von Apple Karten)</source>
-        <translation>Show all images of this view that have a location on a map (loads map data from Apple Maps)</translation>
+        <translation>Show all images in this view that have a location on a map (loads map data from Apple Maps)</translation>
     </message>
 </context>
 <context>
@@ -1984,7 +1984,7 @@
     </message>
     <message>
         <source>Ausgewählten Tag entfernen</source>
-        <translation>Remove Selected Tag</translation>
+        <translation>Remove selected tag</translation>
     </message>
     <message>
         <source>Tag hinzufügen …</source>
@@ -2000,7 +2000,7 @@
     </message>
     <message>
         <source>Kein Histogramm</source>
-        <translation>No Histogram</translation>
+        <translation>No histogram</translation>
     </message>
     <message>
         <source>Wird geladen …</source>
@@ -2087,7 +2087,7 @@
     </message>
     <message>
         <source>Einpassen ↔ 100 % am Mauszeiger</source>
-        <translation>Zoom to Fit ↔ 100% at Cursor</translation>
+        <translation>Zoom to Fit ↔ 100% at Pointer</translation>
     </message>
     <message>
         <source>Zoom fixieren</source>
@@ -2095,7 +2095,7 @@
     </message>
     <message>
         <source>Standard-Zoom wiederherstellen</source>
-        <translation>Reset to Standard Zoom</translation>
+        <translation>Restore Default Zoom</translation>
     </message>
     <message>
         <source>Ausschnitt nach oben</source>
@@ -2327,7 +2327,7 @@
     </message>
     <message>
         <source>Minimaler Fenstermodus</source>
-        <translation>Minimal Window</translation>
+        <translation>Minimal Window Mode</translation>
     </message>
     <message>
         <source>Fenster koppeln …</source>
@@ -2395,7 +2395,7 @@
     </message>
     <message>
         <source>Über-/Unterbelichtungswarnung</source>
-        <translation>Clipping warning</translation>
+        <translation>Clipping Warning</translation>
     </message>
     <message>
         <source>Focus Peaking</source>
@@ -2403,7 +2403,7 @@
     </message>
     <message>
         <source>Fokuspunkte</source>
-        <translation>AF Points</translation>
+        <translation>Focus Points</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2423,15 +2423,15 @@
     </message>
     <message>
         <source>Zoomen (am Mauszeiger)</source>
-        <translation>Zoom (at Cursor)</translation>
+        <translation>Zoom (at Pointer)</translation>
     </message>
     <message>
         <source>Nach oben drehen vergrößert, nach unten verkleinert – am Mauszeiger.</source>
-        <translation>Scrolling up zooms in, scrolling down zooms out — at the pointer.</translation>
+        <translation>Scrolling up zooms in, scrolling down zooms out—at the pointer.</translation>
     </message>
     <message>
         <source>Ausschnitt verschieben (sonst Bild wechseln)</source>
-        <translation>Scroll View (Otherwise Change Image)</translation>
+        <translation>Pan (Otherwise Change Image)</translation>
     </message>
     <message>
         <source>Gezoomt wird der Ausschnitt verschoben, sonst wird das Bild gewechselt.</source>
@@ -2479,11 +2479,11 @@
     </message>
     <message>
         <source>Mehrere Bilder zurück/vor</source>
-        <translation>Several Images Back/Forward</translation>
+        <translation>Jump Back/Forward Several Images</translation>
     </message>
     <message>
         <source>Springt um die eingestellte Sprungweite (Standard 10).</source>
-        <translation>Jumps by the set jump distance (default 10).</translation>
+        <translation>Jumps by the set number of images (default: 10).</translation>
     </message>
     <message>
         <source>Vorheriger/nächster Ordner</source>
@@ -2495,7 +2495,7 @@
     </message>
     <message>
         <source>Seite zurück/vor (sonst Bild)</source>
-        <translation>Page Back/Forward (Otherwise Image)</translation>
+        <translation>Previous/Next Page (Otherwise Image)</translation>
     </message>
     <message>
         <source>Bei mehrseitigen Dateien wird geblättert, sonst das Bild gewechselt.</source>
@@ -2503,7 +2503,7 @@
     </message>
     <message>
         <source>Ausschnitt seitenweise verschieben (sonst Bild)</source>
-        <translation>Scroll View by Page (Otherwise Image)</translation>
+        <translation>Pan by Page (Otherwise Image)</translation>
     </message>
     <message>
         <source>Gezoomt um eine Bildschirmhöhe scrollen, sonst Bild wechseln.</source>
@@ -2579,7 +2579,7 @@
     </message>
     <message>
         <source>Erst bis zum Rand verschieben, dann Bild wechseln</source>
-        <translation>Scroll to Edge First, Then Change Image</translation>
+        <translation>Pan to Edge First, Then Change Image</translation>
     </message>
     <message>
         <source>Der Ausschnitt wird verschoben; am Bildrand wechselt das Bild.</source>
@@ -2587,7 +2587,7 @@
     </message>
     <message>
         <source>Ausschnitt verschieben (Bild mit ⌥←/⌥→)</source>
-        <translation>Scroll View (Image with ⌥←/⌥→)</translation>
+        <translation>Pan (Change Image with ⌥←/⌥→)</translation>
     </message>
     <message>
         <source>Pfeiltasten verschieben den Ausschnitt; Bildwechsel mit ⌥←/⌥→.</source>
@@ -2599,7 +2599,7 @@
     </message>
     <message>
         <source>Ausschnitt verschieben, sonst vorheriges/nächstes Bild</source>
-        <translation>Scroll View, Otherwise Previous/Next Image</translation>
+        <translation>Pan, Otherwise Previous/Next Image</translation>
     </message>
     <message>
         <source>Gezoomt wird der Ausschnitt verschoben, sonst das Bild gewechselt.</source>
@@ -2607,7 +2607,7 @@
     </message>
     <message>
         <source>Ausschnitt verschieben (wenn gezoomt), sonst nichts</source>
-        <translation>Scroll View (When Zoomed), Otherwise Nothing</translation>
+        <translation>Pan When Zoomed, Otherwise Nothing</translation>
     </message>
     <message>
         <source>Gezoomt wird der Ausschnitt verschoben, sonst passiert nichts.</source>
@@ -2707,7 +2707,7 @@
     </message>
     <message>
         <source>Bild wechseln (gezoomt: Ausschnitt verschieben)</source>
-        <translation>Change Image (Zoomed: Scroll)</translation>
+        <translation>Change Image (When Zoomed: Pan)</translation>
     </message>
     <message>
         <source>Wischen wechselt das Bild; im gezoomten Zustand wird der Ausschnitt verschoben.</source>
@@ -2715,7 +2715,7 @@
     </message>
     <message>
         <source>Nur Ausschnitt verschieben</source>
-        <translation>Scroll View</translation>
+        <translation>Pan Only</translation>
     </message>
     <message>
         <source>Wischen verschiebt immer nur den Ausschnitt.</source>
@@ -2807,7 +2807,7 @@
     </message>
     <message>
         <source>Ziffern wählen sonst den Zoommodus (1/2/3).</source>
-        <translation>Otherwise, digits select the zoom mode (1/2/3).</translation>
+        <translation>Otherwise, number keys select the zoom mode (1/2/3).</translation>
     </message>
     <message>
         <source>Immer aktiv</source>
@@ -2815,7 +2815,7 @@
     </message>
     <message>
         <source>Ziffern vergeben immer Sterne, P/X/U setzen Markierungen. Die Zoom-Ziffern sind dann aus.</source>
-        <translation>Digits always assign stars; P/X/U flag. Zoom digits are off.</translation>
+        <translation>Number keys always set stars, and P/X/U set flags. The zoom number keys are then off.</translation>
     </message>
 </context>
 <context>
@@ -2826,7 +2826,7 @@
     </message>
     <message>
         <source>Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im App-Paket unter Contents/Resources/licenses.</source>
-        <translation>Lumaflip includes the following components. The license texts are also located in the app bundle under Contents/Resources/licenses.</translation>
+        <translation>Lumaflip includes the following components. The license texts are also in the app bundle in Contents/Resources/licenses.</translation>
     </message>
     <message>
         <source>Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das App-Paket gelegt.</source>
@@ -2853,15 +2853,15 @@
     <name>lf::LiveText</name>
     <message>
         <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
-        <translation>Live Text is turned off in the settings.</translation>
+        <translation>Live Text is turned off in Settings.</translation>
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
-        <translation>Live Text is not available on this Mac.</translation>
+        <translation>Live Text isn’t available on this Mac.</translation>
     </message>
     <message>
         <source>Live Text: Bild wird analysiert …</source>
-        <translation>Live Text: analysing the image…</translation>
+        <translation>Live Text: analyzing the image…</translation>
     </message>
     <message>
         <source>Live Text: Text und Motive auswählbar</source>
@@ -2900,11 +2900,11 @@
     </message>
     <message>
         <source>Die Datei wurde inzwischen verändert – nichts gesichert. Sichere die Drehung erneut.</source>
-        <translation>The file was changed in the meantime — nothing was saved. Please save the rotation again.</translation>
+        <translation>The file was changed in the meantime—nothing was saved. Save the rotation again.</translation>
     </message>
     <message>
         <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
-        <translation>The file contains additional images (e.g., an HDR gain map or a second stereo image) that would be lost when rearranging the JPEG data losslessly.</translation>
+        <translation>The file contains auxiliary images (such as an HDR gain map or a second stereo image) that would be lost when rearranging the JPEG data losslessly.</translation>
     </message>
     <message>
         <source>Die Datei existiert nicht mehr.</source>
@@ -2916,7 +2916,7 @@
     </message>
     <message>
         <source>RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; verwende zum dauerhaften Drehen deinen RAW-Konverter.</source>
-        <translation>RAW files are never modified. The rotation applies only to the display; to rotate permanently, please use your RAW developer.</translation>
+        <translation>RAW files are never changed. The rotation only applies to the display; to rotate permanently, use your RAW converter.</translation>
     </message>
     <message>
         <source>Animierte oder mehrseitige Dateien können nicht gedreht gesichert werden.</source>
@@ -2928,7 +2928,7 @@
     </message>
     <message>
         <source>Deshalb wurde nur die EXIF-Ausrichtung gesetzt.</source>
-        <translation>So only the EXIF orientation was set.</translation>
+        <translation>Therefore, only the EXIF orientation was set.</translation>
     </message>
     <message>
         <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfreies Drehen ist nur möglich, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
@@ -2968,15 +2968,15 @@
     </message>
     <message>
         <source>Die Datei wurde inzwischen verändert – Widerrufen nicht möglich</source>
-        <translation>File was changed in the meantime — can’t undo</translation>
+        <translation>The file was changed in the meantime—can’t undo</translation>
     </message>
     <message>
         <source>Die Datei wurde inzwischen verändert – Wiederholen nicht möglich</source>
-        <translation>File was changed in the meantime — can’t redo</translation>
+        <translation>The file was changed in the meantime—can’t redo</translation>
     </message>
     <message>
         <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Widerrufen/Wiederholen ist dafür nicht mehr möglich.</source>
-        <translation>The backup copy for this step was deleted to save space — undo/redo is no longer possible for it.</translation>
+        <translation>The backup copy for this step was deleted to save disk space—undo and redo are no longer possible for it.</translation>
     </message>
     <message>
         <source>Es gibt nichts zu widerrufen.</source>
@@ -2984,7 +2984,7 @@
     </message>
     <message>
         <source>Kein Speicherplatz für die Sicherungskopie – nichts gesichert.</source>
-        <translation>No space for the backup copy — nothing was saved.</translation>
+        <translation>Not enough disk space for the backup copy—nothing was saved.</translation>
     </message>
     <message>
         <source>Keine Drehung zu sichern</source>
@@ -3143,15 +3143,15 @@
     </message>
     <message>
         <source>Alle Bildschirme</source>
-        <translation>All Screens</translation>
+        <translation>All Displays</translation>
     </message>
     <message>
         <source>Bildschirm %1</source>
-        <translation>Screen %1</translation>
+        <translation>Display %1</translation>
     </message>
     <message>
         <source>Windows hat das Bild nicht als Desktophintergrund übernommen.</source>
-        <translation>Windows did not accept the image as desktop background.</translation>
+        <translation>Windows didn’t set the image as the desktop background.</translation>
     </message>
 </context>
 <context>
@@ -3198,7 +3198,7 @@
     </message>
     <message>
         <source>Im Editor öffnen</source>
-        <translation>Open in Default Editor</translation>
+        <translation>Open in Editor</translation>
     </message>
     <message>
         <source>In den Papierkorb legen</source>
@@ -3266,7 +3266,7 @@
     </message>
     <message>
         <source>100 % (1:1 Pixel)</source>
-        <translation>Actual Size</translation>
+        <translation>Actual Size (100%)</translation>
     </message>
     <message>
         <source>Breite füllen</source>
@@ -3298,7 +3298,7 @@
     </message>
     <message>
         <source>Standard-Zoom wiederherstellen</source>
-        <translation>Reset to Standard Zoom</translation>
+        <translation>Restore Default Zoom</translation>
     </message>
     <message>
         <source>Vollbild</source>
@@ -3463,7 +3463,7 @@
     </message>
     <message>
         <source>Über-/Unterbelichtungswarnung</source>
-        <translation>Over-/Underexposure</translation>
+        <translation>Clipping Warning</translation>
     </message>
     <message>
         <source>Focus Peaking</source>
@@ -3471,7 +3471,7 @@
     </message>
     <message>
         <source>Fokuspunkte</source>
-        <translation>AF Points</translation>
+        <translation>Focus Points</translation>
     </message>
     <message>
         <source>Vergleich überlagern</source>
@@ -3491,7 +3491,7 @@
     </message>
     <message>
         <source>Wischen (geteilte Ansicht)</source>
-        <translation>Wipe (split view)</translation>
+        <translation>Wipe (Split View)</translation>
     </message>
     <message>
         <source>Diashow</source>
@@ -3619,7 +3619,7 @@
     </message>
     <message>
         <source>Ordnerkarte</source>
-        <translation>Map</translation>
+        <translation>Folder Map</translation>
     </message>
     <message>
         <source>Nächster Ordner</source>
@@ -3647,7 +3647,7 @@
     </message>
     <message>
         <source>Minimaler Fenstermodus</source>
-        <translation>Minimal Window</translation>
+        <translation>Minimal Window Mode</translation>
     </message>
     <message>
         <source>Fenster koppeln …</source>
@@ -3679,7 +3679,7 @@
     </message>
     <message>
         <source>Belichtung beim Bildwechsel beibehalten</source>
-        <translation>Keep Exposure When Changing Images</translation>
+        <translation>Keep Exposure When Switching Images</translation>
     </message>
     <message>
         <source>Belichtungsregler einblenden</source>
@@ -3707,7 +3707,7 @@
     </message>
     <message>
         <source>Keine – in den Einstellungen anlegen</source>
-        <translation>None – create them in the settings</translation>
+        <translation>None — create them in Settings</translation>
     </message>
     <message>
         <source>Protokoll …</source>
@@ -3722,33 +3722,33 @@
     <name>lf::MapPreviewController</name>
     <message>
         <source>Karten sind auf diesem System nicht verfügbar.</source>
-        <translation>Maps are not available on this system.</translation>
+        <translation>Maps aren’t available on this system.</translation>
     </message>
     <message>
         <source>Die Karte konnte nicht geladen werden.</source>
-        <translation>The map could not be loaded.</translation>
+        <translation>The map couldn’t be loaded.</translation>
     </message>
 </context>
 <context>
     <name>lf::MapSnapshot</name>
     <message>
         <source>Die Karte konnte nicht geladen werden.</source>
-        <translation>The map could not be loaded.</translation>
+        <translation>The map couldn’t be loaded.</translation>
     </message>
     <message>
         <source>Karten sind unter Windows nicht verfügbar.</source>
-        <translation>Maps are not available on Windows.</translation>
+        <translation>Maps aren’t available on Windows.</translation>
     </message>
 </context>
 <context>
     <name>lf::MenuExtras</name>
     <message>
         <source>Einzelne PDF-Seiten können nicht an andere Apps übergeben werden.</source>
-        <translation>Single PDF pages cannot be passed to other apps.</translation>
+        <translation>Single PDF pages can’t be passed to other apps.</translation>
     </message>
     <message>
         <source>Das Bild wird aus dem Archiv entpackt – versuche es gleich noch einmal.</source>
-        <translation>The image is being extracted from the archive – please try again in a moment.</translation>
+        <translation>The image is being extracted from the archive—try again in a moment.</translation>
     </message>
     <message>
         <source>Öffnen mit</source>
@@ -3800,7 +3800,7 @@
     </message>
     <message>
         <source>Tabs in den Einstellungen erlauben (Fenster)</source>
-        <translation>Allow Tabs in Settings (Windows)</translation>
+        <translation>Allow Tabs (Settings → Windows)</translation>
     </message>
 </context>
 <context>
@@ -3930,7 +3930,7 @@
     <name>lf::MetadataDialog</name>
     <message>
         <source>Alle Metadaten – %1</source>
-        <translation>All Metadata – %1</translation>
+        <translation>All Metadata — %1</translation>
     </message>
     <message>
         <source>Wird geladen …</source>
@@ -3972,7 +3972,7 @@
     </message>
     <message>
         <source>Suchen (Feld oder Wert) …</source>
-        <translation>Search (field or value)…</translation>
+        <translation>Search fields and values…</translation>
     </message>
     <message>
         <source>Feld</source>
@@ -4026,7 +4026,7 @@
     </message>
     <message>
         <source>Gib eine Bildnummer zwischen 1 und %1 ein.</source>
-        <translation>Enter an image number between 1 and %1</translation>
+        <translation>Enter an image number between 1 and %1.</translation>
     </message>
     <message>
         <source>Zufällige Reihenfolge an</source>
@@ -4057,11 +4057,11 @@
     </message>
     <message>
         <source>Apps (*.desktop);;Alle Dateien (*)</source>
-        <translation>Programs (*.desktop);;All Files (*)</translation>
+        <translation>Apps (*.desktop);;All Files (*)</translation>
     </message>
     <message>
         <source>„%1“ ist keine App.</source>
-        <translation>“%1” is not a program.</translation>
+        <translation>“%1” isn’t an app.</translation>
     </message>
     <message>
         <source>Kein Bild geöffnet</source>
@@ -4131,8 +4131,8 @@
     <message numerus="yes">
         <source>%1 – %n Bild(er)</source>
         <translation>
-            <numerusform>%1 – %n image</numerusform>
-            <numerusform>%1 – %n images</numerusform>
+            <numerusform>%1 — %n image</numerusform>
+            <numerusform>%1 — %n images</numerusform>
         </translation>
     </message>
     <message>
@@ -4166,11 +4166,11 @@
     <name>lf::PdfDocument</name>
     <message>
         <source>Die Seite gibt es im PDF-Dokument nicht.</source>
-        <translation>The page does not exist in the PDF document.</translation>
+        <translation>That page doesn’t exist in the PDF document.</translation>
     </message>
     <message>
         <source>PDF-Dokumente werden auf diesem System nicht unterstützt.</source>
-        <translation>PDF documents are not supported on this system.</translation>
+        <translation>PDF documents aren’t supported on this system.</translation>
     </message>
     <message>
         <source>Das PDF-Dokument ist beschädigt.</source>
@@ -4178,7 +4178,7 @@
     </message>
     <message>
         <source>Die Datei existiert nicht.</source>
-        <translation>The file does not exist.</translation>
+        <translation>The file doesn’t exist.</translation>
     </message>
     <message>
         <source>Das PDF-Dokument ist passwortgeschützt.</source>
@@ -4245,7 +4245,7 @@
     </message>
     <message>
         <source>Öffnen aus dem Finder:</source>
-        <translation>Opening from the Finder:</translation>
+        <translation>When opening from the Finder:</translation>
     </message>
     <message>
         <source>Immer in neuem Fenster</source>
@@ -4257,7 +4257,7 @@
     </message>
     <message>
         <source>Neues Fenster, außer die Datei ist schon offen</source>
-        <translation>New Window Unless File Is Already Open</translation>
+        <translation>New Window Unless the File Is Already Open</translation>
     </message>
     <message>
         <source>Gilt für Doppelklick im Finder, „Öffnen mit“ und Drag &amp; Drop auf das Dock-Symbol.</source>
@@ -4273,7 +4273,7 @@
     </message>
     <message>
         <source>Vor dem Bewegen in den Papierkorb nachfragen</source>
-        <translation>Ask before deleting</translation>
+        <translation>Ask before moving to the Trash</translation>
     </message>
     <message>
         <source>Aus: ⌘⌫ legt das Bild sofort in den Papierkorb, ⌘Z holt es zurück.</source>
@@ -4281,11 +4281,11 @@
     </message>
     <message>
         <source>Fragen, ob Lumaflip Standard-App werden soll</source>
-        <translation type="unfinished"></translation>
+        <translation>Offer to make Lumaflip the default app</translation>
     </message>
     <message>
         <source>Öffnest du ein Bild, dessen Dateityp eine andere App öffnet, erscheint einmal je Dateityp ein Hinweis oben im Fenster.</source>
-        <translation type="unfinished"></translation>
+        <translation>When you open an image whose file type opens in another app, a notice appears at the top of the window, once per file type.</translation>
     </message>
     <message>
         <source>Editor:</source>
@@ -4293,7 +4293,7 @@
     </message>
     <message>
         <source>Für „Im Editor öffnen“ (Taste E).</source>
-        <translation>For “Open in Default Editor” (E key).</translation>
+        <translation>For “Open in Editor” (E key).</translation>
     </message>
     <message>
         <source>Drehung sichern:</source>
@@ -4301,15 +4301,15 @@
     </message>
     <message>
         <source>EXIF-Ausrichtung setzen</source>
-        <translation>Set EXIF orientation</translation>
+        <translation>Set EXIF Orientation</translation>
     </message>
     <message>
         <source>JPEG verlustfrei drehen (DCT)</source>
-        <translation>Rotate JPEG losslessly (DCT)</translation>
+        <translation>Rotate JPEG Losslessly (DCT)</translation>
     </message>
     <message>
         <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Apps ohne EXIF-Unterstützung das Bild richtig anzeigen. RAW-Dateien werden nie verändert; ⌘Z widerruft das Sichern.</source>
-        <translation>Neither option changes any image pixels. “EXIF orientation” only changes a flag (JPEG, HEIC, TIFF, PNG); “rotate losslessly” rearranges the JPEG blocks so that apps without EXIF support also show the image correctly. RAW files are never modified; ⌘Z undoes the save.</translation>
+        <translation>Neither option changes any image pixels. “Set EXIF Orientation” only changes a flag (JPEG, HEIC, TIFF, PNG); “Rotate JPEG Losslessly” rearranges the JPEG blocks so that apps without EXIF support also show the image correctly. RAW files are never changed; ⌘Z undoes the save.</translation>
     </message>
     <message>
         <source>Änderungsdatum beibehalten</source>
@@ -4321,7 +4321,7 @@
     </message>
     <message>
         <source>Aus: Neue Fenster übernehmen die zuletzt benutzte Größe.</source>
-        <translation>Off: New windows use the most recently used size.</translation>
+        <translation>Off: new windows use the last used size.</translation>
     </message>
     <message>
         <source>Titelleiste:</source>
@@ -4329,15 +4329,15 @@
     </message>
     <message>
         <source>Beim Bewegen der Maus einblenden</source>
-        <translation>Show when the mouse moves</translation>
+        <translation>Show When Pointer Moves</translation>
     </message>
     <message>
         <source>Immer einblenden</source>
-        <translation>Always show</translation>
+        <translation>Always Show</translation>
     </message>
     <message>
         <source>Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um.</source>
-        <translation>Without a title bar the image reaches the top edge. Window → “Minimal Window” switches a single window.</translation>
+        <translation>Without a title bar, the image extends to the top edge. Window → “Minimal Window Mode” switches a single window.</translation>
     </message>
     <message>
         <source>Ordnername in der Titelleiste</source>
@@ -4401,7 +4401,7 @@
     </message>
     <message>
         <source>Wie System</source>
-        <translation>Match System Appearance</translation>
+        <translation>Match System</translation>
     </message>
     <message>
         <source>Schachbrett (Transparenz)</source>
@@ -4509,11 +4509,11 @@
     </message>
     <message>
         <source>Überbelichtung ab (J):</source>
-        <translation>Overexposure from (J):</translation>
+        <translation>Overexposure above (J):</translation>
     </message>
     <message>
         <source>Unterbelichtung bis:</source>
-        <translation>Underexposure up to:</translation>
+        <translation>Underexposure below:</translation>
     </message>
     <message>
         <source>HDR-Überbelichtung bezogen auf:</source>
@@ -4561,7 +4561,7 @@
     </message>
     <message>
         <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, P/X/U bewerten, Esc beendet.</source>
-        <translation>During the slideshow: Space pauses, 1–9 sets the interval in seconds, ←/→ browse, P/X/U rate, Esc ends.</translation>
+        <translation>During the slideshow: Space pauses, 1–9 sets the interval in seconds, ←/→ browse, P/X/U rate, Esc exits.</translation>
     </message>
     <message>
         <source>Profilvorlagen</source>
@@ -4569,15 +4569,15 @@
     </message>
     <message>
         <source>Mac-Standard</source>
-        <translation>Mac Standard</translation>
+        <translation>Mac Default</translation>
     </message>
     <message>
         <source>Wie Windows-Bildbetrachter</source>
-        <translation>Windows Viewer Habits</translation>
+        <translation>Windows Image Viewer</translation>
     </message>
     <message>
         <source>Fotografie / Lightroom</source>
-        <translation>Photographer / Lightroom</translation>
+        <translation>Photography / Lightroom</translation>
     </message>
     <message>
         <source>Maus, Trackpad und Tasten</source>
@@ -4617,7 +4617,7 @@
     </message>
     <message>
         <source>Sprungweite (Bild↑/Bild↓):</source>
-        <translation>Jump distance (Page↑/Page↓):</translation>
+        <translation>Jump size (Page↑/Page↓):</translation>
     </message>
     <message>
         <source> Bilder</source>
@@ -4629,7 +4629,7 @@
     </message>
     <message>
         <source>Klicke auf ein Feld und drücke die neue Taste. Bis zu drei Tastenkürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
-        <translation>Click a field and press the new key. Up to three shortcuts per action. Digits and P/X/U for rating only apply in culling mode.</translation>
+        <translation>Click a field and press the new key. Up to three keyboard shortcuts per action. Number keys and P/X/U for rating only apply in culling mode.</translation>
     </message>
     <message>
         <source>Aktion</source>
@@ -4662,13 +4662,13 @@
     <message numerus="yes">
         <source>%n Aktion(en) mit doppelt belegten Tasten – ändere eine davon.</source>
         <translation>
-            <numerusform>%n action has a key that’s assigned twice — please change one of them.</numerusform>
-            <numerusform>%n actions have keys that are assigned twice — please change one of them.</numerusform>
+            <numerusform>%n action has a key that’s assigned twice—change one of them.</numerusform>
+            <numerusform>%n actions have keys that are assigned twice—change one of them.</numerusform>
         </translation>
     </message>
     <message>
         <source>Am Ende der Sammlung:</source>
-        <translation>At end of collection:</translation>
+        <translation>At the end of the collection:</translation>
     </message>
     <message>
         <source>Anhalten</source>
@@ -4740,7 +4740,7 @@
     </message>
     <message>
         <source>Keine Farbe</source>
-        <translation>No color</translation>
+        <translation>No Color</translation>
     </message>
     <message>
         <source>Grau</source>
@@ -4784,11 +4784,11 @@
     </message>
     <message>
         <source>Ziel %1 der Schnellablage</source>
-        <translation>Quick move target %1</translation>
+        <translation>Quick Move target %1</translation>
     </message>
     <message>
         <source>Speicherort für Bewertungen</source>
-        <translation>Store ratings</translation>
+        <translation>Rating Storage</translation>
     </message>
     <message>
         <source>XMP-Zusatzdatei neben dem Bild (Bild.xmp)</source>
@@ -4796,11 +4796,11 @@
     </message>
     <message>
         <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Abgelehnt“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
-        <translation>Compatible with Lightroom, Capture One and darktable: stars in xmp:Rating, “Reject” as -1. Existing content of the file is kept.</translation>
+        <translation>Compatible with Lightroom, Capture One, and darktable: stars in xmp:Rating, “Rejected” as -1. Existing content of the file is kept.</translation>
     </message>
     <message>
         <source>Nur JPEG, HEIC, TIFF, PNG und DNG; die Bildpixel werden nicht neu kodiert. RAW-Dateien werden nie verändert – dafür wird die Zusatzdatei benutzt.</source>
-        <translation>JPEG, HEIC, TIFF, PNG and DNG only; the image pixels are not re-encoded. RAW files are never changed – the sidecar file is used for them.</translation>
+        <translation>JPEG, HEIC, TIFF, PNG, and DNG only; the image pixels aren’t re-encoded. RAW files are never changed—the sidecar file is used for them.</translation>
     </message>
     <message>
         <source>Änderungsdatum beim Schreiben ins Bild beibehalten</source>
@@ -4816,11 +4816,11 @@
     </message>
     <message>
         <source>Tag für „Markiert“:</source>
-        <translation>Tag for Pick:</translation>
+        <translation>Tag for “Picked”:</translation>
     </message>
     <message>
         <source>Tag für „Abgelehnt“:</source>
-        <translation>Tag for Reject:</translation>
+        <translation>Tag for “Rejected”:</translation>
     </message>
     <message>
         <source>Drei Sterne werden zum Tag „★★★“ (Symbol dreimal).</source>
@@ -4840,11 +4840,11 @@
     </message>
     <message>
         <source>Tastenhilfe im Aussortiermodus einblenden</source>
-        <translation>Show key help in culling mode</translation>
+        <translation>Show keyboard hints in culling mode</translation>
     </message>
     <message>
         <source>Aussortiermodus: ⌘K oder K. Ziffern vergeben dort Sterne statt Zoomstufen; „Bewertungstasten immer aktiv“ gibt es unter Maus &amp; Tastatur.</source>
-        <translation>Culling mode: ⌘K or K. There, digits set stars instead of zoom levels; “Rating keys always active” is under Mouse &amp; Keyboard.</translation>
+        <translation>Culling mode: ⌘K or K. In this mode, number keys set stars instead of zoom levels; “Rating Keys: Always Active” is in Mouse &amp; Keyboard.</translation>
     </message>
     <message>
         <source>Schnellablage</source>
@@ -4852,7 +4852,7 @@
     </message>
     <message>
         <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z widerruft es.</source>
-        <translation>M and then 1–9 moves the image into the target folder, C and then 1–9 copies it. M M or C C repeats the last target. ⌘Z undoes it.</translation>
+        <translation>M then 1–9 moves the image to the target folder; C then 1–9 copies it. M M or C C repeats the last target. ⌘Z undoes it.</translation>
     </message>
     <message>
         <source>Im Bild selbst (eingebettetes XMP)</source>
@@ -4860,7 +4860,7 @@
     </message>
     <message>
         <source>Finder-Tags</source>
-        <translation>Finder Tags</translation>
+        <translation>Finder tags</translation>
     </message>
     <message>
         <source>Unterstützte Formate (ohne Nachinstallation):</source>
@@ -4908,11 +4908,11 @@
     </message>
     <message>
         <source>RAW: nur eingebettete Vorschau anzeigen (schneller)</source>
-        <translation>RAW: Show embedded preview only (faster)</translation>
+        <translation>RAW: show embedded preview only (faster)</translation>
     </message>
     <message>
         <source>Aus: Zuerst die eingebettete Vorschau, danach wird die volle Entwicklung nachgeladen.</source>
-        <translation>Off: The embedded preview is shown first, then the full rendering is loaded.</translation>
+        <translation>Off: the embedded preview is shown first, then the full-quality rendering is loaded.</translation>
     </message>
     <message>
         <source>RAW+JPEG-Paare als ein Bild behandeln</source>
@@ -4920,7 +4920,7 @@
     </message>
     <message>
         <source>Gleichnamige RAW- und JPEG-Dateien erscheinen als ein Bild (das JPEG, mit Hinweis „RAW+JPEG“). Bewerten, Verschieben und Löschen betreffen beide Dateien; „RAW anzeigen“ wechselt zur RAW-Datei.</source>
-        <translation>RAW and JPEG files with the same name appear as one image (the JPEG, marked “RAW+JPEG”). Rating, moving and deleting apply to both files; “Show RAW” switches to the RAW file.</translation>
+        <translation>RAW and JPEG files with the same name appear as one image (the JPEG, marked “RAW+JPEG”). Rating, moving, and deleting apply to both files; “Show RAW” switches to the RAW file.</translation>
     </message>
     <message>
         <source>Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner.</source>
@@ -4932,7 +4932,7 @@
     </message>
     <message>
         <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
-        <translation>For manga: ← goes forward, → back. Space and Page Down always go to the next page.</translation>
+        <translation>For manga: ← goes forward, → goes back. Space and Page↓ always go to the next page.</translation>
     </message>
     <message>
         <source>Leistung</source>
@@ -4968,7 +4968,7 @@
     </message>
     <message>
         <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Internetverbindung.</source>
-        <translation>The image is only analysed when you turn on Live Text for a window – on this Mac, without the network.</translation>
+        <translation>The image is only analyzed when you turn on Live Text for a window—on this Mac, without an internet connection.</translation>
     </message>
     <message>
         <source>Eigene Aktionen</source>
@@ -4976,11 +4976,11 @@
     </message>
     <message>
         <source>Ein Shell-Befehl oder ein Kurzbefehl (Kurzbefehle-App) erhält das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
-        <translation>A shell command or a shortcut (Shortcuts) receives the current image as argument. Menu: File → Custom Actions.</translation>
+        <translation>A shell command or a shortcut (Shortcuts app) receives the current image as an argument. Menu: File → Custom Actions.</translation>
     </message>
     <message>
         <source>Abbrechen nach:</source>
-        <translation>Stop after:</translation>
+        <translation>Time out after:</translation>
     </message>
     <message>
         <source> s</source>
@@ -4988,7 +4988,7 @@
     </message>
     <message>
         <source>Backup der Einstellungen</source>
-        <translation>Back Up Settings</translation>
+        <translation>Settings Backup</translation>
     </message>
     <message>
         <source>Exportieren …</source>
@@ -5056,7 +5056,7 @@
     </message>
     <message>
         <source>Lumaflip kann nicht sein eigener Editor sein. Wähle eine andere App.</source>
-        <translation>Lumaflip can’t be its own editor. Please choose a different app.</translation>
+        <translation>Lumaflip can’t be its own editor. Choose a different app.</translation>
     </message>
     <message>
         <source>Editor wählen</source>
@@ -5072,7 +5072,7 @@
     </message>
     <message>
         <source>Lumaflip fragt dann beim Öffnen eines Ordners das vorderste Finder-Fenster nach seiner Sortierung – aber nur, wenn es genau diesen Ordner zeigt.</source>
-        <translation>When opening a folder, Lumaflip then asks the frontmost Finder window for its sorting — but only if it shows exactly that folder.</translation>
+        <translation>When opening a folder, Lumaflip then asks the frontmost Finder window for its sorting—but only if it shows exactly that folder.</translation>
     </message>
     <message>
         <source>Dafür fragt macOS einmalig, ob Lumaflip den Finder steuern darf („Automation“). Lumaflip liest nur Ordner, Ansicht und Sortierung des Fensters und ändert nichts. Die Erlaubnis lässt sich jederzeit unter Systemeinstellungen → Datenschutz &amp; Sicherheit → Automation widerrufen.</source>
@@ -5108,11 +5108,11 @@
     </message>
     <message>
         <source>Die Bittiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
-        <translation>The color depth or color mode of the PSB file is not supported.</translation>
+        <translation>The bit depth or color mode of the PSB file isn’t supported.</translation>
     </message>
     <message>
         <source>Die Komprimierung der PSB-Datei wird nicht unterstützt.</source>
-        <translation>The compression of the PSB file is not supported.</translation>
+        <translation>The compression of the PSB file isn’t supported.</translation>
     </message>
     <message>
         <source>Nicht genug Arbeitsspeicher für das Bild.</source>
@@ -5192,11 +5192,11 @@
     </message>
     <message>
         <source>Noch kein Ziel verwendet – wähle zuerst eine Ziffer 1–9.</source>
-        <translation>No target used yet – choose a digit 1–9 first.</translation>
+        <translation>No target used yet—choose a number from 1 to 9 first.</translation>
     </message>
     <message>
         <source>Ziel %1 ist nicht festgelegt (Einstellungen → Bewertung → Schnellablage).</source>
-        <translation>Target %1 is not set (Settings → Rating → Quick Move).</translation>
+        <translation>Target %1 isn’t set (Settings → Rating → Quick Move).</translation>
     </message>
     <message>
         <source>Verschieben</source>
@@ -5208,7 +5208,7 @@
     </message>
     <message>
         <source>Übersprungen – nichts geändert.</source>
-        <translation>Skipped – nothing changed.</translation>
+        <translation>Skipped—nothing changed.</translation>
     </message>
     <message numerus="yes">
         <source>%n Bild(er) nach „%1“ verschoben</source>
@@ -5242,7 +5242,7 @@
     </message>
     <message>
         <source>„Ersetzen“ legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z widerruft alles.</source>
-        <translation>Replace moves the existing file to the Trash, “Keep Both” gives the new one a name like “%1”. ⌘Z undoes everything.</translation>
+        <translation>“Replace” moves the existing file to the Trash; “Keep Both” gives the new one a name like “%1”. ⌘Z undoes everything.</translation>
     </message>
     <message>
         <source>Ersetzen</source>
@@ -5258,7 +5258,7 @@
     </message>
     <message>
         <source>Für alle %1 Konflikte</source>
-        <translation>For all %1 conflicts</translation>
+        <translation>Apply to all %1 conflicts</translation>
     </message>
 </context>
 <context>
@@ -5285,7 +5285,7 @@
     </message>
     <message>
         <source>Markiert</source>
-        <translation>Pick</translation>
+        <translation>Picked</translation>
     </message>
     <message>
         <source>Abgelehnt</source>
@@ -5296,11 +5296,11 @@
     <name>lf::RatingStore</name>
     <message>
         <source>„%1“ konnte nicht geschrieben werden (Ordner schreibgeschützt?).</source>
-        <translation>“%1” could not be written (folder read-only?).</translation>
+        <translation>“%1” couldn’t be written (folder read-only?).</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
-        <translation>“%1” cannot be read.</translation>
+        <translation>“%1” can’t be read.</translation>
     </message>
     <message>
         <source>„%1“ ist zu groß.</source>
@@ -5308,11 +5308,11 @@
     </message>
     <message>
         <source>Die XMP-Datei „%1“ ist beschädigt oder unbekannt aufgebaut und wird nicht verändert.</source>
-        <translation>The XMP file “%1” is damaged or has an unknown structure and is not changed.</translation>
+        <translation>The XMP file “%1” is damaged or has an unknown structure, so it isn’t changed.</translation>
     </message>
     <message>
         <source>„%1“ konnte nicht ersetzt werden.</source>
-        <translation>“%1” could not be replaced.</translation>
+        <translation>“%1” couldn’t be replaced.</translation>
     </message>
     <message>
         <source>Die Datei existiert nicht mehr.</source>
@@ -5324,11 +5324,11 @@
     </message>
     <message>
         <source>In dieses Format kann die Bewertung nicht sicher geschrieben werden.</source>
-        <translation>The rating cannot be written safely into this format.</translation>
+        <translation>The rating can’t be written safely to this format.</translation>
     </message>
     <message>
         <source>In animierte oder mehrseitige Dateien wird nicht geschrieben.</source>
-        <translation>Animated or multi-page files are not written.</translation>
+        <translation>Animated or multipage files aren’t written to.</translation>
     </message>
     <message>
         <source>Die Datei ist schreibgeschützt.</source>
@@ -5336,23 +5336,23 @@
     </message>
     <message>
         <source>Die Bewertung ließ sich nicht ins Bild schreiben.</source>
-        <translation>The rating could not be written into the image.</translation>
+        <translation>The rating couldn’t be written to the image.</translation>
     </message>
     <message>
         <source>Die Bewertung ließ sich nicht ohne Neukodieren ins Bild schreiben.</source>
-        <translation>The rating could not be written into the image without re-encoding.</translation>
+        <translation>The rating couldn’t be written to the image without re-encoding.</translation>
     </message>
     <message>
         <source>„%1“ wurde inzwischen verändert – Bewertung nicht gesichert.</source>
-        <translation>“%1” was changed in the meantime – rating not saved.</translation>
+        <translation>“%1” was changed in the meantime—rating not saved.</translation>
     </message>
     <message>
         <source>Die Datei konnte nicht ersetzt werden.</source>
-        <translation>The file could not be replaced.</translation>
+        <translation>The file couldn’t be replaced.</translation>
     </message>
     <message>
         <source>Finder-Tags werden auf diesem System nicht unterstützt.</source>
-        <translation>Finder tags are not supported on this system.</translation>
+        <translation>Finder tags aren’t supported on this system.</translation>
     </message>
     <message>
         <source>Kein Speicherort für Bewertungen gewählt (Einstellungen → Bewertung).</source>
@@ -5372,27 +5372,27 @@
     </message>
     <message>
         <source>Die Datei kann nicht gelesen werden.</source>
-        <translation>The file cannot be read.</translation>
+        <translation>The file can’t be read.</translation>
     </message>
     <message>
         <source>Das XMP im Bild ist beschädigt und wird nicht verändert.</source>
-        <translation>The XMP in the image is damaged and is left unchanged.</translation>
+        <translation>The XMP in the image is damaged, so it isn’t changed.</translation>
     </message>
     <message>
         <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
-        <translation>The rating could not be written into the image losslessly.</translation>
+        <translation>The rating couldn’t be written to the image losslessly.</translation>
     </message>
     <message>
         <source>Zusatzbilder der Datei (z. B. eine HDR-Gain-Map) gingen beim Schreiben verloren.</source>
-        <translation>Auxiliary images of the file (e.g. an HDR gain map) were lost while writing.</translation>
+        <translation>Auxiliary images in the file (such as an HDR gain map) were lost while writing.</translation>
     </message>
     <message>
         <source>Tags von „%1“ konnten nicht gelesen werden: %2</source>
-        <translation>Tags of “%1” could not be read: %2</translation>
+        <translation>Couldn’t read tags of “%1”: %2</translation>
     </message>
     <message>
         <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
-        <translation>Tags of “%1” could not be set: %2</translation>
+        <translation>Couldn’t set tags of “%1”: %2</translation>
     </message>
 </context>
 <context>
@@ -5406,7 +5406,7 @@
     <name>lf::RenameController</name>
     <message>
         <source>Bitte gib einen Namen ein.</source>
-        <translation>Please enter a name.</translation>
+        <translation>Enter a name.</translation>
     </message>
     <message>
         <source>Der Name darf keinen Schrägstrich (/) und keinen Doppelpunkt (:) enthalten.</source>
@@ -5414,7 +5414,7 @@
     </message>
     <message>
         <source>Namen, die mit einem Punkt beginnen, sind für Systemdateien reserviert.</source>
-        <translation>Names that begin with a dot are reserved for the system.</translation>
+        <translation>Names that begin with a dot are reserved for system files.</translation>
     </message>
     <message>
         <source>Der Name enthält ungültige Zeichen.</source>
@@ -5426,7 +5426,7 @@
     </message>
     <message>
         <source>„%1“ existiert bereits. Bitte wähle einen anderen Namen.</source>
-        <translation>“%1” already exists. Please choose a different name.</translation>
+        <translation>“%1” already exists. Choose a different name.</translation>
     </message>
     <message>
         <source>Neuer Dateiname</source>
@@ -5446,7 +5446,7 @@
     </message>
     <message>
         <source>Endung ändern?</source>
-        <translation>Change file extension?</translation>
+        <translation>Change extension?</translation>
     </message>
     <message>
         <source>Die Datei wird dadurch nicht umgewandelt. Andere Apps erkennen sie danach eventuell nicht mehr.</source>
@@ -5505,7 +5505,7 @@
     </message>
     <message>
         <source>SVG über resvg ist in diesem Build nicht verfügbar.</source>
-        <translation>SVG via resvg is not available in this build.</translation>
+        <translation>SVG via resvg isn’t available in this build.</translation>
     </message>
     <message>
         <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
@@ -5560,7 +5560,7 @@
     <name>lf::Shell</name>
     <message>
         <source>Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, falls eine erscheint.</source>
-        <translation>Lumaflip is still being set as the default app — please confirm the macOS prompt if one appears.</translation>
+        <translation>Lumaflip is still being set as the default app—confirm the macOS prompt if one appears.</translation>
     </message>
     <message>
         <source>unbekannter Typ</source>
@@ -5580,7 +5580,7 @@
     </message>
     <message>
         <source>Lumaflip ist nicht als App installiert (%1 fehlt).</source>
-        <translation>Lumaflip is not installed as an application (%1 is missing).</translation>
+        <translation>Lumaflip isn’t installed as an app (%1 is missing).</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gestartet werden.</source>
@@ -5588,19 +5588,19 @@
     </message>
     <message>
         <source>Batch-Dateien werden aus Sicherheitsgründen nicht gestartet.</source>
-        <translation>Batch files are not started, for security reasons.</translation>
+        <translation>For security reasons, batch files aren’t started.</translation>
     </message>
     <message>
         <source>„%1“ würde den Dateinamen als Befehl lesen und wird aus Sicherheitsgründen nicht gestartet.</source>
-        <translation>“%1” would read the file name as a command and is not started for security reasons.</translation>
+        <translation>“%1” would read the file name as a command, so it isn’t started for security reasons.</translation>
     </message>
     <message>
         <source>Die App wurde nicht gefunden.</source>
-        <translation>The program was not found.</translation>
+        <translation>The app wasn’t found.</translation>
     </message>
     <message>
         <source>Windows erlaubt Apps nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
-        <translation>Windows does not let programs make themselves the default app. The “Default apps” settings have been opened: choose Lumaflip there for the file types you want.</translation>
+        <translation>Windows doesn’t let apps set themselves as the default app. The Default apps settings have been opened: choose Lumaflip there for the file types you want.</translation>
     </message>
 </context>
 <context>
@@ -5650,7 +5650,7 @@
     <name>lf::StartScreenRecent</name>
     <message>
         <source>Zuletzt geöffnet</source>
-        <translation>Open Recent</translation>
+        <translation>Recently Opened</translation>
     </message>
 </context>
 <context>
@@ -5673,7 +5673,7 @@
     </message>
     <message>
         <source>„%1“ existiert nicht mehr.</source>
-        <translation type="unfinished">“%1” no longer exists.</translation>
+        <translation>“%1” no longer exists.</translation>
     </message>
     <message>
         <source>Dieses Dateisystem unterstützt keine Tags.</source>
@@ -5719,11 +5719,11 @@
     <name>lf::UndoBackupStore</name>
     <message>
         <source>Die Sicherungskopie für „Widerrufen“ existiert nicht mehr.</source>
-        <translation>The backup for Undo no longer exists.</translation>
+        <translation>The backup copy for Undo no longer exists.</translation>
     </message>
     <message>
         <source>Nicht genug Speicherplatz für die Sicherungskopie (Widerrufen) – nichts gesichert.</source>
-        <translation>Not enough space for the backup copy (Undo) — nothing was saved.</translation>
+        <translation>Not enough disk space for the backup copy (Undo)—nothing was saved.</translation>
     </message>
 </context>
 <context>
@@ -5765,7 +5765,7 @@
     </message>
     <message>
         <source>„%1“ kann nicht geöffnet werden</source>
-        <translation>“%1” cannot be opened</translation>
+        <translation>“%1” can’t be opened</translation>
     </message>
     <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
@@ -5948,7 +5948,7 @@
     </message>
     <message>
         <source>Keine Drehung zu sichern – drehe das Bild zuerst mit ⌘L oder ⌘R</source>
-        <translation>No rotation to save — rotate first with ⌘L or ⌘R</translation>
+        <translation>No rotation to save—rotate the image first with ⌘L or ⌘R</translation>
     </message>
     <message>
         <source>Drehung sichern</source>
@@ -5996,7 +5996,7 @@
     </message>
     <message>
         <source>Bilder in Archiven und PDF-Seiten können nicht als Schreibtischhintergrund festgelegt werden.</source>
-        <translation>Images in archives and PDF pages cannot become the desktop picture.</translation>
+        <translation>Images in archives and PDF pages can’t be set as the desktop picture.</translation>
     </message>
     <message>
         <source>Es wurde kein Bildschirm gefunden.</source>
@@ -6009,7 +6009,7 @@
     </message>
     <message>
         <source>„%1“ ist nicht installiert.</source>
-        <translation>“%1” is not installed.</translation>
+        <translation>“%1” isn’t installed.</translation>
     </message>
     <message>
         <source>„%1“ ist fehlgeschlagen.</source>
@@ -6017,11 +6017,11 @@
     </message>
     <message>
         <source>Alle Bildschirme</source>
-        <translation>All Screens</translation>
+        <translation>All Displays</translation>
     </message>
     <message>
         <source>Diese Desktopumgebung wird nicht unterstützt.</source>
-        <translation>This desktop environment is not supported.</translation>
+        <translation>This desktop environment isn’t supported.</translation>
     </message>
 </context>
 <context>
@@ -6044,24 +6044,24 @@
     </message>
     <message>
         <source>Fokuspunkte an</source>
-        <translation>AF points on</translation>
+        <translation>Focus points on</translation>
     </message>
     <message>
         <source>Fokuspunkte aus</source>
-        <translation>AF points off</translation>
+        <translation>Focus points off</translation>
     </message>
     <message>
         <source>Fokuspunkte: %1</source>
         <extracomment>%1 = where the AF points come from (&quot;Canon&quot;, &quot;Sony&quot;, &quot;EXIF&quot; …)</extracomment>
-        <translation>AF points: %1</translation>
+        <translation>Focus points: %1</translation>
     </message>
     <message>
         <source>Keine Fokuspunkte in den Metadaten</source>
-        <translation>No AF points in the metadata</translation>
+        <translation>No focus points in the metadata</translation>
     </message>
     <message>
         <source>Zuschneiden ist nur in der Einzelbildansicht möglich.</source>
-        <translation>Cropping works in the single image view.</translation>
+        <translation>Cropping is only possible in single image view.</translation>
     </message>
     <message>
         <source>Kein Bild zum Zuschneiden.</source>
@@ -6069,7 +6069,7 @@
     </message>
     <message>
         <source>Zuschneiden: Rahmen ziehen – Enter sichert, Esc bricht ab</source>
-        <translation>Crop: drag a frame – Enter saves, Esc cancels</translation>
+        <translation>Crop: drag a frame—Enter saves, Esc cancels</translation>
     </message>
     <message>
         <source>Der vorherige Zuschnitt wird noch gesichert.</source>
@@ -6098,7 +6098,7 @@
     </message>
     <message>
         <source>„%1“ existiert bereits. Möchtest du die Datei ersetzen?</source>
-        <translation>“%1” already exists. Replace it?</translation>
+        <translation>“%1” already exists. Do you want to replace it?</translation>
     </message>
     <message>
         <source>Das zugeschnittene Bild bekommt die Endung des Originals (.%1).</source>
@@ -6110,7 +6110,7 @@
     </message>
     <message>
         <source>Der Zuschnitt konnte nicht gesichert werden.</source>
-        <translation>The crop could not be saved.</translation>
+        <translation>The crop couldn’t be saved.</translation>
     </message>
     <message>
         <source>Zugeschnitten exportiert als „%1“</source>
@@ -6147,15 +6147,15 @@
     <message numerus="yes">
         <source>%n Bilder konnten nicht exportiert werden.</source>
         <translation>
-            <numerusform>%n image could not be exported.</numerusform>
-            <numerusform>%n images could not be exported.</numerusform>
+            <numerusform>%n image couldn’t be exported.</numerusform>
+            <numerusform>%n images couldn’t be exported.</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>Export abgebrochen – %n Bilder exportiert</source>
         <translation>
-            <numerusform>Export cancelled – %n image exported</numerusform>
-            <numerusform>Export cancelled – %n images exported</numerusform>
+            <numerusform>Export canceled—%n image exported</numerusform>
+            <numerusform>Export canceled—%n images exported</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -6177,7 +6177,7 @@
     <name>lf::WindowExtras</name>
     <message>
         <source>Ordnerkarte</source>
-        <translation>Map</translation>
+        <translation>Folder Map</translation>
     </message>
     <message>
         <source>Name: „%1“</source>
@@ -6193,11 +6193,11 @@
     </message>
     <message>
         <source>Blättern, Zoom und Ausschnitt laufen mit den anderen gekoppelten Fenstern</source>
-        <translation>Browsing, zoom and visible area follow the other linked windows</translation>
+        <translation>Browsing, zoom, and visible area follow the other linked windows</translation>
     </message>
     <message>
         <source>Kein Dateiname passt zu „%1“ – Esc hebt den Filter auf</source>
-        <translation>No file name matches “%1” – Esc clears the filter</translation>
+        <translation>No file name matches “%1”—Esc clears the filter</translation>
     </message>
     <message>
         <source>Immer im Vordergrund</source>
@@ -6209,11 +6209,11 @@
     </message>
     <message>
         <source>Minimaler Fenstermodus – die Titelleiste erscheint, wenn sich die Maus bewegt</source>
-        <translation>Minimal window – the title bar appears when the mouse moves</translation>
+        <translation>Minimal window mode—the title bar appears when the pointer moves</translation>
     </message>
     <message>
         <source>Minimaler Fenstermodus aus</source>
-        <translation>Minimal window off</translation>
+        <translation>Minimal window mode off</translation>
     </message>
 </context>
 <context>
@@ -6232,15 +6232,15 @@
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
-        <translation>Live Text is not available on this Mac.</translation>
+        <translation>Live Text isn’t available on this Mac.</translation>
     </message>
     <message>
         <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
-        <translation>Live Text is turned off in the settings.</translation>
+        <translation>Live Text is turned off in Settings.</translation>
     </message>
     <message>
         <source>Live Text an – Text im Bild auswählen und kopieren</source>
-        <translation>Live Text on – select and copy text in the image</translation>
+        <translation>Live Text on—select and copy text in the image</translation>
     </message>
     <message>
         <source>Live Text aus</source>
@@ -6248,7 +6248,7 @@
     </message>
     <message>
         <source>Live Text ist während der HDR-Darstellung nicht verfügbar – schalte mit ⇧⌘H auf SDR um.</source>
-        <translation>Live Text is not available while HDR is shown – switch to SDR with ⇧⌘H.</translation>
+        <translation>Live Text isn’t available while HDR is shown—switch to SDR with ⇧⌘H.</translation>
     </message>
     <message>
         <source>Es ist kein Bild geöffnet.</source>
@@ -6256,7 +6256,7 @@
     </message>
     <message>
         <source>Quick Look ist nicht verfügbar.</source>
-        <translation>Quick Look is not available.</translation>
+        <translation>Quick Look isn’t available.</translation>
     </message>
     <message>
         <source>Als Schreibtischhintergrund festlegen</source>
@@ -6264,7 +6264,7 @@
     </message>
     <message>
         <source>„%1“ als Schreibtischhintergrund festlegen?</source>
-        <translation>Set “%1” as desktop picture?</translation>
+        <translation>Set “%1” as the desktop picture?</translation>
     </message>
     <message>
         <source>Auf allen Bildschirmen</source>
@@ -6280,11 +6280,11 @@
     </message>
     <message>
         <source>Als Schreibtischhintergrund festgelegt</source>
-        <translation>Set as desktop picture</translation>
+        <translation>Desktop picture set</translation>
     </message>
     <message>
         <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
-        <translation>The desktop picture could not be changed: %1</translation>
+        <translation>The desktop picture couldn’t be changed: %1</translation>
     </message>
 </context>
 <context>
@@ -6306,7 +6306,7 @@
     </message>
     <message>
         <source>Keine XCF-Datei.</source>
-        <translation>Not a XCF file.</translation>
+        <translation>Not an XCF file.</translation>
     </message>
     <message>
         <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
@@ -6314,7 +6314,7 @@
     </message>
     <message>
         <source>Die Bittiefe der XCF-Datei wird nicht unterstützt.</source>
-        <translation>The color depth of the XCF file is not supported.</translation>
+        <translation>The bit depth of the XCF file isn’t supported.</translation>
     </message>
     <message>
         <source>Nicht genug Arbeitsspeicher für das Bild.</source>
@@ -6322,7 +6322,7 @@
     </message>
     <message>
         <source>Die Komprimierung der XCF-Datei wird nicht unterstützt.</source>
-        <translation>The compression of the XCF file is not supported.</translation>
+        <translation>The compression of the XCF file isn’t supported.</translation>
     </message>
     <message>
         <source>Die Datei kann nicht gelesen werden.</source>
@@ -6353,7 +6353,7 @@
     </message>
     <message>
         <source>ZIP-Archive dieser Art (mehrteilig, ZIP64) werden nicht unterstützt.</source>
-        <translation>ZIP archives of this kind (multi-part, ZIP64) are not supported.</translation>
+        <translation>ZIP archives of this kind (multipart, ZIP64) aren’t supported.</translation>
     </message>
     <message>
         <source>„%1“ fehlt im Archiv.</source>
@@ -6365,7 +6365,7 @@
     </message>
     <message>
         <source>Die Komprimierungsart von „%1“ wird nicht unterstützt.</source>
-        <translation>The compression method of “%1” is not supported.</translation>
+        <translation>The compression method of “%1” isn’t supported.</translation>
     </message>
 </context>
 </TS>

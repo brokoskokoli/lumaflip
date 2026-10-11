@@ -72,7 +72,7 @@ subscription, no account and no telemetry.
 - Hold `L` for a 100 % / 200 % loupe under the cursor. Lock the zoom (⇧Z) to check focus across a burst.
 
 **Folder map and metadata**
-- **Folder map** (View → Map, ⇧⌘M): every geotagged image in the folder on one map, with nearby
+- **Folder map** (View → Folder Map, ⇧⌘M): every geotagged image in the folder on one map, with nearby
   points clustered. The current image is highlighted and follows as you flip.
 - Info panel with file, image and camera data, a histogram and Finder tags, plus a window listing
   all raw EXIF/IPTC/XMP metadata.
@@ -81,7 +81,7 @@ subscription, no account and no telemetry.
 - Native menus, light and dark mode, full-screen mode, a slideshow, lossless JPEG rotation, rename,
   Share, drag out to other apps, and one-click "Set as Default App for Images".
 - Every shortcut and mouse/trackpad action can be remapped, with conflict detection and presets
-  ("Mac Standard", "Windows Viewer Habits", "Photographer / Lightroom").
+  ("Mac Default", "Windows Image Viewer", "Photography / Lightroom").
 - Automatic, signed updates via Sparkle (can be turned off).
 
 **Multilingual**: available in 18 languages. It follows the system language, or you can pick one
@@ -90,7 +90,7 @@ are welcome.
 
 **Private by design**
 - No telemetry, no account, no cloud. The only network traffic is the update check (can be turned
-  off) and map tiles, which load only after you click "Show map".
+  off) and map tiles, which load only after you click "Show Map".
 - No Full Disk Access needed.
 - Decoders for less common formats (SVG, XCF, PSB, QOI, …) run in a **sandboxed helper process**
   with no network and no write access. A malformed file cannot crash the app.

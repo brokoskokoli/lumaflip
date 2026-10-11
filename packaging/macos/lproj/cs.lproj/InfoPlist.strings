@@ -1,11 +1,11 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 /* Localized Info.plist texts (cs); maintained by hand here (not generated from the .ts catalogues) - see translations/README.md */
-"NSAppleEventsUsageDescription" = "Lumaflip se na požádání zeptá nejpřednějšího okna Finderu na jeho řazení, aby se obrázky zobrazily ve stejném pořadí.";
-"NSDesktopFolderUsageDescription" = "Lumaflip čte složku otevřeného obrázku, abyste mohli listovat pomocí šipek.";
-"NSDocumentsFolderUsageDescription" = "Lumaflip čte složku otevřeného obrázku, abyste mohli listovat pomocí šipek.";
-"NSDownloadsFolderUsageDescription" = "Lumaflip čte složku otevřeného obrázku, abyste mohli listovat pomocí šipek.";
-"NSRemovableVolumesUsageDescription" = "Lumaflip čte složku otevřeného obrázku, abyste mohli listovat pomocí šipek.";
-"NSNetworkVolumesUsageDescription" = "Lumaflip čte složku otevřeného obrázku, abyste mohli listovat pomocí šipek.";
+"NSAppleEventsUsageDescription" = "Pokud to zapnete, Lumaflip se zeptá okna Finderu v popředí na jeho řazení, aby se obrázky zobrazily ve stejném pořadí.";
+"NSDesktopFolderUsageDescription" = "Lumaflip čte složku otevřeného obrázku, abyste v ní mohli listovat pomocí kláves se šipkami.";
+"NSDocumentsFolderUsageDescription" = "Lumaflip čte složku otevřeného obrázku, abyste v ní mohli listovat pomocí kláves se šipkami.";
+"NSDownloadsFolderUsageDescription" = "Lumaflip čte složku otevřeného obrázku, abyste v ní mohli listovat pomocí kláves se šipkami.";
+"NSRemovableVolumesUsageDescription" = "Lumaflip čte složku otevřeného obrázku, abyste v ní mohli listovat pomocí kláves se šipkami.";
+"NSNetworkVolumesUsageDescription" = "Lumaflip čte složku otevřeného obrázku, abyste v ní mohli listovat pomocí kláves se šipkami.";
 "Bild" = "Obrázek";
 "Bild (sonstige)" = "Obrázek (ostatní)";
 "Ordner" = "Složka";

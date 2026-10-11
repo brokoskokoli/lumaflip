@@ -1,11 +1,11 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 /* Localized Info.plist texts (pl); maintained by hand here (not generated from the .ts catalogues) - see translations/README.md */
-"NSAppleEventsUsageDescription" = "Lumaflip na żądanie pyta okno Findera na wierzchu o jego sortowanie, aby wyświetlać obrazy w tej samej kolejności.";
-"NSDesktopFolderUsageDescription" = "Lumaflip odczytuje folder otwartego obrazu, aby można było przeglądać obrazy za pomocą klawiszy strzałek.";
-"NSDocumentsFolderUsageDescription" = "Lumaflip odczytuje folder otwartego obrazu, aby można było przeglądać obrazy za pomocą klawiszy strzałek.";
-"NSDownloadsFolderUsageDescription" = "Lumaflip odczytuje folder otwartego obrazu, aby można było przeglądać obrazy za pomocą klawiszy strzałek.";
-"NSRemovableVolumesUsageDescription" = "Lumaflip odczytuje folder otwartego obrazu, aby można było przeglądać obrazy za pomocą klawiszy strzałek.";
-"NSNetworkVolumesUsageDescription" = "Lumaflip odczytuje folder otwartego obrazu, aby można było przeglądać obrazy za pomocą klawiszy strzałek.";
+"NSAppleEventsUsageDescription" = "Jeśli włączysz tę opcję, Lumaflip pyta okno Findera na wierzchu o jego sortowanie, aby wyświetlać obrazy w tej samej kolejności.";
+"NSDesktopFolderUsageDescription" = "Lumaflip odczytuje folder otwartego obrazu, aby można było przeglądać go klawiszami strzałek.";
+"NSDocumentsFolderUsageDescription" = "Lumaflip odczytuje folder otwartego obrazu, aby można było przeglądać go klawiszami strzałek.";
+"NSDownloadsFolderUsageDescription" = "Lumaflip odczytuje folder otwartego obrazu, aby można było przeglądać go klawiszami strzałek.";
+"NSRemovableVolumesUsageDescription" = "Lumaflip odczytuje folder otwartego obrazu, aby można było przeglądać go klawiszami strzałek.";
+"NSNetworkVolumesUsageDescription" = "Lumaflip odczytuje folder otwartego obrazu, aby można było przeglądać go klawiszami strzałek.";
 "Bild" = "Obraz";
 "Bild (sonstige)" = "Obraz (inny)";
 "Ordner" = "Folder";

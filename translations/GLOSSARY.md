@@ -211,3 +211,98 @@ Zeichenkettenliterale im Code (auch über mehrere Zeilen verteilte). Jede Ersetz
 ausgegeben: Treffer in Daten (z. B. Tag-Standardwerte) oder in einem anderen Kontext von Hand
 zurücknehmen. Ändert sich die Bedeutung, nicht umbenennen – dann soll lupdate den Text neu
 („unfinished“) anlegen.
+
+## Englisch, Polnisch, Tschechisch (en, pl, cs)
+
+Durchgesehen im Oktober 2026 (alle Texte, maschinell; Review durch Muttersprachler:innen steht
+aus). Quellen: macOS-Lokalisierungen auf einem Mac mit macOS 27 (`AppKit …/MenuCommands.loctable`,
+`Preview.app …/MainMenu.loctable`, `FinderKit …/LocalizableMerged.loctable`, Abschnitte
+`en`/`en_CA`, `pl`, `cs`), Apple Style Guide und Human Interface Guidelines (Englisch),
+Microsoft-Terminologie für reine Windows-Texte, Lightroom-Begriffe für die Fotografie.
+
+### Stilregeln
+
+| Thema | Englisch (en) | Polnisch (pl) | Tschechisch (cs) |
+|---|---|---|---|
+| Anrede | *you*, Imperativ ohne „please“ („Choose a different name.“) | du-Form wie Apple pl („Czy na pewno chcesz …?“, „Wybierz …“) | Sie-Form (vykání) wie Apple cs („Opravdu chcete …?“, „Zkuste to znovu.“) |
+| Befehle | **Title Case** (HIG): Menüs, Menübefehle, Knöpfe, Fenstertitel, Gruppenüberschriften, Spaltenköpfe, Einträge von Aufklappmenüs („Show When Pointer Moves“) | Imperativ wie Apple pl („Zamknij“, „Przenieś do Kosza“) | Infinitiv wie Apple cs („Zavřít“, „Přesunout do koše“) |
+| Labels, Hilfetexte | **Sentence case**: Checkboxen, Feldbeschriftungen („Maximum size:“), Tooltips, Status- und Fehlermeldungen | Satzschreibung | Satzschreibung |
+| Kurzformen | wie Apple: can’t, couldn’t, isn’t, doesn’t, won’t (Apostroph U+2019) | – | – |
+| Auslassungspunkte | „…“ direkt angehängt: „Open…“, „Loading…“ | „Otwórz…“ | „Otevřít…“ |
+| Anführungszeichen | “…” (U+201C/U+201D) | „…” (U+201E/U+201D, wie Apple pl) | „…“ (U+201E/U+201C) |
+| Gedankenstrich im Satz | Geviertstrich ohne Leerzeichen („nothing was saved—crop again“); Fenstertitel und Trenner zwischen Namen „ — “ | „ – “ | „ – “ |
+| Aufzählungen | serielles Komma („Lightroom, Capture One, and darktable“) | – | – |
+| Schreibung | US-Englisch (color, analyze, canceled) | – | – |
+| Zahlen | „100%“, „2 GB“, „1–9“ | „100%“, „2 GB“ | „100 %“, „2 GB“ |
+
+### Begriffe
+
+| Begriff | Deutsch | Englisch | Polnisch | Tschechisch |
+|---|---|---|---|---|
+| Menüs | Ablage / Bearbeiten / Darstellung / Fenster / Hilfe | File / Edit / View / Window / Help | Plik / Edycja / Widok / Okno / Pomoc | Soubor / Úpravy / Zobrazení / Okno / Nápověda |
+| Settings… | Einstellungen … | Settings… | Ustawienia… | Nastavení… |
+| Einstellungsbereich „Fenster“ | Fenster | Windows | Okna | Okna |
+| Open Recent / Clear Menu | Benutzte Dokumente / Einträge löschen | Open Recent / Clear Menu | Otwórz ostatnie / Wyczyść menu | Otevřít poslední položku / Vyprázdnit nabídku |
+| Startbildschirm | Zuletzt geöffnet | Recently Opened | Ostatnio otwierane | Naposledy otevřené |
+| Save / Save As | Sichern / Sichern unter … | Save / Save As… | Zachowaj / Zachowaj jako… | Uložit / Uložit jako… |
+| Undo / Redo | Widerrufen / Wiederholen | Undo / Redo | Cofnij / Przywróć | Odvolat akci / Opakovat akci (im Satz: odvolat) |
+| Copy | Kopieren | Copy | Kopiuj | Zkopírovat |
+| Move to Trash | In den Papierkorb legen | Move to Trash (im Satz: move to the Trash) | Przenieś do Kosza | Přesunout do koše |
+| Show in Finder | Im Finder zeigen | Show in Finder (Fließtext: „in the Finder“) | Pokaż w Finderze | Zobrazit ve Finderu |
+| Get Info | Informationen | Get Info / Info | Informacje | Informace |
+| Open With / Share | Öffnen mit / Teilen | Open With / Share | Otwórz w / Udostępnij | Otevřít pomocí / Sdílet |
+| Rename | Umbenennen … | Rename… | Zmień nazwę… | Přejmenovat… |
+| Minimize / Zoom / Bring All to Front | Minimieren / Zoomen / Alle nach vorne bringen | Minimize / Zoom / Bring All to Front | Minimalizuj / Zoom / Umieść wszystko na wierzchu | Minimalizovat / Přepnout velikost / Převést vše do popředí |
+| Full screen | Vollbild | Full Screen | Pełny ekran | Celá obrazovka |
+| Tab | Tab | tab | karta | panel |
+| Choose… | Wählen … | Choose… | Wybierz… | Vybrat… |
+| Check for Updates | Nach Updates suchen … | Check for Updates… | Sprawdź uaktualnienia… | Vyhledat aktualizace… |
+| Desktop picture | Schreibtischhintergrund (Windows: Desktophintergrund) | desktop picture (Windows: desktop background) | obraz biurka (Windows: tło pulpitu) | obrázek plochy (Windows: pozadí plochy) |
+| App / default app | App / Standard-App | app / default app (Windows: Default apps) | aplikacja / domyślna aplikacja (Windows: Aplikacje domyślne) | aplikace / výchozí aplikace (Windows: Výchozí aplikace) |
+| Keyboard shortcut | Tastenkürzel | keyboard shortcut | skrót klawiszowy | klávesová zkratka |
+| Shortcut (Apple) | Kurzbefehl, Kurzbefehle-App | shortcut, Shortcuts app | skrót, aplikacja Skróty | zkratka, aplikace Zkratky |
+| Custom action | Eigene Aktion | Custom Action | własna akcja | vlastní akce |
+| Status bar / title bar | Statusleiste / Titelleiste | status bar / title bar | pasek stanu / pasek tytułu | stavový řádek / záhlaví okna |
+| Info panel | Infopanel | Info Panel | panel informacji | informační panel |
+| Collection | Sammlung | collection | kolekcja | kolekce |
+| File extension | Endung | extension | rozszerzenie | přípona |
+| Memory / disk space | Arbeitsspeicher / Speicherplatz | memory / disk space | pamięć / miejsce na dysku | paměť / místo na disku |
+| Display | Bildschirm | display | ekran | monitor |
+| Pointer / scroll wheel | Mauszeiger / Mausrad | pointer / scroll wheel | wskaźnik / kółko myszy | ukazatel / kolečko myši |
+| Backup copy (Widerrufen) | Sicherungskopie | backup copy | kopia zapasowa | záložní kopie |
+| Settings backup | Backup der Einstellungen | Settings Backup | Kopia zapasowa ustawień | Záloha nastavení |
+| Image | Bild | image (nicht *photo*) | obraz | obrázek |
+| Visible area / pan | Ausschnitt / Ausschnitt verschieben | visible area / Pan (im Satz: pan the view) | widoczny obszar / przesuń widok | zobrazená oblast / posunout zobrazení |
+| Zoom to fit / actual size | Einpassen / 100 % | Zoom to Fit / Actual Size (100%) | Dopasuj / 100% | Velikost podle okna / 100 % |
+| Zoom in / out / lock | Vergrößern / Verkleinern / Zoom fixieren | Zoom In / Zoom Out / Lock Zoom | Powiększ / Pomniejsz / Zablokuj powiększenie | Zvětšit / Zmenšit / Zamknout zvětšení |
+| Filmstrip / grid / loupe | Filmstreifen / Raster / Lupe | Filmstrip / Grid / Loupe | Taśma filmowa / Siatka / Lupa | Filmový pás / Mřížka / Lupa |
+| Slideshow / frame | Diashow / Einzelbild | Slideshow / frame | Pokaz slajdów / klatka | Prezentace / snímek |
+| Overlays | Einblendungen | Overlays | Nakładki | Překryvy |
+| Clipping warning | Über-/Unterbelichtungswarnung | Clipping Warning | ostrzeżenie o prześwietleniu i niedoświetleniu | upozornění na přeexpozici/podexpozici |
+| Focus peaking / focus points | Focus Peaking / Fokuspunkte | Focus Peaking / Focus Points | Focus peaking / punkty ostrości | Focus peaking / body zaostření |
+| Folder map / location | Ordnerkarte / Aufnahmeort | Folder Map / location | Mapa folderu / lokalizacja | Mapa složky / poloha |
+| Compare | Vergleich | Compare | Porównanie | Porovnání |
+| Crop (action / area) | Zuschneiden / Zuschnitt | Crop / crop, crop area (nie *selection*) | Kadruj / kadr, obszar kadrowania | Oříznout / oříznutí, oblast oříznutí |
+| Rotate / flip | Links drehen / Horizontal spiegeln | Rotate Left / Flip Horizontal | Obróć w lewo / Odwróć poziomo | Otočit doleva / Převrátit vodorovně |
+| Lossless / re-encode | verlustfrei / neu kodieren | lossless / re-encode | bezstratnie / zakodować ponownie | bezeztrátový / překódovat |
+| Auxiliary images / sidecar | Zusatzbilder / XMP-Zusatzdatei | auxiliary images / XMP sidecar file | obrazy dodatkowe / plik dodatkowy XMP | doplňkové obrázky / doprovodný soubor XMP |
+| Quick Move | Schnellablage | Quick Move | Szybkie przenoszenie | Rychlé přesunutí |
+| Name conflict | Ersetzen / Beide behalten / Überspringen | Replace / Keep Both / Skip | Zastąp / Pozostaw obie / Pomiń | Nahradit / Ponechat obě / Přeskočit |
+| Rating / stars / unrated | Bewertung / Sterne / unbewertet | Rating / stars / unrated | ocena / gwiazdki / bez oceny | hodnocení / hvězdičky / bez hodnocení |
+| Culling | Aussortieren / Aussortiermodus | Culling / Culling Mode | selekcja / tryb selekcji | třídění / režim třídění |
+| Pick (Befehl / Zustand / Filter) | Markieren / Markiert / nur markierte | Pick / Picked / Picks Only | Oznacz jako wybrane / Wybrane / Tylko wybrane | Označit jako vybrané / Vybráno / Jen vybrané |
+| Reject (Befehl / Zustand) | Ablehnen / Abgelehnt | Reject / Rejected | Odrzuć / odrzucone | Odmítnout / Odmítnuto |
+| Unflag | Markierung aufheben | Unflag | Usuń flagę | Zrušit označení |
+
+Anmerkungen:
+
+- **Englisch:** Wo die Spalte „Englisch“ der Tabellen oben (Stand vor dieser Durchsicht)
+  abweicht, gilt dieser Abschnitt. Geändert wurden unter anderem: *Folder Map* (statt „Map“), *Focus Points* (statt
+  „AF Points“), *Clipping Warning* (statt „Over-/Underexposure“), *Minimal Window Mode*,
+  *Open in Editor* (statt „Open in Default Editor“), *Restore Default Zoom*, Presets
+  *Mac Default* / *Windows Image Viewer* / *Photography / Lightroom*.
+- **Polnisch:** Apple pl verwendet für „Save“ *Zachowaj*; „beibehalten“ ist deshalb *Pozostaw*.
+  „Quick Look“ und „Live Text“ bleiben als Produktnamen (macOS pl zeigt „Szybki przegląd“ bzw.
+  „Tekst na żywo“ – beim Review entscheiden).
+- **Tschechisch:** Vorschau (cs) verwendet sowohl *Zvětšit/Zmenšit* als auch *Přiblížit/Oddálit*;
+  Lumaflip nimmt *Zvětšit/Zmenšit* (passt zum Substantiv *zvětšení*).

@@ -1,21 +1,21 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 /* Localized Info.plist texts (en); maintained by hand here (not generated from the .ts catalogues) - see translations/README.md */
-"NSAppleEventsUsageDescription" = "If you choose, Lumaflip asks the frontmost Finder window for its sort order so that images are shown in the same order.";
+"NSAppleEventsUsageDescription" = "If you turn this on, Lumaflip asks the frontmost Finder window for its sort order so that images appear in the same order.";
 "NSDesktopFolderUsageDescription" = "Lumaflip reads the folder of the opened image so that you can flip through it with the arrow keys.";
 "NSDocumentsFolderUsageDescription" = "Lumaflip reads the folder of the opened image so that you can flip through it with the arrow keys.";
 "NSDownloadsFolderUsageDescription" = "Lumaflip reads the folder of the opened image so that you can flip through it with the arrow keys.";
 "NSRemovableVolumesUsageDescription" = "Lumaflip reads the folder of the opened image so that you can flip through it with the arrow keys.";
 "NSNetworkVolumesUsageDescription" = "Lumaflip reads the folder of the opened image so that you can flip through it with the arrow keys.";
 "Bild" = "Image";
-"Bild (sonstige)" = "Image (Other)";
+"Bild (sonstige)" = "Image (other)";
 "Ordner" = "Folder";
 "WBMP-Bild" = "WBMP image";
-"Comic-Archiv" = "Comic Book Archive";
+"Comic-Archiv" = "Comic book archive";
 "Archiv" = "Archive";
-"PDF-Dokument" = "PDF Document";
-"RAR-Archiv" = "RAR Archive";
-"7-Zip-Archiv" = "7-Zip Archive";
-"Comic-Archiv (ZIP)" = "Comic Book Archive (ZIP)";
-"Comic-Archiv (RAR)" = "Comic Book Archive (RAR)";
-"Comic-Archiv (7z)" = "Comic Book Archive (7z)";
+"PDF-Dokument" = "PDF document";
+"RAR-Archiv" = "RAR archive";
+"7-Zip-Archiv" = "7-Zip archive";
+"Comic-Archiv (ZIP)" = "Comic book archive (ZIP)";
+"Comic-Archiv (RAR)" = "Comic book archive (RAR)";
+"Comic-Archiv (7z)" = "Comic book archive (7z)";
 "NSHumanReadableCopyright" = "© 2026 brokoskokoli and contributors. License: GPL-3.0-or-later.";

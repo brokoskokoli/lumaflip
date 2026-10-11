@@ -135,7 +135,7 @@
     </message>
     <message>
         <source>Vollbild oder Modus beenden</source>
-        <translation>Celá obrazovka / ukončit režim</translation>
+        <translation>Ukončit celou obrazovku nebo režim</translation>
     </message>
     <message>
         <source>Esc</source>
@@ -193,9 +193,9 @@
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
         <extracomment>status bar while a folder with subfolders is read (F-OPEN-08)</extracomment>
         <translation>
-            <numerusform>Načítání podsložek… %1 složek, %n obrázek</numerusform>
-            <numerusform>Načítání podsložek… %1 složek, %n obrázky</numerusform>
-            <numerusform>Načítání podsložek… %1 složek, %n obrázků</numerusform>
+            <numerusform>Načítají se podsložky… složek: %1, %n obrázek</numerusform>
+            <numerusform>Načítají se podsložky… složek: %1, %n obrázky</numerusform>
+            <numerusform>Načítají se podsložky… složek: %1, %n obrázků</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -250,7 +250,7 @@
     </message>
     <message>
         <source>Zweite Datei: %1 – „RAW anzeigen“ wechselt</source>
-        <translation>Druhý soubor: %1 – „Zobrazit RAW“ přepne</translation>
+        <translation>Druhý soubor: %1 – „Zobrazit RAW“ na něj přepne</translation>
     </message>
 </context>
 <context>
@@ -295,7 +295,7 @@
     </message>
     <message>
         <source>Das erste Bild mit einem anderen übereinander vergleichen</source>
-        <translation>Porovnat první obrázek s jiným přes sebe</translation>
+        <translation>Porovnat první obrázek s jiným překrytím</translation>
     </message>
     <message>
         <source>%1 — %2</source>
@@ -312,7 +312,7 @@
     <name>lf::ContainerPolicy</name>
     <message>
         <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten sind hier nicht möglich.</source>
-        <translation>Obrázky v archivech a dokumentech PDF jsou otevřené jen k prohlížení – koš, přejmenování, přesun a hodnocení zde nejsou možné.</translation>
+        <translation>Obrázky v archivech a dokumentech PDF jsou otevřené jen k prohlížení – přesunutí do koše, přejmenování, přesunutí a hodnocení zde nejsou možné.</translation>
     </message>
 </context>
 <context>
@@ -335,7 +335,7 @@
     </message>
     <message>
         <source>Gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt. Mit ⌥ lässt sich ein Fenster einzeln verschieben.</source>
-        <translation>Propojená okna listují společně a sdílejí zvětšení a výřez. Podržením ⌥ posunete jen jedno okno.</translation>
+        <translation>Propojená okna listují společně a sdílejí zvětšení a zobrazenou oblast. Podržením ⌥ posunete jen jedno okno.</translation>
     </message>
     <message>
         <source>Dateiname (ohne Endung)</source>
@@ -343,7 +343,7 @@
     </message>
     <message>
         <source>Position in der Sammlung</source>
-        <translation>Pozice ve sbírce</translation>
+        <translation>Pozice v kolekci</translation>
     </message>
     <message>
         <source>Gemeinsam blättern nach:</source>
@@ -390,7 +390,7 @@
     </message>
     <message>
         <source>Zuschnitt in der Datei sichern (Enter, widerrufbar)</source>
-        <translation>Uložit ořez do souboru (Enter, lze vrátit)</translation>
+        <translation>Uložit oříznutí do souboru (Enter, lze odvolat)</translation>
     </message>
     <message>
         <source>Sichern unter …</source>
@@ -398,7 +398,7 @@
     </message>
     <message>
         <source>Zuschnitt als neue Datei sichern – das Original bleibt unverändert</source>
-        <translation>Uložit ořez jako nový soubor – originál zůstane beze změny</translation>
+        <translation>Uložit oříznutí jako nový soubor – originál zůstane beze změny</translation>
     </message>
     <message>
         <source>Abbrechen</source>
@@ -406,7 +406,7 @@
     </message>
     <message>
         <source>Zuschneiden beenden (Esc)</source>
-        <translation>Ukončit ořezávání (Esc)</translation>
+        <translation>Ukončit oříznutí (Esc)</translation>
     </message>
     <message>
         <source>%1 × %2 px</source>
@@ -418,11 +418,11 @@
     <name>lf::CropSave</name>
     <message>
         <source>Die Datei wurde inzwischen verändert – nichts gesichert. Schneide das Bild erneut zu.</source>
-        <translation>Soubor byl mezitím změněn – nic nebylo uloženo. Ořízněte znovu.</translation>
+        <translation>Soubor byl mezitím změněn – nic nebylo uloženo. Ořízněte obrázek znovu.</translation>
     </message>
     <message>
         <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden ist nur durch Neukodieren möglich – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
-        <translation>Soubor obsahuje další obrázky (např. HDR mapu zisku nebo druhý stereosnímek), které by po bezeztrátovém ořezu už neodpovídaly. Oříznout lze jen novým zakódováním – přijdete přitom o trochu kvality a o tyto další obrázky.</translation>
+        <translation>Soubor obsahuje doplňkové obrázky (např. mapu zisku HDR nebo druhý stereoskopický snímek), které by po bezeztrátovém oříznutí už neodpovídaly. Oříznutí je možné jen překódováním – přitom se ztratí část kvality obrazu a tyto doplňkové obrázky.</translation>
     </message>
     <message>
         <source>Frei</source>
@@ -442,11 +442,11 @@
     </message>
     <message>
         <source>Der Zuschnitt liegt nicht auf dem JPEG-Blockraster.</source>
-        <translation>Výběr neleží na mřížce bloků JPEG.</translation>
+        <translation>Oblast oříznutí není zarovnána na mřížku bloků JPEG.</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden von JPEG-Dateien ist in dieser Version nicht verfügbar.</source>
-        <translation>Bezeztrátový ořez souborů JPEG není v této verzi k dispozici.</translation>
+        <translation>Bezeztrátové oříznutí souborů JPEG není v této verzi k dispozici.</translation>
     </message>
     <message>
         <source>Die Datei existiert nicht mehr.</source>
@@ -458,19 +458,19 @@
     </message>
     <message>
         <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
-        <translation>Obrázky v archivech a dokumentech PDF se nemění. Výřez lze exportovat jako nový soubor.</translation>
+        <translation>Obrázky v archivech a dokumentech PDF se nemění. Oblast oříznutí lze exportovat jako nový soubor.</translation>
     </message>
     <message>
         <source>RAW-Dateien werden nie verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
-        <translation>Soubory RAW se nikdy nemění. Výřez lze exportovat jako nový soubor.</translation>
+        <translation>Soubory RAW se nikdy nemění. Oblast oříznutí lze exportovat jako nový soubor.</translation>
     </message>
     <message>
         <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gesichert werden. Der Zuschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
-        <translation>Animované nebo vícestránkové soubory nelze uložit oříznuté. Výřez prvního obrázku lze exportovat jako nový soubor.</translation>
+        <translation>Animované nebo vícestránkové soubory nelze uložit oříznuté. Oblast oříznutí prvního snímku lze exportovat jako nový soubor.</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
-        <translation>„%1“ je chráněn proti zápisu.</translation>
+        <translation>„%1“ je pouze pro čtení.</translation>
     </message>
     <message>
         <source>„Sichern unter“ überschreibt nie das Original – wähle einen anderen Namen.</source>
@@ -482,63 +482,63 @@
     </message>
     <message>
         <source>„%1“ existiert bereits.</source>
-        <translation>„%1“ už existuje.</translation>
+        <translation>„%1“ již existuje.</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
-        <translation>„%1“ nelze číst.</translation>
+        <translation>„%1“ nelze přečíst.</translation>
     </message>
     <message>
         <source>Kein Bildbereich ausgewählt.</source>
-        <translation>Není vybrána žádná oblast.</translation>
+        <translation>Není vybrána žádná oblast obrázku.</translation>
     </message>
     <message>
         <source>Der Zuschnitt umfasst das ganze Bild – es gibt nichts zuzuschneiden.</source>
-        <translation>Výběr zahrnuje celý obrázek – není co oříznout.</translation>
+        <translation>Oblast oříznutí zahrnuje celý obrázek – není co oříznout.</translation>
     </message>
     <message>
         <source>Für den verlustfreien Zuschnitt wurde der Zuschnittbereich an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
-        <translation>Pro bezeztrátový ořez byl výběr zarovnán na mřížku bloků JPEG (%1 × %2 pixelů) a má nyní %3 × %4 pixelů.</translation>
+        <translation>Pro bezeztrátové oříznutí byla oblast oříznutí zarovnána na mřížku bloků JPEG (%1 × %2 pixelů) a má nyní %3 × %4 pixelů.</translation>
     </message>
     <message>
         <source>Diese JPEG-Datei lässt sich nicht verlustfrei zuschneiden. Beim Neukodieren geht etwas Bildqualität verloren.</source>
-        <translation>Tento soubor JPEG nelze bezeztrátově oříznout. Nové zakódování mírně sníží kvalitu.</translation>
+        <translation>Tento soubor JPEG nelze bezeztrátově oříznout. Překódováním se ztratí část kvality obrazu.</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nicht gesichert werden.</source>
-        <translation>Ořez nelze uložit.</translation>
+        <translation>Oříznutí nelze uložit.</translation>
     </message>
     <message>
         <source>Beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
-        <translation>Při novém kódování by obrázek nezůstal přesně stejný (změnil by se barevný model, bitová hloubka, paleta nebo průhlednost).</translation>
+        <translation>Při překódování by obrázek nezůstal přesně stejný (změnil by se barevný model, bitová hloubka, paleta nebo průhlednost).</translation>
     </message>
     <message>
         <source>Dieses Format kann hier nicht geschrieben werden. Der Zuschnitt kann in einem anderen Format exportiert werden.</source>
-        <translation>Tento formát zde nelze zapsat. Výřez lze exportovat v jiném formátu.</translation>
+        <translation>Tento formát zde nelze zapsat. Oblast oříznutí lze exportovat v jiném formátu.</translation>
     </message>
     <message>
         <source>Dieses Format komprimiert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
-        <translation>Tento formát je ztrátový. Ořez lze uložit jen novým zakódováním obrázku – přitom se mírně sníží kvalita.</translation>
+        <translation>Tento formát používá ztrátovou kompresi. Oříznutí lze uložit jen překódováním obrázku – přitom se ztratí část kvality obrazu.</translation>
     </message>
     <message>
         <source>Zusatzbilder (%1) gehen dabei verloren.</source>
-        <translation>Další obrázky (%1) se přitom ztratí.</translation>
+        <translation>Doplňkové obrázky (%1) se přitom ztratí.</translation>
     </message>
     <message>
         <source>Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.</source>
-        <translation>Metadata (EXIF, XMP, IPTC) se při novém kódování ztratí.</translation>
+        <translation>Metadata (EXIF, XMP, IPTC) se při překódování ztratí.</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
-        <translation>Bezeztrátový ořez u tohoto obrázku není možný.</translation>
+        <translation>Bezeztrátové oříznutí u tohoto obrázku není možné.</translation>
     </message>
     <message>
         <source>Der Zuschnitt konnte nicht gesichert werden.</source>
-        <translation>Ořez se nepodařilo uložit.</translation>
+        <translation>Oříznutí se nepodařilo uložit.</translation>
     </message>
     <message>
         <source>Die Datei konnte nicht ersetzt werden.</source>
-        <translation>Soubor nelze nahradit.</translation>
+        <translation>Soubor se nepodařilo nahradit.</translation>
     </message>
     <message>
         <source>Nichts zuzuschneiden</source>
@@ -554,11 +554,11 @@
     </message>
     <message>
         <source>Zugeschnitten (verlustfrei neu kodiert)</source>
-        <translation>Oříznuto (bezeztrátově nově zakódováno)</translation>
+        <translation>Oříznuto (bezeztrátově překódováno)</translation>
     </message>
     <message>
         <source>Zugeschnitten (neu kodiert)</source>
-        <translation>Oříznuto (nově zakódováno)</translation>
+        <translation>Oříznuto (překódováno)</translation>
     </message>
 </context>
 <context>
@@ -569,23 +569,23 @@
     </message>
     <message>
         <source>AUSSORTIEREN</source>
-        <translation>VÝBĚR</translation>
+        <translation>TŘÍDĚNÍ</translation>
     </message>
     <message>
         <source>0–5  Sterne     P  Markieren     X  Ablehnen     U  Markierung aufheben</source>
-        <translation>0–5  Hvězdičky     P  Ponechat     X  Zamítnout     U  Zrušit označení</translation>
+        <translation>0–5  Hvězdičky     P  Označit jako vybrané     X  Odmítnout     U  Zrušit označení</translation>
     </message>
     <message>
         <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Widerrufen     Esc  Beenden</source>
-        <translation>← →  Procházet     M/C + 1–9  Přesunout/Kopírovat     ⌘Z  Odvolat     Esc  Ukončit</translation>
+        <translation>← →  Procházet     M/C + 1–9  Přesunout/Zkopírovat     ⌘Z  Odvolat     Esc  Ukončit</translation>
     </message>
     <message>
         <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U setzen Markierungen</source>
-        <translation>Režim výběru: číslice dávají hvězdičky, P/X/U označují</translation>
+        <translation>Režim třídění: číslice udělují hvězdičky, P/X/U nastavují označení</translation>
     </message>
     <message>
         <source>Aussortiermodus beendet</source>
-        <translation>Režim výběru ukončen</translation>
+        <translation>Režim třídění ukončen</translation>
     </message>
     <message>
         <source>%1: %2</source>
@@ -597,22 +597,22 @@
     </message>
     <message>
         <source>Keine abgelehnten Bilder</source>
-        <translation>Žádné zamítnuté obrázky</translation>
+        <translation>Žádné odmítnuté obrázky</translation>
     </message>
     <message numerus="yes">
         <source>%n abgelehnte(s) Bild(er) in den Papierkorb legen?</source>
         <translation>
-            <numerusform>Přesunout %n zamítnutý obrázek do koše?</numerusform>
-            <numerusform>Přesunout %n zamítnuté obrázky do koše?</numerusform>
-            <numerusform>Přesunout %n zamítnutých obrázků do koše?</numerusform>
+            <numerusform>Přesunout %n odmítnutý obrázek do koše?</numerusform>
+            <numerusform>Přesunout %n odmítnuté obrázky do koše?</numerusform>
+            <numerusform>Přesunout %n odmítnutých obrázků do koše?</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n abgelehnte(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
         <translation>
-            <numerusform>Přesunout %n zamítnutý obrázek do složky „_Rejected“?</numerusform>
-            <numerusform>Přesunout %n zamítnuté obrázky do složky „_Rejected“?</numerusform>
-            <numerusform>Přesunout %n zamítnutých obrázků do složky „_Rejected“?</numerusform>
+            <numerusform>Přesunout %n odmítnutý obrázek do složky „_Rejected“?</numerusform>
+            <numerusform>Přesunout %n odmítnuté obrázky do složky „_Rejected“?</numerusform>
+            <numerusform>Přesunout %n odmítnutých obrázků do složky „_Rejected“?</numerusform>
         </translation>
     </message>
     <message>
@@ -621,7 +621,7 @@
     </message>
     <message>
         <source>In den Papierkorb legen</source>
-        <translation>Do koše</translation>
+        <translation>Přesunout do koše</translation>
     </message>
     <message>
         <source>Verschieben</source>
@@ -629,11 +629,11 @@
     </message>
     <message>
         <source>Abgelehnte in den Papierkorb legen</source>
-        <translation>Zamítnuté do koše</translation>
+        <translation>Přesunout odmítnuté do koše</translation>
     </message>
     <message>
         <source>Abgelehnte nach „_Rejected“ verschieben</source>
-        <translation>Zamítnuté do _Rejected</translation>
+        <translation>Přesunout odmítnuté do „_Rejected“</translation>
     </message>
     <message numerus="yes">
         <source>%n Bild(er) in den Papierkorb gelegt</source>
@@ -672,19 +672,19 @@
     </message>
     <message>
         <source>Kurzbefehle gibt es nur unter macOS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zkratky jsou k dispozici pouze v systému macOS.</translation>
     </message>
     <message>
         <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
-        <translation type="unfinished"></translation>
+        <translation>Dávkové soubory (.bat, .cmd) nelze spustit přímo: cmd.exe by četl názvy souborů jako příkazy. Spusťte místo toho program nebo skript PowerShellu (powershell -File skript.ps1).</translation>
     </message>
     <message>
         <source>„%1“ kann nicht direkt ausgeführt werden: es würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
-        <translation>„%1“ nelze spustit přímo: četl by názvy souborů jako příkazy. Spusťte místo toho program nebo skript PowerShellu (powershell -File Skript.ps1).</translation>
+        <translation>„%1“ nelze spustit přímo: četl by názvy souborů jako příkazy. Spusťte místo toho program nebo skript PowerShellu (powershell -File skript.ps1).</translation>
     </message>
     <message>
         <source>PowerShell nur mit einem Skript: „powershell -File Skript.ps1“. Mit -Command (oder ohne -File) würde PowerShell Dateinamen als Befehle lesen.</source>
-        <translation>PowerShell pouze se skriptem: „powershell -File Skript.ps1“. S -Command (nebo bez -File) by PowerShell četl názvy souborů jako příkazy.</translation>
+        <translation>PowerShell pouze se skriptem: „powershell -File skript.ps1“. S parametrem -Command (nebo bez -File) by PowerShell četl názvy souborů jako příkazy.</translation>
     </message>
     <message numerus="yes">
         <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
@@ -715,7 +715,7 @@
     <name>lf::CustomActionsEditor</name>
     <message>
         <source>%1 ist schon belegt (%2); im Bildfenster hat die eigene Aktion Vorrang.</source>
-        <translation>%1 je už obsazeno (%2); v okně obrázku má přednost vlastní akce.</translation>
+        <translation>%1 je již obsazeno (%2); v okně obrázku má přednost vlastní akce.</translation>
     </message>
     <message>
         <source>Eigene Aktion</source>
@@ -723,7 +723,7 @@
     </message>
     <message>
         <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
-        <translation>Název zkratky z aplikace Zkratky; dostane soubor jako vstup.</translation>
+        <translation>Název zkratky z aplikace Zkratky; zkratka dostane soubor jako vstup.</translation>
     </message>
     <message>
         <source>Programm mit Argumenten, z. B. &quot;C:\Tools\tool.exe&quot; --flag; die Datei wird als eigenes Argument angehängt und nie über cmd.exe gestartet. Batch-Dateien (.bat, .cmd) sind nicht erlaubt.</source>
@@ -842,7 +842,7 @@
     </message>
     <message>
         <source>„%1“ ausgeführt</source>
-        <translation>„%1“ provedeno</translation>
+        <translation>„%1“ dokončeno</translation>
     </message>
     <message>
         <source>„%1“: %2</source>
@@ -909,7 +909,7 @@
     </message>
     <message>
         <source>Windows-Fehler %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Chyba Windows %1</translation>
     </message>
     <message>
         <source>Die Bilddaten des Decoders fehlen.</source>
@@ -932,7 +932,7 @@
     </message>
     <message>
         <source>Die Datei kann nicht gelesen werden.</source>
-        <translation>Soubor nelze číst.</translation>
+        <translation>Soubor nelze přečíst.</translation>
     </message>
     <message>
         <source>Die Datei ist beschädigt oder unvollständig.</source>
@@ -955,31 +955,31 @@
     <name>lf::DefaultAppBar</name>
     <message>
         <source>Lumaflip ist nicht die Standard-App für den Dateityp „%1“.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip není výchozí aplikací pro typ souboru „%1“.</translation>
     </message>
     <message>
         <source>Festlegen</source>
-        <translation type="unfinished">Nastavit</translation>
+        <translation>Nastavit jako výchozí</translation>
     </message>
     <message>
         <source>Lumaflip öffnet Dateien dieses Typs künftig per Doppelklick.</source>
-        <translation type="unfinished"></translation>
+        <translation>Soubory tohoto typu se od nynějška budou po dvojím kliknutí otevírat v aplikaci Lumaflip.</translation>
     </message>
     <message>
         <source>Alle Bildformate …</source>
-        <translation type="unfinished"></translation>
+        <translation>Všechny formáty obrázků…</translation>
     </message>
     <message>
         <source>Wähle die Bildformate, die Lumaflip öffnen soll.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vyberte formáty obrázků, které má Lumaflip otevírat.</translation>
     </message>
     <message>
         <source>Nicht mehr fragen</source>
-        <translation type="unfinished"></translation>
+        <translation>Příště se už neptat</translation>
     </message>
     <message>
         <source>Schließen</source>
-        <translation type="unfinished">Zavřít</translation>
+        <translation>Zavřít</translation>
     </message>
 </context>
 <context>
@@ -1002,7 +1002,7 @@
     </message>
     <message>
         <source>Festlegen</source>
-        <translation>Nastavit</translation>
+        <translation>Nastavit jako výchozí</translation>
     </message>
     <message>
         <source>Abbrechen</source>
@@ -1013,15 +1013,15 @@
     <name>lf::DefaultAppOfferController</name>
     <message>
         <source>Lumaflip fragt nicht mehr nach der Standard-App – wieder einschalten unter Einstellungen → Allgemein</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip se už nebude ptát na výchozí aplikaci – znovu to můžete zapnout v Nastavení → Obecné</translation>
     </message>
     <message>
         <source>Lumaflip ist jetzt die Standard-App für „%1“</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip je nyní výchozí aplikací pro „%1“</translation>
     </message>
     <message>
         <source>Lumaflip konnte nicht als Standard-App festgelegt werden: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip nelze nastavit jako výchozí aplikaci: %1</translation>
     </message>
 </context>
 <context>
@@ -1124,95 +1124,95 @@
     </message>
     <message>
         <source>Kamera-RAW (Adobe DNG)</source>
-        <translation>Fotoaparát RAW (Adobe DNG)</translation>
+        <translation>RAW z fotoaparátu (Adobe DNG)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Canon CR2)</source>
-        <translation>Fotoaparát RAW (Canon CR2)</translation>
+        <translation>RAW z fotoaparátu (Canon CR2)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Canon CR3)</source>
-        <translation>Fotoaparát RAW (Canon CR3)</translation>
+        <translation>RAW z fotoaparátu (Canon CR3)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Canon CRW)</source>
-        <translation>Fotoaparát RAW (Canon CRW)</translation>
+        <translation>RAW z fotoaparátu (Canon CRW)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Nikon NEF)</source>
-        <translation>Fotoaparát RAW (Nikon NEF)</translation>
+        <translation>RAW z fotoaparátu (Nikon NEF)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Nikon NRW)</source>
-        <translation>Fotoaparát RAW (Nikon NRW)</translation>
+        <translation>RAW z fotoaparátu (Nikon NRW)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Sony ARW)</source>
-        <translation>Fotoaparát RAW (Sony ARW)</translation>
+        <translation>RAW z fotoaparátu (Sony ARW)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Sony SR2)</source>
-        <translation>Fotoaparát RAW (Sony SR2)</translation>
+        <translation>RAW z fotoaparátu (Sony SR2)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Sony SRF)</source>
-        <translation>Fotoaparát RAW (Sony SRF)</translation>
+        <translation>RAW z fotoaparátu (Sony SRF)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Fujifilm RAF)</source>
-        <translation>Fotoaparát RAW (Fujifilm RAF)</translation>
+        <translation>RAW z fotoaparátu (Fujifilm RAF)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Olympus ORF)</source>
-        <translation>Fotoaparát RAW (Olympus ORF)</translation>
+        <translation>RAW z fotoaparátu (Olympus ORF)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Panasonic RW2)</source>
-        <translation>Fotoaparát RAW (Panasonic RW2)</translation>
+        <translation>RAW z fotoaparátu (Panasonic RW2)</translation>
     </message>
     <message>
         <source>Kamera-RAW</source>
-        <translation>Fotoaparát RAW</translation>
+        <translation>RAW z fotoaparátu</translation>
     </message>
     <message>
         <source>Kamera-RAW (Pentax PEF)</source>
-        <translation>Fotoaparát RAW (Pentax PEF)</translation>
+        <translation>RAW z fotoaparátu (Pentax PEF)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Phase One IIQ)</source>
-        <translation>Fotoaparát RAW (Phase One IIQ)</translation>
+        <translation>RAW z fotoaparátu (Phase One IIQ)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Hasselblad 3FR)</source>
-        <translation>Fotoaparát RAW (Hasselblad 3FR)</translation>
+        <translation>RAW z fotoaparátu (Hasselblad 3FR)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Hasselblad FFF)</source>
-        <translation>Fotoaparát RAW (Hasselblad FFF)</translation>
+        <translation>RAW z fotoaparátu (Hasselblad FFF)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Epson ERF)</source>
-        <translation>Fotoaparát RAW (Epson ERF)</translation>
+        <translation>RAW z fotoaparátu (Epson ERF)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Minolta MRW)</source>
-        <translation>Fotoaparát RAW (Minolta MRW)</translation>
+        <translation>RAW z fotoaparátu (Minolta MRW)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Leaf MOS)</source>
-        <translation>Fotoaparát RAW (Leaf MOS)</translation>
+        <translation>RAW z fotoaparátu (Leaf MOS)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Leica RWL)</source>
-        <translation>Fotoaparát RAW (Leica RWL)</translation>
+        <translation>RAW z fotoaparátu (Leica RWL)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Samsung SRW)</source>
-        <translation>Fotoaparát RAW (Samsung SRW)</translation>
+        <translation>RAW z fotoaparátu (Samsung SRW)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Sigma X3F)</source>
-        <translation>Fotoaparát RAW (Sigma X3F)</translation>
+        <translation>RAW z fotoaparátu (Sigma X3F)</translation>
     </message>
 </context>
 <context>
@@ -1227,7 +1227,7 @@
     </message>
     <message>
         <source>Den Zuschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
-        <translation>Exportovat výřez z „%1“ jako nový soubor. Originál zůstane beze změny.</translation>
+        <translation>Exportovat oblast oříznutí z „%1“ jako nový soubor. Originál zůstane beze změny.</translation>
     </message>
     <message>
         <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
@@ -1284,7 +1284,7 @@
     </message>
     <message>
         <source>Alle behalten</source>
-        <translation>Ponechat vše</translation>
+        <translation>Zachovat vše</translation>
     </message>
     <message>
         <source>Ohne Aufnahmeort (GPS)</source>
@@ -1308,11 +1308,11 @@
     </message>
     <message>
         <source>Gain-Map behalten (wo das Format es kann)</source>
-        <translation>Zachovat mapu zisku (pokud to formát umí)</translation>
+        <translation>Zachovat mapu zisku (pokud ji formát podporuje)</translation>
     </message>
     <message>
         <source>Als SDR (Tone Mapping)</source>
-        <translation>Jako SDR (tone mapping)</translation>
+        <translation>Jako SDR (mapování tónů)</translation>
     </message>
     <message>
         <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Endung</source>
@@ -1343,7 +1343,7 @@
     </message>
     <message>
         <source>Wird exportiert …</source>
-        <translation>Exportování…</translation>
+        <translation>Exportuje se…</translation>
     </message>
     <message>
         <source>Abbrechen</source>
@@ -1351,7 +1351,7 @@
     </message>
     <message>
         <source>Bild %1 von %2 wird exportiert: %3</source>
-        <translation>Export %1 z %2: %3</translation>
+        <translation>Exportuje se obrázek %1 z %2: %3</translation>
     </message>
 </context>
 <context>
@@ -1362,15 +1362,15 @@
     </message>
     <message>
         <source>„%1“ konnte nicht kopiert werden.</source>
-        <translation>„%1“ nelze zkopírovat.</translation>
+        <translation>„%1“ se nepodařilo zkopírovat.</translation>
     </message>
     <message>
         <source>Der Ordner „%1“ konnte nicht angelegt werden.</source>
-        <translation>Složku „%1“ nelze vytvořit.</translation>
+        <translation>Složku „%1“ se nepodařilo vytvořit.</translation>
     </message>
     <message>
         <source>Die Kopie „%1“ konnte nicht entfernt werden.</source>
-        <translation>Kopii „%1“ nelze odstranit.</translation>
+        <translation>Kopii „%1“ se nepodařilo odstranit.</translation>
     </message>
 </context>
 <context>
@@ -1381,15 +1381,15 @@
     </message>
     <message>
         <source>„%1“ konnte nicht kopiert werden.</source>
-        <translation>„%1“ nelze zkopírovat.</translation>
+        <translation>„%1“ se nepodařilo zkopírovat.</translation>
     </message>
     <message>
         <source>„%1“ konnte nicht entfernt werden.</source>
-        <translation>„%1“ nelze odstranit.</translation>
+        <translation>„%1“ se nepodařilo odstranit.</translation>
     </message>
     <message>
         <source>„%1“ konnte nicht verschoben werden: %2</source>
-        <translation>„%1“ nelze přesunout: %2</translation>
+        <translation>„%1“ se nepodařilo přesunout: %2</translation>
     </message>
     <message>
         <source>„%1“ existiert nicht.</source>
@@ -1417,11 +1417,11 @@
     </message>
     <message>
         <source>Kopieren</source>
-        <translation>Kopírovat</translation>
+        <translation>Zkopírovat</translation>
     </message>
     <message>
         <source>Die Kopie „%1“ konnte nicht entfernt werden.</source>
-        <translation>Kopii „%1“ nelze odstranit.</translation>
+        <translation>Kopii „%1“ se nepodařilo odstranit.</translation>
     </message>
     <message>
         <source>Ein anderer Dateivorgang läuft noch. Bitte warte, bis er abgeschlossen ist.</source>
@@ -1443,7 +1443,7 @@
     <name>lf::FilmstripModel</name>
     <message>
         <source>%1 – kann nicht gelesen werden</source>
-        <translation>%1 – nelze číst</translation>
+        <translation>%1 – nelze přečíst</translation>
     </message>
 </context>
 <context>
@@ -1455,7 +1455,7 @@
     <message>
         <source>Aufnahmeorte werden gelesen … %1 von %2</source>
         <extracomment>folder map (F-INFO-08) while the GPS positions are read: done / all images</extracomment>
-        <translation>Načítání míst… %1 z %2</translation>
+        <translation>Načítá se poloha… %1 z %2</translation>
     </message>
     <message numerus="yes">
         <source>%1 von %n Bildern mit Aufnahmeort</source>
@@ -1479,18 +1479,18 @@
     </message>
     <message>
         <source>Keines der Bilder enthält einen Aufnahmeort (GPS).</source>
-        <translation>Žádný z obrázků neobsahuje místo pořízení (GPS).</translation>
+        <translation>Žádný z obrázků nemá polohu (GPS).</translation>
     </message>
     <message>
         <source>Ordnerkarte schließen</source>
-        <translation>Zavřít mapu</translation>
+        <translation>Zavřít mapu složky</translation>
     </message>
 </context>
 <context>
     <name>lf::FolderMapView</name>
     <message>
         <source>Karten sind unter Windows nicht verfügbar. Bilder mit Aufnahmeort in diesem Ordner: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Mapy nejsou v systému Windows k dispozici. Obrázky s polohou v této složce: %1</translation>
     </message>
 </context>
 <context>
@@ -1635,7 +1635,7 @@
     </message>
     <message>
         <source>Die Belichtung lässt sich nur bei HDR-Bildern einstellen.</source>
-        <translation>Expozici lze upravit jen u obrázků HDR.</translation>
+        <translation>Expozici lze nastavit jen u obrázků HDR.</translation>
     </message>
     <message>
         <source>Belichtung %1</source>
@@ -1668,7 +1668,7 @@
     </message>
     <message>
         <source>HDR-Bild, als SDR-Vorschau angezeigt – dieser Bildschirm kann kein HDR darstellen</source>
-        <translation>Obrázek HDR zobrazený jako náhled SDR – tento displej neumí zobrazit HDR</translation>
+        <translation>Obrázek HDR zobrazený jako náhled SDR – tento monitor neumí zobrazit HDR</translation>
     </message>
     <message>
         <source>Belichtung</source>
@@ -1684,7 +1684,7 @@
     </message>
     <message>
         <source>Belichtung beim Bildwechsel beibehalten</source>
-        <translation>Zachovat expozici při změně obrázku</translation>
+        <translation>Zachovat expozici při přechodu na jiný obrázek</translation>
     </message>
 </context>
 <context>
@@ -1726,7 +1726,7 @@
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden.</source>
-        <translation>Obrázek nelze dekódovat.</translation>
+        <translation>Obrázek se nepodařilo dekódovat.</translation>
     </message>
     <message>
         <source>Metadaten (EXIF, XMP, IPTC) werden hier nicht übernommen.</source>
@@ -1746,15 +1746,15 @@
     </message>
     <message>
         <source>Die Datei kann nicht gelesen werden.</source>
-        <translation>Soubor nelze číst.</translation>
+        <translation>Soubor nelze přečíst.</translation>
     </message>
     <message>
         <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
-        <translation>%1 nemůže uložit HDR mapu zisku – obrázek byl exportován jako SDR.</translation>
+        <translation>%1 neumí uložit mapu zisku HDR – obrázek byl exportován jako SDR.</translation>
     </message>
     <message>
         <source>Bilder aus Archiven und PDF-Dokumenten werden als 8-Bit-sRGB exportiert – HDR und erweiterter Farbraum gehen verloren.</source>
-        <translation>Obrázky z archivů a dokumentů PDF se exportují jako 8bitové sRGB – HDR a rozšířený barevný gamut se ztratí.</translation>
+        <translation>Obrázky z archivů a dokumentů PDF se exportují jako 8bitové sRGB – HDR a široký barevný gamut se ztratí.</translation>
     </message>
 </context>
 <context>
@@ -1769,7 +1769,7 @@
     </message>
     <message>
         <source>Der Bildpuffer konnte nicht angelegt werden.</source>
-        <translation>Nelze vytvořit vyrovnávací paměť obrázku.</translation>
+        <translation>Nelze vyhradit vyrovnávací paměť obrázku.</translation>
     </message>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -1781,7 +1781,7 @@
     </message>
     <message>
         <source>Die Datei kann nicht gelesen werden.</source>
-        <translation>Soubor nelze číst.</translation>
+        <translation>Soubor nelze přečíst.</translation>
     </message>
     <message>
         <source>Unbekanntes oder nicht unterstütztes Dateiformat.</source>
@@ -1793,7 +1793,7 @@
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden (Datei beschädigt?).</source>
-        <translation>Obrázek nelze dekódovat (poškozený soubor?).</translation>
+        <translation>Obrázek se nepodařilo dekódovat (poškozený soubor?).</translation>
     </message>
     <message>
         <source>Ausgelöst</source>
@@ -1844,7 +1844,7 @@
     <name>lf::InfoGpsBox</name>
     <message>
         <source>Koordinaten kopieren</source>
-        <translation>Kopírovat souřadnice</translation>
+        <translation>Zkopírovat souřadnice</translation>
     </message>
     <message>
         <source>Karte wird geladen …</source>
@@ -1856,7 +1856,7 @@
     </message>
     <message>
         <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
-        <translation>Načte výřez mapy z Apple Map (připojení k internetu)</translation>
+        <translation>Načte náhled mapy z Map Apple (vyžaduje připojení k internetu)</translation>
     </message>
     <message>
         <source>Karte ausblenden</source>
@@ -1864,7 +1864,7 @@
     </message>
     <message>
         <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte einblenden“)</source>
-        <translation>Nenačítat další výřezy mapy (do dalšího kliknutí na „Zobrazit mapu“)</translation>
+        <translation>Nenačítat další náhledy map (do dalšího kliknutí na „Zobrazit mapu“)</translation>
     </message>
     <message>
         <source>In Karten öffnen</source>
@@ -1876,7 +1876,7 @@
     </message>
     <message>
         <source>Alle Bilder dieser Ansicht mit Aufnahmeort auf einer Karte zeigen (lädt Kartendaten von Apple Karten)</source>
-        <translation>Zobrazit na mapě všechny obrázky z tohoto zobrazení, které mají polohu (načítá mapová data z Apple Map)</translation>
+        <translation>Zobrazit na mapě všechny obrázky z tohoto zobrazení, které mají polohu (načítá mapová data z Map Apple)</translation>
     </message>
 </context>
 <context>
@@ -1972,7 +1972,7 @@
     </message>
     <message>
         <source>Aufnahme</source>
-        <translation>Expozice</translation>
+        <translation>Pořízení</translation>
     </message>
     <message>
         <source>GPS</source>
@@ -1984,7 +1984,7 @@
     </message>
     <message>
         <source>Nicht lesbar</source>
-        <translation>Nelze číst</translation>
+        <translation>Nelze přečíst</translation>
     </message>
     <message>
         <source>Alle Metadaten …</source>
@@ -1992,15 +1992,15 @@
     </message>
     <message>
         <source>Tags</source>
-        <translation>Štítky</translation>
+        <translation>Značky</translation>
     </message>
     <message>
         <source>Ausgewählten Tag entfernen</source>
-        <translation>Odstranit vybraný štítek</translation>
+        <translation>Odstranit vybranou značku</translation>
     </message>
     <message>
         <source>Tag hinzufügen …</source>
-        <translation>Přidat štítek…</translation>
+        <translation>Přidat značku…</translation>
     </message>
     <message>
         <source>„%1“ entfernen</source>
@@ -2020,19 +2020,19 @@
     </message>
     <message>
         <source>Wert kopieren</source>
-        <translation>Kopírovat hodnotu</translation>
+        <translation>Zkopírovat hodnotu</translation>
     </message>
     <message>
         <source>Zeile kopieren</source>
-        <translation>Kopírovat řádek</translation>
+        <translation>Zkopírovat řádek</translation>
     </message>
     <message>
         <source>Abschnitt kopieren</source>
-        <translation>Kopírovat sekci</translation>
+        <translation>Zkopírovat oddíl</translation>
     </message>
     <message>
         <source>Alle Angaben kopieren</source>
-        <translation>Kopírovat všechny údaje</translation>
+        <translation>Zkopírovat všechny údaje</translation>
     </message>
 </context>
 <context>
@@ -2091,7 +2091,7 @@
     </message>
     <message>
         <source>Einpassen</source>
-        <translation>Přizpůsobit oknu</translation>
+        <translation>Velikost podle okna</translation>
     </message>
     <message>
         <source>Breite füllen</source>
@@ -2099,7 +2099,7 @@
     </message>
     <message>
         <source>Einpassen ↔ 100 % am Mauszeiger</source>
-        <translation>Přizpůsobit ↔ 100 % u kurzoru</translation>
+        <translation>Velikost podle okna ↔ 100 % u ukazatele</translation>
     </message>
     <message>
         <source>Zoom fixieren</source>
@@ -2111,27 +2111,27 @@
     </message>
     <message>
         <source>Ausschnitt nach oben</source>
-        <translation>Posunout výřez nahoru</translation>
+        <translation>Posunout zobrazení nahoru</translation>
     </message>
     <message>
         <source>Ausschnitt nach unten</source>
-        <translation>Posunout výřez dolů</translation>
+        <translation>Posunout zobrazení dolů</translation>
     </message>
     <message>
         <source>Ausschnitt nach links</source>
-        <translation>Posunout výřez doleva</translation>
+        <translation>Posunout zobrazení doleva</translation>
     </message>
     <message>
         <source>Ausschnitt nach rechts</source>
-        <translation>Posunout výřez doprava</translation>
+        <translation>Posunout zobrazení doprava</translation>
     </message>
     <message>
         <source>Ausschnitt eine Seite nach oben</source>
-        <translation>Posunout výřez o stránku nahoru</translation>
+        <translation>Posunout zobrazení o stránku nahoru</translation>
     </message>
     <message>
         <source>Ausschnitt eine Seite nach unten</source>
-        <translation>Posunout výřez o stránku dolů</translation>
+        <translation>Posunout zobrazení o stránku dolů</translation>
     </message>
     <message>
         <source>Zum Bildanfang scrollen</source>
@@ -2147,7 +2147,7 @@
     </message>
     <message>
         <source>Vollbild oder Modus beenden</source>
-        <translation>Celá obrazovka / ukončit režim</translation>
+        <translation>Ukončit celou obrazovku nebo režim</translation>
     </message>
     <message>
         <source>Modus beenden, sonst Fenster schließen</source>
@@ -2187,11 +2187,11 @@
     </message>
     <message>
         <source>Horizontal spiegeln</source>
-        <translation>Překlopit vodorovně</translation>
+        <translation>Převrátit vodorovně</translation>
     </message>
     <message>
         <source>Vertikal spiegeln</source>
-        <translation>Překlopit svisle</translation>
+        <translation>Převrátit svisle</translation>
     </message>
     <message>
         <source>Drehung sichern</source>
@@ -2203,11 +2203,11 @@
     </message>
     <message>
         <source>Widerrufen</source>
-        <translation>Odvolat</translation>
+        <translation>Odvolat akci</translation>
     </message>
     <message>
         <source>Wiederholen</source>
-        <translation>Znovu</translation>
+        <translation>Opakovat akci</translation>
     </message>
     <message>
         <source>Umbenennen</source>
@@ -2219,11 +2219,11 @@
     </message>
     <message>
         <source>Bild kopieren</source>
-        <translation>Kopírovat obrázek</translation>
+        <translation>Zkopírovat obrázek</translation>
     </message>
     <message>
         <source>Pfad kopieren</source>
-        <translation>Kopírovat cestu</translation>
+        <translation>Zkopírovat cestu</translation>
     </message>
     <message>
         <source>Im Editor öffnen</source>
@@ -2259,7 +2259,7 @@
     </message>
     <message>
         <source>Lupe (gedrückt halten)</source>
-        <translation>Lupa (podržet)</translation>
+        <translation>Lupa (stisknout a podržet)</translation>
     </message>
     <message>
         <source>Datei herausziehen</source>
@@ -2267,7 +2267,7 @@
     </message>
     <message>
         <source>Ausschnitt verschieben</source>
-        <translation>Posunout výřez</translation>
+        <translation>Posunout zobrazení</translation>
     </message>
     <message>
         <source>Bewertung entfernen (0 Sterne)</source>
@@ -2295,11 +2295,11 @@
     </message>
     <message>
         <source>Markieren</source>
-        <translation>Ponechat (Pick)</translation>
+        <translation>Označit jako vybrané</translation>
     </message>
     <message>
         <source>Ablehnen</source>
-        <translation>Zamítnout (Reject)</translation>
+        <translation>Odmítnout</translation>
     </message>
     <message>
         <source>Markierung aufheben</source>
@@ -2307,15 +2307,15 @@
     </message>
     <message>
         <source>Aussortiermodus</source>
-        <translation>Režim výběru</translation>
+        <translation>Režim třídění</translation>
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
-        <translation>Rychlé odkládání: přesunout (M, pak 1–9)</translation>
+        <translation>Rychlé přesunutí: přesunout (M, pak 1–9)</translation>
     </message>
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
-        <translation>Rychlé odkládání: kopírovat (C, pak 1–9)</translation>
+        <translation>Rychlé přesunutí: zkopírovat (C, pak 1–9)</translation>
     </message>
     <message>
         <source>Gehe zu Bild …</source>
@@ -2339,7 +2339,7 @@
     </message>
     <message>
         <source>Minimaler Fenstermodus</source>
-        <translation>Minimální okno</translation>
+        <translation>Minimální režim okna</translation>
     </message>
     <message>
         <source>Fenster koppeln …</source>
@@ -2407,7 +2407,7 @@
     </message>
     <message>
         <source>Über-/Unterbelichtungswarnung</source>
-        <translation>Varování před pře-/podexpozicí</translation>
+        <translation>Upozornění na přeexpozici/podexpozici</translation>
     </message>
     <message>
         <source>Focus Peaking</source>
@@ -2415,7 +2415,7 @@
     </message>
     <message>
         <source>Fokuspunkte</source>
-        <translation>Body AF</translation>
+        <translation>Body zaostření</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2431,23 +2431,23 @@
     </message>
     <message>
         <source>Nach unten drehen zeigt das nächste, nach oben das vorherige Bild.</source>
-        <translation>Otočení dolů zobrazí další obrázek, nahoru předchozí.</translation>
+        <translation>Otočení kolečka dolů zobrazí další obrázek, nahoru předchozí.</translation>
     </message>
     <message>
         <source>Zoomen (am Mauszeiger)</source>
-        <translation>Zvětšení (u kurzoru)</translation>
+        <translation>Zvětšení (u ukazatele)</translation>
     </message>
     <message>
         <source>Nach oben drehen vergrößert, nach unten verkleinert – am Mauszeiger.</source>
-        <translation>Otočení nahoru zvětšuje, dolů zmenšuje – u ukazatele myši.</translation>
+        <translation>Otočení kolečka nahoru zvětšuje, dolů zmenšuje – u ukazatele.</translation>
     </message>
     <message>
         <source>Ausschnitt verschieben (sonst Bild wechseln)</source>
-        <translation>Posouvat výřez (jinak změnit obrázek)</translation>
+        <translation>Posunout zobrazení (jinak změnit obrázek)</translation>
     </message>
     <message>
         <source>Gezoomt wird der Ausschnitt verschoben, sonst wird das Bild gewechselt.</source>
-        <translation>Při zvětšení se posouvá výřez, jinak se mění obrázek.</translation>
+        <translation>Při zvětšení se posouvá zobrazení, jinak se mění obrázek.</translation>
     </message>
     <message>
         <source>Bild wechseln, solange die Taste gehalten wird.</source>
@@ -2455,7 +2455,7 @@
     </message>
     <message>
         <source>Zoomen am Mauszeiger, solange die Taste gehalten wird.</source>
-        <translation>Zvětšovat u ukazatele myši, dokud je klávesa podržena.</translation>
+        <translation>Zvětšovat u ukazatele, dokud je klávesa podržena.</translation>
     </message>
     <message>
         <source>Horizontal scrollen</source>
@@ -2463,7 +2463,7 @@
     </message>
     <message>
         <source>Der Ausschnitt wird waagerecht verschoben.</source>
-        <translation>Výřez se posouvá vodorovně.</translation>
+        <translation>Zobrazení se posouvá vodorovně.</translation>
     </message>
     <message>
         <source>Mausrad mit ⌘</source>
@@ -2487,7 +2487,7 @@
     </message>
     <message>
         <source>Wechselt ein Bild zurück bzw. vor.</source>
-        <translation>Přejde o jeden obrázek zpět, nebo vpřed.</translation>
+        <translation>Přejde o jeden obrázek zpět nebo vpřed.</translation>
     </message>
     <message>
         <source>Mehrere Bilder zurück/vor</source>
@@ -2495,7 +2495,7 @@
     </message>
     <message>
         <source>Springt um die eingestellte Sprungweite (Standard 10).</source>
-        <translation>Přeskočí o nastavenou délku skoku (výchozí 10).</translation>
+        <translation>Přeskočí o nastavený počet obrázků (výchozí: 10).</translation>
     </message>
     <message>
         <source>Vorheriger/nächster Ordner</source>
@@ -2515,11 +2515,11 @@
     </message>
     <message>
         <source>Ausschnitt seitenweise verschieben (sonst Bild)</source>
-        <translation>Posouvat výřez po stránkách (jinak obrázek)</translation>
+        <translation>Posouvat zobrazení po stránkách (jinak obrázek)</translation>
     </message>
     <message>
         <source>Gezoomt um eine Bildschirmhöhe scrollen, sonst Bild wechseln.</source>
-        <translation>Při zvětšení posunout o výšku obrazovky, jinak změnit obrázek.</translation>
+        <translation>Při zvětšení posune o výšku obrazovky, jinak změní obrázek.</translation>
     </message>
     <message>
         <source>Pos1 / Ende</source>
@@ -2531,7 +2531,7 @@
     </message>
     <message>
         <source>Springt zum ersten bzw. letzten Bild der Sammlung.</source>
-        <translation>Přejde na první, nebo poslední obrázek kolekce.</translation>
+        <translation>Přejde na první nebo poslední obrázek kolekce.</translation>
     </message>
     <message>
         <source>Bildanfang/-ende (sonst erstes/letztes Bild)</source>
@@ -2539,7 +2539,7 @@
     </message>
     <message>
         <source>Gezoomt an den Anfang bzw. das Ende des Bildes scrollen, sonst erstes/letztes Bild.</source>
-        <translation>Při zvětšení posunout na začátek, nebo konec obrázku, jinak první/poslední obrázek.</translation>
+        <translation>Při zvětšení posune na začátek nebo konec obrázku, jinak přejde na první/poslední obrázek.</translation>
     </message>
     <message>
         <source>Leertaste / ⇧Leertaste</source>
@@ -2559,15 +2559,15 @@
     </message>
     <message>
         <source>Bei animierten Bildern Wiedergabe umschalten, sonst Bild wechseln.</source>
-        <translation>U animovaných obrázků přepnout přehrávání, jinak změnit obrázek.</translation>
+        <translation>U animovaných obrázků přepne přehrávání, jinak změní obrázek.</translation>
     </message>
     <message>
         <source>Einpassen ↔ 100 %</source>
-        <translation>Přizpůsobit ↔ 100 %</translation>
+        <translation>Velikost podle okna ↔ 100 %</translation>
     </message>
     <message>
         <source>Schaltet zwischen Einpassen und 100 % um.</source>
-        <translation>Přepíná mezi přizpůsobením oknu a 100 %.</translation>
+        <translation>Přepíná mezi velikostí podle okna a 100 %.</translation>
     </message>
     <message>
         <source>Diashow starten/pausieren</source>
@@ -2575,7 +2575,7 @@
     </message>
     <message>
         <source>Startet bzw. pausiert die Diashow.</source>
-        <translation>Spustí, nebo pozastaví prezentaci.</translation>
+        <translation>Spustí nebo pozastaví prezentaci.</translation>
     </message>
     <message>
         <source>← / →, wenn gezoomt</source>
@@ -2587,7 +2587,7 @@
     </message>
     <message>
         <source>Pfeiltasten wechseln das Bild; mit ⌥ wird der Ausschnitt verschoben.</source>
-        <translation>Šipky mění obrázek; s ⌥ se posouvá výřez.</translation>
+        <translation>Šipky mění obrázek; s ⌥ posouvají zobrazení.</translation>
     </message>
     <message>
         <source>Erst bis zum Rand verschieben, dann Bild wechseln</source>
@@ -2595,15 +2595,15 @@
     </message>
     <message>
         <source>Der Ausschnitt wird verschoben; am Bildrand wechselt das Bild.</source>
-        <translation>Výřez se posouvá; na okraji obrázku se obrázek změní.</translation>
+        <translation>Zobrazení se posouvá; na okraji obrázku se obrázek změní.</translation>
     </message>
     <message>
         <source>Ausschnitt verschieben (Bild mit ⌥←/⌥→)</source>
-        <translation>Posouvat výřez (obrázek pomocí ⌥←/⌥→)</translation>
+        <translation>Posouvat zobrazení (obrázek pomocí ⌥←/⌥→)</translation>
     </message>
     <message>
         <source>Pfeiltasten verschieben den Ausschnitt; Bildwechsel mit ⌥←/⌥→.</source>
-        <translation>Šipky posouvají výřez; obrázek se mění pomocí ⌥←/⌥→.</translation>
+        <translation>Šipky posouvají zobrazení; obrázek se mění pomocí ⌥←/⌥→.</translation>
     </message>
     <message>
         <source>↑ / ↓</source>
@@ -2611,19 +2611,19 @@
     </message>
     <message>
         <source>Ausschnitt verschieben, sonst vorheriges/nächstes Bild</source>
-        <translation>Posouvat výřez, jinak předchozí/další obrázek</translation>
+        <translation>Posouvat zobrazení, jinak předchozí/další obrázek</translation>
     </message>
     <message>
         <source>Gezoomt wird der Ausschnitt verschoben, sonst das Bild gewechselt.</source>
-        <translation>Při zvětšení se posouvá výřez, jinak se mění obrázek.</translation>
+        <translation>Při zvětšení se posouvá zobrazení, jinak se mění obrázek.</translation>
     </message>
     <message>
         <source>Ausschnitt verschieben (wenn gezoomt), sonst nichts</source>
-        <translation>Posouvat výřez (při zvětšení), jinak nic</translation>
+        <translation>Posouvat zobrazení (při zvětšení), jinak nic</translation>
     </message>
     <message>
         <source>Gezoomt wird der Ausschnitt verschoben, sonst passiert nichts.</source>
-        <translation>Při zvětšení se posouvá výřez, jinak se nic nestane.</translation>
+        <translation>Při zvětšení se posouvá zobrazení, jinak se nic nestane.</translation>
     </message>
     <message>
         <source>↑ zeigt das vorherige, ↓ das nächste Bild.</source>
@@ -2647,7 +2647,7 @@
     </message>
     <message>
         <source>Ein Klick zoomt auf 100 % an der Klickstelle und zurück.</source>
-        <translation>Kliknutí zvětší na 100 % v místě kliknutí a zpět.</translation>
+        <translation>Kliknutí přepne na 100 % v místě kliknutí a zpět.</translation>
     </message>
     <message>
         <source>Nächstes Bild (linke Hälfte: vorheriges)</source>
@@ -2671,7 +2671,7 @@
     </message>
     <message>
         <source>Doppelklick schaltet zwischen Einpassen und 100 % um.</source>
-        <translation>Dvojí kliknutí přepíná mezi přizpůsobením oknu a 100 %.</translation>
+        <translation>Dvojí kliknutí přepíná mezi velikostí podle okna a 100 %.</translation>
     </message>
     <message>
         <source>Doppelklick schließt das Fenster.</source>
@@ -2695,7 +2695,7 @@
     </message>
     <message>
         <source>Schaltet zwischen Einpassen und 100 % an der Klickstelle um.</source>
-        <translation>Přepíná mezi přizpůsobením oknu a 100 % v místě kliknutí.</translation>
+        <translation>Přepíná mezi velikostí podle okna a 100 % v místě kliknutí.</translation>
     </message>
     <message>
         <source>Zeigt eine Lupe, solange die Taste gedrückt ist.</source>
@@ -2719,19 +2719,19 @@
     </message>
     <message>
         <source>Bild wechseln (gezoomt: Ausschnitt verschieben)</source>
-        <translation>Změnit obrázek (při zvětšení: posouvat)</translation>
+        <translation>Změnit obrázek (při zvětšení: posunout zobrazení)</translation>
     </message>
     <message>
         <source>Wischen wechselt das Bild; im gezoomten Zustand wird der Ausschnitt verschoben.</source>
-        <translation>Přejetí mění obrázek; při zvětšení se posouvá výřez.</translation>
+        <translation>Přejetí mění obrázek; při zvětšení posouvá zobrazení.</translation>
     </message>
     <message>
         <source>Nur Ausschnitt verschieben</source>
-        <translation>Posouvat výřez</translation>
+        <translation>Jen posouvat zobrazení</translation>
     </message>
     <message>
         <source>Wischen verschiebt immer nur den Ausschnitt.</source>
-        <translation>Přejetí vždy jen posouvá výřez.</translation>
+        <translation>Přejetí vždy jen posouvá zobrazení.</translation>
     </message>
     <message>
         <source>Aus</source>
@@ -2747,19 +2747,19 @@
     </message>
     <message>
         <source>Ausschnitt verschieben (⌥: Datei herausziehen)</source>
-        <translation>Posunout výřez (⌥: vytáhnout soubor)</translation>
+        <translation>Posunout zobrazení (⌥: vytáhnout soubor)</translation>
     </message>
     <message>
         <source>Ziehen verschiebt den Ausschnitt; mit ⌥ wird die Datei in andere Apps gezogen.</source>
-        <translation>Tažení posouvá výřez; s ⌥ se soubor přetáhne do jiných aplikací.</translation>
+        <translation>Tažení posouvá zobrazení; s ⌥ se soubor přetáhne do jiných aplikací.</translation>
     </message>
     <message>
         <source>Datei herausziehen (⌥: Ausschnitt verschieben)</source>
-        <translation>Vytáhnout soubor (⌥: posunout výřez)</translation>
+        <translation>Vytáhnout soubor (⌥: posunout zobrazení)</translation>
     </message>
     <message>
         <source>Ziehen zieht die Datei in andere Apps; mit ⌥ wird der Ausschnitt verschoben.</source>
-        <translation>Tažení přetáhne soubor do jiných aplikací; s ⌥ se posouvá výřez.</translation>
+        <translation>Tažení přetáhne soubor do jiných aplikací; s ⌥ se posouvá zobrazení.</translation>
     </message>
     <message>
         <source>Esc</source>
@@ -2767,7 +2767,7 @@
     </message>
     <message>
         <source>Vollbild oder Modus beenden, sonst nichts</source>
-        <translation>Ukončit celou obrazovku / režim, jinak nic</translation>
+        <translation>Ukončit celou obrazovku nebo režim, jinak nic</translation>
     </message>
     <message>
         <source>Esc beendet Vollbild, Diashow oder andere Modi und tut sonst nichts.</source>
@@ -2775,7 +2775,7 @@
     </message>
     <message>
         <source>Vollbild oder Modus beenden, sonst Fenster schließen</source>
-        <translation>Ukončit celou obrazovku / režim, jinak zavřít okno</translation>
+        <translation>Ukončit celou obrazovku nebo režim, jinak zavřít okno</translation>
     </message>
     <message>
         <source>Esc beendet Modi; ist keiner aktiv, wird das Fenster geschlossen.</source>
@@ -2819,7 +2819,7 @@
     </message>
     <message>
         <source>Ziffern wählen sonst den Zoommodus (1/2/3).</source>
-        <translation>Číslice jinak volí režim zvětšení (1/2/3).</translation>
+        <translation>Jinak číslice volí režim zvětšení (1/2/3).</translation>
     </message>
     <message>
         <source>Immer aktiv</source>
@@ -2827,7 +2827,7 @@
     </message>
     <message>
         <source>Ziffern vergeben immer Sterne, P/X/U setzen Markierungen. Die Zoom-Ziffern sind dann aus.</source>
-        <translation>Číslice vždy přidělují hvězdičky; P/X/U označují. Číslice pro zvětšení jsou vypnuté.</translation>
+        <translation>Číslice vždy udělují hvězdičky, P/X/U nastavují označení. Číslice pro zvětšení jsou pak vypnuté.</translation>
     </message>
 </context>
 <context>
@@ -2896,27 +2896,27 @@
     </message>
     <message>
         <source>Die JPEG-Daten konnten nicht verlustfrei umgeordnet werden (%1).</source>
-        <translation>Data JPEG nelze bezztrátově přeuspořádat (%1).</translation>
+        <translation>Data JPEG se nepodařilo bezeztrátově přeuspořádat (%1).</translation>
     </message>
     <message>
         <source>Verlustfreies Drehen der JPEG-Daten ist in dieser Version nicht verfügbar.</source>
-        <translation>Bezztrátové otáčení dat JPEG není v této verzi k dispozici.</translation>
+        <translation>Bezeztrátové otáčení dat JPEG není v této verzi k dispozici.</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
-        <translation>„%1“ nelze číst.</translation>
+        <translation>„%1“ nelze přečíst.</translation>
     </message>
     <message>
         <source>Die Datei konnte nicht geschrieben werden (Ordner schreibgeschützt?).</source>
-        <translation>Soubor nelze zapsat (složka chráněná proti zápisu?).</translation>
+        <translation>Soubor se nepodařilo zapsat (složka jen pro čtení?).</translation>
     </message>
     <message>
         <source>Die Datei wurde inzwischen verändert – nichts gesichert. Sichere die Drehung erneut.</source>
-        <translation>Soubor byl mezitím změněn – nic nebylo uloženo. Uložte otočení prosím znovu.</translation>
+        <translation>Soubor byl mezitím změněn – nic nebylo uloženo. Uložte otočení znovu.</translation>
     </message>
     <message>
         <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
-        <translation>Soubor obsahuje další obrázky (např. HDR gain mapu nebo druhý stereo snímek), které by se při bezztrátovém přeuspořádání dat JPEG ztratily.</translation>
+        <translation>Soubor obsahuje doplňkové obrázky (např. mapu zisku HDR nebo druhý stereoskopický snímek), které by se při bezeztrátovém přeuspořádání dat JPEG ztratily.</translation>
     </message>
     <message>
         <source>Die Datei existiert nicht mehr.</source>
@@ -2936,7 +2936,7 @@
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
-        <translation>„%1“ je chráněn proti zápisu.</translation>
+        <translation>„%1“ je pouze pro čtení.</translation>
     </message>
     <message>
         <source>Deshalb wurde nur die EXIF-Ausrichtung gesetzt.</source>
@@ -2944,7 +2944,7 @@
     </message>
     <message>
         <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfreies Drehen ist nur möglich, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
-        <translation>Šířka nebo výška obrázku není násobkem velikosti bloku JPEG. Bezztrátové otočení je možné jen tehdy, když se přitom ořízne úzký okraj (až 15 pixelů). Případně se nastaví jen orientace EXIF.</translation>
+        <translation>Šířka nebo výška obrázku není násobkem velikosti bloku JPEG. Bezeztrátové otočení je možné jen tehdy, když se přitom ořízne úzký okraj (až 15 pixelů). Případně se nastaví jen orientace EXIF.</translation>
     </message>
     <message>
         <source>Die Drehung kann nicht gesichert werden.</source>
@@ -2952,31 +2952,31 @@
     </message>
     <message>
         <source>Dieses Format kann keine Ausrichtung speichern, und beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
-        <translation>Tento formát neumí uložit orientaci a při novém kódování by obrázek nezůstal přesně stejný (změnil by se barevný model, bitová hloubka, paleta nebo průhlednost).</translation>
+        <translation>Tento formát neumí uložit orientaci a při překódování by obrázek nezůstal přesně stejný (změnil by se barevný model, bitová hloubka, paleta nebo průhlednost).</translation>
     </message>
     <message>
         <source>Dieses Format kann keine Ausrichtung speichern. Die Drehung lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
-        <translation>Tento formát neumí uložit orientaci. Otočení lze uložit jen novým zakódováním obrázku – přitom se ztratí část kvality obrazu.</translation>
+        <translation>Tento formát neumí uložit orientaci. Otočení lze uložit jen překódováním obrázku – přitom se ztratí část kvality obrazu.</translation>
     </message>
     <message>
         <source>Die EXIF-Ausrichtung konnte nicht gesetzt werden.</source>
-        <translation>Orientaci EXIF nelze nastavit.</translation>
+        <translation>Orientaci EXIF se nepodařilo nastavit.</translation>
     </message>
     <message>
         <source>Verlustfreies Drehen ist für dieses Bild nicht möglich.</source>
-        <translation>Bezztrátové otočení není u tohoto obrázku možné.</translation>
+        <translation>Bezeztrátové otočení není u tohoto obrázku možné.</translation>
     </message>
     <message>
         <source>Die Ausrichtung ließ sich nicht ohne Neukodieren sichern.</source>
-        <translation>Orientaci nebylo možné uložit bez nového kódování.</translation>
+        <translation>Orientaci nebylo možné uložit bez překódování.</translation>
     </message>
     <message>
         <source>Die Drehung konnte nicht gesichert werden.</source>
-        <translation>Otočení nelze uložit.</translation>
+        <translation>Otočení se nepodařilo uložit.</translation>
     </message>
     <message>
         <source>Die Datei konnte nicht ersetzt werden.</source>
-        <translation>Soubor nelze nahradit.</translation>
+        <translation>Soubor se nepodařilo nahradit.</translation>
     </message>
     <message>
         <source>Die Datei wurde inzwischen verändert – Widerrufen nicht möglich</source>
@@ -2988,7 +2988,7 @@
     </message>
     <message>
         <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Widerrufen/Wiederholen ist dafür nicht mehr möglich.</source>
-        <translation>Záložní kopie tohoto kroku byla smazána kvůli úspoře místa – odvolání/opakování už pro něj není možné.</translation>
+        <translation>Záložní kopie tohoto kroku byla smazána kvůli úspoře místa na disku – odvolání ani opakování už pro něj není možné.</translation>
     </message>
     <message>
         <source>Es gibt nichts zu widerrufen.</source>
@@ -2996,7 +2996,7 @@
     </message>
     <message>
         <source>Kein Speicherplatz für die Sicherungskopie – nichts gesichert.</source>
-        <translation>Není místo pro záložní kopii – nic nebylo uloženo.</translation>
+        <translation>Není dost místa na disku pro záložní kopii – nic nebylo uloženo.</translation>
     </message>
     <message>
         <source>Keine Drehung zu sichern</source>
@@ -3008,19 +3008,19 @@
     </message>
     <message>
         <source>Drehung verlustfrei gesichert</source>
-        <translation>Otočení uloženo bezztrátově</translation>
+        <translation>Otočení uloženo bezeztrátově</translation>
     </message>
     <message>
         <source>Drehung verlustfrei gesichert (Rand beschnitten)</source>
-        <translation>Otočení uloženo bezztrátově (okraj oříznut)</translation>
+        <translation>Otočení uloženo bezeztrátově (okraj oříznut)</translation>
     </message>
     <message>
         <source>Drehung gesichert (verlustfrei neu kodiert)</source>
-        <translation>Otočení uloženo (bezztrátově znovu zakódováno)</translation>
+        <translation>Otočení uloženo (bezeztrátově překódováno)</translation>
     </message>
     <message>
         <source>Drehung gesichert (neu kodiert)</source>
-        <translation>Otočení uloženo (znovu zakódováno)</translation>
+        <translation>Otočení uloženo (překódováno)</translation>
     </message>
     <message>
         <source>Für dieses Format kann die Ausrichtung nicht gespeichert werden.</source>
@@ -3028,7 +3028,7 @@
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden.</source>
-        <translation>Obrázek nelze dekódovat.</translation>
+        <translation>Obrázek se nepodařilo dekódovat.</translation>
     </message>
     <message>
         <source>Nicht genug Arbeitsspeicher zum Drehen.</source>
@@ -3052,7 +3052,7 @@
     </message>
     <message>
         <source>Die neue Datei konnte nicht gesichert werden.</source>
-        <translation>Nový soubor nelze uložit.</translation>
+        <translation>Nový soubor se nepodařilo uložit.</translation>
     </message>
     <message>
         <source>Die Datei kann nicht geschrieben werden.</source>
@@ -3060,31 +3060,31 @@
     </message>
     <message>
         <source>Die Datei konnte nicht vollständig geschrieben werden.</source>
-        <translation>Soubor nelze zapsat celý.</translation>
+        <translation>Soubor se nepodařilo zapsat celý.</translation>
     </message>
     <message>
         <source>„%1“ konnte nicht ersetzt werden: %2</source>
-        <translation>„%1“ nelze nahradit: %2</translation>
+        <translation>„%1“ se nepodařilo nahradit: %2</translation>
     </message>
     <message>
         <source>Die Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.</source>
-        <translation>Záložní kopii pro odvolání nelze vytvořit.</translation>
+        <translation>Záložní kopii pro odvolání se nepodařilo vytvořit.</translation>
     </message>
     <message>
         <source>HDR-Gain-Map</source>
-        <translation>HDR gain mapa</translation>
+        <translation>mapa zisku HDR</translation>
     </message>
     <message>
         <source>Tiefenkarte</source>
-        <translation>Hloubková mapa</translation>
+        <translation>hloubková mapa</translation>
     </message>
     <message>
         <source>Porträt-Maske</source>
-        <translation>Maska portrétu</translation>
+        <translation>maska portrétu</translation>
     </message>
     <message>
         <source>Segmentierungsmaske</source>
-        <translation>Segmentační maska</translation>
+        <translation>segmentační maska</translation>
     </message>
     <message>
         <source>Die Datei enthält Zusatzbilder (%1), die beim Sichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gesichert und gilt weiter nur in der Anzeige.</source>
@@ -3092,7 +3092,7 @@
     </message>
     <message>
         <source>Die neue Datei kann nicht gelesen werden.</source>
-        <translation>Nový soubor nelze číst.</translation>
+        <translation>Nový soubor nelze přečíst.</translation>
     </message>
     <message>
         <source>Die Datei kann nicht geschrieben werden: %1</source>
@@ -3100,19 +3100,19 @@
     </message>
     <message>
         <source>Die Datei konnte nicht vollständig geschrieben werden: %1</source>
-        <translation>Soubor nelze zapsat celý: %1</translation>
+        <translation>Soubor se nepodařilo zapsat celý: %1</translation>
     </message>
     <message>
         <source>Die Datei kann nicht gelesen werden.</source>
-        <translation>Soubor nelze číst.</translation>
+        <translation>Soubor nelze přečíst.</translation>
     </message>
     <message>
         <source>Die Ausrichtung konnte nicht verlustfrei geschrieben werden.</source>
-        <translation>Orientaci nelze zapsat bezztrátově.</translation>
+        <translation>Orientaci se nepodařilo zapsat bezeztrátově.</translation>
     </message>
     <message>
         <source>Die Ausrichtung konnte nicht verlustfrei geschrieben werden (%1).</source>
-        <translation>Orientaci nelze zapsat bezztrátově (%1).</translation>
+        <translation>Orientaci se nepodařilo zapsat bezeztrátově (%1).</translation>
     </message>
     <message>
         <source>Das Bild lässt sich nicht exakt neu sichern.</source>
@@ -3124,7 +3124,7 @@
     </message>
     <message>
         <source>Nicht genug Speicherplatz, um „%1“ sicher zu überschreiben.</source>
-        <translation>Nedostatek místa k bezpečnému přepsání „%1“.</translation>
+        <translation>Nedostatek místa na disku k bezpečnému přepsání „%1“.</translation>
     </message>
     <message>
         <source>Der alte Inhalt liegt in „%1“.</source>
@@ -3132,7 +3132,7 @@
     </message>
     <message>
         <source>Die Dateiattribute konnten nicht übernommen werden.</source>
-        <translation>Atributy souboru nelze převzít.</translation>
+        <translation>Atributy souboru se nepodařilo převzít.</translation>
     </message>
 </context>
 <context>
@@ -3151,19 +3151,19 @@
     </message>
     <message>
         <source>Der Bildschirm ist nicht mehr angeschlossen.</source>
-        <translation>Displej už není připojen.</translation>
+        <translation>Monitor už není připojen.</translation>
     </message>
     <message>
         <source>Alle Bildschirme</source>
-        <translation type="unfinished">Všechny obrazovky</translation>
+        <translation>Všechny monitory</translation>
     </message>
     <message>
         <source>Bildschirm %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Monitor %1</translation>
     </message>
     <message>
         <source>Windows hat das Bild nicht als Desktophintergrund übernommen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Systém Windows nenastavil obrázek jako pozadí plochy.</translation>
     </message>
 </context>
 <context>
@@ -3190,7 +3190,7 @@
     </message>
     <message>
         <source>Benutzte Dokumente</source>
-        <translation>Otevřít nedávné</translation>
+        <translation>Otevřít poslední položku</translation>
     </message>
     <message>
         <source>Schließen</source>
@@ -3210,7 +3210,7 @@
     </message>
     <message>
         <source>Im Editor öffnen</source>
-        <translation>Otevřít ve výchozím editoru</translation>
+        <translation>Otevřít v editoru</translation>
     </message>
     <message>
         <source>In den Papierkorb legen</source>
@@ -3242,27 +3242,27 @@
     </message>
     <message>
         <source>Widerrufen</source>
-        <translation>Odvolat</translation>
+        <translation>Odvolat akci</translation>
     </message>
     <message>
         <source>Wiederholen</source>
-        <translation>Znovu</translation>
+        <translation>Opakovat akci</translation>
     </message>
     <message>
         <source>„%1“ widerrufen</source>
-        <translation>Odvolat %1</translation>
+        <translation>Odvolat „%1“</translation>
     </message>
     <message>
         <source>„%1“ wiederholen</source>
-        <translation>Znovu %1</translation>
+        <translation>Opakovat „%1“</translation>
     </message>
     <message>
         <source>Kopieren</source>
-        <translation>Kopírovat</translation>
+        <translation>Zkopírovat</translation>
     </message>
     <message>
         <source>Pfad kopieren</source>
-        <translation>Kopírovat cestu</translation>
+        <translation>Zkopírovat cestu</translation>
     </message>
     <message>
         <source>Darstellung</source>
@@ -3270,11 +3270,11 @@
     </message>
     <message>
         <source>Einpassen</source>
-        <translation>Přizpůsobit oknu</translation>
+        <translation>Velikost podle okna</translation>
     </message>
     <message>
         <source>Einpassen (auch vergrößern)</source>
-        <translation>Přizpůsobit oknu (i zvětšit)</translation>
+        <translation>Velikost podle okna (i zvětšit)</translation>
     </message>
     <message>
         <source>100 % (1:1 Pixel)</source>
@@ -3302,7 +3302,7 @@
     </message>
     <message>
         <source>Einpassen ↔ 100 %</source>
-        <translation>Přizpůsobit ↔ 100 %</translation>
+        <translation>Velikost podle okna ↔ 100 %</translation>
     </message>
     <message>
         <source>Zoom fixieren</source>
@@ -3358,7 +3358,7 @@
     </message>
     <message>
         <source>Sortieren nach</source>
-        <translation>Řadit podle</translation>
+        <translation>Seřadit podle</translation>
     </message>
     <message>
         <source>Wie im Finder</source>
@@ -3418,11 +3418,11 @@
     </message>
     <message>
         <source>Horizontal spiegeln</source>
-        <translation>Překlopit vodorovně</translation>
+        <translation>Převrátit vodorovně</translation>
     </message>
     <message>
         <source>Vertikal spiegeln</source>
-        <translation>Překlopit svisle</translation>
+        <translation>Převrátit svisle</translation>
     </message>
     <message>
         <source>RAW anzeigen</source>
@@ -3438,7 +3438,7 @@
     </message>
     <message>
         <source>Zoomen</source>
-        <translation>Zvětšit/zmenšit</translation>
+        <translation>Přepnout velikost</translation>
     </message>
     <message>
         <source>Alle nach vorne bringen</source>
@@ -3475,7 +3475,7 @@
     </message>
     <message>
         <source>Über-/Unterbelichtungswarnung</source>
-        <translation>Pře-/podexpozice</translation>
+        <translation>Upozornění na přeexpozici/podexpozici</translation>
     </message>
     <message>
         <source>Focus Peaking</source>
@@ -3483,7 +3483,7 @@
     </message>
     <message>
         <source>Fokuspunkte</source>
-        <translation>Body AF</translation>
+        <translation>Body zaostření</translation>
     </message>
     <message>
         <source>Vergleich überlagern</source>
@@ -3551,7 +3551,7 @@
     </message>
     <message>
         <source>Nur markierte</source>
-        <translation>Jen ponechané</translation>
+        <translation>Jen vybrané</translation>
     </message>
     <message>
         <source>Nur unbewertete</source>
@@ -3559,7 +3559,7 @@
     </message>
     <message>
         <source>Nur abgelehnte</source>
-        <translation>Jen zamítnuté</translation>
+        <translation>Jen odmítnuté</translation>
     </message>
     <message>
         <source>Mindestens %1 ★</source>
@@ -3567,11 +3567,11 @@
     </message>
     <message>
         <source>Aussortieren</source>
-        <translation>Výběr</translation>
+        <translation>Třídění</translation>
     </message>
     <message>
         <source>Aussortiermodus</source>
-        <translation>Režim výběru</translation>
+        <translation>Režim třídění</translation>
     </message>
     <message>
         <source>Bewerten</source>
@@ -3579,7 +3579,7 @@
     </message>
     <message>
         <source>Nach Bewertung automatisch weiter</source>
-        <translation>Po hodnocení dál</translation>
+        <translation>Po ohodnocení automaticky přejít dál</translation>
     </message>
     <message>
         <source>Filter</source>
@@ -3587,19 +3587,19 @@
     </message>
     <message>
         <source>Alle abgelehnten in den Papierkorb legen …</source>
-        <translation>Všechny zamítnuté do koše…</translation>
+        <translation>Přesunout všechny odmítnuté do koše…</translation>
     </message>
     <message>
         <source>Alle abgelehnten nach „_Rejected“ verschieben …</source>
-        <translation>Všechny zamítnuté do „_Rejected“…</translation>
+        <translation>Přesunout všechny odmítnuté do „_Rejected“…</translation>
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
-        <translation>Rychlé odkládání: přesunout (M, pak 1–9)</translation>
+        <translation>Rychlé přesunutí: přesunout (M, pak 1–9)</translation>
     </message>
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
-        <translation>Rychlé odkládání: kopírovat (C, pak 1–9)</translation>
+        <translation>Rychlé přesunutí: zkopírovat (C, pak 1–9)</translation>
     </message>
     <message>
         <source>Verschieben nach</source>
@@ -3607,11 +3607,11 @@
     </message>
     <message>
         <source>Kopieren nach</source>
-        <translation>Kopírovat do</translation>
+        <translation>Zkopírovat do</translation>
     </message>
     <message>
         <source>Ziele der Schnellablage festlegen …</source>
-        <translation>Nastavit cíle odkládání…</translation>
+        <translation>Nastavit cíle rychlého přesunutí…</translation>
     </message>
     <message>
         <source>Raster</source>
@@ -3631,7 +3631,7 @@
     </message>
     <message>
         <source>Ordnerkarte</source>
-        <translation>Mapa</translation>
+        <translation>Mapa složky</translation>
     </message>
     <message>
         <source>Nächster Ordner</source>
@@ -3659,7 +3659,7 @@
     </message>
     <message>
         <source>Minimaler Fenstermodus</source>
-        <translation>Minimální okno</translation>
+        <translation>Minimální režim okna</translation>
     </message>
     <message>
         <source>Fenster koppeln …</source>
@@ -3691,7 +3691,7 @@
     </message>
     <message>
         <source>Belichtung beim Bildwechsel beibehalten</source>
-        <translation>Zachovat expozici při změně obrázku</translation>
+        <translation>Zachovat expozici při přechodu na jiný obrázek</translation>
     </message>
     <message>
         <source>Belichtungsregler einblenden</source>
@@ -3749,7 +3749,7 @@
     </message>
     <message>
         <source>Karten sind unter Windows nicht verfügbar.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mapy nejsou v systému Windows k dispozici.</translation>
     </message>
 </context>
 <context>
@@ -3760,11 +3760,11 @@
     </message>
     <message>
         <source>Das Bild wird aus dem Archiv entpackt – versuche es gleich noch einmal.</source>
-        <translation>Obrázek se rozbaluje z archivu – zkuste to prosím za chvíli znovu.</translation>
+        <translation>Obrázek se rozbaluje z archivu – zkuste to za chvíli znovu.</translation>
     </message>
     <message>
         <source>Öffnen mit</source>
-        <translation>Otevřít v aplikaci</translation>
+        <translation>Otevřít pomocí</translation>
     </message>
     <message>
         <source>Teilen</source>
@@ -3800,7 +3800,7 @@
     </message>
     <message>
         <source>Tab in ein neues Fenster bewegen</source>
-        <translation>Přesunout panel do nového okna</translation>
+        <translation>Přenést panel do nového okna</translation>
     </message>
     <message>
         <source>Alle Fenster zusammenführen</source>
@@ -3808,11 +3808,11 @@
     </message>
     <message>
         <source>Tableiste ein-/ausblenden</source>
-        <translation>Zobrazit/skrýt pruh panelů</translation>
+        <translation>Zobrazit/skrýt řádek panelů</translation>
     </message>
     <message>
         <source>Tabs in den Einstellungen erlauben (Fenster)</source>
-        <translation>Povolit panely v Nastavení (Okno)</translation>
+        <translation>Povolit panely (Nastavení → Okna)</translation>
     </message>
 </context>
 <context>
@@ -3828,7 +3828,7 @@
     <message>
         <source>Aufnahme</source>
         <extracomment>group: exposure/shooting data</extracomment>
-        <translation>Expozice</translation>
+        <translation>Pořízení</translation>
     </message>
     <message>
         <source>GPS</source>
@@ -3970,23 +3970,23 @@
     </message>
     <message>
         <source>Wert kopieren</source>
-        <translation>Kopírovat hodnotu</translation>
+        <translation>Zkopírovat hodnotu</translation>
     </message>
     <message>
         <source>Gruppe kopieren</source>
-        <translation>Kopírovat skupinu</translation>
+        <translation>Zkopírovat skupinu</translation>
     </message>
     <message>
         <source>Zeile kopieren</source>
-        <translation>Kopírovat řádek</translation>
+        <translation>Zkopírovat řádek</translation>
     </message>
     <message>
         <source>Alles kopieren</source>
-        <translation>Kopírovat vše</translation>
+        <translation>Zkopírovat vše</translation>
     </message>
     <message>
         <source>Suchen (Feld oder Wert) …</source>
-        <translation>Hledat (pole nebo hodnota)…</translation>
+        <translation>Hledat v polích a hodnotách…</translation>
     </message>
     <message>
         <source>Feld</source>
@@ -3998,7 +3998,7 @@
     </message>
     <message>
         <source>Kopieren</source>
-        <translation>Kopírovat</translation>
+        <translation>Zkopírovat</translation>
     </message>
     <message>
         <source>Alle Metadaten</source>
@@ -4041,7 +4041,7 @@
     </message>
     <message>
         <source>Gib eine Bildnummer zwischen 1 und %1 ein.</source>
-        <translation>Zadejte číslo obrázku od 1 do %1</translation>
+        <translation>Zadejte číslo obrázku od 1 do %1.</translation>
     </message>
     <message>
         <source>Zufällige Reihenfolge an</source>
@@ -4072,11 +4072,11 @@
     </message>
     <message>
         <source>Apps (*.desktop);;Alle Dateien (*)</source>
-        <translation>Programy (*.desktop);;Všechny soubory (*)</translation>
+        <translation>Aplikace (*.desktop);;Všechny soubory (*)</translation>
     </message>
     <message>
         <source>„%1“ ist keine App.</source>
-        <translation>„%1“ není program.</translation>
+        <translation>„%1“ není aplikace.</translation>
     </message>
     <message>
         <source>Kein Bild geöffnet</source>
@@ -4111,7 +4111,7 @@
     <name>lf::OverviewController</name>
     <message>
         <source>Keine Bilder für die Rasteransicht</source>
-        <translation>Žádné obrázky pro zobrazení mřížky</translation>
+        <translation>Žádné obrázky pro zobrazení v mřížce</translation>
     </message>
     <message>
         <source>Wähle zum Vergleichen mindestens zwei Bilder aus</source>
@@ -4225,7 +4225,7 @@
     </message>
     <message>
         <source>Fenster</source>
-        <translation>Okno</translation>
+        <translation>Okna</translation>
     </message>
     <message>
         <source>Anzeige</source>
@@ -4261,7 +4261,7 @@
     </message>
     <message>
         <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbildmodus“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
-        <translation>Projeví se okamžitě. Nabídky a okna systému macOS („Zapnout režim celé obrazovky“, „Služby“, „Otevřít“, žádosti o oprávnění) se změní po restartu.</translation>
+        <translation>Projeví se okamžitě. Nabídky a okna systému macOS („Spustit režim celé obrazovky“, „Služby“, „Otevřít“, žádosti o oprávnění) se změní po restartu.</translation>
     </message>
     <message>
         <source>Öffnen aus dem Finder:</source>
@@ -4273,7 +4273,7 @@
     </message>
     <message>
         <source>Im vordersten Fenster ersetzen</source>
-        <translation>Nahradit v nejpřednějším okně</translation>
+        <translation>Nahradit v okně v popředí</translation>
     </message>
     <message>
         <source>Neues Fenster, außer die Datei ist schon offen</source>
@@ -4281,7 +4281,7 @@
     </message>
     <message>
         <source>Gilt für Doppelklick im Finder, „Öffnen mit“ und Drag &amp; Drop auf das Dock-Symbol.</source>
-        <translation>Platí pro dvojí kliknutí ve Finderu, „Otevřít v aplikaci“ a přetažení na ikonu v Docku.</translation>
+        <translation>Platí pro dvojí kliknutí ve Finderu, „Otevřít pomocí“ a přetažení na ikonu v Docku.</translation>
     </message>
     <message>
         <source>Fenster beim nächsten Start wiederherstellen</source>
@@ -4293,7 +4293,7 @@
     </message>
     <message>
         <source>Vor dem Bewegen in den Papierkorb nachfragen</source>
-        <translation>Před smazáním se zeptat</translation>
+        <translation>Před přesunutím do koše se zeptat</translation>
     </message>
     <message>
         <source>Aus: ⌘⌫ legt das Bild sofort in den Papierkorb, ⌘Z holt es zurück.</source>
@@ -4301,11 +4301,11 @@
     </message>
     <message>
         <source>Fragen, ob Lumaflip Standard-App werden soll</source>
-        <translation type="unfinished"></translation>
+        <translation>Nabízet nastavení Lumaflipu jako výchozí aplikace</translation>
     </message>
     <message>
         <source>Öffnest du ein Bild, dessen Dateityp eine andere App öffnet, erscheint einmal je Dateityp ein Hinweis oben im Fenster.</source>
-        <translation type="unfinished"></translation>
+        <translation>Když otevřete obrázek, jehož typ souboru se otevírá v jiné aplikaci, zobrazí se v horní části okna upozornění – jednou pro každý typ souboru.</translation>
     </message>
     <message>
         <source>Editor:</source>
@@ -4313,7 +4313,7 @@
     </message>
     <message>
         <source>Für „Im Editor öffnen“ (Taste E).</source>
-        <translation>Pro „Otevřít ve výchozím editoru“ (klávesa E).</translation>
+        <translation>Pro „Otevřít v editoru“ (klávesa E).</translation>
     </message>
     <message>
         <source>Drehung sichern:</source>
@@ -4325,11 +4325,11 @@
     </message>
     <message>
         <source>JPEG verlustfrei drehen (DCT)</source>
-        <translation>Bezztrátově otočit JPEG (DCT)</translation>
+        <translation>Bezeztrátově otočit JPEG (DCT)</translation>
     </message>
     <message>
         <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Apps ohne EXIF-Unterstützung das Bild richtig anzeigen. RAW-Dateien werden nie verändert; ⌘Z widerruft das Sichern.</source>
-        <translation>Ani jedno nemění pixely obrázku. „Orientace EXIF“ mění jen příznak (JPEG, HEIC, TIFF, PNG); „bezztrátové otočení“ přeuspořádá bloky JPEG, aby obrázek správně zobrazily i aplikace bez podpory EXIF. Soubory RAW se nikdy nemění; ⌘Z uložení odvolá.</translation>
+        <translation>Ani jedna z možností nemění pixely obrázku. „Nastavit orientaci EXIF“ mění jen příznak (JPEG, HEIC, TIFF, PNG); „Bezeztrátově otočit JPEG“ přeuspořádá bloky JPEG, aby obrázek správně zobrazily i aplikace bez podpory EXIF. Soubory RAW se nikdy nemění; ⌘Z uložení odvolá.</translation>
     </message>
     <message>
         <source>Änderungsdatum beibehalten</source>
@@ -4341,7 +4341,7 @@
     </message>
     <message>
         <source>Aus: Neue Fenster übernehmen die zuletzt benutzte Größe.</source>
-        <translation>Vypnuto: Nová okna převezmou naposledy použitou velikost.</translation>
+        <translation>Vypnuto: nová okna převezmou naposledy použitou velikost.</translation>
     </message>
     <message>
         <source>Titelleiste:</source>
@@ -4349,7 +4349,7 @@
     </message>
     <message>
         <source>Beim Bewegen der Maus einblenden</source>
-        <translation>Zobrazit při pohybu myši</translation>
+        <translation>Zobrazit při pohybu ukazatele</translation>
     </message>
     <message>
         <source>Immer einblenden</source>
@@ -4357,7 +4357,7 @@
     </message>
     <message>
         <source>Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um.</source>
-        <translation>Bez záhlaví sahá obrázek až k hornímu okraji. Okno → „Minimální okno“ přepne jednotlivé okno.</translation>
+        <translation>Bez záhlaví okna sahá obrázek až k hornímu okraji. Okno → „Minimální režim okna“ přepne jednotlivé okno.</translation>
     </message>
     <message>
         <source>Ordnername in der Titelleiste</source>
@@ -4393,7 +4393,7 @@
     </message>
     <message>
         <source>Neue Fenster erscheinen dann als Tab im vordersten Fenster; Fenster → „Alle Fenster zusammenführen“ fasst offene Fenster zusammen.</source>
-        <translation>Nová okna se pak zobrazí jako panel v nejpřednějším okně; Okno → „Sloučit všechna okna“ spojí otevřená okna.</translation>
+        <translation>Nová okna se pak zobrazí jako panel v okně v popředí; Okno → „Sloučit všechna okna“ spojí otevřená okna.</translation>
     </message>
     <message>
         <source>Gekoppelte Fenster blättern nach:</source>
@@ -4405,11 +4405,11 @@
     </message>
     <message>
         <source>Position in der Sammlung</source>
-        <translation>Pozice ve sbírce</translation>
+        <translation>Pozice v kolekci</translation>
     </message>
     <message>
         <source>Fenster → „Fenster koppeln …“: gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt.</source>
-        <translation>Okno → „Propojit okna…“: propojená okna listují společně a sdílejí zvětšení a výřez.</translation>
+        <translation>Okno → „Propojit okna…“: propojená okna listují společně a sdílejí zvětšení a zobrazenou oblast.</translation>
     </message>
     <message>
         <source>Dunkel</source>
@@ -4421,7 +4421,7 @@
     </message>
     <message>
         <source>Wie System</source>
-        <translation>Podle vzhledu systému</translation>
+        <translation>Podle systému</translation>
     </message>
     <message>
         <source>Schachbrett (Transparenz)</source>
@@ -4449,11 +4449,11 @@
     </message>
     <message>
         <source>Einpassen (nicht vergrößern)</source>
-        <translation>Přizpůsobit oknu (nezvětšovat)</translation>
+        <translation>Velikost podle okna (nezvětšovat)</translation>
     </message>
     <message>
         <source>Einpassen (auch vergrößern)</source>
-        <translation>Přizpůsobit oknu (i zvětšit)</translation>
+        <translation>Velikost podle okna (i zvětšit)</translation>
     </message>
     <message>
         <source>100 %</source>
@@ -4501,7 +4501,7 @@
     </message>
     <message>
         <source>HDR-Bilder mit erweitertem Dynamikumfang anzeigen</source>
-        <translation>Zobrazovat HDR snímky s rozšířeným dynamickým rozsahem</translation>
+        <translation>Zobrazovat obrázky HDR s rozšířeným dynamickým rozsahem</translation>
     </message>
     <message>
         <source>Lupe (L gedrückt halten):</source>
@@ -4585,19 +4585,19 @@
     </message>
     <message>
         <source>Profilvorlagen</source>
-        <translation>Předvolby profilů</translation>
+        <translation>Předvolby</translation>
     </message>
     <message>
         <source>Mac-Standard</source>
-        <translation>Standard Macu</translation>
+        <translation>Výchozí pro Mac</translation>
     </message>
     <message>
         <source>Wie Windows-Bildbetrachter</source>
-        <translation>Zvyklosti z prohlížečů ve Windows</translation>
+        <translation>Jako prohlížeče obrázků ve Windows</translation>
     </message>
     <message>
         <source>Fotografie / Lightroom</source>
-        <translation>Fotograf / Lightroom</translation>
+        <translation>Fotografie / Lightroom</translation>
     </message>
     <message>
         <source>Maus, Trackpad und Tasten</source>
@@ -4617,7 +4617,7 @@
     </message>
     <message>
         <source>Mindestabstand zwischen Bildwechseln:</source>
-        <translation>Minimální odstup mezi změnami obrázku:</translation>
+        <translation>Minimální interval mezi změnami obrázku:</translation>
     </message>
     <message>
         <source> ms</source>
@@ -4649,7 +4649,7 @@
     </message>
     <message>
         <source>Klicke auf ein Feld und drücke die neue Taste. Bis zu drei Tastenkürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
-        <translation>Klikněte do pole a stiskněte novou klávesu. Až tři zkratky na akci. Číslice a P/X/U pro hodnocení platí jen v režimu třídění.</translation>
+        <translation>Klikněte do pole a stiskněte novou klávesu. Až tři klávesové zkratky na akci. Číslice a P/X/U pro hodnocení platí jen v režimu třídění.</translation>
     </message>
     <message>
         <source>Aktion</source>
@@ -4669,7 +4669,7 @@
     </message>
     <message>
         <source>Standard-Tastenkürzel wiederherstellen</source>
-        <translation>Obnovit výchozí zkratky</translation>
+        <translation>Obnovit výchozí klávesové zkratky</translation>
     </message>
     <message>
         <source>Alle Tastenkürzel zurücksetzen</source>
@@ -4682,9 +4682,9 @@
     <message numerus="yes">
         <source>%n Aktion(en) mit doppelt belegten Tasten – ändere eine davon.</source>
         <translation>
-            <numerusform>%n akce s duplicitně přiřazenými klávesami – změňte prosím jednu z nich.</numerusform>
-            <numerusform>%n akce s duplicitně přiřazenými klávesami – změňte prosím jednu z nich.</numerusform>
-            <numerusform>%n akcí s duplicitně přiřazenými klávesami – změňte prosím jednu z nich.</numerusform>
+            <numerusform>%n akce má dvakrát přiřazenou klávesu – změňte jednu z nich.</numerusform>
+            <numerusform>%n akce mají dvakrát přiřazené klávesy – změňte jednu z nich.</numerusform>
+            <numerusform>%n akcí má dvakrát přiřazené klávesy – změňte jednu z nich.</numerusform>
         </translation>
     </message>
     <message>
@@ -4713,7 +4713,7 @@
     </message>
     <message>
         <source>Zeigt das vorderste Finder-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen aktuelle Sortierung (auch noch nicht gespeicherte). macOS bittet dafür einmalig um die Erlaubnis, den Finder zu steuern (Automation).</source>
-        <translation>Pokud nejpřednější okno Finderu zobrazuje právě otevřenou složku, převezme Lumaflip jeho aktuální řazení (i dosud neuložené). macOS k tomu jednorázově požádá o povolení ovládat Finder (Automatizace).</translation>
+        <translation>Pokud okno Finderu v popředí zobrazuje právě otevřenou složku, Lumaflip převezme jeho aktuální řazení (včetně neuložených změn). macOS kvůli tomu jednou požádá o svolení k ovládání Finderu (Automatizace).</translation>
     </message>
     <message>
         <source>Manuelle Sortierung:</source>
@@ -4757,7 +4757,7 @@
     </message>
     <message>
         <source>Gilt, wenn „Sortierung wie im Finder“ aus ist oder keine Finder-Information gefunden wird. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier.</source>
-        <translation>Platí, když je „Řazení podle Finderu“ vypnuto nebo nejsou nalezeny žádné informace Finderu. Volba v nabídce Zobrazení → Řadit podle se pamatuje pro každou složku zvlášť; „Použít pro všechny složky“ z ní udělá výchozí hodnotu zde.</translation>
+        <translation>Platí, když je „Řazení podle Finderu“ vypnuto nebo nejsou nalezeny žádné informace Finderu. Volba v nabídce Zobrazení → Seřadit podle se pamatuje pro každou složku zvlášť; „Použít pro všechny složky“ z ní udělá výchozí hodnotu zde.</translation>
     </message>
     <message>
         <source>Keine Farbe</source>
@@ -4805,23 +4805,23 @@
     </message>
     <message>
         <source>Ziel %1 der Schnellablage</source>
-        <translation>Cíl %1 rychlého odkládání</translation>
+        <translation>Cíl %1 rychlého přesunutí</translation>
     </message>
     <message>
         <source>Speicherort für Bewertungen</source>
-        <translation>Ukládat hodnocení</translation>
+        <translation>Úložiště hodnocení</translation>
     </message>
     <message>
         <source>XMP-Zusatzdatei neben dem Bild (Bild.xmp)</source>
-        <translation>Doplňkový soubor XMP vedle obrázku (obrázek.xmp)</translation>
+        <translation>Doprovodný soubor XMP vedle obrázku (obrázek.xmp)</translation>
     </message>
     <message>
         <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Abgelehnt“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
-        <translation>Kompatibilní s Lightroomem, Capture One a darktable: hvězdičky v xmp:Rating, „Zamítnout“ jako -1. Stávající obsah souboru zůstane zachován.</translation>
+        <translation>Kompatibilní s Lightroomem, Capture One a darktable: hvězdičky v xmp:Rating, „Odmítnuto“ jako -1. Stávající obsah souboru zůstane zachován.</translation>
     </message>
     <message>
         <source>Nur JPEG, HEIC, TIFF, PNG und DNG; die Bildpixel werden nicht neu kodiert. RAW-Dateien werden nie verändert – dafür wird die Zusatzdatei benutzt.</source>
-        <translation>Jen JPEG, HEIC, TIFF, PNG a DNG; pixely se znovu nekódují. Soubory RAW se nikdy nemění – použije se pro ně doprovodný soubor.</translation>
+        <translation>Jen JPEG, HEIC, TIFF, PNG a DNG; pixely obrázku se nepřekódovávají. Soubory RAW se nikdy nemění – použije se pro ně doprovodný soubor.</translation>
     </message>
     <message>
         <source>Änderungsdatum beim Schreiben ins Bild beibehalten</source>
@@ -4829,7 +4829,7 @@
     </message>
     <message>
         <source>Im Finder sichtbar und per Spotlight durchsuchbar. Sind mehrere Speicherorte gewählt, werden alle beschrieben; beim Lesen gilt die Reihenfolge Zusatzdatei, Bild, Tags.</source>
-        <translation>Viditelné ve Finderu a vyhledatelné přes Spotlight. Je-li zvoleno více míst, zapisuje se do všech; při čtení platí pořadí doprovodný soubor, obrázek, štítky.</translation>
+        <translation>Viditelné ve Finderu a prohledávatelné pomocí Spotlightu. Je-li zvoleno více úložišť, zapisuje se do všech; při čtení platí pořadí: doprovodný soubor, obrázek, značky.</translation>
     </message>
     <message>
         <source>Stern-Symbol:</source>
@@ -4837,39 +4837,39 @@
     </message>
     <message>
         <source>Tag für „Markiert“:</source>
-        <translation>Štítek pro Ponechat:</translation>
+        <translation>Značka pro „Vybráno“:</translation>
     </message>
     <message>
         <source>Tag für „Abgelehnt“:</source>
-        <translation>Štítek pro Zamítnout:</translation>
+        <translation>Značka pro „Odmítnuto“:</translation>
     </message>
     <message>
         <source>Drei Sterne werden zum Tag „★★★“ (Symbol dreimal).</source>
-        <translation>Tři hvězdičky dají štítek „★★★“ (symbol třikrát).</translation>
+        <translation>Tři hvězdičky se změní na značku „★★★“ (symbol třikrát).</translation>
     </message>
     <message>
         <source>Aussortieren</source>
-        <translation>Výběr</translation>
+        <translation>Třídění</translation>
     </message>
     <message>
         <source>Nach Bewertung automatisch weiter</source>
-        <translation>Po hodnocení automaticky dál</translation>
+        <translation>Po ohodnocení automaticky přejít dál</translation>
     </message>
     <message>
         <source>Zoom im Aussortiermodus fixieren</source>
-        <translation>V režimu výběru zamknout zvětšení</translation>
+        <translation>V režimu třídění zamknout zvětšení</translation>
     </message>
     <message>
         <source>Tastenhilfe im Aussortiermodus einblenden</source>
-        <translation>V režimu výběru zobrazit nápovědu kláves</translation>
+        <translation>V režimu třídění zobrazit nápovědu kláves</translation>
     </message>
     <message>
         <source>Aussortiermodus: ⌘K oder K. Ziffern vergeben dort Sterne statt Zoomstufen; „Bewertungstasten immer aktiv“ gibt es unter Maus &amp; Tastatur.</source>
-        <translation>Režim výběru: ⌘K nebo K. Číslice tam dávají hvězdičky místo úrovní zvětšení; „Klávesy hodnocení vždy aktivní“ najdete v části Myš a klávesnice.</translation>
+        <translation>Režim třídění: ⌘K nebo K. Číslice v něm udělují hvězdičky místo úrovní zvětšení; volbu „Klávesy hodnocení: Vždy aktivní“ najdete v části Myš a klávesnice.</translation>
     </message>
     <message>
         <source>Schnellablage</source>
-        <translation>Rychlé odkládání</translation>
+        <translation>Rychlé přesunutí</translation>
     </message>
     <message>
         <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z widerruft es.</source>
@@ -4881,7 +4881,7 @@
     </message>
     <message>
         <source>Finder-Tags</source>
-        <translation>Štítky Finderu</translation>
+        <translation>Značky Finderu</translation>
     </message>
     <message>
         <source>Unterstützte Formate (ohne Nachinstallation):</source>
@@ -4933,7 +4933,7 @@
     </message>
     <message>
         <source>Aus: Zuerst die eingebettete Vorschau, danach wird die volle Entwicklung nachgeladen.</source>
-        <translation>Vypnuto: Nejprve vložený náhled, poté se dočte plné zpracování.</translation>
+        <translation>Vypnuto: nejprve se zobrazí vložený náhled, poté se načte plné zpracování.</translation>
     </message>
     <message>
         <source>RAW+JPEG-Paare als ein Bild behandeln</source>
@@ -4953,7 +4953,7 @@
     </message>
     <message>
         <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
-        <translation>Pro mangu: ← listuje dál, → zpět. Mezerník a Page Down vždy přejdou na další stránku.</translation>
+        <translation>Pro mangu: ← listuje dál, → zpět. Mezerník a Page↓ vždy přejdou na další stránku.</translation>
     </message>
     <message>
         <source>Leistung</source>
@@ -4965,7 +4965,7 @@
     </message>
     <message>
         <source>Automatisch (25 % des Arbeitsspeichers, max. 2 GB)</source>
-        <translation>Automaticky (25 % operační paměti, max. 2 GB)</translation>
+        <translation>Automaticky (25 % paměti, max. 2 GB)</translation>
     </message>
     <message>
         <source>Speicherbudget:</source>
@@ -4989,7 +4989,7 @@
     </message>
     <message>
         <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Internetverbindung.</source>
-        <translation>Obrázek se analyzuje jen tehdy, když pro okno zapnete Živý text – na tomto Macu, bez sítě.</translation>
+        <translation>Obrázek se analyzuje jen tehdy, když pro okno zapnete Živý text – na tomto Macu, bez připojení k internetu.</translation>
     </message>
     <message>
         <source>Eigene Aktionen</source>
@@ -4997,7 +4997,7 @@
     </message>
     <message>
         <source>Ein Shell-Befehl oder ein Kurzbefehl (Kurzbefehle-App) erhält das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
-        <translation>Příkaz shellu nebo zkratka (Zkratky) dostane aktuální obrázek jako argument. Nabídka: Soubor → Vlastní akce.</translation>
+        <translation>Příkaz shellu nebo zkratka (aplikace Zkratky) dostane aktuální obrázek jako argument. Nabídka: Soubor → Vlastní akce.</translation>
     </message>
     <message>
         <source>Abbrechen nach:</source>
@@ -5009,7 +5009,7 @@
     </message>
     <message>
         <source>Backup der Einstellungen</source>
-        <translation>Zálohovat nastavení</translation>
+        <translation>Záloha nastavení</translation>
     </message>
     <message>
         <source>Exportieren …</source>
@@ -5025,7 +5025,7 @@
     </message>
     <message>
         <source>Lumaflip-Einstellungen (*.json)</source>
-        <translation>Nastavení Lumaflip (*.json)</translation>
+        <translation>Nastavení Lumaflipu (*.json)</translation>
     </message>
     <message>
         <source>Einstellungen exportieren</source>
@@ -5077,7 +5077,7 @@
     </message>
     <message>
         <source>Lumaflip kann nicht sein eigener Editor sein. Wähle eine andere App.</source>
-        <translation>Lumaflip nemůže být svým vlastním editorem. Vyberte prosím jinou aplikaci.</translation>
+        <translation>Lumaflip nemůže být svým vlastním editorem. Vyberte jinou aplikaci.</translation>
     </message>
     <message>
         <source>Editor wählen</source>
@@ -5093,7 +5093,7 @@
     </message>
     <message>
         <source>Lumaflip fragt dann beim Öffnen eines Ordners das vorderste Finder-Fenster nach seiner Sortierung – aber nur, wenn es genau diesen Ordner zeigt.</source>
-        <translation>Lumaflip se pak při otevření složky zeptá nejpřednějšího okna Finderu na jeho řazení – ale jen tehdy, když zobrazuje právě tuto složku.</translation>
+        <translation>Lumaflip se pak při otevření složky zeptá okna Finderu v popředí na jeho řazení – ale jen tehdy, když zobrazuje právě tuto složku.</translation>
     </message>
     <message>
         <source>Dafür fragt macOS einmalig, ob Lumaflip den Finder steuern darf („Automation“). Lumaflip liest nur Ordner, Ansicht und Sortierung des Fensters und ändert nichts. Die Erlaubnis lässt sich jederzeit unter Systemeinstellungen → Datenschutz &amp; Sicherheit → Automation widerrufen.</source>
@@ -5129,7 +5129,7 @@
     </message>
     <message>
         <source>Die Bittiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
-        <translation>Barevná hloubka nebo barevný režim souboru PSB není podporován.</translation>
+        <translation>Bitová hloubka nebo barevný režim souboru PSB není podporován.</translation>
     </message>
     <message>
         <source>Die Komprimierung der PSB-Datei wird nicht unterstützt.</source>
@@ -5141,7 +5141,7 @@
     </message>
     <message>
         <source>Die Datei kann nicht gelesen werden.</source>
-        <translation>Soubor nelze číst.</translation>
+        <translation>Soubor nelze přečíst.</translation>
     </message>
     <message>
         <source>Seite %1 existiert nicht.</source>
@@ -5172,7 +5172,7 @@
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden: %1</source>
-        <translation>Obrázek nelze dekódovat: %1</translation>
+        <translation>Obrázek se nepodařilo dekódovat: %1</translation>
     </message>
     <message>
         <source>Die SVG-Datei ist ungültig oder beschädigt.</source>
@@ -5209,7 +5209,7 @@
     </message>
     <message>
         <source>Kopieren nach … (1–9, C = wie zuletzt)</source>
-        <translation>Kopírovat do… (1–9, C = jako minule)</translation>
+        <translation>Zkopírovat do… (1–9, C = jako minule)</translation>
     </message>
     <message>
         <source>Noch kein Ziel verwendet – wähle zuerst eine Ziffer 1–9.</source>
@@ -5217,7 +5217,7 @@
     </message>
     <message>
         <source>Ziel %1 ist nicht festgelegt (Einstellungen → Bewertung → Schnellablage).</source>
-        <translation>Cíl %1 není nastaven (Nastavení → Hodnocení → Rychlé odkládání).</translation>
+        <translation>Cíl %1 není nastaven (Nastavení → Hodnocení → Rychlé přesunutí).</translation>
     </message>
     <message>
         <source>Verschieben</source>
@@ -5225,7 +5225,7 @@
     </message>
     <message>
         <source>Kopieren</source>
-        <translation>Kopírovat</translation>
+        <translation>Zkopírovat</translation>
     </message>
     <message>
         <source>Übersprungen – nichts geändert.</source>
@@ -5265,7 +5265,7 @@
     </message>
     <message>
         <source>„Ersetzen“ legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z widerruft alles.</source>
-        <translation>Nahradit přesune stávající soubor do koše, „Ponechat oba“ dá novému název jako „%1“. ⌘Z vše odvolá.</translation>
+        <translation>„Nahradit“ přesune stávající soubor do koše, „Ponechat obě“ dá novému souboru název jako „%1“. ⌘Z vše odvolá.</translation>
     </message>
     <message>
         <source>Ersetzen</source>
@@ -5273,7 +5273,7 @@
     </message>
     <message>
         <source>Beide behalten</source>
-        <translation>Ponechat oba</translation>
+        <translation>Ponechat obě</translation>
     </message>
     <message>
         <source>Überspringen</source>
@@ -5281,7 +5281,7 @@
     </message>
     <message>
         <source>Für alle %1 Konflikte</source>
-        <translation>Pro všechny konflikty (%1)</translation>
+        <translation>Použít pro všechny konflikty (%1)</translation>
     </message>
 </context>
 <context>
@@ -5292,7 +5292,7 @@
     </message>
     <message>
         <source>nur markierte</source>
-        <translation>jen ponechané</translation>
+        <translation>jen vybrané</translation>
     </message>
     <message>
         <source>≥ %1 ★</source>
@@ -5304,15 +5304,15 @@
     </message>
     <message>
         <source>nur abgelehnte</source>
-        <translation>jen zamítnuté</translation>
+        <translation>jen odmítnuté</translation>
     </message>
     <message>
         <source>Markiert</source>
-        <translation>Ponecháno</translation>
+        <translation>Vybráno</translation>
     </message>
     <message>
         <source>Abgelehnt</source>
-        <translation>Zamítnuto</translation>
+        <translation>Odmítnuto</translation>
     </message>
 </context>
 <context>
@@ -5335,7 +5335,7 @@
     </message>
     <message>
         <source>„%1“ konnte nicht ersetzt werden.</source>
-        <translation>„%1“ nelze nahradit.</translation>
+        <translation>„%1“ se nepodařilo nahradit.</translation>
     </message>
     <message>
         <source>Die Datei existiert nicht mehr.</source>
@@ -5359,11 +5359,11 @@
     </message>
     <message>
         <source>Die Bewertung ließ sich nicht ins Bild schreiben.</source>
-        <translation>Hodnocení nelze zapsat do obrázku.</translation>
+        <translation>Hodnocení se nepodařilo zapsat do obrázku.</translation>
     </message>
     <message>
         <source>Die Bewertung ließ sich nicht ohne Neukodieren ins Bild schreiben.</source>
-        <translation>Hodnocení nelze zapsat do obrázku bez nového kódování.</translation>
+        <translation>Hodnocení se nepodařilo zapsat do obrázku bez překódování.</translation>
     </message>
     <message>
         <source>„%1“ wurde inzwischen verändert – Bewertung nicht gesichert.</source>
@@ -5371,15 +5371,15 @@
     </message>
     <message>
         <source>Die Datei konnte nicht ersetzt werden.</source>
-        <translation>Soubor nelze nahradit.</translation>
+        <translation>Soubor se nepodařilo nahradit.</translation>
     </message>
     <message>
         <source>Finder-Tags werden auf diesem System nicht unterstützt.</source>
-        <translation>Štítky Finderu nejsou v tomto systému podporovány.</translation>
+        <translation>Značky Finderu nejsou v tomto systému podporovány.</translation>
     </message>
     <message>
         <source>Kein Speicherort für Bewertungen gewählt (Einstellungen → Bewertung).</source>
-        <translation>Není zvoleno místo pro ukládání hodnocení (Nastavení → Hodnocení).</translation>
+        <translation>Není zvoleno úložiště hodnocení (Nastavení → Hodnocení).</translation>
     </message>
     <message>
         <source>„%1“: %2 Die Bewertung steht deshalb in der XMP-Zusatzdatei.</source>
@@ -5403,26 +5403,26 @@
     </message>
     <message>
         <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
-        <translation>Hodnocení nelze zapsat do obrázku bezztrátově.</translation>
+        <translation>Hodnocení se nepodařilo bezeztrátově zapsat do obrázku.</translation>
     </message>
     <message>
         <source>Zusatzbilder der Datei (z. B. eine HDR-Gain-Map) gingen beim Schreiben verloren.</source>
-        <translation>Doplňkové obrázky souboru (např. HDR gain mapa) se při zápisu ztratily.</translation>
+        <translation>Doplňkové obrázky souboru (např. mapa zisku HDR) se při zápisu ztratily.</translation>
     </message>
     <message>
         <source>Tags von „%1“ konnten nicht gelesen werden: %2</source>
-        <translation>Štítky „%1“ nelze přečíst: %2</translation>
+        <translation>Značky „%1“ se nepodařilo přečíst: %2</translation>
     </message>
     <message>
         <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
-        <translation>Štítky „%1“ nelze nastavit: %2</translation>
+        <translation>Značky „%1“ se nepodařilo nastavit: %2</translation>
     </message>
 </context>
 <context>
     <name>lf::RecentItems</name>
     <message>
         <source>Einträge löschen</source>
-        <translation>Vymazat nabídku</translation>
+        <translation>Vyprázdnit nabídku</translation>
     </message>
 </context>
 <context>
@@ -5449,7 +5449,7 @@
     </message>
     <message>
         <source>„%1“ existiert bereits. Bitte wähle einen anderen Namen.</source>
-        <translation>„%1“ již existuje. Vyberte prosím jiný název.</translation>
+        <translation>„%1“ již existuje. Zvolte jiný název.</translation>
     </message>
     <message>
         <source>Neuer Dateiname</source>
@@ -5457,19 +5457,19 @@
     </message>
     <message>
         <source>Möchtest du die Endung „.%1“ wirklich entfernen?</source>
-        <translation>Chcete odstranit příponu „.%1“?</translation>
+        <translation>Opravdu chcete odstranit příponu „.%1“?</translation>
     </message>
     <message>
         <source>Möchtest du die Endung „.%1“ wirklich hinzufügen?</source>
-        <translation>Chcete přidat příponu „.%1“?</translation>
+        <translation>Opravdu chcete přidat příponu „.%1“?</translation>
     </message>
     <message>
         <source>Möchtest du die Endung wirklich von „.%1“ in „.%2“ ändern?</source>
-        <translation>Chcete změnit příponu „.%1“ na „.%2“?</translation>
+        <translation>Opravdu chcete změnit příponu z „.%1“ na „.%2“?</translation>
     </message>
     <message>
         <source>Endung ändern?</source>
-        <translation>Změnit příponu souboru?</translation>
+        <translation>Změnit příponu?</translation>
     </message>
     <message>
         <source>Die Datei wird dadurch nicht umgewandelt. Andere Apps erkennen sie danach eventuell nicht mehr.</source>
@@ -5477,7 +5477,7 @@
     </message>
     <message>
         <source>Nicht hinzufügen</source>
-        <translation>Ponechat bez přípony</translation>
+        <translation>Nepřidávat</translation>
     </message>
     <message>
         <source>„.%1“ beibehalten</source>
@@ -5500,7 +5500,7 @@
     <name>lf::ResvgDecoder</name>
     <message>
         <source>Die Datei kann nicht gelesen werden.</source>
-        <translation>Soubor nelze číst.</translation>
+        <translation>Soubor nelze přečíst.</translation>
     </message>
     <message>
         <source>Die Datei ist leer (0 Byte).</source>
@@ -5547,7 +5547,7 @@
     </message>
     <message>
         <source>Datei kann nicht gelesen werden: %1</source>
-        <translation>Soubor nelze číst: %1</translation>
+        <translation>Soubor nelze přečíst: %1</translation>
     </message>
     <message>
         <source>Keine gültige Einstellungsdatei (JSON-Fehler: %1).</source>
@@ -5611,7 +5611,7 @@
     </message>
     <message>
         <source>Batch-Dateien werden aus Sicherheitsgründen nicht gestartet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dávkové soubory se z bezpečnostních důvodů nespouštějí.</translation>
     </message>
     <message>
         <source>„%1“ würde den Dateinamen als Befehl lesen und wird aus Sicherheitsgründen nicht gestartet.</source>
@@ -5619,11 +5619,11 @@
     </message>
     <message>
         <source>Die App wurde nicht gefunden.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplikace nebyla nalezena.</translation>
     </message>
     <message>
         <source>Windows erlaubt Apps nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Systém Windows neumožňuje aplikacím, aby se samy nastavily jako výchozí. Bylo otevřeno nastavení „Výchozí aplikace“: vyberte v něm Lumaflip pro požadované typy souborů.</translation>
     </message>
 </context>
 <context>
@@ -5642,7 +5642,7 @@
     </message>
     <message>
         <source>Die Datei kann nicht gelesen werden.</source>
-        <translation>Soubor nelze číst.</translation>
+        <translation>Soubor nelze přečíst.</translation>
     </message>
     <message>
         <source>Die Datei ist leer (0 Byte).</source>
@@ -5673,57 +5673,57 @@
     <name>lf::StartScreenRecent</name>
     <message>
         <source>Zuletzt geöffnet</source>
-        <translation>Otevřít nedávné</translation>
+        <translation>Naposledy otevřené</translation>
     </message>
 </context>
 <context>
     <name>lf::TagService</name>
     <message>
         <source>Tags werden auf diesem System nicht unterstützt.</source>
-        <translation>Štítky nejsou v tomto systému podporovány.</translation>
+        <translation>Značky nejsou v tomto systému podporovány.</translation>
     </message>
     <message>
         <source>Tags von „%1“ konnten nicht gelesen werden: %2</source>
-        <translation>Štítky souboru „%1“ nelze přečíst: %2</translation>
+        <translation>Značky souboru „%1“ se nepodařilo přečíst: %2</translation>
     </message>
     <message>
         <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
-        <translation>Štítky souboru „%1“ nelze nastavit: %2</translation>
+        <translation>Značky souboru „%1“ se nepodařilo nastavit: %2</translation>
     </message>
     <message>
         <source>Die Tags von „%1“ können nicht gelesen werden.</source>
-        <translation>Štítky souboru „%1“ nelze přečíst.</translation>
+        <translation>Značky souboru „%1“ nelze přečíst.</translation>
     </message>
     <message>
         <source>„%1“ existiert nicht mehr.</source>
-        <translation type="unfinished">„%1“ již neexistuje.</translation>
+        <translation>„%1“ již neexistuje.</translation>
     </message>
     <message>
         <source>Dieses Dateisystem unterstützt keine Tags.</source>
-        <translation>Tento souborový systém nepodporuje štítky.</translation>
+        <translation>Tento souborový systém nepodporuje značky.</translation>
     </message>
     <message>
         <source>Die Tags von „%1“ können nicht gespeichert werden: %2</source>
-        <translation>Štítky souboru „%1“ nelze uložit: %2</translation>
+        <translation>Značky souboru „%1“ nelze uložit: %2</translation>
     </message>
 </context>
 <context>
     <name>lf::TrashService</name>
     <message>
         <source>„%1“ konnte nicht in den Papierkorb gelegt werden.</source>
-        <translation>„%1“ nelze přesunout do koše.</translation>
+        <translation>„%1“ se nepodařilo přesunout do koše.</translation>
     </message>
     <message>
         <source>„%1“ existiert bereits und wird nicht überschrieben.</source>
-        <translation>„%1“ již existuje a nebude přepsán.</translation>
+        <translation>„%1“ již existuje a nepřepíše se.</translation>
     </message>
     <message>
         <source>„%1“ konnte nicht wiederhergestellt werden.</source>
-        <translation>„%1“ nelze obnovit.</translation>
+        <translation>„%1“ se nepodařilo obnovit.</translation>
     </message>
     <message>
         <source>„%1“ konnte nicht in den Papierkorb gelegt werden: %2</source>
-        <translation>„%1“ nelze přesunout do koše: %2</translation>
+        <translation>„%1“ se nepodařilo přesunout do koše: %2</translation>
     </message>
     <message>
         <source>„%1“ ist nicht mehr im Papierkorb.</source>
@@ -5731,7 +5731,7 @@
     </message>
     <message>
         <source>„%1“ konnte nicht wiederhergestellt werden: %2</source>
-        <translation>„%1“ nelze obnovit: %2</translation>
+        <translation>„%1“ se nepodařilo obnovit: %2</translation>
     </message>
     <message>
         <source>„%1“ passte nicht in den Papierkorb und wurde endgültig gelöscht.</source>
@@ -5742,11 +5742,11 @@
     <name>lf::UndoBackupStore</name>
     <message>
         <source>Die Sicherungskopie für „Widerrufen“ existiert nicht mehr.</source>
-        <translation>Záloha pro odvolání již neexistuje.</translation>
+        <translation>Záložní kopie pro odvolání již neexistuje.</translation>
     </message>
     <message>
         <source>Nicht genug Speicherplatz für die Sicherungskopie (Widerrufen) – nichts gesichert.</source>
-        <translation>Nedostatek místa pro záložní kopii (odvolání) – nic nebylo uloženo.</translation>
+        <translation>Nedostatek místa na disku pro záložní kopii (odvolání) – nic nebylo uloženo.</translation>
     </message>
 </context>
 <context>
@@ -5761,7 +5761,7 @@
     </message>
     <message>
         <source>Lumaflip fragt dazu einmal am Tag bei GitHub nach einer neuen Version. Das ist die einzige Netzwerkverbindung der App.</source>
-        <translation>Lumaflip se kvůli tomu jednou denně zeptá na GitHubu na novou verzi. Je to jediné síťové připojení aplikace.</translation>
+        <translation>Lumaflip se kvůli tomu jednou denně dotáže GitHubu na novou verzi. Je to jediné síťové připojení aplikace.</translation>
     </message>
     <message>
         <source>Updates:</source>
@@ -5841,7 +5841,7 @@
     </message>
     <message>
         <source>Lumaflip darf den Ordner „%1“ nicht lesen und zeigt deshalb nur die geöffnete Datei. Erlaube den Zugriff unter Systemeinstellungen → Datenschutz &amp; Sicherheit → Dateien und Ordner. Festplattenvollzugriff ist dafür nicht nötig.</source>
-        <translation>Lumaflip nemá oprávnění číst složku „%1“, a proto zobrazuje jen otevřený soubor. Povolte přístup v Nastavení systému → Soukromí a zabezpečení → Soubory a složky. Plný přístup k disku k tomu není potřeba.</translation>
+        <translation>Lumaflip nemá oprávnění číst složku „%1“, a proto zobrazuje jen otevřený soubor. Povolte přístup v Nastavení systému → Soukromí a zabezpečení → Soubory a složky. Přístup k celému disku k tomu není potřeba.</translation>
     </message>
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
@@ -5897,7 +5897,7 @@
     </message>
     <message>
         <source>Bild wird kopiert …</source>
-        <translation>Kopírování obrázku…</translation>
+        <translation>Kopíruje se obrázek…</translation>
     </message>
     <message>
         <source>Bild kopiert (Bildschirmauflösung)</source>
@@ -5973,7 +5973,7 @@
     </message>
     <message>
         <source>Keine Drehung zu sichern – drehe das Bild zuerst mit ⌘L oder ⌘R</source>
-        <translation>Žádné otočení k uložení – nejprve otočte pomocí ⌘L nebo ⌘R</translation>
+        <translation>Žádné otočení k uložení – nejprve obrázek otočte pomocí ⌘L nebo ⌘R</translation>
     </message>
     <message>
         <source>Drehung sichern</source>
@@ -5981,11 +5981,11 @@
     </message>
     <message>
         <source>Verlustfreies Drehen ist nur mit beschnittenem Rand möglich.</source>
-        <translation>Bezztrátové otočení je možné jen s oříznutým okrajem.</translation>
+        <translation>Bezeztrátové otočení je možné jen s oříznutým okrajem.</translation>
     </message>
     <message>
         <source>Die Drehung kann nur durch Neukodieren gesichert werden.</source>
-        <translation>Otočení lze uložit jen novým zakódováním.</translation>
+        <translation>Otočení lze uložit jen překódováním.</translation>
     </message>
     <message>
         <source>Rand abschneiden</source>
@@ -5993,7 +5993,7 @@
     </message>
     <message>
         <source>Neu kodieren</source>
-        <translation>Znovu zakódovat</translation>
+        <translation>Překódovat</translation>
     </message>
     <message>
         <source>Nur EXIF-Ausrichtung setzen</source>
@@ -6005,7 +6005,7 @@
     <message>
         <source>Seite %1</source>
         <extracomment>one page of a PDF document browsed like a folder (F-OPEN-10)</extracomment>
-        <translation>Strana %1</translation>
+        <translation>Stránka %1</translation>
     </message>
     <message>
         <source>%1 › %2</source>
@@ -6021,11 +6021,11 @@
     </message>
     <message>
         <source>Bilder in Archiven und PDF-Seiten können nicht als Schreibtischhintergrund festgelegt werden.</source>
-        <translation>Obrázky v archivech a stránky PDF nemohou být obrázkem plochy.</translation>
+        <translation>Obrázky v archivech a stránky PDF nelze nastavit jako obrázek plochy.</translation>
     </message>
     <message>
         <source>Es wurde kein Bildschirm gefunden.</source>
-        <translation>Nebyl nalezen žádný displej.</translation>
+        <translation>Nebyl nalezen žádný monitor.</translation>
     </message>
     <message>
         <source>%1: %2</source>
@@ -6042,7 +6042,7 @@
     </message>
     <message>
         <source>Alle Bildschirme</source>
-        <translation>Všechny obrazovky</translation>
+        <translation>Všechny monitory</translation>
     </message>
     <message>
         <source>Diese Desktopumgebung wird nicht unterstützt.</source>
@@ -6053,11 +6053,11 @@
     <name>lf::WindowEditing</name>
     <message>
         <source>Über-/Unterbelichtungswarnung an (rot: Lichter, blau: Schatten)</source>
-        <translation>Varování před pře-/podexpozicí zapnuto (červená: světla, modrá: stíny)</translation>
+        <translation>Upozornění na přeexpozici/podexpozici zapnuto (červená: světla, modrá: stíny)</translation>
     </message>
     <message>
         <source>Über-/Unterbelichtungswarnung aus</source>
-        <translation>Varování před pře-/podexpozicí vypnuto</translation>
+        <translation>Upozornění na přeexpozici/podexpozici vypnuto</translation>
     </message>
     <message>
         <source>Focus Peaking an</source>
@@ -6069,24 +6069,24 @@
     </message>
     <message>
         <source>Fokuspunkte an</source>
-        <translation>Body AF zapnuty</translation>
+        <translation>Body zaostření zapnuty</translation>
     </message>
     <message>
         <source>Fokuspunkte aus</source>
-        <translation>Body AF vypnuty</translation>
+        <translation>Body zaostření vypnuty</translation>
     </message>
     <message>
         <source>Fokuspunkte: %1</source>
         <extracomment>%1 = where the AF points come from (&quot;Canon&quot;, &quot;Sony&quot;, &quot;EXIF&quot; …)</extracomment>
-        <translation>Body AF: %1</translation>
+        <translation>Body zaostření: %1</translation>
     </message>
     <message>
         <source>Keine Fokuspunkte in den Metadaten</source>
-        <translation>V metadatech nejsou body AF</translation>
+        <translation>V metadatech nejsou žádné body zaostření</translation>
     </message>
     <message>
         <source>Zuschneiden ist nur in der Einzelbildansicht möglich.</source>
-        <translation>Ořezávání funguje v zobrazení jednoho obrázku.</translation>
+        <translation>Oříznutí je možné jen v zobrazení jednoho obrázku.</translation>
     </message>
     <message>
         <source>Kein Bild zum Zuschneiden.</source>
@@ -6094,15 +6094,15 @@
     </message>
     <message>
         <source>Zuschneiden: Rahmen ziehen – Enter sichert, Esc bricht ab</source>
-        <translation>Ořez: táhněte rámeček – Enter uloží, Esc zruší</translation>
+        <translation>Oříznutí: táhněte rámeček – Enter uloží, Esc zruší</translation>
     </message>
     <message>
         <source>Der vorherige Zuschnitt wird noch gesichert.</source>
-        <translation>Předchozí ořez se ještě ukládá.</translation>
+        <translation>Předchozí oříznutí se ještě ukládá.</translation>
     </message>
     <message>
         <source>Kein Bildbereich ausgewählt.</source>
-        <translation>Není vybrána žádná oblast.</translation>
+        <translation>Není vybrána žádná oblast obrázku.</translation>
     </message>
     <message>
         <source>%1-zugeschnitten.%2</source>
@@ -6123,7 +6123,7 @@
     </message>
     <message>
         <source>„%1“ existiert bereits. Möchtest du die Datei ersetzen?</source>
-        <translation>„%1“ už existuje. Nahradit?</translation>
+        <translation>„%1“ již existuje. Chcete soubor nahradit?</translation>
     </message>
     <message>
         <source>Das zugeschnittene Bild bekommt die Endung des Originals (.%1).</source>
@@ -6135,7 +6135,7 @@
     </message>
     <message>
         <source>Der Zuschnitt konnte nicht gesichert werden.</source>
-        <translation>Ořez se nepodařilo uložit.</translation>
+        <translation>Oříznutí se nepodařilo uložit.</translation>
     </message>
     <message>
         <source>Zugeschnitten exportiert als „%1“</source>
@@ -6147,11 +6147,11 @@
     </message>
     <message>
         <source>Der Zuschnitt kann nur durch Neukodieren gesichert werden.</source>
-        <translation>Ořez lze uložit jen novým zakódováním.</translation>
+        <translation>Oříznutí lze uložit jen překódováním.</translation>
     </message>
     <message>
         <source>Neu kodieren</source>
-        <translation>Znovu zakódovat</translation>
+        <translation>Překódovat</translation>
     </message>
     <message>
         <source>Abbrechen</source>
@@ -6159,7 +6159,7 @@
     </message>
     <message>
         <source>Zugeschnitten gesichert als „%1“</source>
-        <translation>Ořez uložen jako „%1“</translation>
+        <translation>Oříznutá kopie uložena jako „%1“</translation>
     </message>
     <message>
         <source>Kein Bild zum Exportieren.</source>
@@ -6206,7 +6206,7 @@
     <name>lf::WindowExtras</name>
     <message>
         <source>Ordnerkarte</source>
-        <translation>Mapa</translation>
+        <translation>Mapa složky</translation>
     </message>
     <message>
         <source>Name: „%1“</source>
@@ -6222,7 +6222,7 @@
     </message>
     <message>
         <source>Blättern, Zoom und Ausschnitt laufen mit den anderen gekoppelten Fenstern</source>
-        <translation>Listování, zvětšení a výřez se řídí ostatními propojenými okny</translation>
+        <translation>Listování, zvětšení a zobrazená oblast se řídí ostatními propojenými okny</translation>
     </message>
     <message>
         <source>Kein Dateiname passt zu „%1“ – Esc hebt den Filter auf</source>
@@ -6238,11 +6238,11 @@
     </message>
     <message>
         <source>Minimaler Fenstermodus – die Titelleiste erscheint, wenn sich die Maus bewegt</source>
-        <translation>Minimální okno – záhlaví se zobrazí při pohybu myši</translation>
+        <translation>Minimální režim okna – záhlaví okna se zobrazí při pohybu ukazatele</translation>
     </message>
     <message>
         <source>Minimaler Fenstermodus aus</source>
-        <translation>Minimální okno vypnuto</translation>
+        <translation>Minimální režim okna vypnut</translation>
     </message>
 </context>
 <context>
@@ -6297,7 +6297,7 @@
     </message>
     <message>
         <source>Auf allen Bildschirmen</source>
-        <translation>Na všech displejích</translation>
+        <translation>Na všech monitorech</translation>
     </message>
     <message>
         <source>Festlegen</source>
@@ -6313,7 +6313,7 @@
     </message>
     <message>
         <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
-        <translation>Obrázek plochy nelze změnit: %1</translation>
+        <translation>Obrázek plochy se nepodařilo změnit: %1</translation>
     </message>
 </context>
 <context>
@@ -6343,7 +6343,7 @@
     </message>
     <message>
         <source>Die Bittiefe der XCF-Datei wird nicht unterstützt.</source>
-        <translation>Barevná hloubka souboru XCF není podporována.</translation>
+        <translation>Bitová hloubka souboru XCF není podporována.</translation>
     </message>
     <message>
         <source>Nicht genug Arbeitsspeicher für das Bild.</source>
@@ -6355,7 +6355,7 @@
     </message>
     <message>
         <source>Die Datei kann nicht gelesen werden.</source>
-        <translation>Soubor nelze číst.</translation>
+        <translation>Soubor nelze přečíst.</translation>
     </message>
     <message>
         <source>Seite %1 existiert nicht.</source>
@@ -6374,7 +6374,7 @@
     <name>lf::ZipReader</name>
     <message>
         <source>Die Datei kann nicht gelesen werden.</source>
-        <translation>Soubor nelze číst.</translation>
+        <translation>Soubor nelze přečíst.</translation>
     </message>
     <message>
         <source>Das ZIP-Archiv ist beschädigt.</source>
