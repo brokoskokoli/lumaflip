@@ -21,7 +21,7 @@ permissions:
 env:
   # Current milestone: spec coverage requires every F-/P-ID up to this stage
   # (tools/check.sh --stage). Raise it here when the next stage starts (M3, M4).
-  LF_STAGE: M3
+  LF_STAGE: M4
   HOMEBREW_NO_AUTO_UPDATE: "1"
   HOMEBREW_NO_INSTALL_CLEANUP: "1"
   HOMEBREW_NO_ENV_HINTS: "1"

@@ -6,7 +6,7 @@
 #   --no-gui      only tests that open no windows (unit tests, offscreen); no integration
 #                 tests, no benchmarks. Use this on a laptop someone is working on.
 #   --sanitize    ASan/UBSan build (build/sanitize)
-#   --stage Mn    stage for the spec coverage check (default M3 = current milestone, or $LF_STAGE)
+#   --stage Mn    stage for the spec coverage check (default M4 = current milestone, or $LF_STAGE)
 #   --format-all  clang-format check of every source file; default: only the lines
 #                 changed against `git merge-base HEAD <base>` (base: $LF_BASE_REF,
 #                 main or origin/main) incl. uncommitted changes, plus untracked files
@@ -23,7 +23,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-QUICK=0; NO_GUI=0; SANITIZE=0; FORMAT_ALL=0; TIDY=0; TIDY_ALL=0; STAGE="${LF_STAGE:-M3}"
+QUICK=0; NO_GUI=0; SANITIZE=0; FORMAT_ALL=0; TIDY=0; TIDY_ALL=0; STAGE="${LF_STAGE:-M4}"
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --quick) QUICK=1 ;;

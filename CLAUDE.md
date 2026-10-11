@@ -18,8 +18,8 @@ Vollständige Prüfungen (nach Rückfrage):
 
 ```sh
 tools/check.sh --quick          # Build + alle Tests (schnell, vor jedem Commit)
-tools/check.sh --stage M2       # alle Pflichtprüfungen inkl. Format, SPDX, Spec-Abdeckung, Benchmarks
-                                # (Stufe: Standard M2 bzw. $LF_STAGE; CI: LF_STAGE in checks.yml)
+tools/check.sh --stage M4       # alle Pflichtprüfungen inkl. Format, SPDX, Spec-Abdeckung, Benchmarks
+                                # (Stufe: Standard M4 bzw. $LF_STAGE; CI: LF_STAGE in checks.yml)
 tools/check.sh --quick --sanitize   # ASan/UBSan
 tools/check.sh --format-all     # clang-format für alle Dateien (Standard: nur geänderte Zeilen ggü. main)
 tools/check.sh --quick --tidy   # zusätzlich clang-tidy (.clang-tidy) auf geänderten Dateien, falls installiert
@@ -33,7 +33,7 @@ Optional `tools/fetch_sparkle.sh` (Sparkle 2 nach `third_party/`, automatische U
 ohne baut die App mit abgeschaltetem Updater, siehe `docs/RELEASING.md`).
 Bauverzeichnisse liegen unter `build/` – nicht löschen, `cmake --fresh` verwenden, falls nötig.
 
-- **Aktuelle Stufe:** `LF_STAGE` in `.github/workflows/checks.yml` (derzeit `M2`) bestimmt, bis zu
+- **Aktuelle Stufe:** `LF_STAGE` in `.github/workflows/checks.yml` (derzeit `M4`) bestimmt, bis zu
   welcher Stufe die Spec-Abdeckung vollständig sein muss; beim Start der nächsten Stufe nur dort
   (und als Standard in `tools/check.sh`) anheben.
 - **Benchmarks unter Last:** Vor `lf_bench` wartet `check.sh` höchstens `LF_BENCH_LOAD_WAIT`
