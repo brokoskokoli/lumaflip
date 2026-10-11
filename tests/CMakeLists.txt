@@ -85,6 +85,14 @@ if("LF_HAVE_TURBOJPEG=1" IN_LIST _lf_core_defs) # found and new enough (tj3 API,
 endif()
 gtest_discover_tests(lf_unit_tests DISCOVERY_MODE PRE_TEST PROPERTIES LABELS unit)
 
+# Release tools (F-MAC-08: appcast generation and verification, tests/tools) on every platform.
+find_package(Python3 COMPONENTS Interpreter QUIET)
+if(Python3_Interpreter_FOUND)
+  add_test(NAME tools_appcast
+           COMMAND Python3::Interpreter -I "${CMAKE_CURRENT_SOURCE_DIR}/tools/test_appcast.py" -v)
+  set_tests_properties(tools_appcast PROPERTIES LABELS unit)
+endif()
+
 if(NOT LF_BUILD_UI)
   return() # integration tests and benchmarks need lf_ui
 endif()
@@ -129,6 +137,12 @@ foreach(src ${LF_INTEGRATION_TESTS})
   endif()
   set_tests_properties(${name} PROPERTIES ENVIRONMENT "${_lf_env}")
 endforeach()
+# F-MAC-08 on Windows: tst_updater loads WinSparkle.dll from third_party (the app only loads it
+# from its own folder).
+if(LF_WINSPARKLE AND TARGET tst_updater)
+  file(TO_CMAKE_PATH "${LF_WINSPARKLE_DLL}" _lf_ws_dll)
+  target_compile_definitions(tst_updater PRIVATE LF_TEST_WINSPARKLE_DLL="${_lf_ws_dll}")
+endif()
 
 # Benchmarks (P-xx): macOS only for now (they compare against the ImageIO backend).
 if(LF_GENERIC_PLATFORM)

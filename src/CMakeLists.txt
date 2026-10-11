@@ -386,6 +386,15 @@ if(LF_SPARKLE)
 else()
   target_compile_definitions(lf_ui PUBLIC LF_HAVE_SPARKLE=0)
 endif()
+# WinSparkle (Windows, see LF_ENABLE_WINSPARKLE in the top-level CMakeLists.txt): the backend
+# (app/WinSparkleUpdater_win.cpp) loads WinSparkle.dll at run time, nothing is linked.
+if(LF_WINSPARKLE)
+  target_compile_definitions(lf_ui PUBLIC LF_HAVE_WINSPARKLE=1
+    PRIVATE LF_WINSPARKLE_FEED_URL="${LF_WINSPARKLE_FEED_URL}"
+            LF_WINSPARKLE_PUBLIC_KEY="${LF_SPARKLE_PUBLIC_KEY}")
+else()
+  target_compile_definitions(lf_ui PUBLIC LF_HAVE_WINSPARKLE=0)
+endif()
 file(GLOB LF_SHADERS CONFIGURE_DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/app/shaders/*.vert ${CMAKE_CURRENT_SOURCE_DIR}/app/shaders/*.frag)
 if(LF_SHADERS)
   qt_add_shaders(lf_ui "lf_shaders" PREFIX "/shaders" BASE app/shaders FILES ${LF_SHADERS})

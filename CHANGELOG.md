@@ -9,6 +9,14 @@ refer to [SPEC.md](SPEC.md).
 
 ## [Unreleased]
 
+### Added
+
+- **Windows: automatic updates** with WinSparkle — "Check for Updates…" and the automatic daily
+  check as on macOS, EdDSA-signed installers from a separate feed; the installer updates in place
+  and restarts Lumaflip. [F-MAC-08]
+- **Windows: signed releases** — installer, ZIP, `Lumaflip.exe`, the decoder helper and
+  `WinSparkle.dll` are code-signed (Azure Artifact Signing) and timestamped.
+
 ### Changed
 
 - **German UI texts** follow the macOS German terminology and one term per concept

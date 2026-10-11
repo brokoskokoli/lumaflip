@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Project homepage: copies website/ to the root of the gh-pages branch, which GitHub Pages
 # serves at https://brokoskokoli.github.io/lumaflip/. The same branch holds the Sparkle
-# feed (appcast.xml) and release notes (notes/), written by release.yml - those are never
+# feeds (appcast.xml, appcast-windows.xml) and release notes (notes/), written by
+# release.yml - those are never
 # touched here. Pages setting: Settings -> Pages -> "Deploy from a branch", gh-pages, / (root).
 name: Website
 on:
@@ -48,8 +49,9 @@ jobs:
             git -C "$work/pages" remote add origin "$repo_url"
           fi
 
-          # Mirror website/ into the branch root; keep the feed, the release notes and .git.
-          rsync -a --delete --exclude .git --exclude appcast.xml --exclude notes/ \
+          # Mirror website/ into the branch root; keep the feeds (appcast.xml for macOS,
+          # appcast-windows.xml for Windows), the release notes and .git.
+          rsync -a --delete --exclude .git --exclude appcast.xml --exclude appcast-windows.xml --exclude notes/ \
             website/ "$work/pages/"
           touch "$work/pages/.nojekyll"
           git -C "$work/pages" add -A
@@ -58,7 +60,7 @@ jobs:
           fi
           git -C "$work/pages" commit --quiet -m "Website: ${GITHUB_SHA::7}"
 
-          # A concurrent appcast push only touches appcast.xml and notes/: rebase onto it.
+          # A concurrent appcast push only touches the appcasts and notes/: rebase onto it.
           for attempt in 1 2 3 4 5; do
             if git -C "$work/pages" push --quiet origin HEAD:gh-pages; then exit 0; fi
             echo "::warning::Push to gh-pages failed (attempt $attempt) - fetching and rebasing"

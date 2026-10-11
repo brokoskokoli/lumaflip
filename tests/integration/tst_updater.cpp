@@ -1,13 +1,15 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// F-MAC-08: automatic updates with Sparkle 2. Plumbing only - these tests never start
-// Sparkle and never contact the network: the test bundles point SUFeedURL at a local
-// file URL, and the updater is only ever started by the app (after launch) or by the
-// menu command, which the tests do not trigger.
+// F-MAC-08: automatic updates with Sparkle 2 (macOS) and WinSparkle (Windows). Plumbing
+// only - these tests never start the updater and never contact the network: the macOS test
+// bundles point SUFeedURL at a local file URL, the Windows updaters keep their settings in
+// an INI file (not the registry), and the updater is only ever started by the app (after
+// launch) or by the menu command, which the tests do not trigger.
 #include "app/Application.h"
 #include "app/MainMenu.h"
 #include "app/PreferencesDialog.h"
 #include "app/Updater.h"
 #include "core/Settings.h"
+#include "core/UpdateConfig.h"
 
 #include <QAction>
 #include <QApplication>
@@ -16,6 +18,7 @@
 #include <QFile>
 #include <QMenu>
 #include <QMenuBar>
+#include <QSettings>
 #include <QTemporaryDir>
 #include <QTest>
 
@@ -37,11 +40,39 @@ class TestUpdater : public QObject {
     // A minimal .app bundle (Info.plist only) with a unique bundle identifier. Sparkle
     // keeps its settings in the domain SUDefaultsDomain names: a file in the temporary
     // directory, so the tests leave nothing in ~/Library/Preferences.
+    // An updater "installation": a .app bundle on macOS, a feed + key + settings file on
+    // Windows (WinSparkle keeps its settings there instead of the registry).
+    struct Target {
+        QString bundle;
+        QString feed;
+        QString key;
+        QString settingsFile;
+    };
+    Target makeTarget(bool withKey, const QString& feed = {}) {
+#ifdef Q_OS_WIN
+        Target t;
+        // WinSparkle accepts http(s) feeds only; the URL is never contacted (never started).
+        t.feed = feed.isEmpty() ? QLatin1String(update::kWindowsFeedUrl) : feed;
+        t.key = withKey ? QLatin1String(kTestPublicKey) : QString();
+        t.settingsFile = m_dir.filePath(QStringLiteral("winsparkle%1.ini").arg(++m_counter));
+        return t;
+#else
+        return Target{makeBundle(withKey, feed), {}, {}, {}};
+#endif
+    }
+    static std::unique_ptr<Updater> open(const Target& t) {
+#ifdef Q_OS_WIN
+        return Updater::createForConfiguration(t.feed, t.key, t.settingsFile);
+#else
+        return Updater::createForBundle(t.bundle);
+#endif
+    }
+
     QString makeBundle(bool withKey, const QString& feed = {}) {
         const QString id = QStringLiteral("io.github.brokoskokoli.lumaflip.tests.updater.%1.%2")
                                .arg(QCoreApplication::applicationPid())
                                .arg(++m_counter);
-        const QString app = m_dir.filePath(QStringLiteral("Test%1.app").arg(m_counter));
+        QString app = m_dir.filePath(QStringLiteral("Test%1.app").arg(m_counter));
         QDir().mkpath(app + QStringLiteral("/Contents/MacOS"));
         QString plist = QStringLiteral("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                                        "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" "
@@ -70,7 +101,12 @@ class TestUpdater : public QObject {
     }
 
 private slots:
-    void initTestCase() { QVERIFY(m_dir.isValid()); }
+    void initTestCase() {
+        QVERIFY(m_dir.isValid());
+#ifdef LF_TEST_WINSPARKLE_DLL
+        Updater::setWinSparkleLibraryForTesting(QStringLiteral(LF_TEST_WINSPARKLE_DLL));
+#endif
+    }
 
     void init() { Settings::useTestingBackend(m_dir.filePath(QStringLiteral("s%1.ini").arg(++m_counter))); }
 
@@ -80,13 +116,16 @@ private slots:
         Updater::setInstanceForTesting(nullptr);
     }
 
-    // The build option (LF_ENABLE_SPARKLE) decides whether Sparkle is linked; without it
-    // the app builds and runs with the updater disabled.
+    // The build options (LF_ENABLE_SPARKLE, LF_ENABLE_WINSPARKLE) decide whether an updater
+    // is part of the build; without it the app builds and runs with the updater disabled.
     void F_MAC_08_buildOptionMatchesUpdater() {
-        QCOMPARE(Updater::isCompiledIn(), bool(LF_HAVE_SPARKLE));
-        // CI fetches Sparkle (tools/fetch_sparkle.sh): there it must be compiled in.
+        QCOMPARE(Updater::isCompiledIn(), bool(LF_HAVE_SPARKLE) || bool(LF_HAVE_WINSPARKLE));
+        // CI fetches Sparkle (tools/fetch_sparkle.sh) and WinSparkle (tools/fetch_winsparkle.py):
+        // there they must be part of the build.
         if (qEnvironmentVariableIntValue("LF_REQUIRE_SPARKLE") == 1)
             QVERIFY2(Updater::isCompiledIn(), "LF_REQUIRE_SPARKLE=1, but built without Sparkle");
+        if (qEnvironmentVariableIntValue("LF_REQUIRE_WINSPARKLE") == 1)
+            QVERIFY2(LF_HAVE_WINSPARKLE, "LF_REQUIRE_WINSPARKLE=1, but built without WinSparkle");
         // The test binary is no .app bundle with a feed: the app's updater is disabled,
         // says why, and is never started.
         Updater& app = Updater::instance();
@@ -115,17 +154,14 @@ private slots:
     }
 
     void F_MAC_08_bundleWithoutKeyIsDisabled() {
-        const QString app = makeBundle(false);
-        QVERIFY(!app.isEmpty());
-        auto u = Updater::createForBundle(app);
+        auto u = open(makeTarget(false));
         QVERIFY(!u->isAvailable());
         QVERIFY(!u->unavailableReason().isEmpty());
         QVERIFY(!u->start());
         QVERIFY(!u->isStarted());
 
         // A plain http feed is refused as well.
-        auto insecure =
-            Updater::createForBundle(makeBundle(true, QStringLiteral("http://example.org/a.xml")));
+        auto insecure = open(makeTarget(true, QStringLiteral("http://example.org/a.xml")));
         QVERIFY(!insecure->isAvailable());
     }
 
@@ -140,8 +176,10 @@ private slots:
             QCOMPARE(act->isVisible(), Updater::instance().isAvailable());
             QVERIFY(!act->isVisible()); // test binary: no feed/key
         }
-        auto u = Updater::createForBundle(makeBundle(true));
+        auto u = open(makeTarget(true));
         QCOMPARE(u->isAvailable(), Updater::isCompiledIn());
+        if (Updater::isCompiledIn())
+            QVERIFY2(u->isAvailable(), qPrintable(u->unavailableReason()));
         Updater::setInstanceForTesting(u.get());
         {
             Application shell;
@@ -153,7 +191,9 @@ private slots:
     }
 
     // Preferences "Allgemein": the check boxes map to SPUUpdater's properties
-    // (automaticallyChecksForUpdates, automaticallyDownloadsUpdates).
+    // (automaticallyChecksForUpdates, automaticallyDownloadsUpdates) on macOS and to
+    // WinSparkle's automatic check on Windows (WinSparkle always asks before it installs:
+    // "Updates automatisch installieren" stays disabled there).
     void F_MAC_08_preferencesMapToSparkle() {
         {
             PreferencesDialog dlg; // updater unavailable: no rows
@@ -161,10 +201,10 @@ private slots:
             QVERIFY(!dlg.findChild<QCheckBox*>(QStringLiteral("updater:automaticDownloads")));
         }
         if (!Updater::isCompiledIn())
-            QSKIP("built without Sparkle (LF_ENABLE_SPARKLE=OFF)");
+            QSKIP("built without Sparkle/WinSparkle (LF_ENABLE_SPARKLE/LF_ENABLE_WINSPARKLE=OFF)");
 
-        const QString bundle = makeBundle(true);
-        auto u = Updater::createForBundle(bundle);
+        const Target target = makeTarget(true);
+        auto u = open(target);
         QVERIFY2(u->isAvailable(), qPrintable(u->unavailableReason()));
         Updater::setInstanceForTesting(u.get());
         // Default without a decision: no automatic checks (Sparkle asks on the 2nd launch).
@@ -181,17 +221,30 @@ private slots:
 
         checks->click();
         QVERIFY(u->automaticallyChecks());
-        QVERIFY(downloads->isEnabled());
+        QCOMPARE(downloads->isEnabled(), u->allowsAutomaticDownloads());
         QVERIFY(!downloads->isChecked());
+#ifdef Q_OS_WIN
+        QVERIFY(!u->allowsAutomaticDownloads());
+        QVERIFY(!u->automaticallyDownloads());
+#else
         downloads->click();
         QVERIFY(u->automaticallyDownloads());
+#endif
 
-        // Stored in Sparkle's own defaults: a fresh updater for the bundle reads them back.
+        // Stored in the updater's own settings: a fresh updater for the same installation
+        // reads them back.
         {
-            auto again = Updater::createForBundle(bundle);
+            auto again = open(target);
             QVERIFY(again->automaticallyChecks());
-            QVERIFY(again->automaticallyDownloads());
+            QCOMPARE(again->automaticallyDownloads(), u->automaticallyDownloads());
         }
+#ifdef Q_OS_WIN
+        // WinSparkle's own key, in the settings file instead of the registry.
+        QCOMPARE(QSettings(target.settingsFile, QSettings::IniFormat)
+                     .value(QStringLiteral("WinSparkle/CheckForUpdates"))
+                     .toString(),
+                 QStringLiteral("1"));
+#endif
 
         checks->click(); // off: no update traffic at all (SPEC 10.3)
         QVERIFY(!u->automaticallyChecks());

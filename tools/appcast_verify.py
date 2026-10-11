@@ -1,16 +1,20 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: GPL-3.0-or-later
-"""Checks a freshly generated Sparkle appcast against the previous one before it is
-published (release.yml, F-MAC-08):
+"""Checks a freshly generated Sparkle or WinSparkle appcast against the previous one before
+it is published (release.yml, F-MAC-08):
 
   * every item of the old appcast is still there (same sparkle:version, same enclosure
     URL) - generate_appcast must never drop or rewrite earlier releases;
   * the new appcast has exactly one item more, or the same number when this version was
     already in the old feed (re-run of a release);
   * the item for --version exists, its enclosure URL is --url, it carries an EdDSA
-    signature (sparkle:edSignature) and, with --archive, its length is the archive size.
+    signature (sparkle:edSignature) and, with --archive, its length is the archive size;
+  * the feeds stay apart: without --os (macOS appcast.xml) no item may be marked for Windows;
+    with --os windows (appcast-windows.xml) every item must be marked sparkle:os="windows",
+    and the new one must carry the installer arguments for WinSparkle.
 
 Usage: tools/appcast_verify.py --old OLD.xml|- --new NEW.xml --version 1.0.0 --url URL [--archive DMG]
+                               [--os windows]
        (--old - : there was no appcast yet)
 Prints a short summary; exit code 1 on any violation.
 """
@@ -32,14 +36,15 @@ def items(path):
     return out
 
 
-def main() -> int:
+def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--old", required=True)
     ap.add_argument("--new", required=True)
     ap.add_argument("--version", required=True)
     ap.add_argument("--url", required=True)
     ap.add_argument("--archive")
-    a = ap.parse_args()
+    ap.add_argument("--os", choices=["windows"], help="the Windows feed (appcast-windows.xml)")
+    a = ap.parse_args(argv)
 
     errors = []
     old = [] if a.old == "-" else items(a.old)
@@ -65,6 +70,14 @@ def main() -> int:
             size = os.path.getsize(a.archive)
             if attrib.get("length") != str(size):
                 errors.append(f"enclosure length of {a.version} is {attrib.get('length')}, archive has {size} bytes")
+    for v, _, at in new:
+        os_name = at.get(SP + "os", "")
+        if a.os == "windows" and os_name != "windows":
+            errors.append(f"item {v or '?'} is not marked sparkle:os=\"windows\" (got {os_name!r})")
+        if a.os is None and os_name.startswith("windows"):
+            errors.append(f"item {v or '?'} is a Windows item in the macOS feed")
+    if a.os == "windows" and len(mine) == 1 and not mine[0][1].get(SP + "installerArguments"):
+        errors.append(f"item {a.version} has no sparkle:installerArguments (silent Inno Setup update)")
     urls = [u for _, u, _ in new]
     if len(set(urls)) != len(urls):
         errors.append("duplicate enclosure URLs in the new appcast")

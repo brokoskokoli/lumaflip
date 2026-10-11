@@ -37,13 +37,13 @@ src/core/DecoderRegistry.cpp:unknown error
 # Updater diagnostics (log, Updater::unavailableReason())
 src/platform/mac/SparkleUpdater.mm:no updater for this bundle
 
-src/app/Updater.cpp:SUFeedURL missing or invalid
-src/app/Updater.cpp:SUFeedURL must use https
-src/app/Updater.cpp:SUPublicEDKey is not a base64 EdDSA (ed25519) public key
-src/app/Updater.cpp:SUPublicEDKey missing - never ship updates without a key
+src/core/UpdateConfig.cpp:*
+src/app/WinSparkleUpdater_win.cpp:*
 src/app/Updater.cpp:built without Sparkle (LF_ENABLE_SPARKLE=OFF)
 src/app/Updater.cpp:no SUFeedURL/SUPublicEDKey in Info.plist (built without LF_SPARKLE_PUBLIC_KEY)
 src/app/Updater.cpp:not running from an app bundle
+src/app/Updater.cpp:no EdDSA public key compiled in (built without LF_SPARKLE_PUBLIC_KEY)
+src/app/Updater.cpp:WinSparkle is not part of this build (Windows only, LF_ENABLE_WINSPARKLE)
 # Format lists in the preferences: product and format names
 src/app/PreferencesDialog.cpp:CR2, CR3, CRW, NEF, NRW, ARW, SR2, RAF, ORF, RW2, DNG, PEF, IIQ, 3FR …
 src/app/PreferencesDialog.cpp:HEIC/HEIF, AVIF, JPEG XL

@@ -10,6 +10,7 @@ Layout of <output dir> (= the installation, also packed as the portable ZIP):
                                                for the helper (it runs without a window)
     translations/                              lumaflip_<lang>.qm + Qt's own catalogues
     msvcp140.dll, vcruntime140*.dll            the MSVC runtime, app-local
+    WinSparkle.dll                             automatic updates, if the build has it (LF_ENABLE_WINSPARKLE)
     licenses/                                  licence texts + index.json (About dialog)
 
 Needs: windeployqt of the Qt used for the build on PATH (or QT_ROOT_DIR), the MSVC developer
@@ -79,6 +80,11 @@ def copy_runtime(out: pathlib.Path) -> list[str]:
     return copied
 
 
+def winsparkle_version() -> str:
+    stamp = REPO / "third_party" / "WinSparkle" / ".lumaflip-winsparkle"
+    return stamp.read_text().split()[0] if stamp.is_file() else ""
+
+
 def write_licenses(out: pathlib.Path, qt_version: str, vcpkg_installed: pathlib.Path | None) -> None:
     lic = out / "licenses"
     lic.mkdir(exist_ok=True)
@@ -108,6 +114,16 @@ def write_licenses(out: pathlib.Path, qt_version: str, vcpkg_installed: pathlib.
             index.append({"id": port, "name": meta["name"], "version": "", "license": meta["license"],
                           "homepage": meta["homepage"], "files": [f"{port}/LICENSE.txt"],
                           "binaries": ["Lumaflip.exe (statisch)", "lumaflip-decoder.exe (statisch)"]})
+    if (out / "WinSparkle.dll").is_file():
+        copying = REPO / "third_party" / "WinSparkle" / "COPYING"
+        if not copying.is_file():
+            raise SystemExit(f"error: {copying} missing (tools/fetch_winsparkle.py)")
+        (lic / "winsparkle").mkdir(exist_ok=True)
+        shutil.copy2(copying, lic / "winsparkle" / "COPYING.txt")
+        index.append({"id": "winsparkle", "name": "WinSparkle – automatische Updates",
+                      "version": winsparkle_version(), "license": "MIT",
+                      "homepage": "https://winsparkle.org", "files": ["winsparkle/COPYING.txt"],
+                      "binaries": ["WinSparkle.dll"]})
     (lic / "index.json").write_text(json.dumps(index, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"licenses: {len(index)} components")
 
@@ -118,6 +134,8 @@ def main() -> int:
     ap.add_argument("out", type=pathlib.Path)
     ap.add_argument("--vcpkg-installed", type=pathlib.Path, default=None,
                     help="vcpkg_installed/<triplet> of the build (licence texts of static libraries)")
+    ap.add_argument("--require-winsparkle", action="store_true",
+                    help="fail if the build has no WinSparkle.dll (release builds, automatic updates)")
     args = ap.parse_args()
     build: pathlib.Path = args.build
     out: pathlib.Path = args.out
@@ -133,6 +151,12 @@ def main() -> int:
     out.mkdir(parents=True)
     shutil.copy2(app, out / app.name)
     shutil.copy2(helper, out / helper.name)
+    winsparkle = exe_dir / "WinSparkle.dll"
+    if winsparkle.is_file():
+        shutil.copy2(winsparkle, out / winsparkle.name)
+        print(f"WinSparkle {winsparkle_version()}: automatic updates")
+    elif args.require_winsparkle:
+        raise SystemExit(f"error: {winsparkle} missing - build with LF_ENABLE_WINSPARKLE=ON (tools/fetch_winsparkle.py)")
     (out / "translations").mkdir()
     qms = sorted((build / "translations").glob("lumaflip_*.qm"))
     if len(qms) < len(UI_LANGUAGES):
