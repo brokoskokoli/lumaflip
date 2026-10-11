@@ -9,7 +9,7 @@
     </message>
     <message>
         <source>Änderungsdatum</source>
-        <translation>Data modyfikacji</translation>
+        <translation>Data zmian</translation>
     </message>
     <message>
         <source>Erstellungsdatum</source>
@@ -17,7 +17,7 @@
     </message>
     <message>
         <source>Hinzugefügt am</source>
-        <translation>Data dodania</translation>
+        <translation>Data dołączenia</translation>
     </message>
     <message>
         <source>Aufnahmedatum</source>
@@ -83,7 +83,7 @@
     </message>
     <message>
         <source>Dateivorgänge werden abgeschlossen, dann wird Lumaflip beendet …</source>
-        <translation>Trwa kończenie operacji na plikach, potem Lumaflip zakończy działanie…</translation>
+        <translation>Kończenie operacji na plikach przed zakończeniem działania Lumaflip…</translation>
     </message>
     <message>
         <source>Dateivorgang läuft …</source>
@@ -111,7 +111,7 @@
     </message>
     <message>
         <source>Aktion</source>
-        <translation>Czynność</translation>
+        <translation>Akcja</translation>
     </message>
     <message>
         <source>Taste(n)</source>
@@ -135,7 +135,7 @@
     </message>
     <message>
         <source>Vollbild oder Modus beenden</source>
-        <translation>Wyjście z pełnego ekranu / trybu</translation>
+        <translation>Opuść pełny ekran lub zakończ tryb</translation>
     </message>
     <message>
         <source>Esc</source>
@@ -193,9 +193,9 @@
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
         <extracomment>status bar while a folder with subfolders is read (F-OPEN-08)</extracomment>
         <translation>
-            <numerusform>Wczytywanie podfolderów… %1 folderów, %n obraz</numerusform>
-            <numerusform>Wczytywanie podfolderów… %1 folderów, %n obrazy</numerusform>
-            <numerusform>Wczytywanie podfolderów… %1 folderów, %n obrazów</numerusform>
+            <numerusform>Wczytywanie podfolderów… (folderów: %1, obrazów: %n)</numerusform>
+            <numerusform>Wczytywanie podfolderów… (folderów: %1, obrazów: %n)</numerusform>
+            <numerusform>Wczytywanie podfolderów… (folderów: %1, obrazów: %n)</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -250,7 +250,7 @@
     </message>
     <message>
         <source>Zweite Datei: %1 – „RAW anzeigen“ wechselt</source>
-        <translation>Drugi plik: %1 – „Pokaż RAW” przełącza</translation>
+        <translation>Drugi plik: %1 – „Pokaż RAW” przełącza na niego</translation>
     </message>
 </context>
 <context>
@@ -312,7 +312,7 @@
     <name>lf::ContainerPolicy</name>
     <message>
         <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten sind hier nicht möglich.</source>
-        <translation>Obrazy w archiwach i dokumentach PDF są otwarte tylko do oglądania – kosz, zmiana nazwy, przenoszenie i ocenianie nie działają tutaj.</translation>
+        <translation>Obrazy w archiwach i dokumentach PDF są otwarte tylko do oglądania – przenoszenie do Kosza, zmiana nazwy, przenoszenie i ocenianie nie są tu możliwe.</translation>
     </message>
 </context>
 <context>
@@ -335,7 +335,7 @@
     </message>
     <message>
         <source>Gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt. Mit ⌥ lässt sich ein Fenster einzeln verschieben.</source>
-        <translation>Połączone okna przewijają się razem i mają wspólne powiększenie i widoczny obszar. Przytrzymaj ⌥, aby przesunąć jedno okno osobno.</translation>
+        <translation>Połączone okna przeglądają obrazy razem i mają wspólne powiększenie oraz widoczny obszar. Przytrzymaj ⌥, aby przesunąć jedno okno osobno.</translation>
     </message>
     <message>
         <source>Dateiname (ohne Endung)</source>
@@ -347,7 +347,7 @@
     </message>
     <message>
         <source>Gemeinsam blättern nach:</source>
-        <translation>Przewijaj razem według:</translation>
+        <translation>Przeglądaj razem według:</translation>
     </message>
     <message>
         <source>Koppeln</source>
@@ -390,7 +390,7 @@
     </message>
     <message>
         <source>Zuschnitt in der Datei sichern (Enter, widerrufbar)</source>
-        <translation>Zachowaj przycięcie w pliku (Enter, można cofnąć)</translation>
+        <translation>Zachowaj kadr w pliku (Enter, można cofnąć)</translation>
     </message>
     <message>
         <source>Sichern unter …</source>
@@ -398,7 +398,7 @@
     </message>
     <message>
         <source>Zuschnitt als neue Datei sichern – das Original bleibt unverändert</source>
-        <translation>Zachowaj przycięcie jako nowy plik – oryginał pozostaje bez zmian</translation>
+        <translation>Zachowaj kadr jako nowy plik – oryginał pozostanie bez zmian</translation>
     </message>
     <message>
         <source>Abbrechen</source>
@@ -406,7 +406,7 @@
     </message>
     <message>
         <source>Zuschneiden beenden (Esc)</source>
-        <translation>Zakończ przycinanie (Esc)</translation>
+        <translation>Zakończ kadrowanie (Esc)</translation>
     </message>
     <message>
         <source>%1 × %2 px</source>
@@ -418,11 +418,11 @@
     <name>lf::CropSave</name>
     <message>
         <source>Die Datei wurde inzwischen verändert – nichts gesichert. Schneide das Bild erneut zu.</source>
-        <translation>Plik został w międzyczasie zmieniony – niczego nie zapisano. Przytnij ponownie.</translation>
+        <translation>Plik został w międzyczasie zmieniony – niczego nie zachowano. Wykadruj obraz ponownie.</translation>
     </message>
     <message>
         <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden ist nur durch Neukodieren möglich – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
-        <translation>Plik zawiera dodatkowe obrazy (np. mapę wzmocnienia HDR lub drugi obraz stereo), które po bezstratnym przycięciu przestałyby pasować. Przycięcie jest możliwe tylko przez ponowne zakodowanie – traci się przy tym nieco jakości i te dodatkowe obrazy.</translation>
+        <translation>Plik zawiera obrazy dodatkowe (np. mapę wzmocnienia HDR lub drugi obraz stereo), które po bezstratnym kadrowaniu przestałyby pasować. Kadrowanie jest możliwe tylko przez ponowne zakodowanie – traci się przy tym nieco jakości obrazu oraz te obrazy dodatkowe.</translation>
     </message>
     <message>
         <source>Frei</source>
@@ -438,15 +438,15 @@
     </message>
     <message>
         <source>Die JPEG-Daten konnten nicht verlustfrei zugeschnitten werden (%1).</source>
-        <translation>Nie udało się bezstratnie przyciąć danych JPEG (%1).</translation>
+        <translation>Nie udało się bezstratnie wykadrować danych JPEG (%1).</translation>
     </message>
     <message>
         <source>Der Zuschnitt liegt nicht auf dem JPEG-Blockraster.</source>
-        <translation>Zaznaczenie nie leży na siatce bloków JPEG.</translation>
+        <translation>Kadr nie jest wyrównany do siatki bloków JPEG.</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden von JPEG-Dateien ist in dieser Version nicht verfügbar.</source>
-        <translation>Bezstratne przycinanie plików JPEG nie jest dostępne w tej wersji.</translation>
+        <translation>Bezstratne kadrowanie plików JPEG nie jest dostępne w tej wersji.</translation>
     </message>
     <message>
         <source>Die Datei existiert nicht mehr.</source>
@@ -458,15 +458,15 @@
     </message>
     <message>
         <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
-        <translation>Obrazy w archiwach i dokumentach PDF nie są zmieniane. Zaznaczenie można wyeksportować jako nowy plik.</translation>
+        <translation>Obrazy w archiwach i dokumentach PDF nie są zmieniane. Kadr można wyeksportować jako nowy plik.</translation>
     </message>
     <message>
         <source>RAW-Dateien werden nie verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
-        <translation>Pliki RAW nigdy nie są zmieniane. Zaznaczenie można wyeksportować jako nowy plik.</translation>
+        <translation>Pliki RAW nigdy nie są zmieniane. Kadr można wyeksportować jako nowy plik.</translation>
     </message>
     <message>
         <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gesichert werden. Der Zuschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
-        <translation>Plików animowanych lub wielostronicowych nie można zapisać po przycięciu. Zaznaczenie pierwszego obrazu można wyeksportować jako nowy plik.</translation>
+        <translation>Plików animowanych lub wielostronicowych nie można zachować po wykadrowaniu. Kadr pierwszego obrazu można wyeksportować jako nowy plik.</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
@@ -490,23 +490,23 @@
     </message>
     <message>
         <source>Kein Bildbereich ausgewählt.</source>
-        <translation>Nie zaznaczono obszaru.</translation>
+        <translation>Nie wybrano obszaru obrazu.</translation>
     </message>
     <message>
         <source>Der Zuschnitt umfasst das ganze Bild – es gibt nichts zuzuschneiden.</source>
-        <translation>Zaznaczenie obejmuje cały obraz – nie ma czego przycinać.</translation>
+        <translation>Kadr obejmuje cały obraz – nie ma czego kadrować.</translation>
     </message>
     <message>
         <source>Für den verlustfreien Zuschnitt wurde der Zuschnittbereich an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
-        <translation>Do bezstratnego przycięcia zaznaczenie dopasowano do siatki bloków JPEG (%1 × %2 pikseli); ma teraz %3 × %4 pikseli.</translation>
+        <translation>Na potrzeby bezstratnego kadrowania obszar kadrowania dopasowano do siatki bloków JPEG (%1 × %2 pikseli); ma teraz wymiary %3 × %4 pikseli.</translation>
     </message>
     <message>
         <source>Diese JPEG-Datei lässt sich nicht verlustfrei zuschneiden. Beim Neukodieren geht etwas Bildqualität verloren.</source>
-        <translation>Tego pliku JPEG nie można przyciąć bezstratnie. Ponowne zakodowanie obniża nieco jakość.</translation>
+        <translation>Tego pliku JPEG nie można wykadrować bezstratnie. Ponowne zakodowanie obniża nieco jakość obrazu.</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nicht gesichert werden.</source>
-        <translation>Nie można zapisać przycięcia.</translation>
+        <translation>Nie można zachować kadru.</translation>
     </message>
     <message>
         <source>Beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
@@ -514,15 +514,15 @@
     </message>
     <message>
         <source>Dieses Format kann hier nicht geschrieben werden. Der Zuschnitt kann in einem anderen Format exportiert werden.</source>
-        <translation>Tego formatu nie można tutaj zapisać. Zaznaczenie można wyeksportować w innym formacie.</translation>
+        <translation>Tego formatu nie można tutaj zapisać. Kadr można wyeksportować w innym formacie.</translation>
     </message>
     <message>
         <source>Dieses Format komprimiert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
-        <translation>Ten format jest stratny. Przycięcie można zapisać tylko przez ponowne zakodowanie obrazu – traci się przy tym nieco jakości.</translation>
+        <translation>Ten format stosuje kompresję stratną. Kadr można zachować tylko przez ponowne zakodowanie obrazu – traci się przy tym nieco jakości obrazu.</translation>
     </message>
     <message>
         <source>Zusatzbilder (%1) gehen dabei verloren.</source>
-        <translation>Dodatkowe obrazy (%1) zostaną utracone.</translation>
+        <translation>Obrazy dodatkowe (%1) zostaną utracone.</translation>
     </message>
     <message>
         <source>Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.</source>
@@ -530,11 +530,11 @@
     </message>
     <message>
         <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
-        <translation>Bezstratne przycięcie tego obrazu nie jest możliwe.</translation>
+        <translation>Bezstratne kadrowanie tego obrazu nie jest możliwe.</translation>
     </message>
     <message>
         <source>Der Zuschnitt konnte nicht gesichert werden.</source>
-        <translation>Nie udało się zapisać przycięcia.</translation>
+        <translation>Nie udało się zachować kadru.</translation>
     </message>
     <message>
         <source>Die Datei konnte nicht ersetzt werden.</source>
@@ -542,30 +542,30 @@
     </message>
     <message>
         <source>Nichts zuzuschneiden</source>
-        <translation>Nie ma czego przycinać</translation>
+        <translation>Nie ma czego kadrować</translation>
     </message>
     <message>
         <source>Verlustfrei zugeschnitten (an JPEG-Blöcke angepasst)</source>
-        <translation>Przycięto bezstratnie (dopasowano do bloków JPEG)</translation>
+        <translation>Wykadrowano bezstratnie (dopasowano do bloków JPEG)</translation>
     </message>
     <message>
         <source>Verlustfrei zugeschnitten</source>
-        <translation>Przycięto bezstratnie</translation>
+        <translation>Wykadrowano bezstratnie</translation>
     </message>
     <message>
         <source>Zugeschnitten (verlustfrei neu kodiert)</source>
-        <translation>Przycięto (bezstratnie zakodowano ponownie)</translation>
+        <translation>Wykadrowano (bezstratnie zakodowano ponownie)</translation>
     </message>
     <message>
         <source>Zugeschnitten (neu kodiert)</source>
-        <translation>Przycięto (ponownie zakodowano)</translation>
+        <translation>Wykadrowano (zakodowano ponownie)</translation>
     </message>
 </context>
 <context>
     <name>lf::CullingController</name>
     <message>
         <source>Bewertung wird gelesen …</source>
-        <translation>Odczyt oceny…</translation>
+        <translation>Odczytywanie oceny…</translation>
     </message>
     <message>
         <source>AUSSORTIEREN</source>
@@ -573,7 +573,7 @@
     </message>
     <message>
         <source>0–5  Sterne     P  Markieren     X  Ablehnen     U  Markierung aufheben</source>
-        <translation>0–5  Gwiazdki     P  Zachowaj     X  Odrzuć     U  Usuń oznaczenie</translation>
+        <translation>0–5  Gwiazdki     P  Oznacz jako wybrane     X  Odrzuć     U  Usuń flagę</translation>
     </message>
     <message>
         <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Widerrufen     Esc  Beenden</source>
@@ -581,7 +581,7 @@
     </message>
     <message>
         <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U setzen Markierungen</source>
-        <translation>Tryb selekcji: cyfry nadają gwiazdki, P/X/U oznaczają</translation>
+        <translation>Tryb selekcji: cyfry nadają gwiazdki, P/X/U ustawiają flagi</translation>
     </message>
     <message>
         <source>Aussortiermodus beendet</source>
@@ -602,9 +602,9 @@
     <message numerus="yes">
         <source>%n abgelehnte(s) Bild(er) in den Papierkorb legen?</source>
         <translation>
-            <numerusform>Przenieść %n odrzucony obraz do kosza?</numerusform>
-            <numerusform>Przenieść %n odrzucone obrazy do kosza?</numerusform>
-            <numerusform>Przenieść %n odrzuconych obrazów do kosza?</numerusform>
+            <numerusform>Przenieść %n odrzucony obraz do Kosza?</numerusform>
+            <numerusform>Przenieść %n odrzucone obrazy do Kosza?</numerusform>
+            <numerusform>Przenieść %n odrzuconych obrazów do Kosza?</numerusform>
         </translation>
     </message>
     <message numerus="yes">
@@ -617,11 +617,11 @@
     </message>
     <message>
         <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren werden mitbewegt. ⌘Z widerruft den ganzen Schritt.</source>
-        <translation>Tylko wyświetlane obrazy (bieżące filtry). Pliki pomocnicze XMP i drugi plik par RAW+JPEG są przenoszone razem z nimi. ⌘Z cofa cały krok.</translation>
+        <translation>Tylko wyświetlane obrazy (bieżące filtry). Pliki dodatkowe XMP i drugi plik par RAW+JPEG są przenoszone razem z nimi. ⌘Z cofa cały krok.</translation>
     </message>
     <message>
         <source>In den Papierkorb legen</source>
-        <translation>Do kosza</translation>
+        <translation>Przenieś do Kosza</translation>
     </message>
     <message>
         <source>Verschieben</source>
@@ -629,26 +629,26 @@
     </message>
     <message>
         <source>Abgelehnte in den Papierkorb legen</source>
-        <translation>Odrzucone do kosza</translation>
+        <translation>Przenieś odrzucone do Kosza</translation>
     </message>
     <message>
         <source>Abgelehnte nach „_Rejected“ verschieben</source>
-        <translation>Odrzucone do _Rejected</translation>
+        <translation>Przenieś odrzucone do „_Rejected”</translation>
     </message>
     <message numerus="yes">
         <source>%n Bild(er) in den Papierkorb gelegt</source>
         <translation>
-            <numerusform>%n obraz przeniesiono do kosza</numerusform>
-            <numerusform>%n obrazy przeniesiono do kosza</numerusform>
-            <numerusform>%n obrazów przeniesiono do kosza</numerusform>
+            <numerusform>Przeniesiono do Kosza %n obraz</numerusform>
+            <numerusform>Przeniesiono do Kosza %n obrazy</numerusform>
+            <numerusform>Przeniesiono do Kosza %n obrazów</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n Bild(er) nach „_Rejected“ verschoben</source>
         <translation>
-            <numerusform>%n obraz przeniesiono do „_Rejected”</numerusform>
-            <numerusform>%n obrazy przeniesiono do „_Rejected”</numerusform>
-            <numerusform>%n obrazów przeniesiono do „_Rejected”</numerusform>
+            <numerusform>Przeniesiono do „_Rejected” %n obraz</numerusform>
+            <numerusform>Przeniesiono do „_Rejected” %n obrazy</numerusform>
+            <numerusform>Przeniesiono do „_Rejected” %n obrazów</numerusform>
         </translation>
     </message>
 </context>
@@ -672,31 +672,31 @@
     </message>
     <message>
         <source>Kurzbefehle gibt es nur unter macOS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Skróty są dostępne tylko w systemie macOS.</translation>
     </message>
     <message>
         <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
-        <translation type="unfinished"></translation>
+        <translation>Plików wsadowych (.bat, .cmd) nie można uruchamiać bezpośrednio: cmd.exe odczytałby nazwy plików jako polecenia. Uruchom zamiast tego program lub skrypt PowerShell (powershell -File skrypt.ps1).</translation>
     </message>
     <message>
         <source>„%1“ kann nicht direkt ausgeführt werden: es würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
-        <translation>Nie można uruchomić „%1” bezpośrednio: odczytałby nazwy plików jako polecenia. Uruchom zamiast tego program lub skrypt PowerShell (powershell -File Skrypt.ps1).</translation>
+        <translation>Nie można bezpośrednio uruchomić „%1”: nazwy plików zostałyby odczytane jako polecenia. Uruchom zamiast tego program lub skrypt PowerShell (powershell -File skrypt.ps1).</translation>
     </message>
     <message>
         <source>PowerShell nur mit einem Skript: „powershell -File Skript.ps1“. Mit -Command (oder ohne -File) würde PowerShell Dateinamen als Befehle lesen.</source>
-        <translation>PowerShell tylko ze skryptem: „powershell -File Skrypt.ps1”. Z -Command (lub bez -File) PowerShell odczytałby nazwy plików jako polecenia.</translation>
+        <translation>PowerShell tylko ze skryptem: „powershell -File skrypt.ps1”. Z opcją -Command (lub bez -File) PowerShell odczytałby nazwy plików jako polecenia.</translation>
     </message>
     <message numerus="yes">
         <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
         <translation>
-            <numerusform>Akcja została przerwana po %n sekundzie.</numerusform>
-            <numerusform>Akcja została przerwana po %n sekundach.</numerusform>
-            <numerusform>Akcja została przerwana po %n sekundach.</numerusform>
+            <numerusform>Akcję przerwano po %n sekundzie.</numerusform>
+            <numerusform>Akcję przerwano po %n sekundach.</numerusform>
+            <numerusform>Akcję przerwano po %n sekundach.</numerusform>
         </translation>
     </message>
     <message>
         <source>Die Aktion wurde abgebrochen.</source>
-        <translation>Akcja została przerwana.</translation>
+        <translation>Akcję przerwano.</translation>
     </message>
     <message>
         <source>Die Aktion endete mit Fehlercode %1.</source>
@@ -715,7 +715,7 @@
     <name>lf::CustomActionsEditor</name>
     <message>
         <source>%1 ist schon belegt (%2); im Bildfenster hat die eigene Aktion Vorrang.</source>
-        <translation>%1 jest już używany (%2); w oknie obrazu pierwszeństwo ma własna czynność.</translation>
+        <translation>%1 jest już używany (%2); w oknie obrazu pierwszeństwo ma własna akcja.</translation>
     </message>
     <message>
         <source>Eigene Aktion</source>
@@ -909,7 +909,7 @@
     </message>
     <message>
         <source>Windows-Fehler %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Błąd systemu Windows %1</translation>
     </message>
     <message>
         <source>Die Bilddaten des Decoders fehlen.</source>
@@ -955,31 +955,31 @@
     <name>lf::DefaultAppBar</name>
     <message>
         <source>Lumaflip ist nicht die Standard-App für den Dateityp „%1“.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip nie jest domyślną aplikacją dla typu pliku „%1”.</translation>
     </message>
     <message>
         <source>Festlegen</source>
-        <translation type="unfinished">Ustaw</translation>
+        <translation>Ustaw jako domyślną</translation>
     </message>
     <message>
         <source>Lumaflip öffnet Dateien dieses Typs künftig per Doppelklick.</source>
-        <translation type="unfinished"></translation>
+        <translation>Od teraz dwukrotne kliknięcie pliku tego typu otworzy go w Lumaflip.</translation>
     </message>
     <message>
         <source>Alle Bildformate …</source>
-        <translation type="unfinished"></translation>
+        <translation>Wszystkie formaty obrazów…</translation>
     </message>
     <message>
         <source>Wähle die Bildformate, die Lumaflip öffnen soll.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybierz formaty obrazów, które ma otwierać Lumaflip.</translation>
     </message>
     <message>
         <source>Nicht mehr fragen</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie pytaj ponownie</translation>
     </message>
     <message>
         <source>Schließen</source>
-        <translation type="unfinished">Zamknij</translation>
+        <translation>Zamknij</translation>
     </message>
 </context>
 <context>
@@ -1002,7 +1002,7 @@
     </message>
     <message>
         <source>Festlegen</source>
-        <translation>Ustaw</translation>
+        <translation>Ustaw jako domyślną</translation>
     </message>
     <message>
         <source>Abbrechen</source>
@@ -1013,15 +1013,15 @@
     <name>lf::DefaultAppOfferController</name>
     <message>
         <source>Lumaflip fragt nicht mehr nach der Standard-App – wieder einschalten unter Einstellungen → Allgemein</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip nie będzie już pytać o domyślną aplikację – możesz to ponownie włączyć w Ustawienia → Ogólne</translation>
     </message>
     <message>
         <source>Lumaflip ist jetzt die Standard-App für „%1“</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip jest teraz domyślną aplikacją dla „%1”</translation>
     </message>
     <message>
         <source>Lumaflip konnte nicht als Standard-App festgelegt werden: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można ustawić Lumaflip jako domyślnej aplikacji: %1</translation>
     </message>
 </context>
 <context>
@@ -1223,22 +1223,22 @@
     </message>
     <message>
         <source>Zugeschnitten exportieren</source>
-        <translation>Eksportuj przycięte</translation>
+        <translation>Eksportuj kadr</translation>
     </message>
     <message>
         <source>Den Zuschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
-        <translation>Eksportuj zaznaczenie z „%1” jako nowy plik. Oryginał pozostaje bez zmian.</translation>
+        <translation>Eksportuj kadr z „%1” jako nowy plik. Oryginał pozostanie bez zmian.</translation>
     </message>
     <message>
         <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
-        <translation>Eksportuj „%1” jako nowy plik. Oryginał pozostaje bez zmian.</translation>
+        <translation>Eksportuj „%1” jako nowy plik. Oryginał pozostanie bez zmian.</translation>
     </message>
     <message numerus="yes">
         <source>%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.</source>
         <translation>
-            <numerusform>Eksportuj %n obraz jako nowy plik. Oryginał pozostaje bez zmian.</numerusform>
-            <numerusform>Eksportuj %n obrazy jako nowe pliki. Oryginały pozostają bez zmian.</numerusform>
-            <numerusform>Eksportuj %n obrazów jako nowe pliki. Oryginały pozostają bez zmian.</numerusform>
+            <numerusform>Eksportuj %n obraz jako nowy plik. Oryginał pozostanie bez zmian.</numerusform>
+            <numerusform>Eksportuj %n obrazy jako nowe pliki. Oryginały pozostaną bez zmian.</numerusform>
+            <numerusform>Eksportuj %n obrazów jako nowe pliki. Oryginały pozostaną bez zmian.</numerusform>
         </translation>
     </message>
     <message>
@@ -1275,7 +1275,7 @@
     </message>
     <message>
         <source>Originalgröße</source>
-        <translation>Rozmiar oryginalny</translation>
+        <translation>Oryginalny rozmiar</translation>
     </message>
     <message>
         <source> px (lange Kante)</source>
@@ -1284,7 +1284,7 @@
     </message>
     <message>
         <source>Alle behalten</source>
-        <translation>Zachowaj wszystkie</translation>
+        <translation>Pozostaw wszystkie</translation>
     </message>
     <message>
         <source>Ohne Aufnahmeort (GPS)</source>
@@ -1296,7 +1296,7 @@
     </message>
     <message>
         <source>Beibehalten</source>
-        <translation>Zachowaj</translation>
+        <translation>Pozostaw</translation>
     </message>
     <message>
         <source>In sRGB umwandeln</source>
@@ -1308,7 +1308,7 @@
     </message>
     <message>
         <source>Gain-Map behalten (wo das Format es kann)</source>
-        <translation>Zachowaj mapę wzmocnienia (gdy format na to pozwala)</translation>
+        <translation>Pozostaw mapę wzmocnienia (jeśli format ją obsługuje)</translation>
     </message>
     <message>
         <source>Als SDR (Tone Mapping)</source>
@@ -1316,7 +1316,7 @@
     </message>
     <message>
         <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Endung</source>
-        <translation>Symbole: {name} = nazwa oryginału, {n} = numer kolejny, {format} = rozszerzenie</translation>
+        <translation>Symbole zastępcze: {name} = nazwa oryginału, {n} = numer kolejny, {format} = rozszerzenie</translation>
     </message>
     <message>
         <source>Neben dem Original</source>
@@ -1351,7 +1351,7 @@
     </message>
     <message>
         <source>Bild %1 von %2 wird exportiert: %3</source>
-        <translation>Eksportowanie %1 z %2: %3</translation>
+        <translation>Eksportowanie obrazu %1 z %2: %3</translation>
     </message>
 </context>
 <context>
@@ -1405,7 +1405,7 @@
     </message>
     <message>
         <source>In den Papierkorb legen</source>
-        <translation>Przenieś do kosza</translation>
+        <translation>Przenieś do Kosza</translation>
     </message>
     <message>
         <source>Umbenennen</source>
@@ -1429,14 +1429,14 @@
     </message>
     <message>
         <source>Der Verlauf zum Widerrufen wurde zurückgesetzt, weil er sich während des Vorgangs geändert hat.</source>
-        <translation>Historia cofania została wyzerowana, ponieważ zmieniła się w trakcie operacji.</translation>
+        <translation>Historia cofania została zresetowana, ponieważ zmieniła się w trakcie operacji.</translation>
     </message>
 </context>
 <context>
     <name>lf::Filmstrip</name>
     <message>
         <source>Filmstreifen</source>
-        <translation>Pasek miniatur</translation>
+        <translation>Taśma filmowa</translation>
     </message>
 </context>
 <context>
@@ -1483,14 +1483,14 @@
     </message>
     <message>
         <source>Ordnerkarte schließen</source>
-        <translation>Zamknij mapę</translation>
+        <translation>Zamknij mapę folderu</translation>
     </message>
 </context>
 <context>
     <name>lf::FolderMapView</name>
     <message>
         <source>Karten sind unter Windows nicht verfügbar. Bilder mit Aufnahmeort in diesem Ordner: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Mapy nie są dostępne w systemie Windows. Obrazy z lokalizacją w tym folderze: %1</translation>
     </message>
 </context>
 <context>
@@ -1680,11 +1680,11 @@
     </message>
     <message>
         <source>Beibehalten</source>
-        <translation>Zachowaj</translation>
+        <translation>Pozostaw</translation>
     </message>
     <message>
         <source>Belichtung beim Bildwechsel beibehalten</source>
-        <translation>Zachowaj ekspozycję przy zmianie obrazu</translation>
+        <translation>Pozostaw ekspozycję przy zmianie obrazu</translation>
     </message>
 </context>
 <context>
@@ -1714,11 +1714,11 @@
     </message>
     <message>
         <source>Die vorhandene Datei konnte nicht in den Papierkorb gelegt werden.</source>
-        <translation>Nie można przenieść istniejącego pliku do kosza.</translation>
+        <translation>Nie można przenieść istniejącego pliku do Kosza.</translation>
     </message>
     <message>
         <source>Die vorhandene Datei liegt im Papierkorb, die neue konnte nicht an ihre Stelle gelegt werden: %1</source>
-        <translation>Istniejący plik jest w koszu, ale nowego nie można było umieścić na jego miejscu: %1</translation>
+        <translation>Istniejący plik jest w Koszu, ale nie można było umieścić nowego na jego miejscu: %1</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht geschrieben werden.</source>
@@ -1856,7 +1856,7 @@
     </message>
     <message>
         <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
-        <translation>Wczytuje fragment mapy z Apple Mapy (połączenie z internetem)</translation>
+        <translation>Wczytuje podgląd mapy z Map Apple (wymaga połączenia z internetem)</translation>
     </message>
     <message>
         <source>Karte ausblenden</source>
@@ -1864,7 +1864,7 @@
     </message>
     <message>
         <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte einblenden“)</source>
-        <translation>Nie wczytuj już fragmentów mapy (do następnego kliknięcia „Pokaż mapę”)</translation>
+        <translation>Nie wczytuj więcej podglądów mapy (do ponownego kliknięcia „Pokaż mapę”)</translation>
     </message>
     <message>
         <source>In Karten öffnen</source>
@@ -1876,7 +1876,7 @@
     </message>
     <message>
         <source>Alle Bilder dieser Ansicht mit Aufnahmeort auf einer Karte zeigen (lädt Kartendaten von Apple Karten)</source>
-        <translation>Pokaż na mapie wszystkie obrazy z tego widoku, które mają lokalizację (wczytuje dane mapy z Apple Mapy)</translation>
+        <translation>Pokaż na mapie wszystkie obrazy z tego widoku, które mają lokalizację (wczytuje dane mapy z Map Apple)</translation>
     </message>
 </context>
 <context>
@@ -1940,7 +1940,7 @@
     </message>
     <message>
         <source>Geändert</source>
-        <translation>Zmodyfikowano</translation>
+        <translation>Zmieniono</translation>
     </message>
     <message>
         <source>Hinzugefügt</source>
@@ -1960,7 +1960,7 @@
     </message>
     <message>
         <source>Größe der zweiten Datei</source>
-        <translation>Rozmiar drugiego pliku</translation>
+        <translation>Wielkość drugiego pliku</translation>
     </message>
     <message>
         <source>Bild</source>
@@ -1972,7 +1972,7 @@
     </message>
     <message>
         <source>Aufnahme</source>
-        <translation>Ekspozycja</translation>
+        <translation>Ujęcie</translation>
     </message>
     <message>
         <source>GPS</source>
@@ -2099,7 +2099,7 @@
     </message>
     <message>
         <source>Einpassen ↔ 100 % am Mauszeiger</source>
-        <translation>Dopasuj ↔ 100% w miejscu kursora</translation>
+        <translation>Dopasuj ↔ 100% w miejscu wskaźnika</translation>
     </message>
     <message>
         <source>Zoom fixieren</source>
@@ -2107,7 +2107,7 @@
     </message>
     <message>
         <source>Standard-Zoom wiederherstellen</source>
-        <translation>Przywróć standardowe powiększenie</translation>
+        <translation>Przywróć domyślne powiększenie</translation>
     </message>
     <message>
         <source>Ausschnitt nach oben</source>
@@ -2147,11 +2147,11 @@
     </message>
     <message>
         <source>Vollbild oder Modus beenden</source>
-        <translation>Wyjdź z pełnego ekranu lub trybu</translation>
+        <translation>Opuść pełny ekran lub zakończ tryb</translation>
     </message>
     <message>
         <source>Modus beenden, sonst Fenster schließen</source>
-        <translation>Wyjdź z trybu, w przeciwnym razie zamknij okno</translation>
+        <translation>Zakończ tryb, w przeciwnym razie zamknij okno</translation>
     </message>
     <message>
         <source>Fenster schließen</source>
@@ -2187,11 +2187,11 @@
     </message>
     <message>
         <source>Horizontal spiegeln</source>
-        <translation>Odbij w poziomie</translation>
+        <translation>Odwróć poziomo</translation>
     </message>
     <message>
         <source>Vertikal spiegeln</source>
-        <translation>Odbij w pionie</translation>
+        <translation>Odwróć pionowo</translation>
     </message>
     <message>
         <source>Drehung sichern</source>
@@ -2199,7 +2199,7 @@
     </message>
     <message>
         <source>In den Papierkorb legen</source>
-        <translation>Przenieś do kosza</translation>
+        <translation>Przenieś do Kosza</translation>
     </message>
     <message>
         <source>Widerrufen</source>
@@ -2207,7 +2207,7 @@
     </message>
     <message>
         <source>Wiederholen</source>
-        <translation>Powtórz</translation>
+        <translation>Przywróć</translation>
     </message>
     <message>
         <source>Umbenennen</source>
@@ -2235,7 +2235,7 @@
     </message>
     <message>
         <source>Filmstreifen</source>
-        <translation>Pasek miniatur</translation>
+        <translation>Taśma filmowa</translation>
     </message>
     <message>
         <source>Raster</source>
@@ -2263,7 +2263,7 @@
     </message>
     <message>
         <source>Datei herausziehen</source>
-        <translation>Wyciągnij plik</translation>
+        <translation>Przeciągnij plik na zewnątrz</translation>
     </message>
     <message>
         <source>Ausschnitt verschieben</source>
@@ -2295,15 +2295,15 @@
     </message>
     <message>
         <source>Markieren</source>
-        <translation>Zachowaj (Pick)</translation>
+        <translation>Oznacz jako wybrane</translation>
     </message>
     <message>
         <source>Ablehnen</source>
-        <translation>Odrzuć (Reject)</translation>
+        <translation>Odrzuć</translation>
     </message>
     <message>
         <source>Markierung aufheben</source>
-        <translation>Usuń oznaczenie</translation>
+        <translation>Usuń flagę</translation>
     </message>
     <message>
         <source>Aussortiermodus</source>
@@ -2311,11 +2311,11 @@
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
-        <translation>Szybkie odkładanie: przenieś (M, potem 1–9)</translation>
+        <translation>Szybkie przenoszenie: przenieś (M, potem 1–9)</translation>
     </message>
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
-        <translation>Szybkie odkładanie: kopiuj (C, potem 1–9)</translation>
+        <translation>Szybkie przenoszenie: kopiuj (C, potem 1–9)</translation>
     </message>
     <message>
         <source>Gehe zu Bild …</source>
@@ -2339,7 +2339,7 @@
     </message>
     <message>
         <source>Minimaler Fenstermodus</source>
-        <translation>Minimalne okno</translation>
+        <translation>Tryb minimalnego okna</translation>
     </message>
     <message>
         <source>Fenster koppeln …</source>
@@ -2379,7 +2379,7 @@
     </message>
     <message>
         <source>Quick Look</source>
-        <translation>Szybki podgląd</translation>
+        <translation>Quick Look</translation>
     </message>
     <message>
         <source>Live Text</source>
@@ -2387,7 +2387,7 @@
     </message>
     <message>
         <source>Als Schreibtischhintergrund festlegen</source>
-        <translation>Ustaw jako tło biurka</translation>
+        <translation>Ustaw jako obraz biurka</translation>
     </message>
     <message>
         <source>Protokoll der Aktionen</source>
@@ -2399,7 +2399,7 @@
     </message>
     <message>
         <source>Zuschneiden</source>
-        <translation>Przytnij</translation>
+        <translation>Kadruj</translation>
     </message>
     <message>
         <source>Exportieren</source>
@@ -2407,7 +2407,7 @@
     </message>
     <message>
         <source>Über-/Unterbelichtungswarnung</source>
-        <translation>Ostrzeżenie o prześwietleniu</translation>
+        <translation>Ostrzeżenie o prześwietleniu i niedoświetleniu</translation>
     </message>
     <message>
         <source>Focus Peaking</source>
@@ -2415,7 +2415,7 @@
     </message>
     <message>
         <source>Fokuspunkte</source>
-        <translation>Punkty AF</translation>
+        <translation>Punkty ostrości</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2431,19 +2431,19 @@
     </message>
     <message>
         <source>Nach unten drehen zeigt das nächste, nach oben das vorherige Bild.</source>
-        <translation>Obrót w dół pokazuje następny obraz, w górę – poprzedni.</translation>
+        <translation>Przewinięcie w dół pokazuje następny obraz, w górę – poprzedni.</translation>
     </message>
     <message>
         <source>Zoomen (am Mauszeiger)</source>
-        <translation>Zmień powiększenie (w miejscu kursora)</translation>
+        <translation>Zmień powiększenie (w miejscu wskaźnika)</translation>
     </message>
     <message>
         <source>Nach oben drehen vergrößert, nach unten verkleinert – am Mauszeiger.</source>
-        <translation>Obrót w górę powiększa, w dół pomniejsza – w miejscu wskaźnika.</translation>
+        <translation>Przewinięcie w górę powiększa, w dół pomniejsza – w miejscu wskaźnika.</translation>
     </message>
     <message>
         <source>Ausschnitt verschieben (sonst Bild wechseln)</source>
-        <translation>Przewijaj widok (w przeciwnym razie zmień obraz)</translation>
+        <translation>Przesuń widok (w przeciwnym razie zmień obraz)</translation>
     </message>
     <message>
         <source>Gezoomt wird der Ausschnitt verschoben, sonst wird das Bild gewechselt.</source>
@@ -2515,7 +2515,7 @@
     </message>
     <message>
         <source>Ausschnitt seitenweise verschieben (sonst Bild)</source>
-        <translation>Przewijaj widok stronami (w przeciwnym razie obraz)</translation>
+        <translation>Przesuń widok o stronę (w przeciwnym razie obraz)</translation>
     </message>
     <message>
         <source>Gezoomt um eine Bildschirmhöhe scrollen, sonst Bild wechseln.</source>
@@ -2579,7 +2579,7 @@
     </message>
     <message>
         <source>← / →, wenn gezoomt</source>
-        <translation>← / →, gdy powiększono</translation>
+        <translation>← / →, gdy obraz jest powiększony</translation>
     </message>
     <message>
         <source>Immer Bild wechseln</source>
@@ -2591,7 +2591,7 @@
     </message>
     <message>
         <source>Erst bis zum Rand verschieben, dann Bild wechseln</source>
-        <translation>Najpierw przewiń do krawędzi, potem zmień obraz</translation>
+        <translation>Najpierw przesuń widok do krawędzi, potem zmień obraz</translation>
     </message>
     <message>
         <source>Der Ausschnitt wird verschoben; am Bildrand wechselt das Bild.</source>
@@ -2599,7 +2599,7 @@
     </message>
     <message>
         <source>Ausschnitt verschieben (Bild mit ⌥←/⌥→)</source>
-        <translation>Przewijaj widok (obraz: ⌥←/⌥→)</translation>
+        <translation>Przesuń widok (zmiana obrazu: ⌥←/⌥→)</translation>
     </message>
     <message>
         <source>Pfeiltasten verschieben den Ausschnitt; Bildwechsel mit ⌥←/⌥→.</source>
@@ -2611,7 +2611,7 @@
     </message>
     <message>
         <source>Ausschnitt verschieben, sonst vorheriges/nächstes Bild</source>
-        <translation>Przewijaj widok, w przeciwnym razie poprzedni/następny obraz</translation>
+        <translation>Przesuń widok, w przeciwnym razie poprzedni/następny obraz</translation>
     </message>
     <message>
         <source>Gezoomt wird der Ausschnitt verschoben, sonst das Bild gewechselt.</source>
@@ -2619,7 +2619,7 @@
     </message>
     <message>
         <source>Ausschnitt verschieben (wenn gezoomt), sonst nichts</source>
-        <translation>Przewijaj widok (po powiększeniu), w przeciwnym razie nic</translation>
+        <translation>Przesuń widok (po powiększeniu), w przeciwnym razie nic</translation>
     </message>
     <message>
         <source>Gezoomt wird der Ausschnitt verschoben, sonst passiert nichts.</source>
@@ -2627,7 +2627,7 @@
     </message>
     <message>
         <source>↑ zeigt das vorherige, ↓ das nächste Bild.</source>
-        <translation>↑ pokazuje poprzedni, ↓ następny obraz.</translation>
+        <translation>↑ pokazuje poprzedni obraz, ↓ następny.</translation>
     </message>
     <message>
         <source>Zoomen</source>
@@ -2719,7 +2719,7 @@
     </message>
     <message>
         <source>Bild wechseln (gezoomt: Ausschnitt verschieben)</source>
-        <translation>Zmień obraz (po powiększeniu: przewijaj)</translation>
+        <translation>Zmień obraz (po powiększeniu: przesuń widok)</translation>
     </message>
     <message>
         <source>Wischen wechselt das Bild; im gezoomten Zustand wird der Ausschnitt verschoben.</source>
@@ -2727,7 +2727,7 @@
     </message>
     <message>
         <source>Nur Ausschnitt verschieben</source>
-        <translation>Przewijaj widok</translation>
+        <translation>Tylko przesuń widok</translation>
     </message>
     <message>
         <source>Wischen verschiebt immer nur den Ausschnitt.</source>
@@ -2743,11 +2743,11 @@
     </message>
     <message>
         <source>Ziehen mit linker Maustaste</source>
-        <translation>Przeciąganie lewym przyciskiem</translation>
+        <translation>Przeciąganie lewym przyciskiem myszy</translation>
     </message>
     <message>
         <source>Ausschnitt verschieben (⌥: Datei herausziehen)</source>
-        <translation>Przesuń widok (⌥: wyciągnij plik)</translation>
+        <translation>Przesuń widok (⌥: przeciągnij plik na zewnątrz)</translation>
     </message>
     <message>
         <source>Ziehen verschiebt den Ausschnitt; mit ⌥ wird die Datei in andere Apps gezogen.</source>
@@ -2755,7 +2755,7 @@
     </message>
     <message>
         <source>Datei herausziehen (⌥: Ausschnitt verschieben)</source>
-        <translation>Wyciągnij plik (⌥: przesuń widok)</translation>
+        <translation>Przeciągnij plik na zewnątrz (⌥: przesuń widok)</translation>
     </message>
     <message>
         <source>Ziehen zieht die Datei in andere Apps; mit ⌥ wird der Ausschnitt verschoben.</source>
@@ -2767,15 +2767,15 @@
     </message>
     <message>
         <source>Vollbild oder Modus beenden, sonst nichts</source>
-        <translation>Wyjdź z pełnego ekranu lub trybu, w przeciwnym razie nic</translation>
+        <translation>Opuść pełny ekran lub zakończ tryb, w przeciwnym razie nic</translation>
     </message>
     <message>
         <source>Esc beendet Vollbild, Diashow oder andere Modi und tut sonst nichts.</source>
-        <translation>Esc kończy pełny ekran, pokaz slajdów lub inne tryby, a poza tym nic nie robi.</translation>
+        <translation>Esc opuszcza pełny ekran, kończy pokaz slajdów lub inne tryby, a poza tym nic nie robi.</translation>
     </message>
     <message>
         <source>Vollbild oder Modus beenden, sonst Fenster schließen</source>
-        <translation>Wyjdź z pełnego ekranu lub trybu, w przeciwnym razie zamknij okno</translation>
+        <translation>Opuść pełny ekran lub zakończ tryb, w przeciwnym razie zamknij okno</translation>
     </message>
     <message>
         <source>Esc beendet Modi; ist keiner aktiv, wird das Fenster geschlossen.</source>
@@ -2803,7 +2803,7 @@
     </message>
     <message>
         <source>Zum nächsten Ordner</source>
-        <translation>Do następnego folderu</translation>
+        <translation>Przejdź do następnego folderu</translation>
     </message>
     <message>
         <source>Nach dem letzten Bild geht es im nächsten Ordner weiter.</source>
@@ -2827,7 +2827,7 @@
     </message>
     <message>
         <source>Ziffern vergeben immer Sterne, P/X/U setzen Markierungen. Die Zoom-Ziffern sind dann aus.</source>
-        <translation>Cyfry zawsze przyznają gwiazdki; P/X/U oznaczają. Cyfry powiększenia są wyłączone.</translation>
+        <translation>Cyfry zawsze nadają gwiazdki, a P/X/U ustawiają flagi. Cyfry powiększenia są wtedy wyłączone.</translation>
     </message>
 </context>
 <context>
@@ -2877,7 +2877,7 @@
     </message>
     <message>
         <source>Live Text: Text und Motive auswählbar</source>
-        <translation>Tekst na żywo: tekst i obiekty do zaznaczenia</translation>
+        <translation>Tekst na żywo: można zaznaczać tekst i obiekty</translation>
     </message>
     <message>
         <source>Live Text: kein Text gefunden</source>
@@ -2916,7 +2916,7 @@
     </message>
     <message>
         <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
-        <translation>Plik zawiera dodatkowe obrazy (np. mapę wzmocnienia HDR lub drugi obraz stereo), które zostałyby utracone podczas bezstratnego przekształcania danych JPEG.</translation>
+        <translation>Plik zawiera obrazy dodatkowe (np. mapę wzmocnienia HDR lub drugi obraz stereo), które zostałyby utracone podczas bezstratnego przekształcania danych JPEG.</translation>
     </message>
     <message>
         <source>Die Datei existiert nicht mehr.</source>
@@ -2928,7 +2928,7 @@
     </message>
     <message>
         <source>RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; verwende zum dauerhaften Drehen deinen RAW-Konverter.</source>
-        <translation>Pliki RAW nigdy nie są zmieniane. Obrót dotyczy tylko wyświetlania; aby trwale obrócić obraz, użyj programu do wywoływania RAW.</translation>
+        <translation>Pliki RAW nigdy nie są zmieniane. Obrót dotyczy tylko wyświetlania; aby trwale obrócić obraz, użyj aplikacji do wywoływania plików RAW.</translation>
     </message>
     <message>
         <source>Animierte oder mehrseitige Dateien können nicht gedreht gesichert werden.</source>
@@ -2944,7 +2944,7 @@
     </message>
     <message>
         <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfreies Drehen ist nur möglich, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
-        <translation>Szerokość lub wysokość obrazu nie jest wielokrotnością rozmiaru bloku JPEG. Bezstratny obrót jest możliwy tylko po przycięciu wąskiej krawędzi (do 15 pikseli). Alternatywnie można ustawić tylko orientację EXIF.</translation>
+        <translation>Szerokość lub wysokość obrazu nie jest wielokrotnością rozmiaru bloku JPEG. Bezstratny obrót jest możliwy tylko po obcięciu wąskiego marginesu (do 15 pikseli). Alternatywnie zostanie ustawiona tylko orientacja EXIF.</translation>
     </message>
     <message>
         <source>Die Drehung kann nicht gesichert werden.</source>
@@ -2972,7 +2972,7 @@
     </message>
     <message>
         <source>Die Drehung konnte nicht gesichert werden.</source>
-        <translation>Zachowanie obrotu nie powiodło się.</translation>
+        <translation>Nie udało się zachować obrotu.</translation>
     </message>
     <message>
         <source>Die Datei konnte nicht ersetzt werden.</source>
@@ -2984,11 +2984,11 @@
     </message>
     <message>
         <source>Die Datei wurde inzwischen verändert – Wiederholen nicht möglich</source>
-        <translation>Plik został w międzyczasie zmieniony – nie można powtórzyć</translation>
+        <translation>Plik został w międzyczasie zmieniony – nie można przywrócić</translation>
     </message>
     <message>
         <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Widerrufen/Wiederholen ist dafür nicht mehr möglich.</source>
-        <translation>Kopia zapasowa tego kroku została usunięta, aby zaoszczędzić miejsce – cofnięcie/powtórzenie nie jest już możliwe.</translation>
+        <translation>Kopia zapasowa tego kroku została usunięta, aby zaoszczędzić miejsce na dysku – cofnięcie i przywrócenie tego kroku nie jest już możliwe.</translation>
     </message>
     <message>
         <source>Es gibt nichts zu widerrufen.</source>
@@ -2996,7 +2996,7 @@
     </message>
     <message>
         <source>Kein Speicherplatz für die Sicherungskopie – nichts gesichert.</source>
-        <translation>Brak miejsca na kopię zapasową – niczego nie zachowano.</translation>
+        <translation>Za mało miejsca na dysku na kopię zapasową – niczego nie zachowano.</translation>
     </message>
     <message>
         <source>Keine Drehung zu sichern</source>
@@ -3012,7 +3012,7 @@
     </message>
     <message>
         <source>Drehung verlustfrei gesichert (Rand beschnitten)</source>
-        <translation>Obrót zachowany bezstratnie (przycięto krawędź)</translation>
+        <translation>Obrót zachowany bezstratnie (obcięto krawędź)</translation>
     </message>
     <message>
         <source>Drehung gesichert (verlustfrei neu kodiert)</source>
@@ -3036,11 +3036,11 @@
     </message>
     <message>
         <source>Dieses Format kann nicht geschrieben werden.</source>
-        <translation>Nie można zapisywać w tym formacie.</translation>
+        <translation>Tego formatu nie można zapisać.</translation>
     </message>
     <message>
         <source>Das Bild lässt sich in diesem Format nicht exakt neu sichern.</source>
-        <translation>Nie można dokładnie ponownie zapisać obrazu w tym formacie.</translation>
+        <translation>Obrazu nie da się ponownie zachować w tym formacie bez zmian.</translation>
     </message>
     <message>
         <source>„%1“ existiert nicht mehr.</source>
@@ -3052,7 +3052,7 @@
     </message>
     <message>
         <source>Die neue Datei konnte nicht gesichert werden.</source>
-        <translation>Nie można zabezpieczyć nowego pliku.</translation>
+        <translation>Nie można zachować nowego pliku.</translation>
     </message>
     <message>
         <source>Die Datei kann nicht geschrieben werden.</source>
@@ -3072,19 +3072,19 @@
     </message>
     <message>
         <source>HDR-Gain-Map</source>
-        <translation>Mapa wzmocnienia HDR</translation>
+        <translation>mapa wzmocnienia HDR</translation>
     </message>
     <message>
         <source>Tiefenkarte</source>
-        <translation>Mapa głębi</translation>
+        <translation>mapa głębi</translation>
     </message>
     <message>
         <source>Porträt-Maske</source>
-        <translation>Maska portretu</translation>
+        <translation>maska portretu</translation>
     </message>
     <message>
         <source>Segmentierungsmaske</source>
-        <translation>Maska segmentacji</translation>
+        <translation>maska segmentacji</translation>
     </message>
     <message>
         <source>Die Datei enthält Zusatzbilder (%1), die beim Sichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gesichert und gilt weiter nur in der Anzeige.</source>
@@ -3116,7 +3116,7 @@
     </message>
     <message>
         <source>Das Bild lässt sich nicht exakt neu sichern.</source>
-        <translation>Nie można dokładnie ponownie zapisać obrazu.</translation>
+        <translation>Obrazu nie da się ponownie zachować bez zmian.</translation>
     </message>
     <message>
         <source>Die neue Datei fehlt.</source>
@@ -3124,7 +3124,7 @@
     </message>
     <message>
         <source>Nicht genug Speicherplatz, um „%1“ sicher zu überschreiben.</source>
-        <translation>Za mało miejsca, aby bezpiecznie nadpisać „%1”.</translation>
+        <translation>Za mało miejsca na dysku, aby bezpiecznie nadpisać „%1”.</translation>
     </message>
     <message>
         <source>Der alte Inhalt liegt in „%1“.</source>
@@ -3155,15 +3155,15 @@
     </message>
     <message>
         <source>Alle Bildschirme</source>
-        <translation type="unfinished">Wszystkie ekrany</translation>
+        <translation>Wszystkie ekrany</translation>
     </message>
     <message>
         <source>Bildschirm %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekran %1</translation>
     </message>
     <message>
         <source>Windows hat das Bild nicht als Desktophintergrund übernommen.</source>
-        <translation type="unfinished"></translation>
+        <translation>System Windows nie ustawił obrazu jako tła pulpitu.</translation>
     </message>
 </context>
 <context>
@@ -3198,7 +3198,7 @@
     </message>
     <message>
         <source>Alle schließen</source>
-        <translation>Zamknij wszystko</translation>
+        <translation>Zamknij wszystkie</translation>
     </message>
     <message>
         <source>Im Finder zeigen</source>
@@ -3210,11 +3210,11 @@
     </message>
     <message>
         <source>Im Editor öffnen</source>
-        <translation>Otwórz w domyślnym edytorze</translation>
+        <translation>Otwórz w edytorze</translation>
     </message>
     <message>
         <source>In den Papierkorb legen</source>
-        <translation>Przenieś do kosza</translation>
+        <translation>Przenieś do Kosza</translation>
     </message>
     <message>
         <source>Als Standard-App festlegen …</source>
@@ -3246,7 +3246,7 @@
     </message>
     <message>
         <source>Wiederholen</source>
-        <translation>Powtórz</translation>
+        <translation>Przywróć</translation>
     </message>
     <message>
         <source>„%1“ widerrufen</source>
@@ -3254,7 +3254,7 @@
     </message>
     <message>
         <source>„%1“ wiederholen</source>
-        <translation>Powtórz: %1</translation>
+        <translation>Przywróć: %1</translation>
     </message>
     <message>
         <source>Kopieren</source>
@@ -3274,7 +3274,7 @@
     </message>
     <message>
         <source>Einpassen (auch vergrößern)</source>
-        <translation>Dopasuj z powiększaniem</translation>
+        <translation>Dopasuj (z powiększaniem)</translation>
     </message>
     <message>
         <source>100 % (1:1 Pixel)</source>
@@ -3318,7 +3318,7 @@
     </message>
     <message>
         <source>Statusleiste</source>
-        <translation>Pasek statusu</translation>
+        <translation>Pasek stanu</translation>
     </message>
     <message>
         <source>Infopanel</source>
@@ -3326,7 +3326,7 @@
     </message>
     <message>
         <source>Filmstreifen</source>
-        <translation>Pasek miniatur</translation>
+        <translation>Taśma filmowa</translation>
     </message>
     <message>
         <source>Hintergrund</source>
@@ -3418,11 +3418,11 @@
     </message>
     <message>
         <source>Horizontal spiegeln</source>
-        <translation>Odbij w poziomie</translation>
+        <translation>Odwróć poziomo</translation>
     </message>
     <message>
         <source>Vertikal spiegeln</source>
-        <translation>Odbij w pionie</translation>
+        <translation>Odwróć pionowo</translation>
     </message>
     <message>
         <source>RAW anzeigen</source>
@@ -3438,11 +3438,11 @@
     </message>
     <message>
         <source>Zoomen</source>
-        <translation>Zmień rozmiar</translation>
+        <translation>Zoom</translation>
     </message>
     <message>
         <source>Alle nach vorne bringen</source>
-        <translation>Wszystko na wierzch</translation>
+        <translation>Umieść wszystko na wierzchu</translation>
     </message>
     <message>
         <source>Hilfe</source>
@@ -3467,7 +3467,7 @@
     </message>
     <message>
         <source>Zuschneiden …</source>
-        <translation>Przytnij…</translation>
+        <translation>Kadruj…</translation>
     </message>
     <message>
         <source>Einblendungen</source>
@@ -3475,7 +3475,7 @@
     </message>
     <message>
         <source>Über-/Unterbelichtungswarnung</source>
-        <translation>Prześwietlenie/niedoświetlenie</translation>
+        <translation>Ostrzeżenie o prześwietleniu i niedoświetleniu</translation>
     </message>
     <message>
         <source>Focus Peaking</source>
@@ -3483,7 +3483,7 @@
     </message>
     <message>
         <source>Fokuspunkte</source>
-        <translation>Punkty AF</translation>
+        <translation>Punkty ostrości</translation>
     </message>
     <message>
         <source>Vergleich überlagern</source>
@@ -3503,7 +3503,7 @@
     </message>
     <message>
         <source>Wischen (geteilte Ansicht)</source>
-        <translation>Kurtyna (widok dzielony)</translation>
+        <translation>Kurtyna (widok podzielony)</translation>
     </message>
     <message>
         <source>Diashow</source>
@@ -3551,7 +3551,7 @@
     </message>
     <message>
         <source>Nur markierte</source>
-        <translation>Tylko zachowane</translation>
+        <translation>Tylko wybrane</translation>
     </message>
     <message>
         <source>Nur unbewertete</source>
@@ -3579,7 +3579,7 @@
     </message>
     <message>
         <source>Nach Bewertung automatisch weiter</source>
-        <translation>Dalej po ocenie</translation>
+        <translation>Automatycznie dalej po ocenie</translation>
     </message>
     <message>
         <source>Filter</source>
@@ -3587,19 +3587,19 @@
     </message>
     <message>
         <source>Alle abgelehnten in den Papierkorb legen …</source>
-        <translation>Wszystkie odrzucone do kosza…</translation>
+        <translation>Przenieś wszystkie odrzucone do Kosza…</translation>
     </message>
     <message>
         <source>Alle abgelehnten nach „_Rejected“ verschieben …</source>
-        <translation>Wszystkie odrzucone do „_Rejected”…</translation>
+        <translation>Przenieś wszystkie odrzucone do „_Rejected”…</translation>
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
-        <translation>Szybkie odkładanie: przenieś (M, potem 1–9)</translation>
+        <translation>Szybkie przenoszenie: przenieś (M, potem 1–9)</translation>
     </message>
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
-        <translation>Szybkie odkładanie: kopiuj (C, potem 1–9)</translation>
+        <translation>Szybkie przenoszenie: kopiuj (C, potem 1–9)</translation>
     </message>
     <message>
         <source>Verschieben nach</source>
@@ -3611,7 +3611,7 @@
     </message>
     <message>
         <source>Ziele der Schnellablage festlegen …</source>
-        <translation>Ustaw cele odkładania…</translation>
+        <translation>Ustaw cele szybkiego przenoszenia…</translation>
     </message>
     <message>
         <source>Raster</source>
@@ -3631,7 +3631,7 @@
     </message>
     <message>
         <source>Ordnerkarte</source>
-        <translation>Mapa</translation>
+        <translation>Mapa folderu</translation>
     </message>
     <message>
         <source>Nächster Ordner</source>
@@ -3659,7 +3659,7 @@
     </message>
     <message>
         <source>Minimaler Fenstermodus</source>
-        <translation>Minimalne okno</translation>
+        <translation>Tryb minimalnego okna</translation>
     </message>
     <message>
         <source>Fenster koppeln …</source>
@@ -3691,7 +3691,7 @@
     </message>
     <message>
         <source>Belichtung beim Bildwechsel beibehalten</source>
-        <translation>Zachowaj ekspozycję przy zmianie obrazu</translation>
+        <translation>Pozostaw ekspozycję przy zmianie obrazu</translation>
     </message>
     <message>
         <source>Belichtungsregler einblenden</source>
@@ -3699,11 +3699,11 @@
     </message>
     <message>
         <source>Quick Look</source>
-        <translation>Szybki podgląd</translation>
+        <translation>Quick Look</translation>
     </message>
     <message>
         <source>Als Schreibtischhintergrund festlegen …</source>
-        <translation>Ustaw jako tło biurka…</translation>
+        <translation>Ustaw jako obraz biurka…</translation>
     </message>
     <message>
         <source>Eigene Aktionen</source>
@@ -3719,7 +3719,7 @@
     </message>
     <message>
         <source>Keine – in den Einstellungen anlegen</source>
-        <translation>Brak – utwórz w ustawieniach</translation>
+        <translation>Brak – utwórz je w ustawieniach</translation>
     </message>
     <message>
         <source>Protokoll …</source>
@@ -3749,7 +3749,7 @@
     </message>
     <message>
         <source>Karten sind unter Windows nicht verfügbar.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mapy nie są dostępne w systemie Windows.</translation>
     </message>
 </context>
 <context>
@@ -3764,7 +3764,7 @@
     </message>
     <message>
         <source>Öffnen mit</source>
-        <translation>Otwórz za pomocą</translation>
+        <translation>Otwórz w</translation>
     </message>
     <message>
         <source>Teilen</source>
@@ -3804,15 +3804,15 @@
     </message>
     <message>
         <source>Alle Fenster zusammenführen</source>
-        <translation>Scal wszystkie okna</translation>
+        <translation>Złącz wszystkie okna</translation>
     </message>
     <message>
         <source>Tableiste ein-/ausblenden</source>
-        <translation>Pokaż/ukryj pasek kart</translation>
+        <translation>Pokaż/ukryj pasek z kartami</translation>
     </message>
     <message>
         <source>Tabs in den Einstellungen erlauben (Fenster)</source>
-        <translation>Zezwól na karty w ustawieniach (Okno)</translation>
+        <translation>Zezwól na karty w ustawieniach (Okna)</translation>
     </message>
 </context>
 <context>
@@ -3828,7 +3828,7 @@
     <message>
         <source>Aufnahme</source>
         <extracomment>group: exposure/shooting data</extracomment>
-        <translation>Ekspozycja</translation>
+        <translation>Ujęcie</translation>
     </message>
     <message>
         <source>GPS</source>
@@ -3925,12 +3925,12 @@
     <message>
         <source>Breitengrad</source>
         <extracomment>GPS latitude</extracomment>
-        <translation>Szerokość geogr.</translation>
+        <translation>Szerokość geograficzna</translation>
     </message>
     <message>
         <source>Längengrad</source>
         <extracomment>GPS longitude</extracomment>
-        <translation>Długość geogr.</translation>
+        <translation>Długość geograficzna</translation>
     </message>
     <message>
         <source>Höhe</source>
@@ -4041,7 +4041,7 @@
     </message>
     <message>
         <source>Gib eine Bildnummer zwischen 1 und %1 ein.</source>
-        <translation>Wpisz numer obrazu od 1 do %1</translation>
+        <translation>Wpisz numer obrazu od 1 do %1.</translation>
     </message>
     <message>
         <source>Zufällige Reihenfolge an</source>
@@ -4072,11 +4072,11 @@
     </message>
     <message>
         <source>Apps (*.desktop);;Alle Dateien (*)</source>
-        <translation>Programy (*.desktop);;Wszystkie pliki (*)</translation>
+        <translation>Aplikacje (*.desktop);;Wszystkie pliki (*)</translation>
     </message>
     <message>
         <source>„%1“ ist keine App.</source>
-        <translation>„%1” nie jest programem.</translation>
+        <translation>„%1” nie jest aplikacją.</translation>
     </message>
     <message>
         <source>Kein Bild geöffnet</source>
@@ -4084,7 +4084,7 @@
     </message>
     <message>
         <source>Andere …</source>
-        <translation>Inna…</translation>
+        <translation>Inne…</translation>
     </message>
     <message>
         <source>App wählen</source>
@@ -4155,22 +4155,22 @@
     </message>
     <message>
         <source>In den Papierkorb legen</source>
-        <translation>Przenieś do kosza</translation>
+        <translation>Przenieś do Kosza</translation>
     </message>
     <message numerus="yes">
         <source>%n Bild(er) in den Papierkorb gelegt</source>
         <translation>
-            <numerusform>%n obraz przeniesiono do kosza</numerusform>
-            <numerusform>%n obrazy przeniesiono do kosza</numerusform>
-            <numerusform>%n obrazów przeniesiono do kosza</numerusform>
+            <numerusform>Przeniesiono do Kosza %n obraz</numerusform>
+            <numerusform>Przeniesiono do Kosza %n obrazy</numerusform>
+            <numerusform>Przeniesiono do Kosza %n obrazów</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n Bild(er) in den Papierkorb legen?</source>
         <translation>
-            <numerusform>Przenieść %n obraz do kosza?</numerusform>
-            <numerusform>Przenieść %n obrazy do kosza?</numerusform>
-            <numerusform>Przenieść %n obrazów do kosza?</numerusform>
+            <numerusform>Przenieść %n obraz do Kosza?</numerusform>
+            <numerusform>Przenieść %n obrazy do Kosza?</numerusform>
+            <numerusform>Przenieść %n obrazów do Kosza?</numerusform>
         </translation>
     </message>
     <message>
@@ -4225,7 +4225,7 @@
     </message>
     <message>
         <source>Fenster</source>
-        <translation>Okno</translation>
+        <translation>Okna</translation>
     </message>
     <message>
         <source>Anzeige</source>
@@ -4261,7 +4261,7 @@
     </message>
     <message>
         <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbildmodus“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
-        <translation>Działa od razu. Menu i okna systemu macOS („Włącz tryb pełnoekranowy”, „Usługi”, „Otwórz”, prośby o pozwolenie) zmienią się po ponownym uruchomieniu.</translation>
+        <translation>Działa od razu. Menu i okna systemu macOS („Tryb pełnoekranowy”, „Usługi”, „Otwórz”, prośby o pozwolenie) zmienią język po ponownym uruchomieniu.</translation>
     </message>
     <message>
         <source>Öffnen aus dem Finder:</source>
@@ -4281,7 +4281,7 @@
     </message>
     <message>
         <source>Gilt für Doppelklick im Finder, „Öffnen mit“ und Drag &amp; Drop auf das Dock-Symbol.</source>
-        <translation>Dotyczy dwukrotnego kliknięcia w Finderze, polecenia „Otwórz za pomocą” oraz przeciągania na ikonę w Docku.</translation>
+        <translation>Dotyczy dwukrotnego kliknięcia w Finderze, polecenia „Otwórz w” oraz przeciągania na ikonę w Docku.</translation>
     </message>
     <message>
         <source>Fenster beim nächsten Start wiederherstellen</source>
@@ -4293,19 +4293,19 @@
     </message>
     <message>
         <source>Vor dem Bewegen in den Papierkorb nachfragen</source>
-        <translation>Pytaj przed usunięciem</translation>
+        <translation>Pytaj przed przeniesieniem do Kosza</translation>
     </message>
     <message>
         <source>Aus: ⌘⌫ legt das Bild sofort in den Papierkorb, ⌘Z holt es zurück.</source>
-        <translation>Wył.: ⌘⌫ od razu przenosi obraz do kosza, ⌘Z go przywraca.</translation>
+        <translation>Wył.: ⌘⌫ od razu przenosi obraz do Kosza, a ⌘Z go przywraca.</translation>
     </message>
     <message>
         <source>Fragen, ob Lumaflip Standard-App werden soll</source>
-        <translation type="unfinished"></translation>
+        <translation>Pytaj, czy ustawić Lumaflip jako domyślną aplikację</translation>
     </message>
     <message>
         <source>Öffnest du ein Bild, dessen Dateityp eine andere App öffnet, erscheint einmal je Dateityp ein Hinweis oben im Fenster.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gdy otworzysz obraz, którego typ pliku otwiera inna aplikacja, u góry okna pojawi się komunikat – raz dla każdego typu pliku.</translation>
     </message>
     <message>
         <source>Editor:</source>
@@ -4313,7 +4313,7 @@
     </message>
     <message>
         <source>Für „Im Editor öffnen“ (Taste E).</source>
-        <translation>Dla polecenia „Otwórz w domyślnym edytorze” (klawisz E).</translation>
+        <translation>Dla polecenia „Otwórz w edytorze” (klawisz E).</translation>
     </message>
     <message>
         <source>Drehung sichern:</source>
@@ -4329,11 +4329,11 @@
     </message>
     <message>
         <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Apps ohne EXIF-Unterstützung das Bild richtig anzeigen. RAW-Dateien werden nie verändert; ⌘Z widerruft das Sichern.</source>
-        <translation>Żadna z opcji nie zmienia pikseli obrazu. „Orientacja EXIF” zmienia tylko znacznik (JPEG, HEIC, TIFF, PNG); „obrót bezstratny” przestawia bloki JPEG, aby również aplikacje bez obsługi EXIF wyświetlały obraz poprawnie. Pliki RAW nigdy nie są zmieniane; ⌘Z cofa zachowanie.</translation>
+        <translation>Żadna z opcji nie zmienia pikseli obrazu. „Ustaw orientację EXIF” zmienia tylko znacznik (JPEG, HEIC, TIFF, PNG); „Obróć JPEG bezstratnie” przestawia bloki JPEG, aby również aplikacje bez obsługi EXIF wyświetlały obraz poprawnie. Pliki RAW nigdy nie są zmieniane; ⌘Z cofa zachowanie.</translation>
     </message>
     <message>
         <source>Änderungsdatum beibehalten</source>
-        <translation>Zachowaj datę modyfikacji</translation>
+        <translation>Nie zmieniaj daty modyfikacji</translation>
     </message>
     <message>
         <source>Fenstergröße an Bild anpassen</source>
@@ -4349,7 +4349,7 @@
     </message>
     <message>
         <source>Beim Bewegen der Maus einblenden</source>
-        <translation>Pokazuj po poruszeniu myszą</translation>
+        <translation>Pokazuj, gdy wskaźnik się porusza</translation>
     </message>
     <message>
         <source>Immer einblenden</source>
@@ -4357,7 +4357,7 @@
     </message>
     <message>
         <source>Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um.</source>
-        <translation>Bez paska tytułu obraz sięga do górnej krawędzi. Okno → „Minimalne okno” przełącza pojedyncze okno.</translation>
+        <translation>Bez paska tytułu obraz sięga do górnej krawędzi. Okno → „Tryb minimalnego okna” przełącza pojedyncze okno.</translation>
     </message>
     <message>
         <source>Ordnername in der Titelleiste</source>
@@ -4373,7 +4373,7 @@
     </message>
     <message>
         <source>Statusleiste</source>
-        <translation>Pasek statusu</translation>
+        <translation>Pasek stanu</translation>
     </message>
     <message>
         <source>Infopanel (⌘I)</source>
@@ -4381,7 +4381,7 @@
     </message>
     <message>
         <source>Filmstreifen (T)</source>
-        <translation>Pasek miniatur (T)</translation>
+        <translation>Taśma filmowa (T)</translation>
     </message>
     <message>
         <source>Tabs:</source>
@@ -4393,11 +4393,11 @@
     </message>
     <message>
         <source>Neue Fenster erscheinen dann als Tab im vordersten Fenster; Fenster → „Alle Fenster zusammenführen“ fasst offene Fenster zusammen.</source>
-        <translation>Nowe okna pojawiają się wtedy jako karta w oknie na wierzchu; Okno → „Scal wszystkie okna” łączy otwarte okna.</translation>
+        <translation>Nowe okna pojawiają się wtedy jako karta w oknie na wierzchu; Okno → „Złącz wszystkie okna” łączy otwarte okna.</translation>
     </message>
     <message>
         <source>Gekoppelte Fenster blättern nach:</source>
-        <translation>Połączone okna przewijają się według:</translation>
+        <translation>Połączone okna przeglądają obrazy według:</translation>
     </message>
     <message>
         <source>Dateiname (ohne Endung)</source>
@@ -4409,7 +4409,7 @@
     </message>
     <message>
         <source>Fenster → „Fenster koppeln …“: gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt.</source>
-        <translation>Okno → „Połącz okna…”: połączone okna przewijają się razem i mają wspólne powiększenie i widoczny obszar.</translation>
+        <translation>Okno → „Połącz okna…”: połączone okna przeglądają obrazy razem i mają wspólne powiększenie oraz widoczny obszar.</translation>
     </message>
     <message>
         <source>Dunkel</source>
@@ -4421,7 +4421,7 @@
     </message>
     <message>
         <source>Wie System</source>
-        <translation>Jak wygląd systemu</translation>
+        <translation>Jak system</translation>
     </message>
     <message>
         <source>Schachbrett (Transparenz)</source>
@@ -4453,7 +4453,7 @@
     </message>
     <message>
         <source>Einpassen (auch vergrößern)</source>
-        <translation>Dopasuj z powiększaniem</translation>
+        <translation>Dopasuj (z powiększaniem)</translation>
     </message>
     <message>
         <source>100 %</source>
@@ -4581,7 +4581,7 @@
     </message>
     <message>
         <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, P/X/U bewerten, Esc beendet.</source>
-        <translation>Podczas pokazu: spacja wstrzymuje, 1–9 ustawia odstęp w sekundach, ←/→ przewija, P/X/U oceniają, Esc kończy.</translation>
+        <translation>Podczas pokazu slajdów: spacja wstrzymuje, 1–9 ustawia odstęp w sekundach, ←/→ zmienia obraz, P/X/U oceniają, Esc kończy.</translation>
     </message>
     <message>
         <source>Profilvorlagen</source>
@@ -4593,11 +4593,11 @@
     </message>
     <message>
         <source>Wie Windows-Bildbetrachter</source>
-        <translation>Nawyki z przeglądarek Windows</translation>
+        <translation>Jak przeglądarki obrazów w Windows</translation>
     </message>
     <message>
         <source>Fotografie / Lightroom</source>
-        <translation>Fotograf / Lightroom</translation>
+        <translation>Fotografia / Lightroom</translation>
     </message>
     <message>
         <source>Maus, Trackpad und Tasten</source>
@@ -4605,7 +4605,7 @@
     </message>
     <message>
         <source>Mausrad-Feineinstellungen</source>
-        <translation>Szczegóły kółka myszy</translation>
+        <translation>Dostrajanie kółka myszy</translation>
     </message>
     <message>
         <source>Richtung umkehren</source>
@@ -4637,7 +4637,7 @@
     </message>
     <message>
         <source>Sprungweite (Bild↑/Bild↓):</source>
-        <translation>Odległość skoku (Page Up/Page Down):</translation>
+        <translation>Długość skoku (Page Up/Page Down):</translation>
     </message>
     <message>
         <source> Bilder</source>
@@ -4649,11 +4649,11 @@
     </message>
     <message>
         <source>Klicke auf ein Feld und drücke die neue Taste. Bis zu drei Tastenkürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
-        <translation>Kliknij pole i naciśnij nowy klawisz. Do trzech skrótów na czynność. Cyfry i P/X/U do oceniania działają tylko w trybie selekcji.</translation>
+        <translation>Kliknij pole i naciśnij nowy klawisz. Do trzech skrótów klawiszowych na akcję. Cyfry i P/X/U do oceniania działają tylko w trybie selekcji.</translation>
     </message>
     <message>
         <source>Aktion</source>
-        <translation>Czynność</translation>
+        <translation>Akcja</translation>
     </message>
     <message>
         <source>Kürzel</source>
@@ -4673,7 +4673,7 @@
     </message>
     <message>
         <source>Alle Tastenkürzel zurücksetzen</source>
-        <translation>Wyzeruj wszystkie skróty klawiszowe</translation>
+        <translation>Resetuj wszystkie skróty klawiszowe</translation>
     </message>
     <message>
         <source>Konflikt mit: %1</source>
@@ -4682,9 +4682,9 @@
     <message numerus="yes">
         <source>%n Aktion(en) mit doppelt belegten Tasten – ändere eine davon.</source>
         <translation>
-            <numerusform>%n czynność ma zdublowane klawisze – zmień jedną z nich.</numerusform>
-            <numerusform>%n czynności mają zdublowane klawisze – zmień jedną z nich.</numerusform>
-            <numerusform>%n czynności ma zdublowane klawisze – zmień jedną z nich.</numerusform>
+            <numerusform>%n akcja ma podwójnie przypisany klawisz – zmień jedno z przypisań.</numerusform>
+            <numerusform>%n akcje mają podwójnie przypisane klawisze – zmień jedno z przypisań.</numerusform>
+            <numerusform>%n akcji ma podwójnie przypisane klawisze – zmień jedno z przypisań.</numerusform>
         </translation>
     </message>
     <message>
@@ -4701,7 +4701,7 @@
     </message>
     <message>
         <source>Zum nächsten Ordner</source>
-        <translation>Do następnego folderu</translation>
+        <translation>Przejdź do następnego folderu</translation>
     </message>
     <message>
         <source>Sortierung wie im Finder</source>
@@ -4713,7 +4713,7 @@
     </message>
     <message>
         <source>Zeigt das vorderste Finder-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen aktuelle Sortierung (auch noch nicht gespeicherte). macOS bittet dafür einmalig um die Erlaubnis, den Finder zu steuern (Automation).</source>
-        <translation>Jeśli okno Findera na wierzchu pokazuje dokładnie otwarty folder, Lumaflip przejmuje jego bieżące sortowanie (także jeszcze niezachowane). macOS jednorazowo prosi o pozwolenie na sterowanie Finderem (Automatyzacja).</translation>
+        <translation>Jeśli okno Findera na wierzchu pokazuje dokładnie otwarty folder, Lumaflip przejmuje jego bieżące sortowanie (także niezachowane zmiany). macOS jednorazowo prosi o pozwolenie na sterowanie Finderem (Automatyzacja).</translation>
     </message>
     <message>
         <source>Manuelle Sortierung:</source>
@@ -4725,7 +4725,7 @@
     </message>
     <message>
         <source>Änderungsdatum</source>
-        <translation>Data modyfikacji</translation>
+        <translation>Data zmian</translation>
     </message>
     <message>
         <source>Erstellungsdatum</source>
@@ -4733,7 +4733,7 @@
     </message>
     <message>
         <source>Hinzugefügt am</source>
-        <translation>Data dodania</translation>
+        <translation>Data dołączenia</translation>
     </message>
     <message>
         <source>Aufnahmedatum</source>
@@ -4805,31 +4805,31 @@
     </message>
     <message>
         <source>Ziel %1 der Schnellablage</source>
-        <translation>Cel %1 szybkiego odkładania</translation>
+        <translation>Cel %1 szybkiego przenoszenia</translation>
     </message>
     <message>
         <source>Speicherort für Bewertungen</source>
-        <translation>Zapisuj oceny</translation>
+        <translation>Miejsce zapisu ocen</translation>
     </message>
     <message>
         <source>XMP-Zusatzdatei neben dem Bild (Bild.xmp)</source>
-        <translation>Plik pomocniczy XMP obok obrazu (Obraz.xmp)</translation>
+        <translation>Plik dodatkowy XMP obok obrazu (Obraz.xmp)</translation>
     </message>
     <message>
         <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Abgelehnt“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
-        <translation>Zgodne z Lightroom, Capture One i darktable: gwiazdki w xmp:Rating, „Odrzuć” jako -1. Istniejąca zawartość pliku zostaje zachowana.</translation>
+        <translation>Zgodne z Lightroom, Capture One i darktable: gwiazdki w xmp:Rating, „Odrzucone” jako -1. Istniejąca zawartość pliku pozostaje bez zmian.</translation>
     </message>
     <message>
         <source>Nur JPEG, HEIC, TIFF, PNG und DNG; die Bildpixel werden nicht neu kodiert. RAW-Dateien werden nie verändert – dafür wird die Zusatzdatei benutzt.</source>
-        <translation>Tylko JPEG, HEIC, TIFF, PNG i DNG; piksele nie są ponownie kodowane. Pliki RAW nigdy nie są zmieniane – dla nich używany jest plik pomocniczy.</translation>
+        <translation>Tylko JPEG, HEIC, TIFF, PNG i DNG; piksele obrazu nie są ponownie kodowane. Pliki RAW nigdy nie są zmieniane – dla nich używany jest plik dodatkowy.</translation>
     </message>
     <message>
         <source>Änderungsdatum beim Schreiben ins Bild beibehalten</source>
-        <translation>Zachowaj datę modyfikacji przy zapisie do obrazu</translation>
+        <translation>Nie zmieniaj daty modyfikacji przy zapisie do obrazu</translation>
     </message>
     <message>
         <source>Im Finder sichtbar und per Spotlight durchsuchbar. Sind mehrere Speicherorte gewählt, werden alle beschrieben; beim Lesen gilt die Reihenfolge Zusatzdatei, Bild, Tags.</source>
-        <translation>Widoczne w Finderze i wyszukiwalne przez Spotlight. Gdy wybrano kilka miejsc, zapisywane są wszystkie; przy odczycie obowiązuje kolejność plik pomocniczy, obraz, tagi.</translation>
+        <translation>Widoczne w Finderze i wyszukiwalne przez Spotlight. Gdy wybrano kilka miejsc, zapisywane są wszystkie; przy odczycie obowiązuje kolejność: plik dodatkowy, obraz, tagi.</translation>
     </message>
     <message>
         <source>Stern-Symbol:</source>
@@ -4837,11 +4837,11 @@
     </message>
     <message>
         <source>Tag für „Markiert“:</source>
-        <translation>Tag dla Zachowaj:</translation>
+        <translation>Tag dla „Wybrane”:</translation>
     </message>
     <message>
         <source>Tag für „Abgelehnt“:</source>
-        <translation>Tag dla Odrzuć:</translation>
+        <translation>Tag dla „Odrzucone”:</translation>
     </message>
     <message>
         <source>Drei Sterne werden zum Tag „★★★“ (Symbol dreimal).</source>
@@ -4861,19 +4861,19 @@
     </message>
     <message>
         <source>Tastenhilfe im Aussortiermodus einblenden</source>
-        <translation>Pokazuj pomoc klawiszy w trybie selekcji</translation>
+        <translation>Pokazuj podpowiedzi klawiszy w trybie selekcji</translation>
     </message>
     <message>
         <source>Aussortiermodus: ⌘K oder K. Ziffern vergeben dort Sterne statt Zoomstufen; „Bewertungstasten immer aktiv“ gibt es unter Maus &amp; Tastatur.</source>
-        <translation>Tryb selekcji: ⌘K lub K. Cyfry nadają tam gwiazdki zamiast poziomów powiększenia; „Klawisze oceny zawsze aktywne” są w sekcji Mysz i klawiatura.</translation>
+        <translation>Tryb selekcji: ⌘K lub K. Cyfry nadają w nim gwiazdki zamiast poziomów powiększenia; opcja „Klawisze oceny: zawsze aktywne” znajduje się w sekcji Mysz i klawiatura.</translation>
     </message>
     <message>
         <source>Schnellablage</source>
-        <translation>Szybkie odkładanie</translation>
+        <translation>Szybkie przenoszenie</translation>
     </message>
     <message>
         <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z widerruft es.</source>
-        <translation>M, a potem 1–9 przenosi obraz do folderu docelowego, C, a potem 1–9 go kopiuje. M M lub C C powtarza ostatni cel. ⌘Z cofa.</translation>
+        <translation>M, a potem 1–9 przenosi obraz do folderu docelowego; C, a potem 1–9 go kopiuje. M M lub C C powtarza ostatni cel. ⌘Z cofa operację.</translation>
     </message>
     <message>
         <source>Im Bild selbst (eingebettetes XMP)</source>
@@ -4965,7 +4965,7 @@
     </message>
     <message>
         <source>Automatisch (25 % des Arbeitsspeichers, max. 2 GB)</source>
-        <translation>Automatycznie (25% pamięci RAM, maks. 2 GB)</translation>
+        <translation>Automatycznie (25% pamięci, maks. 2 GB)</translation>
     </message>
     <message>
         <source>Speicherbudget:</source>
@@ -4977,7 +4977,7 @@
     </message>
     <message>
         <source>Vorherige Bilder behalten:</source>
-        <translation>Zachowuj poprzednie obrazy:</translation>
+        <translation>Przechowuj poprzednie obrazy:</translation>
     </message>
     <message>
         <source>Live Text</source>
@@ -4989,7 +4989,7 @@
     </message>
     <message>
         <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Internetverbindung.</source>
-        <translation>Obraz jest analizowany tylko po włączeniu Tekstu na żywo dla okna – na tym Macu, bez sieci.</translation>
+        <translation>Obraz jest analizowany tylko po włączeniu Tekstu na żywo dla okna – na tym Macu, bez połączenia z internetem.</translation>
     </message>
     <message>
         <source>Eigene Aktionen</source>
@@ -4997,7 +4997,7 @@
     </message>
     <message>
         <source>Ein Shell-Befehl oder ein Kurzbefehl (Kurzbefehle-App) erhält das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
-        <translation>Polecenie powłoki lub skrót (Skróty) otrzymuje bieżący obraz jako argument. Menu: Plik → Własne akcje.</translation>
+        <translation>Polecenie powłoki lub skrót (aplikacja Skróty) otrzymuje bieżący obraz jako argument. Menu: Plik → Własne akcje.</translation>
     </message>
     <message>
         <source>Abbrechen nach:</source>
@@ -5021,7 +5021,7 @@
     </message>
     <message>
         <source>Alle Einstellungen zurücksetzen</source>
-        <translation>Wyzeruj wszystkie ustawienia</translation>
+        <translation>Resetuj wszystkie ustawienia</translation>
     </message>
     <message>
         <source>Lumaflip-Einstellungen (*.json)</source>
@@ -5037,7 +5037,7 @@
     </message>
     <message>
         <source>Alle Einstellungen zurücksetzen?</source>
-        <translation>Wyzerować wszystkie ustawienia?</translation>
+        <translation>Zresetować wszystkie ustawienia?</translation>
     </message>
     <message>
         <source>Alle Einstellungen einschließlich der Tastenkürzel werden auf die Standardwerte zurückgesetzt.</source>
@@ -5129,7 +5129,7 @@
     </message>
     <message>
         <source>Die Bittiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
-        <translation>Głębia kolorów lub tryb kolorów pliku PSB nie jest obsługiwany.</translation>
+        <translation>Głębia bitowa lub tryb kolorów pliku PSB nie są obsługiwane.</translation>
     </message>
     <message>
         <source>Die Komprimierung der PSB-Datei wird nicht unterstützt.</source>
@@ -5217,7 +5217,7 @@
     </message>
     <message>
         <source>Ziel %1 ist nicht festgelegt (Einstellungen → Bewertung → Schnellablage).</source>
-        <translation>Cel %1 nie jest ustawiony (Ustawienia → Ocena → Szybkie odkładanie).</translation>
+        <translation>Cel %1 nie jest ustawiony (Ustawienia → Ocena → Szybkie przenoszenie).</translation>
     </message>
     <message>
         <source>Verschieben</source>
@@ -5265,7 +5265,7 @@
     </message>
     <message>
         <source>„Ersetzen“ legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z widerruft alles.</source>
-        <translation>Zastąp przenosi istniejący plik do kosza, „Zachowaj oba” nadaje nowemu nazwę taką jak „%1”. ⌘Z cofa wszystko.</translation>
+        <translation>„Zastąp” przenosi istniejący plik do Kosza, a „Pozostaw obie” nadaje nowemu nazwę taką jak „%1”. ⌘Z cofa wszystko.</translation>
     </message>
     <message>
         <source>Ersetzen</source>
@@ -5273,7 +5273,7 @@
     </message>
     <message>
         <source>Beide behalten</source>
-        <translation>Zachowaj oba</translation>
+        <translation>Pozostaw obie</translation>
     </message>
     <message>
         <source>Überspringen</source>
@@ -5292,7 +5292,7 @@
     </message>
     <message>
         <source>nur markierte</source>
-        <translation>tylko zachowane</translation>
+        <translation>tylko wybrane</translation>
     </message>
     <message>
         <source>≥ %1 ★</source>
@@ -5308,11 +5308,11 @@
     </message>
     <message>
         <source>Markiert</source>
-        <translation>Zachowany</translation>
+        <translation>Wybrane</translation>
     </message>
     <message>
         <source>Abgelehnt</source>
-        <translation>Odrzucony</translation>
+        <translation>Odrzucone</translation>
     </message>
 </context>
 <context>
@@ -5367,7 +5367,7 @@
     </message>
     <message>
         <source>„%1“ wurde inzwischen verändert – Bewertung nicht gesichert.</source>
-        <translation>„%1” zmieniono w międzyczasie – ocena nie została zapisana.</translation>
+        <translation>„%1” zmieniono w międzyczasie – nie zachowano oceny.</translation>
     </message>
     <message>
         <source>Die Datei konnte nicht ersetzt werden.</source>
@@ -5383,7 +5383,7 @@
     </message>
     <message>
         <source>„%1“: %2 Die Bewertung steht deshalb in der XMP-Zusatzdatei.</source>
-        <translation>„%1”: %2 Dlatego ocena jest zapisana w pliku pomocniczym XMP.</translation>
+        <translation>„%1”: %2 Dlatego ocena jest zapisana w pliku dodatkowym XMP.</translation>
     </message>
     <message>
         <source>Bewertung</source>
@@ -5429,7 +5429,7 @@
     <name>lf::RenameController</name>
     <message>
         <source>Bitte gib einen Namen ein.</source>
-        <translation>Wprowadź nazwę.</translation>
+        <translation>Wpisz nazwę.</translation>
     </message>
     <message>
         <source>Der Name darf keinen Schrägstrich (/) und keinen Doppelpunkt (:) enthalten.</source>
@@ -5457,19 +5457,19 @@
     </message>
     <message>
         <source>Möchtest du die Endung „.%1“ wirklich entfernen?</source>
-        <translation>Czy usunąć rozszerzenie „.%1”?</translation>
+        <translation>Czy na pewno chcesz usunąć rozszerzenie „.%1”?</translation>
     </message>
     <message>
         <source>Möchtest du die Endung „.%1“ wirklich hinzufügen?</source>
-        <translation>Czy dodać rozszerzenie „.%1”?</translation>
+        <translation>Czy na pewno chcesz dodać rozszerzenie „.%1”?</translation>
     </message>
     <message>
         <source>Möchtest du die Endung wirklich von „.%1“ in „.%2“ ändern?</source>
-        <translation>Czy zmienić rozszerzenie „.%1” na „.%2”?</translation>
+        <translation>Czy na pewno chcesz zmienić rozszerzenie z „.%1” na „.%2”?</translation>
     </message>
     <message>
         <source>Endung ändern?</source>
-        <translation>Zmienić rozszerzenie pliku?</translation>
+        <translation>Zmienić rozszerzenie?</translation>
     </message>
     <message>
         <source>Die Datei wird dadurch nicht umgewandelt. Andere Apps erkennen sie danach eventuell nicht mehr.</source>
@@ -5477,11 +5477,11 @@
     </message>
     <message>
         <source>Nicht hinzufügen</source>
-        <translation>Bez rozszerzenia</translation>
+        <translation>Nie dodawaj</translation>
     </message>
     <message>
         <source>„.%1“ beibehalten</source>
-        <translation>Zachowaj „.%1”</translation>
+        <translation>Pozostaw „.%1”</translation>
     </message>
     <message>
         <source>Endung entfernen</source>
@@ -5611,7 +5611,7 @@
     </message>
     <message>
         <source>Batch-Dateien werden aus Sicherheitsgründen nicht gestartet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ze względów bezpieczeństwa pliki wsadowe nie są uruchamiane.</translation>
     </message>
     <message>
         <source>„%1“ würde den Dateinamen als Befehl lesen und wird aus Sicherheitsgründen nicht gestartet.</source>
@@ -5619,11 +5619,11 @@
     </message>
     <message>
         <source>Die App wurde nicht gefunden.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie znaleziono aplikacji.</translation>
     </message>
     <message>
         <source>Windows erlaubt Apps nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
-        <translation type="unfinished"></translation>
+        <translation>System Windows nie pozwala aplikacjom ustawiać się jako aplikacja domyślna. Otwarto ustawienia „Aplikacje domyślne”: wybierz tam Lumaflip dla odpowiednich typów plików.</translation>
     </message>
 </context>
 <context>
@@ -5696,7 +5696,7 @@
     </message>
     <message>
         <source>„%1“ existiert nicht mehr.</source>
-        <translation type="unfinished">„%1” już nie istnieje.</translation>
+        <translation>„%1” już nie istnieje.</translation>
     </message>
     <message>
         <source>Dieses Dateisystem unterstützt keine Tags.</source>
@@ -5711,7 +5711,7 @@
     <name>lf::TrashService</name>
     <message>
         <source>„%1“ konnte nicht in den Papierkorb gelegt werden.</source>
-        <translation>Nie można przenieść „%1” do kosza.</translation>
+        <translation>Nie można przenieść „%1” do Kosza.</translation>
     </message>
     <message>
         <source>„%1“ existiert bereits und wird nicht überschrieben.</source>
@@ -5723,11 +5723,11 @@
     </message>
     <message>
         <source>„%1“ konnte nicht in den Papierkorb gelegt werden: %2</source>
-        <translation>Nie można przenieść „%1” do kosza: %2</translation>
+        <translation>Nie można przenieść „%1” do Kosza: %2</translation>
     </message>
     <message>
         <source>„%1“ ist nicht mehr im Papierkorb.</source>
-        <translation>Elementu „%1” nie ma już w koszu.</translation>
+        <translation>Elementu „%1” nie ma już w Koszu.</translation>
     </message>
     <message>
         <source>„%1“ konnte nicht wiederhergestellt werden: %2</source>
@@ -5735,7 +5735,7 @@
     </message>
     <message>
         <source>„%1“ passte nicht in den Papierkorb und wurde endgültig gelöscht.</source>
-        <translation>„%1” nie zmieścił się w koszu i został trwale usunięty.</translation>
+        <translation>„%1” nie zmieścił się w Koszu i został trwale usunięty.</translation>
     </message>
 </context>
 <context>
@@ -5746,7 +5746,7 @@
     </message>
     <message>
         <source>Nicht genug Speicherplatz für die Sicherungskopie (Widerrufen) – nichts gesichert.</source>
-        <translation>Za mało miejsca na kopię zapasową (cofanie) – niczego nie zachowano.</translation>
+        <translation>Za mało miejsca na dysku na kopię zapasową (cofanie) – niczego nie zachowano.</translation>
     </message>
 </context>
 <context>
@@ -5845,7 +5845,7 @@
     </message>
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
-        <translation>Nie masz uprawnień do odczytu folderu „%1”, dlatego Lumaflip pokazuje tylko otwarty plik. Uprawnienia można zmienić w Finderze: Plik → Pokaż informacje → „Udostępnianie i uprawnienia”.</translation>
+        <translation>Nie masz uprawnień do odczytu folderu „%1”, dlatego Lumaflip pokazuje tylko otwarty plik. Uprawnienia można zmienić w Finderze: Plik → Informacje → „Udostępnianie i uprawnienia”.</translation>
     </message>
     <message>
         <source>Kein weiterer Ordner und kein weiteres Archiv</source>
@@ -5873,11 +5873,11 @@
     </message>
     <message>
         <source>In den Papierkorb legen</source>
-        <translation>Przenieś do kosza</translation>
+        <translation>Przenieś do Kosza</translation>
     </message>
     <message>
         <source>„%1“ in den Papierkorb legen?</source>
-        <translation>Przenieść „%1” do kosza?</translation>
+        <translation>Przenieść „%1” do Kosza?</translation>
     </message>
     <message>
         <source>Mit ⌘Z lässt sich das widerrufen.</source>
@@ -5890,9 +5890,9 @@
     <message numerus="yes">
         <source>%n Datei(en) in den Papierkorb gelegt</source>
         <translation>
-            <numerusform>%n plik przeniesiony do kosza</numerusform>
-            <numerusform>%n pliki przeniesione do kosza</numerusform>
-            <numerusform>%n plików przeniesionych do kosza</numerusform>
+            <numerusform>Przeniesiono do Kosza %n plik</numerusform>
+            <numerusform>Przeniesiono do Kosza %n pliki</numerusform>
+            <numerusform>Przeniesiono do Kosza %n plików</numerusform>
         </translation>
     </message>
     <message>
@@ -5981,7 +5981,7 @@
     </message>
     <message>
         <source>Verlustfreies Drehen ist nur mit beschnittenem Rand möglich.</source>
-        <translation>Bezstratny obrót jest możliwy tylko z przyciętą krawędzią.</translation>
+        <translation>Bezstratny obrót jest możliwy tylko z obcięciem krawędzi.</translation>
     </message>
     <message>
         <source>Die Drehung kann nur durch Neukodieren gesichert werden.</source>
@@ -5989,7 +5989,7 @@
     </message>
     <message>
         <source>Rand abschneiden</source>
-        <translation>Przytnij krawędź</translation>
+        <translation>Obetnij krawędź</translation>
     </message>
     <message>
         <source>Neu kodieren</source>
@@ -6021,7 +6021,7 @@
     </message>
     <message>
         <source>Bilder in Archiven und PDF-Seiten können nicht als Schreibtischhintergrund festgelegt werden.</source>
-        <translation>Obrazy w archiwach i strony PDF nie mogą być tłem biurka.</translation>
+        <translation>Obrazów w archiwach i stron PDF nie można ustawić jako obrazu biurka.</translation>
     </message>
     <message>
         <source>Es wurde kein Bildschirm gefunden.</source>
@@ -6053,11 +6053,11 @@
     <name>lf::WindowEditing</name>
     <message>
         <source>Über-/Unterbelichtungswarnung an (rot: Lichter, blau: Schatten)</source>
-        <translation>Ostrzeżenie o prześwietleniu włączone (czerwony: światła, niebieski: cienie)</translation>
+        <translation>Ostrzeżenie o prześwietleniu i niedoświetleniu włączone (czerwony: światła, niebieski: cienie)</translation>
     </message>
     <message>
         <source>Über-/Unterbelichtungswarnung aus</source>
-        <translation>Ostrzeżenie o prześwietleniu wyłączone</translation>
+        <translation>Ostrzeżenie o prześwietleniu i niedoświetleniu wyłączone</translation>
     </message>
     <message>
         <source>Focus Peaking an</source>
@@ -6069,49 +6069,49 @@
     </message>
     <message>
         <source>Fokuspunkte an</source>
-        <translation>Punkty AF włączone</translation>
+        <translation>Punkty ostrości włączone</translation>
     </message>
     <message>
         <source>Fokuspunkte aus</source>
-        <translation>Punkty AF wyłączone</translation>
+        <translation>Punkty ostrości wyłączone</translation>
     </message>
     <message>
         <source>Fokuspunkte: %1</source>
         <extracomment>%1 = where the AF points come from (&quot;Canon&quot;, &quot;Sony&quot;, &quot;EXIF&quot; …)</extracomment>
-        <translation>Punkty AF: %1</translation>
+        <translation>Punkty ostrości: %1</translation>
     </message>
     <message>
         <source>Keine Fokuspunkte in den Metadaten</source>
-        <translation>Brak punktów AF w metadanych</translation>
+        <translation>Brak punktów ostrości w metadanych</translation>
     </message>
     <message>
         <source>Zuschneiden ist nur in der Einzelbildansicht möglich.</source>
-        <translation>Przycinanie działa w widoku pojedynczego obrazu.</translation>
+        <translation>Kadrowanie jest możliwe tylko w widoku pojedynczego obrazu.</translation>
     </message>
     <message>
         <source>Kein Bild zum Zuschneiden.</source>
-        <translation>Brak obrazu do przycięcia.</translation>
+        <translation>Brak obrazu do kadrowania.</translation>
     </message>
     <message>
         <source>Zuschneiden: Rahmen ziehen – Enter sichert, Esc bricht ab</source>
-        <translation>Przycinanie: przeciągnij ramkę – Enter zachowuje, Esc anuluje</translation>
+        <translation>Kadrowanie: przeciągnij ramkę – Enter zachowuje, Esc anuluje</translation>
     </message>
     <message>
         <source>Der vorherige Zuschnitt wird noch gesichert.</source>
-        <translation>Poprzednie przycięcie jest jeszcze zapisywane.</translation>
+        <translation>Poprzedni kadr jest jeszcze zachowywany.</translation>
     </message>
     <message>
         <source>Kein Bildbereich ausgewählt.</source>
-        <translation>Nie zaznaczono obszaru.</translation>
+        <translation>Nie wybrano obszaru obrazu.</translation>
     </message>
     <message>
         <source>%1-zugeschnitten.%2</source>
         <extracomment>default file name of a cropped copy: &quot;&lt;name&gt;-zugeschnitten.&lt;suffix&gt;&quot;</extracomment>
-        <translation>%1-przyciety.%2</translation>
+        <translation>%1-kadr.%2</translation>
     </message>
     <message>
         <source>Zugeschnittenes Bild sichern unter</source>
-        <translation>Zachowaj przycięty obraz jako</translation>
+        <translation>Zachowaj wykadrowany obraz jako</translation>
     </message>
     <message>
         <source>Wie das Original (*.%1)</source>
@@ -6119,15 +6119,15 @@
     </message>
     <message>
         <source>Zuschneiden</source>
-        <translation>Przytnij</translation>
+        <translation>Kadruj</translation>
     </message>
     <message>
         <source>„%1“ existiert bereits. Möchtest du die Datei ersetzen?</source>
-        <translation>„%1” już istnieje. Zastąpić?</translation>
+        <translation>„%1” już istnieje. Czy chcesz go zastąpić?</translation>
     </message>
     <message>
         <source>Das zugeschnittene Bild bekommt die Endung des Originals (.%1).</source>
-        <translation>Przycięty obraz otrzyma rozszerzenie oryginału (.%1).</translation>
+        <translation>Wykadrowany obraz otrzyma rozszerzenie oryginału (.%1).</translation>
     </message>
     <message>
         <source>Ersetzen</source>
@@ -6135,19 +6135,19 @@
     </message>
     <message>
         <source>Der Zuschnitt konnte nicht gesichert werden.</source>
-        <translation>Nie można zapisać przycięcia.</translation>
+        <translation>Nie udało się zachować kadru.</translation>
     </message>
     <message>
         <source>Zugeschnitten exportiert als „%1“</source>
-        <translation>Przycięty obraz wyeksportowano jako „%1”</translation>
+        <translation>Wyeksportowano kadr jako „%1”</translation>
     </message>
     <message>
         <source>Zugeschnitten exportieren …</source>
-        <translation>Eksportuj przycięte…</translation>
+        <translation>Eksportuj kadr…</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nur durch Neukodieren gesichert werden.</source>
-        <translation>Przycięcie można zapisać tylko przez ponowne zakodowanie.</translation>
+        <translation>Kadr można zachować tylko przez ponowne zakodowanie.</translation>
     </message>
     <message>
         <source>Neu kodieren</source>
@@ -6159,7 +6159,7 @@
     </message>
     <message>
         <source>Zugeschnitten gesichert als „%1“</source>
-        <translation>Przycięcie zachowano jako „%1”</translation>
+        <translation>Zachowano kadr jako „%1”</translation>
     </message>
     <message>
         <source>Kein Bild zum Exportieren.</source>
@@ -6206,7 +6206,7 @@
     <name>lf::WindowExtras</name>
     <message>
         <source>Ordnerkarte</source>
-        <translation>Mapa</translation>
+        <translation>Mapa folderu</translation>
     </message>
     <message>
         <source>Name: „%1“</source>
@@ -6222,7 +6222,7 @@
     </message>
     <message>
         <source>Blättern, Zoom und Ausschnitt laufen mit den anderen gekoppelten Fenstern</source>
-        <translation>Przewijanie, powiększenie i widoczny obszar podążają za innymi połączonymi oknami</translation>
+        <translation>Przeglądanie, powiększenie i widoczny obszar są zsynchronizowane z innymi połączonymi oknami</translation>
     </message>
     <message>
         <source>Kein Dateiname passt zu „%1“ – Esc hebt den Filter auf</source>
@@ -6238,11 +6238,11 @@
     </message>
     <message>
         <source>Minimaler Fenstermodus – die Titelleiste erscheint, wenn sich die Maus bewegt</source>
-        <translation>Minimalne okno – pasek tytułu pojawia się po poruszeniu myszą</translation>
+        <translation>Tryb minimalnego okna – pasek tytułu pojawia się, gdy wskaźnik się porusza</translation>
     </message>
     <message>
         <source>Minimaler Fenstermodus aus</source>
-        <translation>Minimalne okno wyłączone</translation>
+        <translation>Tryb minimalnego okna wyłączony</translation>
     </message>
 </context>
 <context>
@@ -6285,15 +6285,15 @@
     </message>
     <message>
         <source>Quick Look ist nicht verfügbar.</source>
-        <translation>Szybki podgląd jest niedostępny.</translation>
+        <translation>Quick Look jest niedostępny.</translation>
     </message>
     <message>
         <source>Als Schreibtischhintergrund festlegen</source>
-        <translation>Ustaw jako tło biurka</translation>
+        <translation>Ustaw jako obraz biurka</translation>
     </message>
     <message>
         <source>„%1“ als Schreibtischhintergrund festlegen?</source>
-        <translation>Ustawić „%1” jako tło biurka?</translation>
+        <translation>Ustawić „%1” jako obraz biurka?</translation>
     </message>
     <message>
         <source>Auf allen Bildschirmen</source>
@@ -6309,11 +6309,11 @@
     </message>
     <message>
         <source>Als Schreibtischhintergrund festgelegt</source>
-        <translation>Ustawiono jako tło biurka</translation>
+        <translation>Ustawiono jako obraz biurka</translation>
     </message>
     <message>
         <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
-        <translation>Nie można zmienić tła biurka: %1</translation>
+        <translation>Nie można zmienić obrazu biurka: %1</translation>
     </message>
 </context>
 <context>
@@ -6324,7 +6324,7 @@
     </message>
     <message>
         <source>Filmstreifen</source>
-        <translation>Pasek miniatur</translation>
+        <translation>Taśma filmowa</translation>
     </message>
 </context>
 <context>
@@ -6343,7 +6343,7 @@
     </message>
     <message>
         <source>Die Bittiefe der XCF-Datei wird nicht unterstützt.</source>
-        <translation>Głębia kolorów pliku XCF nie jest obsługiwana.</translation>
+        <translation>Głębia bitowa pliku XCF nie jest obsługiwana.</translation>
     </message>
     <message>
         <source>Nicht genug Arbeitsspeicher für das Bild.</source>

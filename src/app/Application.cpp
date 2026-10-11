@@ -1243,6 +1243,21 @@ void Application::retranslate() {
     // once with its texts is built again: the menu bar (with the Dock menu), the
     // preferences and the shortcut overview.
     d->retranslatePending = false;
+    // The viewer windows get the change here, synchronously and exactly once. Qt only posts
+    // a LanguageChange to each top-level QWindow; that event belongs to the platform window
+    // and is deleted with it when Qt destroys and re-creates the native window before the
+    // event is delivered (QWidget::destroy(), e.g. a QRhiWidget joining a raster window, a
+    // window flag change). The whole window then kept its old texts: the quick filter's
+    // placeholder or the error card stayed German after a switch (tst_i18n, flaky on CI).
+    // This slot runs once all catalogues of the switch are installed (installTranslations()
+    // is synchronous); Qt's posted event, if still pending, is dropped so nothing runs twice.
+    for (ViewerWindow* w : windows()) {
+        if (QWindow* handle = w->windowHandle())
+            QCoreApplication::removePostedEvents(handle, QEvent::LanguageChange);
+        QCoreApplication::removePostedEvents(w, QEvent::LanguageChange);
+        QEvent change(QEvent::LanguageChange);
+        QCoreApplication::sendEvent(w, &change);
+    }
     delete d->menu;
     d->menu = new MainMenu(*this);
 #ifdef Q_OS_WIN
