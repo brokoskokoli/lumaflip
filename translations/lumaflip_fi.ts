@@ -94,8 +94,8 @@
         <translation>Ei löytynyt: %1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>Kuvat (%1);;Kaikki tiedostot (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>Kuvat, arkistot ja PDF-dokumentit (%1);;Kuvat (%2);;Arkistot ja PDF-dokumentit (%3);;Kaikki tiedostot (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -177,6 +177,14 @@
     <message>
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>Arkistossa ei ole kuvia.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>Arkisto on suojattu salasanalla – salattuja arkistoja ei tueta.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>Arkisto on liian suuri, jotta tämän kuvan voisi lukea siitä.</translation>
     </message>
 </context>
 <context>
@@ -438,10 +446,6 @@
         <translation>JPEG-tiedostojen häviötön rajaus ei ole käytettävissä tässä versiossa.</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
-        <translation>Arkistoissa ja PDF-dokumenteissa olevia kuvia ei voi tallentaa rajattuina – käytä toimintoa ”Vie”.</translation>
-    </message>
-    <message>
         <source>Die Datei existiert nicht mehr.</source>
         <translation>Tiedostoa ei ole enää olemassa.</translation>
     </message>
@@ -450,12 +454,16 @@
         <translation>Tiedostomuotoa ei tunnisteta tallennusta varten.</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
-        <translation>RAW-tiedostoja ei koskaan muuteta. Käytä rajattuun kopioon toimintoa ”Vie”.</translation>
+        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>Arkistoissa ja PDF-dokumenteissa olevia kuvia ei muuteta. Valinnan voi viedä uudeksi tiedostoksi.</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
-        <translation>Animoituja tai monisivuisia tiedostoja ei voi tallentaa rajattuina.</translation>
+        <source>RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>RAW-tiedostoja ei koskaan muuteta. Valinnan voi viedä uudeksi tiedostoksi.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
+        <translation>Animoituja tai monisivuisia tiedostoja ei voi tallentaa rajattuina. Ensimmäisen kuvan valinnan voi viedä uudeksi tiedostoksi.</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
@@ -468,6 +476,10 @@
     <message>
         <source>In „%1“ kann nicht geschrieben werden.</source>
         <translation>Kohteeseen ”%1” ei voi kirjoittaa.</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>”%1” on jo olemassa.</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
@@ -498,12 +510,20 @@
         <translation>Uudelleenkoodattuna kuva ei pysyisi täsmälleen samana (värimalli, bittisyvyys, paletti tai läpinäkyvyys muuttuisi).</translation>
     </message>
     <message>
+        <source>Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.</source>
+        <translation>Tätä muotoa ei voi kirjoittaa täällä. Valinnan voi viedä toisessa muodossa.</translation>
+    </message>
+    <message>
         <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
         <translation>Tämä muoto on häviöllinen. Rajauksen voi tallentaa vain koodaamalla kuvan uudelleen – samalla laatu heikkenee hieman.</translation>
     </message>
     <message>
         <source>Zusatzbilder (%1) gehen dabei verloren.</source>
         <translation>Lisäkuvat (%1) menetetään.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.</source>
+        <translation>Metatiedot (EXIF, XMP, IPTC) menetetään uudelleenkoodattaessa.</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
@@ -678,12 +698,20 @@
 <context>
     <name>lf::CustomActionsEditor</name>
     <message>
+        <source>%1 ist schon belegt (%2); im Bildfenster hat die eigene Aktion Vorrang.</source>
+        <translation>%1 on jo käytössä (%2); kuvaikkunassa oma toiminto on etusijalla.</translation>
+    </message>
+    <message>
         <source>Eigene Aktion</source>
         <translation>Oma toiminto</translation>
     </message>
     <message>
         <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
         <translation>Pikakomennot-apin pikakomennon nimi; se saa tiedoston syötteenä.</translation>
+    </message>
+    <message>
+        <source>Programm mit Argumenten, z. B. &quot;C:\Tools\tool.exe&quot; --flag; die Datei wird als eigenes Argument angehängt und nie über cmd.exe gestartet. Batch-Dateien (.bat, .cmd) sind nicht erlaubt.</source>
+        <translation>Ohjelma argumentteineen, esim. &quot;C:\Tools\tool.exe&quot; --flag; tiedosto lisätään omana argumenttinaan eikä sitä koskaan käynnistetä cmd.exen kautta. Komentojonotiedostot (.bat, .cmd) eivät ole sallittuja.</translation>
     </message>
     <message>
         <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
@@ -722,8 +750,8 @@
         <translation>Näppäin</translation>
     </message>
     <message>
-        <source>„%1“: %2 ist schon belegt (%3).</source>
-        <translation>”%1”: %2 on jo käytössä (%3).</translation>
+        <source>„%1“: %2</source>
+        <translation>”%1”: %2</translation>
     </message>
     <message>
         <source>Hinzufügen …</source>
@@ -1130,6 +1158,14 @@
     <message>
         <source>Exportieren</source>
         <translation>Vie</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren</source>
+        <translation>Vie rajattuna</translation>
+    </message>
+    <message>
+        <source>Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>Vie kuvan ”%1” valinta uudeksi tiedostoksi. Alkuperäinen pysyy muuttumattomana.</translation>
     </message>
     <message>
         <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
@@ -1611,12 +1647,24 @@
         <translation>%1: Kohdekansiota ei voi luoda.</translation>
     </message>
     <message>
+        <source>Die vorhandene Datei konnte nicht in den Papierkorb gelegt werden.</source>
+        <translation>Olemassa olevaa tiedostoa ei voitu siirtää roskakoriin.</translation>
+    </message>
+    <message>
+        <source>Die vorhandene Datei liegt im Papierkorb, die neue konnte nicht an ihre Stelle gelegt werden: %1</source>
+        <translation>Olemassa oleva tiedosto on roskakorissa, mutta uutta ei voitu siirtää sen paikalle: %1</translation>
+    </message>
+    <message>
         <source>Das Bild konnte nicht geschrieben werden.</source>
         <translation>Kuvaa ei voitu kirjoittaa.</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden.</source>
         <translation>Kuvaa ei voitu purkaa.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) werden hier nicht übernommen.</source>
+        <translation>Metatietoja (EXIF, XMP, IPTC) ei siirretä tässä.</translation>
     </message>
     <message>
         <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
@@ -1637,6 +1685,10 @@
     <message>
         <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
         <translation>%1 ei voi tallentaa HDR-vahvistuskarttaa – kuva vietiin SDR-muodossa.</translation>
+    </message>
+    <message>
+        <source>Bilder aus Archiven und PDF-Dokumenten werden als 8-Bit-sRGB exportiert – HDR und erweiterter Farbraum gehen verloren.</source>
+        <translation>Arkistojen ja PDF-dokumenttien kuvat viedään 8-bittisinä sRGB-kuvina – HDR ja laaja väriavaruus menetetään.</translation>
     </message>
 </context>
 <context>
@@ -3636,6 +3688,14 @@
 </context>
 <context>
     <name>lf::MenuExtras</name>
+    <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>Yksittäisiä PDF-sivuja ei voi välittää muille apeille.</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>Kuvaa puretaan arkistosta – yritä hetken kuluttua uudelleen.</translation>
+    </message>
     <message>
         <source>Öffnen mit</source>
         <translation>Avaa sovelluksella</translation>
@@ -5675,6 +5735,14 @@
         <translation>Sinulla ei ole lukuoikeutta kansioon ”%1”, joten Lumaflip näyttää vain avatun tiedoston. Käyttöoikeuksia voi muuttaa Finderissa kohdassa Arkisto → Näytä tiedot → ”Jakaminen ja oikeudet”.</translation>
     </message>
     <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>Ei seuraavaa kansiota tai arkistoa</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>Ei edellistä kansiota tai arkistoa</translation>
+    </message>
+    <message>
         <source>Kein weiterer Ordner mit Bildern</source>
         <translation>Ei seuraavaa kansiota, jossa on kuvia</translation>
     </message>
@@ -5914,6 +5982,10 @@
         <translation>Rajaus: vedä kehys – Enter tallentaa, Esc peruu</translation>
     </message>
     <message>
+        <source>Der vorige Zuschnitt wird noch gespeichert.</source>
+        <translation>Edellistä rajausta tallennetaan vielä.</translation>
+    </message>
+    <message>
         <source>Kein Bildbereich ausgewählt.</source>
         <translation>Aluetta ei ole valittu.</translation>
     </message>
@@ -5927,8 +5999,36 @@
         <translation>Tallenna rajattu kuva nimellä</translation>
     </message>
     <message>
+        <source>Wie das Original (*.%1)</source>
+        <translation>Kuten alkuperäinen (*.%1)</translation>
+    </message>
+    <message>
         <source>Zuschneiden</source>
         <translation>Rajaa</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon. Ersetzen?</source>
+        <translation>”%1” on jo olemassa. Korvataanko?</translation>
+    </message>
+    <message>
+        <source>Das zugeschnittene Bild bekommt die Endung des Originals (.%1).</source>
+        <translation>Rajattu kuva saa alkuperäisen tiedostopäätteen (.%1).</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>Korvaa</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>Rajausta ei voitu tallentaa.</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportiert als „%1“</source>
+        <translation>Rajattu kopio viety nimellä ”%1”</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren …</source>
+        <translation>Vie rajattuna…</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>

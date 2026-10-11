@@ -65,6 +65,19 @@ QStringList imageMimeTypes() {
             QStringLiteral("image/x-panasonic-rw2")};
 }
 
+// F-OPEN-10: archives and PDF documents, offered in "Open with" only (never made default).
+QStringList containerMimeTypes() {
+    return {QStringLiteral("application/vnd.comicbook+zip"),
+            QStringLiteral("application/vnd.comicbook-rar"),
+            QStringLiteral("application/zip"),
+            QStringLiteral("application/vnd.rar"),
+            QStringLiteral("application/x-rar"),
+            QStringLiteral("application/x-rar-compressed"),
+            QStringLiteral("application/x-7z-compressed"),
+            QStringLiteral("application/x-cb7"),
+            QStringLiteral("application/pdf")};
+}
+
 #if LF_HAVE_QTDBUS
 bool showItemsOverDbus(const QString& path) {
     QDBusConnection bus = QDBusConnection::sessionBus();
@@ -106,16 +119,17 @@ bool ensureAppImageDesktopEntry(QString* error) {
         .replace(QLatin1Char('$'), QStringLiteral("\\\\$"))
         .replace(QLatin1Char('`'), QStringLiteral("\\\\`"))
         .replace(QLatin1Char('%'), QStringLiteral("%%"));
-    const QString content = QStringLiteral("[Desktop Entry]\n"
-                                           "Type=Application\n"
-                                           "Name=Lumaflip\n"
-                                           "Exec=\"%1\" %F\n"
-                                           "Icon=io.github.brokoskokoli.lumaflip\n"
-                                           "Terminal=false\n"
-                                           "Categories=Graphics;Viewer;\n"
-                                           "MimeType=%2;\n"
-                                           "X-AppImage-Path=%3\n")
-                                .arg(quoted, imageMimeTypes().join(QLatin1Char(';')), appImage);
+    const QString content =
+        QStringLiteral("[Desktop Entry]\n"
+                       "Type=Application\n"
+                       "Name=Lumaflip\n"
+                       "Exec=\"%1\" %F\n"
+                       "Icon=io.github.brokoskokoli.lumaflip\n"
+                       "Terminal=false\n"
+                       "Categories=Graphics;Viewer;\n"
+                       "MimeType=%2;\n"
+                       "X-AppImage-Path=%3\n")
+            .arg(quoted, (imageMimeTypes() + containerMimeTypes()).join(QLatin1Char(';')), appImage);
     f.write(content.toUtf8());
     if (!f.commit()) {
         if (error)

@@ -58,6 +58,9 @@ public:
     bool isCrossfading() const;
     int crossfadeFramesRendered() const; // frames drawn with both images (tests)
     int framesReusingTextures() const;   // replaceFrame() calls that reused textures (tests)
+    // Widget frames (render()) that drew another, fully uploaded image than before (tests:
+    // the animation reaches the screen, not only the player).
+    int drawnImageChanges() const;
 
     // Full-resolution image px -> viewport device px.
     void setViewTransform(const QTransform& imageToViewport);

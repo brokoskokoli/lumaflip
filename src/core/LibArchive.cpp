@@ -5,6 +5,7 @@
 #include <QFile>
 #include <QTimeZone>
 
+#include <algorithm>
 #include <cstdint>
 #include <sys/types.h>
 
@@ -46,6 +47,7 @@ int archive_entry_size_is_set(struct archive_entry*);
 mode_t archive_entry_filetype(struct archive_entry*);
 time_t archive_entry_mtime(struct archive_entry*);
 int archive_entry_is_encrypted(struct archive_entry*);
+int archive_format(struct archive*);
 struct archive* archive_write_new(void);
 int archive_write_set_format_by_name(struct archive*, const char* name);
 int archive_write_open_filename(struct archive*, const char* file);
@@ -80,6 +82,8 @@ constexpr int kEof = 1;
 constexpr int kWarn = -20;
 constexpr unsigned kRegularFile = 0100000;
 constexpr size_t kBlockSize = 64 * 1024;
+constexpr int kFormatBaseMask = 0xff0000;
+constexpr int kFormat7Zip = 0xe0000; // ARCHIVE_FORMAT_7ZIP
 
 struct Reader {
     LaArchive* a = nullptr;
@@ -119,56 +123,145 @@ bool acceptName(const QString& name) {
     return true;
 }
 
+// libarchive could not go on: a password protected archive (encrypted data or headers) gets
+// its own message, anything else is damaged.
+// Only the error text is asked: archive_read_has_encrypted_entries() is not safe after a
+// failed open on every libarchive version (crashed in the Linux CI).
+QString failure(LaArchive* a) {
+    const QString text = QString::fromUtf8(archive_error_string(a) ? archive_error_string(a) : "");
+    if (text.contains(QLatin1String("ncrypt"), Qt::CaseInsensitive) ||
+        text.contains(QLatin1String("assphrase"), Qt::CaseInsensitive))
+        return archive::messageEncryptedArchive();
+    return archive::messageDamagedArchive();
+}
+
+// 7z archives are (nearly always) solid: skipping a member decompresses it anyway, and the
+// skip of the macOS system libarchive loses its place after large members (the next member
+// then fails to read). Their data is read instead.
+bool readsToSkip(LaArchive* a) {
+    return (archive_format(a) & kFormatBaseMask) == kFormat7Zip;
+}
+
+// Passes over the data of an entry that is not wanted, within the scan budget (kMaxScanBytes,
+// Archive.h). `listing`: only the headers are needed (7z skips without decompressing then).
+// Read here, counting every byte that is produced: 7z data (readsToSkip()) and entries without
+// a stated size. Else skipped by libarchive (the next header): ZIP and non-solid RAR seek;
+// a solid RAR decompresses, but never more than the stated size (the RAR decoders stop at
+// the unpacked size) - so the stated size is what it costs. False: the budget is used up.
+bool passOver(LaArchive* a, LaEntry* e, qint64* scanned, qint64 scanLimit, QByteArray& scratch,
+              bool listing = false) {
+    if (archive_entry_size_is_set(e) && (listing || !readsToSkip(a))) {
+        *scanned += std::max<qint64>(0, qint64(archive_entry_size(e)));
+        return *scanned <= scanLimit;
+    }
+    for (;;) {
+        const ssize_t n = archive_read_data(a, scratch.data(), size_t(scratch.size()));
+        if (n <= 0)
+            return true; // end (or damaged data: the next header says so)
+        *scanned += n;
+        if (*scanned > scanLimit)
+            return false;
+    }
+}
+
+// The data of the current entry, at most maxBytes (whatever size the header states).
+std::optional<QByteArray> readData(LaArchive* a, LaEntry* e, qint64 maxBytes, QByteArray& scratch,
+                                   QString* error) {
+    const qint64 declared = archive_entry_size_is_set(e) ? qint64(archive_entry_size(e)) : -1;
+    if (declared > maxBytes) {
+        *error = archive::messageMemberTooLarge();
+        return std::nullopt;
+    }
+    QByteArray out;
+    out.reserve(qsizetype(declared > 0 ? declared : qint64(kBlockSize)));
+    for (;;) {
+        const ssize_t n = archive_read_data(a, scratch.data(), size_t(scratch.size()));
+        if (n == 0)
+            break;
+        if (n < 0) {
+            *error = failure(a);
+            return std::nullopt;
+        }
+        if (qint64(out.size()) + n > maxBytes) {
+            *error = archive::messageMemberTooLarge();
+            return std::nullopt;
+        }
+        out.append(scratch.constData(), qsizetype(n));
+    }
+    return out;
+}
+
 } // namespace
 
 bool available() {
     return true;
 }
 
-archive::Listing list(const QString& path) {
+archive::Listing list(const QString& path, qint64 scanLimit) {
     archive::Listing out;
     Reader r;
     if (!r.open(path)) {
-        out.error =
-            QFile::exists(path) ? archive::messageUnsupportedArchive() : archive::messageDamagedArchive();
+        out.error = !QFile::exists(path) ? archive::messageDamagedArchive()
+                    : r.a && failure(r.a) == archive::messageEncryptedArchive()
+                        ? archive::messageEncryptedArchive()
+                        : archive::messageUnsupportedArchive();
         return out;
     }
+    QByteArray scratch(qsizetype(kBlockSize), Qt::Uninitialized);
     LaEntry* e = nullptr;
     int rc = kOk;
+    int encrypted = 0;
+    qint64 scanned = 0;
+    bool budgetUsed = false;
     while ((rc = archive_read_next_header(r.a, &e)) == kOk || rc == kWarn) {
         if (out.members.size() >= archive::kMaxMembers)
             break;
-        if (archive_entry_filetype(e) != kRegularFile || archive_entry_is_encrypted(e))
+        if (archive_entry_filetype(e) != kRegularFile)
             continue;
         const QString name = entryName(e).normalized(QString::NormalizationForm_C);
         if (!acceptName(name))
             continue;
+        if (archive_entry_is_encrypted(e)) {
+            ++encrypted;
+            continue;
+        }
         archive::Member m;
         m.name = name;
         m.size = archive_entry_size_is_set(e) ? qint64(archive_entry_size(e)) : -1;
         if (const time_t t = archive_entry_mtime(e); t > 0)
             m.modified = QDateTime::fromSecsSinceEpoch(qint64(t), QTimeZone::UTC);
         out.members.append(m);
-        // The data is not needed for the listing; libarchive skips it (seeks where it can).
+        // The data is not needed for the listing; skipping it (solid RAR archives decompress
+        // it) is bounded like read(): members past the budget could not be read anyway.
+        if (!passOver(r.a, e, &scanned, scanLimit, scratch, true)) {
+            budgetUsed = true;
+            break;
+        }
     }
-    if (rc != kEof && out.members.isEmpty()) {
-        out.error = archive::messageDamagedArchive();
+    if (out.members.isEmpty() && (encrypted > 0 || (rc != kEof && !budgetUsed))) {
+        out.error = encrypted > 0 ? archive::messageEncryptedArchive() : failure(r.a);
         return out;
     }
-    out.ok = true; // a damaged tail still lists the members before it
+    out.ok = true; // a damaged tail (or one past the scan budget) still lists the members before it
     return out;
 }
 
-std::optional<QByteArray> read(const QString& path, const QString& name, qint64 maxBytes, QString* error) {
-    auto fail = [&](const QString& message) -> std::optional<QByteArray> {
+std::optional<QVector<archive::Extracted>> readRun(const QString& path, const QString& name, qint64 maxBytes,
+                                                   qint64 maxRunBytes, const RunFilter& follow,
+                                                   QString* error, qint64 scanLimit) {
+    auto fail = [&](const QString& message) -> std::optional<QVector<archive::Extracted>> {
         if (error)
             *error = message;
         return std::nullopt;
     };
     Reader r;
     if (!r.open(path))
-        return fail(archive::messageDamagedArchive());
+        return fail(r.a ? failure(r.a) : archive::messageDamagedArchive());
+    QByteArray scratch(qsizetype(kBlockSize), Qt::Uninitialized);
     const QString want = name.normalized(QString::NormalizationForm_C);
+    QVector<archive::Extracted> run;
+    qint64 runBytes = 0;
+    qint64 scanned = 0;
     LaEntry* e = nullptr;
     int rc = kOk;
     int seen = 0;
@@ -177,30 +270,57 @@ std::optional<QByteArray> read(const QString& path, const QString& name, qint64 
             break;
         if (archive_entry_filetype(e) != kRegularFile)
             continue;
-        if (entryName(e).normalized(QString::NormalizationForm_C) != want)
-            continue;
-        if (archive_entry_is_encrypted(e))
-            return fail(archive::messageUnsupportedArchive());
-        // Whatever size the header states: never more than maxBytes are produced.
-        QByteArray out;
-        const qint64 declared = archive_entry_size_is_set(e) ? qint64(archive_entry_size(e)) : -1;
-        if (declared > maxBytes)
-            return fail(archive::messageMemberTooLarge());
-        out.reserve(int(declared > 0 ? declared : kBlockSize));
-        char buf[kBlockSize];
-        for (;;) {
-            const ssize_t n = archive_read_data(r.a, buf, sizeof buf);
-            if (n == 0)
+        const QString entry = entryName(e).normalized(QString::NormalizationForm_C);
+        if (run.isEmpty()) {
+            if (entry != want) {
+                if (!passOver(r.a, e, &scanned, scanLimit, scratch))
+                    return fail(archive::messageArchiveTooLarge());
+                continue;
+            }
+            if (archive_entry_is_encrypted(e))
+                return fail(archive::messageEncryptedArchive());
+            QString readError;
+            auto data = readData(r.a, e, maxBytes, scratch, &readError);
+            if (!data)
+                return fail(readError);
+            scanned += data->size();
+            runBytes += data->size();
+            run.append(archive::Extracted{entry, std::move(*data)});
+            if (!follow || runBytes >= maxRunBytes || scanned > scanLimit)
                 break;
-            if (n < 0)
-                return fail(archive::messageDamagedArchive());
-            if (qint64(out.size()) + n > maxBytes)
-                return fail(archive::messageMemberTooLarge());
-            out.append(buf, qsizetype(n));
+            continue;
         }
-        return out;
+        // F-OPEN-10: the members after the wanted one come along while they are decompressed
+        // anyway (solid archives): browsing on does not start from the beginning again.
+        const qint64 declared = archive_entry_size_is_set(e) ? qint64(archive_entry_size(e)) : -1;
+        if (archive_entry_is_encrypted(e) || !acceptName(entry) || !follow(entry)) {
+            if (!passOver(r.a, e, &scanned, scanLimit, scratch))
+                break;
+            continue;
+        }
+        if (declared < 0 || runBytes + declared > maxRunBytes || scanned + declared > scanLimit)
+            break;
+        QString readError;
+        auto data = readData(r.a, e, std::min(maxBytes, maxRunBytes - runBytes), scratch, &readError);
+        if (!data)
+            break; // the wanted member is there; the rest is only a bonus
+        scanned += data->size();
+        runBytes += data->size();
+        run.append(archive::Extracted{entry, std::move(*data)});
+        if (runBytes >= maxRunBytes)
+            break;
     }
-    return fail(archive::messageDamagedArchive());
+    if (run.isEmpty())
+        return fail(rc == kEof || rc == kOk || rc == kWarn ? archive::messageDamagedArchive() : failure(r.a));
+    return run;
+}
+
+std::optional<QByteArray> read(const QString& path, const QString& name, qint64 maxBytes, QString* error,
+                               qint64 scanLimit) {
+    auto run = readRun(path, name, maxBytes, 0, {}, error, scanLimit);
+    if (!run)
+        return std::nullopt;
+    return std::move(run->first().data);
 }
 
 bool writeArchive(const QString& path, const QString& format, const QList<QPair<QString, QByteArray>>& files,
@@ -243,13 +363,20 @@ bool available() {
     return false;
 }
 
-archive::Listing list(const QString&) {
+archive::Listing list(const QString&, qint64) {
     archive::Listing out;
     out.error = archive::messageUnsupportedArchive();
     return out;
 }
 
-std::optional<QByteArray> read(const QString&, const QString&, qint64, QString* error) {
+std::optional<QByteArray> read(const QString&, const QString&, qint64, QString* error, qint64) {
+    if (error)
+        *error = archive::messageUnsupportedArchive();
+    return std::nullopt;
+}
+
+std::optional<QVector<archive::Extracted>> readRun(const QString&, const QString&, qint64, qint64,
+                                                   const RunFilter&, QString* error, qint64) {
     if (error)
         *error = archive::messageUnsupportedArchive();
     return std::nullopt;

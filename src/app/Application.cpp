@@ -12,14 +12,17 @@
 #include "RecentItems.h"
 #include "Translations.h"
 #include "ViewerWindow.h"
+#include "core/ArchiveCache.h"
 #include "core/Collection.h"
 #include "core/FileOps.h"
 #include "core/FolderCache.h"
 #include "core/ImageFormats.h"
 #include "core/ImageProvider.h"
+#include "core/PdfDocument.h"
 #include "core/Platform.h"
 #include "core/Settings.h"
 #include "core/StartupTrace.h"
+#include "core/VirtualPath.h"
 
 #include <QApplication>
 #include <QDesktopServices>
@@ -40,6 +43,7 @@
 #include <QSet>
 #include <QStandardPaths>
 #include <QTableWidget>
+#include <QThreadPool>
 #include <QTimer>
 #include <QUndoStack>
 #include <QVBoxLayout>
@@ -50,10 +54,11 @@ namespace lf {
 
 namespace {
 
-constexpr int kCascadePx = 26;         // F-WIN-08
-constexpr int kTakenPx = 10;           // windows closer than this count as "on top of each other"
-constexpr int kBusyHintMs = 300;       // file operation running longer: busy cursor + message
-constexpr int kServicesDelayMs = 2000; // F-MAC-07 Services at the latest (P-01: after the first image)
+constexpr int kCascadePx = 26;              // F-WIN-08
+constexpr int kTakenPx = 10;                // windows closer than this count as "on top of each other"
+constexpr int kBusyHintMs = 300;            // file operation running longer: busy cursor + message
+constexpr int kServicesDelayMs = 2000;      // F-MAC-07 Services at the latest (P-01: after the first image)
+constexpr int kArchiveSweepDelayMs = 15000; // F-OPEN-10 stale archive caches (worker)
 const char* const kGeometryKey = "window/geometry";
 const char* const kSessionKey = "session/windows"; // F-WIN-06
 
@@ -286,6 +291,12 @@ Application::Application(AppServices services, QObject* parent)
                     QTimer::singleShot(0, registerServices);
             });
         }
+    });
+
+    // F-OPEN-10: archive caches a crashed run left in the temporary folder go - later, on a
+    // worker (no file system work on the GUI thread, nothing in the way of P-01).
+    QTimer::singleShot(kArchiveSweepDelayMs, this, [] {
+        QThreadPool::globalInstance()->start([] { ArchiveCache::sweepStaleDirectories(); });
     });
 
     d->burstTimer.setSingleShot(true);
@@ -581,20 +592,48 @@ void Application::showNotFound(const QStringList& missing, ViewerWindow* preferr
     w->showMessage(msg, 6000);
 }
 
-ViewerWindow* Application::openInWindow(const QStringList& paths, bool isFolder, bool* reusedOrCreated) {
+void Application::openContainersInOwnWindows(const QStringList& containers) {
+    for (const QString& c : containers)
+        openInWindow({c}, false, nullptr, true);
+}
+
+ViewerWindow* Application::openInWindow(const QStringList& paths, bool isFolder, bool* reusedOrCreated,
+                                        bool newWindow) {
     if (reusedOrCreated)
         *reusedOrCreated = false;
+    if (!isFolder && paths.size() > 1) {
+        // F-OPEN-10: archives/PDFs are no part of a file set: each opens in a window of its
+        // own (like folders), the other files together.
+        QStringList files;
+        QStringList containers;
+        for (const QString& p : paths)
+            (vpath::isContainerPath(p) ? containers : files) << p;
+        if (!containers.isEmpty()) {
+            ViewerWindow* first =
+                files.isEmpty() ? nullptr : openInWindow(files, false, reusedOrCreated, newWindow);
+            for (const QString& c : std::as_const(containers)) {
+                ViewerWindow* w =
+                    openInWindow({c}, false, first ? nullptr : reusedOrCreated, newWindow || first);
+                if (!first)
+                    first = w;
+            }
+            return first;
+        }
+    }
     const QString behavior = Settings::instance().value(key::OpenBehavior).toString();
     if (behavior == QLatin1String("newUnlessOpen") && paths.size() == 1) {
-        // F-WIN-02: bring the window to front that already shows this file/folder.
+        // F-WIN-02: bring the window to front that already shows this file/folder (or this
+        // archive/PDF, F-OPEN-10).
         const QString p = normalized(paths.first());
         for (ViewerWindow* w : windows()) {
             Collection* c = w->collection();
-            const bool match =
-                isFolder ? (c->isFolderCollection() && c->folderPath() == p) : c->indexOf(p) >= 0;
+            const bool container = !isFolder && vpath::isContainerPath(p);
+            const bool match = isFolder    ? (c->isFolderCollection() && c->folderPath() == p)
+                               : container ? c->containerPath() == p
+                                           : c->indexOf(p) >= 0;
             if (!match)
                 continue;
-            if (!isFolder)
+            if (!isFolder && !container)
                 c->setCurrentPath(p);
             if (w->isMinimized())
                 w->showNormal();
@@ -607,7 +646,9 @@ ViewerWindow* Application::openInWindow(const QStringList& paths, bool isFolder,
     ViewerWindow* target = nullptr;
     ViewerWindow* front = frontWindow();
     bool reused = false;
-    if (front && front->isEmpty()) {
+    if (newWindow) {
+        // a window of its own
+    } else if (front && front->isEmpty()) {
         target = front; // the start window is reused
         reused = true;
     } else if (behavior == QLatin1String("replaceFront") && front) {
@@ -1057,7 +1098,17 @@ void Application::showOpenDialog() {
     QStringList patterns;
     for (const QString& s : imageSuffixes())
         patterns << QStringLiteral("*.") + s;
-    const QString filter = tr("Bilder (%1);;Alle Dateien (*)").arg(patterns.join(QLatin1Char(' ')));
+    // F-OPEN-10: archives and PDF documents open like folders.
+    QStringList containers;
+    for (const QString& s : vpath::archiveSuffixes())
+        containers << QStringLiteral("*.") + s;
+    if (pdf::available())
+        containers << QStringLiteral("*.pdf");
+    const QString filter =
+        tr("Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente "
+           "(%3);;Alle Dateien (*)")
+            .arg((patterns + containers).join(QLatin1Char(' ')), patterns.join(QLatin1Char(' ')),
+                 containers.join(QLatin1Char(' ')));
     QString dir;
     if (auto* w = frontWindow(); w && !w->collection()->folderPath().isEmpty())
         dir = w->collection()->folderPath();

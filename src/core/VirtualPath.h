@@ -7,10 +7,11 @@
 // A member path is the container's absolute path, the marker "#/" and the member's name
 // inside the container: "/Comics/Band 1.cbz#/Kapitel 1/012.jpg". PDF pages are members
 // named by their 1-based number with four digits: "/Docs/Plan.pdf#/0003". The marker only
-// counts after a container suffix, so ordinary paths are never mistaken for members (a
-// folder named "x.cbz#" would be the only clash - not worth a file system check).
+// counts after a container suffix, so ordinary paths are never mistaken for members; a real
+// folder named "x.cbz#" is no container either - split() asks the file system once per such
+// path (remembered).
 //
-// Pure string functions, thread-safe.
+// String functions (split() aside), thread-safe.
 
 #include <QString>
 #include <QStringList>

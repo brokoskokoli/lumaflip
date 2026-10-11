@@ -196,6 +196,102 @@ private slots:
         QCOMPARE(readBytes(file), original);
     }
 
+    // "Speichern unter" with a name that gets the original's suffix added: an existing file
+    // of that name is only replaced after asking (review M4).
+    void F_EDIT_03_saveAsAsksBeforeReplacingAfterTheSuffixIsAdded() {
+        const QString file = path(QStringLiteral("orig.png"));
+        QVERIFY(pattern(QSize(200, 150)).save(file, "PNG"));
+        const QString taken = path(QStringLiteral("copy.png"));
+        QFile f(taken);
+        QVERIFY(f.open(QIODevice::WriteOnly));
+        f.write("old");
+        f.close();
+        ViewerWindow* w = openAndWait(file);
+        QVERIFY(w);
+        WindowEditing* editing = WindowEditing::of(w);
+        QVERIFY(w->perform(Action::CropImage));
+        editing->cropOverlay()->setImageRect(QRectF(10, 20, 100, 50));
+        editing->saveCropAs(path(QStringLiteral("copy"))); // becomes copy.png
+        QTRY_VERIFY(editing->cropQuestion());
+        QCOMPARE(editing->cropQuestion()->objectName(), QStringLiteral("lfCropReplaceExisting"));
+        editing->cropQuestion()->reject();
+        QTRY_VERIFY(!editing->cropQuestion());
+        QTest::qWait(200);
+        QCOMPARE(readBytes(taken), QByteArray("old"));
+        QVERIFY(editing->cropActive());
+        editing->saveCropAs(path(QStringLiteral("copy")));
+        QTRY_VERIFY(editing->cropQuestion());
+        auto* yes = editing->cropQuestion()->findChild<QPushButton*>(QStringLiteral("lfCropReplaceYes"));
+        QVERIFY(yes);
+        yes->click();
+        QTRY_COMPARE_WITH_TIMEOUT(QImage(taken).size(), QSize(100, 50), 10000);
+        QTRY_VERIFY(!editing->cropActive());
+    }
+
+    // Esc while the save is still being planned: nothing is written, and the next crop can
+    // be saved (m_saving was reset).
+    void F_EDIT_03_escDuringPlanningWritesNothing() {
+        const QString file = path(QStringLiteral("plan.png"));
+        QVERIFY(pattern(QSize(200, 150)).save(file, "PNG"));
+        const QByteArray original = readBytes(file);
+        ViewerWindow* w = openAndWait(file);
+        QVERIFY(w);
+        WindowEditing* editing = WindowEditing::of(w);
+        QVERIFY(w->perform(Action::CropImage));
+        editing->cropOverlay()->setImageRect(QRectF(10, 20, 100, 50));
+        editing->saveCrop(false); // planning runs on a worker
+        QVERIFY(editing->cropSaving());
+        editing->cancelCrop(); // what Esc does, before the plan is back
+        QVERIFY(!editing->cropSaving());
+        QTest::qWait(500);
+        QThreadPool::globalInstance()->waitForDone(5000);
+        QTest::qWait(200);
+        QCOMPARE(readBytes(file), original);
+        QVERIFY(!editing->cropQuestion());
+        // A new crop session saves normally.
+        QVERIFY(w->perform(Action::CropImage));
+        editing->cropOverlay()->setImageRect(QRectF(0, 0, 100, 50));
+        editing->saveCrop(false);
+        QTRY_COMPARE_WITH_TIMEOUT(QImage(file).size(), QSize(100, 50), 10000);
+    }
+
+    // RAW (and animations, archive members, formats without an encoder): the refusal offers
+    // "Zugeschnitten exportieren", which writes the selection as a new file.
+    void F_EDIT_03_refusedCropOffersCroppedExport() {
+        const QString file = path(QStringLiteral("camera.cr2")); // JPEG data under a RAW name
+        QVERIFY(pattern(QSize(200, 150)).save(file, "JPEG", 95));
+        const QByteArray original = readBytes(file);
+        ViewerWindow* w = openAndWait(file);
+        if (!w)
+            QSKIP("no decoder here shows JPEG data in a .cr2 file");
+        WindowEditing* editing = WindowEditing::of(w);
+        QVERIFY(w->perform(Action::CropImage));
+        editing->cropOverlay()->setImageRect(QRectF(100, 0, 100, 75));
+        editing->saveCrop(false);
+        QTRY_VERIFY_WITH_TIMEOUT(editing->cropQuestion(), 10000);
+        QCOMPARE(editing->cropQuestion()->objectName(), QStringLiteral("lfCropExportInstead"));
+        auto* yes =
+            editing->cropQuestion()->findChild<QPushButton*>(QStringLiteral("lfCropExportInsteadYes"));
+        QVERIFY(yes);
+        yes->click();
+        QTRY_VERIFY(editing->exportDialog());
+        ExportDialog* dlg = editing->exportDialog();
+        QVERIFY(!dlg->crop().isEmpty());
+        exporting::Options o = dlg->options();
+        o.formatId = QStringLiteral("png");
+        o.maxLongEdge = 0;
+        o.folder = path(QStringLiteral("out"));
+        o.pattern = QStringLiteral("{name}-crop");
+        dlg->setOptions(o);
+        QVERIFY(!dlg->options().crop.isEmpty());
+        dlg->accept();
+        const QString out = path(QStringLiteral("out/camera-crop.png"));
+        QTRY_VERIFY_WITH_TIMEOUT(QFile::exists(out), 10000);
+        QCOMPARE(QImage(out).size(), QSize(100, 75));
+        QCOMPARE(readBytes(file), original);
+        QTRY_VERIFY(!editing->cropActive());
+    }
+
     void F_EDIT_04_exportDialogRunsAndKeepsSource() {
         const QString file = path(QStringLiteral("export.png"));
         QVERIFY(pattern(QSize(300, 200)).save(file, "PNG"));

@@ -94,8 +94,8 @@
         <translation>찾을 수 없음: %1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>이미지(%1);;모든 파일(*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>이미지, 아카이브 및 PDF 문서(%1);;이미지(%2);;아카이브 및 PDF 문서(%3);;모든 파일(*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -177,6 +177,14 @@
     <message>
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>아카이브에 이미지가 없습니다.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>아카이브가 암호로 보호되어 있습니다 – 암호화된 아카이브는 지원되지 않습니다.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>아카이브가 너무 커서 이 이미지를 읽을 수 없습니다.</translation>
     </message>
 </context>
 <context>
@@ -435,10 +443,6 @@
         <translation>이 버전에서는 JPEG 파일의 무손실 자르기를 사용할 수 없습니다.</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
-        <translation>압축 파일과 PDF 문서의 이미지는 자른 상태로 저장할 수 없습니다. ‘내보내기’를 사용하십시오.</translation>
-    </message>
-    <message>
         <source>Die Datei existiert nicht mehr.</source>
         <translation>파일이 더 이상 존재하지 않습니다.</translation>
     </message>
@@ -447,12 +451,16 @@
         <translation>저장할 파일 포맷을 인식할 수 없습니다.</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
-        <translation>RAW 파일은 절대 변경되지 않습니다. 자른 사본이 필요하면 ‘내보내기’를 사용하십시오.</translation>
+        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>아카이브와 PDF 문서 안의 이미지는 변경되지 않습니다. 선택 영역을 새 파일로 내보낼 수 있습니다.</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
-        <translation>애니메이션 또는 여러 페이지 파일은 자른 상태로 저장할 수 없습니다.</translation>
+        <source>RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>RAW 파일은 절대 변경되지 않습니다. 선택 영역을 새 파일로 내보낼 수 있습니다.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
+        <translation>움직이는 파일이나 여러 페이지 파일은 잘라서 저장할 수 없습니다. 첫 번째 이미지의 선택 영역을 새 파일로 내보낼 수 있습니다.</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
@@ -465,6 +473,10 @@
     <message>
         <source>In „%1“ kann nicht geschrieben werden.</source>
         <translation>‘%1’에 쓸 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>‘%1’이(가) 이미 있습니다.</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
@@ -495,12 +507,20 @@
         <translation>다시 인코딩하면 이미지가 정확히 같게 유지되지 않습니다(색상 모델, 비트 심도, 팔레트 또는 투명도가 바뀜).</translation>
     </message>
     <message>
+        <source>Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.</source>
+        <translation>이 포맷은 여기에서 쓸 수 없습니다. 선택 영역을 다른 포맷으로 내보낼 수 있습니다.</translation>
+    </message>
+    <message>
         <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
         <translation>이 포맷은 손실 압축입니다. 이미지를 다시 인코딩해야만 자르기를 저장할 수 있으며, 화질이 약간 떨어집니다.</translation>
     </message>
     <message>
         <source>Zusatzbilder (%1) gehen dabei verloren.</source>
         <translation>추가 이미지(%1)가 손실됩니다.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.</source>
+        <translation>다시 인코딩하면 메타데이터(EXIF, XMP, IPTC)가 사라집니다.</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
@@ -670,12 +690,20 @@
 <context>
     <name>lf::CustomActionsEditor</name>
     <message>
+        <source>%1 ist schon belegt (%2); im Bildfenster hat die eigene Aktion Vorrang.</source>
+        <translation>%1은(는) 이미 사용 중입니다(%2). 이미지 윈도우에서는 사용자 동작이 우선합니다.</translation>
+    </message>
+    <message>
         <source>Eigene Aktion</source>
         <translation>사용자 동작</translation>
     </message>
     <message>
         <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
         <translation>단축어 앱의 단축어 이름입니다. 파일을 입력으로 받습니다.</translation>
+    </message>
+    <message>
+        <source>Programm mit Argumenten, z. B. &quot;C:\Tools\tool.exe&quot; --flag; die Datei wird als eigenes Argument angehängt und nie über cmd.exe gestartet. Batch-Dateien (.bat, .cmd) sind nicht erlaubt.</source>
+        <translation>인수가 있는 프로그램(예: &quot;C:\Tools\tool.exe&quot; --flag). 파일은 별도의 인수로 추가되며 cmd.exe를 통해 실행되지 않습니다. 배치 파일(.bat, .cmd)은 허용되지 않습니다.</translation>
     </message>
     <message>
         <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
@@ -714,8 +742,8 @@
         <translation>키</translation>
     </message>
     <message>
-        <source>„%1“: %2 ist schon belegt (%3).</source>
-        <translation>‘%1’: %2은(는) 이미 사용 중입니다(%3).</translation>
+        <source>„%1“: %2</source>
+        <translation>‘%1’: %2</translation>
     </message>
     <message>
         <source>Hinzufügen …</source>
@@ -1122,6 +1150,14 @@
     <message>
         <source>Exportieren</source>
         <translation>내보내기</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren</source>
+        <translation>잘라서 내보내기</translation>
+    </message>
+    <message>
+        <source>Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>‘%1’의 선택 영역을 새 파일로 내보냅니다. 원본은 변경되지 않습니다.</translation>
     </message>
     <message>
         <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
@@ -1599,12 +1635,24 @@
         <translation>%1: 대상 폴더를 만들 수 없습니다.</translation>
     </message>
     <message>
+        <source>Die vorhandene Datei konnte nicht in den Papierkorb gelegt werden.</source>
+        <translation>기존 파일을 휴지통으로 옮길 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Die vorhandene Datei liegt im Papierkorb, die neue konnte nicht an ihre Stelle gelegt werden: %1</source>
+        <translation>기존 파일은 휴지통에 있지만 새 파일을 그 자리에 놓을 수 없습니다: %1</translation>
+    </message>
+    <message>
         <source>Das Bild konnte nicht geschrieben werden.</source>
         <translation>이미지를 쓸 수 없습니다.</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden.</source>
         <translation>이미지를 디코딩할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) werden hier nicht übernommen.</source>
+        <translation>여기에서는 메타데이터(EXIF, XMP, IPTC)가 유지되지 않습니다.</translation>
     </message>
     <message>
         <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
@@ -1625,6 +1673,10 @@
     <message>
         <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
         <translation>%1은(는) HDR 게인 맵을 저장할 수 없습니다. 이미지가 SDR로 내보내졌습니다.</translation>
+    </message>
+    <message>
+        <source>Bilder aus Archiven und PDF-Dokumenten werden als 8-Bit-sRGB exportiert – HDR und erweiterter Farbraum gehen verloren.</source>
+        <translation>아카이브와 PDF 문서의 이미지는 8비트 sRGB로 내보내집니다. HDR과 넓은 색영역은 사라집니다.</translation>
     </message>
 </context>
 <context>
@@ -3624,6 +3676,14 @@
 </context>
 <context>
     <name>lf::MenuExtras</name>
+    <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>개별 PDF 페이지는 다른 앱으로 전달할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>아카이브에서 이미지를 추출하는 중입니다 – 잠시 후 다시 시도하십시오.</translation>
+    </message>
     <message>
         <source>Öffnen mit</source>
         <translation>다음으로 열기</translation>
@@ -5652,6 +5712,14 @@
         <translation>‘%1’ 폴더에 대한 읽기 권한이 없으므로 Lumaflip은 열린 파일만 표시합니다. 접근 권한은 Finder의 파일 → 정보 가져오기 → ‘공유 및 권한’에서 변경할 수 있습니다.</translation>
     </message>
     <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>다음 폴더 또는 아카이브가 없음</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>이전 폴더 또는 아카이브가 없음</translation>
+    </message>
+    <message>
         <source>Kein weiterer Ordner mit Bildern</source>
         <translation>이미지가 있는 다음 폴더 없음</translation>
     </message>
@@ -5889,6 +5957,10 @@
         <translation>자르기: 프레임을 드래그 – Enter로 저장, Esc로 취소</translation>
     </message>
     <message>
+        <source>Der vorige Zuschnitt wird noch gespeichert.</source>
+        <translation>이전 자르기를 아직 저장하는 중입니다.</translation>
+    </message>
+    <message>
         <source>Kein Bildbereich ausgewählt.</source>
         <translation>선택된 영역이 없습니다.</translation>
     </message>
@@ -5902,8 +5974,36 @@
         <translation>자른 이미지를 다른 이름으로 저장</translation>
     </message>
     <message>
+        <source>Wie das Original (*.%1)</source>
+        <translation>원본과 동일(*.%1)</translation>
+    </message>
+    <message>
         <source>Zuschneiden</source>
         <translation>자르기</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon. Ersetzen?</source>
+        <translation>‘%1’이(가) 이미 있습니다. 대치하겠습니까?</translation>
+    </message>
+    <message>
+        <source>Das zugeschnittene Bild bekommt die Endung des Originals (.%1).</source>
+        <translation>자른 이미지에는 원본의 확장자(.%1)가 붙습니다.</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>대치</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>자르기를 저장할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportiert als „%1“</source>
+        <translation>자른 사본을 ‘%1’(으)로 내보냄</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren …</source>
+        <translation>잘라서 내보내기…</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>

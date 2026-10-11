@@ -64,6 +64,12 @@ struct Codec {
     QList<Pattern> patterns;
 };
 
+// RIFF....WEBPVP8X with the animation flag (bit 1 of the first byte of the VP8X payload).
+bool isAnimatedWebp(const QByteArray& h) {
+    return h.size() >= 21 && h.startsWith("RIFF") && h.mid(8, 8) == "WEBPVP8X" &&
+           (uchar(h.at(20)) & 0x02) != 0;
+}
+
 bool isGif(const GUID& g) {
     return IsEqualGUID(g, GUID_ContainerFormatGif) != 0;
 }
@@ -477,6 +483,10 @@ int targetLongEdge(QSize stored, const DecodeRequest& req, int bytesPerPixel) {
 // ---- Decoder interface ---------------------------------------------------------------------
 
 bool WicDecoder::canDecode(const QString& path, const QByteArray& header) const {
+    // F-FMT-03: WIC's WebP codec returns the frames of an animation as separate images
+    // (pages, no delays): animated WebP goes to Qt's WebP plugin like GIF.
+    if (isAnimatedWebp(header))
+        return false;
     const QString suffix = QFileInfo(path).suffix().toLower();
     for (const Codec& c : codecs()) {
         if (isGif(c.container))

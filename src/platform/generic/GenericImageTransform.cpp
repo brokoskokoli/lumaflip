@@ -208,6 +208,26 @@ QStringList auxiliaryImageNames(const QString&) {
     return {};
 }
 
+bool canEncodeType(const QString& typeId) {
+    // imageTypeIdentifier(): public.* for the common types, "generic.<Qt format>" else.
+    QByteArray format;
+    if (typeId == QLatin1String("public.jpeg"))
+        format = "jpeg";
+    else if (typeId == QLatin1String("public.png"))
+        format = "png";
+    else if (typeId == QLatin1String("public.tiff"))
+        format = "tiff";
+    else if (typeId == QLatin1String("com.microsoft.bmp"))
+        format = "bmp";
+    else if (typeId.startsWith(QLatin1String("generic.")))
+        format = typeId.mid(8).toLatin1();
+    return !format.isEmpty() && QImageWriter::supportedImageFormats().contains(format);
+}
+
+bool reencodeKeepsMetadata() {
+    return false; // QImageWriter writes the pixels (and an ICC profile) only
+}
+
 bool replaceFile(const QString& replacement, const QString& target, bool keepModificationDate,
                  QString* error) {
     const QFileInfo orig(target);

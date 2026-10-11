@@ -94,8 +94,8 @@
         <translation>Nenalezeno: %1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>Obrázky (%1);;Všechny soubory (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>Obrázky, archivy a dokumenty PDF (%1);;Obrázky (%2);;Archivy a dokumenty PDF (%3);;Všechny soubory (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -177,6 +177,14 @@
     <message>
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>Archiv neobsahuje žádné obrázky.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>Archiv je chráněn heslem – šifrované archivy nejsou podporovány.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>Archiv je příliš velký na to, aby z něj šlo tento obrázek načíst.</translation>
     </message>
 </context>
 <context>
@@ -441,10 +449,6 @@
         <translation>Bezeztrátový ořez souborů JPEG není v této verzi k dispozici.</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
-        <translation>Obrázky v archivech a dokumentech PDF nelze uložit oříznuté – použijte „Exportovat“.</translation>
-    </message>
-    <message>
         <source>Die Datei existiert nicht mehr.</source>
         <translation>Soubor již neexistuje.</translation>
     </message>
@@ -453,12 +457,16 @@
         <translation>Formát souboru nebyl pro uložení rozpoznán.</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
-        <translation>Soubory RAW se nikdy nemění. Pro oříznutou kopii použijte „Exportovat“.</translation>
+        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>Obrázky v archivech a dokumentech PDF se nemění. Výřez lze exportovat jako nový soubor.</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
-        <translation>Animované a vícestránkové soubory nelze uložit oříznuté.</translation>
+        <source>RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>Soubory RAW se nikdy nemění. Výřez lze exportovat jako nový soubor.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
+        <translation>Animované nebo vícestránkové soubory nelze uložit oříznuté. Výřez prvního obrázku lze exportovat jako nový soubor.</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
@@ -471,6 +479,10 @@
     <message>
         <source>In „%1“ kann nicht geschrieben werden.</source>
         <translation>Do „%1“ nelze zapisovat.</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>„%1“ už existuje.</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
@@ -501,12 +513,20 @@
         <translation>Při novém kódování by obrázek nezůstal přesně stejný (změnil by se barevný model, bitová hloubka, paleta nebo průhlednost).</translation>
     </message>
     <message>
+        <source>Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.</source>
+        <translation>Tento formát zde nelze zapsat. Výřez lze exportovat v jiném formátu.</translation>
+    </message>
+    <message>
         <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
         <translation>Tento formát je ztrátový. Ořez lze uložit jen novým zakódováním obrázku – přitom se mírně sníží kvalita.</translation>
     </message>
     <message>
         <source>Zusatzbilder (%1) gehen dabei verloren.</source>
         <translation>Další obrázky (%1) se přitom ztratí.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.</source>
+        <translation>Metadata (EXIF, XMP, IPTC) se při novém kódování ztratí.</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
@@ -686,12 +706,20 @@
 <context>
     <name>lf::CustomActionsEditor</name>
     <message>
+        <source>%1 ist schon belegt (%2); im Bildfenster hat die eigene Aktion Vorrang.</source>
+        <translation>%1 je už obsazeno (%2); v okně obrázku má přednost vlastní akce.</translation>
+    </message>
+    <message>
         <source>Eigene Aktion</source>
         <translation>Vlastní akce</translation>
     </message>
     <message>
         <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
         <translation>Název zkratky z aplikace Zkratky; dostane soubor jako vstup.</translation>
+    </message>
+    <message>
+        <source>Programm mit Argumenten, z. B. &quot;C:\Tools\tool.exe&quot; --flag; die Datei wird als eigenes Argument angehängt und nie über cmd.exe gestartet. Batch-Dateien (.bat, .cmd) sind nicht erlaubt.</source>
+        <translation>Program s argumenty, např. &quot;C:\Tools\tool.exe&quot; --flag; soubor se připojí jako samostatný argument a nikdy se nespouští přes cmd.exe. Dávkové soubory (.bat, .cmd) nejsou povoleny.</translation>
     </message>
     <message>
         <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
@@ -730,8 +758,8 @@
         <translation>Klávesa</translation>
     </message>
     <message>
-        <source>„%1“: %2 ist schon belegt (%3).</source>
-        <translation>„%1“: %2 už je obsazeno (%3).</translation>
+        <source>„%1“: %2</source>
+        <translation>„%1“: %2</translation>
     </message>
     <message>
         <source>Hinzufügen …</source>
@@ -1138,6 +1166,14 @@
     <message>
         <source>Exportieren</source>
         <translation>Exportovat</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren</source>
+        <translation>Exportovat oříznuté</translation>
+    </message>
+    <message>
+        <source>Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>Exportovat výřez z „%1“ jako nový soubor. Originál zůstane beze změny.</translation>
     </message>
     <message>
         <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
@@ -1623,12 +1659,24 @@
         <translation>%1: Cílovou složku nelze vytvořit.</translation>
     </message>
     <message>
+        <source>Die vorhandene Datei konnte nicht in den Papierkorb gelegt werden.</source>
+        <translation>Stávající soubor se nepodařilo přesunout do koše.</translation>
+    </message>
+    <message>
+        <source>Die vorhandene Datei liegt im Papierkorb, die neue konnte nicht an ihre Stelle gelegt werden: %1</source>
+        <translation>Stávající soubor je v koši, ale nový se nepodařilo umístit na jeho místo: %1</translation>
+    </message>
+    <message>
         <source>Das Bild konnte nicht geschrieben werden.</source>
         <translation>Obrázek se nepodařilo zapsat.</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden.</source>
         <translation>Obrázek nelze dekódovat.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) werden hier nicht übernommen.</source>
+        <translation>Metadata (EXIF, XMP, IPTC) se zde nepřebírají.</translation>
     </message>
     <message>
         <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
@@ -1649,6 +1697,10 @@
     <message>
         <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
         <translation>%1 nemůže uložit HDR mapu zisku – obrázek byl exportován jako SDR.</translation>
+    </message>
+    <message>
+        <source>Bilder aus Archiven und PDF-Dokumenten werden als 8-Bit-sRGB exportiert – HDR und erweiterter Farbraum gehen verloren.</source>
+        <translation>Obrázky z archivů a dokumentů PDF se exportují jako 8bitové sRGB – HDR a rozšířený barevný gamut se ztratí.</translation>
     </message>
 </context>
 <context>
@@ -3648,6 +3700,14 @@
 </context>
 <context>
     <name>lf::MenuExtras</name>
+    <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>Jednotlivé stránky PDF nelze předat jiným aplikacím.</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>Obrázek se rozbaluje z archivu – zkuste to prosím za chvíli znovu.</translation>
+    </message>
     <message>
         <source>Öffnen mit</source>
         <translation>Otevřít v aplikaci</translation>
@@ -5698,6 +5758,14 @@
         <translation>Ke složce „%1“ nemáte oprávnění ke čtení, a proto Lumaflip zobrazuje jen otevřený soubor. Oprávnění lze změnit ve Finderu v nabídce Soubor → Informace → „Sdílení a oprávnění“.</translation>
     </message>
     <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>Žádná další složka ani archiv</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>Žádná předchozí složka ani archiv</translation>
+    </message>
+    <message>
         <source>Kein weiterer Ordner mit Bildern</source>
         <translation>Žádná další složka s obrázky</translation>
     </message>
@@ -5939,6 +6007,10 @@
         <translation>Ořez: táhněte rámeček – Enter uloží, Esc zruší</translation>
     </message>
     <message>
+        <source>Der vorige Zuschnitt wird noch gespeichert.</source>
+        <translation>Předchozí ořez se ještě ukládá.</translation>
+    </message>
+    <message>
         <source>Kein Bildbereich ausgewählt.</source>
         <translation>Není vybrána žádná oblast.</translation>
     </message>
@@ -5952,8 +6024,36 @@
         <translation>Uložit oříznutý obrázek jako</translation>
     </message>
     <message>
+        <source>Wie das Original (*.%1)</source>
+        <translation>Jako originál (*.%1)</translation>
+    </message>
+    <message>
         <source>Zuschneiden</source>
         <translation>Oříznout</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon. Ersetzen?</source>
+        <translation>„%1“ už existuje. Nahradit?</translation>
+    </message>
+    <message>
+        <source>Das zugeschnittene Bild bekommt die Endung des Originals (.%1).</source>
+        <translation>Oříznutý obrázek dostane příponu originálu (.%1).</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>Nahradit</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>Ořez se nepodařilo uložit.</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportiert als „%1“</source>
+        <translation>Oříznutá kopie exportována jako „%1“</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren …</source>
+        <translation>Exportovat oříznuté…</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>

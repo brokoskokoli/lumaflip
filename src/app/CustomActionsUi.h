@@ -39,6 +39,12 @@ public:
     // Runs action `id` on the current file of `window` (asks first on the first run).
     void run(const QString& id, ViewerWindow* window);
     bool isRunning() const { return !m_runs.isEmpty(); }
+    // Keys without ⌘/⌃ never reach the menu (Application filters them for InputBindings): the
+    // viewer window asks here first. Runs the action bound to `key`/`modifiers` on the current
+    // file of `window`; false if no action has this key.
+    bool runForKey(int key, Qt::KeyboardModifiers modifiers, ViewerWindow* window);
+    // An action has this key without ⌘/⌃ (typing it must not open the name filter).
+    bool hasKey(int key, Qt::KeyboardModifiers modifiers) const;
 
     void showLog(QWidget* parent);
     QStringList logLines() const { return m_log; }
@@ -56,7 +62,7 @@ signals:
 private:
     CustomActionsManager();
     void reload();
-    void start(const CustomAction& action, const QStringList& files, QPointer<ViewerWindow> window);
+    void start(const CustomAction& action, const QStringList& files, const QPointer<ViewerWindow>& window);
     void appendLog(const QString& text);
 
     QList<CustomAction> m_actions;

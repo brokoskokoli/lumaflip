@@ -264,6 +264,9 @@ struct ImageCanvas::Private {
     QElapsedTimer fadeClock; // started when the new image is on the GPU
     int crossfadeFrames = 0;
     int reusedFrames = 0;
+    // Tests: widget frames that drew another image than the frame before (F-FMT-03).
+    const DecodedImage* lastDrawn = nullptr;
+    int drawnImageChanges = 0;
 
     std::unique_ptr<QRhiGraphicsPipeline> pipeline;
     std::unique_ptr<QRhiGraphicsPipeline> blendPipeline; // like `pipeline`, with alpha blending
@@ -1064,6 +1067,10 @@ int ImageCanvas::framesReusingTextures() const {
     return d->reusedFrames;
 }
 
+int ImageCanvas::drawnImageChanges() const {
+    return d->drawnImageChanges;
+}
+
 void ImageCanvas::setViewTransform(const QTransform& imageToViewport) {
     if (d->view == imageToViewport)
         return;
@@ -1275,6 +1282,11 @@ void ImageCanvas::render(QRhiCommandBuffer* cb) {
     d->drawEntry(cb, f.draw, f.fade && d->blendPipeline ? d->blendPipeline.get() : d->pipeline.get(), target,
                  PassMode::Widget);
     cb->endPass();
+    if (const DecodedImage* drawn = f.draw && f.draw->complete() ? f.draw->src.get() : nullptr;
+        drawn && drawn != d->lastDrawn) {
+        d->lastDrawn = drawn;
+        ++d->drawnImageChanges;
+    }
     if (f.draw)
         trace::once("canvas first frame with image recorded");
     else

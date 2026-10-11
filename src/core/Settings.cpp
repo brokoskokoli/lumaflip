@@ -3,6 +3,7 @@
 
 #include "Language.h"
 
+#include "CustomActions.h"
 #include "InputBindings.h"
 #include "Platform.h"
 
@@ -588,8 +589,15 @@ bool Settings::importData(const QByteArray& json, QString* error) {
     if (!problems.isEmpty())
         return fail(
             tr("Import abgebrochen, nichts wurde geändert:\n%1").arg(problems.join(QLatin1Char('\n'))));
-    for (const auto& [k, v] : accepted)
+    for (auto& [k, v] : accepted) {
+        if (k == QLatin1String(key::CustomActions)) {
+            // F-FILE-10: an imported command never counts as confirmed by the user here.
+            v = customactions::toJson(customactions::withConfirmationFrom(
+                customactions::fromJson(v.toString()),
+                customactions::fromJson(value(key::CustomActions).toString())));
+        }
         setValue(k, v);
+    }
     return true;
 }
 

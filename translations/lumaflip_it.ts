@@ -94,8 +94,8 @@
         <translation>Non trovato: %1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>Immagini (%1);;Tutti i file (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>Immagini, archivi e documenti PDF (%1);;Immagini (%2);;Archivi e documenti PDF (%3);;Tutti i file (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -177,6 +177,14 @@
     <message>
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>L’archivio non contiene immagini.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>L’archivio è protetto da password: gli archivi cifrati non sono supportati.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>L’archivio è troppo grande per leggerne questa immagine.</translation>
     </message>
 </context>
 <context>
@@ -438,10 +446,6 @@
         <translation>Il ritaglio senza perdita dei file JPEG non è disponibile in questa versione.</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
-        <translation>Le immagini in archivi e documenti PDF non possono essere salvate ritagliate: usa “Esporta”.</translation>
-    </message>
-    <message>
         <source>Die Datei existiert nicht mehr.</source>
         <translation>Il file non esiste più.</translation>
     </message>
@@ -450,12 +454,16 @@
         <translation>Il formato del file non è riconosciuto per il salvataggio.</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
-        <translation>I file RAW non vengono mai modificati. Per una copia ritagliata usa “Esporta”.</translation>
+        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>Le immagini in archivi e documenti PDF non vengono modificate. La selezione può essere esportata come nuovo file.</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
-        <translation>I file animati o multipagina non possono essere salvati ritagliati.</translation>
+        <source>RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>I file RAW non vengono mai modificati. La selezione può essere esportata come nuovo file.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
+        <translation>I file animati o multipagina non possono essere salvati ritagliati. La selezione della prima immagine può essere esportata come nuovo file.</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
@@ -468,6 +476,10 @@
     <message>
         <source>In „%1“ kann nicht geschrieben werden.</source>
         <translation>Impossibile scrivere in “%1”.</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>“%1” esiste già.</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
@@ -498,12 +510,20 @@
         <translation>Ricodificando, l’immagine non resterebbe identica (cambierebbero modello colore, profondità di bit, palette o trasparenza).</translation>
     </message>
     <message>
+        <source>Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.</source>
+        <translation>Questo formato non può essere scritto qui. La selezione può essere esportata in un altro formato.</translation>
+    </message>
+    <message>
         <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
         <translation>Questo formato è con perdita. Il ritaglio può essere salvato solo ricodificando l’immagine: si perde un po’ di qualità.</translation>
     </message>
     <message>
         <source>Zusatzbilder (%1) gehen dabei verloren.</source>
         <translation>Le immagini aggiuntive (%1) vanno perse.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.</source>
+        <translation>I metadati (EXIF, XMP, IPTC) vanno persi durante la ricodifica.</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
@@ -678,12 +698,20 @@
 <context>
     <name>lf::CustomActionsEditor</name>
     <message>
+        <source>%1 ist schon belegt (%2); im Bildfenster hat die eigene Aktion Vorrang.</source>
+        <translation>%1 è già in uso (%2); nella finestra dell’immagine ha la precedenza l’azione personalizzata.</translation>
+    </message>
+    <message>
         <source>Eigene Aktion</source>
         <translation>Azione personalizzata</translation>
     </message>
     <message>
         <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
         <translation>Nome di un comando dell’app Comandi Rapidi; riceve il file come input.</translation>
+    </message>
+    <message>
+        <source>Programm mit Argumenten, z. B. &quot;C:\Tools\tool.exe&quot; --flag; die Datei wird als eigenes Argument angehängt und nie über cmd.exe gestartet. Batch-Dateien (.bat, .cmd) sind nicht erlaubt.</source>
+        <translation>Programma con argomenti, ad es. &quot;C:\Tools\tool.exe&quot; --flag; il file viene aggiunto come argomento separato e mai avviato tramite cmd.exe. I file batch (.bat, .cmd) non sono consentiti.</translation>
     </message>
     <message>
         <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
@@ -722,8 +750,8 @@
         <translation>Tasto</translation>
     </message>
     <message>
-        <source>„%1“: %2 ist schon belegt (%3).</source>
-        <translation>«%1»: %2 è già in uso (%3).</translation>
+        <source>„%1“: %2</source>
+        <translation>“%1”: %2</translation>
     </message>
     <message>
         <source>Hinzufügen …</source>
@@ -1130,6 +1158,14 @@
     <message>
         <source>Exportieren</source>
         <translation>Esporta</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren</source>
+        <translation>Esporta ritaglio</translation>
+    </message>
+    <message>
+        <source>Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>Esporta la selezione di “%1” come nuovo file. L’originale rimane invariato.</translation>
     </message>
     <message>
         <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
@@ -1611,12 +1647,24 @@
         <translation>%1: impossibile creare la cartella di destinazione.</translation>
     </message>
     <message>
+        <source>Die vorhandene Datei konnte nicht in den Papierkorb gelegt werden.</source>
+        <translation>Impossibile spostare il file esistente nel Cestino.</translation>
+    </message>
+    <message>
+        <source>Die vorhandene Datei liegt im Papierkorb, die neue konnte nicht an ihre Stelle gelegt werden: %1</source>
+        <translation>Il file esistente è nel Cestino, ma quello nuovo non ha potuto prenderne il posto: %1</translation>
+    </message>
+    <message>
         <source>Das Bild konnte nicht geschrieben werden.</source>
         <translation>Impossibile scrivere l’immagine.</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden.</source>
         <translation>Impossibile decodificare l’immagine.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) werden hier nicht übernommen.</source>
+        <translation>I metadati (EXIF, XMP, IPTC) qui non vengono mantenuti.</translation>
     </message>
     <message>
         <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
@@ -1637,6 +1685,10 @@
     <message>
         <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
         <translation>%1 non può memorizzare una gain map HDR: l’immagine è stata esportata come SDR.</translation>
+    </message>
+    <message>
+        <source>Bilder aus Archiven und PDF-Dokumenten werden als 8-Bit-sRGB exportiert – HDR und erweiterter Farbraum gehen verloren.</source>
+        <translation>Le immagini da archivi e documenti PDF vengono esportate in sRGB a 8 bit: HDR e gamut esteso vanno persi.</translation>
     </message>
 </context>
 <context>
@@ -3636,6 +3688,14 @@
 </context>
 <context>
     <name>lf::MenuExtras</name>
+    <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>Le singole pagine PDF non possono essere passate ad altre app.</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>L’immagine viene estratta dall’archivio: riprova tra un momento.</translation>
+    </message>
     <message>
         <source>Öffnen mit</source>
         <translation>Apri con</translation>
@@ -5675,6 +5735,14 @@
         <translation>Non disponi dei permessi di lettura per la cartella “%1”, quindi Lumaflip mostra solo il file aperto. Puoi modificare i permessi nel Finder in Archivio → Ottieni informazioni → “Condivisione e permessi”.</translation>
     </message>
     <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>Nessuna cartella o archivio successivo</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>Nessuna cartella o archivio precedente</translation>
+    </message>
+    <message>
         <source>Kein weiterer Ordner mit Bildern</source>
         <translation>Nessun’altra cartella con immagini</translation>
     </message>
@@ -5914,6 +5982,10 @@
         <translation>Ritaglia: trascina un riquadro – Invio salva, Esc annulla</translation>
     </message>
     <message>
+        <source>Der vorige Zuschnitt wird noch gespeichert.</source>
+        <translation>Il ritaglio precedente è ancora in fase di salvataggio.</translation>
+    </message>
+    <message>
         <source>Kein Bildbereich ausgewählt.</source>
         <translation>Nessuna area selezionata.</translation>
     </message>
@@ -5927,8 +5999,36 @@
         <translation>Salva immagine ritagliata con nome</translation>
     </message>
     <message>
+        <source>Wie das Original (*.%1)</source>
+        <translation>Come l’originale (*.%1)</translation>
+    </message>
+    <message>
         <source>Zuschneiden</source>
         <translation>Ritaglia</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon. Ersetzen?</source>
+        <translation>“%1” esiste già. Sostituirlo?</translation>
+    </message>
+    <message>
+        <source>Das zugeschnittene Bild bekommt die Endung des Originals (.%1).</source>
+        <translation>L’immagine ritagliata riceve l’estensione dell’originale (.%1).</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>Sostituisci</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>Impossibile salvare il ritaglio.</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportiert als „%1“</source>
+        <translation>Ritaglio esportato come “%1”</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren …</source>
+        <translation>Esporta ritaglio…</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>

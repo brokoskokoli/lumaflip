@@ -224,3 +224,62 @@ TEST(Export, F_EDIT_04_MaxSizeAndFormatApplied) {
     EXPECT_EQ(QImage(out2).size(), QSize(300, 200));
     EXPECT_FALSE(exporting::exportOne(src, out2, o).isEmpty());
 }
+
+// "Ersetzen" writes the new file first: when the export fails, the old file stays where it
+// is (nothing goes to the trash); when it works, the old file is in the trash and the new
+// one in its place.
+TEST(Export, F_EDIT_04_ReplaceTrashesOnlyAfterTheNewFileIsWritten) {
+    QTemporaryDir dir;
+    ExportTestTrash trash(dir.filePath("trash"));
+    const exporting::Options o = pngOptions();
+    std::atomic_bool cancel{false};
+    const QString existing = dir.filePath("target.png");
+    ASSERT_TRUE(writeBytes(existing, "old"));
+
+    const QString broken = dir.filePath("broken.png");
+    ASSERT_TRUE(writeBytes(broken, "not an image"));
+    exporting::Result r =
+        exporting::run({{broken, existing, ConflictChoice::Replace}}, o, cancel, {}, &trash);
+    EXPECT_EQ(r.failed, 1);
+    EXPECT_TRUE(trash.trashed.isEmpty());
+    EXPECT_EQ(readBytes(existing), QByteArray("old"));
+
+    const QString src = dir.filePath("good.png");
+    ASSERT_TRUE(noisyPattern(QSize(24, 16)).save(src, "PNG"));
+    r = exporting::run({{src, existing, ConflictChoice::Replace}}, o, cancel, {}, &trash);
+    EXPECT_EQ(r.written, 1);
+    EXPECT_EQ(trash.trashed, QStringList{existing});
+    EXPECT_EQ(QImage(existing).size(), QSize(24, 16));
+    for (const QString& name : QDir(dir.path()).entryList(QDir::Files | QDir::Hidden))
+        EXPECT_FALSE(name.startsWith(QLatin1Char('.'))) << name.toStdString(); // no staged file left
+}
+
+// F-EDIT-03 "Zugeschnitten exportieren": the crop rectangle (normalized to the displayed
+// image) is applied before the size limit; an empty crop exports everything.
+TEST(Export, F_EDIT_04_CropRectangleIsExported) {
+    EXPECT_EQ(exporting::cropPixels({}, QSize(40, 30)), QRect(0, 0, 40, 30));
+    EXPECT_EQ(exporting::cropPixels(QRectF(0.25, 0.5, 0.5, 0.5), QSize(40, 30)), QRect(10, 15, 20, 15));
+    EXPECT_EQ(exporting::cropPixels(QRectF(0.9, 0.9, 0.5, 0.5), QSize(10, 10)), QRect(9, 9, 1, 1)); // clipped
+
+    QTemporaryDir dir;
+    const QString src = dir.filePath("quadrants.png");
+    QImage img(80, 60, QImage::Format_RGB32);
+    img.fill(Qt::red);
+    for (int y = 0; y < 30; ++y)
+        for (int x = 40; x < 80; ++x)
+            img.setPixel(x, y, qRgb(0, 0, 255)); // top right quadrant blue
+    ASSERT_TRUE(img.save(src, "PNG"));
+    exporting::Options o = pngOptions();
+    o.crop = QRectF(0.5, 0.0, 0.5, 0.5);
+    const QString out = dir.filePath("crop.png");
+    ASSERT_EQ(exporting::exportOne(src, out, o), QString());
+    const QImage back(out);
+    ASSERT_EQ(back.size(), QSize(40, 30));
+    auto blue = [](QRgb c) { return qBlue(c) > 200 && qRed(c) < 50; };
+    EXPECT_TRUE(blue(back.pixel(0, 0)));
+    EXPECT_TRUE(blue(back.pixel(39, 29)));
+    o.maxLongEdge = 20;
+    const QString small = dir.filePath("crop-small.png");
+    ASSERT_EQ(exporting::exportOne(src, small, o), QString());
+    EXPECT_EQ(QImage(small).size(), QSize(20, 15));
+}

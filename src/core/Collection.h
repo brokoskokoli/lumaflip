@@ -59,7 +59,9 @@ public:
     // of a PDF, listed on a worker (Archive.h) in Finder order of the member paths (PDF: page
     // order) unless a manual sort is chosen. `selectMember` (name inside the container) is
     // shown at once and stays current; else the first image. Entry paths are member paths
-    // (VirtualPath.h). Never watched; insertPath()/renamePath() do not apply.
+    // (VirtualPath.h). insertPath()/renamePath() do not apply. Watched through its folder:
+    // folderContentsChanged() for that folder lists the container again if its size or date
+    // changed (containerContentChanged()).
     // containerFailed() if the container cannot be read or holds no images.
     void openContainer(const QString& containerPath, const QString& selectMember = QString());
     QString containerPath() const; // empty unless a container collection
@@ -215,6 +217,9 @@ signals:
     void treeLimitReached(int images);
     // F-OPEN-10: the archive/PDF cannot be read or holds no images (`error`, user facing).
     void containerFailed(const QString& containerPath, const QString& error);
+    // F-OPEN-10: the container was rewritten (size or date changed) and listed again: images
+    // decoded from the old one are outdated.
+    void containerContentChanged(const QString& containerPath);
 
 private:
     struct Private;
@@ -234,6 +239,10 @@ void sortEntries(QVector<FileEntry>& entries, const SortSpec& spec, const NameCo
 // of `folderPath` in Finder name order that contains images; empty if there is none.
 // Blocking (lists folders): call on a worker thread.
 QString siblingImageFolder(const QString& folderPath, int direction, const NameCollator* collator);
+// F-OPEN-10: the same for an archive or PDF browsed like a folder: the next/previous sibling
+// that is a folder with images or another archive/PDF (not opened to check), in Finder name
+// order. Blocking: call on a worker thread.
+QString siblingFolderOrContainer(const QString& path, int direction, const NameCollator* collator);
 // F-OPEN-08: order of folders in a recursive collection: path-wise in Finder name order,
 // a folder before its subfolders (depth-first, like an expanded Finder list view).
 int compareFolderPaths(const QString& a, const QString& b, const NameCollator& collator);

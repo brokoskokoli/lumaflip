@@ -94,8 +94,8 @@
         <translation>找不到：%1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>影像 (%1);;所有檔案 (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>影像、封存檔和 PDF 文件 (%1);;影像 (%2);;封存檔和 PDF 文件 (%3);;所有檔案 (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -177,6 +177,14 @@
     <message>
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>封存檔中沒有影像。</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>封存檔受密碼保護 – 不支援加密的封存檔。</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>封存檔過大，無法從中讀取此影像。</translation>
     </message>
 </context>
 <context>
@@ -435,10 +443,6 @@
         <translation>此版本不支援 JPEG 檔案的無損裁切。</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
-        <translation>壓縮檔與 PDF 文件中的影像無法裁切後儲存——請使用「輸出」。</translation>
-    </message>
-    <message>
         <source>Die Datei existiert nicht mehr.</source>
         <translation>檔案已不存在。</translation>
     </message>
@@ -447,12 +451,16 @@
         <translation>無法辨識要儲存的檔案格式。</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
-        <translation>RAW 檔案永遠不會被變更。若需裁切後的副本，請使用「輸出」。</translation>
+        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>封存檔和 PDF 文件中的影像不會被更改。可將選取範圍輸出為新檔案。</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
-        <translation>動畫或多頁檔案無法裁切後儲存。</translation>
+        <source>RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>RAW 檔永遠不會被更改。可將選取範圍輸出為新檔案。</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
+        <translation>動畫或多頁檔案無法裁切後儲存。可將第一張影像的選取範圍輸出為新檔案。</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
@@ -465,6 +473,10 @@
     <message>
         <source>In „%1“ kann nicht geschrieben werden.</source>
         <translation>無法寫入「%1」。</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>「%1」已存在。</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
@@ -495,12 +507,20 @@
         <translation>重新編碼後影像將無法完全一致（色彩模型、位元深度、調色盤或透明度會改變）。</translation>
     </message>
     <message>
+        <source>Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.</source>
+        <translation>此處無法寫入此格式。可將選取範圍以其他格式輸出。</translation>
+    </message>
+    <message>
         <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
         <translation>此格式為破壞性壓縮。只能透過重新編碼影像來儲存裁切——這會損失些許畫質。</translation>
     </message>
     <message>
         <source>Zusatzbilder (%1) gehen dabei verloren.</source>
         <translation>附加影像（%1）將會遺失。</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.</source>
+        <translation>重新編碼時會遺失後設資料（EXIF、XMP、IPTC）。</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
@@ -670,12 +690,20 @@
 <context>
     <name>lf::CustomActionsEditor</name>
     <message>
+        <source>%1 ist schon belegt (%2); im Bildfenster hat die eigene Aktion Vorrang.</source>
+        <translation>%1 已被使用（%2）；在影像視窗中以自訂動作優先。</translation>
+    </message>
+    <message>
         <source>Eigene Aktion</source>
         <translation>自訂動作</translation>
     </message>
     <message>
         <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
         <translation>「捷徑」App 中某個捷徑的名稱；它會收到該檔案作為輸入。</translation>
+    </message>
+    <message>
+        <source>Programm mit Argumenten, z. B. &quot;C:\Tools\tool.exe&quot; --flag; die Datei wird als eigenes Argument angehängt und nie über cmd.exe gestartet. Batch-Dateien (.bat, .cmd) sind nicht erlaubt.</source>
+        <translation>含參數的程式，例如 &quot;C:\Tools\tool.exe&quot; --flag；檔案會作為獨立參數附加，絕不透過 cmd.exe 啟動。不允許使用批次檔（.bat、.cmd）。</translation>
     </message>
     <message>
         <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
@@ -714,8 +742,8 @@
         <translation>按鍵</translation>
     </message>
     <message>
-        <source>„%1“: %2 ist schon belegt (%3).</source>
-        <translation>「%1」：%2 已被使用（%3）。</translation>
+        <source>„%1“: %2</source>
+        <translation>「%1」：%2</translation>
     </message>
     <message>
         <source>Hinzufügen …</source>
@@ -1122,6 +1150,14 @@
     <message>
         <source>Exportieren</source>
         <translation>輸出</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren</source>
+        <translation>裁切後輸出</translation>
+    </message>
+    <message>
+        <source>Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>將「%1」的選取範圍輸出為新檔案。原始檔保持不變。</translation>
     </message>
     <message>
         <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
@@ -1599,12 +1635,24 @@
         <translation>%1：無法建立目標檔案夾。</translation>
     </message>
     <message>
+        <source>Die vorhandene Datei konnte nicht in den Papierkorb gelegt werden.</source>
+        <translation>無法將現有檔案移到垃圾桶。</translation>
+    </message>
+    <message>
+        <source>Die vorhandene Datei liegt im Papierkorb, die neue konnte nicht an ihre Stelle gelegt werden: %1</source>
+        <translation>現有檔案已在垃圾桶中，但無法將新檔案放到其位置：%1</translation>
+    </message>
+    <message>
         <source>Das Bild konnte nicht geschrieben werden.</source>
         <translation>無法寫入影像。</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden.</source>
         <translation>無法解碼影像。</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) werden hier nicht übernommen.</source>
+        <translation>此處不會保留後設資料（EXIF、XMP、IPTC）。</translation>
     </message>
     <message>
         <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
@@ -1625,6 +1673,10 @@
     <message>
         <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
         <translation>%1 無法儲存 HDR 增益圖——影像已輸出為 SDR。</translation>
+    </message>
+    <message>
+        <source>Bilder aus Archiven und PDF-Dokumenten werden als 8-Bit-sRGB exportiert – HDR und erweiterter Farbraum gehen verloren.</source>
+        <translation>封存檔和 PDF 文件中的影像會以 8 位元 sRGB 輸出——HDR 和廣色域會遺失。</translation>
     </message>
 </context>
 <context>
@@ -3624,6 +3676,14 @@
 </context>
 <context>
     <name>lf::MenuExtras</name>
+    <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>單獨的 PDF 頁面無法傳遞給其他 App。</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>正在從封存檔解壓縮影像 – 請稍後再試一次。</translation>
+    </message>
     <message>
         <source>Öffnen mit</source>
         <translation>打開檔案的應用程式</translation>
@@ -5652,6 +5712,14 @@
         <translation>你沒有檔案夾「%1」的讀取權限，因此 Lumaflip 只會顯示所打開的檔案。你可以在 Finder 的「檔案」→「取得資訊」→「共享與權限」中更改權限。</translation>
     </message>
     <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>沒有下一個檔案夾或封存檔</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>沒有上一個檔案夾或封存檔</translation>
+    </message>
+    <message>
         <source>Kein weiterer Ordner mit Bildern</source>
         <translation>沒有下一個含影像的檔案夾</translation>
     </message>
@@ -5889,6 +5957,10 @@
         <translation>裁切：拖移出邊框——Enter 儲存，Esc 取消</translation>
     </message>
     <message>
+        <source>Der vorige Zuschnitt wird noch gespeichert.</source>
+        <translation>上一次的裁切仍在儲存中。</translation>
+    </message>
+    <message>
         <source>Kein Bildbereich ausgewählt.</source>
         <translation>未選取範圍。</translation>
     </message>
@@ -5902,8 +5974,36 @@
         <translation>將裁切後的影像儲存為</translation>
     </message>
     <message>
+        <source>Wie das Original (*.%1)</source>
+        <translation>與原始檔相同（*.%1）</translation>
+    </message>
+    <message>
         <source>Zuschneiden</source>
         <translation>裁切</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon. Ersetzen?</source>
+        <translation>「%1」已存在。要取代嗎？</translation>
+    </message>
+    <message>
+        <source>Das zugeschnittene Bild bekommt die Endung des Originals (.%1).</source>
+        <translation>裁切後的影像會使用原始檔的副檔名（.%1）。</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>取代</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>無法儲存裁切。</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportiert als „%1“</source>
+        <translation>裁切的拷貝已輸出為「%1」</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren …</source>
+        <translation>裁切後輸出…</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>
