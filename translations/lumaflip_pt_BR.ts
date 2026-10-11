@@ -446,10 +446,6 @@
         <translation>O recorte sem perdas de arquivos JPEG não está disponível nesta versão.</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
-        <translation>Imagens em arquivos compactados e documentos PDF não podem ser salvas recortadas – use “Exportar”.</translation>
-    </message>
-    <message>
         <source>Die Datei existiert nicht mehr.</source>
         <translation>O arquivo não existe mais.</translation>
     </message>
@@ -458,12 +454,16 @@
         <translation>O formato de arquivo não é reconhecido para salvar.</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
-        <translation>Arquivos RAW nunca são alterados. Para uma cópia recortada, use “Exportar”.</translation>
+        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>Imagens em arquivos compactados e documentos PDF não são alteradas. A seleção pode ser exportada como um novo arquivo.</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
-        <translation>Arquivos animados ou com várias páginas não podem ser salvos recortados.</translation>
+        <source>RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>Arquivos RAW nunca são alterados. A seleção pode ser exportada como um novo arquivo.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
+        <translation>Arquivos animados ou com várias páginas não podem ser salvos recortados. A seleção da primeira imagem pode ser exportada como um novo arquivo.</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
@@ -476,6 +476,10 @@
     <message>
         <source>In „%1“ kann nicht geschrieben werden.</source>
         <translation>Não é possível gravar em “%1”.</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>“%1” já existe.</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
@@ -506,12 +510,20 @@
         <translation>Ao recodificar, a imagem não ficaria exatamente igual (modelo de cor, profundidade de bits, paleta ou transparência mudariam).</translation>
     </message>
     <message>
+        <source>Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.</source>
+        <translation>Este formato não pode ser gravado aqui. A seleção pode ser exportada em outro formato.</translation>
+    </message>
+    <message>
         <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
         <translation>Este formato tem perdas. O recorte só pode ser salvo recodificando a imagem – perde-se um pouco de qualidade.</translation>
     </message>
     <message>
         <source>Zusatzbilder (%1) gehen dabei verloren.</source>
         <translation>As imagens adicionais (%1) são perdidas.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.</source>
+        <translation>Os metadados (EXIF, XMP, IPTC) são perdidos ao recodificar.</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
@@ -686,12 +698,20 @@
 <context>
     <name>lf::CustomActionsEditor</name>
     <message>
+        <source>%1 ist schon belegt (%2); im Bildfenster hat die eigene Aktion Vorrang.</source>
+        <translation>%1 já está em uso (%2); na janela da imagem, a ação personalizada tem prioridade.</translation>
+    </message>
+    <message>
         <source>Eigene Aktion</source>
         <translation>Ação personalizada</translation>
     </message>
     <message>
         <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
         <translation>Nome de um atalho do app Atalhos; ele recebe o arquivo como entrada.</translation>
+    </message>
+    <message>
+        <source>Programm mit Argumenten, z. B. &quot;C:\Tools\tool.exe&quot; --flag; die Datei wird als eigenes Argument angehängt und nie über cmd.exe gestartet. Batch-Dateien (.bat, .cmd) sind nicht erlaubt.</source>
+        <translation>Programa com argumentos, por ex. &quot;C:\Tools\tool.exe&quot; --flag; o arquivo é acrescentado como argumento separado e nunca iniciado pelo cmd.exe. Arquivos em lote (.bat, .cmd) não são permitidos.</translation>
     </message>
     <message>
         <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
@@ -730,8 +750,8 @@
         <translation>Tecla</translation>
     </message>
     <message>
-        <source>„%1“: %2 ist schon belegt (%3).</source>
-        <translation>“%1”: %2 já está em uso (%3).</translation>
+        <source>„%1“: %2</source>
+        <translation>“%1”: %2</translation>
     </message>
     <message>
         <source>Hinzufügen …</source>
@@ -1138,6 +1158,14 @@
     <message>
         <source>Exportieren</source>
         <translation>Exportar</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren</source>
+        <translation>Exportar recortado</translation>
+    </message>
+    <message>
+        <source>Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>Exportar a seleção de “%1” como um novo arquivo. O original permanece inalterado.</translation>
     </message>
     <message>
         <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
@@ -1619,12 +1647,24 @@
         <translation>%1: não é possível criar a pasta de destino.</translation>
     </message>
     <message>
+        <source>Die vorhandene Datei konnte nicht in den Papierkorb gelegt werden.</source>
+        <translation>Não foi possível mover o arquivo existente para a Lixeira.</translation>
+    </message>
+    <message>
+        <source>Die vorhandene Datei liegt im Papierkorb, die neue konnte nicht an ihre Stelle gelegt werden: %1</source>
+        <translation>O arquivo existente está na Lixeira, mas o novo não pôde ser colocado no lugar dele: %1</translation>
+    </message>
+    <message>
         <source>Das Bild konnte nicht geschrieben werden.</source>
         <translation>Não foi possível gravar a imagem.</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden.</source>
         <translation>Não foi possível decodificar a imagem.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) werden hier nicht übernommen.</source>
+        <translation>Os metadados (EXIF, XMP, IPTC) não são mantidos aqui.</translation>
     </message>
     <message>
         <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
@@ -1645,6 +1685,10 @@
     <message>
         <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
         <translation>%1 não pode armazenar um mapa de ganho HDR – a imagem foi exportada como SDR.</translation>
+    </message>
+    <message>
+        <source>Bilder aus Archiven und PDF-Dokumenten werden als 8-Bit-sRGB exportiert – HDR und erweiterter Farbraum gehen verloren.</source>
+        <translation>Imagens de arquivos compactados e documentos PDF são exportadas como sRGB de 8 bits – HDR e gama ampla são perdidos.</translation>
     </message>
 </context>
 <context>
@@ -5926,6 +5970,10 @@
         <translation>Recortar: arraste um quadro – Enter salva, Esc cancela</translation>
     </message>
     <message>
+        <source>Der vorige Zuschnitt wird noch gespeichert.</source>
+        <translation>O recorte anterior ainda está sendo salvo.</translation>
+    </message>
+    <message>
         <source>Kein Bildbereich ausgewählt.</source>
         <translation>Nenhuma área selecionada.</translation>
     </message>
@@ -5939,8 +5987,36 @@
         <translation>Salvar imagem recortada como</translation>
     </message>
     <message>
+        <source>Wie das Original (*.%1)</source>
+        <translation>Igual ao original (*.%1)</translation>
+    </message>
+    <message>
         <source>Zuschneiden</source>
         <translation>Recortar</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon. Ersetzen?</source>
+        <translation>“%1” já existe. Substituir?</translation>
+    </message>
+    <message>
+        <source>Das zugeschnittene Bild bekommt die Endung des Originals (.%1).</source>
+        <translation>A imagem recortada recebe a extensão do original (.%1).</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>Substituir</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>Não foi possível salvar o recorte.</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportiert als „%1“</source>
+        <translation>Recorte exportado como “%1”</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren …</source>
+        <translation>Exportar recortado…</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>

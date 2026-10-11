@@ -2,6 +2,7 @@
 #include "QuickFilterBar.h"
 
 #include "Application.h"
+#include "CustomActionsUi.h"
 #include "ViewerWindow.h"
 #include "core/Collection.h"
 #include "core/InputBindings.h"
@@ -142,6 +143,8 @@ bool QuickFilterBar::maybeStart(const QKeyEvent* event, bool ratingKeysActive) {
     ev.inCullingMode = ratingKeysActive;
     if (m_app.bindings().resolve(ev) != Action::None)
         return false; // the key has a meaning (shortcut or input slot)
+    if (CustomActionsManager::instance().hasKey(ev.key, ev.modifiers))
+        return false; // F-FILE-10: a custom action's key (⇧K …)
     open(t);
     return true;
 }

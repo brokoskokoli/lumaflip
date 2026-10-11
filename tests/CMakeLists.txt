@@ -75,6 +75,14 @@ foreach(_lib HEIF:LIBHEIF JXL:LIBJXL EXR:OPENEXR)
     target_compile_definitions(lf_unit_tests PRIVATE LF_TEST_HAVE_${_define}=0)
   endif()
 endforeach()
+# Lossless crop tests (test_m4_crop.cpp) encode JPEG variants (4:4:4, 4:2:2, progressive,
+# restart markers) with the TurboJPEG library the core uses. Only the header: the library
+# comes with lf_core (linking it here again lets its bundled zlib shadow the real one).
+get_target_property(_lf_core_defs lf_core COMPILE_DEFINITIONS)
+if("LF_HAVE_TURBOJPEG=1" IN_LIST _lf_core_defs) # found and new enough (tj3 API, src/CMakeLists.txt)
+  target_include_directories(lf_unit_tests SYSTEM PRIVATE ${LF_TURBOJPEG_INCLUDE})
+  target_compile_definitions(lf_unit_tests PRIVATE LF_TEST_HAVE_TURBOJPEG=1)
+endif()
 gtest_discover_tests(lf_unit_tests DISCOVERY_MODE PRE_TEST PROPERTIES LABELS unit)
 
 if(NOT LF_BUILD_UI)

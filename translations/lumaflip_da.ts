@@ -446,10 +446,6 @@
         <translation>Tabsfri beskæring af JPEG-filer er ikke tilgængelig i denne version.</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
-        <translation>Billeder i arkiver og PDF-dokumenter kan ikke gemmes beskåret – brug ”Eksportér”.</translation>
-    </message>
-    <message>
         <source>Die Datei existiert nicht mehr.</source>
         <translation>Arkivet findes ikke længere.</translation>
     </message>
@@ -458,12 +454,16 @@
         <translation>Arkivformatet genkendes ikke, så der kan ikke gemmes.</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
-        <translation>RAW-filer ændres aldrig. Brug ”Eksportér” til en beskåret kopi.</translation>
+        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>Billeder i arkiver og PDF-dokumenter ændres ikke. Markeringen kan eksporteres som en ny fil.</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
-        <translation>Animerede filer og filer med flere sider kan ikke gemmes beskåret.</translation>
+        <source>RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>RAW-filer ændres aldrig. Markeringen kan eksporteres som en ny fil.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
+        <translation>Animerede filer eller filer med flere sider kan ikke gemmes beskåret. Markeringen af det første billede kan eksporteres som en ny fil.</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
@@ -476,6 +476,10 @@
     <message>
         <source>In „%1“ kann nicht geschrieben werden.</source>
         <translation>Der kan ikke skrives i ”%1”.</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>”%1” findes allerede.</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
@@ -506,12 +510,20 @@
         <translation>Ved genkodning ville billedet ikke forblive helt identisk (farvemodel, bitdybde, palet eller gennemsigtighed ville ændres).</translation>
     </message>
     <message>
+        <source>Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.</source>
+        <translation>Dette format kan ikke skrives her. Markeringen kan eksporteres i et andet format.</translation>
+    </message>
+    <message>
         <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
         <translation>Dette format er med tab. Beskæringen kan kun gemmes ved at genkode billedet – derved går lidt billedkvalitet tabt.</translation>
     </message>
     <message>
         <source>Zusatzbilder (%1) gehen dabei verloren.</source>
         <translation>Ekstra billeder (%1) går tabt.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.</source>
+        <translation>Metadata (EXIF, XMP, IPTC) går tabt ved genkodning.</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
@@ -686,12 +698,20 @@
 <context>
     <name>lf::CustomActionsEditor</name>
     <message>
+        <source>%1 ist schon belegt (%2); im Bildfenster hat die eigene Aktion Vorrang.</source>
+        <translation>%1 er allerede i brug (%2); i billedvinduet har den egne handling forrang.</translation>
+    </message>
+    <message>
         <source>Eigene Aktion</source>
         <translation>Egen handling</translation>
     </message>
     <message>
         <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
         <translation>Navnet på en genvej fra appen Genveje; den får filen som input.</translation>
+    </message>
+    <message>
+        <source>Programm mit Argumenten, z. B. &quot;C:\Tools\tool.exe&quot; --flag; die Datei wird als eigenes Argument angehängt und nie über cmd.exe gestartet. Batch-Dateien (.bat, .cmd) sind nicht erlaubt.</source>
+        <translation>Program med argumenter, f.eks. &quot;C:\Tools\tool.exe&quot; --flag; filen tilføjes som et separat argument og startes aldrig via cmd.exe. Batchfiler (.bat, .cmd) er ikke tilladt.</translation>
     </message>
     <message>
         <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
@@ -730,8 +750,8 @@
         <translation>Tast</translation>
     </message>
     <message>
-        <source>„%1“: %2 ist schon belegt (%3).</source>
-        <translation>“%1”: %2 er allerede i brug (%3).</translation>
+        <source>„%1“: %2</source>
+        <translation>”%1”: %2</translation>
     </message>
     <message>
         <source>Hinzufügen …</source>
@@ -1138,6 +1158,14 @@
     <message>
         <source>Exportieren</source>
         <translation>Eksportér</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren</source>
+        <translation>Eksportér beskåret</translation>
+    </message>
+    <message>
+        <source>Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>Eksportér markeringen af ”%1” som en ny fil. Originalen forbliver uændret.</translation>
     </message>
     <message>
         <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
@@ -1619,12 +1647,24 @@
         <translation>%1: Destinationsmappen kan ikke oprettes.</translation>
     </message>
     <message>
+        <source>Die vorhandene Datei konnte nicht in den Papierkorb gelegt werden.</source>
+        <translation>Den eksisterende fil kunne ikke lægges i papirkurven.</translation>
+    </message>
+    <message>
+        <source>Die vorhandene Datei liegt im Papierkorb, die neue konnte nicht an ihre Stelle gelegt werden: %1</source>
+        <translation>Den eksisterende fil ligger i papirkurven, men den nye kunne ikke lægges i stedet: %1</translation>
+    </message>
+    <message>
         <source>Das Bild konnte nicht geschrieben werden.</source>
         <translation>Billedet kunne ikke skrives.</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden.</source>
         <translation>Billedet kunne ikke afkodes.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) werden hier nicht übernommen.</source>
+        <translation>Metadata (EXIF, XMP, IPTC) overføres ikke her.</translation>
     </message>
     <message>
         <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
@@ -1645,6 +1685,10 @@
     <message>
         <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
         <translation>%1 kan ikke gemme et HDR-gainmap – billedet blev eksporteret som SDR.</translation>
+    </message>
+    <message>
+        <source>Bilder aus Archiven und PDF-Dokumenten werden als 8-Bit-sRGB exportiert – HDR und erweiterter Farbraum gehen verloren.</source>
+        <translation>Billeder fra arkiver og PDF-dokumenter eksporteres som 8-bit sRGB – HDR og udvidet farveområde går tabt.</translation>
     </message>
 </context>
 <context>
@@ -5926,6 +5970,10 @@
         <translation>Beskær: træk en ramme – Retur gemmer, Esc annullerer</translation>
     </message>
     <message>
+        <source>Der vorige Zuschnitt wird noch gespeichert.</source>
+        <translation>Den forrige beskæring gemmes stadig.</translation>
+    </message>
+    <message>
         <source>Kein Bildbereich ausgewählt.</source>
         <translation>Intet område markeret.</translation>
     </message>
@@ -5939,8 +5987,36 @@
         <translation>Gem beskåret billede som</translation>
     </message>
     <message>
+        <source>Wie das Original (*.%1)</source>
+        <translation>Som originalen (*.%1)</translation>
+    </message>
+    <message>
         <source>Zuschneiden</source>
         <translation>Beskær</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon. Ersetzen?</source>
+        <translation>”%1” findes allerede. Erstat?</translation>
+    </message>
+    <message>
+        <source>Das zugeschnittene Bild bekommt die Endung des Originals (.%1).</source>
+        <translation>Det beskårne billede får originalens filtypenavn (.%1).</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>Erstat</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>Beskæringen kunne ikke gemmes.</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportiert als „%1“</source>
+        <translation>Beskåret kopi eksporteret som ”%1”</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren …</source>
+        <translation>Eksportér beskåret…</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>

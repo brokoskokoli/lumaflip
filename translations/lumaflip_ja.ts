@@ -443,10 +443,6 @@
         <translation>このバージョンでは JPEG ファイルのロスレス切り取りは使用できません。</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
-        <translation>アーカイブや PDF 書類内の画像は切り取って保存できません。「書き出す」を使ってください。</translation>
-    </message>
-    <message>
         <source>Die Datei existiert nicht mehr.</source>
         <translation>ファイルはもう存在しません。</translation>
     </message>
@@ -455,12 +451,16 @@
         <translation>保存用のファイルフォーマットを認識できません。</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
-        <translation>RAW ファイルは変更されません。切り取ったコピーには「書き出す」を使ってください。</translation>
+        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>アーカイブや PDF 書類内の画像は変更されません。選択範囲は新しいファイルとして書き出せます。</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
-        <translation>アニメーションや複数ページのファイルは切り取って保存できません。</translation>
+        <source>RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>RAW ファイルは変更されません。選択範囲は新しいファイルとして書き出せます。</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
+        <translation>アニメーションや複数ページのファイルは切り取って保存できません。最初の画像の選択範囲は新しいファイルとして書き出せます。</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
@@ -473,6 +473,10 @@
     <message>
         <source>In „%1“ kann nicht geschrieben werden.</source>
         <translation>「%1」に書き込めません。</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>「%1」はすでに存在します。</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
@@ -503,12 +507,20 @@
         <translation>再エンコードすると画像が完全には同じになりません（カラーモデル、ビット深度、パレット、透明度が変わります）。</translation>
     </message>
     <message>
+        <source>Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.</source>
+        <translation>このフォーマットはここでは書き込めません。選択範囲は別のフォーマットで書き出せます。</translation>
+    </message>
+    <message>
         <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
         <translation>このフォーマットは非可逆です。切り取りは画像を再エンコードしないと保存できず、画質が少し低下します。</translation>
     </message>
     <message>
         <source>Zusatzbilder (%1) gehen dabei verloren.</source>
         <translation>追加画像（%1）は失われます。</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.</source>
+        <translation>再エンコードするとメタデータ（EXIF、XMP、IPTC）は失われます。</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
@@ -678,12 +690,20 @@
 <context>
     <name>lf::CustomActionsEditor</name>
     <message>
+        <source>%1 ist schon belegt (%2); im Bildfenster hat die eigene Aktion Vorrang.</source>
+        <translation>%1 はすでに使用されています（%2）。画像ウインドウではカスタムアクションが優先されます。</translation>
+    </message>
+    <message>
         <source>Eigene Aktion</source>
         <translation>カスタムアクション</translation>
     </message>
     <message>
         <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
         <translation>ショートカットAppのショートカット名。ファイルが入力として渡されます。</translation>
+    </message>
+    <message>
+        <source>Programm mit Argumenten, z. B. &quot;C:\Tools\tool.exe&quot; --flag; die Datei wird als eigenes Argument angehängt und nie über cmd.exe gestartet. Batch-Dateien (.bat, .cmd) sind nicht erlaubt.</source>
+        <translation>引数付きのプログラム（例: &quot;C:\Tools\tool.exe&quot; --flag）。ファイルは個別の引数として追加され、cmd.exe 経由で起動されることはありません。バッチファイル（.bat、.cmd）は使用できません。</translation>
     </message>
     <message>
         <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
@@ -722,8 +742,8 @@
         <translation>キー</translation>
     </message>
     <message>
-        <source>„%1“: %2 ist schon belegt (%3).</source>
-        <translation>「%1」: %2 はすでに使われています（%3）。</translation>
+        <source>„%1“: %2</source>
+        <translation>「%1」: %2</translation>
     </message>
     <message>
         <source>Hinzufügen …</source>
@@ -1130,6 +1150,14 @@
     <message>
         <source>Exportieren</source>
         <translation>書き出す</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren</source>
+        <translation>切り取って書き出す</translation>
+    </message>
+    <message>
+        <source>Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>「%1」の選択範囲を新しいファイルとして書き出します。オリジナルは変更されません。</translation>
     </message>
     <message>
         <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
@@ -1607,12 +1635,24 @@
         <translation>%1: 保存先フォルダを作成できません。</translation>
     </message>
     <message>
+        <source>Die vorhandene Datei konnte nicht in den Papierkorb gelegt werden.</source>
+        <translation>既存のファイルをゴミ箱に入れられませんでした。</translation>
+    </message>
+    <message>
+        <source>Die vorhandene Datei liegt im Papierkorb, die neue konnte nicht an ihre Stelle gelegt werden: %1</source>
+        <translation>既存のファイルはゴミ箱に入っていますが、新しいファイルをその場所に置けませんでした: %1</translation>
+    </message>
+    <message>
         <source>Das Bild konnte nicht geschrieben werden.</source>
         <translation>画像を書き込めませんでした。</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden.</source>
         <translation>画像をデコードできませんでした。</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) werden hier nicht übernommen.</source>
+        <translation>ここではメタデータ（EXIF、XMP、IPTC）は引き継がれません。</translation>
     </message>
     <message>
         <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
@@ -1633,6 +1673,10 @@
     <message>
         <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
         <translation>%1 は HDR ゲインマップを保存できません。画像は SDR として書き出されました。</translation>
+    </message>
+    <message>
+        <source>Bilder aus Archiven und PDF-Dokumenten werden als 8-Bit-sRGB exportiert – HDR und erweiterter Farbraum gehen verloren.</source>
+        <translation>アーカイブや PDF 書類の画像は 8 ビット sRGB で書き出されます。HDR と広色域は失われます。</translation>
     </message>
 </context>
 <context>
@@ -5901,6 +5945,10 @@
         <translation>切り取り: 枠をドラッグ – Enter で保存、Esc で中止</translation>
     </message>
     <message>
+        <source>Der vorige Zuschnitt wird noch gespeichert.</source>
+        <translation>前回の切り取りをまだ保存中です。</translation>
+    </message>
+    <message>
         <source>Kein Bildbereich ausgewählt.</source>
         <translation>範囲が選択されていません。</translation>
     </message>
@@ -5914,8 +5962,36 @@
         <translation>切り取った画像を別名で保存</translation>
     </message>
     <message>
+        <source>Wie das Original (*.%1)</source>
+        <translation>オリジナルと同じ（*.%1）</translation>
+    </message>
+    <message>
         <source>Zuschneiden</source>
         <translation>切り取り</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon. Ersetzen?</source>
+        <translation>「%1」はすでに存在します。置き換えますか？</translation>
+    </message>
+    <message>
+        <source>Das zugeschnittene Bild bekommt die Endung des Originals (.%1).</source>
+        <translation>切り取った画像にはオリジナルの拡張子（.%1）が付きます。</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>置き換える</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>切り取りを保存できませんでした。</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportiert als „%1“</source>
+        <translation>切り取った画像を「%1」として書き出しました</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren …</source>
+        <translation>切り取って書き出す…</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>

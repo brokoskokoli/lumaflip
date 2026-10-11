@@ -2,6 +2,7 @@
 #include "CustomActions.h"
 
 #include "CommandLine.h"
+#include "InputBindings.h"
 #include "Settings.h"
 
 #include <QCoreApplication>
@@ -13,6 +14,8 @@
 #include <QProcess>
 #include <QTimer>
 #include <QUuid>
+
+#include <algorithm>
 
 #ifdef Q_OS_UNIX
 #include <csignal>
@@ -118,6 +121,49 @@ QString validate(const CustomAction& a) {
             "(powershell -File Skript.ps1).");
 #endif
     return {};
+}
+
+bool matchesKey(const CustomAction& action, int key, Qt::KeyboardModifiers modifiers) {
+    if (action.keys.count() != 1 || key == 0 || key == Qt::Key_unknown)
+        return false;
+    constexpr Qt::KeyboardModifiers kMods =
+        Qt::ShiftModifier | Qt::ControlModifier | Qt::AltModifier | Qt::MetaModifier;
+    const Qt::KeyboardModifiers mods = modifiers & kMods;
+    const QKeyCombination bound(action.keys[0].keyboardModifiers() & kMods, action.keys[0].key());
+    if (bound == QKeyCombination(mods, Qt::Key(key)))
+        return true;
+    const bool shiftedSymbol =
+        (mods & Qt::ShiftModifier) && key >= 0x20 && key < 0x7f && !(key >= Qt::Key_A && key <= Qt::Key_Z);
+    return shiftedSymbol && bound == QKeyCombination(mods & ~Qt::ShiftModifier, Qt::Key(key));
+}
+
+QStringList bindingConflicts(const QKeySequence& keys, const InputBindings& bindings) {
+    QStringList out;
+    if (keys.count() != 1)
+        return out;
+    InputEvent ev;
+    ev.kind = InputKind::Key;
+    ev.key = keys[0].key();
+    ev.modifiers = keys[0].keyboardModifiers();
+    for (bool zoomed : {false, true})
+        for (bool culling : {false, true}) {
+            ev.zoomed = zoomed;
+            ev.inCullingMode = culling;
+            const Action a = bindings.resolve(ev);
+            if (a != Action::None && !out.contains(actionLabel(a)))
+                out << actionLabel(a);
+        }
+    return out;
+}
+
+QList<CustomAction> withConfirmationFrom(QList<CustomAction> imported, const QList<CustomAction>& current) {
+    for (CustomAction& a : imported) {
+        const bool known = std::any_of(current.cbegin(), current.cend(), [&](const CustomAction& c) {
+            return c.confirmed && c.id == a.id && c.kind == a.kind && c.command == a.command;
+        });
+        a.confirmed = a.confirmed && known;
+    }
+    return imported;
 }
 
 QStringList splitCommand(const QString& command) {

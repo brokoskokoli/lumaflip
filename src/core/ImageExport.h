@@ -6,7 +6,9 @@
 // CGImageDestinationCopyTypeIdentifiers; JPEG XL is decode-only there and not offered).
 // Options: quality, maximum long edge, metadata (keep / without GPS / none), color space
 // (keep / sRGB / Display P3), HDR (keep the gain map where the format supports it / SDR
-// tone-mapped), file name pattern ("{name}-export"), target folder.
+// tone-mapped), file name pattern ("{name}-export"), target folder, and a crop rectangle
+// ("Zugeschnitten exportieren" from the crop mode, F-EDIT-03: RAW, animations, archive
+// members and formats that cannot be written in place get a cropped copy this way).
 //
 // The source is never changed or overwritten: names that would hit the source get the
 // "Beide behalten" treatment; other existing files are handled with the F-FILE-11 choice
@@ -19,6 +21,9 @@
 
 #include "FileBatch.h" // ConflictChoice
 
+#include <QRect>
+#include <QRectF>
+#include <QSize>
 #include <QString>
 #include <QStringList>
 #include <QVector>
@@ -63,7 +68,14 @@ struct Options {
     HdrMode hdr = HdrMode::Keep;
     QString pattern = QStringLiteral("{name}-export");
     QString folder; // empty: next to the source (archives/PDF: next to the container)
+    // Part of the image to export, normalized to the displayed image (EXIF orientation
+    // applied; 0..1 in both axes). Empty: all of it. Not stored in the settings.
+    QRectF crop;
 };
+
+// The pixel rectangle of `crop` (normalized, see Options::crop) in an image of the displayed
+// size `displayed`; the whole image for an empty or invalid crop. Never empty for a valid size.
+QRect cropPixels(const QRectF& crop, QSize displayed);
 
 QString metadataModeId(MetadataMode m); // "all", "noGps", "none"
 MetadataMode metadataModeFromId(const QString& id);
@@ -104,7 +116,7 @@ struct Result {
 };
 using Progress = std::function<void(int done, int total, const QString& current)>;
 // Worker thread. `trash` puts replaced files into the trash (nullptr: Replace acts like
-// KeepBoth).
+// KeepBoth); the new file is written first, the old one goes to the trash only after that.
 Result run(const QVector<Item>& items, const Options& options, const std::atomic_bool& cancel,
            const Progress& progress, TrashService* trash);
 // One image (no conflict handling): writes `target` (must not exist). Empty = success.

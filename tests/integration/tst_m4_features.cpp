@@ -455,6 +455,50 @@ private slots:
         CustomActionsManager::instance().setConfirmForTesting({});
         customactions::save({});
     }
+
+    // Covers: F-FILE-10 (keys without ⌘/⌃ - F5, K, ⇧K - run the action in the viewer window;
+    // K is also an app shortcut: the custom action wins there; ⇧K has no app meaning and must
+    // not open the name filter, F-NAV-08)
+    void F_FILE_10_customActionOnAPlainKey() {
+#ifdef Q_OS_WIN
+        QSKIP("POSIX shell command (Windows: test_windows_platform.cpp)");
+#endif
+        {
+            QFile f(path(QStringLiteral("plain.png")));
+            QVERIFY(f.open(QIODevice::WriteOnly));
+            f.write(png(80, 60, Qt::red));
+        }
+        auto action = [](const char* id, const QKeySequence& keys) {
+            CustomAction a;
+            a.id = QString::fromLatin1(id);
+            a.name = QString::fromLatin1(id);
+            a.command = QStringLiteral("printf x >> \"$(dirname \"$1\")/%1.txt\"").arg(a.id);
+            a.keys = keys;
+            a.confirmed = true;
+            return a;
+        };
+        customactions::save({action("f5", QKeySequence(Qt::Key_F5)), action("k", QKeySequence(Qt::Key_K)),
+                             action("shiftk", QKeySequence(Qt::ShiftModifier | Qt::Key_K))});
+        QTRY_COMPARE(CustomActionsManager::instance().actions().size(), 3);
+        ViewerWindow* w = openAndWait(path(QStringLiteral("plain.png")));
+        QVERIFY(w);
+        const struct {
+            Qt::Key key;
+            Qt::KeyboardModifiers mods;
+            const char* file;
+        } keys[] = {{Qt::Key_F5, Qt::NoModifier, "f5.txt"},
+                    {Qt::Key_K, Qt::NoModifier, "k.txt"},
+                    {Qt::Key_K, Qt::ShiftModifier, "shiftk.txt"}};
+        for (const auto& k : keys) {
+            QTest::keyClick(w->view(), k.key, k.mods);
+            QTRY_VERIFY2(QFile::exists(path(QString::fromLatin1(k.file))), k.file);
+            QTRY_VERIFY(!CustomActionsManager::instance().isRunning());
+        }
+        QFile f5(path(QStringLiteral("f5.txt")));
+        QVERIFY(f5.open(QIODevice::ReadOnly));
+        QCOMPARE(f5.readAll(), QByteArray("x")); // ran exactly once
+        customactions::save({});
+    }
 };
 
 int main(int argc, char* argv[]) {
