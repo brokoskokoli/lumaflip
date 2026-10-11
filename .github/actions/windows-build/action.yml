@@ -83,9 +83,19 @@ runs:
       env:
         LF_CMAKE_ARGS: ${{ inputs.cmake-args }}
       run: |
-        $extra = @()
-        if ($env:LF_CMAKE_ARGS) { $extra = $env:LF_CMAKE_ARGS -split '\s+' | Where-Object { $_ } }
-        cmake --preset windows-release -DLF_ENABLE_WINSPARKLE=ON @extra
+        # Extra -DNAME=VALUE arguments go into an initial cache file (cmake -C) instead of the
+        # command line: PowerShell mangles native arguments such as -DKEY=abc= (a base64 value
+        # ending in "=" reached CMake as "-" and "=").
+        $init = Join-Path $env:RUNNER_TEMP 'lumaflip-init.cmake'
+        Set-Content -Path $init -Value '' -Encoding utf8
+        if ($env:LF_CMAKE_ARGS) {
+          foreach ($a in ($env:LF_CMAKE_ARGS -split '\s+' | Where-Object { $_ })) {
+            if ($a -notmatch '^-D([A-Za-z0-9_]+)(:[A-Z]+)?=(.*)$') { throw "cmake-args: only -DNAME=VALUE is supported, got '$a'" }
+            $value = $Matches[3] -replace '\\', '/' -replace '"', '\"'
+            Add-Content -Path $init -Value "set($($Matches[1]) `"$value`" CACHE STRING `"`" FORCE)" -Encoding utf8
+          }
+        }
+        cmake -C $init --preset windows-release -DLF_ENABLE_WINSPARKLE=ON
         if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
         $version = (Select-String -Path CMakeLists.txt -Pattern 'project\(Lumaflip VERSION ([0-9.]+)').Matches[0].Groups[1].Value
         "LF_VERSION=$version" >> $env:GITHUB_ENV
