@@ -10,10 +10,12 @@
 #include "app/ImageView.h"
 #include "app/MacIntegration.h"
 #include "app/MainMenu.h"
+#include "app/MenuExtras.h"
 #include "app/RecentItems.h"
 #include "app/ViewerWindow.h"
 #include "app/WindowIntegration.h"
 #include "core/Archive.h"
+#include "core/ArchiveCache.h"
 #include "core/Collection.h"
 #include "core/ContainerPolicy.h"
 #include "core/CustomActions.h"
@@ -112,9 +114,9 @@ class TstM4Features : public QObject {
             return nullptr;
         return w;
     }
-    QString comic() {
+    QString comic(const QString& name = QStringLiteral("Band 1.cbz")) {
         QString error;
-        const QString cbz = path(QStringLiteral("Band 1.cbz"));
+        const QString cbz = path(name);
         const bool ok = libarchive::writeArchive(cbz, QStringLiteral("zip"),
                                                  {{QStringLiteral("10.png"), png(64, 48, Qt::blue)},
                                                   {QStringLiteral("2.png"), png(64, 48, Qt::green)},
@@ -231,6 +233,77 @@ private slots:
         right.key = Qt::Key_Right;
         w->handleInput(right, QPointF(-1, -1));
         QCOMPARE(w->currentPath(), vpath::join(cbz, QStringLiteral("1.png")));
+    }
+
+    // Covers: F-OPEN-10 (several archives opened together: each in a window of its own, like
+    // folders - none is dropped; "new window unless open" finds an open archive)
+    void F_OPEN_10_severalArchivesEachInItsOwnWindow() {
+        const QString a = comic(QStringLiteral("Band 1.cbz"));
+        const QString b = comic(QStringLiteral("Band 2.cbz"));
+        QVERIFY(!a.isEmpty() && !b.isEmpty());
+        Settings::instance().setValue(key::OpenBehavior, QStringLiteral("newUnlessOpen"));
+        app->openPaths({a, b});
+        auto windowOf = [this](const QString& container) -> ViewerWindow* {
+            for (ViewerWindow* w : app->windows())
+                if (w->collection()->containerPath() == container)
+                    return w;
+            return nullptr;
+        };
+        QTRY_VERIFY_WITH_TIMEOUT(windowOf(a) && windowOf(b), 10000);
+        QVERIFY(windowOf(a) != windowOf(b));
+        const int windows = int(app->windows().size());
+        // Opened again: the window that shows it comes to the front, no new one.
+        app->openPaths({a});
+        QTRY_COMPARE_WITH_TIMEOUT(app->frontWindow(), windowOf(a), 10000);
+        QTest::qWait(300);
+        QCOMPARE(int(app->windows().size()), windows);
+    }
+
+    // Covers: F-OPEN-10 (⌥→ in an archive: the next archive or folder next to it)
+    void F_OPEN_10_nextFolderGoesToTheSiblingArchive() {
+        const QString a = comic(QStringLiteral("Band 1.cbz"));
+        const QString b = comic(QStringLiteral("Band 2.cbz"));
+        ViewerWindow* w = openAndWait(a);
+        QVERIFY(w);
+        QVERIFY(w->perform(Action::NextFolder));
+        QTRY_COMPARE_WITH_TIMEOUT(w->collection()->containerPath(), b, 10000);
+        QTRY_VERIFY_WITH_TIMEOUT(!w->collection()->isLoading() && w->collection()->count() == 3, 10000);
+        QVERIFY(w->perform(Action::PreviousFolder));
+        QTRY_COMPARE_WITH_TIMEOUT(w->collection()->containerPath(), a, 10000);
+    }
+
+    // Covers: F-OPEN-10 ("Öffnen mit"/"Teilen" for an image in an archive: its extracted copy;
+    // a PDF page says why it cannot)
+    void F_OPEN_10_openWithUsesTheExtractedCopy() {
+        const QString cbz = comic();
+        ViewerWindow* w = openAndWait(cbz);
+        QVERIFY(w);
+        QTRY_COMPARE(w->shownPath(), w->currentPath());
+        const QString file = ArchiveCache::instance().cachedFile(w->currentPath());
+        QVERIFY(!file.isEmpty());
+        QCOMPARE(QFileInfo(file).fileName(), QStringLiteral("1.png"));
+        QMenu* openWith = app->menu()->extras()->openWithMenu();
+        QVERIFY(openWith);
+        emit openWith->aboutToShow();
+        QVERIFY(!openWith->actions().isEmpty());
+        QVERIFY(openWith->actions().first()->isEnabled() ||
+                openWith->actions().first()->objectName() == QStringLiteral("openWith:pending"));
+        if (!pdf::available())
+            return;
+        const QString pdf = path(QStringLiteral("Plan.pdf"));
+        {
+            QPdfWriter writer(pdf);
+            QPainter p(&writer);
+            p.fillRect(QRect(0, 0, 500, 500), Qt::black);
+        }
+        ViewerWindow* pw = openAndWait(pdf);
+        QVERIFY(pw);
+        pw->activateWindow();
+        QTRY_COMPARE(app->frontWindow(), pw);
+        emit openWith->aboutToShow();
+        QCOMPARE(openWith->actions().size(), 1);
+        QVERIFY(!openWith->actions().first()->isEnabled());
+        QVERIFY(openWith->actions().first()->text().contains(QStringLiteral("PDF")));
     }
 
     // Covers: F-OPEN-10 (PDF pages like images)

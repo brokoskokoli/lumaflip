@@ -3,6 +3,7 @@
 
 #include "AppScoped.h"
 #include "Decoder.h"
+#include "VirtualPath.h"
 
 #include <QBuffer>
 #include <QCache>
@@ -181,7 +182,9 @@ struct ThumbnailCache::Private {
 
     Result generate(const QString& path, int thumbSize, quint64 generation) {
         Result r;
-        const QFileInfo fi(path);
+        // F-OPEN-10: an archive member or PDF page is stamped with its container's size and
+        // date (a changed archive never serves stale thumbnails); the registry decodes it.
+        const QFileInfo fi(vpath::containerOf(path));
         if (!fi.isFile())
             return r;
         const qint64 size = fi.size();

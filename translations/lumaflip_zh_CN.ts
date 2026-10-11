@@ -94,8 +94,8 @@
         <translation>未找到：%1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>图像 (%1);;所有文件 (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>图像、归档和 PDF 文稿 (%1);;图像 (%2);;归档和 PDF 文稿 (%3);;所有文件 (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -177,6 +177,14 @@
     <message>
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>归档中没有图像。</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>归档受密码保护 – 不支持加密归档。</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>归档过大，无法从中读取此图像。</translation>
     </message>
 </context>
 <context>
@@ -3617,6 +3625,14 @@
 <context>
     <name>lf::MenuExtras</name>
     <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>单独的 PDF 页面无法传递给其他应用。</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>正在从归档中解压图像 – 请稍后再试。</translation>
+    </message>
+    <message>
         <source>Öffnen mit</source>
         <translation>打开方式</translation>
     </message>
@@ -5638,6 +5654,14 @@
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
         <translation>你没有文件夹“%1”的读取权限，因此 Lumaflip 只显示已打开的文件。可以在访达中通过“文件”→“显示简介”→“共享与权限”更改访问权限。</translation>
+    </message>
+    <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>没有下一个文件夹或归档</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>没有上一个文件夹或归档</translation>
     </message>
     <message>
         <source>Kein weiterer Ordner mit Bildern</source>

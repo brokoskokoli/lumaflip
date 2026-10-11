@@ -41,12 +41,21 @@ inline constexpr int kMaxMembers = 100000;
 // Upper bound of the bytes libarchive may decompress while looking for one member (solid
 // RAR/7z archives decompress everything before it): a decompression bomb ends here.
 inline constexpr qint64 kMaxScanBytes = qint64(4) << 30; // 4 GiB
+// Upper bound of the members extracted together with a wanted one (readRun(); the helper
+// returns them in one frame, so it stays below kMaxMemberBytes).
+inline constexpr qint64 kMaxRunBytes = qint64(32) << 20; // 32 MiB
 
 struct Member {
     QString name;     // path inside the archive ("Kapitel 1/012.jpg")
     qint64 size = -1; // uncompressed size as the archive states it (-1 unknown)
     QDateTime modified;
     friend bool operator==(const Member&, const Member&) = default;
+};
+
+// One extracted member (readRun()).
+struct Extracted {
+    QString name;
+    QByteArray data;
 };
 
 struct Listing {
@@ -61,9 +70,17 @@ bool libArchiveAvailable();
 Listing listLocal(const QString& containerPath);
 std::optional<QByteArray> readLocal(const QString& containerPath, const QString& member, QString* error);
 
-// Through the decoder helper if there is one, else listLocal()/readLocal().
+// The member and, for archives read front to back (RAR, 7z: libarchive), the image members
+// that follow it in the same pass, up to kMaxRunBytes together (result[0] = `member`). ZIP
+// archives are read member by member (random access): only `member`.
+std::optional<QVector<Extracted>> readRunLocal(const QString& containerPath, const QString& member,
+                                               QString* error);
+
+// Through the decoder helper if there is one, else listLocal()/readLocal()/readRunLocal().
 Listing list(const QString& containerPath);
 std::optional<QByteArray> read(const QString& containerPath, const QString& member, QString* error);
+std::optional<QVector<Extracted>> readRun(const QString& containerPath, const QString& member,
+                                          QString* error);
 
 // The entries a collection shows for a container: image members only
 // (vpath::isImageMemberName; every PDF page), FileEntry::path = member path, name = the
@@ -78,7 +95,9 @@ void sortMemberEntries(QVector<FileEntry>& entries, const NameCollator& collator
 QString messageUnsupportedArchive(); // no libarchive / unknown format
 QString messageMemberTooLarge();
 QString messageDamagedArchive();
-QString messageNoImages(); // the archive holds no images
+QString messageNoImages();         // the archive holds no images
+QString messageEncryptedArchive(); // password protected
+QString messageArchiveTooLarge();  // the member lies beyond kMaxScanBytes
 
 } // namespace archive
 } // namespace lf

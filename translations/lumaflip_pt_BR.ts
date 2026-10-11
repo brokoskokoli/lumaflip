@@ -94,8 +94,8 @@
         <translation>Não encontrado: %1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>Imagens (%1);;Todos os Arquivos (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>Imagens, Arquivos Compactados e Documentos PDF (%1);;Imagens (%2);;Arquivos Compactados e Documentos PDF (%3);;Todos os Arquivos (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -177,6 +177,14 @@
     <message>
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>O arquivo não contém imagens.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>O arquivo compactado está protegido por senha – arquivos criptografados não são compatíveis.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>O arquivo compactado é grande demais para ler esta imagem.</translation>
     </message>
 </context>
 <context>
@@ -3629,6 +3637,14 @@
 <context>
     <name>lf::MenuExtras</name>
     <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>Páginas de PDF individuais não podem ser passadas para outros apps.</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>A imagem está sendo extraída do arquivo compactado – tente novamente em instantes.</translation>
+    </message>
+    <message>
         <source>Öffnen mit</source>
         <translation>Abrir com</translation>
     </message>
@@ -5661,6 +5677,14 @@
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
         <translation>Você não tem permissão de leitura para a pasta “%1”, por isso o Lumaflip mostra apenas o arquivo aberto. As permissões podem ser alteradas no Finder em Arquivo → Obter Informações → “Compartilhamento e Permissões”.</translation>
+    </message>
+    <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>Nenhuma pasta ou arquivo compactado seguinte</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>Nenhuma pasta ou arquivo compactado anterior</translation>
     </message>
     <message>
         <source>Kein weiterer Ordner mit Bildern</source>

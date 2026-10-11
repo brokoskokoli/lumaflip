@@ -4,6 +4,9 @@
 #include "ImageFormats.h"
 
 #include <QCoreApplication>
+#include <QFileInfo>
+#include <QHash>
+#include <QMutex>
 
 namespace lf::vpath {
 
@@ -19,6 +22,24 @@ QString suffixOf(const QString& path) {
     if (dot < 0 || dot < slash || dot == path.size() - 1)
         return {};
     return path.mid(dot + 1).toLower();
+}
+
+// A real folder whose name ends in a container suffix and "#" ("Band.zip#"): its contents
+// are ordinary files, never members. Remembered per path (bounded), so the file system is asked once.
+bool isRealFolder(const QString& container) {
+    static QMutex mutex;
+    static QHash<QString, bool> known;
+    {
+        QMutexLocker lock(&mutex);
+        if (const auto it = known.constFind(container); it != known.cend())
+            return *it;
+    }
+    const bool folder = QFileInfo(container).isDir();
+    QMutexLocker lock(&mutex);
+    if (known.size() >= 512)
+        known.clear();
+    known.insert(container, folder);
+    return folder;
 }
 
 } // namespace
@@ -66,7 +87,8 @@ std::optional<Parts> split(const QString& path) {
         if (at <= 0)
             return std::nullopt;
         const QString container = path.left(at);
-        if (kindForSuffix(suffixOf(container)) != ContainerKind::None && at + marker.size() < path.size())
+        if (kindForSuffix(suffixOf(container)) != ContainerKind::None && at + marker.size() < path.size() &&
+            !isRealFolder(path.left(at + 1)))
             return Parts{container, path.mid(at + marker.size())};
         from = at + 1;
     }
