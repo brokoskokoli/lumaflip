@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Datenschutzerklärung – Lumaflip</title>
+<meta name="description" content="Lumaflip erhebt keine personenbezogenen Daten. Was die App liest, was auf dem Mac bleibt und welche zwei Netzwerkverbindungen sie überhaupt aufbauen kann.">
+<link rel="canonical" href="https://brokoskokoli.github.io/lumaflip/de/privacy.html">
+<link rel="alternate" hreflang="en" href="https://brokoskokoli.github.io/lumaflip/privacy.html">
+<link rel="alternate" hreflang="de" href="https://brokoskokoli.github.io/lumaflip/de/privacy.html">
+<link rel="alternate" hreflang="x-default" href="https://brokoskokoli.github.io/lumaflip/privacy.html">
+<meta property="og:locale" content="de_DE">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" type="image/png" href="../favicon.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<style>
+  :root { --bg: #f4f5fb; --bg-alt: #ffffff; --text: #181a33; --muted: #5b6078; --border: #e0e2ef; --accent: #3b4cca; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #11132a; --bg-alt: #191c38; --text: #eef0fa; --muted: #a4a9c6; --border: #2a2e52; --accent: #7f8cff; }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+    font: 17px/1.65 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+  header.top { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 18px; color: var(--text); }
+  .brand img { width: 32px; height: 32px; }
+  nav a { color: var(--muted); font-size: 15px; }
+  nav a + a { margin-left: 20px; }
+  h1 { font-size: clamp(30px, 5vw, 40px); line-height: 1.15; margin: 24px 0 6px; letter-spacing: -.01em; }
+  h2 { font-size: 21px; margin: 32px 0 8px; }
+  .updated { color: var(--muted); font-size: 15px; margin: 0 0 24px; }
+  .box { background: var(--bg-alt); border: 1px solid var(--border); border-radius: 14px; padding: 16px 20px; }
+  li { margin: 6px 0; }
+  code { font: 14px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--bg-alt); border: 1px solid var(--border); border-radius: 6px; padding: 1px 6px; overflow-wrap: anywhere; }
+  footer { color: var(--muted); font-size: 14px; text-align: center; padding: 56px 0 40px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="./"><img src="../favicon.png" alt="" width="32" height="32">Lumaflip</a>
+    <nav><a href="https://github.com/brokoskokoli/lumaflip">GitHub</a><a class="lang" href="../privacy.html" hreflang="en" lang="en">English</a></nav>
+  </header>
+
+  <main>
+    <h1>Datenschutzerklärung</h1>
+    <p class="updated">Gilt für alle Versionen von Lumaflip für macOS, Windows und Linux. Zuletzt aktualisiert: 11. Oktober 2026.</p>
+
+    <div class="box"><b>Kurz gesagt:</b> Lumaflip erhebt, speichert und teilt keine personenbezogenen Daten. Die Fotos und alles, was Lumaflip über sie erfährt, bleiben auf dem eigenen Computer.</div>
+
+    <h2>Keine Datenerhebung</h2>
+    <p>Lumaflip enthält keine Analyse, keine Telemetrie, keinen Dienst für Absturzberichte, keine Werbung und keine Benutzerkonten. Die Entwickler erhalten keinerlei Informationen über die Nutzer, ihre Fotos oder die Art, wie sie die App verwenden.</p>
+
+    <h2>Die einzigen Netzwerkverbindungen</h2>
+    <ul>
+      <li><b>Suche nach Updates (macOS).</b> Lumaflip fragt einmal täglich bei <code>brokoskokoli.github.io</code> nach, ob es eine neue Version gibt, und lädt sie nach Zustimmung von GitHub herunter. Wie jede Webanfrage übermittelt das die IP-Adresse und die App-Version an GitHub. Die automatische Suche lässt sich unter Einstellungen → Allgemein abschalten.</li>
+      <li><b>Karten (macOS).</b> Karten im Infopanel und die Ordnerkarte werden erst geladen, nachdem in diesem Fenster auf „Karte anzeigen“ geklickt wurde. Die Karte stammt von Apple (MapKit), daher werden die Koordinaten des angezeigten Ausschnitts an Apple gesendet. Die Zustimmung gilt, bis das Fenster geschlossen wird, und wird nie gespeichert.</li>
+    </ul>
+    <p>Sonst verbindet sich nichts mit dem Internet. Dateinamen, Metadaten, Bewertungen und Bildinhalte werden nirgendwohin gesendet.</p>
+
+    <h2>Was auf dem Computer bleibt</h2>
+    <ul>
+      <li>Um ein Bild anzuzeigen, liest Lumaflip dieses Bild und listet die anderen Bilder in seinem Ordner auf. Unter macOS liest es außerdem die Finder-Darstellungsoptionen des Ordners, um die Bilder in derselben Reihenfolge zu zeigen.</li>
+      <li><b>Live Text</b> (macOS) analysiert das sichtbare Bild mit Apples Texterkennung auf dem Gerät, und zwar nur, wenn die Funktion eingeschaltet wird.</li>
+      <li><b>Bewertungen und Etiketten</b> werden dort gespeichert, wo man es festlegt: in einer XMP-Zusatzdatei neben dem Bild, in der Bilddatei selbst oder als Finder-Tags.</li>
+      <li><b>Miniaturen und Einstellungen</b> liegen im lokalen Cache und in den Einstellungen der App. Bilder, die aus Archiven (CBZ, ZIP, RAR, 7z) geöffnet werden, werden in einen temporären Ordner entpackt, der automatisch aufgeräumt wird.</li>
+      <li><b>In den Papierkorb legen</b> verschiebt Dateien in den Papierkorb des Systems, mit Widerrufen. Lumaflip löscht eine Datei nie endgültig, es sei denn, das System kann den Papierkorb nicht verwenden und das endgültige Löschen wird bestätigt.</li>
+      <li><b>Eigene Aktionen</b> (eigene Shell-Befehle oder Kurzbefehle) laufen erst, nachdem sie einmal bestätigt wurden; sie können alles tun, was ihr Befehl tut.</li>
+    </ul>
+
+    <h2>Kontakt</h2>
+    <p>Fragen zum Datenschutz? Bitte <a href="https://github.com/brokoskokoli/lumaflip/issues">ein Issue auf GitHub eröffnen</a>.</p>
+  </main>
+
+  <footer>
+    Lumaflip ist freie Software unter der <a href="https://github.com/brokoskokoli/lumaflip/blob/main/LICENSE">GNU General Public License v3.0 oder neuer</a>.
+    © 2026 brokoskokoli und Mitwirkende ·
+    <a href="./">Startseite</a> ·
+    <a href="https://github.com/brokoskokoli/lumaflip/issues">Problem melden</a>
+  </footer>
+</div>
+</body>
+</html>
