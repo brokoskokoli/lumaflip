@@ -43,7 +43,7 @@ QLabel* help(const QString& text, QWidget* parent) {
 }
 
 // Keeps `fn` in sync with the setting `k` (now and on every change).
-void follow(QWidget* w, const QString& k, std::function<void()> fn) {
+void follow(QWidget* w, const QString& k, const std::function<void()>& fn) {
     fn();
     QObject::connect(&st(), &Settings::changed, w, [k, fn](const QString& changed) {
         if (changed == k)

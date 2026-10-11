@@ -19,6 +19,7 @@
 #include <cctype>
 #include <cmath>
 #include <cstring>
+#include <ranges>
 
 namespace lf {
 
@@ -1013,8 +1014,8 @@ bool Compositor::compositeList(QImage& canvas, const QVector<int>& items, int de
     if (depth > xcf::kMaxGroupDepth)
         return fail(error, QStringLiteral("groups nested too deep"));
     // Layers are stored top first: composite bottom-up.
-    for (auto it = items.crbegin(); it != items.crend(); ++it)
-        if (!compositeItem(canvas, *it, depth, error))
+    for (const int item : std::views::reverse(items))
+        if (!compositeItem(canvas, item, depth, error))
             return false;
     return true;
 }

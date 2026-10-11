@@ -230,7 +230,8 @@ private:
         while (d < m_rowBytes) {
             if (s >= len)
                 return false;
-            const int n = qint8(src[s++]);
+            const int n = src[s] >= 0x80 ? int(src[s]) - 0x100 : int(src[s]); // signed run length
+            ++s;
             if (n >= 0) {
                 const qint64 count = n + 1;
                 if (s + count > len || d + count > m_rowBytes)

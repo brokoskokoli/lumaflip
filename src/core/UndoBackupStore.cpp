@@ -27,7 +27,7 @@ struct Tr {
     Q_DECLARE_TR_FUNCTIONS(lf::UndoBackupStore)
 };
 
-const QString kLockName = QStringLiteral(".lock");
+constexpr QLatin1StringView kLockName(".lock");
 
 // Removes a session folder: only regular files directly inside it, then the folder (no
 // recursion into anything a user might have put there by mistake).
@@ -86,7 +86,7 @@ bool UndoBackupStore::ensureSessionLocked() {
         if (!QDir().mkdir(path)) // fails if it exists: never share a folder
             continue;
         QFile::setPermissions(path, QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner);
-        auto lock = std::make_unique<QLockFile>(QDir(path).filePath(kLockName));
+        auto lock = std::make_unique<QLockFile>(QDir(path).filePath(QString(kLockName)));
         lock->setStaleLockTime(0);
         if (!lock->tryLock(0)) {
             QDir().rmdir(path);
@@ -267,7 +267,7 @@ int UndoBackupStore::removeStaleSessions(const QString& root) {
     for (const QFileInfo& fi : candidates) {
         if (fi.isSymLink() || !fi.isDir() || !fi.isWritable())
             continue; // not ours
-        const QString lockPath = QDir(fi.filePath()).filePath(kLockName);
+        const QString lockPath = QDir(fi.filePath()).filePath(QString(kLockName));
         bool stale = false;
         if (QFileInfo::exists(lockPath)) {
             QLockFile lock(lockPath);

@@ -9,7 +9,6 @@ QString sortKeyLabel(SortKey key) {
     const char* text = QT_TRANSLATE_NOOP("SortSpec", "Name");
     switch (key) {
     case SortKey::Name:
-        text = QT_TRANSLATE_NOOP("SortSpec", "Name");
         break;
     case SortKey::DateModified:
         text = QT_TRANSLATE_NOOP("SortSpec", "Änderungsdatum");

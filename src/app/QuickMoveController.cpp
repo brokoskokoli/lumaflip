@@ -109,7 +109,7 @@ void QuickMoveController::transferCurrent(QuickOp op, int slot) {
 }
 
 void QuickMoveController::transfer(TransferKind kind, QVector<TransferItem> items, const QString& undoText,
-                                   std::function<QString(int)> doneMessage) {
+                                   const std::function<QString(int)>& doneMessage) {
     if (items.isEmpty())
         return;
     // Which targets are taken is looked up on a worker (network volumes).
@@ -128,7 +128,7 @@ void QuickMoveController::transfer(TransferKind kind, QVector<TransferItem> item
 void QuickMoveController::runWithChoices(TransferKind kind, QVector<TransferItem> items,
                                          QStringList conflicts, int next, bool forAll,
                                          ConflictChoice allChoice, const QString& undoText,
-                                         std::function<QString(int)> doneMessage) {
+                                         const std::function<QString(int)>& doneMessage) {
     // Ask about the remaining conflicts one after the other (or apply "für alle").
     while (next < conflicts.size()) {
         const QString source = conflicts.at(next);
@@ -175,7 +175,7 @@ void QuickMoveController::runWithChoices(TransferKind kind, QVector<TransferItem
 
 void QuickMoveController::askConflict(QWidget* parent, const QStringList& fileNames, const QString& folder,
                                       int count,
-                                      std::function<void(std::optional<ConflictChoice>, bool)> done) {
+                                      const std::function<void(std::optional<ConflictChoice>, bool)>& done) {
     auto* box = new QMessageBox(parent);
     box->setObjectName(QStringLiteral("lfConflictDialog"));
     box->setAttribute(Qt::WA_DeleteOnClose);
