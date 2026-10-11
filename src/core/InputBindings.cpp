@@ -49,6 +49,8 @@ const ActionInfo kActions[] = {
     {Action::ToggleFitActualAtCursor, "toggleFitActual",
      QT_TRANSLATE_NOOP("lf::InputBindings", "Einpassen ↔ 100 % am Cursor")},
     {Action::ToggleZoomLock, "toggleZoomLock", QT_TRANSLATE_NOOP("lf::InputBindings", "Zoom fixieren")},
+    {Action::ResetZoom, "resetZoom",
+     QT_TRANSLATE_NOOP("lf::InputBindings", "Standard-Zoom wiederherstellen")},
     {Action::ScrollUp, "scrollUp", QT_TRANSLATE_NOOP("lf::InputBindings", "Ausschnitt nach oben")},
     {Action::ScrollDown, "scrollDown", QT_TRANSLATE_NOOP("lf::InputBindings", "Ausschnitt nach unten")},
     {Action::ScrollLeft, "scrollLeft", QT_TRANSLATE_NOOP("lf::InputBindings", "Ausschnitt nach links")},
@@ -190,6 +192,10 @@ QStringList defaultShortcutStrings(Action a) {
         return {"Z"};
     case Action::ToggleZoomLock:
         return {"Shift+Z"};
+    // F-VIEW-14: Enter (Return and the keypad's Enter) while the zoom of the image was
+    // changed; otherwise Enter keeps renaming (F-FILE-04), see resolve().
+    case Action::ResetZoom:
+        return {"Return", "Enter"};
     case Action::ToggleFullScreen:
         return {"Meta+Ctrl+F", "F"};
     case Action::ToggleSlideshow:
@@ -759,6 +765,9 @@ QVector<Action> InputBindings::conflictsWith(Action a) const {
     for (Action other : allActions()) {
         if (other == a || isCullingAction(other) != isCullingAction(a))
             continue;
+        // F-VIEW-14: ResetZoom acts only while the zoom was changed, else the key goes on.
+        if (a == Action::ResetZoom || other == Action::ResetZoom)
+            continue;
         const auto theirs = shortcuts(other);
         for (const auto& s : mine)
             if (theirs.contains(s)) {
@@ -878,14 +887,16 @@ Action InputBindings::resolve(const InputEvent& ev) const {
     // ---- keys ----
     if (ev.key == 0 || ev.key == Qt::Key_unknown)
         return Action::None;
-    const QKeySequence seq(QKeyCombination(mods, Qt::Key(ev.key)));
+    // fromCombined(): any key code (not every int is a Qt::Key enumerator).
+    const QKeySequence seq(QKeyCombination::fromCombined(mods.toInt() | ev.key));
     // Printable non-letter keys like "?" or "+" arrive with Shift on many layouts.
     const bool shiftedSymbol = (mods & Qt::ShiftModifier) && ev.key >= 0x20 && ev.key < 0x7f &&
                                !(ev.key >= Qt::Key_A && ev.key <= Qt::Key_Z);
-    const QKeySequence seqNoShift(QKeyCombination(mods & ~Qt::ShiftModifier, Qt::Key(ev.key)));
+    const QKeySequence seqNoShift(
+        QKeyCombination::fromCombined((mods & ~Qt::ShiftModifier).toInt() | ev.key));
     auto matchShortcut = [&](bool culling) {
         for (Action a : allActions()) {
-            if (isCullingAction(a) != culling)
+            if (isCullingAction(a) != culling || a == Action::ResetZoom)
                 continue;
             const auto list = shortcuts(a);
             if (list.contains(seq) || (shiftedSymbol && list.contains(seqNoShift)))
@@ -893,6 +904,13 @@ Action InputBindings::resolve(const InputEvent& ev) const {
         }
         return Action::None;
     };
+    // 0. F-VIEW-14: while the zoom of the image was changed its keys reset it (Enter); else
+    // they keep their other meaning (rename, full screen) below.
+    if (ev.zoomChanged) {
+        const auto reset = shortcuts(Action::ResetZoom);
+        if (reset.contains(seq) || (shiftedSymbol && reset.contains(seqNoShift)))
+            return Action::ResetZoom;
+    }
     // 1. Conflict rule (5.2): in culling mode (or if enabled) rating keys win over zoom digits.
     const bool ratingActive =
         ev.inCullingMode || choice(QStringLiteral("ratingKeys")) == QLatin1String("always");

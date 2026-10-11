@@ -9,6 +9,7 @@
 #include "ImageView.h"
 #include "SlideshowController.h"
 #include "ViewerWindow.h"
+#include "ZoomMemoryController.h"
 #include "core/Collection.h"
 #include "core/FileOps.h"
 #include "core/Language.h"
@@ -221,6 +222,7 @@ void ViewerWindow::onFileContentChanged(const QString& path) {
     // is outdated; windows showing it get the new decode.
     m_app.provider().invalidate(path);
     ThumbnailCache::instance().invalidate(path); // the key may not change (modification date kept)
+    m_zoomMemory->fileRewritten(path);           // F-VIEW-14
     if (path == m_shownPath) {
         m_reloadResetsView = true;
         if (m_anim->isActive() && m_anim->path() == path)

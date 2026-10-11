@@ -2040,6 +2040,10 @@
         <translation>Lås zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Gendan standardzoom</translation>
+    </message>
+    <message>
         <source>Ausschnitt nach oben</source>
         <translation>Udsnit op</translation>
     </message>
@@ -3239,6 +3243,10 @@
         <translation>Lås zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Gendan standardzoom</translation>
+    </message>
+    <message>
         <source>Vollbild</source>
         <translation>Fuld skærm</translation>
     </message>
@@ -4352,6 +4360,10 @@
     <message>
         <source>Fenster füllen</source>
         <translation>Fyld vindue</translation>
+    </message>
+    <message>
+        <source>Zoom je Bild für die Sitzung merken</source>
+        <translation>Husk zoom for hvert billede i sessionen</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>

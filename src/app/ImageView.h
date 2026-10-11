@@ -60,6 +60,13 @@ public:
     void toggleFitActual(QPointF anchorInWidget); // F-VIEW-03
     void setZoomLocked(bool locked);              // F-VIEW-05: keep zoom/pan across images
     bool zoomLocked() const;
+    // F-VIEW-14: the mode new images get ("standard zoom": setting or last chosen mode).
+    ZoomMode standardZoomMode() const;
+    void resetToStandardZoom(); // the standard mode, placed like a new image (a user change)
+    // F-VIEW-14: shows a remembered view of the current image: mode (Custom: factor, 1.0 =
+    // 100 %) and the image point at the view center relative to the full image (0..1, like
+    // viewCenter()). Not a user change: no viewTransformChanged(); the standard mode stays.
+    void restoreView(ZoomMode mode, double factor, QPointF relativeCenter);
 
     void panBy(QPointF deltaInWidget);
     // Image point in the middle of the view, relative to the full image (0..1 in both

@@ -27,6 +27,7 @@
 #include <QWheelEvent>
 #include <QWindow>
 
+#include <algorithm>
 #include <cmath>
 
 namespace lf {
@@ -898,6 +899,28 @@ void ImageView::setZoomLocked(bool locked) {
 
 bool ImageView::zoomLocked() const {
     return d->model.zoomLocked();
+}
+
+ZoomMode ImageView::standardZoomMode() const {
+    return d->model.baseMode();
+}
+
+void ImageView::resetToStandardZoom() {
+    d->syncGeometry();
+    d->model.resetToBaseMode();
+    d->sync();
+}
+
+void ImageView::restoreView(ZoomMode mode, double factor, QPointF relativeCenter) {
+    const QSize img = d->model.imageSize();
+    if (!d->image || img.isEmpty())
+        return;
+    d->syncGeometry();
+    relativeCenter =
+        QPointF(std::clamp(relativeCenter.x(), 0.0, 1.0), std::clamp(relativeCenter.y(), 0.0, 1.0));
+    d->model.restoreView(mode, factor,
+                         QPointF(relativeCenter.x() * img.width(), relativeCenter.y() * img.height()));
+    d->quietSync();
 }
 
 void ImageView::panBy(QPointF deltaInWidget) {

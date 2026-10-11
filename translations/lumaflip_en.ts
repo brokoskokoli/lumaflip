@@ -2040,6 +2040,10 @@
         <translation>Lock Zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Reset to Standard Zoom</translation>
+    </message>
+    <message>
         <source>Ausschnitt nach oben</source>
         <translation>Pan Up</translation>
     </message>
@@ -3239,6 +3243,10 @@
         <translation>Lock Zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Reset to Standard Zoom</translation>
+    </message>
+    <message>
         <source>Vollbild</source>
         <translation>Full Screen</translation>
     </message>
@@ -4352,6 +4360,10 @@
     <message>
         <source>Fenster füllen</source>
         <translation>Fill Window</translation>
+    </message>
+    <message>
+        <source>Zoom je Bild für die Sitzung merken</source>
+        <translation>Remember zoom per image for the session</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>

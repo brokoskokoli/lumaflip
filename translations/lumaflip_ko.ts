@@ -2028,6 +2028,10 @@
         <translation>확대/축소 고정</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>기본 확대/축소로 복원</translation>
+    </message>
+    <message>
         <source>Ausschnitt nach oben</source>
         <translation>보기 영역 위로 이동</translation>
     </message>
@@ -3227,6 +3231,10 @@
         <translation>확대/축소 고정</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>기본 확대/축소로 복원</translation>
+    </message>
+    <message>
         <source>Vollbild</source>
         <translation>전체 화면</translation>
     </message>
@@ -4332,6 +4340,10 @@
     <message>
         <source>Fenster füllen</source>
         <translation>윈도우 채우기</translation>
+    </message>
+    <message>
+        <source>Zoom je Bild für die Sitzung merken</source>
+        <translation>세션 동안 이미지별 확대/축소 기억</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>

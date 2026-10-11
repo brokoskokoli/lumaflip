@@ -213,6 +213,7 @@ void MainMenu::build() {
     add(view, Action::ZoomOut, tr("Verkleinern"));
     add(view, Action::ToggleFitActualAtCursor, tr("Einpassen ↔ 100 %"));
     add(view, Action::ToggleZoomLock, tr("Zoom fixieren"))->setCheckable(true);
+    add(view, Action::ResetZoom, tr("Standard-Zoom wiederherstellen")); // F-VIEW-14
     view->addSeparator();
     add(view, Action::ToggleFullScreen, tr("Vollbild"))->setCheckable(true);
     QAction* status = addCommand(view, QStringLiteral("statusBar"), tr("Statusleiste"));
@@ -397,7 +398,7 @@ void MainMenu::refreshState() {
                      Action::PreviousImage,   Action::FirstImage,     Action::LastImage,
                      Action::JumpForward,     Action::JumpBackward,   Action::RotateLeft,
                      Action::RotateRight,     Action::FlipHorizontal, Action::FlipVertical,
-                     Action::Rename,          Action::OpenInEditor})
+                     Action::Rename,          Action::OpenInEditor,   Action::ResetZoom})
         if (QAction* act = action(a))
             act->setEnabled(hasWindow);
     for (const QString& id : {QStringLiteral("minimize"), QStringLiteral("zoomWindow")})

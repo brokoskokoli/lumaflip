@@ -20,6 +20,7 @@
 #include "WindowModes.h"
 #include "WindowPanels.h"
 #include "WindowTabbing.h"
+#include "ZoomMemoryController.h"
 #include "core/Collection.h"
 #include "core/Decoder.h"
 #include "core/FileBatch.h"
@@ -383,6 +384,7 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
         if (path == m_shownPath && !m_shownFailed)
             m_shownStale = true;
     });
+    m_zoomMemory = new ZoomMemoryController(m_view, this); // F-VIEW-14
     connect(m_view, &ImageView::userInput, this, &ViewerWindow::handleInput);
     connect(m_view, &ImageView::zoomChanged, this, [this] { updateStatus(); });
     connect(m_view, &ImageView::needsHigherResolution, this, [this] {
@@ -798,6 +800,7 @@ bool ViewerWindow::display(const QString& path, Quality quality, const DecodedIm
             !m_shownStale)
             return false;
     } else {
+        m_zoomMemory->beginImageChange(); // F-VIEW-14: the changes below are not the user's
         // View-only rotation/flip belongs to one image (F-EDIT-01).
         m_view->setRotation(0);
         m_view->setFlip(false, false);
@@ -807,6 +810,8 @@ bool ViewerWindow::display(const QString& path, Quality quality, const DecodedIm
         trace::once(quality == Quality::Preview ? "display Preview" : "display Screen/Full");
     mediaBeforeDisplay(same); // slideshow crossfade
     m_view->setImage(image, same);
+    if (!same)
+        m_zoomMemory->imageShown(path, m_page); // F-VIEW-14: its remembered zoom, if any
     m_shownPath = path;
     m_shownQuality = quality;
     m_shownFailed = false;
@@ -1323,6 +1328,8 @@ void ViewerWindow::handleInput(InputEvent ev, QPointF pos) {
         ev.inLeftHalf = pos.x() < m_view->width() / 2.0;
     ev.animated = ev.animated || m_anim->isActive(); // F-IN-06 (animation)
     ev.multiPage = ev.multiPage || m_pageCount > 1;  // F-IN-04 (pages)
+    // F-VIEW-14: Enter resets a changed zoom (else it renames)
+    ev.zoomChanged = ev.zoomChanged || m_zoomMemory->zoomChanged();
     if (m_culling->interceptKey(ev))
         return; // F-FILE-08: target digit of a quick move/copy (M/C + 1–9)
     // 5.2: digits = stars (culling mode; M3: also in the grid and the compare mode)
@@ -1436,6 +1443,9 @@ bool ViewerWindow::perform(Action a, QPointF pos) {
         return true;
     case Action::ToggleFitActualAtCursor:
         m_view->toggleFitActual(anchor);
+        return true;
+    case Action::ResetZoom: // F-VIEW-14
+        m_zoomMemory->resetToStandard();
         return true;
     case Action::ToggleZoomLock:
         m_view->setZoomLocked(!m_view->zoomLocked());
@@ -1564,6 +1574,7 @@ bool ViewerWindow::perform(Action a, QPointF pos) {
 
 void ViewerWindow::setZoomMode(ZoomMode mode) {
     m_view->setZoomMode(mode);
+    m_zoomMemory->standardModeChosen(); // F-VIEW-14: the chosen mode is the standard now
     if (mode != ZoomMode::Custom)
         Settings::instance().setValue(key::ZoomMode, zoomModeId(mode)); // F-MAC-05
     m_app.windowChanged(this);
@@ -1820,6 +1831,7 @@ void ViewerWindow::copyPath() {
 // ---------------------------------------------------------------------------------------
 
 void ViewerWindow::fileRemoved(const QString& path) {
+    m_zoomMemory->fileRemoved(path); // F-VIEW-14
     if (m_collection->indexOf(path) < 0)
         return;
     if (path == currentPath())
@@ -1834,6 +1846,7 @@ void ViewerWindow::fileAdded(const QString& path, bool makeCurrent) {
 }
 
 void ViewerWindow::fileRenamed(const QString& from, const QString& to) {
+    m_zoomMemory->fileRenamed(from, to); // F-VIEW-14: the remembered zoom follows the file
     m_collection->renamePath(from, to);
 }
 

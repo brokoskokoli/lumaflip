@@ -2040,6 +2040,10 @@
         <translation>Verrouiller le zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Rétablir le zoom par défaut</translation>
+    </message>
+    <message>
         <source>Ausschnitt nach oben</source>
         <translation>Défiler vers le haut</translation>
     </message>
@@ -3239,6 +3243,10 @@
         <translation>Verrouiller le zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Rétablir le zoom par défaut</translation>
+    </message>
+    <message>
         <source>Vollbild</source>
         <translation>Plein écran</translation>
     </message>
@@ -4352,6 +4360,10 @@
     <message>
         <source>Fenster füllen</source>
         <translation>Remplir la fenêtre</translation>
+    </message>
+    <message>
+        <source>Zoom je Bild für die Sitzung merken</source>
+        <translation>Mémoriser le zoom de chaque image pendant la session</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>

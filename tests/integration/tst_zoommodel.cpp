@@ -177,6 +177,48 @@ private slots:
         QVERIFY(fuzzy(m.scale(), 0.25));
     }
 
+    // F-VIEW-14: a remembered view (factor, image point in the middle) shows the same part
+    // of the image in another window size, on another screen and for another stage.
+    void F_VIEW_14_restoreViewIndependentOfWindowAndStage() {
+        ZoomModel a = makeModel({1000, 800}, {4000, 2000});
+        a.setFactor(2.0, {500, 400});
+        a.panBy({-300, 120});
+        const double factor = a.factor();
+        const QPointF center = a.viewportToImage({500, 400}); // full-size image px
+
+        // Larger window on a Retina screen; the base mode stays (Fit).
+        ZoomModel b = makeModel({3000, 2000}, {4000, 2000}, 2.0);
+        b.restoreView(ZoomMode::Custom, factor, center);
+        QCOMPARE(b.mode(), ZoomMode::Custom);
+        QCOMPARE(b.baseMode(), ZoomMode::Fit);
+        QVERIFY(fuzzy(b.factor(), factor));
+        QVERIFY(fuzzyPt(b.viewportToImage({1500, 1000}), center, 1e-6));
+        // The window shrinks (full screen ends): the same image point stays in the middle.
+        b.setViewportSize({1200, 900});
+        QVERIFY(fuzzyPt(b.viewportToImage({600, 450}), center, 1e-6));
+
+        // A standard mode is applied for the current window (its factor is not fixed).
+        ZoomModel c = makeModel({500, 400}, {4000, 2000});
+        c.restoreView(ZoomMode::FillHeight, 0.0, QPointF(2500, 1000));
+        QCOMPARE(c.mode(), ZoomMode::FillHeight);
+        QVERIFY(fuzzy(c.scale(), 0.2));
+        QVERIFY(fuzzyPt(c.viewportToImage({250, 200}), QPointF(2500, 1000), 1e-6));
+
+        // A remembered point beyond the edge is clamped like a pan.
+        ZoomModel d = makeModel({1000, 800}, {4000, 2000});
+        d.restoreView(ZoomMode::Actual, 0.0, QPointF(4000, 2000));
+        QVERIFY(d.atEdge(Qt::RightEdge));
+        QVERIFY(d.atEdge(Qt::BottomEdge));
+
+        // Back to the standard zoom: base mode, placed like a new image.
+        b.resetToBaseMode();
+        QCOMPARE(b.mode(), ZoomMode::Fit);
+        QVERIFY(!b.isZoomed());
+        // A new image still gets the base mode after a restored one.
+        d.setImageSize({4000, 2000});
+        QCOMPARE(d.mode(), ZoomMode::Fit);
+    }
+
     void F_VIEW_07_devicePixelRatio2() {
         // 1000x800 points on a Retina display = 2000x1600 device px.
         ZoomModel m = makeModel({2000, 1600}, {1000, 500}, 2.0);
