@@ -20,6 +20,8 @@ public:
     }
 };
 
+// gtest's registration idiom (runs before main, a failure there is fatal anyway)
+// NOLINTNEXTLINE(bugprone-throwing-static-initialization,cert-err58-cpp)
 [[maybe_unused]] const ::testing::Environment* const kEnvironment =
     ::testing::AddGlobalTestEnvironment(new StaticFormatList);
 

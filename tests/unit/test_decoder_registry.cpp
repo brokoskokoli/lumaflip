@@ -62,7 +62,7 @@ private:
 };
 
 QString writeFile(const QTemporaryDir& dir, const QString& name, const QByteArray& data) {
-    const QString p = dir.filePath(name);
+    QString p = dir.filePath(name);
     QFile f(p);
     if (!f.open(QIODevice::WriteOnly))
         return {};

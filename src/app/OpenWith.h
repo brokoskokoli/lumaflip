@@ -68,11 +68,11 @@ public:
     void request(const QString& filePath);
     // Calls `done` (GUI thread) with the apps, at once if cached.
     void withApplications(const QString& filePath, QObject* context,
-                          std::function<void(const QList<AppEntry>&)> done);
+                          const std::function<void(const QList<AppEntry>&)>& done);
     // F-FILE-05 "E": resolves the editor (worker if needed) and opens the file with it via
     // `shell`. `report` gets a message for the user if there is no suitable app.
     void openInEditor(const QString& filePath, Shell& shell, QObject* context,
-                      std::function<void(const QString& message)> report);
+                      const std::function<void(const QString& message)>& report);
     // Fills the "Öffnen mit" submenu for `filePath` (placeholder while the query runs).
     void populateMenu(QMenu* menu, const QString& filePath, Shell& shell, QWidget* dialogParent);
 

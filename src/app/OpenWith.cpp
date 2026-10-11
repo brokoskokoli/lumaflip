@@ -123,7 +123,7 @@ void OpenWithService::request(const QString& filePath) {
 }
 
 void OpenWithService::withApplications(const QString& filePath, QObject* context,
-                                       std::function<void(const QList<AppEntry>&)> done) {
+                                       const std::function<void(const QList<AppEntry>&)>& done) {
     if (auto apps = cached(filePath)) {
         done(*apps);
         return;
@@ -141,7 +141,7 @@ void OpenWithService::withApplications(const QString& filePath, QObject* context
 }
 
 void OpenWithService::openInEditor(const QString& filePath, Shell& shell, QObject* context,
-                                   std::function<void(const QString& message)> report) {
+                                   const std::function<void(const QString& message)>& report) {
     if (filePath.isEmpty())
         return;
     const QString configured = Settings::instance().value(key::EditorApp).toString();
@@ -169,7 +169,7 @@ QString chooseProgram(QWidget* parent, const QString& title) {
     const QString dir = QStringLiteral("/usr/share/applications");
     const QString filter = OpenWithService::tr("Programme (*.desktop);;Alle Dateien (*)");
 #endif
-    const QString app = QFileDialog::getOpenFileName(parent, title, dir, filter);
+    QString app = QFileDialog::getOpenFileName(parent, title, dir, filter);
     if (app.isEmpty())
         return {};
 #ifndef Q_OS_MACOS
@@ -227,7 +227,6 @@ void OpenWithService::populateMenu(QMenu* menu, const QString& filePath, Shell& 
             continue;
         if (any && defaultDone) {
             menu->addSeparator(); // Finder style: the default app first, then the others
-            defaultDone = false;
         }
         QAction* act =
             menu->addAction(iconOf(app), app.isDefault ? tr("%1 (Standard)").arg(app.name) : app.name);
