@@ -2040,6 +2040,10 @@
         <translation>Travar Zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Restaurar Zoom Padrão</translation>
+    </message>
+    <message>
         <source>Ausschnitt nach oben</source>
         <translation>Mover Visualização para Cima</translation>
     </message>
@@ -3239,6 +3243,10 @@
         <translation>Travar Zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Restaurar Zoom Padrão</translation>
+    </message>
+    <message>
         <source>Vollbild</source>
         <translation>Tela Cheia</translation>
     </message>
@@ -4368,6 +4376,10 @@
     <message>
         <source>Fenster füllen</source>
         <translation>Preencher janela</translation>
+    </message>
+    <message>
+        <source>Zoom je Bild für die Sitzung merken</source>
+        <translation>Lembrar o zoom de cada imagem durante a sessão</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>

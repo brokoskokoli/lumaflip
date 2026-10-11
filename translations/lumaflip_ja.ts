@@ -2028,6 +2028,10 @@
         <translation>ズームを固定</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>標準のズームに戻す</translation>
+    </message>
+    <message>
         <source>Ausschnitt nach oben</source>
         <translation>表示範囲を上へ</translation>
     </message>
@@ -3227,6 +3231,10 @@
         <translation>ズームを固定</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>標準のズームに戻す</translation>
+    </message>
+    <message>
         <source>Vollbild</source>
         <translation>フルスクリーン</translation>
     </message>
@@ -4348,6 +4356,10 @@
     <message>
         <source>Fenster füllen</source>
         <translation>ウインドウいっぱいに表示</translation>
+    </message>
+    <message>
+        <source>Zoom je Bild für die Sitzung merken</source>
+        <translation>セッション中は画像ごとにズームを記憶</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>

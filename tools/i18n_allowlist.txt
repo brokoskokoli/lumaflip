@@ -22,6 +22,7 @@ src/core/Language.cpp:*
 # Portable key names (QKeySequence::PortableText)
 src/core/InputBindings.cpp:Del
 src/core/InputBindings.cpp:Return
+src/core/InputBindings.cpp:Enter
 # Decoder helper sandbox (Seatbelt profile) and its log diagnostics (SPEC 8.5)
 src/core/DecoderHelper.cpp:(deny default)\n
 src/core/DecoderHelper.cpp:(allow file-read*)\n

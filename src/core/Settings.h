@@ -39,6 +39,7 @@ inline constexpr auto ZoomMode =
     "view/zoomMode"; // "fit" | "fitUpscale" | "actual" | "fillWidth" | "fillHeight" | "fill"
 inline constexpr auto UpscaleFilter = "view/upscaleFilter";   // "smooth" | "nearest"
 inline constexpr auto ActualSizeUnit = "view/actualSizeUnit"; // "devicePixels" | "points"
+inline constexpr auto RememberZoom = "view/rememberZoom";     // bool, default true (F-VIEW-14)
 inline constexpr auto ShowStatusBar = "view/statusBar";
 inline constexpr auto ShowInfoPanel = "view/infoPanel";
 inline constexpr auto ShowFilmstrip = "view/filmstrip";

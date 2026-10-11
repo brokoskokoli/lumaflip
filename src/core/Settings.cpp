@@ -86,6 +86,7 @@ const Registry& registry() {
         s(key::ZoomMode, "fit", {"fit", "fitUpscale", "actual", "fillWidth", "fillHeight", "fill"});
         s(key::UpscaleFilter, "smooth", {"smooth", "nearest"});
         s(key::ActualSizeUnit, "devicePixels", {"devicePixels", "points"});
+        b(key::RememberZoom, true); // F-VIEW-14
         b(key::ShowStatusBar, true);
         b(key::ShowInfoPanel, false);
         b(key::ShowFilmstrip, false);

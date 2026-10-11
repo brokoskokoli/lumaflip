@@ -137,6 +137,7 @@ Jede Anforderung hat eine ID und eine Ausbaustufe:
 | F-VIEW-11 | Lupe: Taste gedrückt halten (Standard `L`, wahlweise mittlere Maustaste, F-IN-11) zeigt eine 100-%- bzw. 200-%-Lupe am Cursor. | M3 |
 | F-VIEW-12 | „Immer im Vordergrund“ für das Fenster. | M3 |
 | F-VIEW-13 | Rahmenloser bzw. minimaler Fenstermodus, pro Fenster umschaltbar (Fenster → „Minimaler Fenstermodus“). Seit M4 ist das das randlose Fenster aus F-VIEW-15. | M3 |
+| F-VIEW-14 | **Zoom je Bild merken (Sitzung):** Wer ein Bild zoomt oder den Ausschnitt verschiebt, weiterblättert und zurückkommt, findet dieselbe Zoomstufe und denselben Ausschnitt wieder (je Fenster, nur im Arbeitsspeicher, höchstens 500 Bilder, das am längsten nicht gezeigte fällt heraus). Gespeichert werden Zoommodus bzw. Faktor und die Bildmitte relativ zum Bild, unabhängig von Fenstergröße, Vollbild und Vorschaustufe. Umbenannte Dateien behalten ihren Zoom, gelöschte oder neu geschriebene verlieren ihn. „Standard-Zoom wiederherstellen“ (Menü „Darstellung“, frei belegbar, Standard Enter bzw. Ziffernblock-Enter) setzt das Bild auf den Standard-Zoommodus zurück und vergisst seinen Zoom; Enter wirkt so nur, solange der Zoom des Bildes geändert ist, sonst gilt weiter Umbenennen (F-FILE-04) bzw. Vollbild (F-IN-18). Im Zuschneiden (F-EDIT-03), in Eingabefeldern und Dialogen behält Enter seine Bedeutung. Ein gewählter Zoommodus (F-VIEW-01/02) wird zum Standard. Bei aktivem „Zoom fixieren“ (F-VIEW-05) hat dieses Vorrang. Abschaltbar in den Einstellungen („Zoom je Bild für die Sitzung merken“, Standard an). | M4 |
 | F-VIEW-15 | **Randloses Fenster mit einblendender Titelleiste** (Standard für neue Fenster): Das Bild reicht bis an den oberen Rand, ohne sichtbare Titelleiste. Bewegt man die Maus über dem Fenster oder wird das Fenster aktiv (Tastaturbedienung), blendet oben ein halbtransparent schwarzer Streifen ein: Fenstertitel in Weiß (Schrift des Systems für Fenstertitel) und die Fensterknöpfe – macOS links (die Systemknöpfe, die mit dem Streifen ein- und ausblenden), Windows rechts (Minimieren/Maximieren/Schließen, links ein Knopf mit den Menüs des Fensters), Linux auf der Seite der Desktop-Einstellung (GNOME `button-layout`, KDE `kwinrc`, sonst rechts). Nach 1,5 s ohne Mausbewegung blendet er wieder aus, solange die Maus nicht über ihm steht. Ziehen am Streifen bewegt das Fenster (Windows: Aero Snap, Snap-Layouts über dem Maximieren-Knopf), Doppelklick zoomt bzw. maximiert (macOS nach der Systemeinstellung „Doppelklick auf Titelleiste“), die Ränder bleiben zum Ändern der Größe; Dateien lassen sich weiter auf das Fenster ziehen. Einstellung *Fenster → Titelleiste*: „beim Bewegen der Maus einblenden“ (Standard) oder „immer zeigen“ (Titelleiste des Systems); Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um (F-VIEW-13). Im Vollbild gilt F-VIEW-10; ein Fenster mit macOS-Tabs (F-WIN-05) zeigt die Titelleiste des Systems. | M4 |
 
 ### 4.4 Formate
@@ -354,6 +355,7 @@ Sie folgt den macOS-Konventionen und ergänzt Einzeltasten für Fortgeschrittene
 | Breite füllen | `2` |
 | Einpassen ↔ 100 % an Cursor | `Z` (Klick nur, wenn in F-IN-09 gewählt; Standard: Klick ohne Wirkung) |
 | Zoom fixieren | ⇧`Z` |
+| Standard-Zoom wiederherstellen | Enter (nur solange der Zoom des Bildes geändert ist, sonst Umbenennen; F-VIEW-14) |
 | Vollbild | ⌃⌘F, `F`, Doppelklick |
 | Vollbild verlassen / Modus verlassen | Esc |
 | Diashow | ⇧⌘F, `S` |
@@ -681,7 +683,7 @@ Weitere Pflichten:
 | **M1 – MVP** | F-OPEN-01…06, F-NAV-01…03/07, F-VIEW-01…02/04/06…10, Formatgruppen Standard/Modern/RAW, F-COL-01, F-INFO-01, F-FILE-01…03, F-EDIT-01, F-SORT-01/02/03/05/08, F-MAC-01/02/05, F-SET-01/04, F-PRIV-01/02, F-WIN-01/02/03/08/09/10, F-IN-01 (Mausrad-Einstellung), Signierung und Notarisierung |
 | **M2 – v1.0** | Ordnerüberwachung, Infopanel, Histogramm, Filmstreifen, Diashow, Animation, mehrseitige Formate, SVG, Pro-Formate, verlustfreies Drehen, Umbenennen, Teilen, Drag-out, Tastatur-Editor, alle Eingabe-Einstellungen (4.14) inkl. Profilvorlagen, Fenster anordnen, Tabs, Fensterwiederherstellung, Standard-App-Button, Live-Finder-Abfrage (Opt-in), Sparkle |
 | **M3 – v1.x** | Mehrsprachigkeit (4.16), Aussortiermodus und Bewertungen (XMP-Zusatzdatei, im Bild, Finder-Tags), Fenster koppeln, Schnellablage, Raster und Vergleich, HDR/EDR vollständig, Lupe, rekursive Ordner, Hilfsprozess für Decoder, Restformate inkl. XCF/PSB, SVG über resvg, Ordnerkarte (F-INFO-08) |
-| **M4 – später** | Archive und PDF, Live Text, Zuschneiden und Export, eigene Aktionen, Overlays für Fototechnik, **Windows- und Linux-Builds**, eventuell eine App-Store-Edition |
+| **M4 – später** | Archive und PDF, Live Text, Zuschneiden und Export, eigene Aktionen, Overlays für Fototechnik, Zoom je Bild merken, **Windows- und Linux-Builds**, eventuell eine App-Store-Edition |
 
 ---
 

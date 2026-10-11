@@ -117,6 +117,8 @@ enum class Action {
     ToggleClipping,     // F-INFO-07: clipping warning (highlights red, shadows blue)
     ToggleFocusPeaking, // F-INFO-07
     ToggleAfPoints,     // F-INFO-07: AF points from the maker notes
+    // M4 part 3 (appended, keep order above stable)
+    ResetZoom, // F-VIEW-14: standard zoom again, forget the remembered view of the file
 };
 
 QString actionId(Action a); // stable string id for settings ("nextImage")
@@ -137,6 +139,10 @@ struct InputEvent {
     bool inCullingMode = false;
     bool multiPage = false;  // current file has several pages (F-IN-04 "page")
     bool inLeftHalf = false; // click position (F-IN-09 "image": left half = previous)
+    // F-VIEW-14: the user changed the zoom or the visible part of the shown file (it differs
+    // from the standard zoom). Only then do the keys of ResetZoom reset it; otherwise they keep
+    // their other meaning (Enter: rename, F-FILE-04; or full screen, F-IN-18 "windows").
+    bool zoomChanged = false;
 };
 
 // Configurable "slots" of SPEC 4.14 (F-IN-01..16). Each slot has a set of
@@ -179,7 +185,8 @@ public:
     void setShortcuts(Action a, const QList<QKeySequence>& seqs); // persists
     void resetShortcuts();
     // Actions whose shortcut collides with another action in the same context
-    // (rating keys only apply in culling mode and never conflict with zoom digits).
+    // (rating keys only apply in culling mode and never conflict with zoom digits; ResetZoom
+    // only applies while the zoom was changed and passes its keys on otherwise).
     QVector<Action> conflicts() const;
     QVector<Action> conflictsWith(Action a) const;
 

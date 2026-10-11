@@ -21,6 +21,11 @@ refer to [SPEC.md](SPEC.md).
 - **Photo overlays**: clipping warning (J), focus peaking (⇧J), AF points from the maker notes
   (⇧A; Canon, Nikon live view, Sony, Fujifilm, EXIF subject area). [F-INFO-07]
 - **Compare**: difference, blend and wipe of two images. [F-GRID-04]
+- **Zoom per image for the session**: a zoomed or panned image keeps its zoom and visible part when
+  you browse away and come back (per window, in memory only, up to 500 images; independent of the
+  window size and full screen). Enter or "View › Reset to Standard Zoom" returns to the standard
+  zoom mode; without a changed zoom Enter still renames. "Lock Zoom" takes precedence. Can be
+  switched off in Preferences › Display. [F-VIEW-14]
 - **Borderless windows** (new default): the image reaches the top edge; a semi-transparent strip
   with the window title and the window buttons fades in when the mouse moves and out after
   1.5 s. Drag it to move the window (Aero Snap and Snap Layouts on Windows), double-click to

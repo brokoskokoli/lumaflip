@@ -2052,6 +2052,10 @@
         <translation>Zablokuj powiększenie</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Przywróć standardowe powiększenie</translation>
+    </message>
+    <message>
         <source>Ausschnitt nach oben</source>
         <translation>Przesuń widok w górę</translation>
     </message>
@@ -3251,6 +3255,10 @@
         <translation>Zablokuj powiększenie</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Przywróć standardowe powiększenie</translation>
+    </message>
+    <message>
         <source>Vollbild</source>
         <translation>Pełny ekran</translation>
     </message>
@@ -4388,6 +4396,10 @@
     <message>
         <source>Fenster füllen</source>
         <translation>Wypełnij okno</translation>
+    </message>
+    <message>
+        <source>Zoom je Bild für die Sitzung merken</source>
+        <translation>Zapamiętuj powiększenie każdego obrazu w trakcie sesji</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>

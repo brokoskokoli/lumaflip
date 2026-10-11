@@ -2040,6 +2040,10 @@
         <translation>Fijar zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Restablecer zoom estándar</translation>
+    </message>
+    <message>
         <source>Ausschnitt nach oben</source>
         <translation>Desplazar vista hacia arriba</translation>
     </message>
@@ -3239,6 +3243,10 @@
         <translation>Fijar zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Restablecer zoom estándar</translation>
+    </message>
+    <message>
         <source>Vollbild</source>
         <translation>Pantalla completa</translation>
     </message>
@@ -4368,6 +4376,10 @@
     <message>
         <source>Fenster füllen</source>
         <translation>Llenar ventana</translation>
+    </message>
+    <message>
+        <source>Zoom je Bild für die Sitzung merken</source>
+        <translation>Recordar el zoom de cada imagen durante la sesión</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>

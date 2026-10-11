@@ -2040,6 +2040,10 @@
         <translation>Blocca zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Ripristina zoom predefinito</translation>
+    </message>
+    <message>
         <source>Ausschnitt nach oben</source>
         <translation>Sposta vista in alto</translation>
     </message>
@@ -3239,6 +3243,10 @@
         <translation>Blocca zoom</translation>
     </message>
     <message>
+        <source>Standard-Zoom wiederherstellen</source>
+        <translation>Ripristina zoom predefinito</translation>
+    </message>
+    <message>
         <source>Vollbild</source>
         <translation>Schermo intero</translation>
     </message>
@@ -4368,6 +4376,10 @@
     <message>
         <source>Fenster füllen</source>
         <translation>Riempi finestra</translation>
+    </message>
+    <message>
+        <source>Zoom je Bild für die Sitzung merken</source>
+        <translation>Ricorda lo zoom di ogni immagine per la sessione</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>
