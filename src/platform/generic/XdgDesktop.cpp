@@ -391,8 +391,14 @@ QStringList expandExec(const DesktopEntry& e, const QStringList& files) {
             case 'F':
             case 'U':
                 usedFiles = true;
-                if (!files.isEmpty())
-                    a += value(code == QLatin1Char('U') ? url(files.first()) : files.first());
+                if (inQuotedArg) { // inside a shell script: every file as its own quoted word
+                    QStringList words;
+                    for (const QString& f : files)
+                        words << shellQuote(code == QLatin1Char('U') ? url(f) : f);
+                    a += words.join(QLatin1Char(' '));
+                } else if (!files.isEmpty()) {
+                    a += code == QLatin1Char('U') ? url(files.first()) : files.first();
+                }
                 break;
             case 'c':
                 a += value(e.name);

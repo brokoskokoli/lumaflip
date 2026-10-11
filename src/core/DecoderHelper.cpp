@@ -789,14 +789,15 @@ bool testOperation(ipc::Op op, const QString& arg, QString* detail) {
     }
     case ipc::Op::TestAllocate: {
         const size_t bytes = size_t(std::max<qint64>(arg.toLongLong(), 0)) * 1024 * 1024;
-        auto* mem = static_cast<char*>(std::malloc(bytes));
+        // volatile: the compiler may not drop the malloc/free pair (the limit must be hit)
+        auto* volatile mem = static_cast<char*>(std::malloc(bytes));
         if (!mem) {
             *detail = QStringLiteral("malloc failed");
             return false;
         }
         for (size_t i = 0; i < bytes; i += 4096) // really use it (lazy allocation)
-            mem[i] = char(i);
-        std::free(mem);
+            static_cast<volatile char*>(mem)[i] = char(i);
+        std::free(static_cast<char*>(mem));
         return true;
     }
     case ipc::Op::TestMachLookup: {
@@ -910,14 +911,15 @@ bool testOperation(ipc::Op op, const QString& arg, QString* detail) {
     }
     case ipc::Op::TestAllocate: {
         const size_t bytes = size_t(std::max<qint64>(arg.toLongLong(), 0)) * 1024 * 1024;
-        auto* mem = static_cast<char*>(std::malloc(bytes));
+        // volatile: the compiler may not drop the malloc/free pair (the limit must be hit)
+        auto* volatile mem = static_cast<char*>(std::malloc(bytes));
         if (!mem) {
             *detail = QStringLiteral("malloc failed");
             return false;
         }
         for (size_t i = 0; i < bytes; i += 4096)
-            mem[i] = char(i);
-        std::free(mem);
+            static_cast<volatile char*>(mem)[i] = char(i);
+        std::free(static_cast<char*>(mem));
         return true;
     }
     case ipc::Op::TestDesktop: {

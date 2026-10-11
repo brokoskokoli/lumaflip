@@ -7,6 +7,7 @@
 #include <QSet>
 
 #include <algorithm>
+#include <atomic>
 #include <utility>
 
 namespace lf {
@@ -95,9 +96,17 @@ QStringList sorted(const QSet<QString>& set) {
     return l;
 }
 
+std::atomic<bool> g_staticForTesting{false};
+
 } // namespace
 
+void setStaticImageSuffixesForTesting(bool on) {
+    g_staticForTesting = on;
+}
+
 bool isImageSuffix(const QString& lowerSuffix) {
+    if (g_staticForTesting)
+        return staticTables().defaults.contains(lowerSuffix);
     if (platformSuffixes().contains(lowerSuffix))
         return true;
     return allSuffixes().contains(lowerSuffix);
@@ -117,7 +126,7 @@ bool hasImageSuffix(const QString& fileName) {
 }
 
 QStringList imageSuffixes() {
-    return sorted(allSuffixes());
+    return sorted(g_staticForTesting ? staticTables().defaults : allSuffixes());
 }
 
 QStringList defaultImageSuffixes() {

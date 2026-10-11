@@ -11,6 +11,19 @@
 
 using namespace lf;
 
+namespace {
+// These tests check the real lists (the other unit tests use the static one where the
+// platform's backends differ, test_format_environment.cpp).
+struct RealFormatList {
+    RealFormatList() { setStaticImageSuffixesForTesting(false); }
+    ~RealFormatList() {
+#if !defined(Q_OS_DARWIN) || defined(LF_GENERIC_PLATFORM)
+        setStaticImageSuffixesForTesting(true); // as the environment set it
+#endif
+    }
+};
+} // namespace
+
 TEST(SortSpec, F_SORT_05_DescribeFinderSources) {
     EXPECT_EQ(describe({SortKey::DateAdded, false, SortSource::FinderDsStore}),
               QString::fromUtf8("Wie Finder: Hinzugefügt am ↓"));
@@ -44,6 +57,7 @@ TEST(SortSpec, F_SORT_02_EveryKeyHasALabel) {
 }
 
 TEST(ImageFormats, F_OPEN_06_KnownSuffixes) {
+    const RealFormatList real;
     test::ensureQtApp(); // the list comes from the backends (Qt image plugins)
     for (const char* s : {"jpg", "jpeg", "png", "webp", "tiff", "tif", "gif", "svg", "qoi", "xcf", "kra"})
         EXPECT_TRUE(isImageSuffix(QString::fromLatin1(s))) << s;
@@ -71,6 +85,7 @@ TEST(ImageFormats, F_OPEN_06_KnownSuffixes) {
 // nobody can decode (GIMP before M3, Sigma X3F, ...) were listed and produced error cards.
 // M3: Krita, OpenRaster, PCX, QOI … have own decoders now (SimpleDecoders.h), XCF and PSB too.
 TEST(ImageFormats, F_OPEN_06_OnlySuffixesWithBackend) {
+    const RealFormatList real;
     test::ensureQtApp();
 #if defined(Q_OS_DARWIN) && !defined(LF_GENERIC_PLATFORM) // ImageIO decides the suffixes
     for (const char* s : {"jpg", "jpeg", "jfif", "heic", "heif", "cr3", "jxl", "avif", "dng", "nef", "png",
@@ -92,6 +107,7 @@ TEST(ImageFormats, F_OPEN_06_OnlySuffixesWithBackend) {
 // backend there are not offered. Windows: the WIC codecs (JPEG XR as jxr/wdp/hdp); Linux:
 // the library decoders that are built in.
 TEST(ImageFormats, F_OPEN_06_FormatListFollowsTheBackendsOfThisPlatform) {
+    const RealFormatList real;
     test::ensureQtApp();
     const QStringList declared = DecoderRegistry::instance().supportedExtensions();
     static const QStringList aliases = {"jpe",  "jfif", "jpeg", "jpg", "apng", "dib", "tif",
@@ -101,10 +117,11 @@ TEST(ImageFormats, F_OPEN_06_FormatListFollowsTheBackendsOfThisPlatform) {
 #ifdef Q_OS_WIN
     for (const char* s : {"jxr", "wdp", "hdp", "jpg", "png", "tif", "bmp", "ico", "dds"})
         EXPECT_TRUE(isImageSuffix(QString::fromLatin1(s))) << s;
-    for (const char* s : {"hdr", "pic", "jp2", "ktx", "dcm", "exr", "x3f"})
+    // (x3f etc. come with the Raw Image Extension, which a runner may have installed)
+    for (const char* s : {"hdr", "pic", "jp2", "ktx", "dcm", "exr"})
         EXPECT_FALSE(isImageSuffix(QString::fromLatin1(s))) << s;
 #elif !defined(Q_OS_DARWIN)
-    for (const char* s : {"hdr", "pic", "jp2", "ktx", "dcm", "jxr", "x3f"})
+    for (const char* s : {"hdr", "pic", "jp2", "ktx", "dcm", "jxr"})
         EXPECT_FALSE(isImageSuffix(QString::fromLatin1(s))) << s;
     // The library decoders: exactly when built in (heic/avif/jxl/RAW/exr).
     const QStringList library = libraryDecoderSuffixes();

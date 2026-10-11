@@ -201,8 +201,12 @@ TEST(DecoderRegistry, F_OPEN_06_UnsupportedFileIsError) {
 
 TEST(DecoderRegistry, InstanceHasDefaultExtensions) {
     auto& reg = DecoderRegistry::instance();
-    for (const char* s : {"jpg", "jpeg", "png", "heic", "avif", "jxl", "cr3", "dng", "svg", "webp"})
+    for (const char* s : {"jpg", "jpeg", "png", "svg", "webp", "qoi", "xcf"})
         EXPECT_TRUE(reg.isSupportedExtension(s)) << s;
+#if defined(Q_OS_DARWIN) && !defined(LF_GENERIC_PLATFORM) // ImageIO; elsewhere: the backends built in
+    for (const char* s : {"heic", "avif", "jxl", "cr3", "dng"})
+        EXPECT_TRUE(reg.isSupportedExtension(s)) << s;
+#endif
     EXPECT_FALSE(reg.isSupportedExtension("txt"));
     EXPECT_EQ(&reg, &DecoderRegistry::instance());
 }

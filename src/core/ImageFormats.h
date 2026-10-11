@@ -27,5 +27,9 @@ QStringList imageSuffixes();
 QStringList defaultImageSuffixes();
 // True for camera RAW suffixes (subset of imageSuffixes()).
 bool isRawSuffix(const QString& lowerSuffix);
+// Tests only: isImageSuffix()/imageSuffixes() answer with defaultImageSuffixes() instead of
+// the backends' list, so that tests of platform-neutral logic (RAW+JPEG pairs, culling,
+// collections) behave the same on every platform (tests/unit/test_format_environment.cpp).
+void setStaticImageSuffixesForTesting(bool on);
 
 } // namespace lf
