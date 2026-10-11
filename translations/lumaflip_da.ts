@@ -671,6 +671,14 @@
         <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>„%1“ kann nicht direkt ausgeführt werden: es würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
+        <translation>”%1” kan ikke køres direkte: det ville læse filnavne som kommandoer. Kør i stedet et program eller et PowerShell-script (powershell -File Script.ps1).</translation>
+    </message>
+    <message>
+        <source>PowerShell nur mit einem Skript: „powershell -File Skript.ps1“. Mit -Command (oder ohne -File) würde PowerShell Dateinamen als Befehle lesen.</source>
+        <translation>PowerShell kun med et script: ”powershell -File Script.ps1”. Med -Command (eller uden -File) ville PowerShell læse filnavne som kommandoer.</translation>
+    </message>
     <message numerus="yes">
         <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
         <translation>
@@ -3998,6 +4006,18 @@
         <translation>Der blev ikke fundet en app til redigering. Vælg en under Indstillinger → Generelt → Editor.</translation>
     </message>
     <message>
+        <source>Programme (*.exe)</source>
+        <translation>Programmer (*.exe)</translation>
+    </message>
+    <message>
+        <source>Programme (*.desktop);;Alle Dateien (*)</source>
+        <translation>Programmer (*.desktop);;Alle filer (*)</translation>
+    </message>
+    <message>
+        <source>„%1“ ist kein Programm.</source>
+        <translation>”%1” er ikke et program.</translation>
+    </message>
+    <message>
         <source>Kein Bild geöffnet</source>
         <translation>Intet billede åbnet</translation>
     </message>
@@ -4993,10 +5013,6 @@
         <translation>Vælg editor</translation>
     </message>
     <message>
-        <source>Programme (*.app)</source>
-        <translation>Apps (*.app)</translation>
-    </message>
-    <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
         <translation>Overtag sortering live fra Finder-vinduet</translation>
     </message>
@@ -5525,6 +5541,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>„%1“ würde den Dateinamen als Befehl lesen und wird aus Sicherheitsgründen nicht gestartet.</source>
+        <translation>”%1” ville læse filnavnet som en kommando og startes ikke af sikkerhedsmæssige årsager.</translation>
+    </message>
+    <message>
         <source>Das Programm wurde nicht gefunden.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5639,6 +5659,10 @@
     <message>
         <source>„%1“ konnte nicht wiederhergestellt werden: %2</source>
         <translation>”%1” kunne ikke gendannes: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ passte nicht in den Papierkorb und wurde endgültig gelöscht.</source>
+        <translation>”%1” var for stor til papirkurven og blev slettet permanent.</translation>
     </message>
 </context>
 <context>

@@ -671,6 +671,14 @@
         <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>„%1“ kann nicht direkt ausgeführt werden: es würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
+        <translation>Kohdetta ”%1” ei voi suorittaa suoraan: se lukisi tiedostonimet komentoina. Suorita sen sijaan ohjelma tai PowerShell-skripti (powershell -File Skripti.ps1).</translation>
+    </message>
+    <message>
+        <source>PowerShell nur mit einem Skript: „powershell -File Skript.ps1“. Mit -Command (oder ohne -File) würde PowerShell Dateinamen als Befehle lesen.</source>
+        <translation>PowerShell vain skriptin kanssa: ”powershell -File Skripti.ps1”. Valitsimella -Command (tai ilman valitsinta -File) PowerShell lukisi tiedostonimet komentoina.</translation>
+    </message>
     <message numerus="yes">
         <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
         <translation>
@@ -3998,6 +4006,18 @@
         <translation>Muokkaamiseen sopivaa sovellusta ei löytynyt. Valitse sellainen kohdassa Asetukset → Yleiset → Editori.</translation>
     </message>
     <message>
+        <source>Programme (*.exe)</source>
+        <translation>Ohjelmat (*.exe)</translation>
+    </message>
+    <message>
+        <source>Programme (*.desktop);;Alle Dateien (*)</source>
+        <translation>Ohjelmat (*.desktop);;Kaikki tiedostot (*)</translation>
+    </message>
+    <message>
+        <source>„%1“ ist kein Programm.</source>
+        <translation>”%1” ei ole ohjelma.</translation>
+    </message>
+    <message>
         <source>Kein Bild geöffnet</source>
         <translation>Kuvaa ei ole avattu</translation>
     </message>
@@ -4993,10 +5013,6 @@
         <translation>Valitse editori</translation>
     </message>
     <message>
-        <source>Programme (*.app)</source>
-        <translation>Sovellukset (*.app)</translation>
-    </message>
-    <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
         <translation>Käytä järjestystä suoraan Finder-ikkunasta</translation>
     </message>
@@ -5525,6 +5541,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>„%1“ würde den Dateinamen als Befehl lesen und wird aus Sicherheitsgründen nicht gestartet.</source>
+        <translation>”%1” lukisi tiedostonimen komentona, eikä sitä käynnistetä turvallisuussyistä.</translation>
+    </message>
+    <message>
         <source>Das Programm wurde nicht gefunden.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5639,6 +5659,10 @@
     <message>
         <source>„%1“ konnte nicht wiederhergestellt werden: %2</source>
         <translation>Kohdetta ”%1” ei voitu palauttaa: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ passte nicht in den Papierkorb und wurde endgültig gelöscht.</source>
+        <translation>”%1” ei mahtunut roskakoriin ja poistettiin pysyvästi.</translation>
     </message>
 </context>
 <context>

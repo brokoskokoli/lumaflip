@@ -671,6 +671,14 @@
         <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>„%1“ kann nicht direkt ausgeführt werden: es würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
+        <translation>«&#xa0;%1&#xa0;» ne peut pas être exécuté directement&#xa0;: il lirait les noms de fichiers comme des commandes. Lancez plutôt un programme ou un script PowerShell (powershell -File Script.ps1).</translation>
+    </message>
+    <message>
+        <source>PowerShell nur mit einem Skript: „powershell -File Skript.ps1“. Mit -Command (oder ohne -File) würde PowerShell Dateinamen als Befehle lesen.</source>
+        <translation>PowerShell uniquement avec un script&#xa0;: «&#xa0;powershell -File Script.ps1&#xa0;». Avec -Command (ou sans -File), PowerShell lirait les noms de fichiers comme des commandes.</translation>
+    </message>
     <message numerus="yes">
         <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
         <translation>
@@ -3998,6 +4006,18 @@
         <translation>Aucune app d’édition trouvée. Choisissez-en une dans Réglages → Général → Éditeur.</translation>
     </message>
     <message>
+        <source>Programme (*.exe)</source>
+        <translation>Programmes (*.exe)</translation>
+    </message>
+    <message>
+        <source>Programme (*.desktop);;Alle Dateien (*)</source>
+        <translation>Programmes (*.desktop);;Tous les fichiers (*)</translation>
+    </message>
+    <message>
+        <source>„%1“ ist kein Programm.</source>
+        <translation>«&#xa0;%1&#xa0;» n’est pas un programme.</translation>
+    </message>
+    <message>
         <source>Kein Bild geöffnet</source>
         <translation>Aucune image ouverte</translation>
     </message>
@@ -4993,10 +5013,6 @@
         <translation>Choisir un éditeur</translation>
     </message>
     <message>
-        <source>Programme (*.app)</source>
-        <translation>Apps (*.app)</translation>
-    </message>
-    <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
         <translation>Reprendre le tri en direct depuis la fenêtre du Finder</translation>
     </message>
@@ -5525,6 +5541,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>„%1“ würde den Dateinamen als Befehl lesen und wird aus Sicherheitsgründen nicht gestartet.</source>
+        <translation>«&#xa0;%1&#xa0;» lirait le nom du fichier comme une commande et n’est pas lancé pour des raisons de sécurité.</translation>
+    </message>
+    <message>
         <source>Das Programm wurde nicht gefunden.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5639,6 +5659,10 @@
     <message>
         <source>„%1“ konnte nicht wiederhergestellt werden: %2</source>
         <translation>Impossible de restaurer «&#xa0;%1&#xa0;»&#xa0;: %2</translation>
+    </message>
+    <message>
+        <source>„%1“ passte nicht in den Papierkorb und wurde endgültig gelöscht.</source>
+        <translation>«&#xa0;%1&#xa0;» ne tenait pas dans la corbeille et a été supprimé définitivement.</translation>
     </message>
 </context>
 <context>

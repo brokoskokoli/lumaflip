@@ -664,6 +664,14 @@
         <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>„%1“ kann nicht direkt ausgeführt werden: es würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
+        <translation>无法直接运行“%1”：它会将文件名当作命令读取。请改为运行程序或 PowerShell 脚本（powershell -File Script.ps1）。</translation>
+    </message>
+    <message>
+        <source>PowerShell nur mit einem Skript: „powershell -File Skript.ps1“. Mit -Command (oder ohne -File) würde PowerShell Dateinamen als Befehle lesen.</source>
+        <translation>PowerShell 只能与脚本一起使用：“powershell -File Script.ps1”。使用 -Command（或不带 -File）时，PowerShell 会将文件名当作命令读取。</translation>
+    </message>
     <message numerus="yes">
         <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
         <translation>
@@ -3983,6 +3991,18 @@
         <translation>未找到用于编辑的 App。请在“设置”→“通用”→“编辑器”中选择一个。</translation>
     </message>
     <message>
+        <source>Programme (*.exe)</source>
+        <translation>程序 (*.exe)</translation>
+    </message>
+    <message>
+        <source>Programme (*.desktop);;Alle Dateien (*)</source>
+        <translation>程序 (*.desktop);;所有文件 (*)</translation>
+    </message>
+    <message>
+        <source>„%1“ ist kein Programm.</source>
+        <translation>“%1”不是程序。</translation>
+    </message>
+    <message>
         <source>Kein Bild geöffnet</source>
         <translation>未打开图像</translation>
     </message>
@@ -4972,10 +4992,6 @@
         <translation>选择编辑器</translation>
     </message>
     <message>
-        <source>Programme (*.app)</source>
-        <translation>App (*.app)</translation>
-    </message>
-    <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
         <translation>实时采用访达窗口中的排序</translation>
     </message>
@@ -5502,6 +5518,10 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>„%1“ würde den Dateinamen als Befehl lesen und wird aus Sicherheitsgründen nicht gestartet.</source>
+        <translation>“%1”会将文件名当作命令读取，出于安全原因不会启动。</translation>
+    </message>
+    <message>
         <source>Das Programm wurde nicht gefunden.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5616,6 +5636,10 @@
     <message>
         <source>„%1“ konnte nicht wiederhergestellt werden: %2</source>
         <translation>无法恢复“%1”：%2</translation>
+    </message>
+    <message>
+        <source>„%1“ passte nicht in den Papierkorb und wurde endgültig gelöscht.</source>
+        <translation>“%1”无法放入废纸篓，已被永久删除。</translation>
     </message>
 </context>
 <context>
