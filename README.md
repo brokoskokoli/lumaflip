@@ -15,7 +15,7 @@
 
 </div>
 
-> **Status:** version 1.1 (milestone M3) is in final acceptance testing. See the [changelog](CHANGELOG.md)
+> **Status:** version 1.2 (milestone M4) is the first public release. See the [changelog](CHANGELOG.md)
 > and the [roadmap](#roadmap).
 
 ## Why Lumaflip?

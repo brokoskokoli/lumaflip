@@ -291,9 +291,11 @@ Lizenzfenster) stehen in [MANUAL_CHECKS.md](MANUAL_CHECKS.md) im Abschnitt „Au
 
 ## Release-Notizen
 
-Der Workflow legt den Entwurf mit `--generate-notes` an; vor dem Veröffentlichen den Text des
-Entwurfs durch die Notizen der Version ersetzen (Sparkle zeigt ihn als HTML im Update-Fenster).
-Deutsch zuerst, Englisch darunter.
+Der Workflow nimmt den Text des Releases aus `CHANGELOG.md`: den Abschnitt `## [X.Y.Z] …` bis zum
+nächsten `## [`. Fehlt der Abschnitt, bricht der Job `draft` ab. Der Text erscheint auf der Release-Seite
+und – als HTML – im Update-Fenster von Sparkle. Vor dem Tag also den Abschnitt `[Unreleased]` in
+`[X.Y.Z] - Datum` umbenennen (mit kurzer Einleitung für Nutzer) und die Links am Ende anpassen.
+Die älteren deutschen Notizen unten sind Entwürfe aus der Abnahme.
 
 ### 1.1.0 (Meilenstein M3)
 

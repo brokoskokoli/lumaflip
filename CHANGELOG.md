@@ -9,8 +9,22 @@ refer to [SPEC.md](SPEC.md).
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-10-11
+
+Milestone M4 — the first public release: signed and notarized for macOS 15+ on Apple Silicon,
+with automatic updates. Windows and Linux builds are previews.
+
 ### Added
 
+- **Comics, archives and PDFs** (CBZ/CBR/CB7, ZIP/RAR/7z, PDF): browse them like a folder, with
+  thumbnails, a right-to-left mode for manga, ⌥←/→ to the neighbouring archive and live reload
+  when the archive changes; read-only, extracted only to a temporary cache. [F-OPEN-10]
+- **Live Text** (⇧⌘L): select and copy text in photos, look up subjects (macOS VisionKit,
+  on-device, only on request). [F-MAC-06]
+- **Quick Look** (⌘Y) and **Services** ("Open in Lumaflip" from other apps). [F-MAC-07]
+- **Set as desktop picture** for the current screen or all screens. [F-FILE-09]
+- **Custom actions**: run a shell command or a Shortcut on the current image or selection from a
+  key or the menu, confirmed once per command, with timeout. [F-FILE-10]
 - **Crop** (⇧C): handles, aspect presets (free, original, 1:1, 4:3, 3:2, 16:9, portrait), rule of
   thirds, size in pixels; Enter saves into the file (undoable), "Save As…" writes a new file. JPEGs
   are cropped losslessly on the block grid; PNG/TIFF re-encoded exactly; lossy formats only after
@@ -44,8 +58,20 @@ refer to [SPEC.md](SPEC.md).
   sandbox with a job object. Installer (Inno Setup) and portable ZIP from CI; not code-signed yet
   (SmartScreen warns). See docs/WINDOWS.md. [SPEC 9.3, 13]
 
+### Security
+
+- Review round for M4 and the ports: decoder helper hardened on Linux (stricter seccomp filter,
+  read-only file system even without Landlock, no inherited file descriptors, pixels returned in
+  sealed memory) and Windows (own desktop, memory limit); pixel and memory limits for HEIF/AVIF,
+  JPEG XL and OpenEXR; bounded archive scans against decompression bombs; imported settings can no
+  longer bring pre-confirmed custom actions.
+
 ### Fixed
 
+- Crop "Save As" never replaces an existing file without asking; Esc cancels a save in progress;
+  custom actions on plain keys (F5, K …) work; full-screen toggles during the macOS animation are
+  no longer lost; difference compare no longer blocks the window and keeps aspect ratios; clipping
+  warning judged in the image's own colour space; JPEG XL colours on Linux/Windows.
 - **Animated GIF, WebP, APNG and AVIF play as the file says**: the file's loop count is honored
   (a GIF without loop extension plays once and stays on its last frame; Space plays it again),
   frame delays of 10 ms or less play at 100 ms like in browsers on every platform, animated AVIF
@@ -54,9 +80,9 @@ refer to [SPEC.md](SPEC.md).
   (the WIC codec returned its frames as pages). New tests check playback on the rendered
   canvas, not only in the player. [F-FMT-03, F-IN-06]
 
-## [1.1.0] - Unreleased
+## [1.1.0] - internal milestone (not published)
 
-Milestone M3 — the first public release. Acceptance testing: [docs/TESTING-M3.md](docs/TESTING-M3.md).
+Milestone M3. Acceptance testing: [docs/TESTING-M3.md](docs/TESTING-M3.md).
 
 ### Added
 
@@ -150,5 +176,5 @@ Milestone M1 — MVP. Acceptance testing: [docs/TESTING-M1.md](docs/TESTING-M1.m
   settings window. [F-WIN-01/02/03/08/09/10, F-MAC-01/02/05, F-SET-01/04]
 - Graceful handling of macOS privacy prompts; no Full Disk Access required. [F-PRIV-01/02]
 
-[Unreleased]: https://github.com/brokoskokoli/lumaflip/compare/v1.1.0...HEAD
-[1.1.0]: https://github.com/brokoskokoli/lumaflip/releases/tag/v1.1.0
+[Unreleased]: https://github.com/brokoskokoli/lumaflip/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/brokoskokoli/lumaflip/releases/tag/v1.2.0

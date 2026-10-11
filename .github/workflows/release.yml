@@ -226,11 +226,33 @@ jobs:
       contents: write   # gh release create/upload
     timeout-minutes: 15
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          sparse-checkout: CHANGELOG.md
+          sparse-checkout-cone-mode: false
       - name: Download release files
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: release-dist
           path: dist
+      - name: Release notes from CHANGELOG.md
+        # The section "## [X.Y.Z] ..." up to the next "## [" becomes the release text, which the
+        # appcast job turns into the notes Sparkle shows in the update window.
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          awk -v v="$version" '
+            index($0, "## [" v "]") == 1 { f = 1; next }
+            f && /^## \[/ { exit }
+            f && /^\[[^]]+\]: http/ { next }
+            f { print }
+          ' CHANGELOG.md | sed -e '/./,$!d' > "$RUNNER_TEMP/notes.md"
+          if [[ ! -s "$RUNNER_TEMP/notes.md" ]]; then
+            echo "::error::CHANGELOG.md has no section \"## [$version]\" - add the release notes there"
+            exit 1
+          fi
+          echo "LF_NOTES_FILE=$RUNNER_TEMP/notes.md" >> "$GITHUB_ENV"
       - name: Create or update the draft release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -245,11 +267,12 @@ jobs:
               echo "::error::Release $GITHUB_REF_NAME is already published - its files are not replaced. Tag a new version."
               exit 1
             fi
-            echo "Draft $GITHUB_REF_NAME exists - replacing its files"
+            echo "Draft $GITHUB_REF_NAME exists - replacing its files and notes"
             gh release upload "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --clobber "${files[@]}"
+            gh release edit "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --notes-file "$LF_NOTES_FILE"
           else
             gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft --verify-tag \
-              --generate-notes --title "Lumaflip $version" "${files[@]}"
+              --notes-file "$LF_NOTES_FILE" --title "Lumaflip $version" "${files[@]}"
           fi
 
   appcast:

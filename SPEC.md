@@ -4,7 +4,7 @@
 |---|---|
 | **Name** | **Lumaflip** (luma = Helligkeit/Bildsignal, flip = durchblättern) |
 | **Bundle-ID** | `io.github.brokoskokoli.lumaflip` |
-| **Status** | v1.x – M1 bis M3 umgesetzt; Version 1.1.0 in der Abnahme (docs/TESTING-M3.md) |
+| **Status** | v1.x – M1 bis M4 umgesetzt; Version 1.2.0 ist das erste öffentliche Release |
 | **Stand** | 2026-10-10 |
 | **Lizenz** | Open Source, GPL-3.0-or-later; veröffentlicht auf GitHub |
 | **Vertrieb** | GitHub Releases, signiert (Developer ID) und notarisiert; zusätzlich Homebrew Cask |

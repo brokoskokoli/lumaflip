@@ -57,7 +57,7 @@ body:
     attributes:
       label: Lumaflip version
       description: Lumaflip → About Lumaflip
-      placeholder: "1.1.0"
+      placeholder: "1.2.0"
     validations:
       required: true
   - type: input

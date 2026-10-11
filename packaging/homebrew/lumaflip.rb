@@ -4,7 +4,7 @@
 # Lumaflip-<version>.dmg.sha256 and copy the file into the tap
 # (brokoskokoli/homebrew-tap: Casks/lumaflip.rb). See docs/RELEASING.md.
 cask "lumaflip" do
-  version "1.1.0"
+  version "1.2.0"
   sha256 "@SHA256_OF_DMG@"
 
   url "https://github.com/brokoskokoli/lumaflip/releases/download/v#{version}/Lumaflip-#{version}.dmg"

@@ -14,7 +14,7 @@
 
 </div>
 
-> **Status:** Version 1.1 (Meilenstein M3) in der Abnahme – siehe [CHANGELOG.md](CHANGELOG.md).
+> **Status:** Version 1.2 (Meilenstein M4) ist das erste öffentliche Release – siehe [CHANGELOG.md](CHANGELOG.md).
 > Die ausführliche Dokumentation ist auf Englisch ([README.md](README.md)); die Spezifikation
 > [SPEC.md](SPEC.md) ist auf Deutsch.
 
