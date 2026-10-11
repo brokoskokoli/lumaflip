@@ -1,21 +1,21 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 /* Localized Info.plist texts (pt_BR); maintained by hand here (not generated from the .ts catalogues) - see translations/README.md */
 "NSAppleEventsUsageDescription" = "Se você quiser, o Lumaflip consulta a ordenação da janela do Finder da frente para exibir as imagens na mesma ordem.";
-"NSDesktopFolderUsageDescription" = "O Lumaflip lê a pasta da imagem aberta para que você possa passar as imagens com as teclas de seta.";
-"NSDocumentsFolderUsageDescription" = "O Lumaflip lê a pasta da imagem aberta para que você possa passar as imagens com as teclas de seta.";
-"NSDownloadsFolderUsageDescription" = "O Lumaflip lê a pasta da imagem aberta para que você possa passar as imagens com as teclas de seta.";
-"NSRemovableVolumesUsageDescription" = "O Lumaflip lê a pasta da imagem aberta para que você possa passar as imagens com as teclas de seta.";
-"NSNetworkVolumesUsageDescription" = "O Lumaflip lê a pasta da imagem aberta para que você possa passar as imagens com as teclas de seta.";
+"NSDesktopFolderUsageDescription" = "O Lumaflip lê a pasta da imagem aberta para que você possa navegar pelas imagens com as teclas de seta.";
+"NSDocumentsFolderUsageDescription" = "O Lumaflip lê a pasta da imagem aberta para que você possa navegar pelas imagens com as teclas de seta.";
+"NSDownloadsFolderUsageDescription" = "O Lumaflip lê a pasta da imagem aberta para que você possa navegar pelas imagens com as teclas de seta.";
+"NSRemovableVolumesUsageDescription" = "O Lumaflip lê a pasta da imagem aberta para que você possa navegar pelas imagens com as teclas de seta.";
+"NSNetworkVolumesUsageDescription" = "O Lumaflip lê a pasta da imagem aberta para que você possa navegar pelas imagens com as teclas de seta.";
 "Bild" = "Imagem";
-"Bild (sonstige)" = "Imagem (outros)";
+"Bild (sonstige)" = "Imagem (outro formato)";
 "Ordner" = "Pasta";
 "WBMP-Bild" = "Imagem WBMP";
-"Comic-Archiv" = "Arquivo de quadrinhos";
+"Comic-Archiv" = "Arquivo compactado de quadrinhos";
 "Archiv" = "Arquivo compactado";
 "PDF-Dokument" = "Documento PDF";
-"RAR-Archiv" = "Arquivo RAR";
-"7-Zip-Archiv" = "Arquivo 7-Zip";
-"Comic-Archiv (ZIP)" = "Arquivo de quadrinhos (ZIP)";
-"Comic-Archiv (RAR)" = "Arquivo de quadrinhos (RAR)";
-"Comic-Archiv (7z)" = "Arquivo de quadrinhos (7z)";
+"RAR-Archiv" = "Arquivo compactado RAR";
+"7-Zip-Archiv" = "Arquivo compactado 7-Zip";
+"Comic-Archiv (ZIP)" = "Arquivo compactado de quadrinhos (ZIP)";
+"Comic-Archiv (RAR)" = "Arquivo compactado de quadrinhos (RAR)";
+"Comic-Archiv (7z)" = "Arquivo compactado de quadrinhos (7z)";
 "NSHumanReadableCopyright" = "© 2026 brokoskokoli e colaboradores. Licença: GPL-3.0-or-later.";

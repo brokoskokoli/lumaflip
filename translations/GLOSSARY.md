@@ -567,3 +567,309 @@ Muttersprachler:innen gegengelesen. Quellen, in dieser Reihenfolge:
 
 Finder-Tag-Standardwerte („Pick“, „Reject“, „★★★“) und der Ordnername „_Rejected“ sind Daten
 und bleiben unübersetzt – wie im Deutschen.
+
+## Romanische Sprachen: fr, es, it, pt_BR, pt_PT
+
+Durchgang vom 11.10.2026 (maschinell gegen Plattform-Glossare geprüft, **nicht** von
+Muttersprachler:innen). Quellen, in dieser Reihenfolge:
+
+1. **macOS 27**, Lokalisierungen auf dem Rechner: `AppKit.framework/Resources/*.loctable`
+   (MenuCommands, FunctionKeyNames, Document …), Vorschau, Fotos, Finder/FinderKit und
+   Systemeinstellungen (Abschnitte `fr`, `es`, `it`, `pt_BR`, `pt_PT`).
+2. **Windows-only-Texte:** Microsoft-Terminologie der Sprache (Standard-Apps,
+   Desktophintergrund, Batchdateien).
+3. **Fotografie:** lokalisierte Adobe Lightroom/Apple Fotos (aus dem Gedächtnis, nicht live
+   geprüft – siehe „Unsichere Entscheidungen“).
+
+### Stilregeln je Sprache
+
+(Auf Englisch, damit sie auch Übersetzer:innen ohne Deutschkenntnisse lesen können.)
+
+#### Französisch (fr)
+
+- Register: "vous" throughout, as in Apple's French macOS; instructions in vous-form imperative ("Choisissez…", "Saisissez…", "modifiez-en une"). Questions use "Voulez-vous…". "Veuillez" is kept where it was already there, but not added.
+- Capitalization: sentence case everywhere (menus, buttons, headings), as Apple French does. Product/feature names keep Apple's localized capitalization ("Texte en direct", "Coup d’œil", "Réglages Système").
+- Ellipsis: "…" (U+2026) glued to the preceding word ("Réglages…", "Ouvrir…"), only where the German source has "…"; never "...".
+- Typographic apostrophe ’ (U+2019) everywhere (l’image, d’ajout).
+- Spacing: U+00A0 before : ; ? ! and » and after «. Plain spaces elsewhere. "%1 : %2" also gets the nbsp, even where English/German have no space.
+- Quotes: « » with U+00A0 inside, for file names, command/button names and setting names in running text. Straight " only in code/shell examples.
+- Units: Ko/Mo/Go/To/Po, octet(s), "100 %" with U+00A0, "2 Go max.", "%1 bits", "f/%1", "%1 mm", "éq. 24×36".
+- Menu paths: "Réglages → Général → Éditeur" with → and spaces. Menus are not quoted, the final command may be in « » (as in the German source).
+- Key names: Espace, Esc, Entrée, Début / Fin, Pg↑ / Pg↓, arrows ← → ↑ ↓, macOS symbols ⌃⌥⇧⌘ with no space and no "+".
+- Dashes: "–" with spaces inside sentences, as in the source; window titles keep "—"; ranges "1–9" with no spaces.
+- Standard commands follow the French AppKit/Preview/Photos loctables (Placer dans la corbeille, Afficher dans le Finder, Lire les informations, Enregistrer, Annuler/Rétablir, Minimiser, Réduire/agrandir, Adapter à la fenêtre, Taille réelle, Diaporama, Recadrer, Faire pivoter, Retourner horizontalement). Windows-only strings use Microsoft terms (Applications par défaut, arrière-plan du Bureau, fichiers batch).
+- Status/toast messages have no final period; full sentences do. Past participles agree with the implied noun "image" (Recadrée, Retenue, Rejetée).
+
+#### Spanisch (es)
+
+- **Register:** informal "tú", as in Apple's macOS Spanish ("¿Seguro que quieres…?", "Elige otro nombre.", "Puedes deshacerlo con ⌘Z."). Imperatives in tú form; no "por favor".
+- **Questions/exclamations:** always with opening ¿ / ¡ ("¿Trasladar “%1” a la papelera?").
+- **Capitalization:** sentence case everywhere (menus, buttons, labels), as in Apple's es localization ("Guardar como…", "Abrir recientes", "Tamaño real"). Product/feature names keep their Apple casing ("Texto en vivo", "Vista rápida", "Ajustes del Sistema").
+- **Ellipsis:** single "…" (U+2026), glued to the preceding word ("Ajustes…", "Abrir…", "Cargando…"), only where the German source has it.
+- **Quotes:** curly double quotes “ ” for file names, commands and buttons in running text (Apple es: Consultar “%@”); no « ». Straight quotes only in shell/code examples.
+- **Punctuation for German " – " in sentences:** colon or semicolon ("No se ha guardado nada: vuelve a recortar."); en dash kept only in title/status separators where the source uses it as a separator; em dash " — " in window titles as in source.
+- **Past-tense error messages:** perfect tense as in Apple es ("No se ha podido…", "se ha cancelado"), not preterite ("No se pudo").
+- **Menu paths:** "Ajustes → General → Editor", menu names unquoted, final command may be quoted ("Ventana → “Vincular ventanas…”").
+- **Key names:** Apple symbols ⌃⌥⇧⌘ glued to the key; named keys "Espacio", "Esc", "Intro", "Re Pág / Av Pág", "Inicio / Fin", arrows ← → ↑ ↓.
+- **Units/numbers:** space before % and units ("100 %", "15 píxeles", "2 GB", "120 ms"); "×" with spaces for dimensions; SI units unchanged (KB, MB, GB); GPS West = "O".
+- **Terminology:** archive = "archivo comprimido" (never bare "archivo", which means file); move = "mover" (M key), but "Trasladar a la papelera" (Apple); default app = "app por omisión" (Apple es), Windows-only strings use Microsoft "aplicación predeterminada", "fondo de escritorio".
+- **Plurals/gender:** image = "imagen" (feminine) – participles agree ("Recortada", "Marcada", "Rechazada", "%n seleccionadas").
+
+#### Italienisch (it)
+
+- **Register:** informal "tu", as Apple macOS Italian uses it ("Vuoi sostituirlo?", "Scegli un altro nome."). Confirmation questions are phrased "Vuoi …?" instead of a bare infinitive ("Spostare …?"). Instructions use the tu imperative ("Riprova", "Consenti l’accesso").
+- **Capitalization:** sentence case everywhere: menus, buttons, labels and column headers ("Salva col nome…", "Mostra nel Finder", "Dimensioni reali (100%)"). Proper names and Apple app names keep their capitals ("Cestino", "Comandi Rapidi", "Impostazioni di Sistema", "Testo attivo").
+- **Ellipsis:** "…" (U+2026) attached to the previous word with no space ("Impostazioni…", "Caricamento…"), and only where the German source has "…".
+- **Quotation marks:** curly “ ” for names of files, commands and buttons in running text, as Apple Italian does (AppKit: “%@” esiste già). All « » were replaced. Straight " stays only in shell/command examples.
+- **Apostrophe:** typographic ’ in elisions ("l’immagine", "un’altra").
+- **Error style:** "Impossibile + infinitive" for failures ("Impossibile salvare il ritaglio."), as in Apple Italian. Short status messages have no final period. Full sentences do.
+- **Dashes and colons:** where German has " – " that joins two clauses, Italian mostly uses a colon ("…: non è stato salvato nulla."). " – " stays in short labels and toasts. Window titles keep " — ".
+- **Units/numbers:** percent with no space ("100%", "%1%"). Other units take a space ("15 pixel", "2 GB", "120 ms", "1/250 s"). SI units (KB, MB, GB) are unchanged. GPS West is "O" (Ovest).
+- **Menu paths:** "Impostazioni → Valutazione → Archiviazione rapida". Menu names have no quotes, and the final command may be in “ ” ("Finestra → “Collega finestre…”"). Menu names are File, Modifica, Vista, Finestra, Aiuto.
+- **Key names:** modifier symbols are glued to the key with no "+" (⇧⌘H, ⌥←). Space is "Barra spaziatrice" (AppKit FunctionKeyNames), Esc is "Esc", Enter/Return is "Invio", Page Up/Down is "Pag↑ / Pag↓", Home/End is "Inizio / Fine".
+- **Tabs vs. panels:** macOS Italian calls window tabs "pannelli". For that reason the Info panel became "Riquadro informazioni", so the two never collide.
+- **Gender agreement:** status texts about images use the feminine ("Ritagliata", "Contrassegnata", "%n immagini rifiutate"). Windows-only strings use Microsoft Italian terminology ("App predefinite", "sfondo del desktop", "Programmi (*.exe)").
+
+#### Portugiesisch, Brasilien (pt_BR)
+
+- **Register:** "você" as in macOS pt_BR. Use the imperative for instructions ("Escolha outro nome.", "Digite um nome."). Confirmation questions follow AppKit: "Deseja substituí-lo?", "Tem certeza de que deseja …?", or a short infinitive question ("Mover %n imagens para o Lixo?"). Leave out "por favor".
+- **Capitalization:** Title Case as in Apple pt_BR for **menu items, push buttons and command/action names** (MainMenu, MenuExtras, context menus, InputBindings action list, dialog buttons): "Salvar Como…", "Mover para o Lixo", "Ajustar à Janela", "Manter Ambos". Articles and prepositions (o, a, de, da, do, para, em, com, e, por, à) stay lowercase. Parenthetical qualifiers inside a menu item are lowercase: "Ajustar à Janela (permitir ampliação)", "100% (1:1 pixel)". Use sentence case everywhere else: checkboxes, radio buttons, settings labels, group titles, metadata field labels, tooltips, status and error messages.
+- **Ellipsis:** Use "…" (U+2026) directly after the word, with no space ("Abrir…", "Carregando…"), and only where the German source has "…". Never write "...".
+- **Quotation marks:** Use curly “ ” around file names, menu commands and button names in running text, as AppKit pt_BR does ("“%1” já existe.").
+- **Menu paths:** Use "→" with spaces. Menu names have no quotes; a quoted final command is allowed: "Ajustes → Geral → Editor", "Janela → “Vincular Janelas…”". Apple's own pt_BR uses ">", but the app keeps the source's →.
+- **Key names:** Espaço (AppKit FunctionKeyNames), Esc, Enter, Page Up / Page Down, Home / End, and the arrow symbols ← → ↑ ↓. Modifier symbols go without spaces or "+" (⇧⌘H, ⌥←). "tecla E" for single letters.
+- **Numbers and units:** Percent sits next to the number with no space ("100%", "%1%"), as in Brazilian usage. Keep KB/MB/GB, "px", "s" and "ms". Write "0 bytes" (plural for zero). Write dimensions as "%1 × %2 pixels". Use an en dash with spaces " – " in sentences; window titles keep " — ".
+- **Abbreviations:** Write "por exemplo" in full in sentences (no "p. ex."). Use "máx." only in compact option labels.
+- **Gender and agreement:** "imagem" is feminine, so states agree with it ("Marcada", "Rejeitada", "%n selecionadas", "Recortada sem perdas"). "app" is masculine ("o app padrão").
+- **Terminology anchors:** arquivo = file and arquivo compactado = archive (never bare "arquivo" for an archive). Lixo (never "Lixeira"). Ajustes / Ajustes do Sistema. app (not "aplicativo", except Microsoft's "Aplicativos padrão" on Windows). Windows-only strings use Microsoft terms ("Configurações", "plano de fundo da área de trabalho", "arquivos em lote").
+- **Data values** stay untranslated: tag names "Pick" / "Reject", the folder "_Rejected", file filters "(*.exe)", and command-line samples ("powershell -File Script.ps1").
+
+#### Portugiesisch, Portugal (pt_PT)
+
+- **Variant:** genuine European Portuguese following Apple's macOS pt_PT loctables: ficheiro, ecrã, definições, guardar, rato, ligação, partilhar, palavra-passe, câmara, píxeis, banda desenhada, controlo, aplicação (never "app", also Microsoft pt-PT), gerund avoided ("A carregar…", "A exportar…").
+- **Register:** impersonal / formal third person as in Apple pt_PT: questions "Pretende…?", "Tem a certeza de que pretende…?"; instructions in the formal imperative ("Selecione", "Escolha", "Introduza", "Clique", "Prima"); no "você", no "tu"; "por favor" omitted like Apple.
+- **Capitalization:** sentence case everywhere (menus, buttons, titles, column headers), as Apple pt_PT ("Guardar como…", "Tamanho real", "Mover para o Lixo"). Product/app names keep capitals: Lixo, Finder, Definições do Sistema, Atalhos, Mapas, Vista rápida, Texto em direto.
+- **Ellipsis:** single "…" (U+2026) glued to the word, no space ("Definições…", "A carregar…"), only where the German source has "…".
+- **Quotes:** curly double quotes “ ” for file names, commands and button names in running text (Apple pt_PT uses “%@”); never « » or straight quotes (except shell/code examples).
+- **Punctuation:** full sentences end with a period; short status/toast messages and labels without period (same as source). En dash with spaces " – " in sentences; window titles keep " — ". Comma after introductory "Por isso," / "Caso contrário,". Abbreviation "p. ex.,".
+- **Menu paths:** "Definições → Geral → Editor", "Ficheiro → Informações"; menus unquoted, final command may be in “ ”.
+- **Keys:** macOS symbols ⌃⌥⇧⌘ without "+" or spaces; key names Espaço, Esc, Enter, Pág↑/Pág↓, Início/Fim, arrows ← → ↑ ↓; "tecla E"; "manter premida".
+- **Numbers/units:** percentages without space ("100%", Apple pt_PT style); "%1 × %2 píxeis", "px", KB/MB/GB unchanged, "%1 bits"; ranges with en dash "1–9", "0–5".
+- **Photo terms:** Rating = classificação; Pick/Reject/Unflag = Marcar / Rejeitar / Remover marcação (states Marcada / Rejeitada); culling = triagem; crop = recortar/recorte; slideshow = diaporama; tags = identificadores (Finder pt_PT).
+- **Data values** stay untranslated: tag names “Pick”, “Reject”, “★★★”, folder “_Rejected”, placeholders {name}/{n}/{format}, file filters.
+
+### Begriffe
+
+Ein Begriff des deutschen Glossars ergibt je Sprache genau einen Begriff. „–“ = in der
+Sprache nicht gesondert festgelegt (gleich wie die übrigen Zeilen bzw. wie im Text).
+
+#### Menüs und Standardbefehle (macOS)
+
+| Begriff | Deutsch | fr | es | it | pt_BR | pt_PT |
+|---|---|---|---|---|---|---|
+| Menü File | Ablage | Fichier | Archivo | File | Arquivo | Ficheiro |
+| Menü Edit | Bearbeiten | Édition | Edición | Modifica | Editar | Edição |
+| Menü View | Darstellung | Présentation | Visualización | Vista | Visualizar | Visualização |
+| Menü Window | Fenster | Fenêtre | Ventana | Finestra | Janela | Janela |
+| Menü Help | Hilfe | Aide | Ayuda | Aiuto | Ajuda | Ajuda |
+| Settings… | Einstellungen … | Réglages… | Ajustes… | Impostazioni… | Ajustes… | Definições… |
+| About | Über Lumaflip | À propos de Lumaflip | Acerca de Lumaflip | Informazioni su Lumaflip | Sobre o Lumaflip | Acerca do Lumaflip |
+| Quit | Lumaflip beenden | Quitter Lumaflip | Salir de Lumaflip | Esci da Lumaflip | Encerrar Lumaflip | Sair do Lumaflip |
+| Open… | Öffnen … | Ouvrir… | Abrir… | Apri… | Abrir… | Abrir… |
+| Open Recent | Benutzte Dokumente | Ouvrir l’élément récent | Abrir recientes | Apri recenti | Abrir Recente | Abrir documento recente |
+| Clear Menu | Einträge löschen | Effacer le menu | Vaciar menú | Cancella menu | Limpar Menu | Limpar menu |
+| Close / Close All | Schließen / Alle schließen | Fermer / Tout fermer | Cerrar / Cerrar todo | Chiudi / Chiudi tutto | Fechar / Fechar Todas | Fechar / Fechar todas |
+| Save | **Sichern** | Enregistrer | Guardar | Salva | Salvar | Guardar |
+| Save As | Sichern unter … | Enregistrer sous… | Guardar como… | Salva col nome… | Salvar Como… | Guardar como… |
+| Undo / Redo | **Widerrufen** / Wiederholen | Annuler / Rétablir | Deshacer / Rehacer | Annulla / Ripristina | Desfazer / Refazer | Desfazer / Refazer |
+| Repeat (Diashow) | Wiederholen | Répéter | Repetir | Ripeti | Repetir | Repetir |
+| Copy | Kopieren | Copier | Copiar | Copia | Copiar | Copiar |
+| Move to Trash | In den Papierkorb legen | Placer dans la corbeille | Trasladar a la papelera | Sposta nel Cestino | Mover para o Lixo | Mover para o Lixo |
+| Show in Finder | Im Finder zeigen | Afficher dans le Finder | Mostrar en el Finder | Mostra nel Finder | Mostrar no Finder | Mostrar no Finder |
+| Get Info | Informationen | Lire les informations | Obtener información | Ottieni informazioni | Obter Informações | Informações |
+| Open With | Öffnen mit | Ouvrir avec | Abrir con | Apri con | Abrir com | Abrir com |
+| Share | Teilen | Partager | Compartir | Condividi | Compartilhar | Partilhar |
+| Rename | Umbenennen … | Renommer… | Renombrar… | Rinomina… | Renomear… | Alterar nome… |
+| Minimize / Zoom | Minimieren / Zoomen | Minimiser / Réduire/agrandir | Minimizar / Zoom | Contrai / Ridimensiona | Minimizar / Zoom | Minimizar / Aumentar/reduzir |
+| Bring All to Front | Alle nach vorne bringen | Tout ramener au premier plan | Traer todo al frente | Porta tutto in primo piano | Trazer Todas para a Frente | Passar tudo para a frente |
+| Full screen | Vollbild (Befehl/Zustand), Vollbildmodus (macOS-Menübefehl) | Plein écran; Activer le mode plein écran (menu command) | Pantalla completa (state); Usar pantalla completa / Salir de pantalla completa (macOS commands) | A tutto schermo; menu "Attiva modalità a tutto schermo" | Tela Cheia; menu “Entrar em Tela Cheia” | Ecrã completo |
+| Tabs | Tab, Tableiste, Vorherigen/Nächsten Tab anzeigen, Tab in ein neues Fenster bewegen, Alle Fenster zusammenführen | onglet, barre d’onglets, Afficher l’onglet précédent/suivant, Placer l’onglet dans une nouvelle fenêtre, Fusionner toutes les fenêtres | pestaña; Mostrar pestaña anterior/siguiente; Trasladar pestaña a una nueva ventana; Fusionar todas las ventanas; barra de pestañas | pannello; barra dei pannelli; Mostra pannello precedente/successivo; Sposta pannello in una nuova finestra; Unisci tutte le finestre | Aba; Mostrar Barra de Abas; Mostrar Aba Anterior/Seguinte; Mover Aba para Nova Janela; Combinar Todas as Janelas | separador; Mostrar separador anterior/seguinte; Mover separador para nova janela; Agrupar todas as janelas; barra de separadores |
+| Choose… / Choose | Wählen … / Auswählen | Choisir… / Choisir | Seleccionar… / Seleccionar | Scegli… / Scegli | Escolher… / Escolher | Escolher… / Escolher |
+| Set as Desktop Picture | Als Schreibtischhintergrund festlegen | Définir comme fond d’écran | Establecer como fondo de pantalla | Imposta come sfondo della scrivania | Definir como Imagem de Fundo | Definir como imagem de secretária |
+| Check for Updates | Nach Updates suchen … | Rechercher des mises à jour… | Buscar actualizaciones… | Cerca aggiornamenti… | Buscar Atualizações… | Procurar atualizações… |
+
+#### Allgemeine Begriffe
+
+| Begriff | Deutsch | fr | es | it | pt_BR | pt_PT |
+|---|---|---|---|---|---|---|
+| Application | **App** | app | app | app | app (o app) | aplicação |
+| App bundle | App-Paket | paquet d’app | paquete de app | pacchetto dell’app | pacote do app | pacote da aplicação |
+| Default app | Standard-App | app par défaut | app por omisión | app predefinita | app padrão | aplicação predefinida |
+| Editor | Editor („Im Editor öffnen“) | éditeur ("Ouvrir dans l’éditeur") | editor ("Abrir en el editor") | editor ("Apri nell’editor") | Editor (“Abrir no Editor”) | editor ("Abrir no editor") |
+| Settings (Einstellungen-Fenster) | Einstellungen | Réglages | Ajustes | Impostazioni (panes: Generali, Finestre, Visualizzazione, Mouse e tastiera, Navigazione e ordinamento, Valutazione, Formati, Avanzate) | Ajustes | Definições |
+| Keyboard shortcut | Tastenkürzel | raccourci clavier (column: Raccourci) | función rápida de teclado (column: "Función rápida") | abbreviazione da tastiera; column "Abbreviazione" | atalho de teclado (column: Atalho) | atalho de teclado (column: Atalho) |
+| Shortcut (Apple Shortcuts) | Kurzbefehl, Kurzbefehle-App | raccourci, app Raccourcis | atajo; app Atajos | comando rapido; app Comandi Rapidi | atalho; app Atalhos | atalho; aplicação Atalhos |
+| Custom action | Eigene Aktion | action personnalisée | acción personalizada | azione personalizzata | ação personalizada | ação personalizada |
+| Status bar | Statusleiste | barre d’état | barra de estado | barra di stato | barra de status | barra de estado |
+| Title bar | Titelleiste | barre de titre | barra de título | barra del titolo | barra de título | barra de título |
+| Info panel | Infopanel (Befehl), Titel „Informationen“ | panneau d’informations; title "Informations" | Panel de información (command); title "Información" | Riquadro informazioni; title "Informazioni" | Painel de Informações; title “Informações” | Painel de informações (command); title "Informações" |
+| Show/hide UI | einblenden / ausblenden | afficher / masquer | Mostrar / Ocultar | mostra / nascondi | Mostrar / Ocultar | mostrar / ocultar |
+| Collection | Sammlung | collection | colección | raccolta | coleção | coleção |
+| Folder | Ordner | dossier | carpeta | cartella | pasta | pasta |
+| File extension | Endung | extension | extensión | estensione | extensão | extensão |
+| Already exists | „%1“ existiert bereits. | « %1 » existe déjà. | “%1” ya existe. | “%1” esiste già. | “%1” já existe. | “%1” já existe. |
+| No longer exists | existiert nicht mehr | n’existe plus | ya no existe | non esiste più | não existe mais | já não existe |
+| Password | Passwort, passwortgeschützt | mot de passe, protégé par mot de passe | contraseña; protegido con contraseña | password; protetto da password | senha; protegido por senha | palavra-passe |
+| Memory (RAM) | Arbeitsspeicher | mémoire ("Mémoire insuffisante") | memoria | memoria | memória | memória |
+| Disk space | Speicherplatz | espace (disque) | espacio | spazio | espaço | espaço |
+| Backup (für Widerrufen) | Sicherungskopie | copie de sauvegarde | copia de seguridad | copia di backup | cópia de segurança | cópia de segurança |
+| Backup (Einstellungen) | Backup der Einstellungen | Sauvegarde des réglages | Copia de seguridad de los ajustes | Backup delle impostazioni | Backup dos Ajustes | Cópia de segurança das definições |
+| Mouse pointer | Mauszeiger | pointeur | puntero | puntatore | ponteiro | ponteiro (do rato) |
+| Scroll wheel | Mausrad | molette (de la souris) | rueda del ratón | rotella del mouse | roda do mouse | roda do rato |
+| Click / double-click | Klick, Doppelklick, klicken | clic, double-clic, cliquer | clic, doble clic, hacer clic | clic, doppio clic, fare clic | clique, clique duplo, clicar | clique, duplo clique, clicar |
+| Drag and drop | Drag & Drop; ziehen | glisser-déposer; faire glisser | arrastrar y soltar; arrastrar | trascinamento; trascinare | arrastar e soltar; arrastar | arrastar e largar |
+| Internet connection | Internetverbindung | connexion Internet | conexión a internet | connessione Internet | conexão com a internet | ligação à Internet |
+| Desktop environment (Linux) | Desktopumgebung | environnement de bureau | entorno de escritorio | ambiente desktop | ambiente de área de trabalho | ambiente de trabalho |
+| Display | Bildschirm | écran | pantalla | schermo | tela | ecrã |
+| Leave a mode | (Modus) beenden | quitter (le mode) | salir de (modo) | uscire (dalla modalità) | sair (do modo) | sair (do modo) / terminar |
+| Restore defaults | Auf Standard zurücksetzen / Standard-… wiederherstellen | Restaurer les valeurs par défaut / Réinitialiser | Restaurar valores por omisión / Restablecer … | Ripristina valori predefiniti / Ripristina … predefinite | Restaurar Padrões / Redefinir | Repor predefinições / Repor … predefinidos |
+
+#### Bildansicht
+
+| Begriff | Deutsch | fr | es | it | pt_BR | pt_PT |
+|---|---|---|---|---|---|---|
+| Image | Bild | image | imagen | immagine | imagem | imagem |
+| Visible area (viewport) | **Ausschnitt** | zone visible | vista | vista; area visibile | área visível | área visível |
+| Pan | Ausschnitt verschieben | déplacer la zone visible | desplazar la vista | Sposta vista | mover a área visível | deslocar área visível |
+| Zoom to fit | Einpassen | Adapter à la fenêtre (variants: Adapter (avec/sans agrandissement)) | Ajustar a la ventana | Adatta | Ajustar à Janela | Ajustar |
+| Actual size | 100 % | 100 % (menu: Taille réelle (100 %, 1:1)) | 100 %; menu "100 % (tamaño real)" | 100%; menu "Dimensioni reali (100%)" | 100% (menu: “100% (1:1 pixel)”) | 100% (menu: "100% (1:1 píxeis)") |
+| Zoom in / out | Vergrößern / Verkleinern | Zoom avant / Zoom arrière | Ampliar / Reducir | Ingrandisci / Riduci | Ampliar / Reduzir | Ampliar / Reduzir |
+| Lock zoom | Zoom fixieren | Verrouiller le zoom | Fijar zoom | Blocca zoom | Travar Zoom | Bloquear zoom |
+| Filmstrip | Filmstreifen | Bande de vignettes | Tira de imágenes | Pellicola | tira de filme | Tira de película |
+| Grid | Raster | Grille | Cuadrícula | Griglia | grade | Grelha |
+| Loupe | Lupe | loupe | Lupa | lente d’ingrandimento | lupa | Lupa |
+| Slideshow | Diashow | Diaporama | Pase de diapositivas | Presentazione | apresentação de slides | Diaporama |
+| Frame (animation) | Einzelbild | image d’animation | fotograma | fotogramma | quadro | fotograma |
+| Page | Seite | page | página | pagina | página | página |
+| Overlays (Foto-Hilfen) | Einblendungen | Superpositions | Superposiciones | Sovrapposizioni | Sobreposições | Sobreposições |
+| Clipping warning | Über-/Unterbelichtungswarnung | alerte de sur-/sous-exposition | Aviso de sobre-/subexposición | Avviso di sovra-/sottoesposizione | aviso de superexposição/subexposição | Aviso de super-/subexposição |
+| Focus peaking | Focus Peaking | focus peaking | Focus peaking | Focus peaking | Focus Peaking (menu) / focus peaking (text) | Focus peaking |
+| AF points | Fokuspunkte | collimateurs AF | Puntos de enfoque | punti AF | pontos de foco | Pontos AF |
+| Exposure | Belichtung, Belichtungsregler | exposition, curseur d’exposition | exposición; regulador de exposición | esposizione; cursore esposizione | exposição; controle de exposição | exposição; controlo de exposição |
+| Bit depth | Bittiefe | profondeur de bits | profundidad de bits | profondità di bit | profundidade de bits | profundidade de bits |
+| Compression | Komprimierung, Komprimierungsart | compression, méthode de compression | compresión; método de compresión | compressione; metodo di compressione | compressão | compressão |
+| Folder map | Ordnerkarte | Carte du dossier | Mapa de la carpeta (menu: "Mapa") | Mappa della cartella; menu "Mappa" | Mapa da Pasta | Mapa da pasta (menu: "Mapa") |
+| Location (GPS) | Aufnahmeort | lieu de prise de vue | ubicación | posizione | localização | localização |
+
+#### Bearbeiten und Dateien
+
+| Begriff | Deutsch | fr | es | it | pt_BR | pt_PT |
+|---|---|---|---|---|---|---|
+| Crop (action) | Zuschneiden | Recadrer | Recortar | Ritaglia | Recortar | Recortar |
+| Crop (result/area) | Zuschnitt, Zuschnittbereich | recadrage, zone de recadrage | recorte; área de recorte | ritaglio; area di ritaglio | recorte; área de recorte | recorte; área de recorte |
+| Rotate | Drehen, Links/Rechts drehen, Drehung sichern | Faire pivoter à gauche/droite; rotation; Enregistrer la rotation | Girar a la izquierda/derecha; rotación; Guardar rotación | Ruota; Ruota a sinistra/destra; Salva rotazione | Girar à Esquerda / Girar à Direita; Salvar Rotação | Rodar para a esquerda/direita; Guardar rotação |
+| Flip | Horizontal/Vertikal spiegeln | Retourner horizontalement/verticalement | Voltear horizontalmente / verticalmente | Rifletti orizzontalmente / verticalmente | Virar Horizontal / Virar Vertical | Virar na horizontal / Virar na vertical |
+| Lossless | verlustfrei | sans perte | sin pérdida | senza perdita | sem perdas | sem perdas |
+| Re-encode | neu kodieren, Neukodieren | réencoder, réencodage | volver a codificar; codificada de nuevo | ricodificare; ricodifica | recodificar | recodificar |
+| Auxiliary images | Zusatzbilder | images supplémentaires | imágenes adicionales | immagini aggiuntive | imagens auxiliares | imagens adicionais |
+| Sidecar file | XMP-Zusatzdatei | fichier annexe XMP | archivo XMP complementario | file collaterale XMP | arquivo XMP associado | ficheiro XMP associado |
+| Export | Exportieren, Export | Exporter, exportation | Exportar; exportación | Esporta; esportazione | Exportar; exportação | Exportar, exportação |
+| Quick move | Schnellablage, Ziel der Schnellablage | Rangement rapide, cible du rangement rapide | Archivado rápido; destino del archivado rápido | Archiviazione rapida; destinazione dell’archiviazione rapida | Arquivamento Rápido | Arquivo rápido; destino do arquivo rápido |
+| Name conflict | Namenskonflikt; Ersetzen / Beide behalten / Überspringen | Conflit de nom; Remplacer / Garder les deux / Ignorer | Conflicto de nombres; Reemplazar / Conservar ambos / Omitir | Conflitto di nomi; Sostituisci / Mantieni entrambi / Salta | conflito de nomes; Substituir / Manter Ambos / Ignorar | Conflito de nomes; Substituir / Manter ambos / Ignorar |
+| Keep (unchanged) | beibehalten | conserver | conservar | mantieni | manter | manter |
+
+#### Bewerten und Aussortieren
+
+| Begriff | Deutsch | fr | es | it | pt_BR | pt_PT |
+|---|---|---|---|---|---|---|
+| Rating | Bewertung, bewerten, Sterne | note, noter, notation, étoiles | valoración, valorar, estrellas | valutazione; stelle | classificação, classificar, estrelas | classificação, classificar, estrelas |
+| Culling | Aussortieren, Aussortiermodus | sélection, mode sélection | criba; Modo de criba | scrematura; Modalità scrematura | triagem; modo de triagem | triagem; modo de triagem |
+| Flag (allgemein) | Markierung | marqueur | marca | contrassegno | marcação | marcação |
+| Pick (Befehl, `P`) | **Markieren** | Retenir | Marcar | Contrassegna | Marcar | Marcar |
+| Pick (Zustand) | **Markiert**, „nur markierte“ | Retenue, « retenues seulement » | Marcada; "solo marcadas" | Contrassegnata; "solo contrassegnate" | Marcada; “somente marcadas” | Marcada; "só marcadas" |
+| Reject (Befehl, `X`) | **Ablehnen** | Rejeter | Rechazar | Rifiuta | Rejeitar | Rejeitar |
+| Reject (Zustand) | **Abgelehnt**, „nur abgelehnte“ | Rejetée, « rejetées seulement » | Rechazada; "solo rechazadas" | Rifiutata; "solo rifiutate" | Rejeitada; “somente rejeitadas” | Rejeitada; "só rejeitadas" |
+| Unflag (`U`) | Markierung aufheben | Retirer le marqueur | Quitar marca | Rimuovi contrassegno | Remover Marcação | Remover marcação |
+| Unrated | unbewertet | non notée | sin valorar | non valutata | não classificada | sem classificação |
+| `_Rejected` folder | Ordner „_Rejected“ | dossier « _Rejected » | carpeta “_Rejected” | cartella “_Rejected” | pasta “_Rejected” | pasta “_Rejected” |
+| Finder tag names | „Pick“, „Reject“, „★★★“ | "Pick", "Reject", "★★★" | “Pick”, “Reject”, “★★★” | “Pick”, “Reject”, “★★★” | “Pick”, “Reject”, “★★★” | “Pick”, “Reject”, “★★★” |
+
+#### Weitere Begriffe
+
+| Begriff (englisch) | fr | es | it | pt_BR | pt_PT |
+|---|---|---|---|---|---|
+| Trash | corbeille | papelera | Cestino | Lixo | Lixo |
+| System Settings | Réglages Système → Confidentialité et sécurité → Fichiers et dossiers / Automatisation | Ajustes del Sistema; Privacidad y seguridad → Automatización / Archivos y carpetas | Impostazioni di Sistema; Privacy e sicurezza | Ajustes do Sistema | Definições do Sistema |
+| Quick Look | Coup d’œil | Vista rápida | Visualizzazione rapida | Visualização Rápida | Vista rápida |
+| Live Text | Texte en direct | Texto en vivo | Testo attivo | Texto ao Vivo | Texto em direto |
+| Apple Maps | Plans | Mapas de Apple; app Mapas | Apple Mappe; app Mappe | Mapas da Apple; app “Mapas” | Mapas ("Abrir em Mapas") |
+| Keyboard key Space | Espace | Espacio | Barra spaziatrice | Espaço | Espaço |
+| Keyboard key Esc | Esc | – | Esc | Esc | – |
+| Keyboard key Enter | Entrée | Intro | Invio | – | – |
+| Keyboard keys Page Up/Down | Pg↑ / Pg↓ | Re Pág / Av Pág | Pag↑ / Pag↓ | Page Up / Page Down | Pág↑ / Pág↓ |
+| Keyboard keys Home/End | Début / Fin | Inicio / Fin | Inizio / Fine | Home / End | Início / Fim |
+| Compare | Comparer, comparaison | Comparar; Comparación | Confronta; confronto | Comparar; comparação | Comparar / Comparação |
+| Metadata | métadonnées | metadatos | metadati | metadados | metadados |
+| HDR | HDR, aperçu SDR, plage dynamique étendue | – | HDR; anteprima SDR | HDR; pré-visualização SDR | HDR; gama dinâmica alargada |
+| HDR gain map | carte de gain HDR | – | – | – | – |
+| Culling mode | Mode sélection | – | – | – | – |
+| Presets (Profilvorlagen) | Préréglages | – | – | – | – |
+| Windows: Default apps | Applications par défaut | Configuración → Aplicaciones predeterminadas | App predefinite | Aplicativos padrão | Aplicações predefinidas |
+| Windows: Desktop background | arrière-plan du Bureau | fondo de escritorio | sfondo del desktop | plano de fundo da área de trabalho | fundo do ambiente de trabalho |
+| Windows: Programs (*.exe) | Programmes (*.exe) | – | Programmi (*.exe) | – | – |
+| Batch files | fichiers batch | archivos por lotes | – | arquivos em lote | – |
+| Tags (Finder) | tags | etiquetas | – | etiquetas | identificadores (Identificadores do Finder) |
+| Comics | BD | – | – | – | – |
+| Settings tab Fenster | Fenêtres | – | – | – | – |
+| Quotation marks | – | “ ” | “ ” (was mixed « » / “ ”) | – | – |
+| Archive | – | archivo comprimido | – | arquivo compactado | arquivo |
+| Move (verschieben) | – | mover | – | – | – |
+| Replace | – | Reemplazar | – | – | – |
+| Link windows | – | Vincular / Desvincular ventanas | – | Vincular Janelas / Desvincular | Ligar janelas / Desligar janelas |
+| Date Added | – | – | Data di aggiunta | Data da Adição | – |
+| Date Taken | – | – | Data di acquisizione | – | – |
+| Pixel dimensions | – | – | Dimensioni in pixel | – | – |
+| Sort / Sort by | – | – | – | ordenação; Ordenar por | – |
+| Date Modified / Created | – | – | – | Data de Modificação / Data de Criação | – |
+| Subject (Live Text) | – | – | – | – | objeto |
+| Digits (keys 0–9) | – | – | – | – | algarismos |
+| Settings tabs | – | – | – | – | Geral, Janelas, Apresentação, Rato e teclado, Navegação e ordenação, Classificação, Formatos, Avançado |
+
+#### Unsichere Entscheidungen (bitte von Muttersprachler:innen prüfen)
+
+- **fr**
+  - Filmstrip → Bande de vignettes: own choice; Lightroom FR "Film fixe"; "Pellicule" rejected (= Apple Camera Roll)
+  - Overlays (Foto-Hilfen) → Superpositions: own choice
+  - Sidecar file → fichier annexe XMP: own choice; (Lightroom FR "fichier annexe XMP" / "fichier sidecar")
+  - Rating → note, noter, notation, étoiles: own choice; (Lightroom FR "classement")
+  - Culling → sélection, mode sélection: own choice; ("tri" clashes with sorting)
+  - Culling mode → Mode sélection: own choice
+- **es**
+  - Set as Desktop Picture → Establecer como fondo de pantalla: System Settings "Fondo de pantalla"; Windows: "fondo de escritorio"; exact Finder command wording
+  - Visible area (viewport) → vista: own choice; also used for "Ansicht" (view), as in English
+  - Filmstrip → Tira de imágenes: own choice; (Lightroom: "Tira de diapositivas")
+  - Sidecar file → archivo XMP complementario: Lightroom
+  - Quick move → Archivado rápido; destino del archivado rápido: own choice
+  - Culling → criba; Modo de criba: own choice; (avoids "selección" = selection)
+  - Pick (Befehl, `P`) → Marcar: Lightroom (ES: "Marcar como seleccionada")
+- **it**
+  - Zoom to fit → Adatta: own choice; Preview uses "Adatta alla finestra" (short form kept for consistency with "Adatta ↔ 100%")
+  - Flip → Rifletti orizzontalmente / verticalmente: Preview (Photos uses "Capovolgi")
+  - Culling → scrematura; Modalità scrematura: own choice (was "selezione", clashed with multi-selection/crop)
+  - Keyboard keys Home/End → Inizio / Fine: own choice ()
+- **pt_BR**
+  - Quit → Encerrar Lumaflip: macOS AppKit (Apple app menus omit the article)
+  - Check for Updates → Buscar Atualizações…: own choice (Sparkle pt_BR may use “Verificar Atualizações…”)
+  - Status bar → barra de status: Finder pt_BR may say “Barra de Estado”
+  - Sidecar file → arquivo XMP associado: Lightroom pt_BR wording not verified
+  - Pick (Befehl, `P`) → Marcar: own choice (Lightroom pt_BR uses “Sinalizar”)
+  - Apple Maps → Mapas da Apple; app “Mapas”: Apple uses the app name “Mapas”
+- **pt_PT**
+  - Shortcut (Apple Shortcuts) → atalho; aplicação Atalhos: macOS AppKit (Services: "Atalhos"); "atalho" collides with keyboard shortcut, context separates
+  - Filmstrip → Tira de película: own choice
+  - Sidecar file → ficheiro XMP associado: own choice
+  - Quick move → Arquivo rápido; destino do arquivo rápido: own choice; "arquivo" also = archive
+  - Pick (Befehl, `P`) → Marcar: own choice (mirrors German; Lightroom pt-BR "Escolhida")
+  - Live Text → Texto em direto: macOS; (no loctable hit)
+  - Keyboard keys Page Up/Down → Pág↑ / Pág↓: own choice
+  - Keyboard keys Home/End → Início / Fim: own choice
