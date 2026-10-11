@@ -587,8 +587,8 @@ int jpeg::removeIrbThumbnails(QByteArray& d) {
         return true;
     });
     int removed = 0;
-    for (auto it = segments.crbegin(); it != segments.crend(); ++it) { // back to front: offsets stay
-        const Seg& s = *it;
+    for (qsizetype i = segments.size() - 1; i >= 0; --i) { // back to front: offsets stay
+        const Seg& s = segments.at(i);
         const qsizetype end = s.payload + s.length;
         QByteArray kept = id;
         qsizetype p = s.payload + id.size();
@@ -640,8 +640,8 @@ void jpeg::patchXmpDimensions(QByteArray& d, int width, int height) {
             segments << s;
         return true;
     });
-    for (auto it = segments.crbegin(); it != segments.crend(); ++it) {
-        const Seg& s = *it;
+    for (qsizetype i = segments.size() - 1; i >= 0; --i) { // back to front: offsets stay
+        const Seg& s = segments.at(i);
         const QByteArray raw = d.mid(s.payload + id.size(), s.length - id.size());
         QString xml = QString::fromUtf8(raw);
         if (xml.toUtf8() != raw)

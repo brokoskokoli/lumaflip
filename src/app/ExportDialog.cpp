@@ -287,7 +287,7 @@ void ExportRunner::start() {
     QtConcurrent::run([sources, options] {
         auto items = exporting::planItems(sources, options);
         return std::make_pair(items, exporting::conflicts(items));
-    }).then(this, [self](std::pair<QVector<exporting::Item>, QVector<int>> planned) {
+    }).then(this, [self](const std::pair<QVector<exporting::Item>, QVector<int>>& planned) {
         if (!self)
             return;
         self->m_items = planned.first;

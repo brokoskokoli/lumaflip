@@ -62,7 +62,7 @@ signals:
 private:
     CustomActionsManager();
     void reload();
-    void start(const CustomAction& action, const QStringList& files, QPointer<ViewerWindow> window);
+    void start(const CustomAction& action, const QStringList& files, const QPointer<ViewerWindow>& window);
     void appendLog(const QString& text);
 
     QList<CustomAction> m_actions;

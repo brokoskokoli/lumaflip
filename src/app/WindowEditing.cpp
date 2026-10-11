@@ -390,7 +390,7 @@ void WindowEditing::saveCrop(bool saveAs) {
 namespace {
 
 QString canonicalSuffix(const QString& suffix) {
-    const QString s = suffix.toLower();
+    QString s = suffix.toLower();
     if (s == QLatin1String("jpeg") || s == QLatin1String("jpe"))
         return QStringLiteral("jpg");
     if (s == QLatin1String("tiff"))

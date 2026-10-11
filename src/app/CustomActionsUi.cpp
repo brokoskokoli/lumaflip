@@ -89,7 +89,8 @@ void CustomActionsManager::run(const QString& id, ViewerWindow* window) {
         std::find_if(m_actions.cbegin(), m_actions.cend(), [&](const CustomAction& a) { return a.id == id; });
     if (it == m_actions.cend() || !window)
         return;
-    const CustomAction action = *it;
+    // A copy: m_actions is replaced when the setting changes (the confirmation saves).
+    const CustomAction action = *it; // NOLINT(performance-unnecessary-copy-initialization)
     const QString cur = window->currentPath();
     if (cur.isEmpty()) {
         window->showMessage(tr("Es ist kein Bild geöffnet."));
@@ -150,7 +151,7 @@ void CustomActionsManager::run(const QString& id, ViewerWindow* window) {
 }
 
 void CustomActionsManager::start(const CustomAction& action, const QStringList& files,
-                                 QPointer<ViewerWindow> window) {
+                                 const QPointer<ViewerWindow>& window) {
     const int timeoutMs = Settings::instance().value(key::CustomActionTimeoutSec).toInt() * 1000;
     auto* run = new CustomActionRun(action, files, timeoutMs, this, m_tool);
     m_runs << run;
