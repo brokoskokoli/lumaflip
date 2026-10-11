@@ -4162,6 +4162,22 @@
         <translation>オフ: 新規ウインドウは最後に使用したサイズで開きます。</translation>
     </message>
     <message>
+        <source>Titelleiste:</source>
+        <translation>タイトルバー:</translation>
+    </message>
+    <message>
+        <source>Beim Bewegen der Maus einblenden</source>
+        <translation>マウスを動かしたときに表示</translation>
+    </message>
+    <message>
+        <source>Immer zeigen</source>
+        <translation>常に表示</translation>
+    </message>
+    <message>
+        <source>Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um.</source>
+        <translation>タイトルバーがないと、イメージがウインドウの上端まで表示されます。「ウインドウ」→「最小限のウインドウ」で個々のウインドウを切り替えられます。</translation>
+    </message>
+    <message>
         <source>Ordnername in der Titelleiste</source>
         <translation>タイトルバーにフォルダ名を表示</translation>
     </message>
@@ -5945,10 +5961,6 @@
 <context>
     <name>lf::WindowExtras</name>
     <message>
-        <source>Zum Bewegen des Fensters ziehen</source>
-        <translation>ドラッグしてウインドウを移動</translation>
-    </message>
-    <message>
         <source>Karte</source>
         <translation>マップ</translation>
     </message>
@@ -5981,8 +5993,8 @@
         <translation>常に手前に表示：オフ</translation>
     </message>
     <message>
-        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
-        <translation>最小限のウインドウ – 上端をドラッグするとウインドウを移動できます</translation>
+        <source>Minimaler Fenstermodus – die Titelleiste erscheint, wenn sich die Maus bewegt</source>
+        <translation>最小限のウインドウ – マウスを動かすとタイトルバーが表示されます</translation>
     </message>
     <message>
         <source>Minimaler Fenstermodus aus</source>

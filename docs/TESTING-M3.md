@@ -135,7 +135,8 @@ Ordner `Viele/`, Einstellungen → Bewertung: Speicherort „XMP-Zusatzdatei“.
 ## 6. Fenstermodi und Koppeln (F-VIEW-12, F-VIEW-13, F-WIN-07, F-WIN-08)
 
 - [ ] Fenster → „Immer im Vordergrund“: bleibt über anderen Apps, auch nach Vollbild. (F-VIEW-12)
-- [ ] Fenster → „Minimaler Fenstermodus“: keine Titelleiste, oben ziehen bewegt das Fenster. (F-VIEW-13)
+- [ ] Fenster → „Minimaler Fenstermodus“: schaltet zwischen randlosem Fenster (Titelleiste blendet
+      beim Bewegen der Maus ein, oben ziehen bewegt das Fenster) und Titelleiste um. (F-VIEW-13/14)
 - [ ] Zwei Fenster (JPEG- und RAW-Variante derselben Aufnahmen), Fenster → „Fenster koppeln …“
       nach Dateiname: Blättern, Zoom und Ausschnitt laufen mit, Statuszeile „Gekoppelt“;
       „Entkoppeln“ löst. (F-WIN-07)

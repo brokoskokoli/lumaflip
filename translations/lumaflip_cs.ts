@@ -4202,6 +4202,22 @@
         <translation>Vypnuto: Nová okna převezmou naposledy použitou velikost.</translation>
     </message>
     <message>
+        <source>Titelleiste:</source>
+        <translation>Záhlaví okna:</translation>
+    </message>
+    <message>
+        <source>Beim Bewegen der Maus einblenden</source>
+        <translation>Zobrazit při pohybu myši</translation>
+    </message>
+    <message>
+        <source>Immer zeigen</source>
+        <translation>Vždy zobrazit</translation>
+    </message>
+    <message>
+        <source>Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um.</source>
+        <translation>Bez záhlaví sahá obrázek až k hornímu okraji. Okno → „Minimální okno“ přepne jednotlivé okno.</translation>
+    </message>
+    <message>
         <source>Ordnername in der Titelleiste</source>
         <translation>Název složky v záhlaví okna</translation>
     </message>
@@ -6003,10 +6019,6 @@
 <context>
     <name>lf::WindowExtras</name>
     <message>
-        <source>Zum Bewegen des Fensters ziehen</source>
-        <translation>Přetažením přesunete okno</translation>
-    </message>
-    <message>
         <source>Karte</source>
         <translation>Mapa</translation>
     </message>
@@ -6039,8 +6051,8 @@
         <translation>Již není navrchu</translation>
     </message>
     <message>
-        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
-        <translation>Minimální okno – tažením nahoře přesunete okno</translation>
+        <source>Minimaler Fenstermodus – die Titelleiste erscheint, wenn sich die Maus bewegt</source>
+        <translation>Minimální okno – záhlaví se zobrazí při pohybu myši</translation>
     </message>
     <message>
         <source>Minimaler Fenstermodus aus</source>

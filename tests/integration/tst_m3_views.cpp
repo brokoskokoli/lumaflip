@@ -18,6 +18,7 @@
 #include "app/QuickFilterBar.h"
 #include "app/RecentItems.h"
 #include "app/SlideshowController.h"
+#include "app/TitleStrip.h"
 #include "app/ViewSyncBinding.h"
 #include "app/ViewerWindow.h"
 #include "app/WindowExtras.h"
@@ -37,6 +38,7 @@
 #include <QLineEdit>
 #include <QMenu>
 #include <QMouseEvent>
+#include <QPointer>
 #include <QPushButton>
 #include <QTemporaryDir>
 #include <QThreadPool>
@@ -320,7 +322,7 @@ private slots:
         QVERIFY(!l->isActive());
     }
 
-    // Covers: F-VIEW-12 (floating window level), F-VIEW-13 (title bar chrome hidden, handle)
+    // Covers: F-VIEW-12 (floating window level), F-VIEW-13 (borderless window on/off per window)
     void F_VIEW_12_F_VIEW_13_alwaysOnTopAndMinimalWindow() {
         makeFolder();
         ViewerWindow* w = openAndWait(path("alpha.jpg"));
@@ -336,16 +338,170 @@ private slots:
         QVERIFY(!nativeWindowState(w).floating);
         QVERIFY(!menuShowsChecked(Action::ToggleAlwaysOnTop));
 
-        w->perform(Action::ToggleMinimalWindow);
+        // F-VIEW-13 = the borderless window of F-VIEW-14, the default for new windows: the
+        // menu entry switches this window to the system's title bar and back.
+        QVERIFY(x->minimalWindow());
+        QVERIFY(menuShowsChecked(Action::ToggleMinimalWindow));
         s = nativeWindowState(w);
         QVERIFY(s.fullSizeContent);
         QVERIFY(s.titlebarTransparent);
         QVERIFY(s.titleHidden);
-        QVERIFY(x->moveHandle()->isVisible());
+        TitleStripController* t = x->titleStrip();
+        QVERIFY(t->active());
         w->perform(Action::ToggleMinimalWindow);
+        QVERIFY(!x->minimalWindow());
+        QVERIFY(!menuShowsChecked(Action::ToggleMinimalWindow));
         s = nativeWindowState(w);
         QVERIFY(!s.fullSizeContent && !s.titlebarTransparent && !s.titleHidden);
-        QVERIFY(!x->moveHandle()->isVisible());
+        QVERIFY(!t->active());
+        QVERIFY(!t->strip()->isVisible());
+        w->perform(Action::ToggleMinimalWindow);
+        s = nativeWindowState(w);
+        QVERIFY(s.fullSizeContent && s.titlebarTransparent && s.titleHidden);
+        QVERIFY(t->active());
+        QVERIFY(t->strip()->shownTarget()); // shows where the title went
+    }
+
+    // Moves the mouse over the window the way the system does (through its QWindow).
+    static void moveMouse(ViewerWindow* w, QPoint pos) { QTest::mouseMove(w->windowHandle(), pos); }
+
+    // Covers: F-VIEW-14 (borderless by default: image up to the top edge, the strip with the
+    // title fades in on a mouse move and out after the idle time, system buttons with it)
+    void F_VIEW_14_titleStripFadesInAndOut() {
+        makeFolder();
+        ViewerWindow* w = openAndWait(path("alpha.jpg"));
+        QVERIFY(w);
+        TitleStripController* t = w->extras()->titleStrip();
+        TitleStrip* strip = t->strip();
+        QVERIFY(t->borderless());
+        QVERIFY(t->active());
+        const NativeWindowState native = nativeWindowState(w);
+        QVERIFY(native.fullSizeContent && native.titleHidden);
+        // The image view starts at the top edge of the window (no title bar, no menu bar).
+        QTRY_COMPARE(w->view()->mapTo(w, QPoint(0, 0)).y(), 0);
+        QCOMPARE(strip->mapTo(w, QPoint(0, 0)), QPoint(0, 0));
+        QCOMPARE(strip->width(), w->centralWidget()->width());
+        QVERIFY(strip->height() >= 20);
+        // Shown briefly when the window became active (keyboard users), then idle: gone.
+        QTRY_VERIFY_WITH_TIMEOUT(!strip->isVisible(), 6000);
+        QVERIFY(!strip->shownTarget());
+        if (titleStripUsesSystemButtons())
+            QTRY_VERIFY(nativeWindowState(w).buttonsHidden);
+        // A mouse move anywhere in the window fades it in.
+        moveMouse(w, QPoint(w->width() / 2, w->height() / 2));
+        QVERIFY(strip->shownTarget());
+        QVERIFY(strip->isVisible());
+        QVERIFY(!strip->takesMouse()); // a click right after the move still reaches the image
+        QTRY_VERIFY(strip->takesMouse());
+        QCOMPARE(strip->opacity(), 1.0);
+        if (titleStripUsesSystemButtons())
+            QVERIFY(!nativeWindowState(w).buttonsHidden);
+        // The window title in the strip, also after flipping.
+        QCOMPARE(strip->title(), w->windowTitle());
+        QVERIFY(strip->title().contains(QStringLiteral("alpha.jpg")));
+        w->collection()->setCurrentPath(path("beta.jpg"));
+        QTRY_VERIFY(strip->title().contains(QStringLiteral("beta.jpg")));
+        QCOMPARE(strip->title(), w->windowTitle());
+        // Further moves keep it; after the idle time it fades out.
+        QTest::qWait(TitleStripController::kIdleMs / 2);
+        moveMouse(w, QPoint(w->width() / 2 + 10, w->height() / 2));
+        QTest::qWait(TitleStripController::kIdleMs / 2 + 200);
+        QVERIFY(strip->shownTarget());
+        QTRY_VERIFY_WITH_TIMEOUT(!strip->isVisible(), 6000);
+        if (titleStripUsesSystemButtons())
+            QTRY_VERIFY(nativeWindowState(w).buttonsHidden);
+    }
+
+    // Covers: F-VIEW-14 (drag area and buttons of the strip, setting "immer zeigen")
+    void F_VIEW_14_dragAreaButtonsAndAlwaysShowSetting() {
+        makeFolder();
+        ViewerWindow* w = openAndWait(path("alpha.jpg"));
+        QVERIFY(w);
+        TitleStripController* t = w->extras()->titleStrip();
+        TitleStrip* strip = t->strip();
+        QTRY_VERIFY_WITH_TIMEOUT(!strip->isVisible(), 6000);
+        const QPoint middle(strip->width() / 2, strip->height() / 2);
+        QCOMPARE(strip->nativeHit(middle), TitleStripHit::Client); // hidden: the image's
+        moveMouse(w, QPoint(w->width() / 2, w->height() / 2));
+        QTRY_VERIFY(strip->takesMouse());
+        // Between the buttons the strip moves the window (native caption on Windows).
+        QCOMPARE(strip->buttonAt(middle), TitleButton::None);
+        QCOMPARE(strip->nativeHit(middle), TitleStripHit::Caption);
+        const TitleStripLayout l = strip->stripLayout();
+        if (titleStripUsesSystemButtons()) {
+            // macOS: the system's buttons on the left, the title stays clear of them.
+            QVERIFY(l.close.isEmpty() && l.maximize.isEmpty());
+            QVERIFY(l.titleArea.left() >= titleStripReservedLeft(w));
+        } else {
+            QVERIFY(!l.close.isEmpty() && !l.minimize.isEmpty() && !l.maximize.isEmpty());
+            QCOMPARE(strip->nativeHit(l.maximize.center()), TitleStripHit::Maximize); // Snap Layouts
+            QCOMPARE(strip->nativeHit(l.close.center()), TitleStripHit::Client);
+            QCOMPARE(strip->buttonAt(l.minimize.center()), TitleButton::Minimize);
+#ifdef Q_OS_WIN
+            // Windows: buttons on the right, the menus behind a button on the left.
+            QCOMPARE(l.close.right(), strip->width() - 1);
+            QVERIFY(!l.menu.isEmpty() && l.menu.left() == 0);
+            QVERIFY(t->holdsMenuBar());
+            QCOMPARE(w->menuWidget()->maximumHeight(), 0);
+#endif
+        }
+        // Setting "Titelleiste: immer zeigen": the system's title bar, no strip.
+        Settings::instance().setValue(QString::fromLatin1(key::TitleBar), QStringLiteral("always"));
+        QVERIFY(!t->borderless());
+        QVERIFY(!t->active());
+        QVERIFY(!w->extras()->minimalWindow());
+        NativeWindowState s = nativeWindowState(w);
+        QVERIFY(!s.fullSizeContent && !s.titleHidden);
+        QVERIFY(!s.buttonsHidden);
+        QVERIFY(!strip->isVisible());
+        moveMouse(w, QPoint(w->width() / 2 + 5, w->height() / 2 + 5));
+        QVERIFY(!strip->shownTarget());
+#ifdef Q_OS_WIN
+        QVERIFY(w->menuWidget()->maximumHeight() > 0);
+#endif
+        // New windows follow the setting as well.
+        ViewerWindow* w2 = openAndWait(path("gamma.jpg"));
+        QVERIFY(w2 && w2 != w);
+        QVERIFY(!w2->extras()->titleStrip()->borderless());
+        QVERIFY(!nativeWindowState(w2).titleHidden);
+        Settings::instance().setValue(QString::fromLatin1(key::TitleBar), QStringLiteral("autoHide"));
+        QVERIFY(t->borderless() && t->active());
+        QVERIFY(nativeWindowState(w).fullSizeContent);
+        QVERIFY(nativeWindowState(w2).titleHidden);
+        if (!titleStripUsesSystemButtons()) {
+            // The strip's own close button closes the window.
+            moveMouse(w2, QPoint(w2->width() / 2, w2->height() / 2));
+            TitleStrip* strip2 = w2->extras()->titleStrip()->strip();
+            QTRY_VERIFY(strip2->takesMouse());
+            QPointer<ViewerWindow> closing(w2);
+            QTest::mouseClick(strip2, Qt::LeftButton, {}, strip2->stripLayout().close.center());
+            QTRY_VERIFY(!closing || !closing->isVisible());
+        }
+    }
+
+    // Covers: F-VIEW-14 (no strip in full screen - F-VIEW-10 has its own chrome; the
+    // borderless window comes back after leaving full screen)
+    void F_VIEW_14_noStripInFullScreen() {
+        makeFolder();
+        ViewerWindow* w = openAndWait(path("alpha.jpg"));
+        QVERIFY(w);
+        TitleStripController* t = w->extras()->titleStrip();
+        QTRY_VERIFY_WITH_TIMEOUT(!w->fullScreenTransitionPending(), 5000);
+        w->setFullScreen(true);
+        QTRY_VERIFY_WITH_TIMEOUT(!w->fullScreenTransitionPending() && w->isFullScreen(), 10000);
+        QVERIFY(!t->active());
+        moveMouse(w, QPoint(w->width() / 2, w->height() / 2));
+        QVERIFY(!t->strip()->isVisible());
+        if (titleStripUsesSystemButtons())
+            QVERIFY(!nativeWindowState(w).buttonsHidden); // the title bar comes with the menu bar
+        QTest::qWait(800);
+        w->setFullScreen(false);
+        QTRY_VERIFY_WITH_TIMEOUT(!w->fullScreenTransitionPending() && !w->isFullScreen(), 10000);
+        QTRY_VERIFY_WITH_TIMEOUT(t->active(), 5000);
+        QVERIFY(nativeWindowState(w).fullSizeContent);
+        moveMouse(w, QPoint(w->width() / 2 + 5, w->height() / 2));
+        QVERIFY(t->strip()->shownTarget());
+        QTest::qWait(800);
     }
 
     // Covers: F-WIN-07 (couple two windows: flip by file name, zoom/pan together, indicator)

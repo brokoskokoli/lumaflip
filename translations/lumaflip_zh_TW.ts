@@ -4162,6 +4162,22 @@
         <translation>關閉時：新視窗會沿用上次使用的大小。</translation>
     </message>
     <message>
+        <source>Titelleiste:</source>
+        <translation>標題列：</translation>
+    </message>
+    <message>
+        <source>Beim Bewegen der Maus einblenden</source>
+        <translation>移動滑鼠時顯示</translation>
+    </message>
+    <message>
+        <source>Immer zeigen</source>
+        <translation>永遠顯示</translation>
+    </message>
+    <message>
+        <source>Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um.</source>
+        <translation>沒有標題列時，影像會延伸到視窗上緣。「視窗」→「極簡視窗」可切換單一視窗。</translation>
+    </message>
+    <message>
         <source>Ordnername in der Titelleiste</source>
         <translation>在標題列中顯示檔案夾名稱</translation>
     </message>
@@ -5945,10 +5961,6 @@
 <context>
     <name>lf::WindowExtras</name>
     <message>
-        <source>Zum Bewegen des Fensters ziehen</source>
-        <translation>拖移以移動視窗</translation>
-    </message>
-    <message>
         <source>Karte</source>
         <translation>地圖</translation>
     </message>
@@ -5981,8 +5993,8 @@
         <translation>不再永遠在最上層</translation>
     </message>
     <message>
-        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
-        <translation>極簡視窗 – 拖移頂部可移動視窗</translation>
+        <source>Minimaler Fenstermodus – die Titelleiste erscheint, wenn sich die Maus bewegt</source>
+        <translation>極簡視窗 – 移動滑鼠時顯示標題列</translation>
     </message>
     <message>
         <source>Minimaler Fenstermodus aus</source>

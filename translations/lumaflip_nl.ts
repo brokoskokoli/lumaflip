@@ -4182,6 +4182,22 @@
         <translation>Uit: nieuwe vensters krijgen de laatst gebruikte grootte.</translation>
     </message>
     <message>
+        <source>Titelleiste:</source>
+        <translation>Titelbalk:</translation>
+    </message>
+    <message>
+        <source>Beim Bewegen der Maus einblenden</source>
+        <translation>Tonen als de muis beweegt</translation>
+    </message>
+    <message>
+        <source>Immer zeigen</source>
+        <translation>Altijd tonen</translation>
+    </message>
+    <message>
+        <source>Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um.</source>
+        <translation>Zonder titelbalk reikt de afbeelding tot de bovenrand. Venster → ‘Minimaal venster’ schakelt één venster om.</translation>
+    </message>
+    <message>
         <source>Ordnername in der Titelleiste</source>
         <translation>Mapnaam in titelbalk</translation>
     </message>
@@ -5974,10 +5990,6 @@
 <context>
     <name>lf::WindowExtras</name>
     <message>
-        <source>Zum Bewegen des Fensters ziehen</source>
-        <translation>Sleep om het venster te verplaatsen</translation>
-    </message>
-    <message>
         <source>Karte</source>
         <translation>Kaart</translation>
     </message>
@@ -6010,8 +6022,8 @@
         <translation>Niet meer bovenop</translation>
     </message>
     <message>
-        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
-        <translation>Minimaal venster – sleep bovenaan om het venster te verplaatsen</translation>
+        <source>Minimaler Fenstermodus – die Titelleiste erscheint, wenn sich die Maus bewegt</source>
+        <translation>Minimaal venster – de titelbalk verschijnt als de muis beweegt</translation>
     </message>
     <message>
         <source>Minimaler Fenstermodus aus</source>

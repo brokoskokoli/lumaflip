@@ -24,6 +24,9 @@ inline constexpr auto FitWindowToImage = "window/fitToImage";     // bool, defau
 inline constexpr auto RestoreWindows = "window/restore";          // bool (F-WIN-06)
 inline constexpr auto TitleShowFolder = "window/titleShowFolder"; // bool, default false (F-WIN-10)
 inline constexpr auto AllowTabs = "window/allowTabs";             // bool, default false (F-WIN-05)
+// F-VIEW-14: title bar of the windows: "autoHide" (borderless, a strip fades in when the
+// mouse moves; default) | "always" (the system's title bar)
+inline constexpr auto TitleBar = "window/titleBar";
 // QSize (device px) the last window decoded for; read at launch to start decoding the
 // opened image before the window exists (P-01). Not a user setting.
 inline constexpr auto DecodeTargetHint = "window/decodeTarget";

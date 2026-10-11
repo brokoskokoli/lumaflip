@@ -4162,6 +4162,22 @@
         <translation>끔: 새로운 윈도우는 마지막으로 사용한 크기를 사용합니다.</translation>
     </message>
     <message>
+        <source>Titelleiste:</source>
+        <translation>제목 막대:</translation>
+    </message>
+    <message>
+        <source>Beim Bewegen der Maus einblenden</source>
+        <translation>마우스를 움직이면 표시</translation>
+    </message>
+    <message>
+        <source>Immer zeigen</source>
+        <translation>항상 표시</translation>
+    </message>
+    <message>
+        <source>Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um.</source>
+        <translation>제목 막대가 없으면 이미지가 윈도우 위쪽 가장자리까지 표시됩니다. 윈도우 → ‘최소 윈도우’로 개별 윈도우를 전환합니다.</translation>
+    </message>
+    <message>
         <source>Ordnername in der Titelleiste</source>
         <translation>제목 막대에 폴더 이름 표시</translation>
     </message>
@@ -5945,10 +5961,6 @@
 <context>
     <name>lf::WindowExtras</name>
     <message>
-        <source>Zum Bewegen des Fensters ziehen</source>
-        <translation>드래그하여 윈도우 이동</translation>
-    </message>
-    <message>
         <source>Karte</source>
         <translation>지도</translation>
     </message>
@@ -5981,8 +5993,8 @@
         <translation>항상 위에 끔</translation>
     </message>
     <message>
-        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
-        <translation>최소 윈도우 – 위쪽을 드래그하여 윈도우 이동</translation>
+        <source>Minimaler Fenstermodus – die Titelleiste erscheint, wenn sich die Maus bewegt</source>
+        <translation>최소 윈도우 – 마우스를 움직이면 제목 막대가 나타납니다</translation>
     </message>
     <message>
         <source>Minimaler Fenstermodus aus</source>

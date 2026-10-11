@@ -4182,6 +4182,22 @@
         <translation>Pois: uudet ikkunat käyttävät viimeksi käytettyä kokoa.</translation>
     </message>
     <message>
+        <source>Titelleiste:</source>
+        <translation>Otsikkopalkki:</translation>
+    </message>
+    <message>
+        <source>Beim Bewegen der Maus einblenden</source>
+        <translation>Näytä, kun hiirtä liikutetaan</translation>
+    </message>
+    <message>
+        <source>Immer zeigen</source>
+        <translation>Näytä aina</translation>
+    </message>
+    <message>
+        <source>Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um.</source>
+        <translation>Ilman otsikkopalkkia kuva ulottuu yläreunaan asti. Ikkuna → ”Minimaalinen ikkuna” vaihtaa yksittäisen ikkunan tilan.</translation>
+    </message>
+    <message>
         <source>Ordnername in der Titelleiste</source>
         <translation>Kansion nimi otsikkopalkissa</translation>
     </message>
@@ -5974,10 +5990,6 @@
 <context>
     <name>lf::WindowExtras</name>
     <message>
-        <source>Zum Bewegen des Fensters ziehen</source>
-        <translation>Siirrä ikkunaa vetämällä</translation>
-    </message>
-    <message>
         <source>Karte</source>
         <translation>Kartta</translation>
     </message>
@@ -6010,8 +6022,8 @@
         <translation>Ei enää päällimmäisenä</translation>
     </message>
     <message>
-        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
-        <translation>Minimaalinen ikkuna – siirrä ikkunaa vetämällä yläreunasta</translation>
+        <source>Minimaler Fenstermodus – die Titelleiste erscheint, wenn sich die Maus bewegt</source>
+        <translation>Minimaalinen ikkuna – otsikkopalkki tulee näkyviin, kun hiirtä liikutetaan</translation>
     </message>
     <message>
         <source>Minimaler Fenstermodus aus</source>

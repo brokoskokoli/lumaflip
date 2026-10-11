@@ -834,7 +834,8 @@ void ViewerWindow::fitWindowToImage(QSize imagePixels) {
     if (!m_accessHint->isHidden())
         chromeHeight += m_accessHint->sizeHint().height();
 #ifdef Q_OS_WIN
-    if (const QWidget* bar = menuWidget(); bar && !bar->isHidden()) // the window's own menu bar
+    // The window's own menu bar (collapsed in the borderless window, F-VIEW-14).
+    if (const QWidget* bar = menuWidget(); bar && !bar->isHidden() && bar->maximumHeight() > 0)
         chromeHeight += bar->sizeHint().height();
 #endif
     const QSize wanted = (QSizeF(imagePixels) / dpr).toSize() + QSize(0, chromeHeight);
@@ -1649,9 +1650,10 @@ void ViewerWindow::setChromeVisible(bool visible) {
     m_chromeShown = visible;
 #ifdef Q_OS_WIN
     // The window's own menu bar (Windows) goes with the chrome. It stays "visible"
-    // with zero height: the menu shortcuts only work through a visible bar.
+    // with zero height: the menu shortcuts only work through a visible bar. In the
+    // borderless window its menus are behind a button of the title strip (F-VIEW-14).
     if (QWidget* bar = menuWidget())
-        bar->setMaximumHeight(visible ? QWIDGETSIZE_MAX : 0);
+        bar->setMaximumHeight(visible && !(m_extras && m_extras->menuInTitleStrip()) ? QWIDGETSIZE_MAX : 0);
 #endif
     applyStatusBarVisibility();
     if (m_panels)

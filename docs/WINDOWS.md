@@ -71,7 +71,8 @@ deployed folder, ZIP and installer as artifacts (`lumaflip-windows-x64`).
 | Recent items (F-OPEN-11) | the app's jump list (`SHAddToRecentDocs`) |
 | Tags (F-INFO-06) | Windows has no Finder tags: the section is hidden; ratings use XMP sidecars / embedded XMP |
 | Live Text, Quick Look, Services, Share sheet, maps | not available on Windows: hidden or replaced by a note |
-| Menus | every window has its own menu bar with the shared menus (no global menu bar) |
+| Menus | every window has its own menu bar with the shared menus (no global menu bar); in the borderless window it is collapsed into a menu button of the title strip (Alt and the shortcuts keep working) |
+| Borderless window (F-VIEW-14) | the caption is removed from the frame with `WM_NCCALCSIZE` (styles unchanged: Aero Snap, Win+arrows, animations, resize borders stay); `WM_NCHITTEST` makes the strip a caption (drag, double click, system menu) and its maximize button `HTMAXBUTTON` (Snap Layouts on Windows 11) |
 
 ## Decoders
 

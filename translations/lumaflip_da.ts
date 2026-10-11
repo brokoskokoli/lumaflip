@@ -4182,6 +4182,22 @@
         <translation>Fra: Nye vinduer bruger den sidst anvendte størrelse.</translation>
     </message>
     <message>
+        <source>Titelleiste:</source>
+        <translation>Titellinje:</translation>
+    </message>
+    <message>
+        <source>Beim Bewegen der Maus einblenden</source>
+        <translation>Vis, når musen bevæger sig</translation>
+    </message>
+    <message>
+        <source>Immer zeigen</source>
+        <translation>Vis altid</translation>
+    </message>
+    <message>
+        <source>Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um.</source>
+        <translation>Uden titellinje går billedet helt op til den øverste kant. Vindue → ”Minimalt vindue” skifter et enkelt vindue.</translation>
+    </message>
+    <message>
         <source>Ordnername in der Titelleiste</source>
         <translation>Mappenavn i titellinjen</translation>
     </message>
@@ -5974,10 +5990,6 @@
 <context>
     <name>lf::WindowExtras</name>
     <message>
-        <source>Zum Bewegen des Fensters ziehen</source>
-        <translation>Træk for at flytte vinduet</translation>
-    </message>
-    <message>
         <source>Karte</source>
         <translation>Kort</translation>
     </message>
@@ -6010,8 +6022,8 @@
         <translation>Ikke længere øverst</translation>
     </message>
     <message>
-        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
-        <translation>Minimalt vindue – træk øverst for at flytte vinduet</translation>
+        <source>Minimaler Fenstermodus – die Titelleiste erscheint, wenn sich die Maus bewegt</source>
+        <translation>Minimalt vindue – titellinjen vises, når musen bevæger sig</translation>
     </message>
     <message>
         <source>Minimaler Fenstermodus aus</source>

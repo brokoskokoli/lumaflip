@@ -4202,6 +4202,22 @@
         <translation>Wył.: nowe okna przejmują ostatnio używany rozmiar.</translation>
     </message>
     <message>
+        <source>Titelleiste:</source>
+        <translation>Pasek tytułu:</translation>
+    </message>
+    <message>
+        <source>Beim Bewegen der Maus einblenden</source>
+        <translation>Pokazuj po poruszeniu myszą</translation>
+    </message>
+    <message>
+        <source>Immer zeigen</source>
+        <translation>Zawsze pokazuj</translation>
+    </message>
+    <message>
+        <source>Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um.</source>
+        <translation>Bez paska tytułu obraz sięga do górnej krawędzi. Okno → „Minimalne okno” przełącza pojedyncze okno.</translation>
+    </message>
+    <message>
         <source>Ordnername in der Titelleiste</source>
         <translation>Nazwa folderu na pasku tytułu</translation>
     </message>
@@ -6003,10 +6019,6 @@
 <context>
     <name>lf::WindowExtras</name>
     <message>
-        <source>Zum Bewegen des Fensters ziehen</source>
-        <translation>Przeciągnij, aby przesunąć okno</translation>
-    </message>
-    <message>
         <source>Karte</source>
         <translation>Mapa</translation>
     </message>
@@ -6039,8 +6051,8 @@
         <translation>Już nie na wierzchu</translation>
     </message>
     <message>
-        <source>Minimaler Fenstermodus – oben ziehen bewegt das Fenster</source>
-        <translation>Minimalne okno – przeciągnij u góry, aby przesunąć okno</translation>
+        <source>Minimaler Fenstermodus – die Titelleiste erscheint, wenn sich die Maus bewegt</source>
+        <translation>Minimalne okno – pasek tytułu pojawia się po poruszeniu myszą</translation>
     </message>
     <message>
         <source>Minimaler Fenstermodus aus</source>
