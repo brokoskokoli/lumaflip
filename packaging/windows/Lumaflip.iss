@@ -8,8 +8,15 @@
 ; over a file type itself. The user chooses Lumaflip as default in Settings → Apps →
 ; Default apps (the app opens that page: Settings → General → "Als Standard-App festlegen").
 ;
-; Unsigned for now: Windows SmartScreen warns on the first start ("Unbekannter Herausgeber").
-; Signing: see docs/WINDOWS.md (SignTool in [Setup] once a certificate exists).
+; Updates (WinSparkle, docs/WINDOWS.md): the same AppId upgrades the installation in place,
+; in the mode (per user / all users) and folder of the previous installation. WinSparkle starts
+; the downloaded installer with the arguments of the appcast (release.yml, tools/appcast_windows.py):
+;   /SILENT /SP- /SUPPRESSMSGBOXES /NORESTART /CLOSEAPPLICATIONS /RELAUNCH=1
+; and asks Lumaflip to quit; Restart Manager closes a copy that is still running, and
+; /RELAUNCH=1 starts the updated app again when the silent installation is done.
+;
+; Signing: release builds sign Lumaflip.exe, the helper and the DLLs before packaging and
+; this installer afterwards (Azure Artifact Signing, release.yml); CI builds are unsigned.
 
 #ifndef AppVersion
   #define AppVersion "0.0.0"
@@ -66,6 +73,11 @@ UninstallDisplayName={#AppName}
 Compression=lzma2/max
 SolidCompression=yes
 WizardStyle=modern
+; Upgrades: running copies are closed (Restart Manager) instead of failing on files in use.
+CloseApplications=yes
+RestartApplications=no
+UsePreviousAppDir=yes
+UsePreviousPrivileges=yes
 
 [Languages]
 Name: "de"; MessagesFile: "compiler:Languages\German.isl"
@@ -116,3 +128,11 @@ Root: HKA; Subkey: "Software\Classes\Applications\{#AppExe}\SupportedTypes"; Val
 
 [Run]
 Filename: "{app}\{#AppExe}"; Description: "{cm:LaunchProgram,{#AppName}}"; Flags: nowait postinstall skipifsilent
+; Update started by WinSparkle (/SILENT ... /RELAUNCH=1): start the updated app again.
+Filename: "{app}\{#AppExe}"; Flags: nowait runasoriginaluser skipifnotsilent; Check: RelaunchAfterUpdate
+
+[Code]
+function RelaunchAfterUpdate: Boolean;
+begin
+  Result := ExpandConstant('{param:RELAUNCH|0}') = '1';
+end;

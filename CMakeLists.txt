@@ -101,6 +101,48 @@ if(LF_SPARKLE)
   endif()
 endif()
 
+# ---- WinSparkle: automatic updates of the Windows build (F-MAC-08, docs/WINDOWS.md) ----
+# AUTO: on if tools/fetch_winsparkle.py has put WinSparkle.dll into third_party/WinSparkle.
+# Nothing is linked: the app loads WinSparkle.dll from its own folder at run time, the build
+# only copies it next to Lumaflip.exe. The EdDSA public key is the one of the macOS build
+# (LF_SPARKLE_PUBLIC_KEY, compiled in); without it the updater stays disabled, as on macOS.
+# The feed is a separate appcast, so Sparkle on macOS never sees Windows items.
+set(LF_ENABLE_WINSPARKLE "AUTO" CACHE STRING "WinSparkle updater (Windows): AUTO, ON or OFF")
+set_property(CACHE LF_ENABLE_WINSPARKLE PROPERTY STRINGS AUTO ON OFF)
+set(LF_WINSPARKLE_DIR "${PROJECT_SOURCE_DIR}/third_party/WinSparkle" CACHE PATH
+    "Directory with x64/WinSparkle.dll (tools/fetch_winsparkle.py)")
+set(LF_WINSPARKLE_FEED_URL "https://brokoskokoli.github.io/lumaflip/appcast-windows.xml" CACHE STRING
+    "WinSparkle appcast URL")
+set(LF_WINSPARKLE OFF)
+if(WIN32 AND LF_BUILD_UI)
+  set(LF_WINSPARKLE_DLL "${LF_WINSPARKLE_DIR}/x64/WinSparkle.dll")
+  if(LF_ENABLE_WINSPARKLE STREQUAL "AUTO")
+    if(EXISTS "${LF_WINSPARKLE_DLL}")
+      set(LF_WINSPARKLE ON)
+    else()
+      message(STATUS "WinSparkle not found in ${LF_WINSPARKLE_DIR} (run tools/fetch_winsparkle.py): "
+                     "building without automatic updates")
+    endif()
+  elseif(LF_ENABLE_WINSPARKLE)
+    if(NOT EXISTS "${LF_WINSPARKLE_DLL}")
+      message(FATAL_ERROR "LF_ENABLE_WINSPARKLE=ON, but ${LF_WINSPARKLE_DLL} is missing - run tools/fetch_winsparkle.py")
+    endif()
+    set(LF_WINSPARKLE ON)
+  endif()
+endif()
+if(LF_WINSPARKLE)
+  string(LENGTH "${LF_SPARKLE_PUBLIC_KEY}" _lf_key_length)
+  if(LF_SPARKLE_PUBLIC_KEY STREQUAL "")
+    message(STATUS "WinSparkle: on, but LF_SPARKLE_PUBLIC_KEY is empty - updater disabled in this build")
+  elseif(NOT _lf_key_length EQUAL 44 OR NOT LF_SPARKLE_PUBLIC_KEY MATCHES "^[A-Za-z0-9+/]+=$")
+    message(FATAL_ERROR "LF_SPARKLE_PUBLIC_KEY is not a base64 EdDSA public key (44 characters)")
+  elseif(NOT LF_WINSPARKLE_FEED_URL MATCHES "^https://")
+    message(FATAL_ERROR "LF_WINSPARKLE_FEED_URL must be an https URL")
+  else()
+    message(STATUS "WinSparkle: on, feed ${LF_WINSPARKLE_FEED_URL}")
+  endif()
+endif()
+
 set(LF_QT_COMPONENTS Core Gui Concurrent Svg)
 if(LF_BUILD_UI)
   list(APPEND LF_QT_COMPONENTS GuiPrivate Widgets ShaderTools Test)

@@ -27,3 +27,10 @@ if(LF_QM_FILES)
     COMMENT "Copying translations next to Lumaflip.exe"
     VERBATIM)
 endif()
+# WinSparkle (automatic updates): loaded at run time from the folder of Lumaflip.exe.
+if(LF_WINSPARKLE)
+  add_custom_command(TARGET Lumaflip POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different "${LF_WINSPARKLE_DLL}" "$<TARGET_FILE_DIR:Lumaflip>/WinSparkle.dll"
+    COMMENT "Copying WinSparkle.dll next to Lumaflip.exe"
+    VERBATIM)
+endif()
