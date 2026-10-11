@@ -351,7 +351,7 @@ Das Skript (interaktiv, bash 3.2, gibt keine Secret-Werte aus):
    Skript mit dem Hinweis `brew install azure-cli` bzw. `az login` ab,
 3. legt die Entra-App-Registrierung **`lumaflip-github-release`** samt Dienstprinzipal an (oder nutzt die
    vorhandene) und eine **föderierte Anmeldeinformation**: Aussteller
-   `https://token.actions.githubusercontent.com`, Subjekt `repo:brokoskokoli/lumaflip:environment:release`,
+   `https://token.actions.githubusercontent.com`, Subjekt `repo:brokoskokoli/lumaflip:environment:release` und (neueres GitHub-Format mit IDs) `repo:brokoskokoli@16724498/lumaflip@1413300059:environment:release`,
    Zielgruppe `api://AzureADTokenExchange`,
 4. weist dem Dienstprinzipal die Rolle **„Artifact Signing Certificate Profile Signer“** (in älteren
    Tenants „Trusted Signing Certificate Profile Signer“) zu – **nur auf das gewählte Profil**,
@@ -383,7 +383,7 @@ trotzdem als Secrets im Environment, damit nur Jobs mit Freigabe sie sehen.
 2. In der App: **Zertifikate & Geheimnisse → Verbundanmeldeinformationen → Anmeldeinformationen
    hinzufügen**, Szenario „GitHub Actions, die Azure-Ressourcen bereitstellen“: Organisation
    `brokoskokoli`, Repository `lumaflip`, Entitätstyp **Umgebung**, Name `release`. Das ergibt das
-   Subjekt `repo:brokoskokoli/lumaflip:environment:release` mit Aussteller
+   Subjekt `repo:brokoskokoli/lumaflip:environment:release` und (neueres GitHub-Format mit IDs) `repo:brokoskokoli@16724498/lumaflip@1413300059:environment:release` mit Aussteller
    `https://token.actions.githubusercontent.com` und Zielgruppe `api://AzureADTokenExchange`.
    **Kein** Client-Secret anlegen.
 3. **Artifact-Signing-Konto → Zertifikatprofile →** das Public-Trust-Profil öffnen → **Zugriffssteuerung

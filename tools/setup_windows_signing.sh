@@ -248,15 +248,30 @@ step_app() {
         say "  Dienstprinzipal angelegt."
     fi
 
-    local subject="repo:$REPO:environment:$ENV_NAME" existing
+    # GitHub presents one of two subject formats, depending on the repository's OIDC setting:
+    # the classic "repo:owner/name:environment:x" and the newer immutable one with numeric ids,
+    # "repo:owner@<owner-id>/name@<repo-id>:environment:x". Register both, so a change of the
+    # format on GitHub's side never breaks the signing step.
+    local ids owner_id repo_id
+    ids=$(gh api "repos/$REPO" --jq '"\(.owner.id) \(.id)"' 2>/dev/null) \
+        || die "Repository-IDs von GitHub nicht lesbar (gh api repos/$REPO)."
+    owner_id=${ids%% *}; repo_id=${ids##* }
+    add_federated_credential "repo:$REPO:environment:$ENV_NAME" "classic"
+    add_federated_credential "repo:${REPO%%/*}@$owner_id/${REPO#*/}@$repo_id:environment:$ENV_NAME" "ids"
+}
+
+# add_federated_credential <subject> <name-suffix>: creates the credential unless one with this
+# subject and issuer exists already.
+add_federated_credential() {
+    local subject=$1 suffix=$2 existing name
     existing=$(az ad app federated-credential list --id "$APP_ID" \
         --query "[?subject=='$subject' && issuer=='$OIDC_ISSUER'].name" -o tsv 2>/dev/null || true)
     if [ -n "$existing" ]; then
-        say "  Föderierte Anmeldeinformation für $subject vorhanden."
-    else
-        local name
-        name="github-$(printf '%s' "$REPO" | tr '/A-Z' '-a-z' | tr -cd 'a-z0-9-')-$ENV_NAME"
-        cat > "$WORK/fic.json" <<JSON
+        say "  Föderierte Anmeldeinformation vorhanden: $subject"
+        return 0
+    fi
+    name="github-$(printf '%s' "$REPO" | tr '/A-Z' '-a-z' | tr -cd 'a-z0-9-')-$ENV_NAME-$suffix"
+    cat > "$WORK/fic.json" <<JSON
 {
   "name": "$name",
   "issuer": "$OIDC_ISSUER",
@@ -265,10 +280,9 @@ step_app() {
   "description": "GitHub Actions, $REPO, environment $ENV_NAME (release.yml, Windows-Signatur)"
 }
 JSON
-        az ad app federated-credential create --id "$APP_ID" --parameters "@$WORK/fic.json" >/dev/null \
-            || die "Föderierte Anmeldeinformation konnte nicht angelegt werden."
-        say "  Föderierte Anmeldeinformation angelegt: $subject"
-    fi
+    az ad app federated-credential create --id "$APP_ID" --parameters "@$WORK/fic.json" >/dev/null \
+        || die "Föderierte Anmeldeinformation konnte nicht angelegt werden: $subject"
+    say "  Föderierte Anmeldeinformation angelegt: $subject"
 }
 
 step_role() {
