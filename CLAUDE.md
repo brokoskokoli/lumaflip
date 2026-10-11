@@ -43,7 +43,7 @@ Bauverzeichnisse liegen unter `build/` – nicht löschen, `cmake --fresh` verwe
   Ergebnisse stehen in der Ausgabe (`build/check/bench.log`, `bench-rerun.log`). Fehlschlag nur,
   wenn auch die Wiederholung scheitert.
   `LF_BENCH_REPORT_ONLY=name1,…` misst und meldet („INFO“), ohne zu scheitern – die CI nutzt es
-  für die Prozessstart-Messungen von P-01 (auf den macOS-VMs zu stark schwankend); lokal gelten sie.
+  für die Fenster-Messungen von P-01 und P-02 (auf den macOS-VMs zu stark schwankend); lokal gelten sie.
 - **Finder-Fixtures:** `LF_REQUIRE_FINDER_FIXTURES=1` lässt den Fixture-Test fehlschlagen statt
   überspringen; die CI setzt es automatisch, sobald `tests/data/finder/` existiert
   (`tools/make_finder_fixtures.sh`, docs/TESTING-M1.md §4).
