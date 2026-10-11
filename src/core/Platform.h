@@ -76,6 +76,10 @@ public:
     // dropped events). Default: only `root` itself (platforms without recursive watching).
     virtual void watchTree(const QString& root) { watch(root); }
     virtual void unwatchTree(const QString& root) { unwatch(root); }
+    // True while watchTree() still sets up its watches in the background (Linux walks the
+    // tree on a worker thread); changes in folders not reached yet may go unnoticed until
+    // then. For tests.
+    virtual bool isSettingUp() const { return false; }
 signals:
     void folderChanged(const QString& folderPath);
     // An XMP sidecar ("*.xmp") was written, e.g. by this app's own rating: reported apart

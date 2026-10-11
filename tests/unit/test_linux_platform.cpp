@@ -91,13 +91,14 @@ TEST(LinuxFolderWatcher, F_OPEN_08_WatchesTheWholeTreeIncludingNewFolders) {
     auto watcher = createFolderWatcher();
     Recorder rec(*watcher);
     watcher->watchTree(root);
+    ASSERT_TRUE(waitUntil([&] { return !watcher->isSettingUp(); }, 5000));
     touch(root + "/a/b/deep.jpg");
     ASSERT_TRUE(waitUntil([&] { return rec.folders.contains(root + "/a/b"); }, 3000));
     // A folder created later is watched as well.
     rec.clear();
     ASSERT_TRUE(QDir(root).mkpath("new"));
     ASSERT_TRUE(waitUntil([&] { return rec.folders.contains(root); }, 3000));
-    spin(50);
+    ASSERT_TRUE(waitUntil([&] { return !watcher->isSettingUp(); }, 5000));
     rec.clear();
     touch(root + "/new/x.jpg");
     ASSERT_TRUE(waitUntil([&] { return rec.folders.contains(root + "/new"); }, 3000));
@@ -108,7 +109,7 @@ TEST(LinuxFolderWatcher, F_OPEN_08_WatchesTheWholeTreeIncludingNewFolders) {
     rec.clear();
     ASSERT_TRUE(QDir().rename(outside.path() + "/moved", root + "/moved"));
     ASSERT_TRUE(waitUntil([&] { return rec.folders.contains(root + "/moved"); }, 3000));
-    spin(50);
+    ASSERT_TRUE(waitUntil([&] { return !watcher->isSettingUp(); }, 5000));
     rec.clear();
     touch(root + "/moved/inner/z.jpg");
     ASSERT_TRUE(waitUntil([&] { return rec.folders.contains(root + "/moved/inner"); }, 3000));
@@ -118,6 +119,60 @@ TEST(LinuxFolderWatcher, F_OPEN_08_WatchesTheWholeTreeIncludingNewFolders) {
     touch(root + "/a/b/after.jpg");
     spin(200);
     EXPECT_TRUE(rec.folders.isEmpty());
+}
+
+namespace {
+// inotify watches of this process (all inotify descriptors, /proc/self/fdinfo).
+int inotifyWatchCount() {
+    int n = 0;
+    const QDir fdinfo(QStringLiteral("/proc/self/fdinfo"));
+    for (const QString& fd : fdinfo.entryList(QDir::Files)) {
+        QFile f(fdinfo.filePath(fd));
+        if (!f.open(QIODevice::ReadOnly))
+            continue;
+        for (const QByteArray& line : f.readAll().split('\n'))
+            n += line.startsWith("inotify wd:") ? 1 : 0;
+    }
+    return n;
+}
+} // namespace
+
+// Review (ports): the tree is walked on a worker thread (watchTree() returns at once, the GUI
+// never waits for a large or slow tree), and folders moved out of a watched tree give their
+// inotify watches back (they used to stay until the per-user limit ran out).
+TEST(LinuxFolderWatcher, F_OPEN_08_TreeIsWalkedInTheBackgroundAndMovedFoldersAreReleased) {
+    ensureQtApp();
+    QTemporaryDir dir;
+    const QString root = QDir::cleanPath(dir.path());
+    for (int i = 0; i < 40; ++i)
+        ASSERT_TRUE(QDir(root).mkpath(QStringLiteral("t/f%1/g/h").arg(i)));
+    const int before = inotifyWatchCount();
+    auto watcher = createFolderWatcher();
+    Recorder rec(*watcher);
+    watcher->watchTree(root);
+    EXPECT_TRUE(watcher->isSettingUp()) << "the walk runs on a worker thread";
+    ASSERT_TRUE(waitUntil([&] { return !watcher->isSettingUp(); }, 10000));
+    const int watched = inotifyWatchCount() - before;
+    EXPECT_EQ(watched, 2 + 40 * 3); // root, t, and f<i>, g, h each
+    // Moving a subtree out releases its watches (and reports the change).
+    QTemporaryDir outside;
+    ASSERT_TRUE(QDir().rename(root + "/t", outside.path() + "/t"));
+    ASSERT_TRUE(waitUntil([&] { return rec.folders.contains(root); }, 3000));
+    EXPECT_TRUE(waitUntil([&] { return inotifyWatchCount() - before == 1; }, 3000))
+        << inotifyWatchCount() - before << " watches left";
+    // Changes in the moved folders are not reported any more.
+    rec.clear();
+    touch(outside.path() + "/t/f1/g/x.jpg");
+    spin(200);
+    EXPECT_TRUE(rec.folders.isEmpty());
+    // Giving up the tree while it is still walked leaves no watch behind.
+    for (int i = 0; i < 40; ++i)
+        ASSERT_TRUE(QDir(root).mkpath(QStringLiteral("u/f%1/g").arg(i)));
+    watcher->unwatchTree(root);
+    watcher->watchTree(root + "/u");
+    watcher->unwatchTree(root + "/u");
+    ASSERT_TRUE(waitUntil([&] { return !watcher->isSettingUp(); }, 10000));
+    EXPECT_EQ(inotifyWatchCount(), before);
 }
 
 TEST(LinuxTrash, F_FILE_01_MovesToFreedesktopTrashAndRestores) {
