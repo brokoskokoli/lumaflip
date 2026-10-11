@@ -834,8 +834,10 @@ void ViewerWindow::fitWindowToImage(QSize imagePixels) {
     if (!m_accessHint->isHidden())
         chromeHeight += m_accessHint->sizeHint().height();
 #ifdef Q_OS_WIN
-    // The window's own menu bar (collapsed in the borderless window, F-VIEW-14).
-    if (const QWidget* bar = menuWidget(); bar && !bar->isHidden() && bar->maximumHeight() > 0)
+    // The window's own menu bar (collapsed in the borderless window, F-VIEW-14; the image
+    // may be shown before the window, which collapses it).
+    if (const QWidget* bar = menuWidget();
+        bar && !bar->isHidden() && !(m_extras && m_extras->menuInTitleStrip()))
         chromeHeight += bar->sizeHint().height();
 #endif
     const QSize wanted = (QSizeF(imagePixels) / dpr).toSize() + QSize(0, chromeHeight);

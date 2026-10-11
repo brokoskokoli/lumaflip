@@ -25,6 +25,8 @@ class QWidget;
 namespace lf {
 
 void setWindowAlwaysOnTop(QWidget* window, bool on);
+// Before the native window exists (macOS, Linux: only Qt's window flags, the window is then
+// created borderless; Windows creates it) or on the native window.
 void setWindowMinimalChrome(QWidget* window, bool on);
 
 // F-VIEW-14: the system's window buttons (macOS: close/minimize/zoom) fade in/out with the

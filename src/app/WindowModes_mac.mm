@@ -106,7 +106,22 @@ void setWindowAlwaysOnTop(QWidget* window, bool on) {
 
 void setWindowMinimalChrome(QWidget* window, bool on) {
     @autoreleasepool {
-        NSWindow* w = nativeWindow(window, true);
+        QWidget* top = window ? window->window() : nullptr;
+        if (!top)
+            return;
+        if (!top->windowHandle() || !top->windowHandle()->handle()) {
+            // Not created yet: Qt creates the NSWindow with a full size content view and a
+            // transparent title bar, so its frame margins are right from the start (placing,
+            // restoring the geometry). Creating it here instead would cost startup time (P-01:
+            // the window would be created before its GPU surface type is known).
+            Qt::WindowFlags flags = top->windowFlags();
+            flags.setFlag(Qt::ExpandedClientAreaHint, on);
+            flags.setFlag(Qt::NoTitleBarBackgroundHint, on);
+            if (flags != top->windowFlags())
+                top->setWindowFlags(flags);
+            return;
+        }
+        NSWindow* w = nativeWindow(window, false);
         if (!w)
             return;
         const bool fullSize = (w.styleMask & NSWindowStyleMaskFullSizeContentView) != 0;

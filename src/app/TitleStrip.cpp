@@ -353,7 +353,9 @@ TitleStripController::TitleStripController(ViewerWindow& window, QWidget* host)
 }
 
 bool TitleStripController::holdsMenuBar() const {
-    return m_active && m_window.menuWidget() != nullptr;
+    // Before the window is shown (the first image may be shown earlier): what it will be.
+    const bool active = m_window.isVisible() ? m_active : wantActive();
+    return active && m_window.menuWidget() != nullptr;
 }
 
 void TitleStripController::setBorderless(bool on) {
