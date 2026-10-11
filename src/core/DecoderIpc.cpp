@@ -307,10 +307,11 @@ QByteArray encode(const Response& r) {
     QByteArray out;
     QDataStream s(&out, QIODevice::WriteOnly);
     s.setVersion(kStreamVersion);
-    s << kProtocolVersion << quint8(2) << r.id << r.ok << r.error << r.sandboxed << r.pid;
+    s << kProtocolVersion << quint8(2) << r.id << r.ok << r.error << r.sandboxed << r.sandboxDetails << r.pid;
     put(s, r.info);
     put(s, r.decoded);
     put(s, r.pixels);
+    s << r.pixelFd;
     put(s, r.metadata);
     s << qint32(r.members.size());
     for (const archive::Member& m : r.members)
@@ -346,10 +347,11 @@ std::optional<Response> decodeResponse(const QByteArray& payload) {
     s >> version >> kind;
     if (version != kProtocolVersion || kind != 2)
         return std::nullopt;
-    s >> r.id >> r.ok >> r.error >> r.sandboxed >> r.pid;
+    s >> r.id >> r.ok >> r.error >> r.sandboxed >> r.sandboxDetails >> r.pid;
     get(s, r.info);
     get(s, r.decoded);
     get(s, r.pixels);
+    s >> r.pixelFd;
     get(s, r.metadata);
     qint32 members = 0;
     s >> members;
@@ -608,6 +610,78 @@ QImage mapSharedImage(int fd, const PixelHeader& h, QString* error) {
         img.setColorSpace(QColorSpace::fromIccProfile(h.iccProfile));
     return img;
 }
+
+#ifdef Q_OS_LINUX
+
+namespace {
+constexpr int kRequiredSeals = F_SEAL_WRITE | F_SEAL_SHRINK | F_SEAL_GROW;
+} // namespace
+
+int createSealedImage(const QImage& image, QString* error) {
+    const qint64 size = qint64(image.bytesPerLine()) * image.height();
+    if (image.isNull() || size <= 0) {
+        if (error)
+            *error = Tr::tr("Das Bild ist leer.");
+        return -1;
+    }
+    const int fd = memfd_create("lumaflip-pixels", MFD_CLOEXEC | MFD_ALLOW_SEALING);
+    bool ok = fd >= 0 && ftruncate(fd, off_t(size)) == 0;
+    void* mem = ok ? mmap(nullptr, size_t(size), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0) : MAP_FAILED;
+    ok = mem != MAP_FAILED;
+    if (ok) {
+        std::memcpy(mem, image.constBits(), size_t(size));
+        munmap(mem, size_t(size)); // F_SEAL_WRITE needs every writable mapping gone
+        ok = fcntl(fd, F_ADD_SEALS, kRequiredSeals | F_SEAL_SEAL) == 0;
+    }
+    if (!ok) {
+        if (fd >= 0)
+            close(fd);
+        if (error)
+            *error = Tr::tr("Nicht genug Speicher für das Bild (%1 × %2 Pixel).")
+                         .arg(image.width())
+                         .arg(image.height());
+        return -1;
+    }
+    return fd;
+}
+
+QImage mapHelperImage(qint64 pid, int fd, const PixelHeader& h, QString* error) {
+    auto invalid = [&] {
+        if (error)
+            *error = Tr::tr("Die Bilddaten des Decoders sind ungültig.");
+        return QImage();
+    };
+    if (pid <= 0 || fd < 0 || !validatePixelHeader(h, nullptr))
+        return invalid();
+    const QByteArray link = "/proc/" + QByteArray::number(pid) + "/fd/" + QByteArray::number(fd);
+    const int own = open(link.constData(), O_RDONLY | O_CLOEXEC);
+    if (own < 0)
+        return invalid();
+    // Only a sealed memfd: the helper can neither change the pixels nor shrink the object
+    // (which would turn the app's reads into SIGBUS) once the app has mapped it.
+    struct stat st{};
+    const int seals = fcntl(own, F_GET_SEALS);
+    const bool sane = seals >= 0 && (seals & kRequiredSeals) == kRequiredSeals && fstat(own, &st) == 0 &&
+                      S_ISREG(st.st_mode) && st.st_size >= h.shmSize;
+    // Private mapping: a QImage that is changed later (setColorSpace) copies on write.
+    void* mem =
+        sane ? mmap(nullptr, size_t(h.shmSize), PROT_READ | PROT_WRITE, MAP_PRIVATE, own, 0) : MAP_FAILED;
+    close(own);
+    if (mem == MAP_FAILED)
+        return invalid();
+    auto* m = new Mapping{mem, size_t(h.shmSize)};
+    QImage img(static_cast<uchar*>(mem), h.width, h.height, qsizetype(h.bytesPerLine),
+               QImage::Format(h.format), releaseMapping, m);
+    if (img.isNull()) {
+        releaseMapping(m);
+        return invalid();
+    }
+    if (!h.iccProfile.isEmpty())
+        img.setColorSpace(QColorSpace::fromIccProfile(h.iccProfile));
+    return img;
+}
+
+#endif
 
 bool unlinkShared(const QByteArray& name) {
     return shm_unlink(name.constData()) == 0;

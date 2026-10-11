@@ -28,6 +28,10 @@
 
 namespace lf {
 
+// Default upper bound of a helper's memory in MB: half the physical memory, between 2 and
+// 8 GiB (Linux and Windows; 0 = no limit elsewhere).
+qint64 defaultHelperMemoryLimitMb();
+
 class DecoderHelperPool {
 public:
     struct Options {
@@ -36,6 +40,9 @@ public:
         int decodeTimeoutMs = 30000;  // a single decode (huge SVG, damaged file loops)
         int infoTimeoutMs = 10000;    // info/metadata/ping
         QStringList extraEnvironment; // "NAME=value" added to the app's environment
+        // Memory of one helper (Linux: RLIMIT_DATA, Windows: job memory limit), 0 = none. A
+        // decode beyond it fails like a damaged file instead of exhausting the system.
+        qint64 memoryLimitMb = defaultHelperMemoryLimitMb();
 #if defined(Q_OS_MACOS) || defined(Q_OS_LINUX) || defined(Q_OS_WIN)
         bool requireSandbox = true; // refuse a helper whose Ping says sandboxed = false
 #else
@@ -115,6 +122,7 @@ std::shared_ptr<Decoder> isolatedDecoder(std::shared_ptr<Decoder> decoder);
 struct DecoderHelperState {
     QImage pending;
     quint32 pendingId = 0;
+    int deliveredFd = -1; // Linux: the memfd of the last Deliver, closed with the next request
 };
 // Answers one request with the backend named in it. Decode keeps the image in `state` and
 // answers with its PixelHeader; the following Deliver copies it into the app's shared
@@ -123,14 +131,18 @@ struct DecoderHelperState {
 ipc::Response serveDecoderRequest(const ipc::Request& request,
                                   const QList<std::shared_ptr<Decoder>>& backends, qint64 pid, bool sandboxed,
                                   bool testOps, DecoderHelperState* state);
+// Helper side, first thing in main(): closes inherited descriptors except stdin/stdout/
+// stderr (Linux) and applies the memory limit the app passed (LF_DECODER_HELPER_MEMORY_MB).
+void prepareDecoderHelperProcess();
 // Request loop until the app closes `inFd`. Returns the process exit code.
 int runDecoderHelper(int inFd, int outFd, const QList<std::shared_ptr<Decoder>>& backends, bool sandboxed,
                      bool testOps);
 // macOS: restricts the calling process with a deny-by-default Seatbelt profile
 // (decoderSandboxProfile()): reading files and a few system services only; no network, no
 // file writes, no new processes, no shared memory except opening the app's "/lfd." objects.
-// Linux: seccomp-bpf (no sockets, no new processes) + Landlock where the kernel has it (no
-// file writes except the app's "/lfd." objects), src/platform/linux/LinuxSandbox.h.
+// Linux: seccomp-bpf (no sockets, no new processes, no signals to other processes, no file
+// system changes) + Landlock where the kernel has it (read-only file system),
+// src/platform/linux/LinuxSandbox.h.
 // Returns false (and why) if the sandbox could not be applied.
 bool applyDecoderSandbox(QString* error);
 const char* decoderSandboxProfile();

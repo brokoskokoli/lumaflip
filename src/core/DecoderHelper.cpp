@@ -13,6 +13,7 @@
 
 #include <QFile>
 
+#include <algorithm>
 #include <atomic>
 #include <cerrno>
 #include <chrono>
@@ -25,19 +26,28 @@
 
 #ifdef Q_OS_UNIX
 #include <arpa/inet.h>
+#include <dirent.h>
 #include <fcntl.h>
 #include <netinet/in.h>
 #include <spawn.h>
+#include <sys/ioctl.h>
 #include <sys/mman.h>
 #include <sys/socket.h>
+#include <sys/stat.h>
 #include <sys/wait.h>
 #include <unistd.h>
+#endif
+#ifdef Q_OS_LINUX
+#include <sys/syscall.h>
 #endif
 #ifdef Q_OS_DARWIN
 #include <crt_externs.h>
 #include <mach/mach.h>
 #include <sandbox.h>
 #include <servers/bootstrap.h>
+#endif
+#ifdef Q_OS_LINUX
+#include "platform/linux/LinuxSandbox.h"
 #endif
 #if defined(Q_OS_WIN) && LF_WINDOWS_PLATFORM
 #include "platform/windows/WinDecoderSandbox.h"
@@ -77,7 +87,42 @@ char** currentEnvironment() {
 #endif
 }
 
+#ifdef Q_OS_UNIX
+// A pipe whose ends are close-on-exec from the start (Linux: atomically, so a program another
+// thread starts at the same moment cannot inherit them).
+bool closeOnExecPipe(int fds[2]) {
+#ifdef Q_OS_LINUX
+    return pipe2(fds, O_CLOEXEC) == 0;
+#else
+    if (pipe(fds) != 0)
+        return false;
+    for (int i = 0; i < 2; ++i)
+        fcntl(fds[i], F_SETFD, FD_CLOEXEC);
+    return true;
+#endif
+}
+#endif
+
 } // namespace
+
+qint64 defaultHelperMemoryLimitMb() {
+#if defined(Q_OS_LINUX) || LF_WIN_HELPER
+    qint64 physicalMb = 0;
+#if defined(Q_OS_LINUX)
+    const long pages = sysconf(_SC_PHYS_PAGES), pageSize = sysconf(_SC_PAGESIZE);
+    if (pages > 0 && pageSize > 0)
+        physicalMb = qint64(pages) * pageSize / (1024 * 1024);
+#elif LF_WIN_HELPER
+    MEMORYSTATUSEX status{};
+    status.dwLength = sizeof status;
+    if (GlobalMemoryStatusEx(&status))
+        physicalMb = qint64(status.ullTotalPhys / (1024 * 1024));
+#endif
+    return std::clamp<qint64>(physicalMb / 2, 2048, 8192);
+#else
+    return 0; // macOS: the Seatbelt sandbox, no memory limit (RLIMIT_DATA is not enforced)
+#endif
+}
 
 QString messageDecoderCrashed() {
     return Tr::tr("Das Bild hat den Decoder zum Absturz gebracht – die Datei ist vermutlich beschädigt.");
@@ -130,15 +175,13 @@ struct HelperProcess {
     bool start(const DecoderHelperPool::Options& o, QString* error) {
 #ifdef Q_OS_UNIX
         int in[2], out[2]; // in: app -> helper (helper's stdin), out: helper -> app
-        if (pipe(in) != 0)
+        if (!closeOnExecPipe(in))
             return false;
-        if (pipe(out) != 0) {
+        if (!closeOnExecPipe(out)) {
             close(in[0]);
             close(in[1]);
             return false;
         }
-        for (int fd : {in[0], in[1], out[0], out[1]})
-            fcntl(fd, F_SETFD, FD_CLOEXEC);
 #ifdef F_SETNOSIGPIPE
         fcntl(in[1], F_SETNOSIGPIPE, 1); // a dead helper must not kill the app with SIGPIPE
 #else
@@ -152,21 +195,32 @@ struct HelperProcess {
         posix_spawn_file_actions_init(&actions);
         posix_spawn_file_actions_adddup2(&actions, in[0], 0);
         posix_spawn_file_actions_adddup2(&actions, out[1], 1);
+        // stderr: the app's only when asked for (diagnostics); else /dev/null - no terminal
+        // reaches the helper.
+        if (qEnvironmentVariableIntValue("LF_DECODER_HELPER_STDERR") != 1)
+            posix_spawn_file_actions_addopen(&actions, 2, "/dev/null", O_WRONLY, 0);
         posix_spawnattr_t attr;
         posix_spawnattr_init(&attr);
 #ifdef POSIX_SPAWN_CLOEXEC_DEFAULT
         // Only stdin/stdout/stderr reach the helper (no inherited files or sockets).
         posix_spawn_file_actions_addinherit_np(&actions, 2);
         posix_spawnattr_setflags(&attr, POSIX_SPAWN_CLOEXEC_DEFAULT);
+#elif defined(__GLIBC__) && (__GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 34))
+        // Linux: descriptors another thread opened without O_CLOEXEC stay behind as well (the
+        // helper closes everything >= 3 itself, too: prepareDecoderHelperProcess()).
+        posix_spawn_file_actions_addclosefrom_np(&actions, 3);
 #endif
         const QByteArray exe = QFile::encodeName(o.executable);
         QByteArray arg1("--decoder-helper");
         char* argv[] = {const_cast<char*>(exe.constData()), arg1.data(), nullptr};
         std::vector<QByteArray> envStore;
         for (char** e = currentEnvironment(); e && *e; ++e)
-            envStore.emplace_back(*e);
+            if (!QByteArray(*e).startsWith("LF_DECODER_HELPER_MEMORY_MB="))
+                envStore.emplace_back(*e);
         for (const QString& extra : o.extraEnvironment)
             envStore.push_back(extra.toLocal8Bit());
+        if (o.memoryLimitMb > 0)
+            envStore.push_back("LF_DECODER_HELPER_MEMORY_MB=" + QByteArray::number(o.memoryLimitMb));
         std::vector<char*> envp;
         envp.reserve(envStore.size() + 1);
         for (QByteArray& e : envStore)
@@ -192,7 +246,7 @@ struct HelperProcess {
         return true;
 #elif LF_WIN_HELPER
         if (!win::startDecoderHelper(o.executable, {QStringLiteral("--decoder-helper")}, o.extraEnvironment,
-                                     &win, error))
+                                     o.memoryLimitMb * 1024 * 1024, &win, error))
             return false;
         pid = win.pid;
         toChild = win.toChild;
@@ -386,6 +440,35 @@ std::optional<ipc::Response> DecoderHelperPool::call(ipc::Request request, int t
     auto response = roundTrip(request);
     if (!response)
         return failRound();
+#ifdef Q_OS_LINUX
+    if (request.op == ipc::Op::Decode && response->ok) {
+        // Linux: the helper hands over a sealed memfd (DecoderIpc.h); the app opens it through
+        // /proc while the helper waits for its next request (it closes the memfd then).
+        QString mapError;
+        if (!ipc::validatePixelHeader(response->pixels, &mapError)) {
+            response->ok = false;
+            response->error = mapError;
+        } else {
+            ipc::Request deliver;
+            deliver.id = request.id;
+            deliver.op = ipc::Op::Deliver;
+            deliver.path = request.path;
+            const auto delivered = roundTrip(deliver);
+            if (!delivered)
+                return failRound();
+            if (delivered->ok) {
+                response->image = ipc::mapHelperImage(pid, delivered->pixelFd, response->pixels, &mapError);
+                if (response->image.isNull()) {
+                    response->ok = false;
+                    response->error = mapError;
+                }
+            } else {
+                response->ok = false;
+                response->error = delivered->error;
+            }
+        }
+    }
+#else
     if (request.op == ipc::Op::Decode && response->ok) {
         // The app owns the shared memory: create it with the announced size, let the helper
         // fill it, map it. The name is removed on every path (ShmNameGuard).
@@ -424,6 +507,7 @@ std::optional<ipc::Response> DecoderHelperPool::call(ipc::Request request, int t
             }
         }
     }
+#endif
     release();
     return response;
 }
@@ -452,9 +536,16 @@ std::shared_ptr<DecoderHelperPool> DecoderHelperPool::shared() {
         o.executable = defaultExecutable();
         if (o.executable.isEmpty())
             return nullptr;
-        // Linux: an explicit opt-out for systems without seccomp (docs/LINUX.md).
+#ifdef Q_OS_LINUX
+        // Linux only: an explicit opt-out for kernels without seccomp (docs/LINUX.md). macOS
+        // and Windows always have their sandbox; there the variable does nothing.
         if (qEnvironmentVariableIntValue("LF_DECODER_ALLOW_UNSANDBOXED") == 1)
             o.requireSandbox = false;
+#endif
+        bool ok = false;
+        if (const qint64 mb = qEnvironmentVariable("LF_DECODER_HELPER_MEMORY_MB").toLongLong(&ok);
+            ok && mb >= 0)
+            o.memoryLimitMb = mb;
         return std::make_shared<DecoderHelperPool>(o);
     }();
     return pool;
@@ -541,6 +632,15 @@ std::shared_ptr<Decoder> isolatedDecoder(std::shared_ptr<Decoder> decoder) {
 // ---- helper side ----
 
 namespace {
+// What applyDecoderSandbox() put in place (set once at start-up, before any request).
+QString& sandboxDetailsStorage() {
+    static QString details;
+    return details;
+}
+QString sandboxDetails() {
+    return sandboxDetailsStorage();
+}
+
 // Test operations: die like a crash, without a crash report (ReportCrash) per test run.
 [[noreturn]] void simulateCrash() {
 #ifdef Q_OS_UNIX
@@ -600,6 +700,103 @@ bool testOperation(ipc::Op op, const QString& arg, QString* detail) {
         }
         int status = 0;
         waitpid(child, &status, 0);
+        return true;
+    }
+    case ipc::Op::TestSignal: {
+        const pid_t target = pid_t(arg.toLongLong());
+        bool ok = ::kill(target, 0) == 0;
+        *detail = QStringLiteral("kill: %1").arg(QString::fromLocal8Bit(strerror(ok ? 0 : errno)));
+#ifdef Q_OS_LINUX
+        const bool tg = syscall(SYS_tgkill, target, target, 0) == 0;
+        *detail += QStringLiteral(", tgkill: %1").arg(QString::fromLocal8Bit(strerror(tg ? 0 : errno)));
+        ok = ok || tg;
+#endif
+        return ok;
+    }
+#if defined(Q_OS_LINUX) && defined(SYS_pidfd_open) && defined(SYS_pidfd_getfd) &&                            \
+    defined(SYS_pidfd_send_signal)
+    case ipc::Op::TestPidfd: {
+        // A pidfd of the target, another process's descriptor, a signal through a pidfd: each
+        // "possible" unless the filter refuses it (EPERM; a bad descriptor gives EBADF).
+        const long pidfd = syscall(SYS_pidfd_open, pid_t(arg.toLongLong()), 0);
+        const bool open = pidfd >= 0;
+        *detail = QStringLiteral("pidfd_open: %1").arg(QString::fromLocal8Bit(strerror(open ? 0 : errno)));
+        const bool getfd = syscall(SYS_pidfd_getfd, open ? int(pidfd) : -1, 0, 0) >= 0 || errno != EPERM;
+        *detail += QStringLiteral(", pidfd_getfd: %1").arg(QString::fromLocal8Bit(strerror(errno)));
+        const bool send =
+            syscall(SYS_pidfd_send_signal, open ? int(pidfd) : -1, 0, nullptr, 0) == 0 || errno != EPERM;
+        *detail += QStringLiteral(", pidfd_send_signal: %1").arg(QString::fromLocal8Bit(strerror(errno)));
+        if (open)
+            close(int(pidfd));
+        return open || getfd || send;
+    }
+#endif
+#ifdef Q_OS_LINUX
+    case ipc::Op::TestTerminal: {
+        char c = 'x';
+        const bool sti = ioctl(STDIN_FILENO, TIOCSTI, &c) == 0 || errno != EPERM;
+        *detail = QStringLiteral("TIOCSTI: %1").arg(QString::fromLocal8Bit(strerror(errno)));
+        return sti;
+    }
+    case ipc::Op::TestListDescriptors: {
+        QStringList lines;
+        if (DIR* d = opendir("/proc/self/fd")) {
+            const int own = dirfd(d);
+            while (const dirent* e = readdir(d)) {
+                bool isNumber = false;
+                const int fd = QByteArray(e->d_name).toInt(&isNumber);
+                if (!isNumber || fd == own)
+                    continue;
+                char target[4096];
+                const QByteArray link = "/proc/self/fd/" + QByteArray(e->d_name);
+                const ssize_t n = readlink(link.constData(), target, sizeof target - 1);
+                lines << QStringLiteral("%1 -> %2")
+                             .arg(fd)
+                             .arg(n > 0 ? QString::fromLocal8Bit(target, int(n)) : QStringLiteral("?"));
+            }
+            closedir(d);
+        }
+        *detail = lines.join(u'\n');
+        return true;
+    }
+#endif
+    case ipc::Op::TestModifyFile: {
+        // Every way to change the file `arg` (which exists) or its folder.
+        const QByteArray p = QFile::encodeName(arg);
+        QStringList done;
+        auto attempt = [&](const char* what, bool ok) {
+            if (ok)
+                done << QLatin1String(what);
+        };
+        const int w = open(p.constData(), O_WRONLY);
+        attempt("open for writing", w >= 0);
+        if (w >= 0)
+            close(w);
+        const QByteArray created = p + ".created";
+        const int c = open(created.constData(), O_RDONLY | O_CREAT, 0600);
+        attempt("open with O_CREAT", c >= 0);
+        if (c >= 0)
+            close(c);
+        attempt("truncate", truncate(p.constData(), 0) == 0);
+        attempt("chmod", chmod(p.constData(), 0777) == 0);
+        attempt("link", link(p.constData(), (p + ".link").constData()) == 0);
+        attempt("symlink", symlink(p.constData(), (p + ".symlink").constData()) == 0);
+        attempt("mkdir", mkdir((p + ".dir").constData(), 0700) == 0);
+        attempt("rename", rename(p.constData(), (p + ".renamed").constData()) == 0);
+        attempt("unlink", unlink(p.constData()) == 0);
+        *detail = done.join(QStringLiteral(", "));
+        return !done.isEmpty();
+    }
+    case ipc::Op::TestAllocate: {
+        const size_t bytes = size_t(std::max<qint64>(arg.toLongLong(), 0)) * 1024 * 1024;
+        auto* mem = static_cast<char*>(std::malloc(bytes));
+        if (!mem) {
+            *detail = QStringLiteral("malloc failed");
+            return false;
+        }
+        for (size_t i = 0; i < bytes; i += 4096) // really use it (lazy allocation)
+            mem[i] = char(i);
+        std::free(mem);
         return true;
     }
     case ipc::Op::TestMachLookup: {
@@ -676,6 +873,67 @@ bool testOperation(ipc::Op op, const QString& arg, QString* detail) {
         CloseHandle(pi.hProcess);
         return true;
     }
+    case ipc::Op::TestSignal: {
+        // The Windows counterpart of a signal: terminating (or suspending) the process.
+        HANDLE h = OpenProcess(PROCESS_TERMINATE | PROCESS_SUSPEND_RESUME, FALSE, DWORD(arg.toLongLong()));
+        if (!h) {
+            *detail = QStringLiteral("OpenProcess: error %1").arg(GetLastError());
+            return false;
+        }
+        CloseHandle(h);
+        return true;
+    }
+    case ipc::Op::TestModifyFile: {
+        const std::wstring p = QDir::toNativeSeparators(arg).toStdWString();
+        QStringList done;
+        HANDLE w = CreateFileW(p.c_str(), GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, 0, nullptr);
+        if (w != INVALID_HANDLE_VALUE) {
+            done << QStringLiteral("open for writing");
+            CloseHandle(w);
+        }
+        const std::wstring created = p + L".created";
+        HANDLE c = CreateFileW(created.c_str(), GENERIC_READ, 0, nullptr, CREATE_NEW, 0, nullptr);
+        if (c != INVALID_HANDLE_VALUE) {
+            done << QStringLiteral("create");
+            CloseHandle(c);
+        }
+        if (SetFileAttributesW(p.c_str(), FILE_ATTRIBUTE_HIDDEN))
+            done << QStringLiteral("attributes");
+        if (CreateDirectoryW((p + L".dir").c_str(), nullptr))
+            done << QStringLiteral("mkdir");
+        if (MoveFileExW(p.c_str(), (p + L".renamed").c_str(), 0))
+            done << QStringLiteral("rename");
+        if (DeleteFileW(p.c_str()))
+            done << QStringLiteral("delete");
+        *detail = done.join(QStringLiteral(", "));
+        return !done.isEmpty();
+    }
+    case ipc::Op::TestAllocate: {
+        const size_t bytes = size_t(std::max<qint64>(arg.toLongLong(), 0)) * 1024 * 1024;
+        auto* mem = static_cast<char*>(std::malloc(bytes));
+        if (!mem) {
+            *detail = QStringLiteral("malloc failed");
+            return false;
+        }
+        for (size_t i = 0; i < bytes; i += 4096)
+            mem[i] = char(i);
+        std::free(mem);
+        return true;
+    }
+    case ipc::Op::TestDesktop: {
+        // Report: the desktop the helper runs on, and whether it reaches the user's one.
+        wchar_t name[256] = {};
+        DWORD needed = 0;
+        GetUserObjectInformationW(GetThreadDesktop(GetCurrentThreadId()), UOI_NAME, name, sizeof name,
+                                  &needed);
+        HDESK input = OpenInputDesktop(0, FALSE, DESKTOP_READOBJECTS);
+        *detail = QStringLiteral("desktop: %1, input desktop: %2")
+                      .arg(QString::fromWCharArray(name),
+                           input ? QStringLiteral("reachable") : QStringLiteral("denied"));
+        if (input)
+            CloseDesktop(input);
+        return true;
+    }
     default:
         return false;
     }
@@ -702,17 +960,37 @@ ipc::Response serveDecoderRequest(const ipc::Request& request,
     if (state) {
         pending = std::exchange(state->pending, QImage());
         pendingId = std::exchange(state->pendingId, 0);
+#ifdef Q_OS_UNIX
+        // The app has mapped the memfd of the last Deliver by now (it sends nothing before).
+        if (const int fd = std::exchange(state->deliveredFd, -1); fd >= 0)
+            close(fd);
+#endif
     }
     if (request.op == ipc::Op::Ping) {
         r.ok = true;
+        r.sandboxDetails = sandboxDetails();
         return r;
     }
     if (request.op == ipc::Op::Deliver) {
         QString error;
-        if (pending.isNull() || pendingId != request.id)
+        if (pending.isNull() || pendingId != request.id) {
             error = Tr::tr("Die Bilddaten des Decoders fehlen.");
-        else
+#ifdef Q_OS_LINUX
+        } else if (request.shm.isEmpty()) {
+            // Linux: a sealed memfd of the helper's own (DecoderIpc.h), kept open until the
+            // next request so that the app can open it through /proc.
+            r.pixelFd = ipc::createSealedImage(pending, &error);
+            r.ok = r.pixelFd >= 0;
+            if (r.ok && state) {
+                state->deliveredFd = r.pixelFd;
+            } else if (r.ok) { // nobody would close it
+                close(std::exchange(r.pixelFd, -1));
+                r.ok = false;
+            }
+#endif
+        } else {
             r.ok = ipc::fillSharedImage(request.shm, pending, &error);
+        }
         if (!r.ok)
             r.error = error;
         return r;
@@ -729,6 +1007,13 @@ ipc::Response serveDecoderRequest(const ipc::Request& request,
         case ipc::Op::TestMachLookup:
         case ipc::Op::TestCreateShm:
         case ipc::Op::TestExec:
+        case ipc::Op::TestSignal:
+        case ipc::Op::TestPidfd:
+        case ipc::Op::TestModifyFile:
+        case ipc::Op::TestTerminal:
+        case ipc::Op::TestAllocate:
+        case ipc::Op::TestListDescriptors:
+        case ipc::Op::TestDesktop:
             r.ok = testOperation(request.op, request.path, &r.error);
             return r;
         default:
@@ -901,8 +1186,20 @@ const char* decoderSandboxProfile() {
 
 #ifdef Q_OS_LINUX
 // src/platform/linux/LinuxSandbox.cpp.
-bool applyPlatformDecoderSandbox(QString* error, QString* details);
+bool applyPlatformDecoderSandbox(bool landlock, QString* error, QString* details);
 #endif
+
+void prepareDecoderHelperProcess() {
+#ifdef Q_OS_LINUX
+    // Nothing the app (or whoever started the helper) left open may be reachable from here.
+    linuxsandbox::closeInheritedDescriptors();
+    bool ok = false;
+    const qint64 mb = qEnvironmentVariable("LF_DECODER_HELPER_MEMORY_MB").toLongLong(&ok);
+    if (ok && mb > 0 && !linuxsandbox::limitMemory(mb * 1024 * 1024))
+        qWarning("lumaflip-decoder: memory limit not applied: %s", strerror(errno));
+#endif
+    // Windows: the job object of the app carries the memory limit (WinDecoderSandbox.h).
+}
 
 bool applyDecoderSandbox(QString* error) {
 #ifdef Q_OS_DARWIN
@@ -910,6 +1207,7 @@ bool applyDecoderSandbox(QString* error) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
     const int rc = sandbox_init(decoderSandboxProfile(), 0, &err);
+    sandboxDetailsStorage() = rc == 0 ? QStringLiteral("Seatbelt") : QString();
     if (rc != 0) {
         if (error)
             *error = QString::fromUtf8(err ? err : "sandbox_init failed");
@@ -922,12 +1220,18 @@ bool applyDecoderSandbox(QString* error) {
 #elif LF_WIN_HELPER
     // Windows: the app starts the helper inside its sandbox (low integrity, job object,
     // mitigations - WinDecoderSandbox.h); the helper checks that it really runs in it.
-    return win::verifyDecoderSandbox(error);
+    const bool ok = win::verifyDecoderSandbox(error);
+    sandboxDetailsStorage() = ok ? QStringLiteral("low integrity, job object") : QString();
+    return ok;
 #elif defined(Q_OS_LINUX)
-    // seccomp-bpf + Landlock, src/platform/linux/LinuxSandbox.h.
+    // seccomp-bpf + Landlock, src/platform/linux/LinuxSandbox.h. Tests check the seccomp
+    // rules alone (the path of kernels without Landlock).
+    const bool landlock = !(qEnvironmentVariableIntValue("LF_DECODER_HELPER_TEST_OPS") == 1 &&
+                            qEnvironmentVariableIntValue("LF_DECODER_HELPER_TEST_NO_LANDLOCK") == 1);
     QString details;
-    const bool ok = applyPlatformDecoderSandbox(error, &details);
+    const bool ok = applyPlatformDecoderSandbox(landlock, error, &details);
     qInfo("lumaflip-decoder: sandbox: %s", qPrintable(details));
+    sandboxDetailsStorage() = details;
     return ok;
 #else
     if (error)

@@ -8,9 +8,13 @@
 #include <QDir>
 #include <QProcessEnvironment>
 
+#include <string>
 #include <vector>
 
 #include <windows.h>
+
+#include <aclapi.h>
+#include <sddl.h>
 
 namespace lf::win {
 
@@ -70,7 +74,7 @@ HANDLE lowIntegrityToken(QString* why) {
     return restricted;
 }
 
-// Diagnostics: LF_DECODER_HELPER_SANDBOX_OFF=token,job,ui,mitigations,childpolicy switches parts
+// Diagnostics: LF_DECODER_HELPER_SANDBOX_OFF=token,job,ui,mitigations,childpolicy,desktop switches parts
 // of the sandbox off (the helper then reports sandboxed = false where that matters).
 bool sandboxPartOff(const char* part) {
     return qEnvironmentVariable("LF_DECODER_HELPER_SANDBOX_OFF")
@@ -78,7 +82,7 @@ bool sandboxPartOff(const char* part) {
         .contains(QLatin1String(part));
 }
 
-HANDLE helperJob() {
+HANDLE helperJob(qint64 memoryLimitBytes) {
     HANDLE job = CreateJobObjectW(nullptr, nullptr);
     if (!job)
         return nullptr;
@@ -87,6 +91,11 @@ HANDLE helperJob() {
                                               JOB_OBJECT_LIMIT_ACTIVE_PROCESS |
                                               JOB_OBJECT_LIMIT_DIE_ON_UNHANDLED_EXCEPTION;
     limits.BasicLimitInformation.ActiveProcessLimit = 1;
+    if (memoryLimitBytes > 0) {
+        // A decode beyond the limit fails (allocation error) instead of exhausting the system.
+        limits.BasicLimitInformation.LimitFlags |= JOB_OBJECT_LIMIT_PROCESS_MEMORY;
+        limits.ProcessMemoryLimit = SIZE_T(memoryLimitBytes);
+    }
     JOBOBJECT_BASIC_UI_RESTRICTIONS ui{};
     ui.UIRestrictionsClass = JOB_OBJECT_UILIMIT_DESKTOP | JOB_OBJECT_UILIMIT_DISPLAYSETTINGS |
                              JOB_OBJECT_UILIMIT_EXITWINDOWS | JOB_OBJECT_UILIMIT_GLOBALATOMS |
@@ -121,6 +130,44 @@ std::vector<wchar_t> environmentBlock(const QStringList& extra) {
     return block;
 }
 
+// The helper's own desktop in the app's window station, created once per app run and
+// labelled low integrity so that the low integrity helper may use it. Empty if it could not
+// be created (the helper then shares the user's desktop; logged).
+const std::wstring& helperDesktopName() {
+    static const std::wstring name = []() -> std::wstring {
+        if (sandboxPartOff("desktop"))
+            return {};
+        const std::wstring n = L"lumaflip-decoder-" + std::to_wstring(GetCurrentProcessId());
+        HDESK desk = CreateDesktopW(n.c_str(), nullptr, nullptr, 0,
+                                    DESKTOP_CREATEWINDOW | DESKTOP_READOBJECTS | DESKTOP_WRITEOBJECTS |
+                                        READ_CONTROL | WRITE_DAC | WRITE_OWNER,
+                                    nullptr);
+        if (!desk) {
+            qWarning("lumaflip: no separate desktop for the decoder helper: %s", qPrintable(lastError()));
+            return {};
+        }
+        PSECURITY_DESCRIPTOR sd = nullptr;
+        PACL sacl = nullptr;
+        BOOL present = FALSE, defaulted = FALSE;
+        const bool labelled = ConvertStringSecurityDescriptorToSecurityDescriptorW(
+                                  L"S:(ML;;NW;;;LW)", SDDL_REVISION_1, &sd, nullptr) &&
+                              GetSecurityDescriptorSacl(sd, &present, &sacl, &defaulted) && present &&
+                              SetSecurityInfo(desk, SE_WINDOW_OBJECT, LABEL_SECURITY_INFORMATION, nullptr,
+                                              nullptr, nullptr, sacl) == ERROR_SUCCESS;
+        if (sd)
+            LocalFree(sd);
+        if (!labelled) {
+            qWarning("lumaflip: the decoder helper's desktop cannot be labelled: %s",
+                     qPrintable(lastError()));
+            CloseDesktop(desk);
+            return {};
+        }
+        // The handle stays open for the app's lifetime (the desktop exists while it is open).
+        return n;
+    }();
+    return name;
+}
+
 HANDLE inheritableStderr() {
     SECURITY_ATTRIBUTES sa{sizeof(SECURITY_ATTRIBUTES), nullptr, TRUE};
     HANDLE err = GetStdHandle(STD_ERROR_HANDLE);
@@ -136,7 +183,7 @@ HANDLE inheritableStderr() {
 } // namespace
 
 bool startDecoderHelper(const QString& exe, const QStringList& args, const QStringList& extraEnvironment,
-                        HelperProcess* out, QString* error) {
+                        qint64 memoryLimitBytes, HelperProcess* out, QString* error) {
     auto fail = [&](const QString& why) {
         if (error)
             *error = Tr::tr("Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).").arg(why);
@@ -164,7 +211,7 @@ bool startDecoderHelper(const QString& exe, const QStringList& args, const QStri
         ipc::closeHandle(appRead);
     };
 
-    HANDLE job = helperJob();
+    HANDLE job = helperJob(memoryLimitBytes);
     if (!job) {
         const QString why = lastError();
         closeAll();
@@ -217,6 +264,10 @@ bool startDecoderHelper(const QString& exe, const QStringList& args, const QStri
     si.StartupInfo.hStdInput = LongToHandle(childIn);
     si.StartupInfo.hStdOutput = LongToHandle(childOut);
     si.StartupInfo.hStdError = childErr;
+    // Its own desktop only together with the low integrity token (the label is low).
+    std::wstring desktop = token ? helperDesktopName() : std::wstring();
+    if (!desktop.empty())
+        si.StartupInfo.lpDesktop = desktop.data();
     si.lpAttributeList = attrs;
     const QString program = QDir::toNativeSeparators(exe);
     QString line = cmdline::build(program, args);
