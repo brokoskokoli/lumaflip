@@ -69,4 +69,45 @@ TEST(CommandLine, F_FILE_10_ProgramAndBatchFiles) {
     EXPECT_TRUE(cmdline::isBatchFile(QStringLiteral("C:\\x\\run.BAT")));
     EXPECT_TRUE(cmdline::isBatchFile(QStringLiteral("tool.cmd")));
     EXPECT_FALSE(cmdline::isBatchFile(QStringLiteral("tool.exe")));
+    // Windows drops trailing dots and spaces and reads the default stream (review, ports).
+    EXPECT_TRUE(cmdline::isBatchFile(QStringLiteral("C:\\x\\run.bat.")));
+    EXPECT_TRUE(cmdline::isBatchFile(QStringLiteral("C:\\x\\run.cmd ")));
+    EXPECT_TRUE(cmdline::isBatchFile(QStringLiteral("C:\\x\\run.bat. .")));
+    EXPECT_TRUE(cmdline::isBatchFile(QStringLiteral("C:\\x\\run.bat::$DATA")));
+    EXPECT_TRUE(cmdline::isBatchFile(QStringLiteral("C:/x/RUN.Cmd")));
+    EXPECT_FALSE(cmdline::isBatchFile(QStringLiteral("C:\\bat\\tool.exe")));
+    EXPECT_EQ(cmdline::effectiveFileName(QStringLiteral("C:\\Tools\\Run.BAT. ")), QStringLiteral("run.bat"));
+}
+
+// Review (ports): programs that read their arguments - and so the appended file names - as
+// commands are refused: cmd.exe, conhost/wsl/bash, PowerShell unless it runs a script with
+// -File (a file named "x;Remove-Item ~ -Recurse.jpg" must stay a file name).
+TEST(CommandLine, F_FILE_10_InterpretersThatReadFileNamesAsCommandsAreRefused) {
+    using cmdline::Reparse;
+    auto check = [](const char* program, const QStringList& args) {
+        return cmdline::reparsesArguments(QString::fromLatin1(program), args);
+    };
+    EXPECT_EQ(check("C:\\Tools\\viewer.exe", {}), Reparse::None);
+    EXPECT_EQ(check("C:\\Tools\\convert.exe", {"-resize", "50%"}), Reparse::None);
+    EXPECT_EQ(check("C:\\x\\run.bat.", {}), Reparse::Batch);
+    for (const char* shell : {"cmd", "cmd.exe", "C:\\Windows\\System32\\CMD.EXE", "conhost.exe", "wsl",
+                              "bash.exe", "C:\\Windows\\System32\\cmd.exe."})
+        EXPECT_EQ(check(shell, {"/c", "echo"}), Reparse::Shell) << shell;
+    for (const char* ps :
+         {"powershell", "powershell.exe", "pwsh", "C:\\Program Files\\PowerShell\\7\\pwsh.exe"}) {
+        SCOPED_TRACE(ps);
+        EXPECT_EQ(check(ps, {"-File", "C:\\s\\resize.ps1"}), Reparse::None);
+        EXPECT_EQ(check(ps, {"-NoProfile", "-ExecutionPolicy", "Bypass", "-file", "s.ps1"}), Reparse::None);
+        EXPECT_EQ(check(ps, {"/f", "s.ps1", "-Command", "x"}), Reparse::None); // script arguments
+        EXPECT_EQ(check(ps, {}), Reparse::PowerShellCommand);
+        EXPECT_EQ(check(ps, {"-Command", "Get-Item"}), Reparse::PowerShellCommand);
+        EXPECT_EQ(check(ps, {"-c", "Get-Item"}), Reparse::PowerShellCommand);
+        EXPECT_EQ(check(ps, {"-Comm", "Get-Item"}), Reparse::PowerShellCommand);
+        EXPECT_EQ(check(ps, {"-EncodedCommand", "AAAA"}), Reparse::PowerShellCommand);
+        EXPECT_EQ(check(ps, {"-ec", "AAAA"}), Reparse::PowerShellCommand);
+        EXPECT_EQ(check(ps, {"-cwa", "x"}), Reparse::PowerShellCommand);
+        EXPECT_EQ(check(ps, {"Get-Item"}), Reparse::PowerShellCommand);
+        EXPECT_EQ(check(ps, {"-NoProfile"}), Reparse::PowerShellCommand);
+        EXPECT_EQ(check(ps, {"-File"}), Reparse::PowerShellCommand); // the file name would be the script
+    }
 }

@@ -70,11 +70,24 @@ QString defaultExecutable(const QString& ext) {
 }
 
 bool startProcess(const QString& program, const QStringList& args, QString* error) {
-    if (cmdline::isBatchFile(program)) {
+    switch (cmdline::reparsesArguments(program, {})) {
+    case cmdline::Reparse::Batch:
         if (error)
             *error = QCoreApplication::translate(
                 "lf::Shell", "Batch-Dateien werden aus Sicherheitsgründen nicht gestartet.");
         return false;
+    case cmdline::Reparse::Shell:
+    case cmdline::Reparse::PowerShellCommand:
+        // The file name would be read as a command (cmd, PowerShell, wsl ...).
+        if (error)
+            *error =
+                QCoreApplication::translate(
+                    "lf::Shell", "„%1“ würde den Dateinamen als Befehl lesen und wird aus Sicherheitsgründen "
+                                 "nicht gestartet.")
+                    .arg(QFileInfo(program).fileName());
+        return false;
+    case cmdline::Reparse::None:
+        break;
     }
     QString line = cmdline::build(QDir::toNativeSeparators(program), args);
     std::vector<wchar_t> buffer(size_t(line.size()) + 1, 0);
