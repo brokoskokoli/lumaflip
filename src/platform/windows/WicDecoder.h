@@ -6,7 +6,8 @@
 //
 // Formats: what the installed WIC codecs read - built in: JPEG, PNG, TIFF, BMP, ICO, JPEG XR,
 // DDS (and GIF, which is left to Qt for the animation); with the codec extensions from the
-// Microsoft Store: HEIF/HEIC, AVIF (AV1), WebP, JPEG XL, camera RAW. The codec list is read
+// Microsoft Store: HEIF/HEIC, AVIF (AV1), WebP (still images; animated WebP goes to Qt as
+// well), JPEG XL, camera RAW. The codec list is read
 // once (IWICImagingFactory::CreateComponentEnumerator); canDecode() matches the codecs'
 // signature patterns against the file header without COM, the extension only for codecs
 // without patterns (RAW).
