@@ -325,11 +325,8 @@ DecoderRegistry& DecoderRegistry::instance() {
     // concurrent use from worker threads needs no locking.
     static DecoderRegistry* registry = [] {
         auto* r = new DecoderRegistry;
-#ifndef Q_OS_DARWIN
-        // Portable default; on macOS the backends below declare exactly what they decode
-        // (and ImageFormats derives its list from this registry).
-        r->addSupportedExtensions(defaultImageSuffixes());
-#endif
+        // The backends declare exactly what they decode (ImageFormats derives its list from
+        // this registry on every platform).
         registerPlatformDecoders(*r);
         registerPortableDecoders(*r); // loads the Qt image plugins (slow, see ImageFormats.cpp)
         trace::mark("decoder registry built");
