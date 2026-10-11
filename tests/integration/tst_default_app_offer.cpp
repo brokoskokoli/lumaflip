@@ -130,10 +130,10 @@ class TstDefaultAppOffer : public QObject {
         return w;
     }
 
-    // The offer's query for the current image came back (whatever it said).
+    // `count` queries of the offer (this session) came back, whatever they said.
     bool waitForQueries(int count) {
-        return QTest::qWaitFor([this, count] { return shell->queries.load() >= count; }, 10000) &&
-               (QTest::qWait(150), true); // the answer reaches the GUI thread
+        return QTest::qWaitFor(
+            [this, count] { return app->defaultAppOffer()->answeredQueryCount() >= count; }, 10000);
     }
 
     DefaultAppBar* bar() const { return app->defaultAppOffer()->visibleBar(); }
@@ -217,9 +217,8 @@ private slots:
         // After a restart the type is still answered: asked again, but no bar.
         app.reset();
         startApp();
-        const int before = shell->queries.load();
         QVERIFY(open(a));
-        QVERIFY(waitForQueries(before + 1));
+        QVERIFY(waitForQueries(1)); // a new session asks the system again
         QVERIFY(!bar());
     }
 

@@ -198,6 +198,7 @@ void DefaultAppOfferController::evaluate() {
             showBar(w, r.status);
             m_barSuffix = suffix;
         }
+        ++m_answered;
         emit queryFinished();
     });
     watcher->setFuture(QtConcurrent::run(&m_pool, [shell, path] {

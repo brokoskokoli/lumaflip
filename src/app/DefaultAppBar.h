@@ -75,8 +75,9 @@ public:
 
     // The bar currently shown (in any window), else nullptr.
     DefaultAppBar* visibleBar() const;
-    // Number of system queries started (tests).
+    // Number of system queries started and answered (tests).
     int queryCount() const { return m_queries; }
+    int answeredQueryCount() const { return m_answered; }
 
 signals:
     void barShown(lf::ViewerWindow* window);
@@ -107,6 +108,7 @@ private:
     QString m_barSuffix;          // suffix of the file the bar was shown for
     bool m_queryRunning = false;
     int m_queries = 0;
+    int m_answered = 0;
     QPointer<ViewerWindow> m_barWindow;
     QHash<ViewerWindow*, QPointer<DefaultAppBar>> m_bars;
     QThreadPool m_pool;
