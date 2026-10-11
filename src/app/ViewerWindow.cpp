@@ -1929,6 +1929,9 @@ void ViewerWindow::changeEvent(QEvent* event) {
     if (event->type() == QEvent::ActivationChange) {
         if (isActiveWindow())
             m_app.windowActivated(this);
+        // F-FMT-03: also here, not only on WindowStateChange - macOS may report the end of
+        // a minimization late or not at all, and a paused animation would never resume.
+        mediaVisibilityChanged();
         if (!currentPath().isEmpty())
             updatePrefetch();
     } else if (event->type() == QEvent::WindowStateChange) {

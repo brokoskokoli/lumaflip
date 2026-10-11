@@ -80,7 +80,8 @@ deployed folder, ZIP and installer as artifacts (`lumaflip-windows-x64`).
    the codec extensions are installed. Orientation (EXIF/XMP), embedded ICC profiles and the
    EXIF color space, CMYK via WIC color management, metadata via
    `IWICMetadataQueryReader` (camera, exposure, date, GPS, rating), decode-time downscaling.
-   GIF is left to Qt (animation).
+   GIF and animated WebP are left to Qt (animation; WIC returns the frames of an animated
+   WebP as separate images without delays).
 2. **Qt image plugins**, **Qt SVG** and Lumaflip's own decoders (QOI, PCX, PNM/PFM, SGI, ORA,
    KRA, XCF, PSB, PDF pages via the archive code) in the sandboxed helper process.
 3. Lossless JPEG rotation with libjpeg-turbo 3 (vcpkg, static); RAR/CBR and 7z/CB7 via

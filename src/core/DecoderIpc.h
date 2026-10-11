@@ -37,7 +37,7 @@
 
 namespace lf::ipc {
 
-inline constexpr quint32 kProtocolVersion = 4; // 3: archive operations, 4: ArchiveReadRun (F-OPEN-10)
+inline constexpr quint32 kProtocolVersion = 5; // 3: archives, 4: ArchiveReadRun (F-OPEN-10), 5: loop count
 // Upper bound of one frame (metadata, ICC profiles, error texts - never pixels).
 inline constexpr quint32 kMaxFrameBytes = 64u * 1024 * 1024;
 

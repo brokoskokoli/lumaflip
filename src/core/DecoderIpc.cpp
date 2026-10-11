@@ -89,16 +89,17 @@ void get(QDataStream& s, ImageInfo& i) {
 
 void put(QDataStream& s, const DecodedImage& d) {
     s << d.fullSize << d.isPreview << d.headroom << qint32(d.frameDurationMs) << qint32(d.page)
-      << qint32(d.frame) << qint32(d.pageCount) << qint32(d.frameCount);
+      << qint32(d.frame) << qint32(d.pageCount) << qint32(d.frameCount) << qint32(d.loopCount);
 }
 void get(QDataStream& s, DecodedImage& d) {
-    qint32 dur = 0, page = 0, frame = 0, pages = 1, frames = 1;
-    s >> d.fullSize >> d.isPreview >> d.headroom >> dur >> page >> frame >> pages >> frames;
+    qint32 dur = 0, page = 0, frame = 0, pages = 1, frames = 1, loops = 0;
+    s >> d.fullSize >> d.isPreview >> d.headroom >> dur >> page >> frame >> pages >> frames >> loops;
     d.frameDurationMs = dur;
     d.page = page;
     d.frame = frame;
     d.pageCount = pages;
     d.frameCount = frames;
+    d.loopCount = std::max<qint32>(0, loops);
 }
 
 void put(QDataStream& s, const PixelHeader& p) {

@@ -77,6 +77,8 @@ struct DecodedImage {
     int frame = 0;      // animation frame (DecodeRequest::frame)
     int pageCount = 1;  // pages of the file (multi-page TIFF, ICO, HEIF collections)
     int frameCount = 1; // animation frames of the file (> 1: animated)
+    // Animations: how often the whole sequence plays (file's loop count; 0 = endlessly).
+    int loopCount = 0;
     // Pipeline stage this image is good for. Set by ImageProvider (and the animation
     // player); decoders leave the default. Use it - not isPreview - to decide whether an
     // image is good enough (histogram, animation start): a downscaled Screen stage is
