@@ -27,6 +27,16 @@ int main(int argc, char* argv[]) {
             if (!n.empty())
                 only.insert(n);
     }
+    // LF_BENCH_REPORT_ONLY=name1,name2: measured and printed ("INFO") but never a failure. CI
+    // uses it for whole-process launch times, which on shared macOS VMs swing between 0.4 and
+    // 1.4 s for the same build; they are enforced locally (tools/check.sh) instead.
+    std::set<std::string> reportOnly;
+    if (const char* env = std::getenv("LF_BENCH_REPORT_ONLY")) {
+        std::stringstream ss(env);
+        for (std::string n; std::getline(ss, n, ',');)
+            if (!n.empty())
+                reportOnly.insert(n);
+    }
     int failed = 0;
     for (const auto& b : lf::bench::registry()) {
         if (!only.empty() && only.count(b.name) == 0)
@@ -37,9 +47,10 @@ int main(int argc, char* argv[]) {
             continue;
         }
         const bool ok = ms <= b.limitMs * tolerance;
-        std::printf("%s  %-45s %9.2f ms  (limit %.1f ms)\n", ok ? "OK  " : "FAIL", b.name.c_str(), ms,
-                    b.limitMs);
-        failed += ok ? 0 : 1;
+        const bool informational = reportOnly.count(b.name) > 0;
+        std::printf("%s  %-45s %9.2f ms  (limit %.1f ms)\n", ok ? "OK  " : (informational ? "INFO" : "FAIL"),
+                    b.name.c_str(), ms, b.limitMs);
+        failed += ok || informational ? 0 : 1;
     }
     return failed == 0 ? 0 : 1;
 }

@@ -389,7 +389,8 @@ private slots:
         QTest::qWait(Application::kOpenGroupingMs + 50);
         QFileOpenEvent e1(path("IMG_2.jpg")); // already open in `a`
         QCoreApplication::sendEvent(qApp, &e1);
-        QTest::qWait(30);
+        // No wait in between: a slow runner (Windows timer granularity, load) could otherwise
+        // stretch the gap past kOpenGroupingMs and split the burst.
         QFileOpenEvent e2(path("IMG_1.png"));
         QCoreApplication::sendEvent(qApp, &e2);
         QTRY_COMPARE_WITH_TIMEOUT(app->windows().size(), 2, 3000);

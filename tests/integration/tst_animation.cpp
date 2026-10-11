@@ -296,6 +296,11 @@ private slots:
         QVERIFY(test::writeAnimatedGif(once, QSize(80, 60), 3, 1, -1)); // 10 ms, no NETSCAPE loop
         const QString twice = path(QStringLiteral("twice.gif"));
         QVERIFY(test::writeAnimatedGif(twice, QSize(80, 60), 3, 2, 1));
+        // Timed from opening: a slow runner (ASan) may only see the player active after it has
+        // already finished, so a timer started later can read 0. Loading only adds time, so
+        // the lower bound below still shows that 10 ms delays did not play as 10 ms.
+        QElapsedTimer t;
+        t.start();
         ViewerWindow* w = open(once);
         QVERIFY(w);
         AnimationPlayer* anim = w->animation();
@@ -303,8 +308,6 @@ private slots:
         QCOMPARE(anim->loopCount(), 1);
         QVERIFY(anim->currentImage());
         QCOMPARE(AnimationPlayer::durationMs(*anim->currentImage()), AnimationPlayer::kDefaultDurationMs);
-        QElapsedTimer t;
-        t.start();
         QTRY_VERIFY2_WITH_TIMEOUT(anim->isFinished(), qPrintable(state(w)), 5000);
         // Three frames of 100 ms (browser minimum), not of 10 ms: about 200 ms until the end.
         QVERIFY2(t.elapsed() >= 120, qPrintable(QString::number(t.elapsed())));
