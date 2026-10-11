@@ -222,11 +222,11 @@ void detectTitleButtonSide(QObject*, const std::function<void(TitleButtonSide)>&
         done(TitleButtonSide::Right);
 }
 
-void setTitleStripHitTest(QWidget* window, std::function<TitleStripHit(QPoint)> hitTest) {
+void setTitleStripHitTest(QWidget* window, const std::function<TitleStripHit(QPoint)>& hitTest) {
     HWND w = nativeWindow(window, true);
     if (!w)
         return;
-    StripFrameFilter::instance().frame(w, window->window()).hitTest = std::move(hitTest);
+    StripFrameFilter::instance().frame(w, window->window()).hitTest = hitTest;
 }
 
 NativeWindowState nativeWindowState(QWidget* window) {

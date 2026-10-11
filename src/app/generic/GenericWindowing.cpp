@@ -202,7 +202,7 @@ void detectTitleButtonSide(QObject* receiver, const std::function<void(TitleButt
     });
 }
 
-void setTitleStripHitTest(QWidget*, std::function<TitleStripHit(QPoint)>) {}
+void setTitleStripHitTest(QWidget*, const std::function<TitleStripHit(QPoint)>&) {}
 
 NativeWindowState nativeWindowState(QWidget* window) {
     NativeWindowState s;

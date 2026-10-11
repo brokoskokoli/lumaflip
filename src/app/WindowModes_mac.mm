@@ -155,7 +155,7 @@ void showButtonsAtOnce(NSWindow* w) {
     }
 }
 
-const void* kButtonsObserverKey = &kButtonsObserverKey;
+char kButtonsObserverKey = 0; // its address is the associated object key
 
 } // namespace
 
@@ -183,7 +183,7 @@ void setWindowButtonsVisible(QWidget* window, bool visible, int fadeMs) {
         NSWindow* w = nativeWindow(window, false);
         if (!w)
             return;
-        LFWindowButtonsObserver* observer = objc_getAssociatedObject(w, kButtonsObserverKey);
+        LFWindowButtonsObserver* observer = objc_getAssociatedObject(w, &kButtonsObserverKey);
         if (!observer) {
             observer = [[LFWindowButtonsObserver alloc] init];
             __weak NSWindow* weakWindow = w;
@@ -197,7 +197,7 @@ void setWindowButtonsVisible(QWidget* window, bool visible, int fadeMs) {
                           if (NSWindow* strong = weakWindow)
                               showButtonsAtOnce(strong);
                         }];
-            objc_setAssociatedObject(w, kButtonsObserverKey, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            objc_setAssociatedObject(w, &kButtonsObserverKey, observer, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         }
         if ((w.styleMask & NSWindowStyleMaskFullScreen) != 0)
             visible = true;
@@ -287,7 +287,7 @@ void detectTitleButtonSide(QObject*, const std::function<void(TitleButtonSide)>&
         done(TitleButtonSide::Left);
 }
 
-void setTitleStripHitTest(QWidget*, std::function<TitleStripHit(QPoint)>) {}
+void setTitleStripHitTest(QWidget*, const std::function<TitleStripHit(QPoint)>&) {}
 
 NativeWindowState nativeWindowState(QWidget* window) {
     NativeWindowState s;

@@ -54,7 +54,7 @@ void detectTitleButtonSide(QObject* receiver, const std::function<void(TitleButt
 // opens the system menu), Maximize shows the Snap Layouts on hover. `hitTest` is also
 // called with QPoint(-1, -1) when the mouse left the non-client area. Elsewhere a no-op.
 enum class TitleStripHit { Client, Caption, Maximize };
-void setTitleStripHitTest(QWidget* window, std::function<TitleStripHit(QPoint)> hitTest);
+void setTitleStripHitTest(QWidget* window, const std::function<TitleStripHit(QPoint)>& hitTest);
 
 // What the native window looks like (tests, F-VIEW-12/13/14).
 struct NativeWindowState {

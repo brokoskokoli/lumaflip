@@ -54,7 +54,7 @@ namespace {
 class FolderTrash : public TrashService {
 public:
     std::optional<QString> moveToTrash(const QString& path, QString* error) override {
-        const QString target =
+        QString target =
             QDir(dir.path())
                 .filePath(QUuid::createUuid().toString(QUuid::Id128) + QFileInfo(path).fileName());
         if (!QFile::rename(path, target)) {
@@ -511,7 +511,8 @@ private slots:
         QFile::remove(path("two/beta.jpg")); // "two" has no beta: no match, the follower stays
         ViewerWindow* a = openAndWait(path("one/alpha.jpg"));
         ViewerWindow* b = openAndWait(path("two/alpha.jpg"));
-        QVERIFY(a && b && a != b);
+        if (!a || !b || a == b)
+            QFAIL("two windows expected");
         CouplingManager& m = CouplingManager::of(*app);
         QVERIFY(m.couple({a, b}));
         QVERIFY(m.isCoupled(a) && m.isCoupled(b));
