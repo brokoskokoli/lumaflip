@@ -123,6 +123,8 @@ foreach(src ${LF_INTEGRATION_TESTS})
   if(name STREQUAL "tst_hdr")
     set(_lf_env "LF_NO_EDR=0")
   endif()
+  # F-MAC-09: no "not the default app" bar in tests (tst_default_app_offer turns it on itself).
+  list(APPEND _lf_env "LF_NO_DEFAULT_APP_OFFER=1")
   if(LF_SANITIZE)
     # ASan/UBSan make the GUI thread several times slower (P-05 blocking check).
     list(APPEND _lf_env "LF_UI_GAP_LIMIT_MS=600")

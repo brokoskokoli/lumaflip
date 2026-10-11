@@ -78,6 +78,7 @@ const Registry& registry() {
         r[QString::fromLatin1(key::RestoreWindows)].dynamicDefault = &restoreWindowsDefault;
         b(key::TitleShowFolder, false);
         b(key::ConfirmTrash, false);
+        b(key::OfferDefaultApp, true); // F-MAC-09
         s(key::EditorApp, "", {}); // F-FILE-05
         b(key::AllowTabs, false);  // F-WIN-05
         // F-VIEW-15

@@ -253,6 +253,7 @@ Ziel: **So viele Formate wie möglich, ohne Nachinstallation.** Die Formate werd
 | F-MAC-06 | Live Text (Text im Bild markieren und kopieren) und Motiv freistellen über VisionKit; abschaltbar. | M4 |
 | F-MAC-07 | Quick-Look-Leiste und Services-Menü. | M4 |
 | F-MAC-08 | Automatische Updates (Sparkle). | M2 |
+| F-MAC-09 | **Standard-App anbieten:** Öffnet der Nutzer ein Bild eines Typs, für den Lumaflip nicht die Standard-App ist, erscheint oben im Fenster (unter der Titelleiste bzw. dem einblendenden Titelstreifen F-VIEW-15, nie über dem Bild, kein Dialog) eine dezente Leiste: „Lumaflip ist nicht die Standard-App für den Dateityp „JPEG-Bild““ (Typname aus der lokalisierten Systembeschreibung) mit „Festlegen“ (nur dieser Typ über die Shell-Schnittstelle von F-MAC-04; Windows öffnet die Einstellungsseite „Standard-Apps“), „Alle Bildformate …“ (Typen-Checkliste von F-MAC-04), „Nicht mehr fragen“ und Schließen (= „nicht jetzt“). Höchstens einmal je Typ: Schließen und „Festlegen“ merken den Typ dauerhaft, „Nicht mehr fragen“ schaltet die Funktion ab; Einstellungen → Allgemein → „Fragen, ob Lumaflip Standard-App werden soll“ (Standard: an). Ergebnis (Erfolg oder Systemfehler) als Hinweis im Fenster. Nur in der installierten App (macOS: App-Paket in /Programme oder ~/Programme auf einem beschreibbaren Volume, nicht aus dem Build-Ordner oder einem Disk-Image), nie in Tests (`LF_NO_DEFAULT_APP_OFFER=1`), im Vollbild, in der Diashow, für Archiv-Einträge und PDF-Seiten oder wenn die Abfrage der Standard-App scheitert. Die Abfrage (macOS `NSWorkspace.urlForApplication(toOpen:)` gegen die eigene Bundle-ID, Linux mimeapps.list, Windows `AssocQueryString`) läuft im Hintergrund, frühestens einige Sekunden nach dem ersten Bild (P-01) und einmal je Dateiendung und Sitzung. | M4 |
 
 ### 4.13 Einstellungen
 
@@ -683,7 +684,7 @@ Weitere Pflichten:
 | **M1 – MVP** | F-OPEN-01…06, F-NAV-01…03/07, F-VIEW-01…02/04/06…10, Formatgruppen Standard/Modern/RAW, F-COL-01, F-INFO-01, F-FILE-01…03, F-EDIT-01, F-SORT-01/02/03/05/08, F-MAC-01/02/05, F-SET-01/04, F-PRIV-01/02, F-WIN-01/02/03/08/09/10, F-IN-01 (Mausrad-Einstellung), Signierung und Notarisierung |
 | **M2 – v1.0** | Ordnerüberwachung, Infopanel, Histogramm, Filmstreifen, Diashow, Animation, mehrseitige Formate, SVG, Pro-Formate, verlustfreies Drehen, Umbenennen, Teilen, Drag-out, Tastatur-Editor, alle Eingabe-Einstellungen (4.14) inkl. Profilvorlagen, Fenster anordnen, Tabs, Fensterwiederherstellung, Standard-App-Button, Live-Finder-Abfrage (Opt-in), Sparkle |
 | **M3 – v1.x** | Mehrsprachigkeit (4.16), Aussortiermodus und Bewertungen (XMP-Zusatzdatei, im Bild, Finder-Tags), Fenster koppeln, Schnellablage, Raster und Vergleich, HDR/EDR vollständig, Lupe, rekursive Ordner, Hilfsprozess für Decoder, Restformate inkl. XCF/PSB, SVG über resvg, Ordnerkarte (F-INFO-08) |
-| **M4 – später** | Archive und PDF, Live Text, Zuschneiden und Export, eigene Aktionen, Overlays für Fototechnik, Zoom je Bild merken, **Windows- und Linux-Builds**, eventuell eine App-Store-Edition |
+| **M4 – später** | Archive und PDF, Live Text, Standard-App anbieten (F-MAC-09), Zuschneiden und Export, eigene Aktionen, Overlays für Fototechnik, Zoom je Bild merken, **Windows- und Linux-Builds**, eventuell eine App-Store-Edition |
 
 ---
 

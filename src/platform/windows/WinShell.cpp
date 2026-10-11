@@ -8,8 +8,11 @@
 //    Windows 8 the choice is protected by a hash only the Settings app writes). Lumaflip
 //    registers as a capable program (installer: RegisteredApplications/Capabilities) and
 //    opens Settings → Apps → Default apps at its own page.
+//  - default app query (F-MAC-09): the program Windows starts for the file's extension
+//    (AssocQueryString, honours the user's choice) compared with the own executable.
 
 #include "core/CommandLine.h"
+#include "core/DefaultAppOffer.h"
 #include "core/Platform.h"
 #include "platform/windows/WinCom.h"
 #include "platform/windows/WinShellUtil.h"
@@ -17,6 +20,7 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
+#include <QMimeDatabase>
 #include <QSettings>
 #include <QTimer>
 
@@ -58,6 +62,15 @@ QImage iconImage(const QString& location, int index, int px) {
 QString extensionOf(const QString& filePath) {
     const QString suffix = QFileInfo(filePath).suffix();
     return suffix.isEmpty() ? QString() : u'.' + suffix.toLower();
+}
+
+QString friendlyTypeName(const QString& ext) {
+    wchar_t buf[512] = {};
+    DWORD size = DWORD(std::size(buf));
+    if (FAILED(AssocQueryStringW(ASSOCF_INIT_IGNOREUNKNOWN, ASSOCSTR_FRIENDLYDOCNAME, wstr(ext), nullptr, buf,
+                                 &size)))
+        return {};
+    return QString::fromWCharArray(buf);
 }
 
 QString defaultExecutable(const QString& ext) {
@@ -285,6 +298,48 @@ public:
                 QStringLiteral("image/x-adobe-dng")};
     }
 
+    // F-MAC-09 (worker thread): only types the installer registers (imageDocumentTypes());
+    // if Windows names no program for the extension the answer is Unknown (no offer).
+    DefaultViewerStatus defaultViewerStatus(const QString& filePath) override {
+        DefaultViewerStatus status;
+        const QString suffix = QFileInfo(filePath).suffix().toLower();
+        if (suffix.isEmpty())
+            return status;
+        const QMimeType mime = QMimeDatabase().mimeTypeForFile(filePath, QMimeDatabase::MatchExtension);
+        bool ours = false;
+        for (const QString& t : imageDocumentTypes()) {
+            if (mime.isValid() && mime.inherits(t)) {
+                ours = true;
+                break;
+            }
+        }
+        if (!ours)
+            return status;
+        const QString ext = u'.' + suffix;
+        const QString program = win::defaultExecutable(ext);
+        if (program.isEmpty())
+            return status;
+        status.type = mime.name();
+        status.typeName = win::friendlyTypeName(ext);
+        if (status.typeName.isEmpty())
+            status.typeName = mime.comment().isEmpty() ? mime.name() : mime.comment();
+        const QString own = QDir::cleanPath(win::ownExecutablePath());
+        status.state =
+            QDir::cleanPath(QDir::fromNativeSeparators(program)).compare(own, Qt::CaseInsensitive) == 0
+                ? DefaultViewerStatus::State::IsDefault
+                : DefaultViewerStatus::State::NotDefault;
+        return status;
+    }
+
+    // F-MAC-09: installed by the installer (registered under RegisteredApplications), not
+    // started from a build tree.
+    bool isInstalledApp() override {
+        if (defaultapp::isInBuildTree(QCoreApplication::applicationDirPath()))
+            return false;
+        return isRegistered(QStringLiteral("HKEY_CURRENT_USER")) ||
+               isRegistered(QStringLiteral("HKEY_LOCAL_MACHINE"));
+    }
+
     bool makeDefaultViewer(const QStringList&, QString* error) override {
         openDefaultAppsSettings();
         if (error)
@@ -305,6 +360,14 @@ public:
     }
 
 private:
+    static bool isRegistered(const QString& hive) {
+        return !QSettings(hive + QStringLiteral("\\Software\\RegisteredApplications"),
+                          QSettings::NativeFormat)
+                    .value(QStringLiteral("Lumaflip"))
+                    .toString()
+                    .isEmpty();
+    }
+
     static void openDefaultAppsSettings() {
         // The page of the app itself when the installer registered it (per user or for all).
         QString uri = QStringLiteral("ms-settings:defaultapps");

@@ -112,6 +112,18 @@ public:
     virtual bool setTags(const QString& path, const QStringList& tags, QString* error) = 0;
 };
 
+// F-MAC-09: whether this app opens files of a type by default (Shell::defaultViewerStatus).
+struct DefaultViewerStatus {
+    enum class State {
+        Unknown,    // not determined (query failed, type not ours, platform cannot tell)
+        IsDefault,  // this app is the default
+        NotDefault, // another app (or none) is the default
+    };
+    State state = State::Unknown;
+    QString type;     // what makeDefaultViewer() takes for it (UTType, MIME type)
+    QString typeName; // the system's localized description, e.g. "JPEG-Bild"
+};
+
 // Misc OS integration (reveal in Finder etc.).
 class Shell {
 public:
@@ -132,6 +144,13 @@ public:
     using DefaultViewerPending = std::function<void(const QString& message)>;
     virtual void makeDefaultViewerAsync(const QStringList& types, QObject* context, DefaultViewerDone done,
                                         DefaultViewerPending pending = {});
+    // F-MAC-09 (blocking, worker threads only - LaunchServices may be slow): the type of
+    // `filePath` and whether this app is its default. Default: Unknown (never offered).
+    virtual DefaultViewerStatus defaultViewerStatus(const QString& filePath);
+    // F-MAC-09 (blocking): runs as the installed app (macOS: bundle in /Applications or
+    // ~/Applications on a writable volume; not from a build tree or a disk image), so
+    // offering to become the default makes sense. Default: false.
+    virtual bool isInstalledApp();
     // Blocks until worker threads started by the default makeDefaultViewerAsync() are done.
     // Whoever owns the shell calls this before destroying it: those threads call
     // makeDefaultViewer() on it.

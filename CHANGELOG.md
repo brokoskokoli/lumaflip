@@ -9,6 +9,13 @@ refer to [SPEC.md](SPEC.md).
 
 ## [Unreleased]
 
+### Added
+
+- **Offer to become the default app**: opening an image of a type another app opens by default
+  shows an info bar at the top of the window ("Set", "All Image Formats…", "Don't Ask Again",
+  close) – once per type, only in the installed app, never in full screen or a slideshow; can be
+  turned off in Settings → General. [F-MAC-09]
+
 ## [1.2.0] - 2026-10-11
 
 Milestone M4 — the first public release: signed and notarized for macOS 15+ on Apple Silicon,

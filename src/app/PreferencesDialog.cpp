@@ -394,6 +394,13 @@ QWidget* PreferencesDialog::buildGeneral() {
     form->addRow(QString(), bind.check(key::ConfirmTrash, tr("Vor dem Löschen nachfragen"), w));
     form->addRow(QString(),
                  helpLabel(tr("Aus: ⌘⌫ legt das Bild sofort in den Papierkorb, ⌘Z holt es zurück."), w));
+    // F-MAC-09
+    form->addRow(QString(),
+                 bind.check(key::OfferDefaultApp, tr("Fragen, ob Lumaflip Standard-App werden soll"), w));
+    form->addRow(QString(),
+                 helpLabel(tr("Öffnest du ein Bild, dessen Dateityp eine andere App öffnet, erscheint "
+                              "einmal je Dateityp ein Hinweis oben im Fenster."),
+                           w));
     Updater::addPreferences(form, w); // F-MAC-08 (only if the updater is available)
     // F-FILE-05
     form->addRow(tr("Editor:"), prefs::createEditorChooser(w));
