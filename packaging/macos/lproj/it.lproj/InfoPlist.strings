@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 /* Localized Info.plist texts (it); maintained by hand here (not generated from the .ts catalogues) - see translations/README.md */
-"NSAppleEventsUsageDescription" = "Su richiesta, Lumaflip chiede alla finestra del Finder in primo piano il suo ordinamento, in modo da mostrare le immagini nello stesso ordine.";
+"NSAppleEventsUsageDescription" = "Se lo desideri, Lumaflip chiede alla finestra del Finder in primo piano il suo ordinamento, in modo da mostrare le immagini nello stesso ordine.";
 "NSDesktopFolderUsageDescription" = "Lumaflip legge la cartella dell’immagine aperta, in modo che tu possa sfogliarla con i tasti freccia.";
 "NSDocumentsFolderUsageDescription" = "Lumaflip legge la cartella dell’immagine aperta, in modo che tu possa sfogliarla con i tasti freccia.";
 "NSDownloadsFolderUsageDescription" = "Lumaflip legge la cartella dell’immagine aperta, in modo che tu possa sfogliarla con i tasti freccia.";
@@ -10,12 +10,12 @@
 "Bild (sonstige)" = "Immagine (altro)";
 "Ordner" = "Cartella";
 "WBMP-Bild" = "Immagine WBMP";
-"Comic-Archiv" = "Archivio fumetto";
+"Comic-Archiv" = "Archivio di fumetti";
 "Archiv" = "Archivio";
 "PDF-Dokument" = "Documento PDF";
 "RAR-Archiv" = "Archivio RAR";
 "7-Zip-Archiv" = "Archivio 7-Zip";
-"Comic-Archiv (ZIP)" = "Archivio fumetto (ZIP)";
-"Comic-Archiv (RAR)" = "Archivio fumetto (RAR)";
-"Comic-Archiv (7z)" = "Archivio fumetto (7z)";
+"Comic-Archiv (ZIP)" = "Archivio di fumetti (ZIP)";
+"Comic-Archiv (RAR)" = "Archivio di fumetti (RAR)";
+"Comic-Archiv (7z)" = "Archivio di fumetti (7z)";
 "NSHumanReadableCopyright" = "© 2026 brokoskokoli e collaboratori. Licenza: GPL-3.0-or-later.";

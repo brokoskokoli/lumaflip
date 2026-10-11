@@ -53,7 +53,7 @@
     </message>
     <message>
         <source>%1 (Finder-Informationen nicht gefunden)</source>
-        <translation>%1 (infos du Finder introuvables)</translation>
+        <translation>%1 (informations du Finder introuvables)</translation>
     </message>
 </context>
 <context>
@@ -135,7 +135,7 @@
     </message>
     <message>
         <source>Vollbild oder Modus beenden</source>
-        <translation>Plein écran / quitter le mode</translation>
+        <translation>Quitter le plein écran ou le mode</translation>
     </message>
     <message>
         <source>Esc</source>
@@ -160,7 +160,7 @@
     <name>lf::Archive</name>
     <message>
         <source>„%1“ fehlt im Archiv.</source>
-        <translation>« %1 » manque dans l’archive.</translation>
+        <translation>«&#xa0;%1&#xa0;» est absent de l’archive.</translation>
     </message>
     <message>
         <source>Dieses Archivformat wird nicht unterstützt.</source>
@@ -184,7 +184,7 @@
     </message>
     <message>
         <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
-        <translation>L’archive est trop volumineuse pour en lire cette image.</translation>
+        <translation>L’archive est trop volumineuse pour en extraire cette image.</translation>
     </message>
 </context>
 <context>
@@ -201,8 +201,8 @@
         <source>Unterordner: Nur die ersten %n Bilder werden angezeigt – öffne einen kleineren Ordner.</source>
         <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
         <translation>
-            <numerusform>Sous-dossiers : seule la première image (%n) est affichée – ouvrez un dossier plus petit.</numerusform>
-            <numerusform>Sous-dossiers : seules les %n premières images sont affichées – ouvrez un dossier plus petit.</numerusform>
+            <numerusform>Sous-dossiers&#xa0;: seule la première image (%n) est affichée – ouvrez un dossier plus petit.</numerusform>
+            <numerusform>Sous-dossiers&#xa0;: seules les %n premières images sont affichées – ouvrez un dossier plus petit.</numerusform>
         </translation>
     </message>
     <message>
@@ -248,7 +248,7 @@
     </message>
     <message>
         <source>Zweite Datei: %1 – „RAW anzeigen“ wechselt</source>
-        <translation>Second fichier : %1 – «&#xa0;Afficher le RAW&#xa0;» permet de basculer</translation>
+        <translation>Second fichier&#xa0;: %1 – «&#xa0;Afficher le RAW&#xa0;» permet de basculer</translation>
     </message>
 </context>
 <context>
@@ -324,7 +324,7 @@
     </message>
     <message>
         <source>Kein passendes Bild zu „%1“</source>
-        <translation>Aucune image correspondant à « %1 »</translation>
+        <translation>Aucune image correspondant à «&#xa0;%1&#xa0;»</translation>
     </message>
     <message>
         <source>Fenster koppeln</source>
@@ -344,7 +344,7 @@
     </message>
     <message>
         <source>Gemeinsam blättern nach:</source>
-        <translation>Défiler ensemble selon :</translation>
+        <translation>Défiler ensemble selon&#xa0;:</translation>
     </message>
     <message>
         <source>Koppeln</source>
@@ -403,7 +403,7 @@
     </message>
     <message>
         <source>Zuschneiden beenden (Esc)</source>
-        <translation>Terminer le recadrage (Échap)</translation>
+        <translation>Terminer le recadrage (Esc)</translation>
     </message>
     <message>
         <source>%1 × %2 px</source>
@@ -419,7 +419,7 @@
     </message>
     <message>
         <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden ist nur durch Neukodieren möglich – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
-        <translation>Le fichier contient d’autres images (p. ex. une gain map HDR ou une seconde vue stéréo) qui ne correspondraient plus après un recadrage sans perte. Le recadrage n’est possible qu’en réencodant – un peu de qualité et ces images supplémentaires sont perdues.</translation>
+        <translation>Le fichier contient des images supplémentaires (p. ex. une carte de gain HDR ou une seconde image stéréo) qui ne correspondraient plus après un recadrage sans perte. Le recadrage n’est possible qu’en réencodant l’image – un peu de qualité d’image et ces images supplémentaires sont alors perdues.</translation>
     </message>
     <message>
         <source>Frei</source>
@@ -439,7 +439,7 @@
     </message>
     <message>
         <source>Der Zuschnitt liegt nicht auf dem JPEG-Blockraster.</source>
-        <translation>La sélection n’est pas alignée sur la grille des blocs JPEG.</translation>
+        <translation>La zone de recadrage n’est pas alignée sur la grille des blocs JPEG.</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden von JPEG-Dateien ist in dieser Version nicht verfügbar.</source>
@@ -455,15 +455,15 @@
     </message>
     <message>
         <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
-        <translation>Les images contenues dans des archives et des documents PDF ne sont pas modifiées. La sélection peut être exportée dans un nouveau fichier.</translation>
+        <translation>Les images contenues dans des archives et des documents PDF ne sont pas modifiées. Le recadrage peut être exporté dans un nouveau fichier.</translation>
     </message>
     <message>
         <source>RAW-Dateien werden nie verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
-        <translation>Les fichiers RAW ne sont jamais modifiés. La sélection peut être exportée dans un nouveau fichier.</translation>
+        <translation>Les fichiers RAW ne sont jamais modifiés. Le recadrage peut être exporté dans un nouveau fichier.</translation>
     </message>
     <message>
         <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gesichert werden. Der Zuschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
-        <translation>Les fichiers animés ou multipages ne peuvent pas être enregistrés recadrés. La sélection de la première image peut être exportée dans un nouveau fichier.</translation>
+        <translation>Les fichiers animés ou multipages ne peuvent pas être enregistrés recadrés. Le recadrage de la première image peut être exporté dans un nouveau fichier.</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
@@ -487,19 +487,19 @@
     </message>
     <message>
         <source>Kein Bildbereich ausgewählt.</source>
-        <translation>Aucune zone sélectionnée.</translation>
+        <translation>Aucune zone d’image sélectionnée.</translation>
     </message>
     <message>
         <source>Der Zuschnitt umfasst das ganze Bild – es gibt nichts zuzuschneiden.</source>
-        <translation>La sélection couvre toute l’image – rien à recadrer.</translation>
+        <translation>La zone de recadrage couvre toute l’image – il n’y a rien à recadrer.</translation>
     </message>
     <message>
         <source>Für den verlustfreien Zuschnitt wurde der Zuschnittbereich an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
-        <translation>Pour un recadrage sans perte, la sélection a été alignée sur la grille des blocs JPEG (%1 × %2 pixels) et mesure maintenant %3 × %4 pixels.</translation>
+        <translation>Pour un recadrage sans perte, la zone de recadrage a été alignée sur la grille des blocs JPEG (%1 × %2 pixels) et mesure maintenant %3 × %4 pixels.</translation>
     </message>
     <message>
         <source>Diese JPEG-Datei lässt sich nicht verlustfrei zuschneiden. Beim Neukodieren geht etwas Bildqualität verloren.</source>
-        <translation>Ce fichier JPEG ne peut pas être recadré sans perte. Le réencodage fait perdre un peu de qualité.</translation>
+        <translation>Ce fichier JPEG ne peut pas être recadré sans perte. Le réencodage fait perdre un peu de qualité d’image.</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nicht gesichert werden.</source>
@@ -507,19 +507,19 @@
     </message>
     <message>
         <source>Beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
-        <translation>Le réencodage ne conserverait pas l’image à l’identique (modèle de couleur, profondeur, palette ou transparence seraient modifiés).</translation>
+        <translation>Le réencodage ne conserverait pas l’image à l’identique (le modèle de couleur, la profondeur de bits, la palette ou la transparence seraient modifiés).</translation>
     </message>
     <message>
         <source>Dieses Format kann hier nicht geschrieben werden. Der Zuschnitt kann in einem anderen Format exportiert werden.</source>
-        <translation>Ce format ne peut pas être écrit ici. La sélection peut être exportée dans un autre format.</translation>
+        <translation>Ce format ne peut pas être écrit ici. Le recadrage peut être exporté dans un autre format.</translation>
     </message>
     <message>
         <source>Dieses Format komprimiert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
-        <translation>Ce format est avec perte. Le recadrage ne peut être enregistré qu’en réencodant l’image – un peu de qualité est perdue.</translation>
+        <translation>Ce format utilise une compression avec perte. Le recadrage ne peut être enregistré qu’en réencodant l’image – un peu de qualité d’image est alors perdue.</translation>
     </message>
     <message>
         <source>Zusatzbilder (%1) gehen dabei verloren.</source>
-        <translation>Les images supplémentaires (%1) sont perdues.</translation>
+        <translation>Les images supplémentaires (%1) sont alors perdues.</translation>
     </message>
     <message>
         <source>Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.</source>
@@ -570,7 +570,7 @@
     </message>
     <message>
         <source>0–5  Sterne     P  Markieren     X  Ablehnen     U  Markierung aufheben</source>
-        <translation>0–5  Étoiles     P  Retenir     X  Rejeter     U  Retirer le marquage</translation>
+        <translation>0–5  Étoiles     P  Retenir     X  Rejeter     U  Retirer le marqueur</translation>
     </message>
     <message>
         <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Widerrufen     Esc  Beenden</source>
@@ -578,7 +578,7 @@
     </message>
     <message>
         <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U setzen Markierungen</source>
-        <translation>Mode sélection : les chiffres donnent des étoiles, P/X/U marquent</translation>
+        <translation>Mode sélection&#xa0;: les chiffres attribuent des étoiles, P/X/U définissent les marqueurs</translation>
     </message>
     <message>
         <source>Aussortiermodus beendet</source>
@@ -586,11 +586,11 @@
     </message>
     <message>
         <source>%1: %2</source>
-        <translation>%1 : %2</translation>
+        <translation>%1&#xa0;: %2</translation>
     </message>
     <message>
         <source>Filter: %1 — %2 / %3</source>
-        <translation>Filtre : %1 — %2 / %3</translation>
+        <translation>Filtre&#xa0;: %1 — %2 / %3</translation>
     </message>
     <message>
         <source>Keine abgelehnten Bilder</source>
@@ -599,20 +599,20 @@
     <message numerus="yes">
         <source>%n abgelehnte(s) Bild(er) in den Papierkorb legen?</source>
         <translation>
-            <numerusform>Placer %n image rejetée dans la corbeille ?</numerusform>
-            <numerusform>Placer %n images rejetées dans la corbeille ?</numerusform>
+            <numerusform>Placer %n image rejetée dans la corbeille&#xa0;?</numerusform>
+            <numerusform>Placer %n images rejetées dans la corbeille&#xa0;?</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n abgelehnte(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
         <translation>
-            <numerusform>Déplacer %n image rejetée dans le dossier « _Rejected » ?</numerusform>
-            <numerusform>Déplacer %n images rejetées dans le dossier « _Rejected » ?</numerusform>
+            <numerusform>Déplacer %n image rejetée dans le dossier «&#xa0;_Rejected&#xa0;»&#xa0;?</numerusform>
+            <numerusform>Déplacer %n images rejetées dans le dossier «&#xa0;_Rejected&#xa0;»&#xa0;?</numerusform>
         </translation>
     </message>
     <message>
         <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren werden mitbewegt. ⌘Z widerruft den ganzen Schritt.</source>
-        <translation>Seules les images affichées (filtres actuels). Les fichiers annexes XMP et le second fichier des paires RAW+JPEG suivent. ⌘Z annule toute l’étape.</translation>
+        <translation>Seules les images affichées (filtres actuels) sont concernées. Les fichiers annexes XMP et le second fichier des paires RAW+JPEG sont déplacés avec elles. ⌘Z annule toute l’étape.</translation>
     </message>
     <message>
         <source>In den Papierkorb legen</source>
@@ -624,11 +624,11 @@
     </message>
     <message>
         <source>Abgelehnte in den Papierkorb legen</source>
-        <translation>Rejetées dans la corbeille</translation>
+        <translation>Placer les rejetées dans la corbeille</translation>
     </message>
     <message>
         <source>Abgelehnte nach „_Rejected“ verschieben</source>
-        <translation>Rejetées vers _Rejected</translation>
+        <translation>Déplacer les rejetées vers «&#xa0;_Rejected&#xa0;»</translation>
     </message>
     <message numerus="yes">
         <source>%n Bild(er) in den Papierkorb gelegt</source>
@@ -640,8 +640,8 @@
     <message numerus="yes">
         <source>%n Bild(er) nach „_Rejected“ verschoben</source>
         <translation>
-            <numerusform>%n image déplacée vers « _Rejected »</numerusform>
-            <numerusform>%n images déplacées vers « _Rejected »</numerusform>
+            <numerusform>%n image déplacée vers «&#xa0;_Rejected&#xa0;»</numerusform>
+            <numerusform>%n images déplacées vers «&#xa0;_Rejected&#xa0;»</numerusform>
         </translation>
     </message>
 </context>
@@ -661,15 +661,15 @@
     </message>
     <message>
         <source>Der Name eines Kurzbefehls darf nicht mit „-“ beginnen.</source>
-        <translation>Le nom d’un raccourci ne doit pas commencer par « - ».</translation>
+        <translation>Le nom d’un raccourci ne doit pas commencer par «&#xa0;-&#xa0;».</translation>
     </message>
     <message>
         <source>Kurzbefehle gibt es nur unter macOS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les raccourcis ne sont disponibles que sous macOS.</translation>
     </message>
     <message>
         <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
-        <translation type="unfinished"></translation>
+        <translation>Les fichiers batch (.bat, .cmd) ne peuvent pas être exécutés directement&#xa0;: cmd.exe lirait les noms de fichiers comme des commandes. Lancez plutôt un programme ou un script PowerShell (powershell -File Script.ps1).</translation>
     </message>
     <message>
         <source>„%1“ kann nicht direkt ausgeführt werden: es würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
@@ -707,7 +707,7 @@
     <name>lf::CustomActionsEditor</name>
     <message>
         <source>%1 ist schon belegt (%2); im Bildfenster hat die eigene Aktion Vorrang.</source>
-        <translation>%1 est déjà utilisé (%2) ; dans la fenêtre d’image, l’action personnalisée est prioritaire.</translation>
+        <translation>%1 est déjà utilisé (%2)&#xa0;; dans la fenêtre d’image, l’action personnalisée est prioritaire.</translation>
     </message>
     <message>
         <source>Eigene Aktion</source>
@@ -715,31 +715,31 @@
     </message>
     <message>
         <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
-        <translation>Nom d’un raccourci de l’app Raccourcis ; il reçoit le fichier en entrée.</translation>
+        <translation>Nom d’un raccourci de l’app Raccourcis&#xa0;; il reçoit le fichier en entrée.</translation>
     </message>
     <message>
         <source>Programm mit Argumenten, z. B. &quot;C:\Tools\tool.exe&quot; --flag; die Datei wird als eigenes Argument angehängt und nie über cmd.exe gestartet. Batch-Dateien (.bat, .cmd) sind nicht erlaubt.</source>
-        <translation>Programme avec arguments, p. ex. &quot;C:\Tools\tool.exe&quot; --flag ; le fichier est ajouté comme argument distinct et n’est jamais lancé via cmd.exe. Les fichiers batch (.bat, .cmd) ne sont pas autorisés.</translation>
+        <translation>Programme avec arguments, p. ex. &quot;C:\Tools\tool.exe&quot; --flag&#xa0;; le fichier est ajouté comme argument distinct et n’est jamais lancé via cmd.exe. Les fichiers batch (.bat, .cmd) ne sont pas autorisés.</translation>
     </message>
     <message>
         <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
-        <translation>S’exécute avec /bin/sh ; le fichier est dans &quot;$1&quot; (tous les fichiers : &quot;$@&quot;), p. ex. open -a Preview &quot;$1&quot;. Le chemin n’est jamais inséré dans la commande.</translation>
+        <translation>S’exécute avec /bin/sh&#xa0;; le fichier est dans &quot;$1&quot; (tous les fichiers&#xa0;: &quot;$@&quot;), p. ex. open -a Preview &quot;$1&quot;. Le chemin n’est jamais inséré dans la commande.</translation>
     </message>
     <message>
         <source>Name:</source>
-        <translation>Nom :</translation>
+        <translation>Nom&#xa0;:</translation>
     </message>
     <message>
         <source>Art:</source>
-        <translation>Type :</translation>
+        <translation>Type&#xa0;:</translation>
     </message>
     <message>
         <source>Befehl:</source>
-        <translation>Commande :</translation>
+        <translation>Commande&#xa0;:</translation>
     </message>
     <message>
         <source>Taste:</source>
-        <translation>Touche :</translation>
+        <translation>Touche&#xa0;:</translation>
     </message>
     <message>
         <source>Name</source>
@@ -759,7 +759,7 @@
     </message>
     <message>
         <source>„%1“: %2</source>
-        <translation>«&#xa0;%1&#xa0;» : %2</translation>
+        <translation>«&#xa0;%1&#xa0;»&#xa0;: %2</translation>
     </message>
     <message>
         <source>Hinzufügen …</source>
@@ -794,19 +794,19 @@
     </message>
     <message>
         <source>„%1“ zum ersten Mal ausführen?</source>
-        <translation>Exécuter « %1 » pour la première fois ?</translation>
+        <translation>Exécuter «&#xa0;%1&#xa0;» pour la première fois&#xa0;?</translation>
     </message>
     <message>
         <source>Kurzbefehl: %1</source>
-        <translation>Raccourci : %1</translation>
+        <translation>Raccourci&#xa0;: %1</translation>
     </message>
     <message>
         <source>Befehl: %1</source>
-        <translation>Commande : %1</translation>
+        <translation>Commande&#xa0;: %1</translation>
     </message>
     <message>
         <source>Datei: %1</source>
-        <translation>Fichier : %1</translation>
+        <translation>Fichier&#xa0;: %1</translation>
     </message>
     <message>
         <source>Ausführen</source>
@@ -818,27 +818,27 @@
     </message>
     <message>
         <source>▶ %1: %2</source>
-        <translation>▶ %1: %2</translation>
+        <translation>▶ %1&#xa0;: %2</translation>
     </message>
     <message>
         <source>„%1“ läuft …</source>
-        <translation>« %1 » en cours…</translation>
+        <translation>«&#xa0;%1&#xa0;» en cours…</translation>
     </message>
     <message>
         <source>✓ %1: fertig</source>
-        <translation>✓ %1 : terminé</translation>
+        <translation>✓ %1&#xa0;: terminé</translation>
     </message>
     <message>
         <source>✗ %1: %2</source>
-        <translation>✗ %1: %2</translation>
+        <translation>✗ %1&#xa0;: %2</translation>
     </message>
     <message>
         <source>„%1“ ausgeführt</source>
-        <translation>« %1 » exécuté</translation>
+        <translation>«&#xa0;%1&#xa0;» exécuté</translation>
     </message>
     <message>
         <source>„%1“: %2</source>
-        <translation>« %1 » : %2</translation>
+        <translation>«&#xa0;%1&#xa0;»&#xa0;: %2</translation>
     </message>
     <message>
         <source>Protokoll der Aktionen</source>
@@ -881,7 +881,7 @@
     </message>
     <message>
         <source>Unbekannter Decoder „%1“.</source>
-        <translation>Décodeur inconnu « %1 ».</translation>
+        <translation>Décodeur inconnu «&#xa0;%1&#xa0;».</translation>
     </message>
     <message>
         <source>Das Bild ist leer.</source>
@@ -901,7 +901,7 @@
     </message>
     <message>
         <source>Windows-Fehler %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Erreur Windows %1</translation>
     </message>
     <message>
         <source>Die Bilddaten des Decoders fehlen.</source>
@@ -947,31 +947,31 @@
     <name>lf::DefaultAppBar</name>
     <message>
         <source>Lumaflip ist nicht die Standard-App für den Dateityp „%1“.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip n’est pas l’app par défaut pour le type de fichier «&#xa0;%1&#xa0;».</translation>
     </message>
     <message>
         <source>Festlegen</source>
-        <translation type="unfinished">Définir</translation>
+        <translation>Définir</translation>
     </message>
     <message>
         <source>Lumaflip öffnet Dateien dieses Typs künftig per Doppelklick.</source>
-        <translation type="unfinished"></translation>
+        <translation>Désormais, Lumaflip ouvrira les fichiers de ce type d’un double-clic.</translation>
     </message>
     <message>
         <source>Alle Bildformate …</source>
-        <translation type="unfinished"></translation>
+        <translation>Tous les formats d’image…</translation>
     </message>
     <message>
         <source>Wähle die Bildformate, die Lumaflip öffnen soll.</source>
-        <translation type="unfinished"></translation>
+        <translation>Choisissez les formats d’image que Lumaflip doit ouvrir.</translation>
     </message>
     <message>
         <source>Nicht mehr fragen</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne plus demander</translation>
     </message>
     <message>
         <source>Schließen</source>
-        <translation type="unfinished">Fermer</translation>
+        <translation>Fermer</translation>
     </message>
 </context>
 <context>
@@ -1005,15 +1005,15 @@
     <name>lf::DefaultAppOfferController</name>
     <message>
         <source>Lumaflip fragt nicht mehr nach der Standard-App – wieder einschalten unter Einstellungen → Allgemein</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip ne proposera plus de devenir l’app par défaut – réactivable dans Réglages → Général</translation>
     </message>
     <message>
         <source>Lumaflip ist jetzt die Standard-App für „%1“</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip est désormais l’app par défaut pour «&#xa0;%1&#xa0;»</translation>
     </message>
     <message>
         <source>Lumaflip konnte nicht als Standard-App festgelegt werden: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de définir Lumaflip comme app par défaut&#xa0;: %1</translation>
     </message>
 </context>
 <context>
@@ -1215,21 +1215,21 @@
     </message>
     <message>
         <source>Zugeschnitten exportieren</source>
-        <translation>Exporter recadré</translation>
+        <translation>Exporter le recadrage</translation>
     </message>
     <message>
         <source>Den Zuschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
-        <translation>Exporter la sélection de «&#xa0;%1&#xa0;» dans un nouveau fichier. L’original reste inchangé.</translation>
+        <translation>Exporter le recadrage de «&#xa0;%1&#xa0;» dans un nouveau fichier. L’original reste inchangé.</translation>
     </message>
     <message>
         <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
-        <translation>Exporter «&#xa0;%1&#xa0;» comme nouveau fichier. L’original reste inchangé.</translation>
+        <translation>Exporter «&#xa0;%1&#xa0;» dans un nouveau fichier. L’original reste inchangé.</translation>
     </message>
     <message numerus="yes">
         <source>%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.</source>
         <translation>
-            <numerusform>Exporter %n image comme nouveau fichier. L’original reste inchangé.</numerusform>
-            <numerusform>Exporter %n images comme nouveaux fichiers. Les originaux restent inchangés.</numerusform>
+            <numerusform>Exporter %n image dans un nouveau fichier. L’original reste inchangé.</numerusform>
+            <numerusform>Exporter %n images dans de nouveaux fichiers. Les originaux restent inchangés.</numerusform>
         </translation>
     </message>
     <message>
@@ -1279,7 +1279,7 @@
     </message>
     <message>
         <source>Ohne Aufnahmeort (GPS)</source>
-        <translation>Sans localisation (GPS)</translation>
+        <translation>Sans lieu de prise de vue (GPS)</translation>
     </message>
     <message>
         <source>Alle entfernen</source>
@@ -1299,7 +1299,7 @@
     </message>
     <message>
         <source>Gain-Map behalten (wo das Format es kann)</source>
-        <translation>Conserver la gain map (si le format le permet)</translation>
+        <translation>Conserver la carte de gain (si le format le permet)</translation>
     </message>
     <message>
         <source>Als SDR (Tone Mapping)</source>
@@ -1342,26 +1342,26 @@
     </message>
     <message>
         <source>Bild %1 von %2 wird exportiert: %3</source>
-        <translation>Exportation %1 sur %2&#xa0;: %3</translation>
+        <translation>Exportation de l’image %1 sur %2&#xa0;: %3</translation>
     </message>
 </context>
 <context>
     <name>lf::FileBatch</name>
     <message>
         <source>„%1“ existiert bereits.</source>
-        <translation>« %1 » existe déjà.</translation>
+        <translation>«&#xa0;%1&#xa0;» existe déjà.</translation>
     </message>
     <message>
         <source>„%1“ konnte nicht kopiert werden.</source>
-        <translation>Impossible de copier « %1 ».</translation>
+        <translation>Impossible de copier «&#xa0;%1&#xa0;».</translation>
     </message>
     <message>
         <source>Der Ordner „%1“ konnte nicht angelegt werden.</source>
-        <translation>Impossible de créer le dossier « %1 ».</translation>
+        <translation>Impossible de créer le dossier «&#xa0;%1&#xa0;».</translation>
     </message>
     <message>
         <source>Die Kopie „%1“ konnte nicht entfernt werden.</source>
-        <translation>Impossible de supprimer la copie « %1 ».</translation>
+        <translation>Impossible de supprimer la copie «&#xa0;%1&#xa0;».</translation>
     </message>
 </context>
 <context>
@@ -1427,7 +1427,7 @@
     <name>lf::Filmstrip</name>
     <message>
         <source>Filmstreifen</source>
-        <translation>Pellicule</translation>
+        <translation>Bande de vignettes</translation>
     </message>
 </context>
 <context>
@@ -1446,14 +1446,14 @@
     <message>
         <source>Aufnahmeorte werden gelesen … %1 von %2</source>
         <extracomment>folder map (F-INFO-08) while the GPS positions are read: done / all images</extracomment>
-        <translation>Lecture des lieux… %1 sur %2</translation>
+        <translation>Lecture des lieux de prise de vue… %1 sur %2</translation>
     </message>
     <message numerus="yes">
         <source>%1 von %n Bildern mit Aufnahmeort</source>
         <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Aufnahmeort&quot; (%1 images with a position, %n all)</extracomment>
         <translation>
-            <numerusform>%1 sur %n image avec un lieu</numerusform>
-            <numerusform>%1 sur %n images avec un lieu</numerusform>
+            <numerusform>%1 sur %n image avec lieu de prise de vue</numerusform>
+            <numerusform>%1 sur %n images avec lieu de prise de vue</numerusform>
         </translation>
     </message>
 </context>
@@ -1480,7 +1480,7 @@
     <name>lf::FolderMapView</name>
     <message>
         <source>Karten sind unter Windows nicht verfügbar. Bilder mit Aufnahmeort in diesem Ordner: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Les cartes ne sont pas disponibles sous Windows. Images avec lieu de prise de vue dans ce dossier&#xa0;: %1</translation>
     </message>
 </context>
 <context>
@@ -1648,7 +1648,7 @@
     </message>
     <message>
         <source>HDR-Bild, mit erweitertem Dynamikumfang angezeigt (⇧⌘H: SDR-Vorschau)</source>
-        <translation>Image HDR, affichée avec une plage dynamique étendue (⇧⌘H : aperçu SDR)</translation>
+        <translation>Image HDR, affichée avec une plage dynamique étendue (⇧⌘H&#xa0;: aperçu SDR)</translation>
     </message>
     <message>
         <source>HDR-Bild, als SDR-Vorschau angezeigt – HDR ist ausgeschaltet (⇧⌘H)</source>
@@ -1706,7 +1706,7 @@
     </message>
     <message>
         <source>Die vorhandene Datei liegt im Papierkorb, die neue konnte nicht an ihre Stelle gelegt werden: %1</source>
-        <translation>Le fichier existant est dans la corbeille, mais le nouveau n’a pas pu prendre sa place : %1</translation>
+        <translation>Le fichier existant est dans la corbeille, mais le nouveau n’a pas pu prendre sa place&#xa0;: %1</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht geschrieben werden.</source>
@@ -1738,7 +1738,7 @@
     </message>
     <message>
         <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
-        <translation>%1 ne peut pas enregistrer de gain map HDR – l’image a été exportée en SDR.</translation>
+        <translation>%1 ne peut pas enregistrer de carte de gain HDR – l’image a été exportée en SDR.</translation>
     </message>
     <message>
         <source>Bilder aus Archiven und PDF-Dokumenten werden als 8-Bit-sRGB exportiert – HDR und erweiterter Farbraum gehen verloren.</source>
@@ -1864,7 +1864,7 @@
     </message>
     <message>
         <source>Alle Bilder dieser Ansicht mit Aufnahmeort auf einer Karte zeigen (lädt Kartendaten von Apple Karten)</source>
-        <translation>Afficher sur une carte toutes les images de cette vue qui ont un lieu (charge des données cartographiques depuis Apple Plans)</translation>
+        <translation>Afficher sur une carte toutes les images de cette vue qui ont un lieu de prise de vue (charge des données cartographiques depuis Apple Plans)</translation>
     </message>
 </context>
 <context>
@@ -2079,7 +2079,7 @@
     </message>
     <message>
         <source>Einpassen</source>
-        <translation>Taille adaptée</translation>
+        <translation>Adapter à la fenêtre</translation>
     </message>
     <message>
         <source>Breite füllen</source>
@@ -2087,7 +2087,7 @@
     </message>
     <message>
         <source>Einpassen ↔ 100 % am Mauszeiger</source>
-        <translation>Taille adaptée ↔ 100&#xa0;% au curseur</translation>
+        <translation>Adapter à la fenêtre ↔ 100 % au pointeur</translation>
     </message>
     <message>
         <source>Zoom fixieren</source>
@@ -2099,27 +2099,27 @@
     </message>
     <message>
         <source>Ausschnitt nach oben</source>
-        <translation>Défiler vers le haut</translation>
+        <translation>Zone visible vers le haut</translation>
     </message>
     <message>
         <source>Ausschnitt nach unten</source>
-        <translation>Défiler vers le bas</translation>
+        <translation>Zone visible vers le bas</translation>
     </message>
     <message>
         <source>Ausschnitt nach links</source>
-        <translation>Défiler vers la gauche</translation>
+        <translation>Zone visible vers la gauche</translation>
     </message>
     <message>
         <source>Ausschnitt nach rechts</source>
-        <translation>Défiler vers la droite</translation>
+        <translation>Zone visible vers la droite</translation>
     </message>
     <message>
         <source>Ausschnitt eine Seite nach oben</source>
-        <translation>Défiler d’une page vers le haut</translation>
+        <translation>Zone visible d’une page vers le haut</translation>
     </message>
     <message>
         <source>Ausschnitt eine Seite nach unten</source>
-        <translation>Défiler d’une page vers le bas</translation>
+        <translation>Zone visible d’une page vers le bas</translation>
     </message>
     <message>
         <source>Zum Bildanfang scrollen</source>
@@ -2135,7 +2135,7 @@
     </message>
     <message>
         <source>Vollbild oder Modus beenden</source>
-        <translation>Plein écran ou quitter le mode</translation>
+        <translation>Quitter le plein écran ou le mode</translation>
     </message>
     <message>
         <source>Modus beenden, sonst Fenster schließen</source>
@@ -2223,7 +2223,7 @@
     </message>
     <message>
         <source>Filmstreifen</source>
-        <translation>Pellicule</translation>
+        <translation>Bande de vignettes</translation>
     </message>
     <message>
         <source>Raster</source>
@@ -2251,11 +2251,11 @@
     </message>
     <message>
         <source>Datei herausziehen</source>
-        <translation>Faire glisser le fichier</translation>
+        <translation>Faire glisser le fichier vers l’extérieur</translation>
     </message>
     <message>
         <source>Ausschnitt verschieben</source>
-        <translation>Déplacer la vue</translation>
+        <translation>Déplacer la zone visible</translation>
     </message>
     <message>
         <source>Bewertung entfernen (0 Sterne)</source>
@@ -2283,15 +2283,15 @@
     </message>
     <message>
         <source>Markieren</source>
-        <translation>Retenir (Pick)</translation>
+        <translation>Retenir</translation>
     </message>
     <message>
         <source>Ablehnen</source>
-        <translation>Rejeter (Reject)</translation>
+        <translation>Rejeter</translation>
     </message>
     <message>
         <source>Markierung aufheben</source>
-        <translation>Réinitialiser le marquage</translation>
+        <translation>Retirer le marqueur</translation>
     </message>
     <message>
         <source>Aussortiermodus</source>
@@ -2299,11 +2299,11 @@
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
-        <translation>Classement rapide : déplacer (M, puis 1–9)</translation>
+        <translation>Rangement rapide&#xa0;: déplacer (M, puis 1–9)</translation>
     </message>
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
-        <translation>Classement rapide : copier (C, puis 1–9)</translation>
+        <translation>Rangement rapide&#xa0;: copier (C, puis 1–9)</translation>
     </message>
     <message>
         <source>Gehe zu Bild …</source>
@@ -2423,7 +2423,7 @@
     </message>
     <message>
         <source>Zoomen (am Mauszeiger)</source>
-        <translation>Zoomer (au curseur)</translation>
+        <translation>Zoomer (au pointeur)</translation>
     </message>
     <message>
         <source>Nach oben drehen vergrößert, nach unten verkleinert – am Mauszeiger.</source>
@@ -2431,11 +2431,11 @@
     </message>
     <message>
         <source>Ausschnitt verschieben (sonst Bild wechseln)</source>
-        <translation>Faire défiler la vue (sinon changer d’image)</translation>
+        <translation>Déplacer la zone visible (sinon changer d’image)</translation>
     </message>
     <message>
         <source>Gezoomt wird der Ausschnitt verschoben, sonst wird das Bild gewechselt.</source>
-        <translation>Si l’image est agrandie, la vue est déplacée&#xa0;; sinon, l’image change.</translation>
+        <translation>Si l’image est agrandie, la zone visible est déplacée&#xa0;; sinon, l’image change.</translation>
     </message>
     <message>
         <source>Bild wechseln, solange die Taste gehalten wird.</source>
@@ -2451,7 +2451,7 @@
     </message>
     <message>
         <source>Der Ausschnitt wird waagerecht verschoben.</source>
-        <translation>La vue est déplacée horizontalement.</translation>
+        <translation>La zone visible est déplacée horizontalement.</translation>
     </message>
     <message>
         <source>Mausrad mit ⌘</source>
@@ -2503,7 +2503,7 @@
     </message>
     <message>
         <source>Ausschnitt seitenweise verschieben (sonst Bild)</source>
-        <translation>Faire défiler la vue page par page (sinon image)</translation>
+        <translation>Déplacer la zone visible page par page (sinon image)</translation>
     </message>
     <message>
         <source>Gezoomt um eine Bildschirmhöhe scrollen, sonst Bild wechseln.</source>
@@ -2551,11 +2551,11 @@
     </message>
     <message>
         <source>Einpassen ↔ 100 %</source>
-        <translation>Taille adaptée ↔ 100&#xa0;%</translation>
+        <translation>Adapter à la fenêtre ↔ 100 %</translation>
     </message>
     <message>
         <source>Schaltet zwischen Einpassen und 100 % um.</source>
-        <translation>Bascule entre Taille adaptée et 100&#xa0;%.</translation>
+        <translation>Bascule entre «&#xa0;Adapter à la fenêtre&#xa0;» et 100 %.</translation>
     </message>
     <message>
         <source>Diashow starten/pausieren</source>
@@ -2575,23 +2575,23 @@
     </message>
     <message>
         <source>Pfeiltasten wechseln das Bild; mit ⌥ wird der Ausschnitt verschoben.</source>
-        <translation>Les touches fléchées changent d’image&#xa0;; avec ⌥, la vue est déplacée.</translation>
+        <translation>Les touches fléchées changent d’image&#xa0;; avec ⌥, la zone visible est déplacée.</translation>
     </message>
     <message>
         <source>Erst bis zum Rand verschieben, dann Bild wechseln</source>
-        <translation>Défiler jusqu’au bord, puis changer d’image</translation>
+        <translation>Déplacer jusqu’au bord, puis changer d’image</translation>
     </message>
     <message>
         <source>Der Ausschnitt wird verschoben; am Bildrand wechselt das Bild.</source>
-        <translation>La vue est déplacée&#xa0;; au bord de l’image, l’image change.</translation>
+        <translation>La zone visible est déplacée&#xa0;; au bord de l’image, l’image change.</translation>
     </message>
     <message>
         <source>Ausschnitt verschieben (Bild mit ⌥←/⌥→)</source>
-        <translation>Faire défiler la vue (image avec ⌥←/⌥→)</translation>
+        <translation>Déplacer la zone visible (image avec ⌥←/⌥→)</translation>
     </message>
     <message>
         <source>Pfeiltasten verschieben den Ausschnitt; Bildwechsel mit ⌥←/⌥→.</source>
-        <translation>Les touches fléchées déplacent la vue&#xa0;; changement d’image avec ⌥←/⌥→.</translation>
+        <translation>Les touches fléchées déplacent la zone visible&#xa0;; changement d’image avec ⌥←/⌥→.</translation>
     </message>
     <message>
         <source>↑ / ↓</source>
@@ -2599,19 +2599,19 @@
     </message>
     <message>
         <source>Ausschnitt verschieben, sonst vorheriges/nächstes Bild</source>
-        <translation>Faire défiler la vue, sinon image précédente/suivante</translation>
+        <translation>Déplacer la zone visible, sinon image précédente/suivante</translation>
     </message>
     <message>
         <source>Gezoomt wird der Ausschnitt verschoben, sonst das Bild gewechselt.</source>
-        <translation>Si l’image est agrandie, la vue est déplacée&#xa0;; sinon, l’image change.</translation>
+        <translation>Si l’image est agrandie, la zone visible est déplacée&#xa0;; sinon, l’image change.</translation>
     </message>
     <message>
         <source>Ausschnitt verschieben (wenn gezoomt), sonst nichts</source>
-        <translation>Faire défiler la vue (si agrandie), sinon rien</translation>
+        <translation>Déplacer la zone visible (si agrandie), sinon rien</translation>
     </message>
     <message>
         <source>Gezoomt wird der Ausschnitt verschoben, sonst passiert nichts.</source>
-        <translation>Si l’image est agrandie, la vue est déplacée&#xa0;; sinon, rien ne se passe.</translation>
+        <translation>Si l’image est agrandie, la zone visible est déplacée&#xa0;; sinon, rien ne se passe.</translation>
     </message>
     <message>
         <source>↑ zeigt das vorherige, ↓ das nächste Bild.</source>
@@ -2631,7 +2631,7 @@
     </message>
     <message>
         <source>Ein Klick hat keine Wirkung (Ziehen verschiebt weiterhin).</source>
-        <translation>Un clic n’a aucun effet (faire glisser déplace toujours la vue).</translation>
+        <translation>Un clic n’a aucun effet (faire glisser déplace toujours la zone visible).</translation>
     </message>
     <message>
         <source>Ein Klick zoomt auf 100 % an der Klickstelle und zurück.</source>
@@ -2659,7 +2659,7 @@
     </message>
     <message>
         <source>Doppelklick schaltet zwischen Einpassen und 100 % um.</source>
-        <translation>Un double-clic bascule entre Taille adaptée et 100&#xa0;%.</translation>
+        <translation>Un double-clic bascule entre «&#xa0;Adapter à la fenêtre&#xa0;» et 100 %.</translation>
     </message>
     <message>
         <source>Doppelklick schließt das Fenster.</source>
@@ -2683,7 +2683,7 @@
     </message>
     <message>
         <source>Schaltet zwischen Einpassen und 100 % an der Klickstelle um.</source>
-        <translation>Bascule entre Taille adaptée et 100&#xa0;% à l’endroit cliqué.</translation>
+        <translation>Bascule entre «&#xa0;Adapter à la fenêtre&#xa0;» et 100 % à l’endroit cliqué.</translation>
     </message>
     <message>
         <source>Zeigt eine Lupe, solange die Taste gedrückt ist.</source>
@@ -2707,19 +2707,19 @@
     </message>
     <message>
         <source>Bild wechseln (gezoomt: Ausschnitt verschieben)</source>
-        <translation>Changer d’image (si agrandie&#xa0;: défiler)</translation>
+        <translation>Changer d’image (si agrandie&#xa0;: déplacer la zone visible)</translation>
     </message>
     <message>
         <source>Wischen wechselt das Bild; im gezoomten Zustand wird der Ausschnitt verschoben.</source>
-        <translation>Le balayage change d’image&#xa0;; si l’image est agrandie, la vue est déplacée.</translation>
+        <translation>Le balayage change d’image&#xa0;; si l’image est agrandie, il déplace la zone visible.</translation>
     </message>
     <message>
         <source>Nur Ausschnitt verschieben</source>
-        <translation>Faire défiler la vue</translation>
+        <translation>Déplacer uniquement la zone visible</translation>
     </message>
     <message>
         <source>Wischen verschiebt immer nur den Ausschnitt.</source>
-        <translation>Le balayage déplace uniquement la vue.</translation>
+        <translation>Le balayage déplace uniquement la zone visible.</translation>
     </message>
     <message>
         <source>Aus</source>
@@ -2735,19 +2735,19 @@
     </message>
     <message>
         <source>Ausschnitt verschieben (⌥: Datei herausziehen)</source>
-        <translation>Déplacer la vue (⌥&#xa0;: faire glisser le fichier)</translation>
+        <translation>Déplacer la zone visible (⌥&#xa0;: faire glisser le fichier)</translation>
     </message>
     <message>
         <source>Ziehen verschiebt den Ausschnitt; mit ⌥ wird die Datei in andere Apps gezogen.</source>
-        <translation>Faire glisser déplace la vue&#xa0;; avec ⌥, le fichier est glissé vers d’autres apps.</translation>
+        <translation>Faire glisser déplace la zone visible&#xa0;; avec ⌥, le fichier est glissé vers d’autres apps.</translation>
     </message>
     <message>
         <source>Datei herausziehen (⌥: Ausschnitt verschieben)</source>
-        <translation>Faire glisser le fichier (⌥&#xa0;: déplacer la vue)</translation>
+        <translation>Faire glisser le fichier (⌥&#xa0;: déplacer la zone visible)</translation>
     </message>
     <message>
         <source>Ziehen zieht die Datei in andere Apps; mit ⌥ wird der Ausschnitt verschoben.</source>
-        <translation>Faire glisser déplace le fichier vers d’autres apps&#xa0;; avec ⌥, la vue est déplacée.</translation>
+        <translation>Faire glisser déplace le fichier vers d’autres apps&#xa0;; avec ⌥, la zone visible est déplacée.</translation>
     </message>
     <message>
         <source>Esc</source>
@@ -2759,7 +2759,7 @@
     </message>
     <message>
         <source>Esc beendet Vollbild, Diashow oder andere Modi und tut sonst nichts.</source>
-        <translation>Esc quitte le plein écran, le diaporama ou d’autres modes, et ne fait rien sinon.</translation>
+        <translation>Esc quitte le plein écran, le diaporama ou d’autres modes, et sinon ne fait rien.</translation>
     </message>
     <message>
         <source>Vollbild oder Modus beenden, sonst Fenster schließen</source>
@@ -2861,19 +2861,19 @@
     </message>
     <message>
         <source>Live Text: Bild wird analysiert …</source>
-        <translation>Texte en direct : analyse de l’image…</translation>
+        <translation>Texte en direct&#xa0;: analyse de l’image…</translation>
     </message>
     <message>
         <source>Live Text: Text und Motive auswählbar</source>
-        <translation>Texte en direct : texte et sujets sélectionnables</translation>
+        <translation>Texte en direct&#xa0;: texte et sujets sélectionnables</translation>
     </message>
     <message>
         <source>Live Text: kein Text gefunden</source>
-        <translation>Texte en direct : aucun texte trouvé</translation>
+        <translation>Texte en direct&#xa0;: aucun texte trouvé</translation>
     </message>
     <message>
         <source>Live Text: Analyse fehlgeschlagen (%1)</source>
-        <translation>Texte en direct : échec de l’analyse (%1)</translation>
+        <translation>Texte en direct&#xa0;: échec de l’analyse (%1)</translation>
     </message>
 </context>
 <context>
@@ -2904,7 +2904,7 @@
     </message>
     <message>
         <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
-        <translation>Le fichier contient d’autres images (par exemple une carte de gain HDR ou une seconde image stéréo) qui seraient perdues lors de la réorganisation sans perte des données JPEG.</translation>
+        <translation>Le fichier contient des images supplémentaires (p. ex. une carte de gain HDR ou une seconde image stéréo) qui seraient perdues lors de la réorganisation sans perte des données JPEG.</translation>
     </message>
     <message>
         <source>Die Datei existiert nicht mehr.</source>
@@ -3143,15 +3143,15 @@
     </message>
     <message>
         <source>Alle Bildschirme</source>
-        <translation type="unfinished">Tous les écrans</translation>
+        <translation>Tous les écrans</translation>
     </message>
     <message>
         <source>Bildschirm %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Écran %1</translation>
     </message>
     <message>
         <source>Windows hat das Bild nicht als Desktophintergrund übernommen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Windows n’a pas accepté l’image comme arrière-plan du Bureau.</translation>
     </message>
 </context>
 <context>
@@ -3198,7 +3198,7 @@
     </message>
     <message>
         <source>Im Editor öffnen</source>
-        <translation>Ouvrir dans l’éditeur par défaut</translation>
+        <translation>Ouvrir dans l’éditeur</translation>
     </message>
     <message>
         <source>In den Papierkorb legen</source>
@@ -3258,11 +3258,11 @@
     </message>
     <message>
         <source>Einpassen</source>
-        <translation>Taille adaptée</translation>
+        <translation>Adapter à la fenêtre</translation>
     </message>
     <message>
         <source>Einpassen (auch vergrößern)</source>
-        <translation>Taille adaptée (avec agrandissement)</translation>
+        <translation>Adapter (avec agrandissement)</translation>
     </message>
     <message>
         <source>100 % (1:1 Pixel)</source>
@@ -3290,7 +3290,7 @@
     </message>
     <message>
         <source>Einpassen ↔ 100 %</source>
-        <translation>Taille adaptée ↔ 100&#xa0;%</translation>
+        <translation>Adapter à la fenêtre ↔ 100 %</translation>
     </message>
     <message>
         <source>Zoom fixieren</source>
@@ -3314,7 +3314,7 @@
     </message>
     <message>
         <source>Filmstreifen</source>
-        <translation>Pellicule</translation>
+        <translation>Bande de vignettes</translation>
     </message>
     <message>
         <source>Hintergrund</source>
@@ -3422,7 +3422,7 @@
     </message>
     <message>
         <source>Minimieren</source>
-        <translation>Placer dans le Dock</translation>
+        <translation>Minimiser</translation>
     </message>
     <message>
         <source>Zoomen</source>
@@ -3463,7 +3463,7 @@
     </message>
     <message>
         <source>Über-/Unterbelichtungswarnung</source>
-        <translation>Sur-/sous-exposition</translation>
+        <translation>Alerte de sur-/sous-exposition</translation>
     </message>
     <message>
         <source>Focus Peaking</source>
@@ -3567,7 +3567,7 @@
     </message>
     <message>
         <source>Nach Bewertung automatisch weiter</source>
-        <translation>Avancer après la notation</translation>
+        <translation>Avancer automatiquement après la notation</translation>
     </message>
     <message>
         <source>Filter</source>
@@ -3575,19 +3575,19 @@
     </message>
     <message>
         <source>Alle abgelehnten in den Papierkorb legen …</source>
-        <translation>Toutes les rejetées à la corbeille…</translation>
+        <translation>Placer toutes les rejetées dans la corbeille…</translation>
     </message>
     <message>
         <source>Alle abgelehnten nach „_Rejected“ verschieben …</source>
-        <translation>Toutes les rejetées vers « _Rejected »…</translation>
+        <translation>Déplacer toutes les rejetées vers «&#xa0;_Rejected&#xa0;»…</translation>
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
-        <translation>Classement rapide : déplacer (M, puis 1–9)</translation>
+        <translation>Rangement rapide&#xa0;: déplacer (M, puis 1–9)</translation>
     </message>
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
-        <translation>Classement rapide : copier (C, puis 1–9)</translation>
+        <translation>Rangement rapide&#xa0;: copier (C, puis 1–9)</translation>
     </message>
     <message>
         <source>Verschieben nach</source>
@@ -3599,7 +3599,7 @@
     </message>
     <message>
         <source>Ziele der Schnellablage festlegen …</source>
-        <translation>Définir les cibles du classement…</translation>
+        <translation>Définir les cibles du rangement rapide…</translation>
     </message>
     <message>
         <source>Raster</source>
@@ -3619,7 +3619,7 @@
     </message>
     <message>
         <source>Ordnerkarte</source>
-        <translation>Carte</translation>
+        <translation>Carte du dossier</translation>
     </message>
     <message>
         <source>Nächster Ordner</source>
@@ -3737,7 +3737,7 @@
     </message>
     <message>
         <source>Karten sind unter Windows nicht verfügbar.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les cartes ne sont pas disponibles sous Windows.</translation>
     </message>
 </context>
 <context>
@@ -3800,7 +3800,7 @@
     </message>
     <message>
         <source>Tabs in den Einstellungen erlauben (Fenster)</source>
-        <translation>Autoriser les onglets dans les réglages (Fenêtre)</translation>
+        <translation>Autoriser les onglets dans les réglages (Fenêtres)</translation>
     </message>
 </context>
 <context>
@@ -4014,7 +4014,7 @@
     </message>
     <message>
         <source>Bildnummer (1–%1), oder +n / −n vom aktuellen Bild:</source>
-        <translation>Numéro d’image (1–%1), ou +n / −n depuis l’image actuelle :</translation>
+        <translation>Numéro d’image (1–%1), ou +n / −n depuis l’image actuelle&#xa0;:</translation>
     </message>
     <message>
         <source>Gehe zu</source>
@@ -4026,15 +4026,15 @@
     </message>
     <message>
         <source>Gib eine Bildnummer zwischen 1 und %1 ein.</source>
-        <translation>Saisissez un numéro d’image entre 1 et %1</translation>
+        <translation>Saisissez un numéro d’image entre 1 et %1.</translation>
     </message>
     <message>
         <source>Zufällige Reihenfolge an</source>
-        <translation>Lecture aléatoire activée</translation>
+        <translation>Ordre aléatoire activé</translation>
     </message>
     <message>
         <source>Zufällige Reihenfolge aus</source>
-        <translation>Lecture aléatoire désactivée</translation>
+        <translation>Ordre aléatoire désactivé</translation>
     </message>
     <message>
         <source>Ende der zufälligen Reihenfolge</source>
@@ -4057,11 +4057,11 @@
     </message>
     <message>
         <source>Apps (*.desktop);;Alle Dateien (*)</source>
-        <translation>Programmes (*.desktop);;Tous les fichiers (*)</translation>
+        <translation>Apps (*.desktop);;Tous les fichiers (*)</translation>
     </message>
     <message>
         <source>„%1“ ist keine App.</source>
-        <translation>«&#xa0;%1&#xa0;» n’est pas un programme.</translation>
+        <translation>«&#xa0;%1&#xa0;» n’est pas une app.</translation>
     </message>
     <message>
         <source>Kein Bild geöffnet</source>
@@ -4122,11 +4122,11 @@
     </message>
     <message>
         <source>Name: „%1“</source>
-        <translation>Nom : « %1 »</translation>
+        <translation>Nom&#xa0;: «&#xa0;%1&#xa0;»</translation>
     </message>
     <message>
         <source>%1: %2</source>
-        <translation>%1 : %2</translation>
+        <translation>%1&#xa0;: %2</translation>
     </message>
     <message numerus="yes">
         <source>%1 – %n Bild(er)</source>
@@ -4149,8 +4149,8 @@
     <message numerus="yes">
         <source>%n Bild(er) in den Papierkorb legen?</source>
         <translation>
-            <numerusform>Placer %n image dans la corbeille ?</numerusform>
-            <numerusform>Placer %n images dans la corbeille ?</numerusform>
+            <numerusform>Placer %n image dans la corbeille&#xa0;?</numerusform>
+            <numerusform>Placer %n images dans la corbeille&#xa0;?</numerusform>
         </translation>
     </message>
     <message>
@@ -4205,7 +4205,7 @@
     </message>
     <message>
         <source>Fenster</source>
-        <translation>Fenêtre</translation>
+        <translation>Fenêtres</translation>
     </message>
     <message>
         <source>Anzeige</source>
@@ -4241,7 +4241,7 @@
     </message>
     <message>
         <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbildmodus“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
-        <translation>Prend effet immédiatement. Les menus et fenêtres de macOS («&#xa0;Passer en plein écran&#xa0;», «&#xa0;Services&#xa0;», «&#xa0;Ouvrir&#xa0;», demandes d’autorisation) suivent après un redémarrage.</translation>
+        <translation>Prend effet immédiatement. Les menus et fenêtres système de macOS («&#xa0;Activer le mode plein écran&#xa0;», «&#xa0;Services&#xa0;», «&#xa0;Ouvrir&#xa0;», demandes d’autorisation) suivent après un redémarrage de l’app.</translation>
     </message>
     <message>
         <source>Öffnen aus dem Finder:</source>
@@ -4273,7 +4273,7 @@
     </message>
     <message>
         <source>Vor dem Bewegen in den Papierkorb nachfragen</source>
-        <translation>Demander avant de supprimer</translation>
+        <translation>Demander avant de placer dans la corbeille</translation>
     </message>
     <message>
         <source>Aus: ⌘⌫ legt das Bild sofort in den Papierkorb, ⌘Z holt es zurück.</source>
@@ -4281,11 +4281,11 @@
     </message>
     <message>
         <source>Fragen, ob Lumaflip Standard-App werden soll</source>
-        <translation type="unfinished"></translation>
+        <translation>Proposer de faire de Lumaflip l’app par défaut</translation>
     </message>
     <message>
         <source>Öffnest du ein Bild, dessen Dateityp eine andere App öffnet, erscheint einmal je Dateityp ein Hinweis oben im Fenster.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si vous ouvrez une image dont le type de fichier est associé à une autre app, un message apparaît en haut de la fenêtre, une fois par type de fichier.</translation>
     </message>
     <message>
         <source>Editor:</source>
@@ -4293,7 +4293,7 @@
     </message>
     <message>
         <source>Für „Im Editor öffnen“ (Taste E).</source>
-        <translation>Pour «&#xa0;Ouvrir dans l’éditeur par défaut&#xa0;» (touche E).</translation>
+        <translation>Pour «&#xa0;Ouvrir dans l’éditeur&#xa0;» (touche E).</translation>
     </message>
     <message>
         <source>Drehung sichern:</source>
@@ -4337,7 +4337,7 @@
     </message>
     <message>
         <source>Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um.</source>
-        <translation>Sans barre de titre, l’image s’étend jusqu’au bord supérieur. Fenêtre → «&#xa0;Fenêtre minimale&#xa0;» bascule une seule fenêtre.</translation>
+        <translation>Sans barre de titre, l’image s’étend jusqu’au bord supérieur. Fenêtre → «&#xa0;Fenêtre minimale&#xa0;» active ou désactive ce mode pour une seule fenêtre.</translation>
     </message>
     <message>
         <source>Ordnername in der Titelleiste</source>
@@ -4361,7 +4361,7 @@
     </message>
     <message>
         <source>Filmstreifen (T)</source>
-        <translation>Pellicule (T)</translation>
+        <translation>Bande de vignettes (T)</translation>
     </message>
     <message>
         <source>Tabs:</source>
@@ -4377,7 +4377,7 @@
     </message>
     <message>
         <source>Gekoppelte Fenster blättern nach:</source>
-        <translation>Les fenêtres liées défilent selon :</translation>
+        <translation>Les fenêtres liées défilent selon&#xa0;:</translation>
     </message>
     <message>
         <source>Dateiname (ohne Endung)</source>
@@ -4389,7 +4389,7 @@
     </message>
     <message>
         <source>Fenster → „Fenster koppeln …“: gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt.</source>
-        <translation>Fenêtre → « Lier les fenêtres… » : les fenêtres liées défilent ensemble et partagent le zoom et la zone visible.</translation>
+        <translation>Fenêtre → «&#xa0;Lier les fenêtres…&#xa0;»&#xa0;: les fenêtres liées défilent ensemble et partagent le zoom et la zone visible.</translation>
     </message>
     <message>
         <source>Dunkel</source>
@@ -4429,11 +4429,11 @@
     </message>
     <message>
         <source>Einpassen (nicht vergrößern)</source>
-        <translation>Taille adaptée (sans agrandissement)</translation>
+        <translation>Adapter (sans agrandissement)</translation>
     </message>
     <message>
         <source>Einpassen (auch vergrößern)</source>
-        <translation>Taille adaptée (avec agrandissement)</translation>
+        <translation>Adapter (avec agrandissement)</translation>
     </message>
     <message>
         <source>100 %</source>
@@ -4473,7 +4473,7 @@
     </message>
     <message>
         <source>1 Bildpixel = 1 Gerätepixel (Retina-korrekt)</source>
-        <translation>1 pixel d’image = 1 pixel de l’appareil (adapté à Retina)</translation>
+        <translation>1 pixel d’image = 1 pixel physique (précis sur Retina)</translation>
     </message>
     <message>
         <source>1 Bildpixel = 1 Punkt</source>
@@ -4485,7 +4485,7 @@
     </message>
     <message>
         <source>Lupe (L gedrückt halten):</source>
-        <translation>Loupe (maintenir L) :</translation>
+        <translation>Loupe (maintenir L)&#xa0;:</translation>
     </message>
     <message>
         <source>200 %</source>
@@ -4493,7 +4493,7 @@
     </message>
     <message>
         <source>Größe der Lupe:</source>
-        <translation>Taille de la loupe :</translation>
+        <translation>Taille de la loupe&#xa0;:</translation>
     </message>
     <message>
         <source>Klein</source>
@@ -4561,11 +4561,11 @@
     </message>
     <message>
         <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, P/X/U bewerten, Esc beendet.</source>
-        <translation>Pendant le diaporama : Espace met en pause, 1–9 définit l’intervalle en secondes, ←/→ change d’image, P/X/U attribuent une note, Échap arrête.</translation>
+        <translation>Pendant le diaporama&#xa0;: Espace met en pause, 1–9 définit l’intervalle en secondes, ←/→ change d’image, P/X/U attribuent un marqueur, Esc arrête.</translation>
     </message>
     <message>
         <source>Profilvorlagen</source>
-        <translation>Modèles de profil</translation>
+        <translation>Préréglages</translation>
     </message>
     <message>
         <source>Mac-Standard</source>
@@ -4573,11 +4573,11 @@
     </message>
     <message>
         <source>Wie Windows-Bildbetrachter</source>
-        <translation>Habitudes des visionneuses Windows</translation>
+        <translation>Comme les visionneuses Windows</translation>
     </message>
     <message>
         <source>Fotografie / Lightroom</source>
-        <translation>Photographe / Lightroom</translation>
+        <translation>Photographie / Lightroom</translation>
     </message>
     <message>
         <source>Maus, Trackpad und Tasten</source>
@@ -4617,7 +4617,7 @@
     </message>
     <message>
         <source>Sprungweite (Bild↑/Bild↓):</source>
-        <translation>Saut (Pg↑/Pg↓)&#xa0;:</translation>
+        <translation>Taille du saut (Pg↑/Pg↓)&#xa0;:</translation>
     </message>
     <message>
         <source> Bilder</source>
@@ -4641,7 +4641,7 @@
     </message>
     <message>
         <source>Alternative</source>
-        <translation>Autre</translation>
+        <translation>Alternative</translation>
     </message>
     <message>
         <source>–</source>
@@ -4649,7 +4649,7 @@
     </message>
     <message>
         <source>Standard-Tastenkürzel wiederherstellen</source>
-        <translation>Restaurer le raccourci par défaut</translation>
+        <translation>Restaurer les raccourcis par défaut</translation>
     </message>
     <message>
         <source>Alle Tastenkürzel zurücksetzen</source>
@@ -4662,8 +4662,8 @@
     <message numerus="yes">
         <source>%n Aktion(en) mit doppelt belegten Tasten – ändere eine davon.</source>
         <translation>
-            <numerusform>%n action avec des touches attribuées en double – veuillez modifier l’une d’elles.</numerusform>
-            <numerusform>%n actions avec des touches attribuées en double – veuillez modifier l’une d’elles.</numerusform>
+            <numerusform>%n action a des touches attribuées en double – modifiez-en une.</numerusform>
+            <numerusform>%n actions ont des touches attribuées en double – modifiez-en une.</numerusform>
         </translation>
     </message>
     <message>
@@ -4784,23 +4784,23 @@
     </message>
     <message>
         <source>Ziel %1 der Schnellablage</source>
-        <translation>Cible %1 du classement rapide</translation>
+        <translation>Cible %1 du rangement rapide</translation>
     </message>
     <message>
         <source>Speicherort für Bewertungen</source>
-        <translation>Enregistrer les notes</translation>
+        <translation>Emplacement des notes</translation>
     </message>
     <message>
         <source>XMP-Zusatzdatei neben dem Bild (Bild.xmp)</source>
-        <translation>Fichier XMP annexe à côté de l’image (image.xmp)</translation>
+        <translation>Fichier annexe XMP à côté de l’image (image.xmp)</translation>
     </message>
     <message>
         <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Abgelehnt“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
-        <translation>Compatible avec Lightroom, Capture One et darktable : étoiles dans xmp:Rating, « Rejeter » comme -1. Le contenu existant du fichier est conservé.</translation>
+        <translation>Compatible avec Lightroom, Capture One et darktable&#xa0;: étoiles dans xmp:Rating, «&#xa0;Rejetée&#xa0;» comme -1. Le contenu existant du fichier est conservé.</translation>
     </message>
     <message>
         <source>Nur JPEG, HEIC, TIFF, PNG und DNG; die Bildpixel werden nicht neu kodiert. RAW-Dateien werden nie verändert – dafür wird die Zusatzdatei benutzt.</source>
-        <translation>Uniquement JPEG, HEIC, TIFF, PNG et DNG ; les pixels ne sont pas réencodés. Les fichiers RAW ne sont jamais modifiés – le fichier annexe est utilisé à la place.</translation>
+        <translation>Uniquement JPEG, HEIC, TIFF, PNG et DNG&#xa0;; les pixels de l’image ne sont pas réencodés. Les fichiers RAW ne sont jamais modifiés – le fichier annexe est utilisé à leur place.</translation>
     </message>
     <message>
         <source>Änderungsdatum beim Schreiben ins Bild beibehalten</source>
@@ -4808,23 +4808,23 @@
     </message>
     <message>
         <source>Im Finder sichtbar und per Spotlight durchsuchbar. Sind mehrere Speicherorte gewählt, werden alle beschrieben; beim Lesen gilt die Reihenfolge Zusatzdatei, Bild, Tags.</source>
-        <translation>Visibles dans le Finder et consultables avec Spotlight. Si plusieurs emplacements sont choisis, tous sont écrits ; à la lecture, l’ordre est fichier annexe, image, tags.</translation>
+        <translation>Visibles dans le Finder et recherchables avec Spotlight. Si plusieurs emplacements sont choisis, tous sont écrits&#xa0;; à la lecture, l’ordre est&#xa0;: fichier annexe, image, tags.</translation>
     </message>
     <message>
         <source>Stern-Symbol:</source>
-        <translation>Symbole d’étoile :</translation>
+        <translation>Symbole d’étoile&#xa0;:</translation>
     </message>
     <message>
         <source>Tag für „Markiert“:</source>
-        <translation>Tag pour Retenir :</translation>
+        <translation>Tag pour «&#xa0;Retenue&#xa0;»&#xa0;:</translation>
     </message>
     <message>
         <source>Tag für „Abgelehnt“:</source>
-        <translation>Tag pour Rejeter :</translation>
+        <translation>Tag pour «&#xa0;Rejetée&#xa0;»&#xa0;:</translation>
     </message>
     <message>
         <source>Drei Sterne werden zum Tag „★★★“ (Symbol dreimal).</source>
-        <translation>Trois étoiles donnent le tag « ★★★ » (symbole trois fois).</translation>
+        <translation>Trois étoiles donnent le tag «&#xa0;★★★&#xa0;» (symbole trois fois).</translation>
     </message>
     <message>
         <source>Aussortieren</source>
@@ -4836,7 +4836,7 @@
     </message>
     <message>
         <source>Zoom im Aussortiermodus fixieren</source>
-        <translation>Figer le zoom en mode sélection</translation>
+        <translation>Verrouiller le zoom en mode sélection</translation>
     </message>
     <message>
         <source>Tastenhilfe im Aussortiermodus einblenden</source>
@@ -4844,11 +4844,11 @@
     </message>
     <message>
         <source>Aussortiermodus: ⌘K oder K. Ziffern vergeben dort Sterne statt Zoomstufen; „Bewertungstasten immer aktiv“ gibt es unter Maus &amp; Tastatur.</source>
-        <translation>Mode sélection : ⌘K ou K. Les chiffres y donnent des étoiles au lieu des niveaux de zoom ; « Touches de notation toujours actives » se trouve sous Souris et clavier.</translation>
+        <translation>Mode sélection&#xa0;: ⌘K ou K. Les chiffres y attribuent des étoiles au lieu des niveaux de zoom&#xa0;; «&#xa0;Touches de notation toujours actives&#xa0;» se trouve sous Souris et clavier.</translation>
     </message>
     <message>
         <source>Schnellablage</source>
-        <translation>Classement rapide</translation>
+        <translation>Rangement rapide</translation>
     </message>
     <message>
         <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z widerruft es.</source>
@@ -4920,7 +4920,7 @@
     </message>
     <message>
         <source>Gleichnamige RAW- und JPEG-Dateien erscheinen als ein Bild (das JPEG, mit Hinweis „RAW+JPEG“). Bewerten, Verschieben und Löschen betreffen beide Dateien; „RAW anzeigen“ wechselt zur RAW-Datei.</source>
-        <translation>Les fichiers RAW et JPEG de même nom apparaissent comme une seule image (le JPEG, avec la mention «&#xa0;RAW+JPEG&#xa0;»). Noter, déplacer et supprimer concernent les deux fichiers ; «&#xa0;Afficher le RAW&#xa0;» bascule vers le fichier RAW.</translation>
+        <translation>Les fichiers RAW et JPEG de même nom apparaissent comme une seule image (le JPEG, avec la mention «&#xa0;RAW+JPEG&#xa0;»). Noter, déplacer et supprimer concernent les deux fichiers&#xa0;; «&#xa0;Afficher le RAW&#xa0;» bascule vers le fichier RAW.</translation>
     </message>
     <message>
         <source>Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner.</source>
@@ -4932,7 +4932,7 @@
     </message>
     <message>
         <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
-        <translation>Pour les mangas : ← avance, → recule. Espace et Page↓ passent toujours à la page suivante.</translation>
+        <translation>Pour les mangas&#xa0;: ← avance, → recule. Espace et Pg↓ passent toujours à la page suivante.</translation>
     </message>
     <message>
         <source>Leistung</source>
@@ -4968,7 +4968,7 @@
     </message>
     <message>
         <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Internetverbindung.</source>
-        <translation>L’image n’est analysée que si vous activez Texte en direct pour une fenêtre – sur ce Mac, sans réseau.</translation>
+        <translation>L’image n’est analysée que si vous activez Texte en direct pour une fenêtre – sur ce Mac, sans connexion Internet.</translation>
     </message>
     <message>
         <source>Eigene Aktionen</source>
@@ -4976,11 +4976,11 @@
     </message>
     <message>
         <source>Ein Shell-Befehl oder ein Kurzbefehl (Kurzbefehle-App) erhält das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
-        <translation>Une commande shell ou un raccourci (Raccourcis) reçoit l’image actuelle en argument. Menu : Fichier → Actions personnalisées.</translation>
+        <translation>Une commande shell ou un raccourci (Raccourcis) reçoit l’image actuelle en argument. Menu&#xa0;: Fichier → Actions personnalisées.</translation>
     </message>
     <message>
         <source>Abbrechen nach:</source>
-        <translation>Interrompre après :</translation>
+        <translation>Interrompre après&#xa0;:</translation>
     </message>
     <message>
         <source> s</source>
@@ -4988,7 +4988,7 @@
     </message>
     <message>
         <source>Backup der Einstellungen</source>
-        <translation>Sauvegarder les réglages</translation>
+        <translation>Sauvegarde des réglages</translation>
     </message>
     <message>
         <source>Exportieren …</source>
@@ -5170,7 +5170,7 @@
     </message>
     <message>
         <source>Filter aufheben (Esc)</source>
-        <translation>Effacer le filtre (Échap)</translation>
+        <translation>Effacer le filtre (Esc)</translation>
     </message>
 </context>
 <context>
@@ -5192,11 +5192,11 @@
     </message>
     <message>
         <source>Noch kein Ziel verwendet – wähle zuerst eine Ziffer 1–9.</source>
-        <translation>Aucune cible utilisée – choisissez d’abord un chiffre de 1 à 9.</translation>
+        <translation>Aucune cible utilisée pour l’instant – choisissez d’abord un chiffre de 1 à 9.</translation>
     </message>
     <message>
         <source>Ziel %1 ist nicht festgelegt (Einstellungen → Bewertung → Schnellablage).</source>
-        <translation>La cible %1 n’est pas définie (Réglages → Notation → Classement rapide).</translation>
+        <translation>La cible %1 n’est pas définie (Réglages → Notation → Rangement rapide).</translation>
     </message>
     <message>
         <source>Verschieben</source>
@@ -5213,24 +5213,24 @@
     <message numerus="yes">
         <source>%n Bild(er) nach „%1“ verschoben</source>
         <translation>
-            <numerusform>%n image déplacée vers « %1 »</numerusform>
-            <numerusform>%n images déplacées vers « %1 »</numerusform>
+            <numerusform>%n image déplacée vers «&#xa0;%1&#xa0;»</numerusform>
+            <numerusform>%n images déplacées vers «&#xa0;%1&#xa0;»</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n Bild(er) nach „%1“ kopiert</source>
         <translation>
-            <numerusform>%n image copiée vers « %1 »</numerusform>
-            <numerusform>%n images copiées vers « %1 »</numerusform>
+            <numerusform>%n image copiée vers «&#xa0;%1&#xa0;»</numerusform>
+            <numerusform>%n images copiées vers «&#xa0;%1&#xa0;»</numerusform>
         </translation>
     </message>
     <message>
         <source>Nach „%1“ verschoben</source>
-        <translation>Déplacée vers « %1 »</translation>
+        <translation>Déplacée vers «&#xa0;%1&#xa0;»</translation>
     </message>
     <message>
         <source>Nach „%1“ kopiert</source>
-        <translation>Copiée vers « %1 »</translation>
+        <translation>Copiée vers «&#xa0;%1&#xa0;»</translation>
     </message>
     <message>
         <source>Namenskonflikt</source>
@@ -5238,11 +5238,11 @@
     </message>
     <message>
         <source>„%1“ existiert bereits in „%2“.</source>
-        <translation>« %1 » existe déjà dans « %2 ».</translation>
+        <translation>«&#xa0;%1&#xa0;» existe déjà dans «&#xa0;%2&#xa0;».</translation>
     </message>
     <message>
         <source>„Ersetzen“ legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z widerruft alles.</source>
-        <translation>Remplacer place le fichier existant dans la corbeille, « Garder les deux » donne au nouveau un nom comme « %1 ». ⌘Z annule tout.</translation>
+        <translation>Remplacer place le fichier existant dans la corbeille, «&#xa0;Garder les deux&#xa0;» donne au nouveau un nom comme «&#xa0;%1&#xa0;». ⌘Z annule tout.</translation>
     </message>
     <message>
         <source>Ersetzen</source>
@@ -5258,7 +5258,7 @@
     </message>
     <message>
         <source>Für alle %1 Konflikte</source>
-        <translation>Pour les %1 conflits</translation>
+        <translation>Appliquer aux %1 conflits</translation>
     </message>
 </context>
 <context>
@@ -5296,23 +5296,23 @@
     <name>lf::RatingStore</name>
     <message>
         <source>„%1“ konnte nicht geschrieben werden (Ordner schreibgeschützt?).</source>
-        <translation>Impossible d’écrire « %1 » (dossier en lecture seule ?).</translation>
+        <translation>Impossible d’écrire «&#xa0;%1&#xa0;» (dossier en lecture seule&#xa0;?).</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
-        <translation>Impossible de lire « %1 ».</translation>
+        <translation>Impossible de lire «&#xa0;%1&#xa0;».</translation>
     </message>
     <message>
         <source>„%1“ ist zu groß.</source>
-        <translation>« %1 » est trop volumineux.</translation>
+        <translation>«&#xa0;%1&#xa0;» est trop volumineux.</translation>
     </message>
     <message>
         <source>Die XMP-Datei „%1“ ist beschädigt oder unbekannt aufgebaut und wird nicht verändert.</source>
-        <translation>Le fichier XMP « %1 » est endommagé ou de structure inconnue et n’est pas modifié.</translation>
+        <translation>Le fichier XMP «&#xa0;%1&#xa0;» est endommagé ou de structure inconnue et n’est pas modifié.</translation>
     </message>
     <message>
         <source>„%1“ konnte nicht ersetzt werden.</source>
-        <translation>Impossible de remplacer « %1 ».</translation>
+        <translation>Impossible de remplacer «&#xa0;%1&#xa0;».</translation>
     </message>
     <message>
         <source>Die Datei existiert nicht mehr.</source>
@@ -5344,7 +5344,7 @@
     </message>
     <message>
         <source>„%1“ wurde inzwischen verändert – Bewertung nicht gesichert.</source>
-        <translation>« %1 » a été modifié entre-temps – note non enregistrée.</translation>
+        <translation>«&#xa0;%1&#xa0;» a été modifié entre-temps – note non enregistrée.</translation>
     </message>
     <message>
         <source>Die Datei konnte nicht ersetzt werden.</source>
@@ -5360,7 +5360,7 @@
     </message>
     <message>
         <source>„%1“: %2 Die Bewertung steht deshalb in der XMP-Zusatzdatei.</source>
-        <translation>« %1 » : %2 La note est donc enregistrée dans le fichier annexe XMP.</translation>
+        <translation>«&#xa0;%1&#xa0;»&#xa0;: %2 La note est donc enregistrée dans le fichier annexe XMP.</translation>
     </message>
     <message>
         <source>Bewertung</source>
@@ -5384,15 +5384,15 @@
     </message>
     <message>
         <source>Zusatzbilder der Datei (z. B. eine HDR-Gain-Map) gingen beim Schreiben verloren.</source>
-        <translation>Des images annexes du fichier (p. ex. une gain map HDR) ont été perdues à l’écriture.</translation>
+        <translation>Des images supplémentaires du fichier (p. ex. une carte de gain HDR) ont été perdues lors de l’écriture.</translation>
     </message>
     <message>
         <source>Tags von „%1“ konnten nicht gelesen werden: %2</source>
-        <translation>Impossible de lire les tags de « %1 » : %2</translation>
+        <translation>Impossible de lire les tags de «&#xa0;%1&#xa0;»&#xa0;: %2</translation>
     </message>
     <message>
         <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
-        <translation>Impossible de définir les tags de « %1 » : %2</translation>
+        <translation>Impossible de définir les tags de «&#xa0;%1&#xa0;»&#xa0;: %2</translation>
     </message>
 </context>
 <context>
@@ -5576,19 +5576,19 @@
     </message>
     <message>
         <source>„%1“ kann nicht geschrieben werden.</source>
-        <translation>« %1 » ne peut pas être écrit.</translation>
+        <translation>«&#xa0;%1&#xa0;» ne peut pas être écrit.</translation>
     </message>
     <message>
         <source>Lumaflip ist nicht als App installiert (%1 fehlt).</source>
-        <translation>Lumaflip n’est pas installé en tant qu’application (%1 manquant).</translation>
+        <translation>Lumaflip n’est pas installé en tant qu’app (%1 manquant).</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gestartet werden.</source>
-        <translation>« %1 » ne peut pas être lancé.</translation>
+        <translation>«&#xa0;%1&#xa0;» ne peut pas être lancé.</translation>
     </message>
     <message>
         <source>Batch-Dateien werden aus Sicherheitsgründen nicht gestartet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les fichiers batch ne sont pas lancés, pour des raisons de sécurité.</translation>
     </message>
     <message>
         <source>„%1“ würde den Dateinamen als Befehl lesen und wird aus Sicherheitsgründen nicht gestartet.</source>
@@ -5596,11 +5596,11 @@
     </message>
     <message>
         <source>Die App wurde nicht gefunden.</source>
-        <translation type="unfinished"></translation>
+        <translation>L’app est introuvable.</translation>
     </message>
     <message>
         <source>Windows erlaubt Apps nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Windows ne permet pas aux apps de se définir elles-mêmes comme app par défaut. Les paramètres «&#xa0;Applications par défaut&#xa0;» ont été ouverts&#xa0;: choisissez-y Lumaflip pour les types de fichiers souhaités.</translation>
     </message>
 </context>
 <context>
@@ -5615,7 +5615,7 @@
     </message>
     <message>
         <source>Das Bild im Archiv ist beschädigt: %1</source>
-        <translation>L’image dans l’archive est endommagée : %1</translation>
+        <translation>L’image dans l’archive est endommagée&#xa0;: %1</translation>
     </message>
     <message>
         <source>Die Datei kann nicht gelesen werden.</source>
@@ -5650,7 +5650,7 @@
     <name>lf::StartScreenRecent</name>
     <message>
         <source>Zuletzt geöffnet</source>
-        <translation>Ouvert récemment</translation>
+        <translation>Ouverts récemment</translation>
     </message>
 </context>
 <context>
@@ -5669,19 +5669,19 @@
     </message>
     <message>
         <source>Die Tags von „%1“ können nicht gelesen werden.</source>
-        <translation>Impossible de lire les étiquettes de « %1 ».</translation>
+        <translation>Impossible de lire les tags de «&#xa0;%1&#xa0;».</translation>
     </message>
     <message>
         <source>„%1“ existiert nicht mehr.</source>
-        <translation type="unfinished">«&#xa0;%1&#xa0;» n’existe plus.</translation>
+        <translation>«&#xa0;%1&#xa0;» n’existe plus.</translation>
     </message>
     <message>
         <source>Dieses Dateisystem unterstützt keine Tags.</source>
-        <translation>Ce système de fichiers ne prend pas en charge les étiquettes.</translation>
+        <translation>Ce système de fichiers ne prend pas en charge les tags.</translation>
     </message>
     <message>
         <source>Die Tags von „%1“ können nicht gespeichert werden: %2</source>
-        <translation>Impossible d’enregistrer les étiquettes de « %1 » : %2</translation>
+        <translation>Impossible d’enregistrer les tags de «&#xa0;%1&#xa0;»&#xa0;: %2</translation>
     </message>
 </context>
 <context>
@@ -5719,7 +5719,7 @@
     <name>lf::UndoBackupStore</name>
     <message>
         <source>Die Sicherungskopie für „Widerrufen“ existiert nicht mehr.</source>
-        <translation>La sauvegarde pour «&#xa0;Annuler&#xa0;» n’existe plus.</translation>
+        <translation>La copie de sauvegarde pour «&#xa0;Annuler&#xa0;» n’existe plus.</translation>
     </message>
     <message>
         <source>Nicht genug Speicherplatz für die Sicherungskopie (Widerrufen) – nichts gesichert.</source>
@@ -5765,7 +5765,7 @@
     </message>
     <message>
         <source>„%1“ kann nicht geöffnet werden</source>
-        <translation>Impossible d’ouvrir « %1 »</translation>
+        <translation>Impossible d’ouvrir «&#xa0;%1&#xa0;»</translation>
     </message>
     <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
@@ -5996,7 +5996,7 @@
     </message>
     <message>
         <source>Bilder in Archiven und PDF-Seiten können nicht als Schreibtischhintergrund festgelegt werden.</source>
-        <translation>Les images d’archives et les pages PDF ne peuvent pas devenir fond d’écran.</translation>
+        <translation>Les images d’archives et les pages PDF ne peuvent pas être définies comme fond d’écran.</translation>
     </message>
     <message>
         <source>Es wurde kein Bildschirm gefunden.</source>
@@ -6005,15 +6005,15 @@
     <message>
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
-        <translation>%1: %2</translation>
+        <translation>%1&#xa0;: %2</translation>
     </message>
     <message>
         <source>„%1“ ist nicht installiert.</source>
-        <translation>« %1 » n’est pas installé.</translation>
+        <translation>«&#xa0;%1&#xa0;» n’est pas installé.</translation>
     </message>
     <message>
         <source>„%1“ ist fehlgeschlagen.</source>
-        <translation>« %1 » a échoué.</translation>
+        <translation>«&#xa0;%1&#xa0;» a échoué.</translation>
     </message>
     <message>
         <source>Alle Bildschirme</source>
@@ -6061,7 +6061,7 @@
     </message>
     <message>
         <source>Zuschneiden ist nur in der Einzelbildansicht möglich.</source>
-        <translation>Le recadrage fonctionne dans la vue d’une seule image.</translation>
+        <translation>Le recadrage n’est possible que dans l’affichage d’une seule image.</translation>
     </message>
     <message>
         <source>Kein Bild zum Zuschneiden.</source>
@@ -6069,7 +6069,7 @@
     </message>
     <message>
         <source>Zuschneiden: Rahmen ziehen – Enter sichert, Esc bricht ab</source>
-        <translation>Recadrer&#xa0;: tracez un cadre – Entrée enregistre, Échap annule</translation>
+        <translation>Recadrer&#xa0;: tracez un cadre – Entrée enregistre, Esc annule</translation>
     </message>
     <message>
         <source>Der vorherige Zuschnitt wird noch gesichert.</source>
@@ -6082,7 +6082,7 @@
     <message>
         <source>%1-zugeschnitten.%2</source>
         <extracomment>default file name of a cropped copy: &quot;&lt;name&gt;-zugeschnitten.&lt;suffix&gt;&quot;</extracomment>
-        <translation>%1-recadre.%2</translation>
+        <translation>%1-recadré.%2</translation>
     </message>
     <message>
         <source>Zugeschnittenes Bild sichern unter</source>
@@ -6098,7 +6098,7 @@
     </message>
     <message>
         <source>„%1“ existiert bereits. Möchtest du die Datei ersetzen?</source>
-        <translation>«&#xa0;%1&#xa0;» existe déjà. Le remplacer ?</translation>
+        <translation>«&#xa0;%1&#xa0;» existe déjà. Voulez-vous le remplacer&#xa0;?</translation>
     </message>
     <message>
         <source>Das zugeschnittene Bild bekommt die Endung des Originals (.%1).</source>
@@ -6118,7 +6118,7 @@
     </message>
     <message>
         <source>Zugeschnitten exportieren …</source>
-        <translation>Exporter recadré…</translation>
+        <translation>Exporter le recadrage…</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nur durch Neukodieren gesichert werden.</source>
@@ -6177,11 +6177,11 @@
     <name>lf::WindowExtras</name>
     <message>
         <source>Ordnerkarte</source>
-        <translation>Carte</translation>
+        <translation>Carte du dossier</translation>
     </message>
     <message>
         <source>Name: „%1“</source>
-        <translation>Nom : « %1 »</translation>
+        <translation>Nom&#xa0;: «&#xa0;%1&#xa0;»</translation>
     </message>
     <message>
         <source>Zufällig</source>
@@ -6197,7 +6197,7 @@
     </message>
     <message>
         <source>Kein Dateiname passt zu „%1“ – Esc hebt den Filter auf</source>
-        <translation>Aucun nom de fichier ne correspond à « %1 » – Échap efface le filtre</translation>
+        <translation>Aucun nom de fichier ne correspond à «&#xa0;%1&#xa0;» – Esc efface le filtre</translation>
     </message>
     <message>
         <source>Immer im Vordergrund</source>
@@ -6220,11 +6220,11 @@
     <name>lf::WindowIntegration</name>
     <message>
         <source>Comics: von rechts nach links lesen (← = weiter)</source>
-        <translation>BD : lecture de droite à gauche (← = suivant)</translation>
+        <translation>BD&#xa0;: lecture de droite à gauche (← = suivant)</translation>
     </message>
     <message>
         <source>Comics: von links nach rechts lesen</source>
-        <translation>BD : lecture de gauche à droite</translation>
+        <translation>BD&#xa0;: lecture de gauche à droite</translation>
     </message>
     <message>
         <source>Live Text wird geladen …</source>
@@ -6264,7 +6264,7 @@
     </message>
     <message>
         <source>„%1“ als Schreibtischhintergrund festlegen?</source>
-        <translation>Définir « %1 » comme fond d’écran ?</translation>
+        <translation>Définir «&#xa0;%1&#xa0;» comme fond d’écran&#xa0;?</translation>
     </message>
     <message>
         <source>Auf allen Bildschirmen</source>
@@ -6284,7 +6284,7 @@
     </message>
     <message>
         <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
-        <translation>Impossible de modifier le fond d’écran : %1</translation>
+        <translation>Impossible de modifier le fond d’écran&#xa0;: %1</translation>
     </message>
 </context>
 <context>
@@ -6295,7 +6295,7 @@
     </message>
     <message>
         <source>Filmstreifen</source>
-        <translation>Pellicule</translation>
+        <translation>Bande de vignettes</translation>
     </message>
 </context>
 <context>

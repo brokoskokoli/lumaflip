@@ -8,11 +8,11 @@ Status: **maschinell, ungeprüft** → **geprüft** (Name/Handle, Datum).
 |---|---|---|---|---|
 | Deutsch | `de` | Ausgangssprache | – | `lumaflip_de.ts` enthält nur die Pluralformen |
 | Englisch | `en` | maschinell durchgesehen, ungeprüft | | Okt. 2026: Apple-Begriffe und HIG-Schreibweise (Title Case/Sentence case, Kurzformen, Geviertstrich), Glossar en/pl/cs |
-| Französisch | `fr` | maschinell, ungeprüft | | Einheiten Ko/Mo/Go; Filmstreifen = „Pellicule“ prüfen |
-| Spanisch | `es` | maschinell, ungeprüft | | |
-| Italienisch | `it` | maschinell, ungeprüft | | Tabs = „pannelli“ prüfen |
-| Portugiesisch (Brasilien) | `pt_BR` | maschinell, ungeprüft | | |
-| Portugiesisch (Portugal) | `pt_PT` | maschinell, ungeprüft | | Qt-eigene Texte kommen aus `qtbase_pt_BR` (Qt liefert kein pt_PT) |
+| Französisch | `fr` | maschinell gegen Plattform-Glossare geprüft, nicht muttersprachlich | Claude (maschinell), 2026-10-11 | „vous“; U+00A0 vor : ; ? ! » und nach «; Filmstreifen = „Bande de vignettes“ (nicht „Pellicule“ = Apple-Aufnahmen); Aussortieren = „Mode sélection“ prüfen |
+| Spanisch | `es` | maschinell gegen Plattform-Glossare geprüft, nicht muttersprachlich | Claude (maschinell), 2026-10-11 | „tú“; “ ”; Aussortieren = „Criba“, Pick = „Marcar“ prüfen |
+| Italienisch | `it` | maschinell gegen Plattform-Glossare geprüft, nicht muttersprachlich | Claude (maschinell), 2026-10-11 | „tu“; “ ”; Tabs = „pannelli“ bestätigt (AppKit), Infopanel daher „Riquadro informazioni“; Aussortieren = „scrematura“ prüfen |
+| Portugiesisch (Brasilien) | `pt_BR` | maschinell gegen Plattform-Glossare geprüft, nicht muttersprachlich | Claude (maschinell), 2026-10-11 | „você“; Title Case für Menübefehle und Knöpfe wie Apple pt_BR; Pick = „Marcar“ (Lightroom evtl. „Sinalizar“) prüfen |
+| Portugiesisch (Portugal) | `pt_PT` | maschinell gegen Plattform-Glossare geprüft, nicht muttersprachlich | Claude (maschinell), 2026-10-11 | unpersönlich („Pretende…?“); „aplicação“ statt „app“ (Apple/Microsoft pt_PT); Qt-eigene Texte kommen aus `qtbase_pt_BR` (Qt liefert kein pt_PT) |
 | Niederländisch | `nl` | maschinell geprüft gegen Plattform-Glossar (macOS/Windows/Lightroom), nicht muttersprachlich geprüft | Claude, 2026-10-11 | 456 Texte überarbeitet; Begriffe: GLOSSARY.md (Abschnitt nl/sv/da/nb/fi); prüfen: Aussortieren = „Schiften“, Format = „Structuur“ (wie macOS nl), Markeren/Afwijzen als Infinitiv |
 | Polnisch | `pl` | maschinell durchgesehen, ungeprüft | | Okt. 2026: macOS-pl-Begriffe (Zachowaj, Kosz, Pokaż w Finderze), Pluralformen; prüfen: „Szybki przegląd“ statt Quick Look, „Oznacz jako wybrane“ (lang), „Kurtyna“ (Wischen) |
 | Schwedisch | `sv` | maschinell geprüft gegen Plattform-Glossar (macOS/Windows/Lightroom), nicht muttersprachlich geprüft | Claude, 2026-10-11 | 292 Texte überarbeitet; Begriffe: GLOSSARY.md; Markieren = „Flagga“ (macOS „Markera“ = auswählen); prüfen: „redigerare“ (Editor), Einheit „kB“ |
