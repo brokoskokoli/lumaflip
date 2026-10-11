@@ -94,8 +94,8 @@
         <translation>Niet gevonden: %1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>Afbeeldingen (%1);;Alle bestanden (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>Afbeeldingen, archieven en pdf-documenten (%1);;Afbeeldingen (%2);;Archieven en pdf-documenten (%3);;Alle bestanden (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -177,6 +177,14 @@
     <message>
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>Het archief bevat geen afbeeldingen.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>Het archief is met een wachtwoord beveiligd – versleutelde archieven worden niet ondersteund.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>Het archief is te groot om deze afbeelding eruit te lezen.</translation>
     </message>
 </context>
 <context>
@@ -438,10 +446,6 @@
         <translation>Verliesloos bijsnijden van JPEG-bestanden is in deze versie niet beschikbaar.</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
-        <translation>Afbeeldingen in archieven en PDF-documenten kunnen niet bijgesneden worden bewaard – gebruik ‘Exporteer’.</translation>
-    </message>
-    <message>
         <source>Die Datei existiert nicht mehr.</source>
         <translation>Het bestand bestaat niet meer.</translation>
     </message>
@@ -450,12 +454,16 @@
         <translation>De bestandsstructuur wordt voor bewaren niet herkend.</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
-        <translation>RAW-bestanden worden nooit gewijzigd. Gebruik ‘Exporteer’ voor een bijgesneden kopie.</translation>
+        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>Afbeeldingen in archieven en pdf-documenten worden niet gewijzigd. De uitsnede kan als nieuw bestand worden geëxporteerd.</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
-        <translation>Geanimeerde bestanden of bestanden met meerdere pagina’s kunnen niet bijgesneden worden bewaard.</translation>
+        <source>RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>RAW-bestanden worden nooit gewijzigd. De uitsnede kan als nieuw bestand worden geëxporteerd.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
+        <translation>Geanimeerde bestanden of bestanden met meerdere pagina’s kunnen niet bijgesneden worden bewaard. De uitsnede van de eerste afbeelding kan als nieuw bestand worden geëxporteerd.</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
@@ -468,6 +476,10 @@
     <message>
         <source>In „%1“ kann nicht geschrieben werden.</source>
         <translation>Kan niet schrijven in ‘%1’.</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>‘%1’ bestaat al.</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
@@ -498,12 +510,20 @@
         <translation>Bij opnieuw coderen blijft de afbeelding niet exact gelijk (kleurmodel, bitdiepte, palet of transparantie zouden veranderen).</translation>
     </message>
     <message>
+        <source>Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.</source>
+        <translation>Dit formaat kan hier niet worden geschreven. De uitsnede kan in een ander formaat worden geëxporteerd.</translation>
+    </message>
+    <message>
         <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
         <translation>Dit formaat is lossy. De uitsnede kan alleen worden bewaard door de afbeelding opnieuw te coderen – daarbij gaat wat beeldkwaliteit verloren.</translation>
     </message>
     <message>
         <source>Zusatzbilder (%1) gehen dabei verloren.</source>
         <translation>Extra afbeeldingen (%1) gaan daarbij verloren.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.</source>
+        <translation>Metadata (EXIF, XMP, IPTC) gaan bij het opnieuw coderen verloren.</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
@@ -678,12 +698,20 @@
 <context>
     <name>lf::CustomActionsEditor</name>
     <message>
+        <source>%1 ist schon belegt (%2); im Bildfenster hat die eigene Aktion Vorrang.</source>
+        <translation>%1 is al in gebruik (%2); in het afbeeldingsvenster heeft de eigen actie voorrang.</translation>
+    </message>
+    <message>
         <source>Eigene Aktion</source>
         <translation>Eigen actie</translation>
     </message>
     <message>
         <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
         <translation>Naam van een opdracht uit de Opdrachten-app; die krijgt het bestand als invoer.</translation>
+    </message>
+    <message>
+        <source>Programm mit Argumenten, z. B. &quot;C:\Tools\tool.exe&quot; --flag; die Datei wird als eigenes Argument angehängt und nie über cmd.exe gestartet. Batch-Dateien (.bat, .cmd) sind nicht erlaubt.</source>
+        <translation>Programma met argumenten, bijv. &quot;C:\Tools\tool.exe&quot; --flag; het bestand wordt als apart argument toegevoegd en nooit via cmd.exe gestart. Batchbestanden (.bat, .cmd) zijn niet toegestaan.</translation>
     </message>
     <message>
         <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
@@ -722,8 +750,8 @@
         <translation>Toets</translation>
     </message>
     <message>
-        <source>„%1“: %2 ist schon belegt (%3).</source>
-        <translation>‘%1’: %2 is al in gebruik (%3).</translation>
+        <source>„%1“: %2</source>
+        <translation>‘%1’: %2</translation>
     </message>
     <message>
         <source>Hinzufügen …</source>
@@ -1130,6 +1158,14 @@
     <message>
         <source>Exportieren</source>
         <translation>Exporteer</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren</source>
+        <translation>Exporteer bijgesneden</translation>
+    </message>
+    <message>
+        <source>Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>Exporteer de uitsnede van ‘%1’ als nieuw bestand. Het origineel blijft ongewijzigd.</translation>
     </message>
     <message>
         <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
@@ -1611,12 +1647,24 @@
         <translation>%1: de doelmap kan niet worden aangemaakt.</translation>
     </message>
     <message>
+        <source>Die vorhandene Datei konnte nicht in den Papierkorb gelegt werden.</source>
+        <translation>Het bestaande bestand kon niet naar de prullenmand worden verplaatst.</translation>
+    </message>
+    <message>
+        <source>Die vorhandene Datei liegt im Papierkorb, die neue konnte nicht an ihre Stelle gelegt werden: %1</source>
+        <translation>Het bestaande bestand staat in de prullenmand, maar het nieuwe kon niet op zijn plaats worden gezet: %1</translation>
+    </message>
+    <message>
         <source>Das Bild konnte nicht geschrieben werden.</source>
         <translation>De afbeelding kon niet worden geschreven.</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden.</source>
         <translation>De afbeelding kan niet worden gedecodeerd.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) werden hier nicht übernommen.</source>
+        <translation>Metadata (EXIF, XMP, IPTC) worden hier niet overgenomen.</translation>
     </message>
     <message>
         <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
@@ -1637,6 +1685,10 @@
     <message>
         <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
         <translation>%1 kan geen HDR-gainmap opslaan – de afbeelding is als SDR geëxporteerd.</translation>
+    </message>
+    <message>
+        <source>Bilder aus Archiven und PDF-Dokumenten werden als 8-Bit-sRGB exportiert – HDR und erweiterter Farbraum gehen verloren.</source>
+        <translation>Afbeeldingen uit archieven en pdf-documenten worden als 8-bits sRGB geëxporteerd – HDR en breed kleurengamma gaan verloren.</translation>
     </message>
 </context>
 <context>
@@ -3628,6 +3680,14 @@
 </context>
 <context>
     <name>lf::MenuExtras</name>
+    <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>Losse pdf-pagina’s kunnen niet aan andere apps worden doorgegeven.</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>De afbeelding wordt uit het archief uitgepakt – probeer het zo opnieuw.</translation>
+    </message>
     <message>
         <source>Öffnen mit</source>
         <translation>Open met</translation>
@@ -5679,6 +5739,14 @@
         <translation>Je hebt geen leesrechten voor de map ‘%1’, daarom toont Lumaflip alleen het geopende bestand. Je kunt de toegangsrechten in de Finder wijzigen via Archief → Toon info → ‘Delen en toegangsrechten’.</translation>
     </message>
     <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>Geen volgende map of volgend archief</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>Geen vorige map of vorig archief</translation>
+    </message>
+    <message>
         <source>Kein weiterer Ordner mit Bildern</source>
         <translation>Geen volgende map met afbeeldingen</translation>
     </message>
@@ -5918,6 +5986,10 @@
         <translation>Bijsnijden: sleep een kader – Enter bewaart, Esc annuleert</translation>
     </message>
     <message>
+        <source>Der vorige Zuschnitt wird noch gespeichert.</source>
+        <translation>De vorige uitsnede wordt nog bewaard.</translation>
+    </message>
+    <message>
         <source>Kein Bildbereich ausgewählt.</source>
         <translation>Geen gebied geselecteerd.</translation>
     </message>
@@ -5931,8 +6003,36 @@
         <translation>Bijgesneden afbeelding bewaren als</translation>
     </message>
     <message>
+        <source>Wie das Original (*.%1)</source>
+        <translation>Zoals het origineel (*.%1)</translation>
+    </message>
+    <message>
         <source>Zuschneiden</source>
         <translation>Snijd bij</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon. Ersetzen?</source>
+        <translation>‘%1’ bestaat al. Vervangen?</translation>
+    </message>
+    <message>
+        <source>Das zugeschnittene Bild bekommt die Endung des Originals (.%1).</source>
+        <translation>De bijgesneden afbeelding krijgt de extensie van het origineel (.%1).</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>Vervang</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>De uitsnede kon niet worden bewaard.</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportiert als „%1“</source>
+        <translation>Bijgesneden geëxporteerd als ‘%1’</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren …</source>
+        <translation>Exporteer bijgesneden…</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>

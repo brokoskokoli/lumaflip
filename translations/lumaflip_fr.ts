@@ -94,8 +94,8 @@
         <translation>Introuvable&#xa0;: %1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>Images (%1);;Tous les fichiers (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>Images, archives et documents PDF (%1);;Images (%2);;Archives et documents PDF (%3);;Tous les fichiers (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -177,6 +177,14 @@
     <message>
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>L’archive ne contient aucune image.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>L’archive est protégée par un mot de passe – les archives chiffrées ne sont pas prises en charge.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>L’archive est trop volumineuse pour en lire cette image.</translation>
     </message>
 </context>
 <context>
@@ -438,10 +446,6 @@
         <translation>Le recadrage sans perte des fichiers JPEG n’est pas disponible dans cette version.</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
-        <translation>Les images d’archives et de documents PDF ne peuvent pas être enregistrées recadrées – utilisez «&#xa0;Exporter&#xa0;».</translation>
-    </message>
-    <message>
         <source>Die Datei existiert nicht mehr.</source>
         <translation>Le fichier n’existe plus.</translation>
     </message>
@@ -450,12 +454,16 @@
         <translation>Le format de fichier n’est pas reconnu pour l’enregistrement.</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
-        <translation>Les fichiers RAW ne sont jamais modifiés. Pour une copie recadrée, utilisez «&#xa0;Exporter&#xa0;».</translation>
+        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>Les images contenues dans des archives et des documents PDF ne sont pas modifiées. La sélection peut être exportée dans un nouveau fichier.</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
-        <translation>Les fichiers animés ou multipages ne peuvent pas être enregistrés recadrés.</translation>
+        <source>RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>Les fichiers RAW ne sont jamais modifiés. La sélection peut être exportée dans un nouveau fichier.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
+        <translation>Les fichiers animés ou multipages ne peuvent pas être enregistrés recadrés. La sélection de la première image peut être exportée dans un nouveau fichier.</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
@@ -468,6 +476,10 @@
     <message>
         <source>In „%1“ kann nicht geschrieben werden.</source>
         <translation>Impossible d’écrire dans «&#xa0;%1&#xa0;».</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>«&#xa0;%1&#xa0;» existe déjà.</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
@@ -498,12 +510,20 @@
         <translation>Le réencodage ne conserverait pas l’image à l’identique (modèle de couleur, profondeur, palette ou transparence seraient modifiés).</translation>
     </message>
     <message>
+        <source>Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.</source>
+        <translation>Ce format ne peut pas être écrit ici. La sélection peut être exportée dans un autre format.</translation>
+    </message>
+    <message>
         <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
         <translation>Ce format est avec perte. Le recadrage ne peut être enregistré qu’en réencodant l’image – un peu de qualité est perdue.</translation>
     </message>
     <message>
         <source>Zusatzbilder (%1) gehen dabei verloren.</source>
         <translation>Les images supplémentaires (%1) sont perdues.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.</source>
+        <translation>Les métadonnées (EXIF, XMP, IPTC) sont perdues lors du réencodage.</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
@@ -678,12 +698,20 @@
 <context>
     <name>lf::CustomActionsEditor</name>
     <message>
+        <source>%1 ist schon belegt (%2); im Bildfenster hat die eigene Aktion Vorrang.</source>
+        <translation>%1 est déjà utilisé (%2) ; dans la fenêtre d’image, l’action personnalisée est prioritaire.</translation>
+    </message>
+    <message>
         <source>Eigene Aktion</source>
         <translation>Action personnalisée</translation>
     </message>
     <message>
         <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
         <translation>Nom d’un raccourci de l’app Raccourcis ; il reçoit le fichier en entrée.</translation>
+    </message>
+    <message>
+        <source>Programm mit Argumenten, z. B. &quot;C:\Tools\tool.exe&quot; --flag; die Datei wird als eigenes Argument angehängt und nie über cmd.exe gestartet. Batch-Dateien (.bat, .cmd) sind nicht erlaubt.</source>
+        <translation>Programme avec arguments, p. ex. &quot;C:\Tools\tool.exe&quot; --flag ; le fichier est ajouté comme argument distinct et n’est jamais lancé via cmd.exe. Les fichiers batch (.bat, .cmd) ne sont pas autorisés.</translation>
     </message>
     <message>
         <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
@@ -722,8 +750,8 @@
         <translation>Touche</translation>
     </message>
     <message>
-        <source>„%1“: %2 ist schon belegt (%3).</source>
-        <translation>« %1 » : %2 est déjà utilisé (%3).</translation>
+        <source>„%1“: %2</source>
+        <translation>«&#xa0;%1&#xa0;» : %2</translation>
     </message>
     <message>
         <source>Hinzufügen …</source>
@@ -1130,6 +1158,14 @@
     <message>
         <source>Exportieren</source>
         <translation>Exporter</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren</source>
+        <translation>Exporter recadré</translation>
+    </message>
+    <message>
+        <source>Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>Exporter la sélection de «&#xa0;%1&#xa0;» dans un nouveau fichier. L’original reste inchangé.</translation>
     </message>
     <message>
         <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
@@ -1611,12 +1647,24 @@
         <translation>%1&#xa0;: impossible de créer le dossier de destination.</translation>
     </message>
     <message>
+        <source>Die vorhandene Datei konnte nicht in den Papierkorb gelegt werden.</source>
+        <translation>Le fichier existant n’a pas pu être placé dans la corbeille.</translation>
+    </message>
+    <message>
+        <source>Die vorhandene Datei liegt im Papierkorb, die neue konnte nicht an ihre Stelle gelegt werden: %1</source>
+        <translation>Le fichier existant est dans la corbeille, mais le nouveau n’a pas pu prendre sa place : %1</translation>
+    </message>
+    <message>
         <source>Das Bild konnte nicht geschrieben werden.</source>
         <translation>L’image n’a pas pu être écrite.</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden.</source>
         <translation>Impossible de décoder l’image.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) werden hier nicht übernommen.</source>
+        <translation>Les métadonnées (EXIF, XMP, IPTC) ne sont pas reprises ici.</translation>
     </message>
     <message>
         <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
@@ -1637,6 +1685,10 @@
     <message>
         <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
         <translation>%1 ne peut pas enregistrer de gain map HDR – l’image a été exportée en SDR.</translation>
+    </message>
+    <message>
+        <source>Bilder aus Archiven und PDF-Dokumenten werden als 8-Bit-sRGB exportiert – HDR und erweiterter Farbraum gehen verloren.</source>
+        <translation>Les images d’archives et de documents PDF sont exportées en sRGB 8 bits – le HDR et la gamme étendue sont perdus.</translation>
     </message>
 </context>
 <context>
@@ -3628,6 +3680,14 @@
 </context>
 <context>
     <name>lf::MenuExtras</name>
+    <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>Les pages PDF individuelles ne peuvent pas être transmises à d’autres apps.</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>L’image est en cours d’extraction de l’archive – réessayez dans un instant.</translation>
+    </message>
     <message>
         <source>Öffnen mit</source>
         <translation>Ouvrir avec</translation>
@@ -5679,6 +5739,14 @@
         <translation>Vous n’avez pas l’autorisation de lecture pour le dossier «&#xa0;%1&#xa0;», Lumaflip n’affiche donc que le fichier ouvert. Vous pouvez modifier les autorisations dans le Finder, via Fichier → Lire les informations → «&#xa0;Partage et permissions&#xa0;».</translation>
     </message>
     <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>Aucun dossier ni archive suivant</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>Aucun dossier ni archive précédent</translation>
+    </message>
+    <message>
         <source>Kein weiterer Ordner mit Bildern</source>
         <translation>Aucun autre dossier contenant des images</translation>
     </message>
@@ -5918,6 +5986,10 @@
         <translation>Recadrer&#xa0;: tracez un cadre – Entrée enregistre, Échap annule</translation>
     </message>
     <message>
+        <source>Der vorige Zuschnitt wird noch gespeichert.</source>
+        <translation>Le recadrage précédent est encore en cours d’enregistrement.</translation>
+    </message>
+    <message>
         <source>Kein Bildbereich ausgewählt.</source>
         <translation>Aucune zone sélectionnée.</translation>
     </message>
@@ -5931,8 +6003,36 @@
         <translation>Enregistrer l’image recadrée sous</translation>
     </message>
     <message>
+        <source>Wie das Original (*.%1)</source>
+        <translation>Comme l’original (*.%1)</translation>
+    </message>
+    <message>
         <source>Zuschneiden</source>
         <translation>Recadrer</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon. Ersetzen?</source>
+        <translation>«&#xa0;%1&#xa0;» existe déjà. Le remplacer ?</translation>
+    </message>
+    <message>
+        <source>Das zugeschnittene Bild bekommt die Endung des Originals (.%1).</source>
+        <translation>L’image recadrée reçoit l’extension de l’original (.%1).</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>Remplacer</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>Le recadrage n’a pas pu être enregistré.</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportiert als „%1“</source>
+        <translation>Copie recadrée exportée sous «&#xa0;%1&#xa0;»</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren …</source>
+        <translation>Exporter recadré…</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>

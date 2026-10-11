@@ -2,12 +2,14 @@
 // M2 media in the core: animation frames through FrameReader (F-FMT-03) and pages of
 // multi-page files, decoded and cached per page by the ImageProvider (F-FMT-04).
 
+#include "../integration/GifTestUtil.h"
 #include "CorpusTestUtil.h"
 #include "QtTestApp.h"
 #include "core/Decoder.h"
 #include "core/ImageProvider.h"
 
 #include <QJsonArray>
+#include <QTemporaryDir>
 #include <gtest/gtest.h>
 
 using namespace lf;
@@ -86,6 +88,72 @@ TEST(AnimationFrames, F_FMT_03_DecodeReportsFrameCount) {
     ASSERT_TRUE(still);
     EXPECT_EQ(still->frameCount, 1);
     EXPECT_EQ(still->pageCount, 1);
+}
+
+// B-2: the frame source of a generated GIF (every platform, no corpus needed): the frames
+// differ, carry their delay, and the decode reports the file's loop count as the number of
+// plays (NETSCAPE loop count n = n + 1 plays, no loop extension = once, 0 = endlessly).
+TEST(AnimationFrames, F_FMT_03_GeneratedGifFramesAndLoopCount) {
+    ensureQtApp();
+    QTemporaryDir dir;
+    ASSERT_TRUE(dir.isValid());
+    const struct {
+        int netscape;
+        int plays;
+    } cases[] = {{-1, 1}, {0, 0}, {1, 2}, {2, 3}};
+    for (const auto& c : cases) {
+        SCOPED_TRACE(c.netscape);
+        const QString path = dir.filePath(QStringLiteral("loop%1.gif").arg(c.netscape + 1));
+        ASSERT_TRUE(writeAnimatedGif(path, QSize(24, 16), 4, 5, c.netscape));
+        QString error;
+        auto img = DecoderRegistry::instance().decode(path, DecodeRequest{}, &error);
+        ASSERT_TRUE(img) << error.toStdString();
+        EXPECT_EQ(img->frameCount, 4);
+        EXPECT_EQ(img->loopCount, c.plays);
+        EXPECT_EQ(img->frameDurationMs, 50);
+    }
+    auto reader = DecoderRegistry::instance().openFrames(dir.filePath(QStringLiteral("loop1.gif")));
+    ASSERT_TRUE(reader);
+    ASSERT_EQ(reader->frameCount(), 4);
+    for (int i : {0, 1, 2, 3, 1}) { // in order, then back (stepping with ',')
+        SCOPED_TRACE(i);
+        QString error;
+        auto frame = reader->readFrame(i, DecodeRequest{}, &error);
+        ASSERT_TRUE(frame) << error.toStdString();
+        EXPECT_EQ(frame->frame, i);
+        EXPECT_EQ(frame->frameDurationMs, 50);
+        EXPECT_EQ(frame->loopCount, 0);
+        const QColor want = gifPaletteColor(i);
+        expectColor(centerColor(frame->image), {want.red(), want.green(), want.blue(), 255}, "frame color");
+    }
+    // Downscaled frames (the size of a fitted first frame) are still the right frames.
+    DecodeRequest small;
+    small.maxPixelSize = 12;
+    QString error;
+    auto frame = reader->readFrame(2, small, &error);
+    ASSERT_TRUE(frame) << error.toStdString();
+    EXPECT_EQ(frame->image.size(), QSize(12, 8));
+    const QColor want = gifPaletteColor(2);
+    expectColor(centerColor(frame->image), {want.red(), want.green(), want.blue(), 255}, "small frame color");
+}
+
+// The corpus animations loop endlessly (written with loop count 0).
+TEST(AnimationFrames, F_FMT_03_CorpusLoopCount) {
+    LF_REQUIRE_CORPUS();
+#ifdef LF_GENERIC_PLATFORM
+    GTEST_SKIP() << "animated WebP/APNG need the platform decoder";
+#endif
+    for (const char* name : {"anim.gif", "anim.png", "anim.webp"}) {
+        SCOPED_TRACE(name);
+        const QString path = corpusFile(QString::fromLatin1(name));
+        if (!QFileInfo::exists(path))
+            continue; // optional (WebP needs img2webp)
+        QString error;
+        auto img = DecoderRegistry::instance().decode(path, DecodeRequest{}, &error);
+        ASSERT_TRUE(img) << error.toStdString();
+        EXPECT_EQ(img->frameCount, 3);
+        EXPECT_EQ(img->loopCount, 0);
+    }
 }
 
 TEST(MultiPage, F_FMT_04_DecodePagesTiffAndIco) {

@@ -47,6 +47,10 @@ Listing listZip(const QString& path) {
         out.error = QFileInfo::exists(path) ? messageDamagedArchive() : zip.errorString();
         return out;
     }
+    if (zip.names().isEmpty() && zip.encryptedCount() > 0) {
+        out.error = messageEncryptedArchive();
+        return out;
+    }
     const QStringList names = zip.names();
     for (const QString& n : names) {
         if (out.members.size() >= kMaxMembers)
@@ -86,7 +90,8 @@ std::optional<QByteArray> readZip(const QString& path, const QString& member, QS
     const auto m = stored.isEmpty() ? std::nullopt : zip.member(stored);
     if (!m) {
         if (error)
-            *error = Tr::tr("„%1“ fehlt im Archiv.").arg(member);
+            *error = zip.isEncrypted(member) ? messageEncryptedArchive()
+                                             : Tr::tr("„%1“ fehlt im Archiv.").arg(member);
         return std::nullopt;
     }
     if (qint64(m->uncompressedSize) > kMaxMemberBytes) {
@@ -130,6 +135,12 @@ QString messageDamagedArchive() {
 QString messageNoImages() {
     return Tr::tr("Das Archiv enthält keine Bilder.");
 }
+QString messageEncryptedArchive() {
+    return Tr::tr("Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.");
+}
+QString messageArchiveTooLarge() {
+    return Tr::tr("Das Archiv ist zu groß, um dieses Bild daraus zu lesen.");
+}
 
 bool libArchiveAvailable() {
     return libarchive::available();
@@ -168,6 +179,17 @@ std::optional<QByteArray> readLocal(const QString& containerPath, const QString&
     if (error)
         *error = messageUnsupportedArchive();
     return std::nullopt;
+}
+
+std::optional<QVector<Extracted>> readRunLocal(const QString& containerPath, const QString& member,
+                                               QString* error) {
+    if (vpath::containerKind(containerPath) == vpath::ContainerKind::LibArchive)
+        return libarchive::readRun(containerPath, member, kMaxMemberBytes, kMaxRunBytes,
+                                   &vpath::isImageMemberName, error);
+    auto data = readLocal(containerPath, member, error);
+    if (!data)
+        return std::nullopt;
+    return QVector<Extracted>{Extracted{member.normalized(QString::NormalizationForm_C), std::move(*data)}};
 }
 
 Listing list(const QString& containerPath) {
@@ -223,6 +245,41 @@ std::optional<QByteArray> read(const QString& containerPath, const QString& memb
         return r->data;
     }
     return readLocal(containerPath, member, error);
+}
+
+std::optional<QVector<Extracted>> readRun(const QString& containerPath, const QString& member,
+                                          QString* error) {
+    const auto pool = DecoderHelperPool::shared();
+    if (!pool)
+        return readRunLocal(containerPath, member, error);
+    ipc::Request req;
+    req.op = ipc::Op::ArchiveReadRun;
+    req.path = containerPath;
+    req.member = member;
+    DecoderHelperPool::Failure failure = DecoderHelperPool::Failure::None;
+    QString callError;
+    auto r = pool->call(req, kReadTimeoutMs, &failure, &callError);
+    if (!r || !r->ok) {
+        if (error)
+            *error = r ? r->error : callError;
+        return std::nullopt;
+    }
+    // The helper's answer is checked like any other input: member i is the next
+    // members[i].size bytes of data; the first one is the wanted member.
+    QVector<Extracted> out;
+    qint64 at = 0;
+    for (const Member& m : std::as_const(r->members)) {
+        if (m.size < 0 || m.size > kMaxMemberBytes || m.size > r->data.size() - at || !acceptName(m.name))
+            break;
+        out.append(Extracted{m.name, r->data.mid(at, m.size)});
+        at += m.size;
+    }
+    if (out.isEmpty() || out.first().name != member.normalized(QString::NormalizationForm_C)) {
+        if (error)
+            *error = messageDamagedArchive();
+        return std::nullopt;
+    }
+    return out;
 }
 
 void sortMemberEntries(QVector<FileEntry>& entries, const NameCollator& collator, bool ascending) {

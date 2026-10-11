@@ -6,6 +6,7 @@
 
 #include "QtTestApp.h"
 #include "core/CustomActions.h"
+#include "core/InputBindings.h"
 #include "core/LiveText.h"
 #include "core/ServiceTypes.h"
 #include "core/Settings.h"
@@ -451,4 +452,39 @@ TEST(CustomActions, F_FILE_10_StoredAsJsonWithKeysAndConfirmation) {
     const CustomActionRun::Result r = runAction(shell(QString()), {});
     EXPECT_FALSE(r.started);
     EXPECT_FALSE(r.error.isEmpty());
+}
+
+// F-FILE-10: keys without ⌘/⌃ (F5, K, ⇧K, ⌥1) are matched in the viewer window itself (the
+// menu never sees them); the editor names the app actions the key already triggers.
+TEST(CustomActions, F_FILE_10_PlainKeysMatchAndConflictsAreFound) {
+    CustomAction a;
+    a.keys = QKeySequence(Qt::Key_F5);
+    EXPECT_TRUE(customactions::matchesKey(a, Qt::Key_F5, Qt::NoModifier));
+    EXPECT_TRUE(customactions::matchesKey(a, Qt::Key_F5, Qt::KeypadModifier));
+    EXPECT_FALSE(customactions::matchesKey(a, Qt::Key_F5, Qt::ShiftModifier));
+    EXPECT_FALSE(customactions::matchesKey(a, Qt::Key_F6, Qt::NoModifier));
+    a.keys = QKeySequence(Qt::ShiftModifier | Qt::Key_K);
+    EXPECT_TRUE(customactions::matchesKey(a, Qt::Key_K, Qt::ShiftModifier));
+    EXPECT_FALSE(customactions::matchesKey(a, Qt::Key_K, Qt::NoModifier));
+    a.id = QStringLiteral("x");
+    const QList<CustomAction> stored = customactions::fromJson(customactions::toJson({a})); // as saved
+    ASSERT_EQ(stored.size(), 1);
+    EXPECT_TRUE(customactions::matchesKey(stored.first(), Qt::Key_K, Qt::ShiftModifier))
+        << stored.first().keys.toString().toStdString();
+    a.keys = QKeySequence(Qt::AltModifier | Qt::Key_1);
+    EXPECT_TRUE(customactions::matchesKey(a, Qt::Key_1, Qt::AltModifier));
+    EXPECT_FALSE(customactions::matchesKey(a, Qt::Key_1, Qt::NoModifier));
+    a.keys = QKeySequence(Qt::Key_Question); // recorded without Shift, typed with it
+    EXPECT_TRUE(customactions::matchesKey(a, Qt::Key_Question, Qt::ShiftModifier));
+    a.keys = QKeySequence();
+    EXPECT_FALSE(customactions::matchesKey(a, Qt::Key_F5, Qt::NoModifier));
+
+    test::ensureQtApp();
+    QTemporaryDir dir;
+    Settings::useTestingBackend(dir.filePath(QStringLiteral("keys.ini")));
+    InputBindings bindings;
+    EXPECT_FALSE(customactions::bindingConflicts(QKeySequence(Qt::Key_K), bindings).isEmpty());
+    EXPECT_FALSE(customactions::bindingConflicts(QKeySequence(Qt::Key_Right), bindings).isEmpty());
+    EXPECT_TRUE(customactions::bindingConflicts(QKeySequence(Qt::Key_F19), bindings).isEmpty());
+    EXPECT_TRUE(customactions::bindingConflicts(QKeySequence(), bindings).isEmpty());
 }

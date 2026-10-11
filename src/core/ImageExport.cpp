@@ -15,6 +15,8 @@
 #include <QFileInfo>
 #include <QSet>
 
+#include <cmath>
+
 namespace lf::exporting {
 
 namespace {
@@ -87,6 +89,19 @@ Format formatById(const QString& id) {
         if (f.id == id)
             return f;
     return {};
+}
+
+QRect cropPixels(const QRectF& crop, QSize displayed) {
+    const QRect all(QPoint(0, 0), displayed);
+    if (crop.isEmpty() || !crop.isValid() || displayed.isEmpty())
+        return all;
+    const QRectF c = crop.intersected(QRectF(0, 0, 1, 1));
+    const int x0 = int(std::lround(c.left() * displayed.width()));
+    const int y0 = int(std::lround(c.top() * displayed.height()));
+    const int x1 = int(std::lround(c.right() * displayed.width()));
+    const int y1 = int(std::lround(c.bottom() * displayed.height()));
+    const QRect r = QRect(QPoint(x0, y0), QPoint(x1 - 1, y1 - 1)).intersected(all);
+    return r.isEmpty() ? all : r;
 }
 
 QString metadataModeId(MetadataMode m) {
@@ -248,6 +263,7 @@ Result run(const QVector<Item>& items, const Options& options, const std::atomic
         if (progress)
             progress(n, total, item.source);
         QString target = item.target;
+        bool replace = false;
         const QString folder = QFileInfo(target).absolutePath();
         if (!QDir().mkpath(folder)) {
             ++r.failed;
@@ -266,19 +282,37 @@ Result run(const QVector<Item>& items, const Options& options, const std::atomic
                 ++r.skipped;
                 continue;
             }
-            if (choice == ConflictChoice::KeepBoth) {
+            if (choice == ConflictChoice::KeepBoth)
                 target = QDir(folder).filePath(filebatch::keepBothName(folder, QFileInfo(target).fileName()));
-            } else {
-                QString error;
-                if (!trash->moveToTrash(target, &error)) {
-                    ++r.failed;
-                    r.errors << QStringLiteral("%1: %2").arg(QFileInfo(target).fileName(), error);
-                    continue;
+            else
+                replace = true;
+        }
+        QString notice;
+        QString e;
+        if (!replace) {
+            e = exportOne(item.source, target, options, &notice);
+        } else {
+            // "Ersetzen": the new file first (hidden, next to the old one); the old file goes
+            // to the trash only when that worked, so a failed export loses nothing.
+            const QString staged = filesafety::siblingTempPath(target);
+            e = exportOne(item.source, staged, options, &notice);
+            QString error;
+            if (e.isEmpty() && !trash->moveToTrash(target, &error)) {
+                QFile::remove(staged);
+                e = error.isEmpty()
+                        ? Tr::tr("Die vorhandene Datei konnte nicht in den Papierkorb gelegt werden.")
+                        : error;
+            } else if (e.isEmpty()) {
+                e = fileops::moveNoReplace(staged, target);
+                if (!e.isEmpty()) {
+                    QFile::remove(staged);
+                    e = Tr::tr(
+                            "Die vorhandene Datei liegt im Papierkorb, die neue konnte nicht an ihre Stelle "
+                            "gelegt werden: %1")
+                            .arg(e);
                 }
             }
         }
-        QString notice;
-        const QString e = exportOne(item.source, target, options, &notice);
         if (!e.isEmpty()) {
             ++r.failed;
             r.errors << QStringLiteral("%1: %2").arg(QFileInfo(target).fileName(), e);

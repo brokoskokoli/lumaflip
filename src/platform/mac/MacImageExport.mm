@@ -6,6 +6,8 @@
 
 #include "core/ImageExport.h"
 
+#include "core/CropSave.h"
+
 #include <QColorSpace>
 #include <QCoreApplication>
 #include <QFile>
@@ -212,13 +214,37 @@ void outputSize(size_t w, size_t h, int o, int maxLongEdge, size_t* outW, size_t
     *outH = size_t(H);
 }
 
-bool exportCGImage(CGImageRef img, int orientation, CGImageMetadataRef meta, bool hdr, const QString& dst,
+// `img` limited to the crop of `o` (normalized to the displayed image, F-EDIT-03), in stored
+// pixels; a new reference (the same image without a crop).
+CGImageRef croppedSource(CGImageRef img, int orientation, const Options& o) {
+    const QSize stored(int(CGImageGetWidth(img)), int(CGImageGetHeight(img)));
+    const QRect all(QPoint(0, 0), stored);
+    const QSize displayed = crop::storedToDisplayRect(all, stored, orientation).size();
+    const QRect shown = exporting::cropPixels(o.crop, displayed);
+    if (shown == QRect(QPoint(0, 0), displayed))
+        return CGImageRetain(img);
+    const QRect r = crop::displayToStoredRect(shown, stored, orientation);
+    return CGImageCreateWithImageInRect(img, CGRectMake(r.x(), r.y(), r.width(), r.height()));
+}
+
+bool exportCGImage(CGImageRef source, int orientation, CGImageMetadataRef meta, bool hdr, const QString& dst,
                    const Options& o, QString* error) {
     const Format f = exporting::formatById(o.formatId);
     if (f.id.isEmpty()) {
         setError(error, QCoreApplication::translate("lf::ImageExport", "Unbekanntes Zielformat."));
         return false;
     }
+    const float sourceHeadroom = hdr ? CGImageGetContentHeadroom(source) : 1.0f;
+    CGImageRef img = croppedSource(source, orientation, o);
+    if (!img) {
+        setError(error,
+                 QCoreApplication::translate("lf::ImageExport", "Nicht genug Speicher zum Exportieren."));
+        return false;
+    }
+    struct Release {
+        CGImageRef ref;
+        ~Release() { CGImageRelease(ref); }
+    } releaseCropped{img};
     size_t w = 0, h = 0;
     outputSize(CGImageGetWidth(img), CGImageGetHeight(img), orientation, o.maxLongEdge, &w, &h);
     Target t;
@@ -240,7 +266,7 @@ bool exportCGImage(CGImageRef img, int orientation, CGImageMetadataRef meta, boo
         return false;
     }
     if (hdr) {
-        const float headroom = CGImageGetContentHeadroom(img);
+        const float headroom = std::max(sourceHeadroom, CGImageGetContentHeadroom(img));
         if (headroom > 1.0f) {
             if (CGImageRef withHeadroom = CGImageCreateCopyWithContentHeadroom(headroom, out)) {
                 CGImageRelease(out);
@@ -337,10 +363,17 @@ bool exportImage(const QString& source, const QString& dst, const Options& o, QS
 
 bool exportDecoded(const QImage& image, const QString& dst, const Options& o, QString* error,
                    QString* notice) {
-    Q_UNUSED(notice);
     @autoreleasepool {
         // Pixels of archive members and PDF pages: as 8-bit sRGB (they carry no metadata).
-        QImage rgba = image;
+        // Never silently: say when HDR values or a wider gamut are lost on the way.
+        const bool deep = image.depth() > 32;
+        const QColorSpace sourceSpace = image.colorSpace();
+        const bool wide = sourceSpace.isValid() && sourceSpace.primaries() != QColorSpace::Primaries::SRgb;
+        if (notice && (deep || wide) && o.color != ColorMode::SRgb)
+            *notice = QCoreApplication::translate(
+                "lf::ImageExport", "Bilder aus Archiven und PDF-Dokumenten werden als 8-Bit-sRGB "
+                                   "exportiert – HDR und erweiterter Farbraum gehen verloren.");
+        QImage rgba = image.copy(exporting::cropPixels(o.crop, image.size()));
         if (rgba.colorSpace().isValid() && rgba.colorSpace() != QColorSpace(QColorSpace::SRgb))
             rgba = rgba.convertedToColorSpace(QColorSpace(QColorSpace::SRgb), QImage::Format_RGBA8888);
         rgba = rgba.convertToFormat(QImage::Format_RGBA8888);

@@ -39,6 +39,16 @@ refer to [SPEC.md](SPEC.md).
   sandbox with a job object. Installer (Inno Setup) and portable ZIP from CI; not code-signed yet
   (SmartScreen warns). See docs/WINDOWS.md. [SPEC 9.3, 13]
 
+### Fixed
+
+- **Animated GIF, WebP, APNG and AVIF play as the file says**: the file's loop count is honored
+  (a GIF without loop extension plays once and stays on its last frame; Space plays it again),
+  frame delays of 10 ms or less play at 100 ms like in browsers on every platform, animated AVIF
+  uses its frame delays, and a paused animation also resumes when the window is activated again
+  (not only on the window state change macOS may report late). Windows: animated WebP plays
+  (the WIC codec returned its frames as pages). New tests check playback on the rendered
+  canvas, not only in the player. [F-FMT-03, F-IN-06]
+
 ## [1.1.0] - Unreleased
 
 Milestone M3 — the first public release. Acceptance testing: [docs/TESTING-M3.md](docs/TESTING-M3.md).

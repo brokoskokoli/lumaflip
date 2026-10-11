@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Portable part of exporting (F-EDIT-04, core/ImageExport.h): Qt's image writers. Metadata
-// is not carried over here (Qt writes none), HDR is exported as SDR.
+// is not carried over here (Qt writes none; the result says so), HDR is exported as SDR.
 
 #include "core/ImageExport.h"
 
@@ -35,6 +35,7 @@ QByteArray qtFormat(const QString& id) {
 }
 
 bool writeImage(QImage img, const QString& dst, const exporting::Options& o, QString* error) {
+    img = img.copy(exporting::cropPixels(o.crop, img.size())); // pixels are oriented here
     if (o.maxLongEdge > 0 && std::max(img.width(), img.height()) > o.maxLongEdge)
         img = img.scaled(o.maxLongEdge, o.maxLongEdge, Qt::KeepAspectRatio, Qt::SmoothTransformation);
     if (o.color == exporting::ColorMode::SRgb && img.colorSpace().isValid())
@@ -66,7 +67,6 @@ QStringList exportTypeIdentifiers() {
 
 bool exportImage(const QString& source, const QString& dst, const exporting::Options& o, QString* error,
                  QString* notice) {
-    Q_UNUSED(notice);
     QImageReader r(source);
     r.setAutoTransform(true);
     const QImage img = r.read();
@@ -75,6 +75,8 @@ bool exportImage(const QString& source, const QString& dst, const exporting::Opt
             *error = Tr::tr("Das Bild konnte nicht dekodiert werden.");
         return false;
     }
+    if (notice && o.metadata != exporting::MetadataMode::RemoveAll)
+        *notice = Tr::tr("Metadaten (EXIF, XMP, IPTC) werden hier nicht übernommen.");
     return writeImage(img, dst, o, error);
 }
 

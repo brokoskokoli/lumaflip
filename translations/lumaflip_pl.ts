@@ -94,8 +94,8 @@
         <translation>Nie znaleziono: %1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>Obrazy (%1);;Wszystkie pliki (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>Obrazy, archiwa i dokumenty PDF (%1);;Obrazy (%2);;Archiwa i dokumenty PDF (%3);;Wszystkie pliki (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -177,6 +177,14 @@
     <message>
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>Archiwum nie zawiera obrazów.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>Archiwum jest chronione hasłem – zaszyfrowane archiwa nie są obsługiwane.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>Archiwum jest zbyt duże, aby odczytać z niego ten obraz.</translation>
     </message>
 </context>
 <context>
@@ -441,10 +449,6 @@
         <translation>Bezstratne przycinanie plików JPEG nie jest dostępne w tej wersji.</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
-        <translation>Obrazów w archiwach i dokumentach PDF nie można zapisać po przycięciu – użyj „Eksportuj”.</translation>
-    </message>
-    <message>
         <source>Die Datei existiert nicht mehr.</source>
         <translation>Plik już nie istnieje.</translation>
     </message>
@@ -453,12 +457,16 @@
         <translation>Nie rozpoznano formatu pliku do zachowania.</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
-        <translation>Pliki RAW nigdy nie są zmieniane. Aby uzyskać przyciętą kopię, użyj „Eksportuj”.</translation>
+        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>Obrazy w archiwach i dokumentach PDF nie są zmieniane. Zaznaczenie można wyeksportować jako nowy plik.</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
-        <translation>Plików animowanych ani wielostronicowych nie można zapisać po przycięciu.</translation>
+        <source>RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>Pliki RAW nigdy nie są zmieniane. Zaznaczenie można wyeksportować jako nowy plik.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
+        <translation>Plików animowanych lub wielostronicowych nie można zapisać po przycięciu. Zaznaczenie pierwszego obrazu można wyeksportować jako nowy plik.</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
@@ -471,6 +479,10 @@
     <message>
         <source>In „%1“ kann nicht geschrieben werden.</source>
         <translation>Nie można zapisywać w „%1”.</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>„%1” już istnieje.</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
@@ -501,12 +513,20 @@
         <translation>Po ponownym zakodowaniu obraz nie byłby identyczny (zmieniłby się model kolorów, głębia bitowa, paleta lub przezroczystość).</translation>
     </message>
     <message>
+        <source>Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.</source>
+        <translation>Tego formatu nie można tutaj zapisać. Zaznaczenie można wyeksportować w innym formacie.</translation>
+    </message>
+    <message>
         <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
         <translation>Ten format jest stratny. Przycięcie można zapisać tylko przez ponowne zakodowanie obrazu – traci się przy tym nieco jakości.</translation>
     </message>
     <message>
         <source>Zusatzbilder (%1) gehen dabei verloren.</source>
         <translation>Dodatkowe obrazy (%1) zostaną utracone.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.</source>
+        <translation>Metadane (EXIF, XMP, IPTC) zostaną utracone podczas ponownego kodowania.</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
@@ -686,12 +706,20 @@
 <context>
     <name>lf::CustomActionsEditor</name>
     <message>
+        <source>%1 ist schon belegt (%2); im Bildfenster hat die eigene Aktion Vorrang.</source>
+        <translation>%1 jest już używany (%2); w oknie obrazu pierwszeństwo ma własna czynność.</translation>
+    </message>
+    <message>
         <source>Eigene Aktion</source>
         <translation>Własna akcja</translation>
     </message>
     <message>
         <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
         <translation>Nazwa skrótu z aplikacji Skróty; otrzymuje plik jako dane wejściowe.</translation>
+    </message>
+    <message>
+        <source>Programm mit Argumenten, z. B. &quot;C:\Tools\tool.exe&quot; --flag; die Datei wird als eigenes Argument angehängt und nie über cmd.exe gestartet. Batch-Dateien (.bat, .cmd) sind nicht erlaubt.</source>
+        <translation>Program z argumentami, np. &quot;C:\Tools\tool.exe&quot; --flag; plik jest dołączany jako osobny argument i nigdy nie jest uruchamiany przez cmd.exe. Pliki wsadowe (.bat, .cmd) są niedozwolone.</translation>
     </message>
     <message>
         <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
@@ -730,8 +758,8 @@
         <translation>Klawisz</translation>
     </message>
     <message>
-        <source>„%1“: %2 ist schon belegt (%3).</source>
-        <translation>„%1”: %2 jest już zajęty (%3).</translation>
+        <source>„%1“: %2</source>
+        <translation>„%1”: %2</translation>
     </message>
     <message>
         <source>Hinzufügen …</source>
@@ -1138,6 +1166,14 @@
     <message>
         <source>Exportieren</source>
         <translation>Eksportuj</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren</source>
+        <translation>Eksportuj przycięte</translation>
+    </message>
+    <message>
+        <source>Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>Eksportuj zaznaczenie z „%1” jako nowy plik. Oryginał pozostaje bez zmian.</translation>
     </message>
     <message>
         <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
@@ -1623,12 +1659,24 @@
         <translation>%1: nie można utworzyć folderu docelowego.</translation>
     </message>
     <message>
+        <source>Die vorhandene Datei konnte nicht in den Papierkorb gelegt werden.</source>
+        <translation>Nie można przenieść istniejącego pliku do kosza.</translation>
+    </message>
+    <message>
+        <source>Die vorhandene Datei liegt im Papierkorb, die neue konnte nicht an ihre Stelle gelegt werden: %1</source>
+        <translation>Istniejący plik jest w koszu, ale nowego nie można było umieścić na jego miejscu: %1</translation>
+    </message>
+    <message>
         <source>Das Bild konnte nicht geschrieben werden.</source>
         <translation>Nie udało się zapisać obrazu.</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden.</source>
         <translation>Nie można zdekodować obrazu.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) werden hier nicht übernommen.</source>
+        <translation>Metadane (EXIF, XMP, IPTC) nie są tutaj przenoszone.</translation>
     </message>
     <message>
         <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
@@ -1649,6 +1697,10 @@
     <message>
         <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
         <translation>%1 nie może zapisać mapy wzmocnienia HDR – obraz wyeksportowano jako SDR.</translation>
+    </message>
+    <message>
+        <source>Bilder aus Archiven und PDF-Dokumenten werden als 8-Bit-sRGB exportiert – HDR und erweiterter Farbraum gehen verloren.</source>
+        <translation>Obrazy z archiwów i dokumentów PDF są eksportowane jako 8-bitowe sRGB – HDR i szeroka gama barw zostają utracone.</translation>
     </message>
 </context>
 <context>
@@ -3640,6 +3692,14 @@
 </context>
 <context>
     <name>lf::MenuExtras</name>
+    <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>Pojedynczych stron PDF nie można przekazać do innych aplikacji.</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>Obraz jest wypakowywany z archiwum – spróbuj ponownie za chwilę.</translation>
+    </message>
     <message>
         <source>Öffnen mit</source>
         <translation>Otwórz za pomocą</translation>
@@ -5702,6 +5762,14 @@
         <translation>Nie masz uprawnień do odczytu folderu „%1”, dlatego Lumaflip pokazuje tylko otwarty plik. Uprawnienia można zmienić w Finderze: Plik → Pokaż informacje → „Udostępnianie i uprawnienia”.</translation>
     </message>
     <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>Brak następnego folderu lub archiwum</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>Brak poprzedniego folderu lub archiwum</translation>
+    </message>
+    <message>
         <source>Kein weiterer Ordner mit Bildern</source>
         <translation>Brak kolejnego folderu z obrazami</translation>
     </message>
@@ -5943,6 +6011,10 @@
         <translation>Przycinanie: przeciągnij ramkę – Enter zachowuje, Esc anuluje</translation>
     </message>
     <message>
+        <source>Der vorige Zuschnitt wird noch gespeichert.</source>
+        <translation>Poprzednie przycięcie jest jeszcze zapisywane.</translation>
+    </message>
+    <message>
         <source>Kein Bildbereich ausgewählt.</source>
         <translation>Nie zaznaczono obszaru.</translation>
     </message>
@@ -5956,8 +6028,36 @@
         <translation>Zachowaj przycięty obraz jako</translation>
     </message>
     <message>
+        <source>Wie das Original (*.%1)</source>
+        <translation>Jak oryginał (*.%1)</translation>
+    </message>
+    <message>
         <source>Zuschneiden</source>
         <translation>Przytnij</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon. Ersetzen?</source>
+        <translation>„%1” już istnieje. Zastąpić?</translation>
+    </message>
+    <message>
+        <source>Das zugeschnittene Bild bekommt die Endung des Originals (.%1).</source>
+        <translation>Przycięty obraz otrzyma rozszerzenie oryginału (.%1).</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>Zastąp</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>Nie można zapisać przycięcia.</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportiert als „%1“</source>
+        <translation>Przycięty obraz wyeksportowano jako „%1”</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren …</source>
+        <translation>Eksportuj przycięte…</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>

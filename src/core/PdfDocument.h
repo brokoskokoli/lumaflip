@@ -3,7 +3,8 @@
 
 // F-OPEN-10 (M4): PDF pages as images. macOS renders with CoreGraphics (CGPDFDocument into
 // an offscreen bitmap, no GPU, no window server - runs in the decoder helper's sandbox);
-// other platforms have no renderer yet (available() = false).
+// other platforms with QtPdf/PDFium when the build has the module (platform/generic/
+// GenericPdf.cpp, also in the helper), else available() = false (e.g. Windows, docs/WINDOWS.md).
 //
 // A page has no pixel size of its own: its "full resolution" is the crop box at kFullDpi
 // (at most kMaxSide pixels per edge). Thread-safe (every call opens the document).

@@ -94,8 +94,8 @@
         <translation>Hittades inte: %1</translation>
     </message>
     <message>
-        <source>Bilder (%1);;Alle Dateien (*)</source>
-        <translation>Bilder (%1);;Alla filer (*)</translation>
+        <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
+        <translation>Bilder, arkiv och PDF-dokument (%1);;Bilder (%2);;Arkiv och PDF-dokument (%3);;Alla filer (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -177,6 +177,14 @@
     <message>
         <source>Das Archiv enthält keine Bilder.</source>
         <translation>Arkivet innehåller inga bilder.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist kennwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
+        <translation>Arkivet är lösenordsskyddat – krypterade arkiv stöds inte.</translation>
+    </message>
+    <message>
+        <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
+        <translation>Arkivet är för stort för att läsa den här bilden ur det.</translation>
     </message>
 </context>
 <context>
@@ -438,10 +446,6 @@
         <translation>Förlustfri beskärning av JPEG-filer är inte tillgänglig i den här versionen.</translation>
     </message>
     <message>
-        <source>Bilder in Archiven und PDF-Dokumenten können nicht zugeschnitten gespeichert werden – bitte „Exportieren“ benutzen.</source>
-        <translation>Bilder i arkiv och PDF-dokument kan inte sparas beskurna – använd ”Exportera”.</translation>
-    </message>
-    <message>
         <source>Die Datei existiert nicht mehr.</source>
         <translation>Filen finns inte längre.</translation>
     </message>
@@ -450,12 +454,16 @@
         <translation>Filformatet känns inte igen för sparande.</translation>
     </message>
     <message>
-        <source>RAW-Dateien werden nie verändert. Für einen zugeschnittenen Abzug bitte „Exportieren“ benutzen.</source>
-        <translation>RAW-filer ändras aldrig. Använd ”Exportera” för en beskuren kopia.</translation>
+        <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>Bilder i arkiv och PDF-dokument ändras inte. Markeringen kan exporteras som en ny fil.</translation>
     </message>
     <message>
-        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden.</source>
-        <translation>Animerade filer eller filer med flera sidor kan inte sparas beskurna.</translation>
+        <source>RAW-Dateien werden nie verändert. Der Ausschnitt kann als neue Datei exportiert werden.</source>
+        <translation>RAW-filer ändras aldrig. Markeringen kan exporteras som en ny fil.</translation>
+    </message>
+    <message>
+        <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gespeichert werden. Der Ausschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
+        <translation>Animerade filer eller filer med flera sidor kan inte sparas beskurna. Markeringen av den första bilden kan exporteras som en ny fil.</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
@@ -468,6 +476,10 @@
     <message>
         <source>In „%1“ kann nicht geschrieben werden.</source>
         <translation>Det går inte att skriva till ”%1”.</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon.</source>
+        <translation>”%1” finns redan.</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
@@ -498,12 +510,20 @@
         <translation>Vid omkodning skulle bilden inte förbli exakt likadan (färgmodell, bitdjup, palett eller genomskinlighet skulle ändras).</translation>
     </message>
     <message>
+        <source>Dieses Format kann hier nicht geschrieben werden. Der Ausschnitt kann in einem anderen Format exportiert werden.</source>
+        <translation>Det här formatet kan inte skrivas här. Markeringen kan exporteras i ett annat format.</translation>
+    </message>
+    <message>
         <source>Dieses Format speichert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
         <translation>Det här formatet är förstörande. Beskärningen kan bara sparas genom att bilden kodas om – då förloras lite bildkvalitet.</translation>
     </message>
     <message>
         <source>Zusatzbilder (%1) gehen dabei verloren.</source>
         <translation>Extrabilder (%1) går förlorade.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.</source>
+        <translation>Metadata (EXIF, XMP, IPTC) går förlorade vid omkodning.</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden ist für dieses Bild nicht möglich.</source>
@@ -678,12 +698,20 @@
 <context>
     <name>lf::CustomActionsEditor</name>
     <message>
+        <source>%1 ist schon belegt (%2); im Bildfenster hat die eigene Aktion Vorrang.</source>
+        <translation>%1 används redan (%2); i bildfönstret har den egna åtgärden företräde.</translation>
+    </message>
+    <message>
         <source>Eigene Aktion</source>
         <translation>Egen åtgärd</translation>
     </message>
     <message>
         <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
         <translation>Namnet på en genväg i appen Genvägar; den får filen som indata.</translation>
+    </message>
+    <message>
+        <source>Programm mit Argumenten, z. B. &quot;C:\Tools\tool.exe&quot; --flag; die Datei wird als eigenes Argument angehängt und nie über cmd.exe gestartet. Batch-Dateien (.bat, .cmd) sind nicht erlaubt.</source>
+        <translation>Program med argument, t.ex. &quot;C:\Tools\tool.exe&quot; --flag; filen läggs till som ett eget argument och startas aldrig via cmd.exe. Batchfiler (.bat, .cmd) är inte tillåtna.</translation>
     </message>
     <message>
         <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
@@ -722,8 +750,8 @@
         <translation>Tangent</translation>
     </message>
     <message>
-        <source>„%1“: %2 ist schon belegt (%3).</source>
-        <translation>”%1”: %2 används redan (%3).</translation>
+        <source>„%1“: %2</source>
+        <translation>”%1”: %2</translation>
     </message>
     <message>
         <source>Hinzufügen …</source>
@@ -1130,6 +1158,14 @@
     <message>
         <source>Exportieren</source>
         <translation>Exportera</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren</source>
+        <translation>Exportera beskuren</translation>
+    </message>
+    <message>
+        <source>Den Ausschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
+        <translation>Exportera markeringen av ”%1” som en ny fil. Originalet förblir oförändrat.</translation>
     </message>
     <message>
         <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
@@ -1611,12 +1647,24 @@
         <translation>%1: målmappen kan inte skapas.</translation>
     </message>
     <message>
+        <source>Die vorhandene Datei konnte nicht in den Papierkorb gelegt werden.</source>
+        <translation>Den befintliga filen kunde inte flyttas till papperskorgen.</translation>
+    </message>
+    <message>
+        <source>Die vorhandene Datei liegt im Papierkorb, die neue konnte nicht an ihre Stelle gelegt werden: %1</source>
+        <translation>Den befintliga filen ligger i papperskorgen, men den nya kunde inte läggas på dess plats: %1</translation>
+    </message>
+    <message>
         <source>Das Bild konnte nicht geschrieben werden.</source>
         <translation>Bilden kunde inte skrivas.</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden.</source>
         <translation>Bilden kunde inte avkodas.</translation>
+    </message>
+    <message>
+        <source>Metadaten (EXIF, XMP, IPTC) werden hier nicht übernommen.</source>
+        <translation>Metadata (EXIF, XMP, IPTC) tas inte med här.</translation>
     </message>
     <message>
         <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
@@ -1637,6 +1685,10 @@
     <message>
         <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
         <translation>%1 kan inte lagra en HDR-förstärkningskarta – bilden exporterades som SDR.</translation>
+    </message>
+    <message>
+        <source>Bilder aus Archiven und PDF-Dokumenten werden als 8-Bit-sRGB exportiert – HDR und erweiterter Farbraum gehen verloren.</source>
+        <translation>Bilder från arkiv och PDF-dokument exporteras som 8-bitars sRGB – HDR och utökat färgomfång går förlorade.</translation>
     </message>
 </context>
 <context>
@@ -3628,6 +3680,14 @@
 </context>
 <context>
     <name>lf::MenuExtras</name>
+    <message>
+        <source>Einzelne PDF-Seiten können nicht an andere Programme übergeben werden.</source>
+        <translation>Enskilda PDF-sidor kan inte skickas till andra appar.</translation>
+    </message>
+    <message>
+        <source>Das Bild wird aus dem Archiv entpackt – bitte gleich noch einmal versuchen.</source>
+        <translation>Bilden packas upp ur arkivet – försök igen om en stund.</translation>
+    </message>
     <message>
         <source>Öffnen mit</source>
         <translation>Öppna med</translation>
@@ -5679,6 +5739,14 @@
         <translation>Du har inte läsbehörighet för mappen ”%1”, därför visar Lumaflip bara den öppnade filen. Behörigheterna kan ändras i Finder under Arkiv → Visa info → ”Delning och behörigheter”.</translation>
     </message>
     <message>
+        <source>Kein weiterer Ordner und kein weiteres Archiv</source>
+        <translation>Ingen nästa mapp eller nästa arkiv</translation>
+    </message>
+    <message>
+        <source>Kein vorheriger Ordner und kein vorheriges Archiv</source>
+        <translation>Ingen föregående mapp eller föregående arkiv</translation>
+    </message>
+    <message>
         <source>Kein weiterer Ordner mit Bildern</source>
         <translation>Ingen nästa mapp med bilder</translation>
     </message>
@@ -5918,6 +5986,10 @@
         <translation>Beskär: dra en ram – Retur sparar, Esc avbryter</translation>
     </message>
     <message>
+        <source>Der vorige Zuschnitt wird noch gespeichert.</source>
+        <translation>Den föregående beskärningen sparas fortfarande.</translation>
+    </message>
+    <message>
         <source>Kein Bildbereich ausgewählt.</source>
         <translation>Inget område markerat.</translation>
     </message>
@@ -5931,8 +6003,36 @@
         <translation>Spara beskuren bild som</translation>
     </message>
     <message>
+        <source>Wie das Original (*.%1)</source>
+        <translation>Som originalet (*.%1)</translation>
+    </message>
+    <message>
         <source>Zuschneiden</source>
         <translation>Beskär</translation>
+    </message>
+    <message>
+        <source>„%1“ gibt es schon. Ersetzen?</source>
+        <translation>”%1” finns redan. Ersätta?</translation>
+    </message>
+    <message>
+        <source>Das zugeschnittene Bild bekommt die Endung des Originals (.%1).</source>
+        <translation>Den beskurna bilden får originalets filändelse (.%1).</translation>
+    </message>
+    <message>
+        <source>Ersetzen</source>
+        <translation>Ersätt</translation>
+    </message>
+    <message>
+        <source>Der Zuschnitt konnte nicht gespeichert werden.</source>
+        <translation>Beskärningen kunde inte sparas.</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportiert als „%1“</source>
+        <translation>Beskuren kopia exporterad som ”%1”</translation>
+    </message>
+    <message>
+        <source>Zugeschnitten exportieren …</source>
+        <translation>Exportera beskuren…</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nur durch Neukodieren gespeichert werden.</source>

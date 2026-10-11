@@ -400,6 +400,17 @@ TEST(WindowsPlatform, F_FMT_01_WicDecodesLikeQt) {
     std::printf("WIC codecs: %s\n", qPrintable(WicDecoder::installedCodecs().join(QStringLiteral("; "))));
 }
 
+// B-2: animated WebP (VP8X with the animation flag) is never taken by WIC, which would show
+// its frames as pages; Qt's WebP plugin plays it like GIF.
+TEST(WindowsPlatform, F_FMT_03_AnimatedWebpLeftToQt) {
+    ComInit com;
+    WicDecoder wic;
+    QByteArray header("RIFF\x40\x00\x00\x00WEBPVP8X\x0a\x00\x00\x00", 20);
+    header.append(char(0x02)).append(QByteArray(11, '\0')).append("ANIM", 4); // flags: animation
+    EXPECT_FALSE(wic.canDecode(QStringLiteral("a.webp"), header));
+    EXPECT_FALSE(wic.canDecode(QStringLiteral("a.gif"), QByteArray("GIF89a\x10\x00\x10\x00", 10)));
+}
+
 TEST(WindowsPlatform, F_VIEW_02_WicAppliesExifOrientation) {
     ComInit com;
     QTemporaryDir dir;

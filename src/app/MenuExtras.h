@@ -38,6 +38,10 @@ public:
 
 private:
     QString frontPath() const;
+    // What other apps get for the front window's image ("Öffnen mit", "Teilen"): the file,
+    // for an image inside an archive its extracted copy (F-OPEN-10); empty + `reason` if
+    // there is none (a PDF page, a member not extracted yet - that starts on a worker).
+    QString frontFile(QString* reason) const;
 
     Application& m_app;
     RegisterCommand m_register;
