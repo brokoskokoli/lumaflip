@@ -1,21 +1,21 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 /* Localized Info.plist texts (zh_CN); maintained by hand here (not generated from the .ts catalogues) - see translations/README.md */
-"NSAppleEventsUsageDescription" = "Lumaflip 会根据需要询问最前面的访达窗口的排序方式，以便按相同顺序显示图像。";
-"NSDesktopFolderUsageDescription" = "Lumaflip 会读取所打开图像所在的文件夹，以便你使用箭头键浏览图像。";
-"NSDocumentsFolderUsageDescription" = "Lumaflip 会读取所打开图像所在的文件夹，以便你使用箭头键浏览图像。";
-"NSDownloadsFolderUsageDescription" = "Lumaflip 会读取所打开图像所在的文件夹，以便你使用箭头键浏览图像。";
-"NSRemovableVolumesUsageDescription" = "Lumaflip 会读取所打开图像所在的文件夹，以便你使用箭头键浏览图像。";
-"NSNetworkVolumesUsageDescription" = "Lumaflip 会读取所打开图像所在的文件夹，以便你使用箭头键浏览图像。";
+"NSAppleEventsUsageDescription" = "如果你选择此功能，Lumaflip会向最前面的访达窗口询问其排序方式，以便按相同顺序显示图像。";
+"NSDesktopFolderUsageDescription" = "Lumaflip会读取所打开图像所在的文件夹，以便你使用箭头键逐张浏览图像。";
+"NSDocumentsFolderUsageDescription" = "Lumaflip会读取所打开图像所在的文件夹，以便你使用箭头键逐张浏览图像。";
+"NSDownloadsFolderUsageDescription" = "Lumaflip会读取所打开图像所在的文件夹，以便你使用箭头键逐张浏览图像。";
+"NSRemovableVolumesUsageDescription" = "Lumaflip会读取所打开图像所在的文件夹，以便你使用箭头键逐张浏览图像。";
+"NSNetworkVolumesUsageDescription" = "Lumaflip会读取所打开图像所在的文件夹，以便你使用箭头键逐张浏览图像。";
 "Bild" = "图像";
 "Bild (sonstige)" = "图像（其他）";
 "Ordner" = "文件夹";
-"WBMP-Bild" = "WBMP 图像";
+"WBMP-Bild" = "WBMP图像";
 "Comic-Archiv" = "漫画归档";
 "Archiv" = "归档";
-"PDF-Dokument" = "PDF 文稿";
-"RAR-Archiv" = "RAR 归档";
-"7-Zip-Archiv" = "7-Zip 归档";
+"PDF-Dokument" = "PDF文稿";
+"RAR-Archiv" = "RAR归档";
+"7-Zip-Archiv" = "7-Zip归档";
 "Comic-Archiv (ZIP)" = "漫画归档（ZIP）";
 "Comic-Archiv (RAR)" = "漫画归档（RAR）";
 "Comic-Archiv (7z)" = "漫画归档（7z）";
-"NSHumanReadableCopyright" = "© 2026 brokoskokoli 和贡献者。许可：GPL-3.0-or-later。";
+"NSHumanReadableCopyright" = "© 2026 brokoskokoli和贡献者。许可证：GPL-3.0-or-later。";

@@ -1,15 +1,15 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 /* Localized Info.plist texts (ja); maintained by hand here (not generated from the .ts catalogues) - see translations/README.md */
-"NSAppleEventsUsageDescription" = "Lumaflipは、画像を同じ順序で表示するために、必要に応じて最前面のFinderウインドウに並べ替えの設定を問い合わせます。";
-"NSDesktopFolderUsageDescription" = "Lumaflipは、矢印キーで画像を切り替えられるように、開いた画像のフォルダを読み込みます。";
-"NSDocumentsFolderUsageDescription" = "Lumaflipは、矢印キーで画像を切り替えられるように、開いた画像のフォルダを読み込みます。";
-"NSDownloadsFolderUsageDescription" = "Lumaflipは、矢印キーで画像を切り替えられるように、開いた画像のフォルダを読み込みます。";
-"NSRemovableVolumesUsageDescription" = "Lumaflipは、矢印キーで画像を切り替えられるように、開いた画像のフォルダを読み込みます。";
-"NSNetworkVolumesUsageDescription" = "Lumaflipは、矢印キーで画像を切り替えられるように、開いた画像のフォルダを読み込みます。";
-"Bild" = "イメージ";
-"Bild (sonstige)" = "イメージ（その他）";
+"NSAppleEventsUsageDescription" = "設定で有効にすると、Lumaflipは最前面のFinderウインドウに並べ替え順序を問い合わせ、画像を同じ順序で表示します。";
+"NSDesktopFolderUsageDescription" = "Lumaflipは、開いた画像のフォルダを読み込みます。これにより、矢印キーで画像を切り替えられます。";
+"NSDocumentsFolderUsageDescription" = "Lumaflipは、開いた画像のフォルダを読み込みます。これにより、矢印キーで画像を切り替えられます。";
+"NSDownloadsFolderUsageDescription" = "Lumaflipは、開いた画像のフォルダを読み込みます。これにより、矢印キーで画像を切り替えられます。";
+"NSRemovableVolumesUsageDescription" = "Lumaflipは、開いた画像のフォルダを読み込みます。これにより、矢印キーで画像を切り替えられます。";
+"NSNetworkVolumesUsageDescription" = "Lumaflipは、開いた画像のフォルダを読み込みます。これにより、矢印キーで画像を切り替えられます。";
+"Bild" = "画像";
+"Bild (sonstige)" = "画像（その他）";
 "Ordner" = "フォルダ";
-"WBMP-Bild" = "WBMPイメージ";
+"WBMP-Bild" = "WBMP画像";
 "Comic-Archiv" = "コミックアーカイブ";
 "Archiv" = "アーカイブ";
 "PDF-Dokument" = "PDF書類";
@@ -18,4 +18,4 @@
 "Comic-Archiv (ZIP)" = "コミックアーカイブ（ZIP）";
 "Comic-Archiv (RAR)" = "コミックアーカイブ（RAR）";
 "Comic-Archiv (7z)" = "コミックアーカイブ（7z）";
-"NSHumanReadableCopyright" = "© 2026 brokoskokoli および貢献者。ライセンス: GPL-3.0-or-later。";
+"NSHumanReadableCopyright" = "© 2026 brokoskokoliおよび貢献者。ライセンス: GPL-3.0-or-later。";

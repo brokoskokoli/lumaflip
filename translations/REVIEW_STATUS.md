@@ -20,10 +20,10 @@ Status: **maschinell, ungeprüft** → **geprüft** (Name/Handle, Datum).
 | Norwegisch (Bokmål) | `nb` | maschinell, ungeprüft | | Qt-eigene Texte kommen aus `qtbase_nn` (Qt liefert kein nb) |
 | Finnisch | `fi` | maschinell, ungeprüft | | |
 | Tschechisch | `cs` | maschinell, ungeprüft | | |
-| Japanisch | `ja` | maschinell, ungeprüft | | GPS als „北緯 48.1°“ |
-| Chinesisch (vereinfacht) | `zh_CN` | maschinell, ungeprüft | | Finder = „访达“ |
-| Chinesisch (traditionell) | `zh_TW` | maschinell, ungeprüft | | |
-| Koreanisch | `ko` | maschinell, ungeprüft | | |
+| Japanisch | `ja` | maschinell, Terminologie-Review | Claude (KI), 2026-10-11 | Begriffe/Satzzeichen nach macOS 27 (GLOSSARY.md); “” statt 「」; Pick/Reject = 採用/除外 (Lightroom); Review durch Muttersprachler:innen steht aus |
+| Chinesisch (vereinfacht) | `zh_CN` | maschinell, Terminologie-Review | Claude (KI), 2026-10-11 | Finder = „访达“, Begriffe nach macOS 27 (GLOSSARY.md), keine Leerzeichen CJK↔Latein; Pick/Reject = 留用/排除; Review durch Muttersprachler:innen steht aus |
+| Chinesisch (traditionell) | `zh_TW` | maschinell, Terminologie-Review | Claude (KI), 2026-10-11 | Begriffe nach macOS 27 (檔案夾, 影像, 按一下); „…“ statt Apples „⋯“ (Test); Pick/Reject = 留用/排除 prüfen; Review durch Muttersprachler:innen steht aus |
+| Koreanisch | `ko` | maschinell, Terminologie-Review | Claude (KI), 2026-10-11 | Begriffe und Register (-습니다/-하십시오) nach macOS 27; Pick/Reject = 선택/제외 prüfen; Review durch Muttersprachler:innen steht aus |
 
 Die Texte der `Info.plist` (`packaging/macos/lproj/*/InfoPlist.strings`) haben denselben Status
 wie die Sprache.

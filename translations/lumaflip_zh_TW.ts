@@ -45,30 +45,30 @@
     </message>
     <message>
         <source>Wie im Finder (live): %1</source>
-        <translation>同 Finder（即時）：%1</translation>
+        <translation>與Finder相同（即時）：%1</translation>
     </message>
     <message>
         <source>Wie im Finder: %1</source>
-        <translation>同 Finder：%1</translation>
+        <translation>與Finder相同：%1</translation>
     </message>
     <message>
         <source>%1 (Finder-Informationen nicht gefunden)</source>
-        <translation>%1（找不到 Finder 資訊）</translation>
+        <translation>%1（找不到Finder資訊）</translation>
     </message>
 </context>
 <context>
     <name>lf::AboutDialog</name>
     <message>
         <source>Über Lumaflip</source>
-        <translation>關於 Lumaflip</translation>
+        <translation>關於Lumaflip</translation>
     </message>
     <message>
         <source>Version %1</source>
-        <translation>版本 %1</translation>
+        <translation>版本%1</translation>
     </message>
     <message>
         <source>&lt;p&gt;Schneller Bildbetrachter für macOS: Doppelklick öffnet den ganzen Ordner – in derselben Reihenfolge wie im Finder.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli und Mitwirkende&lt;/p&gt;&lt;p&gt;Lumaflip ist freie Software: Du kannst sie unter den Bedingungen der &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; Version 3 oder (nach deiner Wahl) jeder späteren Version weitergeben und verändern. Lumaflip wird ohne jede Gewährleistung bereitgestellt.&lt;/p&gt;&lt;p&gt;Quellcode: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Verwendet Qt %3 (LGPLv3).&lt;/p&gt;</source>
-        <translation>&lt;p&gt;適用於 macOS 的快速影像檢視器：按兩下即可打開整個檔案夾，順序與 Finder 中相同。&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli 與貢獻者&lt;/p&gt;&lt;p&gt;Lumaflip 是自由軟體：你可以依據 &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; 第 3 版或（依你的選擇）任何更新版本的條款來散布及修改。Lumaflip 不提供任何擔保。&lt;/p&gt;&lt;p&gt;原始碼：&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;使用 Qt %3（LGPLv3）。&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;適用於macOS的快速影像檢視器：按兩下即可打開整個檔案夾，順序與Finder中相同。&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli與貢獻者&lt;/p&gt;&lt;p&gt;Lumaflip是自由軟體：你可以依據&lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt;第3版或（依你的選擇）任何更新版本的條款來散布及修改。Lumaflip不提供任何擔保。&lt;/p&gt;&lt;p&gt;原始碼：&lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;使用Qt %3（LGPLv3）。&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Lizenzen von Drittanbietern …</source>
@@ -83,7 +83,7 @@
     </message>
     <message>
         <source>Dateivorgänge werden abgeschlossen, dann wird Lumaflip beendet …</source>
-        <translation>正在完成檔案操作，之後將結束 Lumaflip…</translation>
+        <translation>正在完成檔案操作，之後將結束Lumaflip…</translation>
     </message>
     <message>
         <source>Dateivorgang läuft …</source>
@@ -95,7 +95,7 @@
     </message>
     <message>
         <source>Bilder, Archive und PDF-Dokumente (%1);;Bilder (%2);;Archive und PDF-Dokumente (%3);;Alle Dateien (*)</source>
-        <translation>影像、封存檔和 PDF 文件 (%1);;影像 (%2);;封存檔和 PDF 文件 (%3);;所有檔案 (*)</translation>
+        <translation>影像、封存檔和PDF文件 (%1);;影像 (%2);;封存檔和PDF文件 (%3);;所有檔案 (*)</translation>
     </message>
     <message>
         <source>Öffnen</source>
@@ -123,7 +123,7 @@
     </message>
     <message>
         <source>→ / ←, Leertaste / ⇧Leertaste, Bild↓ / Bild↑, Mausrad</source>
-        <translation>→ / ←、空白鍵 / ⇧空白鍵、Page↓ / Page↑、滑鼠滾輪</translation>
+        <translation>→ / ←、空白鍵 / ⇧空白鍵、Page Down / Page Up、滾輪</translation>
     </message>
     <message>
         <source>Erstes / letztes Bild</source>
@@ -135,7 +135,7 @@
     </message>
     <message>
         <source>Vollbild oder Modus beenden</source>
-        <translation>全螢幕／離開模式</translation>
+        <translation>結束全螢幕或目前模式</translation>
     </message>
     <message>
         <source>Esc</source>
@@ -143,16 +143,16 @@
     </message>
     <message>
         <source>Lumaflip wird als Standard-App festgelegt …</source>
-        <translation>正在將 Lumaflip 設為預設 App…</translation>
+        <translation>正在將Lumaflip設為預設App…</translation>
     </message>
     <message>
         <source>Lumaflip ist jetzt die Standard-App für Bilder.</source>
-        <translation>Lumaflip 現在是影像的預設 App。</translation>
+        <translation>Lumaflip現在是影像的預設App。</translation>
     </message>
     <message>
         <source>Lumaflip konnte nicht als Standard-App festgelegt werden:
 %1</source>
-        <translation>無法將 Lumaflip 設為預設 App：
+        <translation>無法將Lumaflip設為預設App：
 %1</translation>
     </message>
 </context>
@@ -180,7 +180,7 @@
     </message>
     <message>
         <source>Das Archiv ist passwortgeschützt – verschlüsselte Archive werden nicht unterstützt.</source>
-        <translation>封存檔受密碼保護 – 不支援加密的封存檔。</translation>
+        <translation>封存檔受密碼保護，不支援加密的封存檔。</translation>
     </message>
     <message>
         <source>Das Archiv ist zu groß, um dieses Bild daraus zu lesen.</source>
@@ -193,14 +193,14 @@
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
         <extracomment>status bar while a folder with subfolders is read (F-OPEN-08)</extracomment>
         <translation>
-            <numerusform>正在讀取子檔案夾… %1 個檔案夾，%n 張影像</numerusform>
+            <numerusform>正在讀取子檔案夾… %1個檔案夾，%n張影像</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>Unterordner: Nur die ersten %n Bilder werden angezeigt – öffne einen kleineren Ordner.</source>
         <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
         <translation>
-            <numerusform>子資料夾：僅顯示前 %n 張影像，請開啟較小的資料夾。</numerusform>
+            <numerusform>子檔案夾：僅顯示前%n張影像，請打開較小的檔案夾。</numerusform>
         </translation>
     </message>
     <message>
@@ -217,19 +217,19 @@
     </message>
     <message>
         <source>Dieses Bild ist kein RAW+JPEG-Paar</source>
-        <translation>此影像不是 RAW+JPEG 配對</translation>
+        <translation>此影像不是RAW+JPEG配對</translation>
     </message>
     <message>
         <source>RAW+JPEG-Paare sind ausgeschaltet (Einstellungen → Formate)</source>
-        <translation>RAW+JPEG 配對已關閉（設定 → 格式）</translation>
+        <translation>RAW+JPEG配對已關閉（設定 → 格式）</translation>
     </message>
     <message>
         <source>RAW-Datei</source>
-        <translation>RAW 檔案</translation>
+        <translation>RAW檔案</translation>
     </message>
     <message>
         <source>JPEG-Datei</source>
-        <translation>JPEG 檔案</translation>
+        <translation>JPEG檔案</translation>
     </message>
     <message>
         <source>in „%1“</source>
@@ -246,7 +246,7 @@
     </message>
     <message>
         <source>Zweite Datei: %1 – „RAW anzeigen“ wechselt</source>
-        <translation>第二個檔案：%1 – 「顯示 RAW」可切換</translation>
+        <translation>第二個檔案：%1——「顯示RAW」可切換</translation>
     </message>
 </context>
 <context>
@@ -258,7 +258,7 @@
     <message>
         <source>mit %1</source>
         <extracomment>compare bar, 3–4 images: which image is blended with the first one</extracomment>
-        <translation>與 %1</translation>
+        <translation>與%1</translation>
     </message>
     <message>
         <source>Bild, das mit dem ersten verglichen wird</source>
@@ -308,7 +308,7 @@
     <name>lf::ContainerPolicy</name>
     <message>
         <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten sind hier nicht möglich.</source>
-        <translation>封存檔和 PDF 文件中的影像僅供檢視——此處無法丟到垃圾桶、重新命名、移動或評分。</translation>
+        <translation>封存檔和PDF文件中的影像僅供檢視——此處無法丟到垃圾桶、重新命名、移動或評分。</translation>
     </message>
 </context>
 <context>
@@ -316,7 +316,7 @@
     <message numerus="yes">
         <source>%n Fenster gekoppelt</source>
         <translation>
-            <numerusform>已連結 %n 個視窗</numerusform>
+            <numerusform>已連結%n個視窗</numerusform>
         </translation>
     </message>
     <message>
@@ -329,7 +329,7 @@
     </message>
     <message>
         <source>Gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt. Mit ⌥ lässt sich ein Fenster einzeln verschieben.</source>
-        <translation>已連結的視窗會一起翻頁，並共用縮放和可見區域。按住 ⌥ 可單獨移動一個視窗。</translation>
+        <translation>已連結的視窗會一起翻頁，並共用縮放和顯示範圍。按住⌥可單獨移動一個視窗。</translation>
     </message>
     <message>
         <source>Dateiname (ohne Endung)</source>
@@ -349,7 +349,7 @@
     </message>
     <message>
         <source>Entkoppeln</source>
-        <translation>取消連結視窗</translation>
+        <translation>取消連結</translation>
     </message>
     <message>
         <source>Abbrechen</source>
@@ -405,7 +405,7 @@
     <message>
         <source>%1 × %2 px</source>
         <extracomment>crop size in pixels, e.g. &quot;1920 × 1080 px&quot;</extracomment>
-        <translation>%1 × %2 像素</translation>
+        <translation>%1 × %2像素</translation>
     </message>
 </context>
 <context>
@@ -416,7 +416,7 @@
     </message>
     <message>
         <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden ist nur durch Neukodieren möglich – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
-        <translation>此檔案包含其他影像（例如 HDR 增益圖或第二張立體影像），無損裁切後將不再相符。只能透過重新編碼來裁切——這會損失些許畫質以及這些附加影像。</translation>
+        <translation>此檔案包含輔助影像（例如HDR增益圖或第二張立體影像），無損裁切後將不再相符。只能透過重新編碼來裁切，這會損失些許畫質，並遺失這些輔助影像。</translation>
     </message>
     <message>
         <source>Frei</source>
@@ -428,19 +428,19 @@
     </message>
     <message>
         <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
-        <translation>無法啟動 JPEG 函式庫。</translation>
+        <translation>無法啟動JPEG函式庫。</translation>
     </message>
     <message>
         <source>Die JPEG-Daten konnten nicht verlustfrei zugeschnitten werden (%1).</source>
-        <translation>無法無損裁切 JPEG 資料（%1）。</translation>
+        <translation>無法無損裁切JPEG資料（%1）。</translation>
     </message>
     <message>
         <source>Der Zuschnitt liegt nicht auf dem JPEG-Blockraster.</source>
-        <translation>所選範圍未對齊 JPEG 區塊格線。</translation>
+        <translation>裁切範圍未對齊JPEG區塊格線。</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden von JPEG-Dateien ist in dieser Version nicht verfügbar.</source>
-        <translation>此版本不支援 JPEG 檔案的無損裁切。</translation>
+        <translation>此版本不支援JPEG檔案的無損裁切。</translation>
     </message>
     <message>
         <source>Die Datei existiert nicht mehr.</source>
@@ -452,15 +452,15 @@
     </message>
     <message>
         <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
-        <translation>封存檔和 PDF 文件中的影像不會被更改。可將選取範圍輸出為新檔案。</translation>
+        <translation>封存檔和PDF文件中的影像不會被更改。可將裁切範圍輸出為新檔案。</translation>
     </message>
     <message>
         <source>RAW-Dateien werden nie verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
-        <translation>RAW 檔永遠不會被更改。可將選取範圍輸出為新檔案。</translation>
+        <translation>RAW檔案永遠不會被更改。可將裁切範圍輸出為新檔案。</translation>
     </message>
     <message>
         <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gesichert werden. Der Zuschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
-        <translation>動畫或多頁檔案無法裁切後儲存。可將第一張影像的選取範圍輸出為新檔案。</translation>
+        <translation>動畫或多頁檔案無法在裁切後儲存。可將第一張影像的裁切範圍輸出為新檔案。</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
@@ -484,19 +484,19 @@
     </message>
     <message>
         <source>Kein Bildbereich ausgewählt.</source>
-        <translation>未選取範圍。</translation>
+        <translation>未選取影像範圍。</translation>
     </message>
     <message>
         <source>Der Zuschnitt umfasst das ganze Bild – es gibt nichts zuzuschneiden.</source>
-        <translation>所選範圍為整張影像——無需裁切。</translation>
+        <translation>裁切範圍為整張影像，無需裁切。</translation>
     </message>
     <message>
         <source>Für den verlustfreien Zuschnitt wurde der Zuschnittbereich an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
-        <translation>為進行無損裁切，所選範圍已對齊 JPEG 區塊格線（%1 × %2 像素），現在為 %3 × %4 像素。</translation>
+        <translation>為進行無損裁切，裁切範圍已對齊JPEG區塊格線（%1 × %2像素），現在為%3 × %4像素。</translation>
     </message>
     <message>
         <source>Diese JPEG-Datei lässt sich nicht verlustfrei zuschneiden. Beim Neukodieren geht etwas Bildqualität verloren.</source>
-        <translation>此 JPEG 檔案無法無損裁切。重新編碼會損失些許畫質。</translation>
+        <translation>此JPEG檔案無法無損裁切。重新編碼會損失些許畫質。</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nicht gesichert werden.</source>
@@ -508,15 +508,15 @@
     </message>
     <message>
         <source>Dieses Format kann hier nicht geschrieben werden. Der Zuschnitt kann in einem anderen Format exportiert werden.</source>
-        <translation>此處無法寫入此格式。可將選取範圍以其他格式輸出。</translation>
+        <translation>此處無法寫入此格式。可將裁切範圍以其他格式輸出。</translation>
     </message>
     <message>
         <source>Dieses Format komprimiert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
-        <translation>此格式為破壞性壓縮。只能透過重新編碼影像來儲存裁切——這會損失些許畫質。</translation>
+        <translation>此格式採用有損壓縮。只能透過重新編碼影像來儲存裁切，這會損失些許畫質。</translation>
     </message>
     <message>
         <source>Zusatzbilder (%1) gehen dabei verloren.</source>
-        <translation>附加影像（%1）將會遺失。</translation>
+        <translation>輔助影像（%1）將會遺失。</translation>
     </message>
     <message>
         <source>Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.</source>
@@ -540,7 +540,7 @@
     </message>
     <message>
         <source>Verlustfrei zugeschnitten (an JPEG-Blöcke angepasst)</source>
-        <translation>已無損裁切（已對齊 JPEG 區塊）</translation>
+        <translation>已無損裁切（已對齊JPEG區塊）</translation>
     </message>
     <message>
         <source>Verlustfrei zugeschnitten</source>
@@ -563,11 +563,11 @@
     </message>
     <message>
         <source>AUSSORTIEREN</source>
-        <translation>篩選</translation>
+        <translation>選片</translation>
     </message>
     <message>
         <source>0–5  Sterne     P  Markieren     X  Ablehnen     U  Markierung aufheben</source>
-        <translation>0–5  星級     P  留用     X  排除     U  清除標記</translation>
+        <translation>0–5  星級     P  留用     X  排除     U  取消旗標</translation>
     </message>
     <message>
         <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Widerrufen     Esc  Beenden</source>
@@ -575,11 +575,11 @@
     </message>
     <message>
         <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U setzen Markierungen</source>
-        <translation>篩選模式：數字設定星級，P/X/U 設定標記</translation>
+        <translation>選片模式：數字設定星級，P/X/U設定旗標</translation>
     </message>
     <message>
         <source>Aussortiermodus beendet</source>
-        <translation>已結束篩選模式</translation>
+        <translation>已結束選片模式</translation>
     </message>
     <message>
         <source>%1: %2</source>
@@ -587,7 +587,7 @@
     </message>
     <message>
         <source>Filter: %1 — %2 / %3</source>
-        <translation>過濾：%1 — %2 / %3</translation>
+        <translation>篩選：%1 — %2 / %3</translation>
     </message>
     <message>
         <source>Keine abgelehnten Bilder</source>
@@ -596,18 +596,18 @@
     <message numerus="yes">
         <source>%n abgelehnte(s) Bild(er) in den Papierkorb legen?</source>
         <translation>
-            <numerusform>要將 %n 張排除的影像丟到垃圾桶嗎？</numerusform>
+            <numerusform>要將%n張排除的影像丟到垃圾桶嗎？</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n abgelehnte(s) Bild(er) in den Ordner „_Rejected“ verschieben?</source>
         <translation>
-            <numerusform>要將 %n 張排除的影像移到檔案夾「_Rejected」嗎？</numerusform>
+            <numerusform>要將%n張排除的影像移到檔案夾「_Rejected」嗎？</numerusform>
         </translation>
     </message>
     <message>
         <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren werden mitbewegt. ⌘Z widerruft den ganzen Schritt.</source>
-        <translation>僅限顯示的影像（目前的篩選條件）。XMP 附屬檔案和 RAW+JPEG 配對中的另一個檔案會一起移動。⌘Z 可還原整個步驟。</translation>
+        <translation>僅限顯示的影像（目前的篩選條件）。XMP附屬檔案和RAW+JPEG配對中的另一個檔案會一起移動。⌘Z可還原整個步驟。</translation>
     </message>
     <message>
         <source>In den Papierkorb legen</source>
@@ -619,22 +619,22 @@
     </message>
     <message>
         <source>Abgelehnte in den Papierkorb legen</source>
-        <translation>排除的影像丟到垃圾桶</translation>
+        <translation>將排除的影像丟到垃圾桶</translation>
     </message>
     <message>
         <source>Abgelehnte nach „_Rejected“ verschieben</source>
-        <translation>排除的影像移到 _Rejected</translation>
+        <translation>將排除的影像移到「_Rejected」</translation>
     </message>
     <message numerus="yes">
         <source>%n Bild(er) in den Papierkorb gelegt</source>
         <translation>
-            <numerusform>已將 %n 張影像丟到垃圾桶</numerusform>
+            <numerusform>已將%n張影像丟到垃圾桶</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n Bild(er) nach „_Rejected“ verschoben</source>
         <translation>
-            <numerusform>已將 %n 張影像移到「_Rejected」</numerusform>
+            <numerusform>已將%n張影像移到「_Rejected」</numerusform>
         </translation>
     </message>
 </context>
@@ -658,24 +658,24 @@
     </message>
     <message>
         <source>Kurzbefehle gibt es nur unter macOS.</source>
-        <translation type="unfinished"></translation>
+        <translation>捷徑僅能在macOS上使用。</translation>
     </message>
     <message>
         <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
-        <translation type="unfinished"></translation>
+        <translation>無法直接執行批次檔（.bat、.cmd）：cmd.exe會將檔案名稱當作指令讀取。請改為執行程式或PowerShell指令碼（powershell -File Script.ps1）。</translation>
     </message>
     <message>
         <source>„%1“ kann nicht direkt ausgeführt werden: es würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
-        <translation>無法直接執行「%1」：它會將檔案名稱當作指令讀取。請改為執行程式或 PowerShell 指令碼（powershell -File Script.ps1）。</translation>
+        <translation>無法直接執行「%1」：它會將檔案名稱當作指令讀取。請改為執行程式或PowerShell指令碼（powershell -File Script.ps1）。</translation>
     </message>
     <message>
         <source>PowerShell nur mit einem Skript: „powershell -File Skript.ps1“. Mit -Command (oder ohne -File) würde PowerShell Dateinamen als Befehle lesen.</source>
-        <translation>PowerShell 只能搭配指令碼使用：「powershell -File Script.ps1」。使用 -Command（或未使用 -File）時，PowerShell 會將檔案名稱當作指令讀取。</translation>
+        <translation>PowerShell只能搭配指令碼使用：「powershell -File Script.ps1」。使用 -Command（或未使用 -File）時，PowerShell會將檔案名稱當作指令讀取。</translation>
     </message>
     <message numerus="yes">
         <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
         <translation>
-            <numerusform>動作在 %n 秒後中止。</numerusform>
+            <numerusform>動作在%n秒後中止。</numerusform>
         </translation>
     </message>
     <message>
@@ -684,7 +684,7 @@
     </message>
     <message>
         <source>Die Aktion endete mit Fehlercode %1.</source>
-        <translation>動作結束，錯誤代碼 %1。</translation>
+        <translation>動作結束並傳回錯誤代碼%1。</translation>
     </message>
     <message>
         <source>Die Kurzbefehle-App konnte nicht gestartet werden.</source>
@@ -699,7 +699,7 @@
     <name>lf::CustomActionsEditor</name>
     <message>
         <source>%1 ist schon belegt (%2); im Bildfenster hat die eigene Aktion Vorrang.</source>
-        <translation>%1 已被使用（%2）；在影像視窗中以自訂動作優先。</translation>
+        <translation>%1已被使用（%2）；在影像視窗中以自訂動作優先。</translation>
     </message>
     <message>
         <source>Eigene Aktion</source>
@@ -707,15 +707,15 @@
     </message>
     <message>
         <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
-        <translation>「捷徑」App 中某個捷徑的名稱；它會收到該檔案作為輸入。</translation>
+        <translation>「捷徑」App中某個捷徑的名稱；它會收到該檔案作為輸入。</translation>
     </message>
     <message>
         <source>Programm mit Argumenten, z. B. &quot;C:\Tools\tool.exe&quot; --flag; die Datei wird als eigenes Argument angehängt und nie über cmd.exe gestartet. Batch-Dateien (.bat, .cmd) sind nicht erlaubt.</source>
-        <translation>含參數的程式，例如 &quot;C:\Tools\tool.exe&quot; --flag；檔案會作為獨立參數附加，絕不透過 cmd.exe 啟動。不允許使用批次檔（.bat、.cmd）。</translation>
+        <translation>含參數的程式，例如&quot;C:\Tools\tool.exe&quot; --flag；檔案會作為獨立參數附加，絕不透過cmd.exe啟動。不允許使用批次檔（.bat、.cmd）。</translation>
     </message>
     <message>
         <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
-        <translation>透過 /bin/sh 執行；檔案在 &quot;$1&quot; 中（所有檔案：&quot;$@&quot;），例如 open -a Preview &quot;$1&quot;。路徑絕不會被插入指令中。</translation>
+        <translation>透過/bin/sh執行；檔案位於&quot;$1&quot;（所有檔案：&quot;$@&quot;），例如open -a Preview &quot;$1&quot;。路徑絕不會被插入指令中。</translation>
     </message>
     <message>
         <source>Name:</source>
@@ -774,11 +774,11 @@
     </message>
     <message>
         <source>Shell-Befehl</source>
-        <translation>Shell 指令</translation>
+        <translation>Shell指令</translation>
     </message>
     <message>
         <source>Es ist kein Bild geöffnet.</source>
-        <translation>未打開影像。</translation>
+        <translation>沒有打開的影像。</translation>
     </message>
     <message>
         <source>Eigene Aktion ausführen</source>
@@ -786,7 +786,7 @@
     </message>
     <message>
         <source>„%1“ zum ersten Mal ausführen?</source>
-        <translation>首次執行「%1」？</translation>
+        <translation>要首次執行「%1」嗎？</translation>
     </message>
     <message>
         <source>Kurzbefehl: %1</source>
@@ -810,7 +810,7 @@
     </message>
     <message>
         <source>▶ %1: %2</source>
-        <translation>▶ %1: %2</translation>
+        <translation>▶ %1：%2</translation>
     </message>
     <message>
         <source>„%1“ läuft …</source>
@@ -822,7 +822,7 @@
     </message>
     <message>
         <source>✗ %1: %2</source>
-        <translation>✗ %1: %2</translation>
+        <translation>✗ %1：%2</translation>
     </message>
     <message>
         <source>„%1“ ausgeführt</source>
@@ -889,11 +889,11 @@
     </message>
     <message>
         <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
-        <translation>記憶體不足，無法處理影像（%1 × %2 像素）。</translation>
+        <translation>記憶體不足，無法處理影像（%1 × %2像素）。</translation>
     </message>
     <message>
         <source>Windows-Fehler %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Windows錯誤%1</translation>
     </message>
     <message>
         <source>Die Bilddaten des Decoders fehlen.</source>
@@ -920,7 +920,7 @@
     </message>
     <message>
         <source>Die Datei ist beschädigt oder unvollständig.</source>
-        <translation>檔案已損壞或不完整。</translation>
+        <translation>檔案已損毀或不完整。</translation>
     </message>
     <message>
         <source>Das Dateiformat wird nicht unterstützt.</source>
@@ -939,42 +939,42 @@
     <name>lf::DefaultAppBar</name>
     <message>
         <source>Lumaflip ist nicht die Standard-App für den Dateityp „%1“.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip不是「%1」檔案類型的預設App。</translation>
     </message>
     <message>
         <source>Festlegen</source>
-        <translation type="unfinished">設定</translation>
+        <translation>設定</translation>
     </message>
     <message>
         <source>Lumaflip öffnet Dateien dieses Typs künftig per Doppelklick.</source>
-        <translation type="unfinished"></translation>
+        <translation>之後按兩下此類型的檔案時，會以Lumaflip打開。</translation>
     </message>
     <message>
         <source>Alle Bildformate …</source>
-        <translation type="unfinished"></translation>
+        <translation>所有影像格式…</translation>
     </message>
     <message>
         <source>Wähle die Bildformate, die Lumaflip öffnen soll.</source>
-        <translation type="unfinished"></translation>
+        <translation>選擇Lumaflip要打開的影像格式。</translation>
     </message>
     <message>
         <source>Nicht mehr fragen</source>
-        <translation type="unfinished"></translation>
+        <translation>不再詢問</translation>
     </message>
     <message>
         <source>Schließen</source>
-        <translation type="unfinished">關閉</translation>
+        <translation>關閉</translation>
     </message>
 </context>
 <context>
     <name>lf::DefaultAppDialog</name>
     <message>
         <source>Als Standard-App festlegen</source>
-        <translation>設為預設 App</translation>
+        <translation>設為預設App</translation>
     </message>
     <message>
         <source>Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht ausgewählte Formate bleiben bei der bisherigen App.</source>
-        <translation>Lumaflip 會成為所選影像格式的預設 App。未選取的格式會維持使用原本的 App。</translation>
+        <translation>Lumaflip會成為所選影像格式的預設App。未選取的格式會維持使用原本的App。</translation>
     </message>
     <message>
         <source>Alle auswählen</source>
@@ -997,206 +997,206 @@
     <name>lf::DefaultAppOfferController</name>
     <message>
         <source>Lumaflip fragt nicht mehr nach der Standard-App – wieder einschalten unter Einstellungen → Allgemein</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip不會再詢問預設App的設定。若要重新開啟，請前往「設定」→「一般」</translation>
     </message>
     <message>
         <source>Lumaflip ist jetzt die Standard-App für „%1“</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip現在是「%1」的預設App</translation>
     </message>
     <message>
         <source>Lumaflip konnte nicht als Standard-App festgelegt werden: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>無法將Lumaflip設為預設App：%1</translation>
     </message>
 </context>
 <context>
     <name>lf::DisplayText</name>
     <message>
         <source>JPEG-Bild</source>
-        <translation>JPEG 影像</translation>
+        <translation>JPEG影像</translation>
     </message>
     <message>
         <source>PNG-Bild</source>
-        <translation>PNG 影像</translation>
+        <translation>PNG影像</translation>
     </message>
     <message>
         <source>APNG-Bild</source>
-        <translation>APNG 影像</translation>
+        <translation>APNG影像</translation>
     </message>
     <message>
         <source>GIF-Bild</source>
-        <translation>GIF 影像</translation>
+        <translation>GIF影像</translation>
     </message>
     <message>
         <source>TIFF-Bild</source>
-        <translation>TIFF 影像</translation>
+        <translation>TIFF影像</translation>
     </message>
     <message>
         <source>BMP-Bild</source>
-        <translation>BMP 影像</translation>
+        <translation>BMP影像</translation>
     </message>
     <message>
         <source>WebP-Bild</source>
-        <translation>WebP 影像</translation>
+        <translation>WebP影像</translation>
     </message>
     <message>
         <source>HEIC-Bild</source>
-        <translation>HEIC 影像</translation>
+        <translation>HEIC影像</translation>
     </message>
     <message>
         <source>HEIF-Bild</source>
-        <translation>HEIF 影像</translation>
+        <translation>HEIF影像</translation>
     </message>
     <message>
         <source>AVIF-Bild</source>
-        <translation>AVIF 影像</translation>
+        <translation>AVIF影像</translation>
     </message>
     <message>
         <source>JPEG-XL-Bild</source>
-        <translation>JPEG XL 影像</translation>
+        <translation>JPEG XL影像</translation>
     </message>
     <message>
         <source>JPEG-2000-Bild</source>
-        <translation>JPEG 2000 影像</translation>
+        <translation>JPEG 2000影像</translation>
     </message>
     <message>
         <source>Photoshop-Dokument</source>
-        <translation>Photoshop 文件</translation>
+        <translation>Photoshop文件</translation>
     </message>
     <message>
         <source>Photoshop-Dokument (groß)</source>
-        <translation>Photoshop 文件（大型）</translation>
+        <translation>Photoshop文件（大型）</translation>
     </message>
     <message>
         <source>OpenEXR-Bild</source>
-        <translation>OpenEXR 影像</translation>
+        <translation>OpenEXR影像</translation>
     </message>
     <message>
         <source>Radiance-HDR-Bild</source>
-        <translation>Radiance HDR 影像</translation>
+        <translation>Radiance HDR影像</translation>
     </message>
     <message>
         <source>TGA-Bild</source>
-        <translation>TGA 影像</translation>
+        <translation>TGA影像</translation>
     </message>
     <message>
         <source>DDS-Textur</source>
-        <translation>DDS 紋理</translation>
+        <translation>DDS紋理</translation>
     </message>
     <message>
         <source>KTX-Textur</source>
-        <translation>KTX 紋理</translation>
+        <translation>KTX紋理</translation>
     </message>
     <message>
         <source>Windows-Symbol (ICO)</source>
-        <translation>Windows 圖像（ICO）</translation>
+        <translation>Windows圖像（ICO）</translation>
     </message>
     <message>
         <source>Windows-Mauszeiger (CUR)</source>
-        <translation>Windows 游標（CUR）</translation>
+        <translation>Windows游標（CUR）</translation>
     </message>
     <message>
         <source>Apple-Symbol (ICNS)</source>
-        <translation>Apple 圖像（ICNS）</translation>
+        <translation>Apple圖像（ICNS）</translation>
     </message>
     <message>
         <source>SVG-Vektorgrafik</source>
-        <translation>SVG 向量圖形</translation>
+        <translation>SVG向量圖形</translation>
     </message>
     <message>
         <source>PDF-Dokument</source>
-        <translation>PDF 文件</translation>
+        <translation>PDF文件</translation>
     </message>
     <message>
         <source>Kamera-RAW (Adobe DNG)</source>
-        <translation>相機 RAW（Adobe DNG）</translation>
+        <translation>相機RAW（Adobe DNG）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Canon CR2)</source>
-        <translation>相機 RAW（Canon CR2）</translation>
+        <translation>相機RAW（Canon CR2）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Canon CR3)</source>
-        <translation>相機 RAW（Canon CR3）</translation>
+        <translation>相機RAW（Canon CR3）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Canon CRW)</source>
-        <translation>相機 RAW（Canon CRW）</translation>
+        <translation>相機RAW（Canon CRW）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Nikon NEF)</source>
-        <translation>相機 RAW（Nikon NEF）</translation>
+        <translation>相機RAW（Nikon NEF）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Nikon NRW)</source>
-        <translation>相機 RAW（Nikon NRW）</translation>
+        <translation>相機RAW（Nikon NRW）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Sony ARW)</source>
-        <translation>相機 RAW（Sony ARW）</translation>
+        <translation>相機RAW（Sony ARW）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Sony SR2)</source>
-        <translation>相機 RAW（Sony SR2）</translation>
+        <translation>相機RAW（Sony SR2）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Sony SRF)</source>
-        <translation>相機 RAW（Sony SRF）</translation>
+        <translation>相機RAW（Sony SRF）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Fujifilm RAF)</source>
-        <translation>相機 RAW（Fujifilm RAF）</translation>
+        <translation>相機RAW（Fujifilm RAF）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Olympus ORF)</source>
-        <translation>相機 RAW（Olympus ORF）</translation>
+        <translation>相機RAW（Olympus ORF）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Panasonic RW2)</source>
-        <translation>相機 RAW（Panasonic RW2）</translation>
+        <translation>相機RAW（Panasonic RW2）</translation>
     </message>
     <message>
         <source>Kamera-RAW</source>
-        <translation>相機 RAW</translation>
+        <translation>相機RAW</translation>
     </message>
     <message>
         <source>Kamera-RAW (Pentax PEF)</source>
-        <translation>相機 RAW（Pentax PEF）</translation>
+        <translation>相機RAW（Pentax PEF）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Phase One IIQ)</source>
-        <translation>相機 RAW（Phase One IIQ）</translation>
+        <translation>相機RAW（Phase One IIQ）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Hasselblad 3FR)</source>
-        <translation>相機 RAW（Hasselblad 3FR）</translation>
+        <translation>相機RAW（Hasselblad 3FR）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Hasselblad FFF)</source>
-        <translation>相機 RAW（Hasselblad FFF）</translation>
+        <translation>相機RAW（Hasselblad FFF）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Epson ERF)</source>
-        <translation>相機 RAW（Epson ERF）</translation>
+        <translation>相機RAW（Epson ERF）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Minolta MRW)</source>
-        <translation>相機 RAW（Minolta MRW）</translation>
+        <translation>相機RAW（Minolta MRW）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Leaf MOS)</source>
-        <translation>相機 RAW（Leaf MOS）</translation>
+        <translation>相機RAW（Leaf MOS）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Leica RWL)</source>
-        <translation>相機 RAW（Leica RWL）</translation>
+        <translation>相機RAW（Leica RWL）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Samsung SRW)</source>
-        <translation>相機 RAW（Samsung SRW）</translation>
+        <translation>相機RAW（Samsung SRW）</translation>
     </message>
     <message>
         <source>Kamera-RAW (Sigma X3F)</source>
-        <translation>相機 RAW（Sigma X3F）</translation>
+        <translation>相機RAW（Sigma X3F）</translation>
     </message>
 </context>
 <context>
@@ -1211,7 +1211,7 @@
     </message>
     <message>
         <source>Den Zuschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
-        <translation>將「%1」的選取範圍輸出為新檔案。原始檔保持不變。</translation>
+        <translation>將「%1」的裁切範圍輸出為新檔案。原始檔保持不變。</translation>
     </message>
     <message>
         <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
@@ -1220,7 +1220,7 @@
     <message numerus="yes">
         <source>%n Bilder als neue Dateien exportieren. Die Originale bleiben unverändert.</source>
         <translation>
-            <numerusform>將 %n 張影像輸出為新檔案。原始檔保持不變。</numerusform>
+            <numerusform>將%n張影像輸出為新檔案。原始檔保持不變。</numerusform>
         </translation>
     </message>
     <message>
@@ -1270,7 +1270,7 @@
     </message>
     <message>
         <source>Ohne Aufnahmeort (GPS)</source>
-        <translation>不含位置（GPS）</translation>
+        <translation>不含拍攝地點（GPS）</translation>
     </message>
     <message>
         <source>Alle entfernen</source>
@@ -1278,15 +1278,15 @@
     </message>
     <message>
         <source>Beibehalten</source>
-        <translation>保持</translation>
+        <translation>保留</translation>
     </message>
     <message>
         <source>In sRGB umwandeln</source>
-        <translation>轉換為 sRGB</translation>
+        <translation>轉換為sRGB</translation>
     </message>
     <message>
         <source>In Display P3 umwandeln</source>
-        <translation>轉換為 Display P3</translation>
+        <translation>轉換為Display P3</translation>
     </message>
     <message>
         <source>Gain-Map behalten (wo das Format es kann)</source>
@@ -1294,7 +1294,7 @@
     </message>
     <message>
         <source>Als SDR (Tone Mapping)</source>
-        <translation>作為 SDR（色調對應）</translation>
+        <translation>轉為SDR（色調對應）</translation>
     </message>
     <message>
         <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Endung</source>
@@ -1333,7 +1333,7 @@
     </message>
     <message>
         <source>Bild %1 von %2 wird exportiert: %3</source>
-        <translation>正在輸出第 %1 張，共 %2 張：%3</translation>
+        <translation>正在輸出第%1張，共%2張：%3</translation>
     </message>
 </context>
 <context>
@@ -1371,7 +1371,7 @@
     </message>
     <message>
         <source>„%1“ konnte nicht verschoben werden: %2</source>
-        <translation>無法搬移「%1」：%2</translation>
+        <translation>無法移動「%1」：%2</translation>
     </message>
     <message>
         <source>„%1“ existiert nicht.</source>
@@ -1395,7 +1395,7 @@
     </message>
     <message>
         <source>Verschieben</source>
-        <translation>搬移</translation>
+        <translation>移動</translation>
     </message>
     <message>
         <source>Kopieren</source>
@@ -1418,14 +1418,14 @@
     <name>lf::Filmstrip</name>
     <message>
         <source>Filmstreifen</source>
-        <translation>底片條</translation>
+        <translation>膠片列</translation>
     </message>
 </context>
 <context>
     <name>lf::FilmstripModel</name>
     <message>
         <source>%1 – kann nicht gelesen werden</source>
-        <translation>%1 – 無法讀取</translation>
+        <translation>%1——無法讀取</translation>
     </message>
 </context>
 <context>
@@ -1437,13 +1437,13 @@
     <message>
         <source>Aufnahmeorte werden gelesen … %1 von %2</source>
         <extracomment>folder map (F-INFO-08) while the GPS positions are read: done / all images</extracomment>
-        <translation>正在讀取位置… %1 / %2</translation>
+        <translation>正在讀取拍攝地點… %1 / %2</translation>
     </message>
     <message numerus="yes">
         <source>%1 von %n Bildern mit Aufnahmeort</source>
         <extracomment>folder map (F-INFO-08): &quot;312 von 412 Bildern mit Aufnahmeort&quot; (%1 images with a position, %n all)</extracomment>
         <translation>
-            <numerusform>%n 張影像中有 %1 張含位置</numerusform>
+            <numerusform>%n張影像中有%1張含拍攝地點</numerusform>
         </translation>
     </message>
 </context>
@@ -1459,18 +1459,18 @@
     </message>
     <message>
         <source>Keines der Bilder enthält einen Aufnahmeort (GPS).</source>
-        <translation>沒有影像包含拍攝位置（GPS）。</translation>
+        <translation>沒有任何影像包含拍攝地點（GPS）。</translation>
     </message>
     <message>
         <source>Ordnerkarte schließen</source>
-        <translation>關閉地圖</translation>
+        <translation>關閉檔案夾地圖</translation>
     </message>
 </context>
 <context>
     <name>lf::FolderMapView</name>
     <message>
         <source>Karten sind unter Windows nicht verfügbar. Bilder mit Aufnahmeort in diesem Ordner: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Windows上無法使用地圖。此檔案夾中含拍攝地點的影像：%1</translation>
     </message>
 </context>
 <context>
@@ -1504,14 +1504,14 @@
         <source>%n Byte</source>
         <extracomment>file size below 1000 bytes; %n is the number of bytes</extracomment>
         <translation>
-            <numerusform>%n 位元組</numerusform>
+            <numerusform>%n位元組</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%1 (%2 Byte)</source>
         <extracomment>size and exact number of bytes, e.g. &quot;2,8 MB (2.812.345 Byte)&quot;; plural by the byte count</extracomment>
         <translation>
-            <numerusform>%1（%2 位元組）</numerusform>
+            <numerusform>%1（%2位元組）</numerusform>
         </translation>
     </message>
     <message>
@@ -1542,7 +1542,7 @@
     <message>
         <source> (Kleinbild: %1 mm)</source>
         <extracomment>appended to the focal length: the 35 mm equivalent (&quot;KB&quot; = Kleinbild), e.g. &quot; (35-mm-equiv.: 52 mm)&quot;</extracomment>
-        <translation> (等效 35 mm：%1 mm)</translation>
+        <translation> (等效35 mm：%1 mm)</translation>
     </message>
     <message>
         <source>%1° %2</source>
@@ -1576,7 +1576,7 @@
     <message>
         <source>%1 m</source>
         <extracomment>altitude in metres</extracomment>
-        <translation>%1 公尺</translation>
+        <translation>%1公尺</translation>
     </message>
 </context>
 <context>
@@ -1596,30 +1596,30 @@
     <name>lf::GridView</name>
     <message>
         <source>Raster</source>
-        <translation>格狀排列</translation>
+        <translation>格狀</translation>
     </message>
 </context>
 <context>
     <name>lf::HdrController</name>
     <message>
         <source>HDR an</source>
-        <translation>HDR 已開啟</translation>
+        <translation>HDR已開啟</translation>
     </message>
     <message>
         <source>HDR aus – SDR-Vorschau</source>
-        <translation>HDR 已關閉——SDR 預覽</translation>
+        <translation>HDR已關閉——SDR預覽</translation>
     </message>
     <message>
         <source>Die Belichtung lässt sich nur bei HDR-Bildern einstellen.</source>
-        <translation>只能為 HDR 影像調整曝光。</translation>
+        <translation>只能為HDR影像調整曝光。</translation>
     </message>
     <message>
         <source>Belichtung %1</source>
-        <translation>曝光 %1</translation>
+        <translation>曝光%1</translation>
     </message>
     <message>
         <source>Der Belichtungsregler erscheint bei HDR-Bildern.</source>
-        <translation>曝光滑桿會在 HDR 影像上顯示。</translation>
+        <translation>曝光滑桿會在HDR影像上顯示。</translation>
     </message>
     <message>
         <source>HDR</source>
@@ -1628,7 +1628,7 @@
     <message>
         <source>HDR (SDR-Vorschau)</source>
         <extracomment>status bar badge: HDR image shown tone-mapped to SDR</extracomment>
-        <translation>HDR（SDR 預覽）</translation>
+        <translation>HDR（SDR預覽）</translation>
     </message>
     <message>
         <source>%1 · %2</source>
@@ -1636,15 +1636,15 @@
     </message>
     <message>
         <source>HDR-Bild, mit erweitertem Dynamikumfang angezeigt (⇧⌘H: SDR-Vorschau)</source>
-        <translation>HDR 影像，以延伸動態範圍顯示（⇧⌘H：SDR 預覽）</translation>
+        <translation>HDR影像，以延伸動態範圍顯示（⇧⌘H：SDR預覽）</translation>
     </message>
     <message>
         <source>HDR-Bild, als SDR-Vorschau angezeigt – HDR ist ausgeschaltet (⇧⌘H)</source>
-        <translation>HDR 影像，以 SDR 預覽顯示——HDR 已關閉（⇧⌘H）</translation>
+        <translation>HDR影像，以SDR預覽顯示——HDR已關閉（⇧⌘H）</translation>
     </message>
     <message>
         <source>HDR-Bild, als SDR-Vorschau angezeigt – dieser Bildschirm kann kein HDR darstellen</source>
-        <translation>HDR 影像，以 SDR 預覽顯示——此顯示器無法顯示 HDR</translation>
+        <translation>HDR影像，以SDR預覽顯示——此顯示器無法顯示HDR</translation>
     </message>
     <message>
         <source>Belichtung</source>
@@ -1656,11 +1656,11 @@
     </message>
     <message>
         <source>Beibehalten</source>
-        <translation>保持</translation>
+        <translation>保留</translation>
     </message>
     <message>
         <source>Belichtung beim Bildwechsel beibehalten</source>
-        <translation>切換影像時保持曝光</translation>
+        <translation>切換影像時保留曝光</translation>
     </message>
 </context>
 <context>
@@ -1710,7 +1710,7 @@
     </message>
     <message>
         <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
-        <translation>無法在這部 Mac 上寫入此格式。</translation>
+        <translation>無法在這部Mac上寫入此格式。</translation>
     </message>
     <message>
         <source>Unbekanntes Zielformat.</source>
@@ -1726,11 +1726,11 @@
     </message>
     <message>
         <source>%1 kann keine HDR-Gain-Map speichern – das Bild wurde als SDR exportiert.</source>
-        <translation>%1 無法儲存 HDR 增益圖——影像已輸出為 SDR。</translation>
+        <translation>%1無法儲存HDR增益圖——影像已輸出為SDR。</translation>
     </message>
     <message>
         <source>Bilder aus Archiven und PDF-Dokumenten werden als 8-Bit-sRGB exportiert – HDR und erweiterter Farbraum gehen verloren.</source>
-        <translation>封存檔和 PDF 文件中的影像會以 8 位元 sRGB 輸出——HDR 和廣色域會遺失。</translation>
+        <translation>封存檔和PDF文件中的影像會以8位元sRGB輸出——HDR和廣色域會遺失。</translation>
     </message>
 </context>
 <context>
@@ -1741,7 +1741,7 @@
     </message>
     <message>
         <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
-        <translation>記憶體不足，無法處理影像（%1 × %2 像素）。</translation>
+        <translation>記憶體不足，無法處理影像（%1 × %2像素）。</translation>
     </message>
     <message>
         <source>Der Bildpuffer konnte nicht angelegt werden.</source>
@@ -1753,7 +1753,7 @@
     </message>
     <message>
         <source>Die Datei ist leer (0 Byte).</source>
-        <translation>檔案是空的（0 位元組）。</translation>
+        <translation>檔案是空的（0位元組）。</translation>
     </message>
     <message>
         <source>Die Datei kann nicht gelesen werden.</source>
@@ -1765,11 +1765,11 @@
     </message>
     <message>
         <source>Die Datei enthält keine lesbaren Bilddaten (beschädigt?).</source>
-        <translation>檔案不含可讀取的影像資料（可能已損壞）。</translation>
+        <translation>檔案不含可讀取的影像資料（可能已損毀）。</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden (Datei beschädigt?).</source>
-        <translation>無法解碼影像（檔案可能已損壞）。</translation>
+        <translation>無法解碼影像（檔案可能已損毀）。</translation>
     </message>
     <message>
         <source>Ausgelöst</source>
@@ -1781,15 +1781,15 @@
     </message>
     <message>
         <source>Die Bildinformationen sind beschädigt.</source>
-        <translation>影像資訊已損壞。</translation>
+        <translation>影像資訊已損毀。</translation>
     </message>
     <message>
         <source>Einzelbild %1 existiert nicht.</source>
-        <translation>影格 %1 不存在。</translation>
+        <translation>影格%1不存在。</translation>
     </message>
     <message>
         <source>Seite %1 existiert nicht.</source>
-        <translation>第 %1 頁不存在。</translation>
+        <translation>第%1頁不存在。</translation>
     </message>
     <message>
         <source>Die Datei ist unvollständig (abgeschnitten).</source>
@@ -1797,7 +1797,7 @@
     </message>
     <message>
         <source>%1 Bit</source>
-        <translation>%1 位元</translation>
+        <translation>%1位元</translation>
     </message>
     <message>
         <source>Ja</source>
@@ -1809,11 +1809,11 @@
     </message>
     <message>
         <source>HEIC-Sequenz</source>
-        <translation>HEIC 序列</translation>
+        <translation>HEIC序列</translation>
     </message>
     <message>
         <source>AVIF-Sequenz</source>
-        <translation>AVIF 序列</translation>
+        <translation>AVIF序列</translation>
     </message>
 </context>
 <context>
@@ -1832,7 +1832,7 @@
     </message>
     <message>
         <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
-        <translation>從 Apple 地圖載入地圖片段（需要網際網路連線）</translation>
+        <translation>從「地圖」載入地圖片段（需要網際網路連線）</translation>
     </message>
     <message>
         <source>Karte ausblenden</source>
@@ -1840,7 +1840,7 @@
     </message>
     <message>
         <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte einblenden“)</source>
-        <translation>不再載入地圖片段（直到再次點按「顯示地圖」）</translation>
+        <translation>不再載入地圖片段（直到再次按一下「顯示地圖」）</translation>
     </message>
     <message>
         <source>In Karten öffnen</source>
@@ -1848,11 +1848,11 @@
     </message>
     <message>
         <source>Ordnerkarte</source>
-        <translation>資料夾地圖</translation>
+        <translation>檔案夾地圖</translation>
     </message>
     <message>
         <source>Alle Bilder dieser Ansicht mit Aufnahmeort auf einer Karte zeigen (lädt Kartendaten von Apple Karten)</source>
-        <translation>在地圖上顯示此檢視中所有含位置的影像（從 Apple 地圖載入地圖資料）</translation>
+        <translation>在地圖上顯示此檢視中所有含拍攝地點的影像（從「地圖」載入地圖資料）</translation>
     </message>
 </context>
 <context>
@@ -1924,11 +1924,11 @@
     </message>
     <message>
         <source>RAW+JPEG-Paar</source>
-        <translation>RAW+JPEG 配對</translation>
+        <translation>RAW+JPEG配對</translation>
     </message>
     <message>
         <source>Angezeigt</source>
-        <translation>顯示的</translation>
+        <translation>目前顯示</translation>
     </message>
     <message>
         <source>Zweite Datei</source>
@@ -2067,7 +2067,7 @@
     </message>
     <message>
         <source>Einpassen</source>
-        <translation>縮放至適當大小</translation>
+        <translation>縮放到適當大小</translation>
     </message>
     <message>
         <source>Breite füllen</source>
@@ -2075,7 +2075,7 @@
     </message>
     <message>
         <source>Einpassen ↔ 100 % am Mauszeiger</source>
-        <translation>適當大小 ↔ 100%（於游標位置）</translation>
+        <translation>縮放到適當大小 ↔ 100%（於指標位置）</translation>
     </message>
     <message>
         <source>Zoom fixieren</source>
@@ -2083,31 +2083,31 @@
     </message>
     <message>
         <source>Standard-Zoom wiederherstellen</source>
-        <translation>回復標準縮放</translation>
+        <translation>回復預設縮放</translation>
     </message>
     <message>
         <source>Ausschnitt nach oben</source>
-        <translation>檢視區域上移</translation>
+        <translation>顯示範圍上移</translation>
     </message>
     <message>
         <source>Ausschnitt nach unten</source>
-        <translation>檢視區域下移</translation>
+        <translation>顯示範圍下移</translation>
     </message>
     <message>
         <source>Ausschnitt nach links</source>
-        <translation>檢視區域左移</translation>
+        <translation>顯示範圍左移</translation>
     </message>
     <message>
         <source>Ausschnitt nach rechts</source>
-        <translation>檢視區域右移</translation>
+        <translation>顯示範圍右移</translation>
     </message>
     <message>
         <source>Ausschnitt eine Seite nach oben</source>
-        <translation>檢視區域上移一頁</translation>
+        <translation>顯示範圍上移一頁</translation>
     </message>
     <message>
         <source>Ausschnitt eine Seite nach unten</source>
-        <translation>檢視區域下移一頁</translation>
+        <translation>顯示範圍下移一頁</translation>
     </message>
     <message>
         <source>Zum Bildanfang scrollen</source>
@@ -2123,11 +2123,11 @@
     </message>
     <message>
         <source>Vollbild oder Modus beenden</source>
-        <translation>全螢幕或離開模式</translation>
+        <translation>結束全螢幕或目前模式</translation>
     </message>
     <message>
         <source>Modus beenden, sonst Fenster schließen</source>
-        <translation>離開模式，否則關閉視窗</translation>
+        <translation>結束目前模式，否則關閉視窗</translation>
     </message>
     <message>
         <source>Fenster schließen</source>
@@ -2191,7 +2191,7 @@
     </message>
     <message>
         <source>Im Finder zeigen</source>
-        <translation>在 Finder 中顯示</translation>
+        <translation>在Finder中顯示</translation>
     </message>
     <message>
         <source>Bild kopieren</source>
@@ -2211,11 +2211,11 @@
     </message>
     <message>
         <source>Filmstreifen</source>
-        <translation>底片條</translation>
+        <translation>膠片列</translation>
     </message>
     <message>
         <source>Raster</source>
-        <translation>格狀顯示</translation>
+        <translation>格狀</translation>
     </message>
     <message>
         <source>Tastenkürzel-Übersicht</source>
@@ -2243,55 +2243,55 @@
     </message>
     <message>
         <source>Ausschnitt verschieben</source>
-        <translation>平移檢視區域</translation>
+        <translation>移動顯示範圍</translation>
     </message>
     <message>
         <source>Bewertung entfernen (0 Sterne)</source>
-        <translation>移除評分（0 顆星）</translation>
+        <translation>移除評分（0顆星）</translation>
     </message>
     <message>
         <source>1 Stern</source>
-        <translation>1 顆星</translation>
+        <translation>1顆星</translation>
     </message>
     <message>
         <source>2 Sterne</source>
-        <translation>2 顆星</translation>
+        <translation>2顆星</translation>
     </message>
     <message>
         <source>3 Sterne</source>
-        <translation>3 顆星</translation>
+        <translation>3顆星</translation>
     </message>
     <message>
         <source>4 Sterne</source>
-        <translation>4 顆星</translation>
+        <translation>4顆星</translation>
     </message>
     <message>
         <source>5 Sterne</source>
-        <translation>5 顆星</translation>
+        <translation>5顆星</translation>
     </message>
     <message>
         <source>Markieren</source>
-        <translation>留用（Pick）</translation>
+        <translation>留用</translation>
     </message>
     <message>
         <source>Ablehnen</source>
-        <translation>排除（Reject）</translation>
+        <translation>排除</translation>
     </message>
     <message>
         <source>Markierung aufheben</source>
-        <translation>重設標記</translation>
+        <translation>取消旗標</translation>
     </message>
     <message>
         <source>Aussortiermodus</source>
-        <translation>篩選模式</translation>
+        <translation>選片模式</translation>
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
-        <translation>快速歸檔：移動（M，然後 1–9）</translation>
+        <translation>快速歸檔：移動（M，然後1–9）</translation>
     </message>
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
-        <translation>快速歸檔：拷貝（C，然後 1–9）</translation>
+        <translation>快速歸檔：拷貝（C，然後1–9）</translation>
     </message>
     <message>
         <source>Gehe zu Bild …</source>
@@ -2303,7 +2303,7 @@
     </message>
     <message>
         <source>Nach Dateinamen filtern</source>
-        <translation>依檔案名稱過濾</translation>
+        <translation>依檔案名稱篩選</translation>
     </message>
     <message>
         <source>Mit nächstem vergleichen</source>
@@ -2315,7 +2315,7 @@
     </message>
     <message>
         <source>Minimaler Fenstermodus</source>
-        <translation>極簡視窗</translation>
+        <translation>極簡視窗模式</translation>
     </message>
     <message>
         <source>Fenster koppeln …</source>
@@ -2323,7 +2323,7 @@
     </message>
     <message>
         <source>HDR anzeigen</source>
-        <translation>顯示 HDR</translation>
+        <translation>顯示HDR</translation>
     </message>
     <message>
         <source>Belichtung erhöhen</source>
@@ -2347,11 +2347,11 @@
     </message>
     <message>
         <source>RAW/JPEG des Paares anzeigen</source>
-        <translation>顯示配對的 RAW/JPEG</translation>
+        <translation>顯示配對的RAW/JPEG</translation>
     </message>
     <message>
         <source>Ordnerkarte</source>
-        <translation>資料夾地圖</translation>
+        <translation>檔案夾地圖</translation>
     </message>
     <message>
         <source>Quick Look</source>
@@ -2363,7 +2363,7 @@
     </message>
     <message>
         <source>Als Schreibtischhintergrund festlegen</source>
-        <translation>設定為桌面圖片</translation>
+        <translation>設為背景圖片</translation>
     </message>
     <message>
         <source>Protokoll der Aktionen</source>
@@ -2383,11 +2383,11 @@
     </message>
     <message>
         <source>Über-/Unterbelichtungswarnung</source>
-        <translation>過曝／欠曝警告</translation>
+        <translation>過曝/欠曝警告</translation>
     </message>
     <message>
         <source>Focus Peaking</source>
-        <translation>對焦峰值</translation>
+        <translation>峰值對焦</translation>
     </message>
     <message>
         <source>Fokuspunkte</source>
@@ -2399,7 +2399,7 @@
     </message>
     <message>
         <source>Mausrad</source>
-        <translation>滑鼠滾輪</translation>
+        <translation>滾輪</translation>
     </message>
     <message>
         <source>Bild wechseln</source>
@@ -2411,19 +2411,19 @@
     </message>
     <message>
         <source>Zoomen (am Mauszeiger)</source>
-        <translation>縮放（於游標位置）</translation>
+        <translation>縮放（於指標位置）</translation>
     </message>
     <message>
         <source>Nach oben drehen vergrößert, nach unten verkleinert – am Mauszeiger.</source>
-        <translation>向上捲動放大，向下捲動縮小，以滑鼠指標位置為中心。</translation>
+        <translation>向上捲動放大，向下捲動縮小，以指標位置為中心。</translation>
     </message>
     <message>
         <source>Ausschnitt verschieben (sonst Bild wechseln)</source>
-        <translation>捲動檢視區域（否則切換影像）</translation>
+        <translation>移動顯示範圍（否則切換影像）</translation>
     </message>
     <message>
         <source>Gezoomt wird der Ausschnitt verschoben, sonst wird das Bild gewechselt.</source>
-        <translation>放大時會平移檢視區域，否則會切換影像。</translation>
+        <translation>放大時會移動顯示範圍，否則會切換影像。</translation>
     </message>
     <message>
         <source>Bild wechseln, solange die Taste gehalten wird.</source>
@@ -2431,7 +2431,7 @@
     </message>
     <message>
         <source>Zoomen am Mauszeiger, solange die Taste gehalten wird.</source>
-        <translation>按住按鍵時以滑鼠指標位置為中心縮放。</translation>
+        <translation>按住按鍵時以指標位置為中心縮放。</translation>
     </message>
     <message>
         <source>Horizontal scrollen</source>
@@ -2439,23 +2439,23 @@
     </message>
     <message>
         <source>Der Ausschnitt wird waagerecht verschoben.</source>
-        <translation>檢視區域會水平平移。</translation>
+        <translation>顯示範圍會水平移動。</translation>
     </message>
     <message>
         <source>Mausrad mit ⌘</source>
-        <translation>滑鼠滾輪加 ⌘</translation>
+        <translation>滾輪加⌘</translation>
     </message>
     <message>
         <source>Mausrad mit ⌥</source>
-        <translation>滑鼠滾輪加 ⌥</translation>
+        <translation>滾輪加⌥</translation>
     </message>
     <message>
         <source>Mausrad mit ⇧</source>
-        <translation>滑鼠滾輪加 ⇧</translation>
+        <translation>滾輪加⇧</translation>
     </message>
     <message>
         <source>Bild↑ / Bild↓</source>
-        <translation>Page↑ / Page↓</translation>
+        <translation>Page Up / Page Down</translation>
     </message>
     <message>
         <source>Vorheriges/nächstes Bild</source>
@@ -2471,7 +2471,7 @@
     </message>
     <message>
         <source>Springt um die eingestellte Sprungweite (Standard 10).</source>
-        <translation>依照設定的跳躍張數移動（預設為 10）。</translation>
+        <translation>依照設定的跳躍張數移動（預設為10）。</translation>
     </message>
     <message>
         <source>Vorheriger/nächster Ordner</source>
@@ -2491,7 +2491,7 @@
     </message>
     <message>
         <source>Ausschnitt seitenweise verschieben (sonst Bild)</source>
-        <translation>逐頁捲動檢視區域（否則切換影像）</translation>
+        <translation>逐頁移動顯示範圍（否則切換影像）</translation>
     </message>
     <message>
         <source>Gezoomt um eine Bildschirmhöhe scrollen, sonst Bild wechseln.</source>
@@ -2507,7 +2507,7 @@
     </message>
     <message>
         <source>Springt zum ersten bzw. letzten Bild der Sammlung.</source>
-        <translation>跳至影像集中的第一張或最後一張影像。</translation>
+        <translation>跳至集合中的第一張或最後一張影像。</translation>
     </message>
     <message>
         <source>Bildanfang/-ende (sonst erstes/letztes Bild)</source>
@@ -2527,7 +2527,7 @@
     </message>
     <message>
         <source>Leertaste: nächstes Bild, mit ⇧: vorheriges Bild.</source>
-        <translation>空白鍵：下一張影像，加 ⇧：上一張影像。</translation>
+        <translation>空白鍵：下一張影像，加⇧：上一張影像。</translation>
     </message>
     <message>
         <source>Animation abspielen/pausieren, sonst Bild</source>
@@ -2539,11 +2539,11 @@
     </message>
     <message>
         <source>Einpassen ↔ 100 %</source>
-        <translation>適當大小 ↔ 100%</translation>
+        <translation>縮放到適當大小 ↔ 100%</translation>
     </message>
     <message>
         <source>Schaltet zwischen Einpassen und 100 % um.</source>
-        <translation>在「縮放至適當大小」與 100% 之間切換。</translation>
+        <translation>在「縮放到適當大小」與100%之間切換。</translation>
     </message>
     <message>
         <source>Diashow starten/pausieren</source>
@@ -2563,7 +2563,7 @@
     </message>
     <message>
         <source>Pfeiltasten wechseln das Bild; mit ⌥ wird der Ausschnitt verschoben.</source>
-        <translation>方向鍵會切換影像；加 ⌥ 則平移檢視區域。</translation>
+        <translation>方向鍵會切換影像；加⌥則移動顯示範圍。</translation>
     </message>
     <message>
         <source>Erst bis zum Rand verschieben, dann Bild wechseln</source>
@@ -2571,15 +2571,15 @@
     </message>
     <message>
         <source>Der Ausschnitt wird verschoben; am Bildrand wechselt das Bild.</source>
-        <translation>檢視區域會平移；到達影像邊緣時切換影像。</translation>
+        <translation>顯示範圍會移動；到達影像邊緣時切換影像。</translation>
     </message>
     <message>
         <source>Ausschnitt verschieben (Bild mit ⌥←/⌥→)</source>
-        <translation>捲動檢視區域（以 ⌥←/⌥→ 切換影像）</translation>
+        <translation>移動顯示範圍（以⌥←/⌥→切換影像）</translation>
     </message>
     <message>
         <source>Pfeiltasten verschieben den Ausschnitt; Bildwechsel mit ⌥←/⌥→.</source>
-        <translation>方向鍵會平移檢視區域；以 ⌥←/⌥→ 切換影像。</translation>
+        <translation>方向鍵會移動顯示範圍；以⌥←/⌥→切換影像。</translation>
     </message>
     <message>
         <source>↑ / ↓</source>
@@ -2587,23 +2587,23 @@
     </message>
     <message>
         <source>Ausschnitt verschieben, sonst vorheriges/nächstes Bild</source>
-        <translation>捲動檢視區域，否則切換上一張／下一張影像</translation>
+        <translation>移動顯示範圍，否則切換上一張／下一張影像</translation>
     </message>
     <message>
         <source>Gezoomt wird der Ausschnitt verschoben, sonst das Bild gewechselt.</source>
-        <translation>放大時會平移檢視區域，否則會切換影像。</translation>
+        <translation>放大時會移動顯示範圍，否則會切換影像。</translation>
     </message>
     <message>
         <source>Ausschnitt verschieben (wenn gezoomt), sonst nichts</source>
-        <translation>捲動檢視區域（放大時），否則無動作</translation>
+        <translation>移動顯示範圍（放大時），否則無動作</translation>
     </message>
     <message>
         <source>Gezoomt wird der Ausschnitt verschoben, sonst passiert nichts.</source>
-        <translation>放大時會平移檢視區域，否則不執行任何動作。</translation>
+        <translation>放大時會移動顯示範圍，否則不執行任何動作。</translation>
     </message>
     <message>
         <source>↑ zeigt das vorherige, ↓ das nächste Bild.</source>
-        <translation>↑ 顯示上一張影像，↓ 顯示下一張。</translation>
+        <translation>↑顯示上一張影像，↓顯示下一張。</translation>
     </message>
     <message>
         <source>Zoomen</source>
@@ -2611,7 +2611,7 @@
     </message>
     <message>
         <source>↑ vergrößert, ↓ verkleinert.</source>
-        <translation>↑ 放大，↓ 縮小。</translation>
+        <translation>↑放大，↓縮小。</translation>
     </message>
     <message>
         <source>Einfacher Klick ins Bild</source>
@@ -2619,11 +2619,11 @@
     </message>
     <message>
         <source>Ein Klick hat keine Wirkung (Ziehen verschiebt weiterhin).</source>
-        <translation>按一下沒有作用（拖移仍會平移）。</translation>
+        <translation>按一下沒有作用（拖移仍會移動顯示範圍）。</translation>
     </message>
     <message>
         <source>Ein Klick zoomt auf 100 % an der Klickstelle und zurück.</source>
-        <translation>按一下會在按下的位置縮放至 100%，再按一下則返回。</translation>
+        <translation>按一下會在按下的位置縮放至100%，再按一下則返回。</translation>
     </message>
     <message>
         <source>Nächstes Bild (linke Hälfte: vorheriges)</source>
@@ -2647,7 +2647,7 @@
     </message>
     <message>
         <source>Doppelklick schaltet zwischen Einpassen und 100 % um.</source>
-        <translation>按兩下會在「縮放至適當大小」與 100% 之間切換。</translation>
+        <translation>按兩下會在「縮放到適當大小」與100%之間切換。</translation>
     </message>
     <message>
         <source>Doppelklick schließt das Fenster.</source>
@@ -2671,7 +2671,7 @@
     </message>
     <message>
         <source>Schaltet zwischen Einpassen und 100 % an der Klickstelle um.</source>
-        <translation>在「縮放至適當大小」與按下位置的 100% 之間切換。</translation>
+        <translation>在「縮放到適當大小」與按下位置的100%之間切換。</translation>
     </message>
     <message>
         <source>Zeigt eine Lupe, solange die Taste gedrückt ist.</source>
@@ -2679,7 +2679,7 @@
     </message>
     <message>
         <source>Maustasten 4/5 (Zurück/Vor)</source>
-        <translation>滑鼠按鍵 4/5（返回／前進）</translation>
+        <translation>滑鼠按鍵4/5（返回／前進）</translation>
     </message>
     <message>
         <source>Zurück-Taste: vorheriges Bild, Vor-Taste: nächstes Bild.</source>
@@ -2695,19 +2695,19 @@
     </message>
     <message>
         <source>Bild wechseln (gezoomt: Ausschnitt verschieben)</source>
-        <translation>切換影像（放大時：捲動）</translation>
+        <translation>切換影像（放大時：移動顯示範圍）</translation>
     </message>
     <message>
         <source>Wischen wechselt das Bild; im gezoomten Zustand wird der Ausschnitt verschoben.</source>
-        <translation>滑動會切換影像；放大時會平移檢視區域。</translation>
+        <translation>滑動會切換影像；放大時會移動顯示範圍。</translation>
     </message>
     <message>
         <source>Nur Ausschnitt verschieben</source>
-        <translation>捲動檢視區域</translation>
+        <translation>僅移動顯示範圍</translation>
     </message>
     <message>
         <source>Wischen verschiebt immer nur den Ausschnitt.</source>
-        <translation>滑動一律只會平移檢視區域。</translation>
+        <translation>滑動一律只會移動顯示範圍。</translation>
     </message>
     <message>
         <source>Aus</source>
@@ -2723,19 +2723,19 @@
     </message>
     <message>
         <source>Ausschnitt verschieben (⌥: Datei herausziehen)</source>
-        <translation>平移檢視區域（⌥：拖出檔案）</translation>
+        <translation>移動顯示範圍（⌥：拖出檔案）</translation>
     </message>
     <message>
         <source>Ziehen verschiebt den Ausschnitt; mit ⌥ wird die Datei in andere Apps gezogen.</source>
-        <translation>拖移會平移檢視區域；加 ⌥ 則可將檔案拖到其他 App。</translation>
+        <translation>拖移會移動顯示範圍；加⌥則可將檔案拖到其他App。</translation>
     </message>
     <message>
         <source>Datei herausziehen (⌥: Ausschnitt verschieben)</source>
-        <translation>拖出檔案（⌥：平移檢視區域）</translation>
+        <translation>拖出檔案（⌥：移動顯示範圍）</translation>
     </message>
     <message>
         <source>Ziehen zieht die Datei in andere Apps; mit ⌥ wird der Ausschnitt verschoben.</source>
-        <translation>拖移會將檔案拖到其他 App；加 ⌥ 則平移檢視區域。</translation>
+        <translation>拖移會將檔案拖到其他App；加⌥則移動顯示範圍。</translation>
     </message>
     <message>
         <source>Esc</source>
@@ -2743,23 +2743,23 @@
     </message>
     <message>
         <source>Vollbild oder Modus beenden, sonst nichts</source>
-        <translation>全螢幕或離開模式，否則無動作</translation>
+        <translation>結束全螢幕或目前模式，否則無動作</translation>
     </message>
     <message>
         <source>Esc beendet Vollbild, Diashow oder andere Modi und tut sonst nichts.</source>
-        <translation>Esc 會結束全螢幕、幻燈片秀或其他模式，否則不執行任何動作。</translation>
+        <translation>Esc會結束全螢幕、幻燈片秀或其他模式，否則不執行任何動作。</translation>
     </message>
     <message>
         <source>Vollbild oder Modus beenden, sonst Fenster schließen</source>
-        <translation>全螢幕或離開模式，否則關閉視窗</translation>
+        <translation>結束全螢幕或目前模式，否則關閉視窗</translation>
     </message>
     <message>
         <source>Esc beendet Modi; ist keiner aktiv, wird das Fenster geschlossen.</source>
-        <translation>Esc 會結束模式；若沒有任何模式在使用中，則關閉視窗。</translation>
+        <translation>Esc會結束模式；若沒有任何模式在使用中，則關閉視窗。</translation>
     </message>
     <message>
         <source>Ende der Sammlung</source>
-        <translation>影像集結尾</translation>
+        <translation>集合結尾</translation>
     </message>
     <message>
         <source>Anhalten</source>
@@ -2791,7 +2791,7 @@
     </message>
     <message>
         <source>Nur im Aussortiermodus</source>
-        <translation>僅限篩選模式</translation>
+        <translation>僅限選片模式</translation>
     </message>
     <message>
         <source>Ziffern wählen sonst den Zoommodus (1/2/3).</source>
@@ -2803,7 +2803,7 @@
     </message>
     <message>
         <source>Ziffern vergeben immer Sterne, P/X/U setzen Markierungen. Die Zoom-Ziffern sind dann aus.</source>
-        <translation>數字鍵一律用於評分；P/X/U 用於標記。縮放數字鍵會停用。</translation>
+        <translation>數字鍵一律用於評分，P/X/U用於設定旗標。此時縮放數字鍵會停用。</translation>
     </message>
 </context>
 <context>
@@ -2814,11 +2814,11 @@
     </message>
     <message>
         <source>Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im App-Paket unter Contents/Resources/licenses.</source>
-        <translation>Lumaflip 包含下列元件。授權文字也位於 App 套件中的 Contents/Resources/licenses。</translation>
+        <translation>Lumaflip包含下列元件。授權文字也位於App套件中的Contents/Resources/licenses。</translation>
     </message>
     <message>
         <source>Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das App-Paket gelegt.</source>
-        <translation>開發者版本：授權文字要到封裝（tools/package.sh）時才會放入 App 套件中。</translation>
+        <translation>開發者版本：授權文字要到封裝（tools/package.sh）時才會放入App套件中。</translation>
     </message>
     <message>
         <source>&lt;p&gt;Version: %1&lt;/p&gt;</source>
@@ -2845,7 +2845,7 @@
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
-        <translation>此 Mac 無法使用原況文字。</translation>
+        <translation>此Mac無法使用原況文字。</translation>
     </message>
     <message>
         <source>Live Text: Bild wird analysiert …</source>
@@ -2868,15 +2868,15 @@
     <name>lf::LosslessTransform</name>
     <message>
         <source>Die JPEG-Bibliothek konnte nicht gestartet werden.</source>
-        <translation>無法啟動 JPEG 函式庫。</translation>
+        <translation>無法啟動JPEG函式庫。</translation>
     </message>
     <message>
         <source>Die JPEG-Daten konnten nicht verlustfrei umgeordnet werden (%1).</source>
-        <translation>無法無損重新排列 JPEG 資料（%1）。</translation>
+        <translation>無法無損重新排列JPEG資料（%1）。</translation>
     </message>
     <message>
         <source>Verlustfreies Drehen der JPEG-Daten ist in dieser Version nicht verfügbar.</source>
-        <translation>此版本無法使用 JPEG 資料的無損旋轉。</translation>
+        <translation>此版本無法使用JPEG資料的無損旋轉。</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
@@ -2892,7 +2892,7 @@
     </message>
     <message>
         <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
-        <translation>檔案包含其他影像（例如 HDR 增益圖或第二張立體影像），在無損重新排列 JPEG 資料時會遺失。</translation>
+        <translation>檔案包含輔助影像（例如HDR增益圖或第二張立體影像），在無損重新排列JPEG資料時會遺失。</translation>
     </message>
     <message>
         <source>Die Datei existiert nicht mehr.</source>
@@ -2904,7 +2904,7 @@
     </message>
     <message>
         <source>RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; verwende zum dauerhaften Drehen deinen RAW-Konverter.</source>
-        <translation>RAW 檔案絕不會被更改。旋轉只套用於顯示；若要永久旋轉，請使用 RAW 顯影軟體。</translation>
+        <translation>RAW檔案絕不會被更改。旋轉只套用於顯示；若要永久旋轉，請使用RAW顯影軟體。</translation>
     </message>
     <message>
         <source>Animierte oder mehrseitige Dateien können nicht gedreht gesichert werden.</source>
@@ -2916,11 +2916,11 @@
     </message>
     <message>
         <source>Deshalb wurde nur die EXIF-Ausrichtung gesetzt.</source>
-        <translation>因此只設定了 EXIF 方向。</translation>
+        <translation>因此只設定了EXIF方向。</translation>
     </message>
     <message>
         <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfreies Drehen ist nur möglich, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
-        <translation>影像的寬度或高度不是 JPEG 區塊大小的倍數。只有裁掉窄邊（最多 15 像素）才能無損旋轉。或者，也可以只設定 EXIF 方向。</translation>
+        <translation>影像的寬度或高度不是JPEG區塊大小的倍數。只有裁掉窄邊（最多15像素）才能無損旋轉。或者，也可以只設定EXIF方向。</translation>
     </message>
     <message>
         <source>Die Drehung kann nicht gesichert werden.</source>
@@ -2932,11 +2932,11 @@
     </message>
     <message>
         <source>Dieses Format kann keine Ausrichtung speichern. Die Drehung lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
-        <translation>此格式無法儲存方向。只能透過重新編碼影像來儲存旋轉，這會損失一些影像品質。</translation>
+        <translation>此格式無法儲存方向。只能透過重新編碼影像來儲存旋轉，這會損失些許畫質。</translation>
     </message>
     <message>
         <source>Die EXIF-Ausrichtung konnte nicht gesetzt werden.</source>
-        <translation>無法設定 EXIF 方向。</translation>
+        <translation>無法設定EXIF方向。</translation>
     </message>
     <message>
         <source>Verlustfreies Drehen ist für dieses Bild nicht möglich.</source>
@@ -2964,7 +2964,7 @@
     </message>
     <message>
         <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Widerrufen/Wiederholen ist dafür nicht mehr möglich.</source>
-        <translation>為節省儲存空間，此步驟的備份拷貝已被刪除，因此無法再還原／重做此步驟。</translation>
+        <translation>為節省儲存空間，此步驟的備份已被刪除，因此無法再還原／重做此步驟。</translation>
     </message>
     <message>
         <source>Es gibt nichts zu widerrufen.</source>
@@ -2972,7 +2972,7 @@
     </message>
     <message>
         <source>Kein Speicherplatz für die Sicherungskopie – nichts gesichert.</source>
-        <translation>沒有空間儲存備份拷貝，未儲存任何內容。</translation>
+        <translation>沒有足夠的儲存空間建立備份，未儲存任何內容。</translation>
     </message>
     <message>
         <source>Keine Drehung zu sichern</source>
@@ -2980,7 +2980,7 @@
     </message>
     <message>
         <source>Drehung gesichert (EXIF-Ausrichtung)</source>
-        <translation>已儲存旋轉（EXIF 方向）</translation>
+        <translation>已儲存旋轉（EXIF方向）</translation>
     </message>
     <message>
         <source>Drehung verlustfrei gesichert</source>
@@ -3028,7 +3028,7 @@
     </message>
     <message>
         <source>Die neue Datei konnte nicht gesichert werden.</source>
-        <translation>無法保存新檔案。</translation>
+        <translation>無法儲存新檔案。</translation>
     </message>
     <message>
         <source>Die Datei kann nicht geschrieben werden.</source>
@@ -3044,11 +3044,11 @@
     </message>
     <message>
         <source>Die Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.</source>
-        <translation>無法建立用於「還原」的備份拷貝。</translation>
+        <translation>無法建立用於「還原」的備份。</translation>
     </message>
     <message>
         <source>HDR-Gain-Map</source>
-        <translation>HDR 增益圖</translation>
+        <translation>HDR增益圖</translation>
     </message>
     <message>
         <source>Tiefenkarte</source>
@@ -3064,7 +3064,7 @@
     </message>
     <message>
         <source>Die Datei enthält Zusatzbilder (%1), die beim Sichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gesichert und gilt weiter nur in der Anzeige.</source>
-        <translation>檔案包含附加影像（%1），儲存方向時會遺失。因此未儲存旋轉，旋轉仍只套用於顯示。</translation>
+        <translation>檔案包含輔助影像（%1），儲存方向時會遺失。因此未儲存旋轉，旋轉仍只套用於顯示。</translation>
     </message>
     <message>
         <source>Die neue Datei kann nicht gelesen werden.</source>
@@ -3100,7 +3100,7 @@
     </message>
     <message>
         <source>Nicht genug Speicherplatz, um „%1“ sicher zu überschreiben.</source>
-        <translation>空間不足，無法安全覆寫「%1」。</translation>
+        <translation>儲存空間不足，無法安全覆寫「%1」。</translation>
     </message>
     <message>
         <source>Der alte Inhalt liegt in „%1“.</source>
@@ -3131,15 +3131,15 @@
     </message>
     <message>
         <source>Alle Bildschirme</source>
-        <translation type="unfinished">所有螢幕</translation>
+        <translation>所有顯示器</translation>
     </message>
     <message>
         <source>Bildschirm %1</source>
-        <translation type="unfinished"></translation>
+        <translation>顯示器%1</translation>
     </message>
     <message>
         <source>Windows hat das Bild nicht als Desktophintergrund übernommen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Windows未接受此影像作為桌面背景。</translation>
     </message>
 </context>
 <context>
@@ -3166,7 +3166,7 @@
     </message>
     <message>
         <source>Benutzte Dokumente</source>
-        <translation>打開最近使用過的</translation>
+        <translation>打開最近使用過的檔案</translation>
     </message>
     <message>
         <source>Schließen</source>
@@ -3178,7 +3178,7 @@
     </message>
     <message>
         <source>Im Finder zeigen</source>
-        <translation>在 Finder 中顯示</translation>
+        <translation>在Finder中顯示</translation>
     </message>
     <message>
         <source>Umbenennen …</source>
@@ -3186,7 +3186,7 @@
     </message>
     <message>
         <source>Im Editor öffnen</source>
-        <translation>在預設編輯器中打開</translation>
+        <translation>在編輯器中打開</translation>
     </message>
     <message>
         <source>In den Papierkorb legen</source>
@@ -3194,11 +3194,11 @@
     </message>
     <message>
         <source>Als Standard-App festlegen …</source>
-        <translation>設為預設 App…</translation>
+        <translation>設為預設App…</translation>
     </message>
     <message>
         <source>Über Lumaflip</source>
-        <translation>關於 Lumaflip</translation>
+        <translation>關於Lumaflip</translation>
     </message>
     <message>
         <source>Nach Updates suchen …</source>
@@ -3210,7 +3210,7 @@
     </message>
     <message>
         <source>Lumaflip beenden</source>
-        <translation>結束 Lumaflip</translation>
+        <translation>結束Lumaflip</translation>
     </message>
     <message>
         <source>Bearbeiten</source>
@@ -3246,15 +3246,15 @@
     </message>
     <message>
         <source>Einpassen</source>
-        <translation>縮放至適當大小</translation>
+        <translation>縮放到適當大小</translation>
     </message>
     <message>
         <source>Einpassen (auch vergrößern)</source>
-        <translation>縮放至適當大小（允許放大）</translation>
+        <translation>縮放到適當大小（允許放大）</translation>
     </message>
     <message>
         <source>100 % (1:1 Pixel)</source>
-        <translation>實際大小（1:1 像素）</translation>
+        <translation>實際大小（1:1像素）</translation>
     </message>
     <message>
         <source>Breite füllen</source>
@@ -3278,7 +3278,7 @@
     </message>
     <message>
         <source>Einpassen ↔ 100 %</source>
-        <translation>適當大小 ↔ 100%</translation>
+        <translation>縮放到適當大小 ↔ 100%</translation>
     </message>
     <message>
         <source>Zoom fixieren</source>
@@ -3286,7 +3286,7 @@
     </message>
     <message>
         <source>Standard-Zoom wiederherstellen</source>
-        <translation>回復標準縮放</translation>
+        <translation>回復預設縮放</translation>
     </message>
     <message>
         <source>Vollbild</source>
@@ -3302,7 +3302,7 @@
     </message>
     <message>
         <source>Filmstreifen</source>
-        <translation>底片條</translation>
+        <translation>膠片列</translation>
     </message>
     <message>
         <source>Hintergrund</source>
@@ -3338,7 +3338,7 @@
     </message>
     <message>
         <source>Wie im Finder</source>
-        <translation>同 Finder</translation>
+        <translation>與Finder相同</translation>
     </message>
     <message>
         <source>Aufsteigend</source>
@@ -3402,7 +3402,7 @@
     </message>
     <message>
         <source>RAW anzeigen</source>
-        <translation>顯示 RAW</translation>
+        <translation>顯示RAW</translation>
     </message>
     <message>
         <source>Fenster</source>
@@ -3447,15 +3447,15 @@
     </message>
     <message>
         <source>Einblendungen</source>
-        <translation>疊加層</translation>
+        <translation>覆疊</translation>
     </message>
     <message>
         <source>Über-/Unterbelichtungswarnung</source>
-        <translation>過曝／欠曝</translation>
+        <translation>過曝/欠曝警告</translation>
     </message>
     <message>
         <source>Focus Peaking</source>
-        <translation>對焦峰值</translation>
+        <translation>峰值對焦</translation>
     </message>
     <message>
         <source>Fokuspunkte</source>
@@ -3527,27 +3527,27 @@
     </message>
     <message>
         <source>Nur markierte</source>
-        <translation>僅留用的</translation>
+        <translation>僅限留用</translation>
     </message>
     <message>
         <source>Nur unbewertete</source>
-        <translation>僅未評分的</translation>
+        <translation>僅限未評分</translation>
     </message>
     <message>
         <source>Nur abgelehnte</source>
-        <translation>僅排除的</translation>
+        <translation>僅限排除</translation>
     </message>
     <message>
         <source>Mindestens %1 ★</source>
-        <translation>至少 %1 ★</translation>
+        <translation>至少%1 ★</translation>
     </message>
     <message>
         <source>Aussortieren</source>
-        <translation>篩選</translation>
+        <translation>選片</translation>
     </message>
     <message>
         <source>Aussortiermodus</source>
-        <translation>篩選模式</translation>
+        <translation>選片模式</translation>
     </message>
     <message>
         <source>Bewerten</source>
@@ -3559,23 +3559,23 @@
     </message>
     <message>
         <source>Filter</source>
-        <translation>過濾</translation>
+        <translation>篩選</translation>
     </message>
     <message>
         <source>Alle abgelehnten in den Papierkorb legen …</source>
-        <translation>將所有排除的丟到垃圾桶…</translation>
+        <translation>將所有排除的影像丟到垃圾桶…</translation>
     </message>
     <message>
         <source>Alle abgelehnten nach „_Rejected“ verschieben …</source>
-        <translation>將所有排除的移到「_Rejected」…</translation>
+        <translation>將所有排除的影像移到「_Rejected」…</translation>
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
-        <translation>快速歸檔：移動（M，然後 1–9）</translation>
+        <translation>快速歸檔：移動（M，然後1–9）</translation>
     </message>
     <message>
         <source>Schnellablage: kopieren (C, dann 1–9)</source>
-        <translation>快速歸檔：拷貝（C，然後 1–9）</translation>
+        <translation>快速歸檔：拷貝（C，然後1–9）</translation>
     </message>
     <message>
         <source>Verschieben nach</source>
@@ -3591,7 +3591,7 @@
     </message>
     <message>
         <source>Raster</source>
-        <translation>格狀排列</translation>
+        <translation>格狀</translation>
     </message>
     <message>
         <source>Mit nächstem vergleichen</source>
@@ -3607,7 +3607,7 @@
     </message>
     <message>
         <source>Ordnerkarte</source>
-        <translation>地圖</translation>
+        <translation>檔案夾地圖</translation>
     </message>
     <message>
         <source>Nächster Ordner</source>
@@ -3623,11 +3623,11 @@
     </message>
     <message>
         <source>Nach Dateinamen filtern …</source>
-        <translation>依檔案名稱過濾…</translation>
+        <translation>依檔案名稱篩選…</translation>
     </message>
     <message>
         <source>Namensfilter aufheben</source>
-        <translation>清除名稱過濾</translation>
+        <translation>清除名稱篩選</translation>
     </message>
     <message>
         <source>Immer im Vordergrund</source>
@@ -3635,7 +3635,7 @@
     </message>
     <message>
         <source>Minimaler Fenstermodus</source>
-        <translation>極簡視窗</translation>
+        <translation>極簡視窗模式</translation>
     </message>
     <message>
         <source>Fenster koppeln …</source>
@@ -3651,7 +3651,7 @@
     </message>
     <message>
         <source>HDR anzeigen</source>
-        <translation>顯示 HDR</translation>
+        <translation>顯示HDR</translation>
     </message>
     <message>
         <source>Belichtung erhöhen</source>
@@ -3667,7 +3667,7 @@
     </message>
     <message>
         <source>Belichtung beim Bildwechsel beibehalten</source>
-        <translation>切換影像時保持曝光</translation>
+        <translation>切換影像時保留曝光</translation>
     </message>
     <message>
         <source>Belichtungsregler einblenden</source>
@@ -3679,7 +3679,7 @@
     </message>
     <message>
         <source>Als Schreibtischhintergrund festlegen …</source>
-        <translation>設定為桌面圖片…</translation>
+        <translation>設為背景圖片…</translation>
     </message>
     <message>
         <source>Eigene Aktionen</source>
@@ -3725,22 +3725,22 @@
     </message>
     <message>
         <source>Karten sind unter Windows nicht verfügbar.</source>
-        <translation type="unfinished"></translation>
+        <translation>Windows上無法使用地圖。</translation>
     </message>
 </context>
 <context>
     <name>lf::MenuExtras</name>
     <message>
         <source>Einzelne PDF-Seiten können nicht an andere Apps übergeben werden.</source>
-        <translation>單獨的 PDF 頁面無法傳遞給其他 App。</translation>
+        <translation>單獨的PDF頁面無法傳遞給其他App。</translation>
     </message>
     <message>
         <source>Das Bild wird aus dem Archiv entpackt – versuche es gleich noch einmal.</source>
-        <translation>正在從封存檔解壓縮影像 – 請稍後再試一次。</translation>
+        <translation>正在從封存檔解壓縮影像——請稍後再試一次。</translation>
     </message>
     <message>
         <source>Öffnen mit</source>
-        <translation>打開檔案的應用程式</translation>
+        <translation>打開方式</translation>
     </message>
     <message>
         <source>Teilen</source>
@@ -3760,7 +3760,7 @@
     </message>
     <message>
         <source>Raster</source>
-        <translation>格狀排列</translation>
+        <translation>格狀</translation>
     </message>
     <message>
         <source>Kaskadieren</source>
@@ -3817,7 +3817,7 @@
     <message>
         <source>Pixelmaße</source>
         <extracomment>image size in pixels (width × height)</extracomment>
-        <translation>尺寸</translation>
+        <translation>像素尺寸</translation>
     </message>
     <message>
         <source>Farbraum</source>
@@ -3918,7 +3918,7 @@
     <name>lf::MetadataDialog</name>
     <message>
         <source>Alle Metadaten – %1</source>
-        <translation>所有後設資料 – %1</translation>
+        <translation>所有後設資料——%1</translation>
     </message>
     <message>
         <source>Wird geladen …</source>
@@ -3931,13 +3931,13 @@
     <message numerus="yes">
         <source>%1 von %n Einträgen</source>
         <translation>
-            <numerusform>%1 / %n 個項目</numerusform>
+            <numerusform>%n個項目中的%1個</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n Einträge</source>
         <translation>
-            <numerusform>%n 個項目</numerusform>
+            <numerusform>%n個項目</numerusform>
         </translation>
     </message>
     <message>
@@ -3987,7 +3987,7 @@
         <source>&lt;%n Bytes: %1&gt;</source>
         <extracomment>binary metadata value: its size and the first bytes in hex, e.g. &quot;&lt;2 Bytes: 01 02&gt;&quot;</extracomment>
         <translation>
-            <numerusform>&lt;%n 位元組: %1&gt;</numerusform>
+            <numerusform>&lt;%n位元組：%1&gt;</numerusform>
         </translation>
     </message>
 </context>
@@ -3999,7 +3999,7 @@
     </message>
     <message>
         <source>Bildnummer (1–%1), oder +n / −n vom aktuellen Bild:</source>
-        <translation>影像編號（1–%1），或相對目前影像的 +n / −n：</translation>
+        <translation>影像編號（1–%1），或相對於目前影像的+n / −n：</translation>
     </message>
     <message>
         <source>Gehe zu</source>
@@ -4011,7 +4011,7 @@
     </message>
     <message>
         <source>Gib eine Bildnummer zwischen 1 und %1 ein.</source>
-        <translation>請輸入 1 到 %1 之間的影像編號</translation>
+        <translation>請輸入1到%1之間的影像編號。</translation>
     </message>
     <message>
         <source>Zufällige Reihenfolge an</source>
@@ -4034,7 +4034,7 @@
     <name>lf::OpenWithService</name>
     <message>
         <source>Keine App zum Bearbeiten gefunden. Wähle eine unter Einstellungen → Allgemein → Editor.</source>
-        <translation>找不到可用於編輯的 App。請在「設定」→「一般」→「編輯器」中選擇一個。</translation>
+        <translation>找不到可用於編輯的App。請在「設定」→「一般」→「編輯器」中選擇一個。</translation>
     </message>
     <message>
         <source>Programme (*.exe)</source>
@@ -4042,11 +4042,11 @@
     </message>
     <message>
         <source>Apps (*.desktop);;Alle Dateien (*)</source>
-        <translation>程式 (*.desktop);;所有檔案 (*)</translation>
+        <translation>App (*.desktop);;所有檔案 (*)</translation>
     </message>
     <message>
         <source>„%1“ ist keine App.</source>
-        <translation>「%1」不是程式。</translation>
+        <translation>「%1」不是App。</translation>
     </message>
     <message>
         <source>Kein Bild geöffnet</source>
@@ -4058,7 +4058,7 @@
     </message>
     <message>
         <source>App wählen</source>
-        <translation>選擇 App</translation>
+        <translation>選擇App</translation>
     </message>
     <message>
         <source>Apps (*.app)</source>
@@ -4066,7 +4066,7 @@
     </message>
     <message>
         <source>Apps werden gesucht …</source>
-        <translation>正在搜尋 App…</translation>
+        <translation>正在搜尋App…</translation>
     </message>
     <message>
         <source>%1 (Standard)</source>
@@ -4074,7 +4074,7 @@
     </message>
     <message>
         <source>Keine passenden Apps</source>
-        <translation>沒有符合的 App</translation>
+        <translation>沒有符合的App</translation>
     </message>
 </context>
 <context>
@@ -4089,18 +4089,18 @@
     </message>
     <message>
         <source>Es werden die ersten %1 Bilder verglichen</source>
-        <translation>將比較前 %1 張影像</translation>
+        <translation>將比較前%1張影像</translation>
     </message>
     <message numerus="yes">
         <source>%n Bild(er)</source>
         <translation>
-            <numerusform>%n 張影像</numerusform>
+            <numerusform>%n張影像</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n ausgewählt</source>
         <translation>
-            <numerusform>已選取 %n 個</numerusform>
+            <numerusform>已選取%n個</numerusform>
         </translation>
     </message>
     <message>
@@ -4114,7 +4114,7 @@
     <message numerus="yes">
         <source>%1 – %n Bild(er)</source>
         <translation>
-            <numerusform>%1 – %n 張影像</numerusform>
+            <numerusform>%1——%n張影像</numerusform>
         </translation>
     </message>
     <message>
@@ -4124,18 +4124,18 @@
     <message numerus="yes">
         <source>%n Bild(er) in den Papierkorb gelegt</source>
         <translation>
-            <numerusform>已將 %n 張影像丟到垃圾桶</numerusform>
+            <numerusform>已將%n張影像丟到垃圾桶</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n Bild(er) in den Papierkorb legen?</source>
         <translation>
-            <numerusform>要將 %n 張影像丟到垃圾桶嗎？</numerusform>
+            <numerusform>要將%n張影像丟到垃圾桶嗎？</numerusform>
         </translation>
     </message>
     <message>
         <source>Mit ⌘Z lässt sich das widerrufen.</source>
-        <translation>你可以使用 ⌘Z 還原此動作。</translation>
+        <translation>你可以使用⌘Z還原此動作。</translation>
     </message>
     <message>
         <source>Abbrechen</source>
@@ -4146,15 +4146,15 @@
     <name>lf::PdfDocument</name>
     <message>
         <source>Die Seite gibt es im PDF-Dokument nicht.</source>
-        <translation>PDF 文件中沒有此頁。</translation>
+        <translation>PDF文件中沒有此頁。</translation>
     </message>
     <message>
         <source>PDF-Dokumente werden auf diesem System nicht unterstützt.</source>
-        <translation>此系統不支援 PDF 文件。</translation>
+        <translation>此系統不支援PDF文件。</translation>
     </message>
     <message>
         <source>Das PDF-Dokument ist beschädigt.</source>
-        <translation>PDF 文件已損毀。</translation>
+        <translation>PDF文件已損毀。</translation>
     </message>
     <message>
         <source>Die Datei existiert nicht.</source>
@@ -4162,7 +4162,7 @@
     </message>
     <message>
         <source>Das PDF-Dokument ist passwortgeschützt.</source>
-        <translation>PDF 文件受密碼保護。</translation>
+        <translation>PDF文件受密碼保護。</translation>
     </message>
     <message>
         <source>Die Seite ist leer.</source>
@@ -4221,11 +4221,11 @@
     </message>
     <message>
         <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbildmodus“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
-        <translation>立即生效。macOS 的選單和視窗（「進入全螢幕」、「服務」、「打開」、權限要求）會在重新啟動後跟著變更。</translation>
+        <translation>立即生效。macOS的選單和視窗（「進入全螢幕」、「服務」、「打開」、權限要求）會在重新啟動後跟著變更。</translation>
     </message>
     <message>
         <source>Öffnen aus dem Finder:</source>
-        <translation>從 Finder 打開：</translation>
+        <translation>從Finder打開：</translation>
     </message>
     <message>
         <source>Immer in neuem Fenster</source>
@@ -4237,11 +4237,11 @@
     </message>
     <message>
         <source>Neues Fenster, außer die Datei ist schon offen</source>
-        <translation>新視窗，除非檔案已經打開</translation>
+        <translation>在新視窗中打開，除非檔案已經打開</translation>
     </message>
     <message>
         <source>Gilt für Doppelklick im Finder, „Öffnen mit“ und Drag &amp; Drop auf das Dock-Symbol.</source>
-        <translation>適用於在 Finder 中按兩下、「打開檔案的應用程式」以及拖放到 Dock 圖像上。</translation>
+        <translation>適用於在Finder中按兩下、「打開方式」以及拖放到Dock圖像上。</translation>
     </message>
     <message>
         <source>Fenster beim nächsten Start wiederherstellen</source>
@@ -4253,19 +4253,19 @@
     </message>
     <message>
         <source>Vor dem Bewegen in den Papierkorb nachfragen</source>
-        <translation>刪除前詢問</translation>
+        <translation>丟到垃圾桶前先詢問</translation>
     </message>
     <message>
         <source>Aus: ⌘⌫ legt das Bild sofort in den Papierkorb, ⌘Z holt es zurück.</source>
-        <translation>關閉時：⌘⌫ 會立即將影像丟到垃圾桶，⌘Z 可將其復原。</translation>
+        <translation>關閉時：⌘⌫會立即將影像丟到垃圾桶，⌘Z可將其復原。</translation>
     </message>
     <message>
         <source>Fragen, ob Lumaflip Standard-App werden soll</source>
-        <translation type="unfinished"></translation>
+        <translation>詢問是否將Lumaflip設為預設App</translation>
     </message>
     <message>
         <source>Öffnest du ein Bild, dessen Dateityp eine andere App öffnet, erscheint einmal je Dateityp ein Hinweis oben im Fenster.</source>
-        <translation type="unfinished"></translation>
+        <translation>當你打開的影像類型預設由其他App打開時，視窗頂端會顯示提示（每種檔案類型一次）。</translation>
     </message>
     <message>
         <source>Editor:</source>
@@ -4273,7 +4273,7 @@
     </message>
     <message>
         <source>Für „Im Editor öffnen“ (Taste E).</source>
-        <translation>用於「在預設編輯器中打開」（E 鍵）。</translation>
+        <translation>用於「在編輯器中打開」（E鍵）。</translation>
     </message>
     <message>
         <source>Drehung sichern:</source>
@@ -4281,15 +4281,15 @@
     </message>
     <message>
         <source>EXIF-Ausrichtung setzen</source>
-        <translation>設定 EXIF 方向</translation>
+        <translation>設定EXIF方向</translation>
     </message>
     <message>
         <source>JPEG verlustfrei drehen (DCT)</source>
-        <translation>無損旋轉 JPEG（DCT）</translation>
+        <translation>無損旋轉JPEG（DCT）</translation>
     </message>
     <message>
         <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Apps ohne EXIF-Unterstützung das Bild richtig anzeigen. RAW-Dateien werden nie verändert; ⌘Z widerruft das Sichern.</source>
-        <translation>兩者都不會更改影像像素。「EXIF 方向」只會更改一個標記（JPEG、HEIC、TIFF、PNG）；「無損旋轉」會重新排列 JPEG 區塊，讓不支援 EXIF 的 App 也能正確顯示影像。RAW 檔案絕不會被更改；⌘Z 可還原儲存。</translation>
+        <translation>兩者都不會更改影像像素。「EXIF方向」只會更改一個標記（JPEG、HEIC、TIFF、PNG）；「無損旋轉」會重新排列JPEG區塊，讓不支援EXIF的App也能正確顯示影像。RAW檔案絕不會被更改；⌘Z可還原儲存。</translation>
     </message>
     <message>
         <source>Änderungsdatum beibehalten</source>
@@ -4317,7 +4317,7 @@
     </message>
     <message>
         <source>Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um.</source>
-        <translation>沒有標題列時，影像會延伸到視窗上緣。「視窗」→「極簡視窗」可切換單一視窗。</translation>
+        <translation>沒有標題列時，影像會延伸到視窗上緣。「視窗」→「極簡視窗模式」可切換單一視窗。</translation>
     </message>
     <message>
         <source>Ordnername in der Titelleiste</source>
@@ -4341,7 +4341,7 @@
     </message>
     <message>
         <source>Filmstreifen (T)</source>
-        <translation>底片條（T）</translation>
+        <translation>膠片列（T）</translation>
     </message>
     <message>
         <source>Tabs:</source>
@@ -4349,7 +4349,7 @@
     </message>
     <message>
         <source>Fenster als Tabs öffnen (macOS-Tabs erlauben)</source>
-        <translation>以標籤頁打開視窗（允許 macOS 標籤頁）</translation>
+        <translation>以標籤頁打開視窗（允許macOS標籤頁）</translation>
     </message>
     <message>
         <source>Neue Fenster erscheinen dann als Tab im vordersten Fenster; Fenster → „Alle Fenster zusammenführen“ fasst offene Fenster zusammen.</source>
@@ -4369,7 +4369,7 @@
     </message>
     <message>
         <source>Fenster → „Fenster koppeln …“: gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt.</source>
-        <translation>視窗 →「連結視窗…」：已連結的視窗會一起翻頁，並共用縮放和可見區域。</translation>
+        <translation>「視窗」→「連結視窗…」：已連結的視窗會一起翻頁，並共用縮放和顯示範圍。</translation>
     </message>
     <message>
         <source>Dunkel</source>
@@ -4409,11 +4409,11 @@
     </message>
     <message>
         <source>Einpassen (nicht vergrößern)</source>
-        <translation>縮放至適當大小（不放大）</translation>
+        <translation>縮放到適當大小（不放大）</translation>
     </message>
     <message>
         <source>Einpassen (auch vergrößern)</source>
-        <translation>縮放至適當大小（允許放大）</translation>
+        <translation>縮放到適當大小（允許放大）</translation>
     </message>
     <message>
         <source>100 %</source>
@@ -4437,7 +4437,7 @@
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>
-        <translation>放大超過 100% 時：</translation>
+        <translation>放大超過100%時：</translation>
     </message>
     <message>
         <source>Glatt</source>
@@ -4449,23 +4449,23 @@
     </message>
     <message>
         <source>100 % bedeutet:</source>
-        <translation>100% 表示：</translation>
+        <translation>100%表示：</translation>
     </message>
     <message>
         <source>1 Bildpixel = 1 Gerätepixel (Retina-korrekt)</source>
-        <translation>1 影像像素 = 1 裝置像素（Retina 正確）</translation>
+        <translation>1影像像素 = 1裝置像素（符合Retina）</translation>
     </message>
     <message>
         <source>1 Bildpixel = 1 Punkt</source>
-        <translation>1 影像像素 = 1 點</translation>
+        <translation>1影像像素 = 1點</translation>
     </message>
     <message>
         <source>HDR-Bilder mit erweitertem Dynamikumfang anzeigen</source>
-        <translation>以延伸動態範圍顯示 HDR 影像</translation>
+        <translation>以延伸動態範圍顯示HDR影像</translation>
     </message>
     <message>
         <source>Lupe (L gedrückt halten):</source>
-        <translation>放大鏡（按住 L）：</translation>
+        <translation>放大鏡（按住L）：</translation>
     </message>
     <message>
         <source>200 %</source>
@@ -4497,7 +4497,7 @@
     </message>
     <message>
         <source>HDR-Überbelichtung bezogen auf:</source>
-        <translation>HDR 過曝參照：</translation>
+        <translation>HDR過曝參照：</translation>
     </message>
     <message>
         <source>Spitzenhelligkeit des Bildes</source>
@@ -4505,15 +4505,15 @@
     </message>
     <message>
         <source>SDR-Weiß</source>
-        <translation>SDR 白</translation>
+        <translation>SDR白</translation>
     </message>
     <message>
         <source>Focus Peaking (⇧J), Empfindlichkeit:</source>
-        <translation>對焦峰值（⇧J），靈敏度：</translation>
+        <translation>峰值對焦（⇧J），靈敏度：</translation>
     </message>
     <message>
         <source>Focus-Peaking-Farbe:</source>
-        <translation>對焦峰值顏色：</translation>
+        <translation>峰值對焦顏色：</translation>
     </message>
     <message>
         <source>Weiß</source>
@@ -4541,7 +4541,7 @@
     </message>
     <message>
         <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, P/X/U bewerten, Esc beendet.</source>
-        <translation>幻燈片秀期間：空白鍵暫停，1–9 設定間隔秒數，←/→ 翻頁，P/X/U 評分，Esc 結束。</translation>
+        <translation>幻燈片秀期間：空白鍵暫停，1–9設定間隔秒數，←/→翻頁，P/X/U評分，Esc結束。</translation>
     </message>
     <message>
         <source>Profilvorlagen</source>
@@ -4549,15 +4549,15 @@
     </message>
     <message>
         <source>Mac-Standard</source>
-        <translation>Mac 標準</translation>
+        <translation>Mac標準</translation>
     </message>
     <message>
         <source>Wie Windows-Bildbetrachter</source>
-        <translation>Windows 檢視器習慣</translation>
+        <translation>如同Windows影像檢視器</translation>
     </message>
     <message>
         <source>Fotografie / Lightroom</source>
-        <translation>攝影師 / Lightroom</translation>
+        <translation>攝影 / Lightroom</translation>
     </message>
     <message>
         <source>Maus, Trackpad und Tasten</source>
@@ -4565,7 +4565,7 @@
     </message>
     <message>
         <source>Mausrad-Feineinstellungen</source>
-        <translation>滑鼠滾輪細部設定</translation>
+        <translation>滾輪細部設定</translation>
     </message>
     <message>
         <source>Richtung umkehren</source>
@@ -4581,7 +4581,7 @@
     </message>
     <message>
         <source> ms</source>
-        <translation> ms</translation>
+        <translation> 毫秒</translation>
     </message>
     <message>
         <source>Verhindert das Überspringen von Bildern bei Rädern ohne Rasterung.</source>
@@ -4597,7 +4597,7 @@
     </message>
     <message>
         <source>Sprungweite (Bild↑/Bild↓):</source>
-        <translation>跳躍張數（Page↑/Page↓）：</translation>
+        <translation>跳躍張數（Page Up/Page Down）：</translation>
     </message>
     <message>
         <source> Bilder</source>
@@ -4609,7 +4609,7 @@
     </message>
     <message>
         <source>Klicke auf ein Feld und drücke die neue Taste. Bis zu drei Tastenkürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
-        <translation>按一下欄位，然後按下新的按鍵。每個動作最多可設定三個快速鍵。用於評分的數字鍵和 P/X/U 只在篩選模式中有效。</translation>
+        <translation>按一下欄位，然後按下新的按鍵。每個動作最多可設定三個鍵盤快速鍵。用於評分的數字鍵和P/X/U只在選片模式中有效。</translation>
     </message>
     <message>
         <source>Aktion</source>
@@ -4629,7 +4629,7 @@
     </message>
     <message>
         <source>Standard-Tastenkürzel wiederherstellen</source>
-        <translation>回復預設快速鍵</translation>
+        <translation>回復預設鍵盤快速鍵</translation>
     </message>
     <message>
         <source>Alle Tastenkürzel zurücksetzen</source>
@@ -4642,12 +4642,12 @@
     <message numerus="yes">
         <source>%n Aktion(en) mit doppelt belegten Tasten – ändere eine davon.</source>
         <translation>
-            <numerusform>%n 個動作使用了重複的按鍵，請更改其中一個。</numerusform>
+            <numerusform>%n個動作使用了重複的按鍵，請更改其中一個。</numerusform>
         </translation>
     </message>
     <message>
         <source>Am Ende der Sammlung:</source>
-        <translation>到達影像集結尾時：</translation>
+        <translation>到達集合結尾時：</translation>
     </message>
     <message>
         <source>Anhalten</source>
@@ -4663,15 +4663,15 @@
     </message>
     <message>
         <source>Sortierung wie im Finder</source>
-        <translation>依照 Finder 排序</translation>
+        <translation>依照Finder排序</translation>
     </message>
     <message>
         <source>Liest die Darstellungsoptionen des Ordners (.DS_Store) und die globalen Finder-Einstellungen.</source>
-        <translation>讀取檔案夾的顯示方式選項（.DS_Store）及 Finder 的全域設定。</translation>
+        <translation>讀取檔案夾的顯示方式選項（.DS_Store）及Finder的全域設定。</translation>
     </message>
     <message>
         <source>Zeigt das vorderste Finder-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen aktuelle Sortierung (auch noch nicht gespeicherte). macOS bittet dafür einmalig um die Erlaubnis, den Finder zu steuern (Automation).</source>
-        <translation>若最前方的 Finder 視窗正好顯示所打開的檔案夾，Lumaflip 會沿用其目前的排序方式（包括尚未儲存的排序）。macOS 會為此詢問一次是否允許控制 Finder（自動化）。</translation>
+        <translation>若最前方的Finder視窗正好顯示所打開的檔案夾，Lumaflip會沿用其目前的排序方式（包括尚未儲存的排序）。macOS會為此詢問一次是否允許控制Finder（自動化）。</translation>
     </message>
     <message>
         <source>Manuelle Sortierung:</source>
@@ -4715,7 +4715,7 @@
     </message>
     <message>
         <source>Gilt, wenn „Sortierung wie im Finder“ aus ist oder keine Finder-Information gefunden wird. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier.</source>
-        <translation>在「依照 Finder 排序」關閉或找不到 Finder 資訊時適用。在「顯示方式」→「排序方式」選單中的選擇會依檔案夾記住；「套用至所有檔案夾」會將其設為此處的預設值。</translation>
+        <translation>在「依照Finder排序」關閉或找不到Finder資訊時適用。在「顯示方式」→「排序方式」選單中的選擇會依檔案夾記住；「套用至所有檔案夾」會將其設為此處的預設值。</translation>
     </message>
     <message>
         <source>Keine Farbe</source>
@@ -4763,7 +4763,7 @@
     </message>
     <message>
         <source>Ziel %1 der Schnellablage</source>
-        <translation>快速歸檔目標 %1</translation>
+        <translation>快速歸檔目標%1</translation>
     </message>
     <message>
         <source>Speicherort für Bewertungen</source>
@@ -4771,15 +4771,15 @@
     </message>
     <message>
         <source>XMP-Zusatzdatei neben dem Bild (Bild.xmp)</source>
-        <translation>影像旁的 XMP 附屬檔案（影像.xmp）</translation>
+        <translation>影像旁的XMP附屬檔案（影像.xmp）</translation>
     </message>
     <message>
         <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Abgelehnt“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
-        <translation>與 Lightroom、Capture One 和 darktable 相容：星級存於 xmp:Rating，「排除」記為 -1。檔案的現有內容會保留。</translation>
+        <translation>與Lightroom、Capture One和darktable相容：星級存於xmp:Rating，「排除」記為 -1。檔案的現有內容會保留。</translation>
     </message>
     <message>
         <source>Nur JPEG, HEIC, TIFF, PNG und DNG; die Bildpixel werden nicht neu kodiert. RAW-Dateien werden nie verändert – dafür wird die Zusatzdatei benutzt.</source>
-        <translation>僅限 JPEG、HEIC、TIFF、PNG 和 DNG；像素不會重新編碼。RAW 檔案絕不會被修改，改用附屬檔案。</translation>
+        <translation>僅限JPEG、HEIC、TIFF、PNG和DNG；像素不會重新編碼。RAW檔案絕不會被修改，改用附屬檔案。</translation>
     </message>
     <message>
         <source>Änderungsdatum beim Schreiben ins Bild beibehalten</source>
@@ -4787,7 +4787,7 @@
     </message>
     <message>
         <source>Im Finder sichtbar und per Spotlight durchsuchbar. Sind mehrere Speicherorte gewählt, werden alle beschrieben; beim Lesen gilt die Reihenfolge Zusatzdatei, Bild, Tags.</source>
-        <translation>在 Finder 中可見，可用 Spotlight 搜尋。若選擇多個位置，則全部寫入；讀取時順序為附屬檔案、影像、標籤。</translation>
+        <translation>在Finder中可見，可用Spotlight搜尋。若選擇多個位置，則全部寫入；讀取時順序為附屬檔案、影像、標籤。</translation>
     </message>
     <message>
         <source>Stern-Symbol:</source>
@@ -4795,11 +4795,11 @@
     </message>
     <message>
         <source>Tag für „Markiert“:</source>
-        <translation>留用的標籤：</translation>
+        <translation>「留用」標籤：</translation>
     </message>
     <message>
         <source>Tag für „Abgelehnt“:</source>
-        <translation>排除的標籤：</translation>
+        <translation>「排除」標籤：</translation>
     </message>
     <message>
         <source>Drei Sterne werden zum Tag „★★★“ (Symbol dreimal).</source>
@@ -4807,7 +4807,7 @@
     </message>
     <message>
         <source>Aussortieren</source>
-        <translation>篩選</translation>
+        <translation>選片</translation>
     </message>
     <message>
         <source>Nach Bewertung automatisch weiter</source>
@@ -4815,15 +4815,15 @@
     </message>
     <message>
         <source>Zoom im Aussortiermodus fixieren</source>
-        <translation>在篩選模式中鎖定縮放</translation>
+        <translation>在選片模式中鎖定縮放</translation>
     </message>
     <message>
         <source>Tastenhilfe im Aussortiermodus einblenden</source>
-        <translation>在篩選模式中顯示按鍵說明</translation>
+        <translation>在選片模式中顯示按鍵說明</translation>
     </message>
     <message>
         <source>Aussortiermodus: ⌘K oder K. Ziffern vergeben dort Sterne statt Zoomstufen; „Bewertungstasten immer aktiv“ gibt es unter Maus &amp; Tastatur.</source>
-        <translation>篩選模式：⌘K 或 K。在此模式中數字設定星級而非縮放比例；「評分按鍵一律啟用」位於「滑鼠與鍵盤」。</translation>
+        <translation>選片模式：⌘K或K。在此模式中數字設定星級而非縮放比例；「評分按鍵一律啟用」位於「滑鼠與鍵盤」。</translation>
     </message>
     <message>
         <source>Schnellablage</source>
@@ -4831,15 +4831,15 @@
     </message>
     <message>
         <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z widerruft es.</source>
-        <translation>M 後按 1–9 將影像移到目標檔案夾，C 後按 1–9 則拷貝。M M 或 C C 重複上一個目標。⌘Z 可還原。</translation>
+        <translation>M後按1–9將影像移到目標檔案夾，C後按1–9則拷貝。M M或C C重複上一個目標。⌘Z可還原。</translation>
     </message>
     <message>
         <source>Im Bild selbst (eingebettetes XMP)</source>
-        <translation>影像檔本身（嵌入式 XMP）</translation>
+        <translation>影像檔本身（嵌入式XMP）</translation>
     </message>
     <message>
         <source>Finder-Tags</source>
-        <translation>Finder 標籤</translation>
+        <translation>Finder標籤</translation>
     </message>
     <message>
         <source>Unterstützte Formate (ohne Nachinstallation):</source>
@@ -4883,7 +4883,7 @@
     </message>
     <message>
         <source>Als Standard-App für Bilder festlegen</source>
-        <translation>設為影像的預設 App</translation>
+        <translation>設為影像的預設App</translation>
     </message>
     <message>
         <source>RAW: nur eingebettete Vorschau anzeigen (schneller)</source>
@@ -4895,15 +4895,15 @@
     </message>
     <message>
         <source>RAW+JPEG-Paare als ein Bild behandeln</source>
-        <translation>將 RAW+JPEG 配對視為一張影像</translation>
+        <translation>將RAW+JPEG配對視為一張影像</translation>
     </message>
     <message>
         <source>Gleichnamige RAW- und JPEG-Dateien erscheinen als ein Bild (das JPEG, mit Hinweis „RAW+JPEG“). Bewerten, Verschieben und Löschen betreffen beide Dateien; „RAW anzeigen“ wechselt zur RAW-Datei.</source>
-        <translation>同名的 RAW 和 JPEG 檔案顯示為一張影像（標有「RAW+JPEG」的 JPEG）。評分、搬移和刪除同時作用於兩個檔案；「顯示 RAW」可切換至 RAW 檔案。</translation>
+        <translation>同名的RAW和JPEG檔案顯示為一張影像（標有「RAW+JPEG」的JPEG）。評分、移動和刪除同時作用於兩個檔案；「顯示RAW」可切換至RAW檔案。</translation>
     </message>
     <message>
         <source>Archive (ZIP/CBZ, RAR/CBR, 7z/CB7) und PDF-Dokumente öffnen wie Ordner.</source>
-        <translation>封存檔（ZIP/CBZ、RAR/CBR、7z/CB7）和 PDF 文件會像檔案夾一樣打開。</translation>
+        <translation>封存檔（ZIP/CBZ、RAR/CBR、7z/CB7）和PDF文件會像檔案夾一樣打開。</translation>
     </message>
     <message>
         <source>Comics (CBZ, CBR, CB7) von rechts nach links lesen</source>
@@ -4911,7 +4911,7 @@
     </message>
     <message>
         <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
-        <translation>適合漫畫：← 往後翻，→ 往前翻。空白鍵和 Page Down 總是翻到下一頁。</translation>
+        <translation>適合漫畫：←翻到下一頁，→翻回上一頁。空白鍵和Page Down一律翻到下一頁。</translation>
     </message>
     <message>
         <source>Leistung</source>
@@ -4923,7 +4923,7 @@
     </message>
     <message>
         <source>Automatisch (25 % des Arbeitsspeichers, max. 2 GB)</source>
-        <translation>自動（記憶體的 25%，最多 2 GB）</translation>
+        <translation>自動（記憶體的25%，最多2 GB）</translation>
     </message>
     <message>
         <source>Speicherbudget:</source>
@@ -4947,7 +4947,7 @@
     </message>
     <message>
         <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Internetverbindung.</source>
-        <translation>只有在你為視窗開啟原況文字時才會分析影像——在此 Mac 上，不連網。</translation>
+        <translation>只有在你為視窗開啟原況文字時才會分析影像；分析在這部Mac上進行，不需要網際網路連線。</translation>
     </message>
     <message>
         <source>Eigene Aktionen</source>
@@ -4955,7 +4955,7 @@
     </message>
     <message>
         <source>Ein Shell-Befehl oder ein Kurzbefehl (Kurzbefehle-App) erhält das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
-        <translation>Shell 指令或捷徑會收到目前影像作為參數。選單：檔案 → 自訂動作。</translation>
+        <translation>Shell指令或捷徑（「捷徑」App）會收到目前的影像作為參數。選單：「檔案」→「自訂動作」。</translation>
     </message>
     <message>
         <source>Abbrechen nach:</source>
@@ -4963,11 +4963,11 @@
     </message>
     <message>
         <source> s</source>
-        <translation> s</translation>
+        <translation> 秒</translation>
     </message>
     <message>
         <source>Backup der Einstellungen</source>
-        <translation>備份設定</translation>
+        <translation>設定備份</translation>
     </message>
     <message>
         <source>Exportieren …</source>
@@ -4983,7 +4983,7 @@
     </message>
     <message>
         <source>Lumaflip-Einstellungen (*.json)</source>
-        <translation>Lumaflip 設定 (*.json)</translation>
+        <translation>Lumaflip設定 (*.json)</translation>
     </message>
     <message>
         <source>Einstellungen exportieren</source>
@@ -5031,11 +5031,11 @@
     </message>
     <message>
         <source>Standard-App des Systems für den Bildtyp (nie Lumaflip)</source>
-        <translation>系統中該影像類型的預設 App（絕不會是 Lumaflip）</translation>
+        <translation>系統中該影像類型的預設App（絕不會是Lumaflip）</translation>
     </message>
     <message>
         <source>Lumaflip kann nicht sein eigener Editor sein. Wähle eine andere App.</source>
-        <translation>Lumaflip 不能作為自己的編輯器。請選擇其他 App。</translation>
+        <translation>Lumaflip不能作為自己的編輯器。請選擇其他App。</translation>
     </message>
     <message>
         <source>Editor wählen</source>
@@ -5043,19 +5043,19 @@
     </message>
     <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
-        <translation>即時沿用 Finder 視窗的排序方式</translation>
+        <translation>即時沿用Finder視窗的排序方式</translation>
     </message>
     <message>
         <source>Sortierung vom Finder-Fenster übernehmen</source>
-        <translation>沿用 Finder 視窗的排序方式</translation>
+        <translation>沿用Finder視窗的排序方式</translation>
     </message>
     <message>
         <source>Lumaflip fragt dann beim Öffnen eines Ordners das vorderste Finder-Fenster nach seiner Sortierung – aber nur, wenn es genau diesen Ordner zeigt.</source>
-        <translation>打開檔案夾時，Lumaflip 會向最前方的 Finder 視窗詢問其排序方式，但僅限該視窗正好顯示此檔案夾時。</translation>
+        <translation>打開檔案夾時，Lumaflip會向最前方的Finder視窗詢問其排序方式，但僅限該視窗正好顯示此檔案夾時。</translation>
     </message>
     <message>
         <source>Dafür fragt macOS einmalig, ob Lumaflip den Finder steuern darf („Automation“). Lumaflip liest nur Ordner, Ansicht und Sortierung des Fensters und ändert nichts. Die Erlaubnis lässt sich jederzeit unter Systemeinstellungen → Datenschutz &amp; Sicherheit → Automation widerrufen.</source>
-        <translation>為此，macOS 會詢問一次是否允許 Lumaflip 控制 Finder（「自動化」）。Lumaflip 只會讀取視窗的檔案夾、顯示方式和排序方式，不會更改任何內容。你隨時可以在「系統設定」→「隱私權與安全性」→「自動化」中撤銷此權限。</translation>
+        <translation>為此，macOS會詢問一次是否允許Lumaflip控制Finder（「自動化」）。Lumaflip只會讀取視窗的檔案夾、顯示方式和排序方式，不會更改任何內容。你隨時可以在「系統設定」→「隱私權與安全性」→「自動化」中撤銷此權限。</translation>
     </message>
     <message>
         <source>Aktivieren</source>
@@ -5075,23 +5075,23 @@
     <name>lf::PsbDecoder</name>
     <message>
         <source>Die PSB-Datei ist beschädigt oder unvollständig.</source>
-        <translation>PSB 檔案已損壞或不完整。</translation>
+        <translation>PSB檔案已損毀或不完整。</translation>
     </message>
     <message>
         <source>Keine PSB-Datei.</source>
-        <translation>不是 PSB 檔案。</translation>
+        <translation>不是PSB檔案。</translation>
     </message>
     <message>
         <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
-        <translation>影像尺寸 %1 × %2 無效或過大。</translation>
+        <translation>影像尺寸%1 × %2無效或過大。</translation>
     </message>
     <message>
         <source>Die Bittiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
-        <translation>不支援此 PSB 檔案的色彩深度或色彩模式。</translation>
+        <translation>不支援此PSB檔案的位元深度或色彩模式。</translation>
     </message>
     <message>
         <source>Die Komprimierung der PSB-Datei wird nicht unterstützt.</source>
-        <translation>不支援此 PSB 檔案的壓縮方式。</translation>
+        <translation>不支援此PSB檔案的壓縮方式。</translation>
     </message>
     <message>
         <source>Nicht genug Arbeitsspeicher für das Bild.</source>
@@ -5103,11 +5103,11 @@
     </message>
     <message>
         <source>Seite %1 existiert nicht.</source>
-        <translation>第 %1 頁不存在。</translation>
+        <translation>第%1頁不存在。</translation>
     </message>
     <message>
         <source>Die Datei ist leer (0 Byte).</source>
-        <translation>檔案是空的（0 位元組）。</translation>
+        <translation>檔案是空的（0位元組）。</translation>
     </message>
     <message>
         <source>Die Datei ist zu groß.</source>
@@ -5118,7 +5118,7 @@
     <name>lf::QtImageDecoder</name>
     <message>
         <source>Die Datei ist leer (0 Byte).</source>
-        <translation>檔案是空的（0 位元組）。</translation>
+        <translation>檔案是空的（0位元組）。</translation>
     </message>
     <message>
         <source>Unbekanntes oder nicht unterstütztes Dateiformat.</source>
@@ -5126,7 +5126,7 @@
     </message>
     <message>
         <source>Seite %1 existiert nicht.</source>
-        <translation>第 %1 頁不存在。</translation>
+        <translation>第%1頁不存在。</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden: %1</source>
@@ -5134,7 +5134,7 @@
     </message>
     <message>
         <source>Die SVG-Datei ist ungültig oder beschädigt.</source>
-        <translation>SVG 檔案無效或已損壞。</translation>
+        <translation>SVG檔案無效或已損毀。</translation>
     </message>
     <message>
         <source>Nicht genug Arbeitsspeicher für das Bild.</source>
@@ -5145,11 +5145,11 @@
     <name>lf::QuickFilterBar</name>
     <message>
         <source>Dateiname filtern</source>
-        <translation>過濾檔案名稱</translation>
+        <translation>篩選檔案名稱</translation>
     </message>
     <message>
         <source>Filter aufheben (Esc)</source>
-        <translation>清除過濾（Esc）</translation>
+        <translation>清除篩選（Esc）</translation>
     </message>
 </context>
 <context>
@@ -5171,11 +5171,11 @@
     </message>
     <message>
         <source>Noch kein Ziel verwendet – wähle zuerst eine Ziffer 1–9.</source>
-        <translation>尚未使用過目標，請先選擇數字 1–9。</translation>
+        <translation>尚未使用過目標，請先選擇數字1–9。</translation>
     </message>
     <message>
         <source>Ziel %1 ist nicht festgelegt (Einstellungen → Bewertung → Schnellablage).</source>
-        <translation>目標 %1 未設定（設定 → 評分 → 快速歸檔）。</translation>
+        <translation>目標%1未設定（「設定」→「評分」→「快速歸檔」）。</translation>
     </message>
     <message>
         <source>Verschieben</source>
@@ -5192,13 +5192,13 @@
     <message numerus="yes">
         <source>%n Bild(er) nach „%1“ verschoben</source>
         <translation>
-            <numerusform>已將 %n 張影像移到「%1」</numerusform>
+            <numerusform>已將%n張影像移到「%1」</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n Bild(er) nach „%1“ kopiert</source>
         <translation>
-            <numerusform>已將 %n 張影像拷貝到「%1」</numerusform>
+            <numerusform>已將%n張影像拷貝到「%1」</numerusform>
         </translation>
     </message>
     <message>
@@ -5219,7 +5219,7 @@
     </message>
     <message>
         <source>„Ersetzen“ legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z widerruft alles.</source>
-        <translation>「取代」會將現有檔案丟到垃圾桶，「兩者都保留」會為新檔案命名為類似「%1」的名稱。⌘Z 可還原全部操作。</translation>
+        <translation>「取代」會將現有檔案丟到垃圾桶，「兩者皆保留」會為新檔案命名為類似「%1」的名稱。⌘Z可還原全部操作。</translation>
     </message>
     <message>
         <source>Ersetzen</source>
@@ -5227,7 +5227,7 @@
     </message>
     <message>
         <source>Beide behalten</source>
-        <translation>兩者都保留</translation>
+        <translation>兩者皆保留</translation>
     </message>
     <message>
         <source>Überspringen</source>
@@ -5235,7 +5235,7 @@
     </message>
     <message>
         <source>Für alle %1 Konflikte</source>
-        <translation>套用至全部 %1 個衝突</translation>
+        <translation>套用至全部%1個衝突</translation>
     </message>
 </context>
 <context>
@@ -5246,7 +5246,7 @@
     </message>
     <message>
         <source>nur markierte</source>
-        <translation>僅留用的</translation>
+        <translation>僅限留用</translation>
     </message>
     <message>
         <source>≥ %1 ★</source>
@@ -5254,11 +5254,11 @@
     </message>
     <message>
         <source>nur unbewertete</source>
-        <translation>僅未評分的</translation>
+        <translation>僅限未評分</translation>
     </message>
     <message>
         <source>nur abgelehnte</source>
-        <translation>僅排除的</translation>
+        <translation>僅限排除</translation>
     </message>
     <message>
         <source>Markiert</source>
@@ -5266,14 +5266,14 @@
     </message>
     <message>
         <source>Abgelehnt</source>
-        <translation>已排除</translation>
+        <translation>排除</translation>
     </message>
 </context>
 <context>
     <name>lf::RatingStore</name>
     <message>
         <source>„%1“ konnte nicht geschrieben werden (Ordner schreibgeschützt?).</source>
-        <translation>無法寫入「%1」（檔案夾為唯讀？）。</translation>
+        <translation>無法寫入「%1」（檔案夾可能為唯讀）。</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
@@ -5285,7 +5285,7 @@
     </message>
     <message>
         <source>Die XMP-Datei „%1“ ist beschädigt oder unbekannt aufgebaut und wird nicht verändert.</source>
-        <translation>XMP 檔案「%1」已損毀或結構不明，不會被修改。</translation>
+        <translation>XMP檔案「%1」已損毀或結構不明，不會被修改。</translation>
     </message>
     <message>
         <source>„%1“ konnte nicht ersetzt werden.</source>
@@ -5297,7 +5297,7 @@
     </message>
     <message>
         <source>RAW-Dateien werden nie verändert.</source>
-        <translation>RAW 檔案絕不會被修改。</translation>
+        <translation>RAW檔案絕不會被修改。</translation>
     </message>
     <message>
         <source>In dieses Format kann die Bewertung nicht sicher geschrieben werden.</source>
@@ -5329,15 +5329,15 @@
     </message>
     <message>
         <source>Finder-Tags werden auf diesem System nicht unterstützt.</source>
-        <translation>此系統不支援 Finder 標籤。</translation>
+        <translation>此系統不支援Finder標籤。</translation>
     </message>
     <message>
         <source>Kein Speicherort für Bewertungen gewählt (Einstellungen → Bewertung).</source>
-        <translation>未選擇評分的儲存位置（設定 → 評分）。</translation>
+        <translation>未選擇評分的儲存位置（「設定」→「評分」）。</translation>
     </message>
     <message>
         <source>„%1“: %2 Die Bewertung steht deshalb in der XMP-Zusatzdatei.</source>
-        <translation>「%1」：%2 因此評分儲存在 XMP 附屬檔案中。</translation>
+        <translation>「%1」：%2因此評分儲存在XMP附屬檔案中。</translation>
     </message>
     <message>
         <source>Bewertung</source>
@@ -5353,7 +5353,7 @@
     </message>
     <message>
         <source>Das XMP im Bild ist beschädigt und wird nicht verändert.</source>
-        <translation>影像中的 XMP 已損毀，不會被修改。</translation>
+        <translation>影像中的XMP已損毀，不會被修改。</translation>
     </message>
     <message>
         <source>Die Bewertung ließ sich nicht verlustfrei ins Bild schreiben.</source>
@@ -5361,7 +5361,7 @@
     </message>
     <message>
         <source>Zusatzbilder der Datei (z. B. eine HDR-Gain-Map) gingen beim Schreiben verloren.</source>
-        <translation>寫入時遺失了檔案的輔助影像（例如 HDR 增益圖）。</translation>
+        <translation>寫入時遺失了檔案的輔助影像（例如HDR增益圖）。</translation>
     </message>
     <message>
         <source>Tags von „%1“ konnten nicht gelesen werden: %2</source>
@@ -5399,7 +5399,7 @@
     </message>
     <message>
         <source>Der Name ist zu lang (höchstens %1 Byte).</source>
-        <translation>名稱太長（最多 %1 位元組）。</translation>
+        <translation>名稱太長（最多%1位元組）。</translation>
     </message>
     <message>
         <source>„%1“ existiert bereits. Bitte wähle einen anderen Namen.</source>
@@ -5411,15 +5411,15 @@
     </message>
     <message>
         <source>Möchtest du die Endung „.%1“ wirklich entfernen?</source>
-        <translation>要移除副檔名「.%1」嗎？</translation>
+        <translation>確定要移除副檔名「.%1」嗎？</translation>
     </message>
     <message>
         <source>Möchtest du die Endung „.%1“ wirklich hinzufügen?</source>
-        <translation>要加入副檔名「.%1」嗎？</translation>
+        <translation>確定要加入副檔名「.%1」嗎？</translation>
     </message>
     <message>
         <source>Möchtest du die Endung wirklich von „.%1“ in „.%2“ ändern?</source>
-        <translation>要將副檔名「.%1」更改為「.%2」嗎？</translation>
+        <translation>確定要將副檔名從「.%1」更改為「.%2」嗎？</translation>
     </message>
     <message>
         <source>Endung ändern?</source>
@@ -5427,11 +5427,11 @@
     </message>
     <message>
         <source>Die Datei wird dadurch nicht umgewandelt. Andere Apps erkennen sie danach eventuell nicht mehr.</source>
-        <translation>這不會轉換檔案格式。其他 App 之後可能無法再辨識此檔案。</translation>
+        <translation>這不會轉換檔案格式。其他App之後可能無法再辨識此檔案。</translation>
     </message>
     <message>
         <source>Nicht hinzufügen</source>
-        <translation>不使用副檔名</translation>
+        <translation>不加入</translation>
     </message>
     <message>
         <source>„.%1“ beibehalten</source>
@@ -5458,7 +5458,7 @@
     </message>
     <message>
         <source>Die Datei ist leer (0 Byte).</source>
-        <translation>檔案是空的（0 位元組）。</translation>
+        <translation>檔案是空的（0位元組）。</translation>
     </message>
     <message>
         <source>Die Datei ist zu groß.</source>
@@ -5466,15 +5466,15 @@
     </message>
     <message>
         <source>Die SVG-Datei ist ungültig oder beschädigt.</source>
-        <translation>SVG 檔案無效或已損壞。</translation>
+        <translation>SVG檔案無效或已損毀。</translation>
     </message>
     <message>
         <source>Die SVG-Datei enthält zu viele Elemente.</source>
-        <translation>SVG 檔案包含的元素過多。</translation>
+        <translation>SVG檔案包含的元素過多。</translation>
     </message>
     <message>
         <source>Die SVG-Datei hat keine gültige Größe.</source>
-        <translation>SVG 檔案沒有有效的尺寸。</translation>
+        <translation>SVG檔案沒有有效的尺寸。</translation>
     </message>
     <message>
         <source>Nicht genug Arbeitsspeicher für das Bild.</source>
@@ -5482,15 +5482,15 @@
     </message>
     <message>
         <source>SVG über resvg ist in diesem Build nicht verfügbar.</source>
-        <translation>此版本無法透過 resvg 顯示 SVG。</translation>
+        <translation>此版本無法透過resvg顯示SVG。</translation>
     </message>
     <message>
         <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
-        <translation>影像尺寸 %1 × %2 無效或過大。</translation>
+        <translation>影像尺寸%1 × %2無效或過大。</translation>
     </message>
     <message>
         <source>Seite %1 existiert nicht.</source>
-        <translation>第 %1 頁不存在。</translation>
+        <translation>第%1頁不存在。</translation>
     </message>
 </context>
 <context>
@@ -5505,11 +5505,11 @@
     </message>
     <message>
         <source>Keine gültige Einstellungsdatei (JSON-Fehler: %1).</source>
-        <translation>不是有效的設定檔（JSON 錯誤：%1）。</translation>
+        <translation>不是有效的設定檔（JSON錯誤：%1）。</translation>
     </message>
     <message>
         <source>Keine Lumaflip-Einstellungsdatei.</source>
-        <translation>不是 Lumaflip 設定檔。</translation>
+        <translation>不是Lumaflip設定檔。</translation>
     </message>
     <message>
         <source>%1: ungültiger Wert (erwartet: %2)</source>
@@ -5537,7 +5537,7 @@
     <name>lf::Shell</name>
     <message>
         <source>Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, falls eine erscheint.</source>
-        <translation>仍在將 Lumaflip 設為預設 App，若 macOS 顯示確認詢問，請予以確認。</translation>
+        <translation>仍在將Lumaflip設為預設App，若macOS顯示確認詢問，請予以確認。</translation>
     </message>
     <message>
         <source>unbekannter Typ</source>
@@ -5545,7 +5545,7 @@
     </message>
     <message>
         <source>Lumaflip läuft nicht als App-Paket und kann nicht als Standard-App festgelegt werden.</source>
-        <translation>Lumaflip 並非以 App 套件執行，因此無法設為預設 App。</translation>
+        <translation>Lumaflip並非以App套件執行，因此無法設為預設App。</translation>
     </message>
     <message>
         <source>Zeitüberschreitung bei der Rückmeldung des Systems.</source>
@@ -5557,7 +5557,7 @@
     </message>
     <message>
         <source>Lumaflip ist nicht als App installiert (%1 fehlt).</source>
-        <translation>Lumaflip 未安裝為應用程式（缺少 %1）。</translation>
+        <translation>Lumaflip未以App形式安裝（缺少%1）。</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gestartet werden.</source>
@@ -5565,7 +5565,7 @@
     </message>
     <message>
         <source>Batch-Dateien werden aus Sicherheitsgründen nicht gestartet.</source>
-        <translation type="unfinished"></translation>
+        <translation>基於安全考量，不會啟動批次檔。</translation>
     </message>
     <message>
         <source>„%1“ würde den Dateinamen als Befehl lesen und wird aus Sicherheitsgründen nicht gestartet.</source>
@@ -5573,11 +5573,11 @@
     </message>
     <message>
         <source>Die App wurde nicht gefunden.</source>
-        <translation type="unfinished"></translation>
+        <translation>找不到App。</translation>
     </message>
     <message>
         <source>Windows erlaubt Apps nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Windows不允許應用程式將自己設為預設應用程式。已開啟「預設應用程式」設定：請在該處為所需的檔案類型選擇Lumaflip。</translation>
     </message>
 </context>
 <context>
@@ -5588,7 +5588,7 @@
     </message>
     <message>
         <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
-        <translation>影像尺寸 %1 × %2 無效或過大。</translation>
+        <translation>影像尺寸%1 × %2無效或過大。</translation>
     </message>
     <message>
         <source>Das Bild im Archiv ist beschädigt: %1</source>
@@ -5600,7 +5600,7 @@
     </message>
     <message>
         <source>Die Datei ist leer (0 Byte).</source>
-        <translation>檔案是空的（0 位元組）。</translation>
+        <translation>檔案是空的（0位元組）。</translation>
     </message>
     <message>
         <source>Die Datei ist zu groß.</source>
@@ -5608,11 +5608,11 @@
     </message>
     <message>
         <source>Die Datei ist beschädigt oder unvollständig.</source>
-        <translation>檔案已損壞或不完整。</translation>
+        <translation>檔案已損毀或不完整。</translation>
     </message>
     <message>
         <source>Seite %1 existiert nicht.</source>
-        <translation>第 %1 頁不存在。</translation>
+        <translation>第%1頁不存在。</translation>
     </message>
     <message>
         <source>Nicht genug Arbeitsspeicher für das Bild.</source>
@@ -5620,7 +5620,7 @@
     </message>
     <message>
         <source>Nicht genug Arbeitsspeicher für das Bild (%1 × %2 Pixel).</source>
-        <translation>記憶體不足，無法處理影像（%1 × %2 像素）。</translation>
+        <translation>記憶體不足，無法處理影像（%1 × %2像素）。</translation>
     </message>
 </context>
 <context>
@@ -5650,7 +5650,7 @@
     </message>
     <message>
         <source>„%1“ existiert nicht mehr.</source>
-        <translation type="unfinished">「%1」已不存在。</translation>
+        <translation>「%1」已不存在。</translation>
     </message>
     <message>
         <source>Dieses Dateisystem unterstützt keine Tags.</source>
@@ -5700,7 +5700,7 @@
     </message>
     <message>
         <source>Nicht genug Speicherplatz für die Sicherungskopie (Widerrufen) – nichts gesichert.</source>
-        <translation>沒有足夠空間儲存備份拷貝（還原），未儲存任何內容。</translation>
+        <translation>沒有足夠的儲存空間建立備份（用於還原），未儲存任何內容。</translation>
     </message>
 </context>
 <context>
@@ -5715,7 +5715,7 @@
     </message>
     <message>
         <source>Lumaflip fragt dazu einmal am Tag bei GitHub nach einer neuen Version. Das ist die einzige Netzwerkverbindung der App.</source>
-        <translation>Lumaflip 每天會向 GitHub 查詢一次是否有新版本。這是本 App 唯一的網路連線。</translation>
+        <translation>Lumaflip每天會向GitHub查詢一次是否有新版本。這是本App唯一的網路連線。</translation>
     </message>
     <message>
         <source>Updates:</source>
@@ -5746,11 +5746,11 @@
     </message>
     <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
-        <translation>檔案已損壞，或不支援其格式。</translation>
+        <translation>檔案已損毀，或不支援其格式。</translation>
     </message>
     <message>
         <source>Im Finder zeigen</source>
-        <translation>在 Finder 中顯示</translation>
+        <translation>在Finder中顯示</translation>
     </message>
     <message>
         <source>Volle Auflösung nicht verfügbar</source>
@@ -5758,7 +5758,7 @@
     </message>
     <message>
         <source>Lumaflip – wird geladen …</source>
-        <translation>Lumaflip – 正在載入…</translation>
+        <translation>Lumaflip——正在載入…</translation>
     </message>
     <message>
         <source>Sortierung wird ermittelt …</source>
@@ -5795,11 +5795,11 @@
     </message>
     <message>
         <source>Lumaflip darf den Ordner „%1“ nicht lesen und zeigt deshalb nur die geöffnete Datei. Erlaube den Zugriff unter Systemeinstellungen → Datenschutz &amp; Sicherheit → Dateien und Ordner. Festplattenvollzugriff ist dafür nicht nötig.</source>
-        <translation>Lumaflip 沒有讀取檔案夾「%1」的權限，因此只會顯示所打開的檔案。請在「系統設定」→「隱私權與安全性」→「檔案和檔案夾」中允許取用。不需要「完整磁碟取用權限」。</translation>
+        <translation>Lumaflip沒有讀取檔案夾「%1」的權限，因此只會顯示所打開的檔案。請在「系統設定」→「隱私權與安全性」→「檔案與檔案夾」中允許取用。不需要「完全取用磁碟」權限。</translation>
     </message>
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
-        <translation>你沒有檔案夾「%1」的讀取權限，因此 Lumaflip 只會顯示所打開的檔案。你可以在 Finder 的「檔案」→「取得資訊」→「共享與權限」中更改權限。</translation>
+        <translation>你沒有檔案夾「%1」的讀取權限，因此Lumaflip只會顯示所打開的檔案。你可以在Finder的「檔案」→「取得資訊」→「共享與權限」中更改權限。</translation>
     </message>
     <message>
         <source>Kein weiterer Ordner und kein weiteres Archiv</source>
@@ -5835,7 +5835,7 @@
     </message>
     <message>
         <source>Mit ⌘Z lässt sich das widerrufen.</source>
-        <translation>你可以使用 ⌘Z 還原此動作。</translation>
+        <translation>你可以使用⌘Z還原此動作。</translation>
     </message>
     <message>
         <source>Abbrechen</source>
@@ -5844,7 +5844,7 @@
     <message numerus="yes">
         <source>%n Datei(en) in den Papierkorb gelegt</source>
         <translation>
-            <numerusform>已將 %n 個檔案移到垃圾桶</numerusform>
+            <numerusform>已將%n個檔案丟到垃圾桶</numerusform>
         </translation>
     </message>
     <message>
@@ -5894,16 +5894,16 @@
     <message numerus="yes">
         <source>Intervall: %n Sekunde(n)</source>
         <translation>
-            <numerusform>間隔：%n 秒</numerusform>
+            <numerusform>間隔：%n秒</numerusform>
         </translation>
     </message>
     <message>
         <source>Bild %1/%2</source>
-        <translation>影像 %1/%2</translation>
+        <translation>影像%1/%2</translation>
     </message>
     <message>
         <source>Seite %1/%2</source>
-        <translation>頁面 %1/%2</translation>
+        <translation>頁面%1/%2</translation>
     </message>
     <message>
         <source>Geschwindigkeit: %1×</source>
@@ -5919,11 +5919,11 @@
     </message>
     <message>
         <source>Diashow – Leertaste: Pause · 1–9: Sekunden · Esc: Ende</source>
-        <translation>幻燈片秀 – 空白鍵：暫停 · 1–9：秒數 · Esc：結束</translation>
+        <translation>幻燈片秀——空白鍵：暫停 · 1–9：秒數 · Esc：結束</translation>
     </message>
     <message>
         <source>Keine Drehung zu sichern – drehe das Bild zuerst mit ⌘L oder ⌘R</source>
-        <translation>沒有要儲存的旋轉，請先以 ⌘L 或 ⌘R 旋轉</translation>
+        <translation>沒有要儲存的旋轉，請先以⌘L或⌘R旋轉影像</translation>
     </message>
     <message>
         <source>Drehung sichern</source>
@@ -5947,7 +5947,7 @@
     </message>
     <message>
         <source>Nur EXIF-Ausrichtung setzen</source>
-        <translation>只設定 EXIF 方向</translation>
+        <translation>只設定EXIF方向</translation>
     </message>
 </context>
 <context>
@@ -5955,7 +5955,7 @@
     <message>
         <source>Seite %1</source>
         <extracomment>one page of a PDF document browsed like a folder (F-OPEN-10)</extracomment>
-        <translation>第 %1 頁</translation>
+        <translation>第%1頁</translation>
     </message>
     <message>
         <source>%1 › %2</source>
@@ -5967,11 +5967,11 @@
     <name>lf::Wallpaper</name>
     <message>
         <source>Es ist kein Bild geöffnet.</source>
-        <translation>未打開影像。</translation>
+        <translation>沒有打開的影像。</translation>
     </message>
     <message>
         <source>Bilder in Archiven und PDF-Seiten können nicht als Schreibtischhintergrund festgelegt werden.</source>
-        <translation>封存檔中的影像和 PDF 頁面不能設為桌面圖片。</translation>
+        <translation>封存檔中的影像和PDF頁面不能設為背景圖片。</translation>
     </message>
     <message>
         <source>Es wurde kein Bildschirm gefunden.</source>
@@ -5980,7 +5980,7 @@
     <message>
         <source>%1: %2</source>
         <extracomment>wallpaper error per screen: &quot;&lt;screen&gt;: &lt;reason&gt;&quot;</extracomment>
-        <translation>%1: %2</translation>
+        <translation>%1：%2</translation>
     </message>
     <message>
         <source>„%1“ ist nicht installiert.</source>
@@ -5992,7 +5992,7 @@
     </message>
     <message>
         <source>Alle Bildschirme</source>
-        <translation>所有螢幕</translation>
+        <translation>所有顯示器</translation>
     </message>
     <message>
         <source>Diese Desktopumgebung wird nicht unterstützt.</source>
@@ -6003,19 +6003,19 @@
     <name>lf::WindowEditing</name>
     <message>
         <source>Über-/Unterbelichtungswarnung an (rot: Lichter, blau: Schatten)</source>
-        <translation>過曝／欠曝警告已開啟（紅色：亮部，藍色：暗部）</translation>
+        <translation>過曝/欠曝警告已開啟（紅色：亮部，藍色：暗部）</translation>
     </message>
     <message>
         <source>Über-/Unterbelichtungswarnung aus</source>
-        <translation>過曝／欠曝警告已關閉</translation>
+        <translation>過曝/欠曝警告已關閉</translation>
     </message>
     <message>
         <source>Focus Peaking an</source>
-        <translation>對焦峰值已開啟</translation>
+        <translation>峰值對焦已開啟</translation>
     </message>
     <message>
         <source>Focus Peaking aus</source>
-        <translation>對焦峰值已關閉</translation>
+        <translation>峰值對焦已關閉</translation>
     </message>
     <message>
         <source>Fokuspunkte an</source>
@@ -6044,7 +6044,7 @@
     </message>
     <message>
         <source>Zuschneiden: Rahmen ziehen – Enter sichert, Esc bricht ab</source>
-        <translation>裁切：拖移出邊框——Enter 儲存，Esc 取消</translation>
+        <translation>裁切：拖移出邊框——Enter儲存，Esc取消</translation>
     </message>
     <message>
         <source>Der vorherige Zuschnitt wird noch gesichert.</source>
@@ -6052,12 +6052,12 @@
     </message>
     <message>
         <source>Kein Bildbereich ausgewählt.</source>
-        <translation>未選取範圍。</translation>
+        <translation>未選取影像範圍。</translation>
     </message>
     <message>
         <source>%1-zugeschnitten.%2</source>
         <extracomment>default file name of a cropped copy: &quot;&lt;name&gt;-zugeschnitten.&lt;suffix&gt;&quot;</extracomment>
-        <translation>%1-cropped.%2</translation>
+        <translation>%1-已裁切.%2</translation>
     </message>
     <message>
         <source>Zugeschnittenes Bild sichern unter</source>
@@ -6089,7 +6089,7 @@
     </message>
     <message>
         <source>Zugeschnitten exportiert als „%1“</source>
-        <translation>裁切的拷貝已輸出為「%1」</translation>
+        <translation>已將裁切結果輸出為「%1」</translation>
     </message>
     <message>
         <source>Zugeschnitten exportieren …</source>
@@ -6109,7 +6109,7 @@
     </message>
     <message>
         <source>Zugeschnitten gesichert als „%1“</source>
-        <translation>裁切已儲存為「%1」</translation>
+        <translation>已將裁切結果儲存為「%1」</translation>
     </message>
     <message>
         <source>Kein Bild zum Exportieren.</source>
@@ -6122,25 +6122,25 @@
     <message numerus="yes">
         <source>%n Bilder konnten nicht exportiert werden.</source>
         <translation>
-            <numerusform>%n 張影像無法輸出。</numerusform>
+            <numerusform>%n張影像無法輸出。</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>Export abgebrochen – %n Bilder exportiert</source>
         <translation>
-            <numerusform>輸出已取消——已輸出 %n 張影像</numerusform>
+            <numerusform>輸出已取消——已輸出%n張影像</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n Bilder exportiert</source>
         <translation>
-            <numerusform>已輸出 %n 張影像</numerusform>
+            <numerusform>已輸出%n張影像</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>%n übersprungen</source>
         <translation>
-            <numerusform>已略過 %n 張</numerusform>
+            <numerusform>已略過%n張</numerusform>
         </translation>
     </message>
 </context>
@@ -6148,7 +6148,7 @@
     <name>lf::WindowExtras</name>
     <message>
         <source>Ordnerkarte</source>
-        <translation>地圖</translation>
+        <translation>檔案夾地圖</translation>
     </message>
     <message>
         <source>Name: „%1“</source>
@@ -6164,11 +6164,11 @@
     </message>
     <message>
         <source>Blättern, Zoom und Ausschnitt laufen mit den anderen gekoppelten Fenstern</source>
-        <translation>翻頁、縮放和可見區域與其他已連結視窗同步</translation>
+        <translation>翻頁、縮放和顯示範圍與其他已連結視窗同步</translation>
     </message>
     <message>
         <source>Kein Dateiname passt zu „%1“ – Esc hebt den Filter auf</source>
-        <translation>沒有與「%1」相符的檔案名稱 – 按 Esc 清除過濾</translation>
+        <translation>沒有與「%1」相符的檔案名稱——按Esc清除篩選</translation>
     </message>
     <message>
         <source>Immer im Vordergrund</source>
@@ -6180,11 +6180,11 @@
     </message>
     <message>
         <source>Minimaler Fenstermodus – die Titelleiste erscheint, wenn sich die Maus bewegt</source>
-        <translation>極簡視窗 – 移動滑鼠時顯示標題列</translation>
+        <translation>極簡視窗模式——移動滑鼠時會顯示標題列</translation>
     </message>
     <message>
         <source>Minimaler Fenstermodus aus</source>
-        <translation>極簡視窗：關</translation>
+        <translation>已關閉極簡視窗模式</translation>
     </message>
 </context>
 <context>
@@ -6203,7 +6203,7 @@
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
-        <translation>此 Mac 無法使用原況文字。</translation>
+        <translation>此Mac無法使用原況文字。</translation>
     </message>
     <message>
         <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
@@ -6219,11 +6219,11 @@
     </message>
     <message>
         <source>Live Text ist während der HDR-Darstellung nicht verfügbar – schalte mit ⇧⌘H auf SDR um.</source>
-        <translation>HDR 顯示時無法使用原況文字——按 ⇧⌘H 切換到 SDR。</translation>
+        <translation>HDR顯示時無法使用原況文字——按⇧⌘H切換到SDR。</translation>
     </message>
     <message>
         <source>Es ist kein Bild geöffnet.</source>
-        <translation>未打開影像。</translation>
+        <translation>沒有打開的影像。</translation>
     </message>
     <message>
         <source>Quick Look ist nicht verfügbar.</source>
@@ -6231,11 +6231,11 @@
     </message>
     <message>
         <source>Als Schreibtischhintergrund festlegen</source>
-        <translation>設定為桌面圖片</translation>
+        <translation>設為背景圖片</translation>
     </message>
     <message>
         <source>„%1“ als Schreibtischhintergrund festlegen?</source>
-        <translation>要將「%1」設定為桌面圖片嗎？</translation>
+        <translation>要將「%1」設為背景圖片嗎？</translation>
     </message>
     <message>
         <source>Auf allen Bildschirmen</source>
@@ -6251,11 +6251,11 @@
     </message>
     <message>
         <source>Als Schreibtischhintergrund festgelegt</source>
-        <translation>已設定為桌面圖片</translation>
+        <translation>已設為背景圖片</translation>
     </message>
     <message>
         <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
-        <translation>無法更改桌面圖片：%1</translation>
+        <translation>無法更改背景圖片：%1</translation>
     </message>
 </context>
 <context>
@@ -6266,26 +6266,26 @@
     </message>
     <message>
         <source>Filmstreifen</source>
-        <translation>底片條</translation>
+        <translation>膠片列</translation>
     </message>
 </context>
 <context>
     <name>lf::XcfDecoder</name>
     <message>
         <source>Die XCF-Datei ist beschädigt oder unvollständig.</source>
-        <translation>XCF 檔案已損壞或不完整。</translation>
+        <translation>XCF檔案已損毀或不完整。</translation>
     </message>
     <message>
         <source>Keine XCF-Datei.</source>
-        <translation>不是 XCF 檔案。</translation>
+        <translation>不是XCF檔案。</translation>
     </message>
     <message>
         <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
-        <translation>影像尺寸 %1 × %2 無效或過大。</translation>
+        <translation>影像尺寸%1 × %2無效或過大。</translation>
     </message>
     <message>
         <source>Die Bittiefe der XCF-Datei wird nicht unterstützt.</source>
-        <translation>不支援此 XCF 檔案的色彩深度。</translation>
+        <translation>不支援此XCF檔案的位元深度。</translation>
     </message>
     <message>
         <source>Nicht genug Arbeitsspeicher für das Bild.</source>
@@ -6293,7 +6293,7 @@
     </message>
     <message>
         <source>Die Komprimierung der XCF-Datei wird nicht unterstützt.</source>
-        <translation>不支援此 XCF 檔案的壓縮方式。</translation>
+        <translation>不支援此XCF檔案的壓縮方式。</translation>
     </message>
     <message>
         <source>Die Datei kann nicht gelesen werden.</source>
@@ -6301,11 +6301,11 @@
     </message>
     <message>
         <source>Seite %1 existiert nicht.</source>
-        <translation>第 %1 頁不存在。</translation>
+        <translation>第%1頁不存在。</translation>
     </message>
     <message>
         <source>Die Datei ist leer (0 Byte).</source>
-        <translation>檔案是空的（0 位元組）。</translation>
+        <translation>檔案是空的（0位元組）。</translation>
     </message>
     <message>
         <source>Die Datei ist zu groß.</source>
@@ -6320,11 +6320,11 @@
     </message>
     <message>
         <source>Das ZIP-Archiv ist beschädigt.</source>
-        <translation>ZIP 封存檔已損毀。</translation>
+        <translation>ZIP封存檔已損毀。</translation>
     </message>
     <message>
         <source>ZIP-Archive dieser Art (mehrteilig, ZIP64) werden nicht unterstützt.</source>
-        <translation>不支援此類 ZIP 封存檔（分卷、ZIP64）。</translation>
+        <translation>不支援此類ZIP封存檔（分卷、ZIP64）。</translation>
     </message>
     <message>
         <source>„%1“ fehlt im Archiv.</source>
