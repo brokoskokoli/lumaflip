@@ -108,16 +108,19 @@ class TstAnimation : public QObject {
         return seen;
     }
     // The window itself repaints with the new frames (on screen - no framebuffer grab here,
-    // which would render a frame of its own): at least `changes` new images within `ms`.
+    // which would render a frame of its own): at least `changes` new images, normally within
+    // `ms`. A loaded CI runner may draw late, so up to four times that long is accepted; a
+    // stopped animation still fails.
     void expectWidgetRepaints(ViewerWindow* w, int ms, int changes) {
         ImageCanvas* canvas = canvasOf(w);
         QVERIFY(canvas);
         const int before = canvas->drawnImageChanges();
-        QTest::qWait(ms);
-        const int drawn = canvas->drawnImageChanges() - before;
-        QVERIFY2(
-            drawn >= changes,
-            qPrintable(QStringLiteral("%1 new images drawn in %2 ms; %3").arg(drawn).arg(ms).arg(state(w))));
+        QTRY_VERIFY2_WITH_TIMEOUT(canvas->drawnImageChanges() - before >= changes,
+                                  qPrintable(QStringLiteral("%1 new images drawn in %2 ms; %3")
+                                                 .arg(canvas->drawnImageChanges() - before)
+                                                 .arg(4 * ms)
+                                                 .arg(state(w))),
+                                  4 * ms);
     }
     static QString describe(const QList<QColor>& colors) {
         QStringList l;
