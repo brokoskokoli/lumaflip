@@ -249,6 +249,29 @@ private slots:
                  qPrintable(QStringLiteral("colors: %1; %2").arg(describe(seen), state(w))));
     }
 
+    // Covers: F-FMT-03, F-WIN-01 (opened again in a second window and duplicated while its
+    // first frame is cached: the new window shows it before it appears on screen, and
+    // playback still starts by itself)
+    void F_FMT_03_playsInNewWindowFromCache() {
+        const QString gif = path(QStringLiteral("again.gif"));
+        QVERIFY(test::writeAnimatedGif(gif, QSize(120, 90), 4, 8));
+        ViewerWindow* first = open(gif);
+        QVERIFY(first);
+        QTRY_VERIFY_WITH_TIMEOUT(first->animation()->isPlaying(), 5000);
+        ViewerWindow* second = open(gif); // "window/openBehavior" = newWindow (default)
+        QVERIFY(second);
+        QVERIFY(second != first);
+        QTRY_VERIFY2_WITH_TIMEOUT(second->animation()->isPlaying(), qPrintable(state(second)), 5000);
+        expectWidgetRepaints(second, 800, 4);
+        if (QTest::currentTestFailed())
+            return;
+        ViewerWindow* copy = app->duplicateWindow(second);
+        QVERIFY(copy && copy != second);
+        QVERIFY(waitShown(copy, gif));
+        QTRY_VERIFY2_WITH_TIMEOUT(copy->animation()->isPlaying(), qPrintable(state(copy)), 5000);
+        expectWidgetRepaints(copy, 800, 4);
+    }
+
     // Covers: F-FMT-03, P-09 (an animation larger than the frame cache plays through the
     // ring of decoded frames: it keeps moving and stays within its memory bound)
     void F_FMT_03_longAnimationPlaysThroughRing() {
@@ -271,6 +294,8 @@ private slots:
     void F_FMT_03_loopCountAndShortDelays() {
         const QString once = path(QStringLiteral("once.gif"));
         QVERIFY(test::writeAnimatedGif(once, QSize(80, 60), 3, 1, -1)); // 10 ms, no NETSCAPE loop
+        const QString twice = path(QStringLiteral("twice.gif"));
+        QVERIFY(test::writeAnimatedGif(twice, QSize(80, 60), 3, 2, 1));
         ViewerWindow* w = open(once);
         QVERIFY(w);
         AnimationPlayer* anim = w->animation();
@@ -299,8 +324,7 @@ private slots:
         QCOMPARE(anim->currentFrame(), 2);
 
         // NETSCAPE loop count 1 = one repetition: two plays, then it stops.
-        const QString twice = path(QStringLiteral("twice.gif"));
-        QVERIFY(test::writeAnimatedGif(twice, QSize(80, 60), 3, 2, 1));
+        QTRY_VERIFY_WITH_TIMEOUT(!w->collection()->isLoading() && w->collection()->count() == 2, 8000);
         w->collection()->setCurrentPath(twice);
         QVERIFY(waitShown(w, twice));
         QTRY_VERIFY2_WITH_TIMEOUT(anim->isActive() && anim->path() == twice, qPrintable(state(w)), 5000);
