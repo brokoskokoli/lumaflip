@@ -60,7 +60,7 @@
     <name>lf::AboutDialog</name>
     <message>
         <source>Über Lumaflip</source>
-        <translation>Tietoja Lumaflipista</translation>
+        <translation>Tietoja: Lumaflip</translation>
     </message>
     <message>
         <source>Version %1</source>
@@ -68,7 +68,7 @@
     </message>
     <message>
         <source>&lt;p&gt;Schneller Bildbetrachter für macOS: Doppelklick öffnet den ganzen Ordner – in derselben Reihenfolge wie im Finder.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli und Mitwirkende&lt;/p&gt;&lt;p&gt;Lumaflip ist freie Software: Du kannst sie unter den Bedingungen der &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; Version 3 oder (nach deiner Wahl) jeder späteren Version weitergeben und verändern. Lumaflip wird ohne jede Gewährleistung bereitgestellt.&lt;/p&gt;&lt;p&gt;Quellcode: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Verwendet Qt %3 (LGPLv3).&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Nopea kuvien katseluohjelma macOS:lle: kaksoisosoitus avaa koko kansion – samassa järjestyksessä kuin Finderissa.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli ja muut tekijät&lt;/p&gt;&lt;p&gt;Lumaflip on vapaa ohjelmisto: voit levittää ja muokata sitä &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; -lisenssin version 3 tai (valintasi mukaan) minkä tahansa myöhemmän version ehtojen mukaisesti. Lumaflip toimitetaan ilman minkäänlaista takuuta.&lt;/p&gt;&lt;p&gt;Lähdekoodi: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Käyttää Qt %3:a (LGPLv3).&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Nopea kuvien katseluohjelma macOS:lle: kaksoisosoitus avaa koko kansion – samassa järjestyksessä kuin Finderissa.&lt;/p&gt;&lt;p&gt;© 2026 brokoskokoli ja muut tekijät&lt;/p&gt;&lt;p&gt;Lumaflip on vapaa ohjelmisto: voit levittää ja muokata sitä &lt;a href=&quot;%1&quot;&gt;GNU General Public License&lt;/a&gt; -lisenssin version 3 tai (valintasi mukaan) minkä tahansa myöhemmän version ehtojen mukaisesti. Lumaflip toimitetaan ilman minkäänlaista takuuta.&lt;/p&gt;&lt;p&gt;Lähdekoodi: &lt;a href=&quot;%2&quot;&gt;%2&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Käyttää Qt:n versiota %3 (LGPLv3).&lt;/p&gt;</translation>
     </message>
     <message>
         <source>Lizenzen von Drittanbietern …</source>
@@ -83,7 +83,7 @@
     </message>
     <message>
         <source>Dateivorgänge werden abgeschlossen, dann wird Lumaflip beendet …</source>
-        <translation>Tiedostotoiminnot viimeistellään, minkä jälkeen Lumaflip lopetetaan…</translation>
+        <translation>Tiedostotoiminnot viedään loppuun, minkä jälkeen Lumaflip lopetetaan…</translation>
     </message>
     <message>
         <source>Dateivorgang läuft …</source>
@@ -123,7 +123,7 @@
     </message>
     <message>
         <source>→ / ←, Leertaste / ⇧Leertaste, Bild↓ / Bild↑, Mausrad</source>
-        <translation>→ / ←, välilyönti / ⇧välilyönti, Sivu alas / Sivu ylös, vierityspyörä</translation>
+        <translation>→ / ←, Välilyönti / ⇧Välilyönti, Sivu alas / Sivu ylös, vierityspyörä</translation>
     </message>
     <message>
         <source>Erstes / letztes Bild</source>
@@ -135,7 +135,7 @@
     </message>
     <message>
         <source>Vollbild oder Modus beenden</source>
-        <translation>Koko näyttö / poistu tilasta</translation>
+        <translation>Poistu koko näytöstä tai tilasta</translation>
     </message>
     <message>
         <source>Esc</source>
@@ -143,16 +143,16 @@
     </message>
     <message>
         <source>Lumaflip wird als Standard-App festgelegt …</source>
-        <translation>Lumaflipia asetetaan oletussovellukseksi…</translation>
+        <translation>Lumaflipia asetetaan oletusapiksi…</translation>
     </message>
     <message>
         <source>Lumaflip ist jetzt die Standard-App für Bilder.</source>
-        <translation>Lumaflip on nyt kuvien oletussovellus.</translation>
+        <translation>Lumaflip on nyt kuvien oletusappi.</translation>
     </message>
     <message>
         <source>Lumaflip konnte nicht als Standard-App festgelegt werden:
 %1</source>
-        <translation>Lumaflipia ei voitu asettaa oletussovellukseksi:
+        <translation>Lumaflipia ei voitu asettaa oletusapiksi:
 %1</translation>
     </message>
 </context>
@@ -193,16 +193,16 @@
         <source>Unterordner werden gelesen … %1 Ordner, %n Bild(er)</source>
         <extracomment>status bar while a folder with subfolders is read (F-OPEN-08)</extracomment>
         <translation>
-            <numerusform>Luetaan alikansioita… %1 kansiota, %n kuva</numerusform>
-            <numerusform>Luetaan alikansioita… %1 kansiota, %n kuvaa</numerusform>
+            <numerusform>Luetaan alikansioita… kansioita: %1, kuvia: %n</numerusform>
+            <numerusform>Luetaan alikansioita… kansioita: %1, kuvia: %n</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>Unterordner: Nur die ersten %n Bilder werden angezeigt – öffne einen kleineren Ordner.</source>
         <extracomment>status bar: a folder with subfolders has more images than are read (F-OPEN-08)</extracomment>
         <translation>
-            <numerusform>Alikansiot: vain %n kuva näytetään – avaa pienempi kansio.</numerusform>
-            <numerusform>Alikansiot: vain ensimmäiset %n kuvaa näytetään – avaa pienempi kansio.</numerusform>
+            <numerusform>Alikansiot: vain %n ensimmäinen kuva näytetään – avaa pienempi kansio.</numerusform>
+            <numerusform>Alikansiot: vain %n ensimmäistä kuvaa näytetään – avaa pienempi kansio.</numerusform>
         </translation>
     </message>
     <message>
@@ -248,7 +248,7 @@
     </message>
     <message>
         <source>Zweite Datei: %1 – „RAW anzeigen“ wechselt</source>
-        <translation>Toinen tiedosto: %1 – ”Näytä RAW” vaihtaa</translation>
+        <translation>Toinen tiedosto: %1 – ”Näytä RAW” vaihtaa tiedostojen välillä</translation>
     </message>
 </context>
 <context>
@@ -310,7 +310,7 @@
     <name>lf::ContainerPolicy</name>
     <message>
         <source>Bilder in Archiven und PDF-Dokumenten sind nur zum Ansehen geöffnet – Papierkorb, Umbenennen, Verschieben und Bewerten sind hier nicht möglich.</source>
-        <translation>Arkistojen ja PDF-dokumenttien kuvat on avattu vain katseltaviksi – roskakori, uudelleennimeäminen, siirtäminen ja arviointi eivät toimi täällä.</translation>
+        <translation>Arkistojen ja PDF-dokumenttien kuvat on avattu vain katseltaviksi – roskakoriin siirtäminen, uudelleennimeäminen, siirtäminen ja arviointi eivät ole tässä mahdollisia.</translation>
     </message>
 </context>
 <context>
@@ -324,7 +324,7 @@
     </message>
     <message>
         <source>Kein passendes Bild zu „%1“</source>
-        <translation>Ei vastaavaa kuvaa kohteelle ”%1”</translation>
+        <translation>Ei vastaavaa kuvaa: ”%1”</translation>
     </message>
     <message>
         <source>Fenster koppeln</source>
@@ -332,11 +332,11 @@
     </message>
     <message>
         <source>Gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt. Mit ⌥ lässt sich ein Fenster einzeln verschieben.</source>
-        <translation>Linkitetyt ikkunat selaavat yhdessä ja jakavat zoomauksen ja näkyvän alueen. Pidä ⌥ painettuna siirtääksesi yhtä ikkunaa erikseen.</translation>
+        <translation>Linkitetyt ikkunat selaavat yhdessä ja jakavat zoomauksen ja näkymän. Kun pidät ⌥-näppäintä painettuna, voit siirtää yhtä ikkunaa erikseen.</translation>
     </message>
     <message>
         <source>Dateiname (ohne Endung)</source>
-        <translation>Tiedostonimi (ilman päätettä)</translation>
+        <translation>Tiedostonimi (ilman tarkennetta)</translation>
     </message>
     <message>
         <source>Position in der Sammlung</source>
@@ -352,7 +352,7 @@
     </message>
     <message>
         <source>Entkoppeln</source>
-        <translation>Poista ikkunoiden linkitys</translation>
+        <translation>Poista linkitys</translation>
     </message>
     <message>
         <source>Abbrechen</source>
@@ -367,11 +367,11 @@
     </message>
     <message>
         <source>Hochformat</source>
-        <translation>Pysty</translation>
+        <translation>Pystysuunta</translation>
     </message>
     <message>
         <source>Seitenverhältnis hochkant statt quer</source>
-        <translation>Kuvasuhde pystyyn vaakasuunnan sijaan</translation>
+        <translation>Pystysuuntainen kuvasuhde vaakasuuntaisen sijaan</translation>
     </message>
     <message>
         <source>Drittel</source>
@@ -387,7 +387,7 @@
     </message>
     <message>
         <source>Zuschnitt in der Datei sichern (Enter, widerrufbar)</source>
-        <translation>Tallenna rajaus tiedostoon (Enter, voidaan kumota)</translation>
+        <translation>Tallenna rajaus tiedostoon (Enter, voi perua)</translation>
     </message>
     <message>
         <source>Sichern unter …</source>
@@ -415,11 +415,11 @@
     <name>lf::CropSave</name>
     <message>
         <source>Die Datei wurde inzwischen verändert – nichts gesichert. Schneide das Bild erneut zu.</source>
-        <translation>Tiedostoa on muutettu sillä välin – mitään ei tallennettu. Rajaa uudelleen.</translation>
+        <translation>Tiedostoa on muutettu sillä välin – mitään ei tallennettu. Rajaa kuva uudelleen.</translation>
     </message>
     <message>
         <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die nach einem verlustfreien Zuschnitt nicht mehr passen würden. Zuschneiden ist nur durch Neukodieren möglich – dabei gehen etwas Bildqualität und diese Zusatzbilder verloren.</source>
-        <translation>Tiedosto sisältää muita kuvia (esim. HDR-vahvistuskartan tai toisen stereokuvan), jotka eivät häviöttömän rajauksen jälkeen enää täsmäisi. Rajaus onnistuu vain uudelleenkoodaamalla – samalla menetetään hieman laatua ja nämä lisäkuvat.</translation>
+        <translation>Tiedosto sisältää lisäkuvia (esim. HDR-vahvistuskartan tai toisen stereokuvan), jotka eivät häviöttömän rajauksen jälkeen enää sopisi kuvaan. Rajaus onnistuu vain koodaamalla kuva uudelleen – samalla menetetään hieman kuvanlaatua ja nämä lisäkuvat.</translation>
     </message>
     <message>
         <source>Frei</source>
@@ -439,7 +439,7 @@
     </message>
     <message>
         <source>Der Zuschnitt liegt nicht auf dem JPEG-Blockraster.</source>
-        <translation>Valinta ei ole JPEG-lohkoruudukossa.</translation>
+        <translation>Rajaus ei osu JPEG-lohkoruudukkoon.</translation>
     </message>
     <message>
         <source>Verlustfreies Zuschneiden von JPEG-Dateien ist in dieser Version nicht verfügbar.</source>
@@ -455,15 +455,15 @@
     </message>
     <message>
         <source>Bilder in Archiven und PDF-Dokumenten werden nicht verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
-        <translation>Arkistoissa ja PDF-dokumenteissa olevia kuvia ei muuteta. Valinnan voi viedä uudeksi tiedostoksi.</translation>
+        <translation>Arkistoissa ja PDF-dokumenteissa olevia kuvia ei muuteta. Rajauksen voi viedä uutena tiedostona.</translation>
     </message>
     <message>
         <source>RAW-Dateien werden nie verändert. Der Zuschnitt kann als neue Datei exportiert werden.</source>
-        <translation>RAW-tiedostoja ei koskaan muuteta. Valinnan voi viedä uudeksi tiedostoksi.</translation>
+        <translation>RAW-tiedostoja ei koskaan muuteta. Rajauksen voi viedä uutena tiedostona.</translation>
     </message>
     <message>
         <source>Animierte oder mehrseitige Dateien können nicht zugeschnitten gesichert werden. Der Zuschnitt des ersten Bildes kann als neue Datei exportiert werden.</source>
-        <translation>Animoituja tai monisivuisia tiedostoja ei voi tallentaa rajattuina. Ensimmäisen kuvan valinnan voi viedä uudeksi tiedostoksi.</translation>
+        <translation>Animoituja tai monisivuisia tiedostoja ei voi tallentaa rajattuina. Ensimmäisen kuvan rajauksen voi viedä uutena tiedostona.</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
@@ -487,19 +487,19 @@
     </message>
     <message>
         <source>Kein Bildbereich ausgewählt.</source>
-        <translation>Aluetta ei ole valittu.</translation>
+        <translation>Kuva-aluetta ei ole valittu.</translation>
     </message>
     <message>
         <source>Der Zuschnitt umfasst das ganze Bild – es gibt nichts zuzuschneiden.</source>
-        <translation>Valinta kattaa koko kuvan – ei rajattavaa.</translation>
+        <translation>Rajaus kattaa koko kuvan – rajattavaa ei ole.</translation>
     </message>
     <message>
         <source>Für den verlustfreien Zuschnitt wurde der Zuschnittbereich an das JPEG-Blockraster (%1 × %2 Pixel) angepasst und ist jetzt %3 × %4 Pixel groß.</source>
-        <translation>Häviötöntä rajausta varten valinta sovitettiin JPEG-lohkoruudukkoon (%1 × %2 pikseliä), ja se on nyt %3 × %4 pikseliä.</translation>
+        <translation>Häviötöntä rajausta varten rajausalue sovitettiin JPEG-lohkoruudukkoon (%1 × %2 pikseliä), ja sen koko on nyt %3 × %4 pikseliä.</translation>
     </message>
     <message>
         <source>Diese JPEG-Datei lässt sich nicht verlustfrei zuschneiden. Beim Neukodieren geht etwas Bildqualität verloren.</source>
-        <translation>Tätä JPEG-tiedostoa ei voi rajata häviöttömästi. Uudelleenkoodaus heikentää hieman laatua.</translation>
+        <translation>Tätä JPEG-tiedostoa ei voi rajata häviöttömästi. Uudelleenkoodaus heikentää hieman kuvanlaatua.</translation>
     </message>
     <message>
         <source>Der Zuschnitt kann nicht gesichert werden.</source>
@@ -511,15 +511,15 @@
     </message>
     <message>
         <source>Dieses Format kann hier nicht geschrieben werden. Der Zuschnitt kann in einem anderen Format exportiert werden.</source>
-        <translation>Tätä muotoa ei voi kirjoittaa täällä. Valinnan voi viedä toisessa muodossa.</translation>
+        <translation>Tätä muotoa ei voi kirjoittaa tässä. Rajauksen voi viedä toisessa muodossa.</translation>
     </message>
     <message>
         <source>Dieses Format komprimiert verlustbehaftet. Der Zuschnitt lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
-        <translation>Tämä muoto on häviöllinen. Rajauksen voi tallentaa vain koodaamalla kuvan uudelleen – samalla laatu heikkenee hieman.</translation>
+        <translation>Tämä muoto pakkaa häviöllisesti. Rajauksen voi tallentaa vain koodaamalla kuvan uudelleen – samalla menetetään hieman kuvanlaatua.</translation>
     </message>
     <message>
         <source>Zusatzbilder (%1) gehen dabei verloren.</source>
-        <translation>Lisäkuvat (%1) menetetään.</translation>
+        <translation>Lisäkuvat (%1) menetetään samalla.</translation>
     </message>
     <message>
         <source>Metadaten (EXIF, XMP, IPTC) gehen beim Neukodieren verloren.</source>
@@ -570,19 +570,19 @@
     </message>
     <message>
         <source>0–5  Sterne     P  Markieren     X  Ablehnen     U  Markierung aufheben</source>
-        <translation>0–5  Tähdet     P  Säilytä     X  Hylkää     U  Poista merkintä</translation>
+        <translation>0–5  Tähdet     P  Merkitse     X  Hylkää     U  Poista merkintä</translation>
     </message>
     <message>
         <source>← →  Blättern     M/C + 1–9  Verschieben/Kopieren     ⌘Z  Widerrufen     Esc  Beenden</source>
-        <translation>← →  Selaa     M/C + 1–9  Siirrä/Kopioi     ⌘Z  Kumoa     Esc  Lopeta</translation>
+        <translation>← →  Selaa     M/C + 1–9  Siirrä/Kopioi     ⌘Z  Peru     Esc  Lopeta</translation>
     </message>
     <message>
         <source>Aussortiermodus: Ziffern vergeben Sterne, P/X/U setzen Markierungen</source>
-        <translation>Karsintatila: numerot antavat tähtiä, P/X/U merkitsevät</translation>
+        <translation>Karsintatila: numerot antavat tähtiä, P/X/U asettavat merkinnät</translation>
     </message>
     <message>
         <source>Aussortiermodus beendet</source>
-        <translation>Karsintatila päättyi</translation>
+        <translation>Karsintatila lopetettu</translation>
     </message>
     <message>
         <source>%1: %2</source>
@@ -612,11 +612,11 @@
     </message>
     <message>
         <source>Nur die angezeigten Bilder (aktuelle Filter). XMP-Zusatzdateien und die zweite Datei von RAW+JPEG-Paaren werden mitbewegt. ⌘Z widerruft den ganzen Schritt.</source>
-        <translation>Vain näytetyt kuvat (nykyiset suodattimet). XMP-sivutiedostot ja RAW+JPEG-parien toinen tiedosto siirtyvät mukana. ⌘Z kumoaa koko vaiheen.</translation>
+        <translation>Vain näytetyt kuvat (nykyiset suodattimet). XMP-sivutiedostot ja RAW+JPEG-parien toinen tiedosto siirretään mukana. ⌘Z peruu koko vaiheen.</translation>
     </message>
     <message>
         <source>In den Papierkorb legen</source>
-        <translation>Roskakoriin</translation>
+        <translation>Siirrä roskakoriin</translation>
     </message>
     <message>
         <source>Verschieben</source>
@@ -624,11 +624,11 @@
     </message>
     <message>
         <source>Abgelehnte in den Papierkorb legen</source>
-        <translation>Hylätyt roskakoriin</translation>
+        <translation>Siirrä hylätyt roskakoriin</translation>
     </message>
     <message>
         <source>Abgelehnte nach „_Rejected“ verschieben</source>
-        <translation>Hylätyt kansioon _Rejected</translation>
+        <translation>Siirrä hylätyt kansioon ”_Rejected”</translation>
     </message>
     <message numerus="yes">
         <source>%n Bild(er) in den Papierkorb gelegt</source>
@@ -665,19 +665,19 @@
     </message>
     <message>
         <source>Kurzbefehle gibt es nur unter macOS.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pikakomennot ovat käytettävissä vain macOS:ssä.</translation>
     </message>
     <message>
         <source>Batch-Dateien (.bat, .cmd) können nicht direkt ausgeführt werden: cmd.exe würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
-        <translation type="unfinished"></translation>
+        <translation>Komentojonotiedostoja (.bat, .cmd) ei voi suorittaa suoraan: cmd.exe lukisi tiedostonimet komentoina. Käynnistä sen sijaan ohjelma tai PowerShell-skripti (powershell -File Skript.ps1).</translation>
     </message>
     <message>
         <source>„%1“ kann nicht direkt ausgeführt werden: es würde Dateinamen als Befehle lesen. Starte stattdessen ein Programm oder ein PowerShell-Skript (powershell -File Skript.ps1).</source>
-        <translation>Kohdetta ”%1” ei voi suorittaa suoraan: se lukisi tiedostonimet komentoina. Suorita sen sijaan ohjelma tai PowerShell-skripti (powershell -File Skripti.ps1).</translation>
+        <translation>Kohdetta ”%1” ei voi suorittaa suoraan: se lukisi tiedostonimet komentoina. Käynnistä sen sijaan ohjelma tai PowerShell-skripti (powershell -File Skript.ps1).</translation>
     </message>
     <message>
         <source>PowerShell nur mit einem Skript: „powershell -File Skript.ps1“. Mit -Command (oder ohne -File) würde PowerShell Dateinamen als Befehle lesen.</source>
-        <translation>PowerShell vain skriptin kanssa: ”powershell -File Skripti.ps1”. Valitsimella -Command (tai ilman valitsinta -File) PowerShell lukisi tiedostonimet komentoina.</translation>
+        <translation>PowerShell vain skriptin kanssa: ”powershell -File Skript.ps1”. Valitsimella -Command (tai ilman valitsinta -File) PowerShell lukisi tiedostonimet komentoina.</translation>
     </message>
     <message numerus="yes">
         <source>Die Aktion wurde nach %n Sekunde(n) abgebrochen.</source>
@@ -715,15 +715,15 @@
     </message>
     <message>
         <source>Name eines Kurzbefehls aus der Kurzbefehle-App; er bekommt die Datei als Eingabe.</source>
-        <translation>Pikakomennot-apin pikakomennon nimi; se saa tiedoston syötteenä.</translation>
+        <translation>Pikakomennon nimi Pikakomennot-apissa; pikakomento saa tiedoston syötteenä.</translation>
     </message>
     <message>
         <source>Programm mit Argumenten, z. B. &quot;C:\Tools\tool.exe&quot; --flag; die Datei wird als eigenes Argument angehängt und nie über cmd.exe gestartet. Batch-Dateien (.bat, .cmd) sind nicht erlaubt.</source>
-        <translation>Ohjelma argumentteineen, esim. &quot;C:\Tools\tool.exe&quot; --flag; tiedosto lisätään omana argumenttinaan eikä sitä koskaan käynnistetä cmd.exen kautta. Komentojonotiedostot (.bat, .cmd) eivät ole sallittuja.</translation>
+        <translation>Ohjelma argumentteineen, esim. &quot;C:\Tools\tool.exe&quot; --flag; tiedosto lisätään omana argumenttinaan, eikä sitä koskaan käynnistetä cmd.exe:n kautta. Komentojonotiedostot (.bat, .cmd) eivät ole sallittuja.</translation>
     </message>
     <message>
         <source>Läuft mit /bin/sh; die Datei steht in &quot;$1&quot; (alle Dateien: &quot;$@&quot;), z. B. open -a Preview &quot;$1&quot;. Der Pfad wird nie in den Befehl eingesetzt.</source>
-        <translation>Suoritetaan /bin/sh:lla; tiedosto on muuttujassa &quot;$1&quot; (kaikki tiedostot: &quot;$@&quot;), esim. open -a Preview &quot;$1&quot;. Polkua ei koskaan lisätä komentoon.</translation>
+        <translation>Suoritetaan komentotulkilla /bin/sh; tiedosto on muuttujassa &quot;$1&quot; (kaikki tiedostot: &quot;$@&quot;), esim. open -a Preview &quot;$1&quot;. Polkua ei koskaan lisätä komentoon.</translation>
     </message>
     <message>
         <source>Name:</source>
@@ -782,7 +782,7 @@
     </message>
     <message>
         <source>Shell-Befehl</source>
-        <translation>Komentotulkin komento</translation>
+        <translation>Shell-komento</translation>
     </message>
     <message>
         <source>Es ist kein Bild geöffnet.</source>
@@ -857,31 +857,31 @@
     <name>lf::DecoderHelper</name>
     <message>
         <source>Das Bild hat den Decoder zum Absturz gebracht – die Datei ist vermutlich beschädigt.</source>
-        <translation>Kuva kaatoi purkajan – tiedosto on luultavasti vioittunut.</translation>
+        <translation>Kuva kaatoi dekooderin – tiedosto on luultavasti vioittunut.</translation>
     </message>
     <message>
         <source>Das Dekodieren hat zu lange gedauert und wurde abgebrochen.</source>
-        <translation>Purkaminen kesti liian kauan ja keskeytettiin.</translation>
+        <translation>Dekoodaus kesti liian kauan ja keskeytettiin.</translation>
     </message>
     <message>
         <source>Der Decoder-Hilfsprozess läuft ohne Sandbox und wird aus Sicherheitsgründen nicht verwendet.</source>
-        <translation>Purkajan apuprosessi toimii ilman hiekkalaatikkoa, eikä sitä käytetä turvallisuussyistä.</translation>
+        <translation>Dekooderin apuprosessi toimii ilman hiekkalaatikkoa, eikä sitä käytetä turvallisuussyistä.</translation>
     </message>
     <message>
         <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden (%1).</source>
-        <translation>Purkajan apuprosessia ei voitu käynnistää (%1).</translation>
+        <translation>Dekooderin apuprosessia ei voitu käynnistää (%1).</translation>
     </message>
     <message>
         <source>Der Decoder-Hilfsprozess wird auf diesem System nicht unterstützt.</source>
-        <translation>Purkajan apuprosessia ei tueta tässä järjestelmässä.</translation>
+        <translation>Dekooderin apuprosessia ei tueta tässä järjestelmässä.</translation>
     </message>
     <message>
         <source>Der Decoder-Hilfsprozess konnte nicht gestartet werden.</source>
-        <translation>Purkajan apuprosessia ei voitu käynnistää.</translation>
+        <translation>Dekooderin apuprosessia ei voitu käynnistää.</translation>
     </message>
     <message>
         <source>Unbekannter Decoder „%1“.</source>
-        <translation>Tuntematon purkaja ”%1”.</translation>
+        <translation>Tuntematon dekooderi ”%1”.</translation>
     </message>
     <message>
         <source>Das Bild ist leer.</source>
@@ -901,15 +901,15 @@
     </message>
     <message>
         <source>Windows-Fehler %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Windows-virhe %1</translation>
     </message>
     <message>
         <source>Die Bilddaten des Decoders fehlen.</source>
-        <translation>Purkajan kuvadata puuttuu.</translation>
+        <translation>Dekooderin kuvadata puuttuu.</translation>
     </message>
     <message>
         <source>Die Bilddaten des Decoders sind ungültig.</source>
-        <translation>Purkajan kuvadata on virheellinen.</translation>
+        <translation>Dekooderin kuvadata on virheellinen.</translation>
     </message>
 </context>
 <context>
@@ -928,7 +928,7 @@
     </message>
     <message>
         <source>Die Datei ist beschädigt oder unvollständig.</source>
-        <translation>Tiedosto on vahingoittunut tai keskeneräinen.</translation>
+        <translation>Tiedosto on vioittunut tai keskeneräinen.</translation>
     </message>
     <message>
         <source>Das Dateiformat wird nicht unterstützt.</source>
@@ -947,42 +947,42 @@
     <name>lf::DefaultAppBar</name>
     <message>
         <source>Lumaflip ist nicht die Standard-App für den Dateityp „%1“.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip ei ole tiedostotyypin ”%1” oletusappi.</translation>
     </message>
     <message>
         <source>Festlegen</source>
-        <translation type="unfinished">Aseta</translation>
+        <translation>Aseta</translation>
     </message>
     <message>
         <source>Lumaflip öffnet Dateien dieses Typs künftig per Doppelklick.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip avaa tämän tyypin tiedostot jatkossa kaksoisosoituksella.</translation>
     </message>
     <message>
         <source>Alle Bildformate …</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaikki kuvamuodot…</translation>
     </message>
     <message>
         <source>Wähle die Bildformate, die Lumaflip öffnen soll.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitse kuvamuodot, jotka Lumaflip avaa.</translation>
     </message>
     <message>
         <source>Nicht mehr fragen</source>
-        <translation type="unfinished"></translation>
+        <translation>Älä kysy uudelleen</translation>
     </message>
     <message>
         <source>Schließen</source>
-        <translation type="unfinished">Sulje</translation>
+        <translation>Sulje</translation>
     </message>
 </context>
 <context>
     <name>lf::DefaultAppDialog</name>
     <message>
         <source>Als Standard-App festlegen</source>
-        <translation>Aseta oletussovellukseksi</translation>
+        <translation>Aseta oletusapiksi</translation>
     </message>
     <message>
         <source>Lumaflip wird die Standard-App für die ausgewählten Bildformate. Nicht ausgewählte Formate bleiben bei der bisherigen App.</source>
-        <translation>Lumaflipista tulee valittujen kuvamuotojen oletussovellus. Valitsemattomat muodot avautuvat edelleen nykyisellä sovelluksella.</translation>
+        <translation>Lumaflipista tulee valittujen kuvamuotojen oletusappi. Valitsemattomat muodot avautuvat edelleen nykyisellä apilla.</translation>
     </message>
     <message>
         <source>Alle auswählen</source>
@@ -1005,15 +1005,15 @@
     <name>lf::DefaultAppOfferController</name>
     <message>
         <source>Lumaflip fragt nicht mehr nach der Standard-App – wieder einschalten unter Einstellungen → Allgemein</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip ei enää kysy oletusapista – voit ottaa kysymisen uudelleen käyttöön kohdassa Asetukset → Yleiset</translation>
     </message>
     <message>
         <source>Lumaflip ist jetzt die Standard-App für „%1“</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflip on nyt tiedostotyypin ”%1” oletusappi</translation>
     </message>
     <message>
         <source>Lumaflip konnte nicht als Standard-App festgelegt werden: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Lumaflipia ei voitu asettaa oletusapiksi: %1</translation>
     </message>
 </context>
 <context>
@@ -1116,95 +1116,95 @@
     </message>
     <message>
         <source>Kamera-RAW (Adobe DNG)</source>
-        <translation>Kameran RAW (Adobe DNG)</translation>
+        <translation>Kameran RAW-kuva (Adobe DNG)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Canon CR2)</source>
-        <translation>Kameran RAW (Canon CR2)</translation>
+        <translation>Kameran RAW-kuva (Canon CR2)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Canon CR3)</source>
-        <translation>Kameran RAW (Canon CR3)</translation>
+        <translation>Kameran RAW-kuva (Canon CR3)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Canon CRW)</source>
-        <translation>Kameran RAW (Canon CRW)</translation>
+        <translation>Kameran RAW-kuva (Canon CRW)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Nikon NEF)</source>
-        <translation>Kameran RAW (Nikon NEF)</translation>
+        <translation>Kameran RAW-kuva (Nikon NEF)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Nikon NRW)</source>
-        <translation>Kameran RAW (Nikon NRW)</translation>
+        <translation>Kameran RAW-kuva (Nikon NRW)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Sony ARW)</source>
-        <translation>Kameran RAW (Sony ARW)</translation>
+        <translation>Kameran RAW-kuva (Sony ARW)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Sony SR2)</source>
-        <translation>Kameran RAW (Sony SR2)</translation>
+        <translation>Kameran RAW-kuva (Sony SR2)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Sony SRF)</source>
-        <translation>Kameran RAW (Sony SRF)</translation>
+        <translation>Kameran RAW-kuva (Sony SRF)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Fujifilm RAF)</source>
-        <translation>Kameran RAW (Fujifilm RAF)</translation>
+        <translation>Kameran RAW-kuva (Fujifilm RAF)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Olympus ORF)</source>
-        <translation>Kameran RAW (Olympus ORF)</translation>
+        <translation>Kameran RAW-kuva (Olympus ORF)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Panasonic RW2)</source>
-        <translation>Kameran RAW (Panasonic RW2)</translation>
+        <translation>Kameran RAW-kuva (Panasonic RW2)</translation>
     </message>
     <message>
         <source>Kamera-RAW</source>
-        <translation>Kameran RAW</translation>
+        <translation>Kameran RAW-kuva</translation>
     </message>
     <message>
         <source>Kamera-RAW (Pentax PEF)</source>
-        <translation>Kameran RAW (Pentax PEF)</translation>
+        <translation>Kameran RAW-kuva (Pentax PEF)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Phase One IIQ)</source>
-        <translation>Kameran RAW (Phase One IIQ)</translation>
+        <translation>Kameran RAW-kuva (Phase One IIQ)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Hasselblad 3FR)</source>
-        <translation>Kameran RAW (Hasselblad 3FR)</translation>
+        <translation>Kameran RAW-kuva (Hasselblad 3FR)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Hasselblad FFF)</source>
-        <translation>Kameran RAW (Hasselblad FFF)</translation>
+        <translation>Kameran RAW-kuva (Hasselblad FFF)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Epson ERF)</source>
-        <translation>Kameran RAW (Epson ERF)</translation>
+        <translation>Kameran RAW-kuva (Epson ERF)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Minolta MRW)</source>
-        <translation>Kameran RAW (Minolta MRW)</translation>
+        <translation>Kameran RAW-kuva (Minolta MRW)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Leaf MOS)</source>
-        <translation>Kameran RAW (Leaf MOS)</translation>
+        <translation>Kameran RAW-kuva (Leaf MOS)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Leica RWL)</source>
-        <translation>Kameran RAW (Leica RWL)</translation>
+        <translation>Kameran RAW-kuva (Leica RWL)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Samsung SRW)</source>
-        <translation>Kameran RAW (Samsung SRW)</translation>
+        <translation>Kameran RAW-kuva (Samsung SRW)</translation>
     </message>
     <message>
         <source>Kamera-RAW (Sigma X3F)</source>
-        <translation>Kameran RAW (Sigma X3F)</translation>
+        <translation>Kameran RAW-kuva (Sigma X3F)</translation>
     </message>
 </context>
 <context>
@@ -1219,7 +1219,7 @@
     </message>
     <message>
         <source>Den Zuschnitt von „%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
-        <translation>Vie kuvan ”%1” valinta uudeksi tiedostoksi. Alkuperäinen pysyy muuttumattomana.</translation>
+        <translation>Vie kuvan ”%1” rajaus uutena tiedostona. Alkuperäinen säilyy muuttumattomana.</translation>
     </message>
     <message>
         <source>„%1“ als neue Datei exportieren. Das Original bleibt unverändert.</source>
@@ -1291,15 +1291,15 @@
     </message>
     <message>
         <source>In sRGB umwandeln</source>
-        <translation>Muunna sRGB-muotoon</translation>
+        <translation>Muunna sRGB-väriavaruuteen</translation>
     </message>
     <message>
         <source>In Display P3 umwandeln</source>
-        <translation>Muunna Display P3 -muotoon</translation>
+        <translation>Muunna Display P3 -väriavaruuteen</translation>
     </message>
     <message>
         <source>Gain-Map behalten (wo das Format es kann)</source>
-        <translation>Säilytä vahvistuskartta (jos muoto tukee)</translation>
+        <translation>Säilytä vahvistuskartta (jos muoto tukee sitä)</translation>
     </message>
     <message>
         <source>Als SDR (Tone Mapping)</source>
@@ -1307,7 +1307,7 @@
     </message>
     <message>
         <source>Platzhalter: {name} = Name des Originals, {n} = laufende Nummer, {format} = Endung</source>
-        <translation>Paikkamerkit: {name} = alkuperäisen nimi, {n} = juokseva numero, {format} = tiedostopääte</translation>
+        <translation>Paikkamerkit: {name} = alkuperäisen nimi, {n} = juokseva numero, {format} = tarkenne</translation>
     </message>
     <message>
         <source>Neben dem Original</source>
@@ -1342,7 +1342,7 @@
     </message>
     <message>
         <source>Bild %1 von %2 wird exportiert: %3</source>
-        <translation>Viedään %1/%2: %3</translation>
+        <translation>Viedään kuvaa %1/%2: %3</translation>
     </message>
 </context>
 <context>
@@ -1420,7 +1420,7 @@
     </message>
     <message>
         <source>Der Verlauf zum Widerrufen wurde zurückgesetzt, weil er sich während des Vorgangs geändert hat.</source>
-        <translation>Kumoamishistoria nollattiin, koska se muuttui toiminnon aikana.</translation>
+        <translation>Peruttavien toimintojen historia nollattiin, koska se muuttui toiminnon aikana.</translation>
     </message>
 </context>
 <context>
@@ -1469,18 +1469,18 @@
     </message>
     <message>
         <source>Keines der Bilder enthält einen Aufnahmeort (GPS).</source>
-        <translation>Missään kuvassa ei ole kuvauspaikkaa (GPS).</translation>
+        <translation>Missään kuvassa ei ole sijaintia (GPS).</translation>
     </message>
     <message>
         <source>Ordnerkarte schließen</source>
-        <translation>Sulje kartta</translation>
+        <translation>Sulje kansiokartta</translation>
     </message>
 </context>
 <context>
     <name>lf::FolderMapView</name>
     <message>
         <source>Karten sind unter Windows nicht verfügbar. Bilder mit Aufnahmeort in diesem Ordner: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kartat eivät ole käytettävissä Windowsissa. Tämän kansion kuvat, joissa on sijainti: %1</translation>
     </message>
 </context>
 <context>
@@ -1714,11 +1714,11 @@
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden.</source>
-        <translation>Kuvaa ei voitu purkaa.</translation>
+        <translation>Kuvaa ei voitu dekoodata.</translation>
     </message>
     <message>
         <source>Metadaten (EXIF, XMP, IPTC) werden hier nicht übernommen.</source>
-        <translation>Metatietoja (EXIF, XMP, IPTC) ei siirretä tässä.</translation>
+        <translation>Metatietoja (EXIF, XMP, IPTC) ei säilytetä tässä.</translation>
     </message>
     <message>
         <source>Dieses Format kann auf diesem Mac nicht geschrieben werden.</source>
@@ -1773,15 +1773,15 @@
     </message>
     <message>
         <source>Unbekanntes oder nicht unterstütztes Dateiformat.</source>
-        <translation>Tuntematon tai ei-tuettu tiedostomuoto.</translation>
+        <translation>Tiedostomuoto on tuntematon, tai sitä ei tueta.</translation>
     </message>
     <message>
         <source>Die Datei enthält keine lesbaren Bilddaten (beschädigt?).</source>
-        <translation>Tiedostossa ei ole luettavaa kuvadataa (vahingoittunut?).</translation>
+        <translation>Tiedostossa ei ole luettavaa kuvadataa (vioittunut?).</translation>
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden (Datei beschädigt?).</source>
-        <translation>Kuvaa ei voitu purkaa (tiedosto vahingoittunut?).</translation>
+        <translation>Kuvaa ei voitu dekoodata (onko tiedosto vioittunut?).</translation>
     </message>
     <message>
         <source>Ausgelöst</source>
@@ -1793,7 +1793,7 @@
     </message>
     <message>
         <source>Die Bildinformationen sind beschädigt.</source>
-        <translation>Kuvan tiedot ovat vahingoittuneet.</translation>
+        <translation>Kuvan tiedot ovat vioittuneet.</translation>
     </message>
     <message>
         <source>Einzelbild %1 existiert nicht.</source>
@@ -1844,15 +1844,15 @@
     </message>
     <message>
         <source>Lädt einen Kartenausschnitt von Apple Karten (Internetverbindung)</source>
-        <translation>Lataa karttaotteen Apple Kartoista (internetyhteys)</translation>
+        <translation>Lataa karttaotteen Applen Kartoista (internetyhteys)</translation>
     </message>
     <message>
         <source>Karte ausblenden</source>
-        <translation>Piilota kartta</translation>
+        <translation>Kätke kartta</translation>
     </message>
     <message>
         <source>Keine Kartenausschnitte mehr laden (bis zum nächsten Klick auf „Karte einblenden“)</source>
-        <translation>Älä lataa enää karttaotteita (ennen seuraavaa ”Näytä kartta” -napsautusta)</translation>
+        <translation>Älä lataa enää karttaotteita (ennen kuin osoitat seuraavan kerran ”Näytä kartta”)</translation>
     </message>
     <message>
         <source>In Karten öffnen</source>
@@ -1860,11 +1860,11 @@
     </message>
     <message>
         <source>Ordnerkarte</source>
-        <translation>Kansion kartta</translation>
+        <translation>Kansiokartta</translation>
     </message>
     <message>
         <source>Alle Bilder dieser Ansicht mit Aufnahmeort auf einer Karte zeigen (lädt Kartendaten von Apple Karten)</source>
-        <translation>Näytä kartalla kaikki tämän näkymän kuvat, joissa on sijainti (lataa karttatietoja Apple Kartoista)</translation>
+        <translation>Näytä kartalla kaikki tämän näkymän kuvat, joissa on sijainti (lataa karttatietoja Applen Kartoista)</translation>
     </message>
 </context>
 <context>
@@ -1980,15 +1980,15 @@
     </message>
     <message>
         <source>Tags</source>
-        <translation>Tagit</translation>
+        <translation>Tunnisteet</translation>
     </message>
     <message>
         <source>Ausgewählten Tag entfernen</source>
-        <translation>Poista valittu tagi</translation>
+        <translation>Poista valittu tunniste</translation>
     </message>
     <message>
         <source>Tag hinzufügen …</source>
-        <translation>Lisää tagi…</translation>
+        <translation>Lisää tunniste…</translation>
     </message>
     <message>
         <source>„%1“ entfernen</source>
@@ -2099,27 +2099,27 @@
     </message>
     <message>
         <source>Ausschnitt nach oben</source>
-        <translation>Vieritä näkymää ylös</translation>
+        <translation>Siirrä näkymää ylös</translation>
     </message>
     <message>
         <source>Ausschnitt nach unten</source>
-        <translation>Vieritä näkymää alas</translation>
+        <translation>Siirrä näkymää alas</translation>
     </message>
     <message>
         <source>Ausschnitt nach links</source>
-        <translation>Vieritä näkymää vasemmalle</translation>
+        <translation>Siirrä näkymää vasemmalle</translation>
     </message>
     <message>
         <source>Ausschnitt nach rechts</source>
-        <translation>Vieritä näkymää oikealle</translation>
+        <translation>Siirrä näkymää oikealle</translation>
     </message>
     <message>
         <source>Ausschnitt eine Seite nach oben</source>
-        <translation>Vieritä näkymää sivu ylöspäin</translation>
+        <translation>Siirrä näkymää sivun verran ylös</translation>
     </message>
     <message>
         <source>Ausschnitt eine Seite nach unten</source>
-        <translation>Vieritä näkymää sivu alaspäin</translation>
+        <translation>Siirrä näkymää sivun verran alas</translation>
     </message>
     <message>
         <source>Zum Bildanfang scrollen</source>
@@ -2135,11 +2135,11 @@
     </message>
     <message>
         <source>Vollbild oder Modus beenden</source>
-        <translation>Koko näyttö tai poistu tilasta</translation>
+        <translation>Poistu koko näytöstä tai tilasta</translation>
     </message>
     <message>
         <source>Modus beenden, sonst Fenster schließen</source>
-        <translation>Poistu tilasta, muuten sulje ikkuna</translation>
+        <translation>Poistu tilasta tai sulje ikkuna</translation>
     </message>
     <message>
         <source>Fenster schließen</source>
@@ -2163,27 +2163,27 @@
     </message>
     <message>
         <source>Diashow</source>
-        <translation>Diaesitys</translation>
+        <translation>Kuvaesitys</translation>
     </message>
     <message>
         <source>Links drehen</source>
-        <translation>Kierrä vasemmalle</translation>
+        <translation>Pyöritä vasemmalle</translation>
     </message>
     <message>
         <source>Rechts drehen</source>
-        <translation>Kierrä oikealle</translation>
+        <translation>Pyöritä oikealle</translation>
     </message>
     <message>
         <source>Horizontal spiegeln</source>
-        <translation>Peilaa vaakasuunnassa</translation>
+        <translation>Käännä vaakasuunnassa</translation>
     </message>
     <message>
         <source>Vertikal spiegeln</source>
-        <translation>Peilaa pystysuunnassa</translation>
+        <translation>Käännä pystysuunnassa</translation>
     </message>
     <message>
         <source>Drehung sichern</source>
-        <translation>Tallenna kierto</translation>
+        <translation>Tallenna pyöritys</translation>
     </message>
     <message>
         <source>In den Papierkorb legen</source>
@@ -2191,11 +2191,11 @@
     </message>
     <message>
         <source>Widerrufen</source>
-        <translation>Kumoa</translation>
+        <translation>Peru</translation>
     </message>
     <message>
         <source>Wiederholen</source>
-        <translation>Tee uudelleen</translation>
+        <translation>Tee sittenkin</translation>
     </message>
     <message>
         <source>Umbenennen</source>
@@ -2247,7 +2247,7 @@
     </message>
     <message>
         <source>Lupe (gedrückt halten)</source>
-        <translation>Suurennuslasi (pidä painettuna)</translation>
+        <translation>Luuppi (pidä painettuna)</translation>
     </message>
     <message>
         <source>Datei herausziehen</source>
@@ -2283,11 +2283,11 @@
     </message>
     <message>
         <source>Markieren</source>
-        <translation>Säilytä (Pick)</translation>
+        <translation>Merkitse</translation>
     </message>
     <message>
         <source>Ablehnen</source>
-        <translation>Hylkää (Reject)</translation>
+        <translation>Hylkää</translation>
     </message>
     <message>
         <source>Markierung aufheben</source>
@@ -2327,7 +2327,7 @@
     </message>
     <message>
         <source>Minimaler Fenstermodus</source>
-        <translation>Minimaalinen ikkuna</translation>
+        <translation>Minimaalinen ikkunatila</translation>
     </message>
     <message>
         <source>Fenster koppeln …</source>
@@ -2363,7 +2363,7 @@
     </message>
     <message>
         <source>Ordnerkarte</source>
-        <translation>Kansion kartta</translation>
+        <translation>Kansiokartta</translation>
     </message>
     <message>
         <source>Quick Look</source>
@@ -2371,11 +2371,11 @@
     </message>
     <message>
         <source>Live Text</source>
-        <translation>Live Text</translation>
+        <translation>Liveteksti</translation>
     </message>
     <message>
         <source>Als Schreibtischhintergrund festlegen</source>
-        <translation>Aseta työpöydän kuvaksi</translation>
+        <translation>Käytä työpöydän taustakuvana</translation>
     </message>
     <message>
         <source>Protokoll der Aktionen</source>
@@ -2403,7 +2403,7 @@
     </message>
     <message>
         <source>Fokuspunkte</source>
-        <translation>AF-pisteet</translation>
+        <translation>Tarkennuspisteet</translation>
     </message>
     <message>
         <source>Nichts</source>
@@ -2431,7 +2431,7 @@
     </message>
     <message>
         <source>Ausschnitt verschieben (sonst Bild wechseln)</source>
-        <translation>Vieritä näkymää (muuten vaihda kuvaa)</translation>
+        <translation>Siirrä näkymää (muuten vaihda kuvaa)</translation>
     </message>
     <message>
         <source>Gezoomt wird der Ausschnitt verschoben, sonst wird das Bild gewechselt.</source>
@@ -2503,7 +2503,7 @@
     </message>
     <message>
         <source>Ausschnitt seitenweise verschieben (sonst Bild)</source>
-        <translation>Vieritä näkymää sivu kerrallaan (muuten kuva)</translation>
+        <translation>Siirrä näkymää sivu kerrallaan (muuten kuva)</translation>
     </message>
     <message>
         <source>Gezoomt um eine Bildschirmhöhe scrollen, sonst Bild wechseln.</source>
@@ -2531,7 +2531,7 @@
     </message>
     <message>
         <source>Leertaste / ⇧Leertaste</source>
-        <translation>Välilyönti / ⇧välilyönti</translation>
+        <translation>Välilyönti / ⇧Välilyönti</translation>
     </message>
     <message>
         <source>Nächstes/vorheriges Bild</source>
@@ -2559,11 +2559,11 @@
     </message>
     <message>
         <source>Diashow starten/pausieren</source>
-        <translation>Aloita/keskeytä diaesitys</translation>
+        <translation>Aloita/keskeytä kuvaesitys</translation>
     </message>
     <message>
         <source>Startet bzw. pausiert die Diashow.</source>
-        <translation>Aloittaa tai keskeyttää diaesityksen.</translation>
+        <translation>Aloittaa tai keskeyttää kuvaesityksen.</translation>
     </message>
     <message>
         <source>← / →, wenn gezoomt</source>
@@ -2579,7 +2579,7 @@
     </message>
     <message>
         <source>Erst bis zum Rand verschieben, dann Bild wechseln</source>
-        <translation>Vieritä ensin reunaan asti, sitten vaihda kuvaa</translation>
+        <translation>Siirrä ensin reunaan asti, sitten vaihda kuvaa</translation>
     </message>
     <message>
         <source>Der Ausschnitt wird verschoben; am Bildrand wechselt das Bild.</source>
@@ -2587,11 +2587,11 @@
     </message>
     <message>
         <source>Ausschnitt verschieben (Bild mit ⌥←/⌥→)</source>
-        <translation>Vieritä näkymää (kuvaa ⌥←/⌥→)</translation>
+        <translation>Siirrä näkymää (kuva: ⌥←/⌥→)</translation>
     </message>
     <message>
         <source>Pfeiltasten verschieben den Ausschnitt; Bildwechsel mit ⌥←/⌥→.</source>
-        <translation>Nuolinäppäimet siirtävät näkymää; kuva vaihdetaan ⌥←/⌥→.</translation>
+        <translation>Nuolinäppäimet siirtävät näkymää; kuva vaihdetaan näppäimillä ⌥←/⌥→.</translation>
     </message>
     <message>
         <source>↑ / ↓</source>
@@ -2599,7 +2599,7 @@
     </message>
     <message>
         <source>Ausschnitt verschieben, sonst vorheriges/nächstes Bild</source>
-        <translation>Vieritä näkymää, muuten edellinen/seuraava kuva</translation>
+        <translation>Siirrä näkymää, muuten edellinen/seuraava kuva</translation>
     </message>
     <message>
         <source>Gezoomt wird der Ausschnitt verschoben, sonst das Bild gewechselt.</source>
@@ -2607,7 +2607,7 @@
     </message>
     <message>
         <source>Ausschnitt verschieben (wenn gezoomt), sonst nichts</source>
-        <translation>Vieritä näkymää (kun zoomattu), muuten ei mitään</translation>
+        <translation>Siirrä näkymää (kun zoomattu), muuten ei mitään</translation>
     </message>
     <message>
         <source>Gezoomt wird der Ausschnitt verschoben, sonst passiert nichts.</source>
@@ -2687,7 +2687,7 @@
     </message>
     <message>
         <source>Zeigt eine Lupe, solange die Taste gedrückt ist.</source>
-        <translation>Näyttää suurennuslasin niin kauan kuin painiketta pidetään painettuna.</translation>
+        <translation>Näyttää luupin niin kauan kuin painiketta pidetään painettuna.</translation>
     </message>
     <message>
         <source>Maustasten 4/5 (Zurück/Vor)</source>
@@ -2707,7 +2707,7 @@
     </message>
     <message>
         <source>Bild wechseln (gezoomt: Ausschnitt verschieben)</source>
-        <translation>Vaihda kuvaa (zoomattuna: vieritä)</translation>
+        <translation>Vaihda kuvaa (zoomattuna: siirrä näkymää)</translation>
     </message>
     <message>
         <source>Wischen wechselt das Bild; im gezoomten Zustand wird der Ausschnitt verschoben.</source>
@@ -2715,7 +2715,7 @@
     </message>
     <message>
         <source>Nur Ausschnitt verschieben</source>
-        <translation>Vieritä näkymää</translation>
+        <translation>Siirrä vain näkymää</translation>
     </message>
     <message>
         <source>Wischen verschiebt immer nur den Ausschnitt.</source>
@@ -2739,7 +2739,7 @@
     </message>
     <message>
         <source>Ziehen verschiebt den Ausschnitt; mit ⌥ wird die Datei in andere Apps gezogen.</source>
-        <translation>Vetäminen siirtää näkymää; ⌥:n kanssa tiedosto vedetään muihin sovelluksiin.</translation>
+        <translation>Vetäminen siirtää näkymää; ⌥:n kanssa tiedosto vedetään muihin appeihin.</translation>
     </message>
     <message>
         <source>Datei herausziehen (⌥: Ausschnitt verschieben)</source>
@@ -2747,7 +2747,7 @@
     </message>
     <message>
         <source>Ziehen zieht die Datei in andere Apps; mit ⌥ wird der Ausschnitt verschoben.</source>
-        <translation>Vetäminen vie tiedoston muihin sovelluksiin; ⌥:n kanssa näkymää siirretään.</translation>
+        <translation>Vetäminen vie tiedoston muihin appeihin; ⌥:n kanssa näkymää siirretään.</translation>
     </message>
     <message>
         <source>Esc</source>
@@ -2759,7 +2759,7 @@
     </message>
     <message>
         <source>Esc beendet Vollbild, Diashow oder andere Modi und tut sonst nichts.</source>
-        <translation>Esc lopettaa koko näytön, diaesityksen tai muun tilan eikä muuten tee mitään.</translation>
+        <translation>Esc lopettaa koko näytön, kuvaesityksen tai muun tilan eikä muuten tee mitään.</translation>
     </message>
     <message>
         <source>Vollbild oder Modus beenden, sonst Fenster schließen</source>
@@ -2815,7 +2815,7 @@
     </message>
     <message>
         <source>Ziffern vergeben immer Sterne, P/X/U setzen Markierungen. Die Zoom-Ziffern sind dann aus.</source>
-        <translation>Numeronäppäimet antavat aina tähtiä; P/X/U merkitsevät. Zoomauksen numeronäppäimet eivät ole käytössä.</translation>
+        <translation>Numeronäppäimet antavat aina tähtiä, P/X/U asettavat merkinnät. Zoomauksen numeronäppäimet ovat silloin pois käytöstä.</translation>
     </message>
 </context>
 <context>
@@ -2826,11 +2826,11 @@
     </message>
     <message>
         <source>Lumaflip enthält die folgenden Komponenten. Die Lizenztexte liegen auch im App-Paket unter Contents/Resources/licenses.</source>
-        <translation>Lumaflip sisältää seuraavat komponentit. Lisenssitekstit löytyvät myös sovelluspaketista kohdasta Contents/Resources/licenses.</translation>
+        <translation>Lumaflip sisältää seuraavat komponentit. Lisenssitekstit löytyvät myös appinipusta kohdasta Contents/Resources/licenses.</translation>
     </message>
     <message>
         <source>Entwickler-Build: Die Lizenztexte werden erst beim Paketieren (tools/package.sh) in das App-Paket gelegt.</source>
-        <translation>Kehittäjäversio: lisenssitekstit lisätään sovelluspakettiin vasta paketoitaessa (tools/package.sh).</translation>
+        <translation>Kehittäjäversio: lisenssitekstit lisätään appinippuun vasta paketoitaessa (tools/package.sh).</translation>
     </message>
     <message>
         <source>&lt;p&gt;Version: %1&lt;/p&gt;</source>
@@ -2853,27 +2853,27 @@
     <name>lf::LiveText</name>
     <message>
         <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
-        <translation>Live Text on poistettu käytöstä asetuksissa.</translation>
+        <translation>Liveteksti on laitettu pois päältä asetuksissa.</translation>
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
-        <translation>Live Text ei ole käytettävissä tässä Macissa.</translation>
+        <translation>Liveteksti ei ole käytettävissä tässä Macissa.</translation>
     </message>
     <message>
         <source>Live Text: Bild wird analysiert …</source>
-        <translation>Live Text: kuvaa analysoidaan…</translation>
+        <translation>Liveteksti: kuvaa analysoidaan…</translation>
     </message>
     <message>
         <source>Live Text: Text und Motive auswählbar</source>
-        <translation>Live Text: teksti ja kohteet valittavissa</translation>
+        <translation>Liveteksti: teksti ja kohteet valittavissa</translation>
     </message>
     <message>
         <source>Live Text: kein Text gefunden</source>
-        <translation>Live Text: tekstiä ei löytynyt</translation>
+        <translation>Liveteksti: tekstiä ei löytynyt</translation>
     </message>
     <message>
         <source>Live Text: Analyse fehlgeschlagen (%1)</source>
-        <translation>Live Text: analyysi epäonnistui (%1)</translation>
+        <translation>Liveteksti: analyysi epäonnistui (%1)</translation>
     </message>
 </context>
 <context>
@@ -2888,7 +2888,7 @@
     </message>
     <message>
         <source>Verlustfreies Drehen der JPEG-Daten ist in dieser Version nicht verfügbar.</source>
-        <translation>JPEG-datan häviötön kiertäminen ei ole saatavilla tässä versiossa.</translation>
+        <translation>JPEG-datan häviötön pyörittäminen ei ole käytettävissä tässä versiossa.</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
@@ -2900,11 +2900,11 @@
     </message>
     <message>
         <source>Die Datei wurde inzwischen verändert – nichts gesichert. Sichere die Drehung erneut.</source>
-        <translation>Tiedostoa on sillä välin muutettu – mitään ei tallennettu. Tallenna kierto uudelleen.</translation>
+        <translation>Tiedostoa on sillä välin muutettu – mitään ei tallennettu. Tallenna pyöritys uudelleen.</translation>
     </message>
     <message>
         <source>Die Datei enthält Zusatzbilder (z. B. eine HDR-Gain-Map oder ein zweites Stereobild), die beim verlustfreien Umordnen der JPEG-Daten verloren gingen.</source>
-        <translation>Tiedosto sisältää muita kuvia (esim. HDR-vahvistuskartan tai toisen stereokuvan), jotka menetettäisiin JPEG-datan häviöttömässä uudelleenjärjestelyssä.</translation>
+        <translation>Tiedosto sisältää lisäkuvia (esim. HDR-vahvistuskartan tai toisen stereokuvan), jotka menetettäisiin JPEG-datan häviöttömässä uudelleenjärjestelyssä.</translation>
     </message>
     <message>
         <source>Die Datei existiert nicht mehr.</source>
@@ -2916,11 +2916,11 @@
     </message>
     <message>
         <source>RAW-Dateien werden nie verändert. Die Drehung gilt nur in der Anzeige; verwende zum dauerhaften Drehen deinen RAW-Konverter.</source>
-        <translation>RAW-tiedostoja ei koskaan muuteta. Kierto koskee vain näkymää; käytä pysyvään kiertämiseen RAW-kehitysohjelmaa.</translation>
+        <translation>RAW-tiedostoja ei koskaan muuteta. Pyöritys koskee vain näyttöä; käytä pysyvään pyörittämiseen RAW-kehitysohjelmaa.</translation>
     </message>
     <message>
         <source>Animierte oder mehrseitige Dateien können nicht gedreht gesichert werden.</source>
-        <translation>Animoituja tai monisivuisia tiedostoja ei voi tallentaa kierrettyinä.</translation>
+        <translation>Animoituja tai monisivuisia tiedostoja ei voi tallentaa pyöritettyinä.</translation>
     </message>
     <message>
         <source>„%1“ ist schreibgeschützt.</source>
@@ -2932,11 +2932,11 @@
     </message>
     <message>
         <source>Breite oder Höhe des Bildes ist kein Vielfaches der JPEG-Blockgröße. Verlustfreies Drehen ist nur möglich, wenn dabei ein schmaler Rand (bis zu 15 Pixel) abgeschnitten wird. Alternativ wird nur die EXIF-Ausrichtung gesetzt.</source>
-        <translation>Kuvan leveys tai korkeus ei ole JPEG-lohkokoon monikerta. Häviötön kiertäminen onnistuu vain, jos kuvasta leikataan kapea reuna (enintään 15 pikseliä). Vaihtoehtoisesti asetetaan vain EXIF-suunta.</translation>
+        <translation>Kuvan leveys tai korkeus ei ole JPEG-lohkokoon monikerta. Häviötön pyörittäminen onnistuu vain, jos kuvasta leikataan kapea reuna (enintään 15 pikseliä). Vaihtoehtoisesti asetetaan vain EXIF-suunta.</translation>
     </message>
     <message>
         <source>Die Drehung kann nicht gesichert werden.</source>
-        <translation>Kiertoa ei voi tallentaa.</translation>
+        <translation>Pyöritystä ei voi tallentaa.</translation>
     </message>
     <message>
         <source>Dieses Format kann keine Ausrichtung speichern, und beim Neukodieren bliebe das Bild nicht exakt gleich (Farbmodell, Bittiefe, Palette oder Transparenz würden verändert).</source>
@@ -2944,7 +2944,7 @@
     </message>
     <message>
         <source>Dieses Format kann keine Ausrichtung speichern. Die Drehung lässt sich nur sichern, indem das Bild neu kodiert wird – dabei geht etwas Bildqualität verloren.</source>
-        <translation>Tähän muotoon ei voi tallentaa suuntaa. Kierto voidaan tallentaa vain koodaamalla kuva uudelleen – jolloin kuvanlaatua menetetään hieman.</translation>
+        <translation>Tähän muotoon ei voi tallentaa suuntaa. Pyörityksen voi tallentaa vain koodaamalla kuvan uudelleen – samalla menetetään hieman kuvanlaatua.</translation>
     </message>
     <message>
         <source>Die EXIF-Ausrichtung konnte nicht gesetzt werden.</source>
@@ -2952,7 +2952,7 @@
     </message>
     <message>
         <source>Verlustfreies Drehen ist für dieses Bild nicht möglich.</source>
-        <translation>Häviötön kiertäminen ei ole mahdollista tälle kuvalle.</translation>
+        <translation>Häviötön pyörittäminen ei ole mahdollista tälle kuvalle.</translation>
     </message>
     <message>
         <source>Die Ausrichtung ließ sich nicht ohne Neukodieren sichern.</source>
@@ -2960,7 +2960,7 @@
     </message>
     <message>
         <source>Die Drehung konnte nicht gesichert werden.</source>
-        <translation>Kiertoa ei voitu tallentaa.</translation>
+        <translation>Pyöritystä ei voitu tallentaa.</translation>
     </message>
     <message>
         <source>Die Datei konnte nicht ersetzt werden.</source>
@@ -2968,47 +2968,47 @@
     </message>
     <message>
         <source>Die Datei wurde inzwischen verändert – Widerrufen nicht möglich</source>
-        <translation>Tiedostoa on sillä välin muutettu – kumoaminen ei ole mahdollista</translation>
+        <translation>Tiedostoa on sillä välin muutettu – ”Peru” ei ole mahdollista</translation>
     </message>
     <message>
         <source>Die Datei wurde inzwischen verändert – Wiederholen nicht möglich</source>
-        <translation>Tiedostoa on sillä välin muutettu – uudelleen tekeminen ei ole mahdollista</translation>
+        <translation>Tiedostoa on sillä välin muutettu – ”Tee sittenkin” ei ole mahdollista</translation>
     </message>
     <message>
         <source>Die Sicherungskopie dieses Schritts wurde gelöscht, um Speicherplatz zu sparen – Widerrufen/Wiederholen ist dafür nicht mehr möglich.</source>
-        <translation>Tämän vaiheen varmuuskopio poistettiin tilan säästämiseksi – sitä ei voi enää kumota tai tehdä uudelleen.</translation>
+        <translation>Tämän vaiheen varmuuskopio poistettiin tallennustilan säästämiseksi – vaihetta ei voi enää perua eikä tehdä sittenkin.</translation>
     </message>
     <message>
         <source>Es gibt nichts zu widerrufen.</source>
-        <translation>Ei mitään kumottavaa.</translation>
+        <translation>Ei mitään peruttavaa.</translation>
     </message>
     <message>
         <source>Kein Speicherplatz für die Sicherungskopie – nichts gesichert.</source>
-        <translation>Varmuuskopiolle ei ole tilaa – mitään ei tallennettu.</translation>
+        <translation>Varmuuskopiolle ei ole tallennustilaa – mitään ei tallennettu.</translation>
     </message>
     <message>
         <source>Keine Drehung zu sichern</source>
-        <translation>Ei tallennettavaa kiertoa</translation>
+        <translation>Ei tallennettavaa pyöritystä</translation>
     </message>
     <message>
         <source>Drehung gesichert (EXIF-Ausrichtung)</source>
-        <translation>Kierto tallennettu (EXIF-suunta)</translation>
+        <translation>Pyöritys tallennettu (EXIF-suunta)</translation>
     </message>
     <message>
         <source>Drehung verlustfrei gesichert</source>
-        <translation>Kierto tallennettu häviöttömästi</translation>
+        <translation>Pyöritys tallennettu häviöttömästi</translation>
     </message>
     <message>
         <source>Drehung verlustfrei gesichert (Rand beschnitten)</source>
-        <translation>Kierto tallennettu häviöttömästi (reunaa leikattu)</translation>
+        <translation>Pyöritys tallennettu häviöttömästi (reunaa leikattu)</translation>
     </message>
     <message>
         <source>Drehung gesichert (verlustfrei neu kodiert)</source>
-        <translation>Kierto tallennettu (koodattu uudelleen häviöttömästi)</translation>
+        <translation>Pyöritys tallennettu (koodattu uudelleen häviöttömästi)</translation>
     </message>
     <message>
         <source>Drehung gesichert (neu kodiert)</source>
-        <translation>Kierto tallennettu (koodattu uudelleen)</translation>
+        <translation>Pyöritys tallennettu (koodattu uudelleen)</translation>
     </message>
     <message>
         <source>Für dieses Format kann die Ausrichtung nicht gespeichert werden.</source>
@@ -3016,11 +3016,11 @@
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden.</source>
-        <translation>Kuvaa ei voitu purkaa.</translation>
+        <translation>Kuvaa ei voitu dekoodata.</translation>
     </message>
     <message>
         <source>Nicht genug Arbeitsspeicher zum Drehen.</source>
-        <translation>Muisti ei riitä kiertämiseen.</translation>
+        <translation>Muisti ei riitä pyörittämiseen.</translation>
     </message>
     <message>
         <source>Dieses Format kann nicht geschrieben werden.</source>
@@ -3056,7 +3056,7 @@
     </message>
     <message>
         <source>Die Sicherungskopie für „Widerrufen“ konnte nicht angelegt werden.</source>
-        <translation>Kumoamista varten ei voitu luoda varmuuskopiota.</translation>
+        <translation>Varmuuskopiota ”Peru”-toimintoa varten ei voitu luoda.</translation>
     </message>
     <message>
         <source>HDR-Gain-Map</source>
@@ -3076,7 +3076,7 @@
     </message>
     <message>
         <source>Die Datei enthält Zusatzbilder (%1), die beim Sichern der Ausrichtung verloren gingen. Die Drehung wurde deshalb nicht gesichert und gilt weiter nur in der Anzeige.</source>
-        <translation>Tiedosto sisältää lisäkuvia (%1), jotka menetettäisiin suuntaa tallennettaessa. Siksi kiertoa ei tallennettu, ja se koskee edelleen vain näkymää.</translation>
+        <translation>Tiedosto sisältää lisäkuvia (%1), jotka menetettäisiin suuntaa tallennettaessa. Siksi pyöritystä ei tallennettu, ja se koskee edelleen vain näyttöä.</translation>
     </message>
     <message>
         <source>Die neue Datei kann nicht gelesen werden.</source>
@@ -3112,7 +3112,7 @@
     </message>
     <message>
         <source>Nicht genug Speicherplatz, um „%1“ sicher zu überschreiben.</source>
-        <translation>Tila ei riitä kohteen ”%1” turvalliseen korvaamiseen.</translation>
+        <translation>Tallennustila ei riitä kohteen ”%1” turvalliseen korvaamiseen.</translation>
     </message>
     <message>
         <source>Der alte Inhalt liegt in „%1“.</source>
@@ -3143,22 +3143,22 @@
     </message>
     <message>
         <source>Alle Bildschirme</source>
-        <translation type="unfinished">Kaikki näytöt</translation>
+        <translation>Kaikki näytöt</translation>
     </message>
     <message>
         <source>Bildschirm %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Näyttö %1</translation>
     </message>
     <message>
         <source>Windows hat das Bild nicht als Desktophintergrund übernommen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Windows ei ottanut kuvaa käyttöön työpöydän taustana.</translation>
     </message>
 </context>
 <context>
     <name>lf::MainMenu</name>
     <message>
         <source>Ablage</source>
-        <translation>Arkisto</translation>
+        <translation>Tiedosto</translation>
     </message>
     <message>
         <source>Neues Fenster</source>
@@ -3178,7 +3178,7 @@
     </message>
     <message>
         <source>Benutzte Dokumente</source>
-        <translation>Avaa viimeaikainen</translation>
+        <translation>Avaa äskeinen</translation>
     </message>
     <message>
         <source>Schließen</source>
@@ -3198,7 +3198,7 @@
     </message>
     <message>
         <source>Im Editor öffnen</source>
-        <translation>Avaa oletuseditorissa</translation>
+        <translation>Avaa editorissa</translation>
     </message>
     <message>
         <source>In den Papierkorb legen</source>
@@ -3206,11 +3206,11 @@
     </message>
     <message>
         <source>Als Standard-App festlegen …</source>
-        <translation>Aseta oletussovellukseksi…</translation>
+        <translation>Aseta oletusapiksi…</translation>
     </message>
     <message>
         <source>Über Lumaflip</source>
-        <translation>Tietoja Lumaflipista</translation>
+        <translation>Tietoja: Lumaflip</translation>
     </message>
     <message>
         <source>Nach Updates suchen …</source>
@@ -3230,19 +3230,19 @@
     </message>
     <message>
         <source>Widerrufen</source>
-        <translation>Kumoa</translation>
+        <translation>Peru</translation>
     </message>
     <message>
         <source>Wiederholen</source>
-        <translation>Tee uudelleen</translation>
+        <translation>Tee sittenkin</translation>
     </message>
     <message>
         <source>„%1“ widerrufen</source>
-        <translation>Kumoa ”%1”</translation>
+        <translation>Peru ”%1”</translation>
     </message>
     <message>
         <source>„%1“ wiederholen</source>
-        <translation>Tee uudelleen ”%1”</translation>
+        <translation>Tee sittenkin ”%1”</translation>
     </message>
     <message>
         <source>Kopieren</source>
@@ -3266,7 +3266,7 @@
     </message>
     <message>
         <source>100 % (1:1 Pixel)</source>
-        <translation>Todellinen koko (100 %)</translation>
+        <translation>100 % (1:1-pikselit)</translation>
     </message>
     <message>
         <source>Breite füllen</source>
@@ -3334,7 +3334,7 @@
     </message>
     <message>
         <source>Schachbrett</source>
-        <translation>Shakkiruudukko</translation>
+        <translation>Shakkilauta</translation>
     </message>
     <message>
         <source>Eigene Farbe …</source>
@@ -3398,19 +3398,19 @@
     </message>
     <message>
         <source>Links drehen</source>
-        <translation>Kierrä vasemmalle</translation>
+        <translation>Pyöritä vasemmalle</translation>
     </message>
     <message>
         <source>Rechts drehen</source>
-        <translation>Kierrä oikealle</translation>
+        <translation>Pyöritä oikealle</translation>
     </message>
     <message>
         <source>Horizontal spiegeln</source>
-        <translation>Peilaa vaakasuunnassa</translation>
+        <translation>Käännä vaakasuunnassa</translation>
     </message>
     <message>
         <source>Vertikal spiegeln</source>
-        <translation>Peilaa pystysuunnassa</translation>
+        <translation>Käännä pystysuunnassa</translation>
     </message>
     <message>
         <source>RAW anzeigen</source>
@@ -3434,7 +3434,7 @@
     </message>
     <message>
         <source>Hilfe</source>
-        <translation>Ohjeet</translation>
+        <translation>Ohje</translation>
     </message>
     <message>
         <source>Tastenkürzel</source>
@@ -3443,7 +3443,7 @@
     <message>
         <source>Wiederholen</source>
         <comment>slideshow option: start again after the last image</comment>
-        <translation>Jatkuva toisto</translation>
+        <translation>Toista uudelleen</translation>
     </message>
     <message>
         <source>Zufällige Reihenfolge</source>
@@ -3459,11 +3459,11 @@
     </message>
     <message>
         <source>Einblendungen</source>
-        <translation>Peitot</translation>
+        <translation>Peittokuvat</translation>
     </message>
     <message>
         <source>Über-/Unterbelichtungswarnung</source>
-        <translation>Yli-/alivalotus</translation>
+        <translation>Yli-/alivalotusvaroitus</translation>
     </message>
     <message>
         <source>Focus Peaking</source>
@@ -3471,11 +3471,11 @@
     </message>
     <message>
         <source>Fokuspunkte</source>
-        <translation>AF-pisteet</translation>
+        <translation>Tarkennuspisteet</translation>
     </message>
     <message>
         <source>Vergleich überlagern</source>
-        <translation>Vertaa päällekkäin</translation>
+        <translation>Päällekkäinen vertailu</translation>
     </message>
     <message>
         <source>Nebeneinander</source>
@@ -3495,11 +3495,11 @@
     </message>
     <message>
         <source>Diashow</source>
-        <translation>Diaesitys</translation>
+        <translation>Kuvaesitys</translation>
     </message>
     <message>
         <source>Diashow-Optionen</source>
-        <translation>Diaesityksen valinnat</translation>
+        <translation>Kuvaesityksen valinnat</translation>
     </message>
     <message>
         <source>Nächste Seite</source>
@@ -3511,7 +3511,7 @@
     </message>
     <message>
         <source>Drehung sichern</source>
-        <translation>Tallenna kierto</translation>
+        <translation>Tallenna pyöritys</translation>
     </message>
     <message>
         <source>Animation</source>
@@ -3539,7 +3539,7 @@
     </message>
     <message>
         <source>Nur markierte</source>
-        <translation>Vain säilytetyt</translation>
+        <translation>Vain merkityt</translation>
     </message>
     <message>
         <source>Nur unbewertete</source>
@@ -3567,7 +3567,7 @@
     </message>
     <message>
         <source>Nach Bewertung automatisch weiter</source>
-        <translation>Jatka arvion jälkeen</translation>
+        <translation>Siirry automaattisesti eteenpäin arvioinnin jälkeen</translation>
     </message>
     <message>
         <source>Filter</source>
@@ -3575,11 +3575,11 @@
     </message>
     <message>
         <source>Alle abgelehnten in den Papierkorb legen …</source>
-        <translation>Kaikki hylätyt roskakoriin…</translation>
+        <translation>Siirrä kaikki hylätyt roskakoriin…</translation>
     </message>
     <message>
         <source>Alle abgelehnten nach „_Rejected“ verschieben …</source>
-        <translation>Kaikki hylätyt kansioon ”_Rejected”…</translation>
+        <translation>Siirrä kaikki hylätyt kansioon ”_Rejected”…</translation>
     </message>
     <message>
         <source>Schnellablage: verschieben (M, dann 1–9)</source>
@@ -3619,7 +3619,7 @@
     </message>
     <message>
         <source>Ordnerkarte</source>
-        <translation>Kartta</translation>
+        <translation>Kansiokartta</translation>
     </message>
     <message>
         <source>Nächster Ordner</source>
@@ -3647,7 +3647,7 @@
     </message>
     <message>
         <source>Minimaler Fenstermodus</source>
-        <translation>Minimaalinen ikkuna</translation>
+        <translation>Minimaalinen ikkunatila</translation>
     </message>
     <message>
         <source>Fenster koppeln …</source>
@@ -3691,7 +3691,7 @@
     </message>
     <message>
         <source>Als Schreibtischhintergrund festlegen …</source>
-        <translation>Aseta työpöydän kuvaksi…</translation>
+        <translation>Käytä työpöydän taustakuvana…</translation>
     </message>
     <message>
         <source>Eigene Aktionen</source>
@@ -3699,7 +3699,7 @@
     </message>
     <message>
         <source>Live Text</source>
-        <translation>Live Text</translation>
+        <translation>Liveteksti</translation>
     </message>
     <message>
         <source>Comics von rechts nach links lesen</source>
@@ -3707,7 +3707,7 @@
     </message>
     <message>
         <source>Keine – in den Einstellungen anlegen</source>
-        <translation>Ei yhtään – luo asetuksissa</translation>
+        <translation>Ei toimintoja – luo ne asetuksissa</translation>
     </message>
     <message>
         <source>Protokoll …</source>
@@ -3737,7 +3737,7 @@
     </message>
     <message>
         <source>Karten sind unter Windows nicht verfügbar.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kartat eivät ole käytettävissä Windowsissa.</translation>
     </message>
 </context>
 <context>
@@ -3752,7 +3752,7 @@
     </message>
     <message>
         <source>Öffnen mit</source>
-        <translation>Avaa sovelluksella</translation>
+        <translation>Avaa apilla</translation>
     </message>
     <message>
         <source>Teilen</source>
@@ -3829,7 +3829,7 @@
     <message>
         <source>Pixelmaße</source>
         <extracomment>image size in pixels (width × height)</extracomment>
-        <translation>Mitat</translation>
+        <translation>Pikselimitat</translation>
     </message>
     <message>
         <source>Farbraum</source>
@@ -4026,7 +4026,7 @@
     </message>
     <message>
         <source>Gib eine Bildnummer zwischen 1 und %1 ein.</source>
-        <translation>Anna kuvan numero väliltä 1–%1</translation>
+        <translation>Anna kuvan numero väliltä 1–%1.</translation>
     </message>
     <message>
         <source>Zufällige Reihenfolge an</source>
@@ -4049,7 +4049,7 @@
     <name>lf::OpenWithService</name>
     <message>
         <source>Keine App zum Bearbeiten gefunden. Wähle eine unter Einstellungen → Allgemein → Editor.</source>
-        <translation>Muokkaamiseen sopivaa sovellusta ei löytynyt. Valitse sellainen kohdassa Asetukset → Yleiset → Editori.</translation>
+        <translation>Muokkaamiseen sopivaa appia ei löytynyt. Valitse appi kohdassa Asetukset → Yleiset → Editori.</translation>
     </message>
     <message>
         <source>Programme (*.exe)</source>
@@ -4057,11 +4057,11 @@
     </message>
     <message>
         <source>Apps (*.desktop);;Alle Dateien (*)</source>
-        <translation>Ohjelmat (*.desktop);;Kaikki tiedostot (*)</translation>
+        <translation>Apit (*.desktop);;Kaikki tiedostot (*)</translation>
     </message>
     <message>
         <source>„%1“ ist keine App.</source>
-        <translation>”%1” ei ole ohjelma.</translation>
+        <translation>”%1” ei ole appi.</translation>
     </message>
     <message>
         <source>Kein Bild geöffnet</source>
@@ -4073,15 +4073,15 @@
     </message>
     <message>
         <source>App wählen</source>
-        <translation>Valitse sovellus</translation>
+        <translation>Valitse appi</translation>
     </message>
     <message>
         <source>Apps (*.app)</source>
-        <translation>Sovellukset (*.app)</translation>
+        <translation>Apit (*.app)</translation>
     </message>
     <message>
         <source>Apps werden gesucht …</source>
-        <translation>Etsitään sovelluksia…</translation>
+        <translation>Etsitään appeja…</translation>
     </message>
     <message>
         <source>%1 (Standard)</source>
@@ -4089,7 +4089,7 @@
     </message>
     <message>
         <source>Keine passenden Apps</source>
-        <translation>Ei sopivia sovelluksia</translation>
+        <translation>Ei sopivia appeja</translation>
     </message>
 </context>
 <context>
@@ -4155,7 +4155,7 @@
     </message>
     <message>
         <source>Mit ⌘Z lässt sich das widerrufen.</source>
-        <translation>Tämän voi kumota painamalla ⌘Z.</translation>
+        <translation>Tämän voi perua painamalla ⌘Z.</translation>
     </message>
     <message>
         <source>Abbrechen</source>
@@ -4241,7 +4241,7 @@
     </message>
     <message>
         <source>Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbildmodus“, „Dienste“, „Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart.</source>
-        <translation>Tulee voimaan heti. macOSin valikot ja ikkunat (”Siirry koko näytön tilaan”, ”Palvelut”, ”Avaa”, lupakyselyt) vaihtuvat uudelleenkäynnistyksen jälkeen.</translation>
+        <translation>Tulee voimaan heti. macOS:n valikot ja ikkunat (”Siirry koko näytön tilaan”, ”Palvelut”, ”Avaa”, lupakyselyt) vaihtuvat uudelleenkäynnistyksen jälkeen.</translation>
     </message>
     <message>
         <source>Öffnen aus dem Finder:</source>
@@ -4261,7 +4261,7 @@
     </message>
     <message>
         <source>Gilt für Doppelklick im Finder, „Öffnen mit“ und Drag &amp; Drop auf das Dock-Symbol.</source>
-        <translation>Koskee kaksoisosoitusta Finderissa, ”Avaa sovelluksella” -toimintoa ja vetämistä Dockin symboliin.</translation>
+        <translation>Koskee kaksoisosoitusta Finderissa, ”Avaa apilla” -toimintoa ja vetämistä Dockin symbolin päälle.</translation>
     </message>
     <message>
         <source>Fenster beim nächsten Start wiederherstellen</source>
@@ -4273,7 +4273,7 @@
     </message>
     <message>
         <source>Vor dem Bewegen in den Papierkorb nachfragen</source>
-        <translation>Kysy ennen poistamista</translation>
+        <translation>Kysy ennen roskakoriin siirtämistä</translation>
     </message>
     <message>
         <source>Aus: ⌘⌫ legt das Bild sofort in den Papierkorb, ⌘Z holt es zurück.</source>
@@ -4281,11 +4281,11 @@
     </message>
     <message>
         <source>Fragen, ob Lumaflip Standard-App werden soll</source>
-        <translation type="unfinished"></translation>
+        <translation>Kysy, asetetaanko Lumaflip oletusapiksi</translation>
     </message>
     <message>
         <source>Öffnest du ein Bild, dessen Dateityp eine andere App öffnet, erscheint einmal je Dateityp ein Hinweis oben im Fenster.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kun avaat kuvan, jonka tiedostotyypin avaa jokin muu appi, ikkunan yläreunaan tulee ilmoitus kerran kutakin tiedostotyyppiä kohden.</translation>
     </message>
     <message>
         <source>Editor:</source>
@@ -4293,11 +4293,11 @@
     </message>
     <message>
         <source>Für „Im Editor öffnen“ (Taste E).</source>
-        <translation>Toiminnolle ”Avaa oletuseditorissa” (näppäin E).</translation>
+        <translation>Toiminnolle ”Avaa editorissa” (näppäin E).</translation>
     </message>
     <message>
         <source>Drehung sichern:</source>
-        <translation>Tallenna kierto:</translation>
+        <translation>Tallenna pyöritys:</translation>
     </message>
     <message>
         <source>EXIF-Ausrichtung setzen</source>
@@ -4305,11 +4305,11 @@
     </message>
     <message>
         <source>JPEG verlustfrei drehen (DCT)</source>
-        <translation>Kierrä JPEG häviöttömästi (DCT)</translation>
+        <translation>Pyöritä JPEG häviöttömästi (DCT)</translation>
     </message>
     <message>
         <source>Beides ändert keine Bildpixel. „EXIF-Ausrichtung“ ändert nur ein Kennzeichen (JPEG, HEIC, TIFF, PNG); „verlustfrei drehen“ ordnet die JPEG-Blöcke neu an, damit auch Apps ohne EXIF-Unterstützung das Bild richtig anzeigen. RAW-Dateien werden nie verändert; ⌘Z widerruft das Sichern.</source>
-        <translation>Kumpikaan ei muuta kuvan pikseleitä. ”EXIF-suunta” muuttaa vain tunnisteen (JPEG, HEIC, TIFF, PNG); ”häviötön kiertäminen” järjestää JPEG-lohkot uudelleen, jotta myös ohjelmat ilman EXIF-tukea näyttävät kuvan oikein. RAW-tiedostoja ei koskaan muuteta; ⌘Z kumoaa tallennuksen.</translation>
+        <translation>Kumpikaan ei muuta kuvan pikseleitä. ”EXIF-suunta” muuttaa vain tunnisteen (JPEG, HEIC, TIFF, PNG); ”häviötön pyöritys” järjestää JPEG-lohkot uudelleen, jotta myös apit ilman EXIF-tukea näyttävät kuvan oikein. RAW-tiedostoja ei koskaan muuteta; ⌘Z peruu tallennuksen.</translation>
     </message>
     <message>
         <source>Änderungsdatum beibehalten</source>
@@ -4337,7 +4337,7 @@
     </message>
     <message>
         <source>Ohne Titelleiste reicht das Bild bis an den oberen Rand. Fenster → „Minimaler Fenstermodus“ schaltet ein einzelnes Fenster um.</source>
-        <translation>Ilman otsikkopalkkia kuva ulottuu yläreunaan asti. Ikkuna → ”Minimaalinen ikkuna” vaihtaa yksittäisen ikkunan tilan.</translation>
+        <translation>Ilman otsikkopalkkia kuva ulottuu yläreunaan asti. Ikkuna → ”Minimaalinen ikkunatila” vaihtaa yksittäisen ikkunan tilan.</translation>
     </message>
     <message>
         <source>Ordnername in der Titelleiste</source>
@@ -4381,7 +4381,7 @@
     </message>
     <message>
         <source>Dateiname (ohne Endung)</source>
-        <translation>Tiedostonimi (ilman päätettä)</translation>
+        <translation>Tiedostonimi (ilman tarkennetta)</translation>
     </message>
     <message>
         <source>Position in der Sammlung</source>
@@ -4389,7 +4389,7 @@
     </message>
     <message>
         <source>Fenster → „Fenster koppeln …“: gekoppelte Fenster blättern gemeinsam und teilen Zoom und Ausschnitt.</source>
-        <translation>Ikkuna → ”Linkitä ikkunat…”: linkitetyt ikkunat selaavat yhdessä ja jakavat zoomauksen ja näkyvän alueen.</translation>
+        <translation>Ikkuna → ”Linkitä ikkunat…”: linkitetyt ikkunat selaavat yhdessä ja jakavat zoomauksen ja näkymän.</translation>
     </message>
     <message>
         <source>Dunkel</source>
@@ -4401,11 +4401,11 @@
     </message>
     <message>
         <source>Wie System</source>
-        <translation>Kuten järjestelmän ulkoasu</translation>
+        <translation>Kuten järjestelmässä</translation>
     </message>
     <message>
         <source>Schachbrett (Transparenz)</source>
-        <translation>Shakkiruudukko (läpinäkyvyys)</translation>
+        <translation>Shakkilauta (läpinäkyvyys)</translation>
     </message>
     <message>
         <source>Eigene Farbe</source>
@@ -4473,11 +4473,11 @@
     </message>
     <message>
         <source>1 Bildpixel = 1 Gerätepixel (Retina-korrekt)</source>
-        <translation>1 kuvapiste = 1 laitepikseli (Retina-tarkka)</translation>
+        <translation>1 kuvapikseli = 1 laitepikseli (Retina-tarkka)</translation>
     </message>
     <message>
         <source>1 Bildpixel = 1 Punkt</source>
-        <translation>1 kuvapiste = 1 piste</translation>
+        <translation>1 kuvapikseli = 1 piste</translation>
     </message>
     <message>
         <source>HDR-Bilder mit erweitertem Dynamikumfang anzeigen</source>
@@ -4485,7 +4485,7 @@
     </message>
     <message>
         <source>Lupe (L gedrückt halten):</source>
-        <translation>Suurennuslasi (pidä L painettuna):</translation>
+        <translation>Luuppi (pidä L painettuna):</translation>
     </message>
     <message>
         <source>200 %</source>
@@ -4493,7 +4493,7 @@
     </message>
     <message>
         <source>Größe der Lupe:</source>
-        <translation>Suurennuslasin koko:</translation>
+        <translation>Luupin koko:</translation>
     </message>
     <message>
         <source>Klein</source>
@@ -4517,7 +4517,7 @@
     </message>
     <message>
         <source>HDR-Überbelichtung bezogen auf:</source>
-        <translation>HDR-ylivalotus suhteessa:</translation>
+        <translation>HDR-ylivalotuksen vertailukohta:</translation>
     </message>
     <message>
         <source>Spitzenhelligkeit des Bildes</source>
@@ -4541,7 +4541,7 @@
     </message>
     <message>
         <source>Diashow (⇧⌘F, S):</source>
-        <translation>Diaesitys (⇧⌘F, S):</translation>
+        <translation>Kuvaesitys (⇧⌘F, S):</translation>
     </message>
     <message>
         <source> s pro Bild</source>
@@ -4549,7 +4549,7 @@
     </message>
     <message>
         <source>Wiederholen</source>
-        <translation>Jatkuva toisto</translation>
+        <translation>Toista uudelleen</translation>
     </message>
     <message>
         <source>Zufällige Reihenfolge</source>
@@ -4561,7 +4561,7 @@
     </message>
     <message>
         <source>Während der Diashow: Leertaste hält an, 1–9 setzt das Intervall in Sekunden, ←/→ blättert, P/X/U bewerten, Esc beendet.</source>
-        <translation>Diaesityksen aikana: välilyönti keskeyttää, 1–9 asettaa välin sekunteina, ←/→ selaa, P/X/U arvioivat, Esc lopettaa.</translation>
+        <translation>Kuvaesityksen aikana: välilyönti keskeyttää, 1–9 asettaa välin sekunteina, ←/→ selaa, P/X/U merkitsevät, Esc lopettaa.</translation>
     </message>
     <message>
         <source>Profilvorlagen</source>
@@ -4573,11 +4573,11 @@
     </message>
     <message>
         <source>Wie Windows-Bildbetrachter</source>
-        <translation>Windows-katseluohjelmien tavat</translation>
+        <translation>Kuten Windowsin kuvankatseluohjelmat</translation>
     </message>
     <message>
         <source>Fotografie / Lightroom</source>
-        <translation>Valokuvaaja / Lightroom</translation>
+        <translation>Valokuvaus / Lightroom</translation>
     </message>
     <message>
         <source>Maus, Trackpad und Tasten</source>
@@ -4629,7 +4629,7 @@
     </message>
     <message>
         <source>Klicke auf ein Feld und drücke die neue Taste. Bis zu drei Tastenkürzel pro Aktion. Ziffern und P/X/U für die Bewertung gelten nur im Aussortiermodus.</source>
-        <translation>Osoita kenttää ja paina uutta näppäintä. Enintään kolme oikotietä toimintoa kohden. Arvioinnin numerot ja P/X/U toimivat vain karsintatilassa.</translation>
+        <translation>Osoita kenttää ja paina uutta näppäintä. Enintään kolme näppäinoikotietä toimintoa kohden. Arvioinnin numerot ja P/X/U toimivat vain karsintatilassa.</translation>
     </message>
     <message>
         <source>Aktion</source>
@@ -4688,7 +4688,7 @@
     </message>
     <message>
         <source>Liest die Darstellungsoptionen des Ordners (.DS_Store) und die globalen Finder-Einstellungen.</source>
-        <translation>Lukee kansion näyttövalinnat (.DS_Store) ja Finderin yleiset asetukset.</translation>
+        <translation>Lukee kansion näkymävalinnat (.DS_Store) ja Finderin yleiset asetukset.</translation>
     </message>
     <message>
         <source>Zeigt das vorderste Finder-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen aktuelle Sortierung (auch noch nicht gespeicherte). macOS bittet dafür einmalig um die Erlaubnis, den Finder zu steuern (Automation).</source>
@@ -4788,7 +4788,7 @@
     </message>
     <message>
         <source>Speicherort für Bewertungen</source>
-        <translation>Tallenna arviot</translation>
+        <translation>Arvioiden tallennuspaikka</translation>
     </message>
     <message>
         <source>XMP-Zusatzdatei neben dem Bild (Bild.xmp)</source>
@@ -4796,11 +4796,11 @@
     </message>
     <message>
         <source>Kompatibel mit Lightroom, Capture One und darktable: Sterne in xmp:Rating, „Abgelehnt“ als -1. Vorhandene Inhalte der Datei bleiben erhalten.</source>
-        <translation>Yhteensopiva Lightroomin, Capture Onen ja darktablen kanssa: tähdet kentässä xmp:Rating, ”Hylkää” arvona -1. Tiedoston nykyinen sisältö säilyy.</translation>
+        <translation>Yhteensopiva Lightroomin, Capture Onen ja darktablen kanssa: tähdet kentässä xmp:Rating, ”Hylätty” arvona -1. Tiedoston nykyinen sisältö säilyy.</translation>
     </message>
     <message>
         <source>Nur JPEG, HEIC, TIFF, PNG und DNG; die Bildpixel werden nicht neu kodiert. RAW-Dateien werden nie verändert – dafür wird die Zusatzdatei benutzt.</source>
-        <translation>Vain JPEG, HEIC, TIFF, PNG ja DNG; kuvapisteitä ei koodata uudelleen. RAW-tiedostoja ei koskaan muuteta – niille käytetään sivutiedostoa.</translation>
+        <translation>Vain JPEG, HEIC, TIFF, PNG ja DNG; kuvan pikseleitä ei koodata uudelleen. RAW-tiedostoja ei koskaan muuteta – niille käytetään sivutiedostoa.</translation>
     </message>
     <message>
         <source>Änderungsdatum beim Schreiben ins Bild beibehalten</source>
@@ -4808,7 +4808,7 @@
     </message>
     <message>
         <source>Im Finder sichtbar und per Spotlight durchsuchbar. Sind mehrere Speicherorte gewählt, werden alle beschrieben; beim Lesen gilt die Reihenfolge Zusatzdatei, Bild, Tags.</source>
-        <translation>Näkyvät Finderissa ja haettavissa Spotlightilla. Jos valittuna on useita paikkoja, kaikkiin kirjoitetaan; luettaessa järjestys on sivutiedosto, kuva, tunnisteet.</translation>
+        <translation>Näkyvät Finderissa ja ovat haettavissa Spotlightilla. Jos valittuna on useita tallennuspaikkoja, kaikkiin kirjoitetaan; luettaessa järjestys on sivutiedosto, kuva, tunnisteet.</translation>
     </message>
     <message>
         <source>Stern-Symbol:</source>
@@ -4816,11 +4816,11 @@
     </message>
     <message>
         <source>Tag für „Markiert“:</source>
-        <translation>Tunniste säilytetyille:</translation>
+        <translation>”Merkitty”-tilan tunniste:</translation>
     </message>
     <message>
         <source>Tag für „Abgelehnt“:</source>
-        <translation>Tunniste hylätyille:</translation>
+        <translation>”Hylätty”-tilan tunniste:</translation>
     </message>
     <message>
         <source>Drei Sterne werden zum Tag „★★★“ (Symbol dreimal).</source>
@@ -4832,7 +4832,7 @@
     </message>
     <message>
         <source>Nach Bewertung automatisch weiter</source>
-        <translation>Jatka automaattisesti arvion jälkeen</translation>
+        <translation>Siirry automaattisesti eteenpäin arvioinnin jälkeen</translation>
     </message>
     <message>
         <source>Zoom im Aussortiermodus fixieren</source>
@@ -4844,7 +4844,7 @@
     </message>
     <message>
         <source>Aussortiermodus: ⌘K oder K. Ziffern vergeben dort Sterne statt Zoomstufen; „Bewertungstasten immer aktiv“ gibt es unter Maus &amp; Tastatur.</source>
-        <translation>Karsintatila: ⌘K tai K. Siellä numerot antavat tähtiä zoomaustasojen sijaan; ”Arviointinäppäimet aina käytössä” löytyy kohdasta Hiiri ja näppäimistö.</translation>
+        <translation>Karsintatila: ⌘K tai K. Siellä numerot antavat tähtiä zoomaustasojen sijaan; ”Arviointinäppäimet aina käytössä” löytyy välilehdeltä Hiiri ja näppäimistö.</translation>
     </message>
     <message>
         <source>Schnellablage</source>
@@ -4852,7 +4852,7 @@
     </message>
     <message>
         <source>M und dann 1–9 verschiebt das Bild in den Zielordner, C und dann 1–9 kopiert es. M M bzw. C C wiederholt das letzte Ziel. ⌘Z widerruft es.</source>
-        <translation>M ja sitten 1–9 siirtää kuvan kohdekansioon, C ja sitten 1–9 kopioi sen. M M tai C C toistaa viimeisimmän kohteen. ⌘Z kumoaa.</translation>
+        <translation>M ja sitten 1–9 siirtää kuvan kohdekansioon, C ja sitten 1–9 kopioi sen. M M tai C C toistaa viimeisimmän kohteen. ⌘Z peruu sen.</translation>
     </message>
     <message>
         <source>Im Bild selbst (eingebettetes XMP)</source>
@@ -4860,7 +4860,7 @@
     </message>
     <message>
         <source>Finder-Tags</source>
-        <translation>Finderin tagit</translation>
+        <translation>Finderin tunnisteet</translation>
     </message>
     <message>
         <source>Unterstützte Formate (ohne Nachinstallation):</source>
@@ -4892,7 +4892,7 @@
     </message>
     <message>
         <source>GIF, APNG, WebP, AVIF/HEICS, JXL – mit Wiedergabe</source>
-        <translation>GIF, APNG, WebP, AVIF/HEICS, JXL – toiston kanssa</translation>
+        <translation>GIF, APNG, WebP, AVIF/HEICS, JXL – toistettavissa</translation>
     </message>
     <message>
         <source>Vektor</source>
@@ -4904,7 +4904,7 @@
     </message>
     <message>
         <source>Als Standard-App für Bilder festlegen</source>
-        <translation>Aseta kuvien oletussovellukseksi</translation>
+        <translation>Aseta kuvien oletusapiksi</translation>
     </message>
     <message>
         <source>RAW: nur eingebettete Vorschau anzeigen (schneller)</source>
@@ -4912,7 +4912,7 @@
     </message>
     <message>
         <source>Aus: Zuerst die eingebettete Vorschau, danach wird die volle Entwicklung nachgeladen.</source>
-        <translation>Pois: ensin näytetään upotettu esikatselu, sen jälkeen ladataan täysi kehitys.</translation>
+        <translation>Pois: ensin näytetään upotettu esikatselu, sen jälkeen ladataan täysin kehitetty kuva.</translation>
     </message>
     <message>
         <source>RAW+JPEG-Paare als ein Bild behandeln</source>
@@ -4932,7 +4932,7 @@
     </message>
     <message>
         <source>Für Manga: ← blättert weiter, → zurück. Leertaste und Bild↓ gehen immer zur nächsten Seite.</source>
-        <translation>Mangaa varten: ← selaa eteenpäin, → taaksepäin. Välilyönti ja Page Down siirtyvät aina seuraavalle sivulle.</translation>
+        <translation>Mangaa varten: ← selaa eteenpäin, → taaksepäin. Välilyönti ja Sivu alas siirtyvät aina seuraavalle sivulle.</translation>
     </message>
     <message>
         <source>Leistung</source>
@@ -4960,15 +4960,15 @@
     </message>
     <message>
         <source>Live Text</source>
-        <translation>Live Text</translation>
+        <translation>Liveteksti</translation>
     </message>
     <message>
         <source>Live Text und Motiv freistellen erlauben (⇧⌘L)</source>
-        <translation>Salli Live Text ja kohteen irrotus (⇧⌘L)</translation>
+        <translation>Salli Liveteksti ja kohteen irrotus (⇧⌘L)</translation>
     </message>
     <message>
         <source>Das Bild wird nur analysiert, wenn du Live Text für ein Fenster einschaltest – auf diesem Mac, ohne Internetverbindung.</source>
-        <translation>Kuva analysoidaan vain, kun otat Live Textin käyttöön ikkunassa – tässä Macissa, ilman verkkoa.</translation>
+        <translation>Kuva analysoidaan vain, kun otat Livetekstin käyttöön ikkunassa – tässä Macissa, ilman internetyhteyttä.</translation>
     </message>
     <message>
         <source>Eigene Aktionen</source>
@@ -4976,11 +4976,11 @@
     </message>
     <message>
         <source>Ein Shell-Befehl oder ein Kurzbefehl (Kurzbefehle-App) erhält das aktuelle Bild als Argument. Menü: Ablage → Eigene Aktionen.</source>
-        <translation>Komentotulkin komento tai pikakomento (Pikakomennot) saa nykyisen kuvan argumenttina. Valikko: Arkisto → Omat toiminnot.</translation>
+        <translation>Shell-komento tai pikakomento (Pikakomennot-appi) saa nykyisen kuvan argumenttina. Valikko: Tiedosto → Omat toiminnot.</translation>
     </message>
     <message>
         <source>Abbrechen nach:</source>
-        <translation>Keskeytä kun on kulunut:</translation>
+        <translation>Keskeytä, kun on kulunut:</translation>
     </message>
     <message>
         <source> s</source>
@@ -4988,7 +4988,7 @@
     </message>
     <message>
         <source>Backup der Einstellungen</source>
-        <translation>Varmuuskopioi asetukset</translation>
+        <translation>Asetusten varmuuskopio</translation>
     </message>
     <message>
         <source>Exportieren …</source>
@@ -5052,11 +5052,11 @@
     </message>
     <message>
         <source>Standard-App des Systems für den Bildtyp (nie Lumaflip)</source>
-        <translation>Järjestelmän oletussovellus kuvatyypille (ei koskaan Lumaflip)</translation>
+        <translation>Järjestelmän oletusappi kuvatyypille (ei koskaan Lumaflip)</translation>
     </message>
     <message>
         <source>Lumaflip kann nicht sein eigener Editor sein. Wähle eine andere App.</source>
-        <translation>Lumaflip ei voi olla oma editorinsa. Valitse toinen sovellus.</translation>
+        <translation>Lumaflip ei voi olla oma editorinsa. Valitse toinen appi.</translation>
     </message>
     <message>
         <source>Editor wählen</source>
@@ -5064,11 +5064,11 @@
     </message>
     <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
-        <translation>Käytä järjestystä suoraan Finder-ikkunasta</translation>
+        <translation>Käytä Finder-ikkunan järjestystä (live)</translation>
     </message>
     <message>
         <source>Sortierung vom Finder-Fenster übernehmen</source>
-        <translation>Käytä järjestystä Finder-ikkunasta</translation>
+        <translation>Käytä Finder-ikkunan järjestystä</translation>
     </message>
     <message>
         <source>Lumaflip fragt dann beim Öffnen eines Ordners das vorderste Finder-Fenster nach seiner Sortierung – aber nur, wenn es genau diesen Ordner zeigt.</source>
@@ -5076,7 +5076,7 @@
     </message>
     <message>
         <source>Dafür fragt macOS einmalig, ob Lumaflip den Finder steuern darf („Automation“). Lumaflip liest nur Ordner, Ansicht und Sortierung des Fensters und ändert nichts. Die Erlaubnis lässt sich jederzeit unter Systemeinstellungen → Datenschutz &amp; Sicherheit → Automation widerrufen.</source>
-        <translation>Tätä varten macOS kysyy kerran, saako Lumaflip ohjata Finderia (”Automaatio”). Lumaflip lukee vain ikkunan kansion, näkymän ja järjestyksen eikä muuta mitään. Luvan voi perua milloin tahansa kohdassa Järjestelmäasetukset → Tietosuoja ja turvallisuus → Automaatio.</translation>
+        <translation>Tätä varten macOS kysyy kerran, saako Lumaflip ohjata Finderia (”Automaatio”). Lumaflip lukee vain ikkunan kansion, näkymän ja järjestyksen eikä muuta mitään. Luvan voi perua milloin tahansa kohdassa Järjestelmäasetukset → Tietosuoja ja suojaus → Automaatio.</translation>
     </message>
     <message>
         <source>Aktivieren</source>
@@ -5096,11 +5096,11 @@
     <name>lf::PsbDecoder</name>
     <message>
         <source>Die PSB-Datei ist beschädigt oder unvollständig.</source>
-        <translation>PSB-tiedosto on vahingoittunut tai keskeneräinen.</translation>
+        <translation>PSB-tiedosto on vioittunut tai keskeneräinen.</translation>
     </message>
     <message>
         <source>Keine PSB-Datei.</source>
-        <translation>Ei PSB-tiedosto.</translation>
+        <translation>Tiedosto ei ole PSB-tiedosto.</translation>
     </message>
     <message>
         <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
@@ -5108,7 +5108,7 @@
     </message>
     <message>
         <source>Die Bittiefe oder der Farbmodus der PSB-Datei wird nicht unterstützt.</source>
-        <translation>PSB-tiedoston värisyvyyttä tai väritilaa ei tueta.</translation>
+        <translation>PSB-tiedoston bittisyvyyttä tai väritilaa ei tueta.</translation>
     </message>
     <message>
         <source>Die Komprimierung der PSB-Datei wird nicht unterstützt.</source>
@@ -5143,7 +5143,7 @@
     </message>
     <message>
         <source>Unbekanntes oder nicht unterstütztes Dateiformat.</source>
-        <translation>Tuntematon tai ei-tuettu tiedostomuoto.</translation>
+        <translation>Tiedostomuoto on tuntematon, tai sitä ei tueta.</translation>
     </message>
     <message>
         <source>Seite %1 existiert nicht.</source>
@@ -5151,11 +5151,11 @@
     </message>
     <message>
         <source>Das Bild konnte nicht dekodiert werden: %1</source>
-        <translation>Kuvaa ei voitu purkaa: %1</translation>
+        <translation>Kuvaa ei voitu dekoodata: %1</translation>
     </message>
     <message>
         <source>Die SVG-Datei ist ungültig oder beschädigt.</source>
-        <translation>SVG-tiedosto on virheellinen tai vahingoittunut.</translation>
+        <translation>SVG-tiedosto on virheellinen tai vioittunut.</translation>
     </message>
     <message>
         <source>Nicht genug Arbeitsspeicher für das Bild.</source>
@@ -5238,11 +5238,11 @@
     </message>
     <message>
         <source>„%1“ existiert bereits in „%2“.</source>
-        <translation>”%1” on jo kohteessa ”%2”.</translation>
+        <translation>”%1” on jo olemassa kohteessa ”%2”.</translation>
     </message>
     <message>
         <source>„Ersetzen“ legt die vorhandene Datei in den Papierkorb, „Beide behalten“ gibt der neuen einen Namen wie „%1“. ⌘Z widerruft alles.</source>
-        <translation>Korvaa siirtää nykyisen tiedoston roskakoriin, ”Säilytä molemmat” antaa uudelle nimen kuten ”%1”. ⌘Z kumoaa kaiken.</translation>
+        <translation>”Korvaa” siirtää nykyisen tiedoston roskakoriin, ”Pidä molemmat” antaa uudelle tiedostolle nimen, kuten ”%1”. ⌘Z peruu kaiken.</translation>
     </message>
     <message>
         <source>Ersetzen</source>
@@ -5250,7 +5250,7 @@
     </message>
     <message>
         <source>Beide behalten</source>
-        <translation>Säilytä molemmat</translation>
+        <translation>Pidä molemmat</translation>
     </message>
     <message>
         <source>Überspringen</source>
@@ -5258,7 +5258,7 @@
     </message>
     <message>
         <source>Für alle %1 Konflikte</source>
-        <translation>Kaikille %1 ristiriidalle</translation>
+        <translation>Kaikille ristiriidoille (%1)</translation>
     </message>
 </context>
 <context>
@@ -5269,7 +5269,7 @@
     </message>
     <message>
         <source>nur markierte</source>
-        <translation>vain säilytetyt</translation>
+        <translation>vain merkityt</translation>
     </message>
     <message>
         <source>≥ %1 ★</source>
@@ -5285,7 +5285,7 @@
     </message>
     <message>
         <source>Markiert</source>
-        <translation>Säilytetty</translation>
+        <translation>Merkitty</translation>
     </message>
     <message>
         <source>Abgelehnt</source>
@@ -5296,7 +5296,7 @@
     <name>lf::RatingStore</name>
     <message>
         <source>„%1“ konnte nicht geschrieben werden (Ordner schreibgeschützt?).</source>
-        <translation>Kohdetta ”%1” ei voitu kirjoittaa (kansio vain luku?).</translation>
+        <translation>Kohdetta ”%1” ei voitu kirjoittaa (onko kansio kirjoitussuojattu?).</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gelesen werden.</source>
@@ -5332,7 +5332,7 @@
     </message>
     <message>
         <source>Die Datei ist schreibgeschützt.</source>
-        <translation>Tiedosto on vain luku -tilassa.</translation>
+        <translation>Tiedosto on kirjoitussuojattu.</translation>
     </message>
     <message>
         <source>Die Bewertung ließ sich nicht ins Bild schreiben.</source>
@@ -5344,7 +5344,7 @@
     </message>
     <message>
         <source>„%1“ wurde inzwischen verändert – Bewertung nicht gesichert.</source>
-        <translation>”%1” on muuttunut välillä – arviota ei tallennettu.</translation>
+        <translation>”%1” on muuttunut sillä välin – arviota ei tallennettu.</translation>
     </message>
     <message>
         <source>Die Datei konnte nicht ersetzt werden.</source>
@@ -5384,7 +5384,7 @@
     </message>
     <message>
         <source>Zusatzbilder der Datei (z. B. eine HDR-Gain-Map) gingen beim Schreiben verloren.</source>
-        <translation>Tiedoston lisäkuvat (esim. HDR-vahvistuskartta) katosivat kirjoitettaessa.</translation>
+        <translation>Tiedoston lisäkuvat (esim. HDR-vahvistuskartta) menetettäisiin kirjoitettaessa.</translation>
     </message>
     <message>
         <source>Tags von „%1“ konnten nicht gelesen werden: %2</source>
@@ -5434,27 +5434,27 @@
     </message>
     <message>
         <source>Möchtest du die Endung „.%1“ wirklich entfernen?</source>
-        <translation>Poistetaanko pääte ”.%1”?</translation>
+        <translation>Poistetaanko tarkenne ”.%1”?</translation>
     </message>
     <message>
         <source>Möchtest du die Endung „.%1“ wirklich hinzufügen?</source>
-        <translation>Lisätäänkö pääte ”.%1”?</translation>
+        <translation>Lisätäänkö tarkenne ”.%1”?</translation>
     </message>
     <message>
         <source>Möchtest du die Endung wirklich von „.%1“ in „.%2“ ändern?</source>
-        <translation>Muutetaanko pääte ”.%1” muotoon ”.%2”?</translation>
+        <translation>Muutetaanko tarkenne ”.%1” tarkenteeksi ”.%2”?</translation>
     </message>
     <message>
         <source>Endung ändern?</source>
-        <translation>Muutetaanko tiedostopäätettä?</translation>
+        <translation>Muutetaanko tarkennetta?</translation>
     </message>
     <message>
         <source>Die Datei wird dadurch nicht umgewandelt. Andere Apps erkennen sie danach eventuell nicht mehr.</source>
-        <translation>Tiedostoa ei tällöin muunneta. Muut sovellukset eivät ehkä enää tunnista sitä.</translation>
+        <translation>Tiedostoa ei tällöin muunneta. Muut apit eivät ehkä enää tunnista sitä.</translation>
     </message>
     <message>
         <source>Nicht hinzufügen</source>
-        <translation>Jätä ilman päätettä</translation>
+        <translation>Älä lisää</translation>
     </message>
     <message>
         <source>„.%1“ beibehalten</source>
@@ -5462,11 +5462,11 @@
     </message>
     <message>
         <source>Endung entfernen</source>
-        <translation>Poista pääte</translation>
+        <translation>Poista tarkenne</translation>
     </message>
     <message>
         <source>„.%1“ verwenden</source>
-        <translation>Käytä ”.%1”</translation>
+        <translation>Käytä tarkennetta ”.%1”</translation>
     </message>
     <message>
         <source>Abbrechen</source>
@@ -5489,7 +5489,7 @@
     </message>
     <message>
         <source>Die SVG-Datei ist ungültig oder beschädigt.</source>
-        <translation>SVG-tiedosto on virheellinen tai vahingoittunut.</translation>
+        <translation>SVG-tiedosto on virheellinen tai vioittunut.</translation>
     </message>
     <message>
         <source>Die SVG-Datei enthält zu viele Elemente.</source>
@@ -5528,11 +5528,11 @@
     </message>
     <message>
         <source>Keine gültige Einstellungsdatei (JSON-Fehler: %1).</source>
-        <translation>Ei kelvollinen asetustiedosto (JSON-virhe: %1).</translation>
+        <translation>Tiedosto ei ole kelvollinen asetustiedosto (JSON-virhe: %1).</translation>
     </message>
     <message>
         <source>Keine Lumaflip-Einstellungsdatei.</source>
-        <translation>Ei Lumaflipin asetustiedosto.</translation>
+        <translation>Tiedosto ei ole Lumaflipin asetustiedosto.</translation>
     </message>
     <message>
         <source>%1: ungültiger Wert (erwartet: %2)</source>
@@ -5560,7 +5560,7 @@
     <name>lf::Shell</name>
     <message>
         <source>Lumaflip wird noch als Standard-App festgelegt – bitte bestätige die Rückfrage von macOS, falls eine erscheint.</source>
-        <translation>Lumaflipia asetetaan vielä oletussovellukseksi – vahvista macOS:n kysymys, jos sellainen tulee näkyviin.</translation>
+        <translation>Lumaflipia asetetaan vielä oletusapiksi – vahvista macOS:n kysymys, jos se tulee näkyviin.</translation>
     </message>
     <message>
         <source>unbekannter Typ</source>
@@ -5568,7 +5568,7 @@
     </message>
     <message>
         <source>Lumaflip läuft nicht als App-Paket und kann nicht als Standard-App festgelegt werden.</source>
-        <translation>Lumaflip ei toimi sovelluspakettina, joten sitä ei voi asettaa oletussovellukseksi.</translation>
+        <translation>Lumaflip ei toimi appinippuna, joten sitä ei voi asettaa oletusapiksi.</translation>
     </message>
     <message>
         <source>Zeitüberschreitung bei der Rückmeldung des Systems.</source>
@@ -5576,19 +5576,19 @@
     </message>
     <message>
         <source>„%1“ kann nicht geschrieben werden.</source>
-        <translation>”%1” ei voi kirjoittaa.</translation>
+        <translation>Kohteeseen ”%1” ei voi kirjoittaa.</translation>
     </message>
     <message>
         <source>Lumaflip ist nicht als App installiert (%1 fehlt).</source>
-        <translation>Lumaflipiä ei ole asennettu sovelluksena (%1 puuttuu).</translation>
+        <translation>Lumaflipia ei ole asennettu appina (%1 puuttuu).</translation>
     </message>
     <message>
         <source>„%1“ kann nicht gestartet werden.</source>
-        <translation>”%1” ei voi käynnistää.</translation>
+        <translation>Kohdetta ”%1” ei voi käynnistää.</translation>
     </message>
     <message>
         <source>Batch-Dateien werden aus Sicherheitsgründen nicht gestartet.</source>
-        <translation type="unfinished"></translation>
+        <translation>Komentojonotiedostoja ei käynnistetä turvallisuussyistä.</translation>
     </message>
     <message>
         <source>„%1“ würde den Dateinamen als Befehl lesen und wird aus Sicherheitsgründen nicht gestartet.</source>
@@ -5596,11 +5596,11 @@
     </message>
     <message>
         <source>Die App wurde nicht gefunden.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sovellusta ei löytynyt.</translation>
     </message>
     <message>
         <source>Windows erlaubt Apps nicht, sich selbst als Standard-App festzulegen. Die Einstellungen „Standard-Apps“ wurden geöffnet: Wähle dort Lumaflip für die gewünschten Dateitypen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Windows ei salli sovellusten asettaa itseään oletussovellukseksi. Oletussovellukset-asetukset avattiin: valitse siellä Lumaflip haluamillesi tiedostotyypeille.</translation>
     </message>
 </context>
 <context>
@@ -5615,7 +5615,7 @@
     </message>
     <message>
         <source>Das Bild im Archiv ist beschädigt: %1</source>
-        <translation>Arkiston kuva on vahingoittunut: %1</translation>
+        <translation>Arkiston kuva on vioittunut: %1</translation>
     </message>
     <message>
         <source>Die Datei kann nicht gelesen werden.</source>
@@ -5631,7 +5631,7 @@
     </message>
     <message>
         <source>Die Datei ist beschädigt oder unvollständig.</source>
-        <translation>Tiedosto on vahingoittunut tai keskeneräinen.</translation>
+        <translation>Tiedosto on vioittunut tai keskeneräinen.</translation>
     </message>
     <message>
         <source>Seite %1 existiert nicht.</source>
@@ -5650,22 +5650,22 @@
     <name>lf::StartScreenRecent</name>
     <message>
         <source>Zuletzt geöffnet</source>
-        <translation>Avaa viimeaikainen</translation>
+        <translation>Äskettäin avatut</translation>
     </message>
 </context>
 <context>
     <name>lf::TagService</name>
     <message>
         <source>Tags werden auf diesem System nicht unterstützt.</source>
-        <translation>Tageja ei tueta tässä järjestelmässä.</translation>
+        <translation>Tunnisteita ei tueta tässä järjestelmässä.</translation>
     </message>
     <message>
         <source>Tags von „%1“ konnten nicht gelesen werden: %2</source>
-        <translation>Kohteen ”%1” tageja ei voitu lukea: %2</translation>
+        <translation>Kohteen ”%1” tunnisteita ei voitu lukea: %2</translation>
     </message>
     <message>
         <source>Tags von „%1“ konnten nicht gesetzt werden: %2</source>
-        <translation>Kohteen ”%1” tageja ei voitu asettaa: %2</translation>
+        <translation>Kohteen ”%1” tunnisteita ei voitu asettaa: %2</translation>
     </message>
     <message>
         <source>Die Tags von „%1“ können nicht gelesen werden.</source>
@@ -5673,7 +5673,7 @@
     </message>
     <message>
         <source>„%1“ existiert nicht mehr.</source>
-        <translation type="unfinished">Kohdetta ”%1” ei ole enää olemassa.</translation>
+        <translation>Kohdetta ”%1” ei ole enää olemassa.</translation>
     </message>
     <message>
         <source>Dieses Dateisystem unterstützt keine Tags.</source>
@@ -5719,11 +5719,11 @@
     <name>lf::UndoBackupStore</name>
     <message>
         <source>Die Sicherungskopie für „Widerrufen“ existiert nicht mehr.</source>
-        <translation>Kumoamisen varmuuskopiota ei ole enää olemassa.</translation>
+        <translation>Varmuuskopiota ”Peru”-toimintoa varten ei ole enää olemassa.</translation>
     </message>
     <message>
         <source>Nicht genug Speicherplatz für die Sicherungskopie (Widerrufen) – nichts gesichert.</source>
-        <translation>Varmuuskopiolle (kumoaminen) ei ole tarpeeksi tilaa – mitään ei tallennettu.</translation>
+        <translation>Tallennustila ei riitä varmuuskopiolle (”Peru”) – mitään ei tallennettu.</translation>
     </message>
 </context>
 <context>
@@ -5738,7 +5738,7 @@
     </message>
     <message>
         <source>Lumaflip fragt dazu einmal am Tag bei GitHub nach einer neuen Version. Das ist die einzige Netzwerkverbindung der App.</source>
-        <translation>Lumaflip tarkistaa tätä varten kerran päivässä GitHubista, onko uusi versio saatavilla. Tämä on sovelluksen ainoa verkkoyhteys.</translation>
+        <translation>Lumaflip tarkistaa tätä varten kerran päivässä GitHubista, onko uusi versio saatavilla. Tämä on apin ainoa verkkoyhteys.</translation>
     </message>
     <message>
         <source>Updates:</source>
@@ -5765,11 +5765,11 @@
     </message>
     <message>
         <source>„%1“ kann nicht geöffnet werden</source>
-        <translation>”%1” ei aukea</translation>
+        <translation>Kohdetta ”%1” ei voi avata</translation>
     </message>
     <message>
         <source>Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.</source>
-        <translation>Tiedosto on vahingoittunut tai sen muotoa ei tueta.</translation>
+        <translation>Tiedosto on vioittunut, tai sen muotoa ei tueta.</translation>
     </message>
     <message>
         <source>Im Finder zeigen</source>
@@ -5777,7 +5777,7 @@
     </message>
     <message>
         <source>Volle Auflösung nicht verfügbar</source>
-        <translation>Täysi resoluutio ei ole saatavilla</translation>
+        <translation>Täysi resoluutio ei ole käytettävissä</translation>
     </message>
     <message>
         <source>Lumaflip – wird geladen …</source>
@@ -5818,7 +5818,7 @@
     </message>
     <message>
         <source>Lumaflip darf den Ordner „%1“ nicht lesen und zeigt deshalb nur die geöffnete Datei. Erlaube den Zugriff unter Systemeinstellungen → Datenschutz &amp; Sicherheit → Dateien und Ordner. Festplattenvollzugriff ist dafür nicht nötig.</source>
-        <translation>Lumaflipilla ei ole lupaa lukea kansiota ”%1”, joten se näyttää vain avatun tiedoston. Salli käyttö kohdassa Järjestelmäasetukset → Tietosuoja ja turvallisuus → Tiedostot ja kansiot. Täyttä levyn käyttöoikeutta ei tarvita.</translation>
+        <translation>Lumaflipilla ei ole lupaa lukea kansiota ”%1”, joten se näyttää vain avatun tiedoston. Salli käyttö kohdassa Järjestelmäasetukset → Tietosuoja ja suojaus → Tiedostot ja kansiot. Koko levyn käyttöä ei tarvita.</translation>
     </message>
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
@@ -5846,7 +5846,7 @@
     </message>
     <message>
         <source>Zoom gelöst</source>
-        <translation>Zoomauksen lukitus avattu</translation>
+        <translation>Zoomauksen lukitus poistettu</translation>
     </message>
     <message>
         <source>In den Papierkorb legen</source>
@@ -5858,7 +5858,7 @@
     </message>
     <message>
         <source>Mit ⌘Z lässt sich das widerrufen.</source>
-        <translation>Tämän voi kumota painamalla ⌘Z.</translation>
+        <translation>Tämän voi perua painamalla ⌘Z.</translation>
     </message>
     <message>
         <source>Abbrechen</source>
@@ -5897,7 +5897,7 @@
     </message>
     <message>
         <source>Diashow beendet</source>
-        <translation>Diaesitys päättyi</translation>
+        <translation>Kuvaesitys päättyi</translation>
     </message>
     <message>
         <source>Wiedergabe</source>
@@ -5909,11 +5909,11 @@
     </message>
     <message>
         <source>Diashow angehalten</source>
-        <translation>Diaesitys keskeytetty</translation>
+        <translation>Kuvaesitys keskeytetty</translation>
     </message>
     <message>
         <source>Diashow läuft weiter</source>
-        <translation>Diaesitys jatkuu</translation>
+        <translation>Kuvaesitys jatkuu</translation>
     </message>
     <message numerus="yes">
         <source>Intervall: %n Sekunde(n)</source>
@@ -5944,23 +5944,23 @@
     </message>
     <message>
         <source>Diashow – Leertaste: Pause · 1–9: Sekunden · Esc: Ende</source>
-        <translation>Diaesitys – välilyönti: tauko · 1–9: sekunnit · Esc: lopeta</translation>
+        <translation>Kuvaesitys – välilyönti: tauko · 1–9: sekunnit · Esc: lopeta</translation>
     </message>
     <message>
         <source>Keine Drehung zu sichern – drehe das Bild zuerst mit ⌘L oder ⌘R</source>
-        <translation>Ei tallennettavaa kiertoa – kierrä ensin painamalla ⌘L tai ⌘R</translation>
+        <translation>Ei tallennettavaa pyöritystä – pyöritä kuvaa ensin painamalla ⌘L tai ⌘R</translation>
     </message>
     <message>
         <source>Drehung sichern</source>
-        <translation>Tallenna kierto</translation>
+        <translation>Tallenna pyöritys</translation>
     </message>
     <message>
         <source>Verlustfreies Drehen ist nur mit beschnittenem Rand möglich.</source>
-        <translation>Häviötön kiertäminen onnistuu vain leikkaamalla reunaa.</translation>
+        <translation>Häviötön pyöritys onnistuu vain leikkaamalla reunaa.</translation>
     </message>
     <message>
         <source>Die Drehung kann nur durch Neukodieren gesichert werden.</source>
-        <translation>Kierto voidaan tallentaa vain koodaamalla uudelleen.</translation>
+        <translation>Pyörityksen voi tallentaa vain koodaamalla kuvan uudelleen.</translation>
     </message>
     <message>
         <source>Rand abschneiden</source>
@@ -5996,7 +5996,7 @@
     </message>
     <message>
         <source>Bilder in Archiven und PDF-Seiten können nicht als Schreibtischhintergrund festgelegt werden.</source>
-        <translation>Arkistojen kuvia ja PDF-sivuja ei voi asettaa työpöydän kuvaksi.</translation>
+        <translation>Arkistojen kuvia ja PDF-sivuja ei voi käyttää työpöydän taustakuvana.</translation>
     </message>
     <message>
         <source>Es wurde kein Bildschirm gefunden.</source>
@@ -6044,24 +6044,24 @@
     </message>
     <message>
         <source>Fokuspunkte an</source>
-        <translation>AF-pisteet näkyvissä</translation>
+        <translation>Tarkennuspisteet näkyvissä</translation>
     </message>
     <message>
         <source>Fokuspunkte aus</source>
-        <translation>AF-pisteet piilotettu</translation>
+        <translation>Tarkennuspisteet kätketty</translation>
     </message>
     <message>
         <source>Fokuspunkte: %1</source>
         <extracomment>%1 = where the AF points come from (&quot;Canon&quot;, &quot;Sony&quot;, &quot;EXIF&quot; …)</extracomment>
-        <translation>AF-pisteet: %1</translation>
+        <translation>Tarkennuspisteet: %1</translation>
     </message>
     <message>
         <source>Keine Fokuspunkte in den Metadaten</source>
-        <translation>Metatiedoissa ei ole AF-pisteitä</translation>
+        <translation>Metatiedoissa ei ole tarkennuspisteitä</translation>
     </message>
     <message>
         <source>Zuschneiden ist nur in der Einzelbildansicht möglich.</source>
-        <translation>Rajaus toimii yksittäisen kuvan näkymässä.</translation>
+        <translation>Rajaus on mahdollista vain yksittäisen kuvan näkymässä.</translation>
     </message>
     <message>
         <source>Kein Bild zum Zuschneiden.</source>
@@ -6069,7 +6069,7 @@
     </message>
     <message>
         <source>Zuschneiden: Rahmen ziehen – Enter sichert, Esc bricht ab</source>
-        <translation>Rajaus: vedä kehys – Enter tallentaa, Esc peruu</translation>
+        <translation>Rajaus: vedä kehys – Enter tallentaa, Esc keskeyttää</translation>
     </message>
     <message>
         <source>Der vorherige Zuschnitt wird noch gesichert.</source>
@@ -6077,7 +6077,7 @@
     </message>
     <message>
         <source>Kein Bildbereich ausgewählt.</source>
-        <translation>Aluetta ei ole valittu.</translation>
+        <translation>Kuva-aluetta ei ole valittu.</translation>
     </message>
     <message>
         <source>%1-zugeschnitten.%2</source>
@@ -6098,11 +6098,11 @@
     </message>
     <message>
         <source>„%1“ existiert bereits. Möchtest du die Datei ersetzen?</source>
-        <translation>”%1” on jo olemassa. Korvataanko?</translation>
+        <translation>”%1” on jo olemassa. Haluatko korvata tiedoston?</translation>
     </message>
     <message>
         <source>Das zugeschnittene Bild bekommt die Endung des Originals (.%1).</source>
-        <translation>Rajattu kuva saa alkuperäisen tiedostopäätteen (.%1).</translation>
+        <translation>Rajattu kuva saa alkuperäisen tarkenteen (.%1).</translation>
     </message>
     <message>
         <source>Ersetzen</source>
@@ -6114,7 +6114,7 @@
     </message>
     <message>
         <source>Zugeschnitten exportiert als „%1“</source>
-        <translation>Rajattu kopio viety nimellä ”%1”</translation>
+        <translation>Rajattu kuva viety nimellä ”%1”</translation>
     </message>
     <message>
         <source>Zugeschnitten exportieren …</source>
@@ -6122,7 +6122,7 @@
     </message>
     <message>
         <source>Der Zuschnitt kann nur durch Neukodieren gesichert werden.</source>
-        <translation>Rajauksen voi tallentaa vain uudelleenkoodaamalla.</translation>
+        <translation>Rajauksen voi tallentaa vain koodaamalla kuvan uudelleen.</translation>
     </message>
     <message>
         <source>Neu kodieren</source>
@@ -6134,7 +6134,7 @@
     </message>
     <message>
         <source>Zugeschnitten gesichert als „%1“</source>
-        <translation>Rajaus tallennettu nimellä ”%1”</translation>
+        <translation>Rajattu kuva tallennettu nimellä ”%1”</translation>
     </message>
     <message>
         <source>Kein Bild zum Exportieren.</source>
@@ -6177,7 +6177,7 @@
     <name>lf::WindowExtras</name>
     <message>
         <source>Ordnerkarte</source>
-        <translation>Kartta</translation>
+        <translation>Kansiokartta</translation>
     </message>
     <message>
         <source>Name: „%1“</source>
@@ -6193,7 +6193,7 @@
     </message>
     <message>
         <source>Blättern, Zoom und Ausschnitt laufen mit den anderen gekoppelten Fenstern</source>
-        <translation>Selaus, zoomaus ja näkyvä alue seuraavat muita linkitettyjä ikkunoita</translation>
+        <translation>Selaus, zoomaus ja näkymä seuraavat muita linkitettyjä ikkunoita</translation>
     </message>
     <message>
         <source>Kein Dateiname passt zu „%1“ – Esc hebt den Filter auf</source>
@@ -6209,11 +6209,11 @@
     </message>
     <message>
         <source>Minimaler Fenstermodus – die Titelleiste erscheint, wenn sich die Maus bewegt</source>
-        <translation>Minimaalinen ikkuna – otsikkopalkki tulee näkyviin, kun hiirtä liikutetaan</translation>
+        <translation>Minimaalinen ikkunatila – otsikkopalkki tulee näkyviin, kun hiirtä liikutetaan</translation>
     </message>
     <message>
         <source>Minimaler Fenstermodus aus</source>
-        <translation>Minimaalinen ikkuna pois</translation>
+        <translation>Minimaalinen ikkunatila pois</translation>
     </message>
 </context>
 <context>
@@ -6228,27 +6228,27 @@
     </message>
     <message>
         <source>Live Text wird geladen …</source>
-        <translation>Ladataan Live Textiä…</translation>
+        <translation>Ladataan Livetekstiä…</translation>
     </message>
     <message>
         <source>Live Text ist auf diesem Mac nicht verfügbar.</source>
-        <translation>Live Text ei ole käytettävissä tässä Macissa.</translation>
+        <translation>Liveteksti ei ole käytettävissä tässä Macissa.</translation>
     </message>
     <message>
         <source>Live Text ist in den Einstellungen ausgeschaltet.</source>
-        <translation>Live Text on poistettu käytöstä asetuksissa.</translation>
+        <translation>Liveteksti on laitettu pois päältä asetuksissa.</translation>
     </message>
     <message>
         <source>Live Text an – Text im Bild auswählen und kopieren</source>
-        <translation>Live Text päällä – valitse ja kopioi kuvan tekstiä</translation>
+        <translation>Liveteksti päällä – valitse ja kopioi kuvan tekstiä</translation>
     </message>
     <message>
         <source>Live Text aus</source>
-        <translation>Live Text pois</translation>
+        <translation>Liveteksti pois</translation>
     </message>
     <message>
         <source>Live Text ist während der HDR-Darstellung nicht verfügbar – schalte mit ⇧⌘H auf SDR um.</source>
-        <translation>Live Text ei ole käytettävissä HDR-näytön aikana – vaihda SDR:ään näppäimillä ⇧⌘H.</translation>
+        <translation>Liveteksti ei ole käytettävissä, kun HDR on käytössä – vaihda SDR-tilaan painamalla ⇧⌘H.</translation>
     </message>
     <message>
         <source>Es ist kein Bild geöffnet.</source>
@@ -6260,11 +6260,11 @@
     </message>
     <message>
         <source>Als Schreibtischhintergrund festlegen</source>
-        <translation>Aseta työpöydän kuvaksi</translation>
+        <translation>Käytä työpöydän taustakuvana</translation>
     </message>
     <message>
         <source>„%1“ als Schreibtischhintergrund festlegen?</source>
-        <translation>Asetetaanko ”%1” työpöydän kuvaksi?</translation>
+        <translation>Käytetäänkö kuvaa ”%1” työpöydän taustakuvana?</translation>
     </message>
     <message>
         <source>Auf allen Bildschirmen</source>
@@ -6280,11 +6280,11 @@
     </message>
     <message>
         <source>Als Schreibtischhintergrund festgelegt</source>
-        <translation>Asetettu työpöydän kuvaksi</translation>
+        <translation>Asetettu työpöydän taustakuvaksi</translation>
     </message>
     <message>
         <source>Der Schreibtischhintergrund konnte nicht geändert werden: %1</source>
-        <translation>Työpöydän kuvaa ei voitu vaihtaa: %1</translation>
+        <translation>Työpöydän taustakuvaa ei voitu vaihtaa: %1</translation>
     </message>
 </context>
 <context>
@@ -6302,11 +6302,11 @@
     <name>lf::XcfDecoder</name>
     <message>
         <source>Die XCF-Datei ist beschädigt oder unvollständig.</source>
-        <translation>XCF-tiedosto on vahingoittunut tai keskeneräinen.</translation>
+        <translation>XCF-tiedosto on vioittunut tai keskeneräinen.</translation>
     </message>
     <message>
         <source>Keine XCF-Datei.</source>
-        <translation>Ei XCF-tiedosto.</translation>
+        <translation>Tiedosto ei ole XCF-tiedosto.</translation>
     </message>
     <message>
         <source>Die Bildgröße %1 × %2 ist ungültig oder zu groß.</source>
@@ -6314,7 +6314,7 @@
     </message>
     <message>
         <source>Die Bittiefe der XCF-Datei wird nicht unterstützt.</source>
-        <translation>XCF-tiedoston värisyvyyttä ei tueta.</translation>
+        <translation>XCF-tiedoston bittisyvyyttä ei tueta.</translation>
     </message>
     <message>
         <source>Nicht genug Arbeitsspeicher für das Bild.</source>
@@ -6349,7 +6349,7 @@
     </message>
     <message>
         <source>Das ZIP-Archiv ist beschädigt.</source>
-        <translation>ZIP-arkisto on vahingoittunut.</translation>
+        <translation>ZIP-arkisto on vioittunut.</translation>
     </message>
     <message>
         <source>ZIP-Archive dieser Art (mehrteilig, ZIP64) werden nicht unterstützt.</source>

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 /* Localized Info.plist texts (nl); maintained by hand here (not generated from the .ts catalogues) - see translations/README.md */
-"NSAppleEventsUsageDescription" = "Lumaflip vraagt desgewenst het voorste Finder-venster naar de sortering, zodat de afbeeldingen in dezelfde volgorde worden weergegeven.";
+"NSAppleEventsUsageDescription" = "Lumaflip vraagt desgewenst het voorste Finder-venster naar de sortering, zodat de afbeeldingen in dezelfde volgorde worden getoond.";
 "NSDesktopFolderUsageDescription" = "Lumaflip leest de map van de geopende afbeelding, zodat je met de pijltoetsen kunt bladeren.";
 "NSDocumentsFolderUsageDescription" = "Lumaflip leest de map van de geopende afbeelding, zodat je met de pijltoetsen kunt bladeren.";
 "NSDownloadsFolderUsageDescription" = "Lumaflip leest de map van de geopende afbeelding, zodat je met de pijltoetsen kunt bladeren.";
@@ -10,12 +10,12 @@
 "Bild (sonstige)" = "Afbeelding (overig)";
 "Ordner" = "Map";
 "WBMP-Bild" = "WBMP-afbeelding";
-"Comic-Archiv" = "Stripboekarchief";
+"Comic-Archiv" = "Striparchief";
 "Archiv" = "Archief";
-"PDF-Dokument" = "PDF-document";
+"PDF-Dokument" = "Pdf-document";
 "RAR-Archiv" = "RAR-archief";
 "7-Zip-Archiv" = "7-Zip-archief";
-"Comic-Archiv (ZIP)" = "Stripboekarchief (ZIP)";
-"Comic-Archiv (RAR)" = "Stripboekarchief (RAR)";
-"Comic-Archiv (7z)" = "Stripboekarchief (7z)";
+"Comic-Archiv (ZIP)" = "Striparchief (ZIP)";
+"Comic-Archiv (RAR)" = "Striparchief (RAR)";
+"Comic-Archiv (7z)" = "Striparchief (7z)";
 "NSHumanReadableCopyright" = "© 2026 brokoskokoli en bijdragers. Licentie: GPL-3.0-or-later.";

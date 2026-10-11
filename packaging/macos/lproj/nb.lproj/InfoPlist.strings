@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: GPL-3.0-or-later */
 /* Localized Info.plist texts (nb); maintained by hand here (not generated from the .ts catalogues) - see translations/README.md */
-"NSAppleEventsUsageDescription" = "Lumaflip spør ved behov det fremste Finder-vinduet om sorteringen, slik at bildene vises i samme rekkefølge.";
+"NSAppleEventsUsageDescription" = "Hvis du slår det på, spør Lumaflip det fremste Finder-vinduet om sorteringen, slik at bildene vises i samme rekkefølge.";
 "NSDesktopFolderUsageDescription" = "Lumaflip leser mappen til det åpne bildet slik at du kan bla med piltastene.";
 "NSDocumentsFolderUsageDescription" = "Lumaflip leser mappen til det åpne bildet slik at du kan bla med piltastene.";
 "NSDownloadsFolderUsageDescription" = "Lumaflip leser mappen til det åpne bildet slik at du kan bla med piltastene.";

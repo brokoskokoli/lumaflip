@@ -13,12 +13,12 @@ Status: **maschinell, ungeprüft** → **geprüft** (Name/Handle, Datum).
 | Italienisch | `it` | maschinell, ungeprüft | | Tabs = „pannelli“ prüfen |
 | Portugiesisch (Brasilien) | `pt_BR` | maschinell, ungeprüft | | |
 | Portugiesisch (Portugal) | `pt_PT` | maschinell, ungeprüft | | Qt-eigene Texte kommen aus `qtbase_pt_BR` (Qt liefert kein pt_PT) |
-| Niederländisch | `nl` | maschinell, ungeprüft | | „Format“ = „Structuur“ prüfen |
+| Niederländisch | `nl` | maschinell geprüft gegen Plattform-Glossar (macOS/Windows/Lightroom), nicht muttersprachlich geprüft | Claude, 2026-10-11 | 456 Texte überarbeitet; Begriffe: GLOSSARY.md (Abschnitt nl/sv/da/nb/fi); prüfen: Aussortieren = „Schiften“, Format = „Structuur“ (wie macOS nl), Markeren/Afwijzen als Infinitiv |
 | Polnisch | `pl` | maschinell durchgesehen, ungeprüft | | Okt. 2026: macOS-pl-Begriffe (Zachowaj, Kosz, Pokaż w Finderze), Pluralformen; prüfen: „Szybki przegląd“ statt Quick Look, „Oznacz jako wybrane“ (lang), „Kurtyna“ (Wischen) |
-| Schwedisch | `sv` | maschinell, ungeprüft | | Einheit „kB“ prüfen |
-| Dänisch | `da` | maschinell, ungeprüft | | |
-| Norwegisch (Bokmål) | `nb` | maschinell, ungeprüft | | Qt-eigene Texte kommen aus `qtbase_nn` (Qt liefert kein nb) |
-| Finnisch | `fi` | maschinell, ungeprüft | | |
+| Schwedisch | `sv` | maschinell geprüft gegen Plattform-Glossar (macOS/Windows/Lightroom), nicht muttersprachlich geprüft | Claude, 2026-10-11 | 292 Texte überarbeitet; Begriffe: GLOSSARY.md; Markieren = „Flagga“ (macOS „Markera“ = auswählen); prüfen: „redigerare“ (Editor), Einheit „kB“ |
+| Dänisch | `da` | maschinell geprüft gegen Plattform-Glossar (macOS/Windows), nicht muttersprachlich geprüft | Claude, 2026-10-11 | 421 Texte überarbeitet; Begriffe: GLOSSARY.md; Datei = „fil“ (nicht macOS-„arkiv“, wegen ZIP-/RAR-Archiven); prüfen: Quick Look (unübersetzt), Raster = „gitter“, Aussortieren = „frasortering“ |
+| Norwegisch (Bokmål) | `nb` | maschinell geprüft gegen Plattform-Glossar (macOS/Windows), nicht muttersprachlich geprüft | Claude, 2026-10-11 | 319 Texte überarbeitet; Begriffe: GLOSSARY.md; prüfen: Apple Karten = „Kart“ im Satz, „Utsortering“; Qt-eigene Texte kommen aus `qtbase_nn` (Qt liefert kein nb) |
+| Finnisch | `fi` | maschinell geprüft gegen Plattform-Glossar (macOS/Windows), nicht muttersprachlich geprüft | Claude, 2026-10-11 | 378 Texte überarbeitet; Begriffe: GLOSSARY.md; macOS-Texte mit „appi“, Windows-Texte mit „sovellus“; prüfen: Kasusendungen an Platzhaltern, Focus Peaking = „Tarkennuksen korostus“ |
 | Tschechisch | `cs` | maschinell durchgesehen, ungeprüft | | Okt. 2026: macOS-cs-Begriffe (vykání, Odvolat akci, Přesunout do koše), Pluralformen; prüfen: Zvětšit vs. Přiblížit, „Mapy Apple“, feste Genitive („složek: %1“) |
 | Japanisch | `ja` | maschinell, Terminologie-Review | Claude (KI), 2026-10-11 | Begriffe/Satzzeichen nach macOS 27 (GLOSSARY.md); “” statt 「」; Pick/Reject = 採用/除外 (Lightroom); Review durch Muttersprachler:innen steht aus |
 | Chinesisch (vereinfacht) | `zh_CN` | maschinell, Terminologie-Review | Claude (KI), 2026-10-11 | Finder = „访达“, Begriffe nach macOS 27 (GLOSSARY.md), keine Leerzeichen CJK↔Latein; Pick/Reject = 留用/排除; Review durch Muttersprachler:innen steht aus |
