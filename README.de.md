@@ -87,10 +87,10 @@ Voraussetzung: macOS 15 (Sequoia) oder neuer, Apple-Silicon-Mac.
 - **Homebrew:**
 
   ```sh
-  brew install --cask brokoskokoli/tap/lumaflip
+  brew install --cask brokoskokoli/lumaflip/lumaflip
   ```
 
-  Der Cask liegt im eigenen Tap [brokoskokoli/homebrew-tap](https://github.com/brokoskokoli/homebrew-tap)
+  Der Cask liegt im eigenen Tap [brokoskokoli/homebrew-lumaflip](https://github.com/brokoskokoli/homebrew-lumaflip)
   und wird mit jedem Release aktualisiert. Lumaflip aktualisiert sich selbst, deshalb lässt
   `brew upgrade` es aus (`brew upgrade --greedy` nicht). Nach Aufnahme in `homebrew/cask` genügt
   `brew install --cask lumaflip`.

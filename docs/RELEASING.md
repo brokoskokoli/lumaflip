@@ -30,7 +30,7 @@ Signing** signiert, siehe [Windows: Signatur und Updates](#windows-signatur-und-
 | `packaging/macos/icon/` | `lumaflip.svg` (Quelle des App-Symbols „Sun Chevron“ für alle Plattformen) und `Lumaflip.icns` (erzeugt mit `tools/make_icon.sh`, braucht `rsvg-convert`). Windows rendert die `.ico` beim Bauen daraus (`lf_make_ico`), Linux die hicolor-PNGs (`rsvg-convert`) |
 | `packaging/brand/` | `lumaflip-mono.svg` (einfarbige Glyphe des Symbols) und `social-preview.svg` (Vorlage für das Linkvorschaubild). `tools/make_website_images.sh` (braucht `resvg`) erzeugt daraus und aus dem Symbol `website/favicon.png`, `website/apple-touch-icon.png`, `website/images/icon.png` und `website/images/social-preview.png` – nach jeder Änderung am Symbol zusammen mit `tools/make_icon.sh` ausführen |
 | `packaging/licenses/` | Lizenztexte, die Homebrew nicht mitliefert (LGPL-3.0 und Hinweis für Qt, LGPL-2.1 für libintl) |
-| `packaging/homebrew/lumaflip.rb` | Homebrew Cask, Spiegel von `Casks/lumaflip.rb` im Tap [`brokoskokoli/homebrew-tap`](https://github.com/brokoskokoli/homebrew-tap) (siehe [Homebrew Cask](#homebrew-cask)) |
+| `packaging/homebrew/lumaflip.rb` | Homebrew Cask, Spiegel von `Casks/lumaflip.rb` im Tap [`brokoskokoli/homebrew-lumaflip`](https://github.com/brokoskokoli/homebrew-lumaflip) (siehe [Homebrew Cask](#homebrew-cask)) |
 | `packaging/winget/manifests/…/1.2.1/` | winget-Manifeste (`Brokoskokoli.Lumaflip`) für die erste Einreichung bei `microsoft/winget-pkgs` (siehe [winget](#winget)) |
 | `tools/setup_distribution_secrets.sh` | Setzt `HOMEBREW_TAP_TOKEN` und `WINGET_TOKEN` (Environment `release`) für die Jobs `homebrew-tap` und `winget` |
 
@@ -133,7 +133,7 @@ die Jobs `homebrew-tap` bzw. `winget` mit einem Hinweis, das Release ist davon n
 
 | Secret | Inhalt | Woher |
 |---|---|---|
-| `HOMEBREW_TAP_TOKEN` | Fine-grained PAT, *Repository access* nur `brokoskokoli/homebrew-tap`, *Permissions → Contents: Read and write* | github.com → Settings → Developer settings → Fine-grained tokens |
+| `HOMEBREW_TAP_TOKEN` | Fine-grained PAT, *Repository access* nur `brokoskokoli/homebrew-lumaflip`, *Permissions → Contents: Read and write* | github.com → Settings → Developer settings → Fine-grained tokens |
 | `WINGET_TOKEN` | Classic PAT mit genau dem Scope `public_repo` (Fork von `winget-pkgs` + Pull Request; fine-grained PATs können keine PRs an fremde Repos öffnen) | github.com → Settings → Developer settings → Tokens (classic) |
 
 Beide Tokens laufen ab (beim Anlegen z. B. ein Jahr wählen); danach das Skript erneut ausführen.
@@ -431,9 +431,9 @@ trotzdem als Secrets im Environment, damit nur Jobs mit Freigabe sie sehen.
 
 ## Homebrew Cask
 
-Eigener Tap [`brokoskokoli/homebrew-tap`](https://github.com/brokoskokoli/homebrew-tap), später Antrag
+Eigener Tap [`brokoskokoli/homebrew-lumaflip`](https://github.com/brokoskokoli/homebrew-lumaflip), später Antrag
 für `homebrew/cask` (SPEC 10.1). Installation für Nutzer:
-`brew install --cask brokoskokoli/tap/lumaflip`.
+`brew install --cask brokoskokoli/lumaflip/lumaflip`.
 
 - **Datei:** `Casks/lumaflip.rb` im Tap; `packaging/homebrew/lumaflip.rb` hier ist derselbe Cask mit
   Kommentarkopf. Ändert sich ein Abschnitt (zap-Pfade, Voraussetzungen), beide anpassen.
@@ -448,7 +448,7 @@ für `homebrew/cask` (SPEC 10.1). Installation für Nutzer:
   `brew fetch` aus. Ohne `HOMEBREW_TAP_TOKEN` endet der Job mit einem Hinweis.
 - **Von Hand** (z. B. ohne Token): im Tap `version` und `sha256` (Inhalt von
   `Lumaflip-<version>.dmg.sha256`) setzen, dann
-  `brew style --cask brokoskokoli/tap/lumaflip && brew audit --cask --online --strict brokoskokoli/tap/lumaflip`.
+  `brew style --cask brokoskokoli/lumaflip/lumaflip && brew audit --cask --online --strict brokoskokoli/lumaflip/lumaflip`.
 - **Später `homebrew/cask`:** `brew audit --cask --new` verlangt ein „bekanntes“ Repository
   (mindestens 30 Forks, 30 Watcher oder 75 Sterne); bis dahin bleibt es beim eigenen Tap.
 
