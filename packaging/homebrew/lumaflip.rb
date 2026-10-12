@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Homebrew cask for Lumaflip (SPEC 10.1). Not used by the build. The live copy is
-# Casks/lumaflip.rb in https://github.com/brokoskokoli/homebrew-lumaflip (without these comment
+# Casks/lumaflip.rb in https://github.com/brokoskokoli/homebrew-tap (without these comment
 # lines); the release workflow (job "homebrew-tap") updates version and sha256 there after
 # every release. Edit both when a stanza changes (zap paths, requirements). See
 # docs/RELEASING.md, section "Homebrew Cask".

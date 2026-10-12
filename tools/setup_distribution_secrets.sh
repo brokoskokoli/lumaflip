@@ -5,9 +5,9 @@
 #   tools/setup_distribution_secrets.sh [homebrew|winget]   # ohne Argument: beide
 #
 #   HOMEBREW_TAP_TOKEN  Job "homebrew-tap" in release.yml: aktualisiert Casks/lumaflip.rb in
-#                       brokoskokoli/homebrew-lumaflip nach jedem Release.
+#                       brokoskokoli/homebrew-tap nach jedem Release.
 #                       Fine-grained PAT: Resource owner = dein Konto, Repository access =
-#                       "Only select repositories" → brokoskokoli/homebrew-lumaflip, Permissions →
+#                       "Only select repositories" → brokoskokoli/homebrew-tap, Permissions →
 #                       Repository → Contents: "Read and write" (Metadata: read kommt automatisch).
 #                       https://github.com/settings/personal-access-tokens/new
 #   WINGET_TOKEN        Job "winget": Pull Request mit der neuen Version an microsoft/winget-pkgs
@@ -27,7 +27,7 @@ set -euo pipefail
 
 ENV_NAME=${LF_RELEASE_ENV:-release}
 REPO=${LF_RELEASE_REPO:-brokoskokoli/lumaflip}
-TAP_REPO=brokoskokoli/homebrew-lumaflip
+TAP_REPO=brokoskokoli/homebrew-tap
 
 say() { printf '%s\n' "$*"; }
 die() { printf 'error: %s\n' "$*" >&2; exit 1; }
