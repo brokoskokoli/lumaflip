@@ -11,7 +11,7 @@
 [![License: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-blue.svg)](LICENSE)
 [![Platform: macOS 15+](https://img.shields.io/badge/platform-macOS%2015%2B%20%C2%B7%20Apple%20Silicon-lightgrey.svg)](#install)
 [![Latest release](https://img.shields.io/github/v/release/brokoskokoli/lumaflip?include_prereleases&sort=semver)](https://github.com/brokoskokoli/lumaflip/releases)
-[![Homebrew cask: planned](https://img.shields.io/badge/homebrew%20cask-planned-orange.svg)](#install)
+[![Homebrew: brokoskokoli/tap](https://img.shields.io/badge/homebrew-brokoskokoli%2Ftap-orange.svg)](https://github.com/brokoskokoli/homebrew-tap)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/viewer-en-dark.webp">
