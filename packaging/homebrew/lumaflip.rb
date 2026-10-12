@@ -5,8 +5,8 @@
 # every release. Edit both when a stanza changes (zap paths, requirements). See
 # docs/RELEASING.md, section "Homebrew Cask".
 cask "lumaflip" do
-  version "1.2.1"
-  sha256 "e4f8dc0d65f1911f04535358287acde0b20f788a9aed58522b01383e589b7265"
+  version "1.2.2"
+  sha256 "ab35173191d76e33edeba6a439720ef8ffdf8cd248c3530d20f01f264adfbe03"
 
   url "https://github.com/brokoskokoli/lumaflip/releases/download/v#{version}/Lumaflip-#{version}.dmg"
   name "Lumaflip"

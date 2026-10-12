@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.12.0.schema.json
 
 PackageIdentifier: Brokoskokoli.Lumaflip
-PackageVersion: 1.2.1
+PackageVersion: 1.2.2
 PackageLocale: en-US
 Publisher: Stefan Richter
 PublisherUrl: https://github.com/brokoskokoli
@@ -35,7 +35,7 @@ Tags:
 - raw
 - viewer
 - xmp
-ReleaseNotesUrl: https://github.com/brokoskokoli/lumaflip/releases/tag/v1.2.1
+ReleaseNotesUrl: https://github.com/brokoskokoli/lumaflip/releases/tag/v1.2.2
 Documentations:
 - DocumentLabel: Windows notes
   DocumentUrl: https://github.com/brokoskokoli/lumaflip/blob/main/docs/WINDOWS.md
