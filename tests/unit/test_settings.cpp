@@ -66,7 +66,8 @@ TEST_F(SettingsTest, F_SET_04_SensibleDefaults) {
     EXPECT_EQ(s().value(key::OpenBehavior).toString(), "newWindow");
     EXPECT_EQ(s().value(key::WrapMode).toString(), "stop");
     EXPECT_TRUE(s().value(key::FollowFinder).toBool());
-    EXPECT_FALSE(s().value(key::FinderLiveQuery).toBool());
+    // F-SORT-04: opt-in on macOS (Automation permission), on in Windows (no permission needed)
+    EXPECT_EQ(s().value(key::FinderLiveQuery).toBool(), platformFileManager() == FileManager::Explorer);
     EXPECT_EQ(s().value(key::Background).toString(), "dark");
     EXPECT_EQ(s().value(key::ZoomMode).toString(), "fit");
     EXPECT_EQ(s().value(key::UpscaleFilter).toString(), "smooth");
@@ -182,7 +183,8 @@ TEST_F(SettingsTest, F_SET_03_ExportImportRoundtrip) {
     const QString file = dir.filePath("export.json");
     s().setValue(key::ZoomMode, "fillWidth");
     s().setValue(key::PrefetchBehind, 4);
-    s().setValue(key::FinderLiveQuery, true);
+    const bool liveOff = platformFileManager() == FileManager::Explorer; // not the default
+    s().setValue(key::FinderLiveQuery, !liveOff);
     s().setValue(QString(key::InputPrefix) + "space", "slideshow");
     s().setValue(QString(key::ShortcutPrefix) + "trash", QStringList{"Ctrl+Backspace"});
     QString err;
@@ -194,7 +196,7 @@ TEST_F(SettingsTest, F_SET_03_ExportImportRoundtrip) {
     ASSERT_TRUE(s().importFrom(file, &err)) << err.toStdString();
     EXPECT_EQ(s().value(key::ZoomMode).toString(), "fillWidth");
     EXPECT_EQ(s().value(key::PrefetchBehind).toInt(), 4);
-    EXPECT_TRUE(s().value(key::FinderLiveQuery).toBool());
+    EXPECT_EQ(s().value(key::FinderLiveQuery).toBool(), !liveOff);
     EXPECT_EQ(s().value(QString(key::InputPrefix) + "space").toString(), "slideshow");
     EXPECT_EQ(s().value(QString(key::ShortcutPrefix) + "trash").toStringList(),
               QStringList{"Ctrl+Backspace"});

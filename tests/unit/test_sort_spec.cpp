@@ -5,6 +5,7 @@
 #include "core/Decoder.h"
 #include "core/ImageFormats.h"
 #include "core/LibraryDecoders.h"
+#include "core/Platform.h"
 #include "core/SortSpec.h"
 
 #include <gtest/gtest.h>
@@ -42,10 +43,39 @@ TEST(SortSpec, F_SORT_04_DescribeLiveSource) {
 }
 
 TEST(SortSpec, F_SORT_05_DescribeFallbackAndManual) {
-    EXPECT_EQ(describe({SortKey::Name, true, SortSource::Fallback}),
+    EXPECT_EQ(describe({SortKey::Name, true, SortSource::Fallback}, FileManager::Finder),
               QString::fromUtf8("Name ↑ (Finder-Informationen nicht gefunden)"));
     EXPECT_EQ(describe({SortKey::DateModified, false, SortSource::Manual}),
               QString::fromUtf8("Änderungsdatum ↓"));
+}
+
+// F-SORT-05: the labels name the file manager of the platform - Finder on macOS, Explorer on
+// Windows, "Dateimanager" on Linux (whose settings are not read).
+TEST(SortSpec, F_SORT_05_DescribeNamesThePlatformsFileManager) {
+    const SortSpec fallback{SortKey::Name, true, SortSource::Fallback};
+    EXPECT_EQ(describe(fallback, FileManager::Explorer),
+              QString::fromUtf8("Name ↑ (Explorer-Ansicht nicht gefunden)"));
+    EXPECT_EQ(describe(fallback, FileManager::Other),
+              QString::fromUtf8("Name ↑ (Sortierung des Dateimanagers nicht bekannt)"));
+    EXPECT_EQ(describe({SortKey::DateModified, false, SortSource::ExplorerLive}, FileManager::Explorer),
+              QString::fromUtf8("Wie im Explorer: Änderungsdatum ↓"));
+    EXPECT_EQ(describe({SortKey::Name, true, SortSource::ExplorerUnsupported}, FileManager::Explorer),
+              QString::fromUtf8("Name ↑ (Sortierung des Explorers nicht unterstützt)"));
+    // A .DS_Store a Mac left on a shared drive is Finder information on every platform.
+    for (FileManager fm : {FileManager::Finder, FileManager::Explorer, FileManager::Other})
+        EXPECT_EQ(describe({SortKey::Size, true, SortSource::FinderDsStore}, fm),
+                  QString::fromUtf8("Wie im Finder: Größe ↑"));
+
+    // This build: macOS app Finder, Windows Explorer, everything else (Linux, the generic
+    // layer on macOS) "Dateimanager"; describe() without a file manager uses it.
+#if defined(LF_WINDOWS_PLATFORM)
+    EXPECT_EQ(platformFileManager(), FileManager::Explorer);
+#elif defined(Q_OS_DARWIN) && !defined(LF_GENERIC_PLATFORM)
+    EXPECT_EQ(platformFileManager(), FileManager::Finder);
+#else
+    EXPECT_EQ(platformFileManager(), FileManager::Other);
+#endif
+    EXPECT_EQ(describe(fallback), describe(fallback, platformFileManager()));
 }
 
 TEST(SortSpec, F_SORT_02_EveryKeyHasALabel) {

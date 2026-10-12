@@ -16,6 +16,16 @@ refer to [SPEC.md](SPEC.md).
   A click flips like ←/→ (wrap, archives, right-to-left comics); no button where there is nothing
   to go to, none in the grid, compare, crop, slideshow or with the loupe. Settings → Display →
   "Show arrow buttons at the image edges" (on by default). [F-NAV-09]
+- **Windows: images in the order of the Explorer window** — opening an image from Explorer
+  takes over the sort column and direction (and grouping where possible) of the Explorer
+  window showing its folder; on by default, can be turned off in Settings → Navigation.
+  [F-SORT-04]
+
+### Fixed
+
+- **Windows and Linux: the sort status named the Finder** — it now says "Explorer" on Windows
+  ("As in Explorer: …", "Name ↑ (Explorer view not found)") and "file manager" on Linux, as do
+  the menu item and the settings. [F-SORT-05]
 
 ## [1.2.1] - 2026-10-12
 

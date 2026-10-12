@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "app/PreferencesDialog.h"
 #include "core/InputBindings.h"
+#include "core/Platform.h"
 #include "core/Settings.h"
 
 #include <QAbstractButton>
@@ -99,6 +100,9 @@ private slots:
                     missing << k;
                 continue;
             }
+            // Linux: no file manager window to ask (F-SORT-04), the setting is not offered.
+            if (k == QLatin1String(key::FinderLiveQuery) && platformFileManager() == FileManager::Other)
+                continue;
             if (!dlg.findChild<QWidget*>("setting:" + k))
                 missing << k;
         }
@@ -156,13 +160,23 @@ private slots:
         spin->setValue(200);
         QCOMPARE(Settings::instance().value(key::WheelMinIntervalMs).toInt(), 200);
         auto* check = dlg.findChild<QCheckBox*>(QStringLiteral("setting:") + key::FinderLiveQuery);
-        check->setChecked(true); // F-SORT-04: explained first, stored on "Aktivieren"
-        auto* explanation = dlg.findChild<QMessageBox*>(QStringLiteral("lfLiveQueryExplanation"));
-        QVERIFY(explanation);
-        QVERIFY(!Settings::instance().value(key::FinderLiveQuery).toBool());
-        click(explanation->findChild<QPushButton*>(QStringLiteral("lfLiveQueryEnable")));
-        QVERIFY(Settings::instance().value(key::FinderLiveQuery).toBool());
-        QVERIFY(check->isChecked());
+        if (platformFileManager() == FileManager::Finder) {
+            check->setChecked(true); // F-SORT-04: explained first, stored on "Aktivieren"
+            auto* explanation = dlg.findChild<QMessageBox*>(QStringLiteral("lfLiveQueryExplanation"));
+            QVERIFY(explanation);
+            QVERIFY(!Settings::instance().value(key::FinderLiveQuery).toBool());
+            click(explanation->findChild<QPushButton*>(QStringLiteral("lfLiveQueryEnable")));
+            QVERIFY(Settings::instance().value(key::FinderLiveQuery).toBool());
+            QVERIFY(check->isChecked());
+        } else if (platformFileManager() == FileManager::Explorer) { // no permission: stored at once
+            QVERIFY(check);
+            check->setChecked(false);
+            QVERIFY(!Settings::instance().value(key::FinderLiveQuery).toBool());
+            check->setChecked(true);
+            QVERIFY(Settings::instance().value(key::FinderLiveQuery).toBool());
+        } else {
+            QVERIFY(!check); // Linux: not offered
+        }
         choose(dlg.findChild<QComboBox*>(QStringLiteral("setting:") + key::ZoomMode), "fillWidth");
         QCOMPARE(Settings::instance().value(key::ZoomMode).toString(), QString("fillWidth"));
     }

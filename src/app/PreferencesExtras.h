@@ -23,7 +23,7 @@ QString editorDisplayName(const QString& appPath);
 
 // Checkbox for key::FinderLiveQuery. Turning it on first shows an explanation
 // (QMessageBox "lfLiveQueryExplanation", buttons "lfLiveQueryEnable"/cancel); only
-// "Aktivieren" stores the setting.
+// "Aktivieren" stores the setting. Windows (Explorer, no permission needed): no explanation.
 QCheckBox* createLiveQueryCheck(QWidget* parent);
 
 // M3 section "Bewertung" (PreferencesCulling.cpp): rating stores and Finder tag names

@@ -411,6 +411,18 @@ Bild geöffnet
   └─ [Stufe 4] Fallback: Name, aufsteigend (Finder-Namensvergleich)
 ```
 
+**Windows und Linux.** Die Stufen 1 (eine `.DS_Store`, die ein Mac z. B. auf einem
+gemeinsamen Laufwerk hinterlassen hat) und 4 gelten überall. Windows ersetzt Stufe 2 und 3
+durch das **Explorer-Fenster**, das genau diesen Ordner zeigt (F-SORT-04): Sortierspalte,
+Richtung und – soweit nachbildbar – die Gruppierung; ohne ein solches Fenster Name
+aufsteigend mit dem Namensvergleich des Explorers. Die Einstellungen des Explorers für nicht
+geöffnete Ordner (ShellBags, undokumentiert) werden nicht gelesen. Linux liest die
+Einstellungen des Dateimanagers (Nautilus, Dolphin …) nicht: Name aufsteigend. Die Anzeige
+(F-SORT-05) nennt den Dateimanager der Plattform: „Wie im Explorer: Änderungsdatum ↓“,
+„Name ↑ (Explorer-Ansicht nicht gefunden)“, unter Linux „Name ↑ (Sortierung des
+Dateimanagers nicht bekannt)“; der Menüpunkt heißt „Wie im Finder“, „Wie im Explorer“ bzw.
+„Wie im Dateimanager“.
+
 ### 6.2 Anforderungen
 
 | ID | Anforderung | Stufe |
@@ -418,7 +430,7 @@ Bild geöffnet
 | F-SORT-01 | Namenssortierung **identisch zum Finder**: `localizedStandardCompare` bzw. `CFStringCompareWithOptionsAndLocale` mit den Flags caseInsensitive, numeric, widthInsensitive, forcedOrdering und localized, Locale = `autoupdatingCurrent`. Verglichen wird der vollständige Dateiname inklusive Endung. Die Sortierschlüssel werden für große Ordner vorab berechnet. | M1 |
 | F-SORT-02 | Manuelle Sortierung: Name, Änderungsdatum, Erstellungsdatum, Hinzugefügt am, Aufnahmedatum (EXIF), Größe, Art, Pixelzahl, Bewertung; jeweils auf- oder absteigend. Bei Gleichstand entscheidet der Name. | M1 |
 | F-SORT-03 | Modus „Wie im Finder“ (Standard) mit Stufe 1 (.DS_Store), Stufe 2 (globale Einstellungen) und Stufe 4 (Fallback). | M1 |
-| F-SORT-04 | Stufe 3 (AppleScript-Abfrage des vordersten Finder-Fensters) als **Opt-in** in den Einstellungen. Die Automatisierungs-Berechtigung wird vorher erklärt. Abfrage nur, wenn `target of front window` dem Ordner entspricht. Zeitlimit 300 ms. | M2 |
+| F-SORT-04 | Stufe 3 (AppleScript-Abfrage des vordersten Finder-Fensters) als **Opt-in** in den Einstellungen. Die Automatisierungs-Berechtigung wird vorher erklärt. Abfrage nur, wenn `target of front window` dem Ordner entspricht. Zeitlimit 300 ms. **Windows:** Abfrage des Explorer-Fensters, das den Ordner zeigt (COM: `IShellWindows` → `IShellBrowser` → `IFolderView2`, erste Sortierspalte und „Gruppieren nach“; mehrere Fenster: der sichtbare Tab des zuletzt aktiven). Sie braucht keine Berechtigung und ist deshalb **standardmäßig an** (abschaltbar, „Sortierung live vom Explorer-Fenster übernehmen“). Sie läuft in einem eigenen Thread (STA), Zeitlimit 500 ms. Spalten ohne Gegenstück in F-SORT-02 (Autoren, Markierungen …) ergeben Name ↑ mit dem Hinweis „Sortierung des Explorers nicht unterstützt“. | M2 |
 | F-SORT-05 | Die UI zeigt die erkannte Sortierung an („Wie im Finder: Hinzugefügt am ↓“ bzw. „Name ↑ (Finder-Informationen nicht gefunden)“). | M1 |
 | F-SORT-06 | Manuelle Wahl wird pro Ordner gemerkt (in den App-Einstellungen, nicht im Ordner). Es gibt eine Option „Für alle Ordner verwenden“: Sie macht die Wahl zur globalen Vorgabe für Ordner ohne eigene Wahl; bereits gemerkte Ordner-Einstellungen bleiben erhalten. | M2 |
 | F-SORT-07 | Nach Dateisystemänderungen (F-OPEN-07) wird neu sortiert, und das aktuelle Bild bleibt erhalten. | M2 |
@@ -430,6 +442,7 @@ Bild geöffnet
 - Auf Netzlaufwerken bzw. USB-Datenträgern mit `DSDontWriteNetworkStores`/`DSDontWriteUSBStores` sowie in manchen Cloud-Ordnern (File Provider) gibt es keine .DS_Store-Datei.
 - „Gruppen verwenden“, Spaltenansicht, Suchergebnis- und „Zuletzt benutzt“-Fenster lassen sich nicht exakt nachbilden.
 - Das Format ist undokumentiert und kann sich mit macOS-Updates ändern. Deshalb gibt es Tests gegen echte Dateien jeder neuen macOS-Version.
+- Windows: Ohne geöffnetes Explorer-Fenster des Ordners (Öffnen aus „Zuletzt verwendet“, einer Bibliothek, Suchergebnissen, einem anderen Programm) gilt die Namensreihenfolge. Innerhalb von Gruppen (z. B. „Gruppieren nach Änderungsdatum“, sortiert nach Name) ordnet Lumaflip nach der Gruppenspalte, nicht nach der Sortierspalte; „Datum“ ohne Aufnahmedatum ordnet der Explorer nach dem Dateidatum ein, Lumaflip ans Ende.
 
 ---
 

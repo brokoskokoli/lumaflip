@@ -99,7 +99,8 @@ const Registry& registry() {
         b(key::HdrEnabled, true);                    // F-COL-04
         s(key::WrapMode, "stop", {"stop", "wrap", "nextFolder"});
         b(key::FollowFinder, true);
-        b(key::FinderLiveQuery, false);
+        // F-SORT-04: opt-in on macOS (Automation permission); Windows asks Explorer without one.
+        b(key::FinderLiveQuery, platformFileManager() == FileManager::Explorer);
         s(key::ManualSortKey, "name",
           {"name", "dateModified", "dateCreated", "dateAdded", "dateCaptured", "size", "kind", "pixelCount",
            "rating"});

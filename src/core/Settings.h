@@ -56,7 +56,7 @@ inline constexpr auto HdrEnabled = "view/hdr";          // bool, default true (F
 // Navigation & sorting
 inline constexpr auto WrapMode = "nav/wrap";               // "stop" | "wrap" | "nextFolder"
 inline constexpr auto FollowFinder = "sort/followFinder";  // bool, default true
-inline constexpr auto FinderLiveQuery = "sort/finderLive"; // bool, default false (opt-in)
+inline constexpr auto FinderLiveQuery = "sort/finderLive"; // bool; macOS opt-in, Windows on (F-SORT-04)
 inline constexpr auto ManualSortKey = "sort/manualKey";    // "name" | "dateModified" | "dateCreated" |
                                                            // "dateAdded" | "dateCaptured" | "size" |
                                                            // "kind" | "pixelCount" | "rating"

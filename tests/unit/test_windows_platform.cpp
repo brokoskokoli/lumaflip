@@ -7,10 +7,13 @@
 #include "core/CommandLine.h"
 #include "core/CustomActions.h"
 #include "core/DecoderHelper.h"
+#include "core/ExplorerSort.h"
 #include "core/Platform.h"
 #include "core/QtImageDecoder.h"
 #include "platform/windows/WicDecoder.h"
+#include "platform/windows/WinCom.h"
 #include "platform/windows/WinDecoderSandbox.h"
+#include "platform/windows/WinExplorerOrder.h"
 #include "platform/windows/WinFileUtil.h"
 
 #include <QCoreApplication>
@@ -36,6 +39,8 @@
 #include <shlwapi.h>
 #include <wincodec.h>
 #include <wrl/client.h>
+
+#include <propsys.h>
 
 using namespace lf;
 using Microsoft::WRL::ComPtr;
@@ -141,6 +146,55 @@ TEST(WindowsPlatform, F_SORT_01_NameOrderLikeExplorer) {
             if (logical != 0)
                 EXPECT_EQ(a < 0, logical < 0) << "differs from Explorer (StrCmpLogicalW)";
         }
+}
+
+// ---- F-SORT-04: order of the Explorer window ------------------------------------------------
+
+// The property keys of core/ExplorerSort.h are the system's (looked up by canonical name in
+// the property schema, PSGetPropertyKeyFromName).
+TEST(WindowsPlatform, F_SORT_04_ExplorerPropertyKeysMatchTheSystem) {
+    const win::ComScope com;
+    auto key = [](const wchar_t* name) {
+        PROPERTYKEY k{};
+        EXPECT_TRUE(SUCCEEDED(PSGetPropertyKeyFromName(name, &k)))
+            << QString::fromWCharArray(name).toStdString();
+        return explorer::PropertyKey{QUuid(k.fmtid), quint32(k.pid)};
+    };
+    EXPECT_EQ(key(L"System.ItemNameDisplay"), explorer::pkey::ItemNameDisplay);
+    EXPECT_EQ(key(L"System.FileName"), explorer::pkey::FileName);
+    EXPECT_EQ(key(L"System.DateModified"), explorer::pkey::DateModified);
+    EXPECT_EQ(key(L"System.DateCreated"), explorer::pkey::DateCreated);
+    EXPECT_EQ(key(L"System.Size"), explorer::pkey::Size);
+    EXPECT_EQ(key(L"System.ItemTypeText"), explorer::pkey::ItemTypeText);
+    EXPECT_EQ(key(L"System.ItemType"), explorer::pkey::ItemType);
+    EXPECT_EQ(key(L"System.ItemDate"), explorer::pkey::ItemDate);
+    EXPECT_EQ(key(L"System.Photo.DateTaken"), explorer::pkey::PhotoDateTaken);
+    EXPECT_EQ(key(L"System.Rating"), explorer::pkey::Rating);
+    EXPECT_FALSE(explorer::sortKeyFor(key(L"System.DateAccessed")).has_value());
+}
+
+// No Explorer window shows a fresh temporary folder (CI has none open at all): the COM
+// enumeration runs through, finds nothing, and the provider falls back to name order.
+TEST(WindowsPlatform, F_SORT_04_ExplorerQueryWithoutWindowFallsBack) {
+    QTemporaryDir dir;
+    ASSERT_TRUE(dir.isValid());
+    QElapsedTimer timer;
+    timer.start();
+    int seen = -2;
+    EXPECT_FALSE(win::explorerOrder(dir.path(), 5000, &seen).has_value());
+    EXPECT_GE(seen, -1); // the query finished (-1: no IShellWindows on this session)
+    EXPECT_LT(timer.elapsed(), 5000);
+    // The default limit holds even while Explorer is slow.
+    timer.restart();
+    EXPECT_FALSE(win::explorerOrder(dir.path()).has_value());
+    EXPECT_LT(timer.elapsed(), win::kExplorerQueryTimeoutMs + 1000);
+    EXPECT_FALSE(win::explorerOrder(QString()).has_value());
+
+    const auto provider = createFolderOrderProvider();
+    const SortSpec s = provider->finderOrder(dir.path(), true);
+    EXPECT_EQ(s, (SortSpec{SortKey::Name, true, SortSource::Fallback}));
+    EXPECT_EQ(describe(s), QString::fromUtf8("Name ↑ (Explorer-Ansicht nicht gefunden)"));
+    EXPECT_EQ(platformFileManager(), FileManager::Explorer);
 }
 
 // ---- F-FILE-01: Recycle Bin -----------------------------------------------------------------

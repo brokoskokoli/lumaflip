@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "SortSpec.h"
 
+#include "Platform.h"
+
 #include <QCoreApplication>
 
 namespace lf {
@@ -41,7 +43,7 @@ QString sortKeyLabel(SortKey key) {
     return QCoreApplication::translate("SortSpec", text);
 }
 
-QString describe(const SortSpec& spec) {
+QString describe(const SortSpec& spec, FileManager fm) {
     // Icon positions have no direction of their own.
     QString keyPart = sortKeyLabel(spec.key);
     if (spec.key != SortKey::FinderIconPosition)
@@ -49,16 +51,35 @@ QString describe(const SortSpec& spec) {
     switch (spec.source) {
     case SortSource::FinderLive: // F-SORT-04: asked the front Finder window
         return QCoreApplication::translate("SortSpec", "Wie im Finder (live): %1").arg(keyPart);
-    case SortSource::FinderDsStore:
+    case SortSource::FinderDsStore: // also on Windows/Linux: a .DS_Store a Mac left there
     case SortSource::FinderGlobal:
         return QCoreApplication::translate("SortSpec", "Wie im Finder: %1").arg(keyPart);
-    case SortSource::Fallback:
-        return QCoreApplication::translate("SortSpec", "%1 (Finder-Informationen nicht gefunden)")
+    case SortSource::ExplorerLive: // read from the Explorer window showing the folder
+        return QCoreApplication::translate("SortSpec", "Wie im Explorer: %1").arg(keyPart);
+    case SortSource::ExplorerUnsupported:
+        return QCoreApplication::translate("SortSpec", "%1 (Sortierung des Explorers nicht unterstützt)")
             .arg(keyPart);
+    case SortSource::Fallback:
+        switch (fm) {
+        case FileManager::Finder:
+            return QCoreApplication::translate("SortSpec", "%1 (Finder-Informationen nicht gefunden)")
+                .arg(keyPart);
+        case FileManager::Explorer:
+            return QCoreApplication::translate("SortSpec", "%1 (Explorer-Ansicht nicht gefunden)")
+                .arg(keyPart);
+        case FileManager::Other:
+            return QCoreApplication::translate("SortSpec", "%1 (Sortierung des Dateimanagers nicht bekannt)")
+                .arg(keyPart);
+        }
+        break;
     case SortSource::Manual:
         break;
     }
     return keyPart;
+}
+
+QString describe(const SortSpec& spec) {
+    return describe(spec, platformFileManager());
 }
 
 } // namespace lf

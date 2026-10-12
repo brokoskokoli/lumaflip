@@ -72,7 +72,7 @@ Setup to a version.
 | Area | Windows implementation |
 |---|---|
 | Name order (F-SORT-01) | `CompareStringEx` with `SORT_DIGITSASNUMBERS` (Explorer's logical order), sort keys for large folders, code point order for ties |
-| Folder order (SPEC 6.1) | Explorer keeps per-folder sort settings only in undocumented ShellBags: **name order**; a `.DS_Store` from a Mac still applies |
+| Folder order (SPEC 6.1, F-SORT-04) | the **Explorer window that shows the folder** (the usual case after a double click): `IShellWindows` → `IServiceProvider::QueryService(SID_STopLevelBrowser)` → `IShellBrowser::QueryActiveShellView` → `IFolderView2` (folder via `IPersistFolder2`, `GetSortColumns`, `GetGroupBy`); several windows: the visible tab of the window highest in the z-order. Name, date modified/created, size, type, date taken/"Date" and rating map to Lumaflip's keys, a group column Lumaflip can sort by decides over the sort column, other columns give name order with a hint. Own STA thread, 500 ms limit, on by default (no permission needed; Settings → Navigation). Without such a window: a `.DS_Store` from a Mac, otherwise Explorer's **name order** ("Explorer-Ansicht nicht gefunden"). The status bar and the menu say "Explorer" (`platformFileManager()`) |
 | File attributes | creation date, Explorer's type name (`SHGetFileInfo`) |
 | Folder watching (F-OPEN-07/08) | `ReadDirectoryChangesW`, recursive for folder trees, overflow → rescan |
 | Recycle Bin (F-FILE-01) | `IFileOperation` with `FOFX_RECYCLEONDELETE`; undo moves the `$R` item back and removes its `$I` record. A file that cannot go to the Recycle Bin (too large, a drive without one) is never deleted silently: Windows asks first (`FOF_WANTNUKEWARNING`), and if the user agrees Lumaflip reports "… wurde endgültig gelöscht" and offers no undo |
@@ -216,7 +216,11 @@ them. The publisher name shown is the validated identity of the certificate prof
 - Updates always ask before they install (WinSparkle); "Updates automatisch installieren" is
   disabled on Windows.
 - No system share sheet yet (Windows `DataTransferManager`), no Live Text, no maps.
-- The Explorer sort order of a folder cannot be read; Lumaflip uses name order.
+- The Explorer sort order is read only from an open Explorer window showing the folder;
+  the settings Explorer keeps for other folders (ShellBags, undocumented) are not read, so
+  those use name order. Libraries, search results and "Recent" views are not matched. Inside
+  groups Lumaflip orders by the group column; with file name extensions hidden, Explorer
+  compares names without them, Lumaflip with them.
 - Network access of the decoder helper is not blocked (see above).
 - PDF pages (F-OPEN-10) need QtPdf, which the Qt online repository does not ship for
   `msvc2022_64` without Qt WebEngine; CBZ/CBR/7z archives work.

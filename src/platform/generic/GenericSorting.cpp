@@ -115,6 +115,10 @@ std::unique_ptr<NameCollator> createNameCollator() {
     return std::make_unique<GenericNameCollator>();
 }
 
+FileManager platformFileManager() {
+    return FileManager::Other;
+}
+
 std::unique_ptr<FolderOrderProvider> createFolderOrderProvider() {
     return std::make_unique<GenericFolderOrderProvider>();
 }

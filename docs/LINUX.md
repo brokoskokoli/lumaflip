@@ -54,7 +54,7 @@ API switched; it is not enabled because OpenGL is the most compatible choice.
 | Piece | Linux implementation | Source |
 |---|---|---|
 | Name sorting (F-SORT-01) | digit runs by value + `QCollator` (ICU when Qt has it) | `platform/generic/GenericSorting.cpp` |
-| Folder order (SPEC 6) | name order; `.DS_Store` files copied from a Mac are still read. File manager sort settings (Nautilus/Dolphin) are not read. | same |
+| Folder order (SPEC 6) | name order; `.DS_Store` files copied from a Mac are still read. File manager sort settings (Nautilus/Dolphin) are not read; the menu, settings and status bar say "Dateimanager" ("Name ↑ (Sortierung des Dateimanagers nicht bekannt)"), and the live query setting is not offered. | same |
 | Dates (F-SORT-02) | birth time via `statx` (through `QFileInfo::birthTime`), where the file system records it | same |
 | Folder watching (F-OPEN-07/08) | inotify, recursive for "folder and subfolders" (the tree is walked on a worker thread; folders deleted or moved out give their watches back), `*.xmp` reported as sidecar changes, queue overflow → rescan | `platform/linux/LinuxFolderWatcher.cpp` |
 | Trash (F-FILE-01) | freedesktop trash via `QFile::moveToTrash`; undo moves the file back (also across file systems) and removes the `.trashinfo` | `platform/generic/GenericTrashService.cpp` |
