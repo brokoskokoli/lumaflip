@@ -138,7 +138,7 @@ void MainMenu::build() {
     add(file, Action::CloseWindow, tr("Schließen"));
     add(file, Action::CloseAllWindows, tr("Alle schließen"));
     file->addSeparator();
-    add(file, Action::RevealInFinder, actionLabel(Action::RevealInFinder)); // per platform
+    add(file, Action::RevealInFinder, actionLabel(Action::RevealInFinder));
     add(file, Action::Rename, tr("Umbenennen …")); // F-FILE-04
     m_extras->addOpenWith(file);                   // F-FILE-05
     add(file, Action::OpenInEditor, tr("Im Editor öffnen"));
