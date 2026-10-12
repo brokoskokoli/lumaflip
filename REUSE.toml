@@ -30,6 +30,15 @@ precedence = "aggregate"
 SPDX-FileCopyrightText = "2026 The Lumaflip contributors"
 SPDX-License-Identifier = "GPL-3.0-or-later"
 
+# Screenshots of the app (tools/screenshots). The photos shown in them are CC0 1.0 files from
+# Wikimedia Commons (public domain dedication, tools/screenshots/sample-photos.json lists
+# every source), so the screenshots are licensed like the rest of the repository.
+[[annotations]]
+path = ["docs/images/**", "website/images/shots/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 The Lumaflip contributors; sample photos by Jebulon (Wikimedia Commons, CC0 1.0)"
+SPDX-License-Identifier = "GPL-3.0-or-later"
+
 # Tool configuration.
 [[annotations]]
 path = [".clang-format", ".gitignore"]

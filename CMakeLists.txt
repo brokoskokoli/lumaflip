@@ -196,6 +196,12 @@ endif()
 
 add_subdirectory(src)
 
+# Screenshot tool for the README and the website (tools/screenshots, macOS only).
+option(LF_BUILD_SCREENSHOTS "Build the screenshot tool lf_screenshots (macOS)" ON)
+if(LF_BUILD_SCREENSHOTS AND LF_BUILD_UI AND APPLE AND NOT LF_GENERIC_PLATFORM)
+  add_subdirectory(tools/screenshots)
+endif()
+
 if(LF_BUILD_TESTS)
   enable_testing()
   add_subdirectory(tests)

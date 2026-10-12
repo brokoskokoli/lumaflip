@@ -42,6 +42,9 @@ else()
 endif()
 add_executable(lf_unit_tests ${LF_UNIT_TESTS})
 target_link_libraries(lf_unit_tests PRIVATE lf_core GTest::gtest_main lf_warnings)
+# Pure helpers of the screenshot tool (tools/screenshots/ShotFrame.h, QtGui only).
+target_sources(lf_unit_tests PRIVATE ${PROJECT_SOURCE_DIR}/tools/screenshots/ShotFrame.cpp)
+target_include_directories(lf_unit_tests PRIVATE ${PROJECT_SOURCE_DIR}/tools)
 target_compile_definitions(lf_unit_tests PRIVATE LF_TEST_DATA_DIR="${CMAKE_CURRENT_SOURCE_DIR}/data"
                                                   LF_CORPUS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/corpus")
 if(APPLE)
@@ -91,6 +94,10 @@ if(Python3_Interpreter_FOUND)
   add_test(NAME tools_appcast
            COMMAND Python3::Interpreter -I "${CMAKE_CURRENT_SOURCE_DIR}/tools/test_appcast.py" -v)
   set_tests_properties(tools_appcast PROPERTIES LABELS unit)
+  # Sample photos of the screenshots (tools/fetch_sample_photos.py): manifest, EXIF GPS writer.
+  add_test(NAME tools_sample_photos
+           COMMAND Python3::Interpreter -I "${CMAKE_CURRENT_SOURCE_DIR}/tools/test_sample_photos.py" -v)
+  set_tests_properties(tools_sample_photos PROPERTIES LABELS unit)
 endif()
 
 if(NOT LF_BUILD_UI)
