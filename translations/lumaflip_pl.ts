@@ -53,11 +53,11 @@
     </message>
     <message>
         <source>Wie im Explorer: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Jak w Eksploratorze plików: %1</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Explorers nicht unterstützt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (sortowanie Eksploratora plików nieobsługiwane)</translation>
     </message>
     <message>
         <source>%1 (Finder-Informationen nicht gefunden)</source>
@@ -65,11 +65,11 @@
     </message>
     <message>
         <source>%1 (Explorer-Ansicht nicht gefunden)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (nie znaleziono widoku Eksploratora plików)</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Dateimanagers nicht bekannt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (nieznane sortowanie menedżera plików)</translation>
     </message>
 </context>
 <context>
@@ -2434,6 +2434,14 @@
         <translation>Punkty ostrości</translation>
     </message>
     <message>
+        <source>Im Explorer zeigen</source>
+        <translation>Pokaż w Eksploratorze plików</translation>
+    </message>
+    <message>
+        <source>Im Dateimanager zeigen</source>
+        <translation>Pokaż w menedżerze plików</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>Nic</translation>
     </message>
@@ -3217,10 +3225,6 @@
         <translation>Zamknij wszystkie</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>Pokaż w Finderze</translation>
-    </message>
-    <message>
         <source>Umbenennen …</source>
         <translation>Zmień nazwę…</translation>
     </message>
@@ -3378,11 +3382,11 @@
     </message>
     <message>
         <source>Wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>Jak w Eksploratorze plików</translation>
     </message>
     <message>
         <source>Wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>Jak w menedżerze plików</translation>
     </message>
     <message>
         <source>Wie im Finder</source>
@@ -4050,7 +4054,7 @@
     <message>
         <source>%1 (%2)</source>
         <extracomment>Tooltip of the arrow buttons at the image edge: action name and its key (←/→)</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -4316,6 +4320,22 @@
         <translation>Dotyczy dwukrotnego kliknięcia w Finderze, polecenia „Otwórz w” oraz przeciągania na ikonę w Docku.</translation>
     </message>
     <message>
+        <source>Öffnen aus dem Explorer:</source>
+        <translation>Otwieranie z Eksploratora plików:</translation>
+    </message>
+    <message>
+        <source>Öffnen aus dem Dateimanager:</source>
+        <translation>Otwieranie z menedżera plików:</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Explorer und „Öffnen mit“.</source>
+        <translation>Dotyczy dwukrotnego kliknięcia w Eksploratorze plików i polecenia „Otwórz za pomocą”.</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Dateimanager und „Öffnen mit“.</source>
+        <translation>Dotyczy dwukrotnego kliknięcia w menedżerze plików i polecenia „Otwórz za pomocą”.</translation>
+    </message>
+    <message>
         <source>Fenster beim nächsten Start wiederherstellen</source>
         <translation>Przywracaj okna przy następnym uruchomieniu</translation>
     </message>
@@ -4509,11 +4529,11 @@
     </message>
     <message>
         <source>Pfeil-Schaltflächen am Bildrand zeigen</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokazuj przyciski strzałek przy krawędzi obrazu</translation>
     </message>
     <message>
         <source>Sie erscheinen, wenn sich die Maus bewegt, und blättern wie ← und → zum vorherigen und nächsten Bild.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pojawiają się, gdy poruszasz myszą, i przełączają na poprzedni lub następny obraz, tak jak ← i →.</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>
@@ -4673,7 +4693,7 @@
     </message>
     <message>
         <source>Gilt, wenn die Sortierung wie im Dateimanager oben aus ist oder nicht gelesen werden kann. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier.</source>
-        <translation type="unfinished"></translation>
+        <translation>Obowiązuje, gdy sortowanie jak w menedżerze plików powyżej jest wyłączone lub nie można go odczytać. Wybór w menu Widok → Sortuj według jest zapamiętywany dla każdego folderu; „Użyj dla wszystkich folderów” ustawia go tutaj jako domyślny.</translation>
     </message>
     <message>
         <source> %</source>
@@ -4761,19 +4781,19 @@
     </message>
     <message>
         <source>Sortierung wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortowanie jak w Eksploratorze plików</translation>
     </message>
     <message>
         <source>Zeigt ein Explorer-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen Sortierung und, soweit möglich, die Gruppierung. Sonst sortiert Lumaflip nach Name; eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jeśli okno Eksploratora plików pokazuje dokładnie otwarty folder, Lumaflip przejmuje jego sortowanie i w miarę możliwości grupowanie. W przeciwnym razie Lumaflip sortuje według nazwy; plik .DS_Store z Maca nadal obowiązuje.</translation>
     </message>
     <message>
         <source>Sortierung wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortowanie jak w menedżerze plików</translation>
     </message>
     <message>
         <source>Die Sortierung des Dateimanagers (Nautilus, Dolphin …) wird nicht gelesen: Lumaflip sortiert nach Name. Eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortowanie menedżera plików (Nautilus, Dolphin…) nie jest odczytywane: Lumaflip sortuje według nazwy. Plik .DS_Store z Maca nadal obowiązuje.</translation>
     </message>
     <message>
         <source>Manuelle Sortierung:</source>
@@ -5145,7 +5165,7 @@
     </message>
     <message>
         <source>Sortierung live vom Explorer-Fenster übernehmen</source>
-        <translation type="unfinished"></translation>
+        <translation>Przejmuj sortowanie na żywo z okna Eksploratora plików</translation>
     </message>
     <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
@@ -5859,10 +5879,6 @@
         <translation>Plik jest uszkodzony lub jego format nie jest obsługiwany.</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>Pokaż w Finderze</translation>
-    </message>
-    <message>
         <source>Volle Auflösung nicht verfügbar</source>
         <translation>Pełna rozdzielczość niedostępna</translation>
     </message>
@@ -5910,6 +5926,14 @@
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
         <translation>Nie masz uprawnień do odczytu folderu „%1”, dlatego Lumaflip pokazuje tylko otwarty plik. Uprawnienia można zmienić w Finderze: Plik → Informacje → „Udostępnianie i uprawnienia”.</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Explorer unter Eigenschaften → Sicherheit ändern.</source>
+        <translation>Nie masz uprawnień do odczytu folderu „%1”, dlatego Lumaflip pokazuje tylko otwarty plik. Uprawnienia można zmienić w Eksploratorze plików: Właściwości → Zabezpieczenia.</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Dateimanager unter Eigenschaften → Berechtigungen ändern.</source>
+        <translation>Nie masz uprawnień do odczytu folderu „%1”, dlatego Lumaflip pokazuje tylko otwarty plik. Uprawnienia można zmienić w menedżerze plików: Właściwości → Uprawnienia.</translation>
     </message>
     <message>
         <source>Kein weiterer Ordner und kein weiteres Archiv</source>

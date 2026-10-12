@@ -53,11 +53,11 @@
     </message>
     <message>
         <source>Wie im Explorer: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 탐색기와 동일: %1</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Explorers nicht unterstützt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1(파일 탐색기 정렬은 지원되지 않음)</translation>
     </message>
     <message>
         <source>%1 (Finder-Informationen nicht gefunden)</source>
@@ -65,11 +65,11 @@
     </message>
     <message>
         <source>%1 (Explorer-Ansicht nicht gefunden)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1(파일 탐색기 보기를 찾을 수 없음)</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Dateimanagers nicht bekannt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1(파일 관리자의 정렬을 알 수 없음)</translation>
     </message>
 </context>
 <context>
@@ -2410,6 +2410,14 @@
         <translation>초점 포인트</translation>
     </message>
     <message>
+        <source>Im Explorer zeigen</source>
+        <translation>파일 탐색기에서 보기</translation>
+    </message>
+    <message>
+        <source>Im Dateimanager zeigen</source>
+        <translation>파일 관리자에서 보기</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>없음</translation>
     </message>
@@ -3193,10 +3201,6 @@
         <translation>모두 닫기</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>Finder에서 보기</translation>
-    </message>
-    <message>
         <source>Umbenennen …</source>
         <translation>이름 변경…</translation>
     </message>
@@ -3354,11 +3358,11 @@
     </message>
     <message>
         <source>Wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 탐색기와 동일</translation>
     </message>
     <message>
         <source>Wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 관리자와 동일</translation>
     </message>
     <message>
         <source>Wie im Finder</source>
@@ -4020,7 +4024,7 @@
     <message>
         <source>%1 (%2)</source>
         <extracomment>Tooltip of the arrow buttons at the image edge: action name and its key (←/→)</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1(%2)</translation>
     </message>
 </context>
 <context>
@@ -4276,6 +4280,22 @@
         <translation>Finder에서 두 번 클릭, ‘다음으로 열기’ 및 Dock 아이콘으로 드래그 앤 드롭할 때 적용됩니다.</translation>
     </message>
     <message>
+        <source>Öffnen aus dem Explorer:</source>
+        <translation>파일 탐색기에서 열기:</translation>
+    </message>
+    <message>
+        <source>Öffnen aus dem Dateimanager:</source>
+        <translation>파일 관리자에서 열기:</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Explorer und „Öffnen mit“.</source>
+        <translation>파일 탐색기에서 두 번 클릭할 때와 ‘연결 프로그램’에 적용됩니다.</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Dateimanager und „Öffnen mit“.</source>
+        <translation>파일 관리자에서 두 번 클릭할 때와 ‘다음으로 열기’에 적용됩니다.</translation>
+    </message>
+    <message>
         <source>Fenster beim nächsten Start wiederherstellen</source>
         <translation>다음 실행 시 윈도우 복원</translation>
     </message>
@@ -4469,11 +4489,11 @@
     </message>
     <message>
         <source>Pfeil-Schaltflächen am Bildrand zeigen</source>
-        <translation type="unfinished"></translation>
+        <translation>이미지 가장자리에 화살표 버튼 표시</translation>
     </message>
     <message>
         <source>Sie erscheinen, wenn sich die Maus bewegt, und blättern wie ← und → zum vorherigen und nächsten Bild.</source>
-        <translation type="unfinished"></translation>
+        <translation>마우스를 움직이면 나타나며, ← 및 →와 같이 이전 이미지와 다음 이미지로 넘깁니다.</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>
@@ -4633,7 +4653,7 @@
     </message>
     <message>
         <source>Gilt, wenn die Sortierung wie im Dateimanager oben aus ist oder nicht gelesen werden kann. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier.</source>
-        <translation type="unfinished"></translation>
+        <translation>위의 파일 관리자와 동일하게 정렬이 꺼져 있거나 읽을 수 없을 때 적용됩니다. 보기 → 정렬 기준 메뉴에서 선택한 항목은 폴더별로 기억되며, ‘모든 폴더에 사용’을 선택하면 여기의 기본값이 됩니다.</translation>
     </message>
     <message>
         <source> %</source>
@@ -4719,19 +4739,19 @@
     </message>
     <message>
         <source>Sortierung wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 탐색기와 동일하게 정렬</translation>
     </message>
     <message>
         <source>Zeigt ein Explorer-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen Sortierung und, soweit möglich, die Gruppierung. Sonst sortiert Lumaflip nach Name; eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 탐색기 윈도우가 열린 폴더를 정확히 표시하고 있으면 Lumaflip은 해당 윈도우의 정렬과 가능한 경우 그룹화를 사용합니다. 그렇지 않으면 Lumaflip은 이름순으로 정렬하며, Mac의 .DS_Store 파일은 계속 적용됩니다.</translation>
     </message>
     <message>
         <source>Sortierung wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 관리자와 동일하게 정렬</translation>
     </message>
     <message>
         <source>Die Sortierung des Dateimanagers (Nautilus, Dolphin …) wird nicht gelesen: Lumaflip sortiert nach Name. Eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 관리자(Nautilus, Dolphin…)의 정렬은 읽지 않습니다. Lumaflip은 이름순으로 정렬합니다. Mac의 .DS_Store 파일은 계속 적용됩니다.</translation>
     </message>
     <message>
         <source>Manuelle Sortierung:</source>
@@ -5103,7 +5123,7 @@
     </message>
     <message>
         <source>Sortierung live vom Explorer-Fenster übernehmen</source>
-        <translation type="unfinished"></translation>
+        <translation>파일 탐색기 윈도우의 정렬을 실시간으로 사용</translation>
     </message>
     <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
@@ -5813,10 +5833,6 @@
         <translation>파일이 손상되었거나 지원되지 않는 포맷입니다.</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>Finder에서 보기</translation>
-    </message>
-    <message>
         <source>Volle Auflösung nicht verfügbar</source>
         <translation>전체 해상도를 사용할 수 없음</translation>
     </message>
@@ -5864,6 +5880,14 @@
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
         <translation>‘%1’ 폴더에 대한 읽기 권한이 없으므로 Lumaflip은 열린 파일만 표시합니다. 접근 권한은 Finder의 파일 → 정보 가져오기 → ‘공유 및 권한’에서 변경할 수 있습니다.</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Explorer unter Eigenschaften → Sicherheit ändern.</source>
+        <translation>‘%1’ 폴더에 대한 읽기 권한이 없으므로 Lumaflip은 열린 파일만 표시합니다. 접근 권한은 파일 탐색기의 속성 → 보안에서 변경할 수 있습니다.</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Dateimanager unter Eigenschaften → Berechtigungen ändern.</source>
+        <translation>‘%1’ 폴더에 대한 읽기 권한이 없으므로 Lumaflip은 열린 파일만 표시합니다. 접근 권한은 파일 관리자의 속성 → 권한에서 변경할 수 있습니다.</translation>
     </message>
     <message>
         <source>Kein weiterer Ordner und kein weiteres Archiv</source>

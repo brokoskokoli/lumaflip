@@ -194,7 +194,7 @@ Ziel: **So viele Formate wie möglich, ohne Nachinstallation.** Die Formate werd
 | ID | Anforderung | Stufe |
 |---|---|---|
 | F-FILE-01 | In den Papierkorb legen (⌘⌫, zusätzlich `Entf`), **mit Undo (⌘Z)**. Danach wird automatisch das nächste Bild gezeigt. Optional mit Bestätigungsabfrage (Standard: aus, weil Undo möglich ist). | M1 |
-| F-FILE-02 | Im Finder zeigen (⌘⇧R bzw. Menü). | M1 |
+| F-FILE-02 | Im Finder zeigen (⌘⇧R bzw. Menü); der Befehl nennt den Dateimanager der Plattform: „Im Explorer zeigen“ (Windows), „Im Dateimanager zeigen“ (Linux). | M1 |
 | F-FILE-03 | Bild in die Zwischenablage kopieren (⌘C: Bilddaten und Datei-URL), Pfad kopieren (⌥⌘C). | M1 |
 | F-FILE-04 | Umbenennen (Enter oder F2): Inline-Feld, die Dateiendung ist geschützt. | M2 |
 | F-FILE-05 | „Öffnen mit“ und „Im Editor öffnen“ (`E`, Editor konfigurierbar). | M2 |

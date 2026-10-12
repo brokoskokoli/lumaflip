@@ -26,6 +26,10 @@ refer to [SPEC.md](SPEC.md).
 - **Windows and Linux: the sort status named the Finder** — it now says "Explorer" on Windows
   ("As in Explorer: …", "Name ↑ (Explorer view not found)") and "file manager" on Linux, as do
   the menu item and the settings. [F-SORT-05]
+- **Windows and Linux: "Show in Finder"** — the File menu command, the button on the error card
+  and the shortcut list now say "Show in File Explorer" on Windows and "Show in File Manager" on
+  Linux; the "When opening from …" setting and the missing-permissions hint name the platform's
+  file manager, too. [F-FILE-02]
 
 ## [1.2.1] - 2026-10-12
 

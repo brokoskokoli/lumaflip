@@ -762,7 +762,11 @@ private slots:
         QVERIFY(title && title->text().contains(QStringLiteral("b_broken.jpg")));
         auto* reveal = w->view()->findChild<QPushButton*>(QStringLiteral("lfErrorAction"));
         QVERIFY(reveal && reveal->isVisible());
-        QCOMPARE(reveal->text(), QStringLiteral("Im Finder zeigen"));
+        // Named after the platform's file manager.
+        const FileManager fm = platformFileManager();
+        QCOMPARE(reveal->text(), fm == FileManager::Explorer ? QStringLiteral("Im Explorer zeigen")
+                                 : fm == FileManager::Other  ? QStringLiteral("Im Dateimanager zeigen")
+                                                             : QStringLiteral("Im Finder zeigen"));
         reveal->click();
         QCOMPARE(shell->revealed, QStringList{path("b_broken.jpg")});
         // Flipping continues.

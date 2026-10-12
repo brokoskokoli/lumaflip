@@ -895,7 +895,7 @@ void ViewerWindow::onImageFailed(const QString& path, const QString& error) {
     // The decoder reason is already user facing (German); generic text only as fallback.
     const QString detail =
         error.isEmpty() ? tr("Die Datei ist beschädigt oder ihr Format wird nicht unterstützt.") : error;
-    m_view->showError(fileName(path), detail, tr("Im Finder zeigen"));
+    m_view->showError(fileName(path), detail, actionLabel(Action::RevealInFinder));
     updateStatus();
 }
 
@@ -1232,11 +1232,26 @@ void ViewerWindow::showAccessHint(const QString& folder, bool privacy) {
                "Dateien und Ordner. Festplattenvollzugriff ist dafür nicht nötig.")
                 .arg(QDir(folder).dirName()));
     } else {
-        m_accessText->setText(
-            tr("Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die "
-               "geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → "
-               "Informationen → „Teilen & Zugriffsrechte“ ändern.")
-                .arg(QDir(folder).dirName()));
+        // Where the permissions are changed depends on the platform's file manager.
+        QString text;
+        switch (platformFileManager()) {
+        case FileManager::Finder:
+            text = tr("Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die "
+                      "geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → "
+                      "Informationen → „Teilen & Zugriffsrechte“ ändern.");
+            break;
+        case FileManager::Explorer:
+            text = tr("Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die "
+                      "geöffnete Datei. Die Zugriffsrechte lassen sich im Explorer unter Eigenschaften → "
+                      "Sicherheit ändern.");
+            break;
+        case FileManager::Other:
+            text = tr("Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die "
+                      "geöffnete Datei. Die Zugriffsrechte lassen sich im Dateimanager unter "
+                      "Eigenschaften → Berechtigungen ändern.");
+            break;
+        }
+        m_accessText->setText(text.arg(QDir(folder).dirName()));
     }
     if (auto* allow = m_accessHint->findChild<QPushButton*>(QStringLiteral("lfAllowAccess")))
         allow->setVisible(privacy);

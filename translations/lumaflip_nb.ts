@@ -53,11 +53,11 @@
     </message>
     <message>
         <source>Wie im Explorer: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Som i Filutforsker: %1</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Explorers nicht unterstützt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (sortering i Filutforsker støttes ikke)</translation>
     </message>
     <message>
         <source>%1 (Finder-Informationen nicht gefunden)</source>
@@ -65,11 +65,11 @@
     </message>
     <message>
         <source>%1 (Explorer-Ansicht nicht gefunden)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (fant ikke Filutforsker-visningen)</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Dateimanagers nicht bekannt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (filbehandlerens sortering er ukjent)</translation>
     </message>
 </context>
 <context>
@@ -2422,6 +2422,14 @@
         <translation>Fokuspunkter</translation>
     </message>
     <message>
+        <source>Im Explorer zeigen</source>
+        <translation>Vis i Filutforsker</translation>
+    </message>
+    <message>
+        <source>Im Dateimanager zeigen</source>
+        <translation>Vis i filbehandleren</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>Ingenting</translation>
     </message>
@@ -3205,10 +3213,6 @@
         <translation>Lukk alle</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>Vis i Finder</translation>
-    </message>
-    <message>
         <source>Umbenennen …</source>
         <translation>Endre navn…</translation>
     </message>
@@ -3366,11 +3370,11 @@
     </message>
     <message>
         <source>Wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>Som i Filutforsker</translation>
     </message>
     <message>
         <source>Wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>Som i filbehandleren</translation>
     </message>
     <message>
         <source>Wie im Finder</source>
@@ -4035,7 +4039,7 @@
     <message>
         <source>%1 (%2)</source>
         <extracomment>Tooltip of the arrow buttons at the image edge: action name and its key (←/→)</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -4296,6 +4300,22 @@
         <translation>Gjelder dobbeltklikk i Finder, «Åpne med» og dra og slipp på Dock-symbolet.</translation>
     </message>
     <message>
+        <source>Öffnen aus dem Explorer:</source>
+        <translation>Åpne fra Filutforsker:</translation>
+    </message>
+    <message>
+        <source>Öffnen aus dem Dateimanager:</source>
+        <translation>Åpne fra filbehandleren:</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Explorer und „Öffnen mit“.</source>
+        <translation>Gjelder dobbeltklikk i Filutforsker og «Åpne med».</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Dateimanager und „Öffnen mit“.</source>
+        <translation>Gjelder dobbeltklikk i filbehandleren og «Åpne med».</translation>
+    </message>
+    <message>
         <source>Fenster beim nächsten Start wiederherstellen</source>
         <translation>Gjenopprett vinduer ved neste oppstart</translation>
     </message>
@@ -4489,11 +4509,11 @@
     </message>
     <message>
         <source>Pfeil-Schaltflächen am Bildrand zeigen</source>
-        <translation type="unfinished"></translation>
+        <translation>Vis pilknapper ved bildekanten</translation>
     </message>
     <message>
         <source>Sie erscheinen, wenn sich die Maus bewegt, und blättern wie ← und → zum vorherigen und nächsten Bild.</source>
-        <translation type="unfinished"></translation>
+        <translation>De vises når musen beveges, og blar som ← og → til forrige og neste bilde.</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>
@@ -4653,7 +4673,7 @@
     </message>
     <message>
         <source>Gilt, wenn die Sortierung wie im Dateimanager oben aus ist oder nicht gelesen werden kann. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gjelder når sortering som i filbehandleren ovenfor er av eller ikke kan leses. Et valg i menyen Vis → Sorter etter huskes per mappe; «Bruk for alle mapper» gjør det til standard her.</translation>
     </message>
     <message>
         <source> %</source>
@@ -4740,19 +4760,19 @@
     </message>
     <message>
         <source>Sortierung wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortering som i Filutforsker</translation>
     </message>
     <message>
         <source>Zeigt ein Explorer-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen Sortierung und, soweit möglich, die Gruppierung. Sonst sortiert Lumaflip nach Name; eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hvis et Filutforsker-vindu viser nøyaktig den åpne mappen, bruker Lumaflip vinduets sortering og, så langt det er mulig, grupperingen. Ellers sorterer Lumaflip etter navn; en .DS_Store-fil fra en Mac gjelder fortsatt.</translation>
     </message>
     <message>
         <source>Sortierung wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortering som i filbehandleren</translation>
     </message>
     <message>
         <source>Die Sortierung des Dateimanagers (Nautilus, Dolphin …) wird nicht gelesen: Lumaflip sortiert nach Name. Eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>Filbehandlerens sortering (Nautilus, Dolphin…) leses ikke: Lumaflip sorterer etter navn. En .DS_Store-fil fra en Mac gjelder fortsatt.</translation>
     </message>
     <message>
         <source>Manuelle Sortierung:</source>
@@ -5124,7 +5144,7 @@
     </message>
     <message>
         <source>Sortierung live vom Explorer-Fenster übernehmen</source>
-        <translation type="unfinished"></translation>
+        <translation>Hent sortering live fra Filutforsker-vinduet</translation>
     </message>
     <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
@@ -5836,10 +5856,6 @@
         <translation>Filen er skadet, eller formatet støttes ikke.</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>Vis i Finder</translation>
-    </message>
-    <message>
         <source>Volle Auflösung nicht verfügbar</source>
         <translation>Full oppløsning er ikke tilgjengelig</translation>
     </message>
@@ -5887,6 +5903,14 @@
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
         <translation>Du har ikke lesetilgang til mappen «%1», så Lumaflip viser bare den åpne filen. Rettighetene kan endres i Finder under Fil → Vis info → «Deling og rettigheter».</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Explorer unter Eigenschaften → Sicherheit ändern.</source>
+        <translation>Du har ikke lesetilgang til mappen «%1», så Lumaflip viser bare den åpne filen. Rettighetene kan endres i Filutforsker under Egenskaper → Sikkerhet.</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Dateimanager unter Eigenschaften → Berechtigungen ändern.</source>
+        <translation>Du har ikke lesetilgang til mappen «%1», så Lumaflip viser bare den åpne filen. Rettighetene kan endres i filbehandleren under Egenskaper → Rettigheter.</translation>
     </message>
     <message>
         <source>Kein weiterer Ordner und kein weiteres Archiv</source>

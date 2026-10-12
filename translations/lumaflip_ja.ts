@@ -53,11 +53,11 @@
     </message>
     <message>
         <source>Wie im Explorer: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>エクスプローラーと同じ: %1</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Explorers nicht unterstützt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1（エクスプローラーの並べ替えには対応していません）</translation>
     </message>
     <message>
         <source>%1 (Finder-Informationen nicht gefunden)</source>
@@ -65,11 +65,11 @@
     </message>
     <message>
         <source>%1 (Explorer-Ansicht nicht gefunden)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1（エクスプローラーの表示が見つかりません）</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Dateimanagers nicht bekannt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1（ファイルマネージャの並べ替えは不明）</translation>
     </message>
 </context>
 <context>
@@ -2410,6 +2410,14 @@
         <translation>AFポイント</translation>
     </message>
     <message>
+        <source>Im Explorer zeigen</source>
+        <translation>エクスプローラーに表示</translation>
+    </message>
+    <message>
+        <source>Im Dateimanager zeigen</source>
+        <translation>ファイルマネージャに表示</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>なし</translation>
     </message>
@@ -3193,10 +3201,6 @@
         <translation>すべてを閉じる</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>Finderに表示</translation>
-    </message>
-    <message>
         <source>Umbenennen …</source>
         <translation>名称変更…</translation>
     </message>
@@ -3354,11 +3358,11 @@
     </message>
     <message>
         <source>Wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>エクスプローラーと同じ</translation>
     </message>
     <message>
         <source>Wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイルマネージャと同じ</translation>
     </message>
     <message>
         <source>Wie im Finder</source>
@@ -4020,7 +4024,7 @@
     <message>
         <source>%1 (%2)</source>
         <extracomment>Tooltip of the arrow buttons at the image edge: action name and its key (←/→)</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1（%2）</translation>
     </message>
 </context>
 <context>
@@ -4276,6 +4280,22 @@
         <translation>Finderでのダブルクリック、“このアプリケーションで開く”、Dockアイコンへのドラッグ＆ドロップに適用されます。</translation>
     </message>
     <message>
+        <source>Öffnen aus dem Explorer:</source>
+        <translation>エクスプローラーから開くとき:</translation>
+    </message>
+    <message>
+        <source>Öffnen aus dem Dateimanager:</source>
+        <translation>ファイルマネージャから開くとき:</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Explorer und „Öffnen mit“.</source>
+        <translation>エクスプローラーでのダブルクリックと“プログラムから開く”に適用されます。</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Dateimanager und „Öffnen mit“.</source>
+        <translation>ファイルマネージャでのダブルクリックと“アプリケーションで開く”に適用されます。</translation>
+    </message>
+    <message>
         <source>Fenster beim nächsten Start wiederherstellen</source>
         <translation>次回起動時にウインドウを復元</translation>
     </message>
@@ -4469,11 +4489,11 @@
     </message>
     <message>
         <source>Pfeil-Schaltflächen am Bildrand zeigen</source>
-        <translation type="unfinished"></translation>
+        <translation>画像の端に矢印ボタンを表示</translation>
     </message>
     <message>
         <source>Sie erscheinen, wenn sich die Maus bewegt, und blättern wie ← und → zum vorherigen und nächsten Bild.</source>
-        <translation type="unfinished"></translation>
+        <translation>マウスを動かすと表示され、←と→と同じように前後の画像に切り替えます。</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>
@@ -4633,7 +4653,7 @@
     </message>
     <message>
         <source>Gilt, wenn die Sortierung wie im Dateimanager oben aus ist oder nicht gelesen werden kann. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier.</source>
-        <translation type="unfinished"></translation>
+        <translation>上のファイルマネージャと同じ並べ替えがオフの場合、または読み取れない場合に適用されます。表示 → 並べ替えメニューでの選択はフォルダごとに記憶されます。“すべてのフォルダで使用”を選ぶと、ここでのデフォルトになります。</translation>
     </message>
     <message>
         <source> %</source>
@@ -4719,19 +4739,19 @@
     </message>
     <message>
         <source>Sortierung wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>エクスプローラーと同じ順序で並べ替え</translation>
     </message>
     <message>
         <source>Zeigt ein Explorer-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen Sortierung und, soweit möglich, die Gruppierung. Sonst sortiert Lumaflip nach Name; eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>エクスプローラーのウインドウに開いているフォルダが表示されている場合、Lumaflipはその並べ替えと、可能であればグループ化を使用します。それ以外の場合は名前順に並べ替えます。Macの.DS_Storeファイルは引き続き適用されます。</translation>
     </message>
     <message>
         <source>Sortierung wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイルマネージャと同じ順序で並べ替え</translation>
     </message>
     <message>
         <source>Die Sortierung des Dateimanagers (Nautilus, Dolphin …) wird nicht gelesen: Lumaflip sortiert nach Name. Eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイルマネージャ（Nautilus、Dolphin…）の並べ替えは読み込まれません。Lumaflipは名前順に並べ替えます。Macの.DS_Storeファイルは引き続き適用されます。</translation>
     </message>
     <message>
         <source>Manuelle Sortierung:</source>
@@ -5103,7 +5123,7 @@
     </message>
     <message>
         <source>Sortierung live vom Explorer-Fenster übernehmen</source>
-        <translation type="unfinished"></translation>
+        <translation>エクスプローラーのウインドウから並べ替えをライブで取得</translation>
     </message>
     <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
@@ -5813,10 +5833,6 @@
         <translation>ファイルが破損しているか、フォーマットがサポートされていません。</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>Finderに表示</translation>
-    </message>
-    <message>
         <source>Volle Auflösung nicht verfügbar</source>
         <translation>フル解像度は利用できません</translation>
     </message>
@@ -5864,6 +5880,14 @@
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
         <translation>フォルダ“%1”の読み出し権限がないため、Lumaflipは開いたファイルのみを表示しています。アクセス権はFinderのファイル → 情報を見る → “共有とアクセス権”で変更できます。</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Explorer unter Eigenschaften → Sicherheit ändern.</source>
+        <translation>フォルダ“%1”の読み出し権限がないため、Lumaflipは開いたファイルのみを表示しています。アクセス権はエクスプローラーのプロパティ → セキュリティで変更できます。</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Dateimanager unter Eigenschaften → Berechtigungen ändern.</source>
+        <translation>フォルダ“%1”の読み出し権限がないため、Lumaflipは開いたファイルのみを表示しています。アクセス権はファイルマネージャのプロパティ → アクセス権で変更できます。</translation>
     </message>
     <message>
         <source>Kein weiterer Ordner und kein weiteres Archiv</source>

@@ -53,11 +53,11 @@
     </message>
     <message>
         <source>Wie im Explorer: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Como no Explorador de Ficheiros: %1</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Explorers nicht unterstützt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (ordenação do Explorador de Ficheiros não suportada)</translation>
     </message>
     <message>
         <source>%1 (Finder-Informationen nicht gefunden)</source>
@@ -65,11 +65,11 @@
     </message>
     <message>
         <source>%1 (Explorer-Ansicht nicht gefunden)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (vista do Explorador de Ficheiros não encontrada)</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Dateimanagers nicht bekannt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (ordenação do gestor de ficheiros desconhecida)</translation>
     </message>
 </context>
 <context>
@@ -2422,6 +2422,14 @@
         <translation>Pontos AF</translation>
     </message>
     <message>
+        <source>Im Explorer zeigen</source>
+        <translation>Mostrar no Explorador de Ficheiros</translation>
+    </message>
+    <message>
+        <source>Im Dateimanager zeigen</source>
+        <translation>Mostrar no gestor de ficheiros</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>Nada</translation>
     </message>
@@ -3205,10 +3213,6 @@
         <translation>Fechar todas</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>Mostrar no Finder</translation>
-    </message>
-    <message>
         <source>Umbenennen …</source>
         <translation>Alterar nome…</translation>
     </message>
@@ -3366,11 +3370,11 @@
     </message>
     <message>
         <source>Wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>Como no Explorador de Ficheiros</translation>
     </message>
     <message>
         <source>Wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>Como no gestor de ficheiros</translation>
     </message>
     <message>
         <source>Wie im Finder</source>
@@ -4035,7 +4039,7 @@
     <message>
         <source>%1 (%2)</source>
         <extracomment>Tooltip of the arrow buttons at the image edge: action name and its key (←/→)</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -4296,6 +4300,22 @@
         <translation>Aplica-se ao duplo clique no Finder, a “Abrir com” e a arrastar e largar no ícone da Dock.</translation>
     </message>
     <message>
+        <source>Öffnen aus dem Explorer:</source>
+        <translation>Abrir a partir do Explorador de Ficheiros:</translation>
+    </message>
+    <message>
+        <source>Öffnen aus dem Dateimanager:</source>
+        <translation>Abrir a partir do gestor de ficheiros:</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Explorer und „Öffnen mit“.</source>
+        <translation>Aplica-se ao duplo clique no Explorador de Ficheiros e a “Abrir com”.</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Dateimanager und „Öffnen mit“.</source>
+        <translation>Aplica-se ao duplo clique no gestor de ficheiros e a “Abrir com”.</translation>
+    </message>
+    <message>
         <source>Fenster beim nächsten Start wiederherstellen</source>
         <translation>Restaurar janelas no próximo arranque</translation>
     </message>
@@ -4489,11 +4509,11 @@
     </message>
     <message>
         <source>Pfeil-Schaltflächen am Bildrand zeigen</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar botões de seta na margem da imagem</translation>
     </message>
     <message>
         <source>Sie erscheinen, wenn sich die Maus bewegt, und blättern wie ← und → zum vorherigen und nächsten Bild.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aparecem quando o rato se move e passam para a imagem anterior ou seguinte, tal como ← e →.</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>
@@ -4653,7 +4673,7 @@
     </message>
     <message>
         <source>Gilt, wenn die Sortierung wie im Dateimanager oben aus ist oder nicht gelesen werden kann. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier.</source>
-        <translation type="unfinished"></translation>
+        <translation>Aplica-se quando a ordenação como no gestor de ficheiros acima está desativada ou não pode ser lida. Uma escolha no menu Visualização → Ordenar por é memorizada para cada pasta; “Usar para todas as pastas” torna-a a predefinição aqui.</translation>
     </message>
     <message>
         <source> %</source>
@@ -4740,19 +4760,19 @@
     </message>
     <message>
         <source>Sortierung wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordenação como no Explorador de Ficheiros</translation>
     </message>
     <message>
         <source>Zeigt ein Explorer-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen Sortierung und, soweit möglich, die Gruppierung. Sonst sortiert Lumaflip nach Name; eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>Se uma janela do Explorador de Ficheiros mostrar exatamente a pasta aberta, o Lumaflip adota a ordenação dessa janela e, sempre que possível, o agrupamento. Caso contrário, o Lumaflip ordena por nome; um ficheiro .DS_Store de um Mac continua a aplicar-se.</translation>
     </message>
     <message>
         <source>Sortierung wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordenação como no gestor de ficheiros</translation>
     </message>
     <message>
         <source>Die Sortierung des Dateimanagers (Nautilus, Dolphin …) wird nicht gelesen: Lumaflip sortiert nach Name. Eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>A ordenação do gestor de ficheiros (Nautilus, Dolphin…) não é lida: o Lumaflip ordena por nome. Um ficheiro .DS_Store de um Mac continua a aplicar-se.</translation>
     </message>
     <message>
         <source>Manuelle Sortierung:</source>
@@ -5124,7 +5144,7 @@
     </message>
     <message>
         <source>Sortierung live vom Explorer-Fenster übernehmen</source>
-        <translation type="unfinished"></translation>
+        <translation>Adotar a ordenação em direto da janela do Explorador de Ficheiros</translation>
     </message>
     <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
@@ -5836,10 +5856,6 @@
         <translation>O ficheiro está danificado ou o seu formato não é suportado.</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>Mostrar no Finder</translation>
-    </message>
-    <message>
         <source>Volle Auflösung nicht verfügbar</source>
         <translation>Resolução completa não disponível</translation>
     </message>
@@ -5887,6 +5903,14 @@
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
         <translation>Não tem permissão de leitura para a pasta “%1”; por isso, o Lumaflip mostra apenas o ficheiro aberto. As permissões podem ser alteradas no Finder em Ficheiro → Informações → “Partilha e permissões”.</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Explorer unter Eigenschaften → Sicherheit ändern.</source>
+        <translation>Não tem permissão de leitura para a pasta “%1”; por isso, o Lumaflip mostra apenas o ficheiro aberto. As permissões podem ser alteradas no Explorador de Ficheiros em Propriedades → Segurança.</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Dateimanager unter Eigenschaften → Berechtigungen ändern.</source>
+        <translation>Não tem permissão de leitura para a pasta “%1”; por isso, o Lumaflip mostra apenas o ficheiro aberto. As permissões podem ser alteradas no gestor de ficheiros em Propriedades → Permissões.</translation>
     </message>
     <message>
         <source>Kein weiterer Ordner und kein weiteres Archiv</source>

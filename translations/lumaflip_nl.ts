@@ -53,11 +53,11 @@
     </message>
     <message>
         <source>Wie im Explorer: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoals in Verkenner: %1</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Explorers nicht unterstützt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (sortering van Verkenner niet ondersteund)</translation>
     </message>
     <message>
         <source>%1 (Finder-Informationen nicht gefunden)</source>
@@ -65,11 +65,11 @@
     </message>
     <message>
         <source>%1 (Explorer-Ansicht nicht gefunden)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (Verkenner-weergave niet gevonden)</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Dateimanagers nicht bekannt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (sortering van bestandsbeheerder onbekend)</translation>
     </message>
 </context>
 <context>
@@ -2422,6 +2422,14 @@
         <translation>Focuspunten</translation>
     </message>
     <message>
+        <source>Im Explorer zeigen</source>
+        <translation>Toon in Verkenner</translation>
+    </message>
+    <message>
+        <source>Im Dateimanager zeigen</source>
+        <translation>Toon in bestandsbeheerder</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>Niets</translation>
     </message>
@@ -3205,10 +3213,6 @@
         <translation>Sluit alles</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>Toon in Finder</translation>
-    </message>
-    <message>
         <source>Umbenennen …</source>
         <translation>Wijzig naam…</translation>
     </message>
@@ -3366,11 +3370,11 @@
     </message>
     <message>
         <source>Wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoals in Verkenner</translation>
     </message>
     <message>
         <source>Wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoals in bestandsbeheerder</translation>
     </message>
     <message>
         <source>Wie im Finder</source>
@@ -4035,7 +4039,7 @@
     <message>
         <source>%1 (%2)</source>
         <extracomment>Tooltip of the arrow buttons at the image edge: action name and its key (←/→)</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -4296,6 +4300,22 @@
         <translation>Geldt voor dubbelklikken in de Finder, &apos;Open met&apos; en slepen naar het Dock-symbool.</translation>
     </message>
     <message>
+        <source>Öffnen aus dem Explorer:</source>
+        <translation>Openen vanuit Verkenner:</translation>
+    </message>
+    <message>
+        <source>Öffnen aus dem Dateimanager:</source>
+        <translation>Openen vanuit de bestandsbeheerder:</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Explorer und „Öffnen mit“.</source>
+        <translation>Geldt voor dubbelklikken in Verkenner en &apos;Openen met&apos;.</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Dateimanager und „Öffnen mit“.</source>
+        <translation>Geldt voor dubbelklikken in de bestandsbeheerder en &apos;Openen met&apos;.</translation>
+    </message>
+    <message>
         <source>Fenster beim nächsten Start wiederherstellen</source>
         <translation>Herstel vensters bij volgende start</translation>
     </message>
@@ -4489,11 +4509,11 @@
     </message>
     <message>
         <source>Pfeil-Schaltflächen am Bildrand zeigen</source>
-        <translation type="unfinished"></translation>
+        <translation>Pijlknoppen aan de rand van de afbeelding tonen</translation>
     </message>
     <message>
         <source>Sie erscheinen, wenn sich die Maus bewegt, und blättern wie ← und → zum vorherigen und nächsten Bild.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ze verschijnen als de muis beweegt en bladeren net als ← en → naar de vorige en volgende afbeelding.</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>
@@ -4653,7 +4673,7 @@
     </message>
     <message>
         <source>Gilt, wenn die Sortierung wie im Dateimanager oben aus ist oder nicht gelesen werden kann. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geldt als sorteren zoals in de bestandsbeheerder hierboven uit staat of niet kan worden gelezen. Een keuze in het menu Weergave → Sorteer op wordt per map onthouden; &apos;Gebruik voor alle mappen&apos; maakt er hier de standaard van.</translation>
     </message>
     <message>
         <source> %</source>
@@ -4740,19 +4760,19 @@
     </message>
     <message>
         <source>Sortierung wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>Sorteer zoals in Verkenner</translation>
     </message>
     <message>
         <source>Zeigt ein Explorer-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen Sortierung und, soweit möglich, die Gruppierung. Sonst sortiert Lumaflip nach Name; eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>Toont een Verkenner-venster precies de geopende map, dan neemt Lumaflip de sortering daarvan over en, voor zover mogelijk, de groepering. Anders sorteert Lumaflip op naam; een .DS_Store-bestand van een Mac blijft gelden.</translation>
     </message>
     <message>
         <source>Sortierung wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>Sorteer zoals in de bestandsbeheerder</translation>
     </message>
     <message>
         <source>Die Sortierung des Dateimanagers (Nautilus, Dolphin …) wird nicht gelesen: Lumaflip sortiert nach Name. Eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>De sortering van de bestandsbeheerder (Nautilus, Dolphin…) wordt niet gelezen: Lumaflip sorteert op naam. Een .DS_Store-bestand van een Mac blijft gelden.</translation>
     </message>
     <message>
         <source>Manuelle Sortierung:</source>
@@ -5124,7 +5144,7 @@
     </message>
     <message>
         <source>Sortierung live vom Explorer-Fenster übernehmen</source>
-        <translation type="unfinished"></translation>
+        <translation>Neem sortering live over van Verkenner-venster</translation>
     </message>
     <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
@@ -5836,10 +5856,6 @@
         <translation>Het bestand is beschadigd of de structuur ervan wordt niet ondersteund.</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>Toon in Finder</translation>
-    </message>
-    <message>
         <source>Volle Auflösung nicht verfügbar</source>
         <translation>Volledige resolutie niet beschikbaar</translation>
     </message>
@@ -5887,6 +5903,14 @@
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
         <translation>Je hebt geen leesrechten voor de map &apos;%1&apos;, daarom toont Lumaflip alleen het geopende bestand. Je kunt de toegangsrechten in de Finder wijzigen via Archief → Toon info → &apos;Delen en toegangsrechten&apos;.</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Explorer unter Eigenschaften → Sicherheit ändern.</source>
+        <translation>Je hebt geen leesrechten voor de map &apos;%1&apos;, daarom toont Lumaflip alleen het geopende bestand. Je kunt de toegangsrechten in Verkenner wijzigen via Eigenschappen → Beveiliging.</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Dateimanager unter Eigenschaften → Berechtigungen ändern.</source>
+        <translation>Je hebt geen leesrechten voor de map &apos;%1&apos;, daarom toont Lumaflip alleen het geopende bestand. Je kunt de toegangsrechten in de bestandsbeheerder wijzigen via Eigenschappen → Toegangsrechten.</translation>
     </message>
     <message>
         <source>Kein weiterer Ordner und kein weiteres Archiv</source>

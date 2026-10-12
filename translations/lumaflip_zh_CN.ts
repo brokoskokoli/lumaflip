@@ -53,11 +53,11 @@
     </message>
     <message>
         <source>Wie im Explorer: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>与文件资源管理器相同：%1</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Explorers nicht unterstützt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1（不支持文件资源管理器的排序）</translation>
     </message>
     <message>
         <source>%1 (Finder-Informationen nicht gefunden)</source>
@@ -65,11 +65,11 @@
     </message>
     <message>
         <source>%1 (Explorer-Ansicht nicht gefunden)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1（未找到文件资源管理器视图）</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Dateimanagers nicht bekannt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1（文件管理器的排序未知）</translation>
     </message>
 </context>
 <context>
@@ -2410,6 +2410,14 @@
         <translation>对焦点</translation>
     </message>
     <message>
+        <source>Im Explorer zeigen</source>
+        <translation>在文件资源管理器中显示</translation>
+    </message>
+    <message>
+        <source>Im Dateimanager zeigen</source>
+        <translation>在文件管理器中显示</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>无</translation>
     </message>
@@ -3193,10 +3201,6 @@
         <translation>全部关闭</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>在访达中显示</translation>
-    </message>
-    <message>
         <source>Umbenennen …</source>
         <translation>重新命名…</translation>
     </message>
@@ -3354,11 +3358,11 @@
     </message>
     <message>
         <source>Wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>与文件资源管理器相同</translation>
     </message>
     <message>
         <source>Wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>与文件管理器相同</translation>
     </message>
     <message>
         <source>Wie im Finder</source>
@@ -4020,7 +4024,7 @@
     <message>
         <source>%1 (%2)</source>
         <extracomment>Tooltip of the arrow buttons at the image edge: action name and its key (←/→)</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1（%2）</translation>
     </message>
 </context>
 <context>
@@ -4276,6 +4280,22 @@
         <translation>适用于在“访达”中连按、“打开方式”以及拖放到程序坞图标上。</translation>
     </message>
     <message>
+        <source>Öffnen aus dem Explorer:</source>
+        <translation>从文件资源管理器打开：</translation>
+    </message>
+    <message>
+        <source>Öffnen aus dem Dateimanager:</source>
+        <translation>从文件管理器打开：</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Explorer und „Öffnen mit“.</source>
+        <translation>适用于在文件资源管理器中双击以及“打开方式”。</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Dateimanager und „Öffnen mit“.</source>
+        <translation>适用于在文件管理器中双击以及“打开方式”。</translation>
+    </message>
+    <message>
         <source>Fenster beim nächsten Start wiederherstellen</source>
         <translation>下次启动时恢复窗口</translation>
     </message>
@@ -4469,11 +4489,11 @@
     </message>
     <message>
         <source>Pfeil-Schaltflächen am Bildrand zeigen</source>
-        <translation type="unfinished"></translation>
+        <translation>在图像边缘显示箭头按钮</translation>
     </message>
     <message>
         <source>Sie erscheinen, wenn sich die Maus bewegt, und blättern wie ← und → zum vorherigen und nächsten Bild.</source>
-        <translation type="unfinished"></translation>
+        <translation>移动鼠标时出现，与←和→一样切换到上一张和下一张图像。</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>
@@ -4633,7 +4653,7 @@
     </message>
     <message>
         <source>Gilt, wenn die Sortierung wie im Dateimanager oben aus ist oder nicht gelesen werden kann. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier.</source>
-        <translation type="unfinished"></translation>
+        <translation>在上方的与文件管理器相同的排序关闭或无法读取时适用。在“显示 → 排序方式”菜单中所做的选择会按文件夹记住；“用于所有文件夹”会将其设为此处的默认值。</translation>
     </message>
     <message>
         <source> %</source>
@@ -4719,19 +4739,19 @@
     </message>
     <message>
         <source>Sortierung wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>与文件资源管理器中的排序相同</translation>
     </message>
     <message>
         <source>Zeigt ein Explorer-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen Sortierung und, soweit möglich, die Gruppierung. Sonst sortiert Lumaflip nach Name; eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>如果文件资源管理器窗口显示的正是所打开的文件夹，Lumaflip会采用其排序方式，并尽可能采用其分组。否则Lumaflip按名称排序；来自Mac的.DS_Store文件仍然有效。</translation>
     </message>
     <message>
         <source>Sortierung wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>与文件管理器中的排序相同</translation>
     </message>
     <message>
         <source>Die Sortierung des Dateimanagers (Nautilus, Dolphin …) wird nicht gelesen: Lumaflip sortiert nach Name. Eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>不会读取文件管理器（Nautilus、Dolphin…）的排序：Lumaflip按名称排序。来自Mac的.DS_Store文件仍然有效。</translation>
     </message>
     <message>
         <source>Manuelle Sortierung:</source>
@@ -5103,7 +5123,7 @@
     </message>
     <message>
         <source>Sortierung live vom Explorer-Fenster übernehmen</source>
-        <translation type="unfinished"></translation>
+        <translation>实时采用文件资源管理器窗口中的排序</translation>
     </message>
     <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
@@ -5813,10 +5833,6 @@
         <translation>文件已损坏或其格式不受支持。</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>在访达中显示</translation>
-    </message>
-    <message>
         <source>Volle Auflösung nicht verfügbar</source>
         <translation>无法使用完整分辨率</translation>
     </message>
@@ -5864,6 +5880,14 @@
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
         <translation>你没有文件夹“%1”的读取权限，因此Lumaflip只显示已打开的文件。可以在“访达”中通过“文件 → 显示简介 → 共享与权限”更改访问权限。</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Explorer unter Eigenschaften → Sicherheit ändern.</source>
+        <translation>你没有文件夹“%1”的读取权限，因此Lumaflip只显示已打开的文件。可以在文件资源管理器中通过“属性 → 安全”更改访问权限。</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Dateimanager unter Eigenschaften → Berechtigungen ändern.</source>
+        <translation>你没有文件夹“%1”的读取权限，因此Lumaflip只显示已打开的文件。可以在文件管理器中通过“属性 → 权限”更改访问权限。</translation>
     </message>
     <message>
         <source>Kein weiterer Ordner und kein weiteres Archiv</source>

@@ -53,11 +53,11 @@
     </message>
     <message>
         <source>Wie im Explorer: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Comme l’Explorateur de fichiers&#xa0;: %1</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Explorers nicht unterstützt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (tri de l’Explorateur de fichiers non pris en charge)</translation>
     </message>
     <message>
         <source>%1 (Finder-Informationen nicht gefunden)</source>
@@ -65,11 +65,11 @@
     </message>
     <message>
         <source>%1 (Explorer-Ansicht nicht gefunden)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (vue de l’Explorateur de fichiers introuvable)</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Dateimanagers nicht bekannt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (tri du gestionnaire de fichiers inconnu)</translation>
     </message>
 </context>
 <context>
@@ -2422,6 +2422,14 @@
         <translation>Collimateurs AF</translation>
     </message>
     <message>
+        <source>Im Explorer zeigen</source>
+        <translation>Afficher dans l’Explorateur de fichiers</translation>
+    </message>
+    <message>
+        <source>Im Dateimanager zeigen</source>
+        <translation>Afficher dans le gestionnaire de fichiers</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>Aucune action</translation>
     </message>
@@ -3205,10 +3213,6 @@
         <translation>Tout fermer</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>Afficher dans le Finder</translation>
-    </message>
-    <message>
         <source>Umbenennen …</source>
         <translation>Renommer…</translation>
     </message>
@@ -3366,11 +3370,11 @@
     </message>
     <message>
         <source>Wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>Comme l’Explorateur de fichiers</translation>
     </message>
     <message>
         <source>Wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>Comme le gestionnaire de fichiers</translation>
     </message>
     <message>
         <source>Wie im Finder</source>
@@ -4035,7 +4039,7 @@
     <message>
         <source>%1 (%2)</source>
         <extracomment>Tooltip of the arrow buttons at the image edge: action name and its key (←/→)</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -4296,6 +4300,22 @@
         <translation>S’applique au double-clic dans le Finder, à «&#xa0;Ouvrir avec&#xa0;» et au glisser-déposer sur l’icône du Dock.</translation>
     </message>
     <message>
+        <source>Öffnen aus dem Explorer:</source>
+        <translation>Ouverture depuis l’Explorateur de fichiers&#xa0;:</translation>
+    </message>
+    <message>
+        <source>Öffnen aus dem Dateimanager:</source>
+        <translation>Ouverture depuis le gestionnaire de fichiers&#xa0;:</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Explorer und „Öffnen mit“.</source>
+        <translation>S’applique au double-clic dans l’Explorateur de fichiers et à «&#xa0;Ouvrir avec&#xa0;».</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Dateimanager und „Öffnen mit“.</source>
+        <translation>S’applique au double-clic dans le gestionnaire de fichiers et à «&#xa0;Ouvrir avec&#xa0;».</translation>
+    </message>
+    <message>
         <source>Fenster beim nächsten Start wiederherstellen</source>
         <translation>Restaurer les fenêtres au prochain lancement</translation>
     </message>
@@ -4489,11 +4509,11 @@
     </message>
     <message>
         <source>Pfeil-Schaltflächen am Bildrand zeigen</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher des boutons fléchés au bord de l’image</translation>
     </message>
     <message>
         <source>Sie erscheinen, wenn sich die Maus bewegt, und blättern wie ← und → zum vorherigen und nächsten Bild.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ils apparaissent quand la souris bouge et passent à l’image précédente ou suivante, comme ← et →.</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>
@@ -4653,7 +4673,7 @@
     </message>
     <message>
         <source>Gilt, wenn die Sortierung wie im Dateimanager oben aus ist oder nicht gelesen werden kann. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier.</source>
-        <translation type="unfinished"></translation>
+        <translation>S’applique lorsque le tri comme dans le gestionnaire de fichiers ci-dessus est désactivé ou ne peut pas être lu. Un choix effectué dans le menu Présentation → Trier par est mémorisé pour chaque dossier&#xa0;; «&#xa0;Utiliser pour tous les dossiers&#xa0;» en fait le réglage par défaut ici.</translation>
     </message>
     <message>
         <source> %</source>
@@ -4740,19 +4760,19 @@
     </message>
     <message>
         <source>Sortierung wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>Trier comme dans l’Explorateur de fichiers</translation>
     </message>
     <message>
         <source>Zeigt ein Explorer-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen Sortierung und, soweit möglich, die Gruppierung. Sonst sortiert Lumaflip nach Name; eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si une fenêtre de l’Explorateur de fichiers affiche exactement le dossier ouvert, Lumaflip reprend son tri et, si possible, son regroupement. Sinon, Lumaflip trie par nom&#xa0;; un fichier .DS_Store provenant d’un Mac reste pris en compte.</translation>
     </message>
     <message>
         <source>Sortierung wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>Trier comme dans le gestionnaire de fichiers</translation>
     </message>
     <message>
         <source>Die Sortierung des Dateimanagers (Nautilus, Dolphin …) wird nicht gelesen: Lumaflip sortiert nach Name. Eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le tri du gestionnaire de fichiers (Nautilus, Dolphin…) n’est pas lu&#xa0;: Lumaflip trie par nom. Un fichier .DS_Store provenant d’un Mac reste pris en compte.</translation>
     </message>
     <message>
         <source>Manuelle Sortierung:</source>
@@ -5124,7 +5144,7 @@
     </message>
     <message>
         <source>Sortierung live vom Explorer-Fenster übernehmen</source>
-        <translation type="unfinished"></translation>
+        <translation>Reprendre le tri en direct depuis la fenêtre de l’Explorateur de fichiers</translation>
     </message>
     <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
@@ -5836,10 +5856,6 @@
         <translation>Le fichier est endommagé ou son format n’est pas pris en charge.</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>Afficher dans le Finder</translation>
-    </message>
-    <message>
         <source>Volle Auflösung nicht verfügbar</source>
         <translation>Pleine résolution non disponible</translation>
     </message>
@@ -5887,6 +5903,14 @@
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
         <translation>Vous n’avez pas l’autorisation de lecture pour le dossier «&#xa0;%1&#xa0;», Lumaflip n’affiche donc que le fichier ouvert. Vous pouvez modifier les autorisations dans le Finder, via Fichier → Lire les informations → «&#xa0;Partage et permissions&#xa0;».</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Explorer unter Eigenschaften → Sicherheit ändern.</source>
+        <translation>Vous n’avez pas l’autorisation de lecture pour le dossier «&#xa0;%1&#xa0;», Lumaflip n’affiche donc que le fichier ouvert. Vous pouvez modifier les autorisations dans l’Explorateur de fichiers, via Propriétés → Sécurité.</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Dateimanager unter Eigenschaften → Berechtigungen ändern.</source>
+        <translation>Vous n’avez pas l’autorisation de lecture pour le dossier «&#xa0;%1&#xa0;», Lumaflip n’affiche donc que le fichier ouvert. Vous pouvez modifier les autorisations dans le gestionnaire de fichiers, via Propriétés → Permissions.</translation>
     </message>
     <message>
         <source>Kein weiterer Ordner und kein weiteres Archiv</source>
