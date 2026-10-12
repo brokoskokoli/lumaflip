@@ -458,8 +458,9 @@ Paket `Brokoskokoli.Lumaflip` (Installer-Typ `inno`, Scope `user` mit `/CURRENTU
 `machine` mit `/ALLUSERS`; winget startet Inno Setup still mit `/SP- /VERYSILENT /SUPPRESSMSGBOXES
 /NORESTART`). Die Daten unter „Apps & Features“ stammen aus `packaging/windows/Lumaflip.iss`:
 `ProductCode` = `{6E0D5D8A-6A43-4C6B-9C6F-4C1A5B7E1F2D}_is1` (AppId + `_is1`), `DisplayName`
-`Lumaflip`, `Publisher` `The Lumaflip contributors`. Ändert sich `AppId` oder `AppPublisher`,
-müssen die Manifeste mitziehen.
+`Lumaflip`, `Publisher` `Stefan Richter` (ab 1.2.2; 1.2.1 schrieb noch `The Lumaflip contributors`, so steht es im
+1.2.1-Manifest). Ändert sich `AppId` oder `AppPublisher`, müssen die Manifeste mitziehen. Die erste winget-Einreichung
+am besten mit 1.2.2, dann passen Herausgeber im Manifest und unter „Apps & Features“ zusammen.
 
 **Erste Einreichung (einmalig, von Hand):** Microsoft prüft neue Pakete manuell; erst nach dem
 Merge kann der Release-Job Updates einreichen. Die Manifeste für 1.2.1 liegen unter
