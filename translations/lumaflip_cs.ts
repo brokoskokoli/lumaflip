@@ -53,11 +53,11 @@
     </message>
     <message>
         <source>Wie im Explorer: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Podle Průzkumníka souborů: %1</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Explorers nicht unterstützt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (řazení Průzkumníka souborů není podporováno)</translation>
     </message>
     <message>
         <source>%1 (Finder-Informationen nicht gefunden)</source>
@@ -65,11 +65,11 @@
     </message>
     <message>
         <source>%1 (Explorer-Ansicht nicht gefunden)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (zobrazení Průzkumníka souborů nenalezeno)</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Dateimanagers nicht bekannt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (řazení správce souborů není známo)</translation>
     </message>
 </context>
 <context>
@@ -2434,6 +2434,14 @@
         <translation>Body zaostření</translation>
     </message>
     <message>
+        <source>Im Explorer zeigen</source>
+        <translation>Zobrazit v Průzkumníku souborů</translation>
+    </message>
+    <message>
+        <source>Im Dateimanager zeigen</source>
+        <translation>Zobrazit ve správci souborů</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>Nic</translation>
     </message>
@@ -3217,10 +3225,6 @@
         <translation>Zavřít vše</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>Zobrazit ve Finderu</translation>
-    </message>
-    <message>
         <source>Umbenennen …</source>
         <translation>Přejmenovat…</translation>
     </message>
@@ -3378,11 +3382,11 @@
     </message>
     <message>
         <source>Wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>Podle Průzkumníka souborů</translation>
     </message>
     <message>
         <source>Wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>Podle správce souborů</translation>
     </message>
     <message>
         <source>Wie im Finder</source>
@@ -4050,7 +4054,7 @@
     <message>
         <source>%1 (%2)</source>
         <extracomment>Tooltip of the arrow buttons at the image edge: action name and its key (←/→)</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -4316,6 +4320,22 @@
         <translation>Platí pro dvojí kliknutí ve Finderu, „Otevřít pomocí“ a přetažení na ikonu v Docku.</translation>
     </message>
     <message>
+        <source>Öffnen aus dem Explorer:</source>
+        <translation>Otevírání z Průzkumníka souborů:</translation>
+    </message>
+    <message>
+        <source>Öffnen aus dem Dateimanager:</source>
+        <translation>Otevírání ze správce souborů:</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Explorer und „Öffnen mit“.</source>
+        <translation>Platí pro dvojí kliknutí v Průzkumníku souborů a „Otevřít v programu“.</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Dateimanager und „Öffnen mit“.</source>
+        <translation>Platí pro dvojí kliknutí ve správci souborů a „Otevřít pomocí“.</translation>
+    </message>
+    <message>
         <source>Fenster beim nächsten Start wiederherstellen</source>
         <translation>Při příštím spuštění obnovit okna</translation>
     </message>
@@ -4509,11 +4529,11 @@
     </message>
     <message>
         <source>Pfeil-Schaltflächen am Bildrand zeigen</source>
-        <translation type="unfinished"></translation>
+        <translation>Zobrazovat tlačítka se šipkami na okraji obrázku</translation>
     </message>
     <message>
         <source>Sie erscheinen, wenn sich die Maus bewegt, und blättern wie ← und → zum vorherigen und nächsten Bild.</source>
-        <translation type="unfinished"></translation>
+        <translation>Objeví se při pohybu myši a stejně jako ← a → přepínají na předchozí a další obrázek.</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>
@@ -4673,7 +4693,7 @@
     </message>
     <message>
         <source>Gilt, wenn die Sortierung wie im Dateimanager oben aus ist oder nicht gelesen werden kann. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier.</source>
-        <translation type="unfinished"></translation>
+        <translation>Platí, když je řazení podle správce souborů výše vypnuto nebo ho nelze načíst. Volba v nabídce Zobrazení → Seřadit podle se pamatuje pro každou složku zvlášť; „Použít pro všechny složky“ z ní udělá výchozí hodnotu zde.</translation>
     </message>
     <message>
         <source> %</source>
@@ -4761,19 +4781,19 @@
     </message>
     <message>
         <source>Sortierung wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>Řazení podle Průzkumníka souborů</translation>
     </message>
     <message>
         <source>Zeigt ein Explorer-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen Sortierung und, soweit möglich, die Gruppierung. Sonst sortiert Lumaflip nach Name; eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokud okno Průzkumníka souborů zobrazuje právě otevřenou složku, Lumaflip převezme jeho řazení a podle možností i seskupení. Jinak Lumaflip řadí podle názvu; soubor .DS_Store z Macu nadále platí.</translation>
     </message>
     <message>
         <source>Sortierung wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>Řazení podle správce souborů</translation>
     </message>
     <message>
         <source>Die Sortierung des Dateimanagers (Nautilus, Dolphin …) wird nicht gelesen: Lumaflip sortiert nach Name. Eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>Řazení správce souborů (Nautilus, Dolphin…) se nenačítá: Lumaflip řadí podle názvu. Soubor .DS_Store z Macu nadále platí.</translation>
     </message>
     <message>
         <source>Manuelle Sortierung:</source>
@@ -5145,7 +5165,7 @@
     </message>
     <message>
         <source>Sortierung live vom Explorer-Fenster übernehmen</source>
-        <translation type="unfinished"></translation>
+        <translation>Přebírat řazení živě z okna Průzkumníka souborů</translation>
     </message>
     <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
@@ -5859,10 +5879,6 @@
         <translation>Soubor je poškozený nebo jeho formát není podporován.</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>Zobrazit ve Finderu</translation>
-    </message>
-    <message>
         <source>Volle Auflösung nicht verfügbar</source>
         <translation>Plné rozlišení není k dispozici</translation>
     </message>
@@ -5910,6 +5926,14 @@
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
         <translation>Ke složce „%1“ nemáte oprávnění ke čtení, a proto Lumaflip zobrazuje jen otevřený soubor. Oprávnění lze změnit ve Finderu v nabídce Soubor → Informace → „Sdílení a oprávnění“.</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Explorer unter Eigenschaften → Sicherheit ändern.</source>
+        <translation>Ke složce „%1“ nemáte oprávnění ke čtení, a proto Lumaflip zobrazuje jen otevřený soubor. Oprávnění lze změnit v Průzkumníku souborů v části Vlastnosti → Zabezpečení.</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Dateimanager unter Eigenschaften → Berechtigungen ändern.</source>
+        <translation>Ke složce „%1“ nemáte oprávnění ke čtení, a proto Lumaflip zobrazuje jen otevřený soubor. Oprávnění lze změnit ve správci souborů v části Vlastnosti → Oprávnění.</translation>
     </message>
     <message>
         <source>Kein weiterer Ordner und kein weiteres Archiv</source>

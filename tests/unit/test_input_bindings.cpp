@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "core/InputBindings.h"
+#include "core/Platform.h"
 #include "core/Settings.h"
 
 #include <QCoreApplication>
@@ -644,6 +645,24 @@ TEST_F(InputBindingsTest, ActionIdRoundtrip) {
     EXPECT_EQ(actionId(Action::NextImage), "nextImage");
     // every enum value except None is listed
     EXPECT_EQ(InputBindings::allActions().size(), int(Action::ResetZoom)); // last enum value
+}
+
+// F-FILE-02: "Im Finder zeigen" is named after the platform's file manager (menu, error card,
+// shortcut list all use actionLabel()).
+TEST_F(InputBindingsTest, F_FILE_02_RevealLabelNamesThePlatformFileManager) {
+    const QString label = actionLabel(Action::RevealInFinder);
+    switch (platformFileManager()) {
+    case FileManager::Finder:
+        EXPECT_EQ(label, QString::fromUtf8("Im Finder zeigen"));
+        break;
+    case FileManager::Explorer:
+        EXPECT_EQ(label, QString::fromUtf8("Im Explorer zeigen"));
+        break;
+    case FileManager::Other:
+        EXPECT_EQ(label, QString::fromUtf8("Im Dateimanager zeigen"));
+        break;
+    }
+    EXPECT_EQ(actionId(Action::RevealInFinder), "revealInFinder"); // stored id unchanged
 }
 
 // F-VIEW-14: Enter resets a changed zoom; otherwise it keeps renaming (F-FILE-04) or, with the

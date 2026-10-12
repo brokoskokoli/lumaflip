@@ -53,11 +53,11 @@
     </message>
     <message>
         <source>Wie im Explorer: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuten Resurssienhallinnassa: %1</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Explorers nicht unterstützt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (Resurssienhallinnan järjestystä ei tueta)</translation>
     </message>
     <message>
         <source>%1 (Finder-Informationen nicht gefunden)</source>
@@ -65,11 +65,11 @@
     </message>
     <message>
         <source>%1 (Explorer-Ansicht nicht gefunden)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (Resurssienhallinnan näkymää ei löytynyt)</translation>
     </message>
     <message>
         <source>%1 (Sortierung des Dateimanagers nicht bekannt)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (tiedostonhallinnan järjestys ei tiedossa)</translation>
     </message>
 </context>
 <context>
@@ -2422,6 +2422,14 @@
         <translation>Tarkennuspisteet</translation>
     </message>
     <message>
+        <source>Im Explorer zeigen</source>
+        <translation>Näytä Resurssienhallinnassa</translation>
+    </message>
+    <message>
+        <source>Im Dateimanager zeigen</source>
+        <translation>Näytä tiedostonhallinnassa</translation>
+    </message>
+    <message>
         <source>Nichts</source>
         <translation>Ei mitään</translation>
     </message>
@@ -3205,10 +3213,6 @@
         <translation>Sulje kaikki</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>Näytä Finderissa</translation>
-    </message>
-    <message>
         <source>Umbenennen …</source>
         <translation>Nimeä uudelleen…</translation>
     </message>
@@ -3366,11 +3370,11 @@
     </message>
     <message>
         <source>Wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuten Resurssienhallinnassa</translation>
     </message>
     <message>
         <source>Wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuten tiedostonhallinnassa</translation>
     </message>
     <message>
         <source>Wie im Finder</source>
@@ -4035,7 +4039,7 @@
     <message>
         <source>%1 (%2)</source>
         <extracomment>Tooltip of the arrow buttons at the image edge: action name and its key (←/→)</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -4296,6 +4300,22 @@
         <translation>Koskee kaksoisosoitusta Finderissa, ”Avaa apilla” -toimintoa ja vetämistä Dockin symbolin päälle.</translation>
     </message>
     <message>
+        <source>Öffnen aus dem Explorer:</source>
+        <translation>Avaaminen Resurssienhallinnasta:</translation>
+    </message>
+    <message>
+        <source>Öffnen aus dem Dateimanager:</source>
+        <translation>Avaaminen tiedostonhallinnasta:</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Explorer und „Öffnen mit“.</source>
+        <translation>Koskee kaksoisnapsautusta Resurssienhallinnassa ja ”Avaa sovelluksessa” -toimintoa.</translation>
+    </message>
+    <message>
+        <source>Gilt für Doppelklick im Dateimanager und „Öffnen mit“.</source>
+        <translation>Koskee kaksoisnapsautusta tiedostonhallinnassa ja ”Avaa sovelluksella” -toimintoa.</translation>
+    </message>
+    <message>
         <source>Fenster beim nächsten Start wiederherstellen</source>
         <translation>Palauta ikkunat seuraavalla käynnistyskerralla</translation>
     </message>
@@ -4489,11 +4509,11 @@
     </message>
     <message>
         <source>Pfeil-Schaltflächen am Bildrand zeigen</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytä nuolipainikkeet kuvan reunassa</translation>
     </message>
     <message>
         <source>Sie erscheinen, wenn sich die Maus bewegt, und blättern wie ← und → zum vorherigen und nächsten Bild.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne tulevat näkyviin, kun hiirtä liikutetaan, ja siirtyvät ← ja → -näppäinten tapaan edelliseen ja seuraavaan kuvaan.</translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>
@@ -4653,7 +4673,7 @@
     </message>
     <message>
         <source>Gilt, wenn die Sortierung wie im Dateimanager oben aus ist oder nicht gelesen werden kann. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier.</source>
-        <translation type="unfinished"></translation>
+        <translation>Käytetään, kun järjestys kuten tiedostonhallinnassa (yllä) on pois päältä tai sitä ei voi lukea. Näytä → Järjestä -valikossa tehty valinta muistetaan kansiokohtaisesti; ”Käytä kaikille kansioille” tekee siitä tämän oletuksen.</translation>
     </message>
     <message>
         <source> %</source>
@@ -4740,19 +4760,19 @@
     </message>
     <message>
         <source>Sortierung wie im Explorer</source>
-        <translation type="unfinished"></translation>
+        <translation>Järjestys kuten Resurssienhallinnassa</translation>
     </message>
     <message>
         <source>Zeigt ein Explorer-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen Sortierung und, soweit möglich, die Gruppierung. Sonst sortiert Lumaflip nach Name; eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jos Resurssienhallinnan ikkuna näyttää juuri avattua kansiota, Lumaflip käyttää sen järjestystä ja mahdollisuuksien mukaan ryhmittelyä. Muuten Lumaflip järjestää nimen mukaan; Macin .DS_Store-tiedosto on edelleen voimassa.</translation>
     </message>
     <message>
         <source>Sortierung wie im Dateimanager</source>
-        <translation type="unfinished"></translation>
+        <translation>Järjestys kuten tiedostonhallinnassa</translation>
     </message>
     <message>
         <source>Die Sortierung des Dateimanagers (Nautilus, Dolphin …) wird nicht gelesen: Lumaflip sortiert nach Name. Eine .DS_Store-Datei von einem Mac gilt weiter.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tiedostonhallinnan (Nautilus, Dolphin…) järjestystä ei lueta: Lumaflip järjestää nimen mukaan. Macin .DS_Store-tiedosto on edelleen voimassa.</translation>
     </message>
     <message>
         <source>Manuelle Sortierung:</source>
@@ -5124,7 +5144,7 @@
     </message>
     <message>
         <source>Sortierung live vom Explorer-Fenster übernehmen</source>
-        <translation type="unfinished"></translation>
+        <translation>Käytä Resurssienhallinnan ikkunan järjestystä (live)</translation>
     </message>
     <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
@@ -5836,10 +5856,6 @@
         <translation>Tiedosto on vioittunut, tai sen muotoa ei tueta.</translation>
     </message>
     <message>
-        <source>Im Finder zeigen</source>
-        <translation>Näytä Finderissa</translation>
-    </message>
-    <message>
         <source>Volle Auflösung nicht verfügbar</source>
         <translation>Täysi resoluutio ei ole käytettävissä</translation>
     </message>
@@ -5887,6 +5903,14 @@
     <message>
         <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Finder unter Ablage → Informationen → „Teilen &amp; Zugriffsrechte“ ändern.</source>
         <translation>Sinulla ei ole lukuoikeutta kansioon ”%1”, joten Lumaflip näyttää vain avatun tiedoston. Käyttöoikeuksia voi muuttaa Finderissa kohdassa Arkisto → Näytä tiedot → ”Jakaminen ja oikeudet”.</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Explorer unter Eigenschaften → Sicherheit ändern.</source>
+        <translation>Sinulla ei ole lukuoikeutta kansioon ”%1”, joten Lumaflip näyttää vain avatun tiedoston. Käyttöoikeuksia voi muuttaa Resurssienhallinnassa kohdassa Ominaisuudet → Suojaus.</translation>
+    </message>
+    <message>
+        <source>Für den Ordner „%1“ fehlen dir die Leserechte, deshalb zeigt Lumaflip nur die geöffnete Datei. Die Zugriffsrechte lassen sich im Dateimanager unter Eigenschaften → Berechtigungen ändern.</source>
+        <translation>Sinulla ei ole lukuoikeutta kansioon ”%1”, joten Lumaflip näyttää vain avatun tiedoston. Käyttöoikeuksia voi muuttaa tiedostonhallinnassa kohdassa Ominaisuudet → Oikeudet.</translation>
     </message>
     <message>
         <source>Kein weiterer Ordner und kein weiteres Archiv</source>

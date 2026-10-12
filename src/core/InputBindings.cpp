@@ -2,6 +2,7 @@
 #include "InputBindings.h"
 
 #include "Language.h"
+#include "Platform.h"
 
 #include <QSet>
 
@@ -381,6 +382,17 @@ Action actionFromId(const QString& id) {
 }
 
 QString actionLabel(Action a) {
+    if (a == Action::RevealInFinder) {
+        // Named after the platform's file manager (menu, error card, shortcut list).
+        switch (platformFileManager()) {
+        case FileManager::Explorer:
+            return Tr::tr("Im Explorer zeigen");
+        case FileManager::Other:
+            return Tr::tr("Im Dateimanager zeigen");
+        case FileManager::Finder:
+            break;
+        }
+    }
     const ActionInfo* i = info(a);
     if (!i)
         return Tr::tr("Nichts");

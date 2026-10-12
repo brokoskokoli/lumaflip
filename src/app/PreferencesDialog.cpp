@@ -378,15 +378,22 @@ QWidget* PreferencesDialog::buildGeneral() {
                  helpLabel(tr("Wirkt sofort. Systemmenüs und -fenster von macOS („Vollbildmodus“, „Dienste“, "
                               "„Öffnen“, Berechtigungsabfragen) folgen nach einem Neustart."),
                            w));
-    form->addRow(tr("Öffnen aus dem Finder:"),
-                 bind.combo(key::OpenBehavior, {"newWindow", "replaceFront", "newUnlessOpen"},
-                            {tr("Immer in neuem Fenster"), tr("Im vordersten Fenster ersetzen"),
-                             tr("Neues Fenster, außer die Datei ist schon offen")},
-                            w));
-    form->addRow(QString(),
-                 helpLabel(tr("Gilt für Doppelklick im Finder, „Öffnen mit“ und Drag & Drop auf das "
-                              "Dock-Symbol."),
-                           w));
+    // Named after the platform's file manager (the Dock exists only on macOS).
+    const FileManager fm = platformFileManager();
+    const QString openLabel = fm == FileManager::Explorer ? tr("Öffnen aus dem Explorer:")
+                              : fm == FileManager::Other  ? tr("Öffnen aus dem Dateimanager:")
+                                                          : tr("Öffnen aus dem Finder:");
+    const QString openHelp = fm == FileManager::Explorer
+                                 ? tr("Gilt für Doppelklick im Explorer und „Öffnen mit“.")
+                             : fm == FileManager::Other
+                                 ? tr("Gilt für Doppelklick im Dateimanager und „Öffnen mit“.")
+                                 : tr("Gilt für Doppelklick im Finder, „Öffnen mit“ und Drag & Drop auf das "
+                                      "Dock-Symbol.");
+    form->addRow(openLabel, bind.combo(key::OpenBehavior, {"newWindow", "replaceFront", "newUnlessOpen"},
+                                       {tr("Immer in neuem Fenster"), tr("Im vordersten Fenster ersetzen"),
+                                        tr("Neues Fenster, außer die Datei ist schon offen")},
+                                       w));
+    form->addRow(QString(), helpLabel(openHelp, w));
     form->addRow(QString(),
                  bind.check(key::RestoreWindows, tr("Fenster beim nächsten Start wiederherstellen"), w));
     form->addRow(QString(),
