@@ -9,6 +9,10 @@ refer to [SPEC.md](SPEC.md).
 
 ## [Unreleased]
 
+## [1.2.2] - 2026-10-12
+
+Arrow buttons on the image, and Windows now follows the Explorer window's sort order.
+
 ### Added
 
 - **Previous/next arrow buttons on the image**: round, semi-transparent buttons at the left and
@@ -30,6 +34,8 @@ refer to [SPEC.md](SPEC.md).
   and the shortcut list now say "Show in File Explorer" on Windows and "Show in File Manager" on
   Linux; the "When opening from …" setting and the missing-permissions hint name the platform's
   file manager, too. [F-FILE-02]
+- **Windows installer** shows the Lumaflip icon in the setup wizard instead of Inno Setup's
+  default pictures, and names "Stefan Richter" as publisher, matching the code signature.
 
 ## [1.2.1] - 2026-10-12
 
@@ -234,6 +240,7 @@ Milestone M1 — MVP. Acceptance testing: [docs/TESTING-M1.md](docs/TESTING-M1.m
   settings window. [F-WIN-01/02/03/08/09/10, F-MAC-01/02/05, F-SET-01/04]
 - Graceful handling of macOS privacy prompts; no Full Disk Access required. [F-PRIV-01/02]
 
-[Unreleased]: https://github.com/brokoskokoli/lumaflip/compare/v1.2.1...HEAD
+[Unreleased]: https://github.com/brokoskokoli/lumaflip/compare/v1.2.2...HEAD
+[1.2.2]: https://github.com/brokoskokoli/lumaflip/releases/tag/v1.2.2
 [1.2.1]: https://github.com/brokoskokoli/lumaflip/releases/tag/v1.2.1
 [1.2.0]: https://github.com/brokoskokoli/lumaflip/releases/tag/v1.2.0

@@ -69,4 +69,4 @@ body:
     id: version
     attributes:
       label: Lumaflip version
-      placeholder: "1.2.1"
+      placeholder: "1.2.2"
