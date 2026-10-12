@@ -69,6 +69,10 @@ OutputBaseFilename=Lumaflip-{#AppVersion}-windows-x64-setup
 SetupIconFile={#IconFile}
 #endif
 UninstallDisplayIcon={app}\{#AppExe}
+; The Lumaflip icon in the wizard instead of Inno Setup's default pictures, one file per DPI
+; step (tools/make_installer_images.sh renders them from the app icon).
+WizardSmallImageFile=wizard\small-55.bmp,wizard\small-64.bmp,wizard\small-69.bmp,wizard\small-83.bmp,wizard\small-92.bmp,wizard\small-110.bmp,wizard\small-119.bmp,wizard\small-138.bmp
+WizardImageFile=wizard\large-164.bmp,wizard\large-205.bmp,wizard\large-246.bmp,wizard\large-287.bmp,wizard\large-328.bmp,wizard\large-369.bmp,wizard\large-410.bmp
 UninstallDisplayName={#AppName}
 Compression=lzma2/max
 SolidCompression=yes
