@@ -84,8 +84,16 @@ class TstNavArrows : public QObject {
             return nullptr;
         return w;
     }
-    // Moves the mouse over the window the way the system does (through its QWindow).
-    static void moveMouse(ViewerWindow* w, QPoint pos) { QTest::mouseMove(w->windowHandle(), pos); }
+    // Moves the mouse over the window the way the system does (through its QWindow). Qt drops
+    // a move to the position it saw last (also a real one of the system cursor, e.g. when a
+    // new window opens under it): two different positions, so one of them always arrives.
+    static void moveMouse(ViewerWindow* w, QPoint pos) {
+        QTest::mouseMove(w->windowHandle(), pos + QPoint(1, 1));
+        QTest::mouseMove(w->windowHandle(), pos);
+    }
+    // Checks of state, not of timing: no fades, and the buttons stay until hidden on purpose
+    // (a busy CI machine must not let the idle timer race the checks).
+    static void pinTiming(ViewerWindow* w) { w->navArrows()->setTimingForTesting(600000, 0, 0); }
     static QPoint middle(ViewerWindow* w) { return w->view()->mapTo(w, w->view()->rect().center()); }
     static QPoint centerOf(ViewerWindow* w, QWidget* button) {
         return button->mapTo(w, button->rect().center());
@@ -146,6 +154,10 @@ private slots:
         QVERIFY(n);
         NavArrowButton* left = n->leftButton();
         NavArrowButton* right = n->rightButton();
+        // The timing of the title strip (F-VIEW-15) and the full screen chrome (SPEC 5.1).
+        QCOMPARE(n->idleMs(), 1500);
+        QCOMPARE(n->fadeInMs(), NavArrows::kFadeInMs);
+        QCOMPARE(n->fadeOutMs(), NavArrows::kFadeOutMs);
         QCOMPARE(left->parentWidget(), w->view()); // above the canvas (and grabbed for EDR)
         // At rest: nothing over the photo.
         QVERIFY(!left->isVisible());
@@ -155,33 +167,45 @@ private slots:
         QCOMPARE(right->accessibleName(), actionLabel(Action::NextImage));
         QVERIFY(left->toolTip().contains(QStringLiteral("←")));
         QVERIFY(right->toolTip().contains(QStringLiteral("→")));
-        // A mouse move over the image fades both in (beta has a neighbour on each side).
+        // A mouse move over the image fades both in (beta has a neighbour on each side). A
+        // long fade-in and no idle timeout: the in-between state is checked, not raced.
+        n->setTimingForTesting(600000, 4000, 0);
         moveMouse(w, middle(w));
         QVERIFY(left->shownTarget());
         QVERIFY(right->shownTarget());
         QVERIFY(left->isVisible() && right->isVisible());
         QVERIFY(!right->takesMouse()); // a click right after the move still reaches the image
-        QTRY_VERIFY(left->takesMouse() && right->takesMouse());
+        QVERIFY(right->opacity() < 1.0);
+        QTRY_VERIFY_WITH_TIMEOUT(left->takesMouse() && right->takesMouse(), 15000);
         QCOMPARE(right->opacity(), 1.0);
         // At the edges, vertically centred, at least 44 px to hit.
         QVERIFY(left->geometry().left() < w->view()->width() / 4);
         QVERIFY(right->geometry().right() > w->view()->width() * 3 / 4);
         QVERIFY(left->width() >= NavArrows::kDiameter && left->height() >= NavArrows::kDiameter);
         QVERIFY(std::abs(left->geometry().center().y() - right->geometry().center().y()) <= 1);
-        // Further moves keep them; after the idle time they fade out.
-        QTest::qWait(NavArrows::kIdleMs / 2);
-        moveMouse(w, middle(w) + QPoint(10, 0));
-        QTest::qWait(NavArrows::kIdleMs / 2 + 200);
+        // Further moves restart the idle time; without moves they fade out. Generous idle
+        // time: each check has 1 s of margin against a slow machine.
+        n->setTimingForTesting(2500, 0, NavArrows::kFadeOutMs);
+        moveMouse(w, middle(w) + QPoint(10, 0)); // idle time starts
+        QTest::qWait(1500);
+        moveMouse(w, middle(w) + QPoint(20, 0)); // 1.5 s later: starts again
+        QTest::qWait(1500);                      // 3 s after the first move, 1.5 s after this one
         QVERIFY(right->shownTarget());
-        QTRY_VERIFY_WITH_TIMEOUT(!left->isVisible() && !right->isVisible(), 6000);
-        // Over a button they stay.
+        QVERIFY(left->shownTarget());
+        QTRY_VERIFY_WITH_TIMEOUT(!left->isVisible() && !right->isVisible(), 10000);
+        QVERIFY(!left->shownTarget() && !right->shownTarget());
+        // Over a button they stay (short idle time, waited for several times).
+        n->setTimingForTesting(300, 0, 0);
         moveMouse(w, middle(w));
-        QTRY_VERIFY(right->takesMouse());
+        QVERIFY(right->takesMouse());
         moveMouse(w, centerOf(w, right));
         QTRY_VERIFY(right->underMouse());
-        QTest::qWait(NavArrows::kIdleMs + 500);
+        QTest::qWait(1500);
         QVERIFY(right->isVisible());
         QVERIFY(right->shownTarget());
+        // Leaving it: they go after the idle time.
+        moveMouse(w, middle(w));
+        QTRY_VERIFY_WITH_TIMEOUT(!right->isVisible(), 10000);
     }
 
     // Covers: F-NAV-09 (click = ←/→, the first/last image hides its button without wrap, a
@@ -190,6 +214,7 @@ private slots:
         makeFolder();
         ViewerWindow* w = openAndWait(path("alpha.jpg"));
         QVERIFY(w);
+        pinTiming(w);
         NavArrowButton* left = w->navArrows()->leftButton();
         NavArrowButton* right = w->navArrows()->rightButton();
         moveMouse(w, middle(w));
@@ -232,6 +257,7 @@ private slots:
         makeFolder();
         ViewerWindow* w = openAndWait(path("beta.jpg"));
         QVERIFY(w);
+        pinTiming(w);
         NavArrowButton* left = w->navArrows()->leftButton();
         NavArrowButton* right = w->navArrows()->rightButton();
         moveMouse(w, middle(w));

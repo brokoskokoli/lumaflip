@@ -76,10 +76,17 @@ public:
     Action leftAction() const { return m_leftAction; }
     Action rightAction() const { return m_rightAction; }
 
-    void reveal(); // fade in what has a target, fade out after kIdleMs without a mouse move
+    void reveal(); // fade in what has a target, fade out after idleMs() without a mouse move
     // The window's state changed (image, mode, setting): buttons without a target or in a
     // mode without buttons go at once.
     void sync();
+
+    int idleMs() const { return m_idleMs; }
+    int fadeInMs() const { return m_fadeInMs; }
+    int fadeOutMs() const { return m_fadeOutMs; }
+    // Tests: other durations (0 = no fade) so that checks do not race the timers on a busy
+    // machine; the defaults are the constants above.
+    void setTimingForTesting(int idleMs, int fadeInMs, int fadeOutMs);
 
 protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
@@ -99,6 +106,9 @@ private:
     Action m_rightAction = Action::NextImage;
     bool m_leftWanted = false;
     bool m_rightWanted = false;
+    int m_idleMs = kIdleMs;
+    int m_fadeInMs = kFadeInMs;
+    int m_fadeOutMs = kFadeOutMs;
 };
 
 } // namespace lf

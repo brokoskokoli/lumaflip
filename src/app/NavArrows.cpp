@@ -34,6 +34,11 @@ namespace {
 
 constexpr int kShadow = 4; // room around the circle for the shadow
 
+QSize buttonSize() {
+    const int s = NavArrows::kDiameter + 2 * kShadow;
+    return {s, s};
+}
+
 } // namespace
 
 // ---------------------------------------------------------------------------------------
@@ -48,7 +53,7 @@ NavArrowButton::NavArrowButton(Side side, QWidget* parent) : QAbstractButton(par
     setFocusPolicy(Qt::NoFocus);                    // keyboard users keep ←/→
     setMouseTracking(true);
     setCursor(Qt::ArrowCursor); // not the pan cursor of the image below
-    resize(sizeHint());
+    resize(buttonSize());
     m_fade = new QVariantAnimation(this);
     m_fade->setEasingCurve(QEasingCurve::InOutQuad);
     connect(m_fade, &QVariantAnimation::valueChanged, this,
@@ -63,8 +68,7 @@ NavArrowButton::NavArrowButton(Side side, QWidget* parent) : QAbstractButton(par
 }
 
 QSize NavArrowButton::sizeHint() const {
-    const int s = NavArrows::kDiameter + 2 * kShadow;
-    return {s, s};
+    return buttonSize();
 }
 
 void NavArrowButton::setOpacity(qreal value) {
@@ -251,10 +255,17 @@ void NavArrows::reveal() {
         return;
     place();
     if (m_leftWanted)
-        m_left->fadeTo(true, kFadeInMs);
+        m_left->fadeTo(true, m_fadeInMs);
     if (m_rightWanted)
-        m_right->fadeTo(true, kFadeInMs);
+        m_right->fadeTo(true, m_fadeInMs);
     m_idle->start();
+}
+
+void NavArrows::setTimingForTesting(int idleMs, int fadeInMs, int fadeOutMs) {
+    m_idleMs = idleMs;
+    m_fadeInMs = fadeInMs;
+    m_fadeOutMs = fadeOutMs;
+    m_idle->setInterval(idleMs);
 }
 
 void NavArrows::onIdle() {
@@ -264,8 +275,8 @@ void NavArrows::onIdle() {
         m_idle->start();
         return;
     }
-    m_left->fadeTo(false, kFadeOutMs);
-    m_right->fadeTo(false, kFadeOutMs);
+    m_left->fadeTo(false, m_fadeOutMs);
+    m_right->fadeTo(false, m_fadeOutMs);
 }
 
 void NavArrows::place() {
@@ -311,8 +322,10 @@ bool NavArrows::eventFilter(QObject* watched, QEvent* event) {
         if (watched == m_window.windowHandle()) {
             const auto* me = static_cast<QMouseEvent*>(event);
             ImageView* view = m_window.view();
+            // Window coordinates (the top-level widget's are its QWindow's): no round trip
+            // through screen coordinates, which lag behind a frame change (Windows).
             if (me->buttons() == Qt::NoButton &&
-                view->rect().contains(view->mapFromGlobal(me->globalPosition().toPoint())))
+                view->rect().contains(view->mapFrom(&m_window, me->position().toPoint())))
                 reveal();
         }
         break;
