@@ -67,6 +67,7 @@ TEST(ScreenshotFrame, TrafficLightsAreCentredInTheTitle) {
 TEST(ScreenshotFrame, FramesContentWithCornersShadowAndButtons) {
     QImage content(200, 100, QImage::Format_ARGB32_Premultiplied);
     content.fill(QColor(10, 120, 200));
+    content.setDevicePixelRatio(2.0); // like a widget grab at 2x: still drawn pixel for pixel
     FrameStyle style;
     style.dpr = 2.0;
     style.margin = 10;
@@ -85,6 +86,7 @@ TEST(ScreenshotFrame, FramesContentWithCornersShadowAndButtons) {
     // The rounded corner is not filled, the middle is the content.
     EXPECT_LT(qAlpha(out.pixel(21, 21)), 255);
     EXPECT_EQ(out.pixelColor(120, 70), QColor(10, 120, 200));
+    EXPECT_EQ(out.pixelColor(210, 110), QColor(10, 120, 200)); // the content fills the window
     // The close button: centre (20, 14) logical inside the window = (20 + 40, 20 + 28) px.
     const QColor close = out.pixelColor(60, 48);
     EXPECT_EQ(close, trafficLightColor(0));

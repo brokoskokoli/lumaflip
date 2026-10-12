@@ -229,7 +229,11 @@ QImage frameWindow(const QImage& content, const FrameStyle& style) {
             p.drawText(bar, Qt::AlignCenter, style.title);
         }
     }
-    p.drawImage(QPointF(windowRect.left(), windowRect.top() + titleH), content);
+    // Pixel for pixel: `out` is painted in device pixels, so the content's own device pixel
+    // ratio (a widget grab carries one) must not scale it.
+    QImage pixels = content;
+    pixels.setDevicePixelRatio(1.0);
+    p.drawImage(QPointF(windowRect.left(), windowRect.top() + titleH), pixels);
     if (style.trafficLights) {
         const int stripH = titleH > 0 ? style.titleBarHeight : style.trafficLightTitleHeight;
         const QList<QRectF> rects = trafficLightRects(stripH);

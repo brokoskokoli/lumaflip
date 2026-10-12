@@ -243,8 +243,12 @@ bool ShotDriver::waitImageReady(ViewerWindow* w, const QString& file) {
     auto* canvas = w->view()->findChild<ImageCanvas*>();
     const bool ok = QTest::qWaitFor(
         [&] {
-            return w->shownPath() == file && m_quality.value(file, Quality::Preview) != Quality::Preview &&
-                   (!canvas || canvas->isIdle());
+            // The stage of the image on the canvas (a cached image is shown before the
+            // imageShown signal could be connected) or the best stage reported.
+            const DecodedImagePtr current = canvas ? canvas->current() : DecodedImagePtr();
+            const bool good = (current && current->quality != Quality::Preview) ||
+                              m_quality.value(file, Quality::Preview) != Quality::Preview;
+            return w->shownPath() == file && good && (!canvas || canvas->isIdle());
         },
         20000);
     if (!ok)
@@ -408,7 +412,12 @@ bool ShotDriver::shotGrid() {
     g->clickRow(2, Qt::NoModifier);
     g->clickRow(5, Qt::ControlModifier);
     g->clickRow(9, Qt::ControlModifier);
-    const QImage image = grabStable(w, [this, w] { revealTitle(w); });
+    g->setThumbSize(200);
+    // The grid's header is at the top: no title strip over it (it fades out in the app too).
+    const QImage image = grabStable(w, [w] {
+        if (TitleStripController* ts = w->extras()->titleStrip())
+            ts->strip()->fadeTo(false, 0);
+    });
     return save(image, mainWindowStyle(w),
                 shotFileName(QStringLiteral("grid"), m_o.language, m_o.appearance));
 }
@@ -438,11 +447,16 @@ bool ShotDriver::shotCompare() {
         log(QStringLiteral("compare panes not loaded"));
         return false;
     }
-    QTest::qWait(500);
+    QTest::qWait(1500); // panes laid out at the window size
     // Synchronised zoom: zoom into the first pane, the others follow.
     ImageView* first = cv->paneView(0);
     const double fit = first->zoomFactor();
     first->setZoomFactor(fit * 1.6, QPointF(first->width() * 0.5, first->height() * 0.45));
+    QTest::qWait(500);
+    QStringList factors;
+    for (int i = 0; i < cv->paneCount(); ++i)
+        factors << QString::number(cv->paneView(i)->zoomFactor(), 'f', 3);
+    log(QStringLiteral("compare zoom: fit %1, panes %2").arg(fit).arg(factors.join(QLatin1Char(' '))));
     const QImage image = grabStable(w, [this, w] { revealTitle(w); });
     return save(image, mainWindowStyle(w),
                 shotFileName(QStringLiteral("compare"), m_o.language, m_o.appearance));

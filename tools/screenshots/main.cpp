@@ -131,6 +131,11 @@ int main(int argc, char* argv[]) {
     QTemporaryDir settingsDir;
     lf::Settings::useTestingBackend(settingsDir.filePath(QStringLiteral("settings.ini")));
     lf::Settings::instance().setValue(QString::fromLatin1(lf::key::Language), o.language);
+    // The sample folder has no Finder view settings (.DS_Store): sort by name explicitly, so
+    // the status bar says so and the flip order is the order of the file names.
+    lf::Settings::instance().setValue(QString::fromLatin1(lf::key::FollowFinder), false);
+    lf::Settings::instance().setValue(QString::fromLatin1(lf::key::ManualSortKey), QStringLiteral("name"));
+    lf::Settings::instance().setValue(QString::fromLatin1(lf::key::ManualSortAscending), true);
     lf::RecentItems::setSystemRegistrationEnabled(false);
     lf::installQtTranslations();
     if (lf::installedUiLanguage() != o.language)
