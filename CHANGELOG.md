@@ -9,6 +9,14 @@ refer to [SPEC.md](SPEC.md).
 
 ## [Unreleased]
 
+### Added
+
+- **Previous/next arrow buttons on the image**: round, semi-transparent buttons at the left and
+  right edge fade in when the mouse moves and out after 1.5 s without a move, like the title strip.
+  A click flips like ←/→ (wrap, archives, right-to-left comics); no button where there is nothing
+  to go to, none in the grid, compare, crop, slideshow or with the loupe. Settings → Display →
+  "Show arrow buttons at the image edges" (on by default). [F-NAV-09]
+
 ## [1.2.1] - 2026-10-12
 
 A new icon, reviewed translations in all 18 languages and an offer to become the default app.

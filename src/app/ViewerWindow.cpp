@@ -9,6 +9,7 @@
 #include "DragOut.h"
 #include "HdrController.h"
 #include "ImageView.h"
+#include "NavArrows.h"
 #include "OpenWith.h"
 #include "QuickMoveController.h"
 #include "RecentItems.h"
@@ -421,6 +422,7 @@ ViewerWindow::ViewerWindow(Application& app, QWidget* parent) : QMainWindow(pare
     m_editing = new WindowEditing(*this, m_app); // M4: crop, export, photo overlays
     connect(this, &ViewerWindow::imageShown, m_editing,
             [this](const QString& path) { m_editing->imageShown(path); });
+    m_navArrows = new NavArrows(*this); // F-NAV-09: after the modes it asks about
     // F-OPEN-10: an archive/PDF that cannot be read or holds no images.
     connect(m_collection, &Collection::containerFailed, this,
             [this](const QString& container, const QString& error) {
@@ -1392,6 +1394,14 @@ void ViewerWindow::handleInput(InputEvent ev, QPointF pos) {
 }
 
 bool ViewerWindow::perform(Action a, QPointF pos) {
+    const bool handled = performAction(a, pos);
+    // F-NAV-09: a mode may have started or ended (grid, crop, loupe, slideshow, Live Text).
+    if (m_navArrows)
+        m_navArrows->sync();
+    return handled;
+}
+
+bool ViewerWindow::performAction(Action a, QPointF pos) {
     if (m_app.intercepted(this, a))
         return true;
     if (m_integration && m_integration->perform(a))
