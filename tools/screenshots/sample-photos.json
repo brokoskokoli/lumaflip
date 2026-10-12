@@ -1,0 +1,150 @@
+{
+  "comment": "Sample photos for the screenshots (tools/fetch_sample_photos.py). All CC0 1.0 (public domain dedication) from Wikimedia Commons, pinned by SHA-256 of the original file. `name` is the file name in the sample folder (the name order is the flip order of the demo); `lat`/`lon` come from the {{Location}} template of the Commons page (the files carry no GPS tags) and are written into the downscaled copy for the folder map.",
+  "maxEdge": 3000,
+  "photos": [
+    {
+      "name": "Acropolis - Erechtheion.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Erechtheum_Acropolis_Athens.jpg",
+      "sha256": "281eaa830fc7b465dd4c247e19c8e1e5427aa444177c6aade3da4919501d9027",
+      "source": "https://commons.wikimedia.org/wiki/File:Erechtheum_Acropolis_Athens.jpg",
+      "author": "Jebulon",
+      "license": "CC0-1.0",
+      "lat": 37.971918, "lon": 23.726041
+    },
+    {
+      "name": "Acropolis - evening moon.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Erechtheum_Acropolis_Athens_evening_moon.jpg",
+      "sha256": "236093efaeb485806755654f01c0dae5f026ad9d24219f9f1e955cf86b94ec6b",
+      "source": "https://commons.wikimedia.org/wiki/File:Erechtheum_Acropolis_Athens_evening_moon.jpg",
+      "author": "Jebulon",
+      "license": "CC0-1.0",
+      "lat": 37.972392, "lon": 23.723522
+    },
+    {
+      "name": "Aegina harbour at sunset.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Aegina_sunset.jpg",
+      "sha256": "f4897e02f91260ee40dab014573291cb206ba3c9f7e6e4f22194e59fd8543e0b",
+      "source": "https://commons.wikimedia.org/wiki/File:Aegina_sunset.jpg",
+      "author": "Jebulon",
+      "license": "CC0-1.0",
+      "lat": 37.745142, "lon": 23.426711
+    },
+    {
+      "name": "Athens - Evzones.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/b/ba/Foot_foot_Evzones_Athens.jpg",
+      "sha256": "86c1705d5bebd9206c8040535e3c4c9cd5f147b12d4d1bcb7da9848b194769bf",
+      "source": "https://commons.wikimedia.org/wiki/File:Foot_foot_Evzones_Athens.jpg",
+      "author": "Jebulon",
+      "license": "CC0-1.0",
+      "lat": 37.975309, "lon": 23.736239
+    },
+    {
+      "name": "Athens - Holy Apostles.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/8/84/Church_of_the_Holy_Apostles_back_ancient_agora_Athens.jpg",
+      "sha256": "35f34a02695cf01f212ccf0a49bc1ce92054f3cebc814ccd25b67c4c614d0be9",
+      "source": "https://commons.wikimedia.org/wiki/File:Church_of_the_Holy_Apostles_back_ancient_agora_Athens.jpg",
+      "author": "Jebulon",
+      "license": "CC0-1.0",
+      "lat": 37.974064, "lon": 23.724125
+    },
+    {
+      "name": "Athens - Temple of Zeus.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/7/75/Evening_columns_Zeus_temple_Athens.jpg",
+      "sha256": "f27a7764477b1d67ecad9938924872293266493b5e816e522deb43ab7638aa1a",
+      "source": "https://commons.wikimedia.org/wiki/File:Evening_columns_Zeus_temple_Athens.jpg",
+      "author": "Jebulon",
+      "license": "CC0-1.0",
+      "lat": 37.969140, "lon": 23.733491
+    },
+    {
+      "name": "Athens - Zappeion.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/4/44/Courtyard_Zappeion_Athens%2C_Greece.jpg",
+      "sha256": "98202504ba1ae709feeeeade6a4bec7bd81b99c9389b4bc8db11f5296819a01e",
+      "source": "https://commons.wikimedia.org/wiki/File:Courtyard_Zappeion_Athens,_Greece.jpg",
+      "author": "Jebulon",
+      "license": "CC0-1.0",
+      "lat": 37.971434, "lon": 23.736671
+    },
+    {
+      "name": "Crete - Komos bay.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/3/3f/Komos_site_baie_Cr%C3%A8te.jpg",
+      "sha256": "b644cbb3caae00008bc232847ed0d9c233c6f6ddc0e7fd0008fcf400ee891ded",
+      "source": "https://commons.wikimedia.org/wiki/File:Komos_site_baie_Cr%C3%A8te.jpg",
+      "author": "Jebulon",
+      "license": "CC0-1.0",
+      "lat": 35.011545, "lon": 24.761528
+    },
+    {
+      "name": "Crete - Mount Ida.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Mount_Ida_chain_Messara_plain_from_Phaistos_Crete_Greece.jpg",
+      "sha256": "9b99e2cded5c12ddfdb760db2e6423708f81f6bd9ecea07c70e8924daf4b683c",
+      "source": "https://commons.wikimedia.org/wiki/File:Mount_Ida_chain_Messara_plain_from_Phaistos_Crete_Greece.jpg",
+      "author": "Jebulon",
+      "license": "CC0-1.0",
+      "lat": 35.052046, "lon": 24.814582
+    },
+    {
+      "name": "Euboea - Bourtzi castle.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/3/36/Bourtzi_castle_harbour_Karystos_Euboea_Greece.jpg",
+      "sha256": "0f30a83648c51b805dd6aaa5c17eb063c3d12611eef54ada2d6cfb789f0dc9b7",
+      "source": "https://commons.wikimedia.org/wiki/File:Bourtzi_castle_harbour_Karystos_Euboea_Greece.jpg",
+      "author": "Jebulon",
+      "license": "CC0-1.0",
+      "lat": 38.012574, "lon": 24.423065
+    },
+    {
+      "name": "Euboea - Chiliadou beach.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/1/1d/Greece_Chiliadou_Euboea_boat.jpg",
+      "sha256": "116510fc5c61628971d1a3059385d8337c97ddc2832d5986e00a94d52f71fc0d",
+      "source": "https://commons.wikimedia.org/wiki/File:Greece_Chiliadou_Euboea_boat.jpg",
+      "author": "Jebulon",
+      "license": "CC0-1.0",
+      "lat": 38.667150, "lon": 23.929480
+    },
+    {
+      "name": "Euboea - Drymona waterfall.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/9/95/Drymona_water_fall_and_pool_north_Euboea_Greece.jpg",
+      "sha256": "2868758122670108c2d805bc47417a9746694e50b14e3113ec88eefcea3f1e4d",
+      "source": "https://commons.wikimedia.org/wiki/File:Drymona_water_fall_and_pool_north_Euboea_Greece.jpg",
+      "author": "Jebulon",
+      "license": "CC0-1.0",
+      "lat": 38.872500, "lon": 23.293347
+    },
+    {
+      "name": "Euboea - fishing net.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/e/e7/Fishing_net_Karystos_Euboea_Greece.jpg",
+      "sha256": "ae43090ea34f1d1f98222493e74513eaa183ab224c22266e0d82a9b213ac107b",
+      "source": "https://commons.wikimedia.org/wiki/File:Fishing_net_Karystos_Euboea_Greece.jpg",
+      "author": "Jebulon",
+      "license": "CC0-1.0",
+      "lat": 38.012988, "lon": 24.418172
+    },
+    {
+      "name": "Euboea - rocks at Karystos.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/f/f5/Rocks_in_Karystos_Euboea_Greece.jpg",
+      "sha256": "ad559238410584a88716e24edaea418869a36d1484e5077c00be68cdfaf3b17f",
+      "source": "https://commons.wikimedia.org/wiki/File:Rocks_in_Karystos_Euboea_Greece.jpg",
+      "author": "Jebulon",
+      "license": "CC0-1.0",
+      "lat": 38.007224, "lon": 24.441120
+    },
+    {
+      "name": "Euboea - shipwreck.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/5/5d/Bow_shipwreck_Nea_Artaki_Evia_Greece.jpg",
+      "sha256": "5a03070d92948f94f7074d8714a2e7880c77b1ca18426ba8eb864a00779e8c8f",
+      "source": "https://commons.wikimedia.org/wiki/File:Bow_shipwreck_Nea_Artaki_Evia_Greece.jpg",
+      "author": "Jebulon",
+      "license": "CC0-1.0",
+      "lat": 38.511519, "lon": 23.629611
+    },
+    {
+      "name": "Rhodes - church at night.jpg",
+      "url": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Church_of_the_virgin_of_the_burgh_Rhodes_14th_century_night.jpg",
+      "sha256": "2c8b20d0300d8d0fa98b9b5e6c4f0291eab6bd27f03f24fd03aca5aadf8cf77f",
+      "source": "https://commons.wikimedia.org/wiki/File:Church_of_the_virgin_of_the_burgh_Rhodes_14th_century_night.jpg",
+      "author": "Jebulon",
+      "license": "CC0-1.0",
+      "lat": 36.442861, "lon": 28.230806
+    }
+  ]
+}

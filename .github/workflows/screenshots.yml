@@ -1,0 +1,92 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Screenshots and the demo animation for the README and the website (docs/RELEASING.md
+# "Screenshots"): builds lf_screenshots, downloads the CC0 sample photos
+# (tools/fetch_sample_photos.py, pinned by SHA-256), takes every shot in English and German,
+# light and dark, and uploads the masters and the exported files (docs/images,
+# website/images/shots) as the artifact "screenshots".
+# Nothing is committed or pushed: a maintainer looks at the artifact and commits the images.
+# Runs on demand, for release tags and for pull requests that change the tool.
+name: Screenshots
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+  pull_request:
+    paths:
+      - 'tools/screenshots/**'
+      - 'tools/fetch_sample_photos.py'
+      - '.github/workflows/screenshots.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: screenshots-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  HOMEBREW_NO_AUTO_UPDATE: "1"
+  HOMEBREW_NO_INSTALL_CLEANUP: "1"
+  HOMEBREW_NO_ENV_HINTS: "1"
+
+jobs:
+  screenshots:
+    name: Take screenshots (macOS)
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install dependencies
+        run: brew install cmake ninja qt webp pngquant
+      - name: Largest display mode (1920 x 1080)
+        # The runner's display starts at 1024 x 768; the windows (1280 x 800 at 2x) are larger
+        # either way, but more of them is on screen (the folder map is taken from the screen).
+        run: |
+          cat > "$RUNNER_TEMP/display.swift" <<'EOF'
+          import CoreGraphics
+          let display = CGMainDisplayID()
+          let modes = (CGDisplayCopyAllDisplayModes(display, nil) as? [CGDisplayMode]) ?? []
+          if let best = modes.filter({ $0.isUsableForDesktopGUI() }).max(by: { $0.width * $0.height < $1.width * $1.height }) {
+              var config: CGDisplayConfigRef?
+              CGBeginDisplayConfiguration(&config)
+              CGConfigureDisplayWithDisplayMode(config, display, best, nil)
+              let result = CGCompleteDisplayConfiguration(config, .forSession)
+              print("display mode \(best.width) x \(best.height): \(result.rawValue)")
+          }
+          EOF
+          swift "$RUNNER_TEMP/display.swift"
+      - name: Restore sample photos
+        id: photos-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: build/sample-photos/.originals
+          key: sample-photos-${{ hashFiles('tools/screenshots/sample-photos.json') }}
+      - name: Download sample photos (CC0, pinned by SHA-256)
+        run: python3 tools/fetch_sample_photos.py --out build/sample-photos
+      - name: Save sample photos
+        if: steps.photos-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: build/sample-photos/.originals
+          key: sample-photos-${{ hashFiles('tools/screenshots/sample-photos.json') }}
+      - name: Build lf_screenshots
+        run: |
+          cmake -S . -B build/screenshot-tool -G Ninja -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_PREFIX_PATH="$(brew --prefix qt)" -DLF_BUILD_TESTS=OFF
+          cmake --build build/screenshot-tool --target lf_screenshots
+      - name: Take screenshots
+        run: tools/screenshots/make_screenshots.sh build/screenshot-tool/tools/screenshots/lf_screenshots
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: screenshots
+          path: |
+            build/screenshots/masters/
+            !build/screenshots/masters/demo-*/frame-0[0-9][1-9].png
+            !build/screenshots/masters/demo-*/frame-0[1-9]0.png
+            docs/images/
+            website/images/shots/
+          if-no-files-found: warn
