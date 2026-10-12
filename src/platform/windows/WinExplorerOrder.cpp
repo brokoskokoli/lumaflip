@@ -76,7 +76,7 @@ std::optional<SortSpec> viewOrder(IFolderView2* view) {
     std::optional<explorer::ColumnSort> sort;
     int count = 0;
     if (SUCCEEDED(view->GetSortColumnCount(&count)) && count > 0) {
-        std::vector<SORTCOLUMN> columns(size_t(count));
+        std::vector<SORTCOLUMN> columns(static_cast<size_t>(count));
         if (SUCCEEDED(view->GetSortColumns(columns.data(), count)))
             sort = explorer::ColumnSort{toCore(columns.front().propkey),
                                         columns.front().direction != SORT_DESCENDING};
