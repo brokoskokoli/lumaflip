@@ -120,67 +120,17 @@
   .btn:hover { text-decoration: none; filter: brightness(1.06); }
   .meta { color: var(--muted); font-size: 14px; margin-top: 12px; }
 
-  /* ---- Illustration of the viewer: a window flipping through photos ---- */
-  .demo { margin: 44px auto 0; max-width: 900px; }
-  .window {
-    background: var(--window); border: 1px solid var(--border); border-radius: 14px;
-    box-shadow: var(--shadow); overflow: hidden; text-align: left;
-  }
-  .stage { position: relative; aspect-ratio: 16 / 9.4; overflow: hidden; background: #0d0f1f; }
-  .photo { position: absolute; inset: 0; opacity: 0; animation: flip 16s infinite; }
-  .photo:nth-child(1) { animation-delay: 0s; }
-  .photo:nth-child(2) { animation-delay: 4s; }
-  .photo:nth-child(3) { animation-delay: 8s; }
-  .photo:nth-child(4) { animation-delay: 12s; }
-  @keyframes flip {
-    0% { opacity: 0; transform: translateX(6%); }
-    3%, 25% { opacity: 1; transform: none; }
-    28%, 100% { opacity: 0; transform: translateX(-6%); }
-  }
-  .p1 { background:
-      radial-gradient(circle at 72% 30%, #fff6c9 0 5%, transparent 5.5%),
-      radial-gradient(ellipse 70% 40% at 25% 100%, #2f7a66 0 60%, transparent 61%),
-      radial-gradient(ellipse 80% 45% at 85% 105%, #1d5e4d 0 60%, transparent 61%),
-      linear-gradient(#8fd8ff, #ffe3a8 75%); }
-  .p2 { background:
-      radial-gradient(circle at 50% 62%, #ffd27a 0 7%, transparent 7.5%),
-      linear-gradient(transparent 62%, #1e6fa8 62% 100%),
-      linear-gradient(#b9a8ff, #ffb8a0 62%); }
-  .p3 { background:
-      linear-gradient(115deg, transparent 0 40%, #3f4a75 40% 58%, transparent 58%),
-      linear-gradient(65deg, transparent 0 46%, #5a6aa8 46% 70%, transparent 70%),
-      radial-gradient(circle at 20% 22%, #ffffff 0 1px, transparent 2px),
-      linear-gradient(#141a3d, #39306b 60%, #e98a6b); }
-  .p4 { background:
-      radial-gradient(ellipse 60% 35% at 50% 100%, #c7884f 0 60%, transparent 61%),
-      radial-gradient(circle at 30% 35%, #fff 0 4%, transparent 4.5%),
-      radial-gradient(circle at 36% 33%, #fff 0 5%, transparent 5.5%),
-      linear-gradient(#5ec2ff, #c8ecff 80%); }
-  .titlestrip {
-    position: absolute; top: 0; left: 0; right: 0; height: 34px; display: flex; align-items: center; gap: 8px;
-    padding: 0 12px; background: rgba(0, 0, 0, .45); color: #fff; font-size: 13px;
-    animation: strip 8s infinite;
-  }
-  @keyframes strip { 0%, 8% { opacity: 0; } 14%, 40% { opacity: 1; } 48%, 100% { opacity: 0; } }
-  .dot { width: 12px; height: 12px; border-radius: 50%; }
-  .dot.r { background: #ff5f57; } .dot.y { background: #febc2e; } .dot.g { background: #28c840; }
-  .titlestrip .name { flex: 1; text-align: center; margin-right: 52px; opacity: .95; }
-  .keyhint {
-    position: absolute; right: 14px; bottom: 14px; display: flex; gap: 6px;
-  }
-  .keyhint kbd { background: rgba(255,255,255,.9); color: #181a33; border-color: rgba(0,0,0,.15); }
-  .statusbar {
-    display: flex; justify-content: space-between; gap: 12px; padding: 8px 14px; font-size: 13px;
-    color: var(--muted); background: var(--window-bar); border-top: 1px solid var(--border);
-  }
-  .filmstrip { display: flex; gap: 6px; padding: 8px 10px; background: var(--window-bar); overflow: hidden; }
-  .thumb { flex: 0 0 64px; height: 42px; border-radius: 5px; opacity: .75; }
-  .thumb.on { outline: 2px solid var(--accent); outline-offset: 1px; opacity: 1; }
-  .caption { color: var(--muted); font-size: 14px; text-align: center; margin-top: 12px; }
-  @media (prefers-reduced-motion: reduce) {
-    .photo, .titlestrip { animation: none; }
-    .photo:nth-child(1) { opacity: 1; }
-  }
+  /* ---- The viewer: real screenshots (tools/screenshots) ---- */
+  .demo { margin: 36px auto 0; max-width: 960px; }
+  .shot { display: block; width: 100%; height: auto; }
+  .caption { color: var(--muted); font-size: 14px; text-align: center; margin-top: 4px; }
+
+  .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px 20px; }
+  .gallery figure { margin: 0; }
+  .gallery a { display: block; border-radius: 14px; }
+  .gallery a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .gallery figcaption { color: var(--muted); font-size: 15px; text-align: center; margin: -6px 12px 0; }
+  .gallery figcaption b { color: var(--text); font-weight: 600; }
 
   section { padding: 64px 0 8px; }
   h2 { font-size: clamp(26px, 3.6vw, 34px); letter-spacing: -.01em; margin: 0 0 12px; text-align: center; }
@@ -229,8 +179,6 @@
     nav a:not(.gh):not(.lang) { display: none; }
     .compare td.c, .compare th.c { width: 84px; padding: 10px 6px; }
     .compare th, .compare td { padding: 10px; font-size: 15px; }
-    .filmstrip .thumb:nth-child(n+7) { display: none; }
-    .titlestrip .name { margin-right: 0; }
   }
 </style>
 </head>
@@ -241,6 +189,7 @@
     <nav>
       <a href="#why">Warum</a>
       <a href="#features">Funktionen</a>
+      <a href="#screenshots">Bilder</a>
       <a href="#formats">Formate</a>
       <a href="#install">Installation</a>
       <a class="gh" href="https://github.com/brokoskokoli/lumaflip">GitHub</a>
@@ -260,23 +209,13 @@
       </div>
       <p class="meta">macOS 15 oder neuer · Apple Silicon · Frei und quelloffen (GPL-3.0) · 18 Sprachen · Vorschauversionen für Windows und Linux</p>
 
-      <div class="demo" aria-hidden="true">
-        <div class="window">
-          <div class="stage">
-            <div class="photo p1"></div>
-            <div class="photo p2"></div>
-            <div class="photo p3"></div>
-            <div class="photo p4"></div>
-            <div class="titlestrip"><i class="dot r"></i><i class="dot y"></i><i class="dot g"></i><span class="name">IMG_0423.HEIC</span></div>
-            <div class="keyhint"><kbd>←</kbd><kbd>→</kbd></div>
-          </div>
-          <div class="filmstrip">
-            <div class="thumb p3"></div><div class="thumb p4"></div><div class="thumb p1 on"></div><div class="thumb p2"></div>
-            <div class="thumb p3"></div><div class="thumb p1"></div><div class="thumb p4"></div><div class="thumb p2"></div>
-            <div class="thumb p1"></div><div class="thumb p3"></div><div class="thumb p2"></div><div class="thumb p4"></div>
-          </div>
-          <div class="statusbar"><span>23 / 412</span><span>Wie im Finder: Hinzugefügt am ↓</span><span>4032 × 3024 · HDR</span></div>
-        </div>
+      <div class="demo">
+        <picture>
+          <source media="(prefers-reduced-motion: reduce)" srcset="../images/shots/demo-de.png">
+          <source type="image/webp" srcset="../images/shots/demo-de.webp">
+          <img class="shot" src="../images/shots/demo-de.png" width="1200" height="781" fetchpriority="high"
+               alt="Animation: Lumaflip blättert mit der Pfeiltaste durch einen Ordner mit Reisefotos; die Titelleiste zeigt den Dateinamen, der Filmstreifen läuft mit">
+        </picture>
       </div>
       <p class="caption">Randloses Fenster: Die Titelleiste blendet sich ein, sobald sich die Maus bewegt, und verschwindet wieder, wenn das Foto im Mittelpunkt steht.</p>
     </div>
@@ -316,6 +255,61 @@
         <div class="card"><div class="ico">⌨️</div><h3>Eigene Tasten, eigene Maus</h3><p>Jedes Tastenkürzel, jedes Scrollen und jeder Klick ist einstellbar, mit Konflikterkennung und Vorlagen für Mac-Nutzer, Umsteiger von Windows und Lightroom-Fotografen.</p></div>
         <div class="card"><div class="ico">🔒</div><h3>Privat und abgeschottet</h3><p>Keine Telemetrie, kein Konto, keine Cloud. Ungewöhnliche Formate werden in einem abgeschotteten Hilfsprozess ohne Netzwerk- und Schreibzugriff dekodiert, sodass eine defekte Datei die App nicht zum Absturz bringen kann.</p></div>
         <div class="card"><div class="ico">🌍</div><h3>Mehrsprachig</h3><p>18 Sprachen, darunter Deutsch, Français, Español, Italiano, 日本語, 简体中文 und 한국어. Folgt der Systemsprache oder wechselt jederzeit ohne Neustart.</p></div>
+      </div>
+    </section>
+
+    <section id="screenshots">
+      <h2>So sieht es aus</h2>
+      <p class="lead">Echte Bildschirmfotos der App, automatisch aus der aktuellen Version erzeugt. Zum Vergrößern anklicken.</p>
+      <div class="gallery">
+        <figure>
+          <a href="../images/shots/info-de-light.webp"><picture>
+            <source type="image/webp" srcset="../images/shots/info-de-light.webp">
+            <img class="shot" src="../images/shots/info-de-light.png" width="1280" height="833" loading="lazy" decoding="async"
+                 alt="Infopanel mit Kameradaten, Histogramm und Finder-Tags, darunter der Filmstreifen">
+          </picture></a>
+          <figcaption><b>Infopanel und Filmstreifen.</b> Kameradaten, Histogramm und Finder-Tags auf einen Blick.</figcaption>
+        </figure>
+        <figure>
+          <a href="../images/shots/culling-de-dark.webp"><picture>
+            <source type="image/webp" srcset="../images/shots/culling-de-dark.webp">
+            <img class="shot" src="../images/shots/culling-de-dark.png" width="1280" height="833" loading="lazy" decoding="async"
+                 alt="Aussortiermodus mit Sternen, Markieren und Ablehnen über dem Foto">
+          </picture></a>
+          <figcaption><b>Aussortieren.</b> Sterne, Markieren und Ablehnen, gespeichert als Lightroom-kompatibles XMP.</figcaption>
+        </figure>
+        <figure>
+          <a href="../images/shots/grid-de-light.webp"><picture>
+            <source type="image/webp" srcset="../images/shots/grid-de-light.webp">
+            <img class="shot" src="../images/shots/grid-de-light.png" width="1280" height="833" loading="lazy" decoding="async"
+                 alt="Rasteransicht des Ordners mit drei ausgewählten Bildern und ihren Bewertungen">
+          </picture></a>
+          <figcaption><b>Raster.</b> Mehrere Bilder auswählen und auf einmal bewerten, verschieben oder vergleichen.</figcaption>
+        </figure>
+        <figure>
+          <a href="../images/shots/compare-de-dark.webp"><picture>
+            <source type="image/webp" srcset="../images/shots/compare-de-dark.webp">
+            <img class="shot" src="../images/shots/compare-de-dark.png" width="1280" height="833" loading="lazy" decoding="async"
+                 alt="Drei Fotos nebeneinander im Vergleich, gemeinsam vergrößert">
+          </picture></a>
+          <figcaption><b>Vergleich.</b> Zwei bis vier Bilder mit synchronem Zoom und Verschieben.</figcaption>
+        </figure>
+        <figure>
+          <a href="../images/shots/preferences-de-light.webp"><picture>
+            <source type="image/webp" srcset="../images/shots/preferences-de-light.webp">
+            <img class="shot" src="../images/shots/preferences-de-light.png" width="1280" height="1067" loading="lazy" decoding="async"
+                 alt="Einstellungen, Maus und Tastatur: jede Aktion mit ihren Tastenkürzeln">
+          </picture></a>
+          <figcaption><b>Eigene Tasten, eigene Maus.</b> Jedes Kürzel und jeder Klick ist änderbar.</figcaption>
+        </figure>
+        <figure>
+          <a href="../images/shots/viewer-de-dark.webp"><picture>
+            <source type="image/webp" srcset="../images/shots/viewer-de-dark.webp">
+            <img class="shot" src="../images/shots/viewer-de-dark.png" width="1280" height="833" loading="lazy" decoding="async"
+                 alt="Lumaflip-Fenster im dunklen Modus mit einem Foto des Hafens von Ägina bei Sonnenuntergang">
+          </picture></a>
+          <figcaption><b>Hell und dunkel.</b> Folgt dem Erscheinungsbild des Systems, das Foto bleibt im Mittelpunkt.</figcaption>
+        </figure>
       </div>
     </section>
 
@@ -370,6 +364,7 @@
     <a href="https://github.com/brokoskokoli/lumaflip/blob/main/docs/FAQ.md">FAQ</a> ·
     <a href="privacy.html">Datenschutz</a> ·
     <a href="https://github.com/brokoskokoli/lumaflip/issues">Problem melden</a>
+    <br>Beispielfotos: <a href="https://commons.wikimedia.org/wiki/User:Jebulon">Jebulon</a>, Wikimedia Commons, CC0 (gemeinfrei).
   </footer>
 </div>
 </body>
