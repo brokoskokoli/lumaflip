@@ -18,8 +18,14 @@
 #   appcast       generate_appcast from the artifact's DMG, Windows  SPARKLE_ED_PRIVATE_KEY
 #                 feed (tools/appcast_windows.py), verify both,       (no brew, no build tools)
 #                 push gh-pages, THEN publish the release
+#   homebrew-tap  after the release is public: version + sha256 of     HOMEBREW_TAP_TOKEN (optional)
+#                 Casks/lumaflip.rb in brokoskokoli/homebrew-tap
+#   winget        after the release is public: PR with the new         WINGET_TOKEN (optional)
+#                 version to microsoft/winget-pkgs (komac)
 # The release becomes public only after the appcast push succeeded; every job can be
 # re-run (draft assets are replaced, an unchanged appcast is not committed again).
+# homebrew-tap and winget run after publishing: without their secret they only leave a notice,
+# and a failure there never touches the published release (re-run the job).
 #
 # Secret handling: actions pinned by commit SHA; no `set -x`; secret values never appear on
 # a command line (`ps`): the .p12 password and the keychain password go to `security -i`
@@ -678,3 +684,132 @@ jobs:
           gh release edit "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft=false
           pages="https://${GITHUB_REPOSITORY_OWNER}.github.io/${GITHUB_REPOSITORY#*/}"
           echo "Released $GITHUB_REF_NAME; appcasts: $pages/appcast.xml, $pages/appcast-windows.xml"
+
+  homebrew-tap:
+    # Sets version and sha256 of Casks/lumaflip.rb in the tap (brew install --cask
+    # brokoskokoli/tap/lumaflip) once the release is public; the tap's own CI then runs
+    # `brew audit --online`. Gets only HOMEBREW_TAP_TOKEN: a fine-grained PAT with
+    # "Contents: Read and write" on brokoskokoli/homebrew-tap only (docs/RELEASING.md,
+    # tools/setup_distribution_secrets.sh). Without it: a notice, nothing fails.
+    # The checksum comes from the published release (what users download) and is checked
+    # against the DMG. Idempotent; never downgrades the tap.
+    name: Homebrew tap
+    needs: [appcast]
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-24.04
+    environment: release
+    permissions:
+      contents: read
+    concurrency:
+      group: release-homebrew-tap
+      cancel-in-progress: false
+    timeout-minutes: 15
+    steps:
+      - name: Update Casks/lumaflip.rb
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          TAP_REPO: brokoskokoli/homebrew-tap
+        run: |
+          set -euo pipefail
+          if [[ -z "$TAP_TOKEN" ]]; then
+            echo "::notice title=Homebrew tap not updated::Secret HOMEBREW_TAP_TOKEN (environment release) is missing. Set it with tools/setup_distribution_secrets.sh and re-run this job, or update Casks/lumaflip.rb in $TAP_REPO by hand (docs/RELEASING.md)."
+            exit 0
+          fi
+          version="${GITHUB_REF_NAME#v}"
+          work=$(mktemp -d "$RUNNER_TEMP/tap.XXXXXX")
+          gh release download "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --dir "$work/dl" \
+            --pattern "Lumaflip-$version.dmg" --pattern "Lumaflip-$version.dmg.sha256"
+          (cd "$work/dl" && sha256sum -c "Lumaflip-$version.dmg.sha256")
+          sha=$(cut -d ' ' -f 1 "$work/dl/Lumaflip-$version.dmg.sha256")
+          if [[ ! "$sha" =~ ^[0-9a-f]{64}$ ]]; then echo "::error::Unexpected content of Lumaflip-$version.dmg.sha256"; exit 1; fi
+
+          # From here on git talks to the tap with the PAT, through gh's credential helper
+          # (no token in any URL or argument).
+          export GH_TOKEN="$TAP_TOKEN"
+          gh auth setup-git
+          git clone --quiet --branch main "https://github.com/$TAP_REPO.git" "$work/tap"
+          git -C "$work/tap" config user.name "github-actions[bot]"
+          git -C "$work/tap" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          cask="$work/tap/Casks/lumaflip.rb"
+          old=$(sed -nE 's/^  version "([^"]+)"$/\1/p' "$cask")
+          if [[ -z "$old" ]]; then echo "::error::No version line in Casks/lumaflip.rb of $TAP_REPO"; exit 1; fi
+          if [[ "$old" == "$version" ]] && grep -qx "  sha256 \"$sha\"" "$cask"; then
+            echo "Tap already at $version - nothing to do"; exit 0
+          fi
+          if [[ "$old" != "$version" && "$(printf '%s\n%s\n' "$old" "$version" | sort -V | tail -n 1)" != "$version" ]]; then
+            echo "::notice title=Homebrew tap not updated::The tap has the newer version $old - not downgraded to $version."
+            exit 0
+          fi
+          sed -i -E -e "s/^  version \"[^\"]+\"$/  version \"$version\"/" \
+                    -e "s/^  sha256 \"[0-9a-f]{64}\"$/  sha256 \"$sha\"/" "$cask"
+          if ! grep -qx "  version \"$version\"" "$cask" || ! grep -qx "  sha256 \"$sha\"" "$cask"; then
+            echo "::error::Could not update version/sha256 in Casks/lumaflip.rb (unexpected layout)"; exit 1
+          fi
+          git -C "$work/tap" diff
+          git -C "$work/tap" commit --quiet -am "lumaflip $version"
+          for attempt in 1 2 3; do
+            if git -C "$work/tap" push --quiet origin HEAD:main; then
+              echo "Homebrew tap updated: lumaflip $version"; exit 0
+            fi
+            echo "::warning::Push to $TAP_REPO failed (attempt $attempt) - rebasing"
+            sleep $((attempt * 5))
+            git -C "$work/tap" pull --quiet --rebase origin main
+          done
+          echo "::error::Could not push to $TAP_REPO"; exit 1
+
+  winget:
+    # Opens a pull request with the new version at microsoft/winget-pkgs (winget install
+    # Brokoskokoli.Lumaflip) with komac (pinned by SHA-256; it fills in the installer hash and
+    # the ARP data from the signed installer and keeps the rest of the previous manifest).
+    # Only updates an existing package: the first version (packaging/winget/) is submitted by
+    # hand and reviewed by Microsoft (docs/RELEASING.md) - until it is merged, this job only
+    # leaves a notice. Gets only WINGET_TOKEN: a classic PAT with the scope public_repo of the
+    # account that owns the winget-pkgs fork. Without it: a notice, nothing fails.
+    name: winget (pull request to microsoft/winget-pkgs)
+    needs: [appcast]
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-24.04
+    environment: release
+    permissions:
+      contents: read
+    timeout-minutes: 20
+    env:
+      WINGET_ID: Brokoskokoli.Lumaflip
+      WINGET_PATH: manifests/b/Brokoskokoli/Lumaflip
+      KOMAC_VERSION: 2.16.0
+      KOMAC_SHA256: 7d2707fa6210f2789a3702de49fbd150b736dbf426ee0b9bc8e098736f9fd82d # x86_64-unknown-linux-gnu.tar.gz
+    steps:
+      - name: Submit the new version
+        env:
+          GH_TOKEN: ${{ github.token }}
+          WINGET_TOKEN: ${{ secrets.WINGET_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [[ -z "$WINGET_TOKEN" ]]; then
+            echo "::notice title=winget not updated::Secret WINGET_TOKEN (environment release) is missing. Set it with tools/setup_distribution_secrets.sh and re-run this job (docs/RELEASING.md)."
+            exit 0
+          fi
+          version="${GITHUB_REF_NAME#v}"
+          if ! versions=$(gh api "repos/microsoft/winget-pkgs/contents/$WINGET_PATH" --jq '.[].name' 2>/dev/null); then
+            echo "::notice title=winget not updated::$WINGET_ID is not in microsoft/winget-pkgs yet - submit the first version by hand (docs/RELEASING.md, section winget)."
+            exit 0
+          fi
+          if grep -qx "$version" <<<"$versions"; then
+            echo "$WINGET_ID $version is already in winget-pkgs - nothing to do"; exit 0
+          fi
+
+          work=$(mktemp -d "$RUNNER_TEMP/komac.XXXXXX")
+          curl -fsSL --retry 3 -o "$work/komac.tar.gz" \
+            "https://github.com/russellbanks/Komac/releases/download/v$KOMAC_VERSION/komac-$KOMAC_VERSION-x86_64-unknown-linux-gnu.tar.gz"
+          echo "$KOMAC_SHA256  $work/komac.tar.gz" | sha256sum -c -
+          tar -xzf "$work/komac.tar.gz" -C "$work" komac
+
+          # The token reaches komac through its environment only (GITHUB_TOKEN), not as an argument.
+          url="https://github.com/$GITHUB_REPOSITORY/releases/download/$GITHUB_REF_NAME/Lumaflip-$version-windows-x64-setup.exe"
+          GITHUB_TOKEN="$WINGET_TOKEN" "$work/komac" update "$WINGET_ID" \
+            --version "$version" --urls "$url" \
+            --release-notes-url "https://github.com/$GITHUB_REPOSITORY/releases/tag/$GITHUB_REF_NAME" \
+            --created-with "Lumaflip release workflow" \
+            --created-with-url "https://github.com/$GITHUB_REPOSITORY/blob/main/.github/workflows/release.yml" \
+            --submit

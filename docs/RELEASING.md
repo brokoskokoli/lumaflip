@@ -30,7 +30,9 @@ Signing** signiert, siehe [Windows: Signatur und Updates](#windows-signatur-und-
 | `packaging/macos/icon/` | `lumaflip.svg` (Quelle des App-Symbols „Sun Chevron“ für alle Plattformen) und `Lumaflip.icns` (erzeugt mit `tools/make_icon.sh`, braucht `rsvg-convert`). Windows rendert die `.ico` beim Bauen daraus (`lf_make_ico`), Linux die hicolor-PNGs (`rsvg-convert`) |
 | `packaging/brand/` | `lumaflip-mono.svg` (einfarbige Glyphe des Symbols) und `social-preview.svg` (Vorlage für das Linkvorschaubild). `tools/make_website_images.sh` (braucht `resvg`) erzeugt daraus und aus dem Symbol `website/favicon.png`, `website/apple-touch-icon.png`, `website/images/icon.png` und `website/images/social-preview.png` – nach jeder Änderung am Symbol zusammen mit `tools/make_icon.sh` ausführen |
 | `packaging/licenses/` | Lizenztexte, die Homebrew nicht mitliefert (LGPL-3.0 und Hinweis für Qt, LGPL-2.1 für libintl) |
-| `packaging/homebrew/lumaflip.rb` | Vorlage für den Homebrew Cask |
+| `packaging/homebrew/lumaflip.rb` | Homebrew Cask, Spiegel von `Casks/lumaflip.rb` im Tap [`brokoskokoli/homebrew-tap`](https://github.com/brokoskokoli/homebrew-tap) (siehe [Homebrew Cask](#homebrew-cask)) |
+| `packaging/winget/manifests/…/1.2.1/` | winget-Manifeste (`Brokoskokoli.Lumaflip`) für die erste Einreichung bei `microsoft/winget-pkgs` (siehe [winget](#winget)) |
+| `tools/setup_distribution_secrets.sh` | Setzt `HOMEBREW_TAP_TOKEN` und `WINGET_TOKEN` (Environment `release`) für die Jobs `homebrew-tap` und `winget` |
 
 ## Lokal bauen
 
@@ -126,6 +128,16 @@ Von Hand: unter Settings → Secrets and variables → Actions (oder als Secrets
 | `NOTARY_API_KEY_P8_BASE64` | Inhalt der `AuthKey_<id>.p8`, Base64-kodiert: `base64 -i AuthKey_ABC123DEFG.p8 \| pbcopy` | wird nur einmal zum Download angeboten; Rolle „Developer“ genügt |
 | `SPARKLE_ED_PRIVATE_KEY` | Privater EdDSA-Schlüssel für Sparkle, Inhalt der mit `generate_keys -x` exportierten Datei (eine Zeile Base64) | siehe „Automatische Updates (Sparkle)“ unten |
 
+Optional (Environment `release`, gesetzt mit `tools/setup_distribution_secrets.sh`; fehlen sie, überspringen
+die Jobs `homebrew-tap` bzw. `winget` mit einem Hinweis, das Release ist davon nie betroffen):
+
+| Secret | Inhalt | Woher |
+|---|---|---|
+| `HOMEBREW_TAP_TOKEN` | Fine-grained PAT, *Repository access* nur `brokoskokoli/homebrew-tap`, *Permissions → Contents: Read and write* | github.com → Settings → Developer settings → Fine-grained tokens |
+| `WINGET_TOKEN` | Classic PAT mit genau dem Scope `public_repo` (Fork von `winget-pkgs` + Pull Request; fine-grained PATs können keine PRs an fremde Repos öffnen) | github.com → Settings → Developer settings → Tokens (classic) |
+
+Beide Tokens laufen ab (beim Anlegen z. B. ein Jahr wählen); danach das Skript erneut ausführen.
+
 Dazu eine **Variable** (kein Secret, der Schlüssel ist öffentlich) unter Settings → Secrets and variables →
 Actions → Variables: `SPARKLE_PUBLIC_ED_KEY` = öffentlicher EdDSA-Schlüssel (44 Zeichen Base64).
 
@@ -139,7 +151,9 @@ Ablauf und Absicherung von `release.yml`:
   Notar-Schlüssel, **nicht** der Sparkle-Schlüssel; Ergebnis als Artefakt `release-dist`) → `draft`
   (nur `GITHUB_TOKEN`) → `appcast` (nur Sparkle-Schlüssel und `GITHUB_TOKEN`; kein `brew`, kein Build:
   Sparkles Werkzeuge kommen aus dem per SHA-256 geprüften Archiv von `tools/fetch_sparkle.sh`, die DMG
-  aus dem Artefakt, dessen Prüfsumme vorher kontrolliert wird).
+  aus dem Artefakt, dessen Prüfsumme vorher kontrolliert wird). Erst nach dem Veröffentlichen:
+  `homebrew-tap` (nur `HOMEBREW_TAP_TOKEN`) und `winget` (nur `WINGET_TOKEN`), siehe
+  [Homebrew Cask](#homebrew-cask) und [winget](#winget).
 - **Gleiche Prüfungen wie CI:** Der Job `build` hängt von `checks` ab, der denselben
   wiederverwendbaren Workflow `checks.yml` wie die CI für den getaggten Commit ausführt
   (Benchmark-Toleranz 2,0, `webp`/`jpeg-xl` für den Formatkorpus, RAW-Beispiele mit Cache und
@@ -417,13 +431,60 @@ trotzdem als Secrets im Environment, damit nur Jobs mit Freigabe sie sehen.
 
 ## Homebrew Cask
 
-Zunächst im eigenen Tap (`brokoskokoli/homebrew-tap`), später Antrag für `homebrew/cask` (SPEC 10.1):
+Eigener Tap [`brokoskokoli/homebrew-tap`](https://github.com/brokoskokoli/homebrew-tap), später Antrag
+für `homebrew/cask` (SPEC 10.1). Installation für Nutzer:
+`brew install --cask brokoskokoli/tap/lumaflip`.
 
-1. `packaging/homebrew/lumaflip.rb` kopieren nach `Casks/lumaflip.rb` im Tap.
-2. `version` setzen, `@SHA256_OF_DMG@` durch den Wert aus `Lumaflip-<version>.dmg.sha256` ersetzen.
-3. Prüfen: `brew audit --cask --new lumaflip` und `brew install --cask brokoskokoli/tap/lumaflip`.
+- **Datei:** `Casks/lumaflip.rb` im Tap; `packaging/homebrew/lumaflip.rb` hier ist derselbe Cask mit
+  Kommentarkopf. Ändert sich ein Abschnitt (zap-Pfade, Voraussetzungen), beide anpassen.
+  Der Cask hat `auto_updates true` (Sparkle aktualisiert die App selbst; `brew upgrade` lässt sie in
+  Ruhe, `brew upgrade --greedy` nicht), `depends_on arch: :arm64`, `depends_on macos: :sequoia`,
+  `livecheck` über den Sparkle-Appcast und `zap` für Einstellungen, Caches und Fensterzustand.
+- **Nach jedem Release automatisch:** Der Job `homebrew-tap` (nach `appcast`, also erst wenn das
+  Release öffentlich ist) lädt `Lumaflip-<version>.dmg` und `.dmg.sha256` aus dem Release, prüft die
+  Summe, setzt `version` und `sha256` im Tap und pusht (`github-actions[bot]`). Er ist idempotent und
+  setzt den Tap nie auf eine ältere Version zurück. Die CI des Taps (`.github/workflows/tests.yml`)
+  führt danach `brew style`, `brew audit --cask --online --strict`, `brew livecheck` und
+  `brew fetch` aus. Ohne `HOMEBREW_TAP_TOKEN` endet der Job mit einem Hinweis.
+- **Von Hand** (z. B. ohne Token): im Tap `version` und `sha256` (Inhalt von
+  `Lumaflip-<version>.dmg.sha256`) setzen, dann
+  `brew style --cask brokoskokoli/tap/lumaflip && brew audit --cask --online --strict brokoskokoli/tap/lumaflip`.
+- **Später `homebrew/cask`:** `brew audit --cask --new` verlangt ein „bekanntes“ Repository
+  (mindestens 30 Forks, 30 Watcher oder 75 Sterne); bis dahin bleibt es beim eigenen Tap.
 
-Installation für Nutzer danach: `brew install --cask brokoskokoli/tap/lumaflip`.
+## winget
+
+Paket `Brokoskokoli.Lumaflip` (Installer-Typ `inno`, Scope `user` mit `/CURRENTUSER` als Standard,
+`machine` mit `/ALLUSERS`; winget startet Inno Setup still mit `/SP- /VERYSILENT /SUPPRESSMSGBOXES
+/NORESTART`). Die Daten unter „Apps & Features“ stammen aus `packaging/windows/Lumaflip.iss`:
+`ProductCode` = `{6E0D5D8A-6A43-4C6B-9C6F-4C1A5B7E1F2D}_is1` (AppId + `_is1`), `DisplayName`
+`Lumaflip`, `Publisher` `The Lumaflip contributors`. Ändert sich `AppId` oder `AppPublisher`,
+müssen die Manifeste mitziehen.
+
+**Erste Einreichung (einmalig, von Hand):** Microsoft prüft neue Pakete manuell; erst nach dem
+Merge kann der Release-Job Updates einreichen. Die Manifeste für 1.2.1 liegen unter
+`packaging/winget/manifests/b/Brokoskokoli/Lumaflip/1.2.1/` (gegen das Schema 1.12.0 geprüft):
+
+```sh
+brew install komac
+gh repo fork microsoft/winget-pkgs --clone=false          # einmalig: Fork im eigenen Konto
+komac token update                                         # PAT mit public_repo (classic), fragt verdeckt
+komac submit packaging/winget/manifests/b/Brokoskokoli/Lumaflip/1.2.1
+```
+
+Alternativ unter Windows: `winget validate --manifest <ordner>`, `winget install --manifest <ordner>`
+zum Ausprobieren, dann `wingetcreate submit --token <PAT> <ordner>`. Nach dem Merge:
+`winget install Brokoskokoli.Lumaflip` (bzw. `winget install lumaflip`).
+
+**Danach automatisch:** Der Job `winget` (nach `appcast`) prüft, ob das Paket schon in
+`microsoft/winget-pkgs` steht (sonst Hinweis und Ende), lädt [komac](https://github.com/russellbanks/Komac)
+in der festgelegten Version (SHA-256 im Workflow) und ruft
+`komac update Brokoskokoli.Lumaflip --version <v> --urls <setup.exe-URL> --submit` auf: komac liest
+Hash, `ProductCode` und ARP-Daten aus dem signierten Installer, übernimmt die übrigen Felder aus der
+vorigen Version und öffnet den Pull Request über den Fork. Der Token geht nur über die Umgebung an
+komac. Ohne `WINGET_TOKEN` endet der Job mit einem Hinweis. `vedantmgoyal9/winget-releaser` nutzt
+dasselbe Werkzeug, installiert es aber ungepinnt (`cargo-binstall@main`) – deshalb komac direkt.
+komac aktualisieren: Version und SHA-256 aus `SHA256SUMS` des Releases in `release.yml` eintragen.
 
 ## Nach dem Release prüfen
 
