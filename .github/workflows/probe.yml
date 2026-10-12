@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Temporary: environment probe for the screenshot workflow (removed before review).
+name: Probe
+on:
+  push:
+    branches: [feat/screenshots]
+    paths: ['.github/workflows/probe.yml']
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: macos-26
+    timeout-minutes: 15
+    steps:
+      - name: Display and tools
+        run: |
+          system_profiler SPDisplaysDataType || true
+          osascript -l JavaScript -e 'ObjC.import("AppKit"); var s=$.NSScreen.mainScreen; JSON.stringify({w:s.frame.size.width,h:s.frame.size.height,scale:s.backingScaleFactor, vh: s.visibleFrame.size.height})' || true
+          for t in ffmpeg img2webp cwebp pngquant avifenc gifski magick swift sips; do printf '%s: ' $t; command -v $t || echo missing; done
+          sw_vers
+          defaults read -g AppleInterfaceStyle 2>/dev/null || echo "light appearance"
+      - name: Screen capture permission
+        run: |
+          mkdir -p out
+          open -a TextEdit || true
+          sleep 3
+          screencapture -x out/screen.png && sips -g pixelWidth -g pixelHeight out/screen.png || echo "screencapture failed"
+          wid=$(osascript -l JavaScript -e 'ObjC.import("CoreGraphics"); var l=ObjC.castRefToObject($.CGWindowListCopyWindowInfo(1|16, 0)); var r=[]; for (var i=0;i<l.count;i++){var d=l.objectAtIndex(i); r.push(ObjC.unwrap(d.objectForKey("kCGWindowOwnerName"))+":"+ObjC.unwrap(d.objectForKey("kCGWindowNumber"))+":"+ObjC.unwrap(d.objectForKey("kCGWindowLayer")));} r.join("\n")' || true)
+          echo "$wid"
+          w=$(echo "$wid" | grep -m1 '^TextEdit' | cut -d: -f2 || true)
+          if [[ -n "$w" ]]; then screencapture -x -o -l "$w" out/window.png && sips -g pixelWidth -g pixelHeight out/window.png || echo "window capture failed"; fi
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: probe
+          path: out/
