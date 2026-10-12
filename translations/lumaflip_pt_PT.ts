@@ -52,8 +52,24 @@
         <translation>Como no Finder: %1</translation>
     </message>
     <message>
+        <source>Wie im Explorer: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 (Sortierung des Explorers nicht unterstützt)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>%1 (Finder-Informationen nicht gefunden)</source>
         <translation>%1 (informação do Finder não encontrada)</translation>
+    </message>
+    <message>
+        <source>%1 (Explorer-Ansicht nicht gefunden)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1 (Sortierung des Dateimanagers nicht bekannt)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3349,6 +3365,14 @@
         <translation>Ordenar por</translation>
     </message>
     <message>
+        <source>Wie im Explorer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wie im Dateimanager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Wie im Finder</source>
         <translation>Como no Finder</translation>
     </message>
@@ -4628,6 +4652,10 @@
         <translation>Passo de zoom por passo da roda:</translation>
     </message>
     <message>
+        <source>Gilt, wenn die Sortierung wie im Dateimanager oben aus ist oder nicht gelesen werden kann. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source> %</source>
         <translation> %</translation>
     </message>
@@ -4709,6 +4737,22 @@
     <message>
         <source>Zeigt das vorderste Finder-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen aktuelle Sortierung (auch noch nicht gespeicherte). macOS bittet dafür einmalig um die Erlaubnis, den Finder zu steuern (Automation).</source>
         <translation>Se a janela do Finder da frente mostrar exatamente a pasta aberta, o Lumaflip adota a ordenação atual dessa janela (mesmo que ainda não esteja guardada). Para isso, o macOS pede uma única vez autorização para controlar o Finder (Automatização).</translation>
+    </message>
+    <message>
+        <source>Sortierung wie im Explorer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Zeigt ein Explorer-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen Sortierung und, soweit möglich, die Gruppierung. Sonst sortiert Lumaflip nach Name; eine .DS_Store-Datei von einem Mac gilt weiter.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sortierung wie im Dateimanager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Die Sortierung des Dateimanagers (Nautilus, Dolphin …) wird nicht gelesen: Lumaflip sortiert nach Name. Eine .DS_Store-Datei von einem Mac gilt weiter.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Manuelle Sortierung:</source>
@@ -5077,6 +5121,10 @@
     <message>
         <source>Editor wählen</source>
         <translation>Escolher editor</translation>
+    </message>
+    <message>
+        <source>Sortierung live vom Explorer-Fenster übernehmen</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Sortierung live vom Finder-Fenster übernehmen</source>
