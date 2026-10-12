@@ -34,6 +34,7 @@ class Collection;
 class CullingController; // M3: rating, culling mode, filter, quick move
 class HdrController;     // M3: HDR toggle, badge, exposure (F-COL-04/05)
 class ImageView;
+class NavArrows; // F-NAV-09 arrow buttons at the image edges
 class SlideshowController;
 class WindowPanels;      // M2 panels (info panel, filmstrip)
 class WindowExtras;      // M3 grid, compare, loupe, window modes, go to, shuffle, name filter
@@ -81,6 +82,7 @@ public:
     WindowEditing* editing() const { return m_editing; }             // M4: F-EDIT-03/04, F-INFO-07
     // F-VIEW-14
     ZoomMemoryController* zoomMemory() const { return m_zoomMemory; }
+    NavArrows* navArrows() const { return m_navArrows; } // F-NAV-09
     QString currentPath() const;
     QString shownPath() const { return m_shownPath; }
     int displayedImageCount() const { return m_displayCount; } // distinct images shown (benchmarks)
@@ -170,6 +172,7 @@ protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:
+    bool performAction(Action action, QPointF pos); // perform() without the follow-ups
     void onCurrentChanged(int index, const QString& path);
     void onEntriesChanged();
     void onImageReady(const QString& path, Quality quality, const DecodedImagePtr& image);
@@ -300,6 +303,7 @@ private:
     WindowEditing* m_editing = nullptr;         // M4 (WindowEditing.cpp)
     // F-VIEW-14 (ZoomMemoryController.cpp)
     ZoomMemoryController* m_zoomMemory = nullptr;
+    NavArrows* m_navArrows = nullptr; // F-NAV-09 (NavArrows.cpp)
     // F-I18N-03: texts of the window after a language switch (ViewerWindowI18n.cpp).
     void retranslateUi();
     QString m_accessFolder; // folder of the access hint (its text is rebuilt)

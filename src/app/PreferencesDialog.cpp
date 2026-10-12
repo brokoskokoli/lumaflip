@@ -237,6 +237,7 @@ QStringList PreferencesDialog::sectionKeys(int section) const {
                 key::UpscaleFilter,
                 key::ActualSizeUnit,
                 key::RememberZoom,
+                key::ShowNavArrows,
                 key::HdrEnabled,
                 key::SlideshowIntervalSec,
                 key::SlideshowRepeat,
@@ -515,6 +516,12 @@ QWidget* PreferencesDialog::buildDisplay() {
                             w));
     // F-VIEW-14
     form->addRow(QString(), bind.check(key::RememberZoom, tr("Zoom je Bild für die Sitzung merken"), w));
+    // F-NAV-09
+    form->addRow(QString(), bind.check(key::ShowNavArrows, tr("Pfeil-Schaltflächen am Bildrand zeigen"), w));
+    form->addRow(QString(),
+                 helpLabel(tr("Sie erscheinen, wenn sich die Maus bewegt, und blättern wie ← und → zum "
+                              "vorherigen und nächsten Bild."),
+                           w));
     form->addRow(tr("Vergrößern über 100 %:"), bind.combo(key::UpscaleFilter, {"smooth", "nearest"},
                                                           {tr("Glatt"), tr("Scharfe Pixel")}, w));
     form->addRow(tr("100 % bedeutet:"),

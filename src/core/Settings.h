@@ -42,6 +42,8 @@ inline constexpr auto ZoomMode =
 inline constexpr auto UpscaleFilter = "view/upscaleFilter";   // "smooth" | "nearest"
 inline constexpr auto ActualSizeUnit = "view/actualSizeUnit"; // "devicePixels" | "points"
 inline constexpr auto RememberZoom = "view/rememberZoom";     // bool, default true (F-VIEW-14)
+// F-NAV-09: previous/next arrow buttons at the edges of the image, bool, default true
+inline constexpr auto ShowNavArrows = "view/navArrows";
 inline constexpr auto ShowStatusBar = "view/statusBar";
 inline constexpr auto ShowInfoPanel = "view/infoPanel";
 inline constexpr auto ShowFilmstrip = "view/filmstrip";

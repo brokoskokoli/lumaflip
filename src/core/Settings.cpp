@@ -88,6 +88,7 @@ const Registry& registry() {
         s(key::UpscaleFilter, "smooth", {"smooth", "nearest"});
         s(key::ActualSizeUnit, "devicePixels", {"devicePixels", "points"});
         b(key::RememberZoom, true); // F-VIEW-14
+        b(key::ShowNavArrows, true); // F-NAV-09
         b(key::ShowStatusBar, true);
         b(key::ShowInfoPanel, false);
         b(key::ShowFilmstrip, false);
