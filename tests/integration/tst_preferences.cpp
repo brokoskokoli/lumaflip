@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "app/PreferencesDialog.h"
 #include "core/InputBindings.h"
+#include "core/Platform.h"
 #include "core/Settings.h"
 
 #include <QAbstractButton>
@@ -99,6 +100,9 @@ private slots:
                     missing << k;
                 continue;
             }
+            // Linux: no file manager window to ask (F-SORT-04), the setting is not offered.
+            if (k == QLatin1String(key::FinderLiveQuery) && platformFileManager() == FileManager::Other)
+                continue;
             if (!dlg.findChild<QWidget*>("setting:" + k))
                 missing << k;
         }
