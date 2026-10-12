@@ -6,6 +6,44 @@
     <description>Updates von Lumaflip für Windows</description>
     <language>de</language>
     <item>
+      <title>Lumaflip 1.2.2</title>
+      <pubDate>Mon, 12 Oct 2026 20:05:10 GMT</pubDate>
+      <sparkle:version>1.2.2</sparkle:version>
+      <sparkle:shortVersionString>1.2.2</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>10.0.17763</sparkle:minimumSystemVersion>
+      <description>&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset="utf-8"&gt;&lt;style&gt;body{font-family:'Segoe UI',sans-serif;font-size:10pt;margin:8px}h1,h2,h3{font-size:11pt}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;Arrow buttons on the image, and Windows now follows the Explorer window's sort order.&lt;/p&gt;
+&lt;div class="markdown-heading"&gt;&lt;h3 class="heading-element"&gt;Added&lt;/h3&gt;&lt;a id="user-content-added" class="anchor" aria-label="Permalink: Added" href="#added"&gt;&lt;span aria-hidden="true" class="octicon octicon-link"&gt;&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;strong&gt;Previous/next arrow buttons on the image&lt;/strong&gt;: round, semi-transparent buttons at the left and
+right edge fade in when the mouse moves and out after 1.5 s without a move, like the title strip.
+A click flips like ←/→ (wrap, archives, right-to-left comics); no button where there is nothing
+to go to, none in the grid, compare, crop, slideshow or with the loupe. Settings → Display →
+"Show arrow buttons at the image edges" (on by default). [F-NAV-09]&lt;/li&gt;
+&lt;li&gt;
+&lt;strong&gt;Windows: images in the order of the Explorer window&lt;/strong&gt; — opening an image from Explorer
+takes over the sort column and direction (and grouping where possible) of the Explorer
+window showing its folder; on by default, can be turned off in Settings → Navigation.
+[F-SORT-04]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="markdown-heading"&gt;&lt;h3 class="heading-element"&gt;Fixed&lt;/h3&gt;&lt;a id="user-content-fixed" class="anchor" aria-label="Permalink: Fixed" href="#fixed"&gt;&lt;span aria-hidden="true" class="octicon octicon-link"&gt;&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;strong&gt;Windows and Linux: the sort status named the Finder&lt;/strong&gt; — it now says "Explorer" on Windows
+("As in Explorer: …", "Name ↑ (Explorer view not found)") and "file manager" on Linux, as do
+the menu item and the settings. [F-SORT-05]&lt;/li&gt;
+&lt;li&gt;
+&lt;strong&gt;Windows and Linux: "Show in Finder"&lt;/strong&gt; — the File menu command, the button on the error card
+and the shortcut list now say "Show in File Explorer" on Windows and "Show in File Manager" on
+Linux; the "When opening from …" setting and the missing-permissions hint name the platform's
+file manager, too. [F-FILE-02]&lt;/li&gt;
+&lt;li&gt;
+&lt;strong&gt;Windows installer&lt;/strong&gt; shows the Lumaflip icon in the setup wizard instead of Inno Setup's
+default pictures, and names "Stefan Richter" as publisher, matching the code signature.&lt;/li&gt;
+&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</description>
+      <enclosure url="https://github.com/brokoskokoli/lumaflip/releases/download/v1.2.2/Lumaflip-1.2.2-windows-x64-setup.exe" length="21755704" type="application/octet-stream" sparkle:os="windows" sparkle:installerArguments="/SILENT /SP- /SUPPRESSMSGBOXES /NORESTART /CLOSEAPPLICATIONS /RELAUNCH=1" sparkle:edSignature="PTd0z8dk4DtRMFsh1hQurXk2B66Jtu+TNVB0GS851dHwalkNafyewJibqxaR8qZMFAU5ptbe6ktt5Q8sW8PuBA==" />
+    </item>
+    <item>
       <title>Lumaflip 1.2.1</title>
       <pubDate>Mon, 12 Oct 2026 01:10:11 GMT</pubDate>
       <sparkle:version>1.2.1</sparkle:version>
