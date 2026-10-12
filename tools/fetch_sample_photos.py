@@ -219,7 +219,8 @@ def main() -> int:
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     out = pathlib.Path(args.out).resolve()
     stamp = out / ".lumaflip-sample-photos"
-    if out.exists() and any(out.iterdir()) and not stamp.exists():
+    # Ours: empty, stamped, or only the cache (restored by CI without the stamp).
+    if out.exists() and not stamp.exists() and any(f.name != ".originals" for f in out.iterdir()):
         raise SystemExit(f"{out} exists and was not created by this script - choose another --out")
     cache = out / ".originals"
     cache.mkdir(parents=True, exist_ok=True)
