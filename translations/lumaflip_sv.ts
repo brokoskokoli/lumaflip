@@ -4007,6 +4007,14 @@
     </message>
 </context>
 <context>
+    <name>lf::NavArrows</name>
+    <message>
+        <source>%1 (%2)</source>
+        <extracomment>Tooltip of the arrow buttons at the image edge: action name and its key (←/→)</extracomment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>lf::NavigationExtras</name>
     <message>
         <source>Gehe zu Bild</source>
@@ -4454,6 +4462,14 @@
     <message>
         <source>Zoom je Bild für die Sitzung merken</source>
         <translation>Kom ihåg zoom per bild under sessionen</translation>
+    </message>
+    <message>
+        <source>Pfeil-Schaltflächen am Bildrand zeigen</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sie erscheinen, wenn sich die Maus bewegt, und blättern wie ← und → zum vorherigen und nächsten Bild.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Vergrößern über 100 %:</source>
