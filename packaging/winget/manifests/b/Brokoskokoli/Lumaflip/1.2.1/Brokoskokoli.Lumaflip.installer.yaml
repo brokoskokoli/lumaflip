@@ -1,0 +1,77 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.12.0.schema.json
+
+PackageIdentifier: Brokoskokoli.Lumaflip
+PackageVersion: 1.2.1
+Platform:
+- Windows.Desktop
+MinimumOSVersion: 10.0.17763.0
+InstallerType: inno
+InstallModes:
+- interactive
+- silent
+- silentWithProgress
+UpgradeBehavior: install
+ProductCode: '{6E0D5D8A-6A43-4C6B-9C6F-4C1A5B7E1F2D}_is1'
+ReleaseDate: 2026-10-12
+AppsAndFeaturesEntries:
+- DisplayName: Lumaflip
+  Publisher: The Lumaflip contributors
+  DisplayVersion: 1.2.1
+  ProductCode: '{6E0D5D8A-6A43-4C6B-9C6F-4C1A5B7E1F2D}_is1'
+FileExtensions:
+- 7z
+- arw
+- avif
+- bmp
+- cb7
+- cbr
+- cbz
+- cr2
+- cr3
+- dds
+- dib
+- dng
+- exr
+- gif
+- heic
+- heif
+- ico
+- jfif
+- jpe
+- jpeg
+- jpg
+- jxl
+- jxr
+- nef
+- orf
+- png
+- psd
+- raf
+- rar
+- svg
+- svgz
+- tif
+- tiff
+- wdp
+- webp
+- zip
+Installers:
+- Architecture: x64
+  Scope: user
+  InstallerUrl: https://github.com/brokoskokoli/lumaflip/releases/download/v1.2.1/Lumaflip-1.2.1-windows-x64-setup.exe
+  InstallerSha256: 206977B516CCB00C1BBD45B514BCC2A3EA52CA692046D125D0B9B7A999839A1D
+  InstallerSwitches:
+    Custom: /CURRENTUSER
+  InstallationMetadata:
+    DefaultInstallLocation: '%LocalAppData%\Programs\Lumaflip'
+- Architecture: x64
+  Scope: machine
+  InstallerUrl: https://github.com/brokoskokoli/lumaflip/releases/download/v1.2.1/Lumaflip-1.2.1-windows-x64-setup.exe
+  InstallerSha256: 206977B516CCB00C1BBD45B514BCC2A3EA52CA692046D125D0B9B7A999839A1D
+  InstallerSwitches:
+    Custom: /ALLUSERS
+  ElevationRequirement: elevatesSelf
+  InstallationMetadata:
+    DefaultInstallLocation: '%ProgramFiles%\Lumaflip'
+ManifestType: installer
+ManifestVersion: 1.12.0

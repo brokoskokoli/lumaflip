@@ -473,6 +473,8 @@ Fertig. Nächste Schritte:
       oder: gh workflow run release.yml --repo $REPO --ref main
   - Release: Version in CMakeLists.txt und CHANGELOG.md setzen, committen, dann
       git tag v<version> && git push origin v<version>
+  - Optional Homebrew-Tap und winget nach jedem Release aktualisieren lassen:
+      tools/setup_distribution_secrets.sh
   - Die .p8 bewahrst du offline auf (Apple bietet sie nur einmal zum Download an)
     oder löschst sie; bei Bedarf einfach einen neuen Key anlegen.
   - Temporäre Dateien werden jetzt gelöscht.
