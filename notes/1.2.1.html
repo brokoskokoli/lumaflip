@@ -1,0 +1,39 @@
+<p>A new icon, reviewed translations in all 18 languages and an offer to become the default app.
+Windows builds are now code-signed and update themselves.</p>
+<div class="markdown-heading"><h3 class="heading-element">Added</h3><a id="user-content-added" class="anchor" aria-label="Permalink: Added" href="#added"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<ul>
+<li>
+<strong>Windows: automatic updates</strong> with WinSparkle — "Check for Updates…" and the automatic daily
+check as on macOS, EdDSA-signed installers from a separate feed; the installer updates in place
+and restarts Lumaflip. [F-MAC-08]</li>
+<li>
+<strong>Windows: signed releases</strong> — installer, ZIP, <code>Lumaflip.exe</code>, the decoder helper and
+<code>WinSparkle.dll</code> are code-signed (Azure Artifact Signing) and timestamped.</li>
+<li>
+<strong>Offer to become the default app</strong>: opening an image of a type another app opens by default
+shows an info bar at the top of the window ("Set", "All Image Formats…", "Don't Ask Again",
+close) – once per type, only in the installed app, never in full screen or a slideshow; can be
+turned off in Settings → General. [F-MAC-09]</li>
+</ul>
+<div class="markdown-heading"><h3 class="heading-element">Changed</h3><a id="user-content-changed" class="anchor" aria-label="Permalink: Changed" href="#changed"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<ul>
+<li>
+<strong>German UI texts</strong> follow the macOS German terminology and one term per concept
+(<a href="translations/GLOSSARY.md">translations/GLOSSARY.md</a>): "Sichern" for save, "Widerrufen" for undo,
+"Benutzte Dokumente", "Markieren/Ablehnen" for pick/reject, "App" instead of "Programm",
+consistent "du". Existing translations were kept (<code>tools/i18n_rename_source.py</code>). [F-I18N-01]</li>
+<li>
+<strong>All 17 translations reviewed</strong> against the terms macOS, Windows and Lightroom use in each
+language (menu names, standard commands, punctuation and form of address as on the platform);
+every language is fully translated. Native-speaker reviews are still welcome
+(<a href="translations/REVIEW_STATUS.md">translations/REVIEW_STATUS.md</a>). [F-I18N-01]</li>
+<li>
+<strong>New app icon</strong> "Sun Chevron": a forward arrow with the sun in its opening, on teal; the website
+uses the matching colours.</li>
+</ul>
+<div class="markdown-heading"><h3 class="heading-element">Fixed</h3><a id="user-content-fixed" class="anchor" aria-label="Permalink: Fixed" href="#fixed"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<ul>
+<li>A language switch now reaches every window, also one whose native window Qt re-created at
+that moment (some texts stayed in the old language). [F-I18N-03]</li>
+<li>Update notes no longer show the line breaks of the changelog source.</li>
+</ul>

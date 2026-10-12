@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='utf-8'?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+  <channel>
+    <title>Lumaflip (Windows)</title>
+    <link>https://github.com/brokoskokoli/lumaflip</link>
+    <description>Updates von Lumaflip für Windows</description>
+    <language>de</language>
+    <item>
+      <title>Lumaflip 1.2.1</title>
+      <pubDate>Mon, 12 Oct 2026 01:10:11 GMT</pubDate>
+      <sparkle:version>1.2.1</sparkle:version>
+      <sparkle:shortVersionString>1.2.1</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>10.0.17763</sparkle:minimumSystemVersion>
+      <description>&lt;!DOCTYPE html&gt;&lt;html&gt;&lt;head&gt;&lt;meta charset="utf-8"&gt;&lt;style&gt;body{font-family:'Segoe UI',sans-serif;font-size:10pt;margin:8px}h1,h2,h3{font-size:11pt}&lt;/style&gt;&lt;/head&gt;&lt;body&gt;&lt;p&gt;A new icon, reviewed translations in all 18 languages and an offer to become the default app.
+Windows builds are now code-signed and update themselves.&lt;/p&gt;
+&lt;div class="markdown-heading"&gt;&lt;h3 class="heading-element"&gt;Added&lt;/h3&gt;&lt;a id="user-content-added" class="anchor" aria-label="Permalink: Added" href="#added"&gt;&lt;span aria-hidden="true" class="octicon octicon-link"&gt;&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;strong&gt;Windows: automatic updates&lt;/strong&gt; with WinSparkle — "Check for Updates…" and the automatic daily
+check as on macOS, EdDSA-signed installers from a separate feed; the installer updates in place
+and restarts Lumaflip. [F-MAC-08]&lt;/li&gt;
+&lt;li&gt;
+&lt;strong&gt;Windows: signed releases&lt;/strong&gt; — installer, ZIP, &lt;code&gt;Lumaflip.exe&lt;/code&gt;, the decoder helper and
+&lt;code&gt;WinSparkle.dll&lt;/code&gt; are code-signed (Azure Artifact Signing) and timestamped.&lt;/li&gt;
+&lt;li&gt;
+&lt;strong&gt;Offer to become the default app&lt;/strong&gt;: opening an image of a type another app opens by default
+shows an info bar at the top of the window ("Set", "All Image Formats…", "Don't Ask Again",
+close) – once per type, only in the installed app, never in full screen or a slideshow; can be
+turned off in Settings → General. [F-MAC-09]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="markdown-heading"&gt;&lt;h3 class="heading-element"&gt;Changed&lt;/h3&gt;&lt;a id="user-content-changed" class="anchor" aria-label="Permalink: Changed" href="#changed"&gt;&lt;span aria-hidden="true" class="octicon octicon-link"&gt;&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;strong&gt;German UI texts&lt;/strong&gt; follow the macOS German terminology and one term per concept
+(&lt;a href="translations/GLOSSARY.md"&gt;translations/GLOSSARY.md&lt;/a&gt;): "Sichern" for save, "Widerrufen" for undo,
+"Benutzte Dokumente", "Markieren/Ablehnen" for pick/reject, "App" instead of "Programm",
+consistent "du". Existing translations were kept (&lt;code&gt;tools/i18n_rename_source.py&lt;/code&gt;). [F-I18N-01]&lt;/li&gt;
+&lt;li&gt;
+&lt;strong&gt;All 17 translations reviewed&lt;/strong&gt; against the terms macOS, Windows and Lightroom use in each
+language (menu names, standard commands, punctuation and form of address as on the platform);
+every language is fully translated. Native-speaker reviews are still welcome
+(&lt;a href="translations/REVIEW_STATUS.md"&gt;translations/REVIEW_STATUS.md&lt;/a&gt;). [F-I18N-01]&lt;/li&gt;
+&lt;li&gt;
+&lt;strong&gt;New app icon&lt;/strong&gt; "Sun Chevron": a forward arrow with the sun in its opening, on teal; the website
+uses the matching colours.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="markdown-heading"&gt;&lt;h3 class="heading-element"&gt;Fixed&lt;/h3&gt;&lt;a id="user-content-fixed" class="anchor" aria-label="Permalink: Fixed" href="#fixed"&gt;&lt;span aria-hidden="true" class="octicon octicon-link"&gt;&lt;/span&gt;&lt;/a&gt;&lt;/div&gt;
+&lt;ul&gt;
+&lt;li&gt;A language switch now reaches every window, also one whose native window Qt re-created at
+that moment (some texts stayed in the old language). [F-I18N-03]&lt;/li&gt;
+&lt;li&gt;Update notes no longer show the line breaks of the changelog source.&lt;/li&gt;
+&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</description>
+      <enclosure url="https://github.com/brokoskokoli/lumaflip/releases/download/v1.2.1/Lumaflip-1.2.1-windows-x64-setup.exe" length="21504880" type="application/octet-stream" sparkle:os="windows" sparkle:installerArguments="/SILENT /SP- /SUPPRESSMSGBOXES /NORESTART /CLOSEAPPLICATIONS /RELAUNCH=1" sparkle:edSignature="XZ9Q+NcFPq4LNpnsA4OxyH8NAfafWJwggbdhCCbpAUdCY5ZZC6N7bUIIHqj8N/0RXQSyR7m4g1lnV54PXVaUAg==" />
+    </item>
+  </channel>
+</rss>

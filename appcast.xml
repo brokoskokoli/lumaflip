@@ -1,8 +1,60 @@
-<?xml version="1.0" standalone="yes"?><!-- sparkle-sign-warning:
+<?xml version="1.0" standalone="yes"?>
+<!-- sparkle-sign-warning:
 IMPORTANT: This file was signed by Sparkle. Any modifications to this file requires re-signing this file with generate_appcast or sign_update! The signed signature will be embedded at the end of this file.
---><rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+-->
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
     <channel>
         <title>Lumaflip</title>
+        <item>
+            <title>1.2.1</title>
+            <pubDate>Mon, 12 Oct 2026 01:09:59 +0000</pubDate>
+            <link>https://github.com/brokoskokoli/lumaflip</link>
+            <sparkle:version>1.2.1</sparkle:version>
+            <sparkle:shortVersionString>1.2.1</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>15.0</sparkle:minimumSystemVersion>
+            <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
+            <description><![CDATA[<p>A new icon, reviewed translations in all 18 languages and an offer to become the default app.
+Windows builds are now code-signed and update themselves.</p>
+<div class="markdown-heading"><h3 class="heading-element">Added</h3><a id="user-content-added" class="anchor" aria-label="Permalink: Added" href="#added"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<ul>
+<li>
+<strong>Windows: automatic updates</strong> with WinSparkle — "Check for Updates…" and the automatic daily
+check as on macOS, EdDSA-signed installers from a separate feed; the installer updates in place
+and restarts Lumaflip. [F-MAC-08]</li>
+<li>
+<strong>Windows: signed releases</strong> — installer, ZIP, <code>Lumaflip.exe</code>, the decoder helper and
+<code>WinSparkle.dll</code> are code-signed (Azure Artifact Signing) and timestamped.</li>
+<li>
+<strong>Offer to become the default app</strong>: opening an image of a type another app opens by default
+shows an info bar at the top of the window ("Set", "All Image Formats…", "Don't Ask Again",
+close) – once per type, only in the installed app, never in full screen or a slideshow; can be
+turned off in Settings → General. [F-MAC-09]</li>
+</ul>
+<div class="markdown-heading"><h3 class="heading-element">Changed</h3><a id="user-content-changed" class="anchor" aria-label="Permalink: Changed" href="#changed"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<ul>
+<li>
+<strong>German UI texts</strong> follow the macOS German terminology and one term per concept
+(<a href="translations/GLOSSARY.md">translations/GLOSSARY.md</a>): "Sichern" for save, "Widerrufen" for undo,
+"Benutzte Dokumente", "Markieren/Ablehnen" for pick/reject, "App" instead of "Programm",
+consistent "du". Existing translations were kept (<code>tools/i18n_rename_source.py</code>). [F-I18N-01]</li>
+<li>
+<strong>All 17 translations reviewed</strong> against the terms macOS, Windows and Lightroom use in each
+language (menu names, standard commands, punctuation and form of address as on the platform);
+every language is fully translated. Native-speaker reviews are still welcome
+(<a href="translations/REVIEW_STATUS.md">translations/REVIEW_STATUS.md</a>). [F-I18N-01]</li>
+<li>
+<strong>New app icon</strong> "Sun Chevron": a forward arrow with the sun in its opening, on teal; the website
+uses the matching colours.</li>
+</ul>
+<div class="markdown-heading"><h3 class="heading-element">Fixed</h3><a id="user-content-fixed" class="anchor" aria-label="Permalink: Fixed" href="#fixed"><span aria-hidden="true" class="octicon octicon-link"></span></a></div>
+<ul>
+<li>A language switch now reaches every window, also one whose native window Qt re-created at
+that moment (some texts stayed in the old language). [F-I18N-03]</li>
+<li>Update notes no longer show the line breaks of the changelog source.</li>
+</ul>
+]]></description>
+            <enclosure url="https://github.com/brokoskokoli/lumaflip/releases/download/v1.2.1/Lumaflip-1.2.1.dmg" length="35495499" type="application/octet-stream" sparkle:edSignature="g0e4zycTcZ8mkQD+Bi8WOuCec/MlVRY3ediGsoEujvvZCJlmejM8oUeHdLblr9h5rqSqyC3q4vYxaQFVDIAkDA=="/>
+        </item>
         <item>
             <title>1.2.0</title>
             <pubDate>Sun, 11 Oct 2026 18:47:04 +0000</pubDate>
@@ -79,10 +131,11 @@ uses its frame delays, and a paused animation also resumes when the window is ac
 (the WIC codec returned its frames as pages). New tests check playback on the rendered<br>
 canvas, not only in the player. [F-FMT-03, F-IN-06]</li>
 </ul>]]></description>
-            <enclosure url="https://github.com/brokoskokoli/lumaflip/releases/download/v1.2.0/Lumaflip-1.2.0.dmg" length="35158826" type="application/octet-stream" sparkle:edSignature="1D3kjOKJjXQ7Kjq0tyz5jC1Jd/riGPJSFvhJJiTlZAQc6x1bCXELj2QrUypfmhx6gNjClPtM1czCF0gnORN8Cw=="></enclosure>
+            <enclosure url="https://github.com/brokoskokoli/lumaflip/releases/download/v1.2.0/Lumaflip-1.2.0.dmg" length="35158826" type="application/octet-stream" sparkle:edSignature="1D3kjOKJjXQ7Kjq0tyz5jC1Jd/riGPJSFvhJJiTlZAQc6x1bCXELj2QrUypfmhx6gNjClPtM1czCF0gnORN8Cw=="/>
         </item>
     </channel>
-</rss><!-- sparkle-signatures:
-edSignature: b29NYzl/yDaKEqMcQnmEx7DMO31zrgu/SOYZ31YlNK9DoTiF2mC/Py1I1qhPSE8M5vb0Jb5u02uEQGMnlRQFCA==
-length: 7114
+</rss>
+<!-- sparkle-signatures:
+edSignature: Nu0OXkAJu3R8FeDNnlW6b93oylw3mi7pDUINlQ33r02yUvg7VI4hnKz64omjQ33FrIiga+4YkWhX7lD74A7YAg==
+length: 10777
 -->
