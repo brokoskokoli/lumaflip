@@ -12,24 +12,27 @@ jobs:
     runs-on: macos-26
     timeout-minutes: 15
     steps:
-      - name: Display and tools
+      - name: Display modes
         run: |
-          system_profiler SPDisplaysDataType || true
-          osascript -l JavaScript -e 'ObjC.import("AppKit"); var s=$.NSScreen.mainScreen; JSON.stringify({w:s.frame.size.width,h:s.frame.size.height,scale:s.backingScaleFactor, vh: s.visibleFrame.size.height})' || true
-          for t in ffmpeg img2webp cwebp pngquant avifenc gifski magick swift sips; do printf '%s: ' $t; command -v $t || echo missing; done
-          sw_vers
-          defaults read -g AppleInterfaceStyle 2>/dev/null || echo "light appearance"
-      - name: Screen capture permission
-        run: |
-          mkdir -p out
-          open -a TextEdit || true
-          sleep 3
-          screencapture -x out/screen.png && sips -g pixelWidth -g pixelHeight out/screen.png || echo "screencapture failed"
-          wid=$(osascript -l JavaScript -e 'ObjC.import("CoreGraphics"); var l=ObjC.castRefToObject($.CGWindowListCopyWindowInfo(1|16, 0)); var r=[]; for (var i=0;i<l.count;i++){var d=l.objectAtIndex(i); r.push(ObjC.unwrap(d.objectForKey("kCGWindowOwnerName"))+":"+ObjC.unwrap(d.objectForKey("kCGWindowNumber"))+":"+ObjC.unwrap(d.objectForKey("kCGWindowLayer")));} r.join("\n")' || true)
-          echo "$wid"
-          w=$(echo "$wid" | grep -m1 '^TextEdit' | cut -d: -f2 || true)
-          if [[ -n "$w" ]]; then screencapture -x -o -l "$w" out/window.png && sips -g pixelWidth -g pixelHeight out/window.png || echo "window capture failed"; fi
-      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: probe
-          path: out/
+          cat > modes.swift <<'EOF'
+          import CoreGraphics
+          import AppKit
+          let d = CGMainDisplayID()
+          let opts = [kCGDisplayShowDuplicateLowResolutionModes: kCFBooleanTrue] as CFDictionary
+          let modes = (CGDisplayCopyAllDisplayModes(d, opts) as? [CGDisplayMode]) ?? []
+          for m in modes { print("mode \(m.width)x\(m.height) px \(m.pixelWidth)x\(m.pixelHeight) usable \(m.isUsableForDesktopGUI())") }
+          if let cur = CGDisplayCopyDisplayMode(d) { print("current \(cur.width)x\(cur.height) px \(cur.pixelWidth)x\(cur.pixelHeight)") }
+          let hidpi = modes.filter { $0.pixelWidth == 2 * $0.width && $0.width >= 1280 }.sorted { $0.width > $1.width }
+          let pick = hidpi.first ?? modes.sorted { $0.width > $1.width }.first
+          if let m = pick {
+            var cfg: CGDisplayConfigRef?
+            CGBeginDisplayConfiguration(&cfg)
+            CGConfigureDisplayWithDisplayMode(cfg, d, m, nil)
+            let err = CGCompleteDisplayConfiguration(cfg, .permanently)
+            print("switch to \(m.width)x\(m.height) px \(m.pixelWidth)x\(m.pixelHeight): \(err.rawValue)")
+          }
+          if let cur = CGDisplayCopyDisplayMode(d) { print("now \(cur.width)x\(cur.height) px \(cur.pixelWidth)x\(cur.pixelHeight)") }
+          EOF
+          swift modes.swift
+          brew install displayplacer >/dev/null 2>&1 && displayplacer list | head -40 || echo "no displayplacer"
+          osascript -l JavaScript -e 'ObjC.import("AppKit"); var s=$.NSScreen.mainScreen; JSON.stringify({w:s.frame.size.width,h:s.frame.size.height,scale:s.backingScaleFactor})'
