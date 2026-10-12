@@ -66,7 +66,8 @@ TEST_F(SettingsTest, F_SET_04_SensibleDefaults) {
     EXPECT_EQ(s().value(key::OpenBehavior).toString(), "newWindow");
     EXPECT_EQ(s().value(key::WrapMode).toString(), "stop");
     EXPECT_TRUE(s().value(key::FollowFinder).toBool());
-    EXPECT_FALSE(s().value(key::FinderLiveQuery).toBool());
+    // F-SORT-04: opt-in on macOS (Automation permission), on in Windows (no permission needed)
+    EXPECT_EQ(s().value(key::FinderLiveQuery).toBool(), platformFileManager() == FileManager::Explorer);
     EXPECT_EQ(s().value(key::Background).toString(), "dark");
     EXPECT_EQ(s().value(key::ZoomMode).toString(), "fit");
     EXPECT_EQ(s().value(key::UpscaleFilter).toString(), "smooth");

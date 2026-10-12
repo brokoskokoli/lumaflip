@@ -865,7 +865,10 @@ private slots:
 
     void F_SORT_04_settingEnablesLiveQueryWithFakeProvider() {
         makeFolder();
-        QVERIFY(!Settings::instance().value(key::FinderLiveQuery).toBool()); // opt-in
+        // opt-in on macOS; Windows asks Explorer without a permission: on by default
+        QCOMPARE(Settings::instance().value(key::FinderLiveQuery).toBool(),
+                 platformFileManager() == FileManager::Explorer);
+        Settings::instance().setValue(key::FinderLiveQuery, false);
         std::unique_ptr<NameCollator> collator = createNameCollator();
         std::unique_ptr<FileAttributeProvider> attributes = createFileAttributeProvider();
         ViewerWindow* w = app->newWindow();
@@ -891,7 +894,21 @@ private slots:
     void F_SORT_04_explainedBeforeEnabling() {
         PreferencesDialog dlg;
         auto* check = dlg.findChild<QCheckBox*>(QStringLiteral("setting:") + key::FinderLiveQuery);
+        if (platformFileManager() == FileManager::Other) { // Linux: nothing to query
+            QVERIFY(!check);
+            return;
+        }
         QVERIFY(check);
+        if (platformFileManager() == FileManager::Explorer) { // no permission: no explanation
+            QCOMPARE(check->text(), QStringLiteral("Sortierung live vom Explorer-Fenster übernehmen"));
+            QVERIFY(check->isChecked()); // on by default
+            check->setChecked(false);
+            QVERIFY(!Settings::instance().value(key::FinderLiveQuery).toBool());
+            check->setChecked(true);
+            QVERIFY(!dlg.findChild<QMessageBox*>(QStringLiteral("lfLiveQueryExplanation")));
+            QVERIFY(Settings::instance().value(key::FinderLiveQuery).toBool());
+            return;
+        }
         QCOMPARE(check->text(), QStringLiteral("Sortierung live vom Finder-Fenster übernehmen"));
         check->setChecked(true);
         auto* box = dlg.findChild<QMessageBox*>(QStringLiteral("lfLiveQueryExplanation"));

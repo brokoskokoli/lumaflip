@@ -41,11 +41,13 @@ public:
     virtual std::unique_ptr<PreparedNames> prepare(QVector<QString> names) const;
 };
 
-// Determines the sort order Finder uses for a folder (SPEC 6.1, tiers 1-4).
+// Determines the sort order the file manager uses for a folder (SPEC 6.1, tiers 1-4; on
+// Windows the Explorer window showing the folder).
 class FolderOrderProvider {
 public:
     virtual ~FolderOrderProvider() = default;
-    // allowLiveQuery: tier 3 (AppleScript) is opt-in, F-SORT-04.
+    // allowLiveQuery: ask the file manager's window (F-SORT-04): macOS tier 3 (AppleScript,
+    // opt-in), Windows the Explorer window via COM (on by default, key::FinderLiveQuery).
     virtual SortSpec finderOrder(const QString& folderPath, bool allowLiveQuery) = 0;
     // Icon positions (Iloc) for SortKey::FinderIconPosition, keyed by file name.
     virtual QHash<QString, QPointF> iconPositions(const QString& folderPath) = 0;
@@ -181,6 +183,9 @@ QStringList appLanguagePreference(const QString& domain = QString());
 bool setAppKitLanguage(const QString& code, const QString& domain = QString());
 
 // ---- factories (implemented per platform) ----
+// The file manager whose order "Wie im Finder" follows (SortSpec.h): macOS Finder, Windows
+// Explorer, otherwise FileManager::Other.
+FileManager platformFileManager();
 std::unique_ptr<NameCollator> createNameCollator();
 std::unique_ptr<FolderOrderProvider> createFolderOrderProvider();
 std::unique_ptr<FileAttributeProvider> createFileAttributeProvider();

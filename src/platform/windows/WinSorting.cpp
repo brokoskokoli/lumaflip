@@ -6,16 +6,19 @@
 // counterpart of StrCmpLogicalW, which Explorer uses). Ties (names that differ only in case
 // or width) are broken by code point order: only identical names compare equal.
 //
-// Folder order (SPEC 6.1): Explorer keeps its view settings in the "Bags" of the user's
-// registry (ShellBags), keyed by folder ID lists and not documented - there is no readable
-// per-folder sort for arbitrary folders. Lumaflip uses name order there; a .DS_Store a Mac
-// left on a shared or external drive still applies (same as the generic layer).
+// Folder order (SPEC 6.1, F-SORT-04): the sort of the Explorer window that shows the folder
+// (WinExplorerOrder.cpp, on unless key::FinderLiveQuery is off). Explorer keeps its view
+// settings for folders without an open window in the "Bags" of the user's registry
+// (ShellBags), keyed by folder ID lists and not documented - those are not read. Then a
+// .DS_Store a Mac left on a shared or external drive applies (same as the generic layer),
+// otherwise name order ("Explorer-Ansicht nicht gefunden").
 //
 // Kind: the type name Explorer shows ("JPG-Datei"), SHGetFileInfo by extension.
 
 #include "core/FinderViewSettings.h"
 #include "core/Platform.h"
 #include "platform/windows/WinCom.h"
+#include "platform/windows/WinExplorerOrder.h"
 
 #include <QFileInfo>
 #include <QHash>
@@ -106,7 +109,11 @@ public:
 
 class WinFolderOrderProvider final : public FolderOrderProvider {
 public:
-    SortSpec finderOrder(const QString& folderPath, bool) override {
+    SortSpec finderOrder(const QString& folderPath, bool allowLiveQuery) override {
+        if (allowLiveQuery) {
+            if (std::optional<SortSpec> live = win::explorerOrder(folderPath))
+                return *live;
+        }
         // .DS_Store files copied from a Mac still carry the Finder settings; otherwise the
         // default (name order).
         return finder::resolve(finder::readFolderRecords(folderPath), finder::GlobalContext{});
@@ -156,6 +163,10 @@ private:
 
 std::unique_ptr<NameCollator> createNameCollator() {
     return std::make_unique<WinNameCollator>();
+}
+
+FileManager platformFileManager() {
+    return FileManager::Explorer;
 }
 
 std::unique_ptr<FolderOrderProvider> createFolderOrderProvider() {

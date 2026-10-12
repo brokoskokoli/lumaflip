@@ -478,7 +478,10 @@ private slots:
         const QString sort = w->sortText();
         QCOMPARE(sort, describe(w->collection()->sortSpec()));
         QVERIFY2(sort.startsWith(QStringLiteral("Wie im Finder: ")) ||
-                     sort.contains(QStringLiteral("Finder-Info")),
+                     sort.startsWith(QStringLiteral("Wie im Explorer: ")) ||
+                     sort.contains(QStringLiteral("Finder-Info")) ||
+                     sort.contains(QStringLiteral("Explorer-Ansicht")) ||
+                     sort.contains(QStringLiteral("Dateimanagers")),
                  qPrintable(sort));
         QVERIFY(status.contains(sort));
 

@@ -6,6 +6,7 @@
 #include "PreferencesExtras.h"
 #include "SystemSymbols.h"
 #include "Updater.h"
+#include "core/Platform.h"
 #include "core/Settings.h"
 
 #include <QAction>
@@ -780,20 +781,42 @@ QWidget* PreferencesDialog::buildNavigation() {
     form->addRow(tr("Am Ende der Sammlung:"),
                  bind.combo(key::WrapMode, {"stop", "wrap", "nextFolder"},
                             {tr("Anhalten"), tr("Umlaufen"), tr("Zum nächsten Ordner")}, w));
-    form->addRow(QString(), bind.check(key::FollowFinder, tr("Sortierung wie im Finder"), w));
-    form->addRow(QString(),
-                 helpLabel(tr("Liest die Darstellungsoptionen des Ordners (.DS_Store) und die globalen "
-                              "Finder-Einstellungen."),
-                           w));
-    // F-SORT-04: opt-in, explained before macOS asks for the Automation permission.
-    form->addRow(QString(), prefs::createLiveQueryCheck(w));
-    form->addRow(
-        QString(),
-        helpLabel(
-            tr("Zeigt das vorderste Finder-Fenster genau den geöffneten Ordner, übernimmt Lumaflip dessen "
-               "aktuelle Sortierung (auch noch nicht gespeicherte). macOS bittet dafür einmalig um die "
-               "Erlaubnis, den Finder zu steuern (Automation)."),
-            w));
+    // F-SORT-03/04: named after the platform's file manager (SPEC 6.1).
+    const FileManager fm = platformFileManager();
+    if (fm == FileManager::Finder) {
+        form->addRow(QString(), bind.check(key::FollowFinder, tr("Sortierung wie im Finder"), w));
+        form->addRow(QString(),
+                     helpLabel(tr("Liest die Darstellungsoptionen des Ordners (.DS_Store) und die globalen "
+                                  "Finder-Einstellungen."),
+                               w));
+        // F-SORT-04: opt-in, explained before macOS asks for the Automation permission.
+        form->addRow(QString(), prefs::createLiveQueryCheck(w));
+        form->addRow(
+            QString(),
+            helpLabel(
+                tr("Zeigt das vorderste Finder-Fenster genau den geöffneten Ordner, übernimmt Lumaflip "
+                   "dessen "
+                   "aktuelle Sortierung (auch noch nicht gespeicherte). macOS bittet dafür einmalig um die "
+                   "Erlaubnis, den Finder zu steuern (Automation)."),
+                w));
+    } else if (fm == FileManager::Explorer) {
+        form->addRow(QString(), bind.check(key::FollowFinder, tr("Sortierung wie im Explorer"), w));
+        // F-SORT-04 on Windows: no permission needed, on by default.
+        form->addRow(QString(), prefs::createLiveQueryCheck(w));
+        form->addRow(
+            QString(),
+            helpLabel(tr("Zeigt ein Explorer-Fenster genau den geöffneten Ordner, übernimmt Lumaflip "
+                         "dessen Sortierung und, soweit möglich, die Gruppierung. Sonst sortiert "
+                         "Lumaflip nach Name; eine .DS_Store-Datei von einem Mac gilt weiter."),
+                      w));
+    } else {
+        form->addRow(QString(), bind.check(key::FollowFinder, tr("Sortierung wie im Dateimanager"), w));
+        form->addRow(
+            QString(),
+            helpLabel(tr("Die Sortierung des Dateimanagers (Nautilus, Dolphin …) wird nicht gelesen: "
+                         "Lumaflip sortiert nach Name. Eine .DS_Store-Datei von einem Mac gilt weiter."),
+                      w));
+    }
     form->addRow(tr("Manuelle Sortierung:"),
                  bind.combo(key::ManualSortKey,
                             {"name", "dateModified", "dateCreated", "dateAdded", "dateCaptured", "size",
@@ -802,11 +825,17 @@ QWidget* PreferencesDialog::buildNavigation() {
                              tr("Aufnahmedatum"), tr("Größe"), tr("Art"), tr("Pixelzahl"), tr("Bewertung")},
                             w));
     form->addRow(QString(), bind.check(key::ManualSortAscending, tr("Aufsteigend"), w));
-    form->addRow(QString(),
-                 helpLabel(tr("Gilt, wenn „Sortierung wie im Finder“ aus ist oder keine Finder-Information "
-                              "gefunden wird. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner "
-                              "gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier."),
-                           w));
+    form->addRow(
+        QString(),
+        helpLabel(
+            fm == FileManager::Finder
+                ? tr("Gilt, wenn „Sortierung wie im Finder“ aus ist oder keine Finder-Information "
+                     "gefunden wird. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner "
+                     "gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier.")
+                : tr("Gilt, wenn die Sortierung wie im Dateimanager oben aus ist oder nicht "
+                     "gelesen werden kann. Eine Wahl im Menü Darstellung → Sortieren nach wird pro Ordner "
+                     "gemerkt; „Für alle Ordner verwenden“ macht sie zur Vorgabe hier."),
+            w));
     return w;
 }
 

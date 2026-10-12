@@ -2,6 +2,7 @@
 #include "PreferencesExtras.h"
 
 #include "OpenWith.h"
+#include "core/Platform.h"
 #include "core/Settings.h"
 
 #include <QCheckBox>
@@ -92,7 +93,11 @@ QWidget* createEditorChooser(QWidget* parent) {
 }
 
 QCheckBox* createLiveQueryCheck(QWidget* parent) {
-    auto* cb = new QCheckBox(Tr::tr("Sortierung live vom Finder-Fenster übernehmen"), parent);
+    // Windows asks the Explorer window over COM: no permission, nothing to explain.
+    const bool explorer = platformFileManager() == FileManager::Explorer;
+    auto* cb = new QCheckBox(explorer ? Tr::tr("Sortierung live vom Explorer-Fenster übernehmen")
+                                      : Tr::tr("Sortierung live vom Finder-Fenster übernehmen"),
+                             parent);
     cb->setObjectName(QStringLiteral("setting:") + key::FinderLiveQuery);
     auto refresh = [cb] {
         const QSignalBlocker block(cb);
@@ -103,9 +108,9 @@ QCheckBox* createLiveQueryCheck(QWidget* parent) {
         if (k == QLatin1String(key::FinderLiveQuery))
             refresh();
     });
-    QObject::connect(cb, &QCheckBox::toggled, cb, [cb, refresh](bool on) {
-        if (!on) {
-            st().setValue(key::FinderLiveQuery, false);
+    QObject::connect(cb, &QCheckBox::toggled, cb, [cb, refresh, explorer](bool on) {
+        if (!on || explorer) {
+            st().setValue(key::FinderLiveQuery, on);
             return;
         }
         if (st().value(key::FinderLiveQuery).toBool())

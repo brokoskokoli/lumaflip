@@ -12,6 +12,7 @@
 #include "WindowPanels.h"
 #include "core/Collection.h"
 #include "core/FileOps.h"
+#include "core/Platform.h"
 #include "core/Settings.h"
 
 #include <QAction>
@@ -250,7 +251,12 @@ void MainMenu::build() {
     view->addSeparator();
     QMenu* sort = view->addMenu(tr("Sortieren nach"));
     sort->setObjectName(QStringLiteral("menu:sort"));
-    QAction* finder = addCommand(sort, QStringLiteral("sort:finder"), tr("Wie im Finder"));
+    // F-SORT-03: named after the platform's file manager (Linux: its settings are not read).
+    const FileManager fm = platformFileManager();
+    const QString followText = fm == FileManager::Explorer ? tr("Wie im Explorer")
+                               : fm == FileManager::Other  ? tr("Wie im Dateimanager")
+                                                           : tr("Wie im Finder");
+    QAction* finder = addCommand(sort, QStringLiteral("sort:finder"), followText);
     finder->setCheckable(true);
     connect(finder, &QAction::triggered, this, [this, front] {
         if (auto* w = front())

@@ -154,6 +154,10 @@ public:
 
 } // namespace
 
+FileManager platformFileManager() {
+    return FileManager::Finder;
+}
+
 std::unique_ptr<FolderOrderProvider> createFolderOrderProvider() {
     return std::make_unique<MacFolderOrderProvider>();
 }
