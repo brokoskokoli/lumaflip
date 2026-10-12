@@ -116,15 +116,45 @@ Then replace this comment with e.g.:
 
 ## Install
 
+### macOS
+
 Requirements: **macOS 15 Sequoia or later** on an **Apple Silicon** Mac.
 
-- **DMG**: download `Lumaflip-<version>.dmg` from
-  [Releases](https://github.com/brokoskokoli/lumaflip/releases), open it and drag Lumaflip into
-  Applications. Releases are signed with a Developer ID and notarized by Apple. To verify the
-  download: `shasum -a 256 -c Lumaflip-<version>.dmg.sha256`.
-- **Homebrew** *(planned)*: the cask will be published in our own tap first,
-  `brew install --cask brokoskokoli/tap/lumaflip`. Once it is accepted into
-  `homebrew/cask`, the command will be `brew install --cask lumaflip`.
+- **Homebrew**:
+
+  ```sh
+  brew install --cask brokoskokoli/tap/lumaflip
+  ```
+
+  The cask lives in our own tap, [brokoskokoli/homebrew-tap](https://github.com/brokoskokoli/homebrew-tap),
+  and is updated with every release. Lumaflip updates itself, so `brew upgrade` leaves it alone
+  (`brew upgrade --greedy` does not). Once the cask is accepted into `homebrew/cask`, the command
+  will be `brew install --cask lumaflip`.
+- **DMG**: download `Lumaflip-<version>.dmg` from the
+  [latest release](https://github.com/brokoskokoli/lumaflip/releases/latest), open it and drag
+  Lumaflip into Applications. Releases are signed with a Developer ID and notarized by Apple. To
+  verify the download: `shasum -a 256 -c Lumaflip-<version>.dmg.sha256`.
+
+The first time you open an image from Desktop, Documents, Downloads, a removable drive or a network
+volume, macOS asks once for access. Lumaflip needs to read the image's folder so you can flip
+through it.
+
+### Windows (preview)
+
+Requirements: **Windows 10 (1809) or 11**, x64.
+
+- **Installer**: `Lumaflip-<version>-windows-x64-setup.exe` from the
+  [latest release](https://github.com/brokoskokoli/lumaflip/releases/latest). It installs per user
+  (no administrator rights), registers Lumaflip under *Open with* and *Settings → Default apps*
+  and never takes over a file type. Installed copies update themselves.
+- **Portable**: `Lumaflip-<version>-windows-x64.zip` from the same release; unpack and start
+  `Lumaflip.exe`.
+- **winget** *(pending)*: once the package is accepted into the Windows Package Manager
+  repository, `winget install Brokoskokoli.Lumaflip`.
+
+Release builds are Authenticode-signed (Azure Artifact Signing). HEIC, AVIF, WebP, JPEG XL and RAW
+use the codec extensions from the Microsoft Store. Details, differences to macOS and known gaps:
+[docs/WINDOWS.md](docs/WINDOWS.md).
 
 ### Linux (preview)
 
@@ -133,19 +163,6 @@ An **AppImage** for x86_64 Linux (glibc 2.39+, e.g. Ubuntu 24.04 or newer) is bu
 `chmod +x Lumaflip-<version>-x86_64.AppImage` and run it. *File → Set as Default App…* registers it
 as your image viewer. HEIC needs a separately installed HEVC decoder; Live Text, Quick Look, maps
 and HDR (EDR) are macOS-only. Details, building from source and the sandbox: [docs/LINUX.md](docs/LINUX.md).
-### Windows (preview)
-
-Requirements: **Windows 10 (1809) or 11**, x64. Preview builds come from CI (job *Windows app*,
-artifact `lumaflip-windows-x64`): `Lumaflip-<version>-windows-x64-setup.exe` (installs per user,
-registers Lumaflip under *Open with* and *Settings → Default apps*, never takes over a file type)
-or the portable `Lumaflip-<version>-windows-x64.zip`. These builds are **not code-signed yet**:
-SmartScreen warns on the first start ("Windows protected your PC" → *More info* → *Run anyway*).
-HEIC, AVIF, WebP, JPEG XL and RAW use the codec extensions from the Microsoft Store. Details,
-differences to macOS and known gaps: [docs/WINDOWS.md](docs/WINDOWS.md).
-
-The first time you open an image from Desktop, Documents, Downloads, a removable drive or a network
-volume, macOS asks once for access. Lumaflip needs to read the image's folder so you can flip
-through it.
 
 ## Quick start
 

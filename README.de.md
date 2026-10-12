@@ -46,12 +46,42 @@ Alle Funktionen und Tastenkürzel: [README.md](README.md#features) (Englisch).
 
 ## Installation
 
+### macOS
+
 Voraussetzung: macOS 15 (Sequoia) oder neuer, Apple-Silicon-Mac.
 
-- **DMG:** unter [Releases](https://github.com/brokoskokoli/lumaflip/releases) laden, öffnen,
-  Lumaflip nach „Programme“ ziehen (signiert und notarisiert).
-- **Homebrew** *(geplant)*: `brew install --cask brokoskokoli/tap/lumaflip`, nach Aufnahme in
-  `homebrew/cask` auch `brew install --cask lumaflip`.
+- **Homebrew:**
+
+  ```sh
+  brew install --cask brokoskokoli/tap/lumaflip
+  ```
+
+  Der Cask liegt im eigenen Tap [brokoskokoli/homebrew-tap](https://github.com/brokoskokoli/homebrew-tap)
+  und wird mit jedem Release aktualisiert. Lumaflip aktualisiert sich selbst, deshalb lässt
+  `brew upgrade` es aus (`brew upgrade --greedy` nicht). Nach Aufnahme in `homebrew/cask` genügt
+  `brew install --cask lumaflip`.
+- **DMG:** `Lumaflip-<version>.dmg` aus dem
+  [neuesten Release](https://github.com/brokoskokoli/lumaflip/releases/latest) laden, öffnen,
+  Lumaflip nach „Programme“ ziehen (signiert und notarisiert). Prüfsumme:
+  `shasum -a 256 -c Lumaflip-<version>.dmg.sha256`.
+
+### Windows (Vorschau)
+
+Windows 10 (1809) oder 11, x64.
+
+- **Installer:** `Lumaflip-<version>-windows-x64-setup.exe` aus dem
+  [neuesten Release](https://github.com/brokoskokoli/lumaflip/releases/latest). Installiert pro
+  Benutzer (ohne Administratorrechte), trägt Lumaflip unter „Öffnen mit“ und „Einstellungen →
+  Standard-Apps“ ein und übernimmt keinen Dateityp ungefragt. Installierte Kopien aktualisieren
+  sich selbst.
+- **Portabel:** `Lumaflip-<version>-windows-x64.zip` aus demselben Release entpacken und
+  `Lumaflip.exe` starten.
+- **winget** *(in Vorbereitung)*: nach Aufnahme in das Paketverzeichnis von winget
+  `winget install Brokoskokoli.Lumaflip`.
+
+Releases sind mit Authenticode signiert (Azure Artifact Signing). HEIC, AVIF, WebP, JPEG XL und RAW
+über die Codec-Erweiterungen aus dem Microsoft Store. Details: [docs/WINDOWS.md](docs/WINDOWS.md)
+(Englisch).
 
 ### Linux (Vorschau)
 
@@ -61,15 +91,6 @@ Lumaflip-<version>-x86_64.AppImage`, dann starten. *Ablage → Als Standard-App 
 es zum Bildbetrachter. HEIC braucht einen separat installierten HEVC-Decoder; Live Text, Quick
 Look, Karten und HDR (EDR) gibt es nur auf dem Mac. Details, Bauen und Sandbox:
 [docs/LINUX.md](docs/LINUX.md) (Englisch).
-### Windows (Vorschau)
-
-Windows 10 (1809) oder 11, x64. Vorschau-Builds aus der CI (Job „Windows app“, Artefakt
-`lumaflip-windows-x64`): Installer `Lumaflip-<version>-windows-x64-setup.exe` (pro Benutzer, trägt
-Lumaflip unter „Öffnen mit“ und „Einstellungen → Standard-Apps“ ein, übernimmt keinen Dateityp
-ungefragt) oder die portable ZIP-Datei. Die Builds sind **noch nicht signiert**: SmartScreen warnt
-beim ersten Start („Der Computer wurde durch Windows geschützt“ → „Weitere Informationen“ →
-„Trotzdem ausführen“). HEIC, AVIF, WebP, JPEG XL und RAW über die Codec-Erweiterungen aus dem
-Microsoft Store. Details: [docs/WINDOWS.md](docs/WINDOWS.md).
 
 ## Aus dem Quellcode bauen
 

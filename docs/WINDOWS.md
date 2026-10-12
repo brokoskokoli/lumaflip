@@ -14,6 +14,9 @@ from macOS. The platform code lives in `src/platform/windows/` (core layer) and
   **Settings → Apps → Default apps**. It never takes over a file type by itself.
 - **Portable:** `Lumaflip-<version>-windows-x64.zip`, unpack anywhere and start
   `Lumaflip.exe` (no file type registration).
+- **winget** *(pending)*: once the package is accepted into `microsoft/winget-pkgs`,
+  `winget install Brokoskokoli.Lumaflip` installs the same installer per user
+  (`--scope machine` for all users). Manifests and submission: [RELEASING.md](RELEASING.md#winget).
 - **Signed releases:** the installer, `Lumaflip.exe`, `lumaflip-decoder.exe` and
   `WinSparkle.dll` of a release are Authenticode-signed with Azure Artifact Signing and
   timestamped (see [Signing](#signing)). **CI artifacts are unsigned:** Windows SmartScreen shows
