@@ -8,7 +8,8 @@
 #
 # Environment: LF_SHOT_PHOTOS (default build/sample-photos, filled by
 # tools/fetch_sample_photos.py), LF_SHOT_OUT (default build/screenshots), LF_SHOT_LANGS
-# (default "en de"). Masters go to $LF_SHOT_OUT/masters, the exported files to docs/images
+# (default "en de"), LF_SHOT_FOLDER (folder the photos are copied to, must not exist; default a
+# temporary one; its path shows in the info panel). Masters go to $LF_SHOT_OUT/masters, the exported files to docs/images
 # and website/images/shots (tools/screenshots/export_images.sh).
 set -uo pipefail
 cd "$(dirname "$0")/../.."

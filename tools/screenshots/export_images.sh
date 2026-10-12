@@ -44,6 +44,7 @@ count=0
 for master in "$MASTERS"/*.png; do
   [[ -f "$master" ]] || continue
   name=$(basename "$master" .png)
+  [[ "$name" == debug-* ]] && continue # diagnostics of the tool, not for publishing
   resize "$master" 1600 "$WORK/readme.png"
   webp "$WORK/readme.png" 82 "$DOCS/$name.webp"
   resize "$master" 1280 "$WORK/site.png"

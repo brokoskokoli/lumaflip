@@ -55,7 +55,8 @@ private:
     QImage grabWindow(QWidget* window);
     // Grabs until two grabs in a row are identical (thumbnails, metadata and fades done).
     QImage grabStable(QWidget* window, const std::function<void()>& prepare = {}, int timeoutMs = 20000);
-    void revealTitle(ViewerWindow* window);
+    static void revealTitle(ViewerWindow* window); // title strip shown, toasts hidden
+    static void hideTitle(ViewerWindow* window);
     FrameStyle mainWindowStyle(ViewerWindow* window) const;
     bool save(const QImage& content, const FrameStyle& style, const QString& file);
 
@@ -71,6 +72,7 @@ private:
     Options m_o;
     QTemporaryDir m_work;
     QString m_folder;
+    QString m_ownedFolder; // LF_SHOT_FOLDER: removed at the end
     std::unique_ptr<Application> m_app;
     QHash<QString, Quality> m_quality; // best stage shown per path
     double m_dpr = 1.0;

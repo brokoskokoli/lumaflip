@@ -88,6 +88,8 @@ ShotDriver::~ShotDriver() {
     closeWindows();
     m_app.reset();
     QThreadPool::globalInstance()->waitForDone(10000);
+    if (!m_ownedFolder.isEmpty())
+        QDir(m_ownedFolder).removeRecursively();
 }
 
 QString ShotDriver::path(const QString& name) const {
@@ -100,7 +102,17 @@ bool ShotDriver::prepareFolder() {
         return false;
     }
     // The folder name appears in the folder map header and the info panel.
-    m_folder = QDir(m_work.path()).filePath(QStringLiteral("Greece"));
+    // The folder's path shows in the info panel: LF_SHOT_FOLDER names a tidy one (CI:
+    // ~/Pictures/Greece); it must not exist yet. Default: a temporary folder.
+    m_folder = qEnvironmentVariable("LF_SHOT_FOLDER");
+    if (!m_folder.isEmpty() && QFileInfo::exists(m_folder)) {
+        log(QStringLiteral("LF_SHOT_FOLDER %1 exists already").arg(m_folder));
+        return false;
+    }
+    if (m_folder.isEmpty())
+        m_folder = QDir(m_work.path()).filePath(QStringLiteral("Greece"));
+    else
+        m_ownedFolder = m_folder;
     QDir().mkpath(m_folder);
     const QFileInfoList photos =
         QDir(m_o.photos).entryInfoList({QStringLiteral("*.jpg")}, QDir::Files, QDir::Name | QDir::IgnoreCase);
@@ -315,8 +327,15 @@ QImage ShotDriver::grabStable(QWidget* window, const std::function<void()>& prep
 }
 
 void ShotDriver::revealTitle(ViewerWindow* window) {
+    window->hideMessage();
     if (TitleStripController* ts = window->extras()->titleStrip())
         ts->reveal();
+}
+
+void ShotDriver::hideTitle(ViewerWindow* window) {
+    window->hideMessage();
+    if (TitleStripController* ts = window->extras()->titleStrip())
+        ts->strip()->fadeTo(false, 0);
 }
 
 FrameStyle ShotDriver::mainWindowStyle(ViewerWindow* window) const {
@@ -349,7 +368,7 @@ bool ShotDriver::shotViewer() {
     ViewerWindow* w = openImage(kHero);
     if (!w)
         return false;
-    const QImage image = grabStable(w, [this, w] { revealTitle(w); });
+    const QImage image = grabStable(w, [w] { revealTitle(w); });
     return save(image, mainWindowStyle(w),
                 shotFileName(QStringLiteral("viewer"), m_o.language, m_o.appearance));
 }
@@ -360,6 +379,9 @@ bool ShotDriver::shotInfo() {
         return false;
     w->panels()->setInfoPanelEnabled(true);
     w->panels()->setFilmstripEnabled(true);
+    QTest::qWait(300);
+    if (auto* dock = w->findChild<QDockWidget*>(QStringLiteral("lfInfoDock")))
+        w->resizeDocks({dock}, {m_o.windowSize.width() * 36 / 100}, Qt::Horizontal);
     InfoPanel* info = nullptr;
     const bool loaded = QTest::qWaitFor(
         [&] {
@@ -376,7 +398,7 @@ bool ShotDriver::shotInfo() {
         if (!QTest::qWaitFor([info] { return !info->isTagWritePending(); }, 10000))
             log(QStringLiteral("Finder tag not written in time"));
     }
-    const QImage image = grabStable(w, [this, w] { revealTitle(w); });
+    const QImage image = grabStable(w, [w] { revealTitle(w); });
     return save(image, mainWindowStyle(w),
                 shotFileName(QStringLiteral("info"), m_o.language, m_o.appearance));
 }
@@ -391,7 +413,8 @@ bool ShotDriver::shotCulling() {
     QTest::qWait(500);
     if (!w->culling()->overlay() || !w->culling()->overlay()->isVisible())
         log(QStringLiteral("culling overlay not visible"));
-    const QImage image = grabStable(w, [this, w] { revealTitle(w); });
+    // The culling badge sits at the top left: no title strip over it, no toast.
+    const QImage image = grabStable(w, [w] { hideTitle(w); });
     return save(image, mainWindowStyle(w),
                 shotFileName(QStringLiteral("culling"), m_o.language, m_o.appearance));
 }
@@ -414,10 +437,7 @@ bool ShotDriver::shotGrid() {
     g->clickRow(9, Qt::ControlModifier);
     g->setThumbSize(200);
     // The grid's header is at the top: no title strip over it (it fades out in the app too).
-    const QImage image = grabStable(w, [w] {
-        if (TitleStripController* ts = w->extras()->titleStrip())
-            ts->strip()->fadeTo(false, 0);
-    });
+    const QImage image = grabStable(w, [w] { hideTitle(w); });
     return save(image, mainWindowStyle(w),
                 shotFileName(QStringLiteral("grid"), m_o.language, m_o.appearance));
 }
@@ -457,7 +477,7 @@ bool ShotDriver::shotCompare() {
     for (int i = 0; i < cv->paneCount(); ++i)
         factors << QString::number(cv->paneView(i)->zoomFactor(), 'f', 3);
     log(QStringLiteral("compare zoom: fit %1, panes %2").arg(fit).arg(factors.join(QLatin1Char(' '))));
-    const QImage image = grabStable(w, [this, w] { revealTitle(w); });
+    const QImage image = grabStable(w, [w] { revealTitle(w); });
     return save(image, mainWindowStyle(w),
                 shotFileName(QStringLiteral("compare"), m_o.language, m_o.appearance));
 }
@@ -476,9 +496,14 @@ bool ShotDriver::shotMap() {
     }
     // MapKit loads its tiles from the network: give it time, then take the map from the
     // window server's image (a widget grab cannot see the native map view).
+    // The window is larger than the runner's screen: move it so the map is on screen.
+    const QPoint hostInWindow = host->mapTo(w, QPoint(0, 0));
+    w->move(-hostInWindow.x() + 8, -hostInWindow.y() + 40);
     QTest::qWait(12000);
-    QImage image = grabStable(w, [this, w] { revealTitle(w); });
+    QImage image = grabStable(w, [w] { revealTitle(w); });
     QImage native = captureNativeWindow(w);
+    if (!native.isNull())
+        native.save(QDir(m_o.out).filePath(QStringLiteral("debug-native-%1.png").arg(m_o.language)));
     if (native.isNull()) {
         log(QStringLiteral("native window capture failed (Screen Recording permission?) - no map shot"));
         return false;
@@ -552,7 +577,7 @@ bool ShotDriver::shotDemo() {
                     return false;
             }
             index = f.index;
-            shown = grabStable(w, [this, w] { revealTitle(w); });
+            shown = grabStable(w, [w] { revealTitle(w); });
         }
         QImage image = shown;
         image.setDevicePixelRatio(m_dpr);
