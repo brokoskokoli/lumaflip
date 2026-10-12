@@ -13,6 +13,13 @@
 [![Latest release](https://img.shields.io/github/v/release/brokoskokoli/lumaflip?include_prereleases&sort=semver)](https://github.com/brokoskokoli/lumaflip/releases)
 [![Homebrew cask: planned](https://img.shields.io/badge/homebrew%20cask-planned-orange.svg)](#install)
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/viewer-en-dark.webp">
+  <img src="docs/images/viewer-en-light.webp" width="820" alt="Lumaflip window showing a photo of Aegina harbour at sunset, with the title strip and the status bar">
+</picture>
+
+[![Download for macOS](https://img.shields.io/badge/Download_for_macOS-latest_release-0a6b75?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/brokoskokoli/lumaflip/releases/latest)
+
 </div>
 
 > **Status:** version 1.2 (milestone M4) is the first public release. See the [changelog](CHANGELOG.md)
@@ -28,6 +35,10 @@ Lumaflip opens the image **instantly**, loads the **whole folder** in the backgr
 **the way the Finder window shows it** (name, date modified, date added, size, even icon
 positions), and preloads the neighbours so ← / → is immediate. It is free software with no
 subscription, no account and no telemetry.
+
+<p align="center">
+  <img src="docs/images/demo-en.webp" width="640" alt="Animation: Lumaflip flips through a folder of travel photos with the arrow key, the filmstrip follows">
+</p>
 
 ## Features
 
@@ -97,22 +108,26 @@ are welcome.
 
 ## Screenshots
 
-<!--
-TODO: add screenshots (PNG, 2x Retina, light and dark mode where it matters; no private photos,
-use CC0 images). Planned files:
-  docs/images/viewer.png        – main window: one photo, slim title bar, status bar with "Sorted like Finder: Date Added ↓"
-  docs/images/info-panel.png    – info panel open (camera data, histogram, Finder tags) + filmstrip
-  docs/images/culling.png       – culling mode overlay with stars / pick / reject
-  docs/images/grid.png          – grid view with multi-select
-  docs/images/compare.png       – compare mode, 3 images, synchronised zoom
-  docs/images/folder-map.png    – folder map with clustered markers and hover preview
-  docs/images/hdr.png           – HDR badge + exposure slider (note: EDR highlights don't show in screenshots)
-  docs/images/preferences-input.png – Preferences → Mouse & Keyboard (remappable inputs)
-Then replace this comment with e.g.:
-  <p align="center"><img src="docs/images/viewer.png" width="800" alt="Lumaflip main window"></p>
--->
+<table>
+  <tr>
+    <td width="50%"><a href="docs/images/info-en-light.webp"><img src="docs/images/info-en-light.webp" alt="Info panel with camera data, histogram and Finder tags, and the filmstrip below the photo"></a><br><sub><b>Info panel and filmstrip</b>: camera data, histogram, Finder tags.</sub></td>
+    <td width="50%"><a href="docs/images/culling-en-dark.webp"><img src="docs/images/culling-en-dark.webp" alt="Culling mode: star rating, pick and reject over the photo"></a><br><sub><b>Culling mode</b> (⌘K): stars, pick and reject, saved as Lightroom-compatible XMP.</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><a href="docs/images/grid-en-light.webp"><img src="docs/images/grid-en-light.webp" alt="Grid view of the folder with three images selected and their ratings"></a><br><sub><b>Grid</b> (G) with multi-select: rate, move or compare several images at once.</sub></td>
+    <td width="50%"><a href="docs/images/compare-en-dark.webp"><img src="docs/images/compare-en-dark.webp" alt="Three photos side by side in compare mode, zoomed in together"></a><br><sub><b>Compare</b> 2–4 images with synchronised zoom and pan.</sub></td>
+  </tr>
+  <tr>
+    <td width="50%"><a href="docs/images/map-en-light.webp"><img src="docs/images/map-en-light.webp" alt="Folder map with the geotagged photos of the folder as markers"></a><br><sub><b>Folder map</b> (⇧⌘M): every geotagged photo of the folder on one map.</sub></td>
+    <td width="50%"><a href="docs/images/preferences-en-light.webp"><img src="docs/images/preferences-en-light.webp" alt="Settings, Mouse and Keyboard: every action with its shortcuts"></a><br><sub><b>Your keys, your mouse</b>: every shortcut and click can be remapped.</sub></td>
+  </tr>
+</table>
 
-*Screenshots are coming soon.*
+The screenshots are taken automatically from the real app by
+[`tools/screenshots`](tools/screenshots) ([how](docs/RELEASING.md#screenshots-und-demo-animation)).
+Sample photos: Jebulon, [Wikimedia Commons](https://commons.wikimedia.org/wiki/User:Jebulon), CC0
+(public domain); the full list with sources is in
+[`tools/screenshots/sample-photos.json`](tools/screenshots/sample-photos.json).
 
 ## Install
 

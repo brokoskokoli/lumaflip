@@ -46,9 +46,9 @@ for master in "$MASTERS"/*.png; do
   name=$(basename "$master" .png)
   [[ "$name" == debug-* ]] && continue # diagnostics of the tool, not for publishing
   resize "$master" 1600 "$WORK/readme.png"
-  webp "$WORK/readme.png" 82 "$DOCS/$name.webp"
+  webp "$WORK/readme.png" 88 "$DOCS/$name.webp"
   resize "$master" 1280 "$WORK/site.png"
-  webp "$WORK/site.png" 80 "$SITE/$name.webp"
+  webp "$WORK/site.png" 85 "$SITE/$name.webp"
   resize "$master" 960 "$WORK/fallback.png"
   quantize "$WORK/fallback.png" "$SITE/$name.png"
   count=$((count + 1))
@@ -59,7 +59,7 @@ for dir in "$MASTERS"/demo-*/; do
   [[ -f "$dir/frames.txt" ]] || continue
   base=$(basename "$dir")        # demo-en-dark
   lang=$(echo "$base" | cut -d- -f2)
-  for target in "readme:960:68:$DOCS/demo-$lang.webp" "site:1200:70:$SITE/demo-$lang.webp"; do
+  for target in "readme:960:78:$DOCS/demo-$lang.webp" "site:1200:80:$SITE/demo-$lang.webp"; do
     IFS=: read -r kind width quality out <<<"$target"
     args=(-loop 0 -lossy -q "$quality" -m 6)
     while read -r frame ms; do

@@ -425,6 +425,36 @@ Zunächst im eigenen Tap (`brokoskokoli/homebrew-tap`), später Antrag für `hom
 
 Installation für Nutzer danach: `brew install --cask brokoskokoli/tap/lumaflip`.
 
+## Screenshots und Demo-Animation
+
+Die Bilder in README und Website entstehen automatisch aus echten Fenstern:
+
+- **Beispielfotos:** `tools/fetch_sample_photos.py` lädt 16 Fotos (CC0 1.0, Wikimedia Commons, Autor
+  meist *Jebulon*) laut `tools/screenshots/sample-photos.json`, jeweils mit SHA-256 gepinnt, nach
+  `build/sample-photos/` (Originale im Cache `.originals/`, nichts davon wird eingecheckt). Das Skript
+  verkleinert sie auf 3000 px (`sips`, EXIF und ICC-Profil bleiben) und schreibt die Position der
+  Commons-Seite als EXIF-GPS hinein, damit die Ordnerkarte etwas zeigt. Neues Foto: Eintrag mit
+  URL, SHA-256, Quelle, Autor, Lizenz und Koordinaten ergänzen; der Unit-Test
+  `tests/tools/test_sample_photos.py` prüft das Manifest und dass jeder Autor in README und Website
+  genannt ist.
+- **Werkzeug:** `lf_screenshots` (`tools/screenshots/`, nur macOS, wird mit der App gebaut) öffnet die
+  Fotos in einer temporären Kopie mit den Klassen der App, stellt die Zustände her (Bild mit
+  Titelleiste, Infopanel + Filmstreifen, Culling, Raster mit Auswahl, Vergleich, Ordnerkarte,
+  Einstellungen → Maus & Tastatur, Demo) und speichert sie per `QWidget::grab` (die QRhi-Leinwand
+  rendert in den Grab) mit 2× Pixeldichte. Ist der Bildschirm 1×, startet es sich mit
+  `QT_SCALE_FACTOR` neu. Rahmen, Schatten und Fensterknöpfe zeichnet `ShotFrame.cpp` (Unit-Test
+  `tests/unit/test_screenshot_frame.cpp`); die Karte (MapKit, nicht im Grab) kommt per
+  `screencapture -l` aus dem Fensterserver. Ohne Bildschirmaufnahme-Recht oder Kartenkacheln
+  entfällt nur dieses Bild.
+- **Ablauf:** `tools/screenshots/make_screenshots.sh` nimmt alles in Englisch und Deutsch, hell und
+  dunkel auf (Master-PNGs in `build/screenshots/masters/`), `tools/screenshots/export_images.sh`
+  erzeugt daraus `docs/images/*.webp` (README) und `website/images/shots/` (WebP plus PNG-Fallback,
+  Demo als animiertes WebP). **Öffnet minutenlang Fenster** – nicht auf einem Arbeitsrechner starten.
+- **CI:** `.github/workflows/screenshots.yml` (manuell, bei Release-Tags und bei Pull Requests, die das
+  Werkzeug ändern) baut, lädt die Fotos, nimmt auf und lädt das Artefakt `screenshots` hoch. Es
+  committet nichts: Bilder ansehen, dann `docs/images/` und `website/images/shots/` aus dem Artefakt
+  übernehmen und committen (`gh run download <run> -n screenshots`).
+
 ## Nach dem Release prüfen
 
 Die nicht automatisierbaren Prüfungen (Gatekeeper beim echten Download, Offline-Start, TCC-Texte,
