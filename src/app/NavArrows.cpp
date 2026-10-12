@@ -34,6 +34,11 @@ namespace {
 
 constexpr int kShadow = 4; // room around the circle for the shadow
 
+QSize buttonSize() {
+    const int s = NavArrows::kDiameter + 2 * kShadow;
+    return {s, s};
+}
+
 } // namespace
 
 // ---------------------------------------------------------------------------------------
@@ -48,7 +53,7 @@ NavArrowButton::NavArrowButton(Side side, QWidget* parent) : QAbstractButton(par
     setFocusPolicy(Qt::NoFocus);                    // keyboard users keep ←/→
     setMouseTracking(true);
     setCursor(Qt::ArrowCursor); // not the pan cursor of the image below
-    resize(sizeHint());
+    resize(buttonSize());
     m_fade = new QVariantAnimation(this);
     m_fade->setEasingCurve(QEasingCurve::InOutQuad);
     connect(m_fade, &QVariantAnimation::valueChanged, this,
@@ -63,8 +68,7 @@ NavArrowButton::NavArrowButton(Side side, QWidget* parent) : QAbstractButton(par
 }
 
 QSize NavArrowButton::sizeHint() const {
-    const int s = NavArrows::kDiameter + 2 * kShadow;
-    return {s, s};
+    return buttonSize();
 }
 
 void NavArrowButton::setOpacity(qreal value) {
