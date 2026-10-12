@@ -4,20 +4,19 @@
 #
 #   tools/setup_distribution_secrets.sh [homebrew|winget]   # ohne Argument: beide
 #
-#   HOMEBREW_TAP_TOKEN  Job "homebrew-tap" in release.yml: aktualisiert Casks/lumaflip.rb in
-#                       brokoskokoli/homebrew-tap nach jedem Release.
-#                       Fine-grained PAT: Resource owner = dein Konto, Repository access =
-#                       "Only select repositories" → brokoskokoli/homebrew-tap, Permissions →
-#                       Repository → Contents: "Read and write" (Metadata: read kommt automatisch).
-#                       https://github.com/settings/personal-access-tokens/new
+#   HOMEBREW_TAP_DEPLOY_KEY  Job "homebrew-tap" in release.yml: aktualisiert Casks/lumaflip.rb in
+#                       brokoskokoli/homebrew-tap nach jedem Release. Das Skript erzeugt einen
+#                       SSH-Schlüssel, legt den öffentlichen Teil als Deploy-Key mit Schreibrecht
+#                       im Tap an und setzt den privaten Teil als Secret. Läuft nicht ab, gilt nur
+#                       für den Tap. Erneuter Lauf ersetzt den Schlüssel.
 #   WINGET_TOKEN        Job "winget": Pull Request mit der neuen Version an microsoft/winget-pkgs
 #                       (über einen Fork von winget-pkgs in deinem Konto).
 #                       Classic PAT mit genau dem Scope "public_repo" (fine-grained PATs
 #                       können keine Pull Requests an fremde Repositories öffnen).
 #                       https://github.com/settings/tokens/new?scopes=public_repo&description=Lumaflip%20winget
 #
-# Beide Tokens laufen ab (Ablaufdatum beim Anlegen wählen, z. B. 1 Jahr): danach dieses Skript
-# erneut ausführen. Fehlt ein Secret, überspringt der Release-Workflow den Job mit einem
+# WINGET_TOKEN kann ohne Ablaufdatum angelegt werden („No expiration“); sonst nach Ablauf dieses
+# Skript erneut ausführen. Fehlt ein Secret, überspringt der Release-Workflow den Job mit einem
 # Hinweis - das Release selbst hängt nie davon ab.
 #
 # Die Tokens werden verdeckt eingelesen, nur über die Umgebung bzw. stdin an gh übergeben
@@ -60,19 +59,30 @@ case "$what" in all|homebrew|winget) ;; *) die "Aufruf: $0 [homebrew|winget]" ;;
 
 if [ "$what" != winget ]; then
     say ""
-    say "== HOMEBREW_TAP_TOKEN (Homebrew-Tap $TAP_REPO) =="
-    say "Fine-grained Token anlegen: https://github.com/settings/personal-access-tokens/new"
-    say "  Token name: Lumaflip homebrew-tap, Expiration: z. B. 1 Jahr"
-    say "  Repository access: Only select repositories → $TAP_REPO"
-    say "  Permissions → Repository permissions → Contents: Read and write"
-    if confirm "Token jetzt eintragen?" j; then
-        read_token "HOMEBREW_TAP_TOKEN (github_pat_…)"
-        [[ "$TOKEN" == github_pat_* ]] || confirm "Das ist kein fine-grained Token (github_pat_…). Trotzdem verwenden?" \
-            || die "Abgebrochen."
-        # Lesezugriff auf den Tap prüfen (Schreibrecht lässt sich ohne Schreiben nicht testen).
-        GH_TOKEN=$TOKEN gh api "repos/$TAP_REPO" --jq .full_name >/dev/null 2>&1 \
-            || die "Der Token sieht $TAP_REPO nicht - Repository access prüfen."
-        set_secret HOMEBREW_TAP_TOKEN
+    say "== HOMEBREW_TAP_DEPLOY_KEY (Homebrew-Tap $TAP_REPO) =="
+    say "Ein neuer SSH-Schlüssel wird erzeugt: der öffentliche Teil als Deploy-Key mit Schreibrecht"
+    say "im Tap, der private Teil als Secret. Er läuft nicht ab und gilt nur für $TAP_REPO."
+    if confirm "Deploy-Key jetzt einrichten?" j; then
+        keydir=$(mktemp -d "${TMPDIR:-/tmp}/lumaflip-tapkey.XXXXXX")
+        chmod 700 "$keydir"
+        trap 'rm -rf -- "$keydir"' EXIT
+        ssh-keygen -q -t ed25519 -N "" -C "lumaflip release workflow" -f "$keydir/key" \
+            || die "ssh-keygen fehlgeschlagen."
+        title="Lumaflip release workflow"
+        # Alten Schlüssel gleichen Namens ersetzen (erneuter Lauf).
+        for id in $(gh api "repos/$TAP_REPO/keys" --jq ".[] | select(.title == \"$title\") | .id" 2>/dev/null); do
+            gh api -X DELETE "repos/$TAP_REPO/keys/$id" >/dev/null && say "  Alten Deploy-Key ($id) entfernt."
+        done
+        gh repo deploy-key add "$keydir/key.pub" --repo "$TAP_REPO" --title "$title" --allow-write >/dev/null \
+            || die "Deploy-Key konnte nicht angelegt werden (Admin-Rechte auf $TAP_REPO nötig)."
+        gh secret set HOMEBREW_TAP_DEPLOY_KEY --repo "$REPO" --env "$ENV_NAME" < "$keydir/key" >/dev/null \
+            || die "Secret konnte nicht gesetzt werden."
+        rm -rf -- "$keydir"
+        say "Deploy-Key in $TAP_REPO angelegt, Secret HOMEBREW_TAP_DEPLOY_KEY im Environment \"$ENV_NAME\" gesetzt."
+        if gh secret list --repo "$REPO" --env "$ENV_NAME" 2>/dev/null | grep -q '^HOMEBREW_TAP_TOKEN'; then
+            gh secret delete HOMEBREW_TAP_TOKEN --repo "$REPO" --env "$ENV_NAME" >/dev/null \
+                && say "Altes Secret HOMEBREW_TAP_TOKEN entfernt (wird nicht mehr gebraucht)."
+        fi
     fi
 fi
 
@@ -80,7 +90,7 @@ if [ "$what" != homebrew ]; then
     say ""
     say "== WINGET_TOKEN (Pull Requests an microsoft/winget-pkgs) =="
     say "Classic Token anlegen: https://github.com/settings/tokens/new?scopes=public_repo&description=Lumaflip%20winget"
-    say "  Scope: nur public_repo, Expiration: z. B. 1 Jahr"
+    say "  Scope: nur public_repo, Expiration: \"No expiration\" (oder z. B. 1 Jahr)"
     say "  Einmalig github.com/microsoft/winget-pkgs forken (Fork → in dein Konto)."
     if confirm "Token jetzt eintragen?" j; then
         read_token "WINGET_TOKEN (ghp_…)"

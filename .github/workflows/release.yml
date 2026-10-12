@@ -18,7 +18,7 @@
 #   appcast       generate_appcast from the artifact's DMG, Windows  SPARKLE_ED_PRIVATE_KEY
 #                 feed (tools/appcast_windows.py), verify both,       (no brew, no build tools)
 #                 push gh-pages, THEN publish the release
-#   homebrew-tap  after the release is public: version + sha256 of     HOMEBREW_TAP_TOKEN (optional)
+#   homebrew-tap  after the release is public: version + sha256 of     HOMEBREW_TAP_DEPLOY_KEY (optional)
 #                 Casks/lumaflip.rb in brokoskokoli/homebrew-tap
 #   winget        after the release is public: PR with the new         WINGET_TOKEN (optional)
 #                 version to microsoft/winget-pkgs (komac)
@@ -688,9 +688,10 @@ jobs:
   homebrew-tap:
     # Sets version and sha256 of Casks/lumaflip.rb in the tap (brew install --cask
     # brokoskokoli/tap/lumaflip) once the release is public; the tap's own CI then runs
-    # `brew audit --online`. Gets only HOMEBREW_TAP_TOKEN: a fine-grained PAT with
-    # "Contents: Read and write" on brokoskokoli/homebrew-tap only (docs/RELEASING.md,
-    # tools/setup_distribution_secrets.sh). Without it: a notice, nothing fails.
+    # `brew audit --online`. Gets only HOMEBREW_TAP_DEPLOY_KEY: the private half of a deploy key
+    # with write access on brokoskokoli/homebrew-tap only - it never expires and is bound to that
+    # one repository (docs/RELEASING.md, tools/setup_distribution_secrets.sh). Without it: a
+    # notice, nothing fails.
     # The checksum comes from the published release (what users download) and is checked
     # against the DMG. Idempotent; never downgrades the tap.
     name: Homebrew tap
@@ -708,12 +709,12 @@ jobs:
       - name: Update Casks/lumaflip.rb
         env:
           GH_TOKEN: ${{ github.token }}
-          TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          TAP_DEPLOY_KEY: ${{ secrets.HOMEBREW_TAP_DEPLOY_KEY }}
           TAP_REPO: brokoskokoli/homebrew-tap
         run: |
           set -euo pipefail
-          if [[ -z "$TAP_TOKEN" ]]; then
-            echo "::notice title=Homebrew tap not updated::Secret HOMEBREW_TAP_TOKEN (environment release) is missing. Set it with tools/setup_distribution_secrets.sh and re-run this job, or update Casks/lumaflip.rb in $TAP_REPO by hand (docs/RELEASING.md)."
+          if [[ -z "$TAP_DEPLOY_KEY" ]]; then
+            echo "::notice title=Homebrew tap not updated::Secret HOMEBREW_TAP_DEPLOY_KEY (environment release) is missing. Set it with tools/setup_distribution_secrets.sh and re-run this job, or update Casks/lumaflip.rb in $TAP_REPO by hand (docs/RELEASING.md)."
             exit 0
           fi
           version="${GITHUB_REF_NAME#v}"
@@ -724,11 +725,16 @@ jobs:
           sha=$(cut -d ' ' -f 1 "$work/dl/Lumaflip-$version.dmg.sha256")
           if [[ ! "$sha" =~ ^[0-9a-f]{64}$ ]]; then echo "::error::Unexpected content of Lumaflip-$version.dmg.sha256"; exit 1; fi
 
-          # From here on git talks to the tap with the PAT, through gh's credential helper
-          # (no token in any URL or argument).
-          export GH_TOKEN="$TAP_TOKEN"
-          gh auth setup-git
-          git clone --quiet --branch main "https://github.com/$TAP_REPO.git" "$work/tap"
+          # From here on git talks to the tap over SSH with the deploy key: a 0600 file in a
+          # private directory, removed at the end; GitHub's host key is pinned (published at
+          # https://docs.github.com/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints).
+          umask 077
+          ssh_dir=$(mktemp -d "$RUNNER_TEMP/tapssh.XXXXXX")
+          trap 'rm -rf -- "$ssh_dir"' EXIT
+          printf '%s\n' "$TAP_DEPLOY_KEY" > "$ssh_dir/key"
+          echo 'github.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl' > "$ssh_dir/known_hosts"
+          export GIT_SSH_COMMAND="ssh -i $ssh_dir/key -o IdentitiesOnly=yes -o UserKnownHostsFile=$ssh_dir/known_hosts -o StrictHostKeyChecking=yes"
+          git clone --quiet --branch main "git@github.com:$TAP_REPO.git" "$work/tap"
           git -C "$work/tap" config user.name "github-actions[bot]"
           git -C "$work/tap" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           cask="$work/tap/Casks/lumaflip.rb"

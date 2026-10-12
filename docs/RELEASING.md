@@ -32,7 +32,7 @@ Signing** signiert, siehe [Windows: Signatur und Updates](#windows-signatur-und-
 | `packaging/licenses/` | Lizenztexte, die Homebrew nicht mitliefert (LGPL-3.0 und Hinweis für Qt, LGPL-2.1 für libintl) |
 | `packaging/homebrew/lumaflip.rb` | Homebrew Cask, Spiegel von `Casks/lumaflip.rb` im Tap [`brokoskokoli/homebrew-tap`](https://github.com/brokoskokoli/homebrew-tap) (siehe [Homebrew Cask](#homebrew-cask)) |
 | `packaging/winget/manifests/…/1.2.1/` | winget-Manifeste (`Brokoskokoli.Lumaflip`) für die erste Einreichung bei `microsoft/winget-pkgs` (siehe [winget](#winget)) |
-| `tools/setup_distribution_secrets.sh` | Setzt `HOMEBREW_TAP_TOKEN` und `WINGET_TOKEN` (Environment `release`) für die Jobs `homebrew-tap` und `winget` |
+| `tools/setup_distribution_secrets.sh` | Richtet den Deploy-Key `HOMEBREW_TAP_DEPLOY_KEY` ein und setzt `WINGET_TOKEN` (Environment `release`) für die Jobs `homebrew-tap` und `winget` |
 
 ## Lokal bauen
 
@@ -133,7 +133,7 @@ die Jobs `homebrew-tap` bzw. `winget` mit einem Hinweis, das Release ist davon n
 
 | Secret | Inhalt | Woher |
 |---|---|---|
-| `HOMEBREW_TAP_TOKEN` | Fine-grained PAT, *Repository access* nur `brokoskokoli/homebrew-tap`, *Permissions → Contents: Read and write* | github.com → Settings → Developer settings → Fine-grained tokens |
+| `HOMEBREW_TAP_DEPLOY_KEY` | Privater Teil eines SSH-Deploy-Keys mit Schreibrecht nur auf `brokoskokoli/homebrew-tap`; läuft nicht ab. Wird von `tools/setup_distribution_secrets.sh` erzeugt (öffentlicher Teil als Deploy-Key „Lumaflip release workflow“ im Tap) | Skript erneut ausführen ersetzt den Schlüssel |
 | `WINGET_TOKEN` | Classic PAT mit genau dem Scope `public_repo` (Fork von `winget-pkgs` + Pull Request; fine-grained PATs können keine PRs an fremde Repos öffnen) | github.com → Settings → Developer settings → Tokens (classic) |
 
 Beide Tokens laufen ab (beim Anlegen z. B. ein Jahr wählen); danach das Skript erneut ausführen.
@@ -152,7 +152,7 @@ Ablauf und Absicherung von `release.yml`:
   (nur `GITHUB_TOKEN`) → `appcast` (nur Sparkle-Schlüssel und `GITHUB_TOKEN`; kein `brew`, kein Build:
   Sparkles Werkzeuge kommen aus dem per SHA-256 geprüften Archiv von `tools/fetch_sparkle.sh`, die DMG
   aus dem Artefakt, dessen Prüfsumme vorher kontrolliert wird). Erst nach dem Veröffentlichen:
-  `homebrew-tap` (nur `HOMEBREW_TAP_TOKEN`) und `winget` (nur `WINGET_TOKEN`), siehe
+  `homebrew-tap` (nur `HOMEBREW_TAP_DEPLOY_KEY`) und `winget` (nur `WINGET_TOKEN`), siehe
   [Homebrew Cask](#homebrew-cask) und [winget](#winget).
 - **Gleiche Prüfungen wie CI:** Der Job `build` hängt von `checks` ab, der denselben
   wiederverwendbaren Workflow `checks.yml` wie die CI für den getaggten Commit ausführt
@@ -445,7 +445,7 @@ für `homebrew/cask` (SPEC 10.1). Installation für Nutzer:
   Summe, setzt `version` und `sha256` im Tap und pusht (`github-actions[bot]`). Er ist idempotent und
   setzt den Tap nie auf eine ältere Version zurück. Die CI des Taps (`.github/workflows/tests.yml`)
   führt danach `brew style`, `brew audit --cask --online --strict`, `brew livecheck` und
-  `brew fetch` aus. Ohne `HOMEBREW_TAP_TOKEN` endet der Job mit einem Hinweis.
+  `brew fetch` aus. Ohne `HOMEBREW_TAP_DEPLOY_KEY` endet der Job mit einem Hinweis.
 - **Von Hand** (z. B. ohne Token): im Tap `version` und `sha256` (Inhalt von
   `Lumaflip-<version>.dmg.sha256`) setzen, dann
   `brew style --cask brokoskokoli/tap/lumaflip && brew audit --cask --online --strict brokoskokoli/tap/lumaflip`.
