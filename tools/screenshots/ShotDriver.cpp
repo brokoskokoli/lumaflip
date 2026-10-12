@@ -239,6 +239,9 @@ ViewerWindow* ShotDriver::openImage(const QString& name) {
         return nullptr;
     }
     w->move(0, 0);
+    // Panels are remembered across windows: every shot starts without and turns on its own.
+    w->panels()->setInfoPanelEnabled(false);
+    w->panels()->setFilmstripEnabled(false);
     if (!ensureSize(w, m_o.windowSize))
         return nullptr;
     if (!QTest::qWaitFor([w] { return !w->collection()->isLoading(); }, 15000) ||
@@ -435,7 +438,7 @@ bool ShotDriver::shotGrid() {
     g->clickRow(2, Qt::NoModifier);
     g->clickRow(5, Qt::ControlModifier);
     g->clickRow(9, Qt::ControlModifier);
-    g->setThumbSize(200);
+    g->setThumbSize(170); // every image of the folder in view
     // The grid's header is at the top: no title strip over it (it fades out in the app too).
     const QImage image = grabStable(w, [w] { hideTitle(w); });
     return save(image, mainWindowStyle(w),

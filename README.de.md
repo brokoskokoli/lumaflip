@@ -67,7 +67,7 @@ Alle Funktionen und Tastenkürzel: [README.md](README.md#features) (Englisch).
     <td width="50%"><a href="docs/images/compare-de-dark.webp"><img src="docs/images/compare-de-dark.webp" alt="Drei Fotos nebeneinander im Vergleich, gemeinsam vergrößert"></a><br><sub><b>Vergleich</b> von 2–4 Bildern mit synchronem Zoom und Verschieben.</sub></td>
   </tr>
   <tr>
-    <td width="50%"><a href="docs/images/map-de-light.webp"><img src="docs/images/map-de-light.webp" alt="Ordnerkarte mit den Fotos des Ordners als Markierungen"></a><br><sub><b>Ordnerkarte</b> (⇧⌘M): alle Fotos mit Ort auf einer Karte.</sub></td>
+    <td width="50%"><a href="docs/images/viewer-de-dark.webp"><img src="docs/images/viewer-de-dark.webp" alt="Lumaflip-Fenster im dunklen Modus mit einem Foto des Hafens von Ägina"></a><br><sub><b>Hell und dunkel</b>: folgt dem Erscheinungsbild des Systems.</sub></td>
     <td width="50%"><a href="docs/images/preferences-de-light.webp"><img src="docs/images/preferences-de-light.webp" alt="Einstellungen, Maus und Tastatur: jede Aktion mit ihren Tastenkürzeln"></a><br><sub><b>Eigene Tasten, eigene Maus</b>: jedes Kürzel und jeder Klick ist änderbar.</sub></td>
   </tr>
 </table>

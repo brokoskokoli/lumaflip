@@ -118,7 +118,7 @@ are welcome.
     <td width="50%"><a href="docs/images/compare-en-dark.webp"><img src="docs/images/compare-en-dark.webp" alt="Three photos side by side in compare mode, zoomed in together"></a><br><sub><b>Compare</b> 2–4 images with synchronised zoom and pan.</sub></td>
   </tr>
   <tr>
-    <td width="50%"><a href="docs/images/map-en-light.webp"><img src="docs/images/map-en-light.webp" alt="Folder map with the geotagged photos of the folder as markers"></a><br><sub><b>Folder map</b> (⇧⌘M): every geotagged photo of the folder on one map.</sub></td>
+    <td width="50%"><a href="docs/images/viewer-en-dark.webp"><img src="docs/images/viewer-en-dark.webp" alt="Lumaflip window in dark mode showing a photo of Aegina harbour at sunset"></a><br><sub><b>Light and dark</b>: follows the system appearance.</sub></td>
     <td width="50%"><a href="docs/images/preferences-en-light.webp"><img src="docs/images/preferences-en-light.webp" alt="Settings, Mouse and Keyboard: every action with its shortcuts"></a><br><sub><b>Your keys, your mouse</b>: every shortcut and click can be remapped.</sub></td>
   </tr>
 </table>

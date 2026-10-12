@@ -443,9 +443,9 @@ Die Bilder in README und Website entstehen automatisch aus echten Fenstern:
   Einstellungen → Maus & Tastatur, Demo) und speichert sie per `QWidget::grab` (die QRhi-Leinwand
   rendert in den Grab) mit 2× Pixeldichte. Ist der Bildschirm 1×, startet es sich mit
   `QT_SCALE_FACTOR` neu. Rahmen, Schatten und Fensterknöpfe zeichnet `ShotFrame.cpp` (Unit-Test
-  `tests/unit/test_screenshot_frame.cpp`); die Karte (MapKit, nicht im Grab) kommt per
-  `screencapture -l` aus dem Fensterserver. Ohne Bildschirmaufnahme-Recht oder Kartenkacheln
-  entfällt nur dieses Bild.
+  `tests/unit/test_screenshot_frame.cpp`). Die Ordnerkarte (`--shots map`, MapKit) ist nicht im
+  Grab und kommt nur per `screencapture -l` in der 1×-Auflösung des Bildschirms dazu; sie wird
+  deshalb standardmäßig nicht aufgenommen.
 - **Ablauf:** `tools/screenshots/make_screenshots.sh` nimmt alles in Englisch und Deutsch, hell und
   dunkel auf (Master-PNGs in `build/screenshots/masters/`), `tools/screenshots/export_images.sh`
   erzeugt daraus `docs/images/*.webp` (README) und `website/images/shots/` (WebP plus PNG-Fallback,

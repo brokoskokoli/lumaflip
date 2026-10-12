@@ -24,15 +24,16 @@ rm -rf "$OUT/masters"
 mkdir -p "$OUT/masters"
 # Which shot in which appearance: the hero in both, the gallery mixed, the demo dark (photos
 # look best on the dark background).
-LIGHT="viewer,info,grid,map,preferences"
+LIGHT="viewer,info,grid,preferences"
 DARK="viewer,culling,compare,demo"
 for lang in $LANGS; do
   "$TOOL" --photos "$PHOTOS" --out "$OUT/masters" --lang "$lang" --appearance light --shots "$LIGHT"
   "$TOOL" --photos "$PHOTOS" --out "$OUT/masters" --lang "$lang" --appearance dark --shots "$DARK"
 done
 
-# Everything but the folder map is required (the map needs MapKit tiles from the network and
-# the Screen Recording permission for the window capture).
+# The folder map shot ("map") is not taken by default: MapKit's view is not part of a widget
+# grab and only comes in at the screen's 1x scale (tiny labels, a world-wide region). Add it to
+# LIGHT to try (it needs map tiles from the network and the Screen Recording permission).
 missing=0
 for lang in $LANGS; do
   for f in viewer-$lang-light viewer-$lang-dark info-$lang-light grid-$lang-light preferences-$lang-light \
@@ -40,7 +41,6 @@ for lang in $LANGS; do
     [[ -f "$OUT/masters/$f.png" ]] || { echo "missing: $f.png" >&2; missing=1; }
   done
   [[ -f "$OUT/masters/demo-$lang-dark/frames.txt" ]] || { echo "missing: demo-$lang-dark" >&2; missing=1; }
-  [[ -f "$OUT/masters/map-$lang-light.png" ]] || echo "note: no folder map shot for $lang"
 done
 [[ $missing == 0 ]] || exit 1
 
