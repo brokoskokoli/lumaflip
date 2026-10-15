@@ -1,0 +1,78 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+// PC-lint Plus options for Lumaflip (tools/pclint.sh), after the compiler configuration
+// (co-clang.lnt) and before the project configuration (project.lnt).
+// The profile follows .clang-tidy: bugs, value tracking and performance; style, naming and
+// conversion rules that clang-tidy has switched off are off here too (reasons below).
+
+// One line per message, compiler style (file:line:col), full paths, no line wrapping.
+-h1
+-width(0)
++ffn
+-"format=%(%f:%l:%C:%) %t %n: %m"
+
+// Qt, Homebrew libraries and the SDK are library code: only errors from there.
++libdir("/opt/homebrew/*")
++libdir("/Library/Developer/*")
++libdir("/Applications/Xcode*")
++libdir("*/build/*")
+-wlib(1)
+// libc++ calls __builtin_operator_new/delete, which PC-lint Plus checks as user code.
+-elib(6071)
+// Builtins of current libc++ the 2025 parser does not resolve (std::format, std::any).
+-elib(1024, 5449)
+
+// Level: errors and warnings (like clang-tidy's bugprone-*/clang-analyzer-*), plus the
+// informational messages that match enabled clang-tidy checks.
+-w2
++e1746 // parameter could be reference to const (performance-unnecessary-value-param) ...
+-etype(1746, QString, QStringList, QByteArray, QImage, QVariant, QList*, QVector*, QHash*, QMap*, QSet*, QColorSpace, *Ptr)
+       // ... except implicitly shared Qt types (same AllowedTypes as .clang-tidy) ...
+-etype(1746, QPoint, QPointF, QSize, QSizeF, QRect, QRectF, QChar, QColor, QMargins, QMarginsF, QLatin1String, QStringView, QLatin1Char)
+       // ... and small trivially copyable values (clang-tidy skips those too)
+-etype(1746, QFlags*, Qt::*, QImageIOHandler::Transformations, std::optional<bool>, std::chrono::*)
++e774  // boolean condition always true/false (clang-analyzer dead code)
+
+// Off like in .clang-tidy:
+// Qt parent/child ownership (new QWidget(parent)) looks like a leak
+// (clang-analyzer-cplusplus.NewDeleteLeaks off).
+-e429 -e423 -e1524 -e1540
+// Narrowing, widening and signed bitwise conversions (bugprone-narrowing-conversions,
+// implicit-widening-of-multiplication-result, signed-bitwise off): Qt flags, qRgb, byte
+// packing and QVERIFY(pointer) use them on purpose.
+-e507 -e571 -e641
+// Throwing static initialisation and calls that may throw in destructors
+// (bugprone-throwing-static-initialization, bugprone-exception-escape off; no exceptions).
+-e1551 -e3708 -e3712 -e1756
+
+// Off because PC-lint Plus sees only part of the program or Qt's generated code:
+// moc (Q_OBJECT) declares tr(), qt_static_metacall() etc. again in every QObject class,
+// signals are defined in moc_*.cpp, platform functions in .mm files (not analysed).
+-esym(1511, *::tr, *::qt_*, *::metaObject, *::staticMetaObject)
+-e1526 -e526
+// Whole-program "not referenced" messages: users in .mm/moc files are not analysed.
+-e714 -e757 -e758 -e768 -e769 -e1714
+// Include structure: the compiler and clang-format already enforce it; Qt's forwarding
+// headers (<QString>) have no guards on purpose.
+-e451 -e537
+// Macro side effects inside system and Qt Test macros (OSSwapInt16, QTRY_VERIFY ...): the
+// macros evaluate their argument once per check on purpose; qt_test_i is QTRY's loop counter.
+-elibmacro(666)
+-estring(666, QTRY_*, QVERIFY*, QCOMPARE*, QFAIL*, QEXPECT_FAIL*, QWARN*)
+-estring(665, QTRY_*, QVERIFY*, QCOMPARE*)
+-esym(440, qt_test_i)
+// Return values that Qt APIs offer for chaining or that are optional by design
+// (connect handles, QString/QByteArray/QList modifiers returning *this).
+-esym(534, QObject::connect*, QObject::disconnect*, QString::*, QByteArray::*, QList*::*, QStringList::*, QHash*::*, QSet*::*, QMap*::*, QJsonObject::*, QPainterPath::*, QTimer::*, qRegisterMetaType*, QWidget::close)
+// Thread analysis does not know QMutexLocker/QReadLocker (RAII): every guarded section
+// looks unlocked.
+-e2541 -e454 -e455 -e456
+// Several programs (app, helper, tests, benchmarks) in one project: one main() each;
+// equal type names in anonymous namespaces of different files are distinct types.
+-e2467 -e631
+// Getters that hand out a QWidget/QObject pointer member are normal Qt style.
+-e1535 -e1537
+// Empty function objects (comparators, tag types).
+-e1502
+
+// Overview of message counts at the end.
+-summary()

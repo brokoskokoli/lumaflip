@@ -33,7 +33,7 @@ namespace {
 // Images up to this many pixels are converted synchronously (a few ms at most).
 constexpr qint64 kSyncConvertPixels = 512 * 1024;
 // Upload budget per frame; the rest continues in the next frame (P-07/P-08).
-constexpr qint64 kUploadBudgetBytes = 192ll * 1024 * 1024;
+constexpr qint64 kUploadBudgetBytes = 192LL * 1024 * 1024;
 // Tile padding (texels) so that filtering and mip levels do not show seams.
 constexpr int kTilePadding = 64;
 constexpr int kUboSize = 288; // image.vert/.frag "buf": 18 x vec4 (mat4 = 4)
@@ -204,6 +204,15 @@ qint64 bytesPerPixel(QRhiTexture::Format f) {
     default:
         return 4;
     }
+}
+
+// create() of a QRhi resource; a failure (e.g. out of GPU memory) is logged, the caller
+// leaves out what depends on it instead of using an invalid resource.
+template <class R> bool created(R* r) {
+    if (r->create())
+        return true;
+    qCWarning(lcCanvas) << "QRhi resource creation failed:" << r->resourceType();
+    return false;
 }
 
 } // namespace
@@ -498,7 +507,11 @@ struct ImageCanvas::Private {
             return;
         if (!e.srcLut) {
             e.srcLut.reset(rhi->newTexture(QRhiTexture::RGBA16F, QSize(ColorPipeline::kLutSize, 1)));
-            e.srcLut->create();
+            if (!created(e.srcLut.get())) {
+                e.srcLut.reset(); // shown with the dummy LUT (unmanaged colours), not retried
+                e.srcLutUploaded = true;
+                return;
+            }
             for (Tile& t : e.tiles)
                 t.resetBindings();
         }
@@ -515,6 +528,7 @@ struct ImageCanvas::Private {
         rub->uploadTexture(tex, QRhiTextureUploadDescription({0, 0, desc}));
     }
 
+    // Null if a resource cannot be created: the tile is then left out (like a failed texture).
     QRhiShaderResourceBindings* srbFor(Entry& e, Tile& t, PassMode mode) {
         const int pass = passIndex(mode);
         const int idx = nearest ? 1 : 0;
@@ -522,7 +536,11 @@ struct ImageCanvas::Private {
         std::unique_ptr<QRhiShaderResourceBindings>& srb = t.srb[pass][idx];
         if (!ubo) {
             ubo.reset(rhi->newBuffer(QRhiBuffer::Dynamic, QRhiBuffer::UniformBuffer, kUboSize));
-            ubo->create();
+            if (!created(ubo.get())) {
+                ubo.reset();
+                t.tex.reset();
+                return nullptr;
+            }
         }
         if (!srb) {
             QRhiTexture* src = e.srcLut ? e.srcLut.get() : dummyLut.get();
@@ -537,7 +555,11 @@ struct ImageCanvas::Private {
                                                            lutSampler.get()),
                  QRhiShaderResourceBinding::sampledTexture(3, QRhiShaderResourceBinding::FragmentStage,
                                                            dstLut.get(), lutSampler.get())});
-            srb->create();
+            if (!created(srb.get())) {
+                srb.reset();
+                t.tex.reset();
+                return nullptr;
+            }
         }
         return srb.get();
     }
@@ -729,32 +751,33 @@ struct ImageCanvas::Private {
         return p;
     }
 
-    // Shared static resources (vertex buffer, samplers, LUTs, layout).
-    void ensureStaticResources() {
+    // Shared static resources (vertex buffer, samplers, LUTs, layout). False if one cannot be
+    // created: nothing is drawn (no pipeline) and the next initialize() tries again.
+    bool ensureStaticResources() {
         if (vbuf)
-            return;
+            return true;
         vbuf.reset(rhi->newBuffer(QRhiBuffer::Immutable, QRhiBuffer::VertexBuffer, 8 * sizeof(float)));
-        vbuf->create();
+        bool ok = created(vbuf.get());
         staticUploaded = false;
         for (int i = 0; i < 2; ++i) {
             const auto mag = i == 1 ? QRhiSampler::Nearest : QRhiSampler::Linear;
             sampler[i].reset(rhi->newSampler(mag, QRhiSampler::Linear, QRhiSampler::Linear,
                                              QRhiSampler::ClampToEdge, QRhiSampler::ClampToEdge));
-            sampler[i]->create();
+            ok = created(sampler[i].get()) && ok;
         }
         lutSampler.reset(rhi->newSampler(QRhiSampler::Linear, QRhiSampler::Linear, QRhiSampler::None,
                                          QRhiSampler::ClampToEdge, QRhiSampler::ClampToEdge));
-        lutSampler->create();
+        ok = created(lutSampler.get()) && ok;
         overlaySampler.reset(rhi->newSampler(QRhiSampler::Nearest, QRhiSampler::Linear, QRhiSampler::None,
                                              QRhiSampler::ClampToEdge, QRhiSampler::ClampToEdge));
-        overlaySampler->create();
+        ok = created(overlaySampler.get()) && ok;
         dummyLut.reset(rhi->newTexture(QRhiTexture::RGBA16F, QSize(ColorPipeline::kLutSize, 1)));
-        dummyLut->create();
+        ok = created(dummyLut.get()) && ok;
         dstLut.reset(rhi->newTexture(QRhiTexture::RGBA16F, QSize(ColorPipeline::kLutSize, 1)));
-        dstLut->create();
+        ok = created(dstLut.get()) && ok;
         dstLutDirty = true;
         layoutUbo.reset(rhi->newBuffer(QRhiBuffer::Dynamic, QRhiBuffer::UniformBuffer, kUboSize));
-        layoutUbo->create();
+        ok = created(layoutUbo.get()) && ok;
         layoutSrb.reset(rhi->newShaderResourceBindings());
         layoutSrb->setBindings(
             {QRhiShaderResourceBinding::uniformBuffer(
@@ -766,7 +789,10 @@ struct ImageCanvas::Private {
                                                        dummyLut.get(), lutSampler.get()),
              QRhiShaderResourceBinding::sampledTexture(3, QRhiShaderResourceBinding::FragmentStage,
                                                        dstLut.get(), lutSampler.get())});
-        layoutSrb->create();
+        ok = created(layoutSrb.get()) && ok;
+        if (!ok)
+            vbuf.reset();
+        return ok;
     }
 
     void uploadStatic(QRhiResourceUpdateBatch* rub) {
@@ -859,10 +885,8 @@ struct ImageCanvas::Private {
             ensureExtColor(*e);
         ensureSrcLut(*e, rub); // before srbFor(): a new LUT texture resets the bindings
         for (Tile& t : e->tiles) {
-            if (t.uploaded && t.tex) {
-                srbFor(*e, t, mode);
+            if (t.uploaded && t.tex && srbFor(*e, t, mode))
                 fillUbo(*e, t, target, rub, xf, alpha, mode);
-            }
         }
     }
 
@@ -875,7 +899,10 @@ struct ImageCanvas::Private {
         for (Tile& t : e->tiles) {
             if (!t.uploaded || !t.tex)
                 continue;
-            cb->setShaderResources(srbFor(*e, t, mode));
+            QRhiShaderResourceBindings* srb = srbFor(*e, t, mode);
+            if (!srb)
+                continue;
+            cb->setShaderResources(srb);
             cb->setVertexInput(0, 1, &vin);
             cb->draw(4);
         }
@@ -897,10 +924,12 @@ struct ImageCanvas::Private {
                 if (!overlayLut) {
                     overlayLut.reset(
                         rhi->newTexture(QRhiTexture::RGBA16F, QSize(ColorPipeline::kLutSize, 1)));
-                    overlayLut->create();
+                    if (!created(overlayLut.get()))
+                        overlayLut.reset(); // the overlay uses the dummy LUT
                     overlaySrb.reset();
                 }
-                uploadLut(overlayLut.get(), overlayColor.srcLut, rub);
+                if (overlayLut)
+                    uploadLut(overlayLut.get(), overlayColor.srcLut, rub);
             }
         }
         if (!overlayTex || overlayTex->pixelSize() != overlayImage.size()) {
@@ -914,7 +943,10 @@ struct ImageCanvas::Private {
         }
         if (!overlayUbo) {
             overlayUbo.reset(rhi->newBuffer(QRhiBuffer::Dynamic, QRhiBuffer::UniformBuffer, kUboSize));
-            overlayUbo->create();
+            if (!created(overlayUbo.get())) {
+                overlayUbo.reset();
+                return false;
+            }
         }
         if (!overlaySrb) {
             overlaySrb.reset(rhi->newShaderResourceBindings());
@@ -929,7 +961,10 @@ struct ImageCanvas::Private {
                                                            lutSampler.get()),
                  QRhiShaderResourceBinding::sampledTexture(3, QRhiShaderResourceBinding::FragmentStage,
                                                            dstLut.get(), lutSampler.get())});
-            overlaySrb->create();
+            if (!created(overlaySrb.get())) {
+                overlaySrb.reset();
+                return false;
+            }
         }
         const QRect dirty = overlayDirty.intersected(overlayImage.rect());
         if (!dirty.isEmpty()) {
@@ -1251,7 +1286,8 @@ void ImageCanvas::initialize(QRhiCommandBuffer*) {
     }
     if (d->pipeline)
         return;
-    d->ensureStaticResources();
+    if (!d->ensureStaticResources())
+        return;
     d->pipeline = d->makePipeline(false, renderTarget()->renderPassDescriptor(), sampleCount());
     d->blendPipeline = d->makePipeline(true, renderTarget()->renderPassDescriptor(), sampleCount());
 }
@@ -1261,6 +1297,11 @@ void ImageCanvas::render(QRhiCommandBuffer* cb) {
         trace::once("canvas render begin with image");
     QRhi* rhi = d->rhi;
     QRhiResourceUpdateBatch* rub = rhi->nextResourceUpdateBatch();
+    if (!d->vbuf) { // static resources could not be created (logged): background only
+        cb->beginPass(renderTarget(), d->base, {1.0f, 0}, rub);
+        cb->endPass();
+        return;
+    }
     d->uploadStatic(rub);
     if (d->extended && d->requestExtended && d->extFrames > d->extFramesAtSwitch) {
         // Covered by the extended range surface, which draws the image: only clear (no

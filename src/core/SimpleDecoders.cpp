@@ -608,8 +608,8 @@ std::optional<Raster> decodePnm(const QByteArray& data, QString* error) {
         }
     };
     if (isFloat) {
-        const qint64 need = qint64(w) * hh * depth * 4;
-        if (h->dataOffset > n || n - h->dataOffset < need)
+        const qint64 needBytes = qint64(w) * hh * depth * 4;
+        if (h->dataOffset > n || n - h->dataOffset < needBytes)
             return failWith<Raster>(error, damaged());
         const bool little = h->scale < 0;
         const uchar* p = d + h->dataOffset;
@@ -675,8 +675,8 @@ std::optional<Raster> decodePnm(const QByteArray& data, QString* error) {
         }
     } else { // P5, P6, P7
         const int sampleBytes = maxval > 255 ? 2 : 1;
-        const qint64 need = qint64(w) * hh * depth * sampleBytes;
-        if (h->dataOffset > n || n - h->dataOffset < need)
+        const qint64 needBytes = qint64(w) * hh * depth * sampleBytes;
+        if (h->dataOffset > n || n - h->dataOffset < needBytes)
             return failWith<Raster>(error, damaged());
         const uchar* p = d + h->dataOffset;
         for (int y = 0; y < hh; ++y)

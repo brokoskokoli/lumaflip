@@ -127,3 +127,40 @@ Rohdaten: `build/cppcheck/report.txt` (Cppcheck); clang-tidy-Ausgabe über `tool
 
 Danach: `tools/check.sh --tidy-all` ohne Meldungen (LLVM 22), Cppcheck 514 statt 524 Meldungen
 (nur noch Stil und Fehlalarme).
+
+## PC-lint Plus (15.10.2026)
+
+PC-lint Plus 2025 SP1 mit Testlizenz (bis 29.10.2026), macOS-Binary (x86_64, läuft über Rosetta 2).
+Nicht im Repository: Distribution nach `third_party/pclp/` entpacken (git-ignoriert), Lizenzdatei
+daneben legen, dann `tools/pclint.sh --report` (ca. 9 min, 234 `.cpp`, Bericht
+`build/pclp/report.txt`; einzelne Dateien mit `LF_PCLP_ONLY=src/core/Xmp`).
+
+Einrichtung:
+
+- `tools/pclint.sh` erzeugt mit dem mitgelieferten `pclp_config.py` (Python-Module in
+  `build/pclp/venv`) die Compiler-Konfiguration (Apple Clang, C++20, SDK) und die Projekt-
+  Konfiguration aus `compile_commands.json` (gleiche Dateiauswahl wie Cppcheck). Qt-Frameworks
+  werden über einen Ordner mit Verweisen (`build/pclp/frameworks/QtCore` → `…/QtCore.framework/Headers`)
+  gefunden, weil PC-lint keine Framework-Suche kennt.
+- `tools/pclint_builtins.h`: Ersatz für Builtins der libc++ von Clang 21 (`__builtin_clzg` …),
+  die PC-lint 2025 nicht kennt, und `#undef __ARM_NEON` (sonst ca. 11 000 Fehler aus
+  `arm_neon.h`/`__fp16`).
+- `tools/pclint.lnt`: Profil wie `.clang-tidy` – Fehler und Warnungen, dazu `const&`-Hinweise mit
+  denselben Qt-Ausnahmen; aus wie dort: Qt-Eltern-Besitz („Leck“), Zahl-Umwandlungen, werfende
+  statische Initialisierung. Zusätzlich aus, weil PC-lint moc-Code, `.mm`-Dateien und
+  `QMutexLocker` nicht sieht (Begründungen in der Datei).
+
+Ergebnis: 1 513 Meldungen, kein Fehler. Umgesetzt:
+
+- `ImageCanvas`: Ergebnis von `QRhi…::create()` wird geprüft (14 Stellen). Fehlschlag wird
+  geloggt; die Kachel bzw. das Overlay wird weggelassen, eine LUT fällt auf die Dummy-LUT zurück,
+  fehlende Grundressourcen → nur Hintergrund und neuer Versuch beim nächsten `initialize()`.
+- Verschattete Variablen umbenannt (`SimpleDecoders.cpp` `needBytes`, `ImageProvider.cpp` `failedStage`);
+  `192ll` → `192LL` (+ 3 in Tests).
+
+Nicht umgesetzt (Fehlalarme oder Absicht): ignorierte Rückgabewerte (1 037, Menüaufbau, Aufräumen,
+klebrige Lesefehler), „nicht initialisiert“ bei `std::vector`/`unique_ptr` (96), Null-Zeiger, die
+der Ablauf ausschließt (41), „immer wahr/falsch“ wegen `(c ? a : b) << x` und Build-Schaltern (89),
+Rechnungen in Decodern, die die Größengrenzen (F-FMT-02) beschränken (36), 32-Bit-Prüfungen in
+`DecoderIpc.cpp`, `render()` (von `QRhiWidget` vorgegeben), `return` nach vollständigem `switch`,
+Qt-Test- und Benchmark-Makros.

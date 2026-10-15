@@ -357,7 +357,7 @@ TEST_F(ArchiveTest, F_OPEN_10_ZipBombIsRefusedWithoutAllocating) {
         EXPECT_LE(small->size(), 100);
     // A directory that claims 4 GiB for a tiny member.
     const QString huge = writeFile(path(QStringLiteral("huge.zip")),
-                                   makeZip({{QStringLiteral("x.png"), QByteArray("abc"), 0xFFFFFFF0ll}}));
+                                   makeZip({{QStringLiteral("x.png"), QByteArray("abc"), 0xFFFFFFF0LL}}));
     EXPECT_FALSE(archive::readLocal(huge, QStringLiteral("x.png"), &error).has_value());
 }
 

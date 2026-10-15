@@ -74,7 +74,7 @@ TEST(DecoderIpc, ProtocolRoundTrip) {
     rq.path = QStringLiteral("/tmp/ä ö/bild.svg");
     rq.decode.page = 2;
     rq.decode.maxPixelSize = 1234;
-    rq.decode.maxBytes = 1ll << 33;
+    rq.decode.maxBytes = 1LL << 33;
     rq.decode.hdr = true;
     const auto rq2 = ipc::decodeRequest(ipc::encode(rq));
     ASSERT_TRUE(rq2.has_value());
@@ -84,7 +84,7 @@ TEST(DecoderIpc, ProtocolRoundTrip) {
     EXPECT_EQ(rq2->path, rq.path);
     EXPECT_EQ(rq2->decode.page, 2);
     EXPECT_EQ(rq2->decode.maxPixelSize, 1234);
-    EXPECT_EQ(rq2->decode.maxBytes, 1ll << 33);
+    EXPECT_EQ(rq2->decode.maxBytes, 1LL << 33);
     EXPECT_TRUE(rq2->decode.hdr);
 
     ipc::Response rs;

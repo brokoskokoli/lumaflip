@@ -735,9 +735,9 @@ DecodedImagePtr ImageProvider::request(const QString& path, Quality quality, QSi
         DecodedImagePtr img = d->touch(*lower);
         QMetaObject::invokeMethod(
             this, [this, path, lq, img] { emit imageReady(path, lq, img); }, Qt::QueuedConnection);
-        if (auto f = d->failedStages.constFind(keyFor(path, quality, px, page));
-            f != d->failedStages.cend()) {
-            const QString err = f.value();
+        if (auto failedStage = d->failedStages.constFind(keyFor(path, quality, px, page));
+            failedStage != d->failedStages.cend()) {
+            const QString err = failedStage.value();
             QMetaObject::invokeMethod(
                 this, [this, path, quality, err] { emit stageFailed(path, quality, err); },
                 Qt::QueuedConnection);
