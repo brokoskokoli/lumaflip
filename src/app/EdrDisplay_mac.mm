@@ -52,6 +52,8 @@ bool edrPresentationAvailable() {
            qEnvironmentVariableIntValue("LF_NO_EDR") != 1;
 }
 
+// By value like the Windows version, which moves it; the block below copies it once.
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
 EdrDisplayWatcher::EdrDisplayWatcher(std::function<void()> changed, QObject* parent) : QObject(parent) {
     @autoreleasepool {
         id token = [[NSNotificationCenter defaultCenter]

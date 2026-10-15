@@ -19,6 +19,8 @@ NSWindow* nativeWindow(QWidget* widget) {
     QWidget* top = widget ? widget->window() : nullptr;
     if (!top || !top->windowHandle() || !top->windowHandle()->handle())
         return nil;
+    // WId is the NSView pointer; ARC needs the __bridge cast through void*.
+    // NOLINTNEXTLINE(bugprone-casting-through-void,performance-no-int-to-ptr)
     NSView* view = (__bridge NSView*)reinterpret_cast<void*>(top->windowHandle()->winId());
     return view.window;
 }

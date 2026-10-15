@@ -66,7 +66,7 @@ class TrashToFolder : public TrashService {
 public:
     explicit TrashToFolder(QString dir) : m_dir(std::move(dir)) {}
     std::optional<QString> moveToTrash(const QString& path, QString* error) override {
-        const QString to = m_dir + u'/' + QFileInfo(path).fileName();
+        QString to = m_dir + u'/' + QFileInfo(path).fileName();
         if (!QFile::rename(path, to)) {
             if (error)
                 *error = QStringLiteral("rename failed");

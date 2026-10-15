@@ -13,7 +13,7 @@ using namespace lf;
 namespace {
 
 QString makeFile(const QTemporaryDir& dir, const QString& name) {
-    const QString path = dir.filePath(name);
+    QString path = dir.filePath(name);
     QFile f(path);
     if (!f.open(QIODevice::WriteOnly))
         return {};

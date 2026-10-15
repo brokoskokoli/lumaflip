@@ -269,11 +269,11 @@ namespace {
 constexpr int kBatch = 16;
 
 struct ScanItem {
-    int index;
+    int index = 0;
     QString path;
     QString paired;
     QDateTime modified;
-    qint64 size;
+    qint64 size = 0;
 };
 } // namespace
 

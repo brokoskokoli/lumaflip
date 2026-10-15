@@ -502,7 +502,7 @@ struct Task {
 struct FileOps::Private {
     FileOps* q;
     TrashService& trash;
-    QUndoStack* stack;
+    QUndoStack* stack = nullptr;
     QList<Task> queue; // queued asynchronous operations (not started yet)
     bool running = false;
     QFuture<Outcome> current; // work of the running operation

@@ -23,6 +23,7 @@ tools/check.sh --stage M4       # alle Pflichtprüfungen inkl. Format, SPDX, Spe
 tools/check.sh --quick --sanitize   # ASan/UBSan
 tools/check.sh --format-all     # clang-format für alle Dateien (Standard: nur geänderte Zeilen ggü. main)
 tools/check.sh --quick --tidy   # zusätzlich clang-tidy (.clang-tidy) auf geänderten Dateien, falls installiert
+tools/cppcheck.sh --report      # Cppcheck auf allen .cpp (brew install cppcheck), meldet nur; auch check.sh --cppcheck
 python3 tools/spec_coverage.py --verbose   # wo welche Anforderungs-ID getestet wird
 cmake -B build/generic -DLF_FORCE_GENERIC_PLATFORM=ON …  # Core mit src/platform/generic (wie Linux-CI)
 open build/check/src/Lumaflip.app --args <bild>   # App starten

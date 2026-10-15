@@ -104,7 +104,7 @@ bool parse(const QString& xml, Doc* doc) {
                 return false;
             e.tagStart = start;
             e.tagEnd = end;
-            e.selfClosing = end >= 2 && xml[end - 2] == u'/' && xml[end - 1] == u'>';
+            e.selfClosing = end >= 2 && xml[end - 2] == u'/'; // xml[end - 1] is '>' (checked above)
             e.nsUri = r.namespaceUri().toString();
             e.local = r.name().toString();
             e.attributes = r.attributes();
@@ -424,7 +424,7 @@ std::optional<QString> writeRating(const QString& xml, const Rating& rating) {
 }
 
 QString newSidecar(const Rating& rating) {
-    const QString empty =
+    QString empty = // not const: moved on return
         QStringLiteral("<x:xmpmeta xmlns:x=\"adobe:ns:meta/\" x:xmptk=\"Lumaflip\">\n"
                        " <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n"
                        "  <rdf:Description rdf:about=\"\"\n"

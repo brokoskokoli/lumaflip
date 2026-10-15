@@ -38,7 +38,7 @@ QColorSpace srgb() {
 // to the expected display size and colors.
 TEST(ImageIODecoder, F_FMT_01_CorpusInfoAndDecode) {
     LF_REQUIRE_CORPUS();
-    const QJsonObject root = expectedCorpus();
+    const QJsonObject& root = expectedCorpus();
     ASSERT_FALSE(root.isEmpty()) << "tests/corpus/expected.json not readable";
     const int defaultTol = root.value(QStringLiteral("tolerance")).toInt(40);
     const QJsonObject images = root.value(QStringLiteral("images")).toObject();
@@ -295,7 +295,7 @@ TEST(ImageIODecoder, F_FMT_02_BrokenFilesFailCleanly) {
     ImageIODecoder dec;
     const QJsonArray broken = expectedCorpus().value(QStringLiteral("broken")).toArray();
     ASSERT_EQ(broken.size(), 3);
-    for (const QJsonValue& v : broken) {
+    for (const QJsonValue v : broken) {
         const QString path = corpusFile(v.toString());
         SCOPED_TRACE(v.toString().toStdString());
         ASSERT_TRUE(QFileInfo::exists(path));
@@ -503,6 +503,7 @@ TEST(ImageIODecoder, ConcurrentDecodeIsThreadSafe) {
     ImageIODecoder dec;
     std::atomic<int> failures{0};
     std::vector<std::thread> threads;
+    threads.reserve(8);
     const QStringList files = {QStringLiteral("orient_6.jpg"), QStringLiteral("p3.png"),
                                QStringLiteral("anim.gif"),     QStringLiteral("still.heic"),
                                QStringLiteral("cmyk.jpg"),     QStringLiteral("garbage.jpg")};

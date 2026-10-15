@@ -52,7 +52,7 @@ public:
     std::optional<QString> moveToTrash(const QString& path, QString* error) override {
         QThread::msleep(ulong(delayMs.load()));
         ++calls;
-        const QString target =
+        QString target =
             m_folder + QStringLiteral("/%1-%2").arg(calls.load()).arg(QFileInfo(path).fileName());
         if (!QFile::rename(path, target)) {
             if (error)

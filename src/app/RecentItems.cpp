@@ -116,7 +116,7 @@ void RecentItems::clear() {
 }
 
 QString RecentItems::menuTitle(const RecentItem& item, const QList<RecentItem>& all) {
-    const QString name =
+    QString name = // not const: moved on return
         QFileInfo(item.path).fileName().isEmpty() ? item.path : QFileInfo(item.path).fileName();
     int same = 0;
     for (const RecentItem& o : all)

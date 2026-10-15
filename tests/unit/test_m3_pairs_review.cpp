@@ -106,9 +106,9 @@ protected:
         Settings::useTestingBackend(QDir(root).filePath(QStringLiteral("settings.ini")));
     }
     QString path(const QString& rel) const { return root + u'/' + rel; }
-    bool run(FileOps& ops, std::shared_ptr<FileBatch> batch) {
+    bool run(FileOps& ops, const std::shared_ptr<FileBatch>& batch) {
         bool done = false, ok = false;
-        runBatchAsync(ops, QStringLiteral("x"), std::move(batch), [&](bool success, const QString&) {
+        runBatchAsync(ops, QStringLiteral("x"), batch, [&](bool success, const QString&) {
             ok = success;
             done = true;
         });

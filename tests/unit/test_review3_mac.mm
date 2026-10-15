@@ -161,6 +161,8 @@ TEST(Review3Mac, F_MAC_04_SlowRegistrationReportsPendingThenResult) {
     QObject context;
     QStringList events;
     bool ok = false;
+    // By value: the block runs later and would capture a reference parameter as a reference.
+    // NOLINTNEXTLINE(performance-unnecessary-value-param)
     auto setter = [](const QString&, std::function<void(const QString&)> completion) {
         // The system answers after the user confirmed its dialog (here: 400 ms).
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 400 * int64_t(NSEC_PER_MSEC)),
@@ -187,6 +189,8 @@ TEST(Review3Mac, F_MAC_04_FastRegistrationHasNoPendingNote) {
     test::ensureQtApp();
     QObject context;
     QStringList events;
+    // By value: the block runs later and would capture a reference parameter as a reference.
+    // NOLINTNEXTLINE(performance-unnecessary-value-param)
     auto setter = [](const QString&, std::function<void(const QString&)> completion) {
         completion(QString());
     };
@@ -208,6 +212,8 @@ TEST(Review3Mac, F_MAC_04_ConcurrentCompletionsCollectAllErrors) {
     QString errors;
     // Every second type fails; completions come from many threads at once; every fifth
     // type is unknown (reported without calling the system).
+    // By value: the block runs later and would capture a reference parameter as a reference.
+    // NOLINTNEXTLINE(performance-unnecessary-value-param)
     auto setter = [](const QString& t, std::function<void(const QString&)> completion) {
         const int n = t.section('.', 1).toInt();
         dispatch_async(dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), ^{

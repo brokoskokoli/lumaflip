@@ -82,7 +82,7 @@ void GridDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
     const QImage thumb = index.data(FilmstripModel::ThumbnailRole).value<QImage>();
     const QVariant ratingData = index.data(FilmstripModel::RatingRole);
     const Rating rating = ratingData.canConvert<Rating>() ? ratingData.value<Rating>() : Rating();
-    QRectF target = inner;
+    QRectF target; // set in both branches
     if (!thumb.isNull()) {
         const QSizeF s = QSizeF(thumb.size()).scaled(inner.size(), Qt::KeepAspectRatio);
         target = QRectF(inner.center() - QPointF(s.width() / 2, s.height() / 2), s);

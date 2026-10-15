@@ -23,6 +23,8 @@ NSWindow* nativeWindow(QWidget* widget) {
 
 } // namespace
 
+// By value like the Windows version, which moves it; the block below copies it once.
+// NOLINTNEXTLINE(performance-unnecessary-value-param)
 ScreenProfileWatcher::ScreenProfileWatcher(QWidget* window, std::function<void()> changed, QObject* parent)
     : QObject(parent) {
     @autoreleasepool {

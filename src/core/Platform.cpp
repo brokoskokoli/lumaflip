@@ -70,8 +70,11 @@ bool Shell::isInstalledApp() {
     return false;
 }
 
+// The signature is the virtual one (overrides keep the callbacks); this version ignores `pending`.
+// NOLINTBEGIN(performance-unnecessary-value-param)
 void Shell::makeDefaultViewerAsync(const QStringList& types, QObject* context, DefaultViewerDone done,
                                    DefaultViewerPending /*pending*/) {
+    // NOLINTEND(performance-unnecessary-value-param)
     // The blocking call waits for LaunchServices; keep it off the GUI thread. The future is
     // remembered so the owner can wait for it before the shell goes away.
     const QFuture<DefaultViewerResult> future = QtConcurrent::run([this, types] {
@@ -85,12 +88,13 @@ void Shell::makeDefaultViewerAsync(const QStringList& types, QObject* context, D
         m_async->running.append(future);
     }
     auto* watcher = new QFutureWatcher<DefaultViewerResult>(context);
-    QObject::connect(watcher, &QFutureWatcher<DefaultViewerResult>::finished, context, [watcher, done] {
-        const DefaultViewerResult r = watcher->result();
-        watcher->deleteLater();
-        if (done)
-            done(r.ok, r.error);
-    });
+    QObject::connect(watcher, &QFutureWatcher<DefaultViewerResult>::finished, context,
+                     [watcher, done = std::move(done)] {
+                         const DefaultViewerResult r = watcher->result();
+                         watcher->deleteLater();
+                         if (done)
+                             done(r.ok, r.error);
+                     });
     watcher->setFuture(future);
 }
 

@@ -32,7 +32,7 @@ class TrashService;
 class ExportDialog : public QDialog {
     Q_OBJECT
 public:
-    ExportDialog(const QStringList& sources, QWidget* parent = nullptr);
+    explicit ExportDialog(const QStringList& sources, QWidget* parent = nullptr);
 
     exporting::Options options() const;
     void setOptions(const exporting::Options& options);

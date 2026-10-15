@@ -67,7 +67,7 @@ QString matchUiLanguage(const QString& tag, const QStringList& available) {
     const QStringList parts = t.split(QLatin1Char('-'), Qt::SkipEmptyParts);
     if (parts.isEmpty())
         return {};
-    const QString lang = parts.first().toLower();
+    QString lang = parts.first().toLower(); // not const: moved on return
     // Script (4 letters) and region (2 letters or 3 digits) subtags.
     QString script, region;
     for (qsizetype i = 1; i < parts.size(); ++i) {

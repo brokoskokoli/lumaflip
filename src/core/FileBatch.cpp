@@ -129,7 +129,7 @@ UnitTargets unitTargets(const QStringList& members, const QStringList& sidecarPa
 // F-FILE-11 "Beide behalten" for a unit: the first "<base> n" free for every target name.
 QString keepBothBase(const QString& folder, const QStringList& members, const QStringList& sidecarPaths,
                      Folding& folding) {
-    const QString base = baseOf(fileName(members.first()));
+    QString base = baseOf(fileName(members.first())); // not const: moved on return
     for (int n = 2; n < 100000; ++n) {
         const QString candidate = QStringLiteral("%1 %2").arg(base).arg(n);
         const UnitTargets t = unitTargets(members, sidecarPaths, candidate, folding);
@@ -541,7 +541,7 @@ void FileBatch::notify(FileOps& ops, bool forward) const {
     }
 }
 
-void runBatchAsync(FileOps& ops, const QString& undoText, std::shared_ptr<FileBatch> batch,
+void runBatchAsync(FileOps& ops, const QString& undoText, const std::shared_ptr<FileBatch>& batch,
                    FileOps::Completion done) {
     FileOps* o = &ops;
     ops.runAsync(

@@ -54,10 +54,10 @@ bool gpuPlatform() {
 }
 
 QString make24MPSource(const QString& folder) {
-    const QString corpus = QStringLiteral(LF_CORPUS_DIR "/generated/big_24mp.jpg");
+    QString corpus = QStringLiteral(LF_CORPUS_DIR "/generated/big_24mp.jpg");
     if (QFileInfo(corpus).size() > 0)
         return corpus;
-    const QString generated = folder + QStringLiteral("/source.jpg");
+    QString generated = folder + QStringLiteral("/source.jpg");
     if (QFileInfo(generated).size() > 0)
         return generated;
     QImage img(6000, 4000, QImage::Format_RGB32);
@@ -76,7 +76,7 @@ QString make24MPSource(const QString& folder) {
 // Folder with `kFolderImages` distinct files (same pixels, separate cache keys).
 QString benchFolder(const QString& name, int count) {
     const QString base = QDir::tempPath() + QStringLiteral("/lumaflip-bench-24mp-v1");
-    const QString folder = base + QLatin1Char('/') + name;
+    QString folder = base + QLatin1Char('/') + name;
     if (!QDir().mkpath(folder))
         return {};
     const QString source = make24MPSource(base);

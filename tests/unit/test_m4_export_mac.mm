@@ -34,6 +34,10 @@ bool writeSourceJpeg(const QString& path) {
         CGColorSpaceRelease(cs);
         CGImageDestinationRef d =
             CGImageDestinationCreateWithURL((__bridge CFURLRef)urlOf(path), CFSTR("public.jpeg"), 1, nullptr);
+        if (!d) {
+            CGImageRelease(cg);
+            return false;
+        }
         NSDictionary* props = @{
             (__bridge NSString*)kCGImagePropertyOrientation : @6,
             (__bridge NSString*)kCGImagePropertyGPSDictionary : @{
@@ -173,7 +177,7 @@ TEST(ExportMac, F_EDIT_04_HdrGainMapKeptOrToneMapped) {
         const CGFloat bright[] = {3.0, 3.0, 3.0, 1.0};
         CGColorRef c = CGColorCreate(cs, bright);
         CGContextSetFillColorWithColor(ctx, c);
-        CGContextFillRect(ctx, CGRectMake(0, 0, w / 2, h / 2));
+        CGContextFillRect(ctx, CGRectMake(0, 0, w / 2.0, h / 2.0));
         CGColorRelease(c);
         CGImageRef img = CGBitmapContextCreateImage(ctx);
         CGImageRef withHeadroom = CGImageCreateCopyWithContentHeadroom(3.0f, img);
@@ -181,6 +185,7 @@ TEST(ExportMac, F_EDIT_04_HdrGainMapKeptOrToneMapped) {
         CGColorSpaceRelease(cs);
         CGImageDestinationRef d =
             CGImageDestinationCreateWithURL((__bridge CFURLRef)urlOf(src), CFSTR("public.jpeg"), 1, nullptr);
+        ASSERT_NE(d, nullptr);
         NSDictionary* opts = @{
             (__bridge NSString*)
             kCGImageDestinationEncodeRequest : (__bridge NSString*)kCGImageDestinationEncodeToISOGainmap

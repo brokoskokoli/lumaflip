@@ -127,8 +127,8 @@ bool plausibleInput(qint64 inputBytes, qint64 outputBytes) {
 
 // Tokenizer for the text header (whitespace, '#' comments).
 struct PnmCursor {
-    const uchar* d;
-    qint64 n;
+    const uchar* d = nullptr;
+    qint64 n = 0;
     qint64 pos = 0;
 
     void skipSpace() {

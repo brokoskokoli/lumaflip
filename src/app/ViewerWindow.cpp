@@ -490,12 +490,12 @@ void ViewerWindow::setVisible(bool visible) {
     mediaVisibilityChanged(); // F-FMT-03: no playback in hidden windows
     if (visible && m_extras)
         m_extras->windowStateChanged(); // F-VIEW-12/13 on the native window
-    if (visible)                        // F-VIEW-10: also transitions the user starts (green button, gesture)
+    if (visible) {
+        // F-VIEW-10: also transitions the user starts (green button, gesture)
         watchFullScreenTransitions(
             this, [this](bool entering, bool finished) { onFullScreenTransition(entering, finished); });
-    // After the native window and the GPU surface exist (show), before the event loop
-    // presents the first frame: the first frame already has the status bar.
-    if (visible) {
+        // After the native window and the GPU surface exist (show), before the event loop
+        // presents the first frame: the first frame already has the status bar.
         createStatusBar();
         m_panels->restore(); // M2 panels remembered in the settings
         updateEmptyState();

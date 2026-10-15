@@ -102,7 +102,7 @@ private:
 };
 
 // Queues `batch` on `ops` as one undo step named `undoText`; `done` on the GUI thread.
-void runBatchAsync(FileOps& ops, const QString& undoText, std::shared_ptr<FileBatch> batch,
+void runBatchAsync(FileOps& ops, const QString& undoText, const std::shared_ptr<FileBatch>& batch,
                    FileOps::Completion done = {});
 
 } // namespace lf

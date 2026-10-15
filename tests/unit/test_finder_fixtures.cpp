@@ -155,7 +155,7 @@ QStringList checkFixture(const QString& dir, const NameCollator* collator) {
     // Order: sort the recorded metadata with the spec and compare.
     const QHash<QString, QPointF> positions = iconPositions(folderRecords);
     QVector<FileEntry> entries;
-    for (const QJsonValue& v : obj.value(QLatin1String("files")).toArray()) {
+    for (const QJsonValue v : obj.value(QLatin1String("files")).toArray()) {
         const QJsonObject f = v.toObject();
         FileEntry e;
         e.name = f.value(QLatin1String("name")).toString();
@@ -173,7 +173,7 @@ QStringList checkFixture(const QString& dir, const NameCollator* collator) {
     QStringList order, expected;
     for (const FileEntry& e : std::as_const(entries))
         order.append(e.name);
-    for (const QJsonValue& v : obj.value(QLatin1String("order")).toArray())
+    for (const QJsonValue v : obj.value(QLatin1String("order")).toArray())
         expected.append(v.toString());
     if (order != expected)
         failures.append(QStringLiteral("order\n  got      %1\n  expected %2 (%3)")

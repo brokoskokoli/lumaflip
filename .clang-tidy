@@ -28,11 +28,19 @@ Checks: >
   modernize-redundant-void-arg,
   modernize-deprecated-headers,
   -bugprone-signed-bitwise,
+  -bugprone-throwing-static-initialization,
+  -bugprone-assignment-in-if-condition,
   -performance-use-std-move,
   -clang-analyzer-optin.performance.*
 # New in LLVM 23 and off here: bugprone-signed-bitwise (Qt flags, qRgb and byte packing
 # use int on purpose), performance-use-std-move (copies of small Qt values, implicitly
 # shared). optin.performance (struct padding, GCD wait with timeout) are opt-in hints.
+# bugprone-throwing-static-initialization: static Qt constants (QString, QStringList, QHash)
+# and benchmark registration throw only on out-of-memory at start-up; no exceptions in use.
+# bugprone-assignment-in-if-condition: the compiler already rejects an unparenthesized
+# assignment (-Wparentheses, -Werror); `if ((x = f()))` is the marked, intended form.
+# modernize-loop-convert does not rewrite reverse loops (UseCxx20ReverseRanges): crbegin/crend
+# states the order, and std::views::reverse on a non-const Qt container would detach it.
 # Qt parent/child ownership (new QWidget(parent)) looks like a leak to the analyzer:
 # cplusplus.NewDeleteLeaks is off for that reason.
 WarningsAsErrors: ''
@@ -45,5 +53,7 @@ CheckOptions:
     value: 'QString;QStringList;QByteArray;QImage;QVariant;QList;QVector;QHash;QMap;QSet;QColorSpace;.*Ptr$'
   - key: modernize-loop-convert.MinConfidence
     value: reasonable
+  - key: modernize-loop-convert.UseCxx20ReverseRanges
+    value: false
   - key: bugprone-assert-side-effect.AssertMacros
     value: 'assert,Q_ASSERT,Q_ASSERT_X'

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: GPL-3.0-or-later
 # Runs all mandatory checks (SPEC 15.1).
-# Usage: tools/check.sh [--quick] [--no-gui] [--sanitize] [--stage M1] [--format-all] [--tidy|--tidy-all]
+# Usage: tools/check.sh [--quick] [--no-gui] [--sanitize] [--stage M1] [--format-all] [--tidy|--tidy-all] [--cppcheck]
 #   --quick       build + tests only
 #   --no-gui      only tests that open no windows (unit tests, offscreen); no integration
 #                 tests, no benchmarks. Use this on a laptop someone is working on.
@@ -14,6 +14,8 @@
 #                 the format check); any finding fails. Skipped if clang-tidy is not
 #                 installed, unless LF_REQUIRE_TIDY=1 (CI)
 #   --tidy-all    like --tidy, but on every .cpp/.mm file under src/ and tests/
+#   --cppcheck    Cppcheck on all .cpp files (tools/cppcheck.sh --report): lists findings,
+#                 does not fail; skipped if cppcheck is not installed
 # Always (also with --quick --no-gui): tools/i18n_check.py (untranslated texts, catalogues).
 # Environment: LF_BENCH_TOLERANCE (benchmark limit factor, default 1.2),
 #   LF_BENCH_LOAD_WAIT (seconds to wait for the 1-minute load average to drop to the
@@ -23,7 +25,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-QUICK=0; NO_GUI=0; SANITIZE=0; FORMAT_ALL=0; TIDY=0; TIDY_ALL=0; STAGE="${LF_STAGE:-M4}"
+QUICK=0; NO_GUI=0; SANITIZE=0; FORMAT_ALL=0; TIDY=0; TIDY_ALL=0; CPPCHECK=0; STAGE="${LF_STAGE:-M4}"
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --quick) QUICK=1 ;;
@@ -33,6 +35,7 @@ while [[ $# -gt 0 ]]; do
     --format-all) FORMAT_ALL=1 ;;
     --tidy) TIDY=1 ;;
     --tidy-all) TIDY=1; TIDY_ALL=1 ;;
+    --cppcheck) CPPCHECK=1 ;;
     *) echo "unknown option $1"; exit 2 ;;
   esac; shift
 done
@@ -228,6 +231,15 @@ if [[ $TIDY == 1 ]]; then
         "$TIDY_BIN" -p "$BUILD_DIR" --quiet --warnings-as-errors='*' \
         || die "clang-tidy reported findings (see above)"
     fi
+  fi
+fi
+
+if [[ $CPPCHECK == 1 ]]; then
+  step "cppcheck"
+  if command -v "${LF_CPPCHECK:-cppcheck}" >/dev/null; then
+    tools/cppcheck.sh --build-dir "$BUILD_DIR" --report
+  else
+    echo "cppcheck not found - skipped (brew install cppcheck)"
   fi
 fi
 

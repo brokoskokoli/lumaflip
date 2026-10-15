@@ -17,14 +17,17 @@ constexpr int kIconScale = 2; // Retina
 
 AppEntry entryFor(NSURL* appUrl) {
     AppEntry e;
-    e.path = QString::fromNSString(appUrl.path);
-    NSString* name = [[NSFileManager defaultManager] displayNameAtPath:appUrl.path];
+    NSString* path = appUrl.path;
+    if (!path) // not a file URL: nothing to show (displayNameAtPath: needs a path)
+        return e;
+    e.path = QString::fromNSString(path);
+    NSString* name = [[NSFileManager defaultManager] displayNameAtPath:path];
     if ([name.pathExtension.lowercaseString isEqualToString:@"app"])
         name = name.stringByDeletingPathExtension;
     e.name = QString::fromNSString(name);
     e.bundleId = QString::fromNSString([NSBundle bundleWithURL:appUrl].bundleIdentifier);
-    e.icon = mac::toQImage([[NSWorkspace sharedWorkspace] iconForFile:appUrl.path], kIconPt * kIconScale,
-                           kIconScale);
+    e.icon =
+        mac::toQImage([[NSWorkspace sharedWorkspace] iconForFile:path], kIconPt * kIconScale, kIconScale);
     return e;
 }
 

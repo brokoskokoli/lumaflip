@@ -104,7 +104,7 @@ class TstDefaultAppOffer : public QObject {
     std::unique_ptr<Application> app;
 
     QString image(const QString& name, Qt::GlobalColor color = Qt::darkCyan) const {
-        const QString p = QDir::cleanPath(dir->path()) + QLatin1Char('/') + name;
+        QString p = QDir::cleanPath(dir->path()) + QLatin1Char('/') + name;
         QImage img(640, 480, QImage::Format_RGB32);
         img.fill(color);
         const QByteArray format = QFileInfo(name).suffix() == QLatin1String("jpg") ? "JPEG" : "PNG";

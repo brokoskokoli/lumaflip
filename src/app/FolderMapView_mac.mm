@@ -122,7 +122,8 @@ public:
         m_view.showsScale = YES;
         m_view.pitchEnabled = NO;
         [m_view registerClass:[LFMarkerView class] forAnnotationViewWithReuseIdentifier:kPhotoReuse];
-        m_window = QWindow::fromWinId(WId((__bridge void*)m_view));
+        // ARC allows an object pointer to become an integer only through a __bridge void*.
+        m_window = QWindow::fromWinId(WId((__bridge void*)m_view)); // NOLINT(bugprone-casting-through-void)
         m_container = QWidget::createWindowContainer(m_window, m_host);
         m_container->setObjectName(QStringLiteral("lfFolderMapContainer"));
         m_container->setMinimumSize(160, 120);

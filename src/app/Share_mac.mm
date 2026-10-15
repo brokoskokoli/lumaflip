@@ -43,7 +43,7 @@ QString serviceTitle(NSSharingService* s) {
 } // namespace
 
 QString shareTypeKey(const QString& path) {
-    const QString suffix = QFileInfo(path).suffix().toLower();
+    QString suffix = QFileInfo(path).suffix().toLower(); // not const: moved on return
     @autoreleasepool {
         UTType* type = suffix.isEmpty() ? nil : [UTType typeWithFilenameExtension:suffix.toNSString()];
         if (type && !type.dynamic)

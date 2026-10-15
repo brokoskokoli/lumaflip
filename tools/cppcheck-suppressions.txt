@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Cppcheck suppressions (tools/cppcheck.sh). One per line: id[:file[:line]], with a reason.
+# System and Qt headers are not checked.
+missingIncludeSystem
+missingInclude
+# Inline suppressions without a matching finding are not an error.
+unmatchedSuppression

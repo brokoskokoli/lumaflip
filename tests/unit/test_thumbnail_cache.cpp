@@ -67,7 +67,7 @@ protected:
     }
 
     QString makeFile(const QString& name) {
-        const QString path = QDir::cleanPath(files.filePath(name));
+        QString path = QDir::cleanPath(files.filePath(name));
         QFile f(path);
         if (!f.open(QIODevice::WriteOnly))
             return {};
