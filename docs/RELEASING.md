@@ -31,7 +31,7 @@ Signing** signiert, siehe [Windows: Signatur und Updates](#windows-signatur-und-
 | `packaging/brand/` | `lumaflip-mono.svg` (einfarbige Glyphe des Symbols) und `social-preview.svg` (Vorlage für das Linkvorschaubild). `tools/make_website_images.sh` (braucht `resvg`) erzeugt daraus und aus dem Symbol `website/favicon.png`, `website/apple-touch-icon.png`, `website/images/icon.png` und `website/images/social-preview.png` – nach jeder Änderung am Symbol zusammen mit `tools/make_icon.sh` ausführen |
 | `packaging/licenses/` | Lizenztexte, die Homebrew nicht mitliefert (LGPL-3.0 und Hinweis für Qt, LGPL-2.1 für libintl) |
 | `packaging/homebrew/lumaflip.rb` | Homebrew Cask, Spiegel von `Casks/lumaflip.rb` im Tap [`brokoskokoli/homebrew-tap`](https://github.com/brokoskokoli/homebrew-tap) (siehe [Homebrew Cask](#homebrew-cask)) |
-| `packaging/winget/manifests/…/1.2.1/` | winget-Manifeste (`Brokoskokoli.Lumaflip`) für die erste Einreichung bei `microsoft/winget-pkgs` (siehe [winget](#winget)) |
+| `packaging/winget/manifests/…/1.2.2/` | winget-Manifeste (`Brokoskokoli.Lumaflip`) der ersten Einreichung bei `microsoft/winget-pkgs` (siehe [winget](#winget)) |
 | `tools/setup_distribution_secrets.sh` | Richtet den Deploy-Key `HOMEBREW_TAP_DEPLOY_KEY` ein und setzt `WINGET_TOKEN` (Environment `release`) für die Jobs `homebrew-tap` und `winget` |
 
 ## Lokal bauen
@@ -136,7 +136,8 @@ die Jobs `homebrew-tap` bzw. `winget` mit einem Hinweis, das Release ist davon n
 | `HOMEBREW_TAP_DEPLOY_KEY` | Privater Teil eines SSH-Deploy-Keys mit Schreibrecht nur auf `brokoskokoli/homebrew-tap`; läuft nicht ab. Wird von `tools/setup_distribution_secrets.sh` erzeugt (öffentlicher Teil als Deploy-Key „Lumaflip release workflow“ im Tap) | Skript erneut ausführen ersetzt den Schlüssel |
 | `WINGET_TOKEN` | Classic PAT mit genau dem Scope `public_repo` (Fork von `winget-pkgs` + Pull Request; fine-grained PATs können keine PRs an fremde Repos öffnen) | github.com → Settings → Developer settings → Tokens (classic) |
 
-Beide Tokens laufen ab (beim Anlegen z. B. ein Jahr wählen); danach das Skript erneut ausführen.
+Der Deploy-Key läuft nicht ab. `WINGET_TOKEN` am besten ohne Ablaufdatum anlegen („No expiration“); hat er
+eines, nach dem Ablauf `tools/setup_distribution_secrets.sh winget` erneut ausführen.
 
 Dazu eine **Variable** (kein Secret, der Schlüssel ist öffentlich) unter Settings → Secrets and variables →
 Actions → Variables: `SPARKLE_PUBLIC_ED_KEY` = öffentlicher EdDSA-Schlüssel (44 Zeichen Base64).
