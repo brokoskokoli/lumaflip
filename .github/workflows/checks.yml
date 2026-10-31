@@ -188,7 +188,7 @@ jobs:
           sudo apt-get install -y --no-install-recommends ninja-build clang libgtest-dev \
             libarchive-dev libgl1-mesa-dev libegl1 libxkbcommon0 libfontconfig1 libglib2.0-0
       - name: Install Qt
-        uses: jurplel/install-qt-action@a9c63c7c123f3069cff414e7e482d95dfa9d8125 # v4.4.1
+        uses: jurplel/install-qt-action@b344308e4483fc892e0d27b3cd1b173ebdd95f06 # v4.5.0
         with:
           # An exact version (supply chain: the same Qt as the Windows job, no silent update).
           version: "6.11.2"
@@ -277,7 +277,7 @@ jobs:
           key: turbojpeg-${{ env.LIBJPEG_TURBO_VERSION }}-ubuntu-24.04
         continue-on-error: true
       - name: Install Qt
-        uses: jurplel/install-qt-action@a9c63c7c123f3069cff414e7e482d95dfa9d8125 # v4.4.1
+        uses: jurplel/install-qt-action@b344308e4483fc892e0d27b3cd1b173ebdd95f06 # v4.5.0
         with:
           # Exact version: the AppImage ships this Qt (no silent update between builds).
           version: "6.11.2"
